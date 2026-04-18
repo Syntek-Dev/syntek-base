@@ -15,6 +15,9 @@ code/src/frontend/src/graphql/generated/
 # Lockfiles
 pnpm-lock.yaml
 
+# Claude Code workspace (internal tooling — not project source)
+.claude/
+
 # Misc
 .git/
 coverage/

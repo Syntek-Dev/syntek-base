@@ -11,11 +11,11 @@ pre-commit:
 
     ruff-lint:
       glob: "*.py"
-      run: uv run ruff check {staged_files}
+      run: uv run ruff check --force-exclude {staged_files}
 
     ruff-format:
       glob: "*.py"
-      run: uv run ruff format --check {staged_files}
+      run: uv run ruff format --force-exclude --check {staged_files}
 
     basedpyright:
       glob: "*.py"
