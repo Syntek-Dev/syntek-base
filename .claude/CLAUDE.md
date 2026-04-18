@@ -48,6 +48,12 @@ Always-applicable guides: `project-management/docs/GIT-GUIDE.md` · `project-man
 - Backend coverage floor: 75% all modules; 90% for auth-related code.
 - Frontend coverage floor: 70% minimum.
 
+**Scripts:**
+
+- Never run `pnpm`, `npm`, `npx`, `uv`, `pip`, or any package-manager command directly.
+- Always use the project shell scripts in `code/src/scripts/**/*.sh` instead.
+- If no script exists for the task, ask the user to create one before proceeding.
+
 **Documentation (Markdown):**
 
 - Every fenced code block must declare its language — ` ```bash `, ` ```python `,
