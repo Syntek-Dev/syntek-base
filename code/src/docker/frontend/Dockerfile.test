@@ -1,0 +1,21 @@
+FROM node:24.15.0-alpine
+
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+
+ENV PNPM_HOME="/usr/local/share/pnpm" \
+    PATH="/usr/local/share/pnpm:$PATH" \
+    NEXT_TELEMETRY_DISABLED=1
+
+WORKDIR /workspace
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY code/src/frontend/package.json ./code/src/frontend/
+
+RUN pnpm install --frozen-lockfile
+
+# Bake source into image — no volume mounts in test
+COPY code/src/frontend/ ./code/src/frontend/
+
+WORKDIR /workspace/code/src/frontend
+
+CMD ["pnpm", "run", "test"]

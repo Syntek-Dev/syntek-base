@@ -1,0 +1,29 @@
+FROM python:3.14-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    curl && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PATH="/workspace/.venv/bin:$PATH"
+
+WORKDIR /workspace
+
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-install-project
+
+# Bake source into image — no volume mounts in test
+COPY code/src/backend/ ./code/src/backend/
+
+COPY code/src/docker/backend/entrypoint.test.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 8000
+ENTRYPOINT ["/entrypoint.sh"]

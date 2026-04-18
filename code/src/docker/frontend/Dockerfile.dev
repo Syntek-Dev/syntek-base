@@ -1,0 +1,20 @@
+FROM node:24.15.0-alpine
+
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+
+ENV PNPM_HOME="/usr/local/share/pnpm" \
+    PATH="/usr/local/share/pnpm:$PATH" \
+    NEXT_TELEMETRY_DISABLED=1
+
+WORKDIR /workspace
+
+# Install dependencies — source is mounted as a volume at runtime
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY code/src/frontend/package.json ./code/src/frontend/
+
+RUN pnpm install --frozen-lockfile
+
+WORKDIR /workspace/code/src/frontend
+
+EXPOSE 3000
+CMD ["pnpm", "run", "dev"]

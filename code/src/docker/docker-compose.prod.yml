@@ -1,0 +1,39 @@
+# Production stack — images pulled exclusively from GHCR (built via GitHub Actions).
+# Server handles: Nginx (reverse proxy), Postgres, Valkey, CF Tunnel.
+# Backend runs Gunicorn + Uvicorn workers (ASGI); frontend serves Next.js static export via Nginx.
+#
+# Server Nginx should proxy:
+#   /graphql/, /admin/, /static/, /media/, /health/ → http://127.0.0.1:8000
+#   /                                               → http://127.0.0.1:3001
+#
+# Deploy: docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d
+#
+# Required env vars (set on the server — managed secrets, never .env files in production):
+#   DATABASE_URL, SECRET_KEY, ALLOWED_HOSTS, CORS_ALLOWED_ORIGINS,
+#   REDIS_URL, IMAGE_TAG, NEXT_PUBLIC_GRAPHQL_URL
+name: syntek-prod
+
+services:
+  backend:
+    image: ghcr.io/syntek-studio/syntek-website/backend:${IMAGE_TAG:?IMAGE_TAG is required}
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:?ALLOWED_HOSTS is required}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:?CORS_ALLOWED_ORIGINS is required}
+      DEBUG: "false"
+      # Gunicorn + Uvicorn worker tuning
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-30}
+      GUNICORN_MAX_REQUESTS: ${GUNICORN_MAX_REQUESTS:-1000}
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/syntek-studio/syntek-website/frontend:${IMAGE_TAG:?IMAGE_TAG is required}
+    ports:
+      - "127.0.0.1:3001:80"
+    restart: unless-stopped
