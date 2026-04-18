@@ -1,0 +1,255 @@
+# Project: Syntek Website - Full-Stack
+
+**Last Updated**: 18/04/2026
+**Version**: 0.1.0
+**Maintained By**: Syntek Studio
+**Language**: British English (en_GB)
+**Timezone**: Europe/London
+
+---
+
+## Stack Overview
+
+| Component           | Technology                                      |
+| ------------------- | ----------------------------------------------- |
+| **Type**            | Full-Stack Monorepo (Backend + Frontend)        |
+| **Backend Lang**    | Python 3.12                                     |
+| **Backend Frame**   | Django 5.x                                      |
+| **GraphQL**         | Strawberry GraphQL (strawberry-graphql[django]) |
+| **Database**        | PostgreSQL 16                                   |
+| **Backend Server**  | Gunicorn / Nginx                                |
+| **Frontend Frame**  | Next.js 15 (App Router)                         |
+| **Frontend Lang**   | TypeScript 5.x                                  |
+| **UI Library**      | React 19                                        |
+| **Styling**         | Tailwind CSS v4                                 |
+| **GraphQL Client**  | Apollo Client (or urql)                         |
+| **Code Generation** | GraphQL Code Generator                          |
+| **Node Runtime**    | Node.js 22 (where required)                     |
+| **Backend Tests**   | pytest, pytest-django                           |
+| **Frontend Tests**  | Vitest, React Testing Library                   |
+| **Container**       | Docker Compose                                  |
+
+---
+
+## Coding Principles
+
+All code in this project follows Rob Pike's 5 Rules of Programming and Linus Torvalds' Coding Rules.
+
+**Core rules:**
+- Measure before optimising — no speed hacks without profiling
+- Simple algorithms and simple data structures over fancy ones
+- Data structures dominate: get the data model right and the logic becomes obvious
+- Short, focused functions that do one thing
+- Eliminate special cases rather than patching them with `if` statements
+- Make it work first, then make it better
+- Favour stability and readability over cleverness
+
+See `.claude/CODING-PRINCIPLES.md` for the full rules.
+
+---
+
+## Skill Targets
+
+- **Stack Skill (Backend):** `stack-django`
+- **Stack Skill (Frontend):** `stack-react`
+- **Global Skill:** `global-workflow`
+
+---
+
+## Architecture
+
+This is a **full-stack monorepo** combining:
+
+```
+syntek-website/
+├── backend/          # Django + Strawberry GraphQL API
+└── frontend/         # Next.js (App Router, TypeScript, Tailwind)
+```
+
+The Next.js frontend consumes the Django GraphQL API. Both services run via Docker Compose.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     frontend/ (Next.js)                          │
+│  - React 19 + TypeScript                                         │
+│  - Tailwind CSS v4                                               │
+│  - Apollo Client → GraphQL queries/mutations                     │
+│  - Generated TypeScript types from Strawberry schema             │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │ GraphQL API (http://localhost:8000/graphql/)
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     backend/ (Django)                            │
+│  - Strawberry GraphQL — Queries, Mutations, Subscriptions        │
+│  - JWT Authentication (strawberry-django-jwt or similar)         │
+│  - PostgreSQL 16                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Environment
+
+| Setting                      | Value                                   |
+| ---------------------------- | --------------------------------------- |
+| **Frontend URL (Dev)**       | http://localhost:3000                   |
+| **Backend URL (Dev)**        | http://localhost:8000                   |
+| **GraphQL Endpoint**         | http://localhost:8000/graphql/          |
+| **GraphQL Playground**       | http://localhost:8000/graphql/ (dev)    |
+| **Django Admin**             | http://localhost:8000/admin/            |
+| **Database (Dev)**           | syntek_website_dev                      |
+| **Database (Test)**          | syntek_website_test                     |
+| **Database (Staging)**       | syntek_website_staging                  |
+| **Database (Production)**    | syntek_website_production               |
+| **Locale**                   | en_GB                                   |
+| **Timezone**                 | Europe/London                           |
+| **Currency**                 | GBP (£)                                 |
+
+---
+
+## Key Locations
+
+### Backend (`backend/`)
+
+| Path                         | Purpose                                    |
+| ---------------------------- | ------------------------------------------ |
+| `backend/apps/core/`         | Shared utilities, root GraphQL schema      |
+| `backend/apps/core/schema.py`| Root Strawberry schema                     |
+| `backend/apps/users/`        | User management and authentication         |
+| `backend/apps/users/schema.py` | User GraphQL types, queries, mutations   |
+| `backend/config/settings/`   | Environment-specific Django settings       |
+| `backend/tests/`             | pytest test suite                          |
+
+### Frontend (`frontend/`)
+
+| Path                              | Purpose                               |
+| --------------------------------- | ------------------------------------- |
+| `frontend/src/app/`               | Next.js App Router pages              |
+| `frontend/src/components/`        | App-specific React components         |
+| `frontend/src/graphql/`           | GraphQL queries, mutations, fragments |
+| `frontend/src/graphql/generated/` | Auto-generated types and hooks        |
+| `frontend/src/hooks/`             | Custom React hooks                    |
+| `frontend/src/contexts/`          | React Context providers               |
+| `frontend/src/services/`          | Non-GraphQL services                  |
+| `frontend/src/utils/`             | Utility functions                     |
+| `frontend/src/types/`             | Shared TypeScript types               |
+
+---
+
+## Development Commands
+
+```bash
+# Full stack
+docker compose up -d                  # Start all containers
+docker compose down                   # Stop all containers
+docker compose logs -f backend        # Backend logs
+docker compose logs -f frontend       # Frontend logs
+
+# Backend (Django)
+docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py makemigrations
+docker compose exec backend python manage.py createsuperuser
+docker compose exec backend pytest
+docker compose exec backend pytest --cov=apps
+
+# GraphQL schema export
+docker compose exec backend python manage.py export_schema --path schema.graphql
+
+# Frontend (Next.js)
+docker compose exec frontend npm run dev
+docker compose exec frontend npm run build
+docker compose exec frontend npm run codegen        # Generate types from schema
+docker compose exec frontend npm run codegen:watch  # Watch mode
+docker compose exec frontend npm test
+docker compose exec frontend npm run lint
+```
+
+---
+
+## GraphQL API
+
+### Endpoint
+- **URL:** `http://localhost:8000/graphql/`
+- **Method:** POST (queries/mutations), GET (playground in dev)
+
+### Authentication
+- JWT tokens via `Authorization: Bearer <token>` header
+
+### Example Query
+```graphql
+query GetCurrentUser {
+  me {
+    id
+    email
+    firstName
+    lastName
+  }
+}
+```
+
+### Example Mutation
+```graphql
+mutation Login($email: String!, $password: String!) {
+  tokenAuth(email: $email, password: $password) {
+    token
+    refreshToken
+  }
+}
+```
+
+---
+
+## Code Conventions
+
+### Backend (Django / Strawberry)
+- Business logic lives in **Services**, not resolvers — keep resolvers thin
+- **No traditional views** — all data exposed via GraphQL (exceptions: webhooks, health checks)
+- **Class-Based Views (CBVs)** when views are required
+- **Strict type hints** required on all Python code
+
+```python
+import strawberry
+from typing import Optional
+
+@strawberry.type
+class UserType:
+    id: strawberry.ID
+    email: str
+    first_name: str
+    last_name: str
+
+    @strawberry.field
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+```
+
+### Frontend (Next.js / TypeScript)
+- **Functional components only** with TypeScript interfaces
+- Use **Next.js App Router** conventions (Server Components by default, `"use client"` only when needed)
+- Use generated Apollo hooks from `src/graphql/generated/`
+- Tailwind CSS v4 utilities for all styling — no hardcoded colours
+
+---
+
+## Database Schema
+
+*(Document key tables and relationships here as the project develops)*
+
+---
+
+## Reference Files
+
+All agents must read these before working:
+
+| File                               | Purpose                               |
+| ---------------------------------- | ------------------------------------- |
+| `.claude/CODING-PRINCIPLES.md`     | Rob Pike + Linus Torvalds rules       |
+| `.claude/TESTING.md`               | Testing guide for this stack          |
+| `.claude/SECURITY.md`              | Security patterns and checklist       |
+| `.claude/ACCESSIBILITY.md`         | WCAG 2.2 AA and ARIA patterns         |
+| `.claude/API-DESIGN.md`            | REST and GraphQL conventions          |
+| `.claude/ARCHITECTURE-PATTERNS.md` | Service layer and project structure   |
+| `.claude/DATA-STRUCTURES.md`       | Domain modelling and schema design    |
+| `.claude/PERFORMANCE.md`           | Query optimisation and caching        |
+| `.claude/DEVELOPMENT.md`           | Development workflow and tasks        |
+| `.claude/SEO-CHECKLIST.md`         | SEO & AI discoverability checklist    |
