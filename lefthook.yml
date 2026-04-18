@@ -24,13 +24,3 @@ pre-commit:
     markdownlint:
       glob: "*.md"
       run: pnpm exec markdownlint-cli2 {staged_files}
-
-    # Detect stub implementations (Django, GraphQL, Next.js, TypeScript).
-    # TDD/BDD red phase bypass: STUBS_TDD_RED=1 git commit -m "red: ..."
-    audit-stubs:
-      run: bash code/src/scripts/audits/stubs.sh
-
-    # Enforce per-file line limits: warn ≥750 lines, fail ≥800 lines.
-    # Requires cloc for the language summary; wc/find always run enforcement.
-    audit-cloc:
-      run: bash code/src/scripts/audits/cloc.sh

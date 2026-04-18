@@ -2,6 +2,7 @@
   "globs": [
     "**/*.md",
     "!.claude/**",
+    ".claude/CLAUDE.md",
     "!.venv/**",
     "!node_modules/**",
     "!.next/**",

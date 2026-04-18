@@ -15,8 +15,11 @@ code/src/frontend/src/graphql/generated/
 # Lockfiles
 pnpm-lock.yaml
 
-# Claude Code workspace (internal tooling — not project source)
-.claude/
+# Claude Code workspace — format CLAUDE.md only; exclude internal tooling files
+.claude/CLAUDE.md.pre-scaffold
+.claude/commands/
+.claude/plugins/
+.claude/settings.local.json
 
 # Misc
 .git/
