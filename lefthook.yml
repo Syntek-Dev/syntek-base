@@ -1,0 +1,36 @@
+pre-commit:
+  parallel: true
+  commands:
+    eslint:
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs}"
+      run: pnpm exec eslint {staged_files}
+
+    prettier:
+      glob: "*.{js,jsx,ts,tsx,mjs,cjs,json,yaml,yml,css,html,md,mdx}"
+      run: pnpm exec prettier --check {staged_files}
+
+    ruff-lint:
+      glob: "*.py"
+      run: uv run ruff check {staged_files}
+
+    ruff-format:
+      glob: "*.py"
+      run: uv run ruff format --check {staged_files}
+
+    basedpyright:
+      glob: "*.py"
+      run: uv run basedpyright
+
+    markdownlint:
+      glob: "*.md"
+      run: pnpm exec markdownlint-cli2 {staged_files}
+
+    # Detect stub implementations (Django, GraphQL, Next.js, TypeScript).
+    # TDD/BDD red phase bypass: STUBS_TDD_RED=1 git commit -m "red: ..."
+    audit-stubs:
+      run: bash code/src/scripts/audits/stubs.sh
+
+    # Enforce per-file line limits: warn ≥750 lines, fail ≥800 lines.
+    # Requires cloc for the language summary; wc/find always run enforcement.
+    audit-cloc:
+      run: bash code/src/scripts/audits/cloc.sh
