@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "code-review-graph": {
+      "command": ".venv/bin/code-review-graph",
+      "args": ["serve"],
+      "env": {}
+    }
+  }
+}

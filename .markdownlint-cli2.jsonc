@@ -1,0 +1,30 @@
+{
+  "globs": [
+    "**/*.md",
+    "!.claude/**",
+    "!.venv/**",
+    "!node_modules/**",
+    "!.next/**",
+    "!coverage/**",
+    "!htmlcov/**",
+  ],
+  "config": {
+    "default": true,
+    // Line-length limit: disabled — tables and code examples routinely exceed 100 chars
+    "MD013": false,
+    // Duplicate headings: disabled — technical reference docs repeat "Rules" subsections by design
+    "MD024": false,
+    // Blank line in blockquote: disabled — two consecutive blockquotes appear in several docs
+    "MD028": false,
+    // Inline HTML: disabled — used intentionally in some docs
+    "MD033": false,
+    // Bare URLs: disabled — localhost dev URLs appear in how-to docs and are intentional
+    "MD034": false,
+    // Emphasis as heading: disabled — bold phrases used as section labels in principles docs
+    "MD036": false,
+    // First line must be heading: disabled — some docs start with metadata or a lead paragraph
+    "MD041": false,
+    // Fenced code language: kept enabled — required by CLAUDE.md
+    "MD040": true,
+  },
+}

@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python artefacts
+**/__pycache__
+**/*.py[cod]
+**/*.egg-info
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+**/.coverage
+**/htmlcov
+
+# Node artefacts
+**/node_modules
+**/.next
+**/out
+**/*.tsbuildinfo
+**/.npm
+
+# Virtualenv
+.venv
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Documentation layers
+*.md
+code/docs
+how-to
+project-management
+.claude
+.code-review-graph
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea

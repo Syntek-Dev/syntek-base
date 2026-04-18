@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Auto-generated — never hand-edit
+code/src/frontend/src/graphql/generated/
+
+# Python (Prettier ignores these by default, listed for clarity)
+**/*.py
+**/*.pyc
+
+# Lockfiles
+pnpm-lock.yaml
+
+# Misc
+.git/
+coverage/
+htmlcov/
+*.min.js
+*.min.css
