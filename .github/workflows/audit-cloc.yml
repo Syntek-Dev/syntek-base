@@ -1,0 +1,45 @@
+name: Audit — Line Count (cloc)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.py"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "code/src/scripts/audits/cloc.sh"
+      - ".github/workflows/audit-cloc.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.py"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "code/src/scripts/audits/cloc.sh"
+      - ".github/workflows/audit-cloc.yml"
+  workflow_dispatch:
+
+jobs:
+  cloc:
+    name: Line-count audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+
+      - name: Run line-count audit
+        run: bash code/src/scripts/audits/cloc.sh --output md
+
+      - name: Upload cloc report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloc-report
+          path: code/src/scripts/audits/reports/cloc-report.md
+          if-no-files-found: ignore

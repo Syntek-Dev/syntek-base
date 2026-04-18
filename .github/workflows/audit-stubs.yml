@@ -1,0 +1,42 @@
+name: Audit — Stubs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.py"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "code/src/scripts/audits/stubs.sh"
+      - ".github/workflows/audit-stubs.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.py"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "code/src/scripts/audits/stubs.sh"
+      - ".github/workflows/audit-stubs.yml"
+  workflow_dispatch:
+
+jobs:
+  stubs:
+    name: Stub audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run stub audit
+        run: bash code/src/scripts/audits/stubs.sh --output md
+
+      - name: Upload stub report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stub-report
+          path: code/src/scripts/audits/reports/stubs-report.md
+          if-no-files-found: ignore
