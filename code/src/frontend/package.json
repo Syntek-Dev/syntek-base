@@ -11,7 +11,9 @@
     "test:coverage": "vitest run --coverage",
     "codegen": "graphql-codegen --config codegen.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@apollo/client": "^3.13.0",
@@ -35,6 +37,11 @@
     "msw": "^2.7.3",
     "tailwindcss": "^4.2.0",
     "typescript": "6.0.3",
-    "vitest": "^3.2.0"
+    "vitest": "^3.2.0",
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/addon-interactions": "^8.4.0",
+    "@storybook/nextjs": "^8.4.0",
+    "@storybook/test": "^8.4.0",
+    "storybook": "^8.4.0"
   }
 }

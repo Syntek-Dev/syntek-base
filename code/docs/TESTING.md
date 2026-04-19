@@ -1,4 +1,4 @@
-# Testing Guide — syntek-website
+# Testing Guide — project-name
 
 **Last Updated**: 18/04/2026\
 **Version**: 1.0.0\
@@ -240,7 +240,7 @@ def test_create_user_sets_unusable_password_when_none_given() -> None:
 ### PostgreSQL 18 via Docker Compose
 
 Integration tests use the real `postgres:18-alpine` instance managed by
-`docker-compose.test.yml` (database `syntek_website_test`). No testcontainers or external setup
+`docker-compose.test.yml` (database `project_name_test`). No testcontainers or external setup
 required — start the test stack and the database is ready.
 
 `@pytest.mark.django_db` wraps each test in a transaction that is rolled back on exit, keeping

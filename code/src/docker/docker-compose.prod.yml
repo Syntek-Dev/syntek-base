@@ -15,7 +15,7 @@ name: syntek-prod
 
 services:
   backend:
-    image: ghcr.io/syntek-studio/syntek-website/backend:${IMAGE_TAG:?IMAGE_TAG is required}
+    image: ghcr.io/Syntek-Dev/project-name/backend:${IMAGE_TAG:?IMAGE_TAG is required}
     ports:
       - "127.0.0.1:8000:8000"
     environment:
@@ -33,7 +33,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: ghcr.io/syntek-studio/syntek-website/frontend:${IMAGE_TAG:?IMAGE_TAG is required}
+    image: ghcr.io/Syntek-Dev/project-name/frontend:${IMAGE_TAG:?IMAGE_TAG is required}
     ports:
       - "127.0.0.1:3001:3000"
     restart: unless-stopped

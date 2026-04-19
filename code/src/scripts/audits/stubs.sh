@@ -238,9 +238,9 @@ if wants python; then
   log ""
 fi
 
-# ── TypeScript / JavaScript / Next.js / React ─────────────────────────────────
+# ── TypeScript / JavaScript / Next.js / React / React Native ─────────────────
 if wants_ts_js; then
-  bold "── TypeScript / JavaScript / Next.js / React ──────────────────────────────"
+  bold "── TypeScript / JavaScript / Next.js / React / React Native ───────────────"
   declare -a ts_exts=("*.ts" "*.tsx")
   wants javascript && ts_exts+=("*.js" "*.jsx")
 
@@ -321,7 +321,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stub Audit — syntek-website</title>
+  <title>Stub Audit — project-name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -336,7 +336,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Stub Audit — syntek-website</h1>
+  <h1>Stub Audit — project-name</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

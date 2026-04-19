@@ -15,7 +15,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
 
-DB_NAME="${POSTGRES_DB:-syntek_website_dev}"
+DB_NAME="${POSTGRES_DB:-project_name_dev}"
 DB_USER="${POSTGRES_USER:-postgres}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -38,7 +38,7 @@ Options:
   --psql     Open psql directly in the db container instead of Django dbshell
 
 Django dbshell connects using the DATABASE_URL / DATABASES setting from Django config.
-psql connects as POSTGRES_USER to POSTGRES_DB (env vars, defaults: postgres / syntek_website_dev).
+psql connects as POSTGRES_USER to POSTGRES_DB (env vars, defaults: postgres / project_name_dev).
 
 Exit codes:  0 = exited normally   1 = container error   2 = script error
 EOF

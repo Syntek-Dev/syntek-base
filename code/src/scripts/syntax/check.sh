@@ -55,7 +55,8 @@ Options:
 
 Notes:
   • basedpyright uses project config at code/src/backend/pyrightconfig.json.
-  • tsc uses tsconfig.json at code/src/frontend/tsconfig.json.
+  • tsc uses tsconfig.json at code/src/frontend/tsconfig.json (web) and
+      code/src/mobile/tsconfig.json (mobile) respectively.
   • --fix is accepted for API consistency but no type checker auto-corrects
     type errors; it prints guidance on how to fix common classes of errors.
 
@@ -72,7 +73,7 @@ container_running() {
 }
 
 check_any_container() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend)' \
+  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend|mobile)' \
     || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
 }
 
@@ -175,12 +176,11 @@ if wants python; then
   fi
 fi
 
-# ── TypeScript / JavaScript / React — tsc ────────────────────────────────────
+# ── TypeScript / JavaScript / React — tsc (frontend) ─────────────────────────
 if wants_ts_js; then
   if container_running frontend; then
-    bold "── TypeScript / React (tsc --noEmit) ──────────────────────────────────────"
+    bold "── TypeScript / React — frontend (tsc --noEmit) ───────────────────────────"
     declare -a tsc_args=(pnpm tsc --noEmit)
-    # Restrict to a specific project config if --path points to a tsconfig
     if [[ -n "$TARGET_PATH" ]]; then
       tsc_args+=(--project "$TARGET_PATH")
     fi
@@ -188,7 +188,24 @@ if wants_ts_js; then
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  frontend container not running — skipping TypeScript type-check"
+    log "  ⚠  frontend container not running — skipping frontend TypeScript type-check"
+    log ""
+  fi
+fi
+
+# ── TypeScript / React Native — tsc (mobile) ──────────────────────────────────
+if wants_ts_js; then
+  if container_running mobile; then
+    bold "── TypeScript / React Native — mobile (tsc --noEmit) ─────────────────────"
+    declare -a mobile_tsc_args=(pnpm tsc --noEmit)
+    if [[ -n "$TARGET_PATH" ]]; then
+      mobile_tsc_args+=(--project "$TARGET_PATH")
+    fi
+    run_in mobile "${mobile_tsc_args[@]}"
+    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    log ""
+  else
+    log "  ⚠  mobile container not running — skipping mobile TypeScript type-check"
     log ""
   fi
 fi
@@ -259,7 +276,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Type-Check Report — syntek-website</title>
+  <title>Type-Check Report — project-name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -274,7 +291,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Type-Check Report — syntek-website</h1>
+  <h1>Type-Check Report — project-name</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>File types</th><td>${FILE_TYPES[*]}</td></tr>

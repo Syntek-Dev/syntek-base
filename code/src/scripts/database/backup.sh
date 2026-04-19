@@ -15,7 +15,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/database/reports"
 
-DB_NAME="${POSTGRES_DB:-syntek_website_dev}"
+DB_NAME="${POSTGRES_DB:-project_name_dev}"
 DB_USER="${POSTGRES_USER:-postgres}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -43,7 +43,7 @@ Options:
                         plain  → .sql   (can be piped directly to psql)
 
 Environment:
-  POSTGRES_DB    Database name (default: syntek_website_dev)
+  POSTGRES_DB    Database name (default: project_name_dev)
   POSTGRES_USER  Database user (default: postgres)
 
 Exit codes:  0 = success   1 = command failed   2 = script error

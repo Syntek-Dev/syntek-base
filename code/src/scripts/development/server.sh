@@ -93,10 +93,10 @@ case "$COMMAND" in
     "${args[@]}"
     log ""
     bold "✓ Stack is up."
-    log "  Site:     http://dev.syntekstudio.com"
-    log "  GraphQL:  http://dev.syntekstudio.com/graphql/"
-    log "  Admin:    http://dev.syntekstudio.com/admin/"
-    log "  Mail:     http://dev.syntekstudio.com:1080"
+    log "  Site:     http://dev.projectname.com"
+    log "  GraphQL:  http://dev.projectname.com/graphql/"
+    log "  Admin:    http://dev.projectname.com/admin/"
+    log "  Mail:     http://dev.projectname.com:1080"
     ;;
 
   down)

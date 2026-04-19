@@ -72,7 +72,7 @@ container_running() {
 }
 
 check_any_container() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend)' \
+  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend|mobile)' \
     || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
 }
 
@@ -177,20 +177,24 @@ if wants python; then
   fi
 fi
 
-# ── TypeScript / JavaScript / React — ESLint ──────────────────────────────────
+# ── TypeScript / JavaScript / React / React Native — ESLint (root config) ────
 if wants_ts_js; then
   if container_running frontend; then
-    bold "── TypeScript / JS / React (ESLint) ───────────────────────────────────────"
-    fe_path="${TARGET_PATH:-code/src/frontend/src/}"
-    declare -a eslint_args=(pnpm eslint "$fe_path")
+    bold "── TypeScript / JS / React / React Native (ESLint — root config) ──────────"
+    # Root eslint.config.mjs scopes React Native rules to code/src/mobile/** automatically.
+    if [[ -n "$TARGET_PATH" ]]; then
+      declare -a eslint_targets=("$TARGET_PATH")
+    else
+      declare -a eslint_targets=("code/src/frontend/src/" "code/src/mobile/src/")
+    fi
+    declare -a eslint_args=(pnpm eslint "${eslint_targets[@]}")
     $FIX && eslint_args+=(--fix)
-    # Use native HTML formatter when writing an HTML report; otherwise plain
     [[ "$OUTPUT_FORMAT" == "html" ]] && eslint_args+=(--format html)
     run_in frontend "${eslint_args[@]}"
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  frontend container not running — skipping TS/JS lint"
+    log "  ⚠  frontend container not running — skipping TS/JS/React Native lint"
     log ""
   fi
 fi
@@ -269,7 +273,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lint Report — syntek-website</title>
+  <title>Lint Report — project-name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -284,7 +288,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Lint Report — syntek-website</h1>
+  <h1>Lint Report — project-name</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

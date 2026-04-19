@@ -66,7 +66,7 @@ Do not apply RLS to:
 
 ## RLS and Application Isolation
 
-syntek-website is a **single-tenant application** — there is no tenant schema isolation layer.
+project-name is a **single-tenant application** — there is no tenant schema isolation layer.
 RLS is used exclusively for **user-level row isolation**: ensuring that each authenticated user
 can only read and write their own rows.
 

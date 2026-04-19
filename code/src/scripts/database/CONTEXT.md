@@ -67,7 +67,7 @@ bash code/src/scripts/database/shell.sh --psql
 
 | Variable        | Default              | Purpose                                          |
 | --------------- | -------------------- | ------------------------------------------------ |
-| `POSTGRES_DB`   | `syntek_website_dev` | Database name used by backup/restore/reset/shell |
+| `POSTGRES_DB`   | `project_name_dev` | Database name used by backup/restore/reset/shell |
 | `POSTGRES_USER` | `postgres`           | PostgreSQL user for backup/restore/reset/shell   |
 
 Set these in your `.env` file or shell if your local config differs from the defaults.

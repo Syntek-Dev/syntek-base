@@ -5,7 +5,7 @@
 # Usage: shell.sh [--service SERVICE] [--help]
 #
 # Default service: backend  (bash)
-# Services: backend (bash) · frontend (sh) · db (bash) · cache (sh) · nginx (sh) · maildev (sh)
+# Services: backend (bash) · frontend (sh) · mobile (sh) · db (bash) · cache (sh) · nginx (sh) · maildev (sh)
 #
 # Exit codes:  0 = exited normally   1 = container error   2 = script error
 #
@@ -35,7 +35,7 @@ Usage:
 
 Options:
   --service SERVICE    Service to shell into:
-                         backend (default) | frontend | db | cache | nginx | maildev
+                         backend (default) | frontend | mobile | db | cache | nginx | maildev
 
 Exit codes:  0 = exited normally   1 = container error   2 = script error
 EOF
@@ -54,9 +54,9 @@ done
 
 # Map service to shell binary (alpine uses ash/sh, debian-based has bash)
 case "$SERVICE" in
-  backend|db)                   SHELL_BIN="bash" ;;
-  frontend|cache|nginx|maildev) SHELL_BIN="sh" ;;
-  *)                            die "Unknown service '$SERVICE'. Choose: backend frontend db cache nginx maildev" ;;
+  backend|db)                          SHELL_BIN="bash" ;;
+  frontend|mobile|cache|nginx|maildev) SHELL_BIN="sh" ;;
+  *)                                   die "Unknown service '$SERVICE'. Choose: backend frontend mobile db cache nginx maildev" ;;
 esac
 
 cd "$PROJECT_ROOT"

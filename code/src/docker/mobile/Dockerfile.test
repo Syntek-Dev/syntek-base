@@ -1,0 +1,22 @@
+FROM node:24.15.0-alpine
+
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+
+ENV PNPM_HOME="/usr/local/share/pnpm" \
+    PATH="/usr/local/share/pnpm:$PATH"
+
+WORKDIR /workspace
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY code/src/mobile/package.json ./code/src/mobile/
+COPY code/src/shared/package.json ./code/src/shared/
+
+RUN pnpm install --frozen-lockfile
+
+# Bake source into image — no volume mounts in test
+COPY code/src/mobile/ ./code/src/mobile/
+COPY code/src/shared/ ./code/src/shared/
+
+WORKDIR /workspace/code/src/mobile
+
+CMD ["pnpm", "run", "test"]

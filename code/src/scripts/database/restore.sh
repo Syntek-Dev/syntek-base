@@ -13,7 +13,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
 
-DB_NAME="${POSTGRES_DB:-syntek_website_dev}"
+DB_NAME="${POSTGRES_DB:-project_name_dev}"
 DB_USER="${POSTGRES_USER:-postgres}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ Options:
   --yes            Skip confirmation prompt
 
 Environment:
-  POSTGRES_DB    Database name (default: syntek_website_dev)
+  POSTGRES_DB    Database name (default: project_name_dev)
   POSTGRES_USER  Database user (default: postgres)
 
 Exit codes:  0 = success   1 = command failed   2 = script error

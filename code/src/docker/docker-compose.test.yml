@@ -1,4 +1,4 @@
-# Test stack — automated testing, accessible at test.syntekstudio.com
+# Test stack — automated testing, accessible at test.projectname.com
 # Run from project root: docker compose -f code/src/docker/docker-compose.test.yml up --abort-on-container-exit
 # Backend tests exit with pytest's exit code; frontend tests exit with vitest's exit code.
 name: syntek-test
@@ -7,13 +7,13 @@ services:
   db:
     image: postgres:18-alpine
     environment:
-      POSTGRES_DB: syntek_website_test
+      POSTGRES_DB: project_name_test
       POSTGRES_USER: ${POSTGRES_USER:-syntek}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-test_password_change_me}
     volumes:
       - postgres_test_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-syntek} -d syntek_website_test"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-syntek} -d project_name_test"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -36,7 +36,7 @@ services:
       dockerfile: code/src/docker/backend/Dockerfile.test
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.test
-      DATABASE_URL: postgresql://${POSTGRES_USER:-syntek}:${POSTGRES_PASSWORD:-test_password_change_me}@db:5432/syntek_website_test
+      DATABASE_URL: postgresql://${POSTGRES_USER:-syntek}:${POSTGRES_PASSWORD:-test_password_change_me}@db:5432/project_name_test
       REDIS_URL: redis://cache:6379/0
       SECRET_KEY: ${SECRET_KEY:-test-secret-key-not-for-production}
       EMAIL_HOST: maildev
@@ -61,6 +61,15 @@ services:
       - ../scripts/tests/reports:/workspace/code/src/scripts/tests/reports:rw
     depends_on:
       - backend-test
+
+  mobile-test:
+    build:
+      context: ../../..
+      dockerfile: code/src/docker/mobile/Dockerfile.test
+    environment:
+      NODE_ENV: test
+    volumes:
+      - ../scripts/tests/reports:/workspace/code/src/scripts/tests/reports:rw
 
   nginx:
     image: nginx:alpine

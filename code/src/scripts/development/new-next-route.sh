@@ -65,4 +65,4 @@ CTXEOF
 
 echo "Created ${ROUTE_DIR}/page.tsx"
 echo "Created ${ROUTE_DIR}/CONTEXT.md"
-echo "Route is now live at: http://dev.syntekstudio.com/${ROUTE_PATH}"
+echo "Route is now live at: http://dev.projectname.com/${ROUTE_PATH}"

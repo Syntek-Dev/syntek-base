@@ -70,7 +70,7 @@ container_running() {
 }
 
 check_any_container() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend)' \
+  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend|mobile)' \
     || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
 }
 
@@ -194,10 +194,10 @@ if wants python; then
   fi
 fi
 
-# ── TypeScript / JavaScript / React / CSS / Markdown — Prettier ───────────────
+# ── TypeScript / JavaScript / React / CSS / Markdown — Prettier (frontend) ────
 if wants_prettier; then
   if container_running frontend; then
-    bold "── TS / JS / React / CSS / Markdown (Prettier) ────────────────────────────"
+    bold "── TS / JS / React / React Native / CSS / Markdown (Prettier) ────────────"
     pattern="$(prettier_pattern)"
     if $FIX; then
       # shellcheck disable=SC2086
@@ -278,7 +278,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Format Report — syntek-website</title>
+  <title>Format Report — project-name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -293,7 +293,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Format Report — syntek-website</h1>
+  <h1>Format Report — project-name</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

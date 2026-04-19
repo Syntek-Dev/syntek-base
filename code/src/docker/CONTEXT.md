@@ -11,8 +11,8 @@ Docker Compose files, Dockerfiles, and entrypoint scripts for all four environme
 
 | Environment | Compose file                 | URL / access                      | Who spins it up         |
 | ----------- | ---------------------------- | --------------------------------- | ----------------------- |
-| `dev`       | `docker-compose.dev.yml`     | `dev.syntekstudio.com` (port 80)  | Developer locally       |
-| `test`      | `docker-compose.test.yml`    | `test.syntekstudio.com` (port 80) | CI / developer          |
+| `dev`       | `docker-compose.dev.yml`     | `dev.projectname.com` (port 80)  | Developer locally       |
+| `test`      | `docker-compose.test.yml`    | `test.projectname.com` (port 80) | CI / developer          |
 | `staging`   | `docker-compose.staging.yml` | CF Tunnel subdomain               | GitHub Actions → server |
 | `prod`      | `docker-compose.prod.yml`    | CF Tunnel root domain             | GitHub Actions → server |
 
@@ -57,8 +57,8 @@ The output is served by Nginx inside the container — no Node.js runtime at run
 ## GHCR image names
 
 ```text
-ghcr.io/syntek-studio/syntek-website/backend:<tag>
-ghcr.io/syntek-studio/syntek-website/frontend:<tag>
+ghcr.io/Syntek-Dev/project-name/backend:<tag>
+ghcr.io/Syntek-Dev/project-name/frontend:<tag>
 ```
 
 Tags: `staging`, `prod`, or a specific git SHA / semver string.

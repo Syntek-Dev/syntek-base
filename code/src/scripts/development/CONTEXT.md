@@ -60,16 +60,16 @@ bash code/src/scripts/development/server.sh status
 
 | Service    | Shell  | Notes                                                     |
 | ---------- | ------ | --------------------------------------------------------- |
-| `nginx`    | `sh`   | Reverse proxy — http://dev.syntekstudio.com (port 80)     |
+| `nginx`    | `sh`   | Reverse proxy — http://dev.projectname.com (port 80)     |
 | `backend`  | `bash` | Django/Uvicorn — internal, hot-reload via `--reload`      |
 | `frontend` | `sh`   | Next.js dev server — internal (port 3000)                 |
 | `db`       | `bash` | PostgreSQL 18 — internal only                             |
 | `cache`    | `sh`   | Valkey 8 — internal only                                  |
-| `maildev`  | `sh`   | Catches outbound email — http://dev.syntekstudio.com:1080 |
+| `maildev`  | `sh`   | Catches outbound email — http://dev.projectname.com:1080 |
 
 ## Routing
 
-All traffic enters through the `nginx` service at `http://dev.syntekstudio.com` (port 80).
+All traffic enters through the `nginx` service at `http://dev.projectname.com` (port 80).
 Config: `code/src/docker/nginx/dev.conf`.
 
 | Path prefix          | Proxied to                           |
@@ -98,4 +98,4 @@ All scripts resolve this path automatically. Run commands from any directory.
 - Scripts use `exec docker compose …` for interactive commands (`shell.sh`, `logs --follow`)
   so Ctrl+C / Ctrl+D behave naturally.
 - `maildev` captures all outgoing SMTP from Django — no real emails are sent in dev.
-  Browse captured mail at http://dev.syntekstudio.com:1080.
+  Browse captured mail at http://dev.projectname.com:1080.

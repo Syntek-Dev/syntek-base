@@ -1,4 +1,4 @@
-# Development stack — full hot-reload, accessible at dev.syntekstudio.com
+# Development stack — full hot-reload, accessible at dev.projectname.com
 # Run from project root: docker compose -f code/src/docker/docker-compose.dev.yml up
 # Required env vars: POSTGRES_PASSWORD, SECRET_KEY
 # Optional: POSTGRES_USER (default: syntek)
@@ -8,13 +8,13 @@ services:
   db:
     image: postgres:18-alpine
     environment:
-      POSTGRES_DB: syntek_website_dev
+      POSTGRES_DB: project_name_dev
       POSTGRES_USER: ${POSTGRES_USER:-syntek}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-syntek} -d syntek_website_dev"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-syntek} -d project_name_dev"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -46,7 +46,7 @@ services:
       - ../backend:/workspace/code/src/backend
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.dev
-      DATABASE_URL: postgresql://${POSTGRES_USER:-syntek}:${POSTGRES_PASSWORD}@db:5432/syntek_website_dev
+      DATABASE_URL: postgresql://${POSTGRES_USER:-syntek}:${POSTGRES_PASSWORD}@db:5432/project_name_dev
       REDIS_URL: redis://cache:6379/0
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
       EMAIL_HOST: maildev

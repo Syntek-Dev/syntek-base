@@ -26,6 +26,10 @@ code/
 │   │   └── CONTEXT.md
 │   ├── frontend/                    ← Next.js 16.2.4 App Router
 │   │   └── CONTEXT.md
+│   ├── mobile/                      ← Expo React Native app
+│   │   └── CONTEXT.md
+│   ├── shared/                      ← Cross-platform UI components, hooks, and utilities
+│   │   └── CONTEXT.md
 │   ├── logs/                        ← runtime log files (dev/test; all gitignored)
 │   │   ├── CONTEXT.md
 │   │   ├── .gitignore

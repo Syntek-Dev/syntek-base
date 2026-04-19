@@ -50,6 +50,19 @@ frontend/
 | `src/app/page.tsx`       | Home page                                 |
 | `src/graphql/generated/` | Auto-generated hooks — never edit by hand |
 
+## Storybook
+
+Storybook discovers stories from both this package and `code/src/shared/`:
+
+```bash
+pnpm storybook        # dev server on http://localhost:6006
+pnpm build-storybook  # static build into storybook-static/
+```
+
+- Story files live alongside the component: `Button.stories.tsx` next to `Button.tsx`
+- Stories from `code/src/shared/src/**/*.stories.tsx` are automatically included
+- The `@storybook/nextjs` framework handles App Router, server component mocking, and Tailwind CSS
+
 ## Standards
 
 - All code must follow `code/docs/CODING-PRINCIPLES.md`

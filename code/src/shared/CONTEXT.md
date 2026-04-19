@@ -61,6 +61,18 @@ All styling uses **Tailwind CSS 4.2** utility classes. Avoid inline styles and C
 - Tests run as part of the frontend Vitest suite (`frontend.sh` / `frontend-coverage.sh`).
 - Coverage floor: 70% line and branch (inherited from the frontend threshold in `vitest.config.ts`).
 
+## Storybook
+
+Story files live alongside their component: `Button.stories.tsx` next to `Button.tsx`.
+
+Both Storybook instances discover stories automatically:
+- **Web** (`frontend/` Storybook): picks up `shared/src/**/*.stories.tsx`
+- **Mobile** (`mobile/` Storybook): picks up `shared/src/**/*.stories.tsx`
+
+When a shared component has platform-specific variants (`.web.tsx` / `.native.tsx`), the same
+`*.stories.tsx` file works for both — Metro resolves the `.native.tsx` variant on mobile and
+the `.web.tsx` variant in the browser automatically.
+
 ## Consuming in Next.js
 
 ```typescript
@@ -69,11 +81,10 @@ import { Button } from "@/shared/components/ui/Button";
 
 The `@/shared` path alias is configured in `tsconfig.json` for the frontend workspace.
 
-## Future mobile app
+## Mobile app
 
-When a React Native mobile app for the Syntek website is introduced:
+The React Native mobile app lives at `code/src/mobile/`. It imports directly from `code/src/shared/`.
 
-1. Add a `mobile/` workspace alongside `frontend/` in `code/src/`.
-2. Configure the mobile workspace to import directly from `code/src/shared/`.
-3. Provide platform-specific adapters for any web-only primitives (e.g. `Image`, `Link`).
-4. Do not duplicate shared component logic — extend via composition.
+- Provide platform-specific adapters for any web-only primitives (e.g. `Image`, `Link`).
+- Do not duplicate shared component logic — extend via composition.
+- See `code/src/mobile/CONTEXT.md` for the full mobile stack and conventions.

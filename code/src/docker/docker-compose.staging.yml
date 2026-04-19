@@ -16,7 +16,7 @@ name: syntek-staging
 
 services:
   backend:
-    image: ghcr.io/syntek-studio/syntek-website/backend:${IMAGE_TAG:-staging}
+    image: ghcr.io/Syntek-Dev/project-name/backend:${IMAGE_TAG:-staging}
     build:
       context: ../../..
       dockerfile: code/src/docker/backend/Dockerfile.staging
@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: ghcr.io/syntek-studio/syntek-website/frontend:${IMAGE_TAG:-staging}
+    image: ghcr.io/Syntek-Dev/project-name/frontend:${IMAGE_TAG:-staging}
     build:
       context: ../../..
       dockerfile: code/src/docker/frontend/Dockerfile.staging
