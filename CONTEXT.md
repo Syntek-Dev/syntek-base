@@ -111,5 +111,5 @@ project-name/
 
 ## Repository State
 
-Current version: `0.1.0` — scaffolded, pre-implementation.
-Backend and frontend source code live in `code/src/` and are initialised via `/syntek-dev-suite:setup`.
+Current version: `1.0.0` — first stable scaffold release. Ready for feature development.
+Backend, frontend, and mobile source code live in `code/src/` and are initialised via `/syntek-dev-suite:setup`.

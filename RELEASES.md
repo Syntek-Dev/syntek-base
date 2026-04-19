@@ -1,9 +1,37 @@
 # Releases — project-name
 
-**Last Updated**: 19/04/2026 **Version**: 0.1.0 **Maintained By**: Syntek Studio
+**Last Updated**: 19/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.0.0 — 19/04/2026
+
+**Status:** First stable scaffold release — ready for feature development
+
+### Summary
+
+Completes the full three-layer monorepo scaffold for the Syntek Studio website. This
+release adds the Expo React Native mobile layer, a comprehensive contributor guide suite,
+complete CI coverage for all three layers (backend, frontend, mobile), and all supporting
+documentation. The scaffold is now fully ready for user story implementation.
+
+### What's new since v0.1.0
+
+- **Mobile layer:** Full Expo React Native scaffold with NativeWind, Storybook, Jest unit
+  tests, Detox E2E skeleton, GraphQL codegen config, and Expo Router app screens
+- **Mobile Docker:** Dedicated `Dockerfile.test` and mobile service in all Docker Compose configs
+- **Mobile CI:** `test-mobile.yml` GitHub Actions workflow for Jest and Detox
+- **Mobile scripts:** `mobile.sh`, `mobile-coverage.sh`, `new-expo-screen.sh` shell scripts
+- **Frontend Storybook:** `.storybook/` config added to the Next.js layer
+- **Contributor guides:** Nine new guides in `how-to/src/` covering getting started,
+  branching, committing, PRs, code review, issue reporting, environment setup,
+  template customisation, and Claude multilayer usage
+- **Repository meta:** `CONTRIBUTING.md` and `LICENSE` (MIT) added to project root
+- **Documentation updates:** All CONTEXT.md files, PM guides, CI workflows, Docker configs,
+  and script files updated to reflect the complete three-layer structure
 
 ---
 
