@@ -145,11 +145,11 @@ covered before a module is considered production-ready.
 
 | Layer               | Unit / Integration                | E2E / Browser    | Framework                                   |
 | ------------------- | --------------------------------- | ---------------- | ------------------------------------------- |
-| Python / Django     | pytest + factory_boy + hypothesis | —                | pytest-django, testcontainers-python        |
+| Python / Django     | pytest + factory_boy + hypothesis | —                | pytest-django, compose-managed PostgreSQL   |
 | GraphQL (Python)    | pytest                            | —                | pytest-django + Strawberry test client      |
-| Web (React/TS)      | Vitest + RTL + MSW                | Playwright       | vitest, @testing-library/react, msw         |
+| Web (React/TS)      | Vitest + RTL + MSW                | playwright-bdd   | vitest, @testing-library/react, msw         |
 | GraphQL (TS client) | Vitest + MSW                      | —                | vitest, msw                                 |
-| PostgreSQL          | pytest transactional fixtures     | —                | testcontainers-python                       |
+| PostgreSQL          | pytest transactional fixtures     | —                | compose-managed postgres:18-alpine          |
 | Contract            | —                                 | —                | Pact (GraphQL schema changes)               |
 | a11y                | axe-core                          | Playwright + axe | @axe-core/react, playwright-axe             |
 | Mutation            | mutmut                            | Stryker          | mutmut (Python), @stryker-mutator/core (TS) |
@@ -158,40 +158,47 @@ covered before a module is considered production-ready.
 
 ## Running Tests
 
-All tests run inside Docker containers. Never invoke `pytest`, `pnpm`, or `next` directly on the
-host machine.
+All tests run inside Docker containers via the scripts in `code/src/scripts/tests/`. Never invoke
+`pytest`, `pnpm`, or `next` directly on the host machine.
 
 ```bash
+# Start the test stack (required for backend and E2E scripts)
+docker compose -f code/src/docker/docker-compose.test.yml up -d
+
 # Backend — full suite
-docker compose exec backend pytest
+./code/src/scripts/tests/backend.sh
 
 # Backend — unit tests only
-docker compose exec backend pytest -m unit
+./code/src/scripts/tests/backend.sh -m unit
 
-# Backend — integration tests only (real PostgreSQL via testcontainers)
-docker compose exec backend pytest -m integration
+# Backend — integration tests only
+./code/src/scripts/tests/backend.sh -m integration
 
-# Backend — with HTML coverage report
-docker compose exec backend pytest --cov=apps --cov-report=html
+# Backend — with coverage report
+./code/src/scripts/tests/backend-coverage.sh
 
-# Backend — enforce coverage threshold
-docker compose exec backend pytest --cov=apps --cov-fail-under=75 --cov-branch
-
-# Frontend — full suite
-docker compose exec frontend pnpm test
+# Frontend — full suite (one-shot, no persistent container required)
+./code/src/scripts/tests/frontend.sh
 
 # Frontend — with coverage
-docker compose exec frontend pnpm test -- --coverage
+./code/src/scripts/tests/frontend-coverage.sh
 
-# E2E — must be triggered explicitly, never runs by default
-docker compose exec frontend pnpm test:e2e
+# Frontend — watch mode (interactive)
+docker compose -f code/src/docker/docker-compose.test.yml run --rm \
+  frontend-test pnpm test:watch
+
+# E2E (playwright-bdd) — explicit only, never runs automatically
+./code/src/scripts/tests/e2e.sh
+
+# Both suites (no E2E)
+./code/src/scripts/tests/all.sh
 ```
 
 ---
 
 ## Python / Django
 
-**Tools:** pytest-django, factory_boy, pytest-cov, testcontainers-python, hypothesis
+**Tools:** pytest-django, factory_boy, pytest-cov, hypothesis
 
 Tests live in `code/src/backend/apps/<app>/tests/`. Each app has a `tests/` directory containing
 unit tests, integration tests, and fixtures. The Django settings used during testing are in
@@ -230,22 +237,15 @@ def test_create_user_sets_unusable_password_when_none_given() -> None:
     assert not user.has_usable_password()
 ```
 
-### PostgreSQL 18 via testcontainers
+### PostgreSQL 18 via Docker Compose
 
-Use `testcontainers-python` for integration tests that need a real PostgreSQL 18 instance — no
-external database setup required:
+Integration tests use the real `postgres:18-alpine` instance managed by
+`docker-compose.test.yml` (database `syntek_website_test`). No testcontainers or external setup
+required — start the test stack and the database is ready.
 
-```python
-# code/src/backend/apps/core/tests/conftest.py
-import pytest
-from testcontainers.postgres import PostgresContainer
-
-
-@pytest.fixture(scope="session")
-def postgres_container():
-    with PostgresContainer("postgres:18") as pg:
-        yield pg
-```
+`@pytest.mark.django_db` wraps each test in a transaction that is rolled back on exit, keeping
+the database clean between tests. For tests that need to verify committed state (e.g. audit log
+inspection), use `@pytest.mark.django_db(transaction=True)`.
 
 ### factory_boy example
 
@@ -350,6 +350,90 @@ beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
+
+---
+
+## BDD — playwright-bdd (E2E acceptance tests)
+
+BDD is used only at the E2E acceptance layer. Backend unit/integration tests and frontend
+component tests are TDD only — RTL is already behaviour-driven by design.
+
+**Where BDD lives:**
+
+```text
+code/src/frontend/
+├── playwright.config.ts          ← playwright-bdd config
+└── e2e/
+    ├── features/                 ← Gherkin .feature files (one per user story / flow)
+    │   └── auth/
+    │       └── login.feature
+    └── steps/                    ← TypeScript step definitions (Playwright API)
+        └── auth.steps.ts
+```
+
+Feature files map 1:1 to `project-management/src/STORIES/US###.md` acceptance criteria.
+
+### Feature file format
+
+```gherkin
+# code/src/frontend/e2e/features/auth/login.feature
+Feature: User login
+
+  Scenario: Successful login with valid credentials
+    Given I am on the login page
+    When I enter "alice@example.com" and my correct password
+    And I click "Sign in"
+    Then I should see the dashboard
+
+  Scenario: Login rejected with incorrect password
+    Given I am on the login page
+    When I enter "alice@example.com" and an incorrect password
+    And I click "Sign in"
+    Then I should see an error message "Invalid credentials"
+```
+
+### Step definition format
+
+```typescript
+// code/src/frontend/e2e/steps/auth.steps.ts
+import { Given, When, Then } from "playwright-bdd";
+
+Given("I am on the login page", async ({ page }) => {
+  await page.goto("/login");
+});
+
+When("I enter {string} and my correct password", async ({ page }, email: string) => {
+  await page.getByLabel("Email address").fill(email);
+  await page.getByLabel("Password").fill(process.env.E2E_TEST_PASSWORD!);
+});
+
+When("I click {string}", async ({ page }, label: string) => {
+  await page.getByRole("button", { name: label }).click();
+});
+
+Then("I should see the dashboard", async ({ page }) => {
+  await page.waitForURL("/dashboard");
+});
+
+Then("I should see an error message {string}", async ({ page }, message: string) => {
+  await expect(page.getByRole("alert")).toContainText(message);
+});
+```
+
+### Running E2E tests
+
+```bash
+# Local — requires full test stack running
+./code/src/scripts/tests/e2e.sh
+
+# Filter by scenario name
+./code/src/scripts/tests/e2e.sh --grep "User login"
+
+# CI — trigger manually via GitHub Actions → test-e2e → Run workflow
+```
+
+E2E tests connect to `http://localhost` (nginx port 80 in the test compose stack). They are
+**never triggered automatically** on push or PR — always explicit only.
 
 ---
 
