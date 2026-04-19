@@ -1,0 +1,56 @@
+name: test-mobile
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "code/src/mobile/**"
+      - "code/src/shared/**"
+      - "code/src/docker/mobile/Dockerfile.test"
+      - "code/src/docker/docker-compose.test.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "code/src/mobile/**"
+      - "code/src/shared/**"
+      - "code/src/docker/mobile/Dockerfile.test"
+      - "code/src/docker/docker-compose.test.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+
+jobs:
+  jest:
+    name: jest + coverage
+    runs-on: ubuntu-latest
+
+    env:
+      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build mobile-test image
+        run: docker compose -f $COMPOSE_FILE build mobile-test
+
+      - name: Run jest with coverage
+        run: |
+          mkdir -p reports
+          docker compose -f $COMPOSE_FILE run --rm \
+            -v "${{ github.workspace }}/reports:/workspace/code/src/mobile/coverage" \
+            mobile-test \
+            pnpm test:coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-coverage
+          path: reports/
+          retention-days: 30
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f $COMPOSE_FILE down -v
