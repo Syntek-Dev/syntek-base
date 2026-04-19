@@ -1,4 +1,4 @@
-# Development Workflow — syntek-website
+# Development Workflow — project-name
 
 **Last Updated**: 18/04/2026\
 **Version**: 1.0.0\
@@ -22,7 +22,7 @@
 
 ## Overview
 
-`syntek-website` is a two-layer full-stack web application — a **deployable product**, not a library.
+`project-name` is a two-layer full-stack web application — a **deployable product**, not a library.
 All development work runs inside Docker containers. Never invoke `python`, `pytest`, `pnpm`, or
 `next` directly on the host machine.
 
@@ -50,8 +50,6 @@ The following must be installed on your host machine before you begin:
 - **Docker** (latest stable) — [docs.docker.com/get-docker](https://docs.docker.com/get-docker/)
 - **Docker Compose** v2.x (bundled with Docker Desktop, or `docker compose` plugin for Linux)
 - **Git** 2.x
-- **SSH key** registered with the Syntek Forgejo instance at `git.syntek-studio.com`
-
 No host-level Python, Node.js, or Rust installation is required. All runtimes live inside the
 containers.
 
@@ -62,8 +60,8 @@ containers.
 ### 1. Clone the repository
 
 ```bash
-git clone git@git.syntek-studio.com:syntek/syntek-website.git
-cd syntek-website
+git clone git@github.com:Syntek-Dev/project-name.git
+cd project-name
 ```
 
 ### 2. Copy the environment file
@@ -182,7 +180,7 @@ docker compose exec frontend pnpm test:watch
 ### 6. Commit and open a PR
 
 Commit using Conventional Commits format (see [Git Workflow](#git-workflow)) and open a pull
-request on Forgejo targeting `main`.
+request on GitHub targeting `main`.
 
 ---
 
@@ -335,7 +333,7 @@ DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 CORS_ALLOWED_ORIGINS=http://localhost:3000
 
 # Database
-POSTGRES_DB=syntek_website_dev
+POSTGRES_DB=project_name_dev
 POSTGRES_USER=syntek
 POSTGRES_PASSWORD=CHANGE_ME
 POSTGRES_HOST=db
@@ -347,8 +345,6 @@ VALKEY_URL=redis://valkey:6379/0
 # Next.js
 NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8000/graphql/
 
-# Forgejo (CI only — do not set locally unless needed)
-# FORGEJO_TOKEN=CHANGE_ME
 ```
 
 **Security rules (non-negotiable):**

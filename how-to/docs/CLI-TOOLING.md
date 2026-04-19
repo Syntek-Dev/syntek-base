@@ -1,4 +1,4 @@
-# CLI Tooling — syntek-website
+# CLI Tooling — project-name
 
 **Last Updated**: 18/04/2026
 **Version**: 1.0.0
@@ -34,7 +34,7 @@
 
 ## Overview
 
-All development tasks for syntek-website run through Docker Compose. There are two primary service
+All development tasks for project-name run through Docker Compose. There are two primary service
 targets:
 
 | Target     | Container | Toolchain                                        |
@@ -353,7 +353,7 @@ docker compose exec backend python manage.py showmigrations
 Connect directly to the development database:
 
 ```bash
-docker compose exec db psql -U postgres syntek_website_dev
+docker compose exec db psql -U postgres project_name_dev
 ```
 
 Useful psql commands once connected:
@@ -450,7 +450,7 @@ If step 9 produces a diff, commit the regenerated files before pushing.
 | Apply migrations              | `docker compose exec backend python manage.py migrate`                    |
 | Make migrations               | `docker compose exec backend python manage.py makemigrations`             |
 | Django shell                  | `docker compose exec backend python manage.py shell`                      |
-| psql shell                    | `docker compose exec db psql -U postgres syntek_website_dev`              |
+| psql shell                    | `docker compose exec db psql -U postgres project_name_dev`              |
 | Run backend tests             | `docker compose exec backend pytest`                                      |
 | Run backend tests (coverage)  | `docker compose exec backend pytest --cov=apps --cov-report=term-missing` |
 | Backend lint                  | `docker compose exec backend ruff check .`                                |

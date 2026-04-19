@@ -4,70 +4,62 @@
 
 ```text
 how-to/src/
-└── CONTEXT.md               ← this file (contributing guide, testing, code quality, git hooks)
+├── CONTEXT.md                   ← this file
+├── BRANCH-GUIDE.md              ← branch naming and promotion flow
+├── CLAUDE-MULTILAYER.md         ← using Claude Code with the three-layer structure
+├── CODE-REVIEW.md               ← reviewer checklist and feedback standards
+├── COMMIT-GUIDE.md              ← Conventional Commits format and rules
+├── CUSTOMISING-TEMPLATE.md      ← adapting syntek-base as your own project
+├── ENV-SETUP.md                 ← environment variable reference
+├── GETTING-STARTED.md           ← first steps — clone, configure, run
+├── ISSUE-REPORTING.md           ← bug reports and feature requests
+└── PR-GUIDE.md                  ← opening, reviewing, and merging pull requests
 ```
 
 ---
 
 ## Contributing & Code-Quality Guide
 
-This directory contains all three deployable layers of the Syntek Studio website.
-
-| Directory   | Contents                                           |
-| ----------- | -------------------------------------------------- |
-| `backend/`  | Django 6.0.4 + Strawberry GraphQL API              |
-| `frontend/` | Next.js 16.2.4 App Router site                     |
-| `docker/`   | Dockerfiles and Compose files for all environments |
-
-Read the relevant sub-layer CONTEXT.md before touching any code:
-
-- `backend/CONTEXT.md` — Django apps, GraphQL schema, service layer rules
-- `frontend/CONTEXT.md` — Next.js pages, components, Apollo Client, code generation
-- `docker/CONTEXT.md` — images, environments, Nginx proxy
+This directory contains contributor-facing guides for the project. Use these alongside the
+step-by-step workflows in `how-to/workflows/` and the operational reference in `how-to/docs/`.
 
 ---
 
 ## Contributing
 
-**All development runs inside Docker.** Never execute `python`, `pytest`, `pnpm`, `next`, or
-`npm` directly on your host machine.
+**All development runs inside Docker.** Use the project scripts — never execute `python`,
+`pytest`, `pnpm`, `next`, or `npm` directly on the host machine.
 
 ```bash
-# Backend commands
-docker compose exec backend python manage.py <command>
-docker compose exec backend pytest
+# Start the dev stack
+./code/src/scripts/development/server.sh up
 
-# Frontend commands
-docker compose exec frontend pnpm <command>
+# Run all tests
+./code/src/scripts/tests/all.sh
+
+# Lint, format, and type-check
+./code/src/scripts/syntax/lint.sh
+./code/src/scripts/syntax/check.sh
 ```
 
 ### Branching
 
-Branches must follow the format `us###/short-description` where `###` is the zero-padded
-user story number. Full branch and promotion rules: `project-management/docs/GIT-GUIDE.md`.
+Branches follow the format `us###/short-description`. See [BRANCH-GUIDE.md](BRANCH-GUIDE.md)
+for the full naming rules and promotion flow.
 
 ### Commit messages
 
-Use [Conventional Commits](https://www.conventionalcommits.org/):
-
-```text
-<type>(<scope>): <description>
-
-[optional body]
-```
-
-**Types:** `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`, `perf`, `style`
-
-**Scopes:** `backend`, `frontend`, `graphql`, `db`, `ci`, `docs`, `infra`
+Follow Conventional Commits. See [COMMIT-GUIDE.md](COMMIT-GUIDE.md) for the full format,
+type and scope reference, and examples.
 
 ---
 
 ## Licensing
 
-This codebase is proprietary. All rights reserved by Syntek Studio. You must have explicit
-written permission from Syntek Studio before using, copying, or distributing any part of this
-source code. Do not include third-party dependencies whose licences are incompatible with
-commercial proprietary use (e.g. GPL/AGPL) without prior written approval.
+This project is released under the [MIT Licence](../../LICENSE). You are free to use, copy,
+modify, merge, publish, distribute, sublicense, and sell copies of the software without
+restriction. Third-party dependencies bundled in this template carry MIT, Apache 2.0, or ISC
+licences. GPL/AGPL dependencies require written approval before inclusion.
 
 ---
 

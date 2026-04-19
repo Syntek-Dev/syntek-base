@@ -10,8 +10,8 @@
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone git@github.com:Syntek-Studio/syntek-website.git
-cd syntek-website
+git clone git@github.com:Syntek-Studio/project-name.git
+cd project-name
 ```
 
 ### Step 2 — Copy Environment Files
