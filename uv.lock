@@ -891,7 +891,7 @@ django = [
 ]
 
 [[package]]
-name = "syntek-website"
+name = "project-name"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

@@ -1,11 +1,11 @@
-# syntek-website
+# syntek-base
 
-> Full-stack monorepo for the Syntek Studio website — Django + Strawberry GraphQL backend,
+> Syntek Studio's opinionated full-stack monorepo template — Django + Strawberry GraphQL backend,
 > Next.js + Tailwind CSS frontend, deployed via Docker Compose.
 
 ![Version](https://img.shields.io/badge/version-0.1.0-blue)
-![Licence](https://img.shields.io/badge/licence-Proprietary-red)
-![Status](https://img.shields.io/badge/status-scaffolded%20%E2%80%94%20pre--implementation-yellow)
+![Licence](https://img.shields.io/badge/licence-MIT-green)
+![Status](https://img.shields.io/badge/status-template-blue)
 
 ---
 
@@ -31,10 +31,14 @@
 
 ## Purpose
 
-**syntek-website** is the source repository for the Syntek Studio public website. It is a
-full-stack monorepo — one repository containing the Django backend, the Next.js frontend, all
-supporting infrastructure, and every documentation and project-management artefact needed to
-develop, test, and deploy the product.
+**syntek-base** is a GitHub template repository maintained by Syntek Studio. It provides a
+complete, opinionated starting point for full-stack web projects — one repository containing the
+Django backend scaffold, Next.js frontend scaffold, all supporting infrastructure, and every
+documentation and project-management artefact needed to develop, test, and deploy a product.
+
+When you create a new project, use the **"Use this template"** button on GitHub to generate a
+fresh repository from this base. You do not need to clone this repo unless you are contributing
+to the template itself (see [Contributing to this template](#getting-started)).
 
 ### Stack
 
@@ -59,20 +63,19 @@ develop, test, and deploy the product.
 | **Frontend tests**         | Vitest, React Testing Library |
 | **Container**              | Docker Compose                |
 
-### Proprietary notice
+### Licence
 
-All source code and documentation in this repository is proprietary and confidential. All rights
-reserved — Syntek Studio. Explicit written permission is required before using, copying, or
-distributing any part of this codebase. Third-party dependencies must carry licences compatible
-with commercial proprietary use (MIT, Apache 2.0, ISC). GPL/AGPL requires written approval before
-use.
+This template is maintained by Syntek Studio and released for use across Syntek Studio projects.
+Projects generated from this template are owned by their respective teams. Third-party dependencies
+bundled in this template carry MIT, Apache 2.0, or ISC licences compatible with commercial
+proprietary use. GPL/AGPL dependencies require written approval before inclusion.
 
 ---
 
 ## Project Tree
 
 ```text
-syntek-website/
+project-name/
 ├── .claude/                             ← Claude Code configuration
 │   ├── CLAUDE.md                        ← global rules, routing, model selection
 │   ├── settings.local.json              ← local Claude Code permission settings
@@ -96,13 +99,19 @@ syntek-website/
 │       ├── project-tool.py
 │       └── quality-tool.py
 ├── .github/
-│   └── workflows/                       ← CI: syntax checks (JS/TS, Python, Markdown)
+│   └── workflows/                       ← CI: syntax, tests, and audit checks
+│       ├── audit-cloc.yml
+│       ├── audit-stubs.yml
 │       ├── syntax-js-ts.yml
 │       ├── syntax-markdown.yml
-│       └── syntax-python.yml
+│       ├── syntax-python.yml
+│       ├── test-backend.yml
+│       ├── test-e2e.yml
+│       ├── test-frontend.yml
+│       └── test-mobile.yml
 ├── code/                                ← source code, coding standards, tests
 │   ├── CONTEXT.md                       ← coding layer index
-│   ├── docs/                            ← 12 coding reference guides
+│   ├── docs/                            ← 11 coding reference guides
 │   │   ├── ACCESSIBILITY.md
 │   │   ├── API-DESIGN.md
 │   │   ├── ARCHITECTURE-PATTERNS.md
@@ -119,7 +128,9 @@ syntek-website/
 │   │   ├── docker/                      ← Dockerfiles and Compose files
 │   │   ├── frontend/                    ← Next.js 16.2.4 App Router
 │   │   ├── logs/                        ← runtime log files (dev/test; gitignored)
-│   │   └── scripts/                     ← quality scripts (lint.sh, check.sh, format.sh)
+│   │   ├── mobile/                      ← Expo SDK + React Native
+│   │   ├── scripts/                     ← development, test, database, and quality scripts
+│   │   └── shared/                      ← cross-platform components and utilities
 │   └── workflows/                       ← 10 step-by-step coding workflows
 │       ├── 01-new-feature/
 │       ├── 02-tdd-cycle/
@@ -163,9 +174,16 @@ syntek-website/
 │       ├── 05-pr-and-review/
 │       ├── 06-gdpr-compliance/
 │       └── 07-release/
+├── CHANGELOG.md
 ├── CONTEXT.md                           ← project overview and layer map
+├── CONTRIBUTING.md
 ├── GAPS.md                              ← missing workflow files flagged by Claude
+├── install.sh                           ← interactive project setup script
+├── LICENSE
 ├── README.md                            ← this file
+├── RELEASES.md
+├── VERSION
+├── VERSION-HISTORY.md
 ├── eslint.config.mjs
 ├── lefthook.yml                         ← pre-commit hook runner
 ├── package.json                         ← root pnpm workspace
@@ -203,25 +221,37 @@ zsh shell (Git Bash or WSL 2 terminal).
 
 ## Getting Started
 
-### Clone the repository
+### Starting a new project from this template
 
-```bash
-git clone git@github.com:syntek-studio/syntek-website.git
-cd syntek-website
-```
-
-### Install root tooling and git hooks
-
-Make the install script executable, then run it:
+1. Open [github.com/Syntek-Dev/syntek-base](https://github.com/Syntek-Dev/syntek-base) on GitHub.
+2. Click **"Use this template" → "Create a new repository"**.
+3. Name your repository, choose the owner (`Syntek-Dev`), and set visibility.
+4. Clone your new repository, then run the install script:
 
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-This installs all root dev dependencies and runs `lefthook install`, which registers the
-pre-commit hooks. From this point on, every `git commit` automatically runs linting and
-type-checking across both layers.
+The script is interactive — it will ask for your project name and automatically rename all
+`project-name` / `project_name` placeholders throughout the repository. It also installs all root
+dev dependencies and registers the pre-commit hooks via `lefthook install`.
+
+### Contributing to this template
+
+To work on the template itself, clone it directly:
+
+```bash
+git clone git@github.com:Syntek-Dev/syntek-base.git
+cd syntek-base
+```
+
+Then run the install script and follow the prompts:
+
+```bash
+chmod +x install.sh
+./install.sh
+```
 
 ### Configure environment variables
 
@@ -270,10 +300,10 @@ This starts:
 
 | URL                                    | Description                   |
 | -------------------------------------- | ----------------------------- |
-| `http://dev.syntekstudio.com`          | Next.js frontend              |
-| `http://dev.syntekstudio.com/graphql/` | GraphQL playground (dev only) |
-| `http://dev.syntekstudio.com/admin/`   | Django admin                  |
-| `http://dev.syntekstudio.com:1080`     | Maildev — local mail catcher  |
+| `http://dev.projectname.com`          | Next.js frontend              |
+| `http://dev.projectname.com/graphql/` | GraphQL playground (dev only) |
+| `http://dev.projectname.com/admin/`   | Django admin                  |
+| `http://dev.projectname.com:1080`     | Maildev — local mail catcher  |
 
 ---
 
@@ -666,8 +696,8 @@ docker compose -f code/src/docker/docker-compose.dev.yml exec frontend pnpm <com
 Staging and prod images are pushed to GHCR by GitHub Actions and pulled on the server:
 
 ```text
-ghcr.io/syntek-studio/syntek-website/backend:<tag>
-ghcr.io/syntek-studio/syntek-website/frontend:<tag>
+ghcr.io/Syntek-Dev/project-name/backend:<tag>
+ghcr.io/Syntek-Dev/project-name/frontend:<tag>
 ```
 
 Tags: `staging`, `prod`, or a git SHA. Set `IMAGE_TAG` in the server environment.
@@ -710,8 +740,9 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 | `server.sh`         | Manage the dev stack: `up`, `down`, `restart`, `build`, `status` |
 | `logs.sh`           | View and tail container logs; filter by service, time, or count  |
 | `shell.sh`          | Open an interactive shell in any dev container                   |
-| `new-django-app.sh` | Scaffold a new Django app with per-model-file structure          |
-| `new-next-route.sh` | Scaffold a new Next.js App Router route with a typed page stub   |
+| `new-django-app.sh`  | Scaffold a new Django app with per-model-file structure          |
+| `new-expo-screen.sh` | Scaffold a new Expo screen with a typed component stub           |
+| `new-next-route.sh`  | Scaffold a new Next.js App Router route with a typed page stub   |
 
 ```bash
 ./code/src/scripts/development/server.sh up
@@ -720,6 +751,7 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 ./code/src/scripts/development/logs.sh --service backend --follow
 ./code/src/scripts/development/shell.sh
 ./code/src/scripts/development/new-django-app.sh <app_name>
+./code/src/scripts/development/new-expo-screen.sh <screen_name>
 ./code/src/scripts/development/new-next-route.sh <route_path>
 ```
 
@@ -759,6 +791,8 @@ The test stack (`docker-compose.test.yml`) must be running before executing back
 | `backend-coverage.sh`  | Run Django/pytest with coverage report                                        |
 | `frontend.sh`          | Run Vitest frontend test suite                                                |
 | `frontend-coverage.sh` | Run Vitest with coverage report                                               |
+| `mobile.sh`            | Run Jest mobile test suite in the test container                              |
+| `mobile-coverage.sh`   | Run Jest mobile tests with coverage report                                    |
 | `e2e.sh`               | Run Playwright/BDD end-to-end tests (explicit only)                           |
 | `open-coverage.sh`     | Open the latest coverage report in the browser                                |
 
@@ -769,6 +803,8 @@ The test stack (`docker-compose.test.yml`) must be running before executing back
 ./code/src/scripts/tests/backend-coverage.sh
 ./code/src/scripts/tests/frontend.sh
 ./code/src/scripts/tests/frontend-coverage.sh
+./code/src/scripts/tests/mobile.sh
+./code/src/scripts/tests/mobile-coverage.sh
 ./code/src/scripts/tests/e2e.sh
 ./code/src/scripts/tests/open-coverage.sh
 ```
@@ -941,8 +977,8 @@ code/src/frontend/
 
 ## Welcome
 
-Welcome to the syntek-website repository. Whether you are a developer, designer, or Claude Code
-agent reading this for the first time — you are in the right place.
+Welcome to syntek-base — Syntek Studio's monorepo template. Whether you are setting up a new
+project from this template or contributing improvements back to it, you are in the right place.
 
 The three-layer structure (`code/`, `how-to/`, `project-management/`) is designed to make it easy
 to find exactly what you need without reading everything at once. When in doubt, start with the
@@ -952,7 +988,8 @@ If you encounter a workflow folder that is missing `STEPS.md` or `CHECKLIST.md`,
 `GAPS.md` at the project root and proceed using `CONTEXT.md` alone. Do not silently generate
 missing files.
 
-For questions, issues, or contributions, reach out to the Syntek Studio development team.
+For questions, issues, or contributions to the template, open an issue or PR on
+[github.com/Syntek-Dev/syntek-base](https://github.com/Syntek-Dev/syntek-base).
 
 ---
 

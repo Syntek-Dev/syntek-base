@@ -1,4 +1,4 @@
-# syntek-website — Project Overview
+# project-name — Project Overview
 
 This is the source repository for the Syntek Studio website, built as a full-stack
 monorepo: Django + Strawberry GraphQL backend, Next.js + Tailwind CSS frontend.
@@ -6,10 +6,9 @@ monorepo: Django + Strawberry GraphQL backend, Next.js + Tailwind CSS frontend.
 ## Directory Tree
 
 ```text
-syntek-website/
+project-name/
 ├── .claude/
 │   ├── CLAUDE.md                    ← global rules, routing, model selection
-│   ├── CLAUDE.md.pre-scaffold       ← original CLAUDE.md snapshot (pre-scaffold)
 │   ├── settings.local.json          ← local Claude Code permission settings
 │   ├── commands/                    ← slash commands
 │   │   ├── codegen.md
@@ -31,10 +30,16 @@ syntek-website/
 │       ├── project-tool.py
 │       └── quality-tool.py
 ├── .github/
-│   └── workflows/                   ← CI: syntax checks
+│   └── workflows/                   ← CI: syntax, tests, and audit checks
+│       ├── audit-cloc.yml
+│       ├── audit-stubs.yml
 │       ├── syntax-js-ts.yml
 │       ├── syntax-markdown.yml
-│       └── syntax-python.yml
+│       ├── syntax-python.yml
+│       ├── test-backend.yml
+│       ├── test-e2e.yml
+│       ├── test-frontend.yml
+│       └── test-mobile.yml
 ├── code/                            ← source code, coding standards, tests
 │   ├── CONTEXT.md
 │   ├── docs/                        ← coding reference guides
@@ -43,7 +48,9 @@ syntek-website/
 │   │   ├── docker/                  ← Dockerfiles and Compose files
 │   │   ├── frontend/                ← Next.js 16.2.4 App Router
 │   │   ├── logs/                    ← runtime log files (dev/test; gitignored)
-│   │   └── scripts/                 ← quality scripts (lint, check, format)
+│   │   ├── mobile/                  ← Expo SDK + React Native
+│   │   ├── scripts/                 ← development, test, database, and quality scripts
+│   │   └── shared/                  ← cross-platform components and utilities
 │   └── workflows/                   ← step-by-step coding workflows (01–10)
 ├── how-to/                          ← setup, daily dev, debugging guides
 │   ├── CONTEXT.md
@@ -55,9 +62,16 @@ syntek-website/
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR)
 │   ├── src/                         ← live PM artefacts (STORIES, SPRINTS, BUGS, …)
 │   └── workflows/                   ← step-by-step PM workflows (01–07)
+├── CHANGELOG.md
 ├── CONTEXT.md                       ← this file
+├── CONTRIBUTING.md
 ├── GAPS.md                          ← missing workflow files flagged by Claude
+├── install.sh                       ← interactive project setup script
+├── LICENSE
 ├── README.md
+├── RELEASES.md
+├── VERSION
+├── VERSION-HISTORY.md
 ├── eslint.config.mjs                ← ESLint config (JS/TS/React)
 ├── lefthook.yml                     ← pre-commit hook runner config
 ├── package.json                     ← root workspace package (pnpm)

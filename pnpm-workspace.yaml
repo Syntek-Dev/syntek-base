@@ -1,3 +1,4 @@
 packages:
   - "code/src/frontend"
+  - "code/src/mobile"
   - "code/src/shared"

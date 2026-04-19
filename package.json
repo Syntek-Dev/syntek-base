@@ -1,5 +1,5 @@
 {
-  "name": "syntek-website",
+  "name": "project-name",
   "private": true,
   "packageManager": "pnpm@10.33.0",
   "scripts": {
@@ -26,6 +26,9 @@
   "devDependencies": {
     "@eslint/js": "^9.27.0",
     "eslint": "^9.27.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-native": "^4.1.0",
     "lefthook": "^1.11.13",
     "markdownlint-cli2": "^0.17.2",
     "prettier": "^3.5.3",
