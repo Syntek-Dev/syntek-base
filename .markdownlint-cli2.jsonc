@@ -5,6 +5,7 @@
     ".claude/CLAUDE.md",
     "!.venv/**",
     "!node_modules/**",
+    "!**/node_modules/**",
     "!.next/**",
     "!coverage/**",
     "!htmlcov/**",
@@ -25,6 +26,9 @@
     "MD036": false,
     // First line must be heading: disabled — some docs start with metadata or a lead paragraph
     "MD041": false,
+    // Ordered list prefix: allow sequential (1, 2, 3) — code blocks between items interrupt
+    // the list context and would otherwise require all items to use "1."
+    "MD029": { "style": "ordered" },
     // Fenced code language: kept enabled — required by CLAUDE.md
     "MD040": true,
   },

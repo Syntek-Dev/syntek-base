@@ -12,6 +12,15 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "lefthook"
+    ],
+    "overrides": {
+      "js-yaml": ">=4.1.1",
+      "markdown-it": ">=14.1.1"
+    },
+    "ignoredBuiltDependencies": [
+      "esbuild",
+      "msw",
+      "sharp"
     ]
   },
   "devDependencies": {

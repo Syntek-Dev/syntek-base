@@ -2,16 +2,23 @@
 name = "syntek-website"
 version = "0.1.0"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+  "django>=6.0.4",
+  "strawberry-graphql[django]>=0.314.3",
+  "gunicorn",
+  "uvicorn[standard]",
+  "dj-database-url",
+  "psycopg[binary]",
+  "django-cors-headers",
+  "django-cloudinary-storage",
+  "cloudinary",
+  "sentry-sdk[django]",
+  "argon2-cffi",
+  "cryptography",
+]
 
 [tool.uv]
 package = false
-
-[dependency-groups]
-dev = [
-  "ruff>=0.11.0",
-  "basedpyright>=1.28.0",
-]
 
 [tool.ruff]
 src = ["code/src/backend"]
@@ -57,8 +64,47 @@ typeCheckingMode = "standard"
 reportMissingImports = true
 reportMissingTypeStubs = false
 
+[dependency-groups]
+dev = [
+  "ruff>=0.11.0",
+  "basedpyright>=1.28.0",
+]
+test = [
+  "pytest>=8.0",
+  "pytest-django>=4.9",
+  "pytest-asyncio>=0.25",
+  "pytest-cov>=6.0",
+  "factory-boy>=3.3",
+  "hypothesis>=6.0",
+  "mutmut>=3.0",
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["code/src/backend"]
 testpaths = ["code/src/backend"]
-addopts = "-x -q"
-DJANGO_SETTINGS_MODULE = "config.settings.local"
+addopts = "-x -q --strict-markers"
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+markers = [
+  "unit: pure unit tests with no DB access",
+  "integration: tests that require a real database",
+  "e2e: end-to-end browser tests — never run automatically",
+]
+
+[tool.coverage.run]
+source = ["apps"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "\\.\\.\\.",
+]
+omit = [
+  "*/migrations/*",
+  "*/tests/*",
+  "*/__init__.py",
+]
