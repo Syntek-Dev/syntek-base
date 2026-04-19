@@ -1,0 +1,63 @@
+name: test-e2e
+
+# E2E tests are NEVER triggered automatically.
+# Run manually via: Actions → test-e2e → Run workflow
+on:
+  workflow_dispatch:
+    inputs:
+      grep:
+        description: "Filter scenarios by name (optional, e.g. 'User login')"
+        required: false
+        default: ""
+
+jobs:
+  playwright-bdd:
+    name: playwright-bdd acceptance tests
+    runs-on: ubuntu-latest
+
+    env:
+      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env.test
+        run: |
+          cp code/src/docker/.env.test.example code/src/docker/.env.test
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+
+      - name: Build test images
+        run: docker compose -f $COMPOSE_FILE build backend-test frontend-test
+
+      - name: Start full test stack
+        run: docker compose -f $COMPOSE_FILE up -d
+
+      - name: Wait for nginx
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost/health/ && break
+            echo "Waiting for nginx... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run playwright-bdd
+        run: |
+          GREP_ARG=""
+          if [ -n "${{ github.event.inputs.grep }}" ]; then
+            GREP_ARG="--grep=${{ github.event.inputs.grep }}"
+          fi
+          docker compose -f $COMPOSE_FILE exec frontend-test \
+            pnpm test:e2e $GREP_ARG
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: code/src/frontend/e2e/playwright-report/
+          retention-days: 30
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f $COMPOSE_FILE down -v

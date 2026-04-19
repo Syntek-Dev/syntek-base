@@ -1,0 +1,79 @@
+name: test-backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "code/src/backend/**"
+      - "code/src/docker/backend/Dockerfile.test"
+      - "code/src/docker/backend/entrypoint.test.sh"
+      - "code/src/docker/docker-compose.test.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+  pull_request:
+    branches: [main]
+    paths:
+      - "code/src/backend/**"
+      - "code/src/docker/backend/Dockerfile.test"
+      - "code/src/docker/backend/entrypoint.test.sh"
+      - "code/src/docker/docker-compose.test.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+
+jobs:
+  pytest:
+    name: pytest + coverage
+    runs-on: ubuntu-latest
+
+    env:
+      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env.test
+        run: |
+          cp code/src/docker/.env.test.example code/src/docker/.env.test
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+
+      - name: Build backend-test image
+        run: docker compose -f $COMPOSE_FILE build backend-test
+
+      - name: Start db and cache
+        run: docker compose -f $COMPOSE_FILE up -d db cache
+
+      - name: Wait for database
+        run: |
+          for i in $(seq 1 30); do
+            docker compose -f $COMPOSE_FILE exec db \
+              pg_isready -U syntek -d syntek_website_test && break
+            echo "Waiting for db... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run pytest with coverage
+        run: |
+          mkdir -p reports
+          docker compose -f $COMPOSE_FILE run --rm \
+            --env-file code/src/docker/.env.test \
+            -v "${{ github.workspace }}/reports:/workspace/reports" \
+            backend-test \
+            pytest \
+              --cov=apps \
+              --cov-branch \
+              --cov-fail-under=75 \
+              --cov-report=xml:/workspace/reports/coverage.xml \
+              --cov-report=term-missing
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: reports/coverage.xml
+          retention-days: 30
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f $COMPOSE_FILE down -v

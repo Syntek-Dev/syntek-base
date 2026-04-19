@@ -1,0 +1,54 @@
+name: test-frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "code/src/frontend/**"
+      - "code/src/docker/frontend/Dockerfile.test"
+      - "code/src/docker/docker-compose.test.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "code/src/frontend/**"
+      - "code/src/docker/frontend/Dockerfile.test"
+      - "code/src/docker/docker-compose.test.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+
+jobs:
+  vitest:
+    name: vitest + coverage
+    runs-on: ubuntu-latest
+
+    env:
+      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build frontend-test image
+        run: docker compose -f $COMPOSE_FILE build frontend-test
+
+      - name: Run vitest with coverage
+        run: |
+          mkdir -p reports
+          docker compose -f $COMPOSE_FILE run --rm \
+            -v "${{ github.workspace }}/reports:/workspace/code/src/frontend/coverage" \
+            frontend-test \
+            pnpm test:coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: reports/
+          retention-days: 30
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f $COMPOSE_FILE down -v
