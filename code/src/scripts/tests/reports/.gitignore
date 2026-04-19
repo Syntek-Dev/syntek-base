@@ -1,5 +1,0 @@
-# Ignore generated report files but keep this folder and tracked files.
-*
-!.gitignore
-!.gitkeep
-!CONTEXT.md

@@ -14,7 +14,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/reports"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -67,14 +68,12 @@ require_arg() {
 }
 
 container_running() {
-  cd "$PROJECT_ROOT"
-  docker compose ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
+  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
 }
 
 check_any_container() {
-  cd "$PROJECT_ROOT"
-  docker compose ps --status running 2>/dev/null | grep -qE '(backend|frontend)' \
-    || die "No containers are running. Start with: docker compose up -d"
+  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend)' \
+    || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
 }
 
 LAST_EXIT=0
@@ -82,11 +81,11 @@ run_in() {
   local service="$1"; shift
   set +e
   if $QUIET; then
-    docker compose -f "$PROJECT_ROOT/docker-compose.yml" exec -T "$service" "$@" \
+    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
       >> "$TMPFILE" 2>&1
     LAST_EXIT=$?
   else
-    docker compose -f "$PROJECT_ROOT/docker-compose.yml" exec -T "$service" "$@" \
+    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
       2>&1 | tee -a "$TMPFILE"
     LAST_EXIT=${PIPESTATUS[0]}
   fi

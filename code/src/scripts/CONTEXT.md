@@ -1,57 +1,51 @@
 # code/src/scripts
 
-Shell scripts for code quality checks. All scripts run inside Docker containers via `docker compose exec` — never on the host directly.
+Shell scripts for all development operations. Organised into functional subdirectories. Scripts
+that require Django or Next.js run inside Docker containers via `docker compose exec` — never
+on the host directly.
 
 ## Directory Tree
 
 ```text
 code/src/scripts/
-├── check.sh                 ← type-check Python (basedpyright) and TypeScript (tsc)
-├── CONTEXT.md               ← this file
-├── format.sh                ← format Python (ruff), TS/JS/CSS/MD (Prettier)
-├── lint.sh                  ← lint Python (ruff), TS/JS/React (ESLint), Markdown
-└── reports/                 ← generated report output (all gitignored)
-    ├── CONTEXT.md
-    ├── .gitignore
-    └── .gitkeep
+├── audits/                  ← codebase health audits (cloc, stub detection)
+│   └── reports/             ← generated report output (gitignored)
+├── database/                ← database management (migrate, backup, restore, shell)
+│   └── reports/             ← backup files and generated reports (gitignored)
+├── deployment/              ← deployment scripts (planned — scripts TBD)
+│   └── reports/             ← generated report output (gitignored)
+├── development/             ← dev stack lifecycle (server, shell, logs)
+│   └── reports/             ← reserved for future report output (gitignored)
+├── syntax/                  ← code quality (lint, type-check, format)
+│   └── reports/             ← generated report output (gitignored)
+└── tests/                   ← test suite runner (pytest, Vitest, Playwright)
+    └── reports/             ← test reports by type (gitignored)
+        ├── backend/
+        ├── backend-coverage/
+        ├── frontend/
+        ├── frontend-coverage/
+        └── e2e/
 ```
 
-## Scripts
+## Subdirectories
 
-| Script      | Tool(s)                               | Purpose                                   |
-| ----------- | ------------------------------------- | ----------------------------------------- |
-| `lint.sh`   | ruff check, ESLint, markdownlint-cli2 | Lint Python, TS/JS/React, Markdown        |
-| `check.sh`  | basedpyright, tsc --noEmit            | Type-check Python and TypeScript          |
-| `format.sh` | ruff format, Prettier                 | Format Python, TS/JS/React, CSS, Markdown |
+| Directory      | Purpose                                                           |
+| -------------- | ----------------------------------------------------------------- |
+| `audits/`      | Codebase health: line-count enforcement, stub detection           |
+| `database/`    | Django migration management, PostgreSQL backup / restore / reset  |
+| `deployment/`  | Deployment automation scripts (planned)                           |
+| `development/` | Dev stack lifecycle: server up/down, container shell, log tailing |
+| `syntax/`      | Code quality: ruff, ESLint, markdownlint, basedpyright, tsc       |
+| `tests/`       | Test suite: pytest (backend), Vitest (frontend), Playwright (e2e) |
 
-## Common Flags
+## Rules
 
-| Flag                 | Description                                                                                     |
-| -------------------- | ----------------------------------------------------------------------------------------------- |
-| `--fix`              | Apply safe automatic fixes (lint/format) or print fix guidance (check)                          |
-| `--unsafe-fix`       | Apply safe + unsafe fixes — ruff only (`lint.sh`)                                               |
-| `--file-type TYPE`   | Restrict to one or more file types: `python` `typescript` `javascript` `react` `css` `markdown` |
-| `--output FORMAT`    | Write a report file: `md` `txt` `json` `html`                                                   |
-| `--output-file PATH` | Override the default report output path                                                         |
-| `--quiet`            | Suppress terminal output — requires `--output`                                                  |
-| `--path PATH`        | Restrict to a specific file or directory                                                        |
-| `--help`             | Print usage                                                                                     |
+- Always use these scripts rather than invoking `python`, `pnpm`, `pytest`, or `next` directly.
+- If a script does not exist for a task, ask for it to be created before proceeding.
+- Audit scripts (`audits/`) run on the host — no container required.
+- All other scripts that interact with Django or Next.js run inside Docker.
 
-## Exit Codes
+## Cross-references
 
-- `0` — clean / all formatted / no changes
-- `1` — issues found / formatting needed / type errors
-- `2` — script error (bad arguments, containers not running)
-
-## Reports
-
-Generated reports are written to `reports/` and gitignored by default.
-Default filenames: `lint-report.<FORMAT>`, `check-report.<FORMAT>`, `format-report.<FORMAT>`.
-
-## Requirements
-
-Docker Compose services must be running before invoking any script:
-
-```bash
-docker compose up -d
-```
+- `how-to/docs/CONTEXT.md` — daily development commands and workflows
+- `code/docs/TESTING.md` — testing strategy and coverage requirements
