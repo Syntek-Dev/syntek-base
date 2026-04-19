@@ -14,22 +14,30 @@ This is the Next.js 16.2.4 App Router frontend for the Syntek Studio website.
 | Code Gen       | GraphQL Code Generator        |
 | Tests          | Vitest, React Testing Library |
 
-## Directory Layout (post-setup)
+## Directory Layout
 
 ```text
 frontend/
+├── e2e/
+│   ├── features/           # Playwright spec files (BDD-style, one per feature)
+│   └── steps/              # Page-object models and step helpers
 ├── src/
 │   ├── app/                # Next.js App Router pages and layouts
-│   ├── components/         # Shared React components
+│   ├── components/         # Page-specific React components (single-page use only)
 │   ├── graphql/
-│   │   ├── queries/        # .graphql query files
-│   │   ├── mutations/      # .graphql mutation files
-│   │   ├── fragments/      # Shared GraphQL fragments
-│   │   └── generated/      # Auto-generated TypeScript types and hooks
-│   └── lib/                # Shared utilities and helpers
+│   │   ├── queries/        # .graphql query and mutation files
+│   │   ├── mutations/      # .graphql mutation files (created on demand)
+│   │   ├── fragments/      # Shared GraphQL fragments (created on demand)
+│   │   └── generated/      # Auto-generated TypeScript types and hooks (never edit)
+│   ├── lib/                # Singleton clients and shared utilities (e.g. ApolloWrapper)
+│   └── test/
+│       ├── builders/       # Typed test data factory functions
+│       ├── msw-server.ts   # Shared MSW Node.js server instance
+│       └── setup.ts        # Vitest global setup (jest-dom + MSW lifecycle)
 ├── public/                 # Static assets
 ├── next.config.ts
-├── tailwind.config.ts
+├── playwright.config.ts
+├── postcss.config.mjs      # PostCSS — activates @tailwindcss/postcss for next build
 ├── tsconfig.json
 └── package.json
 ```
@@ -46,7 +54,7 @@ frontend/
 
 - All code must follow `code/docs/CODING-PRINCIPLES.md`
 - WCAG 2.2 AA compliance required on all interactive components
-- Run `npm run codegen` after any backend schema change
+- Run codegen via `docker compose exec frontend pnpm run codegen` after any backend schema change
 - SEO metadata required on every page — see `project-management/docs/SEO-CHECKLIST.md`
 
 ## Cross-references
