@@ -45,7 +45,7 @@ services:
     volumes:
       - ../backend:/workspace/code/src/backend
     environment:
-      DJANGO_SETTINGS_MODULE: config.settings.local
+      DJANGO_SETTINGS_MODULE: config.settings.dev
       DATABASE_URL: postgresql://${POSTGRES_USER:-syntek}:${POSTGRES_PASSWORD}@db:5432/syntek_website_dev
       REDIS_URL: redis://cache:6379/0
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
@@ -66,6 +66,7 @@ services:
       dockerfile: code/src/docker/frontend/Dockerfile.dev
     volumes:
       - ../frontend:/workspace/code/src/frontend
+      - ../shared:/workspace/code/src/shared
       # Preserve container node_modules from being overwritten by the source mount
       - /workspace/node_modules
     environment:

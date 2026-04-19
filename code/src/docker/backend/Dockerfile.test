@@ -17,7 +17,9 @@ ENV UV_COMPILE_BYTECODE=1 \
 WORKDIR /workspace
 
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-install-project
+# --frozen disabled until `uv lock` is run after test deps are added to pyproject.toml.
+# Switch back to: uv sync --frozen --no-install-project --group test
+RUN uv sync --no-install-project --group test
 
 # Bake source into image — no volume mounts in test
 COPY code/src/backend/ ./code/src/backend/

@@ -11,6 +11,7 @@ WORKDIR /workspace
 # Install dependencies — source is mounted as a volume at runtime
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY code/src/frontend/package.json ./code/src/frontend/
+COPY code/src/shared/package.json ./code/src/shared/
 
 RUN pnpm install --frozen-lockfile
 

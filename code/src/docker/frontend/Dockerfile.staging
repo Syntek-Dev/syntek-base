@@ -12,22 +12,35 @@ WORKDIR /workspace
 # Layer-cache dependencies separately from source
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY code/src/frontend/package.json ./code/src/frontend/
+COPY code/src/shared/package.json ./code/src/shared/
 RUN pnpm install --frozen-lockfile
 
 COPY code/src/frontend/ ./code/src/frontend/
+COPY code/src/shared/ ./code/src/shared/
 
-# NEXT_PUBLIC_* vars are baked into the static export at build time
+# NEXT_PUBLIC_* vars are baked into the bundle at build time
 ARG NEXT_PUBLIC_GRAPHQL_URL
 ENV NEXT_PUBLIC_GRAPHQL_URL=${NEXT_PUBLIC_GRAPHQL_URL}
 
 WORKDIR /workspace/code/src/frontend
 RUN pnpm run build
 
-# ── Stage 2: static server ───────────────────────────────────────────────────
-# Requires `output: 'export'` in next.config.ts — see code/src/frontend/CONTEXT.md
-FROM nginx:alpine AS runner
+# ── Stage 2: standalone runner ────────────────────────────────────────────────
+FROM node:24.15.0-alpine AS runner
 
-COPY --from=builder /workspace/code/src/frontend/out /usr/share/nginx/html
-COPY code/src/docker/nginx/frontend-static.conf /etc/nginx/conf.d/default.conf
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-EXPOSE 80
+WORKDIR /workspace/code/src/frontend
+
+COPY --from=builder --chown=nextjs:nodejs \
+    /workspace/code/src/frontend/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs \
+    /workspace/code/src/frontend/.next/static ./.next/static
+COPY --from=builder \
+    /workspace/code/src/frontend/public ./public
+
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000 HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]

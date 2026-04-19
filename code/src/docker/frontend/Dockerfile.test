@@ -10,11 +10,13 @@ WORKDIR /workspace
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY code/src/frontend/package.json ./code/src/frontend/
+COPY code/src/shared/package.json ./code/src/shared/
 
 RUN pnpm install --frozen-lockfile
 
 # Bake source into image — no volume mounts in test
 COPY code/src/frontend/ ./code/src/frontend/
+COPY code/src/shared/ ./code/src/shared/
 
 WORKDIR /workspace/code/src/frontend
 
