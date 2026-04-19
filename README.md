@@ -212,8 +212,11 @@ cd syntek-website
 
 ### Install root tooling and git hooks
 
+Make the install script executable, then run it:
+
 ```bash
-pnpm install
+chmod +x install.sh
+./install.sh
 ```
 
 This installs all root dev dependencies and runs `lefthook install`, which registers the
@@ -222,20 +225,24 @@ type-checking across both layers.
 
 ### Configure environment variables
 
-```bash
-cp code/src/backend/.env.example code/src/backend/.env.local
-cp code/src/frontend/.env.example code/src/frontend/.env.local
+The install script copies the example env files for you. Open each one and fill in the required
+values before starting Docker:
+
+```text
+code/src/docker/.env.dev
+code/src/docker/.env.test
+code/src/docker/.env.staging
+code/src/docker/.env.production
 ```
 
-Edit both `.env.dev` files and fill in any required values. See
-`how-to/docs/DEVELOPMENT.md` for a full list of environment variables and their defaults.
+See `how-to/docs/DEVELOPMENT.md` for a full list of environment variables and their defaults.
 
 Never commit `.env.dev` or any file containing real secrets.
 
 ### Start the development environment
 
 ```bash
-docker compose -f code/src/docker/docker-compose.dev.yml up -d
+./code/src/scripts/development/server.sh up
 ```
 
 This starts:
@@ -250,22 +257,23 @@ This starts:
 ### Apply database migrations
 
 ```bash
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend python manage.py migrate
+./code/src/scripts/database/migrate.sh run
 ```
 
 ### Create a superuser (optional)
 
 ```bash
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend python manage.py createsuperuser
+./code/src/scripts/database/manageusers.sh create-superuser
 ```
 
 ### Verify
 
-| URL                              | Description                   |
-| -------------------------------- | ----------------------------- |
-| `http://localhost:3000`          | Next.js frontend              |
-| `http://localhost:8000/graphql/` | GraphQL playground (dev only) |
-| `http://localhost:8000/admin/`   | Django admin                  |
+| URL                                    | Description                   |
+| -------------------------------------- | ----------------------------- |
+| `http://dev.syntekstudio.com`          | Next.js frontend              |
+| `http://dev.syntekstudio.com/graphql/` | GraphQL playground (dev only) |
+| `http://dev.syntekstudio.com/admin/`   | Django admin                  |
+| `http://dev.syntekstudio.com:1080`     | Maildev — local mail catcher  |
 
 ---
 
@@ -679,60 +687,125 @@ Full observability guide: `code/docs/LOGGING.md`
 
 ## Project Scripts
 
+All scripts live under `code/src/scripts/` and are made executable by `install.sh`. Run any
+script with `--help` for full usage details. Reports are written to the script group's own
+`reports/` subdirectory (gitignored).
+
 ### Root scripts (run on host via pnpm)
 
-These scripts run on the host machine against the root workspace. They are used for linting and
-formatting the repository's JS/TS configuration files and Markdown documentation.
+These run on the host machine and cover root-level JS/TS config files and Markdown documentation.
 
 ```bash
 pnpm lint:js          # ESLint — checks JS, TS, and React files
 pnpm lint:md          # markdownlint-cli2 — checks all Markdown files
 pnpm format:check     # Prettier — dry-run format check
 pnpm format           # Prettier — apply formatting
-pnpm prepare          # Install Lefthook git hooks (runs automatically after pnpm install)
+pnpm prepare          # Install Lefthook git hooks (runs automatically after install.sh)
 ```
 
-### Quality scripts (run inside containers via docker compose exec)
+### Development scripts (`code/src/scripts/development/`)
 
-The scripts in `code/src/scripts/` run inside the Docker containers and cover both the backend
-and frontend layers.
+| Script              | Purpose                                                          |
+| ------------------- | ---------------------------------------------------------------- |
+| `server.sh`         | Manage the dev stack: `up`, `down`, `restart`, `build`, `status` |
+| `logs.sh`           | View and tail container logs; filter by service, time, or count  |
+| `shell.sh`          | Open an interactive shell in any dev container                   |
+| `new-django-app.sh` | Scaffold a new Django app with per-model-file structure          |
+| `new-next-route.sh` | Scaffold a new Next.js App Router route with a typed page stub   |
 
 ```bash
-# Lint — Python (ruff), TS/JS/React (ESLint), Markdown (markdownlint-cli2)
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend bash /scripts/lint.sh
-
-# Type-check — Python (basedpyright), TypeScript (tsc --noEmit)
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend bash /scripts/check.sh
-
-# Format — Python (ruff format), TS/JS/CSS/MD (Prettier)
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend bash /scripts/format.sh --fix
+./code/src/scripts/development/server.sh up
+./code/src/scripts/development/server.sh down
+./code/src/scripts/development/server.sh status
+./code/src/scripts/development/logs.sh --service backend --follow
+./code/src/scripts/development/shell.sh
+./code/src/scripts/development/new-django-app.sh <app_name>
+./code/src/scripts/development/new-next-route.sh <route_path>
 ```
 
-All three scripts support flags: `--fix`, `--quiet`, `--output`, `--path`. Run any script with
-`--help` for usage details. Generated reports are written to `code/src/scripts/reports/`
-(gitignored).
+### Database scripts (`code/src/scripts/database/`)
 
-### Logging and debugging commands
+| Script           | Purpose                                                                |
+| ---------------- | ---------------------------------------------------------------------- |
+| `migrate.sh`     | Django migrations: `run`, `make`, `show`, `check`, `fake`              |
+| `manageusers.sh` | Create or promote users: `create-superuser`, `create-staff`, `promote` |
+| `reset.sh`       | Drop and recreate the dev database, then re-migrate (destructive)      |
+| `backup.sh`      | Create a `pg_dump` backup of the dev database                          |
+| `restore.sh`     | Restore the dev database from a backup file (destructive)              |
+| `shell.sh`       | Open Django `dbshell` or a direct `psql` session                       |
 
 ```bash
-# Tail the live Django log (dev/test — written to code/src/logs/django.log)
-tail -f code/src/logs/django.log
-
-# Grep for errors in the local log
-grep -i "error\|critical" code/src/logs/django.log
-
-# Stream container logs (all services)
-docker compose -f code/src/docker/docker-compose.dev.yml logs -f
-
-# Stream backend container logs only
-docker compose -f code/src/docker/docker-compose.dev.yml logs -f backend
-
-# Run Django management commands (migrations, shell, etc.)
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend python manage.py <command>
+./code/src/scripts/database/migrate.sh run
+./code/src/scripts/database/migrate.sh make --app <app_name>
+./code/src/scripts/database/migrate.sh check
+./code/src/scripts/database/manageusers.sh create-superuser
+./code/src/scripts/database/manageusers.sh create-staff --email <email> --username <username>
+./code/src/scripts/database/manageusers.sh promote --email <email> --superuser
+./code/src/scripts/database/reset.sh
+./code/src/scripts/database/backup.sh
+./code/src/scripts/database/restore.sh <backup-file>
+./code/src/scripts/database/shell.sh
+./code/src/scripts/database/shell.sh --psql
 ```
 
-Full observability and debugging guide: `code/docs/LOGGING.md`
-Step-by-step debugging workflow: `code/workflows/10-debugging-with-logs/`
+### Test scripts (`code/src/scripts/tests/`)
+
+The test stack (`docker-compose.test.yml`) must be running before executing backend or E2E tests.
+
+| Script                 | Purpose                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| `all.sh`               | Run backend then frontend in sequence; `--coverage` for both coverage reports |
+| `backend.sh`           | Run Django/pytest suite in the test container                                 |
+| `backend-coverage.sh`  | Run Django/pytest with coverage report                                        |
+| `frontend.sh`          | Run Vitest frontend test suite                                                |
+| `frontend-coverage.sh` | Run Vitest with coverage report                                               |
+| `e2e.sh`               | Run Playwright/BDD end-to-end tests (explicit only)                           |
+| `open-coverage.sh`     | Open the latest coverage report in the browser                                |
+
+```bash
+./code/src/scripts/tests/all.sh
+./code/src/scripts/tests/all.sh --coverage
+./code/src/scripts/tests/backend.sh
+./code/src/scripts/tests/backend-coverage.sh
+./code/src/scripts/tests/frontend.sh
+./code/src/scripts/tests/frontend-coverage.sh
+./code/src/scripts/tests/e2e.sh
+./code/src/scripts/tests/open-coverage.sh
+```
+
+Full testing guide: `code/docs/TESTING.md` · TDD workflow: `code/workflows/02-tdd-cycle/`
+
+### Syntax scripts (`code/src/scripts/syntax/`)
+
+| Script      | Purpose                                                                |
+| ----------- | ---------------------------------------------------------------------- |
+| `lint.sh`   | Lint with ruff (Python), ESLint (TS/JS/React), markdownlint (Markdown) |
+| `check.sh`  | Type-check with basedpyright (Python) and tsc (TypeScript)             |
+| `format.sh` | Format with ruff and Prettier; dry-run by default, `--fix` to apply    |
+
+```bash
+./code/src/scripts/syntax/lint.sh
+./code/src/scripts/syntax/lint.sh --fix
+./code/src/scripts/syntax/check.sh
+./code/src/scripts/syntax/format.sh
+./code/src/scripts/syntax/format.sh --fix
+```
+
+All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
+
+### Audit scripts (`code/src/scripts/audits/`)
+
+| Script     | Purpose                                                                                 |
+| ---------- | --------------------------------------------------------------------------------------- |
+| `cloc.sh`  | Count lines per file (warns at 750, fails at 800) and produce language breakdown        |
+| `stubs.sh` | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK) |
+
+```bash
+./code/src/scripts/audits/cloc.sh
+./code/src/scripts/audits/cloc.sh --output md
+./code/src/scripts/audits/stubs.sh
+./code/src/scripts/audits/stubs.sh --strict
+```
 
 ### Pre-commit hooks
 
