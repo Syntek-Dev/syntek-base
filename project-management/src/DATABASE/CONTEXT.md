@@ -1,6 +1,6 @@
 # project-management/src/DATABASE
 
-Database design documentation for the syntek-website project.
+Database design documentation for the project-name project.
 
 ## Directory Tree
 

@@ -1,6 +1,6 @@
 # project-management/src/STORIES
 
-User stories for the syntek-website project.
+User stories for the project-name project.
 
 ## Directory Tree
 

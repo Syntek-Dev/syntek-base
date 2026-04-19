@@ -1,6 +1,6 @@
 # project-management/src/SPRINTS
 
-Sprint plans for the syntek-website project.
+Sprint plans for the project-name project.
 
 ## Directory Tree
 

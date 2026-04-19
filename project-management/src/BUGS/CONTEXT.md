@@ -1,6 +1,6 @@
 # project-management/src/BUGS
 
-Bug reports for the syntek-website project.
+Bug reports for the project-name project.
 
 ## Directory Tree
 

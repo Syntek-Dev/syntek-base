@@ -1,6 +1,6 @@
 # project-management/src/PLANS
 
-Architectural and feature plans for the syntek-website project.
+Architectural and feature plans for the project-name project.
 
 ## Directory Tree
 

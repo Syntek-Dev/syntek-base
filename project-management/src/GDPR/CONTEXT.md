@@ -1,6 +1,6 @@
 # project-management/src/GDPR
 
-GDPR compliance documentation for the syntek-website project.
+GDPR compliance documentation for the project-name project.
 
 ## Directory Tree
 

@@ -8,7 +8,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [GDPR Compliance in syntek-website](#gdpr-compliance-in-syntek-website)
+- [GDPR Compliance in project-name](#gdpr-compliance-in-project-name)
 - [Per-App GDPR Service Functions](#per-app-gdpr-service-functions)
 - [Data Retention — Celery Beat Tasks](#data-retention--celery-beat-tasks)
 - [Token Purge Tasks](#token-purge-tasks)
@@ -30,7 +30,7 @@ GDPR compliance is a **mandatory, non-optional** requirement for every app that 
 personal data. It is not a phase that happens at the end of a story — it is wired in from the
 initial migration.
 
-This guide covers the syntek-website patterns for implementing GDPR compliance across Django
+This guide covers the project-name patterns for implementing GDPR compliance across Django
 backend apps. For the authoritative legal text, refer to:
 
 - [UK GDPR](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/)
@@ -51,9 +51,9 @@ backend apps. For the authoritative legal text, refer to:
 
 ---
 
-## GDPR Compliance in syntek-website
+## GDPR Compliance in project-name
 
-GDPR compliance for **syntek-website** is built directly into the Django apps (`apps/users`,
+GDPR compliance for **project-name** is built directly into the Django apps (`apps/users`,
 `apps/audit`, `apps/content`, `apps/notifications`). There is no external GDPR orchestration
 package — each app owns its own erasure and export logic, and the GDPR views/tasks call those
 service functions directly.
@@ -400,7 +400,7 @@ class ConsentRecord(models.Model):
 ## Article 32 — Encryption at Rest
 
 GDPR Article 32 requires "appropriate technical measures" to protect personal data. For
-syntek-website, this means:
+project-name, this means:
 
 - **All PII fields** use `EncryptedField` (AES-256-GCM — implemented in Python via the `cryptography` library).
 - **All unique PII fields** have a companion HMAC-SHA256 lookup token.

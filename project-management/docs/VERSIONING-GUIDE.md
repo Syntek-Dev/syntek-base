@@ -1,4 +1,4 @@
-# Versioning Guide — syntek-website
+# Versioning Guide — project-name
 
 **Last Updated**: 18/04/2026 **Version**: 0.1.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
@@ -7,7 +7,7 @@
 
 ## Strategy Overview
 
-syntek-website uses a **single-track semver** strategy — the project as a whole is versioned.
+project-name uses a **single-track semver** strategy — the project as a whole is versioned.
 
 ---
 

@@ -1,6 +1,6 @@
 # project-management/src/WIREFRAMES
 
-Wireframes and UI design references for the syntek-website project.
+Wireframes and UI design references for the project-name project.
 
 ## Directory Tree
 
