@@ -1,12 +1,13 @@
-# Project: syntek-website
+# Project: project-name
 
 **Last Updated**: 18/04/2026 **Version**: 0.1.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB) **Timezone**: Europe/London
 
 ---
 
-> **Dev:** Always use `docker compose exec backend` for Django and `docker compose exec frontend` for
-> Next.js. Never run `python`, `pytest`, `pnpm`, or `next` directly outside the container.
+> **Dev:** Always use `docker compose exec backend` for Django, `docker compose exec frontend` for
+> Next.js, and `docker compose exec mobile` for Expo. Never run `python`, `pytest`, `pnpm`, or
+> `next` directly outside the container.
 
 ---
 
@@ -165,26 +166,30 @@ Format: `us###/short-description` — full rules in `project-management/docs/GIT
 
 ## Stack Overview
 
-| Component           | Technology                              |
-| ------------------- | --------------------------------------- |
-| **Type**            | Full-Stack Website (Backend + Frontend) |
-| **Backend Lang**    | Python 3.14                             |
-| **Backend Frame**   | Django 6.0.4                            |
-| **GraphQL**         | Strawberry GraphQL 0.314.3              |
-| **Database**        | PostgreSQL 18                           |
-| **Backend Server**  | Gunicorn + Uvicorn / Nginx              |
-| **Cache / Queue**   | Valkey (latest stable at release)       |
-| **Frontend Frame**  | Next.js 16.2.4 (App Router)             |
-| **Frontend Lang**   | TypeScript 6.0.3                        |
-| **UI Library**      | React 19.2                              |
-| **Styling**         | Tailwind CSS 4.2                        |
-| **GraphQL Client**  | Apollo Client                           |
-| **Code Generation** | GraphQL Code Generator                  |
-| **Node Runtime**    | Node.js 24.15.0                         |
-| **Package Manager** | pnpm 10.33.0 (JS) / uv 0.11.7 (Python)  |
-| **Backend Tests**   | pytest, pytest-django                   |
-| **Frontend Tests**  | Vitest, React Testing Library           |
-| **Container**       | Docker Compose                          |
+| Component           | Technology                                        |
+| ------------------- | ------------------------------------------------- |
+| **Type**            | Full-Stack Monorepo (Backend + Web + Mobile)      |
+| **Backend Lang**    | Python 3.14                                       |
+| **Backend Frame**   | Django 6.0.4                                      |
+| **GraphQL**         | Strawberry GraphQL 0.314.3                        |
+| **Database**        | PostgreSQL 18                                     |
+| **Backend Server**  | Gunicorn + Uvicorn / Nginx                        |
+| **Cache / Queue**   | Valkey (latest stable at release)                 |
+| **Frontend Frame**  | Next.js 16.2.4 (App Router)                       |
+| **Mobile Frame**    | Expo SDK (latest) + Expo Router + React Native 0.85.x |
+| **Mobile Styling**  | NativeWind 4.2.3 + react-native-css-interop 0.2.3 (Tailwind CSS v3) |
+| **Frontend Lang**   | TypeScript 6.0.3                                  |
+| **UI Library**      | React 19.2 / React Native                         |
+| **Shared UI**       | `code/src/shared/` (cross-platform components)    |
+| **Styling**         | Tailwind CSS 4.2                                  |
+| **GraphQL Client**  | Apollo Client                                     |
+| **Code Generation** | GraphQL Code Generator                            |
+| **Node Runtime**    | Node.js 24.15.0                                   |
+| **Package Manager** | pnpm 10.33.0 (JS) / uv 0.11.7 (Python)            |
+| **Backend Tests**   | pytest, pytest-django                             |
+| **Frontend Tests**  | Vitest, React Testing Library                     |
+| **Mobile Tests**    | Jest + React Native Testing Library (unit/TDD), Detox (E2E/BDD) |
+| **Container**       | Docker Compose                                    |
 
 ---
 
@@ -198,9 +203,14 @@ Format: `us###/short-description` — full rules in `project-management/docs/GIT
 | `code/src/backend/config/settings/`        | Environment-specific Django settings             |
 | `code/src/frontend/`                       | Next.js project root                             |
 | `code/src/frontend/src/app/`               | Next.js App Router pages                         |
-| `code/src/frontend/src/components/`        | React components                                 |
-| `code/src/frontend/src/graphql/`           | GraphQL queries, mutations, fragments            |
+| `code/src/frontend/src/components/`        | Page-specific React components                   |
+| `code/src/frontend/src/graphql/`           | Web GraphQL queries, mutations, fragments        |
 | `code/src/frontend/src/graphql/generated/` | Auto-generated TypeScript types and hooks        |
+| `code/src/mobile/`                         | Expo React Native app root                       |
+| `code/src/mobile/app/`                     | Expo Router screens                              |
+| `code/src/mobile/src/graphql/`             | Mobile GraphQL queries, mutations, fragments     |
+| `code/src/mobile/src/graphql/generated/`   | Auto-generated TypeScript types and hooks        |
+| `code/src/shared/`                         | Cross-platform components, hooks, and utilities  |
 | `project-management/src/`                  | Stories, sprints, GDPR docs, security audits, QA |
 
 ---
@@ -214,7 +224,7 @@ Format: `us###/short-description` — full rules in `project-management/docs/GIT
 | **GraphQL Endpoint**   | http://localhost:8000/graphql/       |
 | **GraphQL Playground** | http://localhost:8000/graphql/ (dev) |
 | **Django Admin**       | http://localhost:8000/admin/         |
-| **Database (Dev)**     | syntek_website_dev                   |
+| **Database (Dev)**     | project_name_dev                   |
 | **Locale**             | en_GB                                |
 | **Timezone**           | Europe/London                        |
 | **Currency**           | GBP (£)                              |
