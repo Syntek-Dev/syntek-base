@@ -23,12 +23,12 @@ data structure, relationship, or schema change is being planned.
 ## Key concepts
 
 - Schema design happens before code — models must reflect a reviewed, agreed design
-- Documents are saved to `project-management/src/DATABASE/`
+- Documents are saved to `project-management/src/03-DATABASE/`
 - Changes that affect existing data require an explicit migration strategy
 - All schema decisions must align with `code/docs/DATA-STRUCTURES.md`
 
 ## Cross-references
 
-- `project-management/src/DATABASE/` — where schema design documents are saved
+- `project-management/src/03-DATABASE/` — where schema design documents are saved
 - `code/docs/DATA-STRUCTURES.md` — domain modelling and PostgreSQL conventions
 - `code/workflows/09-database-migration/` — follow this after schema is approved

@@ -9,7 +9,7 @@
 
 ### Step 1 — Review the Backlog
 
-Read open stories in `project-management/src/STORIES/` and identify candidates.
+Read open stories in `project-management/src/01-STORIES/` and identify candidates.
 
 ### Step 2 — Generate Sprint Plan
 
@@ -27,7 +27,7 @@ Check the generated sprint for:
 
 ### Step 4 — Save
 
-Save to `project-management/src/SPRINTS/SPRINT-##.md`.
+Save to `project-management/src/02-SPRINTS/SPRINT-##.md`.
 
 ### Step 5 — Commit
 

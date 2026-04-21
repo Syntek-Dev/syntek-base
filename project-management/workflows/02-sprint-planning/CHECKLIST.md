@@ -11,7 +11,7 @@
 - [ ] Stories are MoSCoW prioritised
 - [ ] Scope is realistic for the sprint duration
 - [ ] Dependencies between stories identified
-- [ ] Sprint saved at correct path: `project-management/src/SPRINTS/SPRINT-##.md`
+- [ ] Sprint saved at correct path: `project-management/src/02-SPRINTS/SPRINT-##.md`
 
 ---
 

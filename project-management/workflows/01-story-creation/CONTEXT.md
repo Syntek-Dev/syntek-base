@@ -27,4 +27,4 @@ Every feature must have a corresponding user story.
 
 ## Cross-references
 
-- `project-management/src/STORIES/` — where stories are saved
+- `project-management/src/01-STORIES/` — where stories are saved

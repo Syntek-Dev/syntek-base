@@ -16,7 +16,7 @@ Reference `code/docs/DATA-STRUCTURES.md` for naming and indexing conventions.
 
 ### Step 2 — Document the Schema
 
-Create a schema document in `project-management/src/DATABASE/`.
+Create a schema document in `project-management/src/03-DATABASE/`.
 
 Name the file descriptively, e.g. `DB-<FEATURE>-DD-MM-YYYY.md`.
 

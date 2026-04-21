@@ -10,7 +10,7 @@
 - [ ] Story follows the standard format (role / goal / benefit)
 - [ ] Acceptance criteria are specific and testable
 - [ ] Story number is sequential and not already taken
-- [ ] File saved at the correct path: `project-management/src/STORIES/US###.md`
+- [ ] File saved at the correct path: `project-management/src/01-STORIES/US###.md`
 
 ---
 

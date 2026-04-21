@@ -7,29 +7,37 @@ specific category of project document.
 
 ```text
 project-management/src/
-├── BUGS/                    ← bug reports (BUG-<DESCRIPTOR>-DD-MM-YYYY.md)
-├── DATABASE/                ← database schema design documents and decisions
-├── GDPR/                    ← GDPR compliance artefacts (DPIAs, registers, notices)
-├── PLANS/                   ← architecture and implementation plans
-├── QA/                      ← quality assurance docs and manual test guides
-├── REFACTORING/             ← refactoring plans and technical debt records
-├── REVIEWS/                 ← code review records and PR feedback
-├── SECURITY/                ← security audits and threat model documents
-├── SPRINTS/                 ← sprint plans (SPRINT-##.md)
-├── STORIES/                 ← user stories (US###.md) and test status docs
-├── TESTS/                   ← test status tracking (US###-TEST-STATUS.md)
-└── WIREFRAMES/              ← UI wireframes and design decision notes
+├── 00-ASSETS/               ← logos, images, and static media (SVG source + raster exports)
+├── 00-DECISIONS/            ← Architecture Decision Records (ADR-###-<TITLE>.md)
+├── 00-PLANS/                ← architecture and implementation plans (PLAN-<FEATURE>.md)
+├── 01-STORIES/              ← user stories (US###.md)
+├── 02-SPRINTS/              ← sprint plans (SPRINT-##.md)
+├── 03-DATABASE/             ← database schema design documents and decisions
+├── 04-USER-FLOW/            ← user journey maps (USER-FLOW-<AREA>.md)
+├── 05-BRAND-GUIDE/          ← brand guidelines (colours, typography, tone of voice)
+├── 06-COMPONENTS/           ← UI component specs and API contracts
+├── 07-WIREFRAMES/           ← UI wireframes and design decision notes
+├── 08-GDPR/                 ← GDPR compliance artefacts (DPIAs, registers, notices)
+├── 09-SECURITY/             ← security audits and threat model documents
+├── 10-QA/                   ← quality assurance docs and manual test guides
+├── 11-TESTS/                ← test status tracking (US###-TEST-STATUS.md, US###-MANUAL-TESTING.md)
+├── 12-REVIEWS/              ← code review records and PR feedback
+├── 13-BUGS/                 ← bug reports (BUG-<DESCRIPTOR>-DD-MM-YYYY.md)
+└── 14-REFACTORING/          ← refactoring plans and technical debt records
 ```
 
 ## Naming Conventions
 
-| Pattern                          | Directory  | Example                   |
-| -------------------------------- | ---------- | ------------------------- |
-| `US###.md`                       | `STORIES/` | `US015.md`                |
-| `US###-TEST-STATUS.md`           | `TESTS/`   | `US015-TEST-STATUS.md`    |
-| `US###-MANUAL-TESTING.md`        | `QA/`      | `US015-MANUAL-TESTING.md` |
-| `SPRINT-##.md`                   | `SPRINTS/` | `SPRINT-06.md`            |
-| `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `BUGS/`    | `BUG-AUTH-19-04-2026.md`  |
+| Pattern                          | Directory       | Example                       |
+| -------------------------------- | --------------- | ----------------------------- |
+| `US###.md`                       | `01-STORIES/`   | `US015.md`                    |
+| `US###-TEST-STATUS.md`           | `11-TESTS/`     | `US015-TEST-STATUS.md`        |
+| `US###-MANUAL-TESTING.md`        | `11-TESTS/`     | `US015-MANUAL-TESTING.md`     |
+| `SPRINT-##.md`                   | `02-SPRINTS/`   | `SPRINT-06.md`                |
+| `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `13-BUGS/`      | `BUG-AUTH-19-04-2026.md`      |
+| `ADR-###-<TITLE>.md`             | `00-DECISIONS/` | `ADR-001-SESSIONS-JWT.md`     |
+| `BRAND-<TOPIC>.md`               | `05-BRAND-GUIDE/` | `BRAND-COLOURS.md`          |
+| `COMPONENT-<NAME>.md`            | `06-COMPONENTS/` | `COMPONENT-BUTTON.md`        |
 
 ## Cross-references
 

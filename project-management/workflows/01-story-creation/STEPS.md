@@ -23,12 +23,12 @@ Review the generated story for:
 
 ### Step 3 — Assign Story Number
 
-Check `project-management/src/STORIES/` for the next available number.
+Check `project-management/src/01-STORIES/` for the next available number.
 Name the file `US###.md`.
 
 ### Step 4 — Save
 
-Save to `project-management/src/STORIES/US###.md`.
+Save to `project-management/src/01-STORIES/US###.md`.
 
 ### Step 5 — Commit
 

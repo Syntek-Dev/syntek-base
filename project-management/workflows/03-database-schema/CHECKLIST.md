@@ -12,7 +12,7 @@
 - [ ] Index strategy documented for foreign keys and high-frequency query fields
 - [ ] Migration strategy documented if altering existing data
 - [ ] Schema aligns with `code/docs/DATA-STRUCTURES.md` conventions
-- [ ] Document saved at `project-management/src/DATABASE/DB-<FEATURE>-DD-MM-YYYY.md`
+- [ ] Document saved at `project-management/src/03-DATABASE/DB-<FEATURE>-DD-MM-YYYY.md`
 
 ---
 

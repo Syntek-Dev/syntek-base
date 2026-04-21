@@ -15,16 +15,16 @@ Use this workflow at the start of each sprint to select and prioritise user stor
 
 ## Prerequisites
 
-- [ ] Backlog of user stories exists in `project-management/src/STORIES/`
+- [ ] Backlog of user stories exists in `project-management/src/01-STORIES/`
 - [ ] Previous sprint is closed
 
 ## Key concepts
 
-- Sprints are saved as `SPRINT-##.md` in `project-management/src/SPRINTS/`
+- Sprints are saved as `SPRINT-##.md` in `project-management/src/02-SPRINTS/`
 - Use MoSCoW prioritisation (Must / Should / Could / Won't)
 - A sprint should be completable in the planned time box
 
 ## Cross-references
 
-- `project-management/src/STORIES/` — story backlog
-- `project-management/src/SPRINTS/` — sprint history
+- `project-management/src/01-STORIES/` — story backlog
+- `project-management/src/02-SPRINTS/` — sprint history

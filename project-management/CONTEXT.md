@@ -11,58 +11,96 @@ project-management/
 │   ├── GIT-GUIDE.md         ← branch strategy, commit format, PR flow, PR gates
 │   ├── SEO-CHECKLIST.md     ← SEO and AI discoverability for all frontend pages
 │   └── VERSIONING-GUIDE.md  ← root-only semver, files to update on every bump
-├── src/                     ← live PM artefacts (stories, sprints, bugs, …)
-│   ├── BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+├── src/                        ← live PM artefacts (stories, sprints, bugs, …)
+│   ├── 00-ASSETS/              ← ERD diagrams, user-flow diagrams, logos
 │   │   └── CONTEXT.md
-│   ├── DATABASE/            ← SCHEMA-*.md, ERD-*.md, MIGRATION-NOTES-*.md
+│   ├── 00-DECISIONS/           ← ADR-###-*.md (architectural decision records)
 │   │   └── CONTEXT.md
-│   ├── GDPR/                ← data inventory, consent, retention, breach docs
+│   ├── 00-PLANS/               ← PLAN-<FEATURE>.md, PLAN-US###-*.md
 │   │   └── CONTEXT.md
-│   ├── PLANS/               ← PLAN-<FEATURE>.md, PLAN-US###-*.md
+│   ├── 01-STORIES/             ← US###.md
 │   │   └── CONTEXT.md
-│   ├── QA/                  ← QA-US###-<DESCRIPTION>.md
+│   ├── 02-SPRINTS/             ← SPRINT-##.md
 │   │   └── CONTEXT.md
-│   ├── REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
+│   ├── 03-DATABASE/            ← SCHEMA-*.md, ERD-*.md, MIGRATION-NOTES-*.md
 │   │   └── CONTEXT.md
-│   ├── REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
+│   ├── 04-USER-FLOW/           ← USER-FLOW-<AREA>.md
 │   │   └── CONTEXT.md
-│   ├── SECURITY/            ← AUDIT-*.md, threat models, assessments
+│   ├── 05-BRAND-GUIDE/         ← brand identity, colour palette, typography
 │   │   └── CONTEXT.md
-│   ├── SPRINTS/             ← SPRINT-##.md
+│   ├── 06-COMPONENTS/          ← component design specs
 │   │   └── CONTEXT.md
-│   ├── STORIES/             ← US###.md
+│   ├── 07-WIREFRAMES/          ← WF-<US###>-*.md, WF-<SCREEN>-*.md
 │   │   └── CONTEXT.md
-│   ├── TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 08-GDPR/                ← data inventory, consent, retention, breach docs
 │   │   └── CONTEXT.md
-│   └── WIREFRAMES/          ← WF-<US###>-*.md, WF-<SCREEN>-*.md
+│   ├── 09-SECURITY/            ← AUDIT-*.md, threat models, assessments
+│   │   └── CONTEXT.md
+│   ├── 10-QA/                  ← QA-US###-<DESCRIPTION>.md
+│   │   └── CONTEXT.md
+│   ├── 11-TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   │   └── CONTEXT.md
+│   ├── 12-REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
+│   │   └── CONTEXT.md
+│   ├── 13-BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+│   │   └── CONTEXT.md
+│   └── 14-REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
 │       └── CONTEXT.md
-└── workflows/               ← step-by-step PM workflows
+└── workflows/                  ← step-by-step PM workflows
     ├── CONTEXT.md
-    ├── 01-story-creation/   ← write a well-formed user story
+    ├── 01-story-creation/      ← write a well-formed user story
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 02-sprint-planning/  ← organise stories into a balanced sprint
+    ├── 02-sprint-planning/     ← organise stories into a balanced sprint
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 03-database-schema/  ← design and sign off a database schema
+    ├── 03-database-schema/     ← design and sign off a database schema
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 04-wireframes/       ← create and sign off wireframes
+    ├── 04-user-flow-design/    ← map user journeys before wireframing
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 05-pr-and-review/    ← create, review, and merge a feature PR
+    ├── 05-brand-guides/        ← define and document the visual brand identity
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 06-gdpr-compliance/  ← review a feature for GDPR compliance
+    ├── 06-component-designs/   ← design reusable UI components
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    └── 07-release/          ← cut a release (version bump, changelog, deploy)
+    ├── 07-wireframes/          ← create and sign off wireframes
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 08-gdpr-compliance/     ← review a feature for GDPR compliance
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 09-backend-code/        ← implement Django models, services, business logic
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 10-api-code/            ← implement the Strawberry GraphQL API layer
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 11-frontend-code/       ← implement Next.js pages and React components
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 12-app-code/            ← implement Expo React Native screens and components
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 13-pr-and-review/       ← create, review, and merge a feature PR
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    └── 14-release/             ← cut a release (version bump, changelog, deploy)
         ├── CHECKLIST.md
         ├── CONTEXT.md
         └── STEPS.md
@@ -96,19 +134,29 @@ project-management/
 | `docs/GIT-GUIDE.md`        | Branch strategy, commit format, PR gates             |
 | `docs/VERSIONING-GUIDE.md` | Before any version bump or release                   |
 | `docs/SEO-CHECKLIST.md`    | Before publishing a new page                         |
-| `docs/GDPR-GUIDE.md`       | Before adding any feature that handles personal data |
+| `docs/GDPR-GUIDE.md`            | Before adding any feature that handles personal data    |
+| `docs/RESPONSIVE-DESIGN.md`    | Before wireframing, designing, or testing any UI screen |
 
 ## src/ structure
 
-| Path               | Contains                                     |
-| ------------------ | -------------------------------------------- |
-| `src/STORIES/`     | User stories (US###.md)                      |
-| `src/SPRINTS/`     | Sprint plans and logs                        |
-| `src/PLANS/`       | Architectural and feature plans              |
-| `src/BUGS/`        | Bug reports and related user stories         |
-| `src/QA/`          | QA test files per user story                 |
-| `src/TESTS/`       | Test status and manual testing guides        |
-| `src/REVIEWS/`     | Code review notes                            |
-| `src/REFACTORING/` | Refactoring plans and notes                  |
-| `src/SECURITY/`    | Security audits, threat models, assessments  |
-| `src/GDPR/`        | GDPR data inventory, consent, retention docs |
+Numbered to mirror the `workflows/` steps. `00-` folders are pre-workflow reference material.
+
+| Path                  | Contains                                     |
+| --------------------- | -------------------------------------------- |
+| `src/00-ASSETS/`      | ERD diagrams, user-flow diagrams, logos      |
+| `src/00-DECISIONS/`   | Architectural decision records (ADR-###)     |
+| `src/00-PLANS/`       | Architectural and feature plans              |
+| `src/01-STORIES/`     | User stories (US###.md)                      |
+| `src/02-SPRINTS/`     | Sprint plans and logs                        |
+| `src/03-DATABASE/`    | Schema designs, ERDs, migration notes        |
+| `src/04-USER-FLOW/`   | User journey maps per product area           |
+| `src/05-BRAND-GUIDE/` | Brand identity, colour palette, typography   |
+| `src/06-COMPONENTS/`  | Component design specs                       |
+| `src/07-WIREFRAMES/`  | Wireframes per user story or screen          |
+| `src/08-GDPR/`        | GDPR data inventory, consent, retention docs |
+| `src/09-SECURITY/`    | Security audits, threat models, assessments  |
+| `src/10-QA/`          | QA test files per user story                 |
+| `src/11-TESTS/`       | Test status and manual testing guides        |
+| `src/12-REVIEWS/`     | Code review notes                            |
+| `src/13-BUGS/`        | Bug reports and related user stories         |
+| `src/14-REFACTORING/` | Refactoring plans and notes                  |
