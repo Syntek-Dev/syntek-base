@@ -37,4 +37,4 @@ refactor separately.
 
 - `code/docs/CODING-PRINCIPLES.md` — rules the refactor must satisfy
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service layer and module structure
-- `project-management/src/REFACTORING/` — where refactoring notes are saved
+- `project-management/src/14-REFACTORING/` — where refactoring notes are saved

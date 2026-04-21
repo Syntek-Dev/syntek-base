@@ -16,7 +16,7 @@ Use this workflow when adding any new capability to the website that requires bo
 
 ## Prerequisites
 
-- [ ] A user story exists in `project-management/src/STORIES/` covering this feature
+- [ ] A user story exists in `project-management/src/01-STORIES/` covering this feature
 - [ ] Branch created from `dev`: `us###/feature-name`
 - [ ] No blocking items in `/GAPS.md`
 - [ ] `.env.dev` is populated and containers are running

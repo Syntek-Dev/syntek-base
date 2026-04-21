@@ -34,7 +34,7 @@ environments with different tooling at each tier.
 
 - Root cause identified and documented
 - A regression test added to prevent recurrence (see `code/workflows/07-debug/`)
-- If a staging/prod incident: a bug report filed in `project-management/src/BUGS/`
+- If a staging/prod incident: a bug report filed in `project-management/src/13-BUGS/`
 
 ## Cross-references
 

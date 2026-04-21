@@ -36,4 +36,4 @@ environment is healthy, then use this workflow to fix the logic.
 
 - `how-to/workflows/03-debugging/` — operational debugging (logs, containers, runtime errors)
 - `code/docs/TESTING.md` — test writing conventions and coverage requirements
-- `project-management/src/BUGS/` — bug report artefacts
+- `project-management/src/13-BUGS/` — bug report artefacts

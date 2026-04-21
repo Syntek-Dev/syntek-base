@@ -14,12 +14,12 @@ code/workflows/05-gdpr-enforcement/
 Use this workflow when implementing GDPR requirements in code — any feature that
 collects, processes, or stores personal data. This is the code-level implementation
 workflow; the compliance review happens first in
-`project-management/workflows/06-gdpr-compliance/`.
+`project-management/workflows/08-gdpr-compliance/`.
 
 ## Prerequisites
 
-- [ ] GDPR compliance review in `project-management/workflows/06-gdpr-compliance/` is complete
-- [ ] Data flows are understood and documented in `project-management/src/GDPR/DATA-INVENTORY.md`
+- [ ] GDPR compliance review in `project-management/workflows/08-gdpr-compliance/` is complete
+- [ ] Data flows are understood and documented in `project-management/src/08-GDPR/DATA-INVENTORY.md`
 - [ ] Feature implementation is in place
 
 ## Key concepts
@@ -34,5 +34,5 @@ workflow; the compliance review happens first in
 
 - `code/docs/ENCRYPTION-GUIDE.md` — field-level encryption patterns
 - `code/docs/SECURITY.md` — permission and IDOR requirements
-- `project-management/src/GDPR/` — live GDPR documentation
-- `project-management/workflows/06-gdpr-compliance/` — the preceding PM-layer compliance review
+- `project-management/src/08-GDPR/` — live GDPR documentation
+- `project-management/workflows/08-gdpr-compliance/` — the preceding PM-layer compliance review

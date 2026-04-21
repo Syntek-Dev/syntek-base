@@ -14,7 +14,7 @@ code/workflows/06-review/
 Use this workflow when performing a code quality review before raising a PR. This
 covers the _content_ of the code — security, patterns, coverage, and coding principles.
 For the PR merge process (branch promotion, approvals, gates) use
-`project-management/workflows/05-pr-and-review/`.
+`project-management/workflows/13-pr-and-review/`.
 
 ## Prerequisites
 
@@ -35,4 +35,4 @@ For the PR merge process (branch promotion, approvals, gates) use
 - `code/docs/CODING-PRINCIPLES.md` — coding rules and style
 - `code/docs/SECURITY.md` — OWASP A01–A10, permission and IDOR requirements
 - `code/docs/TESTING.md` — coverage floors and test philosophy
-- `project-management/workflows/05-pr-and-review/` — the subsequent PR merge workflow
+- `project-management/workflows/13-pr-and-review/` — the subsequent PR merge workflow
