@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 19/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: 21/04/2026 **Version**: 1.1.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.1.0] - 21/04/2026
+
+### Added
+
+- Figma MCP server registered in `CLAUDE.md` as a machine-global MCP with usage guidance
+  for reading designs, generating FigJam diagrams, and managing Code Connect mappings
+- `code/docs/RESPONSIVE-DESIGN.md` — breakpoint strategy, mobile-first patterns, Tailwind
+  utility conventions for frontend and mobile layers
+- `project-management/docs/RESPONSIVE-DESIGN.md` — same responsive design reference for
+  the PM documentation layer
+- `code/src/scripts/development/codegen.sh` — shell script for running GraphQL Code
+  Generator inside the dev container
+- PM src directories: `00-ASSETS/` (with `ERD-DIAGRAMS/`, `LOGOS/`, `USER-FLOW-DIAGRAMS/`
+  subdirectories), `00-DECISIONS/`, `00-PLANS/`, `04-USER-FLOW/`, `05-BRAND-GUIDE/`,
+  `06-COMPONENTS/`, `07-WIREFRAMES/` — all blank template placeholders with `CONTEXT.md`
+- PM workflows: `04-user-flow-design/`, `05-brand-guides/`, `06-component-designs/`,
+  `07-wireframes/`, `08-gdpr-compliance/`, `09-backend-code/`, `10-api-code/`,
+  `11-frontend-code/`, `12-app-code/`, `13-pr-and-review/`, `14-release/` — each with
+  `CONTEXT.md`, `STEPS.md`, and `CHECKLIST.md`
+
+### Changed
+
+- `project-management/src/` directories renamed from flat SCREAMING-SNAKE-CASE to
+  numbered prefix scheme: `STORIES/` → `01-STORIES/`, `SPRINTS/` → `02-SPRINTS/`,
+  `DATABASE/` → `03-DATABASE/`, `GDPR/` → `08-GDPR/`, `SECURITY/` → `09-SECURITY/`,
+  `QA/` → `10-QA/`, `TESTS/` → `11-TESTS/`, `REVIEWS/` → `12-REVIEWS/`,
+  `BUGS/` → `13-BUGS/`, `REFACTORING/` → `14-REFACTORING/`, `PLANS/` → `00-PLANS/`
+- `.mcp.json` updated to invoke `code-review-graph` via `uvx` instead of `.venv/bin/`
+- `CONTEXT.md` and `README.md` updated to reflect new PM src numbering and workflow count
+- `project-management/CONTEXT.md`, `project-management/src/CONTEXT.md`, and
+  `project-management/workflows/CONTEXT.md` updated to document the new structure
+- All `code/workflows/*/CONTEXT.md` cross-references updated to new PM directory paths
+  (e.g. `BUGS/` → `13-BUGS/`, `06-gdpr-compliance/` → `08-gdpr-compliance/`)
+- `code/src/logs/CONTEXT.md` bug report path updated to `project-management/src/13-BUGS/`
+
+### Removed
+
+- PM source directories: `BUGS/`, `DATABASE/`, `GDPR/`, `PLANS/`, `QA/`, `REFACTORING/`,
+  `REVIEWS/`, `SECURITY/`, `SPRINTS/`, `STORIES/`, `TESTS/`, `WIREFRAMES/` — superseded
+  by the numbered directory scheme
+- PM workflows: `04-wireframes/`, `05-pr-and-review/`, `06-gdpr-compliance/`,
+  `07-release/` — superseded by renumbered counterparts (07, 13, 08, 14)
 
 ---
 

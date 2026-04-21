@@ -1,9 +1,44 @@
 # Releases — project-name
 
-**Last Updated**: 19/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: 21/04/2026 **Version**: 1.1.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.1.0 — 21/04/2026
+
+**Status:** PM layer restructure and scaffold improvements
+
+### Summary
+
+Restructures the project-management source directories from flat SCREAMING-SNAKE-CASE
+names to a numbered prefix scheme (00–14) for deterministic ordering and clearer
+navigation. Expands the PM workflow set from 7 to 14 step-by-step guides, covering the
+full delivery pipeline from user flow design through to release. Also adds Figma as a
+registered MCP server, a responsive design reference guide for both layers, and a
+GraphQL codegen shell script for the development workflow.
+
+### What's new since v1.0.0
+
+- **PM src restructure:** All source directories renamed from flat SCREAMING-SNAKE-CASE
+  (e.g. `STORIES/`, `BUGS/`) to numbered prefixes (`01-STORIES/`, `13-BUGS/`) for
+  consistent ordering; 15 new directories added covering assets, decisions, plans,
+  user flows, brand guides, components, and wireframes
+- **PM workflows expanded:** Seven new workflows added (04–14) covering user flow design,
+  brand guides, component designs, wireframes, GDPR compliance, backend/API/frontend/app
+  code, PR and review, and release; superseded workflows 04–07 removed
+- **Figma MCP:** Registered as a machine-global MCP server in `CLAUDE.md` with full
+  usage guidance for reading designs, generating FigJam diagrams, and Code Connect
+- **Responsive design guide:** Added `RESPONSIVE-DESIGN.md` to both `code/docs/` and
+  `project-management/docs/` covering breakpoints, mobile-first strategy, and Tailwind
+  utility conventions
+- **Codegen script:** Added `code/src/scripts/development/codegen.sh` for running
+  GraphQL Code Generator inside the dev container
+- **MCP config:** Switched `code-review-graph` invocation from `.venv/bin/` to `uvx`
+- **Path references:** All cross-layer references in code workflow CONTEXT files updated
+  to the new PM directory paths
 
 ---
 
