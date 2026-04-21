@@ -60,8 +60,8 @@ project-name/
 ├── project-management/              ← stories, sprints, PM, GDPR, security
 │   ├── CONTEXT.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR)
-│   ├── src/                         ← live PM artefacts (STORIES, SPRINTS, BUGS, …)
-│   └── workflows/                   ← step-by-step PM workflows (01–07)
+│   ├── src/                         ← live PM artefacts (00-ASSETS … 14-REFACTORING)
+│   └── workflows/                   ← step-by-step PM workflows (01–14)
 ├── CHANGELOG.md
 ├── CONTEXT.md                       ← this file
 ├── CONTRIBUTING.md

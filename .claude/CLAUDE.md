@@ -75,6 +75,7 @@ Full detail → `code/CONTEXT.md`
 | `context7`          | Machine-global     | Only if installed locally              |
 | `claude-in-chrome`  | Machine-global     | Only if installed locally              |
 | `mcp-mermaid`       | Machine-global     | Only if installed locally              |
+| `figma`             | Machine-global     | Only if installed locally              |
 
 **Documentation lookups** (`context7`): Always prefer over web search for any library, framework,
 or SDK. Use `mcp__context7__resolve-library-id` → `mcp__context7__query-docs`.
@@ -84,6 +85,10 @@ structural context.
 
 **Browser automation** (`claude-in-chrome`): For inspecting rendered output and visual verification.
 Load tool schema with ToolSearch before calling any `mcp__claude-in-chrome__*` tool.
+
+**Design context** (`figma`): Use for reading Figma design files, generating FigJam diagrams, and
+managing Code Connect mappings. Load tool schema with ToolSearch before calling any
+`mcp__figma__*` tool. Prioritise when the user shares a figma.com URL.
 
 ---
 

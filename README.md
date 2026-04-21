@@ -154,26 +154,38 @@ project-name/
 │   ├── CONTEXT.md
 │   ├── docs/                            ← GIT-GUIDE.md, VERSIONING-GUIDE.md, SEO-CHECKLIST.md, GDPR-GUIDE.md
 │   ├── src/                             ← live PM artefacts
-│   │   ├── BUGS/
-│   │   ├── DATABASE/
-│   │   ├── GDPR/
-│   │   ├── PLANS/
-│   │   ├── QA/
-│   │   ├── REFACTORING/
-│   │   ├── REVIEWS/
-│   │   ├── SECURITY/
-│   │   ├── SPRINTS/
-│   │   ├── STORIES/
-│   │   ├── TESTS/
-│   │   └── WIREFRAMES/
-│   └── workflows/                       ← 7 step-by-step PM workflows
+│   │   ├── 00-ASSETS/
+│   │   ├── 00-DECISIONS/
+│   │   ├── 00-PLANS/
+│   │   ├── 01-STORIES/
+│   │   ├── 02-SPRINTS/
+│   │   ├── 03-DATABASE/
+│   │   ├── 04-USER-FLOW/
+│   │   ├── 05-BRAND-GUIDE/
+│   │   ├── 06-COMPONENTS/
+│   │   ├── 07-WIREFRAMES/
+│   │   ├── 08-GDPR/
+│   │   ├── 09-SECURITY/
+│   │   ├── 10-QA/
+│   │   ├── 11-TESTS/
+│   │   ├── 12-REVIEWS/
+│   │   ├── 13-BUGS/
+│   │   └── 14-REFACTORING/
+│   └── workflows/                       ← 14 step-by-step PM workflows
 │       ├── 01-story-creation/
 │       ├── 02-sprint-planning/
 │       ├── 03-database-schema/
-│       ├── 04-wireframes/
-│       ├── 05-pr-and-review/
-│       ├── 06-gdpr-compliance/
-│       └── 07-release/
+│       ├── 04-user-flow-design/
+│       ├── 05-brand-guides/
+│       ├── 06-component-designs/
+│       ├── 07-wireframes/
+│       ├── 08-gdpr-compliance/
+│       ├── 09-backend-code/
+│       ├── 10-api-code/
+│       ├── 11-frontend-code/
+│       ├── 12-app-code/
+│       ├── 13-pr-and-review/
+│       └── 14-release/
 ├── CHANGELOG.md
 ├── CONTEXT.md                           ← project overview and layer map
 ├── CONTRIBUTING.md
@@ -363,7 +375,7 @@ gets lost.
 
 ### User stories
 
-Stories live in `project-management/src/STORIES/` and follow the naming convention `US###.md`
+Stories live in `project-management/src/01-STORIES/` and follow the naming convention `US###.md`
 (three-digit zero-padded: `US001.md`, `US042.md`).
 
 Each story should define acceptance criteria, the affected layer (backend / frontend / both), and
@@ -372,7 +384,7 @@ any GDPR or accessibility considerations. Use the PM workflow
 
 ### Sprint planning
 
-Sprint plans live in `project-management/src/SPRINTS/` as `SPRINT-##.md` (two-digit:
+Sprint plans live in `project-management/src/02-SPRINTS/` as `SPRINT-##.md` (two-digit:
 `SPRINT-01.md`). Each sprint is organised using **MoSCoW** prioritisation:
 
 - **Must have** — critical for the sprint goal
@@ -385,7 +397,7 @@ Use `project-management/workflows/02-sprint-planning/` to plan sprints.
 ### Database ERDs with mcp-mermaid
 
 Database schemas and entity-relationship diagrams are documented in
-`project-management/src/DATABASE/` using Mermaid diagrams.
+`project-management/src/03-DATABASE/` using Mermaid diagrams.
 
 The `mcp-mermaid` MCP server renders Mermaid diagrams inside Claude Code sessions. Install it once
 on your machine:
@@ -420,13 +432,13 @@ erDiagram
 ### Wireframes with Figma
 
 UI wireframes are designed in Figma and linked (not embedded) from
-`project-management/src/WIREFRAMES/`. Each wireframe entry records the Figma URL, the story it
+`project-management/src/07-WIREFRAMES/`. Each wireframe entry records the Figma URL, the story it
 belongs to, and the sign-off status. No frontend work begins on a feature until the wireframe is
-signed off — use `project-management/workflows/04-wireframes/`.
+signed off — use `project-management/workflows/07-wireframes/`.
 
 ### User flow diagrams
 
-User flows are documented as Mermaid flowcharts in `project-management/src/PLANS/` alongside
+User flows are documented as Mermaid flowcharts in `project-management/src/00-PLANS/` alongside
 architectural plans. They capture the end-to-end journey through a feature before implementation
 begins.
 
@@ -434,25 +446,32 @@ begins.
 
 | Document type        | Naming convention                | Location                        |
 | -------------------- | -------------------------------- | ------------------------------- |
-| QA test file         | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/QA/`    |
-| Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/TESTS/` |
-| Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/TESTS/` |
-| Bug report           | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/BUGS/`  |
+| QA test file         | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/10-QA/`    |
+| Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/11-TESTS/` |
+| Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/11-TESTS/` |
+| Bug report           | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/13-BUGS/`  |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
 tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
 
 ### PM workflows — when to use each
 
-| Workflow              | Trigger                                                |
-| --------------------- | ------------------------------------------------------ |
-| `01-story-creation/`  | Writing a new user story                               |
-| `02-sprint-planning/` | Planning a new sprint                                  |
-| `03-database-schema/` | Designing a new model or schema change                 |
-| `04-wireframes/`      | Creating or updating wireframes before frontend work   |
-| `05-pr-and-review/`   | Raising a PR and moving it through the promotion chain |
-| `06-gdpr-compliance/` | Reviewing a feature for GDPR compliance                |
-| `07-release/`         | Cutting a release (version bump, changelog, deploy)    |
+| Workflow                 | Trigger                                                      |
+| ------------------------ | ------------------------------------------------------------ |
+| `01-story-creation/`     | Writing a new user story                                     |
+| `02-sprint-planning/`    | Planning a new sprint                                        |
+| `03-database-schema/`    | Designing a new model or schema change                       |
+| `04-user-flow-design/`   | Mapping user journeys before wireframing                     |
+| `05-brand-guides/`       | Defining the visual brand identity                           |
+| `06-component-designs/`  | Designing reusable UI components                             |
+| `07-wireframes/`         | Creating or updating wireframes before frontend work         |
+| `08-gdpr-compliance/`    | Reviewing a feature for GDPR compliance                      |
+| `09-backend-code/`       | Implementing Django models, services, and business logic     |
+| `10-api-code/`           | Implementing the Strawberry GraphQL API layer                |
+| `11-frontend-code/`      | Implementing Next.js pages and React components              |
+| `12-app-code/`           | Implementing Expo React Native screens and components        |
+| `13-pr-and-review/`      | Raising a PR and moving it through the promotion chain       |
+| `14-release/`            | Cutting a release (version bump, changelog, deploy)          |
 
 ---
 
@@ -573,7 +592,7 @@ workflow is explicitly triggered.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 05-pr-and-review
+01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 13-pr-and-review
 ```
 
 - Start with `01-new-feature` to plan the feature scope.
@@ -582,12 +601,12 @@ workflow is explicitly triggered.
 - If the feature touches PII, run `05-gdpr-enforcement` before raising a PR.
 - Before opening the PR, run `06-review` to verify OWASP coverage, coding principles, and
   coverage floors.
-- Hand off to the PM layer with `project-management/workflows/05-pr-and-review/`.
+- Hand off to the PM layer with `project-management/workflows/13-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/03-debugging  →  07-debug  →  06-review  →  PM: 05-pr-and-review
+how-to/03-debugging  →  07-debug  →  06-review  →  PM: 13-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
