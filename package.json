@@ -15,9 +15,21 @@
     ],
     "overrides": {
       "js-yaml": ">=4.1.1",
-      "markdown-it": ">=14.1.1"
+      "markdown-it": ">=14.1.1",
+      "@xmldom/xmldom": ">=0.8.12",
+      "@tootallnate/once": ">=3.0.1",
+      "lodash": "4.17.21"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "19",
+        "react-dom": "19",
+        "@storybook/nextjs>next": "16",
+        "expo-router>expo-constants": "18"
+      }
     },
     "ignoredBuiltDependencies": [
+      "core-js-pure",
       "esbuild",
       "msw",
       "sharp"
@@ -27,8 +39,8 @@
     "@eslint/js": "^9.27.0",
     "eslint": "^9.27.0",
     "eslint-plugin-react": "^7.37.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-native": "^4.1.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-react-native": "^5.0.0",
     "lefthook": "^1.11.13",
     "markdownlint-cli2": "^0.17.2",
     "prettier": "^3.5.3",
