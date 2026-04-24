@@ -6,6 +6,7 @@ written in BDD style (`describe` / `it` with full natural-language descriptions)
 ## Naming
 
 `<feature-name>.e2e.ts` — lowercase, hyphen-separated. Examples:
+
 - `authentication.e2e.ts`
 - `profile-edit.e2e.ts`
 - `push-notifications.e2e.ts`

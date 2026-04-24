@@ -32,12 +32,12 @@ chmod +x install.sh
 
 The interactive prompt replaces every occurrence of:
 
-| Placeholder | Replaced with |
-| ----------- | ------------- |
+| Placeholder    | Replaced with                    |
+| -------------- | -------------------------------- |
 | `project-name` | `your-project-name` (kebab-case) |
 | `project_name` | `your_project_name` (snake_case) |
-| `ProjectName` | `YourProjectName` (PascalCase) |
-| `projectname` | `yourprojectname` (lowercase) |
+| `ProjectName`  | `YourProjectName` (PascalCase)   |
+| `projectname`  | `yourprojectname` (lowercase)    |
 
 This covers filenames, content, Docker Compose files, Django settings, environment files,
 CLAUDE.md, and all documentation.
@@ -75,7 +75,7 @@ After the rename, review and update the following:
 
 - Set `TIME_ZONE`, `LANGUAGE_CODE`, and `SITE_NAME` for your project.
 
-### code/src/docker/.env.*.example
+### code/src/docker/.env.\*.example
 
 - Remove placeholder values and add your project-specific variables.
 - Document every variable — future team members read these files as a reference.
@@ -146,13 +146,13 @@ improvements made to the template:
 git remote add template git@github.com:Syntek-Dev/syntek-base.git
 ```
 
-2. Fetch changes:
+1. Fetch changes:
 
 ```bash
 git fetch template
 ```
 
-3. Cherry-pick the specific commit(s) you want:
+1. Cherry-pick the specific commit(s) you want:
 
 ```bash
 git cherry-pick <commit-sha>

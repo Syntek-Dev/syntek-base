@@ -13,6 +13,7 @@ Read the signed-off wireframes from `project-management/src/07-WIREFRAMES/` and 
 component designs for the feature area.
 
 Before writing any code, read:
+
 - `code/CONTEXT.md` — Next.js conventions, App Router structure, frontend tooling rules
 - `code/docs/CODING-PRINCIPLES.md` — component design rules, naming, single-responsibility
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA requirements for all interactive components

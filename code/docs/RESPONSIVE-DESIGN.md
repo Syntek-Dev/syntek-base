@@ -4,11 +4,11 @@
 
 The gap between mobile and desktop/laptop is still growing, but tablets remain minimal.
 
-| Device          | Share |
-| --------------- | ----- |
-| Mobile          | ~62%  |
-| Desktop/Laptop  | ~36%  |
-| Tablet          | ~2%   |
+| Device         | Share |
+| -------------- | ----- |
+| Mobile         | ~62%  |
+| Desktop/Laptop | ~36%  |
+| Tablet         | ~2%   |
 
 _Source: StatCounter, early 2026_
 
@@ -22,10 +22,10 @@ _Source: StatCounter, early 2026_
 
 No tracker publishes this directly, but piecing it together from available data:
 
-| Orientation | Share       | Notes                                       |
-| ----------- | ----------- | ------------------------------------------- |
-| Portrait    | ~58–60%     | Nearly all mobile sessions                  |
-| Landscape   | ~40–42%     | Desktop (always landscape) plus some tablet |
+| Orientation | Share   | Notes                                       |
+| ----------- | ------- | ------------------------------------------- |
+| Portrait    | ~58–60% | Nearly all mobile sessions                  |
+| Landscape   | ~40–42% | Desktop (always landscape) plus some tablet |
 
 On smartphones specifically, ~90% of use is portrait — even on video sites it remains ~82% portrait.
 
@@ -35,11 +35,329 @@ If something needs to be usable by the majority of users, it must be portrait-or
 
 ## Media Queries vs Container Queries
 
-**Media queries** are best used for overall page layout — changing the structure of the whole page based on viewport size. Examples: swapping a sidebar for a stacked layout on mobile, changing font scales, adjusting global spacing.
+**Media queries** respond to the viewport or device characteristics — use them for overall page layout. **Container queries** respond to the size or state of a parent element — use them for individual components. They complement each other; neither replaces the other.
+
+## Media Queries
+
+### Syntax
+
+```css
+@media [media-type] [logical-operator] (media-feature) {
+  /* styles */
+}
+```
+
+The media type is optional and defaults to `all`. The three valid types:
+
+| Type     | Purpose                            |
+| -------- | ---------------------------------- |
+| `screen` | All screen displays                |
+| `print`  | Printers and print preview         |
+| `all`    | All devices (default when omitted) |
+
+### Breakpoints
+
+Width is the most-used media feature. Always use the named pixel tokens from the project's Tailwind CSS config for web and the NativeWind CSS config for mobile — never write ad-hoc pixel values inline. Use modern range syntax rather than `min-width`/`max-width` prefixes:
+
+```css
+/* Traditional — still valid */
+@media (min-width: 768px) {
+}
+
+/* Modern range syntax — preferred */
+@media (width >= 768px) {
+}
+@media (600px <= width <= 1024px) {
+}
+```
+
+### Mobile-First
+
+Write base styles for the smallest viewport first, then layer `min-width` queries upward. This produces smaller CSS for mobile devices and aligns with the project's mobile-first design principle. Never use `max-width` for new layouts — only when retrofitting a legacy desktop-first stylesheet:
+
+```css
+/* Mobile base — no query needed */
+.layout {
+  display: block;
+}
+
+/* Tablet and above */
+@media (width >= 768px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+  }
+}
+
+/* Desktop and above */
+@media (width >= 1280px) {
+  .layout {
+    grid-template-columns: 5fr 2fr;
+  }
+}
+```
+
+### Orientation
+
+Use orientation queries for layouts that change fundamentally between portrait and landscape — not as a substitute for width breakpoints:
+
+```css
+@media (orientation: landscape) {
+}
+@media (orientation: portrait) {
+}
+```
+
+### Pointer and Hover
+
+Adapt touch targets and hover interactions based on the primary input device rather than screen size alone — a large tablet can still be touch-only:
+
+```css
+/* Mouse or stylus: fine pointer, hover available */
+@media (pointer: fine) and (hover: hover) {
+  .btn {
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Touchscreen: coarse pointer, no reliable hover */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+  }
+}
+```
+
+### User Preferences
+
+These are non-negotiable — they reflect explicit accessibility settings the user has made at the OS or browser level:
+
+```css
+@media (prefers-color-scheme: dark) {
+}
+@media (prefers-color-scheme: light) {
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+}
+```
+
+### Resolution
+
+Use for serving high-DPI image assets — do not use to infer device type:
+
+```css
+@media (min-resolution: 2dppx) {
+  /* Retina / HiDPI displays — serve 2× assets */
+}
+```
+
+### Display Mode
+
+Use for PWA-specific layout adjustments when the app is running outside the browser:
+
+```css
+@media (display-mode: standalone) {
+}
+```
+
+### Logical Operators
+
+| Operator | Example                                      | Meaning                                            |
+| -------- | -------------------------------------------- | -------------------------------------------------- |
+| `and`    | `screen and (width >= 768px)`                | All conditions must be true                        |
+| `,`      | `(width >= 768px), (orientation: landscape)` | Any condition can be true (acts as `or`)           |
+| `not`    | `not (width >= 768px)`                       | Inverts the query                                  |
+| `only`   | `only screen and (color)`                    | Hides from legacy browsers lacking feature support |
+
+### HTML Integration
+
+Always include the viewport meta tag — without it, mobile browsers render at a default 980px width and media queries fire at the wrong sizes:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+```
+
+Responsive images using `<picture>` with media queries:
+
+```html
+<picture>
+  <source media="(width >= 768px)" srcset="hero-large.webp" />
+  <img src="hero-small.webp" alt="..." />
+</picture>
+```
+
+### Print Styles
+
+There is no separate `print.css` file in this project. Tailwind's built-in `print:` variant handles print styles directly on elements — this is the preferred approach for most cases:
+
+```tsx
+<nav className="print:hidden">...</nav>
+<footer className="print:block hidden">...</footer>
+```
+
+For anything too complex for utility classes, add an `@media print {}` block directly to `global.css` on the web side. Do not create a standalone print stylesheet.
+
+Print styles are web-only — NativeWind and React Native have no print concept, so never add print styles to the shared or mobile `global.css`.
+
+### JavaScript
+
+Test and react to media query changes programmatically with `matchMedia()`:
+
+```javascript
+const wide = window.matchMedia("(width >= 768px)");
+
+if (wide.matches) {
+  /* already wide at page load */
+}
+
+wide.addEventListener("change", (e) => {
+  if (e.matches) {
+    /* viewport just crossed into wide */
+  }
+});
+```
+
+## Container Queries
 
 **Container queries** are best used for components that need to adapt based on the space they occupy rather than the whole screen. A card component might sit in a narrow sidebar on one page and a wide grid on another — container queries let it respond to its own container, so the same component works everywhere without special cases.
 
-> Kevin Powell covers both of these well on his blog and YouTube channel — genuinely the best CSS content available on these topics.
+### Declaring a Container
+
+Before any child can run a container query, the parent HTML element must opt in with `container-type`. Use `inline-size` in most cases — it enables querying the container's width without also constraining the block axis:
+
+```css
+.card-wrapper {
+  container-type: inline-size;
+}
+```
+
+To name a container (useful when elements are nested inside multiple containers and you need to target a specific ancestor):
+
+```css
+.card-wrapper {
+  container: card / inline-size;
+}
+```
+
+### Query Syntax and Units
+
+Container query breakpoints use `ch` (character width) rather than pixels. This ties breakpoints to the typography — they naturally adjust when font size changes and make it easier to reason about how much text fits at each breakpoint:
+
+```css
+@container (min-width: 40ch) {
+  .card {
+    flex-direction: row;
+  }
+}
+
+/* Targeting a named container */
+@container card (min-width: 40ch) {
+  .card {
+    flex-direction: row;
+  }
+}
+```
+
+Inside a query block, use container query units for property values that should scale with the container rather than the viewport:
+
+| Unit    | Definition                        |
+| ------- | --------------------------------- |
+| `cqi`   | 1% of the container's inline size |
+| `cqb`   | 1% of the container's block size  |
+| `cqw`   | 1% of the container's width       |
+| `cqh`   | 1% of the container's height      |
+| `cqmin` | Smaller of `cqi` / `cqb`          |
+| `cqmax` | Larger of `cqi` / `cqb`           |
+
+```css
+@container card (min-width: 40ch) {
+  .card {
+    padding: clamp(0.5rem, 5cqi, 1.5rem);
+    font-size: clamp(14px, 10px + 1.33cqi, 20px);
+  }
+}
+```
+
+### Custom Container Sizes
+
+Define reusable `ch`-based container sizes using `--container-*` theme variables in each `global.css`. Tailwind and NativeWind automatically expose each one as a `@{name}:` variant usable directly in class names.
+
+**Web** — `code/src/frontend/src/app/global.css`:
+
+```css
+@theme {
+  --container-xs: 20ch;
+  --container-sm: 40ch;
+  --container-md: 60ch;
+  --container-lg: 80ch;
+  --container-xl: 100ch;
+}
+```
+
+**Mobile** — `code/src/mobile/global.css`:
+
+```css
+@theme {
+  --container-xs: 20ch;
+  --container-sm: 40ch;
+  --container-md: 60ch;
+  --container-lg: 80ch;
+  --container-xl: 100ch;
+}
+```
+
+Use them in JSX by marking the parent as `@container` and applying `@{name}:` variants to children:
+
+```tsx
+<div className="@container">
+  <p className="@sm:flex-row @md:grid-cols-2 flex-col">...</p>
+</div>
+```
+
+> **NativeWind caveat:** `ch` is a browser font-metric unit. React Native's layout engine (Yoga) does not natively understand it — NativeWind may silently fall back to pixels for `ch` values on the native side. Verify container query behaviour on device when implementing for the first time.
+
+### Three Query Types
+
+| Type             | What it queries                                                                 | Browser support                          |
+| ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------- |
+| **Size**         | Container dimensions — width, height, inline/block size                         | Baseline (all major browsers since 2023) |
+| **Style**        | CSS custom property values — `@container style(--variant: compact)`             | Partial — Firefox pending                |
+| **Scroll-state** | Scroll conditions — `stuck`, `snapped`, `scrollable` on sticky/snapped elements | Chrome, Edge, Opera only (2025+)         |
+
+Size queries are the primary type and what you will use day-to-day. Style and scroll-state queries are progressive enhancements — wrap them in `@supports` when used:
+
+```css
+@supports (container-type: scroll-state) {
+  .sticky-header {
+    container-type: scroll-state;
+  }
+
+  @container scroll-state(stuck: top) {
+    .sticky-header {
+      box-shadow: 0 2px 8px hsl(0 0% 0% / 0.1);
+    }
+  }
+}
+```
+
+### Key Limitations
+
+- **No self-queries** — a container reads its ancestor's dimensions, not its own. Structure the HTML so the queried container wraps the component, not the component itself.
+- **No `var()` in conditions** — custom properties cannot be used inside `@container (min-width: var(--bp))`. Define named container sizes in the config instead.
+- **Flexbox sizing** — flex children need explicit or intrinsic sizing; without it, containment can cause content to collapse.
+
+> Kevin Powell covers both of these well on his YouTube channel — genuinely the best CSS content available on these topics.
 
 ## Web Breakpoints
 

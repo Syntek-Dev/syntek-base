@@ -12,6 +12,7 @@
 Read the implemented service methods and the user story acceptance criteria.
 
 Before writing any API code, read:
+
 - `code/docs/API-DESIGN.md` — GraphQL type design, resolver patterns, pagination conventions
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service/resolver separation (resolvers must not contain business logic)
 - `code/docs/SECURITY.md` — permission check patterns and IDOR prevention requirements

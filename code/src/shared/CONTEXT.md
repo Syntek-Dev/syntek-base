@@ -66,6 +66,7 @@ All styling uses **Tailwind CSS 4.2** utility classes. Avoid inline styles and C
 Story files live alongside their component: `Button.stories.tsx` next to `Button.tsx`.
 
 Both Storybook instances discover stories automatically:
+
 - **Web** (`frontend/` Storybook): picks up `shared/src/**/*.stories.tsx`
 - **Mobile** (`mobile/` Storybook): picks up `shared/src/**/*.stories.tsx`
 

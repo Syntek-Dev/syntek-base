@@ -13,6 +13,7 @@ Review the approved schema document in `project-management/src/03-DATABASE/` and
 corresponding user story in `project-management/src/01-STORIES/`.
 
 Before writing any code, read:
+
 - `code/CONTEXT.md` — Django project structure and settings conventions
 - `code/docs/DATA-STRUCTURES.md` — model naming, field conventions, and indexing strategy
 - `code/docs/CODING-PRINCIPLES.md` — transaction rules, error handling, function design
@@ -43,6 +44,7 @@ Follow `code/workflows/02-tdd-cycle/` for the red-green-refactor steps.
 Tests are written before implementation — no stubs to make tests pass.
 
 Coverage floors:
+
 - 75% minimum for all modules
 - 90% minimum for auth-related code
 

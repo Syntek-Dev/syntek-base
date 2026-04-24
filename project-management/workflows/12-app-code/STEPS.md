@@ -14,6 +14,7 @@ component designs for the feature area. Ensure mobile viewport variants are pres
 360px, 390px, 430px, and 768px portrait as a minimum.
 
 Before writing any code, read:
+
 - `code/CONTEXT.md` — Expo conventions, Expo Router structure, mobile tooling rules
 - `code/docs/CODING-PRINCIPLES.md` — component design rules, naming, single-responsibility
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA requirements for React Native

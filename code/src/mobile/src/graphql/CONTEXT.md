@@ -21,7 +21,7 @@ graphql/
 bash code/src/scripts/development/server.sh codegen:mobile
 ```
 
-3. Import generated hooks in components — never import raw document nodes directly
+1. Import generated hooks in components — never import raw document nodes directly
 
 ## Conventions
 
