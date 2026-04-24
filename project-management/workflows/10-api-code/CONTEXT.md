@@ -32,20 +32,20 @@ exist before this workflow begins.
 
 ### code/ layer — read before writing any API code
 
-| Path                                  | When to read                                                          |
-| ------------------------------------- | --------------------------------------------------------------------- |
-| `code/CONTEXT.md`                     | Django conventions, settings, GraphQL endpoint location               |
-| `code/docs/API-DESIGN.md`             | GraphQL type design, resolver patterns, pagination conventions        |
+| Path                                 | When to read                                                            |
+| ------------------------------------ | ----------------------------------------------------------------------- |
+| `code/CONTEXT.md`                    | Django conventions, settings, GraphQL endpoint location                 |
+| `code/docs/API-DESIGN.md`            | GraphQL type design, resolver patterns, pagination conventions          |
 | `code/docs/ARCHITECTURE-PATTERNS.md` | Service/resolver separation — resolvers must not contain business logic |
-| `code/docs/SECURITY.md`               | Permission check patterns, IDOR prevention, OWASP A01 requirements   |
+| `code/docs/SECURITY.md`              | Permission check patterns, IDOR prevention, OWASP A01 requirements      |
 
 ### code/workflows/ — companion workflows to run alongside this one
 
-| Workflow                            | Purpose                                                              |
-| ----------------------------------- | -------------------------------------------------------------------- |
-| `code/workflows/04-api-design/`     | GraphQL type and resolver design steps — follow before writing code  |
-| `code/workflows/02-tdd-cycle/`      | Red-green-refactor steps for query and mutation tests                |
-| `code/workflows/03-security-hardening/` | Security checklist to run after mutations are implemented        |
+| Workflow                                | Purpose                                                             |
+| --------------------------------------- | ------------------------------------------------------------------- |
+| `code/workflows/04-api-design/`         | GraphQL type and resolver design steps — follow before writing code |
+| `code/workflows/02-tdd-cycle/`          | Red-green-refactor steps for query and mutation tests               |
+| `code/workflows/03-security-hardening/` | Security checklist to run after mutations are implemented           |
 
 ### Source locations
 

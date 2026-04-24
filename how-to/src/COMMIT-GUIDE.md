@@ -30,33 +30,33 @@ The subject line must be under 72 characters. Use imperative mood: "Add feature"
 
 ## Types
 
-| Type | When to use |
-| ---- | ----------- |
-| `feat` | New feature or page |
-| `fix` | Bug fix |
+| Type       | When to use                                         |
+| ---------- | --------------------------------------------------- |
+| `feat`     | New feature or page                                 |
+| `fix`      | Bug fix                                             |
 | `refactor` | Code change that is neither a fix nor a new feature |
-| `test` | Adding or updating tests |
-| `docs` | Documentation only |
-| `chore` | Tooling, config, dependencies, version bumps |
-| `ci` | CI/CD workflow changes |
-| `perf` | Performance improvement |
-| `style` | Formatting only — no logic change |
+| `test`     | Adding or updating tests                            |
+| `docs`     | Documentation only                                  |
+| `chore`    | Tooling, config, dependencies, version bumps        |
+| `ci`       | CI/CD workflow changes                              |
+| `perf`     | Performance improvement                             |
+| `style`    | Formatting only — no logic change                   |
 
 ---
 
 ## Scopes
 
-| Scope | Meaning |
-| ----- | ------- |
-| `backend` | Django backend changes |
-| `frontend` | Next.js frontend changes |
-| `mobile` | Expo React Native app changes |
-| `graphql` | Strawberry schema or Apollo client |
-| `db` | Django migrations or schema changes |
-| `ci` | CI workflow files |
-| `docs` | Documentation files |
-| `infra` | Docker Compose or environment config |
-| `shared` | Shared components or utilities |
+| Scope      | Meaning                              |
+| ---------- | ------------------------------------ |
+| `backend`  | Django backend changes               |
+| `frontend` | Next.js frontend changes             |
+| `mobile`   | Expo React Native app changes        |
+| `graphql`  | Strawberry schema or Apollo client   |
+| `db`       | Django migrations or schema changes  |
+| `ci`       | CI workflow files                    |
+| `docs`     | Documentation files                  |
+| `infra`    | Docker Compose or environment config |
+| `shared`   | Shared components or utilities       |
 
 ---
 
@@ -131,14 +131,14 @@ removed from the Portfolio type. Clients must migrate to `title` and
 Hooks run automatically on `git commit` via Lefthook. All of the following must pass before the
 commit is accepted:
 
-| Hook | Tool | Files |
-| ---- | ---- | ----- |
-| `eslint` | ESLint | `.js`, `.ts`, `.tsx`, `.mjs` |
-| `prettier` | Prettier | `.js`, `.ts`, `.json`, `.yaml`, `.css`, `.md` |
-| `ruff-lint` | ruff | `.py` |
-| `ruff-format` | ruff format | `.py` |
-| `basedpyright` | basedpyright | `.py` |
-| `markdownlint` | markdownlint-cli2 | `.md` |
+| Hook           | Tool              | Files                                         |
+| -------------- | ----------------- | --------------------------------------------- |
+| `eslint`       | ESLint            | `.js`, `.ts`, `.tsx`, `.mjs`                  |
+| `prettier`     | Prettier          | `.js`, `.ts`, `.json`, `.yaml`, `.css`, `.md` |
+| `ruff-lint`    | ruff              | `.py`                                         |
+| `ruff-format`  | ruff format       | `.py`                                         |
+| `basedpyright` | basedpyright      | `.py`                                         |
+| `markdownlint` | markdownlint-cli2 | `.md`                                         |
 
 Run checks manually before committing:
 

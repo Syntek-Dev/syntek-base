@@ -14,17 +14,17 @@ Mobile-specific UI components. These are primitives and composites used across m
 ## Story shape
 
 ```typescript
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Button } from './Button';
+import type { Meta, StoryObj } from "@storybook/react-native";
+import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: 'Mobile/Button',
+  title: "Mobile/Button",
   component: Button,
 };
 export default meta;
 
 type Story = StoryObj<typeof Button>;
-export const Primary: Story = { args: { label: 'Press me' } };
+export const Primary: Story = { args: { label: "Press me" } };
 ```
 
 ## Cross-references

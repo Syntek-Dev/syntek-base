@@ -119,4 +119,4 @@ code/
 | `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change             |
 | `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics  |
 | `docs/PERFORMANCE.md`           | Before optimising a query or page                  |
-| `docs/RESPONSIVE-DESIGN.md`    | Before building any responsive layout or component |
+| `docs/RESPONSIVE-DESIGN.md`     | Before building any responsive layout or component |

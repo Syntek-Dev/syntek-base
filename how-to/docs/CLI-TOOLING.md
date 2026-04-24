@@ -450,7 +450,7 @@ If step 9 produces a diff, commit the regenerated files before pushing.
 | Apply migrations              | `docker compose exec backend python manage.py migrate`                    |
 | Make migrations               | `docker compose exec backend python manage.py makemigrations`             |
 | Django shell                  | `docker compose exec backend python manage.py shell`                      |
-| psql shell                    | `docker compose exec db psql -U postgres project_name_dev`              |
+| psql shell                    | `docker compose exec db psql -U postgres project_name_dev`                |
 | Run backend tests             | `docker compose exec backend pytest`                                      |
 | Run backend tests (coverage)  | `docker compose exec backend pytest --cov=apps --cov-report=term-missing` |
 | Backend lint                  | `docker compose exec backend ruff check .`                                |

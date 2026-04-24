@@ -4,12 +4,12 @@ Static files bundled by Metro at build time.
 
 ## Expected files
 
-| File | Purpose |
-|---|---|
-| `icon.png` | App icon (1024×1024 px, no transparency) |
-| `splash-icon.png` | Splash screen image |
-| `adaptive-icon.png` | Android adaptive icon foreground (1024×1024 px) |
-| `favicon.png` | Web favicon (used when running as PWA via Expo Web) |
+| File                | Purpose                                             |
+| ------------------- | --------------------------------------------------- |
+| `icon.png`          | App icon (1024×1024 px, no transparency)            |
+| `splash-icon.png`   | Splash screen image                                 |
+| `adaptive-icon.png` | Android adaptive icon foreground (1024×1024 px)     |
+| `favicon.png`       | Web favicon (used when running as PWA via Expo Web) |
 
 ## Rules
 

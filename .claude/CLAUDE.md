@@ -171,30 +171,30 @@ Format: `us###/short-description` — full rules in `project-management/docs/GIT
 
 ## Stack Overview
 
-| Component           | Technology                                        |
-| ------------------- | ------------------------------------------------- |
-| **Type**            | Full-Stack Monorepo (Backend + Web + Mobile)      |
-| **Backend Lang**    | Python 3.14                                       |
-| **Backend Frame**   | Django 6.0.4                                      |
-| **GraphQL**         | Strawberry GraphQL 0.314.3                        |
-| **Database**        | PostgreSQL 18                                     |
-| **Backend Server**  | Gunicorn + Uvicorn / Nginx                        |
-| **Cache / Queue**   | Valkey (latest stable at release)                 |
-| **Frontend Frame**  | Next.js 16.2.4 (App Router)                       |
-| **Mobile Frame**    | Expo SDK (latest) + Expo Router + React Native 0.85.x |
+| Component           | Technology                                                          |
+| ------------------- | ------------------------------------------------------------------- |
+| **Type**            | Full-Stack Monorepo (Backend + Web + Mobile)                        |
+| **Backend Lang**    | Python 3.14                                                         |
+| **Backend Frame**   | Django 6.0.4                                                        |
+| **GraphQL**         | Strawberry GraphQL 0.314.3                                          |
+| **Database**        | PostgreSQL 18                                                       |
+| **Backend Server**  | Gunicorn + Uvicorn / Nginx                                          |
+| **Cache / Queue**   | Valkey (latest stable at release)                                   |
+| **Frontend Frame**  | Next.js 16.2.4 (App Router)                                         |
+| **Mobile Frame**    | Expo SDK (latest) + Expo Router + React Native 0.85.x               |
 | **Mobile Styling**  | NativeWind 4.2.3 + react-native-css-interop 0.2.3 (Tailwind CSS v3) |
-| **Frontend Lang**   | TypeScript 6.0.3                                  |
-| **UI Library**      | React 19.2 / React Native                         |
-| **Shared UI**       | `code/src/shared/` (cross-platform components)    |
-| **Styling**         | Tailwind CSS 4.2                                  |
-| **GraphQL Client**  | Apollo Client                                     |
-| **Code Generation** | GraphQL Code Generator                            |
-| **Node Runtime**    | Node.js 24.15.0                                   |
-| **Package Manager** | pnpm 10.33.0 (JS) / uv 0.11.7 (Python)            |
-| **Backend Tests**   | pytest, pytest-django                             |
-| **Frontend Tests**  | Vitest, React Testing Library                     |
-| **Mobile Tests**    | Jest + React Native Testing Library (unit/TDD), Detox (E2E/BDD) |
-| **Container**       | Docker Compose                                    |
+| **Frontend Lang**   | TypeScript 6.0.3                                                    |
+| **UI Library**      | React 19.2 / React Native                                           |
+| **Shared UI**       | `code/src/shared/` (cross-platform components)                      |
+| **Styling**         | Tailwind CSS 4.2                                                    |
+| **GraphQL Client**  | Apollo Client                                                       |
+| **Code Generation** | GraphQL Code Generator                                              |
+| **Node Runtime**    | Node.js 24.15.0                                                     |
+| **Package Manager** | pnpm 10.33.0 (JS) / uv 0.11.7 (Python)                              |
+| **Backend Tests**   | pytest, pytest-django                                               |
+| **Frontend Tests**  | Vitest, React Testing Library                                       |
+| **Mobile Tests**    | Jest + React Native Testing Library (unit/TDD), Detox (E2E/BDD)     |
+| **Container**       | Docker Compose                                                      |
 
 ---
 
@@ -229,7 +229,7 @@ Format: `us###/short-description` — full rules in `project-management/docs/GIT
 | **GraphQL Endpoint**   | http://localhost:8000/graphql/       |
 | **GraphQL Playground** | http://localhost:8000/graphql/ (dev) |
 | **Django Admin**       | http://localhost:8000/admin/         |
-| **Database (Dev)**     | project_name_dev                   |
+| **Database (Dev)**     | project_name_dev                     |
 | **Locale**             | en_GB                                |
 | **Timezone**           | Europe/London                        |
 | **Currency**           | GBP (£)                              |

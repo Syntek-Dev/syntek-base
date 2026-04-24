@@ -4,11 +4,11 @@ Apollo Client setup, shared hooks, and utility functions used across the mobile 
 
 ## Expected files
 
-| File | Purpose |
-|---|---|
-| `apollo.ts` | Apollo Client instance with AsyncStorage persistence |
+| File                 | Purpose                                                |
+| -------------------- | ------------------------------------------------------ |
+| `apollo.ts`          | Apollo Client instance with AsyncStorage persistence   |
 | `ApolloProvider.tsx` | React provider wrapping the app with the Apollo Client |
-| `useAuth.ts` | Authentication state hook |
+| `useAuth.ts`         | Authentication state hook                              |
 
 ## Apollo setup
 

@@ -20,13 +20,13 @@ Generate:
 
 Review and curate the outputs. Document every agreed decision immediately as a `BRAND-<TOPIC>.md` file in `project-management/src/05-BRAND-GUIDE/`:
 
-| File                   | Content                                            |
-| ---------------------- | -------------------------------------------------- |
-| `BRAND-LOGO.md`        | Logo concepts, usage rules, clear space guidelines |
-| `BRAND-COLOURS.md`     | Full palette with hex values and semantic roles    |
-| `BRAND-TYPOGRAPHY.md`  | Typefaces, scale, weights, line heights            |
-| `BRAND-TONE.md`        | Personality traits and tone of voice rules         |
-| `BRAND-SPACING.md`     | Base unit, spacing scale, container max-widths     |
+| File                  | Content                                            |
+| --------------------- | -------------------------------------------------- |
+| `BRAND-LOGO.md`       | Logo concepts, usage rules, clear space guidelines |
+| `BRAND-COLOURS.md`    | Full palette with hex values and semantic roles    |
+| `BRAND-TYPOGRAPHY.md` | Typefaces, scale, weights, line heights            |
+| `BRAND-TONE.md`       | Personality traits and tone of voice rules         |
+| `BRAND-SPACING.md`    | Base unit, spacing scale, container max-widths     |
 
 These documents are the source of truth. Figma and the token system are built from them — not the other way around.
 
@@ -34,15 +34,15 @@ These documents are the source of truth. Figma and the token system are built fr
 
 From the Claude Design output, finalise every colour with its role:
 
-| Role              | Description                               |
-| ----------------- | ----------------------------------------- |
-| Primary           | Main brand colour, CTAs, key UI elements  |
-| Secondary         | Supporting accent colour                  |
-| Neutral           | Backgrounds, borders, text                |
-| Semantic: success | Confirmation states                        |
-| Semantic: warning | Caution states                             |
-| Semantic: error   | Validation and error states                |
-| Semantic: info    | Informational states                       |
+| Role              | Description                              |
+| ----------------- | ---------------------------------------- |
+| Primary           | Main brand colour, CTAs, key UI elements |
+| Secondary         | Supporting accent colour                 |
+| Neutral           | Backgrounds, borders, text               |
+| Semantic: success | Confirmation states                      |
+| Semantic: warning | Caution states                           |
+| Semantic: error   | Validation and error states              |
+| Semantic: info    | Informational states                     |
 
 Provide hex values, names, and contrast ratios against intended backgrounds
 (WCAG 2.2 AA: 4.5:1 for normal text, 3:1 for large text and UI components).

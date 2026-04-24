@@ -18,14 +18,14 @@ after completing this guide.
 
 ## Prerequisites
 
-| Tool | Version | Notes |
-| ---- | ------- | ----- |
-| Docker Engine | 27+ | [docs.docker.com/get-docker](https://docs.docker.com/get-docker/) |
-| Docker Compose | v2+ | Bundled with Docker Desktop; plugin for Linux |
-| Git | any recent | |
-| Node.js | 24 (`.nvmrc`) | Root scripts and git hooks only |
-| pnpm | 10.33.0 | Root workspace only |
-| uv | 0.11.7+ | Python tooling — [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
+| Tool           | Version       | Notes                                                                                         |
+| -------------- | ------------- | --------------------------------------------------------------------------------------------- |
+| Docker Engine  | 27+           | [docs.docker.com/get-docker](https://docs.docker.com/get-docker/)                             |
+| Docker Compose | v2+           | Bundled with Docker Desktop; plugin for Linux                                                 |
+| Git            | any recent    |                                                                                               |
+| Node.js        | 24 (`.nvmrc`) | Root scripts and git hooks only                                                               |
+| pnpm           | 10.33.0       | Root workspace only                                                                           |
+| uv             | 0.11.7+       | Python tooling — [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
 
 ---
 
@@ -79,12 +79,12 @@ Full variable reference: [Environment Setup](ENV-SETUP.md)
 
 ### 6. Verify
 
-| Service | URL |
-| ------- | --- |
-| Frontend | http://dev.projectname.com |
+| Service            | URL                                 |
+| ------------------ | ----------------------------------- |
+| Frontend           | http://dev.projectname.com          |
 | GraphQL Playground | http://dev.projectname.com/graphql/ |
-| Django Admin | http://dev.projectname.com/admin/ |
-| Maildev | http://dev.projectname.com:1080 |
+| Django Admin       | http://dev.projectname.com/admin/   |
+| Maildev            | http://dev.projectname.com:1080     |
 
 After `install.sh` replaces the `projectname` placeholder with your project name, these URLs
 will reflect your project name automatically.
@@ -93,13 +93,13 @@ will reflect your project name automatically.
 
 ## Where to go next
 
-| Task | Guide |
-| ---- | ----- |
-| Daily development workflow | `how-to/workflows/02-daily-development/STEPS.md` |
+| Task                          | Guide                                                             |
+| ----------------------------- | ----------------------------------------------------------------- |
+| Daily development workflow    | `how-to/workflows/02-daily-development/STEPS.md`                  |
 | Branch and commit conventions | [Branch Guide](BRANCH-GUIDE.md) · [Commit Guide](COMMIT-GUIDE.md) |
-| All CLI commands | `how-to/docs/CLI-TOOLING.md` |
-| Claude Code integration | [Claude Multilayer Guide](CLAUDE-MULTILAYER.md) |
-| Using this as a template | [Customising the Template](CUSTOMISING-TEMPLATE.md) |
+| All CLI commands              | `how-to/docs/CLI-TOOLING.md`                                      |
+| Claude Code integration       | [Claude Multilayer Guide](CLAUDE-MULTILAYER.md)                   |
+| Using this as a template      | [Customising the Template](CUSTOMISING-TEMPLATE.md)               |
 
 ---
 

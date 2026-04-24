@@ -45,24 +45,24 @@ All branches travel through the full chain. Never skip a stage.
 us###/feature  →  testing  →  dev  →  staging  →  main
 ```
 
-| Branch | Purpose | Who merges |
-| ------ | ------- | ---------- |
-| `us###/feature` | Feature work for one story | Developer |
-| `testing` | Dev-team QA — CI + manual testing | Developer → QA sign-off |
-| `dev` | Integration — all in-progress features | Lead after QA |
-| `staging` | Pre-production acceptance | Lead after staging sign-off |
-| `main` | Production-ready, client-accepted releases | Lead after full sign-off |
+| Branch          | Purpose                                    | Who merges                  |
+| --------------- | ------------------------------------------ | --------------------------- |
+| `us###/feature` | Feature work for one story                 | Developer                   |
+| `testing`       | Dev-team QA — CI + manual testing          | Developer → QA sign-off     |
+| `dev`           | Integration — all in-progress features     | Lead after QA               |
+| `staging`       | Pre-production acceptance                  | Lead after staging sign-off |
+| `main`          | Production-ready, client-accepted releases | Lead after full sign-off    |
 
 ---
 
 ## Merge gates
 
-| Step | Gate |
-| ---- | ---- |
-| `us###/feature` → `testing` | Tests pass locally; PR opened to `testing` only |
-| `testing` → `dev` | CI passes on `testing`; QA sign-off obtained |
-| `dev` → `staging` | CI passes on `dev`; lead sign-off; no regressions |
-| `staging` → `main` | Staging sign-off; version bump and changelog entry present |
+| Step                        | Gate                                                       |
+| --------------------------- | ---------------------------------------------------------- |
+| `us###/feature` → `testing` | Tests pass locally; PR opened to `testing` only            |
+| `testing` → `dev`           | CI passes on `testing`; QA sign-off obtained               |
+| `dev` → `staging`           | CI passes on `dev`; lead sign-off; no regressions          |
+| `staging` → `main`          | Staging sign-off; version bump and changelog entry present |
 
 ---
 

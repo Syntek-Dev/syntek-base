@@ -21,10 +21,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   // React rules — web (frontend + shared)
   {
-    files: [
-      "code/src/frontend/**/*.{ts,tsx}",
-      "code/src/shared/**/*.{ts,tsx}",
-    ],
+    files: ["code/src/frontend/**/*.{ts,tsx}", "code/src/shared/**/*.{ts,tsx}"],
     plugins: {
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
@@ -36,6 +33,33 @@ export default tseslint.config(
     },
     settings: {
       react: { version: "detect" },
+    },
+  },
+  // CommonJS config files — require Node globals
+  {
+    files: [
+      "code/src/mobile/babel.config.js",
+      "code/src/mobile/jest.config.js",
+      "code/src/mobile/metro.config.js",
+    ],
+    languageOptions: {
+      globals: {
+        module: "writable",
+        exports: "writable",
+        require: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  // Tailwind config — preset loaded via require() (no ESM export available)
+  {
+    files: ["code/src/mobile/tailwind.config.ts"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
   // React Native rules — mobile only

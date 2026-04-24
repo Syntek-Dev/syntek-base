@@ -50,8 +50,8 @@ The following must be installed on your host machine before you begin:
 - **Docker** (latest stable) — [docs.docker.com/get-docker](https://docs.docker.com/get-docker/)
 - **Docker Compose** v2.x (bundled with Docker Desktop, or `docker compose` plugin for Linux)
 - **Git** 2.x
-No host-level Python, Node.js, or Rust installation is required. All runtimes live inside the
-containers.
+  No host-level Python, Node.js, or Rust installation is required. All runtimes live inside the
+  containers.
 
 ---
 

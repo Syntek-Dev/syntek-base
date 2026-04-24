@@ -94,10 +94,10 @@ How to verify this change manually:
 
 After `testing` → `dev` → `staging` → `main`, each step requires sign-off:
 
-| Step | Gate |
-| ---- | ---- |
-| `testing` → `dev` | CI passes; QA sign-off |
-| `dev` → `staging` | Lead sign-off; no regressions |
+| Step               | Gate                                  |
+| ------------------ | ------------------------------------- |
+| `testing` → `dev`  | CI passes; QA sign-off                |
+| `dev` → `staging`  | Lead sign-off; no regressions         |
 | `staging` → `main` | Full sign-off; version bump committed |
 
 Full promotion rules: `project-management/docs/GIT-GUIDE.md` ·

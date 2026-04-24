@@ -13,9 +13,9 @@ Screen-object models and reusable step utilities consumed by feature specs in `.
 
 ```typescript
 export const LoginScreen = {
-  emailInput: () => element(by.id('login-email')),
-  passwordInput: () => element(by.id('login-password')),
-  submitButton: () => element(by.id('login-submit')),
+  emailInput: () => element(by.id("login-email")),
+  passwordInput: () => element(by.id("login-password")),
+  submitButton: () => element(by.id("login-submit")),
   async fillAndSubmit(email: string, password: string) {
     await this.emailInput().typeText(email);
     await this.passwordInput().typeText(password);

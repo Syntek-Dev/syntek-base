@@ -589,6 +589,71 @@ wheels = [
 ]
 
 [[package]]
+name = "project-name"
+version = "1.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "argon2-cffi" },
+    { name = "cloudinary" },
+    { name = "cryptography" },
+    { name = "dj-database-url" },
+    { name = "django" },
+    { name = "django-cloudinary-storage" },
+    { name = "django-cors-headers" },
+    { name = "gunicorn" },
+    { name = "psycopg", extra = ["binary"] },
+    { name = "sentry-sdk", extra = ["django"] },
+    { name = "strawberry-graphql", extra = ["django"] },
+    { name = "uvicorn", extra = ["standard"] },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "basedpyright" },
+    { name = "ruff" },
+]
+test = [
+    { name = "factory-boy" },
+    { name = "hypothesis" },
+    { name = "mutmut" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-django" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "argon2-cffi" },
+    { name = "cloudinary" },
+    { name = "cryptography" },
+    { name = "dj-database-url" },
+    { name = "django", specifier = ">=6.0.4" },
+    { name = "django-cloudinary-storage" },
+    { name = "django-cors-headers" },
+    { name = "gunicorn" },
+    { name = "psycopg", extras = ["binary"] },
+    { name = "sentry-sdk", extras = ["django"] },
+    { name = "strawberry-graphql", extras = ["django"], specifier = ">=0.314.3" },
+    { name = "uvicorn", extras = ["standard"] },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "basedpyright", specifier = ">=1.28.0" },
+    { name = "ruff", specifier = ">=0.11.0" },
+]
+test = [
+    { name = "factory-boy", specifier = ">=3.3" },
+    { name = "hypothesis", specifier = ">=6.0" },
+    { name = "mutmut", specifier = ">=3.0" },
+    { name = "pytest", specifier = ">=8.0" },
+    { name = "pytest-asyncio", specifier = ">=0.25" },
+    { name = "pytest-cov", specifier = ">=6.0" },
+    { name = "pytest-django", specifier = ">=4.9" },
+]
+
+[[package]]
 name = "psycopg"
 version = "3.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -888,71 +953,6 @@ wheels = [
 django = [
     { name = "asgiref" },
     { name = "django" },
-]
-
-[[package]]
-name = "project-name"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "argon2-cffi" },
-    { name = "cloudinary" },
-    { name = "cryptography" },
-    { name = "dj-database-url" },
-    { name = "django" },
-    { name = "django-cloudinary-storage" },
-    { name = "django-cors-headers" },
-    { name = "gunicorn" },
-    { name = "psycopg", extra = ["binary"] },
-    { name = "sentry-sdk", extra = ["django"] },
-    { name = "strawberry-graphql", extra = ["django"] },
-    { name = "uvicorn", extra = ["standard"] },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "basedpyright" },
-    { name = "ruff" },
-]
-test = [
-    { name = "factory-boy" },
-    { name = "hypothesis" },
-    { name = "mutmut" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "pytest-django" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "argon2-cffi" },
-    { name = "cloudinary" },
-    { name = "cryptography" },
-    { name = "dj-database-url" },
-    { name = "django", specifier = ">=6.0.4" },
-    { name = "django-cloudinary-storage" },
-    { name = "django-cors-headers" },
-    { name = "gunicorn" },
-    { name = "psycopg", extras = ["binary"] },
-    { name = "sentry-sdk", extras = ["django"] },
-    { name = "strawberry-graphql", extras = ["django"], specifier = ">=0.314.3" },
-    { name = "uvicorn", extras = ["standard"] },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "basedpyright", specifier = ">=1.28.0" },
-    { name = "ruff", specifier = ">=0.11.0" },
-]
-test = [
-    { name = "factory-boy", specifier = ">=3.3" },
-    { name = "hypothesis", specifier = ">=6.0" },
-    { name = "mutmut", specifier = ">=3.0" },
-    { name = "pytest", specifier = ">=8.0" },
-    { name = "pytest-asyncio", specifier = ">=0.25" },
-    { name = "pytest-cov", specifier = ">=6.0" },
-    { name = "pytest-django", specifier = ">=4.9" },
 ]
 
 [[package]]

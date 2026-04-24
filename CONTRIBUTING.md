@@ -7,16 +7,16 @@ pull requests, and template adaptations from anyone.
 
 ## Quick links
 
-| Guide | Purpose |
-| ----- | ------- |
-| [Getting Started](how-to/src/GETTING-STARTED.md) | First steps — clone, configure, run |
-| [Branch Guide](how-to/src/BRANCH-GUIDE.md) | Branch naming and promotion flow |
-| [Commit Guide](how-to/src/COMMIT-GUIDE.md) | Conventional Commits format and rules |
-| [PR Guide](how-to/src/PR-GUIDE.md) | Opening, reviewing, and merging pull requests |
-| [Issue Reporting](how-to/src/ISSUE-REPORTING.md) | Reporting bugs and requesting features |
-| [Code Review](how-to/src/CODE-REVIEW.md) | Reviewer checklist and feedback standards |
-| [Customising the Template](how-to/src/CUSTOMISING-TEMPLATE.md) | Adapting this as the base for your own project |
-| [Claude Multilayer Guide](how-to/src/CLAUDE-MULTILAYER.md) | Using Claude Code with the three-layer structure |
+| Guide                                                          | Purpose                                          |
+| -------------------------------------------------------------- | ------------------------------------------------ |
+| [Getting Started](how-to/src/GETTING-STARTED.md)               | First steps — clone, configure, run              |
+| [Branch Guide](how-to/src/BRANCH-GUIDE.md)                     | Branch naming and promotion flow                 |
+| [Commit Guide](how-to/src/COMMIT-GUIDE.md)                     | Conventional Commits format and rules            |
+| [PR Guide](how-to/src/PR-GUIDE.md)                             | Opening, reviewing, and merging pull requests    |
+| [Issue Reporting](how-to/src/ISSUE-REPORTING.md)               | Reporting bugs and requesting features           |
+| [Code Review](how-to/src/CODE-REVIEW.md)                       | Reviewer checklist and feedback standards        |
+| [Customising the Template](how-to/src/CUSTOMISING-TEMPLATE.md) | Adapting this as the base for your own project   |
+| [Claude Multilayer Guide](how-to/src/CLAUDE-MULTILAYER.md)     | Using Claude Code with the three-layer structure |
 
 ---
 

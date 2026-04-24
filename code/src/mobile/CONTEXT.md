@@ -4,18 +4,18 @@ This is the Expo (React Native) mobile app for the project, sharing the same Gra
 
 ## Stack
 
-| Component        | Technology                                                          |
-| ---------------- | ------------------------------------------------------------------- |
-| Framework        | Expo SDK (latest) + Expo Router                                     |
-| Native Layer     | React Native 0.85.x                                                 |
-| Language         | TypeScript 6.0.3                                                    |
-| UI Library       | React Native + React 19.2                                           |
-| Styling          | NativeWind 4.2.3 + react-native-css-interop 0.2.3                  |
-| Tailwind Config  | Tailwind CSS 3.x (NativeWind 4 requires v3, not v4)                 |
-| GraphQL Client   | Apollo Client                                                       |
-| Code Gen         | GraphQL Code Generator                                              |
-| Unit / TDD       | Jest + React Native Testing Library + @testing-library/jest-native  |
-| E2E / BDD        | Detox                                                               |
+| Component       | Technology                                                         |
+| --------------- | ------------------------------------------------------------------ |
+| Framework       | Expo SDK (latest) + Expo Router                                    |
+| Native Layer    | React Native 0.85.x                                                |
+| Language        | TypeScript 6.0.3                                                   |
+| UI Library      | React Native + React 19.2                                          |
+| Styling         | NativeWind 4.2.3 + react-native-css-interop 0.2.3                  |
+| Tailwind Config | Tailwind CSS 3.x (NativeWind 4 requires v3, not v4)                |
+| GraphQL Client  | Apollo Client                                                      |
+| Code Gen        | GraphQL Code Generator                                             |
+| Unit / TDD      | Jest + React Native Testing Library + @testing-library/jest-native |
+| E2E / BDD       | Detox                                                              |
 
 > **Note:** NativeWind 4.x depends on Tailwind CSS v3. The web frontend uses Tailwind CSS v4 — the
 > configs are intentionally separate. Do not share `tailwind.config.js` between `frontend/` and `mobile/`.
@@ -56,13 +56,13 @@ mobile/
 
 ## Key Entry Points
 
-| Path                     | Purpose                                     |
-| ------------------------ | ------------------------------------------- |
-| `app/_layout.tsx`        | Root layout — Apollo provider, navigation   |
-| `app/index.tsx`          | Entry screen                                |
-| `src/graphql/generated/` | Auto-generated hooks — never edit by hand   |
-| `src/lib/apollo.ts`      | Apollo Client instance for React Native     |
-| `src/test/setup.ts`      | Jest global setup                           |
+| Path                     | Purpose                                   |
+| ------------------------ | ----------------------------------------- |
+| `app/_layout.tsx`        | Root layout — Apollo provider, navigation |
+| `app/index.tsx`          | Entry screen                              |
+| `src/graphql/generated/` | Auto-generated hooks — never edit by hand |
+| `src/lib/apollo.ts`      | Apollo Client instance for React Native   |
+| `src/test/setup.ts`      | Jest global setup                         |
 
 ## Testing
 

@@ -34,21 +34,21 @@ workflow begins.
 
 ### code/ layer — read before writing any frontend code
 
-| Path                             | When to read                                                          |
-| -------------------------------- | --------------------------------------------------------------------- |
-| `code/CONTEXT.md`                | Next.js conventions, frontend project structure, tooling rules        |
-| `code/docs/CODING-PRINCIPLES.md` | Component design rules, naming, single-responsibility                 |
-| `code/docs/TESTING.md`           | Vitest + React Testing Library conventions and coverage floors        |
-| `code/docs/ACCESSIBILITY.md`     | WCAG 2.2 AA requirements for all interactive components               |
+| Path                             | When to read                                                               |
+| -------------------------------- | -------------------------------------------------------------------------- |
+| `code/CONTEXT.md`                | Next.js conventions, frontend project structure, tooling rules             |
+| `code/docs/CODING-PRINCIPLES.md` | Component design rules, naming, single-responsibility                      |
+| `code/docs/TESTING.md`           | Vitest + React Testing Library conventions and coverage floors             |
+| `code/docs/ACCESSIBILITY.md`     | WCAG 2.2 AA requirements for all interactive components                    |
 | `code/docs/PERFORMANCE.md`       | Client-side performance rules (lazy loading, bundle size, Core Web Vitals) |
 | `code/docs/RESPONSIVE-DESIGN.md` | Breakpoint tokens, media vs container query guidance, viewport test set    |
 
 ### code/workflows/ — companion workflows to run alongside this one
 
-| Workflow                       | Purpose                                                               |
-| ------------------------------ | --------------------------------------------------------------------- |
-| `code/workflows/01-new-feature/` | Full-stack feature checklist that wraps this workflow               |
-| `code/workflows/02-tdd-cycle/`   | Red-green-refactor steps for component and page tests               |
+| Workflow                         | Purpose                                               |
+| -------------------------------- | ----------------------------------------------------- |
+| `code/workflows/01-new-feature/` | Full-stack feature checklist that wraps this workflow |
+| `code/workflows/02-tdd-cycle/`   | Red-green-refactor steps for component and page tests |
 
 ### Source locations
 

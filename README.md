@@ -310,8 +310,8 @@ This starts:
 
 ### Verify
 
-| URL                                    | Description                   |
-| -------------------------------------- | ----------------------------- |
+| URL                                   | Description                   |
+| ------------------------------------- | ----------------------------- |
 | `http://dev.projectname.com`          | Next.js frontend              |
 | `http://dev.projectname.com/graphql/` | GraphQL playground (dev only) |
 | `http://dev.projectname.com/admin/`   | Django admin                  |
@@ -444,8 +444,8 @@ begins.
 
 ### QA and testing documentation
 
-| Document type        | Naming convention                | Location                        |
-| -------------------- | -------------------------------- | ------------------------------- |
+| Document type        | Naming convention                | Location                           |
+| -------------------- | -------------------------------- | ---------------------------------- |
 | QA test file         | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/10-QA/`    |
 | Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/11-TESTS/` |
 | Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/11-TESTS/` |
@@ -456,22 +456,22 @@ tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to
 
 ### PM workflows — when to use each
 
-| Workflow                 | Trigger                                                      |
-| ------------------------ | ------------------------------------------------------------ |
-| `01-story-creation/`     | Writing a new user story                                     |
-| `02-sprint-planning/`    | Planning a new sprint                                        |
-| `03-database-schema/`    | Designing a new model or schema change                       |
-| `04-user-flow-design/`   | Mapping user journeys before wireframing                     |
-| `05-brand-guides/`       | Defining the visual brand identity                           |
-| `06-component-designs/`  | Designing reusable UI components                             |
-| `07-wireframes/`         | Creating or updating wireframes before frontend work         |
-| `08-gdpr-compliance/`    | Reviewing a feature for GDPR compliance                      |
-| `09-backend-code/`       | Implementing Django models, services, and business logic     |
-| `10-api-code/`           | Implementing the Strawberry GraphQL API layer                |
-| `11-frontend-code/`      | Implementing Next.js pages and React components              |
-| `12-app-code/`           | Implementing Expo React Native screens and components        |
-| `13-pr-and-review/`      | Raising a PR and moving it through the promotion chain       |
-| `14-release/`            | Cutting a release (version bump, changelog, deploy)          |
+| Workflow                | Trigger                                                  |
+| ----------------------- | -------------------------------------------------------- |
+| `01-story-creation/`    | Writing a new user story                                 |
+| `02-sprint-planning/`   | Planning a new sprint                                    |
+| `03-database-schema/`   | Designing a new model or schema change                   |
+| `04-user-flow-design/`  | Mapping user journeys before wireframing                 |
+| `05-brand-guides/`      | Defining the visual brand identity                       |
+| `06-component-designs/` | Designing reusable UI components                         |
+| `07-wireframes/`        | Creating or updating wireframes before frontend work     |
+| `08-gdpr-compliance/`   | Reviewing a feature for GDPR compliance                  |
+| `09-backend-code/`      | Implementing Django models, services, and business logic |
+| `10-api-code/`          | Implementing the Strawberry GraphQL API layer            |
+| `11-frontend-code/`     | Implementing Next.js pages and React components          |
+| `12-app-code/`          | Implementing Expo React Native screens and components    |
+| `13-pr-and-review/`     | Raising a PR and moving it through the promotion chain   |
+| `14-release/`           | Cutting a release (version bump, changelog, deploy)      |
 
 ---
 
@@ -754,11 +754,11 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 
 ### Development scripts (`code/src/scripts/development/`)
 
-| Script              | Purpose                                                          |
-| ------------------- | ---------------------------------------------------------------- |
-| `server.sh`         | Manage the dev stack: `up`, `down`, `restart`, `build`, `status` |
-| `logs.sh`           | View and tail container logs; filter by service, time, or count  |
-| `shell.sh`          | Open an interactive shell in any dev container                   |
+| Script               | Purpose                                                          |
+| -------------------- | ---------------------------------------------------------------- |
+| `server.sh`          | Manage the dev stack: `up`, `down`, `restart`, `build`, `status` |
+| `logs.sh`            | View and tail container logs; filter by service, time, or count  |
+| `shell.sh`           | Open an interactive shell in any dev container                   |
 | `new-django-app.sh`  | Scaffold a new Django app with per-model-file structure          |
 | `new-expo-screen.sh` | Scaffold a new Expo screen with a typed component stub           |
 | `new-next-route.sh`  | Scaffold a new Next.js App Router route with a typed page stub   |

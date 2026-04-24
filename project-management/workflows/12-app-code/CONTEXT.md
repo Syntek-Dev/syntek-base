@@ -36,21 +36,21 @@ workflow begins.
 
 ### code/ layer — read before writing any mobile code
 
-| Path                                 | When to read                                                               |
-| ------------------------------------ | -------------------------------------------------------------------------- |
-| `code/CONTEXT.md`                    | Expo conventions, Expo Router structure, mobile tooling rules              |
-| `code/docs/CODING-PRINCIPLES.md`     | Component design rules, naming, single-responsibility                      |
-| `code/docs/TESTING.md`               | RNTL + Jest conventions, Detox E2E setup, and coverage floors              |
-| `code/docs/ACCESSIBILITY.md`         | WCAG 2.2 AA requirements adapted for React Native                          |
-| `code/docs/RESPONSIVE-DESIGN.md`     | Mobile viewport tiers, portrait/landscape breakpoints, Maestro test set    |
-| `code/docs/PERFORMANCE.md`           | React Native performance rules (FlatList, memo, image optimisation)        |
+| Path                             | When to read                                                            |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| `code/CONTEXT.md`                | Expo conventions, Expo Router structure, mobile tooling rules           |
+| `code/docs/CODING-PRINCIPLES.md` | Component design rules, naming, single-responsibility                   |
+| `code/docs/TESTING.md`           | RNTL + Jest conventions, Detox E2E setup, and coverage floors           |
+| `code/docs/ACCESSIBILITY.md`     | WCAG 2.2 AA requirements adapted for React Native                       |
+| `code/docs/RESPONSIVE-DESIGN.md` | Mobile viewport tiers, portrait/landscape breakpoints, Maestro test set |
+| `code/docs/PERFORMANCE.md`       | React Native performance rules (FlatList, memo, image optimisation)     |
 
 ### code/workflows/ — companion workflows to run alongside this one
 
-| Workflow                         | Purpose                                                              |
-| -------------------------------- | -------------------------------------------------------------------- |
-| `code/workflows/01-new-feature/` | Full-stack feature checklist that wraps this workflow                |
-| `code/workflows/02-tdd-cycle/`   | Red-green-refactor steps for screen and component tests              |
+| Workflow                         | Purpose                                                 |
+| -------------------------------- | ------------------------------------------------------- |
+| `code/workflows/01-new-feature/` | Full-stack feature checklist that wraps this workflow   |
+| `code/workflows/02-tdd-cycle/`   | Red-green-refactor steps for screen and component tests |
 
 ### Source locations
 

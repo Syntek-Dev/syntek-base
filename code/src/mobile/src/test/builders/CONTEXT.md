@@ -12,13 +12,13 @@ Factory functions that construct realistic, fully-typed test data objects. Consu
 ## Example shape
 
 ```typescript
-import { User } from '@/graphql/generated/graphql';
+import { User } from "@/graphql/generated/graphql";
 
 export function buildUser(overrides?: Partial<User>): User {
   return {
-    id: 'user-1',
-    email: 'alice@example.com',
-    displayName: 'Alice Example',
+    id: "user-1",
+    email: "alice@example.com",
+    displayName: "Alice Example",
     avatarUrl: null,
     ...overrides,
   };

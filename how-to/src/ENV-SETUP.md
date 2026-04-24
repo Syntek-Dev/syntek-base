@@ -23,12 +23,12 @@ cp code/src/docker/.env.prod.example     code/src/docker/.env.prod
 
 ## Files by environment
 
-| File | Used by | When |
-| ---- | ------- | ---- |
-| `.env.dev` | `docker-compose.dev.yml` | Local development |
-| `.env.test` | `docker-compose.test.yml` | CI and local test runs |
-| `.env.staging` | `docker-compose.staging.yml` | GitHub Actions → staging server |
-| `.env.prod` | `docker-compose.prod.yml` | GitHub Actions → production server |
+| File           | Used by                      | When                               |
+| -------------- | ---------------------------- | ---------------------------------- |
+| `.env.dev`     | `docker-compose.dev.yml`     | Local development                  |
+| `.env.test`    | `docker-compose.test.yml`    | CI and local test runs             |
+| `.env.staging` | `docker-compose.staging.yml` | GitHub Actions → staging server    |
+| `.env.prod`    | `docker-compose.prod.yml`    | GitHub Actions → production server |
 
 ---
 

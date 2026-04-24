@@ -9,12 +9,12 @@ Docker Compose files, Dockerfiles, and entrypoint scripts for all four environme
 
 ## Environments
 
-| Environment | Compose file                 | URL / access                      | Who spins it up         |
-| ----------- | ---------------------------- | --------------------------------- | ----------------------- |
+| Environment | Compose file                 | URL / access                     | Who spins it up         |
+| ----------- | ---------------------------- | -------------------------------- | ----------------------- |
 | `dev`       | `docker-compose.dev.yml`     | `dev.projectname.com` (port 80)  | Developer locally       |
 | `test`      | `docker-compose.test.yml`    | `test.projectname.com` (port 80) | CI / developer          |
-| `staging`   | `docker-compose.staging.yml` | CF Tunnel subdomain               | GitHub Actions → server |
-| `prod`      | `docker-compose.prod.yml`    | CF Tunnel root domain             | GitHub Actions → server |
+| `staging`   | `docker-compose.staging.yml` | CF Tunnel subdomain              | GitHub Actions → server |
+| `prod`      | `docker-compose.prod.yml`    | CF Tunnel root domain            | GitHub Actions → server |
 
 ## Images
 

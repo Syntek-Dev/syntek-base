@@ -28,16 +28,16 @@ project-management/src/
 
 ## Naming Conventions
 
-| Pattern                          | Directory       | Example                       |
-| -------------------------------- | --------------- | ----------------------------- |
-| `US###.md`                       | `01-STORIES/`   | `US015.md`                    |
-| `US###-TEST-STATUS.md`           | `11-TESTS/`     | `US015-TEST-STATUS.md`        |
-| `US###-MANUAL-TESTING.md`        | `11-TESTS/`     | `US015-MANUAL-TESTING.md`     |
-| `SPRINT-##.md`                   | `02-SPRINTS/`   | `SPRINT-06.md`                |
-| `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `13-BUGS/`      | `BUG-AUTH-19-04-2026.md`      |
-| `ADR-###-<TITLE>.md`             | `00-DECISIONS/` | `ADR-001-SESSIONS-JWT.md`     |
-| `BRAND-<TOPIC>.md`               | `05-BRAND-GUIDE/` | `BRAND-COLOURS.md`          |
-| `COMPONENT-<NAME>.md`            | `06-COMPONENTS/` | `COMPONENT-BUTTON.md`        |
+| Pattern                          | Directory         | Example                   |
+| -------------------------------- | ----------------- | ------------------------- |
+| `US###.md`                       | `01-STORIES/`     | `US015.md`                |
+| `US###-TEST-STATUS.md`           | `11-TESTS/`       | `US015-TEST-STATUS.md`    |
+| `US###-MANUAL-TESTING.md`        | `11-TESTS/`       | `US015-MANUAL-TESTING.md` |
+| `SPRINT-##.md`                   | `02-SPRINTS/`     | `SPRINT-06.md`            |
+| `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `13-BUGS/`        | `BUG-AUTH-19-04-2026.md`  |
+| `ADR-###-<TITLE>.md`             | `00-DECISIONS/`   | `ADR-001-SESSIONS-JWT.md` |
+| `BRAND-<TOPIC>.md`               | `05-BRAND-GUIDE/` | `BRAND-COLOURS.md`        |
+| `COMPONENT-<NAME>.md`            | `06-COMPONENTS/`  | `COMPONENT-BUTTON.md`     |
 
 ## Cross-references
 

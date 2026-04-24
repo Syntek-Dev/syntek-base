@@ -58,13 +58,13 @@ bash code/src/scripts/development/server.sh status
 
 ## Services
 
-| Service    | Shell  | Notes                                                     |
-| ---------- | ------ | --------------------------------------------------------- |
+| Service    | Shell  | Notes                                                    |
+| ---------- | ------ | -------------------------------------------------------- |
 | `nginx`    | `sh`   | Reverse proxy — http://dev.projectname.com (port 80)     |
-| `backend`  | `bash` | Django/Uvicorn — internal, hot-reload via `--reload`      |
-| `frontend` | `sh`   | Next.js dev server — internal (port 3000)                 |
-| `db`       | `bash` | PostgreSQL 18 — internal only                             |
-| `cache`    | `sh`   | Valkey 8 — internal only                                  |
+| `backend`  | `bash` | Django/Uvicorn — internal, hot-reload via `--reload`     |
+| `frontend` | `sh`   | Next.js dev server — internal (port 3000)                |
+| `db`       | `bash` | PostgreSQL 18 — internal only                            |
+| `cache`    | `sh`   | Valkey 8 — internal only                                 |
 | `maildev`  | `sh`   | Catches outbound email — http://dev.projectname.com:1080 |
 
 ## Routing

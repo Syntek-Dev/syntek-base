@@ -129,13 +129,13 @@ project-management/
 
 ## Key docs
 
-| Guide                      | When to read                                         |
-| -------------------------- | ---------------------------------------------------- |
-| `docs/GIT-GUIDE.md`        | Branch strategy, commit format, PR gates             |
-| `docs/VERSIONING-GUIDE.md` | Before any version bump or release                   |
-| `docs/SEO-CHECKLIST.md`    | Before publishing a new page                         |
-| `docs/GDPR-GUIDE.md`            | Before adding any feature that handles personal data    |
-| `docs/RESPONSIVE-DESIGN.md`    | Before wireframing, designing, or testing any UI screen |
+| Guide                       | When to read                                            |
+| --------------------------- | ------------------------------------------------------- |
+| `docs/GIT-GUIDE.md`         | Branch strategy, commit format, PR gates                |
+| `docs/VERSIONING-GUIDE.md`  | Before any version bump or release                      |
+| `docs/SEO-CHECKLIST.md`     | Before publishing a new page                            |
+| `docs/GDPR-GUIDE.md`        | Before adding any feature that handles personal data    |
+| `docs/RESPONSIVE-DESIGN.md` | Before wireframing, designing, or testing any UI screen |
 
 ## src/ structure
 

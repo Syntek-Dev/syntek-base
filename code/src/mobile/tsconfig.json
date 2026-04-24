@@ -12,11 +12,6 @@
       "@shared/*": ["../shared/src/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.d.ts",
-    "nativewind-env.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.d.ts", "nativewind-env.d.ts"],
   "exclude": ["node_modules"]
 }
