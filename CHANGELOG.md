@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Studio
+**Last Updated**: 24/04/2026 **Version**: 1.1.2 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.1.2] - 24/04/2026
+
+### Changed
+
+- Expanded user preference media query guidance in `code/docs/RESPONSIVE-DESIGN.md`
+  and `project-management/docs/RESPONSIVE-DESIGN.md` — all six OS/browser preference
+  signals now documented (dark mode, reduced motion, high contrast, forced colours,
+  reduced transparency, reduced data) with CSS patterns, Tailwind variants, React hooks,
+  and a React Native `AccessibilityInfo` hook
+- Added cross-reference in `code/docs/ACCESSIBILITY.md` Motion and Animation section
+  pointing to the expanded RESPONSIVE-DESIGN.md content
 
 ---
 

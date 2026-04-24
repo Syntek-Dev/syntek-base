@@ -1,9 +1,36 @@
 # Releases — project-name
 
-**Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Studio
+**Last Updated**: 24/04/2026 **Version**: 1.1.2 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.1.2 — 24/04/2026
+
+**Status:** Documentation release — expanded user preference media query reference
+
+### Summary
+
+A documentation-only release expanding the responsive design and accessibility guides.
+No source code, configuration, or tests were changed.
+
+### What's changed since v1.1.1
+
+- **User preference media queries:** Both `code/docs/RESPONSIVE-DESIGN.md` and
+  `project-management/docs/RESPONSIVE-DESIGN.md` now contain a complete guide to all six
+  OS/browser preference signals — dark mode (`prefers-color-scheme`), reduced motion
+  (`prefers-reduced-motion`), high contrast and forced colours (`prefers-contrast` /
+  `forced-colors`), reduced transparency (`prefers-reduced-transparency`), and reduced
+  data (`prefers-reduced-data`). Each query is documented with a CSS pattern, Tailwind
+  variant, and a reusable React hook
+- **React Native accessibility patterns:** A `useAccessibilityPreferences` hook wrapping
+  the React Native `AccessibilityInfo` API is documented alongside the web patterns for
+  cross-platform consistency
+- **Accessibility cross-reference:** `code/docs/ACCESSIBILITY.md` has been updated in the
+  Motion and Animation section to direct developers to the expanded RESPONSIVE-DESIGN.md
+  content rather than duplicating guidance
 
 ---
 
