@@ -131,26 +131,375 @@ Adapt touch targets and hover interactions based on the primary input device rat
 
 ### User Preferences
 
-These are non-negotiable — they reflect explicit accessibility settings the user has made at the OS or browser level:
+These media queries reflect explicit OS-level or browser-level settings the user has made. They are non-negotiable — always respect them. Ignoring them is an accessibility failure.
+
+#### Quick Reference
+
+| Query                          | Values                                    | What it signals                             |
+| ------------------------------ | ----------------------------------------- | ------------------------------------------- |
+| `prefers-color-scheme`         | `light`, `dark`                           | OS dark/light mode setting                  |
+| `prefers-reduced-motion`       | `no-preference`, `reduce`                 | Reduced Motion enabled in OS                |
+| `prefers-contrast`             | `no-preference`, `more`, `less`, `forced` | High or low contrast preference             |
+| `forced-colors`                | `none`, `active`                          | Windows High Contrast / Forced Colours mode |
+| `prefers-reduced-transparency` | `no-preference`, `reduce`                 | Reduce Transparency enabled (macOS/iOS)     |
+| `prefers-reduced-data`         | `no-preference`, `reduce`                 | Data Saver / metered connection             |
+
+---
+
+#### Dark Mode — `prefers-color-scheme`
+
+Design and implement for both light and dark at the same time. Never add dark mode as an afterthought.
+
+**CSS custom properties — recommended approach:**
 
 ```css
-@media (prefers-color-scheme: dark) {
-}
-@media (prefers-color-scheme: light) {
+:root {
+  --colour-bg: #ffffff;
+  --colour-text: #111111;
+  --colour-surface: #f5f5f5;
+  --colour-border: #d1d5db;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-bg: #111111;
+    --colour-text: #f5f5f5;
+    --colour-surface: #1e1e1e;
+    --colour-border: #374151;
+  }
+}
+```
+
+**Tailwind CSS — use the `dark:` variant:**
+
+```tsx
+<div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">...</div>
+```
+
+Tailwind's `dark:` variant uses `prefers-color-scheme` by default. If the project implements a manual dark mode toggle (via a class on `<html>`), configure `darkMode: 'class'` in `tailwind.config.ts`.
+
+**JavaScript — reading and reacting to the preference:**
+
+```typescript
+const mq = window.matchMedia("(prefers-color-scheme: dark)");
+
+if (mq.matches) {
+  applyTheme("dark");
+}
+
+mq.addEventListener("change", (e) => {
+  applyTheme(e.matches ? "dark" : "light");
+});
+```
+
+**React hook:**
+
+```typescript
+function useColorScheme(): "light" | "dark" {
+  const [scheme, setScheme] = useState<"light" | "dark">(
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => setScheme(e.matches ? "dark" : "light");
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return scheme;
+}
+```
+
+**React Native — `useColorScheme`:**
+
+```typescript
+import { useColorScheme } from 'react-native';
+
+function ThemedComponent() {
+  const scheme = useColorScheme(); // 'light' | 'dark' | null
+  const isDark = scheme === 'dark';
+
+  return (
+    <View style={{ backgroundColor: isDark ? '#111111' : '#ffffff' }}>
+      ...
+    </View>
+  );
+}
+```
+
+With NativeWind, use the `dark:` variant identically to the web — it reads from `useColorScheme` automatically.
+
+**Rules:**
+
+- Always verify contrast ratios in both light and dark palettes — they are independent checks.
+- Never rely on colour alone to distinguish states. Icons, borders, and text must also work in both schemes.
+- If implementing a manual theme toggle, persist the user's choice to `localStorage` (web) or `AsyncStorage` (mobile) and default to the OS preference when no override is set.
+
+---
+
+#### Reduced Motion — `prefers-reduced-motion`
+
+Users enable this at the OS level when animations cause discomfort, dizziness, or distraction. See also the Motion and Animation section in `code/docs/ACCESSIBILITY.md` for the WCAG requirements that sit alongside this.
+
+**CSS — global reset baseline:**
+
+```css
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+Apply this reset globally. For individual components, provide a purposeful alternative rather than just removing the effect — a cross-fade is less disorienting than a slide, and an instant state change is better than breaking the feedback entirely:
+
+```css
+.slide-in {
+  animation: slideIn 0.4s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-in {
+    animation: fadeIn 0.15s ease-out;
+  }
+}
+```
+
+**Tailwind CSS — `motion-reduce:` and `motion-safe:` variants:**
+
+```tsx
+<div className="transition-transform motion-reduce:transition-none">...</div>
+```
+
+**React hook:**
+
+```typescript
+function usePrefersReducedMotion(): boolean {
+  const [prefersReduced, setPrefersReduced] = useState(
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return prefersReduced;
+}
+```
+
+**React Native:**
+
+```typescript
+import { AccessibilityInfo } from "react-native";
+import { useState, useEffect } from "react";
+
+function usePrefersReducedMotion(): boolean {
+  const [isReduceMotionEnabled, setIsReduceMotionEnabled] = useState(false);
+
+  useEffect(() => {
+    AccessibilityInfo.isReduceMotionEnabled().then(setIsReduceMotionEnabled);
+    const subscription = AccessibilityInfo.addEventListener(
+      "reduceMotionChanged",
+      setIsReduceMotionEnabled,
+    );
+    return () => subscription.remove();
+  }, []);
+
+  return isReduceMotionEnabled;
+}
+```
+
+---
+
+#### High Contrast — `prefers-contrast` and `forced-colors`
+
+Two separate but related queries — use both.
+
+**`prefers-contrast`** — user has requested higher or lower contrast at the OS or browser level:
+
+```css
+@media (prefers-contrast: more) {
+  :root {
+    --colour-text: #000000;
+    --colour-bg: #ffffff;
+    --colour-border: #000000;
+  }
+
+  .btn {
+    border: 2px solid currentColor;
+    outline-offset: 2px;
   }
 }
 
-@media (prefers-contrast: more) {
+@media (prefers-contrast: less) {
+  :root {
+    --colour-text: #444444;
+  }
 }
 ```
+
+Tailwind provides `contrast-more:` and `contrast-less:` variants.
+
+**`forced-colors`** — Windows High Contrast mode and equivalent OS forced-colour modes. The browser replaces all colours with a restricted system palette. Do not fight it:
+
+```css
+@media (forced-colors: active) {
+  .btn {
+    border: 2px solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: none; /* only use when absolutely necessary */
+  }
+
+  /* Restore structure that was conveyed via background alone */
+  .card {
+    border: 1px solid CanvasText;
+  }
+}
+```
+
+System colour keywords available in forced-colours mode: `Canvas`, `CanvasText`, `LinkText`, `VisitedText`, `ActiveText`, `ButtonFace`, `ButtonText`, `ButtonBorder`, `Field`, `FieldText`, `Highlight`, `HighlightText`, `SelectedItem`, `SelectedItemText`, `Mark`, `MarkText`, `GrayText`.
+
+**Rules:**
+
+- Never use `forced-color-adjust: none` to opt out of the system palette without a strong reason — it overrides the user's accessibility need.
+- Test in Windows High Contrast mode (Settings > Accessibility > Contrast themes) before every release.
+- Borders and outlines are preserved in forced-colours mode; backgrounds and `box-shadow` are not. Design components so that borders convey structure, not just decoration.
+
+---
+
+#### Reduced Transparency — `prefers-reduced-transparency`
+
+Users on macOS and iOS can enable Reduce Transparency (System Settings > Accessibility > Display). Frosted glass, blur effects, and translucent overlays can cause visual noise for users with certain cognitive or visual conditions.
+
+```css
+@media (prefers-reduced-transparency: reduce) {
+  .frosted-panel {
+    backdrop-filter: none;
+    background-color: var(--colour-surface);
+  }
+
+  .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+}
+```
+
+**React Native:**
+
+```typescript
+import { AccessibilityInfo } from "react-native";
+
+AccessibilityInfo.isReduceTransparencyEnabled().then((isEnabled) => {
+  if (isEnabled) {
+    // use fully opaque backgrounds
+  }
+});
+```
+
+---
+
+#### Reduced Data — `prefers-reduced-data`
+
+Users on metered connections or with Data Saver enabled. Browser support is limited (Chrome/Edge behind a flag as of 2026), but worth planning for. Skip decorative assets and lazy-load aggressively:
+
+```css
+@media (prefers-reduced-data: reduce) {
+  .hero {
+    background-image: none;
+  }
+}
+```
+
+The Network Information API provides a complementary signal with broader current support:
+
+```typescript
+const connection = (navigator as Navigator & { connection?: { saveData: boolean } }).connection;
+if (connection?.saveData) {
+  // skip non-essential resource loads
+}
+```
+
+---
+
+#### React Native — Accessibility Preferences Hook
+
+React Native exposes OS-level accessibility preferences via `AccessibilityInfo`. Subscribe to changes rather than reading once at mount — users can toggle these settings without restarting the app:
+
+```typescript
+import { AccessibilityInfo } from "react-native";
+import { useState, useEffect } from "react";
+
+interface AccessibilityPreferences {
+  reduceMotion: boolean;
+  reduceTransparency: boolean;
+  screenReaderEnabled: boolean;
+  boldText: boolean;
+  grayscale: boolean;
+}
+
+function useAccessibilityPreferences(): AccessibilityPreferences {
+  const [prefs, setPrefs] = useState<AccessibilityPreferences>({
+    reduceMotion: false,
+    reduceTransparency: false,
+    screenReaderEnabled: false,
+    boldText: false,
+    grayscale: false,
+  });
+
+  useEffect(() => {
+    Promise.all([
+      AccessibilityInfo.isReduceMotionEnabled(),
+      AccessibilityInfo.isReduceTransparencyEnabled(),
+      AccessibilityInfo.isScreenReaderEnabled(),
+      AccessibilityInfo.isBoldTextEnabled(),
+      AccessibilityInfo.isGrayscaleEnabled(),
+    ]).then(([reduceMotion, reduceTransparency, screenReaderEnabled, boldText, grayscale]) => {
+      setPrefs({ reduceMotion, reduceTransparency, screenReaderEnabled, boldText, grayscale });
+    });
+
+    const subscriptions = [
+      AccessibilityInfo.addEventListener("reduceMotionChanged", (v) =>
+        setPrefs((p) => ({ ...p, reduceMotion: v })),
+      ),
+      AccessibilityInfo.addEventListener("reduceTransparencyChanged", (v) =>
+        setPrefs((p) => ({ ...p, reduceTransparency: v })),
+      ),
+      AccessibilityInfo.addEventListener("screenReaderChanged", (v) =>
+        setPrefs((p) => ({ ...p, screenReaderEnabled: v })),
+      ),
+      AccessibilityInfo.addEventListener("boldTextChanged", (v) =>
+        setPrefs((p) => ({ ...p, boldText: v })),
+      ),
+      AccessibilityInfo.addEventListener("grayscaleChanged", (v) =>
+        setPrefs((p) => ({ ...p, grayscale: v })),
+      ),
+    ];
+
+    return () => subscriptions.forEach((s) => s.remove());
+  }, []);
+
+  return prefs;
+}
+```
+
+| Preference                           | iOS | Android | `AccessibilityInfo` API       |
+| ------------------------------------ | --- | ------- | ----------------------------- |
+| Reduce Motion                        | ✓   | ✓       | `isReduceMotionEnabled`       |
+| Reduce Transparency                  | ✓   | —       | `isReduceTransparencyEnabled` |
+| Screen Reader (VoiceOver / TalkBack) | ✓   | ✓       | `isScreenReaderEnabled`       |
+| Bold Text                            | ✓   | —       | `isBoldTextEnabled`           |
+| Grayscale                            | ✓   | ✓       | `isGrayscaleEnabled`          |
+| Invert Colours                       | ✓   | —       | `isInvertColorsEnabled`       |
 
 ### Resolution
 

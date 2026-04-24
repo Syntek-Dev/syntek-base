@@ -464,6 +464,10 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 
 - No content should flash more than three times per second (WCAG 2.3.1 — seizure risk).
 
+For full implementation patterns — CSS resets, Tailwind variants, React hooks, React Native
+`AccessibilityInfo`, and all related OS preference queries (dark mode, high contrast, reduced
+transparency, reduced data) — see the **User Preferences** section in `RESPONSIVE-DESIGN.md`.
+
 ---
 
 ## React Component Patterns
