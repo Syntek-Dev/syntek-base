@@ -1,6 +1,6 @@
 # Version History — project-name
 
-**Last Updated**: 21/04/2026 **Version**: 1.1.0 **Maintained By**: Syntek Studio
+**Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                     |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 24/04/2026 | 1.1.1   | Fix CI pnpm version pin, resolve peer warnings and dependency vulnerabilities, expand responsive design docs                    |
 | 21/04/2026 | 1.1.0   | Restructure PM src to numbered dirs (00–14), expand workflows to 14, add Figma MCP, responsive design guide, and codegen script |
 | 19/04/2026 | 1.0.0   | First stable scaffold release — mobile layer, contributor guides, CI complete, version bump                                     |
 | 19/04/2026 | 0.2.2   | Finalise project-management layer CONTEXT.md files and PM reference guides                                                      |

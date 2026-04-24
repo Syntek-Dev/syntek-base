@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 21/04/2026 **Version**: 1.1.0 **Maintained By**: Syntek Studio
+**Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.1.1] - 24/04/2026
+
+### Fixed
+
+- Removed hardcoded `pnpm` version pin from CI workflow setup steps (`fix(ci)`, 598a216)
+- Resolved npm/pnpm peer dependency warnings, dependency audit vulnerabilities, and
+  deprecated package references (`fix(deps)`, 1b6f53a)
+
+### Changed
+
+- Expanded `code/docs/RESPONSIVE-DESIGN.md` and `project-management/docs/RESPONSIVE-DESIGN.md`
+  with additional media query and container query reference examples
+  (`docs(responsive-design)`, 219735b)
+- Committed all pending stack and documentation changes to bring the repository fully
+  in sync (`chore`, ce0d5e1)
 
 ---
 

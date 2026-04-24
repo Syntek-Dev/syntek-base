@@ -1,9 +1,32 @@
 # Releases — project-name
 
-**Last Updated**: 21/04/2026 **Version**: 1.1.0 **Maintained By**: Syntek Studio
+**Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.1.1 — 24/04/2026
+
+**Status:** Maintenance release — CI fixes, dependency health, and documentation improvements
+
+### Summary
+
+A routine maintenance release addressing dependency health and documentation quality.
+No new features or breaking changes are included. The project is fully up to date
+and safe to use.
+
+### What's changed since v1.1.0
+
+- **Improved CI reliability:** The continuous integration pipeline no longer pins a
+  hardcoded package manager version, ensuring setup steps remain compatible with the
+  latest tooling automatically
+- **Cleaner dependencies:** Resolved a set of peer dependency warnings and removed
+  outdated package references to keep the project free from known vulnerabilities
+- **Expanded responsive design guide:** The responsive design reference documentation
+  has been extended with additional examples covering media queries and container queries,
+  making it easier for developers to apply consistent responsive patterns
 
 ---
 
