@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 24/04/2026 **Version**: 1.1.2 **Maintained By**: Syntek Studio
+**Last Updated**: 26/04/2026 **Version**: 1.2.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.2.0] - 26/04/2026
+
+### Added
+
+- Bruno API integration test collection (`code/src/tests/api/`) covering auth, users,
+  orders, and performance scenarios — with environments for local, Docker, staging, and
+  production
+- `code/src/scripts/tests/api.sh` — shell script to run the Bruno collection locally
+  against the Docker test stack; validates the container is running and writes results
+  to `code/src/scripts/tests/reports/api/`
+- `.github/workflows/test-api.yml` — GitHub Actions workflow triggering the Bruno suite
+  on push/PR to `main` when API or backend files change, and on manual dispatch with
+  optional environment and folder inputs; uploads `results.json` as an artefact
+- `how-to/docs/API-TESTING.md` and `how-to/src/API-TESTING.md` — contributor guide
+  covering Bruno desktop/CLI setup, environment split, `api.sh` usage, and CI
+  configuration
+
+### Changed
+
+- `@usebruno/cli ^3.3.0` added as a dev dependency; `protobufjs` added to pnpm nohoist
+  list (required by the Bruno CLI)
+- `code/src/docker/.env.test.example` updated with `BRUNO_VAR_test_password` documentation
+- `code/CONTEXT.md`, `code/src/CONTEXT.md`, `code/src/scripts/tests/CONTEXT.md`,
+  `code/src/scripts/tests/reports/CONTEXT.md`, `how-to/CONTEXT.md`,
+  `how-to/docs/CONTEXT.md`, and `how-to/src/CONTEXT.md` updated to reflect new
+  directories and guides
 
 ---
 

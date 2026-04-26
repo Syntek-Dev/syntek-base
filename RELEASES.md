@@ -1,9 +1,40 @@
 # Releases — project-name
 
-**Last Updated**: 24/04/2026 **Version**: 1.1.2 **Maintained By**: Syntek Studio
+**Last Updated**: 26/04/2026 **Version**: 1.2.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.2.0 — 26/04/2026
+
+**Status:** Feature release — Bruno API integration testing
+
+### Summary
+
+Adds a complete API integration test suite powered by Bruno, covering authentication,
+user management, orders, and performance scenarios. Tests can be run locally against
+the Docker test stack via a new shell script, and automatically on CI via a new GitHub
+Actions workflow. The `@usebruno/cli` package is added to the root dev dependencies so
+no additional global installs are required.
+
+### What's new since v1.1.2
+
+- **Bruno API test collection:** A full set of `.bru` request files under
+  `code/src/tests/api/` covering four domains: auth (login, refresh, invalid password),
+  users (list, get, create), orders (list, get, create, update, delete), and performance
+  (load and stress tests). Four environment configs are included: `local`, `docker`,
+  `staging`, and `production`
+- **Local test runner:** `code/src/scripts/tests/api.sh` — run the full Bruno collection
+  against the Docker test stack with a single command; results are written to
+  `code/src/scripts/tests/reports/api/results.json`
+- **CI workflow:** `.github/workflows/test-api.yml` triggers the Bruno suite automatically
+  on push or pull request when API or backend files change, and supports manual dispatch
+  with environment and folder options; results are uploaded as a CI artefact (30-day retention)
+- **API testing guide:** `how-to/docs/API-TESTING.md` documents Bruno setup, the
+  environment split, `api.sh` usage, the `API_TEST_PASSWORD` CI secret, and CORS
+  configuration implications
 
 ---
 

@@ -1,6 +1,6 @@
 # Version History — project-name
 
-**Last Updated**: 24/04/2026 **Version**: 1.1.2 **Maintained By**: Syntek Studio
+**Last Updated**: 26/04/2026 **Version**: 1.2.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                           |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 26/04/2026 | 1.2.0   | Add Bruno API integration test suite, api.sh runner script, test-api.yml CI workflow, and @usebruno/cli dependency                    |
 | 24/04/2026 | 1.1.2   | Expand user preference media query docs (dark mode, motion, contrast, transparency, data) and add React Native AccessibilityInfo hook |
 | 24/04/2026 | 1.1.1   | Fix CI pnpm version pin, resolve peer warnings and dependency vulnerabilities, expand responsive design docs                          |
 | 21/04/2026 | 1.1.0   | Restructure PM src to numbered dirs (00–14), expand workflows to 14, add Figma MCP, responsive design guide, and codegen script       |
