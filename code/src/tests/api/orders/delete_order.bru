@@ -1,0 +1,24 @@
+meta {
+  name: Delete Order
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{api_url}}/orders/{{test_order_id}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+tests {
+  test("Status is 204 No Content", function() {
+    expect(res.getStatus()).to.equal(204);
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

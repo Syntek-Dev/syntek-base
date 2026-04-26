@@ -1,0 +1,68 @@
+meta {
+  name: Create Order (Valid Input)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api_url}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "customer_id": "{{test_customer_id}}",
+    "items": [
+      {
+        "product_id": "{{test_product_id}}",
+        "quantity": 2
+      }
+    ],
+    "total_price": 99.99
+  }
+}
+
+script:post-response {
+  // Store the created order_id for use in get/update/delete tests.
+  if (res.getStatus() === 201 && res.body && res.body.order_id) {
+    bru.setVar("test_order_id", res.body.order_id);
+  }
+}
+
+tests {
+  test("Status is 201 Created", function() {
+    expect(res.getStatus()).to.equal(201);
+  });
+
+  test("Response contains order_id", function() {
+    expect(res.body).to.have.property("order_id");
+    expect(res.body.order_id).to.be.a("string").and.not.be.empty;
+  });
+
+  test("Response contains customer_id", function() {
+    expect(res.body).to.have.property("customer_id");
+    expect(res.body.customer_id).to.equal(bru.getVar("test_customer_id"));
+  });
+
+  test("Response contains items array", function() {
+    expect(res.body).to.have.property("items");
+    expect(res.body.items).to.be.an("array").with.lengthOf(1);
+  });
+
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

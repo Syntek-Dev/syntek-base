@@ -1,0 +1,34 @@
+meta {
+  name: Stress Test — Orders List Under Pagination
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{api_url}}/orders
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+query {
+  limit: 100
+  offset: 0
+}
+
+tests {
+  test("Status is 200 with large page", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  // Large result sets should still be served within 2 seconds.
+  test("Response time < 2000ms for limit=100", function() {
+    expect(res.getResponseTime()).to.be.below(2000);
+  });
+
+  test("Response is an array", function() {
+    expect(res.body).to.be.an("array");
+  });
+}

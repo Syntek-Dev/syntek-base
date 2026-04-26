@@ -1,0 +1,52 @@
+meta {
+  name: Login (Valid Credentials)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{api_url}}/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "test@example.com",
+    "password": "{{test_password}}"
+  }
+}
+
+script:post-response {
+  // Store the token for subsequent requests in this run.
+  if (res.getStatus() === 200 && res.body && res.body.access_token) {
+    bru.setVar("auth_token", res.body.access_token);
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response contains access_token", function() {
+    expect(res.body).to.have.property("access_token");
+    expect(res.body.access_token).to.be.a("string").and.not.be.empty;
+  });
+
+  test("Response contains refresh_token", function() {
+    expect(res.body).to.have.property("refresh_token");
+  });
+
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

@@ -1,0 +1,20 @@
+{
+  "name": "production",
+  "variables": [
+    {
+      "name": "api_url",
+      "value": "https://api.project-name.com",
+      "enabled": true
+    },
+    {
+      "name": "timeout_ms",
+      "value": "10000",
+      "enabled": true
+    },
+    {
+      "name": "slow_threshold_ms",
+      "value": "5000",
+      "enabled": true
+    }
+  ]
+}

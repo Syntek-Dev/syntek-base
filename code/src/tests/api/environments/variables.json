@@ -1,0 +1,37 @@
+{
+  "name": "variables",
+  "variables": [
+    {
+      "name": "auth_token",
+      "value": "",
+      "enabled": true,
+      "secret": true
+    },
+    {
+      "name": "test_password",
+      "value": "",
+      "enabled": true,
+      "secret": true
+    },
+    {
+      "name": "test_user_id",
+      "value": "usr_test_001",
+      "enabled": true
+    },
+    {
+      "name": "test_customer_id",
+      "value": "cust_test_001",
+      "enabled": true
+    },
+    {
+      "name": "test_product_id",
+      "value": "prod_test_001",
+      "enabled": true
+    },
+    {
+      "name": "test_order_id",
+      "value": "",
+      "enabled": true
+    }
+  ]
+}

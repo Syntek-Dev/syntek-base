@@ -1,0 +1,97 @@
+name: test-api
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "code/src/tests/api/**"
+      - "code/src/backend/**"
+      - "code/src/docker/docker-compose.test.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "code/src/tests/api/**"
+      - "code/src/backend/**"
+      - "code/src/docker/docker-compose.test.yml"
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Bruno environment (docker | staging | production)"
+        required: false
+        default: "docker"
+      folder:
+        description: "Subfolder to run (e.g. auth, users — leave empty for all)"
+        required: false
+        default: ""
+
+jobs:
+  bruno:
+    name: Bruno API tests
+    runs-on: ubuntu-latest
+
+    env:
+      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
+      BRUNO_ENV: ${{ github.event.inputs.env || 'docker' }}
+      COLLECTION: /workspace/code/src/tests/api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env.test
+        run: |
+          cp code/src/docker/.env.test.example code/src/docker/.env.test
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+
+      - name: Build images
+        run: docker compose -f $COMPOSE_FILE build backend-test frontend-test
+
+      - name: Start db and cache
+        run: docker compose -f $COMPOSE_FILE up -d db cache
+
+      - name: Wait for database
+        run: |
+          for i in $(seq 1 30); do
+            docker compose -f $COMPOSE_FILE exec db \
+              pg_isready -U syntek -d project_name_test && break
+            echo "Waiting for db... ($i/30)"
+            sleep 2
+          done
+
+      - name: Start backend
+        run: docker compose -f $COMPOSE_FILE up -d backend-test
+
+      - name: Wait for backend
+        run: |
+          for i in $(seq 1 30); do
+            docker compose -f $COMPOSE_FILE exec backend-test \
+              curl -sf http://localhost:8000/health/ && break
+            echo "Waiting for backend... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run Bruno API tests
+        run: |
+          mkdir -p reports/api
+          FOLDER="${{ github.event.inputs.folder }}"
+          RUN_PATH="${COLLECTION}${FOLDER:+/$FOLDER}"
+          docker compose -f $COMPOSE_FILE run --rm \
+            -e "BRUNO_VAR_test_password=${{ secrets.API_TEST_PASSWORD }}" \
+            -v "${{ github.workspace }}/code/src/tests/api:${COLLECTION}:ro" \
+            -v "${{ github.workspace }}/reports/api:/output:rw" \
+            frontend-test \
+            bru run "$RUN_PATH" \
+              --env "$BRUNO_ENV" \
+              --reporter-json /output/results.json
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bruno-api-results
+          path: reports/api/results.json
+          retention-days: 30
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f $COMPOSE_FILE down -v

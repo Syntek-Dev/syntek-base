@@ -1,0 +1,37 @@
+meta {
+  name: Get User by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{api_url}}/users/{{test_user_id}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response contains user_id", function() {
+    expect(res.body).to.have.property("id");
+  });
+
+  test("Response contains email field", function() {
+    expect(res.body).to.have.property("email");
+  });
+
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  // Performance threshold: user lookups must be fast.
+  test("Response time < 5000ms", function() {
+    expect(res.getResponseTime()).to.be.below(5000);
+  });
+}

@@ -1,0 +1,148 @@
+##
+## Bruno Test Template
+##
+## Copy this file into the appropriate folder under api/ and rename it.
+## Folder structure:
+##   api/auth/         → authentication flows
+##   api/orders/       → order CRUD operations
+##   api/users/        → user management
+##   api/performance/  → response time assertions
+##
+## Remove comment blocks and unused sections before committing.
+##
+
+meta {
+  ##
+  ## name:  Short, descriptive test name (shown in CI build log and Mattermost).
+  ##        Convention: "<Action> (<Context>)" e.g. "Create Order (Valid Input)"
+  ## type:  Always "http" for REST tests.
+  ## seq:   Execution order within this folder (1, 2, 3...).
+  ##        Tests run alphabetically by folder, then by seq within the folder.
+  ##
+  name: <Your Test Name Here>
+  type: http
+  seq: 1
+}
+
+##
+## HTTP METHOD BLOCK
+## Replace "get" with the appropriate verb: get, post, put, patch, delete
+##
+## url:  Use {{api_url}} variable — resolved from environments/staging.json
+##       in CI, or environments/production.json for manual production runs.
+##
+## auth: Options: none | bearer | basic | apiKey
+##       Use "bearer" for all authenticated endpoints.
+##
+get {
+  url: {{api_url}}/your/endpoint
+  auth: bearer
+}
+
+auth:bearer {
+  ##
+  ## {{auth_token}} is populated by the login test (auth/login.bru seq:1).
+  ## The login script stores the token via bru.setVar("auth_token", ...).
+  ## Ensure tests that require auth run after auth/login.bru.
+  ##
+  token: {{auth_token}}
+}
+
+##
+## HEADERS (optional)
+## Add custom headers here.  Content-Type is usually set automatically by
+## the body block.
+##
+# headers {
+#   X-Custom-Header: value
+# }
+
+##
+## REQUEST BODY
+## Only include for POST/PUT/PATCH requests.  Remove for GET/DELETE.
+##
+## body:json — JSON body (sets Content-Type: application/json automatically)
+## body:form — application/x-www-form-urlencoded
+## body:multipart — multipart/form-data
+##
+# body:json {
+#   {
+#     "field": "value",
+#     "another_field": 123
+#   }
+# }
+
+##
+## QUERY PARAMETERS (optional)
+## Append ?key=value to the URL, or define here for clarity.
+##
+# query {
+#   limit: 20
+#   offset: 0
+# }
+
+##
+## PRE-REQUEST SCRIPT (optional)
+## Runs before the HTTP request is sent.
+## Use to set up dynamic variables (timestamps, random IDs, etc.)
+##
+# script:pre-request {
+#   // Generate a unique ID for this test run.
+#   bru.setVar("unique_id", Math.random().toString(36).slice(2));
+# }
+
+##
+## POST-RESPONSE SCRIPT (optional)
+## Runs after the response is received, before assertions.
+## Use to extract values for downstream tests (e.g. save created resource IDs).
+##
+# script:post-response {
+#   if (res.getStatus() === 201 && res.body.id) {
+#     bru.setVar("created_resource_id", res.body.id);
+#   }
+# }
+
+##
+## ASSERTIONS (tests block)
+##
+## Bruno uses Chai.js assertion syntax: https://www.chaijs.com/api/bdd/
+##
+## Standard assertions to include:
+##   1. HTTP status code
+##   2. Response body structure (required fields)
+##   3. Content-Type header
+##   4. Response time (always include a performance threshold)
+##
+## Thresholds (from environments/staging.json):
+##   - Standard endpoints:     < 500ms
+##   - Complex queries:        < 2000ms
+##   - Expensive operations:   < 5000ms  ({{slow_threshold_ms}})
+##
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  ##
+  ## Body assertions — check for required fields.
+  ##
+  test("Response contains required fields", function() {
+    expect(res.body).to.have.property("id");
+    // Add more property checks as needed.
+  });
+
+  ##
+  ## Content-Type assertion — always include.
+  ##
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  ##
+  ## Performance assertion — always include.
+  ## Adjust threshold based on endpoint complexity.
+  ##
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

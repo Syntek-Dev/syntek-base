@@ -1,0 +1,51 @@
+meta {
+  name: Create User
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{api_url}}/users
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "ci-test-{{$randomInt}}@example.com",
+    "first_name": "CI",
+    "last_name": "Test",
+    "role": "viewer"
+  }
+}
+
+tests {
+  test("Status is 201 Created", function() {
+    expect(res.getStatus()).to.equal(201);
+  });
+
+  test("Response contains id", function() {
+    expect(res.body).to.have.property("id");
+    expect(res.body.id).to.be.a("string").and.not.be.empty;
+  });
+
+  test("Response contains email", function() {
+    expect(res.body).to.have.property("email");
+  });
+
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

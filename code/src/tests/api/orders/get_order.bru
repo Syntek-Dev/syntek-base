@@ -1,0 +1,37 @@
+meta {
+  name: Get Order by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{api_url}}/orders/{{test_order_id}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response contains order_id", function() {
+    expect(res.body).to.have.property("order_id");
+    expect(res.body.order_id).to.equal(bru.getVar("test_order_id"));
+  });
+
+  test("Response contains status field", function() {
+    expect(res.body).to.have.property("status");
+  });
+
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

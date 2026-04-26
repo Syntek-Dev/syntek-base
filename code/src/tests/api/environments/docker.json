@@ -1,0 +1,20 @@
+{
+  "name": "docker",
+  "variables": [
+    {
+      "name": "api_url",
+      "value": "http://backend-test:8000",
+      "enabled": true
+    },
+    {
+      "name": "timeout_ms",
+      "value": "10000",
+      "enabled": true
+    },
+    {
+      "name": "slow_threshold_ms",
+      "value": "5000",
+      "enabled": true
+    }
+  ]
+}

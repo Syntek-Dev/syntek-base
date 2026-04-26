@@ -1,0 +1,44 @@
+meta {
+  name: Update Order Status
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{api_url}}/orders/{{test_order_id}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "status": "processing"
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response reflects updated status", function() {
+    expect(res.body).to.have.property("status");
+    expect(res.body.status).to.equal("processing");
+  });
+
+  test("Content-Type is JSON", function() {
+    expect(res.getHeader("content-type")).to.include("application/json");
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}
