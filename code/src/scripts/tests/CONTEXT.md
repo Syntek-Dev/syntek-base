@@ -7,6 +7,7 @@ Shell scripts for running the automated test suites. All scripts invoke Docker c
 ```text
 code/src/scripts/tests/
 ├── all.sh                    ← backend + frontend in sequence; supports --coverage
+├── api.sh                    ← Bruno API tests (explicit only); writes JSON report
 ├── backend.sh                ← pytest plain run; writes JUnit XML
 ├── backend-coverage.sh       ← pytest + coverage; writes HTML, Cobertura XML, JUnit XML
 ├── CONTEXT.md                ← this file
@@ -15,6 +16,7 @@ code/src/scripts/tests/
 ├── frontend-coverage.sh      ← vitest + coverage; writes HTML + LCOV
 ├── open-coverage.sh          ← opens backend and/or frontend coverage HTML in browser
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
+    ├── api/                  ← output from api.sh
     ├── backend/              ← output from backend.sh
     ├── backend-coverage/     ← output from backend-coverage.sh
     ├── frontend/             ← output from frontend.sh
@@ -26,6 +28,7 @@ code/src/scripts/tests/
 
 | Script                 | Tool               | Pattern  | Stack required     | Default output dir           |
 | ---------------------- | ------------------ | -------- | ------------------ | ---------------------------- |
+| `api.sh`               | Bruno CLI          | run --rm | backend-test up    | `reports/api/`               |
 | `backend.sh`           | pytest             | exec     | Full test stack up | `reports/backend/`           |
 | `backend-coverage.sh`  | pytest + cov       | exec     | Full test stack up | `reports/backend-coverage/`  |
 | `frontend.sh`          | vitest             | run --rm | None (one-shot)    | `reports/frontend/`          |
@@ -136,8 +139,9 @@ docker compose -f code/src/docker/docker-compose.test.yml up -d db cache backend
 
 These scripts are used by three GitHub Actions workflows:
 
-| Workflow                              | Trigger                       | Scripts used           |
-| ------------------------------------- | ----------------------------- | ---------------------- |
-| `.github/workflows/test-backend.yml`  | Push/PR on `.py` changes      | `backend-coverage.sh`  |
-| `.github/workflows/test-frontend.yml` | Push/PR on `.ts/.tsx` changes | `frontend-coverage.sh` |
-| `.github/workflows/test-e2e.yml`      | `workflow_dispatch` only      | `e2e.sh`               |
+| Workflow                              | Trigger                                                         | Scripts used                              |
+| ------------------------------------- | --------------------------------------------------------------- | ----------------------------------------- |
+| `.github/workflows/test-api.yml`      | Push/PR on backend or `tests/api/` changes; `workflow_dispatch` | `api.sh` (runs via `frontend-test` image) |
+| `.github/workflows/test-backend.yml`  | Push/PR on `.py` changes                                        | `backend-coverage.sh`                     |
+| `.github/workflows/test-frontend.yml` | Push/PR on `.ts/.tsx` changes                                   | `frontend-coverage.sh`                    |
+| `.github/workflows/test-e2e.yml`      | `workflow_dispatch` only                                        | `e2e.sh`                                  |

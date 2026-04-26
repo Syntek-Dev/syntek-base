@@ -9,6 +9,8 @@ code/src/scripts/tests/reports/
 ├── CONTEXT.md                  ← this file
 ├── .gitignore                  ← ignores all generated reports; keeps tracked files
 ├── .gitkeep                    ← keeps this folder present in git when empty
+├── api/                        ← JSON from api.sh (Bruno API tests)
+│   └── CONTEXT.md
 ├── backend/                    ← JUnit XML from backend.sh (plain pytest)
 │   └── CONTEXT.md
 ├── backend-coverage/           ← HTML + XML from backend-coverage.sh (pytest-cov)
@@ -25,6 +27,7 @@ code/src/scripts/tests/reports/
 
 | Suite             | Script                 | Normal run             | Coverage run                           |
 | ----------------- | ---------------------- | ---------------------- | -------------------------------------- |
+| API (Bruno)       | `api.sh`               | `results.json`         | N/A                                    |
 | Backend (pytest)  | `backend.sh`           | `results.xml`          | N/A                                    |
 | Backend (cov)     | `backend-coverage.sh`  | N/A                    | `html/`, `coverage.xml`, `results.xml` |
 | Frontend (vitest) | `frontend.sh`          | `results.xml`          | N/A                                    |

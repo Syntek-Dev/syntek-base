@@ -48,7 +48,9 @@ how-to/
 
 ## Key docs
 
-| Guide                  | When to read                                 |
-| ---------------------- | -------------------------------------------- |
-| `docs/DEVELOPMENT.md`  | Environment setup, commands, troubleshooting |
-| `docs/SYNTEK-GUIDE.md` | Full Claude Code agent and skill reference   |
+| Guide                  | When to read                                           |
+| ---------------------- | ------------------------------------------------------ |
+| `docs/API-TESTING.md`  | API tool setup, environment split, promotion flow      |
+| `docs/DEVELOPMENT.md`  | Environment setup, commands, troubleshooting           |
+| `docs/SYNTEK-GUIDE.md` | Full Claude Code agent and skill reference             |
+| `src/API-TESTING.md`   | Developer guide — GraphiQL locally, Hoppscotch staging |

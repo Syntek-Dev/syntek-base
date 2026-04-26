@@ -21,6 +21,10 @@ code/src/
 │   ├── CONTEXT.md
 │   ├── .gitignore
 │   └── .gitkeep
+├── tests/                   ← API integration tests (Bruno collection)
+│   ├── CONTEXT.md
+│   └── api/                 ← Bruno API collection (auth, users, orders, performance)
+│       └── CONTEXT.md
 └── scripts/                 ← quality scripts (lint, check, format)
     ├── check.sh
     ├── CONTEXT.md
@@ -42,6 +46,7 @@ code/src/
 | `shared/`   | Cross-platform UI components, hooks, and utilities | `shared/CONTEXT.md`   |
 | `docker/`   | Dockerfiles and Compose files for all environments | `docker/CONTEXT.md`   |
 | `logs/`     | Runtime log files (dev/test only; all gitignored)  | `logs/CONTEXT.md`     |
+| `tests/`    | Bruno API integration test collection              | `tests/CONTEXT.md`    |
 
 Always read the relevant sub-layer CONTEXT.md before touching any code in that directory.
 

@@ -34,6 +34,10 @@ code/
 │   │   ├── CONTEXT.md
 │   │   ├── .gitignore
 │   │   └── .gitkeep
+│   ├── tests/                       ← API integration tests (Bruno collection)
+│   │   ├── CONTEXT.md
+│   │   └── api/                     ← Bruno collection (auth, users, orders, performance)
+│   │       └── CONTEXT.md
 │   └── scripts/                     ← quality scripts (lint, check, format)
 │       ├── check.sh
 │       ├── CONTEXT.md

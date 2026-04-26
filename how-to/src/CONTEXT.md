@@ -5,6 +5,7 @@
 ```text
 how-to/src/
 ├── CONTEXT.md                   ← this file
+├── API-TESTING.md               ← GraphiQL (local) and Hoppscotch (staging) usage guide
 ├── BRANCH-GUIDE.md              ← branch naming and promotion flow
 ├── CLAUDE-MULTILAYER.md         ← using Claude Code with the three-layer structure
 ├── CODE-REVIEW.md               ← reviewer checklist and feedback standards
