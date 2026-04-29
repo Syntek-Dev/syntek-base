@@ -20,10 +20,11 @@ project-management/src/
 ├── 08-GDPR/                 ← GDPR compliance artefacts (DPIAs, registers, notices)
 ├── 09-SECURITY/             ← security audits and threat model documents
 ├── 10-QA/                   ← quality assurance docs and manual test guides
-├── 11-TESTS/                ← test status tracking (US###-TEST-STATUS.md, US###-MANUAL-TESTING.md)
-├── 12-REVIEWS/              ← code review records and PR feedback
-├── 13-BUGS/                 ← bug reports (BUG-<DESCRIPTOR>-DD-MM-YYYY.md)
-└── 14-REFACTORING/          ← refactoring plans and technical debt records
+├── 11-SPRINT-PLANS/         ← sprint plan documents (SPRINT-PLAN-##.md)
+├── 12-TESTS/                ← test status tracking (US###-TEST-STATUS.md, US###-MANUAL-TESTING.md)
+├── 13-REVIEWS/              ← code review records and PR feedback
+├── 14-BUGS/                 ← bug reports (BUG-<DESCRIPTOR>-DD-MM-YYYY.md)
+└── 15-REFACTORING/          ← refactoring plans and technical debt records
 ```
 
 ## Naming Conventions
@@ -31,10 +32,10 @@ project-management/src/
 | Pattern                          | Directory         | Example                   |
 | -------------------------------- | ----------------- | ------------------------- |
 | `US###.md`                       | `01-STORIES/`     | `US015.md`                |
-| `US###-TEST-STATUS.md`           | `11-TESTS/`       | `US015-TEST-STATUS.md`    |
-| `US###-MANUAL-TESTING.md`        | `11-TESTS/`       | `US015-MANUAL-TESTING.md` |
+| `US###-TEST-STATUS.md`           | `12-TESTS/`       | `US015-TEST-STATUS.md`    |
+| `US###-MANUAL-TESTING.md`        | `12-TESTS/`       | `US015-MANUAL-TESTING.md` |
 | `SPRINT-##.md`                   | `02-SPRINTS/`     | `SPRINT-06.md`            |
-| `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `13-BUGS/`        | `BUG-AUTH-19-04-2026.md`  |
+| `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `14-BUGS/`        | `BUG-AUTH-19-04-2026.md`  |
 | `ADR-###-<TITLE>.md`             | `00-DECISIONS/`   | `ADR-001-SESSIONS-JWT.md` |
 | `BRAND-<TOPIC>.md`               | `05-BRAND-GUIDE/` | `BRAND-COLOURS.md`        |
 | `COMPONENT-<NAME>.md`            | `06-COMPONENTS/`  | `COMPONENT-BUTTON.md`     |

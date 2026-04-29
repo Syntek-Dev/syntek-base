@@ -1,11 +1,11 @@
-# project-management/src/11-TESTS
+# project-management/src/12-TESTS
 
 Test status and manual testing guides per user story.
 
 ## Directory Tree
 
 ```text
-project-management/src/11-TESTS/
+project-management/src/12-TESTS/
 ├── CONTEXT.md                       ← this file
 ├── US###-TEST-STATUS.md             ← automated test status tracker per story
 └── US###-MANUAL-TESTING.md          ← manual testing guide per story
