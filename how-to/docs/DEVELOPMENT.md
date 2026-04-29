@@ -1,5 +1,7 @@
 # Development Workflow — project-name
 
+> **Agent hints — Model:** Haiku
+
 **Last Updated**: 18/04/2026\
 **Version**: 1.0.0\
 **Language**: British English (en_GB)\

@@ -1,5 +1,7 @@
 # Workflow: First-Time Setup
 
+> **Agent hints — Model:** Haiku · **MCP:** `docfork` + `context7` (Docker Compose)
+
 ## Directory Tree
 
 ```text

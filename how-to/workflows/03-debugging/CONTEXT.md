@@ -1,5 +1,7 @@
 # Workflow: Debugging
 
+> **Agent hints — Model:** Sonnet
+
 ## Directory Tree
 
 ```text

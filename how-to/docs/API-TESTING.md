@@ -1,5 +1,7 @@
 # API Testing — Tool Setup & Promotion Flow
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Bruno CLI)
+
 **Last Updated:** 24/04/2026 **Maintained By:** Syntek Studio **Language:** British English (en_GB)
 
 ---

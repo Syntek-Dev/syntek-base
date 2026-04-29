@@ -1,5 +1,7 @@
 # Syntek Dev Suite - Plugin Usage Guide
 
+> **Agent hints — Model:** Sonnet
+
 **Version:** 1.1.0 **Plugin:** syntek-dev-suite **Maintained by:** Syntek Developers
 
 ---

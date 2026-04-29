@@ -1,5 +1,7 @@
 # Workflow: Daily Development
 
+> **Agent hints — Model:** Haiku
+
 ## Directory Tree
 
 ```text
