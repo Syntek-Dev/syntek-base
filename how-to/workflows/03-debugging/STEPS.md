@@ -57,7 +57,7 @@ docker compose exec frontend npm test -- --run --reporter=verbose
 ### Step 6 — Document and Fix
 
 If the bug warrants a bug report:
-Save to `project-management/src/BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
+Save to `project-management/src/14-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
 
 ---
 
