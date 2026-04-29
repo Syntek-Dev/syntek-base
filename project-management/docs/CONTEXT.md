@@ -4,16 +4,24 @@
 
 ```text
 project-management/docs/
-├── CONTEXT.md               ← this file
-├── GDPR-GUIDE.md            ← GDPR compliance — lawful basis, retention, data rights
-├── GIT-GUIDE.md             ← branch strategy, commit format, PR flow, PR gates
-├── SEO-CHECKLIST.md         ← SEO and AI discoverability checklist for all frontend pages
-└── VERSIONING-GUIDE.md      ← root-only semver strategy, files to update on every bump
+├── CONTEXT.md                  ← this file
+├── GDPR-GUIDE.md               ← GDPR compliance — lawful basis, retention, data rights
+├── GIT-GUIDE.md                ← branch strategy, commit format, PR flow, PR gates
+├── QA-GUIDE.md                 ← QA planning at design stage — test scenario format and process
+├── RESPONSIVE-DESIGN.md        ← breakpoint tokens, media vs container queries, viewport testing
+├── SECURITY-GUIDE.md           ← STRIDE threat modelling, severity levels, document format
+├── SEO-CHECKLIST.md            ← SEO and AI discoverability checklist for all frontend pages
+├── SPRINT-PLANNING-GUIDE.md    ← sprint plan format, MoSCoW prioritisation, development phases
+└── VERSIONING-GUIDE.md         ← root-only semver strategy, files to update on every bump
 ```
 
-| Guide                 | Scope                                                        |
-| --------------------- | ------------------------------------------------------------ |
-| `GIT-GUIDE.md`        | Branch strategy, commit format, PR flow, PR gates            |
-| `VERSIONING-GUIDE.md` | Root-only semver strategy, files to update on every bump     |
-| `SEO-CHECKLIST.md`    | SEO and AI discoverability checklist for all frontend pages  |
-| `GDPR-GUIDE.md`       | GDPR compliance guide — lawful basis, retention, data rights |
+| Guide                      | Scope                                                           |
+| -------------------------- | --------------------------------------------------------------- |
+| `GIT-GUIDE.md`             | Branch strategy, commit format, PR flow, PR gates               |
+| `VERSIONING-GUIDE.md`      | Root-only semver strategy, files to update on every bump        |
+| `SEO-CHECKLIST.md`         | SEO and AI discoverability checklist for all frontend pages     |
+| `GDPR-GUIDE.md`            | GDPR compliance guide — lawful basis, retention, data rights    |
+| `QA-GUIDE.md`              | QA planning at design stage — test scenario format and process  |
+| `RESPONSIVE-DESIGN.md`     | Breakpoint tokens, media vs container queries, viewport testing |
+| `SECURITY-GUIDE.md`        | STRIDE threat modelling, severity levels, document format       |
+| `SPRINT-PLANNING-GUIDE.md` | Sprint plan format, MoSCoW prioritisation, development phases   |
