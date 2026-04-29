@@ -1,5 +1,7 @@
 # Logging, Observability & Media — Reference Guide
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Sentry, Loki, Prometheus, Grafana)
+
 ## Stack by environment
 
 | Tool         | dev | test | staging | prod | Purpose                            |

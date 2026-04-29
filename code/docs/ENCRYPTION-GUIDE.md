@@ -1,5 +1,7 @@
 # Encryption Guide
 
+> **Agent hints — Model:** Opus · **MCP:** `docfork` + `context7` (cryptography, Django encryption)
+
 **Applies to:** `code/src/backend/apps/` **Reference implementation:**
 `code/src/backend/apps/users/`
 

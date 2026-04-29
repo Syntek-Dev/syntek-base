@@ -1,5 +1,7 @@
 # Row Level Security Guide
 
+> **Agent hints — Model:** Opus · **MCP:** `code-review-graph`, `docfork` + `context7` (PostgreSQL RLS, Django)
+
 **Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Development Team
 **Language**: British English (en_GB) **Timezone**: Europe/London
 

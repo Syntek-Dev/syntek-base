@@ -1,5 +1,7 @@
 # Data Structures
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Django ORM, PostgreSQL)
+
 **Last Updated:** 15/03/2026 **Version:** 1.8.0 **Maintained By:** Development Team **Language:**
 British English (en_GB) **Timezone:** Europe/London **Plugin Scope:** syntek-dev-suite
 (Python/Django, PHP/Laravel, TypeScript/React, React Native)

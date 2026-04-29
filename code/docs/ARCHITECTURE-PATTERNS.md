@@ -1,5 +1,7 @@
 # Architecture Patterns
 
+> **Agent hints — Model:** Opus · **MCP:** `code-review-graph`, `mcp-mermaid` (architecture diagrams)
+
 **Last Updated:** 15/03/2026
 **Version:** 1.8.0
 **Maintained By:** Development Team

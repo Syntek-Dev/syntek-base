@@ -1,5 +1,7 @@
 # Coding Principles
 
+> **Agent hints — Model:** Sonnet
+
 **Last Updated**: 22/03/2026 **Version**: 1.11.0 **Maintained By**: Development Team **Language**:
 British English (en_GB) **Timezone**: Europe/London
 

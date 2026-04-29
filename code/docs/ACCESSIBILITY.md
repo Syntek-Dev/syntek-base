@@ -1,5 +1,7 @@
 # Accessibility
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (WCAG, ARIA, React Native accessibility), `claude-in-chrome` (visual verification)
+
 **Last Updated:** 15/03/2026 **Version:** 1.8.0 **Maintained By:** Development Team **Language:**
 British English (en_GB) **Timezone:** Europe/London **Plugin Scope:** syntek-dev-suite
 (Python/Django, PHP/Laravel, TypeScript/React, React Native)
