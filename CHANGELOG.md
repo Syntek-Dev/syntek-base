@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 26/04/2026 **Version**: 1.2.0 **Maintained By**: Syntek Studio
+**Last Updated**: 29/04/2026 **Version**: 1.3.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.3.0] - 29/04/2026
+
+### Added
+
+- `DESIGN.md` — root-level entry point for UI/UX, component, brand, and wireframe work;
+  maps all relevant standards, guides, and workflows across all four documentation layers
+- Three new pre-development PM workflows: `09-security-checks` (threat modelling),
+  `10-qa-checks` (QA scenario definition), and `11-sprint-plans` (MoSCoW sprint planning
+  with definition of done)
+- Three new PM reference guides: `project-management/docs/QA-GUIDE.md`,
+  `project-management/docs/SECURITY-GUIDE.md`, and
+  `project-management/docs/SPRINT-PLANNING-GUIDE.md`
+- `project-management/src/11-SPRINT-PLANS/` — new artefact folder for sprint plan documents
+- Agent hint headers added to all `code/docs/`, `code/workflows/`, `how-to/docs/`,
+  `how-to/workflows/`, and `project-management/` CONTEXT and reference files; each header
+  declares the recommended model and relevant MCP servers
+
+### Changed
+
+- `project-management/src/` folders renumbered: TESTS 11→12, REVIEWS 12→13, BUGS 13→14,
+  REFACTORING 14→15 to accommodate the new 11-SPRINT-PLANS folder
+- `project-management/workflows/` renumbered: six coding workflows shifted from 09–14 to
+  12–17 to accommodate the three new pre-development workflows (09–11)
+- `.claude/CLAUDE.md` updated: Layer Routing table gains UI/UX row, MCP server table adds
+  `docfork` entry with user scope, dual-tool docfork+context7 documentation lookup
+  instructions expanded, `mcp-mermaid` usage note added, Design section added, GAPS.md
+  rule added
+- `CONTEXT.md` and `README.md` updated to reflect new `DESIGN.md`, renumbered src folders,
+  and expanded workflow count (01–17)
 
 ---
 

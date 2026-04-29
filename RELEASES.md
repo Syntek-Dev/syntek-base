@@ -1,9 +1,43 @@
 # Releases — project-name
 
-**Last Updated**: 26/04/2026 **Version**: 1.2.0 **Maintained By**: Syntek Studio
+**Last Updated**: 29/04/2026 **Version**: 1.3.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.3.0 — 29/04/2026
+
+**Status:** Feature release — Pre-development workflow phase, DESIGN.md, and agent hint system
+
+### Summary
+
+Expands the project management layer with three new pre-development workflows (security checks,
+QA scenario planning, and sprint planning), adds a root-level `DESIGN.md` entry point for
+all UI/UX and brand work, and rolls out a consistent agent hint system across every reference
+document and workflow context file.
+
+### What's new since v1.2.0
+
+- **DESIGN.md entry point:** A new root-level `DESIGN.md` maps all design-related standards,
+  guides, and workflows across the full documentation stack — a single place to start any
+  UI/UX, component, brand, or wireframe task
+- **Security checks workflow (`09-security-checks`):** Threat-model planned features before
+  sprint planning to surface risks early; includes CHECKLIST, CONTEXT, and STEPS
+- **QA checks workflow (`10-qa-checks`):** Define QA scenarios for each user story before
+  development begins, ensuring testability is built in from the start
+- **Sprint plans workflow (`11-sprint-plans`):** Write sprint plans with MoSCoW
+  prioritisation, phased delivery, and a clear definition of done
+- **Sprint plans folder (`project-management/src/11-SPRINT-PLANS/`):** Dedicated artefact
+  folder for sprint plan documents alongside stories, QA, and reviews
+- **Three new PM reference guides:** `QA-GUIDE.md`, `SECURITY-GUIDE.md`, and
+  `SPRINT-PLANNING-GUIDE.md` added to `project-management/docs/`
+- **Agent hint system:** Every `code/docs/`, `code/workflows/`, `how-to/docs/`,
+  `how-to/workflows/`, and `project-management/` reference file now carries a hint line
+  naming the right model and MCP servers — agents self-configure on first read
+- **docfork MCP guidance:** `.claude/CLAUDE.md` now documents the `docfork` MCP server and
+  dual-tool `docfork` + `context7` lookup pattern for library documentation
 
 ---
 
