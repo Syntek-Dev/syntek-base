@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 29/04/2026 **Version**: 1.3.0 **Maintained By**: Syntek Studio
+**Last Updated**: 29/04/2026 **Version**: 1.4.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.4.0] - 29/04/2026
+
+### Added
+
+- `code/docs/URL-STRATEGY.md` — new reference document covering path-based routing (Phase 1)
+  and the planned subdomain migration for admin and portal surfaces (Phase 2)
+- `code/docs/CODING-PRINCIPLES.md` — two new sections: **Class vs Function** (when to use each
+  in Python/Django and TypeScript/React, with worked examples) and **Decision Structuring:
+  Boolean, Policy, and Strategy** (formalising the three named patterns for access rules and
+  variant algorithms)
+- `project-management/src/03-DATABASE/ERD-DIAGRAMS/CONTEXT.md` — placeholder directory with
+  conventions for storing PNG ERD exports generated from Mermaid source
+- `project-management/src/04-USER-FLOW/DIAGRAMS/CONTEXT.md` — placeholder directory with
+  conventions for storing PNG user flow diagram exports from Mermaid or Figma
+
+### Changed
+
+- `project-management/docs/VERSIONING-GUIDE.md` — rewritten to document the **two-tier
+  versioning strategy**: root project semver (covering the full monorepo) and independent
+  sub-package semver for `backend`, `frontend`, `mobile`, and `shared`; file tables for both
+  tiers updated and the sub-package isolation rule made explicit
+- `code/docs/SECURITY.md` — NIST SP 800-63B added as the governing standard for
+  authentication, password policy, and MFA in the Authentication section; OWASP A07 table
+  row updated to cite the full standard name
+- `how-to/src/CLAUDE-MULTILAYER.md` — significantly expanded from a brief table to full
+  installation and usage instructions for all six MCP servers (`code-review-graph`,
+  `claude-in-chrome`, `docfork`, `context7`, `figma`, `mcp-mermaid`), including JSON
+  definitions, usage guidance, and example sessions for each
+- `README.md` — MCP server table updated to list all six servers with correct scope
+  classification; descriptive paragraphs added for each server group
+- All `code/workflows/` CHECKLIST and STEPS files updated: numbered artefact folder paths
+  corrected (`src/PLANS/` → `src/00-PLANS/`, `src/SECURITY/` → `src/09-SECURITY/`,
+  `src/GDPR/` → `src/08-GDPR/`, `src/BUGS/` → `src/14-BUGS/`, `src/REVIEWS/` →
+  `src/13-REVIEWS/`, `src/REFACTORING/` → `src/15-REFACTORING/`)
+- `code/workflows/03-security-hardening/CONTEXT.md` and `code/workflows/06-review/CONTEXT.md`
+  — NIST SP 800-63B added to key concepts alongside OWASP A01–A10
+- `code/workflows/01-new-feature/STEPS.md`, `code/workflows/04-api-design/STEPS.md`,
+  `code/workflows/06-review/CHECKLIST.md`, and `code/workflows/08-refactor/CHECKLIST.md` —
+  explicit requirement for named Policy classes on all auth/permission checks, linking to the
+  new Decision Structuring section in CODING-PRINCIPLES.md
+- `how-to/workflows/03-debugging/` CHECKLIST and STEPS — bug report path corrected to
+  `project-management/src/14-BUGS/`
 
 ---
 

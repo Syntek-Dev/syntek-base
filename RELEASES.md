@@ -1,9 +1,64 @@
 # Releases — project-name
 
-**Last Updated**: 29/04/2026 **Version**: 1.3.0 **Maintained By**: Syntek Studio
+**Last Updated**: 29/04/2026 **Version**: 1.4.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.4.0 — 29/04/2026
+
+**Status:** Feature release — Coding standards expansion, MCP server documentation, and two-tier versioning
+
+### Summary
+
+Expands coding standards with two new authoritative sections (Class vs Function and Decision
+Structuring), adds a URL routing strategy document, documents all six MCP servers with full
+installation and usage instructions, rewrites the versioning guide to cover the two-tier semver
+strategy, and introduces placeholder directories for ERD and user flow diagram exports.
+Workflow and reference files are also updated to cite NIST SP 800-63B alongside OWASP and to
+use correct numbered artefact folder paths throughout.
+
+### What's new since v1.3.0
+
+- **Class vs Function guidance:** A new section in `code/docs/CODING-PRINCIPLES.md` gives
+  definitive rules for when to choose a class over a function in both Python/Django and
+  TypeScript/React, with worked examples covering stateless utilities, service objects,
+  Protocol implementations, and React hooks
+- **Decision Structuring patterns:** A second new section in `CODING-PRINCIPLES.md`
+  formalises three named patterns — Boolean predicate, Policy class (named access rule),
+  and Strategy class (variant algorithm) — so agents and developers have a consistent
+  vocabulary and a clear guide for shaping business logic
+- **URL Strategy document:** `code/docs/URL-STRATEGY.md` documents the Phase 1 path-based
+  routing plan (`/`, `/admin/`, `/portal/`) and the planned Phase 2 migration to dedicated
+  subdomains, giving the team a single reference for routing decisions
+- **Full MCP server guide:** `how-to/src/CLAUDE-MULTILAYER.md` now provides complete
+  installation commands and usage guidance for all six MCP servers, including the
+  auto-loaded `code-review-graph`, the built-in `claude-in-chrome`, and the four user-scoped
+  servers (`docfork`, `context7`, `figma`, `mcp-mermaid`)
+- **Two-tier versioning guide:** `project-management/docs/VERSIONING-GUIDE.md` rewritten to
+  document the root project semver (covering the entire monorepo) and independent sub-package
+  semver for `backend`, `frontend`, `mobile`, and `shared`, with explicit file update tables
+  for both tiers
+- **ERD diagram directory:** `project-management/src/03-DATABASE/ERD-DIAGRAMS/` created as a
+  dedicated home for PNG entity-relationship diagram exports from Mermaid source
+- **User flow diagram directory:** `project-management/src/04-USER-FLOW/DIAGRAMS/` created as
+  a dedicated home for PNG user flow diagram exports from Mermaid or Figma
+
+### What's improved since v1.3.0
+
+- **NIST SP 800-63B referenced throughout:** `code/docs/SECURITY.md`, security-hardening and
+  review workflow CONTEXT files now cite NIST SP 800-63B as the governing standard for
+  authentication, password policy, and MFA requirements alongside OWASP
+- **Policy classes enforced in workflows:** All relevant workflow CHECKLIST and STEPS files
+  now explicitly require named Policy classes for authentication and permission checks,
+  linking to the new Decision Structuring section
+- **Correct artefact folder paths:** All workflow files that referenced old unnumbered folder
+  paths (`src/PLANS/`, `src/BUGS/`, etc.) have been corrected to their current numbered
+  equivalents
+- **README MCP table:** Updated to list all six servers with accurate scope classification
+  and added descriptive paragraphs for each group
 
 ---
 

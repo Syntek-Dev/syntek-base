@@ -114,5 +114,5 @@ project-name/
 
 ## Repository State
 
-Current version: `1.0.0` — first stable scaffold release. Ready for feature development.
+Current version: `1.4.0` — coding standards expansion, MCP server documentation, and two-tier versioning. Ready for feature development.
 Backend, frontend, and mobile source code live in `code/src/` and are initialised via `/syntek-dev-suite:setup`.
