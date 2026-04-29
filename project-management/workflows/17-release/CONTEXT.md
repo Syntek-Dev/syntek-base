@@ -1,9 +1,11 @@
 # Workflow: Release
 
+> **Agent hints — Model:** Sonnet
+
 ## Directory Tree
 
 ```text
-project-management/workflows/14-release/
+project-management/workflows/17-release/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute

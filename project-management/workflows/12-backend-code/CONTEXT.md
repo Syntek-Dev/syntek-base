@@ -1,9 +1,11 @@
 # Workflow: Backend Code
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Django, Python)
+
 ## Directory Tree
 
 ```text
-project-management/workflows/09-backend-code/
+project-management/workflows/12-backend-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute

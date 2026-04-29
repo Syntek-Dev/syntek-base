@@ -1,9 +1,11 @@
 # Workflow: API Code (GraphQL)
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Strawberry GraphQL)
+
 ## Directory Tree
 
 ```text
-project-management/workflows/10-api-code/
+project-management/workflows/13-api-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
@@ -54,5 +56,5 @@ exist before this workflow begins.
 
 ### project-management/ — prerequisites and next step
 
-- `project-management/workflows/09-backend-code/` — backend models and services must exist first
-- `project-management/workflows/11-frontend-code/` — follow this after the API is tested
+- `project-management/workflows/12-backend-code/` — backend models and services must exist first
+- `project-management/workflows/14-frontend-code/` — follow this after the API is tested

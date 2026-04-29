@@ -1,9 +1,11 @@
 # Workflow: Mobile App Code
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Expo, React Native, NativeWind), `figma` (read designs)
+
 ## Directory Tree
 
 ```text
-project-management/workflows/12-app-code/
+project-management/workflows/15-app-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
@@ -64,5 +66,5 @@ workflow begins.
 
 - `project-management/workflows/06-component-designs/` — component designs consumed here
 - `project-management/workflows/07-wireframes/` — wireframes consumed here (use mobile viewports)
-- `project-management/workflows/10-api-code/` — GraphQL API must exist before this workflow
-- `project-management/workflows/13-pr-and-review/` — follow this after mobile is tested
+- `project-management/workflows/13-api-code/` — GraphQL API must exist before this workflow
+- `project-management/workflows/16-pr-and-review/` — follow this after mobile is tested

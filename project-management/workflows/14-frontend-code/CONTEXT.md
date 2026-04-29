@@ -1,9 +1,11 @@
 # Workflow: Frontend Code
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Next.js, React, Tailwind), `figma` (read designs), `claude-in-chrome` (visual verification)
+
 ## Directory Tree
 
 ```text
-project-management/workflows/11-frontend-code/
+project-management/workflows/14-frontend-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
@@ -61,5 +63,5 @@ workflow begins.
 
 - `project-management/workflows/06-component-designs/` — component designs consumed here
 - `project-management/workflows/07-wireframes/` — wireframes consumed here
-- `project-management/workflows/10-api-code/` — GraphQL API must exist before this workflow
-- `project-management/workflows/13-pr-and-review/` — follow this after frontend is tested
+- `project-management/workflows/13-api-code/` — GraphQL API must exist before this workflow
+- `project-management/workflows/16-pr-and-review/` — follow this after frontend is tested
