@@ -1,5 +1,7 @@
 # Workflow: Brand Guides
 
+> **Agent hints — Model:** Sonnet · **MCP:** `figma`
+
 ## Directory Tree
 
 ```text

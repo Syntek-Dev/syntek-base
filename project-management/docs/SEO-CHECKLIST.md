@@ -1,5 +1,7 @@
 # SEO & AI Discoverability Checklist
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Next.js metadata, Open Graph)
+
 **Last Updated**: 13/03/2026 **Version**: 1.0.0 **Maintained By**: Development Team **Language**:
 British English (en_GB) **Timezone**: Europe/London
 

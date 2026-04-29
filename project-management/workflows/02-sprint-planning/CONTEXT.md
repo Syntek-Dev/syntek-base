@@ -1,5 +1,7 @@
 # Workflow: Sprint Planning
 
+> **Agent hints — Model:** Sonnet
+
 ## Directory Tree
 
 ```text

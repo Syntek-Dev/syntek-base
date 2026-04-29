@@ -1,5 +1,7 @@
 # GDPR Guide
 
+> **Agent hints — Model:** Opus
+
 **Last Updated**: 24/04/2026 **Version**: 1.1.1 **Maintained By**: Syntek Development Team
 **Language**: British English (en_GB) **Timezone**: Europe/London
 

@@ -1,5 +1,7 @@
 # Workflow: GDPR Compliance Review
 
+> **Agent hints — Model:** Opus
+
 ## Directory Tree
 
 ```text

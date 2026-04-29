@@ -1,5 +1,7 @@
 # Workflow: Wireframes
 
+> **Agent hints — Model:** Sonnet · **MCP:** `figma`
+
 ## Directory Tree
 
 ```text

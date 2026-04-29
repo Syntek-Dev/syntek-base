@@ -38,13 +38,15 @@ project-management/
 │   │   └── CONTEXT.md
 │   ├── 10-QA/                  ← QA-US###-<DESCRIPTION>.md
 │   │   └── CONTEXT.md
-│   ├── 11-TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 11-SPRINT-PLANS/        ← SPRINT-PLAN-##.md
 │   │   └── CONTEXT.md
-│   ├── 12-REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
+│   ├── 12-TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
 │   │   └── CONTEXT.md
-│   ├── 13-BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ├── 13-REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
 │   │   └── CONTEXT.md
-│   └── 14-REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
+│   ├── 14-BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+│   │   └── CONTEXT.md
+│   └── 15-REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
 │       └── CONTEXT.md
 └── workflows/                  ← step-by-step PM workflows
     ├── CONTEXT.md
@@ -80,27 +82,39 @@ project-management/
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 09-backend-code/        ← implement Django models, services, business logic
+    ├── 09-security-checks/     ← threat-model planned features before sprint planning
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 10-api-code/            ← implement the Strawberry GraphQL API layer
+    ├── 10-qa-checks/           ← define QA scenarios for each story before development
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 11-frontend-code/       ← implement Next.js pages and React components
+    ├── 11-sprint-plans/        ← write the sprint plan (MoSCoW, phases, definition of done)
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 12-app-code/            ← implement Expo React Native screens and components
+    ├── 12-backend-code/        ← implement Django models, services, business logic
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 13-pr-and-review/       ← create, review, and merge a feature PR
+    ├── 13-api-code/            ← implement the Strawberry GraphQL API layer
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    └── 14-release/             ← cut a release (version bump, changelog, deploy)
+    ├── 14-frontend-code/       ← implement Next.js pages and React components
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 15-app-code/            ← implement Expo React Native screens and components
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    ├── 16-pr-and-review/       ← create, review, and merge a feature PR
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    └── 17-release/             ← cut a release (version bump, changelog, deploy)
         ├── CHECKLIST.md
         ├── CONTEXT.md
         └── STEPS.md
@@ -141,22 +155,23 @@ project-management/
 
 Numbered to mirror the `workflows/` steps. `00-` folders are pre-workflow reference material.
 
-| Path                  | Contains                                     |
-| --------------------- | -------------------------------------------- |
-| `src/00-ASSETS/`      | ERD diagrams, user-flow diagrams, logos      |
-| `src/00-DECISIONS/`   | Architectural decision records (ADR-###)     |
-| `src/00-PLANS/`       | Architectural and feature plans              |
-| `src/01-STORIES/`     | User stories (US###.md)                      |
-| `src/02-SPRINTS/`     | Sprint plans and logs                        |
-| `src/03-DATABASE/`    | Schema designs, ERDs, migration notes        |
-| `src/04-USER-FLOW/`   | User journey maps per product area           |
-| `src/05-BRAND-GUIDE/` | Brand identity, colour palette, typography   |
-| `src/06-COMPONENTS/`  | Component design specs                       |
-| `src/07-WIREFRAMES/`  | Wireframes per user story or screen          |
-| `src/08-GDPR/`        | GDPR data inventory, consent, retention docs |
-| `src/09-SECURITY/`    | Security audits, threat models, assessments  |
-| `src/10-QA/`          | QA test files per user story                 |
-| `src/11-TESTS/`       | Test status and manual testing guides        |
-| `src/12-REVIEWS/`     | Code review notes                            |
-| `src/13-BUGS/`        | Bug reports and related user stories         |
-| `src/14-REFACTORING/` | Refactoring plans and notes                  |
+| Path                   | Contains                                     |
+| ---------------------- | -------------------------------------------- |
+| `src/00-ASSETS/`       | ERD diagrams, user-flow diagrams, logos      |
+| `src/00-DECISIONS/`    | Architectural decision records (ADR-###)     |
+| `src/00-PLANS/`        | Architectural and feature plans              |
+| `src/01-STORIES/`      | User stories (US###.md)                      |
+| `src/02-SPRINTS/`      | Sprint plans and logs                        |
+| `src/03-DATABASE/`     | Schema designs, ERDs, migration notes        |
+| `src/04-USER-FLOW/`    | User journey maps per product area           |
+| `src/05-BRAND-GUIDE/`  | Brand identity, colour palette, typography   |
+| `src/06-COMPONENTS/`   | Component design specs                       |
+| `src/07-WIREFRAMES/`   | Wireframes per user story or screen          |
+| `src/08-GDPR/`         | GDPR data inventory, consent, retention docs |
+| `src/09-SECURITY/`     | Security audits, threat models, assessments  |
+| `src/10-QA/`           | QA test files per user story                 |
+| `src/11-SPRINT-PLANS/` | Sprint plan documents                        |
+| `src/12-TESTS/`        | Test status and manual testing guides        |
+| `src/13-REVIEWS/`      | Code review notes                            |
+| `src/14-BUGS/`         | Bug reports and related user stories         |
+| `src/15-REFACTORING/`  | Refactoring plans and notes                  |

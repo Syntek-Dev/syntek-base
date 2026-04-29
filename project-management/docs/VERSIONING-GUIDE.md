@@ -1,5 +1,7 @@
 # Versioning Guide — project-name
 
+> **Agent hints — Model:** Haiku
+
 **Last Updated**: 18/04/2026 **Version**: 0.1.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 

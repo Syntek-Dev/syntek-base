@@ -1,5 +1,7 @@
 # Responsive Design
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Tailwind CSS, NativeWind), `claude-in-chrome` (viewport verification)
+
 ## Device Split
 
 The gap between mobile and desktop/laptop is still growing, but tablets remain minimal.

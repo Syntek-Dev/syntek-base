@@ -1,5 +1,7 @@
 # Workflow: User Flow Design
 
+> **Agent hints — Model:** Sonnet · **MCP:** `figma`, `mcp-mermaid` (flow diagrams)
+
 ## Directory Tree
 
 ```text

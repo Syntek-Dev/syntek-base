@@ -1,5 +1,7 @@
 # Workflow: Database Schema Design
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Django ORM, PostgreSQL), `mcp-mermaid` (ERD diagrams)
+
 ## Directory Tree
 
 ```text
