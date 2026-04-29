@@ -1,5 +1,7 @@
 # Workflow 10 — Debugging with Logs and Observability
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Sentry, Loki, Grafana)
+
 ## Purpose
 
 Systematic debugging using the project's observability stack, working from the fastest/cheapest

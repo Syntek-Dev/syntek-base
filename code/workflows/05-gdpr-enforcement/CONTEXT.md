@@ -1,5 +1,7 @@
 # Workflow: GDPR Enforcement
 
+> **Agent hints — Model:** Opus · **MCP:** `code-review-graph`, `docfork` + `context7` (Django encryption, GDPR)
+
 ## Directory Tree
 
 ```text

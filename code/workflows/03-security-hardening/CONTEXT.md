@@ -1,5 +1,7 @@
 # Workflow: Security Hardening
 
+> **Agent hints — Model:** Opus · **MCP:** `code-review-graph`, `docfork` + `context7` (OWASP, Django security)
+
 ## Directory Tree
 
 ```text

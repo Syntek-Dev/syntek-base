@@ -1,5 +1,7 @@
 # Workflow: Django Database Migration
 
+> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Django migrations)
+
 ## Directory Tree
 
 ```text

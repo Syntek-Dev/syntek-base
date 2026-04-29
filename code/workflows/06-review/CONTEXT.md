@@ -1,5 +1,7 @@
 # Workflow: Code Review
 
+> **Agent hints — Model:** Opus · **MCP:** `code-review-graph`
+
 ## Directory Tree
 
 ```text

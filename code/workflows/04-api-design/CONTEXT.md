@@ -1,5 +1,7 @@
 # Workflow: GraphQL API Design
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Strawberry GraphQL)
+
 ## Directory Tree
 
 ```text

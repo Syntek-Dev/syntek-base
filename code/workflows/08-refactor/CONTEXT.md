@@ -1,5 +1,7 @@
 # Workflow: Refactor
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`
+
 ## Directory Tree
 
 ```text

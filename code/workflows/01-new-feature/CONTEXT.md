@@ -1,5 +1,7 @@
 # Workflow: Add a New Full-Stack Feature
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7`
+
 ## Directory Tree
 
 ```text

@@ -1,5 +1,7 @@
 # Workflow: TDD Cycle
 
+> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (pytest, Vitest)
+
 ## Directory Tree
 
 ```text
