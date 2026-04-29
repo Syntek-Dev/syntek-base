@@ -664,12 +664,34 @@ inspect the local environment without running arbitrary shell commands.
 
 ### MCP servers
 
-| Server              | Scope              | Always available                       |
-| ------------------- | ------------------ | -------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors |
-| `context7`          | Machine-global     | Only if installed locally              |
-| `claude-in-chrome`  | Machine-global     | Only if installed locally              |
-| `mcp-mermaid`       | Machine-global     | Only if installed locally              |
+Six MCP servers are configured for this project. One is repo-scoped and auto-loaded for all contributors. One is built-in. Four require a one-time installation on each developer's machine and are stored in the user-level Claude Code config at `~/.claude.json`.
+
+| Server              | Scope                   | Always available                       |
+| ------------------- | ----------------------- | -------------------------------------- |
+| `code-review-graph` | Repo — `.mcp.json`      | Yes — auto-loaded for all contributors |
+| `claude-in-chrome`  | Built-in                | Yes — no installation required         |
+| `docfork`           | User — `~/.claude.json` | Only if installed locally              |
+| `context7`          | User — `~/.claude.json` | Only if installed locally              |
+| `figma`             | User — `~/.claude.json` | Only if installed locally              |
+| `mcp-mermaid`       | User — `~/.claude.json` | Only if installed locally              |
+
+Full installation instructions for each server: `how-to/src/CLAUDE-MULTILAYER.md`
+
+#### code-review-graph (auto-loaded)
+
+No action required. Defined in `.mcp.json`, loaded automatically for every contributor. Parses the
+codebase with Tree-sitter and exposes structural graph queries. Use before Grep/Glob/Read.
+
+#### claude-in-chrome (built-in)
+
+No installation required. Provides browser automation for visual verification inside Claude Code
+sessions. Load each tool schema with `ToolSearch` before calling any `mcp__claude-in-chrome__*`
+tool.
+
+#### docfork, context7, figma, mcp-mermaid (user-scoped)
+
+Install once per machine using the Claude Code CLI. See `how-to/src/CLAUDE-MULTILAYER.md` for the
+exact command for each server, including Figma API key configuration.
 
 ---
 
