@@ -16,7 +16,7 @@
 
 ## Execution Checklist
 
-- [ ] Architectural plan saved to `project-management/src/PLANS/`
+- [ ] Architectural plan saved to `project-management/src/00-PLANS/`
 - [ ] Failing tests written before implementation
 - [ ] Models and migration created and applied
 - [ ] Service layer implemented with `transaction.atomic()` on multi-write methods

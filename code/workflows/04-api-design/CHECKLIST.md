@@ -10,7 +10,7 @@
 - [ ] Schema design documented before implementation
 - [ ] Types defined in correct app's `types.py`
 - [ ] Business logic in service layer, not resolvers
-- [ ] Every mutation checks authentication and permissions
+- [ ] Every mutation checks authentication and permissions via a named Policy class
 - [ ] Schema exported to `schema.graphql`
 - [ ] Frontend types regenerated with `npm run codegen`
 - [ ] GraphQL tests written and passing

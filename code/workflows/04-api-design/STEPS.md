@@ -10,7 +10,7 @@
 ### Step 1 — Design the Schema
 
 Document the intended types, queries, and mutations before writing any code.
-Save the design to `project-management/src/PLANS/PLAN-<FEATURE>-API.md`.
+Save the design to `project-management/src/00-PLANS/PLAN-<FEATURE>-API.md`.
 
 ### Step 2 — Implement Types
 
@@ -29,6 +29,10 @@ Every mutation must:
 1. Verify the caller is authenticated
 2. Check the caller has permission for the operation
 3. Validate any user-supplied IDs
+
+Implement items 1–2 as named Policy classes — see
+[CODING-PRINCIPLES.md — Decision Structuring](../../docs/CODING-PRINCIPLES.md#decision-structuring-boolean-policy-and-strategy).
+Item 3 is input validation, not Policy.
 
 ### Step 4 — Export Schema
 

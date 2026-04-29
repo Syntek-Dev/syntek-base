@@ -26,7 +26,7 @@ Commit after each group of fixes.
 
 ### Step 4 — Log Audit
 
-Save a security audit summary to `project-management/src/SECURITY/AUDITS/`.
+Save a security audit summary to `project-management/src/09-SECURITY/AUDITS/`.
 
 ### Step 5 — Commit
 

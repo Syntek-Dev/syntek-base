@@ -26,7 +26,8 @@ Use this workflow when:
 
 ## Key concepts
 
-- OWASP A01–A10 are the baseline — all must be addressed
+- OWASP A01–A10 are the security baseline — all must be addressed
+- NIST SP 800-63B governs authentication, password policy, and MFA requirements
 - Every GraphQL mutation must verify permissions explicitly
 - User-supplied IDs must be validated against caller ownership
 - `DEBUG=False` enforced in all non-local environments

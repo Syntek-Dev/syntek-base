@@ -16,7 +16,7 @@ code/workflows/06-review/
 Use this workflow when performing a code quality review before raising a PR. This
 covers the _content_ of the code — security, patterns, coverage, and coding principles.
 For the PR merge process (branch promotion, approvals, gates) use
-`project-management/workflows/13-pr-and-review/`.
+`project-management/workflows/16-pr-and-review/`.
 
 ## Prerequisites
 
@@ -26,8 +26,9 @@ For the PR merge process (branch promotion, approvals, gates) use
 
 ## Key concepts
 
-- OWASP A01–A10 are the baseline — all must be addressed before a PR is raised
-- Every mutation must verify authentication and permissions explicitly
+- OWASP A01–A10 are the security baseline — all must be addressed before a PR is raised
+- NIST SP 800-63B governs authentication, password policy, and MFA requirements
+- Every mutation must verify authentication and permissions explicitly via named Policy classes
 - User-supplied IDs must be validated against caller ownership (no IDOR)
 - Coverage floors: 75% backend (90% auth), 70% frontend
 - No hardcoded secrets, no bare `except:`, no inline imports without documentation
@@ -35,6 +36,6 @@ For the PR merge process (branch promotion, approvals, gates) use
 ## Cross-references
 
 - `code/docs/CODING-PRINCIPLES.md` — coding rules and style
-- `code/docs/SECURITY.md` — OWASP A01–A10, permission and IDOR requirements
+- `code/docs/SECURITY.md` — OWASP A01–A10 and NIST SP 800-63B, permission and IDOR requirements
 - `code/docs/TESTING.md` — coverage floors and test philosophy
-- `project-management/workflows/13-pr-and-review/` — the subsequent PR merge workflow
+- `project-management/workflows/16-pr-and-review/` — the subsequent PR merge workflow

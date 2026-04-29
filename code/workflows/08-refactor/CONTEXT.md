@@ -30,7 +30,9 @@ refactor separately.
 ## Key concepts
 
 - Tests must stay green throughout — run them after every meaningful change
-- Extract business logic from resolvers into service classes
+- Extract business logic from resolvers into service classes; when the extracted logic is a named
+  access rule, shape it as a Policy class — when it is a variant algorithm, shape it as a Strategy
+  class (see `code/docs/CODING-PRINCIPLES.md — Decision Structuring`)
 - Split any file exceeding 750 lines into focused modules
 - One function — one purpose
 - After refactoring, behaviour must be identical to before
@@ -39,4 +41,4 @@ refactor separately.
 
 - `code/docs/CODING-PRINCIPLES.md` — rules the refactor must satisfy
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service layer and module structure
-- `project-management/src/14-REFACTORING/` — where refactoring notes are saved
+- `project-management/src/15-REFACTORING/` — where refactoring notes are saved

@@ -7,7 +7,7 @@
 
 ## Prerequisites
 
-- [ ] `project-management/src/GDPR/DATA-INVENTORY.md` exists and is up to date
+- [ ] `project-management/src/08-GDPR/DATA-INVENTORY.md` exists and is up to date
 - [ ] PM-layer GDPR compliance review is complete
 
 ---
@@ -16,7 +16,7 @@
 
 ### Step 1 — Review the Data Inventory
 
-Read `project-management/src/GDPR/DATA-INVENTORY.md` and confirm which fields in
+Read `project-management/src/08-GDPR/DATA-INVENTORY.md` and confirm which fields in
 the current feature are classified as personal data. Cross-reference
 `code/docs/ENCRYPTION-GUIDE.md` for the encryption strategy.
 

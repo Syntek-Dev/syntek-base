@@ -15,7 +15,7 @@
 ## Execution Checklist
 
 - [ ] Coding principles followed — functions single-purpose, files under 750 lines
-- [ ] All mutations verify authentication and permissions explicitly
+- [ ] All mutations verify authentication and permissions explicitly via a named Policy class
 - [ ] No user-supplied IDs used without ownership verification (no IDOR)
 - [ ] Backend coverage ≥ 75% (≥ 90% for auth modules)
 - [ ] Frontend coverage ≥ 70%
@@ -30,5 +30,5 @@
 ## Definition of Done
 
 - [ ] All review findings resolved or explicitly accepted with rationale
-- [ ] Review notes saved to `project-management/src/REVIEWS/` if significant findings were made
+- [ ] Review notes saved to `project-management/src/13-REVIEWS/` if significant findings were made
 - [ ] Committed and pushed

@@ -21,7 +21,7 @@
 /syntek-dev-suite:plan [feature name and scope]
 ```
 
-Save the plan to `project-management/src/PLANS/PLAN-<FEATURE-NAME>.md`.
+Save the plan to `project-management/src/00-PLANS/PLAN-<FEATURE-NAME>.md`.
 
 ### Step 2 — Write Failing Tests First (Red Phase)
 
@@ -58,7 +58,8 @@ Every service method doing ≥ 2 writes must use `transaction.atomic()`.
 /syntek-dev-suite:backend [implement Strawberry types and resolvers]
 ```
 
-Every mutation must verify permissions before executing business logic.
+Every mutation must verify permissions before executing business logic — implement as a named Policy
+class (see [CODING-PRINCIPLES.md — Decision Structuring](../../docs/CODING-PRINCIPLES.md#decision-structuring-boolean-policy-and-strategy)).
 
 ### Step 6 — Export Schema and Generate Frontend Types
 
