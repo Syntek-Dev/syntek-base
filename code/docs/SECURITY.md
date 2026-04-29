@@ -81,6 +81,9 @@ This document aligns with the [OWASP Top 10:2025](https://owasp.org/Top10/2025/)
 
 ### Authentication
 
+> Requirements in this section follow [NIST SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html)
+> Digital Identity Guidelines alongside the OWASP Authentication Cheat Sheet.
+
 - Use the framework's built-in authentication system. Do not roll your own.
 - Passwords must be hashed using a memory-hard algorithm. Use the following preference order per the
   [OWASP Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html):
@@ -713,7 +716,7 @@ root causes.
 | **A04:2025** | **Cryptographic Failures**                | Use approved algorithms only (see [Cryptography section](#cryptography-and-encryption-standards)); TLS everywhere; encrypt PII at rest; use memory-hard password hashing (argon2id -> scrypt -> bcrypt); never use MD5, SHA-1, DES, or ECB |
 | **A05:2025** | **Injection**                             | Parameterised queries always; framework validation on all inputs; escape/encode output based on context (HTML, JavaScript, URL, SQL); disable dangerous interpreter features                                                               |
 | **A06:2025** | **Insecure Design**                       | Threat model new features; apply least privilege; security review before launch; use secure design patterns; separate trust boundaries                                                                                                     |
-| **A07:2025** | **Authentication Failures**               | Framework auth with memory-hard hashing; regenerate sessions on login; enforce MFA for admin; implement credential stuffing protection; do not require periodic password changes (per NIST)                                                |
+| **A07:2025** | **Authentication Failures**               | Framework auth with memory-hard hashing; regenerate sessions on login; enforce MFA for admin; implement credential stuffing protection; do not require periodic password changes (per NIST SP 800-63B)                                     |
 | **A08:2025** | **Software and Data Integrity Failures**  | Pin dependency versions; verify package integrity; use signed commits; validate CI/CD pipeline integrity; verify webhook signatures                                                                                                        |
 | **A09:2025** | **Security Logging & Alerting Failures**  | Log all auth events, admin actions, and errors; configure alerting for suspicious patterns; ensure logs are immutable and tamper-resistant (see [Security Logging](#security-logging-and-monitoring))                                      |
 | **A10:2025** | **Mishandling of Exceptional Conditions** | Handle all error paths explicitly; fail closed (deny by default) rather than open; do not leak sensitive data in error messages; test error handling paths including unexpected inputs and resource exhaustion                             |

@@ -2,7 +2,7 @@
 
 > **Agent hints — Model:** Sonnet
 
-**Last Updated**: 22/03/2026 **Version**: 1.11.0 **Maintained By**: Development Team **Language**:
+**Last Updated**: 29/04/2026 **Version**: 1.12.0 **Maintained By**: Development Team **Language**:
 British English (en_GB) **Timezone**: Europe/London
 
 ---
@@ -25,6 +25,8 @@ British English (en_GB) **Timezone**: Europe/London
 - [DRY vs WET — The Rule of Three](#dry-vs-wet--the-rule-of-three)
 - [KISS — Keep It Simple](#kiss--keep-it-simple)
 - [YAGNI — You Ain't Gonna Need It](#yagni--you-aint-gonna-need-it)
+- [Class vs Function](#class-vs-function)
+- [Decision Structuring: Boolean, Policy, and Strategy](#decision-structuring-boolean-policy-and-strategy)
 - [Error Handling](#error-handling)
 - [Naming Conventions](#naming-conventions)
 - [Import Rules](#import-rules)
@@ -483,6 +485,302 @@ until there is a real need.
 
 ---
 
+## Class vs Function
+
+The choice between a class and a function is primarily about **state and dependencies**. Use the
+simplest form that satisfies the requirement.
+
+### Python / Django
+
+**Use a function when:**
+
+- The logic is stateless — takes inputs and returns an output with no retained state
+- No dependencies need to be injected
+- It is a one-off utility or predicate (`format_currency`, `is_expired`)
+
+**Use a class when:**
+
+- The code implements a `Protocol` (Policy, Strategy, or any other interface)
+- The Django framework expects a class: views (`View`), permissions (`BasePermission`), managers
+  (`Manager`), middleware, authentication backends, management commands
+- Two or more related methods share state or injected dependencies
+- You need `__init__` to receive and store dependencies for later use
+
+The default in the Django service layer is a **class**, because service objects typically hold
+injected dependencies (repositories, policy classes, external clients) constructed once per request.
+
+```python
+# Stateless utility — function
+def format_currency(amount: Decimal, currency: str = "GBP") -> str:
+    return f"£{amount:,.2f}"
+
+# Holds injected dependencies, implements a Protocol — class
+class RecordService:
+    def __init__(self, deletion_policy: DeletionPolicy) -> None:
+        self._policy = deletion_policy
+
+    def delete(self, user: "User", record: "Record") -> None:
+        if not self._policy.permits(user, record):
+            raise PermissionDenied("Not permitted.")
+        record.delete()
+```
+
+### TypeScript / React / Next.js
+
+The modern React ecosystem is **function-first**. Class components are legacy and must never be
+written for new code.
+
+**Use a function for:**
+
+- React components — always function components
+- Hooks (`use*`) — always functions
+- Pure utilities, predicates, and helpers
+- Stateless Policy implementations (no injected dependencies, no shared interface)
+- Next.js route handlers, server actions, and middleware
+
+**Use a class for:**
+
+- Strategy and Policy implementations that are shared across React and non-React contexts, require
+  injected dependencies, or must satisfy a shared TypeScript `interface`
+- Custom Error subclasses (`class PaymentError extends Error`)
+- Non-React service objects — e.g., an API client wrapper that holds configuration state
+
+```typescript
+// Stateless utility — function
+function formatCurrency(amount: number, currency = "GBP"): string {
+  return new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount);
+}
+
+// Stateless Policy — function is sufficient
+function canDeleteRecord(user: User, record: Record): boolean {
+  return user.hasMFAVerified && (user.isAdmin || record.ownerId === user.id);
+}
+
+// Strategy implementing a shared interface — class
+class TOTPStrategy implements MFAStrategy {
+  async verify(token: string): Promise<boolean> {
+    const { verified } = await api.post("/mfa/totp/verify", { token });
+    return verified;
+  }
+}
+
+// Custom Error subclass — always a class
+class PaymentError extends Error {
+  constructor(
+    public readonly orderId: string,
+    message: string,
+  ) {
+    super(message);
+    this.name = "PaymentError";
+  }
+}
+```
+
+### Quick decision guide
+
+| Context                                                       | Use      |
+| ------------------------------------------------------------- | -------- |
+| Django: stateless utility or predicate                        | Function |
+| Django: service with injected dependencies                    | Class    |
+| Django: implements a Protocol (Policy, Strategy)              | Class    |
+| Django: framework expects a class (view, permission, manager) | Class    |
+| TypeScript: React component                                   | Function |
+| TypeScript: hook                                              | Function |
+| TypeScript: stateless Policy or utility                       | Function |
+| TypeScript: Strategy with `interface`, or Error subclass      | Class    |
+| TypeScript: non-React service with injected dependencies      | Class    |
+
+---
+
+## Decision Structuring: Boolean, Policy, and Strategy
+
+> When a condition fits on one line, keep it inline. When a decision has a name in the domain, give
+> it a class. When an algorithm varies by context, give each variant its own class.
+
+Three tools exist for encoding decisions. Use the simplest one that fits.
+
+### Boolean (if/elif/else)
+
+Use plain conditionals when the check is simple, lives in one place, and carries no domain name.
+
+```python
+# Fine: simple, single-place guard
+if not user.is_active:
+    raise PermissionDenied("Account is inactive.")
+```
+
+```typescript
+// Fine: inline guard, no reuse
+if (!user.isVerified) {
+  redirect("/verify-email");
+}
+```
+
+When a boolean chain grows beyond two or three branches, or the same condition appears in more than
+one place, reach for Policy or Strategy instead.
+
+### Policy — _what to do_
+
+A Policy encapsulates a business rule: a named decision about what is permitted, required, or
+forbidden. It answers a yes/no question without dictating the mechanism.
+
+Use a Policy when the rule has a name in the domain, appears in more than one place, must be
+independently testable, or may be swapped without touching the calling code.
+
+**Python / Django**
+
+Use a `Protocol` for the interface and name the class after the business rule it encodes. Django's
+own permission system (`has_permission`, `has_object_permission`) is the canonical Policy pattern in
+the framework. Strawberry GraphQL mutations should call a service that enforces the Policy — never
+inline the check in the resolver.
+
+```python
+from typing import Protocol
+from django.core.exceptions import PermissionDenied
+
+class DeletionPolicy(Protocol):
+    def permits(self, user: "User", obj: object) -> bool: ...
+
+class MFARequiredDeletionPolicy:
+    def permits(self, user: "User", obj: object) -> bool:
+        return user.mfa_verified_this_session
+
+class RecordService:
+    def __init__(self, deletion_policy: DeletionPolicy) -> None:
+        self._policy = deletion_policy
+
+    def delete(self, user: "User", record: "Record") -> None:
+        if not self._policy.permits(user, record):
+            raise PermissionDenied("You are not permitted to delete this record.")
+        record.delete()
+```
+
+**TypeScript / Next.js**
+
+Use a plain function for pure decisions (no React state). Use a hook when the decision depends on
+React context such as auth state or feature flags.
+
+```typescript
+// Pure function — usable anywhere, including server components
+function canDeleteRecord(user: User, record: Record): boolean {
+  return user.hasMFAVerified && (user.isAdmin || record.ownerId === user.id);
+}
+
+// Hook — when the decision depends on React auth context
+function useCanDeleteRecord(record: Record): boolean {
+  const { user } = useAuth();
+  return user.hasMFAVerified && (user.isAdmin || record.ownerId === user.id);
+}
+```
+
+### Strategy — _how to do it_
+
+A Strategy encapsulates an algorithm or implementation variant. Where a Policy says "MFA is
+required to delete a record", a Strategy covers "which kind of MFA this user has access to and how
+to verify it". The decision about _which_ strategy to use lives in a factory function or the service
+layer — not scattered across the codebase.
+
+Structurally, Policy and Strategy are identical — an interface with multiple implementations. The
+distinction is semantic: the name carries the developer's intent.
+
+Use a Strategy when multiple implementations of the same operation exist, the algorithm is selected
+at runtime, or implementations must be swappable without changing the calling code.
+
+**Python / Django**
+
+Django's `AUTHENTICATION_BACKENDS` setting is a first-class framework example of the Strategy
+pattern — different backends, same `authenticate()` interface.
+
+```python
+from typing import Protocol
+from django.db import transaction
+
+class MFAStrategy(Protocol):
+    def verify(self, user: "User", token: str) -> bool: ...
+
+class TOTPStrategy:
+    def verify(self, user: "User", token: str) -> bool:
+        return pyotp.TOTP(user.totp_secret).verify(token)
+
+class BackupCodeStrategy:
+    def verify(self, user: "User", token: str) -> bool:
+        with transaction.atomic():
+            code = BackupCode.objects.select_for_update().filter(
+                user=user, code=token, used=False
+            ).first()
+            if code is None:
+                return False
+            code.used = True
+            code.save()
+            return True
+
+def get_mfa_strategy(user: "User") -> MFAStrategy:
+    return TOTPStrategy() if user.totp_enabled else BackupCodeStrategy()
+```
+
+**TypeScript / Next.js**
+
+```typescript
+interface MFAStrategy {
+  verify(token: string): Promise<boolean>;
+}
+
+class TOTPStrategy implements MFAStrategy {
+  async verify(token: string): Promise<boolean> {
+    const { verified } = await api.post("/mfa/totp/verify", { token });
+    return verified;
+  }
+}
+
+class BackupCodeStrategy implements MFAStrategy {
+  async verify(code: string): Promise<boolean> {
+    const { verified } = await api.post("/mfa/backup-code/verify", { code });
+    return verified;
+  }
+}
+
+function getMFAStrategy(user: User): MFAStrategy {
+  return user.hasTOTP ? new TOTPStrategy() : new BackupCodeStrategy();
+}
+```
+
+### How they compose
+
+Policy determines _whether_ an action is allowed; Strategy determines _how_ it is carried out. They
+compose naturally — the Policy delegates the mechanism to the Strategy:
+
+```python
+class MFARequiredDeletionPolicy:
+    def __init__(self, mfa_strategy: MFAStrategy) -> None:
+        self._strategy = mfa_strategy
+
+    def permits(self, user: "User", token: str) -> bool:
+        return self._strategy.verify(user, token)
+
+# Wired together in the service layer:
+strategy = get_mfa_strategy(user)
+policy = MFARequiredDeletionPolicy(mfa_strategy=strategy)
+service = RecordService(deletion_policy=policy)
+service.delete(user, record, token)
+```
+
+The calling code reads as a sentence: the service enforces a Policy; the Policy delegates _how_ to
+verify to the Strategy.
+
+### Quick decision guide
+
+| Signal                                              | Use                        |
+| --------------------------------------------------- | -------------------------- |
+| One or two conditions, no reuse                     | `if`/`elif`/`else` inline  |
+| Named business rule, checked in two or more places  | Policy                     |
+| Same operation, multiple implementations            | Strategy                   |
+| Rule says _whether_; implementation varies by _how_ | Policy + Strategy composed |
+
+Apply the Rule of Three: do not extract to a Policy or Strategy until the logic appears in at least
+two places, or the intent is clearly a named domain concern from the outset.
+
+---
+
 ## Error Handling
 
 Prefer explicit error handling over silent failures. Never swallow an error without logging it —
@@ -849,3 +1147,7 @@ Before submitting code for review or marking a task complete, verify:
 - [ ] No commented-out code was left in the diff
 - [ ] All imports are at the top of the file (see Import Rules above) — no imports inside functions,
       methods, or classes unless a documented justified exception applies
+- [ ] Conditional chains of three or more branches that encode a named business rule are extracted to
+      a Policy or Strategy rather than left as inline if/elif/else logic
+- [ ] Class vs function choice follows the language-specific rules — no class components in React,
+      no stateless service logic stranded in a class where a function would suffice
