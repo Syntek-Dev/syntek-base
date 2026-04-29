@@ -25,7 +25,8 @@
 12. [TDD and BDD](#tdd-and-bdd)
 13. [Backend and API Guide](#backend-and-api-guide)
 14. [Frontend Guide](#frontend-guide)
-15. [Welcome](#welcome)
+15. [Design](#design)
+16. [Welcome](#welcome)
 
 ---
 
@@ -167,11 +168,12 @@ project-name/
 │   │   ├── 08-GDPR/
 │   │   ├── 09-SECURITY/
 │   │   ├── 10-QA/
-│   │   ├── 11-TESTS/
-│   │   ├── 12-REVIEWS/
-│   │   ├── 13-BUGS/
-│   │   └── 14-REFACTORING/
-│   └── workflows/                       ← 14 step-by-step PM workflows
+│   │   ├── 11-SPRINT-PLANS/
+│   │   ├── 12-TESTS/
+│   │   ├── 13-REVIEWS/
+│   │   ├── 14-BUGS/
+│   │   └── 15-REFACTORING/
+│   └── workflows/                       ← 17 step-by-step PM workflows
 │       ├── 01-story-creation/
 │       ├── 02-sprint-planning/
 │       ├── 03-database-schema/
@@ -180,15 +182,19 @@ project-name/
 │       ├── 06-component-designs/
 │       ├── 07-wireframes/
 │       ├── 08-gdpr-compliance/
-│       ├── 09-backend-code/
-│       ├── 10-api-code/
-│       ├── 11-frontend-code/
-│       ├── 12-app-code/
-│       ├── 13-pr-and-review/
-│       └── 14-release/
+│       ├── 09-security-checks/
+│       ├── 10-qa-checks/
+│       ├── 11-sprint-plans/
+│       ├── 12-backend-code/
+│       ├── 13-api-code/
+│       ├── 14-frontend-code/
+│       ├── 15-app-code/
+│       ├── 16-pr-and-review/
+│       └── 17-release/
 ├── CHANGELOG.md
 ├── CONTEXT.md                           ← project overview and layer map
 ├── CONTRIBUTING.md
+├── DESIGN.md                            ← design entry point for Claude Design (standards + workflows)
 ├── GAPS.md                              ← missing workflow files flagged by Claude
 ├── install.sh                           ← interactive project setup script
 ├── LICENSE
@@ -327,20 +333,22 @@ task, keeping responses fast and token-efficient.
 
 ### Layers
 
-| Layer                  | Path                  | Purpose                                                 |
-| ---------------------- | --------------------- | ------------------------------------------------------- |
-| **Code**               | `code/`               | Source code, coding standards, tests, quality workflows |
-| **How-To**             | `how-to/`             | Setup guides, daily development commands, debugging     |
-| **Project management** | `project-management/` | User stories, sprints, plans, GDPR, security audits     |
-| **Claude config**      | `.claude/`            | Global rules, routing, commands, MCP plugins            |
+| Layer                  | Path                  | Purpose                                                         |
+| ---------------------- | --------------------- | --------------------------------------------------------------- |
+| **Code**               | `code/`               | Source code, coding standards, tests, quality workflows         |
+| **How-To**             | `how-to/`             | Setup guides, daily development commands, debugging             |
+| **Project management** | `project-management/` | User stories, sprints, plans, GDPR, security audits             |
+| **Claude config**      | `.claude/`            | Global rules, routing, commands, MCP plugins                    |
+| **Design**             | `DESIGN.md`           | Design standards and workflows for UI/UX, components, and brand |
 
 ### Routing — read only the layer you need
 
-| Task type                                  | Read first                      |
-| ------------------------------------------ | ------------------------------- |
-| Writing, reviewing, or testing code        | `code/CONTEXT.md`               |
-| Stories, sprints, PRs, releases, GDPR, SEO | `project-management/CONTEXT.md` |
-| Setup, daily dev, CLI usage, debugging     | `how-to/CONTEXT.md`             |
+| Task type                                   | Read first                      |
+| ------------------------------------------- | ------------------------------- |
+| Writing, reviewing, or testing code         | `code/CONTEXT.md`               |
+| Stories, sprints, PRs, releases, GDPR, SEO  | `project-management/CONTEXT.md` |
+| Setup, daily dev, CLI usage, debugging      | `how-to/CONTEXT.md`             |
+| UI/UX design, components, brand, wireframes | `DESIGN.md`                     |
 
 Always-applicable guides: `project-management/docs/GIT-GUIDE.md` ·
 `project-management/docs/VERSIONING-GUIDE.md`
@@ -364,6 +372,7 @@ reference material rather than everything at once.
 | Writing or reviewing code                   | `code/CONTEXT.md`               |
 | Planning, writing stories, or PM work       | `project-management/CONTEXT.md` |
 | Configuring Claude Code or adding a command | `.claude/CLAUDE.md`             |
+| Working on UI/UX, components, or brand      | `DESIGN.md`                     |
 
 ---
 
@@ -447,31 +456,34 @@ begins.
 | Document type        | Naming convention                | Location                           |
 | -------------------- | -------------------------------- | ---------------------------------- |
 | QA test file         | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/10-QA/`    |
-| Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/11-TESTS/` |
-| Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/11-TESTS/` |
-| Bug report           | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/13-BUGS/`  |
+| Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/12-TESTS/` |
+| Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/12-TESTS/` |
+| Bug report           | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/14-BUGS/`  |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
 tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
 
 ### PM workflows — when to use each
 
-| Workflow                | Trigger                                                  |
-| ----------------------- | -------------------------------------------------------- |
-| `01-story-creation/`    | Writing a new user story                                 |
-| `02-sprint-planning/`   | Planning a new sprint                                    |
-| `03-database-schema/`   | Designing a new model or schema change                   |
-| `04-user-flow-design/`  | Mapping user journeys before wireframing                 |
-| `05-brand-guides/`      | Defining the visual brand identity                       |
-| `06-component-designs/` | Designing reusable UI components                         |
-| `07-wireframes/`        | Creating or updating wireframes before frontend work     |
-| `08-gdpr-compliance/`   | Reviewing a feature for GDPR compliance                  |
-| `09-backend-code/`      | Implementing Django models, services, and business logic |
-| `10-api-code/`          | Implementing the Strawberry GraphQL API layer            |
-| `11-frontend-code/`     | Implementing Next.js pages and React components          |
-| `12-app-code/`          | Implementing Expo React Native screens and components    |
-| `13-pr-and-review/`     | Raising a PR and moving it through the promotion chain   |
-| `14-release/`           | Cutting a release (version bump, changelog, deploy)      |
+| Workflow                | Trigger                                                      |
+| ----------------------- | ------------------------------------------------------------ |
+| `01-story-creation/`    | Writing a new user story                                     |
+| `02-sprint-planning/`   | Planning a new sprint                                        |
+| `03-database-schema/`   | Designing a new model or schema change                       |
+| `04-user-flow-design/`  | Mapping user journeys before wireframing                     |
+| `05-brand-guides/`      | Defining the visual brand identity                           |
+| `06-component-designs/` | Designing reusable UI components                             |
+| `07-wireframes/`        | Creating or updating wireframes before frontend work         |
+| `08-gdpr-compliance/`   | Reviewing a feature for GDPR compliance                      |
+| `09-security-checks/`   | Threat-modelling planned features before sprint planning     |
+| `10-qa-checks/`         | Defining QA scenarios for each story before development      |
+| `11-sprint-plans/`      | Writing the sprint plan (MoSCoW, phases, definition of done) |
+| `12-backend-code/`      | Implementing Django models, services, and business logic     |
+| `13-api-code/`          | Implementing the Strawberry GraphQL API layer                |
+| `14-frontend-code/`     | Implementing Next.js pages and React components              |
+| `15-app-code/`          | Implementing Expo React Native screens and components        |
+| `16-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
+| `17-release/`           | Cutting a release (version bump, changelog, deploy)          |
 
 ---
 
@@ -592,7 +604,7 @@ workflow is explicitly triggered.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 13-pr-and-review
+01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 16-pr-and-review
 ```
 
 - Start with `01-new-feature` to plan the feature scope.
@@ -601,12 +613,12 @@ workflow is explicitly triggered.
 - If the feature touches PII, run `05-gdpr-enforcement` before raising a PR.
 - Before opening the PR, run `06-review` to verify OWASP coverage, coding principles, and
   coverage floors.
-- Hand off to the PM layer with `project-management/workflows/13-pr-and-review/`.
+- Hand off to the PM layer with `project-management/workflows/16-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/03-debugging  →  07-debug  →  06-review  →  PM: 13-pr-and-review
+how-to/03-debugging  →  07-debug  →  06-review  →  PM: 16-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
@@ -991,6 +1003,23 @@ code/src/frontend/
 - Accessibility guide → `code/docs/ACCESSIBILITY.md`
 - Performance guide → `code/docs/PERFORMANCE.md`
 - Architecture patterns → `code/docs/ARCHITECTURE-PATTERNS.md`
+
+---
+
+## Design
+
+All UI/UX, component, brand, and wireframe work is anchored from `DESIGN.md` at the project root.
+It is the entry point for Claude Design and links to all relevant standards and workflows across
+the `code/` and `project-management/` layers.
+
+| Category             | Files                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| **Code standards**   | `code/docs/ACCESSIBILITY.md`, `RESPONSIVE-DESIGN.md`, `ARCHITECTURE-PATTERNS.md`    |
+| **PM standards**     | `project-management/docs/RESPONSIVE-DESIGN.md`, `SEO-CHECKLIST.md`, `GDPR-GUIDE.md` |
+| **Design workflows** | `project-management/workflows/04–07` (flows, brand, components, wireframes)         |
+| **Implementation**   | `project-management/workflows/14–15` (frontend, app), `code/workflows/01–02`        |
+
+Full map → `DESIGN.md`
 
 ---
 

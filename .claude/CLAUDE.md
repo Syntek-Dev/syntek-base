@@ -1,6 +1,6 @@
 # Project: project-name
 
-**Last Updated**: 19/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: 29/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB) **Timezone**: Europe/London
 
 ---
@@ -15,11 +15,12 @@
 
 Read only the layer relevant to your task:
 
-| Task type                                  | Read first                      |
-| ------------------------------------------ | ------------------------------- |
-| Writing, reviewing, or testing code        | `code/CONTEXT.md`               |
-| Stories, sprints, PRs, releases, GDPR, SEO | `project-management/CONTEXT.md` |
-| Setup, daily dev, CLI usage, debugging     | `how-to/CONTEXT.md`             |
+| Task type                                   | Read first                      |
+| ------------------------------------------- | ------------------------------- |
+| Writing, reviewing, or testing code         | `code/CONTEXT.md`               |
+| Stories, sprints, PRs, releases, GDPR, SEO  | `project-management/CONTEXT.md` |
+| Setup, daily dev, CLI usage, debugging      | `how-to/CONTEXT.md`             |
+| UI/UX design, components, brand, wireframes | `DESIGN.md`                     |
 
 Always-applicable guides: `project-management/docs/GIT-GUIDE.md` · `project-management/docs/VERSIONING-GUIDE.md`
 
@@ -69,16 +70,22 @@ Full detail → `code/CONTEXT.md`
 
 ## MCP Servers
 
-| Server              | Scope              | Always available                       |
-| ------------------- | ------------------ | -------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors |
-| `context7`          | Machine-global     | Only if installed locally              |
-| `claude-in-chrome`  | Machine-global     | Only if installed locally              |
-| `mcp-mermaid`       | Machine-global     | Only if installed locally              |
-| `figma`             | Machine-global     | Only if installed locally              |
+| Server              | Scope                   | Always available                       |
+| ------------------- | ----------------------- | -------------------------------------- |
+| `code-review-graph` | Repo — `.mcp.json`      | Yes — auto-loaded for all contributors |
+| `docfork`           | User — `~/.claude.json` | Only if installed locally              |
+| `context7`          | User — `~/.claude.json` | Only if installed locally              |
+| `figma`             | User — `~/.claude.json` | Only if installed locally              |
+| `mcp-mermaid`       | User — `~/.claude.json` | Only if installed locally              |
+| `claude-in-chrome`  | Built-in                | Always available                       |
 
-**Documentation lookups** (`context7`): Always prefer over web search for any library, framework,
-or SDK. Use `mcp__context7__resolve-library-id` → `mcp__context7__query-docs`.
+**Documentation lookups** (`docfork` + `context7`): Always prefer over web search for any library,
+framework, or SDK. Use both tools together:
+
+- `docfork` first — `mcp__docfork__search_docs` for broad discovery across 10,000+ libraries
+  (hybrid BM25 + semantic search), then `mcp__docfork__fetch_doc` to retrieve the full page.
+- `context7` to complement — `mcp__context7__resolve-library-id` →
+  `mcp__context7__query-docs` when docfork results are sparse or a second source is needed.
 
 **Code graph** (`code-review-graph`): Use before Grep/Glob/Read. Faster, cheaper on tokens,
 structural context.
@@ -89,6 +96,9 @@ Load tool schema with ToolSearch before calling any `mcp__claude-in-chrome__*` t
 **Design context** (`figma`): Use for reading Figma design files, generating FigJam diagrams, and
 managing Code Connect mappings. Load tool schema with ToolSearch before calling any
 `mcp__figma__*` tool. Prioritise when the user shares a figma.com URL.
+
+**Diagrams** (`mcp-mermaid`): Use for generating architecture, flow, and sequence diagrams.
+Load tool schema with ToolSearch before calling any `mcp__mcp-mermaid__*` tool.
 
 ---
 
@@ -233,6 +243,14 @@ Format: `us###/short-description` — full rules in `project-management/docs/GIT
 | **Locale**             | en_GB                                |
 | **Timezone**           | Europe/London                        |
 | **Currency**           | GBP (£)                              |
+
+---
+
+## Design
+
+Entry point for all UI/UX, component, brand, and wireframe work: `DESIGN.md` (project root).
+Links to all relevant standards and workflows across `code/docs/`, `code/workflows/`,
+`project-management/docs/`, and `project-management/workflows/`.
 
 ---
 

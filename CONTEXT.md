@@ -60,11 +60,12 @@ project-name/
 ├── project-management/              ← stories, sprints, PM, GDPR, security
 │   ├── CONTEXT.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR)
-│   ├── src/                         ← live PM artefacts (00-ASSETS … 14-REFACTORING)
-│   └── workflows/                   ← step-by-step PM workflows (01–14)
+│   ├── src/                         ← live PM artefacts (00-ASSETS … 15-REFACTORING)
+│   └── workflows/                   ← step-by-step PM workflows (01–17)
 ├── CHANGELOG.md
 ├── CONTEXT.md                       ← this file
 ├── CONTRIBUTING.md
+├── DESIGN.md                        ← design entry point for Claude Design (standards + workflows)
 ├── GAPS.md                          ← missing workflow files flagged by Claude
 ├── install.sh                       ← interactive project setup script
 ├── LICENSE
@@ -93,14 +94,15 @@ project-name/
 
 ## Layer Map
 
-| Layer                 | Purpose                                              |
-| --------------------- | ---------------------------------------------------- |
-| `code/`               | Source code and coding standards                     |
-| `how-to/`             | Setup guides, daily development, debugging           |
-| `project-management/` | User stories, sprints, plans, GDPR, security audits  |
-| `.claude/`            | Claude Code context, routing, git and version guides |
-| `code/src/backend/`   | Django project                                       |
-| `code/src/frontend/`  | Next.js project                                      |
+| Layer                 | Purpose                                                              |
+| --------------------- | -------------------------------------------------------------------- |
+| `code/`               | Source code and coding standards                                     |
+| `how-to/`             | Setup guides, daily development, debugging                           |
+| `project-management/` | User stories, sprints, plans, GDPR, security audits                  |
+| `.claude/`            | Claude Code context, routing, git and version guides                 |
+| `DESIGN.md`           | Design entry point — standards, guides, and workflows for UI/UX work |
+| `code/src/backend/`   | Django project                                                       |
+| `code/src/frontend/`  | Next.js project                                                      |
 
 ## Starting Points
 
@@ -108,6 +110,7 @@ project-name/
 - **Writing or reviewing code?** → `code/CONTEXT.md`
 - **Planning or PM work?** → `project-management/CONTEXT.md`
 - **Routing and global rules?** → `.claude/CLAUDE.md`
+- **UI/UX design or component work?** → `DESIGN.md`
 
 ## Repository State
 
