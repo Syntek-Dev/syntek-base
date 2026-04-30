@@ -1,9 +1,67 @@
 # Releases — project-name
 
-**Last Updated**: 29/04/2026 **Version**: 1.4.0 **Maintained By**: Syntek Studio
+**Last Updated**: 30/04/2026 **Version**: 1.5.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.5.0 — 30/04/2026
+
+**Status:** Feature release — testing strategy expansion and TDD workflow rewrite
+
+### Summary
+
+Significantly expands the testing documentation and TDD workflow to cover all test tiers
+in the monorepo. The testing reference guide (`TESTING.md`) has been augmented with new
+sections on mobile (Expo/React Native), Bruno HTTP API tests, compile-time type checking,
+and human-readable test output. The TDD cycle workflow (`02-tdd-cycle`) has been fully
+rewritten to reflect a pragmatic, scalable, real-world TDD approach covering all four
+phases: compile check, Red, Green, and Refactor.
+
+### What's new since v1.4.0
+
+- **Compile & Type-Checking section:** `TESTING.md` now opens with a dedicated section on
+  pre-test compile checks using basedpyright (Python) and tsc (TypeScript/React), making
+  type errors first-class failures in the TDD loop
+- **Mobile test section:** Complete guidance for Expo/React Native testing — Jest unit
+  tests with React Native Testing Library, Detox E2E with BDD scenarios, and coverage
+  configuration specific to the mobile layer
+- **Bruno API Tests section:** Documents the HTTP layer test tier: running the Bruno
+  collection against the Docker test stack, when API tests replace unit tests, and how
+  Bruno fits into the full testing matrix
+- **Test Output & Readability section:** New rules for naming tests in plain English,
+  using `describe`/`it` blocks that read as sentences, and structuring output so failures
+  are immediately actionable without reading source code
+- **Rules 21–24:** Four new numbered rules appended to the coding standards within
+  TESTING.md — pragmatic TDD (tests evolve during Green), realistic test data (no
+  `foo`/`bar` fixtures), contract-level assertions (test observable behaviour not
+  internals), and structured-for-growth (organise tests to survive refactoring)
+- **Phase 0 in TDD STEPS:** The TDD cycle now begins with a compile check phase (basedpyright
+  - tsc) before any test is written, surface type errors before they become test failures
+- **BDD branching in STEPS:** Phase 2 now explicitly routes user-observable scenarios to
+  Detox/Playwright BDD and internal edge cases to unit tests, replacing an ambiguous
+  single path
+
+### What's improved since v1.4.0
+
+- **mypy replaced throughout:** All references to mypy in `TESTING.md` have been replaced
+  with basedpyright, aligning the documentation with the actual type-checker configured
+  in the project
+- **Testing Matrix extended:** The matrix in `TESTING.md` now includes rows for mobile
+  (Jest + Detox) and API tests (Bruno), giving a complete view of all test tiers
+- **BDD section rewritten:** The BDD guidance now includes real-world scenario examples
+  with concrete Given/When/Then steps, readability rules for scenario names, and
+  anti-patterns to avoid
+- **TDD CONTEXT refreshed:** `02-tdd-cycle/CONTEXT.md` key concepts updated to document
+  pragmatic TDD, contract-level assertions, realistic data, and refactor-safety with
+  clear definitions and rationale
+- **Four-phase CHECKLIST:** `02-tdd-cycle/CHECKLIST.md` rewritten as four independent
+  checklists (Compile, Red, Green, Refactor) so developers can validate each phase
+  independently without re-reading the full document
+- **MD032 lint errors fixed:** Two markdown lint errors in TESTING.md and STEPS.md
+  (bare list items adjacent to code blocks) have been corrected
 
 ---
 

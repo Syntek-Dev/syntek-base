@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 29/04/2026 **Version**: 1.4.0 **Maintained By**: Syntek Studio
+**Last Updated**: 30/04/2026 **Version**: 1.5.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.5.0] - 30/04/2026
+
+### Changed
+
+- `code/docs/TESTING.md` — major expansion: added Compilation & Type-Checking section
+  (basedpyright and tsc), Mobile (Expo/React Native) test section, Bruno API Tests
+  (HTTP layer) section, and Test Output & Readability section; updated the Testing Matrix
+  with mobile and API rows; replaced all mypy references with basedpyright; rewrote the
+  BDD section with real-world scenario examples and human-readability rules; added
+  Rules 21–24 covering pragmatic TDD, realistic test data, contract-level assertions,
+  and structured-for-growth organisation; fixed MD032 lint errors
+- `code/workflows/02-tdd-cycle/CONTEXT.md` — key concepts updated to cover pragmatic TDD
+  (tests evolve during Green phase), contract-level assertions, realistic test data, and
+  refactor-safety; prerequisites and cross-references refreshed
+- `code/workflows/02-tdd-cycle/STEPS.md` — fully rewritten: Phase 0 added for basedpyright
+  and tsc compile checks before any test run; Phase 1 expanded with contract-level and
+  realistic-data guidance; Phase 2 extended with user-observable vs internal edge case
+  routing and BDD branching; fixed MD032 lint error
+- `code/workflows/02-tdd-cycle/CHECKLIST.md` — fully rewritten as a four-phase checklist
+  covering basedpyright compile check, realistic test data, contract-level assertion
+  validation, BDD scenario coverage, and the zero-test-changes-in-Refactor rule
 
 ---
 

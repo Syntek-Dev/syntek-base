@@ -15,14 +15,18 @@
 - [Backend & API Testing Checklist](#backend--api-testing-checklist)
 - [Testing Matrix](#testing-matrix)
 - [Running Tests](#running-tests)
+- [Compilation & Type-Checking](#compilation--type-checking)
 - [Python / Django](#python--django)
 - [TypeScript / React](#typescript--react)
+- [Mobile (Expo / React Native)](#mobile-expo--react-native)
 - [GraphQL](#graphql)
+- [Bruno API Tests (HTTP Layer)](#bruno-api-tests-http-layer)
 - [Database Isolation](#database-isolation)
 - [Test Data and Factories](#test-data-and-factories)
 - [Property-Based Testing with Hypothesis](#property-based-testing-with-hypothesis)
 - [Security Testing](#security-testing)
 - [Performance & Load Testing](#performance--load-testing)
+- [Test Output & Readability](#test-output--readability)
 - [Accessibility Testing](#accessibility-testing)
 - [Contract Testing](#contract-testing)
 - [Mutation Testing](#mutation-testing)
@@ -145,16 +149,18 @@ covered before a module is considered production-ready.
 
 ## Testing Matrix
 
-| Layer               | Unit / Integration                | E2E / Browser    | Framework                                   |
-| ------------------- | --------------------------------- | ---------------- | ------------------------------------------- |
-| Python / Django     | pytest + factory_boy + hypothesis | —                | pytest-django, compose-managed PostgreSQL   |
-| GraphQL (Python)    | pytest                            | —                | pytest-django + Strawberry test client      |
-| Web (React/TS)      | Vitest + RTL + MSW                | playwright-bdd   | vitest, @testing-library/react, msw         |
-| GraphQL (TS client) | Vitest + MSW                      | —                | vitest, msw                                 |
-| PostgreSQL          | pytest transactional fixtures     | —                | compose-managed postgres:18-alpine          |
-| Contract            | —                                 | —                | Pact (GraphQL schema changes)               |
-| a11y                | axe-core                          | Playwright + axe | @axe-core/react, playwright-axe             |
-| Mutation            | mutmut                            | Stryker          | mutmut (Python), @stryker-mutator/core (TS) |
+| Layer                 | Unit / Integration                | E2E / Browser    | Framework                                   |
+| --------------------- | --------------------------------- | ---------------- | ------------------------------------------- |
+| Python / Django       | pytest + factory_boy + hypothesis | —                | pytest-django, compose-managed PostgreSQL   |
+| GraphQL (Python)      | pytest                            | —                | pytest-django + Strawberry test client      |
+| Web (React/TS)        | Vitest + RTL + MSW                | playwright-bdd   | vitest, @testing-library/react, msw         |
+| GraphQL (TS client)   | Vitest + MSW                      | —                | vitest, msw                                 |
+| Mobile (React Native) | Jest + RNTL + MSW                 | Detox (BDD)      | jest, @testing-library/react-native, detox  |
+| API (HTTP layer)      | Bruno collection                  | —                | Bruno CLI, environments/local.env           |
+| PostgreSQL            | pytest transactional fixtures     | —                | compose-managed postgres:18-alpine          |
+| Contract              | —                                 | —                | Pact (GraphQL schema changes)               |
+| a11y                  | axe-core                          | Playwright + axe | @axe-core/react, playwright-axe             |
+| Mutation              | mutmut                            | Stryker          | mutmut (Python), @stryker-mutator/core (TS) |
 
 ---
 
@@ -164,8 +170,11 @@ All tests run inside Docker containers via the scripts in `code/src/scripts/test
 `pytest`, `pnpm`, or `next` directly on the host machine.
 
 ```bash
-# Start the test stack (required for backend and E2E scripts)
+# Start the test stack (required for backend, mobile, and E2E scripts)
 docker compose -f code/src/docker/docker-compose.test.yml up -d
+
+# Type-check and lint all layers before running tests
+./code/src/scripts/syntax/check.sh
 
 # Backend — full suite
 ./code/src/scripts/tests/backend.sh
@@ -175,6 +184,9 @@ docker compose -f code/src/docker/docker-compose.test.yml up -d
 
 # Backend — integration tests only
 ./code/src/scripts/tests/backend.sh -m integration
+
+# Backend — parallel (faster on large suites)
+./code/src/scripts/tests/backend.sh -n auto
 
 # Backend — with coverage report
 ./code/src/scripts/tests/backend-coverage.sh
@@ -189,12 +201,76 @@ docker compose -f code/src/docker/docker-compose.test.yml up -d
 docker compose -f code/src/docker/docker-compose.test.yml run --rm \
   frontend-test pnpm test:watch
 
+# Mobile — unit suite
+./code/src/scripts/tests/mobile.sh
+
+# Mobile — E2E (Detox, explicit only)
+./code/src/scripts/tests/mobile-e2e.sh
+
+# API (Bruno HTTP tests) — requires dev stack running
+./code/src/scripts/tests/api.sh
+
 # E2E (playwright-bdd) — explicit only, never runs automatically
 ./code/src/scripts/tests/e2e.sh
 
-# Both suites (no E2E)
+# Backend + frontend + API (no E2E or mobile-e2e)
 ./code/src/scripts/tests/all.sh
 ```
+
+---
+
+## Compilation & Type-Checking
+
+Code must compile and pass static type checks before any test result is meaningful. A test suite
+that passes on untypeable code is giving false confidence. Run `./code/src/scripts/syntax/check.sh`
+before the test suite — it runs both checks in one command.
+
+### Python — basedpyright
+
+basedpyright validates type annotations statically without executing any code. It catches wrong
+argument types, missing attributes, incompatible return types, and misuses of Strawberry schema
+types that pytest would only surface at runtime. basedpyright is stricter than standard pyright
+by default — prefer fixing errors over suppressing them.
+
+Project config lives at `code/src/backend/pyrightconfig.json`:
+
+```json
+{
+  "typeCheckingMode": "all",
+  "pythonVersion": "3.14",
+  "include": ["apps"],
+  "reportMissingTypeStubs": false
+}
+```
+
+```bash
+./code/src/scripts/syntax/check.sh --file-type python
+```
+
+### TypeScript — tsc
+
+`tsc --noEmit` validates that the entire type graph is consistent — including the generated GraphQL
+types in `src/graphql/generated/` — without emitting any output files. Run it after every
+`graphql-codegen` run to confirm generated types still match the consumer code.
+
+```bash
+# Web
+docker compose exec frontend pnpm tsc --noEmit
+
+# Mobile
+docker compose exec mobile pnpm tsc --noEmit
+```
+
+### When to run
+
+| Event                   | Action                                                                |
+| ----------------------- | --------------------------------------------------------------------- |
+| Before the test suite   | `./code/src/scripts/syntax/check.sh` (type-check + lint, both layers) |
+| Before every commit     | Pre-commit hook runs lint + type-check automatically                  |
+| In CI on every PR       | Type-check step runs before the test step — blocks on failure         |
+| After `graphql-codegen` | Re-run `tsc --noEmit` to catch generated type mismatches              |
+
+A type error that is "fixed" by suppressing the checker or removing a test is not fixed.
 
 ---
 
@@ -355,6 +431,82 @@ afterAll(() => server.close());
 
 ---
 
+## Mobile (Expo / React Native)
+
+**Tools:** Jest, React Native Testing Library (RNTL), MSW, Detox
+
+Tests live alongside source files in `code/src/mobile/src/`. Detox E2E tests live in
+`code/src/mobile/e2e/`. Jest configuration is at `code/src/mobile/jest.config.ts`.
+
+Coverage floor: 70% line and branch (same as frontend).
+
+### Unit / component tests (Jest + RNTL)
+
+```typescript
+// code/src/mobile/src/screens/auth/LoginScreen.test.tsx
+import { render, screen, fireEvent } from "@testing-library/react-native";
+import { describe, it, expect, jest } from "@jest/globals";
+
+import { LoginScreen } from "./LoginScreen";
+
+describe("LoginScreen", () => {
+  it("calls onSubmit with email and password when the form is submitted", () => {
+    const onSubmit = jest.fn();
+    render(<LoginScreen onSubmit={onSubmit} />);
+
+    fireEvent.changeText(screen.getByLabelText("Email address"), "alice@example.com");
+    fireEvent.changeText(screen.getByLabelText("Password"), "secret123");
+    fireEvent.press(screen.getByRole("button", { name: /sign in/i }));
+
+    expect(onSubmit).toHaveBeenCalledWith({
+      email: "alice@example.com",
+      password: "secret123",
+    });
+  });
+});
+```
+
+MSW handler setup for mobile mirrors the web setup — define handlers in
+`code/src/mobile/src/test/msw/handlers.ts` and wire them into `jest.setup.ts`.
+
+### Detox E2E (BDD — explicit only)
+
+Detox tests run on a real device or simulator. They are **never triggered automatically** — always
+explicit only, mirroring the web playwright-bdd policy.
+
+```typescript
+// code/src/mobile/e2e/auth/login.test.ts
+import { by, device, element, expect } from "detox";
+
+describe("Login flow", () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
+
+  it("logs in successfully with valid credentials", async () => {
+    await element(by.label("Email address")).typeText("alice@example.com");
+    await element(by.label("Password")).typeText("secret123");
+    await element(by.label("Sign in")).tap();
+    await expect(element(by.id("dashboard-screen"))).toBeVisible();
+  });
+});
+```
+
+### Running mobile tests
+
+```bash
+# Unit suite
+./code/src/scripts/tests/mobile.sh
+
+# Unit suite with coverage
+./code/src/scripts/tests/mobile-coverage.sh
+
+# Detox E2E — explicit only
+./code/src/scripts/tests/mobile-e2e.sh
+```
+
+---
+
 ## BDD — playwright-bdd (E2E acceptance tests)
 
 BDD is used only at the E2E acceptance layer. Backend unit/integration tests and frontend
@@ -373,7 +525,19 @@ code/src/frontend/
         └── auth.steps.ts
 ```
 
-Feature files map 1:1 to `project-management/src/STORIES/US###.md` acceptance criteria.
+Feature files map 1:1 to `project-management/src/STORIES/US###.md` acceptance criteria. Each
+scenario in a feature file must describe something a real user would experience — not a technical
+edge case invented for coverage. Scenarios added during implementation (discovered edge cases) must
+still describe observable user behaviour, not internal system behaviour.
+
+Follow these rules when writing scenarios:
+
+- Scenario titles read as user-story acceptance criteria: what a user can do or what they see.
+- Use realistic data in examples — real-looking names, plausible email addresses, actual error
+  messages the UI would display.
+- `Given` sets up the world the user is in. `When` is the action the user takes. `Then` is what
+  the user observes. Never put assertions in `Given` or actions in `Then`.
+- One observable outcome per scenario. Split multi-outcome scenarios.
 
 ### Feature file format
 
@@ -381,17 +545,22 @@ Feature files map 1:1 to `project-management/src/STORIES/US###.md` acceptance cr
 # code/src/frontend/e2e/features/auth/login.feature
 Feature: User login
 
-  Scenario: Successful login with valid credentials
-    Given I am on the login page
-    When I enter "alice@example.com" and my correct password
-    And I click "Sign in"
-    Then I should see the dashboard
+  Scenario: Member logs in successfully with valid credentials
+    Given Sarah is a registered member with email "sarah.jones@example.com"
+    When she signs in with her correct password
+    Then she should land on her dashboard
+    And the navigation should show her first name "Sarah"
 
-  Scenario: Login rejected with incorrect password
-    Given I am on the login page
-    When I enter "alice@example.com" and an incorrect password
-    And I click "Sign in"
-    Then I should see an error message "Invalid credentials"
+  Scenario: Login is rejected when the password is wrong
+    Given Sarah is a registered member with email "sarah.jones@example.com"
+    When she signs in with an incorrect password
+    Then she should see the error "The email or password you entered is incorrect"
+    And she should remain on the login page
+
+  Scenario: Suspended account cannot log in
+    Given Sarah's account has been suspended by an administrator
+    When she attempts to sign in with her correct credentials
+    Then she should see the error "Your account has been suspended. Contact support."
 ```
 
 ### Step definition format
@@ -514,6 +683,73 @@ it("shows an error message when login fails", async () => {
   // … interact and assert error message appears …
 });
 ```
+
+---
+
+## Bruno API Tests (HTTP Layer)
+
+Bruno tests live in `code/src/tests/api/` and test the GraphQL API over real HTTP — exercising
+the full Django request/response cycle including middleware, authentication headers, CORS, and
+error formatting. This is the authoritative check that the API actually works as a client would
+see it.
+
+These are distinct from pytest GraphQL tests, which use the Strawberry `Client` and bypass HTTP
+entirely. Both are required.
+
+### When to run
+
+- After any middleware, settings, or authentication change
+- After any GraphQL schema change that alters the public API
+- Before every release, as part of the smoke test suite
+
+### Running Bruno tests
+
+```bash
+# Full collection against the local dev stack (stack must be running)
+./code/src/scripts/tests/api.sh
+
+# Single collection
+./code/src/scripts/tests/api.sh --collection auth
+
+# CI mode — outputs JUnit XML
+./code/src/scripts/tests/api.sh --reporter junit
+```
+
+### Collection structure
+
+```text
+code/src/tests/api/
+├── CONTEXT.md
+├── environments/
+│   ├── local.env          ← BASE_URL=http://localhost:8000
+│   └── staging.env        ← BASE_URL=https://staging.example.com
+├── auth/
+│   ├── login.bru          ← Login mutation — happy path + wrong password
+│   ├── refresh.bru        ← RefreshToken mutation
+│   └── me.bru             ← Me query — authenticated + unauthenticated
+└── users/
+    └── update-profile.bru
+```
+
+### What every `.bru` file must assert
+
+- [ ] HTTP status code — `200` for GraphQL; `4xx` for malformed requests that fail before the resolver
+- [ ] `Content-Type: application/json` header present
+- [ ] `data` shape — required fields present and correctly typed on the happy path
+- [ ] `errors` absent on the happy path
+- [ ] `errors` present and correctly shaped on all failure paths
+- [ ] Authentication failure returns a structured GraphQL error — not a Django 403 HTML page
+
+### Difference from pytest GraphQL tests
+
+| Concern                         | pytest (Strawberry `Client`) | Bruno (HTTP)                   |
+| ------------------------------- | ---------------------------- | ------------------------------ |
+| Schema logic                    | Yes                          | Yes (indirectly)               |
+| Django middleware               | No                           | Yes                            |
+| CORS and authentication headers | No                           | Yes                            |
+| Real HTTP status codes          | No                           | Yes                            |
+| Response content-type headers   | No                           | Yes                            |
+| Suitable for smoke tests        | No                           | Yes (runs against any env URL) |
 
 ---
 
@@ -733,6 +969,106 @@ k6 run code/docs/PERFORMANCE/homepage.js
 
 ---
 
+## Test Output & Readability
+
+Test results must be human-readable — both in the terminal during development and in CI reports.
+Unreadable output delays debugging and masks failures.
+
+### Python — pytest output
+
+Configure for clear terminal output in `pyproject.toml`:
+
+```toml
+# code/src/backend/pyproject.toml
+[tool.pytest.ini_options]
+addopts = "--tb=short --strict-markers -q"
+```
+
+| Flag               | Effect                                                          |
+| ------------------ | --------------------------------------------------------------- |
+| `--tb=short`       | Short tracebacks — the failure line plus immediate context only |
+| `--strict-markers` | Unregistered markers are errors, not silent no-ops              |
+| `-q`               | Quiet — one summary line per test; full details only on failure |
+| `-v`               | Verbose — one line per test name (use when debugging a module)  |
+| `-n auto`          | Parallel execution via pytest-xdist — auto-selects worker count |
+
+Coverage and JUnit XML output are generated by the test scripts:
+
+```bash
+# Human-readable HTML coverage report
+./code/src/scripts/tests/backend-coverage.sh
+
+# CI — runs suite and emits junit-backend.xml to code/src/scripts/reports/
+./code/src/scripts/tests/backend-ci.sh
+```
+
+### TypeScript — Vitest reporters
+
+```typescript
+// code/src/frontend/vitest.config.ts
+export default defineConfig({
+  test: {
+    reporters: ["verbose", ["junit", { outputFile: "reports/junit-frontend.xml" }]],
+  },
+});
+```
+
+Use `verbose` locally for readable test-by-test output. In CI, the `junit` reporter produces a
+machine-readable report alongside it. Both reporters run simultaneously — no config change is
+needed between local and CI runs.
+
+Coverage and JUnit output are generated by the test scripts:
+
+```bash
+# Human-readable HTML coverage report
+./code/src/scripts/tests/frontend-coverage.sh
+
+# CI — runs suite and emits junit-frontend.xml to code/src/scripts/reports/
+./code/src/scripts/tests/frontend-ci.sh
+```
+
+### Coverage report locations
+
+| Layer    | Format | Location                                      | How to open                      |
+| -------- | ------ | --------------------------------------------- | -------------------------------- |
+| Backend  | HTML   | `code/src/scripts/reports/coverage/backend/`  | Open `index.html` in a browser   |
+| Frontend | HTML   | `code/src/scripts/reports/coverage/frontend/` | Open `index.html` in a browser   |
+| Frontend | LCOV   | `code/src/scripts/reports/coverage/lcov.info` | Imported by CI coverage trackers |
+
+### Writing readable assertions
+
+A well-written failure reads like a sentence:
+
+```text
+FAILED apps/users/tests/test_user_service.py::test_create_user_sets_unusable_password_when_none_given
+AssertionError: assert False
+  + where False = <User alice@example.com>.has_usable_password()
+```
+
+If a failure message does not state what went wrong and where, the assertion is too weak.
+
+```python
+# Weak — tells you nothing on failure
+assert result == expected
+
+# Strong — tells you exactly what diverged
+assert result == expected, f"Got {result!r}, expected {expected!r}"
+```
+
+### Rules
+
+- Test names must read as sentences: `test_create_user_sets_unusable_password_when_none_given`,
+  not `test_create_user_1`.
+- Never use `print()` for debugging in tests — use `caplog` or `capsys`.
+- Failure messages must state what the test expected and what it got.
+- CI must surface individual test failures in the pipeline UI — configure JUnit output in every
+  CI test script.
+- Any test suite taking longer than 3 minutes on a single worker must be parallelised
+  (`-n auto` for pytest-xdist, `--pool=threads` for Vitest). Slow suites block iteration and
+  erode the TDD loop.
+
+---
+
 ## Accessibility Testing
 
 All Next.js pages and interactive components must pass WCAG 2.2 AA. Accessibility tests run
@@ -935,3 +1271,38 @@ following are excluded from the threshold calculation but still appear in the re
     (`caplog.messages`), not that `logger.info` was called. DB assertions must query the database,
     not assert on mock return values. A test that only asserts `mock.assert_called_once()` with no
     outcome verification is a vacuous test.
+17. **Code must compile before tests are run.** Run `./code/src/scripts/syntax/check.sh`
+    (basedpyright + tsc + lint) before the test suite on every PR. A type error "fixed" by
+    suppressing the checker is not fixed.
+18. **Every new GraphQL mutation or query must have a Bruno `.bru` file.** The `.bru` file is the
+    authoritative proof that the API works over real HTTP — correct status codes, response shape,
+    headers, and authentication behaviour. pytest GraphQL tests alone do not cover this.
+19. **Test output must be human-readable.** Configure `--tb=short` for pytest and `verbose`
+    reporter for Vitest. CI must publish JUnit XML so individual failures are visible per-test in
+    the pipeline UI, not buried in log scroll.
+20. **Tests must scale.** Any suite taking longer than 3 minutes on a single worker must be
+    parallelised (`-n auto` for pytest-xdist, `--pool=threads` for Vitest). Mark tests with
+    `unit`, `integration`, and `e2e` markers so developers can run only the relevant tier during
+    active development without running the full suite every cycle.
+21. **TDD is the starting discipline; tests evolve with the implementation.** Write a failing test
+    first to define the contract. During the Green phase, amend existing tests or add new ones
+    when real edge cases are discovered through building the feature — this is expected and
+    correct. When the edge case is user-observable (account suspended, session expired, form
+    rejected with a visible message), add a BDD scenario. When it is internal (transaction
+    rollback, retry logic, N+1 protection), add a unit or integration test. Never add a test
+    solely to raise a coverage number.
+22. **Tests must model real-world scenarios.** Use realistic data — plausible email addresses,
+    amounts in valid ranges, error messages users would actually see. Synthetic data
+    (`"test@test.com"`, `id=999`, `name="foo"`) gives no confidence the system handles real
+    input. Use `factory_boy` with `Faker` for Python; use realistic builders for TypeScript. BDD
+    feature file scenarios must read as things a real user would experience, derived from
+    acceptance criteria, not invented for coverage.
+23. **Write initial tests at the contract level, not the implementation level.** A test asserting
+    on a private method, internal attribute, or specific SQL query will break on every refactor. A
+    test asserting on the outcome — return value, database state, API response — survives
+    refactoring unchanged. Design the initial test suite so the Refactor phase requires zero test
+    changes unless the public contract itself changes.
+24. **Structure initial tests for growth.** Use factories (never inline model instances), use
+    `@pytest.mark.parametrize` for the same behaviour across different inputs, and mark every
+    test with the correct tier (`unit`, `integration`, `e2e`). This keeps the suite selectively
+    runnable and prevents test sprawl as the feature set scales.
