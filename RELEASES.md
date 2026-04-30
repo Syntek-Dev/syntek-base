@@ -1,9 +1,56 @@
 # Releases — project-name
 
-**Last Updated**: 30/04/2026 **Version**: 1.5.0 **Maintained By**: Syntek Studio
+**Last Updated**: 30/04/2026 **Version**: 1.6.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.6.0 — 30/04/2026
+
+**Status:** Documentation release — how-to layer testing guides and context corrections
+
+### Summary
+
+Expands the how-to contributor layer with comprehensive mobile and Bruno API testing
+guidance, aligns the project-management context file with the actual docs on disk, and
+fixes a stale workflow path in the PR guide. No source code, configuration, or tests were
+changed.
+
+### What's new since v1.5.0
+
+- **Bruno API testing guide (`how-to/src/API-TESTING.md`):** A full new section explains
+  the automated Bruno HTTP test suite — how the collection is structured, how to run it
+  with `api.sh`, what every `.bru` file must assert, and how to add a new file for a new
+  mutation or query. A comparison table clarifies what pytest (Strawberry `Client`) tests
+  cover versus what only Bruno (real HTTP) can catch. The overview is updated to show all
+  three API testing tools: GraphiQL (local interactive), Bruno (automated), and Hoppscotch
+  (staging manual)
+- **Mobile testing section (`how-to/src/CONTEXT.md`):** Contributors now have a dedicated
+  section covering the co-located test structure for Expo/React Native screens, the three
+  test scripts (`mobile.sh`, `mobile-coverage.sh`, `e2e.sh`), and the E2E opt-in rule.
+  The `all.sh` multi-suite runner is also documented alongside the coverage and
+  open-coverage helpers
+
+### What's improved since v1.5.0
+
+- **Script-based test commands:** The backend and frontend testing subsections in
+  `how-to/src/CONTEXT.md` now use project shell scripts (`backend.sh`, `frontend.sh`,
+  etc.) rather than raw `docker compose exec` commands, consistent with the project rule
+  that direct container commands are not used by contributors
+- **Project-management context accuracy:** `project-management/CONTEXT.md` docs tree and
+  key docs table now correctly list all reference guides that exist on disk, including
+  `QA-GUIDE.md`, `RESPONSIVE-DESIGN.md`, `SECURITY-GUIDE.md`, and
+  `SPRINT-PLANNING-GUIDE.md` — these were added in earlier releases but missing from the
+  index
+
+### What's fixed since v1.5.0
+
+- **PR-GUIDE workflow path:** The link to the PR-and-review workflow in
+  `how-to/src/PR-GUIDE.md` pointed to `workflows/05-pr-and-review/` — a path that has
+  not existed since the workflow renumbering in v1.1.0. Corrected to
+  `workflows/16-pr-and-review/`
 
 ---
 

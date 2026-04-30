@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 30/04/2026 **Version**: 1.5.0 **Maintained By**: Syntek Studio
+**Last Updated**: 30/04/2026 **Version**: 1.6.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.6.0] - 30/04/2026
+
+### Added
+
+- `how-to/src/API-TESTING.md` — new Bruno API Tests section: collection structure
+  (`code/src/tests/api/`), `api.sh` runner usage (including `--collection` and `--reporter`
+  flags), per-`.bru` assertion checklist, Rule 18 reference for new mutations/queries,
+  and a comparison table showing what pytest (Strawberry `Client`) vs Bruno (HTTP) each
+  cover; overview table updated to three tools (GraphiQL, Bruno, Hoppscotch); Production
+  section added as a standalone block; promotion flow updated to include Bruno local and
+  staging gates; two new common issues added (403 HTML page, connection refused)
+- `how-to/src/CONTEXT.md` — mobile testing section added: co-located test structure,
+  `mobile.sh`, `mobile-coverage.sh`, and `e2e.sh` script usage, E2E opt-in rule;
+  `all.sh` and `all.sh --coverage` usage added; "What to test" table extended with
+  React Native screens row; cross-references to `code/docs/TESTING.md` and
+  `code/workflows/02-tdd-cycle/` added
+
+### Changed
+
+- `how-to/src/CONTEXT.md` — backend and frontend testing subsections updated to use
+  project scripts (`backend.sh`, `backend-coverage.sh`, `frontend.sh`,
+  `frontend-coverage.sh`) instead of raw `docker compose exec` commands; argument
+  passing syntax documented (`--` separator for pytest filters)
+- `project-management/CONTEXT.md` — docs tree updated to include four previously missing
+  files (`QA-GUIDE.md`, `RESPONSIVE-DESIGN.md`, `SECURITY-GUIDE.md`,
+  `SPRINT-PLANNING-GUIDE.md`); key docs table extended with the same four entries and
+  their "when to read" triggers
+
+### Fixed
+
+- `how-to/src/PR-GUIDE.md` — stale PR-and-review workflow path corrected:
+  `workflows/05-pr-and-review/` → `workflows/16-pr-and-review/`
 
 ---
 

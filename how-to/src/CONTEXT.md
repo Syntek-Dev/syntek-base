@@ -85,12 +85,18 @@ apps/
         └── test_services.py
 ```
 
-Run tests inside the container:
+Use the project scripts — never run `pytest` directly on the host:
 
 ```bash
-docker compose exec backend pytest               # full suite
-docker compose exec backend pytest apps/users/   # single app
-docker compose exec backend pytest -k "test_login"  # filter by name
+./code/src/scripts/tests/backend.sh                    # full suite
+./code/src/scripts/tests/backend-coverage.sh           # with coverage report
+```
+
+To target a single app or filter by test name, pass arguments after `--`:
+
+```bash
+./code/src/scripts/tests/backend.sh -- apps/users/
+./code/src/scripts/tests/backend.sh -- -k "test_login"
 ```
 
 Pytest is configured in `pyproject.toml` (`[tool.pytest.ini_options]`). It stops on first
@@ -115,25 +121,59 @@ src/
         └── Button.test.tsx
 ```
 
-Run tests inside the container:
+Use the project scripts:
 
 ```bash
-docker compose exec frontend pnpm test          # watch mode
-docker compose exec frontend pnpm test --run    # single pass (CI)
+./code/src/scripts/tests/frontend.sh                   # single pass
+./code/src/scripts/tests/frontend-coverage.sh          # with coverage report
 ```
 
 **Coverage floor:** 70% minimum across all frontend modules.
 
+### Mobile (Jest + React Native Testing Library / Detox)
+
+Unit and integration tests live co-located with screens and components:
+
+```text
+app/
+└── screens/
+    └── HomeScreen/
+        ├── HomeScreen.tsx
+        └── HomeScreen.test.tsx
+```
+
+Use the project scripts:
+
+```bash
+./code/src/scripts/tests/mobile.sh                     # unit/integration suite
+./code/src/scripts/tests/mobile-coverage.sh            # with coverage report
+./code/src/scripts/tests/e2e.sh                        # Detox E2E (explicit only)
+```
+
+E2E tests are opt-in — they require a running device or emulator and are not part of the
+default pre-push gate. Run them before promoting to staging.
+
+### Running all suites together
+
+```bash
+./code/src/scripts/tests/all.sh                        # backend then frontend in sequence
+./code/src/scripts/tests/all.sh --coverage             # both with coverage reports
+./code/src/scripts/tests/open-coverage.sh              # open latest coverage report in browser
+```
+
 ### What to test
 
-| Layer             | Test target                                     |
-| ----------------- | ----------------------------------------------- |
-| Django services   | Business logic, edge cases, error paths         |
-| GraphQL resolvers | Permission checks, correct return shape         |
-| React components  | Render output, user interactions, accessibility |
-| Utility functions | Pure logic — full branch coverage expected      |
+| Layer                | Test target                                     |
+| -------------------- | ----------------------------------------------- |
+| Django services      | Business logic, edge cases, error paths         |
+| GraphQL resolvers    | Permission checks, correct return shape         |
+| React components     | Render output, user interactions, accessibility |
+| React Native screens | Render output, user interactions, navigation    |
+| Utility functions    | Pure logic — full branch coverage expected      |
 
 Do not test implementation details (internal state, private methods). Test observable behaviour.
+
+Full testing guide → `code/docs/TESTING.md` · TDD workflow → `code/workflows/02-tdd-cycle/`
 
 ---
 

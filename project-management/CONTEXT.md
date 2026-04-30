@@ -7,10 +7,14 @@ project-management/
 ├── CONTEXT.md               ← this file
 ├── docs/                    ← PM reference guides
 │   ├── CONTEXT.md
-│   ├── GDPR-GUIDE.md        ← lawful basis, retention, data rights
-│   ├── GIT-GUIDE.md         ← branch strategy, commit format, PR flow, PR gates
-│   ├── SEO-CHECKLIST.md     ← SEO and AI discoverability for all frontend pages
-│   └── VERSIONING-GUIDE.md  ← root-only semver, files to update on every bump
+│   ├── GDPR-GUIDE.md            ← lawful basis, retention, data rights
+│   ├── GIT-GUIDE.md             ← branch strategy, commit format, PR flow, PR gates
+│   ├── QA-GUIDE.md              ← QA planning at design stage — test scenario format
+│   ├── RESPONSIVE-DESIGN.md     ← breakpoints, media vs container queries, viewport testing
+│   ├── SECURITY-GUIDE.md        ← STRIDE threat modelling, severity levels, document format
+│   ├── SEO-CHECKLIST.md         ← SEO and AI discoverability for all frontend pages
+│   ├── SPRINT-PLANNING-GUIDE.md ← sprint plan format, MoSCoW prioritisation, phases
+│   └── VERSIONING-GUIDE.md      ← root-only semver, files to update on every bump
 ├── src/                        ← live PM artefacts (stories, sprints, bugs, …)
 │   ├── 00-ASSETS/              ← ERD diagrams, user-flow diagrams, logos
 │   │   └── CONTEXT.md
@@ -143,13 +147,16 @@ project-management/
 
 ## Key docs
 
-| Guide                       | When to read                                            |
-| --------------------------- | ------------------------------------------------------- |
-| `docs/GIT-GUIDE.md`         | Branch strategy, commit format, PR gates                |
-| `docs/VERSIONING-GUIDE.md`  | Before any version bump or release                      |
-| `docs/SEO-CHECKLIST.md`     | Before publishing a new page                            |
-| `docs/GDPR-GUIDE.md`        | Before adding any feature that handles personal data    |
-| `docs/RESPONSIVE-DESIGN.md` | Before wireframing, designing, or testing any UI screen |
+| Guide                           | When to read                                            |
+| ------------------------------- | ------------------------------------------------------- |
+| `docs/GIT-GUIDE.md`             | Branch strategy, commit format, PR gates                |
+| `docs/VERSIONING-GUIDE.md`      | Before any version bump or release                      |
+| `docs/SEO-CHECKLIST.md`         | Before publishing a new page                            |
+| `docs/GDPR-GUIDE.md`            | Before adding any feature that handles personal data    |
+| `docs/RESPONSIVE-DESIGN.md`     | Before wireframing, designing, or testing any UI screen |
+| `docs/QA-GUIDE.md`              | Before writing QA scenarios for a story                 |
+| `docs/SECURITY-GUIDE.md`        | Before threat-modelling a planned feature               |
+| `docs/SPRINT-PLANNING-GUIDE.md` | Before planning or writing a sprint plan                |
 
 ## src/ structure
 

@@ -1,6 +1,6 @@
 # Version History — project-name
 
-**Last Updated**: 30/04/2026 **Version**: 1.5.0 **Maintained By**: Syntek Studio
+**Last Updated**: 30/04/2026 **Version**: 1.6.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                                               |
 | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 30/04/2026 | 1.6.0   | Add mobile and Bruno API testing docs to how-to layer, fix PR-GUIDE workflow path, extend project-management CONTEXT docs tree and key docs table         |
 | 30/04/2026 | 1.5.0   | Expand TESTING.md (mobile, Bruno API, compile checks, BDD rewrite, Rules 21–24) and rewrite TDD-cycle workflow CONTEXT, STEPS, and CHECKLIST              |
 | 29/04/2026 | 1.4.0   | Add URL-STRATEGY.md, Class vs Function + Decision Structuring sections, two-tier versioning guide, ERD/user-flow diagram dirs, NIST and Policy references |
 | 29/04/2026 | 1.3.0   | Add DESIGN.md, three pre-dev PM workflows (security-checks, qa-checks, sprint-plans), three PM guides, agent hint headers across all layers               |

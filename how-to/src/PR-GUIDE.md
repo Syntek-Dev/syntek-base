@@ -101,7 +101,7 @@ After `testing` → `dev` → `staging` → `main`, each step requires sign-off:
 | `staging` → `main` | Full sign-off; version bump committed |
 
 Full promotion rules: `project-management/docs/GIT-GUIDE.md` ·
-PM workflow: `project-management/workflows/05-pr-and-review/`
+PM workflow: `project-management/workflows/16-pr-and-review/`
 
 ---
 
