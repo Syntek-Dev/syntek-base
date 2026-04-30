@@ -1,7 +1,7 @@
 # project-name — Project Overview
 
-This is the source repository for the Syntek Studio website, built as a full-stack
-monorepo: Django + Strawberry GraphQL backend, Next.js + Tailwind CSS frontend.
+This is the source repository for `project-name`, built as a full-stack monorepo:
+Django + Strawberry GraphQL backend, Next.js + Tailwind CSS frontend.
 
 ## Directory Tree
 
@@ -114,5 +114,5 @@ project-name/
 
 ## Repository State
 
-Current version: `1.5.0` — testing strategy expansion and TDD workflow rewrite. Ready for feature development.
+Current version: see `VERSION` and `CHANGELOG.md`.
 Backend, frontend, and mobile source code live in `code/src/` and are initialised via `/syntek-dev-suite:setup`.

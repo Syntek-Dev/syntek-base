@@ -1063,4 +1063,4 @@ For questions, issues, or contributions to the template, open an issue or PR on
 
 ---
 
-_Maintained by Syntek Studio · v0.1.0 · British English (en_GB) · Europe/London_
+_Maintained by Syntek Studio · v1.5.0 · British English (en_GB) · Europe/London_
