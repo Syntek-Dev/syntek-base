@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 01/05/2026 **Version**: 1.7.0 **Maintained By**: Syntek Studio
+**Last Updated**: 01/05/2026 **Version**: 1.8.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.8.0] - 01/05/2026
+
+### Added
+
+- `project-management/src/11-SEO/` — new artefact folder for SEO documents, with
+  `CONTEXT.md` and `PLANNING/CONTEXT.md` sub-directory for pre-development SEO planning
+- `project-management/workflows/11-seo-checks/` — new SEO checks workflow with
+  `CONTEXT.md`, `STEPS.md`, and `CHECKLIST.md` covering page-level SEO verification
+  before a story is marked done
+- `### SEO Acceptance Criteria` and `### SEO Tasks` sections added to
+  `project-management/src/01-STORIES/US000-TEMPLATE.md` (between Security and Testing);
+  SEO flag row added to the flags table; SEO verification check line added
+- `### SEO Acceptance Criteria` and `### SEO Tasks` sections added to
+  `project-management/src/02-SPRINTS/SPRINT-00-TEMPLATE.md` (between Security and Testing);
+  matching SEO flag row and verification check added
+
+### Changed
+
+- `project-management/src/` folders renumbered to accommodate the new `11-SEO/` slot:
+  `11-SPRINT-PLANS` → `12-SPRINT-PLANS`, `12-TESTS` → `13-TESTS`,
+  `13-REVIEWS` → `14-REVIEWS`, `14-BUGS` → `15-BUGS`, `15-REFACTORING` → `16-REFACTORING`
+- `project-management/workflows/` renumbered to match: `11-sprint-plans` → `12-sprint-plans`,
+  `12-backend-code` → `13-backend-code`, `13-api-code` → `14-api-code`,
+  `14-frontend-code` → `15-frontend-code`, `15-app-code` → `16-app-code`,
+  `16-pr-and-review` → `17-pr-and-review`, `17-release` → `18-release`
 
 ---
 

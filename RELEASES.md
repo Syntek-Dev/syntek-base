@@ -1,9 +1,52 @@
 # Releases — project-name
 
-**Last Updated**: 01/05/2026 **Version**: 1.7.0 **Maintained By**: Syntek Studio
+**Last Updated**: 01/05/2026 **Version**: 1.8.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.8.0 — 01/05/2026
+
+**Status:** Feature release — SEO workflow, SEO artefact folder, and SEO template sections
+
+### Summary
+
+Introduces SEO as a first-class pre-development step in the PM workflow. A new
+`11-seo-checks` workflow (with `CONTEXT.md`, `STEPS.md`, and `CHECKLIST.md`) provides a
+structured guide for verifying SEO requirements before a story is closed. A new
+`src/11-SEO/` artefact folder and `PLANNING/` sub-directory give teams a canonical home
+for SEO planning documents. Both the canonical story template (`US000-TEMPLATE.md`) and
+sprint template (`SPRINT-00-TEMPLATE.md`) gain dedicated SEO sections — flags table row,
+acceptance criteria, tasks, and verification checks — matching the existing structure for
+GDPR, Security, and other cross-cutting concerns. The src and workflows directories are
+renumbered throughout to make room for the new slot 11.
+
+### What's new since v1.7.0
+
+- **SEO checks workflow (`workflows/11-seo-checks/`):** A three-file workflow — CONTEXT,
+  STEPS, and CHECKLIST — walking agents and developers through page-level SEO verification
+  as a mandatory pre-completion gate for any story that touches a frontend page
+- **SEO artefact folder (`src/11-SEO/`):** A dedicated home for SEO planning documents,
+  with a `PLANNING/` sub-directory for pre-development SEO analysis; both directories
+  include `CONTEXT.md` to orient agents without requiring a full file scan
+- **SEO sections in `US000-TEMPLATE.md`:** An `SEO` flag row added to the flags table;
+  `### SEO Acceptance Criteria` and `### SEO Tasks` subsections inserted between Security
+  and Testing; an SEO verification check line added to the Verification Checks section
+- **SEO sections in `SPRINT-00-TEMPLATE.md`:** Identical additions to the sprint template,
+  ensuring sprint-level planning artefacts remain consistent with story-level artefacts
+
+### What's changed since v1.7.0
+
+- **Directory renumbering (`src/`):** Five artefact folders shifted up one slot to
+  accommodate `11-SEO/`: `11-SPRINT-PLANS` → `12-SPRINT-PLANS`, `12-TESTS` → `13-TESTS`,
+  `13-REVIEWS` → `14-REVIEWS`, `14-BUGS` → `15-BUGS`, `15-REFACTORING` → `16-REFACTORING`
+- **Directory renumbering (`workflows/`):** Seven workflow folders shifted one slot up:
+  `11-sprint-plans` → `12-sprint-plans`, `12-backend-code` → `13-backend-code`,
+  `13-api-code` → `14-api-code`, `14-frontend-code` → `15-frontend-code`,
+  `15-app-code` → `16-app-code`, `16-pr-and-review` → `17-pr-and-review`,
+  `17-release` → `18-release`
 
 ---
 

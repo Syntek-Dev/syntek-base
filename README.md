@@ -3,7 +3,7 @@
 > Syntek Studio's opinionated full-stack monorepo template — Django + Strawberry GraphQL backend,
 > Next.js + Tailwind CSS frontend, deployed via Docker Compose.
 
-![Version](https://img.shields.io/badge/version-1.7.0-blue)
+![Version](https://img.shields.io/badge/version-1.8.0-blue)
 ![Licence](https://img.shields.io/badge/licence-MIT-green)
 ![Status](https://img.shields.io/badge/status-template-blue)
 

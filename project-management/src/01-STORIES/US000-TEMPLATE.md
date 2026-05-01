@@ -11,6 +11,7 @@
      Frontend  — Web / Mobile / Web + Mobile / N/A
      GDPR      — Yes (complete GDPR section below) or N/A
      Security  — shortlist of concerns (e.g. rate-limit, audit-log, XSS-escape, IDOR), or N/A
+     SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
      Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
 
 | Flag      | Value                                          |
@@ -22,6 +23,7 @@
 | Frontend  | Web + Mobile                                   |
 | GDPR      | Yes                                            |
 | Security  | rate-limit, audit-log, XSS-escape              |
+| SEO       | /blog, /about                                  |
 | Testing   | unit, integration, E2E                         |
 
 ---
@@ -206,6 +208,23 @@ Then [expected mutation fires and UI updates]
 - [ ] [UF##/ST##] `[user-supplied field]` is HTML-escaped server-side before rendering in any admin or public view — raw HTML is never rendered
 - [ ] [UF##/ST##] `request.session.flush()` is called on logout — server-side session deleted from Valkey; client-side cookie deletion alone is insufficient
 
+### SEO Acceptance Criteria
+
+<!-- Remove this section when SEO flag is N/A. -->
+
+- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the
+      Next.js metadata API
+- [ ] `og:title`, `og:description`, and `og:image` are set for all new public pages
+- [ ] Canonical URL is set correctly — no duplicate content risk
+- [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`,
+      `Organization`)
+- [ ] Page slug / URL is human-readable, lowercase, hyphenated, and contains the target keyword
+- [ ] New pages are included in `sitemap.xml` (via Celery regeneration task or static addition)
+- [ ] `robots.txt` does not block any new public page
+- [ ] Page meets Core Web Vitals targets: LCP < 2.5 s, CLS < 0.1, INP < 200 ms
+- [ ] All images on the page have descriptive `alt` text; no image is served without `alt`
+- [ ] Heading hierarchy is correct: one `<h1>` per page; `<h2>` / `<h3>` used in logical order
+
 ### Testing Acceptance Criteria
 
 <!-- Remove this section when Testing flag is N/A. -->
@@ -311,6 +330,22 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] Add `audit_auditlog` entry on `[failure event]` including IP and reason
 - [ ] Verify `[mutation]` rejects calls where the session user does not own the target resource
 
+### SEO Tasks
+
+<!-- Remove this section when SEO flag is N/A. -->
+
+- [ ] Set `<title>` and `<meta name="description">` via Next.js metadata API for `[page / route]`
+- [ ] Set `og:title`, `og:description`, `og:image` for `[page / route]`
+- [ ] Set canonical URL for `[page / route]`
+- [ ] Add JSON-LD structured data (`[schema type]`) to `[page / route]`
+- [ ] Verify page slug is human-readable, lowercase, and hyphenated
+- [ ] Add `[page / route]` to `sitemap.xml` — trigger Celery regeneration task if applicable
+- [ ] Confirm `robots.txt` does not block `[page / route]`
+- [ ] Run Lighthouse (or equivalent) to verify Core Web Vitals targets are met
+- [ ] Add descriptive `alt` text to all images on `[page / route]`
+- [ ] Verify heading hierarchy: one `<h1>` per page; `<h2>` / `<h3>` in logical order
+- [ ] Run `/syntek-dev-suite:seo` to confirm all SEO checks pass
+
 ### Testing Tasks
 
 <!-- Remove this section when Testing flag is N/A. -->
@@ -365,6 +400,7 @@ Run all of the following before raising a PR. All must pass.
 - [ ] No secrets, debug flags, or hardcoded IDs introduced
 - [ ] GDPR section reviewed and all GDPR tasks checked off (if GDPR: Yes)
 - [ ] Security acceptance criteria signed off (if Security: not N/A)
+- [ ] SEO acceptance criteria signed off and Lighthouse run recorded (if SEO: not N/A)
 
 ---
 

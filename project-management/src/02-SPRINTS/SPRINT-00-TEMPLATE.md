@@ -17,6 +17,7 @@
      Frontend  — Web / Mobile / Web + Mobile / N/A
      GDPR      — Yes (PII introduced or processed) or N/A
      Security  — shortlist of concerns across this sprint, or N/A
+     SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
      Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
 
 | Flag      | Value                          |
@@ -28,6 +29,7 @@
 | Frontend  | Web + Mobile                   |
 | GDPR      | Yes                            |
 | Security  | rate-limit, audit-log          |
+| SEO       | /blog, /about                  |
 | Testing   | unit, integration, E2E         |
 
 ---
@@ -138,6 +140,26 @@
 - [ ] No new endpoint bypasses the ABAC permission system
 - [ ] No secrets, debug flags, or hardcoded credentials are introduced in this sprint
 
+### SEO Acceptance Criteria
+
+<!-- Remove this section when SEO flag is N/A. -->
+
+- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the
+      Next.js metadata API
+- [ ] `og:title`, `og:description`, and `og:image` are set for all new public pages
+- [ ] Canonical URLs are set correctly across all new public pages — no duplicate content risk
+- [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`,
+      `Organization`)
+- [ ] All new page slugs / URLs are human-readable, lowercase, hyphenated, and contain the target
+      keyword
+- [ ] All new public pages are included in `sitemap.xml` (Celery regeneration task triggered or
+      static entry added)
+- [ ] `robots.txt` does not block any new public page introduced this sprint
+- [ ] All new public pages meet Core Web Vitals targets: LCP < 2.5 s, CLS < 0.1, INP < 200 ms
+- [ ] All images on new pages have descriptive `alt` text; no image served without `alt`
+- [ ] Heading hierarchy is correct on all new pages: one `<h1>` per page; `<h2>` / `<h3>` in
+      logical order
+
 ### Testing Acceptance Criteria
 
 <!-- Remove this section when Testing flag is N/A. -->
@@ -229,6 +251,20 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Add `audit_auditlog` entry on `[event]` within the same `transaction.atomic()`    | [ ]  |
 | US### | Verify `[mutation]` rejects calls where session user does not own target resource | [ ]  |
 
+### SEO Tasks
+
+<!-- Remove this section when SEO flag is N/A. -->
+
+| Story | Task                                                                             | Done |
+| ----- | -------------------------------------------------------------------------------- | ---- |
+| US### | Set `<title>` and `<meta name="description">` for `[page / route]`               | [ ]  |
+| US### | Set `og:title`, `og:description`, `og:image` for `[page / route]`                | [ ]  |
+| US### | Set canonical URL for `[page / route]`                                           | [ ]  |
+| US### | Add JSON-LD structured data (`[schema type]`) to `[page / route]`                | [ ]  |
+| US### | Add `[page / route]` to `sitemap.xml`; trigger Celery regeneration if applicable | [ ]  |
+| US### | Run Lighthouse to verify Core Web Vitals targets; record results                 | [ ]  |
+| US### | Run `/syntek-dev-suite:seo` to confirm all SEO checks pass                       | [ ]  |
+
 ### Testing Tasks
 
 <!-- Remove this section when Testing flag is N/A. -->
@@ -261,6 +297,7 @@ Run all of the following before closing the sprint. All must pass.
 - [ ] No secrets, debug flags, or hardcoded IDs introduced in this sprint
 - [ ] All GDPR tasks checked off (if GDPR: Yes)
 - [ ] All security acceptance criteria signed off (if Security: not N/A)
+- [ ] SEO acceptance criteria signed off and Lighthouse results recorded (if SEO: not N/A)
 
 ---
 
