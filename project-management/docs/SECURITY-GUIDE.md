@@ -36,7 +36,7 @@ Security checks run once per sprint cycle, after wireframes are signed off and b
 plans are written:
 
 ```text
-07-wireframes  →  08-gdpr-compliance  →  09-security-checks  →  10-qa-checks  →  11-sprint-plans
+07-wireframes  →  08-gdpr-compliance  →  09-security-checks  →  10-qa-checks  →  12-sprint-plans
 ```
 
 Any `HIGH` or `CRITICAL` findings must be resolved (by updating the design or adding explicit
@@ -171,4 +171,4 @@ Before closing the security checks workflow:
 - [ ] All `MEDIUM` and `LOW` findings have explicit developer constraints documented
 - [ ] Developer constraints added to relevant `US###.md` acceptance criteria
 - [ ] Wireframes or user flows updated if structural changes were required
-- [ ] Findings ready to feed into `workflows/11-sprint-plans`
+- [ ] Findings ready to feed into `workflows/12-sprint-plans`

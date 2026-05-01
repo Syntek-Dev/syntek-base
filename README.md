@@ -3,7 +3,7 @@
 > Syntek Studio's opinionated full-stack monorepo template — Django + Strawberry GraphQL backend,
 > Next.js + Tailwind CSS frontend, deployed via Docker Compose.
 
-![Version](https://img.shields.io/badge/version-1.8.0-blue)
+![Version](https://img.shields.io/badge/version-1.9.0-blue)
 ![Licence](https://img.shields.io/badge/licence-MIT-green)
 ![Status](https://img.shields.io/badge/status-template-blue)
 
@@ -168,12 +168,13 @@ project-name/
 │   │   ├── 08-GDPR/
 │   │   ├── 09-SECURITY/
 │   │   ├── 10-QA/
-│   │   ├── 11-SPRINT-PLANS/
-│   │   ├── 12-TESTS/
-│   │   ├── 13-REVIEWS/
-│   │   ├── 14-BUGS/
-│   │   └── 15-REFACTORING/
-│   └── workflows/                       ← 17 step-by-step PM workflows
+│   │   ├── 11-SEO/
+│   │   ├── 12-SPRINT-PLANS/
+│   │   ├── 13-TESTS/
+│   │   ├── 14-REVIEWS/
+│   │   ├── 15-BUGS/
+│   │   └── 16-REFACTORING/
+│   └── workflows/                       ← 18 step-by-step PM workflows
 │       ├── 01-story-creation/
 │       ├── 02-sprint-planning/
 │       ├── 03-database-schema/
@@ -184,13 +185,14 @@ project-name/
 │       ├── 08-gdpr-compliance/
 │       ├── 09-security-checks/
 │       ├── 10-qa-checks/
-│       ├── 11-sprint-plans/
-│       ├── 12-backend-code/
-│       ├── 13-api-code/
-│       ├── 14-frontend-code/
-│       ├── 15-app-code/
-│       ├── 16-pr-and-review/
-│       └── 17-release/
+│       ├── 11-seo-checks/
+│       ├── 12-sprint-plans/
+│       ├── 13-backend-code/
+│       ├── 14-api-code/
+│       ├── 15-frontend-code/
+│       ├── 16-app-code/
+│       ├── 17-pr-and-review/
+│       └── 18-release/
 ├── CHANGELOG.md
 ├── CONTEXT.md                           ← project overview and layer map
 ├── CONTRIBUTING.md
@@ -456,9 +458,9 @@ begins.
 | Document type        | Naming convention                | Location                           |
 | -------------------- | -------------------------------- | ---------------------------------- |
 | QA test file         | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/10-QA/`    |
-| Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/12-TESTS/` |
-| Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/12-TESTS/` |
-| Bug report           | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/14-BUGS/`  |
+| Test status tracker  | `US###-TEST-STATUS.md`           | `project-management/src/13-TESTS/` |
+| Manual testing guide | `US###-MANUAL-TESTING.md`        | `project-management/src/13-TESTS/` |
+| Bug report           | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/15-BUGS/`  |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
 tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
@@ -477,13 +479,14 @@ tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to
 | `08-gdpr-compliance/`   | Reviewing a feature for GDPR compliance                      |
 | `09-security-checks/`   | Threat-modelling planned features before sprint planning     |
 | `10-qa-checks/`         | Defining QA scenarios for each story before development      |
-| `11-sprint-plans/`      | Writing the sprint plan (MoSCoW, phases, definition of done) |
-| `12-backend-code/`      | Implementing Django models, services, and business logic     |
-| `13-api-code/`          | Implementing the Strawberry GraphQL API layer                |
-| `14-frontend-code/`     | Implementing Next.js pages and React components              |
-| `15-app-code/`          | Implementing Expo React Native screens and components        |
-| `16-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
-| `17-release/`           | Cutting a release (version bump, changelog, deploy)          |
+| `11-seo-checks/`        | Verifying SEO metadata, structured data, and Core Web Vitals |
+| `12-sprint-plans/`      | Writing the sprint plan (MoSCoW, phases, definition of done) |
+| `13-backend-code/`      | Implementing Django models, services, and business logic     |
+| `14-api-code/`          | Implementing the Strawberry GraphQL API layer                |
+| `15-frontend-code/`     | Implementing Next.js pages and React components              |
+| `16-app-code/`          | Implementing Expo React Native screens and components        |
+| `17-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
+| `18-release/`           | Cutting a release (version bump, changelog, deploy)          |
 
 ---
 
@@ -604,7 +607,7 @@ workflow is explicitly triggered.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 16-pr-and-review
+01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 17-pr-and-review
 ```
 
 - Start with `01-new-feature` to plan the feature scope.
@@ -613,12 +616,12 @@ workflow is explicitly triggered.
 - If the feature touches PII, run `05-gdpr-enforcement` before raising a PR.
 - Before opening the PR, run `06-review` to verify OWASP coverage, coding principles, and
   coverage floors.
-- Hand off to the PM layer with `project-management/workflows/16-pr-and-review/`.
+- Hand off to the PM layer with `project-management/workflows/17-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/03-debugging  →  07-debug  →  06-review  →  PM: 16-pr-and-review
+how-to/03-debugging  →  07-debug  →  06-review  →  PM: 17-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
@@ -1063,4 +1066,4 @@ For questions, issues, or contributions to the template, open an issue or PR on
 
 ---
 
-_Maintained by Syntek Studio · v1.5.0 · British English (en_GB) · Europe/London_
+_Maintained by Syntek Studio · v1.9.0 · British English (en_GB) · Europe/London_

@@ -25,8 +25,8 @@ A sprint plan is the **single source of truth** for what is in scope, why, and i
 will be built. It is written once per sprint, after GDPR, security, and QA checks are complete,
 so that developers begin with a full picture of the requirements, constraints, and test criteria.
 
-Sprint plans live in `project-management/src/11-SPRINT-PLANS/`. This guide supports the
-`workflows/11-sprint-plans` workflow.
+Sprint plans live in `project-management/src/12-SPRINT-PLANS/`. This guide supports the
+`workflows/12-sprint-plans` workflow.
 
 ---
 
@@ -39,9 +39,9 @@ Sprint plans are written at the end of the pre-sprint checks phase:
 09-security-checks   ←  all three must be complete and signed off
 10-qa-checks
           ↓
-11-sprint-plans  ←  sprint plan written here
+12-sprint-plans  ←  sprint plan written here
           ↓
-12-backend-code  ←  development begins
+13-backend-code  ←  development begins
 ```
 
 **Prerequisites** — all of the following must be done before writing the sprint plan:
@@ -78,10 +78,10 @@ which layers they touch:
 
 | Phase | Workflow           | What is built                                           |
 | ----- | ------------------ | ------------------------------------------------------- |
-| **1** | `12-backend-code`  | Django models, services, business logic, migrations     |
-| **2** | `13-api-code`      | Strawberry GraphQL types, queries, mutations, resolvers |
-| **3** | `14-frontend-code` | Next.js pages, React components, Apollo integration     |
-| **4** | `15-pr-and-review` | PR, code review, QA sign-off, merge to `testing`        |
+| **1** | `13-backend-code`  | Django models, services, business logic, migrations     |
+| **2** | `14-api-code`      | Strawberry GraphQL types, queries, mutations, resolvers |
+| **3** | `15-frontend-code` | Next.js pages, React components, Apollo integration     |
+| **4** | `17-pr-and-review` | PR, code review, QA sign-off, merge to `testing`        |
 
 Tests are written **alongside** each phase — not after. Backend tests in Phase 1; API tests in
 Phase 2; frontend tests in Phase 3.
@@ -93,7 +93,7 @@ records which phases each story requires.
 
 ## Sprint Plan Document Format
 
-One file per sprint in `project-management/src/11-SPRINT-PLANS/`:
+One file per sprint in `project-management/src/12-SPRINT-PLANS/`:
 
 ```text
 SPRINT-PLAN-##.md  (e.g. SPRINT-PLAN-01.md)
@@ -155,7 +155,7 @@ SPRINT-PLAN-##.md  (e.g. SPRINT-PLAN-01.md)
 
 ## Phase Breakdown
 
-### Phase 1 — Backend (`workflows/12-backend-code`)
+### Phase 1 — Backend (`workflows/13-backend-code`)
 
 **Stories**: US###, US###
 
@@ -164,7 +164,7 @@ Key deliverables:
 - <model or service to implement>
 - <migration to write>
 
-### Phase 2 — API (`workflows/13-api-code`)
+### Phase 2 — API (`workflows/14-api-code`)
 
 **Stories**: US###, US###
 
@@ -173,7 +173,7 @@ Key deliverables:
 - <GraphQL type or query to implement>
 - <mutation and permission check>
 
-### Phase 3 — Frontend (`workflows/14-frontend-code`)
+### Phase 3 — Frontend (`workflows/15-frontend-code`)
 
 **Stories**: US###, US###
 
@@ -182,7 +182,7 @@ Key deliverables:
 - <page or component to implement>
 - <Apollo hook to wire up>
 
-### Phase 4 — PR & Review (`workflows/16-pr-and-review`)
+### Phase 4 — PR & Review (`workflows/17-pr-and-review`)
 
 All stories. PR opened to `testing`; CI must pass; QA sign-off required before merge.
 

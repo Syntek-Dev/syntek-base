@@ -1,9 +1,42 @@
 # Releases — project-name
 
-**Last Updated**: 01/05/2026 **Version**: 1.8.0 **Maintained By**: Syntek Studio
+**Last Updated**: 01/05/2026 **Version**: 1.9.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.9.0 — 01/05/2026
+
+**Status:** Documentation update — cross-reference corrections after SEO directory insertion
+
+### Summary
+
+Corrects all stale cross-references and self-references across the documentation layer
+following the insertion of `src/11-SEO/` and `workflows/11-seo-checks/` in v1.8.0. The
+physical directories were renamed in v1.8.0, but a broad pass across 33 files was required
+to update internal links, directory trees, workflow tables, and numbered path references
+that still pointed to the old slot numbers. No code was modified.
+
+### What's changed since v1.8.0
+
+- **README.md** — project tree, workflows table, QA table, feature-sequence diagrams, and
+  footer version badge updated to the new directory numbering
+- **project-management/src/CONTEXT.md and workflows/CONTEXT.md** — directory trees and
+  summary tables corrected throughout
+- **src/ CONTEXT.md files (`12-SPRINT-PLANS/` through `16-REFACTORING/`)** — stale
+  self-references replaced with the correct renumbered folder names
+- **workflows/ CONTEXT.md files (`12-sprint-plans/` through `18-release/`)** — stale
+  self-references replaced with the correct renumbered workflow names
+- **`12-sprint-plans/CHECKLIST.md` and `STEPS.md`** — internal path references corrected
+- **PM guide files** (`QA-GUIDE.md`, `SECURITY-GUIDE.md`, `SPRINT-PLANNING-GUIDE.md`) —
+  numbered path references corrected to match the new directory structure
+- **`code/workflows/` files** (06-review, 07-debug, 08-refactor, 10-debugging-with-logs) —
+  bug and review folder paths corrected to `15-BUGS/` and `14-REVIEWS/`
+- **`how-to/` files** (`PR-GUIDE.md`, `03-debugging/` workflow) — PR workflow path
+  corrected to `17-pr-and-review/`; bug report path corrected to `15-BUGS/`
+- **`DESIGN.md`** — renumbered PM directory references updated
 
 ---
 

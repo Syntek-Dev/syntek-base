@@ -13,7 +13,7 @@
 - [ ] All in-scope stories have complete acceptance criteria
 - [ ] Stories selected and prioritised using MoSCoW
 - [ ] Each story mapped to its development phases (backend / API / frontend)
-- [ ] Sprint plan document created: `SPRINT-PLAN-##.md` in `project-management/src/11-SPRINT-PLANS/`
+- [ ] Sprint plan document created: `SPRINT-PLAN-##.md` in `project-management/src/12-SPRINT-PLANS/`
 - [ ] Sprint goal is clearly stated in one sentence
 - [ ] Phase breakdown defines which stories are addressed in each phase
 - [ ] Definition of Done recorded in the sprint plan
@@ -24,4 +24,4 @@
 
 - [ ] `SPRINT-PLAN-##.md` committed and pushed
 - [ ] All developers have reviewed the plan
-- [ ] Ready to proceed to `workflows/12-backend-code`
+- [ ] Ready to proceed to `workflows/13-backend-code`

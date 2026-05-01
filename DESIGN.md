@@ -43,9 +43,9 @@ This file is the entry point for design work in Claude Design. It maps the relev
 | [`project-management/workflows/07-wireframes/`](project-management/workflows/07-wireframes/CONTEXT.md)               | Low- and mid-fidelity wireframes for layout decisions       |
 | [`project-management/workflows/08-gdpr-compliance/`](project-management/workflows/08-gdpr-compliance/CONTEXT.md)     | GDPR-compliant UI patterns — consent, data forms, notices   |
 | [`project-management/workflows/10-qa-checks/`](project-management/workflows/10-qa-checks/CONTEXT.md)                 | QA verification before a feature ships                      |
-| [`project-management/workflows/14-frontend-code/`](project-management/workflows/14-frontend-code/CONTEXT.md)         | Translating designs into Next.js components                 |
-| [`project-management/workflows/15-app-code/`](project-management/workflows/15-app-code/CONTEXT.md)                   | Translating designs into Expo / React Native screens        |
-| [`project-management/workflows/16-pr-and-review/`](project-management/workflows/16-pr-and-review/CONTEXT.md)         | PR review process including visual and accessibility checks |
+| [`project-management/workflows/15-frontend-code/`](project-management/workflows/15-frontend-code/CONTEXT.md)         | Translating designs into Next.js components                 |
+| [`project-management/workflows/16-app-code/`](project-management/workflows/16-app-code/CONTEXT.md)                   | Translating designs into Expo / React Native screens        |
+| [`project-management/workflows/17-pr-and-review/`](project-management/workflows/17-pr-and-review/CONTEXT.md)         | PR review process including visual and accessibility checks |
 
 ### Code Layer — Implementation Workflows
 

@@ -10,7 +10,7 @@
 - [ ] Root cause identified and documented
 - [ ] Fix implemented and tested
 - [ ] Tests passing (no regressions introduced)
-- [ ] If a significant bug: bug report saved to `project-management/src/14-BUGS/`
+- [ ] If a significant bug: bug report saved to `project-management/src/15-BUGS/`
 
 ---
 

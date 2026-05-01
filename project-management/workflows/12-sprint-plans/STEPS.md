@@ -44,7 +44,7 @@ For each story in the sprint, identify which development phases it touches:
 
 ### Step 5 — Write the Sprint Plan Document
 
-Create `project-management/src/11-SPRINT-PLANS/SPRINT-PLAN-##.md` with the following sections:
+Create `project-management/src/12-SPRINT-PLANS/SPRINT-PLAN-##.md` with the following sections:
 
 ```text
 # Sprint Plan ## — <Goal Summary>
@@ -67,18 +67,18 @@ Create `project-management/src/11-SPRINT-PLANS/SPRINT-PLAN-##.md` with the follo
 
 ### Phase 1 — Backend
 Stories: US###, US###
-Workflows: 12-backend-code
+Workflows: 13-backend-code
 
 ### Phase 2 — API
 Stories: US###, US###
-Workflows: 13-api-code
+Workflows: 14-api-code
 
 ### Phase 3 — Frontend
 Stories: US###, US###
-Workflows: 14-frontend-code
+Workflows: 15-frontend-code
 
 ### Phase 4 — PR & Review
-Workflows: 15-pr-and-review
+Workflows: 17-pr-and-review
 
 ## Definition of Done
 - [ ] All Must stories implemented, tested, and reviewed

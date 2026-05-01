@@ -5,7 +5,7 @@
 ## Directory Tree
 
 ```text
-project-management/workflows/15-app-code/
+project-management/workflows/16-app-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
@@ -66,5 +66,5 @@ workflow begins.
 
 - `project-management/workflows/06-component-designs/` — component designs consumed here
 - `project-management/workflows/07-wireframes/` — wireframes consumed here (use mobile viewports)
-- `project-management/workflows/13-api-code/` — GraphQL API must exist before this workflow
-- `project-management/workflows/16-pr-and-review/` — follow this after mobile is tested
+- `project-management/workflows/14-api-code/` — GraphQL API must exist before this workflow
+- `project-management/workflows/17-pr-and-review/` — follow this after mobile is tested

@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 01/05/2026 **Version**: 1.8.0 **Maintained By**: Syntek Studio
+**Last Updated**: 01/05/2026 **Version**: 1.9.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.9.0] - 01/05/2026
+
+### Changed
+
+- `README.md` — project tree, workflows table, QA table, feature-sequence diagrams, and
+  footer version line updated to reflect the new `11-SEO/` directory slot and the
+  corresponding renumbering of all subsequent src and workflow entries
+- `project-management/src/CONTEXT.md` — directory tree and naming conventions table
+  corrected; stale numbered references updated throughout
+- `project-management/workflows/CONTEXT.md` — directory tree and workflow summary table
+  corrected; stale numbered references updated throughout
+- `project-management/src/12-SPRINT-PLANS/` through `16-REFACTORING/` `CONTEXT.md` —
+  self-references updated to use the correct renumbered folder names
+- `project-management/workflows/12-sprint-plans/` through `18-release/` `CONTEXT.md` —
+  self-references updated to use the correct renumbered workflow names
+- `project-management/workflows/12-sprint-plans/CHECKLIST.md` and `STEPS.md` — stale path
+  references corrected to match the renumbered workflow
+- `project-management/workflows/10-qa-checks/CHECKLIST.md` — cross-references updated
+- `project-management/docs/QA-GUIDE.md`, `SECURITY-GUIDE.md`, `SPRINT-PLANNING-GUIDE.md`
+  — stale numbered path references corrected throughout
+- `code/workflows/06-review/`, `07-debug/`, `08-refactor/`, `10-debugging-with-logs/`
+  CONTEXT.md, CHECKLIST.md, and STEPS.md — stale `src/BUGS/` and `src/REVIEWS/` paths
+  corrected to new numbered equivalents (`15-BUGS/`, `14-REVIEWS/`)
+- `how-to/src/PR-GUIDE.md` — stale workflow path corrected to `17-pr-and-review/`
+- `how-to/workflows/03-debugging/CHECKLIST.md` and `STEPS.md` — bug report path corrected
+  to `project-management/src/15-BUGS/`
+- `DESIGN.md` — cross-references updated to reflect renumbered PM directories
 
 ---
 

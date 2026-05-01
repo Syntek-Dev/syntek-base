@@ -132,7 +132,7 @@ Once the root cause is identified:
 
 1. Switch to `code/workflows/07-debug/STEPS.md` to write the fix and regression test
 2. The regression test must fail before the fix and pass after
-3. For staging/prod issues, file a bug report in `project-management/src/14-BUGS/`
+3. For staging/prod issues, file a bug report in `project-management/src/15-BUGS/`
    using the naming convention `BUG-<DESCRIPTOR>-DD-MM-YYYY.md`
 
 ---

@@ -22,4 +22,4 @@
 - [ ] QA documents exist for every in-scope story
 - [ ] All user stories have complete acceptance criteria
 - [ ] QA documentation committed and pushed
-- [ ] Ready to proceed to `workflows/11-sprint-plans`
+- [ ] Ready to proceed to `workflows/12-sprint-plans`

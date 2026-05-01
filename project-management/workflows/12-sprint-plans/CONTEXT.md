@@ -5,7 +5,7 @@
 ## Directory Tree
 
 ```text
-project-management/workflows/11-sprint-plans/
+project-management/workflows/12-sprint-plans/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
@@ -30,7 +30,7 @@ It produces a sprint plan document that:
 
 ## Key concepts
 
-- Sprint plan documents live in `project-management/src/11-SPRINT-PLANS/`
+- Sprint plan documents live in `project-management/src/12-SPRINT-PLANS/`
 - Naming: `SPRINT-PLAN-##.md` (2-digit zero-padded sprint number)
 - Each plan records: goal, stories (MoSCoW), phase breakdown, and definition of done
 - Development phases within a sprint: backend → API → frontend → PR & review
@@ -38,7 +38,7 @@ It produces a sprint plan document that:
 
 ## Cross-references
 
-- `project-management/src/11-SPRINT-PLANS/` — sprint plan documents
+- `project-management/src/12-SPRINT-PLANS/` — sprint plan documents
 - `project-management/src/01-STORIES/` — story backlog
 - `project-management/src/08-GDPR/` — GDPR review output
 - `project-management/src/09-SECURITY/` — security review output

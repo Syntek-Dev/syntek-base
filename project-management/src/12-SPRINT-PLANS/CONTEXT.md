@@ -1,11 +1,11 @@
-# project-management/src/11-SPRINT-PLANS
+# project-management/src/12-SPRINT-PLANS
 
 Sprint plan documents — one per sprint, written after GDPR, security, and QA checks.
 
 ## Directory Tree
 
 ```text
-project-management/src/11-SPRINT-PLANS/
+project-management/src/12-SPRINT-PLANS/
 ├── CONTEXT.md               ← this file
 └── SPRINT-PLAN-##.md        ← sprint plan per sprint (e.g. SPRINT-PLAN-01.md)
 ```
@@ -25,6 +25,6 @@ Each sprint plan records:
 
 ## When to use
 
-- `workflows/11-sprint-plans` — the workflow that produces these documents
+- `workflows/12-sprint-plans` — the workflow that produces these documents
 - Created after `src/08-GDPR/`, `src/09-SECURITY/`, and `src/10-QA/` reviews are complete
-- Referenced throughout development phases (`workflows/12-backend-code` through `workflows/16-pr-and-review`)
+- Referenced throughout development phases (`workflows/13-backend-code` through `workflows/17-pr-and-review`)
