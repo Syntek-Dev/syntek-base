@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 30/04/2026 **Version**: 1.6.0 **Maintained By**: Syntek Studio
+**Last Updated**: 01/05/2026 **Version**: 1.7.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.7.0] - 01/05/2026
+
+### Added
+
+- `project-management/src/01-STORIES/US000-TEMPLATE.md` — canonical user story template
+  with full section structure: DB Changes, User Flow, Backend, API, Frontend, GDPR, and
+  Security; acceptance criteria and task subsections for each area; Verification Checks
+  and Definition of Done sections; flag-to-section table documenting which flags activate
+  which sections
+- `project-management/src/02-SPRINTS/SPRINT-00-TEMPLATE.md` — canonical sprint template
+  with Story Summary table, the same flag-driven section structure as the user story
+  template, and a matching Definition of Done
+
+### Changed
+
+- `project-management/workflows/01-story-creation/CONTEXT.md` — updated to reference
+  `US000-TEMPLATE.md` as the single source of truth for story structure; flag-to-section
+  table added; cross-reference to the template file added
+- `project-management/workflows/01-story-creation/STEPS.md` — fully rewritten as a
+  10-step process covering template copy, zero-padding, flag-setting for each domain,
+  and section-by-section completion rules
+- `project-management/workflows/01-story-creation/CHECKLIST.md` — fully expanded to
+  verify template use, all flags set, all AC subsections present, all task subsections
+  populated, Verification Checks and Definition of Done complete
+- `project-management/workflows/02-sprint-planning/CONTEXT.md` — updated to reference
+  `SPRINT-00-TEMPLATE.md`; flag-to-section table added; cross-reference to template added
+- `project-management/workflows/02-sprint-planning/STEPS.md` — fully rewritten as a
+  12-step process mirroring the story creation workflow for sprint artefacts
+- `project-management/workflows/02-sprint-planning/CHECKLIST.md` — fully expanded to
+  mirror the story checklist: template use, Story Summary table, flags, AC and task
+  subsections, and Definition of Done verified
 
 ---
 

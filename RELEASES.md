@@ -1,9 +1,50 @@
 # Releases — project-name
 
-**Last Updated**: 30/04/2026 **Version**: 1.6.0 **Maintained By**: Syntek Studio
+**Last Updated**: 01/05/2026 **Version**: 1.7.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.7.0 — 01/05/2026
+
+**Status:** Feature release — canonical story and sprint templates, rewritten PM workflows
+
+### Summary
+
+Introduces two canonical template files — `US000-TEMPLATE.md` for user stories and
+`SPRINT-00-TEMPLATE.md` for sprint plans — as single sources of truth for the PM
+artefact structure. Both templates cover all domain sections (DB, User Flow, Backend,
+API, Frontend, GDPR, Security) with acceptance criteria and task subsections, Verification
+Checks, and a Definition of Done. The story-creation and sprint-planning workflows are
+rewritten end-to-end to reference these templates and guide agents step by step through
+copying, flag-setting, and section completion.
+
+### What's new since v1.6.0
+
+- **`US000-TEMPLATE.md`:** A ready-to-copy user story template lives at
+  `project-management/src/01-STORIES/US000-TEMPLATE.md`. It includes the full structure
+  for every domain flag (DB, User Flow, Backend, API, Frontend, GDPR, Security), with
+  clearly delineated acceptance criteria and task subsections for each, plus Verification
+  Checks and a Definition of Done. Agents and developers copy and rename this file for
+  every new story rather than constructing the structure from scratch
+- **`SPRINT-00-TEMPLATE.md`:** An equivalent template for sprint plans lives at
+  `project-management/src/02-SPRINTS/SPRINT-00-TEMPLATE.md`. It adds a Story Summary
+  table at the top and uses the same flag-driven section structure and Definition of Done
+  as the story template, ensuring consistency across all sprint artefacts
+
+### What's improved since v1.6.0
+
+- **Story-creation workflow rewritten:** `workflows/01-story-creation/STEPS.md` is now a
+  10-step process that covers template copy, zero-padded filename creation, flag-setting
+  for each domain, and section-by-section completion. `CONTEXT.md` references the template
+  and includes the flag-to-section mapping. `CHECKLIST.md` verifies every structural
+  requirement from template use through to Definition of Done sign-off
+- **Sprint-planning workflow rewritten:** `workflows/02-sprint-planning/STEPS.md` follows
+  the same pattern as story creation — 12 steps covering template copy, Story Summary
+  population, flag-setting, and section completion. `CONTEXT.md` and `CHECKLIST.md` are
+  expanded to match
 
 ---
 
