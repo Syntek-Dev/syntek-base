@@ -46,15 +46,17 @@ project-management/
 │   │   ├── CONTEXT.md
 │   │   └── PLANNING/
 │   │       └── CONTEXT.md
-│   ├── 12-SPRINT-PLANS/        ← SPRINT-PLAN-##.md
+│   ├── 12-API-DESIGN/          ← API-US###-*.md, API-<FEATURE>-*.md
 │   │   └── CONTEXT.md
-│   ├── 13-TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 13-SPRINT-PLANS/        ← SPRINT-PLAN-##.md
 │   │   └── CONTEXT.md
-│   ├── 14-REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
+│   ├── 14-TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
 │   │   └── CONTEXT.md
-│   ├── 15-BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ├── 15-REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
 │   │   └── CONTEXT.md
-│   └── 16-REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
+│   ├── 16-BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+│   │   └── CONTEXT.md
+│   └── 17-REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
 │       └── CONTEXT.md
 └── workflows/                  ← step-by-step PM workflows
     ├── CONTEXT.md
@@ -102,31 +104,35 @@ project-management/
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 12-sprint-plans/        ← write the sprint plan (MoSCoW, phases, definition of done)
+    ├── 12-api-design/          ← design the GraphQL contract before sprint planning
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 13-backend-code/        ← implement Django models, services, business logic
+    ├── 13-sprint-plans/        ← write the sprint plan (MoSCoW, phases, definition of done)
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 14-api-code/            ← implement the Strawberry GraphQL API layer
+    ├── 14-backend-code/        ← implement Django models, services, business logic
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 15-frontend-code/       ← implement Next.js pages and React components
+    ├── 15-api-code/            ← implement the Strawberry GraphQL API layer
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 16-app-code/            ← implement Expo React Native screens and components
+    ├── 16-frontend-code/       ← implement Next.js pages and React components
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 17-pr-and-review/       ← create, review, and merge a feature PR
+    ├── 17-app-code/            ← implement Expo React Native screens and components
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    └── 18-release/             ← cut a release (version bump, changelog, deploy)
+    ├── 18-pr-and-review/       ← create, review, and merge a feature PR
+    │   ├── CHECKLIST.md
+    │   ├── CONTEXT.md
+    │   └── STEPS.md
+    └── 19-release/             ← cut a release (version bump, changelog, deploy)
         ├── CHECKLIST.md
         ├── CONTEXT.md
         └── STEPS.md
@@ -186,8 +192,9 @@ Numbered to mirror the `workflows/` steps. `00-` folders are pre-workflow refere
 | `src/09-SECURITY/`     | Security audits, threat models, assessments  |
 | `src/10-QA/`           | QA test files per user story                 |
 | `src/11-SEO/`          | SEO planning documents                       |
-| `src/12-SPRINT-PLANS/` | Sprint plan documents                        |
-| `src/13-TESTS/`        | Test status and manual testing guides        |
-| `src/14-REVIEWS/`      | Code review notes                            |
-| `src/15-BUGS/`         | Bug reports and related user stories         |
-| `src/16-REFACTORING/`  | Refactoring plans and notes                  |
+| `src/12-API-DESIGN/`   | GraphQL API design documents                 |
+| `src/13-SPRINT-PLANS/` | Sprint plan documents                        |
+| `src/14-TESTS/`        | Test status and manual testing guides        |
+| `src/15-REVIEWS/`      | Code review notes                            |
+| `src/16-BUGS/`         | Bug reports and related user stories         |
+| `src/17-REFACTORING/`  | Refactoring plans and notes                  |

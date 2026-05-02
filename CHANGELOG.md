@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 01/05/2026 **Version**: 1.9.0 **Maintained By**: Syntek Studio
+**Last Updated**: 02/05/2026 **Version**: 1.10.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.10.0] - 02/05/2026
+
+### Added
+
+- `project-management/src/12-API-DESIGN/` — new artefact folder for API design documents,
+  with `CONTEXT.md` and `PLANNING/CONTEXT.md` sub-directory for pre-development API planning
+- `project-management/workflows/12-api-design/` — new API design workflow with `CONTEXT.md`,
+  `STEPS.md`, and `CHECKLIST.md` covering API contract design as a discrete pre-coding step
+
+### Changed
+
+- `project-management/src/` folders renumbered to accommodate the new `12-API-DESIGN/` slot:
+  `12-SPRINT-PLANS` → `13-SPRINT-PLANS`, `13-TESTS` → `14-TESTS`,
+  `14-REVIEWS` → `15-REVIEWS`, `15-BUGS` → `16-BUGS`, `16-REFACTORING` → `17-REFACTORING`
+- `project-management/workflows/` renumbered to match: `12-sprint-plans` → `13-sprint-plans`,
+  `13-backend-code` → `14-backend-code`, `14-api-code` → `15-api-code`,
+  `15-frontend-code` → `16-frontend-code`, `16-app-code` → `17-app-code`,
+  `17-pr-and-review` → `18-pr-and-review`, `18-release` → `19-release`
+- `project-management/CONTEXT.md` — directory tree and cross-references updated to reflect
+  new 12-API-DESIGN slot and subsequent renumbering
+- `project-management/workflows/CONTEXT.md` — workflow summary table updated to reflect
+  new 12-api-design entry and subsequent renumbering
+- `project-management/workflows/10-qa-checks/CHECKLIST.md` — cross-reference to sprint-plans
+  workflow corrected to new slot number
 
 ---
 

@@ -1,6 +1,6 @@
 # Version History — project-name
 
-**Last Updated**: 01/05/2026 **Version**: 1.9.0 **Maintained By**: Syntek Studio
+**Last Updated**: 02/05/2026 **Version**: 1.10.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                                               |
 | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 02/05/2026 | 1.10.0  | Add 12-api-design workflow and src/12-API-DESIGN/ artefact folder; renumber src 12–16 and workflows 12–18 to accommodate new API design slot              |
 | 01/05/2026 | 1.9.0   | Update all CONTEXT.md, README.md, and cross-reference files to reflect new 11-SEO directory slot; correct stale self-references across 33 files           |
 | 01/05/2026 | 1.8.0   | Add SEO workflow (11-seo-checks), src/11-SEO/ artefact folder, SEO sections in story and sprint templates; renumber src 11–15 and workflows 11–17         |
 | 01/05/2026 | 1.7.0   | Add US000 story template and SPRINT-00 sprint template; rewrite story-creation and sprint-planning workflow STEPS, CHECKLIST, and CONTEXT files           |

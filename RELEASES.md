@@ -1,9 +1,41 @@
 # Releases — project-name
 
-**Last Updated**: 01/05/2026 **Version**: 1.9.0 **Maintained By**: Syntek Studio
+**Last Updated**: 02/05/2026 **Version**: 1.10.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.10.0 — 02/05/2026
+
+**Status:** Feature release — API design workflow and artefact folder added
+
+### Summary
+
+Introduces API design as a first-class pre-coding step in the PM workflow. A new
+`12-api-design` workflow (with `CONTEXT.md`, `STEPS.md`, and `CHECKLIST.md`) provides a
+structured guide for designing and documenting API contracts before backend implementation
+begins. A new `src/12-API-DESIGN/` artefact folder and `PLANNING/` sub-directory give teams
+a canonical home for API specification documents. The src and workflows directories are
+renumbered throughout to make room for the new slot 12.
+
+### What's new since v1.9.0
+
+- **`project-management/workflows/12-api-design/`** — new API design workflow with full
+  CONTEXT, STEPS, and CHECKLIST covering GraphQL schema design, REST contract definition,
+  and API review sign-off before coding begins
+- **`project-management/src/12-API-DESIGN/`** — canonical artefact folder for API design
+  documents with `PLANNING/` sub-directory for pre-development API planning artefacts
+- **`project-management/src/` renumbered** — `12-SPRINT-PLANS` → `13-SPRINT-PLANS`,
+  `13-TESTS` → `14-TESTS`, `14-REVIEWS` → `15-REVIEWS`, `15-BUGS` → `16-BUGS`,
+  `16-REFACTORING` → `17-REFACTORING`
+- **`project-management/workflows/` renumbered** — `12-sprint-plans` → `13-sprint-plans`,
+  `13-backend-code` → `14-backend-code`, `14-api-code` → `15-api-code`,
+  `15-frontend-code` → `16-frontend-code`, `16-app-code` → `17-app-code`,
+  `17-pr-and-review` → `18-pr-and-review`, `18-release` → `19-release`
+- **`project-management/CONTEXT.md`** and **`workflows/CONTEXT.md`** — directory trees and
+  summary tables updated to reflect the new numbering
 
 ---
 

@@ -49,31 +49,31 @@ project-management/workflows/
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-├── 12-sprint-plans/            ← write the sprint plan (MoSCoW, phases, definition of done)
+├── 13-sprint-plans/            ← write the sprint plan (MoSCoW, phases, definition of done)
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-├── 13-backend-code/            ← implement Django models, services, and business logic
+├── 14-backend-code/            ← implement Django models, services, and business logic
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-├── 14-api-code/                ← implement the Strawberry GraphQL API layer
+├── 15-api-code/                ← implement the Strawberry GraphQL API layer
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-├── 15-frontend-code/           ← implement Next.js pages and React components
+├── 16-frontend-code/           ← implement Next.js pages and React components
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-├── 16-app-code/                ← implement Expo React Native screens and components
+├── 17-app-code/                ← implement Expo React Native screens and components
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-├── 17-pr-and-review/           ← create, review, and merge a feature PR
+├── 18-pr-and-review/           ← create, review, and merge a feature PR
 │   ├── CHECKLIST.md
 │   ├── CONTEXT.md
 │   └── STEPS.md
-└── 18-release/                 ← cut a release (version bump, changelog, deployment)
+└── 19-release/                 ← cut a release (version bump, changelog, deployment)
     ├── CHECKLIST.md
     ├── CONTEXT.md
     └── STEPS.md
@@ -92,10 +92,10 @@ project-management/workflows/
 | `09-security-checks/`   | Threat-model planned features before sprint planning           |
 | `10-qa-checks/`         | Define QA scenarios for each story before development          |
 | `11-seo-checks/`        | Verify SEO metadata, structured data, and Core Web Vitals      |
-| `12-sprint-plans/`      | Write the sprint plan (MoSCoW, phases, definition of done)     |
-| `13-backend-code/`      | Implement Django models, services, and business logic (TDD)    |
-| `14-api-code/`          | Implement the Strawberry GraphQL API layer                     |
-| `15-frontend-code/`     | Implement Next.js pages and React components                   |
-| `16-app-code/`          | Implement Expo React Native screens and components             |
-| `17-pr-and-review/`     | Create, review, and merge a feature PR                         |
-| `18-release/`           | Cut a release (version bump, changelog, deployment)            |
+| `13-sprint-plans/`      | Write the sprint plan (MoSCoW, phases, definition of done)     |
+| `14-backend-code/`      | Implement Django models, services, and business logic (TDD)    |
+| `15-api-code/`          | Implement the Strawberry GraphQL API layer                     |
+| `16-frontend-code/`     | Implement Next.js pages and React components                   |
+| `17-app-code/`          | Implement Expo React Native screens and components             |
+| `18-pr-and-review/`     | Create, review, and merge a feature PR                         |
+| `19-release/`           | Cut a release (version bump, changelog, deployment)            |
