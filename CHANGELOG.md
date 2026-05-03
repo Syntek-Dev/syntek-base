@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: 02/05/2026 **Version**: 1.10.0 **Maintained By**: Syntek Studio
+**Last Updated**: 03/05/2026 **Version**: 1.11.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -13,6 +13,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 _No unreleased changes._
+
+---
+
+## [1.11.0] - 03/05/2026
+
+### Added
+
+- `.claude/hooks/pr-gate.sh` — Claude Code pre-tool-use hook that runs a full Docker-based
+  check suite (lockfiles, lint, stubs, tests + coverage, security audit) before `gh pr create`
+- `.claude/hooks/pr-comment.sh` — Claude Code post-tool-use hook that posts a structured summary
+  comment to every new pull request with check results and coverage data
+- `.claude/hooks/lib/` — shared helper library used by both PR gate hooks
+- `.claude/settings.json` — Claude Code hook configuration wiring `PreToolUse` and `PostToolUse`
+  Bash matchers to the PR gate and PR comment scripts
+- TypeScript typecheck job in `syntax-js-ts.yml` — runs `tsc --noEmit` for frontend and
+  `expo check` for mobile on every push and pull request
+
+### Changed
+
+- All 10 CI workflows now trigger on `[main, staging, dev, testing]` branches instead of
+  `[main]` only — audit-cloc, audit-stubs, syntax-js-ts, syntax-markdown, syntax-python,
+  test-api, test-backend, test-e2e, test-frontend, and test-mobile
+- `test-backend.yml`, `test-frontend.yml`, `test-mobile.yml` — coverage threshold is now dynamic:
+  80% when merging to `main` or `staging`, 75% for `dev` and `testing` branches
+- `test-e2e.yml` — E2E tests are now triggered automatically on push and pull request to all four
+  branches; manual `workflow_dispatch` with scenario filter is retained alongside
+- `.gitignore` — added comment documenting that Claude Code PR gate history lives in
+  `~/.claude/pr-check-history/` and is not tracked in the project
 
 ---
 

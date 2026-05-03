@@ -2,7 +2,7 @@ name: Audit — Stubs
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.py"
       - "**/*.ts"
@@ -12,7 +12,7 @@ on:
       - "code/src/scripts/audits/stubs.sh"
       - ".github/workflows/audit-stubs.yml"
   pull_request:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.py"
       - "**/*.ts"

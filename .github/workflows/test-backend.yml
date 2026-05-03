@@ -2,7 +2,7 @@ name: test-backend
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "code/src/backend/**"
       - "code/src/docker/backend/Dockerfile.test"
@@ -11,7 +11,7 @@ on:
       - "pyproject.toml"
       - "uv.lock"
   pull_request:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "code/src/backend/**"
       - "code/src/docker/backend/Dockerfile.test"
@@ -52,6 +52,16 @@ jobs:
             sleep 2
           done
 
+      - name: Set coverage threshold
+        id: threshold
+        run: |
+          BRANCH="${{ github.base_ref || github.ref_name }}"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "staging" ]]; then
+            echo "pct=80" >> $GITHUB_OUTPUT
+          else
+            echo "pct=75" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run pytest with coverage
         run: |
           mkdir -p reports
@@ -62,7 +72,7 @@ jobs:
             pytest \
               --cov=apps \
               --cov-branch \
-              --cov-fail-under=75 \
+              --cov-fail-under=${{ steps.threshold.outputs.pct }} \
               --cov-report=xml:/workspace/reports/coverage.xml \
               --cov-report=term-missing
 

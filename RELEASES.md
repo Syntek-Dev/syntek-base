@@ -1,9 +1,37 @@
 # Releases — project-name
 
-**Last Updated**: 02/05/2026 **Version**: 1.10.0 **Maintained By**: Syntek Studio
+**Last Updated**: 03/05/2026 **Version**: 1.11.0 **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.11.0 — 03/05/2026
+
+**Status:** Feature release — full-branch CI coverage, dynamic thresholds, and Claude Code PR gate
+
+### Summary
+
+Extends all ten CI workflows to trigger on the complete branch set (`main`, `staging`, `dev`,
+`testing`), ensuring that linting, type-checking, tests, and audits run at every tier of the
+branch flow — not only on `main`. Introduces a TypeScript typecheck job, branch-aware coverage
+thresholds (80% for production tiers, 75% for integration tiers), and fully-automated E2E test
+execution. Adds a Claude Code PR gate that enforces the full check suite before any pull request
+is created.
+
+### What's new since v1.10.0
+
+- **Claude Code PR gate** — `.claude/hooks/pr-gate.sh` runs lockfile, lint, stubs, tests, coverage,
+  and security checks before `gh pr create` is permitted; `.claude/hooks/pr-comment.sh` posts a
+  structured result summary as a PR comment after creation
+- **TypeScript typecheck** — new `typecheck` job in `syntax-js-ts.yml` runs `tsc --noEmit` for
+  the frontend and `expo check` for mobile on every push and PR
+- **Dynamic coverage thresholds** — `test-backend.yml`, `test-frontend.yml`, and `test-mobile.yml`
+  now enforce 80% coverage when targeting `main` or `staging`, and 75% for `dev` and `testing`
+- **Full-branch CI triggers** — all 10 workflows now respond to pushes and PRs on `main`,
+  `staging`, `dev`, and `testing`; E2E tests (`test-e2e.yml`) now also run automatically
+  (manual `workflow_dispatch` with scenario filter is still available)
 
 ---
 

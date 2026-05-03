@@ -2,7 +2,7 @@ name: JS/TS — Lint & Format
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.ts"
       - "**/*.tsx"
@@ -22,7 +22,7 @@ on:
       - ".prettierignore"
       - ".github/workflows/syntax-js-ts.yml"
   pull_request:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.ts"
       - "**/*.tsx"
@@ -81,3 +81,27 @@ jobs:
 
       - name: Check formatting
         run: pnpm format:check
+
+  typecheck:
+    name: TypeScript — Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck frontend
+        working-directory: code/src/frontend
+        run: pnpm exec tsc --noEmit
+
+      - name: Typecheck mobile
+        working-directory: code/src/mobile
+        run: pnpm exec expo check

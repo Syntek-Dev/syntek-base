@@ -1,8 +1,22 @@
 name: test-e2e
 
-# E2E tests are NEVER triggered automatically.
-# Run manually via: Actions → test-e2e → Run workflow
+# E2E tests run automatically on push/PR to main, staging, dev, and testing.
+# Run manually via: Actions → test-e2e → Run workflow (supports scenario filter)
 on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/frontend/**"
+      - "code/src/backend/**"
+      - "code/src/shared/**"
+      - "code/src/docker/docker-compose.test.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/frontend/**"
+      - "code/src/backend/**"
+      - "code/src/shared/**"
+      - "code/src/docker/docker-compose.test.yml"
   workflow_dispatch:
     inputs:
       grep:

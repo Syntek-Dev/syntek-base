@@ -2,13 +2,13 @@ name: Python — Lint, Format & Typecheck
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.py"
       - "pyproject.toml"
       - ".github/workflows/syntax-python.yml"
   pull_request:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.py"
       - "pyproject.toml"

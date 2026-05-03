@@ -2,7 +2,7 @@ name: test-frontend
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "code/src/frontend/**"
       - "code/src/docker/frontend/Dockerfile.test"
@@ -10,7 +10,7 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
   pull_request:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "code/src/frontend/**"
       - "code/src/docker/frontend/Dockerfile.test"
@@ -40,6 +40,39 @@ jobs:
             -v "${{ github.workspace }}/reports:/workspace/code/src/frontend/coverage" \
             frontend-test \
             pnpm test:coverage
+
+      - name: Set coverage threshold
+        id: threshold
+        run: |
+          BRANCH="${{ github.base_ref || github.ref_name }}"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "staging" ]]; then
+            echo "pct=80" >> $GITHUB_OUTPUT
+          else
+            echo "pct=75" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Enforce coverage threshold
+        env:
+          COV_THRESHOLD: ${{ steps.threshold.outputs.pct }}
+        run: |
+          python3 - <<'EOF'
+          import json, sys, os
+          threshold = int(os.environ["COV_THRESHOLD"])
+          try:
+              d = json.load(open("reports/coverage-summary.json"))
+              pct = int(float(d.get("total", {}).get("lines", {}).get("pct", 0)))
+              print(f"Lines coverage: {pct}% (required: {threshold}%)")
+              if pct < threshold:
+                  print(f"FAIL: {pct}% is below the required {threshold}%")
+                  sys.exit(1)
+              print(f"PASS: {pct}% >= {threshold}%")
+          except FileNotFoundError:
+              print("FAIL: coverage-summary.json not found")
+              sys.exit(1)
+          except Exception as e:
+              print(f"FAIL: {e}")
+              sys.exit(1)
+          EOF
 
       - name: Upload coverage report
         if: always()

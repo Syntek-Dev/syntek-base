@@ -2,13 +2,13 @@ name: Markdown — Lint
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.md"
       - ".markdownlint-cli2.jsonc"
       - ".github/workflows/syntax-markdown.yml"
   pull_request:
-    branches: [main]
+    branches: [main, staging, dev, testing]
     paths:
       - "**/*.md"
       - ".markdownlint-cli2.jsonc"
