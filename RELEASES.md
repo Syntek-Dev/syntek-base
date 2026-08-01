@@ -1,9 +1,35 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.10.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.11.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.11.0 — 01/08/2026
+
+**Status:** Patch release — the root orientation file returns
+
+### Summary
+
+Retiring the root `CONTEXT.md` in 0.10.0 went a step too far. `.claude/CLAUDE.md` imports it with
+`@../CONTEXT.md` on line 6, so every session since has loaded a file that no longer existed — the
+project lost its top-level orientation just as the layered structure grew to justify it. The file is
+back, rewritten for what the repository now is: a Django-only monolith distributed as a reusable base
+template, not the Django + Next.js + React Native monorepo the old version described.
+
+It carries the current directory tree, the layer map, the starting points for each kind of work, the
+conventions that govern the `CONTEXT.md`/`CLAUDE.md` pairing, and the repository state. The one
+documented exception to that pairing is recorded in place: the root has no `CLAUDE.md` because
+`code-review-graph install` generates one there and the repository gitignores it — `.claude/CLAUDE.md`
+is the root's operating-rules counterpart.
+
+### What's new since v0.10.0
+
+- **Root `CONTEXT.md` reinstated** — directory tree, layer map, starting points, conventions, repository state
+- **Broken session import repaired** — `@../CONTEXT.md` in `.claude/CLAUDE.md` resolves again
+- **Template instantiation signposted from the root** — the overview points at `setup.sh` and the token contract, and the note removes itself once the template is instantiated
 
 ---
 

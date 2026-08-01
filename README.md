@@ -4,7 +4,7 @@
 > server-rendered Django templates + django-components + HTMX + Alpine throughout, vanilla token
 > CSS, deployed via Docker Compose.
 
-![Version](https://img.shields.io/badge/version-0.10.0-blue)
+![Version](https://img.shields.io/badge/version-0.11.0-blue)
 ![Licence](https://img.shields.io/badge/licence-{{LICENCE}}-red)
 ![Status](https://img.shields.io/badge/status-in%20development-brightgreen)
 
@@ -1157,4 +1157,4 @@ For questions, issues, or contributions, reach out to the {{ORG_NAME}} developme
 
 ---
 
-_Maintained by {{ORG_NAME}} · v0.10.0 · British English (en_GB) · {{TIMEZONE}}_
+_Maintained by {{ORG_NAME}} · v0.11.0 · British English (en_GB) · {{TIMEZONE}}_

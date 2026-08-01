@@ -1,6 +1,6 @@
 # Version History — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.10.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.11.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                                            |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 01/08/2026 | 0.11.0  | Reinstate the root `CONTEXT.md` as the project overview, repairing the `@../CONTEXT.md` import in `.claude/CLAUDE.md`.                                 |
 | 01/08/2026 | 0.10.0  | Templatise the root configuration, extend CI with six audit workflows, and add the handoffs, learning, and research sandboxes.                         |
 | 01/08/2026 | 0.9.0   | Rewrite the how-to layer — add the AI dictionary, tooling guide, worktree workflow, and the scale and server architecture sizing documents.            |
 | 01/08/2026 | 0.8.0   | Rewrite the project-management layer — renumber src to 00–20 and workflows to 01–21, and add the API design, SEO, decisions, and story-plan tiers.     |
