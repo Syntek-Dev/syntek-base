@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # format.sh — Check or apply code formatting using ruff format (Python) and
-#             Prettier (TypeScript, JavaScript, React, CSS, Markdown).
+#             Prettier (JavaScript, CSS, Markdown).
 #             Dry-run by default — no files are modified without --fix.
 #
 # Usage: format.sh [--fix] [--file-type TYPE] [--output FORMAT]
@@ -14,7 +14,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/reports"
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 FIX=false
@@ -32,7 +38,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-format.sh — Format using ruff format (Python) and Prettier (TS/JS/React/CSS/Markdown)
+format.sh — Format using ruff format (Python) and Prettier (JS/CSS/Markdown)
 
 Usage:
   format.sh                        Dry-run check across all file types
@@ -43,7 +49,7 @@ Usage:
 Options:
   --fix                Apply formatting (writes files). Default is dry-run check.
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | typescript | javascript | react | css | markdown
+                         python | javascript | css | markdown
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/reports/format-report.<FORMAT>)
@@ -53,7 +59,7 @@ Options:
 
 Notes:
   • Dry-run exit code 1 means files need formatting — run with --fix to correct.
-  • Prettier handles TypeScript, JavaScript, React (TSX/JSX), CSS, and Markdown.
+  • Prettier handles JavaScript, CSS, and Markdown.
   • ruff format handles Python (PEP 8 compatible, opinionated like Black).
   • --output writes a report regardless of whether --fix was used.
 
@@ -66,25 +72,38 @@ require_arg() {
 }
 
 container_running() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
+  "${DC[@]}" ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
 }
 
-check_any_container() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend|mobile)' \
-    || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
-}
+# Prettier runs on the host (see the Prettier section below), so it needs the
+# workspace pnpm rather than a container.
+host_has_pnpm() { command -v pnpm >/dev/null 2>&1; }
 
 LAST_EXIT=0
 run_in() {
   local service="$1"; shift
   set +e
   if $QUIET; then
-    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
+    "${DC[@]}" exec -T "$service" "$@" \
       >> "$TMPFILE" 2>&1
     LAST_EXIT=$?
   else
-    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
+    "${DC[@]}" exec -T "$service" "$@" \
       2>&1 | tee -a "$TMPFILE"
+    LAST_EXIT=${PIPESTATUS[0]}
+  fi
+  set -e
+}
+
+# Run a command on the host, appending stdout+stderr to TMPFILE and setting
+# LAST_EXIT — the host counterpart of run_in for tools that span the whole repo.
+run_on_host() {
+  set +e
+  if $QUIET; then
+    "$@" >> "$TMPFILE" 2>&1
+    LAST_EXIT=$?
+  else
+    "$@" 2>&1 | tee -a "$TMPFILE"
     LAST_EXIT=${PIPESTATUS[0]}
   fi
   set -e
@@ -114,11 +133,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|typescript|javascript|react|css|markdown) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python typescript javascript react css markdown" ;;
+    python|javascript|css|markdown) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python javascript css markdown" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python typescript javascript react css markdown)
+[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python javascript css markdown)
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -126,8 +145,9 @@ if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
 fi
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
+# Python (ruff) runs in the django container; Prettier runs on the host. Each
+# tool guards its own prerequisite below, so no blanket container check here.
 cd "$PROJECT_ROOT"
-check_any_container
 
 TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE"' EXIT
@@ -148,10 +168,10 @@ wants() {
   return 1
 }
 
-# Prettier handles ts, js, react (tsx/jsx), css, markdown together
+# Prettier handles js, css, markdown together
 wants_prettier() {
   for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in typescript|javascript|react|css|markdown) return 0 ;; esac
+    case "$ft" in javascript|css|markdown) return 0 ;; esac
   done
   return 1
 }
@@ -159,57 +179,69 @@ wants_prettier() {
 # Build the Prettier glob pattern based on requested file types
 prettier_pattern() {
   local -a exts=()
-  wants typescript && exts+=(ts tsx)
-  wants javascript && exts+=(js jsx)
-  wants react      && { wants typescript || exts+=(tsx); wants javascript || exts+=(jsx); }
+  wants javascript && exts+=(js mjs cjs)
   wants css        && exts+=(css)
   wants markdown   && exts+=(md)
 
-  # Deduplicate
-  local deduped
+  # Deduplicate, then build the extension glob. A single extension must NOT use a
+  # brace ({md} is not expanded by Prettier's glob — only multi-element braces
+  # are), so emit a bare `md`; use `{a,b,c}` only for two or more.
+  local deduped ext_glob
   deduped=$(printf '%s\n' "${exts[@]}" | sort -u | tr '\n' ',' | sed 's/,$//')
-
-  if [[ -n "$TARGET_PATH" ]]; then
-    printf '%s' "$TARGET_PATH"
+  if [[ "$deduped" == *,* ]]; then
+    ext_glob="{$deduped}"
   else
-    printf '"**/*.{%s}"' "$deduped"
+    ext_glob="$deduped"
+  fi
+
+  # Emit a bare glob (no embedded quotes — the caller quotes the whole pattern as
+  # one arg and lets Prettier expand it). A directory --path is widened to a
+  # recursive glob so `--path some/dir` works (Prettier does not recurse dirs).
+  if [[ -z "$TARGET_PATH" ]]; then
+    printf '**/*.%s' "$ext_glob"
+  elif [[ -d "$TARGET_PATH" ]]; then
+    printf '%s/**/*.%s' "${TARGET_PATH%/}" "$ext_glob"
+  else
+    printf '%s' "$TARGET_PATH"
   fi
 }
 
 # ── Python — ruff format ──────────────────────────────────────────────────────
 if wants python; then
-  if container_running backend; then
+  if container_running django; then
     bold "── Python (ruff format) ───────────────────────────────────────────────────"
-    py_path="${TARGET_PATH:-code/src/backend/}"
+    py_path="${TARGET_PATH:-code/src/django/}"
     if $FIX; then
-      run_in backend ruff format "$py_path"
+      run_in django ruff format "$py_path"
     else
-      run_in backend ruff format --check "$py_path"
+      run_in django ruff format --check "$py_path"
     fi
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  backend container not running — skipping Python format"
+    log "  ⚠  django container not running — skipping Python format"
     log ""
   fi
 fi
 
-# ── TypeScript / JavaScript / React / CSS / Markdown — Prettier (frontend) ────
+# ── JavaScript / CSS / Markdown — Prettier ────────────────────────────────────
+# Prettier runs on the HOST, not in a container: no dev container mounts the whole
+# tree, so a containerised Prettier cannot reach the django app,
+# project-management, or root docs. This mirrors the lefthook pre-commit gate,
+# which also runs `pnpm exec prettier` on the host.
 if wants_prettier; then
-  if container_running frontend; then
-    bold "── TS / JS / React / React Native / CSS / Markdown (Prettier) ────────────"
+  if host_has_pnpm; then
+    bold "── JS / CSS / Markdown (Prettier) ─────────────────────────────────────────"
     pattern="$(prettier_pattern)"
     if $FIX; then
-      # shellcheck disable=SC2086
-      run_in frontend pnpm prettier --write $pattern
+      run_on_host pnpm exec prettier --write "$pattern"
     else
-      # shellcheck disable=SC2086
-      run_in frontend pnpm prettier --check $pattern
+      run_on_host pnpm exec prettier --check "$pattern"
     fi
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  frontend container not running — skipping Prettier format"
+    log "  ⚠  pnpm not found on host — skipping Prettier (it runs on the host; install pnpm/Node)"
     log ""
   fi
 fi
@@ -278,7 +310,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Format Report — project-name</title>
+  <title>Format Report — {{PROJECT_SLUG}}</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -293,7 +325,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Format Report — project-name</h1>
+  <h1>Format Report — {{PROJECT_SLUG}}</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

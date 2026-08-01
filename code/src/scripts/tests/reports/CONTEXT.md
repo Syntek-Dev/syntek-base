@@ -9,34 +9,24 @@ code/src/scripts/tests/reports/
 ├── CONTEXT.md                  ← this file
 ├── .gitignore                  ← ignores all generated reports; keeps tracked files
 ├── .gitkeep                    ← keeps this folder present in git when empty
-├── api/                        ← JSON from api.sh (Bruno API tests)
-│   └── CONTEXT.md
 ├── backend/                    ← JUnit XML from backend.sh (plain pytest)
 │   └── CONTEXT.md
 ├── backend-coverage/           ← HTML + XML from backend-coverage.sh (pytest-cov)
 │   └── CONTEXT.md
-├── frontend/                   ← JUnit XML from frontend.sh (plain vitest)
-│   └── CONTEXT.md
-├── frontend-coverage/          ← HTML + LCOV from frontend-coverage.sh (vitest coverage)
-│   └── CONTEXT.md
-└── e2e/                        ← HTML + JUnit XML from e2e.sh (playwright-bdd)
-    └── CONTEXT.md
+└── api/                        ← created on demand by api.sh (Bruno CLI output)
 ```
 
 ## Report formats by suite
 
-| Suite             | Script                 | Normal run             | Coverage run                           |
-| ----------------- | ---------------------- | ---------------------- | -------------------------------------- |
-| API (Bruno)       | `api.sh`               | `results.json`         | N/A                                    |
-| Backend (pytest)  | `backend.sh`           | `results.xml`          | N/A                                    |
-| Backend (cov)     | `backend-coverage.sh`  | N/A                    | `html/`, `coverage.xml`, `results.xml` |
-| Frontend (vitest) | `frontend.sh`          | `results.xml`          | N/A                                    |
-| Frontend (cov)    | `frontend-coverage.sh` | N/A                    | `html/`, `lcov.info`                   |
-| E2E (playwright)  | `e2e.sh`               | `html/`, `results.xml` | N/A                                    |
+| Suite            | Script                | Normal run                                    | Coverage run                                  |
+| ---------------- | --------------------- | --------------------------------------------- | --------------------------------------------- |
+| Backend (pytest) | `backend.sh`          | `results-unit.xml`, `results-integration.xml` | N/A                                           |
+| Backend (cov)    | `backend-coverage.sh` | N/A                                           | `html/`, `coverage.xml`, both JUnit XML files |
+| API (Bruno)      | `api.sh`              | Bruno CLI run output                          | N/A                                           |
 
 ## Bind mount
 
-Both `backend-test` and `frontend-test` Docker containers bind-mount this directory at
+The `django-test` container bind-mounts this directory at
 `/workspace/code/src/scripts/tests/reports`. Reports written inside the container appear here on the host immediately.
 
 ## Custom output directory

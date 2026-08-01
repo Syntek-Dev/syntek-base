@@ -4,8 +4,8 @@
 #
 # Usage: shell.sh [--service SERVICE] [--help]
 #
-# Default service: backend  (bash)
-# Services: backend (bash) · frontend (sh) · mobile (sh) · db (bash) · cache (sh) · nginx (sh) · maildev (sh)
+# Default service: django  (bash)
+# Services: django (bash) · db (bash) · cache (sh) · nginx (sh)
 #
 # Exit codes:  0 = exited normally   1 = container error   2 = script error
 #
@@ -14,9 +14,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
-SERVICE="backend"
+SERVICE="django"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'shell.sh error: %s\n' "$*" >&2; exit 2; }
@@ -28,14 +29,13 @@ usage() {
 shell.sh — Open an interactive shell in a development Docker Compose service
 
 Usage:
-  shell.sh                     Open bash in the backend container (default)
-  shell.sh --service frontend  Open sh in the frontend container
+  shell.sh                     Open bash in the django container (default)
   shell.sh --service db        Open bash in the PostgreSQL container
   shell.sh --service cache     Open sh in the Valkey container
 
 Options:
   --service SERVICE    Service to shell into:
-                         backend (default) | frontend | mobile | db | cache | nginx | maildev
+                         django (default) | db | cache | nginx
 
 Exit codes:  0 = exited normally   1 = container error   2 = script error
 EOF
@@ -54,10 +54,16 @@ done
 
 # Map service to shell binary (alpine uses ash/sh, debian-based has bash)
 case "$SERVICE" in
-  backend|db)                          SHELL_BIN="bash" ;;
-  frontend|mobile|cache|nginx|maildev) SHELL_BIN="sh" ;;
-  *)                                   die "Unknown service '$SERVICE'. Choose: backend frontend mobile db cache nginx maildev" ;;
+  django|db)    SHELL_BIN="bash" ;;
+  cache|nginx)  SHELL_BIN="sh" ;;
+  *)            die "Unknown service '$SERVICE'. Choose: django db cache nginx" ;;
 esac
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 cd "$PROJECT_ROOT"
 
@@ -65,4 +71,4 @@ bold "▸ shell.sh — $SERVICE ($SHELL_BIN)"
 log "  Type 'exit' or press Ctrl+D to leave the container."
 log ""
 
-exec docker compose -f "$COMPOSE_FILE" exec "$SERVICE" "$SHELL_BIN"
+exec "${DC[@]}" exec "$SERVICE" "$SHELL_BIN"

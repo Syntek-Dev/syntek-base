@@ -4,7 +4,7 @@
 #
 # Usage: shell.sh [--psql] [--help]
 #
-# Default: Django dbshell (python manage.py dbshell) in the backend container.
+# Default: Django dbshell (python manage.py dbshell) in the django container.
 # --psql:  Direct psql session in the db container.
 #
 # Exit codes:  0 = exited normally   1 = container error   2 = script error
@@ -14,9 +14,24 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
-DB_NAME="${POSTGRES_DB:-project_name_dev}"
-DB_USER="${POSTGRES_USER:-postgres}"
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
+
+# Load env file so POSTGRES_USER / POSTGRES_DB are available in this shell
+# (--env-file only injects vars into the compose process, not the host shell)
+if [[ -f "$ENV_FILE" ]]; then
+  set -a
+  # shellcheck source=/dev/null
+  source "$ENV_FILE"
+  set +a
+fi
+
+DB_NAME="${POSTGRES_DB:-{{PROJECT_SLUG}}_dev}"
+DB_USER="${POSTGRES_USER:-{{PROJECT_SLUG}}}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 USE_PSQL=false
@@ -38,7 +53,7 @@ Options:
   --psql     Open psql directly in the db container instead of Django dbshell
 
 Django dbshell connects using the DATABASE_URL / DATABASES setting from Django config.
-psql connects as POSTGRES_USER to POSTGRES_DB (env vars, defaults: postgres / project_name_dev).
+psql connects as POSTGRES_USER to POSTGRES_DB (env vars, defaults: {{PROJECT_SLUG}} / {{PROJECT_SLUG}}_dev).
 
 Exit codes:  0 = exited normally   1 = container error   2 = script error
 EOF
@@ -56,18 +71,18 @@ done
 cd "$PROJECT_ROOT"
 
 if $USE_PSQL; then
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qi "db" \
+  "${DC[@]}" ps --services --status running 2>/dev/null | grep -qx "db" \
     || die "db container is not running. Start with: bash code/src/scripts/development/server.sh up"
   bold "▸ shell.sh — psql ($DB_USER @ $DB_NAME)"
   log "  Type \\q or press Ctrl+D to exit."
   log ""
-  exec docker compose -f "$COMPOSE_FILE" exec db \
+  exec "${DC[@]}" exec db \
     psql -U "$DB_USER" -d "$DB_NAME"
 else
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qi "backend" \
-    || die "backend container is not running. Start with: bash code/src/scripts/development/server.sh up"
+  "${DC[@]}" ps --services --status running 2>/dev/null | grep -qx "django" \
+    || die "django container is not running. Start with: bash code/src/scripts/development/server.sh up"
   bold "▸ shell.sh — Django dbshell"
   log "  Type \\q or press Ctrl+D to exit."
   log ""
-  exec docker compose -f "$COMPOSE_FILE" exec backend python manage.py dbshell
+  exec "${DC[@]}" exec -w /workspace/code/src/django django python manage.py dbshell
 fi

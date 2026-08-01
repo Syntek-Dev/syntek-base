@@ -17,6 +17,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'server.sh error: %s\n' "$*" >&2; exit 2; }
@@ -37,10 +38,12 @@ Usage:
 Options (up):
   --build            Rebuild images before starting
   --watch            Enable file-watch mode (docker compose up --watch)
+  --seed             Run database/seed-dev.sh after startup (dev users + SEED_COMMANDS)
   --service SERVICE  Target a single service
 
 Options (down):
   --volumes          Also remove named volumes (wipes database data)
+  --clean-hosts [N]  Remove /etc/hosts entries for story N (defaults to current us### branch)
 
 Options (restart, build):
   --service SERVICE  Target a single service
@@ -65,14 +68,21 @@ esac
 # ── Per-command flag parsing ──────────────────────────────────────────────────
 BUILD=false
 WATCH=false
+SEED=false
 VOLUMES=false
+CLEAN_HOSTS=false
+CLEAN_HOSTS_NUM=""
 SERVICE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --build)            BUILD=true; shift ;;
     --watch)            WATCH=true; shift ;;
+    --seed)             SEED=true; shift ;;
     --volumes)          VOLUMES=true; shift ;;
+    --clean-hosts)      CLEAN_HOSTS=true
+                        if [[ "${2:-}" =~ ^[0-9]+$ ]]; then CLEAN_HOSTS_NUM="$2"; shift; fi
+                        shift ;;
     --service)          require_arg "$@"; SERVICE="$2"; shift 2 ;;
     --help|-h)          usage; exit 0 ;;
     *)                  die "Unknown option '$1'. Use --help for usage." ;;
@@ -81,27 +91,71 @@ done
 
 cd "$PROJECT_ROOT"
 
+[[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
+
+# Auto-detect worktree: if branch is us###/*, apply matching compose override.
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+
+# Base docker compose command with env file — all subcommands use this array.
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
+
+# ── Internal helpers ──────────────────────────────────────────────────────────
+
+# Re-sync the postgres user password from .env.dev so a changed POSTGRES_PASSWORD
+# never leaves the backend unable to connect against a reused volume.
+# Runs only when the full stack is started (no --service flag).
+_sync_db_password() {
+  [[ -n "$SERVICE" ]] && return 0
+  # shellcheck source=/dev/null
+  set -a; source "$ENV_FILE"; set +a
+  local db_user="${POSTGRES_USER:-{{PROJECT_SLUG}}}"
+  [[ -z "${POSTGRES_PASSWORD:-}" ]] && return 0
+  # Password is piped to psql stdin — never appears in the process list.
+  printf 'ALTER USER "%s" WITH PASSWORD '"'"'%s'"'"';\n' \
+    "$db_user" "$POSTGRES_PASSWORD" \
+    | "${DC[@]}" exec -T db psql -U "$db_user" -d postgres > /dev/null 2>&1 \
+    || log "  ⚠  Could not sync DB password (DB not ready — safe to ignore on first build)."
+}
+
 # ── Commands ──────────────────────────────────────────────────────────────────
 case "$COMMAND" in
   up)
     bold "▸ server.sh up"
-    declare -a args=(docker compose -f "$COMPOSE_FILE" up -d)
+    declare -a args=("${DC[@]}" up -d)
     $BUILD  && args+=(--build)
     $WATCH  && args+=(--watch)
     [[ -n "$SERVICE" ]] && args+=("$SERVICE")
     log ""
     "${args[@]}"
+    _sync_db_password
+    if $SEED; then
+      log ""
+      bold "  Seeding dev data…"
+      bash "$SCRIPT_DIR/../database/seed-dev.sh"
+    fi
     log ""
     bold "✓ Stack is up."
-    log "  Site:     http://dev.projectname.com"
-    log "  GraphQL:  http://dev.projectname.com/graphql/"
-    log "  Admin:    http://dev.projectname.com/admin/"
-    log "  Mail:     http://dev.projectname.com:1080"
+    # Only routes the stack actually serves are printed. At baseline the URLconf
+    # registers Django's admin at /control/ and nothing else; the marketing, portal,
+    # and API prefixes appear here as the apps that serve them are built.
+    if [[ -n "$OVERRIDE_DEV_FILE" ]]; then
+      # Worktree stacks isolate by host IP (127.0.0.<story>) — see
+      # docker-compose.us<NNN>.dev.yml for the port that override publishes.
+      _host="dev-us${WORKTREE_US_NUM}.{{PROJECT_SLUG}}.localhost"
+    else
+      # Host 81, not 80 — a local router (e.g. DDEV) commonly holds 127.0.0.1:80.
+      _host="dev.{{PROJECT_SLUG}}.localhost:81"
+    fi
+    log "  Site:          http://${_host}/"
+    log "  Django Admin:  http://${_host}/control/   (superuser/staff only)"
+    unset _host
     ;;
 
   down)
     bold "▸ server.sh down"
-    declare -a args=(docker compose -f "$COMPOSE_FILE" down)
+    declare -a args=("${DC[@]}" down)
     $VOLUMES && args+=(--volumes)
     log ""
     "${args[@]}"
@@ -109,15 +163,24 @@ case "$COMMAND" in
     $VOLUMES \
       && bold "✓ Stack stopped and volumes removed." \
       || bold "✓ Stack stopped."
+    if $CLEAN_HOSTS; then
+      _hosts_num="${CLEAN_HOSTS_NUM:-$WORKTREE_US_NUM}"
+      if [[ -n "$_hosts_num" ]]; then
+        bash "$SCRIPT_DIR/hosts-story-remove.sh" "$_hosts_num"
+      else
+        log "  ⚠  --clean-hosts ignored — not on a us### branch and no number given."
+      fi
+      unset _hosts_num
+    fi
     ;;
 
   restart)
     bold "▸ server.sh restart"
     log ""
     if [[ -n "$SERVICE" ]]; then
-      docker compose -f "$COMPOSE_FILE" restart "$SERVICE"
+      "${DC[@]}" restart "$SERVICE"
     else
-      docker compose -f "$COMPOSE_FILE" restart
+      "${DC[@]}" restart
     fi
     log ""
     bold "✓ Restarted${SERVICE:+ $SERVICE}."
@@ -127,9 +190,9 @@ case "$COMMAND" in
     bold "▸ server.sh build"
     log ""
     if [[ -n "$SERVICE" ]]; then
-      docker compose -f "$COMPOSE_FILE" build "$SERVICE"
+      "${DC[@]}" build "$SERVICE"
     else
-      docker compose -f "$COMPOSE_FILE" build
+      "${DC[@]}" build
     fi
     log ""
     bold "✓ Build complete."
@@ -138,8 +201,8 @@ case "$COMMAND" in
   status)
     bold "▸ server.sh status"
     log ""
-    docker compose -f "$COMPOSE_FILE" ps
+    "${DC[@]}" ps
     log ""
-    docker compose -f "$COMPOSE_FILE" images 2>/dev/null || true
+    "${DC[@]}" images 2>/dev/null || true
     ;;
 esac

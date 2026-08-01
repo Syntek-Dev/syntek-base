@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# stubs.sh — Detect stub implementations across Python/Django, GraphQL (Strawberry),
-#            and TypeScript/Next.js/React.
+# stubs.sh — Detect stub implementations across Python/Django,
+#            and JavaScript.
 #
 # Hard stubs (always fail):
 #   Python  — raise NotImplementedError  ·  # STUB
@@ -44,7 +44,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-stubs.sh — Detect stub implementations in Python/Django, GraphQL, TypeScript/Next.js
+stubs.sh — Detect stub implementations in Python/Django and JavaScript
 
 Usage:
   stubs.sh                         Scan all file types (hard stubs only)
@@ -55,7 +55,7 @@ Options:
   --strict             Show soft markers (# TODO / # FIXME / # HACK / // TODO etc.)
                        Soft markers are listed but do not cause failure.
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | typescript | javascript
+                         python | javascript
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/stubs-report.<FORMAT>)
@@ -115,11 +115,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|typescript|javascript) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python typescript javascript" ;;
+    python|javascript) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python javascript" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python typescript)
+[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python javascript)
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -158,7 +158,7 @@ wants() {
 
 wants_ts_js() {
   for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in typescript|javascript) return 0 ;; esac
+    case "$ft" in javascript) return 0 ;; esac
   done
   return 1
 }
@@ -215,9 +215,9 @@ scan() {
   printf '%s\n' "$all_hits" >> "$TMPFILE"
 }
 
-# ── Python / Django / GraphQL (Strawberry) ────────────────────────────────────
+# ── Python / Django ───────────────────────────────────────────────────────────
 if wants python; then
-  bold "── Python / Django / GraphQL (Strawberry) ─────────────────────────────────"
+  bold "── Python / Django ────────────────────────────────────────────────────────"
   scan "raise NotImplementedError" hard \
     'raise NotImplementedError' \
     "*.py"
@@ -238,9 +238,9 @@ if wants python; then
   log ""
 fi
 
-# ── TypeScript / JavaScript / Next.js / React / React Native ─────────────────
+# ── JavaScript ────────────────────────────────────────────────────────────────
 if wants_ts_js; then
-  bold "── TypeScript / JavaScript / Next.js / React / React Native ───────────────"
+  bold "── JavaScript ─────────────────────────────────────────────────────────────"
   declare -a ts_exts=("*.ts" "*.tsx")
   wants javascript && ts_exts+=("*.js" "*.jsx")
 
@@ -321,7 +321,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stub Audit — project-name</title>
+  <title>Stub Audit — {{PROJECT_NAME}}</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -336,7 +336,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Stub Audit — project-name</h1>
+  <h1>Stub Audit — {{PROJECT_NAME}}</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

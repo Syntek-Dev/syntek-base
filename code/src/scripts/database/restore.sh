@@ -12,9 +12,19 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
-DB_NAME="${POSTGRES_DB:-project_name_dev}"
-DB_USER="${POSTGRES_USER:-postgres}"
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
+
+if [[ -f "$ENV_FILE" ]]; then
+  DB_NAME="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB='   "$ENV_FILE" | cut -d= -f2- || true)}"
+  DB_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
+fi
+DB_NAME="${DB_NAME:-{{PROJECT_SLUG}}_dev}"
+DB_USER="${DB_USER:-{{PROJECT_SLUG}}}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 BACKUP_FILE=""
@@ -46,8 +56,8 @@ Options:
   --yes            Skip confirmation prompt
 
 Environment:
-  POSTGRES_DB    Database name (default: project_name_dev)
-  POSTGRES_USER  Database user (default: postgres)
+  POSTGRES_DB    Database name (default: {{PROJECT_SLUG}}_dev)
+  POSTGRES_USER  Database user (default: {{PROJECT_SLUG}})
 
 Exit codes:  0 = success   1 = command failed   2 = script error
 EOF
@@ -76,7 +86,7 @@ esac
 
 cd "$PROJECT_ROOT"
 
-docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qi "db" \
+"${DC[@]}" ps --services --status running 2>/dev/null | grep -qx "db" \
   || die "db container is not running. Start with: bash code/src/scripts/development/server.sh up"
 
 # ── Confirmation ──────────────────────────────────────────────────────────────
@@ -89,25 +99,25 @@ log ""
 
 if ! $YES; then
   printf '  Type "yes" to continue: '
-  read -r REPLY
+  read -r REPLY || true
   [[ "$REPLY" == "yes" ]] || { log "  Aborted."; exit 0; }
   log ""
 fi
 
 # ── Restore ───────────────────────────────────────────────────────────────────
 bold "  Dropping and recreating '$DB_NAME'…"
-docker compose -f "$COMPOSE_FILE" exec -T db \
+"${DC[@]}" exec -T db \
   psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS $DB_NAME;" postgres
-docker compose -f "$COMPOSE_FILE" exec -T db \
+"${DC[@]}" exec -T db \
   psql -U "$DB_USER" -c "CREATE DATABASE $DB_NAME;" postgres
 log ""
 
 bold "  Restoring from backup…"
 if [[ "$FORMAT" == "custom" ]]; then
-  docker compose -f "$COMPOSE_FILE" exec -T db \
+  "${DC[@]}" exec -T db \
     pg_restore -U "$DB_USER" -d "$DB_NAME" --no-owner --role "$DB_USER" < "$BACKUP_FILE"
 else
-  docker compose -f "$COMPOSE_FILE" exec -T db \
+  "${DC[@]}" exec -T db \
     psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
 fi
 

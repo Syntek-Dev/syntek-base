@@ -1,7 +1,8 @@
 # code/src/scripts/audits
 
-Audit scripts for codebase health. Unlike the scripts in `syntax/`, these run directly on the
-host (no Docker required) and cover the full source tree on every invocation.
+Audit scripts for codebase health. `cloc.sh`, `stubs.sh`, and `css-tokens.sh` run directly on the
+host (no Docker required) and cover the full source tree on every invocation. `security.sh` runs
+on the host by default but also accepts `--docker` to audit inside the running dev containers.
 
 ## Directory Tree
 
@@ -9,7 +10,11 @@ host (no Docker required) and cover the full source tree on every invocation.
 code/src/scripts/audits/
 ├── cloc.sh                  ← line-count audit (wc -l enforcement + cloc summary)
 ├── CONTEXT.md               ← this file
-├── stubs.sh                 ← stub detection (Django, GraphQL, Next.js, TypeScript)
+├── css-tokens.sh            ← phantom-token guard (var(--x) must resolve to a defined token)
+├── css-gradients.sh         ← inline-gradient guard (brand gradients must be var(--gradient-*) tokens)
+├── copy-emdash.sh           ← marketing-copy em-dash guard (no em dash in pagedata / templates)
+├── security.sh              ← dependency CVE audit (pip-audit for runtime deps + pnpm audit for repo tooling)
+├── stubs.sh                 ← stub detection (Python; also TS/JS if any is ever added)
 └── reports/                 ← generated report output (all gitignored)
     ├── CONTEXT.md
     ├── .gitignore
@@ -18,17 +23,40 @@ code/src/scripts/audits/
 
 ## Scripts
 
-| Script     | Purpose                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------- |
-| `stubs.sh` | Detect stub implementations: `raise NotImplementedError`, `throw new Error(*not implemented*)`, `# STUB`, `// STUB` |
-| `cloc.sh`  | Count lines per file via `wc -l`; warn at 750, fail at 800. Cloc language summary when installed.                   |
+| Script             | Purpose                                                                                                                                                                                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stubs.sh`         | Detect stub implementations: `raise NotImplementedError`, `throw new Error(*not implemented*)`, `# STUB`, `// STUB`                                                                                                                                                             |
+| `cloc.sh`          | Count lines per file via `wc -l`; warn at 750, fail at 800. Covers `*.py` `*.html` `*.css` `*.js` `*.jsx` `*.ts` `*.tsx` — templates and CSS are source in this stack. Cloc language summary when installed.                                                                    |
+| `css-tokens.sh`    | Verify every `var(--x)` reference across the three CSS scopes resolves to a defined token (or an allowlisted `--blk-` runtime prefix). Fails on "phantom" tokens that silently drop under Lightning CSS.                                                                        |
+| `css-gradients.sh` | Ban raw inline gradients in component/page CSS — brand gradients must be `var(--gradient-*)` / `var(--sector-tone-*)` tokens (`code/docs/VISUAL-DESIGN.md` § 4). The token layer is exempt; a functional gradient (shimmer/mask) is allowed with a `gradient-allow` annotation. |
+| `copy-emdash.sh`   | Ban em dashes (—) in public marketing copy — `apps/marketing/pagedata/*.py` + `templates/*.html`. Enforces the "no em dash, no spaced-en-dash substitute" copy rule (`BRAND-VOICE.md`). Numeric en dashes (`Mon–Fri`) are not flagged.                                          |
+| `security.sh`      | Dependency CVE audit mirroring the CI `[8/8] Security` gate: `pnpm audit` (JS/TS) + `pip-audit` (Python).                                                                                                                                                                       |
+
+## security.sh
+
+Mirrors the CI `[8/8] Security` gate (`.github/workflows/claude.yml`) so a clean local run
+predicts a clean CI run. `pnpm audit` reads `auditConfig.ignoreGhsas` from `pnpm-workspace.yaml`
+natively, so accepted advisories do not fail the run.
+
+| Flag                | Description                                                               |
+| ------------------- | ------------------------------------------------------------------------- |
+| `--local`           | Run on the host (default)                                                 |
+| `--docker`          | Run inside the running dev containers (needs `development/server.sh up`)  |
+| `--js-only`         | Only `pnpm audit` (frontend workspace)                                    |
+| `--py-only`         | Only the Python CVE scan (backend)                                        |
+| `--py-tool TOOL`    | Python auditor: `pip-audit` (default, CI parity) \| `uv` (`uv audit`)     |
+| `--audit-level LVL` | pnpm threshold: `info` `low` `moderate` `high` `critical` (default `low`) |
+| `--quiet`           | Suppress per-tool output; print only the summary                          |
+
+> `pip-audit` (the scanner the CI gate uses) and `uv audit` (uv's built-in, experimental) are
+> different tools — `security.sh` defaults to `pip-audit` for CI parity.
 
 ## Markdown exclusion
 
 Both scripts exclude `*.md` files:
 
 - **`stubs.sh`** — only scans `*.py`, `*.ts`, `*.tsx`, `*.js`, `*.jsx` via `--include`. Markdown is never checked for stubs.
-- **`cloc.sh`** — per-file enforcement only checks those same source extensions. The cloc language summary uses `--exclude-lang=Markdown` so Markdown lines are not counted.
+- **`cloc.sh`** — per-file enforcement checks `*.py`, `*.html`, `*.css`, `*.js`, `*.jsx`, `*.ts`, `*.tsx`. The cloc language summary uses `--exclude-lang=Markdown` so Markdown lines are not counted.
 
 Markdown files are still linted by `markdownlint-cli2` (via `lefthook` pre-commit and `syntax/lint.sh`) and formatted by Prettier — they are just not subject to the 750/800-line hard limit.
 
@@ -73,10 +101,14 @@ Default filenames: `stubs-report.<FORMAT>`, `cloc-report.<FORMAT>`.
 
 ## Requirements
 
-| Script     | Dependencies                                                              |
-| ---------- | ------------------------------------------------------------------------- |
-| `stubs.sh` | `grep` (always available)                                                 |
-| `cloc.sh`  | `wc`, `find` (always available) · `cloc` (optional, for language summary) |
+| Script             | Dependencies                                                                           |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| `stubs.sh`         | `grep` (always available)                                                              |
+| `cloc.sh`          | `wc`, `find` (always available) · `cloc` (optional, for language summary)              |
+| `css-tokens.sh`    | `grep`, `find`, `xargs`, `perl` (always available)                                     |
+| `css-gradients.sh` | `grep`, `find`, `awk` (always available)                                               |
+| `copy-emdash.sh`   | `grep`, `find` (always available)                                                      |
+| `security.sh`      | `pnpm` (JS audit) · `uv` + `pip-audit` (Python audit) · `docker` (for `--docker` mode) |
 
 Install cloc:
 

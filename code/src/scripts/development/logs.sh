@@ -11,6 +11,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 SERVICE=""
@@ -30,12 +36,12 @@ logs.sh — View and tail logs from development Docker Compose services
 Usage:
   logs.sh                          Show last 100 lines from all services
   logs.sh --follow                 Follow all service logs (Ctrl+C to stop)
-  logs.sh --service backend        Tail only the backend service
-  logs.sh --service backend --follow --tail 50
+  logs.sh --service django         Tail only the django service
+  logs.sh --service django --follow --tail 50
 
 Options:
   --service SERVICE    Service to show logs for (default: all)
-                         backend | frontend | db | cache
+                         django | db | cache | nginx
   --follow             Follow log output
   --tail N             Number of lines to show from the end (default: 100)
   --since DURATION     Show logs since a duration or timestamp
@@ -62,12 +68,13 @@ done
 cd "$PROJECT_ROOT"
 
 # ── Build docker compose logs command ────────────────────────────────────────
-declare -a args=(docker compose -f "$COMPOSE_FILE" logs)
+declare -a args=("${DC[@]}" logs)
 args+=(--tail "$TAIL")
 $FOLLOW       && args+=(-f)
 [[ -n "$SINCE" ]] && args+=(--since "$SINCE")
 [[ -n "$SERVICE" ]] && args+=("$SERVICE")
 
-bold "▸ logs.sh${SERVICE:+ — $SERVICE}${FOLLOW:+ (following)}"
+# ${FOLLOW:+…} would expand on the *string* "false" — test the value, not emptiness.
+bold "▸ logs.sh${SERVICE:+ — $SERVICE}$($FOLLOW && printf ' (following)' || true)"
 log ""
 "${args[@]}"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# lint.sh — Lint the codebase using ruff (Python), ESLint (TS/JS/React),
-#           and markdownlint-cli2 (Markdown). Dry-run by default.
+# lint.sh — Lint the codebase using ruff (Python) and markdownlint-cli2
+#           (Markdown). Dry-run by default.
 #
 # Usage: lint.sh [--fix] [--unsafe-fix] [--file-type TYPE] [--output FORMAT]
 #                [--output-file PATH] [--quiet] [--path PATH] [--help]
@@ -13,7 +13,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/reports"
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 FIX=false
@@ -32,7 +36,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-lint.sh — Lint using ruff (Python), ESLint (TS/JS/React), markdownlint (Markdown)
+lint.sh — Lint using ruff (Python) and markdownlint (Markdown)
 
 Usage:
   lint.sh                          Dry-run all supported file types
@@ -45,7 +49,7 @@ Options:
   --fix                Apply safe automatic fixes
   --unsafe-fix         Apply safe and unsafe automatic fixes (ruff only)
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | typescript | javascript | react | markdown | css
+                         python | markdown | css
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/reports/lint-report.<FORMAT>)
@@ -56,7 +60,6 @@ Options:
 Notes:
   • Runs inside Docker containers via docker compose exec.
   • CSS has no lint tool configured — use format.sh for CSS formatting.
-  • HTML output uses ESLint's native HTML formatter for JS/TS sections.
   • JSON output captures each tool's text output in a structured envelope.
 
 Exit codes:  0 = clean   1 = lint issues found   2 = script error
@@ -68,13 +71,12 @@ require_arg() {
 }
 
 container_running() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
 }
 
-check_any_container() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend|mobile)' \
-    || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
-}
+# markdownlint runs on the host (see the Markdown section below), so it needs the
+# workspace pnpm rather than a container.
+host_has_pnpm() { command -v pnpm >/dev/null 2>&1; }
 
 # Run a command in a service container, appending stdout+stderr to TMPFILE.
 # Sets LAST_EXIT to the command's exit code.
@@ -83,12 +85,26 @@ run_in() {
   local service="$1"; shift
   set +e
   if $QUIET; then
-    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
+    docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T "$service" "$@" \
       >> "$TMPFILE" 2>&1
     LAST_EXIT=$?
   else
-    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
+    docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T "$service" "$@" \
       2>&1 | tee -a "$TMPFILE"
+    LAST_EXIT=${PIPESTATUS[0]}
+  fi
+  set -e
+}
+
+# Run a command on the host, appending stdout+stderr to TMPFILE and setting
+# LAST_EXIT — the host counterpart of run_in for tools that span the whole repo.
+run_on_host() {
+  set +e
+  if $QUIET; then
+    "$@" >> "$TMPFILE" 2>&1
+    LAST_EXIT=$?
+  else
+    "$@" 2>&1 | tee -a "$TMPFILE"
     LAST_EXIT=${PIPESTATUS[0]}
   fi
   set -e
@@ -119,11 +135,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|typescript|javascript|react|markdown|css) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python typescript javascript react markdown css" ;;
+    python|markdown|css) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python markdown css" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python typescript markdown)
+[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python markdown)
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -131,8 +147,9 @@ if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
 fi
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
+# Python (ruff) runs in its container; markdownlint runs on the host. Each
+# tool guards its own prerequisite below, so no blanket check here.
 cd "$PROJECT_ROOT"
-check_any_container
 
 TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE"' EXIT
@@ -153,64 +170,46 @@ wants() {
   return 1
 }
 
-wants_ts_js() {
-  for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in typescript|javascript|react) return 0 ;; esac
-  done
-  return 1
-}
-
 # ── Python — ruff check ───────────────────────────────────────────────────────
 if wants python; then
-  if container_running backend; then
+  if container_running django; then
     bold "── Python (ruff check) ────────────────────────────────────────────────────"
-    py_path="${TARGET_PATH:-code/src/backend/}"
+    py_path="${TARGET_PATH:-code/src/django/}"
     declare -a ruff_args=(ruff check "$py_path")
     $FIX && ruff_args+=(--fix)
     $UNSAFE_FIX && ruff_args+=(--unsafe-fixes)
-    run_in backend "${ruff_args[@]}"
+    run_in django "${ruff_args[@]}"
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  backend container not running — skipping Python lint"
-    log ""
-  fi
-fi
-
-# ── TypeScript / JavaScript / React / React Native — ESLint (root config) ────
-if wants_ts_js; then
-  if container_running frontend; then
-    bold "── TypeScript / JS / React / React Native (ESLint — root config) ──────────"
-    # Root eslint.config.mjs scopes React Native rules to code/src/mobile/** automatically.
-    if [[ -n "$TARGET_PATH" ]]; then
-      declare -a eslint_targets=("$TARGET_PATH")
-    else
-      declare -a eslint_targets=("code/src/frontend/src/" "code/src/mobile/src/")
-    fi
-    declare -a eslint_args=(pnpm eslint "${eslint_targets[@]}")
-    $FIX && eslint_args+=(--fix)
-    [[ "$OUTPUT_FORMAT" == "html" ]] && eslint_args+=(--format html)
-    run_in frontend "${eslint_args[@]}"
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
-    log ""
-  else
-    log "  ⚠  frontend container not running — skipping TS/JS/React Native lint"
+    log "  ⚠  django container not running — skipping Python lint"
     log ""
   fi
 fi
 
 # ── Markdown — markdownlint-cli2 ──────────────────────────────────────────────
+# markdownlint runs on the HOST, not in a container: the django container only
+# mounts code/src/django, so it cannot reach project-management or root docs.
+# This mirrors the lefthook pre-commit gate, which also runs
+# `pnpm exec markdownlint-cli2` on the host.
 if wants markdown; then
-  if container_running frontend; then
+  if host_has_pnpm; then
     bold "── Markdown (markdownlint-cli2) ───────────────────────────────────────────"
-    md_pattern="${TARGET_PATH:-**/*.md}"
-    declare -a md_args=(pnpm markdownlint-cli2 "$md_pattern")
+    # A directory --path is widened to a recursive glob; default lints the repo.
+    if [[ -z "$TARGET_PATH" ]]; then
+      md_pattern="**/*.md"
+    elif [[ -d "$TARGET_PATH" ]]; then
+      md_pattern="${TARGET_PATH%/}/**/*.md"
+    else
+      md_pattern="$TARGET_PATH"
+    fi
+    declare -a md_args=(pnpm exec markdownlint-cli2 "$md_pattern")
     $FIX && md_args+=(--fix)
-    run_in frontend "${md_args[@]}"
+    run_on_host "${md_args[@]}"
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  frontend container not running — skipping Markdown lint"
+    log "  ⚠  pnpm not found on host — skipping Markdown lint (it runs on the host; install pnpm/Node)"
     log ""
   fi
 fi
@@ -273,7 +272,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lint Report — project-name</title>
+  <title>Lint Report — {{PROJECT_SLUG}}</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -288,7 +287,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Lint Report — project-name</h1>
+  <h1>Lint Report — {{PROJECT_SLUG}}</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

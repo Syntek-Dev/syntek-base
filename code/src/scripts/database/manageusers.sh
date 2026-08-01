@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# manageusers.sh — Create or promote Django users via the backend container.
+# manageusers.sh — Create or promote Django users via the django container.
 #
 # Usage:
 #   manageusers.sh create-superuser
@@ -15,6 +15,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'manageusers.sh error: %s\n' "$*" >&2; exit 2; }
@@ -23,7 +29,7 @@ log()  { printf '%s\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-manageusers.sh — Create or promote Django users via the backend container
+manageusers.sh — Create or promote Django users via the django container
 
 Usage:
   manageusers.sh create-superuser               Interactive superuser creation (Django prompt)
@@ -54,11 +60,11 @@ require_arg() { [[ $# -gt 1 ]] || die "$1 requires a value"; }
 
 container_running() {
   cd "$PROJECT_ROOT"
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qi "backend"
+  "${DC[@]}" ps --services --status running 2>/dev/null | grep -qx "django"
 }
 
 manage() {
-  docker compose -f "$COMPOSE_FILE" exec backend python manage.py "$@"
+  "${DC[@]}" exec -w /workspace/code/src/django django python manage.py "$@"
 }
 
 # ── Command ───────────────────────────────────────────────────────────────────
@@ -89,7 +95,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-container_running || die "backend container is not running. Start with: ./code/src/scripts/development/server.sh up"
+container_running || die "django container is not running. Start with: bash code/src/scripts/development/server.sh up"
 
 cd "$PROJECT_ROOT"
 
@@ -98,7 +104,7 @@ case "$COMMAND" in
   create-superuser)
     bold "▸ manageusers.sh create-superuser"
     log ""
-    docker compose -f "$COMPOSE_FILE" exec -it backend python manage.py createsuperuser
+    "${DC[@]}" exec -it -w /workspace/code/src/django django python manage.py createsuperuser
     log ""
     bold "✓ Superuser created."
     ;;
@@ -136,7 +142,8 @@ print('Staff user created (no password set — use the admin to set one).')
 
   promote)
     [[ -z "$EMAIL" ]] && die "promote requires --email EMAIL"
-    bold "▸ manageusers.sh promote — $EMAIL${GRANT_SUPERUSER:+ (superuser)}"
+    # ${GRANT_SUPERUSER:+…} would expand on the *string* "false" — test the value.
+    bold "▸ manageusers.sh promote — $EMAIL$($GRANT_SUPERUSER && printf ' (superuser)' || true)"
     log ""
     if $GRANT_SUPERUSER; then
       manage shell -c "

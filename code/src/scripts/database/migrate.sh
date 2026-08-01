@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 #
-# migrate.sh — Django migration management via the backend container.
+# migrate.sh — Django migration management via the django container.
 #
 # Usage:
-#   migrate.sh run   [--app APP]
-#   migrate.sh make  [--app APP] [--name NAME] [--empty]
-#   migrate.sh show  [--app APP]
-#   migrate.sh check
-#   migrate.sh fake  --migration MIGRATION [--app APP]
-#   migrate.sh fake-initial
+#   migrate.sh run          [--database DB] [--app APP]
+#   migrate.sh make         [--app APP] [--name NAME] [--empty]
+#   migrate.sh show         [--database DB] [--app APP]
+#   migrate.sh check        [--database DB]
+#   migrate.sh fake         [--database DB] --migration MIGRATION [--app APP]
+#   migrate.sh fake-initial [--database DB]
 #   migrate.sh --help
+#
+# Use --database DB only when the project defines more than one DATABASES entry.
+# Omit --database to target the default database (the baseline has one).
 #
 # Exit codes:  0 = success   1 = command failed   2 = script error
 #
@@ -18,6 +21,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'migrate.sh error: %s\n' "$*" >&2; exit 2; }
@@ -26,7 +33,7 @@ log()  { printf '%s\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-migrate.sh — Django migration management via the backend container
+migrate.sh — Django migration management via the django container
 
 Usage:
   migrate.sh run                   Apply all pending migrations
@@ -35,6 +42,10 @@ Usage:
   migrate.sh check                 Exit non-zero if any migrations are pending
   migrate.sh fake                  Mark migrations as applied without running SQL
   migrate.sh fake-initial          Fake initial migrations for pre-existing tables
+
+Options (run, show, check, fake, fake-initial):
+  --database DB      Target a non-default DATABASES alias.
+                     Omit to use the default database (the baseline has one).
 
 Options (run, make, show, fake):
   --app APP          Restrict to a single Django app
@@ -47,15 +58,19 @@ Options (fake):
   --migration NAME   Migration name to fake (e.g. 0003_add_slug)
                      Omit to fake the latest migration for the app.
 
-Examples:
+Examples (<app> is a package under code/src/django/apps/):
   migrate.sh run
-  migrate.sh run --app users
-  migrate.sh make --app content --name add_slug_field
-  migrate.sh make --empty --app users --name populate_usernames
-  migrate.sh show --app core
+  migrate.sh run --app <app>
+  migrate.sh make --app <app> --name add_slug_field
+  migrate.sh make --empty --app <app> --name backfill_slugs
+  migrate.sh show --app <app>
   migrate.sh check
-  migrate.sh fake --app users --migration 0002_alter_user
+  migrate.sh fake --app <app> --migration 0002_add_slug
   migrate.sh fake-initial
+
+  # Only if the project has added a second database entry to DATABASES:
+  migrate.sh run --database <alias>
+  migrate.sh check --database <alias>
 
 Exit codes:  0 = success   1 = command failed   2 = script error
 EOF
@@ -63,16 +78,16 @@ EOF
 
 require_arg() { [[ $# -gt 1 ]] || die "$1 requires a value"; }
 
+# `ps --services` prints service names only, so `grep -qx` is an exact match — a
+# substring grep over the full `ps` table also matches image names and other services.
 container_running() {
   cd "$PROJECT_ROOT"
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null \
-    | grep -q "[[:space:]]backend[[:space:]]" || \
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null \
-    | grep -qi "backend"
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --services --status running 2>/dev/null \
+    | grep -qx "django"
 }
 
 manage() {
-  docker compose -f "$COMPOSE_FILE" exec -T backend python manage.py "$@"
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T -w /workspace/code/src/django django python manage.py "$@"
 }
 
 # ── Command ───────────────────────────────────────────────────────────────────
@@ -88,6 +103,7 @@ esac
 
 # ── Per-command flag parsing ──────────────────────────────────────────────────
 APP=""
+DATABASE=""
 MIGRATION_NAME=""
 MAKE_NAME=""
 EMPTY=false
@@ -95,6 +111,7 @@ EMPTY=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --app)        require_arg "$@"; APP="$2"; shift 2 ;;
+    --database)   require_arg "$@"; DATABASE="$2"; shift 2 ;;
     --name)       require_arg "$@"; MAKE_NAME="$2"; shift 2 ;;
     --migration)  require_arg "$@"; MIGRATION_NAME="$2"; shift 2 ;;
     --empty)      EMPTY=true; shift ;;
@@ -104,18 +121,17 @@ while [[ $# -gt 0 ]]; do
 done
 
 cd "$PROJECT_ROOT"
-container_running || die "backend container is not running. Start with: bash code/src/scripts/development/server.sh up"
+container_running || die "django container is not running. Start with: bash code/src/scripts/development/server.sh up"
 
 # ── Commands ──────────────────────────────────────────────────────────────────
 case "$COMMAND" in
   run)
-    bold "▸ migrate.sh run${APP:+ — $APP}"
+    bold "▸ migrate.sh run${DATABASE:+ — db:$DATABASE}${APP:+ — $APP}"
     log ""
-    if [[ -n "$APP" ]]; then
-      manage migrate "$APP"
-    else
-      manage migrate
-    fi
+    declare -a run_args=(migrate)
+    [[ -n "$APP" ]]      && run_args+=("$APP")
+    [[ -n "$DATABASE" ]] && run_args+=(--database "$DATABASE")
+    manage "${run_args[@]}"
     log ""
     bold "✓ Migrations applied."
     ;;
@@ -133,38 +149,42 @@ case "$COMMAND" in
     ;;
 
   show)
-    bold "▸ migrate.sh show${APP:+ — $APP}"
+    bold "▸ migrate.sh show${DATABASE:+ — db:$DATABASE}${APP:+ — $APP}"
     log ""
-    if [[ -n "$APP" ]]; then
-      manage showmigrations "$APP"
-    else
-      manage showmigrations
-    fi
+    declare -a show_args=(showmigrations)
+    [[ -n "$APP" ]]      && show_args+=("$APP")
+    [[ -n "$DATABASE" ]] && show_args+=(--database "$DATABASE")
+    manage "${show_args[@]}"
     ;;
 
   check)
-    bold "▸ migrate.sh check"
+    bold "▸ migrate.sh check${DATABASE:+ — db:$DATABASE}"
     log ""
-    manage migrate --check
+    declare -a check_args=(migrate --check)
+    [[ -n "$DATABASE" ]] && check_args+=(--database "$DATABASE")
+    manage "${check_args[@]}"
     log ""
     bold "✓ No pending migrations."
     ;;
 
   fake)
     [[ -z "$APP" ]] && die "fake requires --app APP"
-    bold "▸ migrate.sh fake — $APP${MIGRATION_NAME:+ $MIGRATION_NAME}"
+    bold "▸ migrate.sh fake${DATABASE:+ — db:$DATABASE} — $APP${MIGRATION_NAME:+ $MIGRATION_NAME}"
     log ""
     declare -a fake_args=(migrate --fake "$APP")
     [[ -n "$MIGRATION_NAME" ]] && fake_args+=("$MIGRATION_NAME")
+    [[ -n "$DATABASE" ]]       && fake_args+=(--database "$DATABASE")
     manage "${fake_args[@]}"
     log ""
     bold "✓ Migration(s) marked as applied."
     ;;
 
   fake-initial)
-    bold "▸ migrate.sh fake-initial"
+    bold "▸ migrate.sh fake-initial${DATABASE:+ — db:$DATABASE}"
     log ""
-    manage migrate --fake-initial
+    declare -a fi_args=(migrate --fake-initial)
+    [[ -n "$DATABASE" ]] && fi_args+=(--database "$DATABASE")
+    manage "${fi_args[@]}"
     log ""
     bold "✓ Initial migrations faked."
     ;;

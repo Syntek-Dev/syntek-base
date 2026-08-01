@@ -44,7 +44,7 @@ cloc.sh — Line-count audit using wc -l (enforcement) and cloc (language summar
 
 Usage:
   cloc.sh                          Scan default source paths
-  cloc.sh --path code/src/backend  Restrict to a specific directory
+  cloc.sh --path code/src/django  Restrict to a specific directory
   cloc.sh --output md              Write a markdown report
 
 Options:
@@ -59,9 +59,12 @@ Thresholds (total file lines, including blank lines and comments):
   ≥ 750 lines → WARNING   (printed; does not fail)
   ≥ 800 lines → ERROR     (exit 1 — project hard limit per CLAUDE.md)
 
+Enforced file types:
+  *.py  ·  *.html  ·  *.css  ·  *.js  ·  *.jsx  ·  *.ts  ·  *.tsx
+
 Excluded paths:
   node_modules/  ·  .venv/  ·  __pycache__/  ·  migrations/  ·  .next/
-  generated/  ·  dist/  ·  .git/
+  generated/  ·  dist/  ·  .git/  ·  staticfiles/  ·  static/vendor/
 
 Excluded file types:
   *.md — Markdown files are linted and formatted separately; they are not subject
@@ -141,10 +144,21 @@ EXCL_FIND=(
   -path "*/.next/*" -o
   -path "*/generated/*" -o
   -path "*/dist/*" -o
-  -path "*/.git/*"
+  -path "*/.git/*" -o
+  -path "*/staticfiles/*" -o
+  -path "*/static/vendor/*"
 )
 
-SOURCE_EXTS=( -name "*.py" -o -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" )
+# The 750/800 limit is on source files, and in this stack the frontend IS .html and
+# .css — Django templates, django-component templates, and token CSS. Leaving them out
+# exempted the files most likely to sprawl. .ts/.tsx stay listed for a project that
+# adds a build step; they match nothing in the baseline.
+SOURCE_EXTS=(
+  -name "*.py" -o
+  -name "*.html" -o
+  -name "*.css" -o
+  -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx"
+)
 
 while IFS= read -r -d '' f; do
   lines=$(wc -l < "$f" | tr -d ' ')
@@ -177,7 +191,7 @@ bold "── Language breakdown (cloc) ─────────────�
 
 CLOC_OUTPUT=""
 if $CLOC_AVAILABLE; then
-  CLOC_EXCLUDE_DIRS="node_modules,.venv,__pycache__,migrations,.next,generated,dist"
+  CLOC_EXCLUDE_DIRS="node_modules,.venv,__pycache__,migrations,.next,generated,dist,staticfiles,vendor"
 
   CLOC_OUTPUT=$(
     cloc "$SCAN_ROOT" \
@@ -274,7 +288,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Line-Count Audit — project-name</title>
+  <title>Line-Count Audit — {{PROJECT_SLUG}}</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -289,7 +303,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Line-Count Audit — project-name</h1>
+  <h1>Line-Count Audit — {{PROJECT_SLUG}}</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Warn threshold</th><td>≥${WARN_THRESHOLD} lines</td></tr>

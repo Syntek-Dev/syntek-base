@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # check.sh — Type-check the codebase using basedpyright (Python) and
-#            tsc --noEmit (TypeScript / React). Dry-run only.
+#            Dry-run only.
 #
 # Usage: check.sh [--fix] [--file-type TYPE] [--output FORMAT]
 #                 [--output-file PATH] [--quiet] [--path PATH] [--help]
@@ -16,7 +16,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
+ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/reports"
+
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 FIX=false
@@ -34,7 +38,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-check.sh — Type-check using basedpyright (Python) and tsc (TypeScript / React)
+check.sh — Type-check using basedpyright (Python)
 
 Usage:
   check.sh                         Dry-run all supported file types
@@ -44,7 +48,7 @@ Usage:
 Options:
   --fix                Print fix guidance (no automated type fixes are available)
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | typescript | javascript | react
+                         python | javascript
                          (markdown and css are not type-checked)
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
@@ -54,9 +58,7 @@ Options:
   --help               Show this help
 
 Notes:
-  • basedpyright uses project config at code/src/backend/pyrightconfig.json.
-  • tsc uses tsconfig.json at code/src/frontend/tsconfig.json (web) and
-      code/src/mobile/tsconfig.json (mobile) respectively.
+  • basedpyright uses project config at code/src/django/pyrightconfig.json.
   • --fix is accepted for API consistency but no type checker auto-corrects
     type errors; it prints guidance on how to fix common classes of errors.
 
@@ -69,12 +71,12 @@ require_arg() {
 }
 
 container_running() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --status running 2>/dev/null | grep -q "^[^ ]*$1"
 }
 
 check_any_container() {
-  docker compose -f "$COMPOSE_FILE" ps --status running 2>/dev/null | grep -qE '(backend|frontend|mobile)' \
-    || die "No containers are running. Start with: docker compose -f $COMPOSE_FILE up -d"
+  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --status running 2>/dev/null | grep -q "django" \
+    || die "No containers are running. Start with: bash code/src/scripts/development/server.sh up"
 }
 
 LAST_EXIT=0
@@ -82,11 +84,11 @@ run_in() {
   local service="$1"; shift
   set +e
   if $QUIET; then
-    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
+    docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T "$service" "$@" \
       >> "$TMPFILE" 2>&1
     LAST_EXIT=$?
   else
-    docker compose -f "$COMPOSE_FILE" exec -T "$service" "$@" \
+    docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T "$service" "$@" \
       2>&1 | tee -a "$TMPFILE"
     LAST_EXIT=${PIPESTATUS[0]}
   fi
@@ -117,12 +119,12 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|typescript|javascript|react) ;;
+    python|javascript) ;;
     markdown|css) die "--file-type '$ft' is not type-checked. Remove it or use lint.sh instead." ;;
-    *) die "Invalid --file-type '$ft'. Choose: python typescript javascript react" ;;
+    *) die "Invalid --file-type '$ft'. Choose: python javascript" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python typescript)
+[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python)
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -157,55 +159,27 @@ wants() {
 
 wants_ts_js() {
   for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in typescript|javascript|react) return 0 ;; esac
+    case "$ft" in javascript) return 0 ;; esac
   done
   return 1
 }
 
 # ── Python — basedpyright ─────────────────────────────────────────────────────
 if wants python; then
-  if container_running backend; then
+  if container_running django; then
     bold "── Python (basedpyright) ──────────────────────────────────────────────────"
-    py_path="${TARGET_PATH:-code/src/backend/}"
-    run_in backend basedpyright "$py_path"
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
-    log ""
-  else
-    log "  ⚠  backend container not running — skipping Python type-check"
-    log ""
-  fi
-fi
-
-# ── TypeScript / JavaScript / React — tsc (frontend) ─────────────────────────
-if wants_ts_js; then
-  if container_running frontend; then
-    bold "── TypeScript / React — frontend (tsc --noEmit) ───────────────────────────"
-    declare -a tsc_args=(pnpm tsc --noEmit)
     if [[ -n "$TARGET_PATH" ]]; then
-      tsc_args+=(--project "$TARGET_PATH")
+      run_in django basedpyright "$TARGET_PATH"
+    else
+      # Run from backend root so pyrightconfig.json is discovered automatically
+      # and its exclude patterns (e.g. **/tests/**) are honoured. Passing an
+      # explicit path on the command line bypasses config-level excludes.
+      run_in django bash -c "cd /workspace/code/src/django && basedpyright"
     fi
-    run_in frontend "${tsc_args[@]}"
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  frontend container not running — skipping frontend TypeScript type-check"
-    log ""
-  fi
-fi
-
-# ── TypeScript / React Native — tsc (mobile) ──────────────────────────────────
-if wants_ts_js; then
-  if container_running mobile; then
-    bold "── TypeScript / React Native — mobile (tsc --noEmit) ─────────────────────"
-    declare -a mobile_tsc_args=(pnpm tsc --noEmit)
-    if [[ -n "$TARGET_PATH" ]]; then
-      mobile_tsc_args+=(--project "$TARGET_PATH")
-    fi
-    run_in mobile "${mobile_tsc_args[@]}"
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
-    log ""
-  else
-    log "  ⚠  mobile container not running — skipping mobile TypeScript type-check"
+    log "  ⚠  django container not running — skipping Python type-check"
     log ""
   fi
 fi
@@ -218,11 +192,7 @@ if $FIX && [[ $OVERALL_EXIT -ne 0 ]]; then
     printf '  Python:\n'
     printf '    • Add missing type annotations identified by basedpyright\n'
     printf '    • Use cast() or TYPE_IGNORE with a comment for third-party stubs\n'
-    printf '    • Run: docker compose exec backend basedpyright --verifytypes <module>\n\n'
-    printf '  TypeScript:\n'
-    printf '    • Address each tsc error in your editor (VS Code shows them inline)\n'
-    printf '    • For intentional any: use `// eslint-disable-next-line` with justification\n'
-    printf '    • Run: docker compose exec frontend pnpm tsc --noEmit --pretty\n\n'
+    printf '    • Run: docker compose exec django basedpyright --verifytypes <module>\n\n'
   } | tee -a "$TMPFILE" | $QUIET && cat >> "$TMPFILE" || cat
 fi
 
@@ -276,7 +246,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Type-Check Report — project-name</title>
+  <title>Type-Check Report — {{PROJECT_SLUG}}</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -291,7 +261,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Type-Check Report — project-name</h1>
+  <h1>Type-Check Report — {{PROJECT_SLUG}}</h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>File types</th><td>${FILE_TYPES[*]}</td></tr>

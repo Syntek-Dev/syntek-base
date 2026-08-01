@@ -1,9 +1,30 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.3.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.4.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.4.0 — 01/08/2026
+
+**Status:** Feature release — the script surface is the only supported way to run dev operations
+
+### Summary
+
+Every developer operation in this template runs through `code/src/scripts/**/*.sh` — never a raw
+`pnpm`, `pytest`, `python`, or `docker` invocation. This release rewrites that surface for the
+single-stack monolith. Existing runners are re-pointed from `code/src/backend/` to
+`code/src/django/`; the frontend and mobile runners are deleted; and a new audit family, project
+scaffolding scripts, and worktree helpers are added. Generated test reports stop being tracked.
+
+### What's new since v0.3.0
+
+- **Audit family** — a design-token audit that fails any component CSS carrying a raw literal, plus gradient, copy, and security audits, each wired to a CI workflow in 0.10.0
+- **Page scaffolding** — `new-django-view.sh` creates view, template, and URL entry together so page routes are never hand-assembled
+- **Worktree support** — `worktree-detect.sh` and the hosts helpers let several stories run side by side with isolated Docker stacks
+- **Reports untracked** — test output is generated, never committed
 
 ---
 
