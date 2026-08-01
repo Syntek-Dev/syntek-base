@@ -1,7 +1,29 @@
+---
+workflow: 02-tdd-cycle
+phase: build
+agent: test-writer
+skills: [stack-django, stack-htmx-templates]
+model: opus
+---
+
 # TDD Cycle — Steps
 
-**Last Updated**: 30/04/2026 **Version**: 1.1.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `code/REFERENCES.md` as you work through these phases:
+
+| Phase      | Section                                                                       |
+| ---------- | ----------------------------------------------------------------------------- |
+| All phases | **Guides in code/docs/** → TESTING.md, CODING-PRINCIPLES.md                   |
+| Phase 0    | **External — Code Quality** → basedpyright, Ruff, ESLint                      |
+| Phases 1–2 | **External — Testing** → pytest, pytest-django, factory_boy, Hypothesis       |
+| Phase 2    | **External — Framework & Language Docs → Backend** → Django 6.x, Django Ninja |
+| Phase 3    | **External — Code Quality** → Ruff, ESLint, Prettier                          |
 
 ---
 
@@ -14,16 +36,21 @@ the baseline is already broken — tests written on top of it give false results
 ./code/src/scripts/syntax/check.sh
 ```
 
-This runs basedpyright (backend) and `tsc --noEmit` (frontend/mobile) plus lint. Fix all errors
-before proceeding. Do not suppress type errors to unblock this step.
+> **Model:** opus · **MCP:** none
+
+This runs basedpyright plus lint. There is no TypeScript in this stack, so there is no
+frontend typecheck — the templates, components, and HTMX partials are covered by pytest.
+Fix all errors before proceeding. Do not suppress type errors to unblock this step.
 
 ---
 
-## Phase 1 — Red (Write Failing Tests)
+## Phase 1 — Grill, then Red (Write Failing Tests)
 
 ```text
-/syntek-dev-suite:test-writer [scope of work] --mode failing-first
+test-writer [scope of work] --mode failing-first
 ```
+
+> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
 
 Write tests that describe the desired behaviour before writing any implementation. Tests must
 assert on **outcomes** — return values, database state, API responses — not on internal methods
@@ -31,14 +58,24 @@ or implementation details. Use realistic data from the start (factories with `Fa
 hardcoded `"test@test.com"`). Structure with parametrize and markers so the suite is selectively
 runnable as it grows.
 
+**Agree the seams first — grill first** (`.claude/CLAUDE.md` §10): load
+`.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time about which seams and
+behaviours to test — the service boundary, Ninja endpoint, or component contract on the story's critical
+path — before writing any test, then confirm that list with {{DEVELOPER_NAME}}. Test those seams, not every
+reachable edge case. Two rules hold on every assertion: the expected value comes from an **independent source of
+truth** (a known literal, a worked example, or the acceptance criteria) and is never recomputed the
+way the code computes it (**no tautological tests**); and every assertion runs **through the public
+interface** so it survives Phases 2–3 unchanged. Framing:
+`code/docs/testing/COVERAGE.md` → _Test Discipline_.
+
 Cover all four tiers relevant to the scope:
 
 | Tier        | When required                                                  | Script                                               |
 | ----------- | -------------------------------------------------------------- | ---------------------------------------------------- |
 | Unit        | Every new function or class                                    | `./code/src/scripts/tests/backend.sh -m unit`        |
 | Integration | Any code that touches the database, queue, or external service | `./code/src/scripts/tests/backend.sh -m integration` |
-| API (Bruno) | Every new GraphQL mutation or query                            | `./code/src/scripts/tests/api.sh`                    |
-| E2E / BDD   | Acceptance criteria from the user story (explicit only)        | `./code/src/scripts/tests/e2e.sh`                    |
+| API (Bruno) | Every new Django Ninja endpoint                                | `./code/src/scripts/tests/api.sh`                    |
+| Acceptance  | Each `Scenario:` from the user story, as an integration test   | `./code/src/scripts/tests/backend.sh -m integration` |
 
 Verify tests are red:
 
@@ -47,10 +84,6 @@ Verify tests are red:
 ./code/src/scripts/tests/backend.sh -v
 
 # Frontend
-./code/src/scripts/tests/frontend.sh
-
-# Mobile
-./code/src/scripts/tests/mobile.sh
 ```
 
 Do not proceed to Phase 2 until all new tests are red. A test that is green before any
@@ -61,14 +94,21 @@ implementation exists is either testing the wrong thing or testing nothing.
 ## Phase 2 — Green (Minimal Implementation)
 
 ```text
-/syntek-dev-suite:backend [scope]   # for backend
-/syntek-dev-suite:frontend [scope]  # for frontend
+backend [scope]   # for backend
 ```
+
+> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+
+```text
+frontend [scope]  # for frontend
+```
+
+> **↳ New agent:** `frontend` · **Model:** opus · **MCP:** none
 
 Write the **minimum** code to make all tests pass. No gold-plating, no speculative abstractions.
 
 During this phase, amend or add tests when real edge cases are discovered through building the
-feature. Route each new test to the right tier:
+feature:
 
 - **User-observable edge case** (account suspended, session expired, form rejected with a
   specific visible message) → add a BDD scenario to the relevant `.feature` file
@@ -83,10 +123,6 @@ Run tests again — all must be green:
 ./code/src/scripts/tests/backend.sh
 
 # Frontend
-./code/src/scripts/tests/frontend.sh
-
-# Mobile
-./code/src/scripts/tests/mobile.sh
 
 # API (Bruno) — verify HTTP behaviour once implementation is in place
 ./code/src/scripts/tests/api.sh
@@ -105,8 +141,10 @@ Do not proceed to Phase 3 if any test is red or if the type-check fails.
 ## Phase 3 — Refactor
 
 ```text
-/syntek-dev-suite:refactor [scope]
+refactor [scope]
 ```
+
+> **↳ New agent:** `refactor` · **Model:** opus · **MCP:** code-review-graph
 
 Improve readability and structure. No new behaviour. All tests — including Bruno API tests — must
 remain green after every refactor step.
@@ -114,8 +152,6 @@ remain green after every refactor step.
 ```bash
 # Run the full suite to confirm nothing regressed
 ./code/src/scripts/tests/backend.sh
-./code/src/scripts/tests/frontend.sh
-./code/src/scripts/tests/mobile.sh
 ./code/src/scripts/tests/api.sh
 ```
 
@@ -123,16 +159,40 @@ Check coverage floors are still met:
 
 ```bash
 ./code/src/scripts/tests/backend-coverage.sh
-./code/src/scripts/tests/frontend-coverage.sh
+./code/src/scripts/tests/backend-coverage.sh
 ```
 
 ---
 
-## Phase 4 — Commit
+## Phase 4 — Implementation Documentation (hand off to PM 19)
+
+Hand the story to `project-management/workflows/19-implementation-documentation/`. That
+workflow **owns** the closeout and is its single source of truth — do not restate the record
+formats, destinations, or templates here; a second copy is exactly how they drift.
 
 ```text
-/syntek-dev-suite:git
+doc-writer
 ```
+
+> **↳ New agent:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
+
+It covers the IMPLEMENTATION record for every applicable spec (GDPR, security, QA, SEO, API),
+the story's findings record in `project-management/src/18-FINDINGS/`, the `/GAPS.md` and
+`/DEFERRED.md` routing, the `CONTEXT.md`/`CLAUDE.md` closeout across every touched layer, and
+the code-review-graph refresh.
+
+**Hard gate:** implementation docs, the touched `CONTEXT.md`/`CLAUDE.md`, and the graph refresh
+must all be complete **before any commit** (`.claude/CLAUDE.md` §6).
+
+---
+
+## Phase 5 — Commit
+
+```text
+git
+```
+
+> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

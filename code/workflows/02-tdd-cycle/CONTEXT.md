@@ -1,7 +1,5 @@
 # Workflow: TDD Cycle
 
-> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (pytest, Vitest)
-
 ## Directory Tree
 
 ```text
@@ -19,7 +17,7 @@ Always follows the Red → Green → Refactor pattern.
 ## Prerequisites
 
 - [ ] Clear acceptance criteria from the user story
-- [ ] Test framework running (`pytest` for backend, `vitest` for frontend, `jest` for mobile)
+- [ ] Test framework running (`pytest` — one runner for every layer)
 - [ ] `./code/src/scripts/syntax/check.sh` passes (type-check + lint) before writing any tests
 - [ ] No stubs — green means real implementation passing
 
@@ -38,12 +36,21 @@ Always follows the Red → Green → Refactor pattern.
   outcomes (not internals), the Refactor phase should require zero test changes unless the public
   contract itself changes.
 
-Coverage floors:
+Coverage floors — **one floor, not one per layer**: template, component, and HTMX-partial
+tests are pytest tests and count towards the same floor.
 
-- Backend: 75% minimum; 90% for auth-related code
-- Frontend / Mobile: 70% minimum
+- 75% line and branch minimum; 90% for auth-related code
 
 ## Cross-references
 
-- `code/docs/TESTING.md` — full TDD rules, pytest/vitest/jest setup, Bruno API tests, output
-  configuration, and coverage thresholds
+### Hard gates — read before executing Step 1
+
+- `code/docs/testing/COVERAGE.md` — coverage floors (75% line and branch / 90% auth) block PR — one floor, not one per layer; output configuration
+
+### Soft references — consult during execution
+
+- `code/docs/testing/BACKEND-TESTING.md` — pytest setup, Django test patterns, fixture conventions
+- `code/docs/testing/FRONTEND-TESTING.md` — template, component, and HTMX-partial tests; markup-level accessibility
+- `code/docs/TESTING.md` — full TDD taxonomy, test matrix, and running tests
+- `code/docs/testing/API-TESTING.md` — when story includes API layer
+- `code/docs/coding-principles/PRACTICAL-RULES.md` — shapes what unit vs integration testing means

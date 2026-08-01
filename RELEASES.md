@@ -1,9 +1,33 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.6.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.7.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.7.0 — 01/08/2026
+
+**Status:** Documentation release — the code layer is re-documented and re-indexed
+
+### Summary
+
+Every guide under `code/docs/` is rewritten for the server-rendered Django stack, and the
+instructional file-length rule is applied throughout: any guide over 300 code lines becomes a thin
+index over a sub-folder of focused documents. Fourteen top-level guides now front sub-folders for
+accessibility, API design, architecture, coding principles, data structures, design tokens,
+encryption, logging, performance, rendering, responsive design, row-level security, security, and
+testing. New guides cover the areas the stack change created — `DATABASE.md`, `DESIGN-TOKENS.md`,
+`RENDERING.md`, `VISUAL-DESIGN.md`, the split backend and frontend coding principles, and the
+code-review-graph playbooks. All ten code workflows gain `CLAUDE.md` operating rules.
+
+### What's new since v0.6.0
+
+- **Guides split, not truncated** — oversized guides become thin indexes over focused sub-documents, keeping every instructional file inside the 300-code-line limit
+- **New stack guides** — database invariants and lock-safe migrations, the token-first design system, and the rendering decision boundary between template, HTMX, and Alpine
+- **Code-review-graph playbooks** — explore, debug, review, and refactor procedures wired into the matching agents and workflows
+- **Workflow operating rules** — every numbered code workflow carries a `CLAUDE.md` beside its `CONTEXT.md`
 
 ---
 

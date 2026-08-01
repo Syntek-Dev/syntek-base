@@ -1,6 +1,4 @@
-# Workflow: GraphQL API Design
-
-> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`, `docfork` + `context7` (Strawberry GraphQL)
+# Workflow: Django Ninja API Design
 
 ## Directory Tree
 
@@ -13,24 +11,40 @@ code/workflows/04-api-design/
 
 ## When to use this
 
-Use this workflow when adding or modifying the Strawberry GraphQL schema —
-new types, queries, mutations, or subscriptions.
+Use this workflow when adding or modifying the Django Ninja JSON API surface —
+new Router modules, Schema request/response models, or endpoints.
 
 ## Prerequisites
 
 - [ ] Data model is agreed and documented
-- [ ] `code/docs/API-DESIGN.md` has been read
+- [ ] `code/docs/api-design/NINJA-CONVENTIONS.md` has been read
 - [ ] Django backend containers are running
 
 ## Key concepts
 
-- Types defined in `apps/<app>/types.py`
-- Queries and mutations defined in `apps/<app>/schema.py`
-- Root schema aggregated in `apps/core/schema.py`
-- Business logic delegated to `apps/<app>/services.py` — resolvers stay thin
-- After schema changes, always run `pnpm codegen` to regenerate frontend types
+- Schema request/response models defined in `apps/<app>/schemas.py`
+- Endpoints and their Router defined in `apps/<app>/api.py`
+- Routers aggregated on the root `NinjaAPI` mounted at `/api/`
+- Business logic delegated to `apps/<app>/services.py` — endpoints stay thin
+- Django Ninja auto-generates the OpenAPI schema at `/api/docs` — no codegen step needed
 
 ## Cross-references
 
-- `code/docs/API-DESIGN.md` — GraphQL and REST conventions
-- `code/docs/SECURITY.md` — mutation permission requirements
+### Hard gates — read before executing Step 1
+
+- `code/docs/api-design/NINJA-CONVENTIONS.md` — Router/`api.py` module rule, Schema models, endpoints, error handling, throttling
+- `code/docs/security/AUTH-AND-AUTHZ.md` — endpoint permission requirements and IDOR prevention
+
+### Soft references — consult during execution
+
+- `code/docs/api-design/REST-CONVENTIONS.md` — REST URLs, methods, status codes, pagination, versioning
+- `code/docs/data-structures/DOMAIN-MODELLING.md` — value objects, enums, aggregates, Schema/type design
+- `code/docs/performance/DATABASE-PERFORMANCE.md` — N+1 prevention and query optimisation
+- `code/docs/testing/API-TESTING.md` — API tests immediately follow design
+- `project-management/workflows/12-api-design/` — PM-layer API design precedes this workflow; the
+  signed-off `API-US###-*.md` is the contract this one expresses in code. Contract decided there
+  (Fable), code shape decided here (Opus).
+- `project-management/workflows/17-api-code/` — **this workflow is entered from there**, not
+  directly from `12-api-design/`
+- `project-management/workflows/19-implementation-documentation/` — writes the `API-IMPL-US###-*.md`
+  record verifying the built API against the contract; do not write it here

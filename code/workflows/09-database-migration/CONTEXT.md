@@ -1,7 +1,5 @@
 # Workflow: Django Database Migration
 
-> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Django migrations)
-
 ## Directory Tree
 
 ```text
@@ -30,4 +28,19 @@ that requires a Django migration.
 
 ## Cross-references
 
-- `code/docs/DATA-STRUCTURES.md` — schema design principles
+### Hard gates — read before executing Step 1
+
+- `code/docs/data-structures/SCHEMA-DESIGN.md` — naming and index conventions; violations produce broken migrations (PostgreSQL schema design, normalisation, indexes, FK, soft deletes)
+- `code/docs/encryption/FIELD-ENCRYPTION.md` — required when adding any PII column; must be applied before committing
+
+### Soft references — consult during execution
+
+- `code/docs/rls/TESTING-AND-AUDIT.md` — row-level security policy updates and new module checklist
+- `code/docs/rls/FUNDAMENTALS.md` — RLS policy must be updated alongside schema changes
+- `code/docs/data-structures/DOMAIN-MODELLING.md` — domain constraints on new fields
+- `project-management/workflows/03-database-schema/` — the approved schema document is a hard
+  prerequisite; that workflow designs the schema, this one implements it
+- `project-management/workflows/16-backend-code/` — **this workflow is entered from there**, not
+  directly from `03-database-schema/`: the migration is written during the backend build phase,
+  once the story plan (`15-story-plans/`) is signed off
+- `code/docs/architecture/CORE-AND-SCALING.md` — shard key is `tenant_id`; a new user-owned table must carry it (readiness + ADR-016 co-location)

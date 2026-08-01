@@ -5,48 +5,47 @@
 ```text
 code/
 ├── CONTEXT.md                       ← this file
+├── REFERENCES.md                    ← internal and external reference index for the code layer
 ├── docs/                            ← coding reference guides
-│   ├── ACCESSIBILITY.md
-│   ├── API-DESIGN.md
-│   ├── ARCHITECTURE-PATTERNS.md
-│   ├── CODING-PRINCIPLES.md
+│   ├── ACCESSIBILITY.md             (sub-docs: accessibility/)
+│   ├── API-DESIGN.md                (sub-docs: api-design/)
+│   ├── ARCHITECTURE-PATTERNS.md     (sub-docs: architecture/)
+│   ├── BACKEND-CODING-PRINCIPLES.md ← Django/Python/Celery specifics
+│   ├── CODING-PRINCIPLES.md         (sub-docs: coding-principles/)
 │   ├── CONTEXT.md
-│   ├── DATA-STRUCTURES.md
-│   ├── ENCRYPTION-GUIDE.md
-│   ├── LOGGING.md
-│   ├── PERFORMANCE.md
-│   ├── RLS-GUIDE.md
-│   ├── SECURITY.md
-│   └── TESTING.md
+│   ├── DATA-STRUCTURES.md           (sub-docs: data-structures/)
+│   ├── DESIGN-TOKENS.md             ← CSS design token catalogue and usage rules
+│   ├── ENCRYPTION-GUIDE.md          (sub-docs: encryption/)
+│   ├── FRONTEND-CODING-PRINCIPLES.md ← Django templates + HTMX + Alpine + CSS
+│   ├── LOGGING.md                   (sub-docs: logging/)
+│   ├── PERFORMANCE.md               (sub-docs: performance/)
+│   ├── RENDERING.md                 (sub-docs: rendering/)
+│   ├── RESPONSIVE-DESIGN.md         (sub-docs: responsive/)
+│   ├── RLS-GUIDE.md                 (sub-docs: rls/)
+│   ├── SECURITY.md                  (sub-docs: security/)
+│   ├── TESTING.md                   (sub-docs: testing/)
+│   ├── URL-STRATEGY.md
+│   └── VISUAL-DESIGN.md             ← visual language: anti-generic layout + {{ORG_NAME}} signature
 ├── src/                             ← all deployable source code
 │   ├── CONTEXT.md
-│   ├── backend/                     ← Django 6.0.4 + Strawberry GraphQL
+│   ├── django/                      ← the Django project (backend + server-rendered frontend)
 │   │   └── CONTEXT.md
 │   ├── docker/                      ← Dockerfiles and Compose files
-│   │   └── CONTEXT.md
-│   ├── frontend/                    ← Next.js 16.2.4 App Router
-│   │   └── CONTEXT.md
-│   ├── mobile/                      ← Expo React Native app
-│   │   └── CONTEXT.md
-│   ├── shared/                      ← Cross-platform UI components, hooks, and utilities
 │   │   └── CONTEXT.md
 │   ├── logs/                        ← runtime log files (dev/test; all gitignored)
 │   │   ├── CONTEXT.md
 │   │   ├── .gitignore
 │   │   └── .gitkeep
-│   ├── tests/                       ← API integration tests (Bruno collection)
+│   ├── scripts/                     ← shell scripts for all development operations
 │   │   ├── CONTEXT.md
-│   │   └── api/                     ← Bruno collection (auth, users, orders, performance)
-│   │       └── CONTEXT.md
-│   └── scripts/                     ← quality scripts (lint, check, format)
-│       ├── check.sh
-│       ├── CONTEXT.md
-│       ├── format.sh
-│       ├── lint.sh
-│       └── reports/                 ← generated reports (gitignored)
-│           ├── CONTEXT.md
-│           ├── .gitignore
-│           └── .gitkeep
+│   │   ├── audits/                  ← codebase health audits (cloc, stub detection)
+│   │   ├── database/                ← database management (migrate, backup, restore, shell)
+│   │   ├── deployment/              ← deployment scripts (planned)
+│   │   ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
+│   │   ├── syntax/                  ← code quality (lint, type-check, format)
+│   │   └── tests/                   ← test suite runners (pytest, Bruno)
+│   └── tests/                       ← API integration tests (Bruno collection)
+│       └── CONTEXT.md
 └── workflows/                       ← step-by-step coding workflows
     ├── CONTEXT.md
     ├── 01-new-feature/              ← full-stack feature development
@@ -61,7 +60,7 @@ code/
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
-    ├── 04-api-design/               ← Strawberry GraphQL schema design
+    ├── 04-api-design/               ← Django Ninja API design
     │   ├── CHECKLIST.md
     │   ├── CONTEXT.md
     │   └── STEPS.md
@@ -93,11 +92,11 @@ code/
 
 ## When to read this
 
-- Writing any code in `code/src/backend/` or `code/src/frontend/`
+- Writing any code in `code/src/django/`
 - Designing a new page, feature, or Django app
 - Writing or debugging tests (TDD)
 - Implementing security or permissions logic
-- Designing a Strawberry GraphQL schema or Apollo query
+- Designing a Django Ninja API endpoint
 - Reviewing a PR for code quality
 
 ## Contents
@@ -112,15 +111,32 @@ code/
 
 ## Key docs
 
-| Guide                           | When to read                                       |
-| ------------------------------- | -------------------------------------------------- |
-| `docs/CODING-PRINCIPLES.md`     | Before writing any code                            |
-| `docs/TESTING.md`               | Before writing tests                               |
-| `docs/SECURITY.md`              | Before writing auth, permissions, or any resolver  |
-| `docs/API-DESIGN.md`            | Before adding GraphQL types or mutations           |
-| `docs/ACCESSIBILITY.md`         | Before building any frontend component             |
-| `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or Next.js route |
-| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change             |
-| `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics  |
-| `docs/PERFORMANCE.md`           | Before optimising a query or page                  |
-| `docs/RESPONSIVE-DESIGN.md`     | Before building any responsive layout or component |
+| Guide                           | When to read                                                     |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `docs/CODING-PRINCIPLES.md`     | Before writing any code                                          |
+| `docs/TESTING.md`               | Before writing tests                                             |
+| `docs/SECURITY.md`              | Before writing auth, permissions, or any endpoint                |
+| `docs/API-DESIGN.md`            | Before adding Django Ninja endpoints or Schema models            |
+| `docs/ACCESSIBILITY.md`         | Before building any frontend component                           |
+| `docs/RESPONSIVE-DESIGN.md`     | Before building any frontend component or layout                 |
+| `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or page route                  |
+| `docs/DATABASE.md`              | **Before any model, migration, or query** — the pre-flight rules |
+| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change                           |
+| `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics                |
+| `docs/RENDERING.md`             | Before choosing server vs HTMX vs Alpine for an interaction      |
+| `docs/PERFORMANCE.md`           | Before optimising a query or page                                |
+| `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                           |
+| `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                 |
+| `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                |
+
+## Global constraints
+
+These apply to every file in `code/src/`:
+
+- **File length:** 750 lines maximum (800 with grace) — split into modules beyond that
+- **Coverage floors:** 75% line and branch, 90% for auth-related code (one floor — template and
+  HTMX tests are pytest tests and count towards it)
+- **Never read:** `node_modules/`, `code/src/django/staticfiles/`, `.git/`
+- **New directories:** every new directory in `code/src/` must have a `CONTEXT.md` describing its purpose, contents, and when to use it
+
+Full rules: `code/docs/CODING-PRINCIPLES.md` · `code/docs/TESTING.md`

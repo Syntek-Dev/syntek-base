@@ -1,7 +1,5 @@
 # Workflow: Debug
 
-> **Agent hints — Model:** Sonnet · **MCP:** `code-review-graph`
-
 ## Directory Tree
 
 ```text
@@ -36,6 +34,24 @@ environment is healthy, then use this workflow to fix the logic.
 
 ## Cross-references
 
+### Hard gates — read before executing Step 1
+
+None — debugging is reactive; no mandatory pre-reads before investigating a bug.
+
+### Soft references — consult during execution
+
+- `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **debug playbook**
+  (`.claude/skills/debug-issue.md`): `semantic_search_nodes` → `query_graph` callers/callees →
+  `get_flow` → `detect_changes` → `get_impact_radius`, to trace the fault structurally
 - `how-to/workflows/03-debugging/` — operational debugging (logs, containers, runtime errors)
-- `code/docs/TESTING.md` — test writing conventions and coverage requirements
-- `project-management/src/13-BUGS/` — bug report artefacts
+- `code/docs/testing/BACKEND-TESTING.md` — pytest test writing conventions for regression tests
+- `code/docs/testing/FRONTEND-TESTING.md` — template and HTMX-partial conventions for regression tests
+- `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` — SSR/CSR boundary issues and Server Component constraints
+- `code/docs/performance/DATABASE-PERFORMANCE.md` — N+1 queries and slow resolver investigation
+- `code/docs/logging/DJANGO-LOGGING.md` — reading structured log output
+- `code/workflows/10-debugging-with-logs/` — observability-based companion workflow
+- `code/docs/cloudinary/CONTEXT.md` — when debugging Cloudinary SDK calls, transformation URLs, or media delivery errors; invoke `/cloudinary-docs` or `/cloudinary-transformations`
+- `project-management/src/19-BUGS/` — bug report artefacts
+- `project-management/workflows/19-implementation-documentation/` — **how work reaches this
+  workflow**: findings recorded there with a defect disposition are routed to `src/19-BUGS/` and
+  become the input for a debug pass. There is no PM-layer debug workflow — 19 is the entry point.
