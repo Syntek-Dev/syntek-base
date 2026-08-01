@@ -1,0 +1,34 @@
+name: Audit — CSS Tokens
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "**/*.css"
+      - "code/src/scripts/audits/css-tokens.sh"
+      - ".github/workflows/audit-css-tokens.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "**/*.css"
+      - "code/src/scripts/audits/css-tokens.sh"
+      - ".github/workflows/audit-css-tokens.yml"
+  workflow_dispatch:
+
+jobs:
+  css-tokens:
+    name: CSS token audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run CSS token audit
+        run: bash code/src/scripts/audits/css-tokens.sh --output md
+
+      - name: Upload CSS token report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: css-tokens-report
+          path: code/src/scripts/audits/reports/css-tokens-report.md
+          if-no-files-found: ignore

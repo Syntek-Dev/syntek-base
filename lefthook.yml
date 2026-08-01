@@ -2,11 +2,13 @@ pre-commit:
   parallel: true
   commands:
     eslint:
-      glob: "*.{js,jsx,ts,tsx,mjs,cjs}"
+      glob: "*.{js,mjs,cjs}"
       run: pnpm exec eslint {staged_files}
 
     prettier:
-      glob: "*.{js,jsx,ts,tsx,mjs,cjs,json,yaml,yml,css,html,md,mdx}"
+      glob: "*.{js,mjs,cjs,json,yaml,yml,css,html,md}"
+      exclude:
+        - "project-management/export/**"
       run: pnpm exec prettier --check {staged_files}
 
     ruff-lint:
@@ -23,4 +25,18 @@ pre-commit:
 
     markdownlint:
       glob: "*.md"
+      exclude:
+        - "project-management/export/**"
       run: pnpm exec markdownlint-cli2 {staged_files}
+
+    # code-review-graph advisory risk analysis of the staged change; never blocks the commit
+    # (|| true). Replaces the raw hook `code-review-graph install` appends to
+    # .git/hooks/pre-commit, keeping lint/format blocking and the git hook lefthook-managed.
+    # If `code-review-graph install` is re-run it re-appends its hook — run `lefthook install`.
+    code-review-graph:
+      run: if command -v code-review-graph >/dev/null 2>&1; then code-review-graph detect-changes --brief || true; fi
+
+    # Regenerate the read-only ClickUp client exports from source stories and re-stage
+    # them. Self-gating: exits instantly unless a story or generated file is staged.
+    clickup-export:
+      run: bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh

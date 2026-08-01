@@ -7,6 +7,8 @@ out/
 
 # Auto-generated — never hand-edit
 code/src/frontend/src/graphql/generated/
+code/src/frontend/schema.graphql
+project-management/export/
 
 # Python (Prettier ignores these by default, listed for clarity)
 **/*.py
@@ -17,9 +19,41 @@ pnpm-lock.yaml
 
 # Claude Code workspace — format CLAUDE.md only; exclude internal tooling files
 .claude/CLAUDE.md.pre-scaffold
-.claude/commands/
 .claude/plugins/
 .claude/settings.local.json
+.claude/worktrees/
+# code-review-graph task cards — auto-generated on `install`, referenced by path, never hand-edited
+.claude/skills/debug-issue.md
+.claude/skills/explore-codebase.md
+.claude/skills/refactor-safely.md
+.claude/skills/review-changes.md
+
+# Vendored third-party skill definitions — do not reformat
+.agents/
+
+# Generated test/lint reports
+code/src/scripts/tests/reports/
+code/src/scripts/reports/
+
+# Auto-generated Playwright artifacts (gitignored; root-owned when produced in Docker)
+code/src/frontend/tests/e2e/results/
+code/src/frontend/tests/e2e/playwright-report/
+
+# Django collected static files
+code/src/backend/staticfiles/
+
+# Relocated marketing CSS + vendored JS (ADR-019) — mirrored from source / third-party; do not reformat
+code/src/backend/static/css/
+code/src/backend/static/vendor/
+
+# Django templates — contain template tags that Prettier's HTML parser cannot handle
+code/src/backend/templates/
+code/src/backend/apps/**/templates/
+# django-components templates (ADR-019) — same reason: Prettier's HTML parser mangles {% %} tags
+code/src/backend/components/
+
+# Golden-fixture test data — exact-match expected output; must not be reformatted
+code/src/backend/apps/content/tests/fixtures/
 
 # Misc
 .git/

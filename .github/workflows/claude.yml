@@ -1,0 +1,373 @@
+name: Claude Code
+
+# Claude AI assistant: triggered by @claude mentions in issues, PRs, and reviews.
+# CI quality gate: mirrors the 8 checks in .claude/hooks/pre-pr-check.sh.
+#   Checks [1/8]–[6/8] and [8/8] run natively (no Docker needed).
+#   Check [7/8] runs pytest directly with service containers — the test scripts
+#   (backend.sh) are Docker-only and cannot be called here.
+#   Coverage thresholds match the hooks: 75% pytest floor always, 80% CI floor on
+#   staging/main (same logic as _apply_coverage_floor in check-tests.sh).
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+  pull_request_review:
+    types: [submitted]
+  pull_request:
+    branches: [main, staging, dev, testing]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, staging]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/staging' }}
+
+env:
+  UV_VERSION: "0.11.7"
+  NODE_VERSION: "24"
+  PYTHON_VERSION: "3.14"
+
+jobs:
+  # ── Claude AI Assistant ──────────────────────────────────────────────────────
+  claude:
+    name: Claude AI
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: read
+      checks: read
+      deployments: read
+      packages: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+  # ── [1/8] Line Count ────────────────────────────────────────────────────────
+  # Mirrors check-cloc.sh: wc -l enforcement (≥800 = error) via cloc.sh.
+  cloc:
+    name: "[1/8] Line Count"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cloc
+        run: sudo apt-get install -y --no-install-recommends cloc
+      - name: Check file line counts
+        run: bash code/src/scripts/audits/cloc.sh
+
+  # ── [2/8] Lockfile Alignment ─────────────────────────────────────────────────
+  # Mirrors check-lockfiles.sh: verifies uv.lock and pnpm-lock.yaml are consistent.
+  # Does not replicate the Docker-vs-local drift check (local-only concern).
+  lockfiles:
+    name: "[2/8] Lockfile Alignment"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+      - name: Python — uv sync --frozen
+        run: uv sync --frozen
+        working-directory: code/src/django
+      - name: JS — pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
+
+  # ── [3/8] Format ─────────────────────────────────────────────────────────────
+  # Mirrors check-format.sh: ruff format --check (Python) + prettier --check (repo-wide).
+  format:
+    name: "[3/8] Format"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+      - run: uv sync --frozen
+        working-directory: code/src/django
+      - run: pnpm install --frozen-lockfile
+      - name: Python — ruff format --check
+        run: uv run ruff format --check .
+        working-directory: code/src/django
+      - name: Prettier — --check
+        run: pnpm exec prettier --check .
+
+  # ── [4/8] Lint ───────────────────────────────────────────────────────────────
+  # Mirrors check-lint.sh: ruff check (Python) + eslint (JS).
+  lint:
+    name: "[4/8] Lint"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+      - run: uv sync --frozen
+        working-directory: code/src/django
+      - run: pnpm install --frozen-lockfile
+      - name: Python — ruff check
+        run: uv run ruff check .
+        working-directory: code/src/django
+      - name: JS — eslint
+        run: pnpm exec eslint .
+
+  # ── [5/8] Stub Audit ─────────────────────────────────────────────────────────
+  # Mirrors check-stubs.sh: grep-based hard-stub detection via stubs.sh.
+  stubs:
+    name: "[5/8] Stub Audit"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for hard stubs
+        run: bash code/src/scripts/audits/stubs.sh
+
+  # ── [6/8] Type-check ─────────────────────────────────────────────────────────
+  # Mirrors check-typecheck.sh: basedpyright (Python). There is no TypeScript.
+  typecheck:
+    name: "[6/8] Type-check"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+      - run: uv sync --frozen
+        working-directory: code/src/django
+      - run: pnpm install --frozen-lockfile
+      - name: Python — basedpyright
+        run: uv run basedpyright
+
+  # ── [7/8] Tests ──────────────────────────────────────────────────────────────
+  # Mirrors check-tests.sh + _apply_coverage_floor.
+  # Runs pytest directly — the project's test scripts (backend.sh,
+  # backend-coverage.sh) require Docker and cannot run in CI. Service containers
+  # replicate docker-compose.test.yml. Coverage thresholds:
+  #   - 75% pytest --cov-fail-under floor (always, matches backend-coverage.sh)
+  #   - 80% CI floor on staging/main (matches _apply_coverage_floor in check-tests.sh)
+  tests:
+    name: "[7/8] Tests"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    services:
+      db:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: "{{PROJECT_SLUG}}_test"
+          POSTGRES_USER: "{{PROJECT_SLUG}}"
+          POSTGRES_PASSWORD: test_password_change_me
+        options: >-
+          --health-cmd "pg_isready -U {{PROJECT_SLUG}} -d {{PROJECT_SLUG}}_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5432:5432
+      cache:
+        image: valkey/valkey:8-alpine
+        options: >-
+          --health-cmd "valkey-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+        ports:
+          - 6379:6379
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.test
+      DATABASE_URL: postgresql://{{PROJECT_SLUG}}:test_password_change_me@localhost:5432/{{PROJECT_SLUG}}_test
+      REDIS_URL: redis://localhost:6379/0
+      SECRET_KEY: test-secret-key-not-for-production-ci-only
+      ENCRYPTION_KEY: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+      LEGAL_FIELD_HMAC_KEY: test-hmac-key-32-bytes-padded-000
+      DEBUG: "False"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+      - run: uv sync --frozen --group test
+        working-directory: code/src/django
+      - run: pnpm install --frozen-lockfile
+
+      - name: Backend — pytest
+        run: |
+          mkdir -p ../scripts/tests/reports/backend-coverage
+          if [[ "$GITHUB_REF" == "refs/heads/staging" || "$GITHUB_REF" == "refs/heads/main" || \
+                "$GITHUB_BASE_REF" == "staging" || "$GITHUB_BASE_REF" == "main" ]]; then
+            uv run pytest \
+              --cov=apps --cov-branch --cov-fail-under=75 \
+              --cov-report="html:../scripts/tests/reports/backend-coverage/html" \
+              --cov-report="xml:../scripts/tests/reports/backend-coverage/coverage.xml" \
+              --cov-report=term-missing \
+              --junit-xml="../scripts/tests/reports/backend-coverage/results.xml"
+          else
+            mkdir -p ../scripts/tests/reports/backend
+            uv run pytest \
+              --junit-xml="../scripts/tests/reports/backend/results.xml"
+          fi
+        working-directory: code/src/django
+
+      - name: Enforce 80% coverage floor (staging/main)
+        if: |
+          github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main' ||
+          github.base_ref == 'staging' || github.base_ref == 'main'
+        run: |
+          python3 - <<'EOF'
+          import xml.etree.ElementTree as ET, json, sys
+          THRESHOLD = 80
+          failed = []
+          try:
+              root = ET.parse(
+                  'code/src/scripts/tests/reports/backend-coverage/coverage.xml'
+              ).getroot()
+              pct = int(float(root.get('line-rate', 0)) * 100)
+              print(f'Backend:  {pct}%')
+              if pct < THRESHOLD:
+                  failed.append(f'backend {pct}% (requires {THRESHOLD}%)')
+          except Exception as e:
+              print(f'Backend coverage report missing: {e}')
+              failed.append('backend coverage report missing')
+          if failed:
+              print(f'\n80% floor not met: {", ".join(failed)}')
+              sys.exit(1)
+          print('Coverage floor met.')
+          EOF
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports-${{ github.run_id }}
+          path: |
+            code/src/scripts/tests/reports/backend-coverage/
+          if-no-files-found: ignore
+
+      - name: Backend — post coverage comment
+        if: |
+          always() &&
+          github.event_name == 'pull_request' &&
+          (github.base_ref == 'staging' || github.base_ref == 'main')
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
+          title: Backend Coverage
+
+
+  # ── [8/8] Security ───────────────────────────────────────────────────────────
+  # Mirrors check-security.sh: ruff --select S (Python) + pnpm audit --audit-level low (JS).
+  # Uses Ruff's built-in flake8-bandit (S) rules — no separate bandit install needed.
+  security:
+    name: "[8/8] Security"
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+      - run: uv sync --frozen
+        working-directory: code/src/django
+      - run: pnpm install --frozen-lockfile
+      - name: Python — ruff security (flake8-bandit rules)
+        run: uv run ruff check --select S .
+        working-directory: code/src/django
+      - name: JS — pnpm audit
+        run: pnpm audit --audit-level low
+      - name: Python — pip-audit (CVE scan)
+        run: uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes)
+        working-directory: code/src/django

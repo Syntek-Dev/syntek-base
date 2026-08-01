@@ -1,17 +1,21 @@
-# GAPS.md — Missing Workflow Files
+# GAPS.md — Active Gaps, Blockers & Sprint Dependencies
 
-This file is maintained automatically. When Claude encounters a workflow folder missing
-`STEPS.md` or `CHECKLIST.md`, it appends an entry here and proceeds with `CONTEXT.md` alone.
+Tracks active architectural gaps, blockers, and sprint dependencies. **Not** a memory store —
+feedback, patterns, and observations go in `.claude/MEMORY.md` instead.
+
+Resolved entries are marked `✅ CLOSED <date>` and removed on the next tidy pass. Permanent
+architectural decisions are promoted to `code/docs/ARCHITECTURE-PATTERNS.md` or the relevant doc.
 
 **Format:**
 
 ```text
-## DD/MM/YYYY — <missing file path>
+## DD/MM/YYYY — <title>
 
-Suggested description: <what the file should contain>
-Discovered during: <workflow or task that surfaced the gap>
+**Type:** <Infrastructure gap | Planned feature | Sprint dependency | Active gap>
+**Summary:** …
+**Blocked by / Action:** …
 ```
 
 ---
 
-_No gaps recorded yet._
+_No open gaps._

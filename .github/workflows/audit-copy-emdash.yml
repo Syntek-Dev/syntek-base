@@ -1,0 +1,36 @@
+name: Audit — Marketing Copy Em Dashes
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/apps/marketing/pagedata/**/*.py"
+      - "code/src/django/apps/marketing/templates/**/*.html"
+      - "code/src/scripts/audits/copy-emdash.sh"
+      - ".github/workflows/audit-copy-emdash.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/apps/marketing/pagedata/**/*.py"
+      - "code/src/django/apps/marketing/templates/**/*.html"
+      - "code/src/scripts/audits/copy-emdash.sh"
+      - ".github/workflows/audit-copy-emdash.yml"
+  workflow_dispatch:
+
+jobs:
+  copy-emdash:
+    name: Marketing copy em-dash audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run marketing copy em-dash audit
+        run: bash code/src/scripts/audits/copy-emdash.sh --output md
+
+      - name: Upload em-dash report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: copy-emdash-report
+          path: code/src/scripts/audits/reports/copy-emdash-report.md
+          if-no-files-found: ignore

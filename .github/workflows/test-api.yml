@@ -5,13 +5,13 @@ on:
     branches: [main, staging, dev, testing]
     paths:
       - "code/src/tests/api/**"
-      - "code/src/backend/**"
+      - "code/src/django/**"
       - "code/src/docker/docker-compose.test.yml"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
       - "code/src/tests/api/**"
-      - "code/src/backend/**"
+      - "code/src/django/**"
       - "code/src/docker/docker-compose.test.yml"
   workflow_dispatch:
     inputs:
@@ -28,11 +28,19 @@ jobs:
   bruno:
     name: Bruno API tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     env:
       COMPOSE_FILE: code/src/docker/docker-compose.test.yml
       BRUNO_ENV: ${{ github.event.inputs.env || 'docker' }}
       COLLECTION: /workspace/code/src/tests/api
+      # Seeded into the fixture users AND sent by Bruno at login — must be identical, or
+      # adminLogin returns "Email or password incorrect". Fall back to the non-secret test
+      # defaults (also used by docker-compose.test.yml) when the secrets are not configured.
+      API_TEST_PW: ${{ secrets.API_TEST_PASSWORD || 'Test@Api2026!' }}
+      API_LIMITED_PW: ${{ secrets.API_LIMITED_PASSWORD || 'Limited@Api2026!' }}
 
     steps:
       - name: Checkout
@@ -44,7 +52,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
       - name: Build images
-        run: docker compose -f $COMPOSE_FILE build backend-test frontend-test
+        run: docker compose -f $COMPOSE_FILE build django-test
 
       - name: Start db and cache
         run: docker compose -f $COMPOSE_FILE up -d db cache
@@ -53,36 +61,46 @@ jobs:
         run: |
           for i in $(seq 1 30); do
             docker compose -f $COMPOSE_FILE exec db \
-              pg_isready -U syntek -d project_name_test && break
+              pg_isready -U {{PROJECT_SLUG}} -d {{PROJECT_SLUG}}_test && break
             echo "Waiting for db... ($i/30)"
             sleep 2
           done
 
       - name: Start backend
-        run: docker compose -f $COMPOSE_FILE up -d backend-test
+        run: docker compose -f $COMPOSE_FILE up -d django-test
 
       - name: Wait for backend
         run: |
           for i in $(seq 1 30); do
-            docker compose -f $COMPOSE_FILE exec backend-test \
-              curl -sf http://localhost:8000/health/ && break
+            docker compose -f $COMPOSE_FILE exec django-test \
+              curl -sf http://localhost:8000/control/ && break
             echo "Waiting for backend... ($i/30)"
             sleep 2
           done
+
+      # NOTE: the API test users were seeded by a management command that the Django
+      # baseline no longer carries. Reinstate a seed step alongside the first
+      # authenticated endpoint, or the authenticated requests will fail at login.
 
       - name: Run Bruno API tests
         run: |
           mkdir -p reports/api
           FOLDER="${{ github.event.inputs.folder }}"
-          RUN_PATH="${COLLECTION}${FOLDER:+/$FOLDER}"
-          docker compose -f $COMPOSE_FILE run --rm \
-            -e "BRUNO_VAR_test_password=${{ secrets.API_TEST_PASSWORD }}" \
-            -v "${{ github.workspace }}/code/src/tests/api:${COLLECTION}:ro" \
-            -v "${{ github.workspace }}/reports/api:/output:rw" \
-            frontend-test \
-            bru run "$RUN_PATH" \
-              --env "$BRUNO_ENV" \
-              --reporter-json /output/results.json
+          RUN_PATH="${FOLDER:-.}"
+          # `-r` is required: without it, an explicit path (".") runs only the .bru files in
+          # that directory, not subfolders — which is why the suite previously reported a single
+          # request. The CLI honours neither bruno.json `ignore` nor `meta { skip }`; exclusion
+          # is by tag. `manual` = can't pass in a normal run (rate-limit). `wip` = blocked on
+          # test infra not present here (seeded SEO/client/blog data, Cloudinary mock, the
+          # unimplemented user(id) query). See BUG-API-SUITE-UNRUN-09-06-2026.md. The request
+          # template lives outside the collection root so recursion never executes it.
+          BRUNO_VAR_test_password="$API_TEST_PW" \
+          BRUNO_VAR_limited_password="$API_LIMITED_PW" \
+          pnpm exec bru run -r "$RUN_PATH" \
+            --cwd code/src/tests/api \
+            --env "$BRUNO_ENV" \
+            --exclude-tags manual,wip \
+            --reporter-json reports/api/results.json
 
       - name: Upload test results
         if: always()
@@ -91,6 +109,51 @@ jobs:
           name: bruno-api-results
           path: reports/api/results.json
           retention-days: 30
+
+      - name: Generate API test summary
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          python3 - <<'EOF'
+          import json, os
+          os.makedirs('reports/api', exist_ok=True)
+          try:
+              with open('reports/api/results.json') as f:
+                  data = json.load(f)
+              results = data if isinstance(data, list) else [data]
+              total_req = passed_req = failed_req = error_req = 0
+              total_tests = passed_tests = failed_tests = 0
+              for r in results:
+                  s = r.get('summary', {})
+                  total_req    += s.get('totalRequests',  0)
+                  passed_req   += s.get('passedRequests', 0)
+                  failed_req   += s.get('failedRequests', 0)
+                  error_req    += s.get('errorRequests',  0)
+                  total_tests  += s.get('totalTests',     0)
+                  passed_tests += s.get('passedTests',    0)
+                  failed_tests += s.get('failedTests',    0)
+              bad = failed_req + error_req + failed_tests
+              status = '✅ Passed' if bad == 0 else '❌ Failed'
+              body = '\n'.join([
+                  f'## API Tests — {status}',
+                  '',
+                  '| | Requests | Tests |',
+                  '|---|---|---|',
+                  f'| Total  | {total_req} | {total_tests} |',
+                  f'| Passed | {passed_req} | {passed_tests} |',
+                  f'| Failed / Error | {failed_req + error_req} | {failed_tests} |',
+              ])
+          except Exception as e:
+              body = f'## API Tests\n\n⚠️ Could not parse results: {e}'
+          with open('reports/api/comment.md', 'w') as f:
+              f.write(body)
+          EOF
+
+      - name: Post API test comment
+        if: always() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: api-tests
+          path: reports/api/comment.md
 
       - name: Tear down
         if: always()

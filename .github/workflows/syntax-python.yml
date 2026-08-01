@@ -19,6 +19,9 @@ jobs:
   ruff-lint:
     name: Ruff — Lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - uses: actions/checkout@v4
 
@@ -35,6 +38,9 @@ jobs:
   ruff-format:
     name: Ruff — Format
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - uses: actions/checkout@v4
 
@@ -51,6 +57,9 @@ jobs:
   basedpyright:
     name: basedpyright — Typecheck
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - uses: actions/checkout@v4
 

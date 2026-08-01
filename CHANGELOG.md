@@ -1,12 +1,43 @@
 # Changelog
 
-**Last Updated**: {{DATE}} **Version**: 0.9.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.10.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [0.10.0] - 01/08/2026
+
+### Added
+
+- `REFERENCES.md` — the root reference index covering every layer entry point, guide, workflow, and external standard.
+- `DEFERRED.md` — the register of work deliberately deferred, alongside `GAPS.md` for active blockers.
+- `setup.sh` and a rewritten `install.sh` — resolve the template placeholders and prepare a scaffolded project.
+- `skills-lock.json` — installed Claude Code skills with their versions and hashes.
+- `.github/workflows/audit-css-tokens.yml`, `audit-css-gradients.yml`, `audit-copy-emdash.yml`, `audit-secrets.yml`, and `audit-deps.yml` — CI wiring for the audit scripts added in 0.4.0.
+- `.github/workflows/claude.yml` and `clickup-sync.yml` — the Claude Code review pipeline and the ClickUp story export sync.
+- `.zed/settings.json` — editor configuration shipped as part of the template's tooling surface.
+- `handoffs/`, `learning/`, and `research/` — session sandboxes for the handoff, teach, and research skills, each with `CONTEXT.md` and `CLAUDE.md`.
+
+### Changed
+
+- Hardcoded project identifiers replaced with substitution placeholders throughout the root files — `{{PROJECT_NAME}}`, `{{PROJECT_SLUG}}`, `{{ORG_NAME}}`, `{{ORG_SLUG}}`, `{{DEVELOPER_NAME}}`, `{{LOCALE}}`, `{{TIMEZONE}}`, `{{CURRENCY}}`, `{{LICENCE}}`, and `{{DATE}}`.
+- `README.md` rewritten for the Django-only monolith; the version badge and footer set to `0.10.0`.
+- `DESIGN.md` and `GAPS.md` rewritten around the token-first design system and the template's open items.
+- `package.json`, `pnpm-workspace.yaml`, and `pnpm-lock.yaml` reduced to the tooling dependencies that survive without a JavaScript application.
+- `eslint.config.mjs`, `.prettierrc`, `.prettierignore`, `.markdownlint-cli2.jsonc`, and `.npmrc` re-scoped to the remaining file types.
+- `lefthook.yml` — pre-commit hooks re-pointed at the Django tree, with a self-gating ClickUp export step and an advisory code-review-graph pass.
+- The six surviving CI workflows re-pointed at `code/src/django/` and the rewritten script surface.
+
+### Removed
+
+- Root `CONTEXT.md` — superseded by `REFERENCES.md` as the root index.
+- `LICENCE` — a base template does not choose a licence on behalf of the project scaffolded from it; the placeholder `{{LICENCE}}` is resolved at setup.
+- `CONTRIBUTING.md` — superseded by the PM layer's git, PR, and review workflows.
 
 ---
 

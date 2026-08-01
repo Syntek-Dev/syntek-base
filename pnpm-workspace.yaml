@@ -1,4 +1,55 @@
-packages:
-  - "code/src/frontend"
-  - "code/src/mobile"
-  - "code/src/shared"
+# No workspace packages — the site is server-rendered by Django and there is no client
+# build. The root package.json carries the repo tooling (markdownlint, prettier, eslint,
+# lefthook, bruno) and nothing else.
+packages: []
+allowBuilds:
+  esbuild: false
+  lefthook: false
+  msw: false
+  protobufjs: false
+  sharp: false
+auditConfig:
+  ignoreGhsas:
+    - GHSA-jxxr-4gwj-5jf2
+    - GHSA-5375-pq7m-f5r2
+    - GHSA-99f4-grh7-6pcq
+minimumReleaseAgeExclude:
+  - js-yaml@4.1.2
+  - markdown-it@14.1.2
+  - axios@1.15.0
+  - postcss@8.5.10
+  - axios@1.15.1
+  - axios@1.15.2
+  - fast-uri@3.1.2
+  - esbuild@0.28.1
+  - form-data@4.0.6
+  - "@babel/core@7.29.1"
+  - ws@8.21.0
+  - protobufjs@7.6.3
+  - protobufjs@8.5.1
+overrides:
+  axios@>=1.0.0 <1.15.0: ^1.15.0
+  axios@>=1.0.0 <1.15.1: ^1.15.1
+  axios@>=1.0.0 <1.15.2: ^1.15.2
+  fast-uri@<=3.1.1: ^3.1.2
+  js-yaml@>=4.0.0 <4.1.2: ^4.1.2
+  markdown-it@>=13.0.0 <14.1.2: ^14.1.2
+  postcss@<8.5.10: ^8.5.10
+  esbuild@<0.28.1: ^0.28.1
+  form-data@>=4.0.0 <4.0.6: ^4.0.6
+  undici@>=7.0.0 <7.28.0: ^7.28.0
+  "@babel/core@<=7.29.0": ^7.29.1
+  lodash: ">=4.18.0"
+  uuid: ">=11.0.0"
+  glob: ">=11.0.0"
+  ws: ">=8.21.0"
+  brace-expansion: ">=5.0.6"
+  qs: ">=6.15.2"
+  shell-quote: ">=1.8.4"
+  "@grpc/proto-loader>protobufjs": ">=8.5.1"
+  "grpc-js-reflection-client>protobufjs": ">=8.5.1"
+  protobufjs@>=8.0.0 <8.5.1: ">=8.5.1"
+  protobufjs@>=7.0.0 <7.6.3: ^7.6.3
+allowedDeprecatedVersions:
+  whatwg-encoding: "*"
+  node-domexception: "*"

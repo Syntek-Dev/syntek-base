@@ -1,11 +1,12 @@
+# ESLint covers the repo's JavaScript — the site is server-rendered, so that is the
+# progressive-enhancement scripts under code/src/django/static/js/. Prettier stays
+# repo-wide (formatting only). There is no TypeScript, so there is no typecheck job.
 name: JS/TS — Lint & Format
 
 on:
   push:
     branches: [main, staging, dev, testing]
     paths:
-      - "**/*.ts"
-      - "**/*.tsx"
       - "**/*.js"
       - "**/*.jsx"
       - "**/*.mjs"
@@ -24,8 +25,6 @@ on:
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
-      - "**/*.ts"
-      - "**/*.tsx"
       - "**/*.js"
       - "**/*.jsx"
       - "**/*.mjs"
@@ -55,13 +54,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: pnpm
+
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
-        run: pnpm lint:js
+        run: pnpm exec eslint .
 
   prettier:
     name: Prettier
@@ -74,34 +81,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: pnpm
+
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Check formatting
         run: pnpm format:check
-
-  typecheck:
-    name: TypeScript — Typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Typecheck frontend
-        working-directory: code/src/frontend
-        run: pnpm exec tsc --noEmit
-
-      - name: Typecheck mobile
-        working-directory: code/src/mobile
-        run: pnpm exec expo check

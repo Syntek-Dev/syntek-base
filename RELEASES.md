@@ -1,9 +1,34 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.9.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.10.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.10.0 — 01/08/2026
+
+**Status:** Feature release — the templatisation completes and CI covers the new audits
+
+### Summary
+
+The final batch closes the conversion. Every hardcoded project identifier at the repository root
+becomes a substitution placeholder — `{{PROJECT_NAME}}`, `{{PROJECT_SLUG}}`, `{{ORG_NAME}}`,
+`{{LOCALE}}`, `{{TIMEZONE}}`, `{{CURRENCY}}`, `{{LICENCE}}` — and an `install.sh`/`setup.sh` pair
+resolves them when a project is scaffolded. CI gains six audit workflows matching the audit scripts
+added in 0.4.0, plus a ClickUp sync pipeline, while the frontend and mobile pipelines are gone. Three
+session sandboxes are established — `handoffs/` for the compaction replacement, `learning/` for the
+teaching skill, and `research/` for cited primary-source notes. `REFERENCES.md` becomes the root
+index, and the root `CONTEXT.md` and `LICENCE` are retired: a template does not pick a licence for
+the project generated from it.
+
+### What's new since v0.9.0
+
+- **Placeholders throughout** — every project identifier is a substitution token resolved by `setup.sh` when a project is scaffolded
+- **Six audit pipelines** — design tokens, CSS gradients, copy, secrets, and dependencies now fail CI, matching the audit scripts
+- **Session sandboxes** — `handoffs/`, `learning/`, and `research/` give the handoff, teach, and research skills a committed home
+- **Licence deferred to the consumer** — the template ships `{{LICENCE}}`, not a decision
 
 ---
 

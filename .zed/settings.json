@@ -1,0 +1,13 @@
+{
+  "lsp": {
+    "vscode-css-language-server": {
+      "initialization_options": {
+        "css": {
+          "lint": {
+            "unknownAtRules": "ignore"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,77 +1,85 @@
+---
 name: test-e2e
 
-# E2E tests run automatically on push/PR to main, staging, dev, and testing.
-# Run manually via: Actions → test-e2e → Run workflow (supports scenario filter)
+# Browser-level suite — playwright-python driving a real Chromium against the running
+# dev stack. One browser driver, in Python: there is no Node test path in this stack.
+#
+# Also triggerable manually via: Actions → test-e2e → Run workflow
 on:
   push:
     branches: [main, staging, dev, testing]
     paths:
-      - "code/src/frontend/**"
-      - "code/src/backend/**"
-      - "code/src/shared/**"
-      - "code/src/docker/docker-compose.test.yml"
+      - "code/src/django/**"
+      - "code/src/docker/**"
+      - "pyproject.toml"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
-      - "code/src/frontend/**"
-      - "code/src/backend/**"
-      - "code/src/shared/**"
-      - "code/src/docker/docker-compose.test.yml"
+      - "code/src/django/**"
+      - "code/src/docker/**"
+      - "pyproject.toml"
   workflow_dispatch:
     inputs:
-      grep:
-        description: "Filter scenarios by name (optional, e.g. 'User login')"
+      k:
+        description: "Filter tests by keyword (optional, e.g. 'overflow')"
         required: false
         default: ""
 
 jobs:
-  playwright-bdd:
-    name: playwright-bdd acceptance tests
+  playwright:
+    name: playwright-python browser suite
     runs-on: ubuntu-latest
-
-    env:
-      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create .env.test
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Create .env.dev
         run: |
-          cp code/src/docker/.env.test.example code/src/docker/.env.test
-          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+          cp code/src/docker/.env.dev.example code/src/docker/.env.dev
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.dev
 
-      - name: Build test images
-        run: docker compose -f $COMPOSE_FILE build backend-test frontend-test
+      # e2e-py.sh talks to the dev stack over HTTP on host port 81. It refuses to run
+      # if the stack is unreachable, so bring it up first and let the compose
+      # healthchecks settle before handing over.
+      - name: Start the dev stack
+        run: bash code/src/scripts/development/server.sh up --build
 
-      - name: Start full test stack
-        run: docker compose -f $COMPOSE_FILE up -d
-
-      - name: Wait for nginx
+      - name: Wait for the stack
         run: |
-          for i in $(seq 1 30); do
-            curl -sf http://localhost/health/ && break
-            echo "Waiting for nginx... ($i/30)"
+          for _ in $(seq 1 60); do
+            if curl -sf -o /dev/null http://localhost:81/control/; then
+              echo "stack is up"; exit 0
+            fi
             sleep 2
           done
+          echo "stack did not come up in 120s" >&2
+          bash code/src/scripts/development/logs.sh --service django || true
+          exit 1
 
-      - name: Run playwright-bdd
+      - name: Run the e2e suite
+        env:
+          # localhost, not the dev hostname — no /etc/hosts entry on the runner.
+          E2E_BASE_URL: http://localhost:81
         run: |
-          GREP_ARG=""
-          if [ -n "${{ github.event.inputs.grep }}" ]; then
-            GREP_ARG="--grep=${{ github.event.inputs.grep }}"
+          if [ -n "${{ github.event.inputs.k }}" ]; then
+            bash code/src/scripts/tests/e2e-py.sh -k "${{ github.event.inputs.k }}"
+          else
+            bash code/src/scripts/tests/e2e-py.sh
           fi
-          docker compose -f $COMPOSE_FILE exec frontend-test \
-            pnpm test:e2e $GREP_ARG
 
-      - name: Upload Playwright report
+      - name: Upload axe results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: code/src/frontend/e2e/playwright-report/
+          name: a11y-results
+          path: code/src/scripts/tests/reports/a11y/
+          if-no-files-found: ignore
           retention-days: 30
 
       - name: Tear down
         if: always()
-        run: docker compose -f $COMPOSE_FILE down -v
+        run: bash code/src/scripts/development/server.sh down --volumes || true

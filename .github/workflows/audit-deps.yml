@@ -1,0 +1,109 @@
+name: Dependency Audit Sweep
+
+# Scheduled CVE / advisory sweep of JS (pnpm audit) and Python (pip-audit) deps.
+#
+# The per-PR "[8/8] Security" gate in claude.yml only runs when a PR happens.
+# Advisories are published continuously, so the SAME committed lockfiles drift
+# to "vulnerable" between PRs — which is why audits surface as surprise failures
+# on whichever PR happens to run next. This sweep runs the identical audits on a
+# daily schedule, opens (or updates) a tracking issue listing the advisories +
+# patched versions, and fails the run so the advisory is visible proactively.
+#
+# Fix flow when it fires:
+#   JS     → bump the patched version in pnpm-workspace.yaml `overrides`
+#            (+ minimumReleaseAgeExclude), then `pnpm install --lockfile-only`.
+#   Python → `uv lock --upgrade-package <pkg>` (verify no breaking major bump).
+# Both fixes live in root lock/config and propagate on merge to testing.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # 06:00 UTC daily
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  UV_VERSION: "0.11.7"
+  NODE_VERSION: "24"
+
+jobs:
+  audit:
+    name: Audit JS + Python dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install backend deps (uv)
+        run: uv sync --frozen
+        working-directory: code/src/django
+
+      - name: Install frontend deps (pnpm)
+        run: pnpm install --frozen-lockfile
+
+      # Both audits mirror "[8/8] Security" in claude.yml exactly, so a hit here
+      # is exactly what the next PR's gate would see. continue-on-error lets both
+      # run and the issue/fail steps report the combined result.
+      - name: JS/TS — pnpm audit
+        id: pnpm_audit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          pnpm audit --audit-level low 2>&1 | tee "$RUNNER_TEMP/pnpm-audit.txt"
+
+      - name: Python — pip-audit (CVE scan)
+        id: pip_audit
+        continue-on-error: true
+        working-directory: code/src/django
+        run: |
+          set -o pipefail
+          uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes) \
+            2>&1 | tee "$RUNNER_TEMP/pip-audit.txt"
+
+      - name: Open / update tracking issue
+        if: steps.pnpm_audit.outcome == 'failure' || steps.pip_audit.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="🔒 Dependency advisories detected by scheduled audit"
+          SEARCH="Dependency advisories detected by scheduled audit"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          {
+            echo "The scheduled dependency audit found advisories on \`${{ github.ref_name }}\`."
+            echo "Run: [#${{ github.run_id }}]($RUN_URL) · $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo
+            echo "**Fix:** JS → bump the patched version in \`pnpm-workspace.yaml\` \`overrides\` then \`pnpm install --lockfile-only\`; Python → \`uv lock --upgrade-package <pkg>\`. Both propagate to \`testing\` on merge."
+            echo
+            echo "## JS — \`pnpm audit\` (${{ steps.pnpm_audit.outcome }})"
+            echo '```text'
+            tail -c 6000 "$RUNNER_TEMP/pnpm-audit.txt" 2>/dev/null || echo "(no output)"
+            echo '```'
+            echo "## Python — \`pip-audit\` (${{ steps.pip_audit.outcome }})"
+            echo '```text'
+            tail -c 6000 "$RUNNER_TEMP/pip-audit.txt" 2>/dev/null || echo "(no output)"
+          } > "$RUNNER_TEMP/issue-body.md"
+          EXISTING=$(gh issue list --search "$SEARCH in:title" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file "$RUNNER_TEMP/issue-body.md"
+            echo "Updated tracking issue #$EXISTING"
+          else
+            gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/issue-body.md"
+            echo "Opened a new tracking issue"
+          fi
+
+      - name: Fail the run if advisories were found
+        if: steps.pnpm_audit.outcome == 'failure' || steps.pip_audit.outcome == 'failure'
+        run: |
+          echo "::error::Dependency advisories detected — see the tracking issue."
+          exit 1

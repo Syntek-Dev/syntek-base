@@ -1,0 +1,84 @@
+name: Sync stories to ClickUp
+
+# The repo is the source of truth. Statuses are edited in project-management/src/01-STORIES/,
+# rendered to project-management/export/clickup/US###-CLIENT.md by export-clickup-stories.sh,
+# and this workflow upserts that export into ClickUp via sync-clickup.sh.
+#
+# A durable story -> task id map (project-management/export/clickup-task-map.json) keeps
+# re-runs idempotent (no duplicate tasks). New ids are committed back to the branch. The map
+# lives OUTSIDE export/clickup/**, so committing it does not retrigger this workflow ([skip ci]
+# guards regardless). Because the map is per-branch, keep it merged through the normal git flow
+# (feature -> testing -> staging -> main) so the four branches do not create duplicate tasks.
+#
+# Required repo secrets (to apply):
+#   CLICKUP_API_TOKEN        personal/OAuth token
+#   CLICKUP_BACKLOG_LIST_ID  preferred target ClickUp List id (the Backlog list)
+# Fallback / optional:
+#   CLICKUP_FOLDER_ID   if the backlog list id is unreachable, the 'Backlog' list is resolved under it
+#   CLICKUP_TEAM_ID, CLICKUP_SPACE_ID   context, passed through (unused by the upsert)
+#   CLICKUP_STATUS_MAP  JSON: repo status -> ClickUp status name. Default identity — the source
+#                       stories already use ClickUp's status vocabulary.
+# Until the token + a target list (backlog id or folder) are set, the job runs as a harmless DRY RUN.
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "project-management/export/clickup/**"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "project-management/export/clickup/**"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run only (do not write to ClickUp)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clickup-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Push export to ClickUp
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the actual branch (head_ref on a PR, ref_name on a push) — not the detached
+      # PR merge ref — so the updated task map can be committed back in both cases.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Sync to ClickUp
+        env:
+          CLICKUP_API_TOKEN: ${{ secrets.CLICKUP_API_TOKEN }}
+          CLICKUP_BACKLOG_LIST_ID: ${{ secrets.CLICKUP_BACKLOG_LIST_ID }}
+          CLICKUP_TEAM_ID: ${{ secrets.CLICKUP_TEAM_ID }}
+          CLICKUP_SPACE_ID: ${{ secrets.CLICKUP_SPACE_ID }}
+          CLICKUP_FOLDER_ID: ${{ secrets.CLICKUP_FOLDER_ID }}
+          CLICKUP_STATUS_MAP: ${{ secrets.CLICKUP_STATUS_MAP }}
+          # Apply on push and pull_request; manual runs honour the dry_run toggle. The script
+          # degrades to a dry run by itself if the token / list id are not set.
+          CLICKUP_SYNC_APPLY: ${{ (github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run)) && '1' || '' }}
+        run: bash project-management/src/00-ASSETS/scripts/sync-clickup.sh
+
+      - name: Commit updated task map
+        run: |
+          if ! git diff --quiet -- project-management/export/clickup-task-map.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add project-management/export/clickup-task-map.json
+            git commit -m "chore(clickup): update task ID map [skip ci]"
+            git push
+          else
+            echo "Task map unchanged."
+          fi
