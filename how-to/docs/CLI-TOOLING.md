@@ -1,470 +1,254 @@
-# CLI Tooling — project-name
-
-> **Agent hints — Model:** Haiku · **MCP:** `docfork` + `context7` (Docker, CLI tools)
-
-**Last Updated**: 18/04/2026
-**Version**: 1.0.0
-**Language**: British English (en_GB)
-**Timezone**: Europe/London
-
-> **Rule:** All development commands run inside Docker containers.
-> Use `docker compose exec backend` for Django/Python and `docker compose exec frontend` for
-> Next.js/TypeScript. Never invoke `python`, `pytest`, `pnpm`, or `next` directly on the host.
-
+---
+type: guide
+agent: setup
+skills: [global-workflow]
+model: opus
 ---
 
-## Table of Contents
+# CLI Tooling — {{PROJECT_NAME}}
 
-- [Overview](#overview)
-- [Starting and Stopping Services](#starting-and-stopping-services)
-- [Backend Commands](#backend-commands)
-  - [Django Management](#django-management)
-  - [Testing](#backend-testing)
-  - [Lint and Type-check](#backend-lint-and-type-check)
-  - [Auto-fix](#backend-auto-fix)
-- [Frontend Commands](#frontend-commands)
-  - [Testing](#frontend-testing)
-  - [Lint and Type-check](#frontend-lint-and-type-check)
-  - [Auto-fix](#frontend-auto-fix)
-  - [GraphQL Codegen](#graphql-codegen)
-- [Database Management](#database-management)
-- [Running CI Checks Locally](#running-ci-checks-locally)
-- [Common Shortcuts](#common-shortcuts)
-- [Troubleshooting](#troubleshooting)
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: {{TIMEZONE}}
+**Claude Model:** opus — Docker Compose dev commands run via project shell scripts
+
+> **Rule:** All development commands run through the project shell scripts in `code/src/scripts/**/*.sh`.
+> Never invoke `docker compose`, `python`, `pytest`, `pnpm`, or `uv` directly — always use the scripts.
 
 ---
 
 ## Overview
 
-All development tasks for project-name run through Docker Compose. There are two primary service
-targets:
+There is one app process family: the Django ASGI server. It serves the public site
+(django-components + templates + HTMX + Alpine + token CSS) and the Django Ninja
+`/api/` routers. There is no client build step.
 
-| Target     | Container | Toolchain                                        |
-| ---------- | --------- | ------------------------------------------------ |
-| `backend`  | Django    | Python 3.14, uv, ruff, basedpyright, pytest      |
-| `frontend` | Next.js   | Node.js 24, pnpm, TypeScript, Vitest, Playwright |
-
-Every command in this guide is prefixed with either `docker compose exec backend` or
-`docker compose exec frontend`. Never run `python`, `pytest`, `pnpm`, or `next` directly on the
-host machine — doing so will use host-level binaries and environment variables that differ from the
-container, producing inconsistent results and breaking CI parity.
+| Target    | Runtime / Build                           | Toolchain                                   |
+| --------- | ----------------------------------------- | ------------------------------------------- |
+| `backend` | Django ASGI — serves the site and `/api/` | Python 3.14, uv, ruff, basedpyright, pytest |
 
 ---
 
 ## Starting and Stopping Services
 
-### Start all services
-
 ```bash
-docker compose up
+# Start all services
+bash code/src/scripts/development/server.sh up
+
+# Start with image rebuild
+bash code/src/scripts/development/server.sh up --build
+
+# Start a single service
+bash code/src/scripts/development/server.sh up --service backend
+
+# Stop all services
+bash code/src/scripts/development/server.sh down
+
+# Stop and remove volumes (resets the database)
+bash code/src/scripts/development/server.sh down --volumes
+
+# Restart a single service
+bash code/src/scripts/development/server.sh restart --service backend
+
+# Stream all service logs
+bash code/src/scripts/development/logs.sh --follow
+
+# Stream logs for a single service
+bash code/src/scripts/development/logs.sh --service backend --follow
 ```
 
-Add `-d` to detach and run in the background:
-
-```bash
-docker compose up -d
-```
-
-### Start a single service
-
-```bash
-docker compose up backend
-docker compose up frontend
-```
-
-### Stop all services
-
-```bash
-docker compose down
-```
-
-Stop and remove volumes (resets the database):
-
-```bash
-docker compose down -v
-```
-
-### Restart a single service
-
-```bash
-docker compose restart backend
-docker compose restart frontend
-```
-
-### View logs
-
-Stream all service logs:
-
-```bash
-docker compose logs -f
-```
-
-Stream logs for a single service:
-
-```bash
-docker compose logs -f backend
-docker compose logs -f frontend
-```
+The site is served by Django — with the stack up, visit `http://localhost:8000`.
 
 ---
 
 ## Backend Commands
 
-All backend commands are prefixed with `docker compose exec backend`.
-
 ### Django Management
 
-Apply pending migrations:
-
 ```bash
-docker compose exec backend python manage.py migrate
-```
+# Apply pending migrations
+bash code/src/scripts/database/migrate.sh run
 
-Create new migration files:
+# Create new migration files
+bash code/src/scripts/database/migrate.sh make
 
-```bash
-docker compose exec backend python manage.py makemigrations
-```
+# Create migrations for a specific app
+bash code/src/scripts/database/migrate.sh make --app <app_label>
 
-Create migrations for a specific app:
+# Open the Django interactive shell
+bash code/src/scripts/development/shell.sh
 
-```bash
-docker compose exec backend python manage.py makemigrations <app_label>
-```
-
-Open the Django interactive shell:
-
-```bash
-docker compose exec backend python manage.py shell
-```
-
-Create a superuser account:
-
-```bash
-docker compose exec backend python manage.py createsuperuser
-```
-
-Show all available management commands:
-
-```bash
-docker compose exec backend python manage.py help
+# Create a superuser account
+bash code/src/scripts/database/manageusers.sh create-superuser
 ```
 
 ### Backend Testing
 
-Run the full test suite:
-
 ```bash
-docker compose exec backend pytest
+# Full test suite
+bash code/src/scripts/tests/backend.sh
+
+# Run only unit-marked tests
+bash code/src/scripts/tests/backend.sh -m unit
+
+# Run only integration-marked tests
+bash code/src/scripts/tests/backend.sh -m integration
+
+# Run tests matching a keyword pattern
+bash code/src/scripts/tests/backend.sh -k <pattern>
+
+# Run a specific test file
+bash code/src/scripts/tests/backend.sh apps/<app>/tests/test_<module>.py
+
+# Stop on first failure
+bash code/src/scripts/tests/backend.sh -x
+
+# Coverage report
+bash code/src/scripts/tests/backend-coverage.sh
+
+# Django Ninja API integration tests
+bash code/src/scripts/tests/api.sh
 ```
 
-Run only unit-marked tests:
+### Backend Lint, Type-check, and Format
 
 ```bash
-docker compose exec backend pytest -m unit
-```
+# Lint (ruff)
+bash code/src/scripts/syntax/lint.sh --file-type python
 
-Run only integration-marked tests:
+# Format check
+bash code/src/scripts/syntax/format.sh --file-type python
 
-```bash
-docker compose exec backend pytest -m integration
-```
+# Type analysis (basedpyright)
+bash code/src/scripts/syntax/check.sh --file-type python
 
-Run tests matching a keyword pattern:
+# Auto-fix lint errors
+bash code/src/scripts/syntax/lint.sh --fix --file-type python
 
-```bash
-docker compose exec backend pytest -k <pattern>
-```
-
-Run a specific test file:
-
-```bash
-docker compose exec backend pytest apps/<app>/tests/test_<module>.py
-```
-
-Run tests with HTML coverage report (output to `htmlcov/`):
-
-```bash
-docker compose exec backend pytest --cov=apps --cov-report=html
-```
-
-Run tests with terminal coverage summary:
-
-```bash
-docker compose exec backend pytest --cov=apps --cov-report=term-missing
-```
-
-Stop on first failure:
-
-```bash
-docker compose exec backend pytest -x
-```
-
-### Backend Lint and Type-check
-
-Check for linting errors (ruff):
-
-```bash
-docker compose exec backend ruff check .
-```
-
-Check formatting without writing changes:
-
-```bash
-docker compose exec backend ruff format --check .
-```
-
-Run static type analysis (basedpyright):
-
-```bash
-docker compose exec backend basedpyright
-```
-
-### Backend Auto-fix
-
-Apply all auto-fixable lint errors:
-
-```bash
-docker compose exec backend ruff check --fix .
-```
-
-Apply code formatting:
-
-```bash
-docker compose exec backend ruff format .
+# Apply formatting
+bash code/src/scripts/syntax/format.sh --fix --file-type python
 ```
 
 ---
 
 ## Frontend Commands
 
-All frontend commands are prefixed with `docker compose exec frontend`.
+The frontend is Django-served — there is no separate dev server, no bundler, and no
+build step. Templates re-render on every request and Django's `--reload` picks up
+Python changes, so **there is nothing to rebuild after a frontend edit**: save the
+template and refresh.
 
-The Next.js dev server starts automatically when `docker compose up` is run — there is no separate
-command to start it. Visit `http://localhost:3000` once the container is healthy.
+### Frontend testing
 
-### Frontend Testing
-
-Run the full Vitest test suite:
-
-```bash
-docker compose exec frontend pnpm test
-```
-
-Run tests in watch mode:
+Frontend tests are pytest tests — templates, django-components, and HTMX partials are
+all exercised through the Django test client
+(`code/docs/testing/FRONTEND-TESTING.md`):
 
 ```bash
-docker compose exec frontend pnpm test -- --watch
+# The whole suite, including template and partial tests
+bash code/src/scripts/tests/backend.sh
+
+# Just one app's tests
+bash code/src/scripts/tests/backend.sh code/src/django/apps/marketing/
 ```
 
-Run tests with coverage report:
+For the checks that genuinely need a browser — colour contrast, real layout overflow, an HTMX
+swap actually landing — use the playwright-python suite. It runs on the host against a live dev
+stack:
 
 ```bash
-docker compose exec frontend pnpm test -- --coverage
+bash code/src/scripts/development/server.sh up
+bash code/src/scripts/tests/e2e-py.sh
+bash code/src/scripts/tests/e2e-py.sh --headed   # watch it drive the browser
 ```
 
-Run end-to-end tests (Playwright):
+### CSS lint, format, and the token guards
 
 ```bash
-docker compose exec frontend pnpm test:e2e
+# Format CSS (Prettier, host)
+bash code/src/scripts/syntax/format.sh --file-type css
+
+# Apply formatting
+bash code/src/scripts/syntax/format.sh --fix --file-type css
+
+# Every var(--token) must resolve in the token layer
+bash code/src/scripts/audits/css-tokens.sh
+
+# No inline gradients — brand gradients are tokens
+bash code/src/scripts/audits/css-gradients.sh
 ```
-
-### Frontend Lint and Type-check
-
-Run ESLint:
-
-```bash
-docker compose exec frontend pnpm lint
-```
-
-Run TypeScript type-checking:
-
-```bash
-docker compose exec frontend pnpm type-check
-```
-
-Check formatting without writing changes (Prettier):
-
-```bash
-docker compose exec frontend pnpm format:check
-```
-
-### Frontend Auto-fix
-
-Apply auto-fixable ESLint errors:
-
-```bash
-docker compose exec frontend pnpm lint --fix
-```
-
-Apply Prettier formatting:
-
-```bash
-docker compose exec frontend pnpm format
-```
-
-### GraphQL Codegen
-
-Regenerate TypeScript types and Apollo hooks from the GraphQL schema:
-
-```bash
-docker compose exec frontend pnpm codegen
-```
-
-Run codegen in watch mode (useful during active API development):
-
-```bash
-docker compose exec frontend pnpm codegen --watch
-```
-
-Generated output lands in `code/src/frontend/src/graphql/generated/`. Commit these files alongside
-any schema or query changes.
 
 ---
 
 ## Database Management
 
-### Apply migrations
-
 ```bash
-docker compose exec backend python manage.py migrate
-```
+# Apply migrations
+bash code/src/scripts/database/migrate.sh run
 
-### Create new migrations
+# Create new migrations
+bash code/src/scripts/database/migrate.sh make
 
-```bash
-docker compose exec backend python manage.py makemigrations
-```
+# Check migration plan without applying
+bash code/src/scripts/database/migrate.sh check
 
-### Check for migration drift
+# Show unapplied migrations
+bash code/src/scripts/database/migrate.sh show
 
-Show the current migration plan without applying it:
+# Open psql shell
+bash code/src/scripts/database/shell.sh --psql
 
-```bash
-docker compose exec backend python manage.py migrate --plan
-```
-
-Detect unapplied migrations:
-
-```bash
-docker compose exec backend python manage.py showmigrations
-```
-
-### Open a raw psql shell
-
-Connect directly to the development database:
-
-```bash
-docker compose exec db psql -U postgres project_name_dev
-```
-
-Useful psql commands once connected:
-
-```text
-\dt          — list all tables
-\d <table>   — describe a table
-\q           — quit
-```
-
-### Reset the database
-
-Stop services, remove the database volume, restart, and re-apply migrations:
-
-```bash
-docker compose down -v
-docker compose up -d db
-docker compose exec backend python manage.py migrate
-docker compose exec backend python manage.py createsuperuser
+# Reset the database
+bash code/src/scripts/database/reset.sh
+bash code/src/scripts/database/migrate.sh run
+bash code/src/scripts/database/manageusers.sh create-superuser
 ```
 
 ---
 
 ## Running CI Checks Locally
 
-Run these steps in order before every push. All steps must pass.
-
-**Step 1 — Backend lint:**
+Run in order before every push — all steps must pass:
 
 ```bash
-docker compose exec backend ruff check .
+bash code/src/scripts/syntax/lint.sh --file-type python
+bash code/src/scripts/syntax/format.sh --file-type python
+bash code/src/scripts/syntax/check.sh --file-type python
+bash code/src/scripts/tests/backend-coverage.sh
+bash code/src/scripts/tests/api.sh
+bash code/src/scripts/syntax/lint.sh --file-type markdown
+bash code/src/scripts/syntax/format.sh --file-type css
+bash code/src/scripts/audits/css-tokens.sh
 ```
 
-**Step 2 — Backend format check:**
+To run the full suite (backend + API) in one go:
 
 ```bash
-docker compose exec backend ruff format --check .
+bash code/src/scripts/tests/all.sh --api
 ```
-
-**Step 3 — Backend type-check:**
-
-```bash
-docker compose exec backend basedpyright
-```
-
-**Step 4 — Backend tests with coverage:**
-
-```bash
-docker compose exec backend pytest --cov=apps --cov-report=term-missing
-```
-
-**Step 5 — Frontend lint:**
-
-```bash
-docker compose exec frontend pnpm lint
-```
-
-**Step 6 — Frontend format check:**
-
-```bash
-docker compose exec frontend pnpm format:check
-```
-
-**Step 7 — Frontend type-check:**
-
-```bash
-docker compose exec frontend pnpm type-check
-```
-
-**Step 8 — Frontend tests with coverage:**
-
-```bash
-docker compose exec frontend pnpm test -- --coverage
-```
-
-**Step 9 — GraphQL codegen drift check (no uncommitted diff):**
-
-```bash
-docker compose exec frontend pnpm codegen
-git diff --exit-code code/src/frontend/src/graphql/generated/
-```
-
-If step 9 produces a diff, commit the regenerated files before pushing.
 
 ---
 
 ## Common Shortcuts
 
-| Task                          | Command                                                                   |
-| ----------------------------- | ------------------------------------------------------------------------- |
-| Start all services            | `docker compose up`                                                       |
-| Stop all services             | `docker compose down`                                                     |
-| Tail all logs                 | `docker compose logs -f`                                                  |
-| Apply migrations              | `docker compose exec backend python manage.py migrate`                    |
-| Make migrations               | `docker compose exec backend python manage.py makemigrations`             |
-| Django shell                  | `docker compose exec backend python manage.py shell`                      |
-| psql shell                    | `docker compose exec db psql -U postgres project_name_dev`                |
-| Run backend tests             | `docker compose exec backend pytest`                                      |
-| Run backend tests (coverage)  | `docker compose exec backend pytest --cov=apps --cov-report=term-missing` |
-| Backend lint                  | `docker compose exec backend ruff check .`                                |
-| Backend type-check            | `docker compose exec backend basedpyright`                                |
-| Backend format                | `docker compose exec backend ruff format .`                               |
-| Run frontend tests            | `docker compose exec frontend pnpm test`                                  |
-| Run frontend tests (coverage) | `docker compose exec frontend pnpm test -- --coverage`                    |
-| Run E2E tests                 | `docker compose exec frontend pnpm test:e2e`                              |
-| Frontend lint                 | `docker compose exec frontend pnpm lint`                                  |
-| Frontend type-check           | `docker compose exec frontend pnpm type-check`                            |
-| Frontend format               | `docker compose exec frontend pnpm format`                                |
-| GraphQL codegen               | `docker compose exec frontend pnpm codegen`                               |
+| Task                         | Command                                                           |
+| ---------------------------- | ----------------------------------------------------------------- |
+| Start all services           | `bash code/src/scripts/development/server.sh up`                  |
+| Stop all services            | `bash code/src/scripts/development/server.sh down`                |
+| Tail all logs                | `bash code/src/scripts/development/logs.sh --follow`              |
+| Apply migrations             | `bash code/src/scripts/database/migrate.sh run`                   |
+| Make migrations              | `bash code/src/scripts/database/migrate.sh make`                  |
+| Django shell                 | `bash code/src/scripts/development/shell.sh`                      |
+| psql shell                   | `bash code/src/scripts/database/shell.sh --psql`                  |
+| Run backend tests            | `bash code/src/scripts/tests/backend.sh`                          |
+| Run backend tests (coverage) | `bash code/src/scripts/tests/backend-coverage.sh`                 |
+| Run API tests                | `bash code/src/scripts/tests/api.sh`                              |
+| Backend lint                 | `bash code/src/scripts/syntax/lint.sh --file-type python`         |
+| Backend type-check           | `bash code/src/scripts/syntax/check.sh --file-type python`        |
+| Backend format               | `bash code/src/scripts/syntax/format.sh --fix --file-type python` |
+| Markdown lint                | `bash code/src/scripts/syntax/lint.sh --file-type markdown`       |
+| CSS format                   | `bash code/src/scripts/syntax/format.sh --fix --file-type css`    |
+| CSS token guard              | `bash code/src/scripts/audits/css-tokens.sh`                      |
+| CSS gradient guard           | `bash code/src/scripts/audits/css-gradients.sh`                   |
 
 ---
 
@@ -472,84 +256,63 @@ If step 9 produces a diff, commit the regenerated files before pushing.
 
 ### Container not running
 
-If `docker compose exec` fails with `no such service` or `container is not running`:
-
 ```bash
-# Check current container state
-docker compose ps
+# Check container state
+bash code/src/scripts/development/server.sh status
 
 # Start the specific service
-docker compose up -d backend
-docker compose up -d frontend
-```
+bash code/src/scripts/development/server.sh up --service backend
 
-If a container exits immediately after starting, inspect its logs:
-
-```bash
-docker compose logs backend
-docker compose logs frontend
+# Inspect exit logs
+bash code/src/scripts/development/logs.sh --service backend
 ```
 
 ### pnpm lockfile mismatch
 
-If the frontend container fails to start with a lockfile error (e.g.
-`ERR_PNPM_OUTDATED_LOCKFILE`), the `pnpm-lock.yaml` is out of sync with `package.json`. Fix by
-rebuilding the frontend image after updating dependencies:
+`pnpm` carries repo tooling only (markdownlint, Prettier, lefthook, Bruno) — nothing
+ships to the browser. If a tooling command fails with `ERR_PNPM_OUTDATED_LOCKFILE`,
+reinstall on the host:
 
 ```bash
-docker compose down frontend
-docker compose build frontend
-docker compose up -d frontend
+bash code/src/scripts/development/install-frontend.sh
 ```
 
-If you have intentionally updated `package.json` on the host and need to regenerate the lockfile:
+To regenerate the lockfile after updating `package.json`:
 
 ```bash
-docker compose exec frontend pnpm install
+bash code/src/scripts/development/install.sh
 ```
 
 Commit the updated `pnpm-lock.yaml`.
 
 ### Migration drift
 
-If Django reports unapplied migrations on startup, apply them:
-
 ```bash
-docker compose exec backend python manage.py migrate
+bash code/src/scripts/database/migrate.sh run
 ```
 
-If there are conflicting migrations (two branches both created a migration for the same app),
-merge them:
+For conflicting migrations (two branches created a migration for the same app), merge them:
 
 ```bash
-docker compose exec backend python manage.py makemigrations --merge
+bash code/src/scripts/database/migrate.sh make  # review conflicts manually
 ```
 
 Always review the merged migration file before committing.
 
 ### Port conflicts
 
-The default ports are `3000` (frontend) and `8000` (backend). If another process is using these
-ports, find and stop it:
-
 ```bash
-# Find the process using port 8000
 lsof -i :8000
-
-# Find the process using port 3000
-lsof -i :3000
 ```
 
-Alternatively, override the ports temporarily using a `docker-compose.override.yml` file — do not
-commit host-specific port overrides to the main `docker-compose.yml`.
+Override ports temporarily with a `docker-compose.override.yml` — do not commit host-specific
+port overrides to the main `docker-compose.yml`.
 
 ### Rebuilding after dependency changes
 
-When `pyproject.toml` or `pnpm-lock.yaml` changes (e.g. after pulling from main), rebuild the
-affected image so the container picks up the new dependencies:
+When `pyproject.toml` or `pnpm-lock.yaml` changes after pulling from main:
 
 ```bash
-docker compose build backend
-docker compose build frontend
-docker compose up -d
+bash code/src/scripts/development/server.sh build --service backend
+bash code/src/scripts/development/server.sh up
 ```

@@ -1,7 +1,27 @@
+---
+workflow: 03-debugging
+phase: verify
+agent: debugger
+skills: [global-workflow]
+model: opus
+---
+
 # Debugging — Steps
 
-**Last Updated**: 18/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `how-to/REFERENCES.md` as you work through these steps:
+
+| Step | Section                                                                                                              |
+| ---- | -------------------------------------------------------------------------------------------------------------------- |
+| 1–2  | **External — Tools & CLI** → Docker Compose v2 reference                                                             |
+| 2–4  | **External — Debugging & Observability** → Django debug toolbar, pytest documentation, Chrome DevTools Network panel |
+| 5    | **Internal → Reference guides** → how-to/docs/TOOLING-GUIDE.md                                                       |
 
 ---
 
@@ -11,26 +31,30 @@
 
 ```bash
 # All logs
-docker compose logs -f
+bash code/src/scripts/development/logs.sh --follow
 
 # Backend only
-docker compose logs -f backend
+bash code/src/scripts/development/logs.sh --service backend --follow
 
 # Frontend only
-docker compose logs -f frontend
+bash code/src/scripts/development/logs.sh --service frontend --follow
 ```
+
+> **Model:** opus
 
 ### Step 2 — Isolate the Problem
 
-If the error is in a GraphQL resolver, test the query directly in the Playground:
-http://localhost:8000/graphql/
+If the error is in a Django Ninja endpoint, test the operation directly in the OpenAPI docs:
+http://localhost:8000/api/docs
 
 If it is a frontend issue, open browser DevTools → Network → find the failing request.
+
+> **Model:** opus · **MCP:** claude-in-chrome (DevTools inspection)
 
 ### Step 3 — Inspect Data (Backend)
 
 ```bash
-docker compose exec backend python manage.py shell
+bash code/src/scripts/development/shell.sh
 ```
 
 ```python
@@ -38,26 +62,44 @@ from apps.<app>.models import <Model>
 <Model>.objects.filter(<condition>)
 ```
 
+> **Model:** opus · **MCP:** code-review-graph (model structure analysis)
+
 ### Step 4 — Run the Failing Test in Verbose Mode
 
 ```bash
 # Backend
-docker compose exec backend pytest tests/<module>/<test_file>.py::test_name -v -s
+bash code/src/scripts/tests/backend.sh tests/<module>/<test_file>.py::test_name -v -s
 
 # Frontend
-docker compose exec frontend npm test -- --run --reporter=verbose
 ```
+
+> **Model:** opus
 
 ### Step 5 — Use the Debug Agent
 
 ```text
-/syntek-dev-suite:debug [describe the problem and what you have tried]
+debugger [describe the problem and what you have tried]
 ```
+
+> **↳ New agent:** `debugger` · **Model:** opus · **MCP:** code-review-graph
 
 ### Step 6 — Document and Fix
 
 If the bug warrants a bug report:
-Save to `project-management/src/15-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
+Save to `project-management/src/19-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
+
+> **Model:** opus
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
 
 ---
 

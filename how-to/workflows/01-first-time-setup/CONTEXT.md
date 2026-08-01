@@ -1,12 +1,13 @@
 # Workflow: First-Time Setup
 
-> **Agent hints — Model:** Haiku · **MCP:** `docfork` + `context7` (Docker Compose)
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
 ```text
 how-to/workflows/01-first-time-setup/
 ├── CHECKLIST.md             ← verification checklist before marking complete
+├── CLAUDE.md                ← operating rules for this workflow
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
 ```
@@ -21,6 +22,7 @@ or when onboarding a new team member.
 - [ ] Docker and Docker Compose installed
 - [ ] Git configured with your SSH key
 - [ ] Access to the repository
+- [ ] GitHub CLI (`gh`) installed and authenticated (`gh auth login`) — required for the PR workflow
 
 ## Key concepts
 
@@ -30,4 +32,12 @@ or when onboarding a new team member.
 
 ## Cross-references
 
+### Hard gates — read before executing Step 1
+
+None — setup is sequential; follow STEPS.md in order.
+
+### Soft references — consult during execution
+
 - `how-to/docs/DEVELOPMENT.md` — full command reference
+- `how-to/docs/CLI-TOOLING.md` — CLI tools needed during setup
+- `project-management/docs/GIT-GUIDE.md` — git config and SSH key setup

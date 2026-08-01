@@ -1,66 +1,93 @@
 # how-to/src — Contributing & Code-Quality Guide
 
+**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}}
+
 ## Directory Tree
 
 ```text
 how-to/src/
-├── CONTEXT.md                   ← this file
-├── API-TESTING.md               ← GraphiQL (local) and Hoppscotch (staging) usage guide
-├── BRANCH-GUIDE.md              ← branch naming and promotion flow
-├── CLAUDE-MULTILAYER.md         ← using Claude Code with the three-layer structure
-├── CODE-REVIEW.md               ← reviewer checklist and feedback standards
-├── COMMIT-GUIDE.md              ← Conventional Commits format and rules
-├── CUSTOMISING-TEMPLATE.md      ← adapting syntek-base as your own project
-├── ENV-SETUP.md                 ← environment variable reference
-├── GETTING-STARTED.md           ← first steps — clone, configure, run
-├── ISSUE-REPORTING.md           ← bug reports and feature requests
-└── PR-GUIDE.md                  ← opening, reviewing, and merging pull requests
+├── CONTEXT.md               ← this file (contributing guide, testing, code quality, git hooks)
+├── TEMPLATE-TOKENS.md       ← base-template manifest: the {{…}}, what to fill, what stays fixed
+├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
+├── SCALE-ARCHITECTURE/      ← how the app scales: load profiles, readiness audit, sizing envelope (scale-planner snapshot)
+└── SERVER-ARCHITECTURE/     ← what the server/edge must provide + assigned compute with buffer; feeds the NixOS deploy repo
 ```
 
 ---
 
 ## Contributing & Code-Quality Guide
 
-This directory contains contributor-facing guides for the project. Use these alongside the
-step-by-step workflows in `how-to/workflows/` and the operational reference in `how-to/docs/`.
+This file documents the contributing standards, testing requirements, and code-quality rules that
+apply across the entire `{{PROJECT_NAME}}` codebase.
 
 ---
 
 ## Contributing
 
-**All development runs inside Docker.** Use the project scripts — never execute `python`,
-`pytest`, `pnpm`, `next`, or `npm` directly on the host machine.
+**All development runs inside Docker.** Never execute `python`, `pytest`, `pnpm`, or `npm`
+directly on your host machine.
 
 ```bash
-# Start the dev stack
-./code/src/scripts/development/server.sh up
+# Backend — run tests
+bash code/src/scripts/tests/backend.sh
 
-# Run all tests
-./code/src/scripts/tests/all.sh
-
-# Lint, format, and type-check
-./code/src/scripts/syntax/lint.sh
-./code/src/scripts/syntax/check.sh
+# Frontend — run tests
 ```
 
 ### Branching
 
-Branches follow the format `us###/short-description`. See [BRANCH-GUIDE.md](BRANCH-GUIDE.md)
-for the full naming rules and promotion flow.
+Branches must follow the format `us###/short-description` where `###` is the zero-padded
+user story number. Full branch and promotion rules: `project-management/docs/GIT-GUIDE.md`.
 
 ### Commit messages
 
-Follow Conventional Commits. See [COMMIT-GUIDE.md](COMMIT-GUIDE.md) for the full format,
-type and scope reference, and examples.
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```text
+<type>(<scope>): <description>
+
+[optional body]
+```
+
+**Types:** `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`, `perf`, `style`
+
+**Scopes:** `backend`, `frontend`, `api`, `db`, `ci`, `docs`, `infra`
+
+---
+
+## Dev User Accounts
+
+The development database ships with two pre-seeded accounts created by `reset.sh --seed`.
+Credentials are stored in `code/src/docker/.env.dev` (gitignored).
+
+| Account    | Django flag               | Purpose                                                 |
+| ---------- | ------------------------- | ------------------------------------------------------- |
+| Superuser  | `is_superuser + is_staff` | Full admin access; all module permissions               |
+| Staff user | `is_staff` only           | Verify ABAC permission boundaries in dev/manual testing |
+
+To seed accounts after a fresh reset:
+
+```bash
+bash code/src/scripts/database/reset.sh --seed
+```
+
+Accounts are idempotent — already-existing accounts are skipped, not duplicated.
+
+To create a one-off account with custom credentials:
+
+```bash
+bash code/src/scripts/database/manageusers.sh create-superuser
+bash code/src/scripts/database/manageusers.sh create-staff --email you@example.com --username you
+```
 
 ---
 
 ## Licensing
 
-This project is released under the [MIT Licence](../../LICENSE). You are free to use, copy,
-modify, merge, publish, distribute, sublicense, and sell copies of the software without
-restriction. Third-party dependencies bundled in this template carry MIT, Apache 2.0, or ISC
-licences. GPL/AGPL dependencies require written approval before inclusion.
+This codebase is proprietary. All rights reserved by {{ORG_NAME}}. You must have explicit
+written permission from {{ORG_NAME}} before using, copying, or distributing any part of this
+source code. Do not include third-party dependencies whose licences are incompatible with
+commercial proprietary use (e.g. GPL/AGPL) without prior written approval.
 
 ---
 
@@ -85,18 +112,12 @@ apps/
         └── test_services.py
 ```
 
-Use the project scripts — never run `pytest` directly on the host:
+Run tests inside the container:
 
 ```bash
-./code/src/scripts/tests/backend.sh                    # full suite
-./code/src/scripts/tests/backend-coverage.sh           # with coverage report
-```
-
-To target a single app or filter by test name, pass arguments after `--`:
-
-```bash
-./code/src/scripts/tests/backend.sh -- apps/users/
-./code/src/scripts/tests/backend.sh -- -k "test_login"
+bash code/src/scripts/tests/backend.sh                        # full suite
+bash code/src/scripts/tests/backend.sh apps/users/            # single app
+bash code/src/scripts/tests/backend.sh -k "test_login"        # filter by name
 ```
 
 Pytest is configured in `pyproject.toml` (`[tool.pytest.ini_options]`). It stops on first
@@ -109,71 +130,28 @@ failure (`-x`) and uses `config.settings.local` as the Django settings module.
 | All modules          | 75%     |
 | Auth-related modules | 90%     |
 
-### Frontend (Vitest + React Testing Library)
+### Templates, components, and HTMX partials
 
-Tests live co-located with the component or module they test:
-
-```text
-src/
-└── components/
-    └── Button/
-        ├── Button.tsx
-        └── Button.test.tsx
-```
-
-Use the project scripts:
+These are pytest tests too — there is no client-side runner. They live beside the app they
+cover, in `code/src/django/apps/<app>/tests/`, and count towards the single coverage floor
+above. Patterns: `code/docs/testing/FRONTEND-TESTING.md`.
 
 ```bash
-./code/src/scripts/tests/frontend.sh                   # single pass
-./code/src/scripts/tests/frontend-coverage.sh          # with coverage report
-```
-
-**Coverage floor:** 70% minimum across all frontend modules.
-
-### Mobile (Jest + React Native Testing Library / Detox)
-
-Unit and integration tests live co-located with screens and components:
-
-```text
-app/
-└── screens/
-    └── HomeScreen/
-        ├── HomeScreen.tsx
-        └── HomeScreen.test.tsx
-```
-
-Use the project scripts:
-
-```bash
-./code/src/scripts/tests/mobile.sh                     # unit/integration suite
-./code/src/scripts/tests/mobile-coverage.sh            # with coverage report
-./code/src/scripts/tests/e2e.sh                        # Detox E2E (explicit only)
-```
-
-E2E tests are opt-in — they require a running device or emulator and are not part of the
-default pre-push gate. Run them before promoting to staging.
-
-### Running all suites together
-
-```bash
-./code/src/scripts/tests/all.sh                        # backend then frontend in sequence
-./code/src/scripts/tests/all.sh --coverage             # both with coverage reports
-./code/src/scripts/tests/open-coverage.sh              # open latest coverage report in browser
+bash code/src/scripts/tests/backend.sh code/src/django/apps/marketing/
 ```
 
 ### What to test
 
-| Layer                | Test target                                     |
-| -------------------- | ----------------------------------------------- |
-| Django services      | Business logic, edge cases, error paths         |
-| GraphQL resolvers    | Permission checks, correct return shape         |
-| React components     | Render output, user interactions, accessibility |
-| React Native screens | Render output, user interactions, navigation    |
-| Utility functions    | Pure logic — full branch coverage expected      |
+| Layer                      | Test target                                           |
+| -------------------------- | ----------------------------------------------------- |
+| Django services            | Business logic, edge cases, error paths               |
+| Django Ninja API endpoints | Permission checks, correct return shape               |
+| Django views / templates   | Status, template used, rendered content, query counts |
+| django-components          | Rendered markup and its accessible surface            |
+| HTMX partials              | Fragment returned, no page chrome, response headers   |
+| Utility functions          | Pure logic — full branch coverage expected            |
 
 Do not test implementation details (internal state, private methods). Test observable behaviour.
-
-Full testing guide → `code/docs/TESTING.md` · TDD workflow → `code/workflows/02-tdd-cycle/`
 
 ---
 
@@ -205,22 +183,20 @@ Key rules:
 - `except (A, B):` syntax, never `except A, B:`
 - All type annotations required — basedpyright runs in `standard` mode
 
-### Frontend — TypeScript / CSS
+### Frontend — CSS and Markdown
 
-| Tool       | Purpose                              | Run manually                                     |
-| ---------- | ------------------------------------ | ------------------------------------------------ |
-| ESLint     | TypeScript and JavaScript linting    | `pnpm lint:js`                                   |
-| Prettier   | Formatting (TS, CSS, JSON, MD, YAML) | `pnpm format:check`                              |
-| TypeScript | Type checking                        | `docker compose exec frontend pnpm tsc --noEmit` |
+| Tool            | Purpose                                | Run manually                                                |
+| --------------- | -------------------------------------- | ----------------------------------------------------------- |
+| Prettier        | Formatting (CSS, JSON, MD, YAML)       | `bash code/src/scripts/syntax/format.sh --file-type css`    |
+| markdownlint    | Markdown linting (MD040 fences)        | `bash code/src/scripts/syntax/lint.sh --file-type markdown` |
+| `css-tokens`    | Every `var(--token)` resolves          | `bash code/src/scripts/audits/css-tokens.sh`                |
+| `css-gradients` | No inline gradients outside the tokens | `bash code/src/scripts/audits/css-gradients.sh`             |
 
-Configuration files:
+There is no TypeScript and no client bundle, so there is nothing for a JS type-checker to
+check. Configuration files:
 
-- ESLint: `eslint.config.mjs` (repo root)
 - Prettier: `.prettierrc` (repo root) — `printWidth: 100`, `singleQuote: false`, `semi: true`
-- TypeScript: `code/src/frontend/tsconfig.json`
-
-The `code/src/frontend/src/graphql/generated/` directory is excluded from all linting — never
-edit generated files by hand.
+- Markdown: `.markdownlint-cli2.jsonc`
 
 ### Markdown
 
@@ -257,8 +233,7 @@ manually first gives faster feedback.
 Run the full test suite:
 
 ```bash
-docker compose exec backend pytest
-docker compose exec frontend pnpm test --run
+bash code/src/scripts/tests/backend.sh
 ```
 
 Both must pass with no failures before pushing to any branch.

@@ -1,12 +1,13 @@
 # Workflow: Daily Development
 
-> **Agent hints — Model:** Haiku
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
 ```text
 how-to/workflows/02-daily-development/
 ├── CHECKLIST.md             ← verification checklist before marking complete
+├── CLAUDE.md                ← operating rules for this workflow
 ├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
 └── STEPS.md                 ← ordered steps to execute
 ```
@@ -22,10 +23,18 @@ Use this at the start of each development session to set up your working context
 
 ## Key concepts
 
-- Always pull latest from `dev` before starting a new user story branch
+- Always pull latest from `testing` before starting a new user story branch
 - Create a branch with the format `us###/short-description`
 - Containers must be running before any development work
 
 ## Cross-references
 
-- `project-management/docs/GIT-GUIDE.md` — branch strategy and commit format
+### Hard gates — read before executing Step 1
+
+- `project-management/docs/GIT-GUIDE.md` — branch naming convention must be correct before the first commit
+
+### Soft references — consult during execution
+
+- `how-to/docs/DEVELOPMENT.md` — full command reference
+- `how-to/docs/CLI-TOOLING.md` — daily CLI commands
+- `how-to/docs/TOOLING-GUIDE.md` — project-specific scripts

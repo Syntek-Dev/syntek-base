@@ -1,7 +1,27 @@
+---
+workflow: 01-first-time-setup
+phase: setup
+agent: setup
+skills: [global-workflow]
+model: opus
+---
+
 # First-Time Setup — Steps
 
-**Last Updated**: 18/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `how-to/REFERENCES.md` as you work through these steps:
+
+| Step | Section                                                                                          |
+| ---- | ------------------------------------------------------------------------------------------------ |
+| 2    | **Internal → Reference guides** → how-to/docs/DEVELOPMENT.md (prerequisites and troubleshooting) |
+| 2–4  | **External — Tools & CLI** → Docker Compose v2 reference, uv documentation, pnpm documentation   |
+| 5–6  | **External — IDE & Editor** → Claude Code CLI documentation                                      |
 
 ---
 
@@ -10,55 +30,93 @@
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone git@github.com:Syntek-Studio/project-name.git
-cd project-name
+git clone git@github.com:{{ORG_SLUG}}/{{PROJECT_SLUG}}.git
+cd {{PROJECT_SLUG}}
 ```
 
-### Step 2 — Copy Environment Files
+> **Model:** opus
+
+### Step 2 — Run the Installer
 
 ```bash
-cp .env.dev.example .env.dev
+bash install.sh
 ```
 
-Edit `.env.dev` and fill in any required values (database credentials, secret key, etc.).
+This single command:
 
-### Step 3 — Build and Start Containers
+- Checks all prerequisites (Docker, docker compose v2, git, uv, pnpm, openssl)
+- Installs Python dependencies (delegates to `code/src/scripts/development/install-backend.sh --sync`)
+- Installs JavaScript dependencies (delegates to `code/src/scripts/development/install-frontend.sh --local`, keeping `pnpm-lock.yaml` in sync)
+- Copies every `.env.*.example` file to its live counterpart (skips existing)
+- Auto-generates `SECRET_KEY`, `ENCRYPTION_KEY`, `LEGAL_FIELD_HMAC_KEY`, `MFA_FIELD_KEY`, and `POSTGRES_PASSWORD` in `.env.dev`
+- Marks `install.sh` and all `code/src/scripts/**/*.sh` files executable
+
+> **Model:** opus
+
+### Step 3 — Review Environment Files
+
+Open `code/src/docker/.env.dev` and confirm the auto-generated secrets look correct.
+For staging and production, populate `code/src/docker/.env.staging` and `.env.prod`
+manually — those secrets are never generated automatically.
+
+> **Model:** opus
+
+### Step 4 — Start the Stack (choose one)
+
+**Quick option — full bootstrap in one command:**
 
 ```bash
-docker compose up -d --build
+bash install.sh --full
 ```
 
-Wait for containers to be healthy:
+This builds Docker images, starts all containers, and applies migrations automatically.
+Use this for a clean first run when all secrets are already set.
+
+**Manual option — step by step:**
 
 ```bash
-docker compose ps
+bash code/src/scripts/development/server.sh up --build
+bash code/src/scripts/database/migrate.sh run
 ```
 
-### Step 4 — Run Migrations
+> **Model:** opus
+
+### Step 5 — Seed the Database
 
 ```bash
-docker compose exec backend python manage.py migrate
+bash code/src/scripts/database/reset.sh --seed --yes
 ```
 
-### Step 5 — Create a Superuser (Optional)
+This applies all migrations and creates two dev accounts from `code/src/docker/.env.dev`:
 
-```bash
-docker compose exec backend python manage.py createsuperuser
-```
+- **Superuser** (`DJANGO_SUPERUSER_*`) — full admin access
+- **Staff user** (`SEED_STAFF_*`) — staff-only access for testing permission boundaries
 
-### Step 6 — Generate Frontend Types
+Accounts are idempotent — safe to re-run after any future reset.
 
-```bash
-docker compose exec frontend npm run codegen
-```
+> **Model:** opus
 
-### Step 7 — Verify
+### Step 6 — Verify
 
 Open:
 
-- Frontend: http://localhost:3000
-- GraphQL Playground: http://localhost:8000/graphql/
-- Django Admin: http://localhost:8000/admin/
+- Public site: http://localhost:8000/
+- API docs (OpenAPI): http://localhost:8000/api/docs
+- Django Admin: http://localhost:8000/control/ (non-obvious path — never `/admin/`, which is reserved for the {{PROJECT_NAME}} Admin surface; see `code/docs/URL-STRATEGY.md`)
+- Mail (dev): http://localhost:1080
+
+> **Model:** opus · **MCP:** claude-in-chrome (rendered verification)
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
 
 ---
 

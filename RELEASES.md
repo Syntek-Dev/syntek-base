@@ -1,9 +1,34 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.8.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.9.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.9.0 — 01/08/2026
+
+**Status:** Documentation release — setup, tooling, and deployment sizing guidance
+
+### Summary
+
+The how-to layer is rewritten for the Django-only stack and extended with the material a developer
+needs that is neither code nor project management. Two new sub-folder guides land: an AI dictionary
+giving plain-English definitions for the agent-coding vocabulary, and a tooling guide covering the
+internal agents, skills, commands, and configuration. A fourth workflow documents git worktree
+setup for parallel stories. Two architecture folders — `SCALE-ARCHITECTURE/` and
+`SERVER-ARCHITECTURE/` — carry the sizing envelope, load profiles, readiness criteria, and compute
+allocation that feed the separate NixOS deployment repository. The narrow contributor guides that
+duplicated the PM layer are removed rather than maintained twice.
+
+### What's new since v0.8.0
+
+- **AI dictionary** — the agent-coding vocabulary in plain English, split across seven focused documents
+- **Tooling guide** — what each internal agent and skill does, and how the configuration fits together
+- **Worktree workflow** — run several stories in parallel with isolated Docker stacks and loopback hosts
+- **Deployment sizing** — load profiles, a sizing envelope, and readiness criteria that hand off to the NixOS deployment repository
+- **Duplication removed** — narrow contributor guides gave way to the authoritative code and PM guides
 
 ---
 

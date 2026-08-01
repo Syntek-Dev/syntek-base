@@ -1,263 +1,136 @@
-# Development Workflow — project-name
-
-> **Agent hints — Model:** Haiku
-
-**Last Updated**: 18/04/2026\
-**Version**: 1.0.0\
-**Language**: British English (en_GB)\
-**Timezone**: Europe/London
-
+---
+type: guide
+agent: setup
+skills: [global-workflow]
+model: opus
 ---
 
-## Table of Contents
+# Development Workflow — {{PROJECT_NAME}}
 
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Daily Workflow](#daily-workflow)
-- [Code Quality](#code-quality)
-- [Git Workflow](#git-workflow)
-- [Environment Variables](#environment-variables)
-- [Troubleshooting](#troubleshooting)
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: {{TIMEZONE}}
+**Claude Model:** opus — First-time setup, Docker Compose dev commands, env vars, troubleshooting
+
+> All development commands run through shell scripts in `code/src/scripts/**/*.sh`.
+> Never invoke `docker compose`, `python`, `pytest`, or `pnpm` directly — always use the scripts.
 
 ---
 
 ## Overview
 
-`project-name` is a two-layer full-stack web application — a **deployable product**, not a library.
-All development work runs inside Docker containers. Never invoke `python`, `pytest`, `pnpm`, or
-`next` directly on the host machine.
+| Layer                 | Technology                                                                                                                                     | Container | Dev URL                                           |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------- |
+| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.{{PROJECT_SLUG}}.localhost:8000        |
+| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.{{PROJECT_SLUG}}.localhost:8000/admin/ |
+| **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                       |
+| **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                       |
 
-| Layer        | Technology                                    | Container  | Dev URL                     |
-| ------------ | --------------------------------------------- | ---------- | --------------------------- |
-| **Backend**  | Django 6.0.4, Python 3.14, Strawberry GraphQL | `backend`  | http://localhost:8000       |
-| **Frontend** | Next.js 16.2.4, TypeScript 6.0.3, React 19.2  | `frontend` | http://localhost:3000       |
-| **Database** | PostgreSQL 18                                 | `db`       | `localhost:5432` (internal) |
-| **Cache**    | Valkey (latest stable)                        | `valkey`   | `localhost:6379` (internal) |
-
-Additional endpoints:
-
-| Endpoint           | URL                            |
-| ------------------ | ------------------------------ |
-| GraphQL API        | http://localhost:8000/graphql/ |
-| GraphQL Playground | http://localhost:8000/graphql/ |
-| Django Admin       | http://localhost:8000/admin/   |
+One app process family (Django ASGI) serves the public site, the `/admin/` surface, and the
+Django Ninja API at `http://dev.{{PROJECT_SLUG}}.localhost:8000/api/`. Django admin is mounted at
+`/control/`, never `/admin/`.
 
 ---
 
 ## Prerequisites
 
-The following must be installed on your host machine before you begin:
-
-- **Docker** (latest stable) — [docs.docker.com/get-docker](https://docs.docker.com/get-docker/)
+- **Docker** (latest stable)
 - **Docker Compose** v2.x (bundled with Docker Desktop, or `docker compose` plugin for Linux)
 - **Git** 2.x
-  No host-level Python, Node.js, or Rust installation is required. All runtimes live inside the
-  containers.
+- **SSH key** registered with `git.{{PRIMARY_DOMAIN}}`
+
+No host-level Python, Node.js, or Rust installation required — all runtimes live inside containers.
 
 ---
 
 ## Getting Started
 
-### 1. Clone the repository
-
 ```bash
-git clone git@github.com:Syntek-Dev/project-name.git
-cd project-name
+# 1. Clone
+git clone git@git.{{PRIMARY_DOMAIN}}:{{ORG_SLUG}}/{{PROJECT_SLUG}}.git
+cd {{PROJECT_SLUG}}
+
+# 2. Run installer (copies .env.dev.example → .env.dev, installs dependencies)
+bash code/src/scripts/development/install.sh
+
+# 3. Fill in CHANGE_ME values in code/src/docker/.env.dev
+#    Set seed credentials: DJANGO_SUPERUSER_*, SEED_STAFF_*
+
+# 4. Build and start
+bash code/src/scripts/development/server.sh up --build
+
+# 5. Reset database and seed dev accounts
+bash code/src/scripts/database/reset.sh --seed --yes
 ```
 
-### 2. Copy the environment file
+`--seed` creates both accounts from `.env.dev` automatically. See **Dev Accounts** below.
+
+To create accounts interactively instead (e.g. for a custom password):
 
 ```bash
-cp .env.example .env
+bash code/src/scripts/database/manageusers.sh create-superuser
+bash code/src/scripts/database/manageusers.sh create-staff --email your@email.com --username you
 ```
 
-Open `.env` and fill in any values marked `CHANGE_ME`. See [Environment Variables](#environment-variables)
-for a full reference.
+Verify at http://dev.{{PROJECT_SLUG}}.localhost:8000 and the API at
+http://dev.{{PROJECT_SLUG}}.localhost:8000/api/.
 
-### 3. Build and start all containers
+---
 
-```bash
-docker compose up -d --build
-```
+## Dev Accounts
 
-The `--build` flag is only needed on first run or after a `Dockerfile` change. Subsequent starts
-can omit it:
+`reset.sh --seed` creates two accounts from `.env.dev` every time. Credentials are set
+under the `Seed users` block in `.env.dev` (gitignored — never committed).
 
-```bash
-docker compose up -d
-```
+| Account    | Username    | Role                      | Purpose                                   |
+| ---------- | ----------- | ------------------------- | ----------------------------------------- |
+| Superuser  | `superuser` | `is_superuser + is_staff` | Full admin access, all module permissions |
+| Staff user | `staffuser` | `is_staff` only           | Test ABAC permission boundaries           |
 
-### 4. Apply database migrations
+The superuser password is set via `DJANGO_SUPERUSER_PASSWORD` in `.env.dev`.
+The staff user password is set via `SEED_STAFF_PASSWORD` in `.env.dev`.
 
-```bash
-docker compose exec backend python manage.py migrate
-```
-
-### 5. Create a superuser (first time only)
-
-```bash
-docker compose exec backend python manage.py createsuperuser
-```
-
-### 6. Verify everything is running
-
-Open the following URLs in your browser:
-
-- Frontend: http://localhost:3000
-- GraphQL Playground: http://localhost:8000/graphql/
-- Django Admin: http://localhost:8000/admin/
-
-Check container health at any time:
-
-```bash
-docker compose ps
-```
+Both accounts are idempotent — running `reset.sh --seed` again after a reset recreates them;
+running it on an existing database skips accounts that already exist.
 
 ---
 
 ## Daily Workflow
 
-Follow these steps at the start of each development session.
-
-### 1. Pull latest changes
-
 ```bash
-git checkout main
-git pull origin main
-```
+# Pull latest (feature branches always cut from and target `testing` — see GIT-GUIDE.md)
+git checkout testing && git pull origin testing
 
-### 2. Create a feature branch
-
-```bash
+# Create feature branch (us### must match a story ID)
 git checkout -b us###/short-description
+
+# Start containers
+bash code/src/scripts/development/server.sh up
+
+# Apply any new migrations from pulled changes
+bash code/src/scripts/database/migrate.sh run
 ```
 
-See [Git Workflow](#git-workflow) for branch naming rules.
-
-### 3. Start containers
-
-```bash
-docker compose up -d
-```
-
-Apply any new migrations if `git pull` brought in migration files:
-
-```bash
-docker compose exec backend python manage.py migrate
-```
-
-### 4. Write tests first (TDD)
-
-Backend tests live in `code/src/backend/`. Frontend tests live alongside their components in
-`code/src/frontend/src/`. Always write a failing test before implementing the feature.
-
-### 5. Run the test suite
-
-**Backend:**
-
-```bash
-docker compose exec backend pytest
-```
-
-Run a specific file or test:
-
-```bash
-docker compose exec backend pytest apps/users/tests/test_auth.py
-docker compose exec backend pytest -k "test_login"
-```
-
-**Frontend:**
-
-```bash
-docker compose exec frontend pnpm test
-```
-
-Run in watch mode during development:
-
-```bash
-docker compose exec frontend pnpm test:watch
-```
-
-### 6. Commit and open a PR
-
-Commit using Conventional Commits format (see [Git Workflow](#git-workflow)) and open a pull
-request on GitHub targeting `main`.
+Write a failing test before implementing the feature (TDD). For all test and quality commands
+see `how-to/docs/CLI-TOOLING.md`.
 
 ---
 
 ## Code Quality
 
-Run all checks before committing. CI enforces the same checks — failures locally mean failures in
-CI.
-
-### Backend — ruff (lint + format)
+Run before every commit — CI enforces the same checks.
 
 ```bash
-# Lint
-docker compose exec backend ruff check .
+# Backend
+bash code/src/scripts/syntax/lint.sh --file-type python
+bash code/src/scripts/syntax/format.sh --file-type python
+bash code/src/scripts/syntax/check.sh --file-type python
+bash code/src/scripts/tests/backend.sh
 
-# Auto-fix safe issues
-docker compose exec backend ruff check --fix .
+# CSS
+bash code/src/scripts/syntax/format.sh --file-type css
 
-# Format
-docker compose exec backend ruff format .
-
-# Check formatting without writing changes
-docker compose exec backend ruff format --check .
-```
-
-### Backend — basedpyright (type checking)
-
-```bash
-docker compose exec backend basedpyright
-```
-
-### Frontend — ESLint
-
-```bash
-docker compose exec frontend pnpm lint
-```
-
-### Frontend — Prettier
-
-```bash
-# Check
-docker compose exec frontend pnpm format:check
-
-# Write changes
-docker compose exec frontend pnpm format
-```
-
-### Frontend — TypeScript type checking
-
-```bash
-docker compose exec frontend pnpm type-check
-```
-
-### Markdown lint
-
-All Markdown files must pass `markdownlint`. Every fenced code block must declare its language
-(bare ` ``` ` blocks are a lint error per MD040):
-
-```bash
-docker compose exec frontend pnpm lint:md
-```
-
-### Run everything at once
-
-```bash
-# Backend: lint, format check, type check, tests
-docker compose exec backend ruff check . && \
-  docker compose exec backend ruff format --check . && \
-  docker compose exec backend basedpyright && \
-  docker compose exec backend pytest
-
-# Frontend: lint, format check, type check, tests
-docker compose exec frontend pnpm lint && \
-  docker compose exec frontend pnpm format:check && \
-  docker compose exec frontend pnpm type-check && \
-  docker compose exec frontend pnpm test
+# Markdown (all .md files must declare code block languages — MD040)
+bash code/src/scripts/syntax/lint.sh --file-type markdown
 ```
 
 ---
@@ -267,16 +140,10 @@ docker compose exec frontend pnpm lint && \
 ### Branch naming
 
 ```text
-us###/short-description
-
-Examples:
-  us001/user-registration
-  us042/graphql-portfolio-query
-  fix/missing-csrf-token
-  chore/upgrade-strawberry-0.315
+us###/short-description    (e.g. us001/user-registration)
+fix/short-description
+chore/short-description
 ```
-
-The `us###` prefix must match a story ID in `project-management/src/STORIES/`.
 
 ### Commit messages (Conventional Commits)
 
@@ -284,168 +151,144 @@ The `us###` prefix must match a story ID in `project-management/src/STORIES/`.
 <type>(<scope>): <subject>
 
 Types: feat, fix, refactor, test, docs, chore, perf, style
-
-Examples:
-  feat(auth): add JWT refresh token rotation
-  fix(graphql): correct IDOR check on portfolio query
-  test(users): add coverage for password reset flow
-  docs(api): document rate-limiting headers
-  chore(deps): upgrade strawberry-graphql to 0.315.0
+Subject line under 72 characters, imperative mood.
+Body explains why, not what. Reference story: Closes US-042
 ```
-
-**Rules:**
-
-- Subject line under 72 characters
-- Imperative mood: "Add feature" not "Added feature"
-- Body explains _why_, not _what_
-- Reference the story ID in the body: `Closes US-042`
 
 ### Pull requests
 
-Every PR must include:
-
-1. A clear title summarising the change
-2. A description explaining what changed and why
-3. Story ID reference (e.g., `Closes US-042`)
-4. A testing section describing how to verify the change
-5. Passing CI (tests, lint, type checking)
-
-Full branching rules: `project-management/docs/GIT-GUIDE.md`
+Every PR must have: a clear title, description (what + why), story ID reference, testing steps,
+and passing CI. Full branching rules: `project-management/docs/GIT-GUIDE.md`.
 
 ---
 
 ## Environment Variables
 
-All configuration is provided via a `.env` file at the project root. This file is never committed —
-only `.env.example` is tracked in version control.
-
-Copy the example file on first setup:
+Configuration is provided via `.env` at the project root. Never commit this file — only
+`.env.example` is tracked.
 
 ```bash
-cp .env.example .env
-```
+# Seed users (reset.sh --seed reads these from the container environment)
+DJANGO_SUPERUSER_USERNAME=superuser
+DJANGO_SUPERUSER_EMAIL=superuser@example.com
+DJANGO_SUPERUSER_PASSWORD=CHANGE_ME
+SEED_STAFF_USERNAME=staffuser
+SEED_STAFF_EMAIL=staffuser@example.com
+SEED_STAFF_PASSWORD=CHANGE_ME
 
-### Key variables
-
-```bash
 # Django
-DJANGO_SECRET_KEY=CHANGE_ME
-DJANGO_DEBUG=True                        # Must be False in all non-local environments
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-CORS_ALLOWED_ORIGINS=http://localhost:3000
+SECRET_KEY=CHANGE_ME           # generate: python -c "import secrets; print(secrets.token_urlsafe(50))"
+DEBUG=true
+ENCRYPTION_KEY=CHANGE_ME       # generate: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+PASSWORD_PEPPER=CHANGE_ME      # generate: python -c "import secrets; print(secrets.token_hex(32))"
 
 # Database
-POSTGRES_DB=project_name_dev
-POSTGRES_USER=syntek
+POSTGRES_USER={{PROJECT_SLUG}}
 POSTGRES_PASSWORD=CHANGE_ME
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
 
-# Valkey / cache
-VALKEY_URL=redis://valkey:6379/0
+# Media (Cloudinary public delivery)
+CLOUDINARY_CLOUD_NAME=CHANGE_ME
 
-# Next.js
-NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8000/graphql/
-
+# Trusted proxies — REMOTE_ADDR values allowed to set X-Forwarded-For /
+# X-Real-IP. Leave UNSET in local dev (no Nginx → REMOTE_ADDR is already the
+# client IP). In staging/production set to the Nginx container IP(s), comma-separated.
+TRUSTED_PROXIES=
 ```
 
-**Security rules (non-negotiable):**
+Full var list with generation commands: `code/src/docker/.env.dev.example`.
 
-- Never hardcode secrets — always use environment variables.
-- `DJANGO_DEBUG` must be `False` in staging and production.
-- `CORS_ALLOWED_ORIGINS` must be an explicit allowlist — never `*` in production.
+Non-negotiable rules: never hardcode secrets; `DJANGO_DEBUG=False` in all non-local environments;
+`CORS_ALLOWED_ORIGINS` must be an explicit allowlist; off-local `TRUSTED_PROXIES` must list the
+Nginx container IP(s) (default `[]` = no X-Forwarded-For trust — fail-safe).
+
+---
+
+## Script Catalogue
+
+| Script                           | Purpose                                                   |
+| -------------------------------- | --------------------------------------------------------- |
+| `development/install.sh`         | Install project dependencies                              |
+| `development/server.sh`          | Start / stop / rebuild the dev stack                      |
+| `development/shell.sh`           | Open a shell inside a container                           |
+| `development/logs.sh`            | Tail container logs                                       |
+| `development/new-django-app.sh`  | Scaffold a new Django app                                 |
+| `development/new-django-view.sh` | Scaffold a new Django-served page (view + template + URL) |
+| `database/migrate.sh`            | Run Django migrations                                     |
+| `database/reset.sh`              | Reset the database; `--seed` also creates dev accounts    |
+| `database/shell.sh`              | Open a psql shell                                         |
+| `database/backup.sh`             | Back up the database                                      |
+| `database/restore.sh`            | Restore a database backup                                 |
+| `database/manageusers.sh`        | Create superusers and manage DB users                     |
+| `database/verify-db-security.sh` | Verify DB security settings (RLS, roles)                  |
+| `tests/backend.sh`               | Run backend tests                                         |
+| `tests/backend-coverage.sh`      | Backend tests with coverage report                        |
+| `tests/api.sh`                   | Run Django Ninja API integration tests                    |
+| `tests/all.sh`                   | Run all tests (backend, `--api` adds Bruno)               |
+| `tests/mutmut.sh`                | Python mutation testing (local only)                      |
+| `tests/open-coverage.sh`         | Open the backend coverage HTML report                     |
+| `syntax/lint.sh`                 | Lint code (Python, Markdown)                              |
+| `syntax/check.sh`                | Type-check Python (basedpyright)                          |
+| `syntax/format.sh`               | Format code (ruff, Prettier)                              |
+| `audits/cloc.sh`                 | Count lines of code                                       |
+| `audits/stubs.sh`                | Audit type stubs                                          |
+
+If a required operation has no script, raise a task to create one — do not run the underlying
+tool directly.
 
 ---
 
 ## Troubleshooting
 
-### A container won't start
-
-Check the logs for the specific service:
+### Container won't start
 
 ```bash
-docker compose logs backend
-docker compose logs frontend
-docker compose logs db
-```
-
-Rebuild the image if a `Dockerfile` or dependency file changed:
-
-```bash
-docker compose up -d --build backend
+bash code/src/scripts/development/logs.sh --service backend
+bash code/src/scripts/development/server.sh up --build --service backend
 ```
 
 ### Database connection errors
 
-Ensure the `db` container is healthy before the `backend` container tries to connect:
+Ensure `POSTGRES_HOST=db` (the Docker Compose service name, not `localhost`). Check container
+health with `server.sh status`. If the `db` container is still initialising:
 
 ```bash
-docker compose ps db
+bash code/src/scripts/development/server.sh restart --service backend
 ```
-
-If the database container is still initialising, wait a moment and retry:
-
-```bash
-docker compose restart backend
-```
-
-Verify that `POSTGRES_HOST` in `.env` is set to `db` (the Docker Compose service name), not
-`localhost`.
 
 ### Migration errors
 
-If `migrate` reports conflicting migrations:
-
 ```bash
-# Show current migration state
-docker compose exec backend python manage.py showmigrations
-
-# If a migration is stuck, check for unapplied squashed migrations
-docker compose exec backend python manage.py migrate --run-syncdb
+bash code/src/scripts/database/migrate.sh show
+bash code/src/scripts/database/migrate.sh run
 ```
 
 For a clean local reset (destroys all data — never run in production):
 
 ```bash
-docker compose down -v          # removes volumes including the database
-docker compose up -d
-docker compose exec backend python manage.py migrate
-docker compose exec backend python manage.py createsuperuser
+bash code/src/scripts/database/reset.sh --seed
 ```
 
-### Node module issues / missing packages
-
-If the frontend reports missing packages after a `git pull`:
+### Stale image after a dependency change
 
 ```bash
-docker compose exec frontend pnpm install
+bash code/src/scripts/development/server.sh up --build --service django
 ```
-
-If that does not resolve it, rebuild the frontend image to reinstall from scratch:
-
-```bash
-docker compose up -d --build frontend
-```
-
-### GraphQL schema out of date
-
-After adding or modifying Strawberry types, regenerate the TypeScript types:
-
-```bash
-docker compose exec frontend pnpm codegen
-```
-
-The generated files are written to `code/src/frontend/src/graphql/generated/`. Commit them
-alongside the schema changes.
 
 ### Port already in use
 
-If port 3000 or 8000 is occupied by another process:
+```bash
+sudo lsof -i :8000
+```
+
+Use a `docker-compose.override.yml` for host-specific port overrides — do not commit to
+`docker-compose.yml`.
+
+### Docker data-root location
+
+If your Docker daemon is configured with a custom `--data-root` (images, containers, and volumes
+stored off the default `/var/lib/docker`), and Docker appears to lose images after a reboot,
+check that the backing disk is mounted before starting the stack:
 
 ```bash
-# Find what is using port 8000
-sudo lsof -i :8000
-
-# Kill the process or stop the conflicting service, then:
-docker compose up -d
+docker info | grep "Docker Root Dir"
 ```
