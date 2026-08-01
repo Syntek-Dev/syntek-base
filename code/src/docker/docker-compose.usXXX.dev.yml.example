@@ -1,0 +1,40 @@
+# Worktree isolation override — development stack. TEMPLATE: copy, never edit in place.
+#
+# Replace NNN with the story number throughout (e.g. story 3 → us003, 127.0.0.3, 10.3.1.0/24).
+# Save as docker-compose.us<NNN>.dev.yml; server.sh auto-detects it on a us<NNN>/* branch.
+#
+# Usage (manual):
+#   docker compose \
+#     -f code/src/docker/docker-compose.dev.yml \
+#     -f code/src/docker/docker-compose.usNNN.dev.yml \
+#     --env-file code/src/docker/.env.dev \
+#     up -d
+#
+# Container names: {{PROJECT_SLUG}}-dev-usNNN-*-1
+# Named volumes:   {{PROJECT_SLUG}}-dev-usNNN_postgres_dev_data
+#                  {{PROJECT_SLUG}}-dev-usNNN_valkey_dev_data
+# Dev URL:         http://dev-usNNN.{{PROJECT_SLUG}}.localhost:3080
+#
+# Every host-facing port the base file binds MUST be re-scoped here, or the worktree
+# stack collides with the main dev stack. The host loopback IP is 127.0.0.NNN and must
+# match the /etc/hosts entry; keep worktree IPs at 127.0.0.2 or above (127.0.0.1 is the
+# main stack). The host port is never 80 — only the container side is.
+#
+# /etc/hosts required (one-time):
+#   127.0.0.NNN dev-usNNN.{{PROJECT_SLUG}}.localhost
+
+name: {{PROJECT_SLUG}}-dev-usNNN
+
+services:
+  nginx:
+    ports: !override
+      - "127.0.0.NNN:3080:80"
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        # Third octet 1 = dev, 0 = test. Second octet = story number.
+        - subnet: 10.NNN.1.0/24
+          gateway: 10.NNN.1.1

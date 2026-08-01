@@ -1,27 +1,57 @@
 [project]
-name = "project-name"
-version = "1.11.0"
+name = "{{PROJECT_SLUG}}"
+version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
   "django>=6.0.4",
-  "strawberry-graphql[django]>=0.314.3",
+  "django-prometheus>=2.3.1",
   "gunicorn",
   "uvicorn[standard]",
+  # WhiteNoise serves hashed, pre-compressed static files from the app process itself
+  # (CompressedManifestStaticFilesStorage in staging/prod), so the backend container is
+  # hermetic — no static volume or separate static server. See config/settings.
+  "whitenoise[brotli]>=6.12",
   "dj-database-url",
   "psycopg[binary]",
   "django-cors-headers",
   "django-cloudinary-storage",
   "cloudinary",
+  # ── Frontend foundation: Django templates + HTMX + Alpine, server-rendered
+  # throughout — there is no React and no client build step. django-components is the
+  # single shared server-side component library (django-cotton was dropped — it
+  # conflicts with django-components' global template-compilation monkeypatch);
+  # django-htmx exposes request.htmx and partial helpers; django-ninja serves the JSON
+  # API (at /api/, OpenAPI at /api/docs); django-ratelimit covers generic form rate
+  # limiting. Security headers (CSP included) are set at the edge in the server deploy
+  # repo — NEVER in this repo — so django-csp is deliberately absent. These are declared
+  # now and wired incrementally.
+  "django-htmx>=1.19",
+  "django-components>=0.151",
+  "django-ninja>=1.3",
+  "django-ratelimit>=4.1",
   "sentry-sdk[django]",
   "argon2-cffi",
   "cryptography",
+  "redis>=5.0.0",
+  "django-valkey>=0.4.1",
+  "celery[redis]>=5.3",
+  # Private-document storage (S3 API). Public media goes to Cloudinary above.
+  "boto3>=1.34",
 ]
+
+# Deliberately NOT declared at baseline — add them with the feature that needs them:
+#   pyotp / qrcode / webauthn  — TOTP and passkey ceremonies (the `authentication` agent)
+#   bleach                     — sanitising user-authored HTML
+#   python-magic / pyclamd     — upload MIME sniffing and ClamAV scanning
+#   channels / channels-redis  — ASGI WebSockets; note the stack is one app process
+#                                family, so real-time is a stack change argued in an ADR
+#   cairosvg                   — SVG rasterisation for an asset pipeline
 
 [tool.uv]
 package = false
 
 [tool.ruff]
-src = ["code/src/backend"]
+src = ["code/src/django"]
 target-version = "py314"
 line-length = 100
 exclude = [".claude", ".venv"]
@@ -47,19 +77,18 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "*/migrations/*" = ["E501", "N806"]
 "*/settings/*"   = ["S105", "F405", "F403"]
-"*/tests/*"      = ["S101", "S106"]
+"*/tests/*"      = ["S101", "S105", "S106"]
 
 [tool.ruff.lint.isort]
 sections = { "django" = ["django"] }
-known-third-party = ["strawberry", "graphene"]
 section-order = ["future", "standard-library", "django", "third-party", "first-party", "local-folder"]
 
 [tool.basedpyright]
 pythonVersion = "3.14"
 venvPath = "."
 venv = ".venv"
-include = ["code/src/backend"]
-exclude = ["**/migrations", "**/__pycache__"]
+include = ["code/src/django"]
+exclude = ["**/migrations", "**/__pycache__", "**/tests/**", "**/conftest.py"]
 typeCheckingMode = "standard"
 reportMissingImports = true
 reportMissingTypeStubs = false
@@ -68,6 +97,7 @@ reportMissingTypeStubs = false
 dev = [
   "ruff>=0.11.0",
   "basedpyright>=1.28.0",
+  "pip-audit",
 ]
 test = [
   "pytest>=8.0",
@@ -77,11 +107,19 @@ test = [
   "factory-boy>=3.3",
   "hypothesis>=6.0",
   "mutmut>=3.0",
+  # ── Browser-level e2e. ONE browser driver, in Python: there is no Node test path in
+  # this stack. HTMX, Alpine, axe and real-layout overflow are all browser-bound, and
+  # Django's test client executes no JavaScript. Tests are marked `e2e` and never run
+  # automatically — see [tool.pytest.ini_options] and code/src/scripts/tests/e2e-py.sh.
+  "pytest-playwright>=0.5",
+  # axe-core packaged for Python + Playwright. Bundles axe.min.js, so the a11y gate
+  # carries no Node and no CDN fetch.
+  "axe-core-python>=0.1",
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["code/src/backend"]
-testpaths = ["code/src/backend"]
+pythonpath = ["code/src/django"]
+testpaths = ["code/src/django"]
 addopts = "-x -q --strict-markers"
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 markers = [

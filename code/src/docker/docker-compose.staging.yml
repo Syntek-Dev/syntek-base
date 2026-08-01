@@ -1,25 +1,22 @@
-# Staging stack — two containers pushed to GHCR and deployed via GitHub Actions.
-# Server handles: Nginx (reverse proxy), Postgres, Valkey, CF Tunnel.
-# Backend runs Gunicorn + Uvicorn workers (ASGI); frontend runs Next.js standalone (Node.js).
+# Staging stack — image built and pushed to GHCR by GitHub Actions.
+# The server provides Nginx (reverse proxy), Postgres, Valkey, and the tunnel.
+# Django runs Gunicorn with Uvicorn workers (ASGI) and server-renders the site.
 #
-# Server Nginx should proxy:
-#   /graphql/, /admin/, /static/, /media/, /health/ → http://127.0.0.1:8000
-#   /                                               → http://127.0.0.1:3001
+# Server Nginx should proxy: /static/, /media/, /control/, / → http://127.0.0.1:8000
 #
-# Pull pre-built images: docker compose -f docker-compose.staging.yml pull
-# Deploy:                docker compose -f docker-compose.staging.yml up -d
+# Pull: docker compose -f docker-compose.staging.yml pull
+# Deploy: docker compose -f docker-compose.staging.yml up -d
 #
-# Required env vars (set on the server — .env or CI secrets):
-#   DATABASE_URL, SECRET_KEY, ALLOWED_HOSTS, CORS_ALLOWED_ORIGINS,
-#   REDIS_URL, IMAGE_TAG, NEXT_PUBLIC_GRAPHQL_URL
-name: syntek-staging
+# Required env vars (server-side .env or CI secrets):
+#   DATABASE_URL, REDIS_URL, SECRET_KEY, ALLOWED_HOSTS, IMAGE_TAG
+name: "{{PROJECT_SLUG}}-staging"
 
 services:
-  backend:
-    image: ghcr.io/Syntek-Dev/project-name/backend:${IMAGE_TAG:-staging}
+  django:
+    image: ghcr.io/{{ORG_SLUG}}/{{PROJECT_SLUG}}/django:${IMAGE_TAG:-staging}
     build:
       context: ../../..
-      dockerfile: code/src/docker/backend/Dockerfile.staging
+      dockerfile: code/src/docker/django/Dockerfile.staging
     ports:
       - "127.0.0.1:8000:8000"
     environment:
@@ -28,21 +25,10 @@ services:
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:?ALLOWED_HOSTS is required}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:?CORS_ALLOWED_ORIGINS is required}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-}
       DEBUG: "false"
       # Gunicorn + Uvicorn worker tuning
       GUNICORN_WORKERS: ${GUNICORN_WORKERS:-2}
       GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-30}
       GUNICORN_MAX_REQUESTS: ${GUNICORN_MAX_REQUESTS:-1000}
-    restart: unless-stopped
-
-  frontend:
-    image: ghcr.io/Syntek-Dev/project-name/frontend:${IMAGE_TAG:-staging}
-    build:
-      context: ../../..
-      dockerfile: code/src/docker/frontend/Dockerfile.staging
-      args:
-        NEXT_PUBLIC_GRAPHQL_URL: ${NEXT_PUBLIC_GRAPHQL_URL:?NEXT_PUBLIC_GRAPHQL_URL is required}
-    ports:
-      - "127.0.0.1:3001:3000"
     restart: unless-stopped

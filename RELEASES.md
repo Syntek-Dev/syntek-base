@@ -1,9 +1,31 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.2.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.3.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.3.0 — 01/08/2026
+
+**Status:** Breaking change to the stack — the Django project bundle becomes the single application root
+
+### Summary
+
+Second half of the stack replacement. `code/src/backend/` becomes `code/src/django/`: with no
+JavaScript client left, the Django project is no longer a _backend_ — it is the whole application,
+serving its own templates, components, and HTMX partials. The rename runs through the Docker
+images, Compose files, Nginx configuration, and the four environment templates. The django bundle
+is registered as the repository's only versioned sub-package, starting at its own `0.1.0` baseline
+with the three version files the versioning guide requires alongside every package manifest.
+
+### What's new since v0.2.0
+
+- **`code/src/django/`** — one application root: settings split four ways (dev, test, staging, production), ASGI and WSGI entry points, an `apps/` namespace, and template and static roots
+- **django sub-package versioning** — the bundle carries its own `CHANGELOG.md`, `VERSION-HISTORY.md`, and `RELEASES.md` at `0.1.0`, moving independently of the root track
+- **Docker re-pointed** — `docker/django/` images for all four environments, PostgreSQL dev tuning, and example Compose overlays for per-story worktrees
+- **TypeScript shared package removed** — nothing consumes it once both JavaScript clients are gone
 
 ---
 

@@ -1,12 +1,37 @@
 # Changelog
 
-**Last Updated**: {{DATE}} **Version**: 0.2.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.3.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [0.3.0] - 01/08/2026
+
+### Added
+
+- `code/src/django/` — the Django project bundle: `config/` (ASGI and WSGI entry points, root URL conf, and the four-environment settings split), `apps/`, `templates/`, `static/`, `tests/e2e/` with accessibility and marketing-overflow suites, plus `conftest.py`, `manage.py`, and `pyrightconfig.json`.
+- `code/src/django/CHANGELOG.md`, `code/src/django/VERSION-HISTORY.md`, and `code/src/django/RELEASES.md` — sub-package version files at the `0.1.0` baseline, as required for every package manifest by `project-management/docs/VERSIONING-GUIDE.md`.
+- `code/src/docker/django/` — the Django container images and entrypoints for dev, test, staging, and production.
+- `code/src/docker/postgres/` — PostgreSQL container configuration, including `postgresql.dev.conf`.
+- `code/src/docker/docker-compose.usXXX.dev.yml.example` and `docker-compose.usXXX.test.yml.example` — per-worktree Compose overlays for parallel story development.
+- `CLAUDE.md` operating-rules files alongside every `CONTEXT.md` in the `code/src`, `docker`, and `django` trees, per the directory pairing rule.
+
+### Changed
+
+- `code/src/backend/` → `code/src/django/` — the Python package root is renamed to reflect that Django now serves the entire application, not just an API.
+- `code/src/docker/backend/` → `code/src/docker/django/` — image names, build contexts, and entrypoints follow the rename.
+- Compose files, the Nginx dev and test configurations, and the four `.env.*.example` templates re-pointed at the `django` service.
+- `pyproject.toml` — project name templatised to `{{PROJECT_SLUG}}`, version set to the django sub-package `0.1.0` baseline, and the dependency set narrowed to the Django-only stack.
+
+### Removed
+
+- `code/src/backend/**` — superseded in full by `code/src/django/**`.
+- `code/src/shared/**` — the TypeScript package shared between the web and mobile clients, obsolete now that neither client exists.
 
 ---
 

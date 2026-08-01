@@ -1,135 +1,113 @@
 # code/src/docker — Docker Configuration
 
-Docker Compose files, Dockerfiles, and entrypoint scripts for all four environments.
+Compose files, Dockerfiles, and entrypoints for all four environments. There is **one
+application container, `django`**, which server-renders the site. No Node, no React, no
+separate frontend container.
 
-> **All compose commands are run from the project root:**
+> **All compose commands run from the project root:**
 > `docker compose -f code/src/docker/docker-compose.<env>.yml <command>`
 >
-> **Never run `python`, `pytest`, `pnpm`, or `next` directly — always use `docker compose exec`.**
+> **Never run `python` or `pytest` directly — always `docker compose exec`.**
 
 ## Environments
 
-| Environment | Compose file                 | URL / access                     | Who spins it up         |
-| ----------- | ---------------------------- | -------------------------------- | ----------------------- |
-| `dev`       | `docker-compose.dev.yml`     | `dev.projectname.com` (port 80)  | Developer locally       |
-| `test`      | `docker-compose.test.yml`    | `test.projectname.com` (port 80) | CI / developer          |
-| `staging`   | `docker-compose.staging.yml` | CF Tunnel subdomain              | GitHub Actions → server |
-| `prod`      | `docker-compose.prod.yml`    | CF Tunnel root domain            | GitHub Actions → server |
+| Environment | Compose file                 | Access                | Spun up by              |
+| ----------- | ---------------------------- | --------------------- | ----------------------- |
+| `dev`       | `docker-compose.dev.yml`     | `http://localhost:81` | Developer locally       |
+| `test`      | `docker-compose.test.yml`    | `http://localhost:83` | CI / developer          |
+| `staging`   | `docker-compose.staging.yml` | Server (tunnel)       | GitHub Actions → server |
+| `prod`      | `docker-compose.prod.yml`    | Server (tunnel)       | GitHub Actions → server |
 
-## Images
+> Dev and test bind different host ports (`81` / `83`) so both can run at once. The
+> container side is always `80`; host `80` is left free for other local tooling.
 
-| Service    | Image             | Version          | Environments             |
-| ---------- | ----------------- | ---------------- | ------------------------ |
-| `backend`  | `python`          | `3.14-slim`      | all                      |
-| `frontend` | `node`            | `24.15.0-alpine` | dev, test (builder)      |
-| `frontend` | `nginx`           | `alpine`         | dev, test, staging, prod |
-| `db`       | `postgres`        | `18-alpine`      | dev, test                |
-| `cache`    | `valkey/valkey`   | `8-alpine`       | dev, test                |
-| `maildev`  | `maildev/maildev` | `latest`         | dev, test                |
-| `nginx`    | `nginx`           | `alpine`         | dev, test                |
+## Services
 
-> **Staging and production:** Postgres and Valkey run on the server — not in Docker.
-> Only `backend` and `frontend` containers are deployed.
+| Service  | Image                    | dev | test | staging | prod |
+| -------- | ------------------------ | --- | ---- | ------- | ---- |
+| `django` | `python:3.14-slim`       | ✅  | ✅   | ✅      | ✅   |
+| `db`     | `postgres:18-alpine`     | ✅  | ✅   | ❌      | ❌   |
+| `cache`  | `valkey/valkey:8-alpine` | ✅  | ✅   | ❌      | ❌   |
+| `nginx`  | `nginx:alpine`           | ✅  | ✅   | ❌      | ❌   |
 
-> **Pin `valkey/valkey:8-alpine` to an exact digest before the first production release.**
+> **Staging and production:** Postgres, Valkey, and Nginx run on the server, not in
+> Compose — only the `django` container is deployed. **Pin `valkey/valkey:8-alpine` to a
+> digest before the first production release.**
 
-## Backend server
+## Application server (`django`)
 
-The backend runs **Gunicorn with Uvicorn workers** (ASGI) in all non-dev environments:
-
-```bash
-gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker
-```
-
-In dev, **Uvicorn** runs directly with `--reload` for hot-reloading.
-
-Tunable env vars (staging / prod): `GUNICORN_WORKERS`, `GUNICORN_TIMEOUT`, `GUNICORN_MAX_REQUESTS`.
-
-## Frontend
-
-In `dev` and `test`, Next.js runs its dev server (port 3000) behind the Nginx proxy.
-
-In `staging` and `prod`, Next.js is built to a **static export** (`output: 'export'` in `next.config.ts`).
-The output is served by Nginx inside the container — no Node.js runtime at run time.
-
-`NEXT_PUBLIC_GRAPHQL_URL` is baked in at image build time via `ARG` in `Dockerfile.staging/prod`.
-
-## GHCR image names
-
-```text
-ghcr.io/Syntek-Dev/project-name/backend:<tag>
-ghcr.io/Syntek-Dev/project-name/frontend:<tag>
-```
-
-Tags: `staging`, `prod`, or a specific git SHA / semver string.
-Set `IMAGE_TAG` in the server environment to control which image is pulled.
+- **dev** — Uvicorn directly (`--reload`), so `.py` and template edits hot-reload.
+- **test** — Gunicorn + one Uvicorn worker; the container stays up for `exec pytest`.
+- **staging / prod** — Gunicorn + Uvicorn workers, count tuned by `GUNICORN_WORKERS`,
+  `GUNICORN_TIMEOUT`, `GUNICORN_MAX_REQUESTS`.
 
 ## Path routing (Nginx — dev / test)
 
-| Path prefix                | Upstream           |
-| -------------------------- | ------------------ |
-| `/graphql/`                | backend (ASGI)     |
-| `/admin/`                  | backend (Django)   |
-| `/static/`                 | backend            |
-| `/health/`                 | backend            |
-| `/_next/webpack-hmr` (dev) | frontend (HMR WS)  |
-| `/`                        | frontend (Next.js) |
+Every route resolves to the django upstream. `/static/` is served from disk by Nginx.
 
-> **Media files are served by Cloudinary in all environments.**
-> No `/media/` route exists in any nginx config. Django's `DEFAULT_FILE_STORAGE` uses
-> Cloudinary storage in every environment — no local media volume is required.
+| Path        | Upstream                           |
+| ----------- | ---------------------------------- |
+| `/static/`  | Nginx, from the staticfiles volume |
+| `/media/`   | `django`                           |
+| `/control/` | `django` — Django's built-in admin |
+| `/`         | `django` — catch-all               |
+
+> Django's built-in admin is at `/control/`, **never `/admin/`**. See
+> `code/docs/URL-STRATEGY.md`.
 
 ## Directory layout
 
 ```text
 docker/
-├── backend/
-│   ├── Dockerfile.dev         # Uvicorn hot-reload; source mounted as volume
-│   ├── Dockerfile.test        # Source baked in; runs pytest on start
-│   ├── Dockerfile.staging     # Multi-stage; Gunicorn + Uvicorn; non-root user
-│   ├── Dockerfile.prod        # Multi-stage; Gunicorn + Uvicorn; non-root user
-│   ├── entrypoint.dev.sh      # migrate → uvicorn --reload
-│   ├── entrypoint.test.sh     # migrate → pytest (exits with test result code)
-│   ├── entrypoint.staging.sh  # migrate → collectstatic → gunicorn (2 workers)
-│   └── entrypoint.prod.sh     # migrate → collectstatic → gunicorn (4 workers)
-├── frontend/
-│   ├── Dockerfile.dev         # Deps installed; source mounted; next dev
-│   ├── Dockerfile.test        # Source baked in; runs vitest on start
-│   ├── Dockerfile.staging     # Multi-stage node builder → nginx static server
-│   └── Dockerfile.prod        # Multi-stage node builder → nginx static server
+├── django/                  # the application container
+│   ├── Dockerfile.dev        # Uvicorn --reload; source mounted as a volume
+│   ├── Dockerfile.test       # source baked in; run pytest via exec
+│   ├── Dockerfile.staging    # multi-stage; Gunicorn + Uvicorn; non-root
+│   ├── Dockerfile.prod       # multi-stage; Gunicorn + Uvicorn; non-root
+│   └── entrypoint.<env>.sh   # migrate → server (collectstatic in test/staging/prod)
 ├── nginx/
-│   ├── dev.conf               # Proxy → backend:8000 + frontend:3000, HMR WS
-│   ├── test.conf              # Proxy → backend-test:8000 + frontend-test:3000
-│   └── frontend-static.conf   # Serves Next.js static export (staging / prod container)
-├── docker-compose.dev.yml
-├── docker-compose.test.yml
-├── docker-compose.staging.yml
-└── docker-compose.prod.yml
+│   ├── dev.conf              # proxy → django:8000
+│   └── test.conf             # proxy → django-test:8000
+├── postgres/
+│   └── postgresql.dev.conf   # local tuning
+├── docker-compose.<env>.yml
+├── docker-compose.usXXX.dev.yml.example    # worktree isolation template
+├── docker-compose.usXXX.test.yml.example   # worktree isolation template
+└── .env.<env>.example        # environment templates — copy, never commit the real file
 ```
-
-## Observability
-
-| Tool       | dev | test | staging | prod | Notes                                        |
-| ---------- | --- | ---- | ------- | ---- | -------------------------------------------- |
-| File logs  | ✅  | ✅   | ❌      | ❌   | Written to `code/src/logs/` (gitignored)     |
-| Glitchtip  | ❌  | ❌   | ✅      | ✅   | Exception tracking via Sentry SDK            |
-| Loki       | ❌  | ❌   | ✅      | ✅   | Promtail on server captures Docker stdout    |
-| Prometheus | ❌  | ❌   | ✅      | ✅   | Scraped from `/metrics/` (django-prometheus) |
-| Grafana    | ❌  | ❌   | ✅      | ✅   | Dashboards over Loki + Prometheus            |
-
-Staging and prod containers log structured JSON to stdout — no log volumes, no file handlers.
-Promtail is configured on the server (outside Docker) and ships logs to Loki automatically.
-
-Full configuration guide: `code/docs/LOGGING.md`
 
 ## Health check
 
-The backend exposes `GET /health/` — required by the `HEALTHCHECK` in staging/prod Dockerfiles
-and by the server's Nginx upstream health checks. Wire this up in `config/urls.py`.
+The stacks probe `/control/` — the only route the baseline serves. It answers `302` to the
+admin login, which proves the process is up and the URLconf loaded. **Repoint the
+healthchecks at a dedicated liveness route once one exists.**
+
+## Network subnet scheme
+
+Explicit bridge subnets, so Docker never auto-assigns from the 192.168.x.x pool (which
+collides with common VPN and home-router ranges).
+
+| Stack          | Subnet                                           |
+| -------------- | ------------------------------------------------ |
+| Main dev       | `10.0.1.0/24`                                    |
+| Main test      | `10.0.0.0/24`                                    |
+| Per-story dev  | `10.NNN.1.0/24` — story 7 dev → `10.7.1.0/24`    |
+| Per-story test | `10.NNN.0.0/24` — story 59 test → `10.59.0.0/24` |
+
+Third octet `0` = test, `1` = dev. Second octet = story number (`0` = main stacks). Story
+numbers above 254 overflow — rename to a sub-range before that point.
+
+## Worktree stacks
+
+A per-story stack runs **concurrently** with the main dev stack, so every host-facing port
+the base file binds must be re-scoped in the override — otherwise the second stack collides
+with the first. Copy `docker-compose.usXXX.dev.yml.example`, replace `NNN` throughout, and
+add the matching `/etc/hosts` entry (`127.0.0.NNN`). Keep worktree IPs at `127.0.0.2`+;
+`127.0.0.1` is the main stack. The Nginx configs are `server_name _` catch-alls, so a
+worktree stack reuses them unchanged.
 
 ## Cross-references
 
-- `code/src/backend/CONTEXT.md` — Django app structure and settings
-- `code/src/frontend/CONTEXT.md` — Next.js project structure
-- `how-to/workflows/01-first-time-setup/` — spinning up the dev stack for the first time
-- `how-to/workflows/02-daily-development/` — daily Docker Compose commands
+- `code/src/django/CONTEXT.md` — the Django project and its settings
+- `how-to/workflows/01-first-time-setup/` — first run of the dev stack
+- `how-to/workflows/02-daily-development/` — daily Compose commands
