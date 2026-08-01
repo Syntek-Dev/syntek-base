@@ -1,30 +1,40 @@
 # US000 — [Story Title]
 
 **Epic:** [Epic Name — e.g. Authentication & Access Control / Core Features / Public Pages]
-**Status:** Ready
+**Status:** Open
 
 <!-- FLAGS
      DB        — shortlist of models created / modified, or N/A
      User Flow — Yes or N/A
      Backend   — Yes or N/A
-     API       — shortlist of mutations / queries introduced, or N/A
-     Frontend  — Web / Mobile / Web + Mobile / N/A
+     API       — shortlist of Ninja endpoints introduced, or N/A
+     Frontend  — Public / Admin / Both / N/A  (all server-rendered Django templates)
      GDPR      — Yes (complete GDPR section below) or N/A
      Security  — shortlist of concerns (e.g. rate-limit, audit-log, XSS-escape, IDOR), or N/A
      SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
      Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
 
-| Flag      | Value                                          |
-| --------- | ---------------------------------------------- |
-| DB        | `ModelA`, `ModelB`                             |
-| User Flow | Yes                                            |
-| Backend   | Yes                                            |
-| API       | `createModelA`, `updateModelA`, `deleteModelA` |
-| Frontend  | Web + Mobile                                   |
-| GDPR      | Yes                                            |
-| Security  | rate-limit, audit-log, XSS-escape              |
-| SEO       | /blog, /about                                  |
-| Testing   | unit, integration, E2E                         |
+| Flag      | Value                                                |
+| --------- | ---------------------------------------------------- |
+| DB        | `ModelA`, `ModelB`                                   |
+| User Flow | Yes                                                  |
+| Backend   | Yes                                                  |
+| API       | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a` |
+| Frontend  | Both                                                 |
+| GDPR      | Yes                                                  |
+| Security  | rate-limit, audit-log, XSS-escape                    |
+| SEO       | /blog, /about                                        |
+| Testing   | unit, integration, E2E                               |
+
+---
+
+## Client Summary
+
+<!-- Plain-English description for client review. 1–3 sentences. No technical jargon.
+     Describe WHAT the feature does and WHY it matters to the client or end user.
+     This section is included in the Client Approval Pack PDF. -->
+
+[Plain-English description of what this feature does and the benefit it provides.]
 
 ---
 
@@ -91,8 +101,8 @@ Then the database rejects the operation with a constraint violation error
 
 Scenario: [Migration applies cleanly]
 Given the migration is run against a clean database
-Then [makemigrations --check] reports no unapplied changes
-And [pytest] passes after the migration is applied
+Then `database/migrate.sh check` reports no unapplied changes
+And `tests/backend.sh` passes after the migration is applied
 ```
 
 ### User Flow Acceptance Criteria
@@ -141,20 +151,20 @@ And the system state remains consistent
 
 <!-- Remove this section when API flag is N/A. -->
 
-- [ ] `[mutationName]` — authenticated caller with required permission receives the expected payload
-- [ ] `[mutationName]` — unauthenticated caller receives HTTP 401
-- [ ] `[mutationName]` — caller without required permission receives HTTP 403
-- [ ] `[mutationName]` — invalid input returns a validation error with a descriptive message
-- [ ] `[queryName]` — returns only records the caller is authorised to view
-- [ ] All mutations write to `audit_auditlog` before the transaction commits
+- [ ] `[endpoint]` — authenticated caller with required permission receives the expected payload
+- [ ] `[endpoint]` — unauthenticated caller receives HTTP 401
+- [ ] `[endpoint]` — caller without required permission receives HTTP 403
+- [ ] `[endpoint]` — invalid input returns a validation error with a descriptive message
+- [ ] `[endpoint]` (read) — returns only records the caller is authorised to view
+- [ ] All write endpoints write to `audit_auditlog` before the transaction commits
 
 ### Frontend Acceptance Criteria
 
 <!-- Remove this section when Frontend flag is N/A.
-     Scope subsections to Web / Mobile / both as indicated by the Frontend flag. -->
+     Scope subsections to Public / Admin / both as indicated by the Frontend flag. -->
 
 ```gherkin
-Scenario: [Web — component renders in the correct state]
+Scenario: [Component renders in the correct state]
 Given [precondition]
 When [user action]
 Then [expected UI outcome]
@@ -171,16 +181,27 @@ Given a user with insufficient permission
 When they view [page or component]
 Then [edit / delete / create] controls are [hidden / disabled with tooltip]
 
-Scenario: [Mobile — screen renders correctly]
+Scenario: [HTMX — the partial swaps in on success]
 Given [precondition]
-When the user navigates to [screen]
-Then they see [expected UI state]
+When the user submits [form]
+Then the [target region] is replaced with [expected fragment]
+And no full page reload occurs
 
-Scenario: [Mobile — action triggers correct mutation]
+Scenario: [HTMX — validation failure re-renders the form]
 Given [precondition]
-When the user taps [control]
-Then [expected mutation fires and UI updates]
+When the user submits [form] with an invalid field
+Then the response is HTTP 200 carrying the re-rendered form and its inline errors
+And the previously entered values are preserved
+
+Scenario: [Alpine — local UI state only]
+Given [component with local state, e.g. a disclosure or menu]
+When the user [toggles it]
+Then the state changes in the browser with no server round-trip
 ```
+
+<!-- Interaction tier: server template → HTMX → Alpine. There is no fourth tier, and a page
+     never calls the JSON API — Django views return HTML, `apps/<app>/api.py` returns JSON to
+     machine clients. See code/docs/RENDERING.md and code/docs/api-design/CLIENT-PATTERNS.md. -->
 
 ### GDPR Acceptance Criteria
 
@@ -189,11 +210,11 @@ Then [expected mutation fires and UI updates]
 - [ ] `[field_name]` is stored as `EncryptedField` (Fernet AES-256-GCM) — never persisted in plaintext
 - [ ] HMAC-SHA3-256 companion field `[hmac_token]` is written on every create and update for erasure lookup
 - [ ] `[app].gdpr_erase([identifier])` nulls `[field list]`, retains the row for audit purposes
-- [ ] `[app].gdpr_erase()` is wired into the US041 erasure orchestrator
+- [ ] `[app].gdpr_erase()` is wired into the US### erasure orchestrator
 - [ ] Celery Beat task `[task_name]` purges / anonymises rows older than [retention period]
-- [ ] Consent gate: `[mutationName]` rejects any call where `consent_given = False` with a clear error
-- [ ] No PII field is exposed in the public GraphQL schema or any public endpoint
-- [ ] PII fields are documented in the Privacy Policy (US039) and Sub-Processor Register
+- [ ] Consent gate: `[endpoint]` rejects any call where `consent_given = False` with a clear error
+- [ ] No PII field is exposed in any public endpoint or server-rendered page
+- [ ] PII fields are documented in the Privacy Policy (US###) and Sub-Processor Register
 
 ### Security Acceptance Criteria
 
@@ -208,16 +229,27 @@ Then [expected mutation fires and UI updates]
 - [ ] [UF##/ST##] `[user-supplied field]` is HTML-escaped server-side before rendering in any admin or public view — raw HTML is never rendered
 - [ ] [UF##/ST##] `request.session.flush()` is called on logout — server-side session deleted from Valkey; client-side cookie deletion alone is insufficient
 
+### Logging Acceptance Criteria
+
+<!-- Always applicable when Backend or Frontend ≠ N/A.
+     Log IDs — never log values. Never log [enc] fields. -->
+
+- [ ] All server-side log calls use `logging.getLogger("apps.[app-name]")` (Django) — no bare `print()` on any server path, and no stray `console.log()` in committed JavaScript
+- [ ] `[key operation]` logs entry at `DEBUG` with safe fields: `[entity]_id`, `action` — no PII, no `[enc]` field values
+- [ ] `[key operation]` logs success at `INFO` with: `[entity]_id`, `duration_ms` — no encrypted field values
+- [ ] Permission-denied paths log at `WARNING` with: `actor_id`, `target_id`, `action` — no passwords, tokens, or session keys
+- [ ] Unexpected exceptions log at `ERROR` with: exception type and operation name — stack traces never contain raw PII
+- [ ] No field marked `[enc]` in the story's schema design (`03-DATABASE/DB-<FEATURE>-DD-MM-YYYY.md`) appears in any log output
+- [ ] No `console.*` in any committed JavaScript — browser logging routes through the project logger
+
 ### SEO Acceptance Criteria
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the
-      Next.js metadata API
+- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the Django template `<head>` (the SEO app `build_seo` helper)
 - [ ] `og:title`, `og:description`, and `og:image` are set for all new public pages
 - [ ] Canonical URL is set correctly — no duplicate content risk
-- [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`,
-      `Organization`)
+- [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`, `Organization`)
 - [ ] Page slug / URL is human-readable, lowercase, hyphenated, and contains the target keyword
 - [ ] New pages are included in `sitemap.xml` (via Celery regeneration task or static addition)
 - [ ] `robots.txt` does not block any new public page
@@ -229,11 +261,10 @@ Then [expected mutation fires and UI updates]
 
 <!-- Remove this section when Testing flag is N/A. -->
 
-- [ ] Backend coverage is at or above 75 % for all modules (at or above 90 % for auth-related paths) after this story
-- [ ] Frontend coverage is at or above 70 % after this story
+- [ ] Coverage is at or above 75 % line and branch for all modules (at or above 90 % for auth-related paths) after this story — one floor: template, django-component, and HTMX-partial tests are pytest tests and count towards it
 - [ ] Unit tests cover the success path, validation error, and permission error for `[service_function]`
 - [ ] Unit tests cover constraint enforcement and signal idempotence for `[ModelName]`
-- [ ] Integration tests cover the success path, 401, and 403 for all mutations introduced by this story
+- [ ] Integration tests cover the success path, 401, and 403 for all endpoints introduced by this story
 - [ ] E2E tests cover the primary user flow, the permission-denied path, and at least one form validation error
 - [ ] Manual checks cover any UI behaviour not reachable by automation (e.g. [drag-and-drop, colour picker])
 
@@ -247,12 +278,12 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when DB flag is N/A. -->
 
-- [ ] Create Django model `[ModelName]` in `code/src/backend/apps/[app]/models.py`
+- [ ] Create Django model `[ModelName]` in `code/src/django/apps/[app]/models.py`
 - [ ] Add fields: [field list with types and constraints]
 - [ ] Add unique constraint on `([field_a, field_b])`
 - [ ] Add index on `[field_c]` for `[query pattern]`
 - [ ] Add check constraint: `[invariant description]`
-- [ ] Write and apply migration — run `makemigrations --check` then `pytest` after applying
+- [ ] Write and apply the migration via `bash code/src/scripts/database/migrate.sh make` → review → `... run`, then `bash code/src/scripts/database/migrate.sh check` and `bash code/src/scripts/tests/backend.sh`
 - [ ] Seed initial data if required (via data migration or fixture)
 
 ### User Flow Tasks
@@ -267,7 +298,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when Backend flag is N/A. -->
 
-- [ ] Implement service method `[name]` in `code/src/backend/apps/[app]/services.py` wrapped in `transaction.atomic()`
+- [ ] Implement service method `[name]` in `code/src/django/apps/[app]/services.py` wrapped in `transaction.atomic()`
 - [ ] Verify caller ownership of user-supplied `[id field]` before querying (IDOR prevention)
 - [ ] Implement `post_save` signal for `[Model]` using `get_or_create` (idempotent)
 - [ ] Create Celery task `[task_name]` with schedule `[cron expression]`
@@ -277,31 +308,30 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when API flag is N/A. -->
 
-- [ ] Add Strawberry query `[queryName]` with permission check in `code/src/backend/apps/[app]/schema.py`
-- [ ] Add Strawberry mutation `[mutationName]` with permission check and service layer call
-- [ ] Apply permission decorator: `@permission_required("[module]", level="[view|edit|full]")`
-- [ ] Run `graphql-codegen` to regenerate frontend TypeScript types after schema changes
+- [ ] Add Django Ninja read endpoint `[endpoint]` with an explicit permission check, on a router mounted onto the project's single `NinjaAPI` (`config/api.py`, served at `/api/`)
+- [ ] Add Django Ninja write endpoint `[endpoint]` with an explicit permission check and a service-layer call
+- [ ] Apply the permission guard: `@permission_required("[module]", level="[view|edit|full]")`
+- [ ] Define the request/response `Schema` classes — Ninja is Python-typed; consumers read the JSON directly (no codegen step)
 
 ### Frontend Tasks
 
 <!-- Remove this section when Frontend flag is N/A.
-     Scope tasks to Web / Mobile / both as indicated by the Frontend flag. -->
+     Scope tasks to Public / Admin / both as indicated by the Frontend flag. -->
 
-<!-- Web -->
+<!-- Pages and components -->
 
-- [ ] Create Next.js page `code/src/frontend/src/app/[path]/page.tsx`
-- [ ] Build `[ComponentName]` in `code/src/frontend/src/components/[Name]/[Name].tsx`
-- [ ] Wire Apollo hook `use[MutationName]Mutation` / `use[QueryName]Query`
+- [ ] Scaffold the public page via `bash code/src/scripts/development/new-django-view.sh [route_path]` — a Django view + template + `urls.py` entry in `apps.marketing`
+- [ ] Build `[ComponentName]` as a django-component in `code/src/django/components/[name]/` (HTMX + Alpine, token-driven CSS)
+- [ ] Wire server-side rendering / HTMX interactions — no client-side API fetch anywhere
 - [ ] Implement form validation (required fields, character limits, live counters)
 - [ ] Implement permission-based control visibility (hidden / disabled with tooltip)
 - [ ] Handle loading, empty, and error states
 
-<!-- Mobile -->
+<!-- HTMX interactions -->
 
-- [ ] Create Expo screen `code/src/mobile/app/[path].tsx`
-- [ ] Build `[ComponentName]` in `code/src/mobile/src/components/[Name]/[Name].tsx`
-- [ ] Wire Apollo hook `use[MutationName]Mutation` / `use[QueryName]Query`
-- [ ] Handle loading and error states with appropriate mobile UI patterns
+- [ ] Return the smallest partial that satisfies the swap; the `hx-target` id exists in the response
+- [ ] Every non-instant request carries `hx-indicator` / `hx-disabled-elt`
+- [ ] Validation failure returns `200` with the re-rendered form and its errors
 
 <!-- Both -->
 
@@ -314,10 +344,10 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] Add `EncryptedField` (Fernet AES-256-GCM) to `[field_name]` in `[app]/models.py`
 - [ ] Add HMAC-SHA3-256 companion field `[hmac_token]` for erasure lookup without decryption
 - [ ] Implement `[app].gdpr_erase([identifier])` — nulls `[field list]`, retains row
-- [ ] Wire `[app].gdpr_erase()` into the US041 erasure orchestrator
+- [ ] Wire `[app].gdpr_erase()` into the US### erasure orchestrator
 - [ ] Create Celery Beat task `[task_name]` for retention purge after `[period]`
-- [ ] Enforce consent gate in `[mutationName]`: reject if `consent_given = False`
-- [ ] Document PII fields in Privacy Policy (US039) and Sub-Processor Register
+- [ ] Enforce consent gate in `[endpoint]`: reject if `consent_given = False`
+- [ ] Document PII fields in Privacy Policy (US###) and Sub-Processor Register
 
 ### Security Tasks
 
@@ -328,13 +358,27 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] HTML-escape `[field]` server-side before rendering in any admin or public view
 - [ ] Add `audit_auditlog` entry on `[success event]` within the same `transaction.atomic()` block as the write
 - [ ] Add `audit_auditlog` entry on `[failure event]` including IP and reason
-- [ ] Verify `[mutation]` rejects calls where the session user does not own the target resource
+- [ ] Verify `[endpoint]` rejects calls where the session user does not own the target resource
+
+### Logging Tasks
+
+<!-- Always applicable when Backend or Frontend ≠ N/A.
+     Reference: code/docs/LOGGING.md -->
+
+- [ ] Backend: use `logging.getLogger("apps.[app-name]")` for all log calls in `[app]/services.py` and `[app]/api.py` (Ninja endpoints)
+- [ ] Backend: add `DEBUG` log at entry of `[service_method]` with `[entity]_id` and `action` only
+- [ ] Backend: add `INFO` log on success of `[service_method]` with `[entity]_id` and `duration_ms`
+- [ ] Backend: add `WARNING` log on permission-denied in `[endpoint]` — include `actor_id`, `action`; never include token or PII
+- [ ] Server-rendered pages: log key user-facing events via `logging.getLogger("apps.[app-name]")` with safe fields only (IDs, not values)
+- [ ] Browser: route any client logging through the project logger — never a raw `console.log()` in committed code
+- [ ] Confirm: no `[enc]` field values, no raw emails / names / tokens appear in any log line for this story
+- [ ] Confirm: no `console.log` / `console.error` in any committed JavaScript
 
 ### SEO Tasks
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] Set `<title>` and `<meta name="description">` via Next.js metadata API for `[page / route]`
+- [ ] Set `<title>` and `<meta name="description">` via the Django template `<head>` (SEO app `build_seo` helper) for `[page / route]`
 - [ ] Set `og:title`, `og:description`, `og:image` for `[page / route]`
 - [ ] Set canonical URL for `[page / route]`
 - [ ] Add JSON-LD structured data (`[schema type]`) to `[page / route]`
@@ -344,7 +388,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] Run Lighthouse (or equivalent) to verify Core Web Vitals targets are met
 - [ ] Add descriptive `alt` text to all images on `[page / route]`
 - [ ] Verify heading hierarchy: one `<h1>` per page; `<h2>` / `<h3>` in logical order
-- [ ] Run `/syntek-dev-suite:seo` to confirm all SEO checks pass
+- [ ] Run the `seo` agent to confirm all SEO checks pass
 
 ### Testing Tasks
 
@@ -361,42 +405,44 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Integration tests -->
 
-- [ ] `[mutationName]` — success path returns expected payload
-- [ ] `[mutationName]` — unauthenticated caller receives 401
-- [ ] `[mutationName]` — caller without permission receives 403
-- [ ] `[mutationName]` — invalid input returns validation error with descriptive message
+- [ ] `[endpoint]` — success path returns expected payload
+- [ ] `[endpoint]` — unauthenticated caller receives 401
+- [ ] `[endpoint]` — caller without permission receives 403
+- [ ] `[endpoint]` — invalid input returns validation error with descriptive message
 
-<!-- E2E tests -->
+<!-- E2E tests (pytest-playwright — code/src/django/tests/e2e/, run via tests/e2e-py.sh) -->
 
 - [ ] Primary user flow — happy path completes and displays success state
 - [ ] Permission-denied path — user without access sees access-denied screen or is redirected
 - [ ] Form validation — required field error is displayed without submission
+- [ ] Route added to the a11y / overflow page lists in `code/src/django/tests/e2e/a11y_config.py`
 
-<!-- Frontend unit tests (Vitest + React Testing Library / Jest + RNTL) -->
+<!-- django-component and HTMX-partial tests (pytest, Django test client) -->
 
-- [ ] `[ComponentName]` — renders in loading state
-- [ ] `[ComponentName]` — renders in empty state
-- [ ] `[ComponentName]` — renders in error state
-- [ ] `[ComponentName]` — permission-gated controls are hidden / disabled for insufficient permission
+- [ ] `[ComponentName]` — renders with its accessible name and required ARIA attributes
+- [ ] `[ComponentName]` — renders its empty and error states
+- [ ] `[ComponentName]` — permission-gated controls are absent for insufficient permission
+- [ ] `[partial]` — returned on `HX-Request` with no page chrome; full page returned otherwise
 
 <!-- Manual checks -->
 
 - [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop reorder, colour picker render]
-- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable) — Web only
-- [ ] Device: iOS and Android on a physical device or simulator — Mobile only
+- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
+- [ ] Responsive: verify layout at mobile, tablet, and desktop breakpoints (mobile-first) — Web (public pages)
 - [ ] Accessibility: keyboard navigation and screen reader on `[component]` — WCAG 2.2 AA
 
 ---
 
 ## Verification Checks
 
-Run all of the following before raising a PR. All must pass.
+Run all of the following before raising a PR — via the project scripts under
+`code/src/scripts/**/*.sh`, never a raw `python`, `manage.py`, `pytest`, or `docker` call.
+All must pass.
 
-- [ ] `makemigrations --check` — no unapplied model changes detected
-- [ ] `pytest` — all backend tests pass; coverage at or above floor for this module
-- [ ] `vitest` — all frontend tests pass; coverage at or above 70 %
-- [ ] Lint and type-check pass in both layers
-- [ ] `graphql-codegen` re-run after any schema change; generated files committed
+- [ ] `bash code/src/scripts/database/migrate.sh check` — no unapplied model changes detected
+- [ ] `bash code/src/scripts/tests/all.sh --coverage` — all suites pass; coverage at or above the floor for this module
+- [ ] Template, django-component, and HTMX-partial tests pass (same pytest run)
+- [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass
 - [ ] No secrets, debug flags, or hardcoded IDs introduced
 - [ ] GDPR section reviewed and all GDPR tasks checked off (if GDPR: Yes)
 - [ ] Security acceptance criteria signed off (if Security: not N/A)
@@ -412,5 +458,5 @@ Run all of the following before raising a PR. All must pass.
 - [ ] Code reviewed and approved (minimum 1 reviewer)
 - [ ] No outstanding TODO or FIXME comments introduced by this story
 - [ ] Merged to `main` (or the active release branch)
-- [ ] Story status updated to **Done** in the project board
+- [ ] Story status updated to **Completed** in the project board
 - [ ] Any GDPR or security gaps identified during review are documented in the sprint note

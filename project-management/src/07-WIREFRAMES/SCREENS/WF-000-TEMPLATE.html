@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WF-000 · Screen Template — Wireframe</title>
+    <!--
+      Wireframe screen template. Self-contained: no CDN, no build step.
+      To create a screen, copy this file to WF-<NNN>-<Screen-Name>.html and edit.
+      The only dependency is ../SHARED/wireframe.css (palette + chrome). Icons are
+      inline SVG so the file opens over file:// with nothing to fetch.
+      British English throughout. Placeholder brand — rebrand via wireframe.css :root.
+    -->
+    <link rel="stylesheet" href="../SHARED/wireframe.css" />
+  </head>
+  <body>
+    <a class="wf-skip" href="#main">Skip to content</a>
+
+    <div class="wf-banner">
+      Wireframe · WF-000 Screen Template · indicative layout, placeholder brand
+    </div>
+
+    <!-- ===== Header / navigation ===== -->
+    <header class="wf-header">
+      <div class="wf-container">
+        <nav class="wf-nav" aria-label="Primary">
+          <a class="wf-brand" href="#">
+            <span class="wf-brand__mark" aria-hidden="true">◆</span>
+            Placeholder
+          </a>
+          <ul class="wf-nav__links">
+            <li><a href="#">Overview</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <a class="wf-btn wf-btn--primary" href="#">Get started</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ===== Hero ===== -->
+      <section class="wf-hero">
+        <div class="wf-container wf-section">
+          <div class="wf-hero__grid">
+            <div>
+              <p class="wf-eyebrow">Section eyebrow</p>
+              <h1>
+                Primary headline for this screen
+                <span class="wf-note">1</span>
+              </h1>
+              <p>
+                A short supporting sentence describing what the screen does and
+                the single action it drives the visitor towards.
+              </p>
+              <div class="wf-hero__actions">
+                <a class="wf-btn wf-btn--primary" href="#">Primary action</a>
+                <a class="wf-btn wf-btn--ghost" href="#">Secondary action</a>
+              </div>
+            </div>
+            <div
+              class="wf-placeholder"
+              role="img"
+              aria-label="Placeholder for hero imagery or media"
+            >
+              Media placeholder <span class="wf-note">2</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Feature cards ===== -->
+      <section class="wf-section">
+        <div class="wf-container">
+          <div class="wf-section__head">
+            <p class="wf-eyebrow">What it offers</p>
+            <h2>Three-up content block <span class="wf-note">3</span></h2>
+            <p>
+              A repeatable card row — swap the count with the
+              <code>wf-grid--3</code> modifier to control columns at wide sizes.
+            </p>
+          </div>
+          <div class="wf-grid wf-grid--3">
+            <article class="wf-card">
+              <div class="wf-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M12 2 2 7l10 5 10-5-10-5Z" />
+                  <path d="m2 17 10 5 10-5" />
+                  <path d="m2 12 10 5 10-5" />
+                </svg>
+              </div>
+              <h3>Card heading one</h3>
+              <p>
+                One or two lines of supporting copy. Cards stack on mobile and
+                sit in a row from the medium breakpoint up.
+              </p>
+            </article>
+            <article class="wf-card">
+              <div class="wf-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </div>
+              <h3>Card heading two</h3>
+              <p>
+                Keep card copy short — a wireframe communicates hierarchy and
+                intent, not finished marketing text.
+              </p>
+            </article>
+            <article class="wf-card">
+              <div class="wf-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M3 3v18h18" />
+                  <path d="m19 9-5 5-4-4-3 3" />
+                </svg>
+              </div>
+              <h3>Card heading three</h3>
+              <p>
+                Duplicate an <code>article.wf-card</code> to add more; the grid
+                reflows automatically.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Form example ===== -->
+      <section class="wf-section wf-section--tight">
+        <div class="wf-container">
+          <div class="wf-section__head">
+            <p class="wf-eyebrow">Capture</p>
+            <h2>Form block <span class="wf-note">4</span></h2>
+            <p>
+              An indicative form. A real build wires validation, GDPR consent,
+              and the API — the wireframe only shows the fields and their order.
+            </p>
+          </div>
+          <form class="wf-form" aria-label="Example form">
+            <div class="wf-field">
+              <label for="wf-name">Full name</label>
+              <input id="wf-name" type="text" placeholder="Jane Doe" />
+            </div>
+            <div class="wf-field">
+              <label for="wf-email">Email address</label>
+              <input id="wf-email" type="email" placeholder="jane@example.com" />
+              <p class="wf-field__hint">We only use this to reply to your enquiry.</p>
+            </div>
+            <div class="wf-field">
+              <label for="wf-topic">Topic</label>
+              <select id="wf-topic">
+                <option>General enquiry</option>
+                <option>Support</option>
+                <option>Partnership</option>
+              </select>
+            </div>
+            <div class="wf-field">
+              <label for="wf-message">Message</label>
+              <textarea id="wf-message" rows="4" placeholder="How can we help?"></textarea>
+            </div>
+            <button class="wf-btn wf-btn--primary" type="button">Send message</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===== Annotation key ===== -->
+      <section class="wf-section wf-section--tight">
+        <div class="wf-container">
+          <div class="wf-annotations">
+            <h2>Annotations</h2>
+            <ol>
+              <li>
+                Headline states the screen's single purpose; keep to one line at
+                desktop width.
+              </li>
+              <li>
+                Media placeholder — final asset sourced at build; note the
+                intended aspect ratio here.
+              </li>
+              <li>
+                Card row is the primary scannable content; three items at wide
+                sizes, stacked on mobile.
+              </li>
+              <li>
+                Form fields listed in submission order; consent and validation
+                are specified in the linked user story, not drawn here.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="wf-footer">
+      <div class="wf-container">
+        <div class="wf-footer__grid">
+          <div>
+            <a class="wf-brand" href="#" style="color: var(--wf-paper)">
+              <span class="wf-brand__mark" aria-hidden="true">◆</span>
+              Placeholder
+            </a>
+            <p style="color: #aebdcb; font-size: var(--wf-fs-sm); margin-top: 1rem">
+              A one-line description of the organisation.
+            </p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Overview</a></li>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Careers</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Cookies</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="wf-footer__legal wf-container" style="padding-inline: 0">
+          © Placeholder Ltd — wireframe, not a live page.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

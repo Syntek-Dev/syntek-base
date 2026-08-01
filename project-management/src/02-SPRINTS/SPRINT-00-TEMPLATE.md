@@ -1,6 +1,6 @@
 # SPRINT-00
 
-**Last Updated**: DD/MM/YYYY **Version**: 1.0.0 **Maintained By**: [Team / Studio Name]
+**Last Updated**: DD/MM/YYYY **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 ---
@@ -13,24 +13,24 @@
      DB        — shortlist of models created / modified across this sprint, or N/A
      User Flow — Yes (new user journeys introduced) or N/A
      Backend   — Yes or N/A
-     API       — shortlist of mutations / queries introduced, or N/A
-     Frontend  — Web / Mobile / Web + Mobile / N/A
+     API       — shortlist of Ninja endpoints introduced, or N/A
+     Frontend  — Public / Admin / Both / N/A  (all server-rendered Django templates)
      GDPR      — Yes (PII introduced or processed) or N/A
      Security  — shortlist of concerns across this sprint, or N/A
      SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
      Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
 
-| Flag      | Value                          |
-| --------- | ------------------------------ |
-| DB        | `ModelA`, `ModelB`             |
-| User Flow | Yes                            |
-| Backend   | Yes                            |
-| API       | `createModelA`, `updateModelA` |
-| Frontend  | Web + Mobile                   |
-| GDPR      | Yes                            |
-| Security  | rate-limit, audit-log          |
-| SEO       | /blog, /about                  |
-| Testing   | unit, integration, E2E         |
+| Flag      | Value                             |
+| --------- | --------------------------------- |
+| DB        | `ModelA`, `ModelB`                |
+| User Flow | Yes                               |
+| Backend   | Yes                               |
+| API       | `POST /model-a`, `PATCH /model-a` |
+| Frontend  | Both                              |
+| GDPR      | Yes                               |
+| Security  | rate-limit, audit-log             |
+| SEO       | /blog, /about                     |
+| Testing   | unit, integration, E2E            |
 
 ---
 
@@ -66,7 +66,7 @@
 <!-- Remove this section when DB flag is N/A. -->
 
 - [ ] All models listed in the Story Summary are created or modified with the correct fields, constraints, and indexes
-- [ ] All migrations apply cleanly against a clean database with no `makemigrations --check` errors
+- [ ] All migrations apply cleanly against a clean database — `bash code/src/scripts/database/migrate.sh check` reports nothing pending
 - [ ] `[ModelName]` — unique constraint on `[field]` is enforced at the database layer
 - [ ] `[ModelName]` — check constraint `[invariant]` is enforced at the database layer
 - [ ] No migration ordering conflicts exist between stories in this sprint
@@ -95,29 +95,29 @@
 
 <!-- Remove this section when API flag is N/A. -->
 
-- [ ] All mutations and queries listed in the Story Summary are available at the GraphQL endpoint
-- [ ] All mutations require authentication; unauthenticated callers receive HTTP 401
-- [ ] All mutations enforce the required permission level; callers without permission receive HTTP 403
-- [ ] All mutations write to `audit_auditlog` before the transaction commits
-- [ ] `graphql-codegen` has been re-run; generated TypeScript types are committed and up to date
+- [ ] All endpoints listed in the Story Summary are available on the project's single `NinjaAPI` (served under `/api/`)
+- [ ] All endpoints require authentication; unauthenticated callers receive HTTP 401
+- [ ] All endpoints enforce the required permission level; callers without permission receive HTTP 403
+- [ ] All write endpoints write to `audit_auditlog` before the transaction commits
+- [ ] Request/response `Schema` classes are defined and typed — Ninja serves JSON directly to its consumers (no codegen step)
 
 ### Frontend Acceptance Criteria
 
 <!-- Remove this section when Frontend flag is N/A.
-     Scope subsections to Web / Mobile / both as indicated by the Frontend flag. -->
+     Scope subsections to Public / Admin / both as indicated by the Frontend flag. -->
 
-<!-- Web -->
+<!-- Pages and components -->
 
-- [ ] All new Next.js pages and components render correctly in Chrome, Firefox, and Safari (latest stable)
+- [ ] All new Django pages and django-components render correctly in Chrome, Firefox, and Safari (latest stable)
 - [ ] All forms validate required fields and display inline error messages without submitting
 - [ ] Permission-gated controls are hidden or disabled (with tooltip) for users without sufficient permission
 - [ ] Loading, empty, and error states are handled in all new pages and components
 
-<!-- Mobile -->
+<!-- HTMX interactions -->
 
-- [ ] All new Expo screens render correctly on iOS and Android (physical device or simulator)
-- [ ] All mobile forms validate required fields and display appropriate error feedback
-- [ ] Loading and error states are handled with appropriate mobile UI patterns
+- [ ] Every HTMX swap targets an id the response actually returns; no partial carries page chrome
+- [ ] Every non-instant HTMX request shows feedback (`hx-indicator` / `hx-disabled-elt`)
+- [ ] Validation failure returns `200` with the re-rendered form; `4xx`/`5xx` surface a global error toast
 
 ### GDPR Acceptance Criteria
 
@@ -126,9 +126,9 @@
 - [ ] All PII fields introduced this sprint are stored as `EncryptedField` (Fernet AES-256-GCM) — no PII in plaintext
 - [ ] HMAC-SHA3-256 companion fields are present for all encrypted fields requiring erasure lookup
 - [ ] `gdpr_erase()` coverage is extended or confirmed for all new PII models introduced this sprint
-- [ ] All consent gates are enforced at the mutation layer (not only in the UI)
+- [ ] All consent gates are enforced at the endpoint layer (not only in the UI)
 - [ ] New PII fields and their lawful bases are documented in the Privacy Policy and Sub-Processor Register
-- [ ] No PII is exposed in any public GraphQL query or public endpoint introduced this sprint
+- [ ] No PII is exposed in any public endpoint or server-rendered page introduced this sprint
 
 ### Security Acceptance Criteria
 
@@ -140,32 +140,39 @@
 - [ ] No new endpoint bypasses the ABAC permission system
 - [ ] No secrets, debug flags, or hardcoded credentials are introduced in this sprint
 
+### Logging Acceptance Criteria
+
+<!-- Always applicable when Backend or Frontend ≠ N/A.
+     Every story in this sprint that touches server-side code must meet these criteria. -->
+
+- [ ] All new service methods, Ninja endpoints, and Django views use the named logger (`logging.getLogger("apps.X")`) — no bare `print()` on any server path, and no stray `console.log()` in committed JavaScript
+- [ ] All `[enc]`-marked fields from the sprint's schema designs (`03-DATABASE/DB-<FEATURE>-DD-MM-YYYY.md`) are absent from every log line produced by stories in this sprint
+- [ ] Permission-denied and unexpected-error paths across all stories log at the correct level (`WARNING` / `ERROR`) with safe fields only (IDs, action names — no PII values, no tokens)
+- [ ] No `console.*` in any JavaScript committed this sprint — browser logging routes through the project logger
+- [ ] No raw PII (email, name, phone, address) appears in `code/src/logs/django.log` after exercising all new flows in dev
+
 ### SEO Acceptance Criteria
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the
-      Next.js metadata API
-- [ ] `og:title`, `og:description`, and `og:image` are set for all new public pages
-- [ ] Canonical URLs are set correctly across all new public pages — no duplicate content risk
-- [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`,
-      `Organization`)
-- [ ] All new page slugs / URLs are human-readable, lowercase, hyphenated, and contain the target
-      keyword
-- [ ] All new public pages are included in `sitemap.xml` (Celery regeneration task triggered or
-      static entry added)
-- [ ] `robots.txt` does not block any new public page introduced this sprint
-- [ ] All new public pages meet Core Web Vitals targets: LCP < 2.5 s, CLS < 0.1, INP < 200 ms
-- [ ] All images on new pages have descriptive `alt` text; no image served without `alt`
-- [ ] Heading hierarchy is correct on all new pages: one `<h1>` per page; `<h2>` / `<h3>` in
-      logical order
+- [ ] The `seo` agent run against all public pages introduced in this sprint; output reviewed and all issues resolved
+- [ ] `<title>` set via the Django template `<head>` (SEO app `build_seo` helper) — max 60 chars — contains primary keyword
+- [ ] `<meta name="description">` set — max 160 chars — unique to this page
+- [ ] `<link rel="canonical">` present and correct
+- [ ] `og:title`, `og:description`, `og:image` (min 1200 × 630 px) all set
+- [ ] JSON-LD block present in `<head>` — correct schema type for the page — validated with no errors in Google Rich Results Test
+- [ ] Page URL appears in `sitemap.xml` — or is explicitly excluded with `noindex` decision documented
+- [ ] `robots.txt` does not block the page path — or `noindex` decision is explicitly documented
+- [ ] Image `alt` text present on all images — non-empty, descriptive, not keyword-stuffed
+- [ ] Exactly one `<h1>` per page — `<h2>` / `<h3>` used in logical order — no skipped levels
+- [ ] LCP < 2.5 s · CLS < 0.1 · INP < 200 ms — recorded in Lighthouse audit
+- [ ] Lighthouse report exported alongside the story's SEO record — `project-management/src/11-SEO/IMPLEMENTATION/LIGHTHOUSE-[US###]-[ROUTE]-[DD-MM-YYYY].json`
 
 ### Testing Acceptance Criteria
 
 <!-- Remove this section when Testing flag is N/A. -->
 
-- [ ] Backend coverage is at or above 75 % for all modules introduced or modified this sprint (at or above 90 % for auth-related paths)
-- [ ] Frontend coverage is at or above 70 % for all components introduced or modified this sprint
+- [ ] Coverage is at or above 75 % line and branch for all modules introduced or modified this sprint (at or above 90 % for auth-related paths) — one floor, since template, django-component, and HTMX-partial tests are pytest tests
 - [ ] Unit, integration, and E2E tests cover all stories as indicated in the Test Scope table in the Testing Tasks section below
 - [ ] All manual checks listed in the Testing Tasks section below are complete and signed off
 
@@ -179,11 +186,11 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 <!-- Remove this section when DB flag is N/A. -->
 
-| Story | Task                                                                   | Done |
-| ----- | ---------------------------------------------------------------------- | ---- |
-| US### | Create Django model `[ModelName]` with fields, constraints, and index  | [ ]  |
-| US### | Write and apply migration — run `makemigrations --check` then `pytest` | [ ]  |
-| US### | Seed initial data if required                                          | [ ]  |
+| Story | Task                                                                                    | Done |
+| ----- | --------------------------------------------------------------------------------------- | ---- |
+| US### | Create Django model `[ModelName]` with fields, constraints, and index                   | [ ]  |
+| US### | Write and apply migration via `database/migrate.sh make` → review → `run`, then `check` | [ ]  |
+| US### | Seed initial data if required                                                           | [ ]  |
 
 ### User Flow Tasks
 
@@ -209,23 +216,23 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 <!-- Remove this section when API flag is N/A. -->
 
-| Story | Task                                                           | Done |
-| ----- | -------------------------------------------------------------- | ---- |
-| US### | Add Strawberry query `[queryName]` with permission check       | [ ]  |
-| US### | Add Strawberry mutation `[mutationName]` with permission check | [ ]  |
-| US### | Run `graphql-codegen`; commit generated TypeScript types       | [ ]  |
+| Story | Task                                                               | Done |
+| ----- | ------------------------------------------------------------------ | ---- |
+| US### | Add Django Ninja read endpoint `[endpoint]` with permission check  | [ ]  |
+| US### | Add Django Ninja write endpoint `[endpoint]` with permission check | [ ]  |
+| US### | Define request/response `Schema` classes (Ninja — no codegen step) | [ ]  |
 
 ### Frontend Tasks
 
 <!-- Remove this section when Frontend flag is N/A.
-     Scope tasks to Web / Mobile / both as indicated by the Frontend flag. -->
+     Scope tasks to Public / Admin / both as indicated by the Frontend flag. -->
 
-| Story | Platform | Task                                                            | Done |
-| ----- | -------- | --------------------------------------------------------------- | ---- |
-| US### | Web      | Create Next.js page `[path]` with Apollo data fetching          | [ ]  |
-| US### | Web      | Build `[ComponentName]` with validation and permission-gated UI | [ ]  |
-| US### | Mobile   | Create Expo screen `[path]`                                     | [ ]  |
-| US### | Mobile   | Build `[ComponentName]` with validation and error states        | [ ]  |
+| Story | Surface | Task                                                                                     | Done |
+| ----- | ------- | ---------------------------------------------------------------------------------------- | ---- |
+| US### | Page    | Scaffold the Django view + template (`new-django-view.sh`) — server-rendered             | [ ]  |
+| US### | Page    | Build `[ComponentName]` as a django-component with validation and permission-gated UI    | [ ]  |
+| US### | HTMX    | Add the `_[name].html` partial and the view's `HX-Request` branch                        | [ ]  |
+| US### | HTMX    | Wire the save: indicator, `200` re-render on validation failure, `HX-Trigger` on success | [ ]  |
 
 ### GDPR Tasks
 
@@ -249,7 +256,22 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Implement rate limit on `[endpoint]` — max N / IP / M min; HTTP 429 on breach     | [ ]  |
 | US### | HTML-escape `[field]` server-side before rendering in any view                    | [ ]  |
 | US### | Add `audit_auditlog` entry on `[event]` within the same `transaction.atomic()`    | [ ]  |
-| US### | Verify `[mutation]` rejects calls where session user does not own target resource | [ ]  |
+| US### | Verify `[endpoint]` rejects calls where session user does not own target resource | [ ]  |
+
+### Logging Tasks
+
+<!-- Always applicable when Backend or Frontend ≠ N/A.
+     Reference: code/docs/LOGGING.md -->
+
+| Story | Layer   | Task                                                                                          | Done |
+| ----- | ------- | --------------------------------------------------------------------------------------------- | ---- |
+| US### | Backend | Use `logging.getLogger("apps.[app-name]")` for all log calls in service and Ninja endpoint    | [ ]  |
+| US### | Backend | `DEBUG` log on service method entry — `[entity]_id`, `action` only; no PII                    | [ ]  |
+| US### | Backend | `INFO` log on success — `[entity]_id`, `duration_ms`; no encrypted field values               | [ ]  |
+| US### | Backend | `WARNING` log on permission denied — `actor_id`, `action`; no tokens or PII                   | [ ]  |
+| US### | Browser | Keep committed JavaScript free of `console.log()`; route logging through the project logger   | [ ]  |
+| US### | Pages   | Server-rendered pages log key user-facing events via the Django logger — IDs only, not values | [ ]  |
+| US### | Both    | Confirm no `[enc]` field values appear in `django.log` after exercising the flow              | [ ]  |
 
 ### SEO Tasks
 
@@ -263,7 +285,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Add JSON-LD structured data (`[schema type]`) to `[page / route]`                | [ ]  |
 | US### | Add `[page / route]` to `sitemap.xml`; trigger Celery regeneration if applicable | [ ]  |
 | US### | Run Lighthouse to verify Core Web Vitals targets; record results                 | [ ]  |
-| US### | Run `/syntek-dev-suite:seo` to confirm all SEO checks pass                       | [ ]  |
+| US### | Run the `seo` agent to confirm all SEO checks pass                               | [ ]  |
 
 ### Testing Tasks
 
@@ -279,8 +301,8 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 **Manual checks this sprint:**
 
 - [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop, colour picker, file upload]
-- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable) — Web
-- [ ] Device: iOS and Android (physical device or simulator) — Mobile
+- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
+- [ ] Responsive: verify layout at mobile, tablet, and desktop breakpoints (mobile-first) — Web (public pages)
 - [ ] Accessibility: keyboard navigation and screen reader on `[component]` — WCAG 2.2 AA
 
 ---
@@ -289,11 +311,13 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 Run all of the following before closing the sprint. All must pass.
 
-- [ ] `makemigrations --check` — no unapplied model changes detected
-- [ ] `pytest` — all backend tests pass; coverage at or above floor for all modules touched
-- [ ] `vitest` — all frontend tests pass; coverage at or above 70 % for all components touched
-- [ ] Lint and type-check pass in both layers
-- [ ] `graphql-codegen` re-run after any schema change; generated files committed
+Every command is a project script under `code/src/scripts/**/*.sh` — never a raw `python`,
+`manage.py`, `pytest`, or `docker` call.
+
+- [ ] `bash code/src/scripts/database/migrate.sh check` — no unapplied model changes detected
+- [ ] `bash code/src/scripts/tests/all.sh --coverage` — all suites pass; coverage at or above the floor for all modules touched
+- [ ] Template, django-component, and HTMX-partial tests pass (same pytest run)
+- [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass
 - [ ] No secrets, debug flags, or hardcoded IDs introduced in this sprint
 - [ ] All GDPR tasks checked off (if GDPR: Yes)
 - [ ] All security acceptance criteria signed off (if Security: not N/A)

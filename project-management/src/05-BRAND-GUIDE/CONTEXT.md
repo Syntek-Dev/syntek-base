@@ -1,26 +1,42 @@
 # project-management/src/05-BRAND-GUIDE
 
-Brand guidelines for Syntek Studio — colours, typography, tone of voice, and logo usage rules.
+The brand guidelines. The deliverable is a **PDF** generated from a Python script that holds
+the brand tokens (colour, typography, spacing, logo rules, voice) as its source of truth and
+typesets them with LaTeX — swatches, type specimens, and spacing bars drawn from the data.
 
 ## Directory Tree
 
 ```text
 project-management/src/05-BRAND-GUIDE/
-├── CONTEXT.md               ← this file
-└── BRAND-<TOPIC>.md         ← e.g. BRAND-COLOURS.md, BRAND-TYPOGRAPHY.md, BRAND-TONE.md
+├── CONTEXT.md              ← this file
+├── CLAUDE.md               ← operating rules for this folder
+└── guide-build/            ← the brand-guide build (generator + generated outputs)
+    ├── CONTEXT.md
+    ├── CLAUDE.md
+    ├── brand_guide.py      ← SOURCE OF TRUTH — brand tokens + rules, and the LaTeX renderer
+    ├── brand-guide.tex     ← GENERATED — do not hand-edit
+    └── brand-guide.pdf     ← GENERATED — the deliverable brand guide
 ```
 
-**Naming:** `BRAND-<TOPIC>.md` — `TOPIC` in `SCREAMING-SNAKE-CASE`.
+## What the guide covers
 
-Each document covers a single brand dimension. Reference these when implementing UI or writing
-copy — do not override brand decisions at the component level without updating this directory first.
+The generated PDF has, as full visual pages: a cover, **colour** (brand / neutral / semantic
+swatches), **typography** (families + type scale specimens), **spacing & radius**, **logo**
+usage rules, and **voice & tone** — plus a **token appendix** (motion, elevation, dark mode,
+icons) recorded as tables. The base template ships a **generic placeholder brand**; a new
+project fills in its own tokens in `guide-build/brand_guide.py` and re-runs.
 
-## Design Toolchain
+## Authoring / updating the guide
 
-Brand work follows a two-phase process:
+Edit the `INPUTS` in `guide-build/brand_guide.py`, then run `python3 brand_guide.py` (see
+`guide-build/CONTEXT.md`). Never hand-edit the generated `.tex`/`.pdf`. Commit the `.py`,
+`.tex`, and `.pdf` together.
 
-1. **Generate with Claude Design** — Use [Claude Design by Anthropic Labs](https://www.anthropic.com/news/claude-design-anthropic-labs) to generate initial logo concepts, colour palettes, typography options, and visual direction. Curate the outputs and document every agreed decision as a `BRAND-<TOPIC>.md` file in this directory.
+## Cross-references
 
-2. **Build in Figma** — Open the [Syntek Studio Figma team templates](https://www.figma.com/files/team/1593704150140722359/drafts?fuid=1593704145676751629) and use the brand guide template to port the decisions from step 1 into Figma. Set up Figma variables for all tokens so component designers can consume them directly.
+- `guide-build/CONTEXT.md` — the build layout, run commands, and requirements
+- `project-management/src/00-ASSETS/LOGOS/` — logo source files the guide's logo rules point to
+- `code/docs/DESIGN-TOKENS.md` — the code-side, DB-canonical design-token system
+- `project-management/workflows/05-brand-guides/` — the brand-guide workflow (STEPS + CHECKLIST)
 
-The `BRAND-<TOPIC>.md` files in this directory are the source of truth. The Figma brand guide is the shared design reference for all downstream component and wireframe work.
+**Last Updated**: {{DATE}}

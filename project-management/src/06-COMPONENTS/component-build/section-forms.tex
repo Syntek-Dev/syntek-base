@@ -1,0 +1,93 @@
+\brandsection{Form Controls}
+
+Form controls capture user input. Every field pairs a clear label with a bordered
+control; state is communicated through border colour and supporting text rather than
+colour alone, to satisfy WCAG 2.2 AA.
+
+{\small\color{muted} Border colour signals state: neutral (default), accent (focus),
+error (invalid). Never rely on colour as the sole cue.}
+
+\vspace{4mm}
+\subhead{Text Input}
+
+{\small\textbf{Email}}\par
+\vspace{1mm}
+\uifieldbox[border]{\color{muted}you@example.com}
+
+{\small\color{muted} Default resting state with a neutral border and placeholder text.}
+
+\vspace{4mm}
+\subhead{Focused Input}
+
+{\small\textbf{Password}}\par
+\vspace{1mm}
+\uifieldbox[accent]{\color{muted}\textbullet\textbullet\textbullet\textbullet\textbullet}
+
+{\small\color{muted} The accent border indicates keyboard focus; the value is masked.}
+
+\vspace{4mm}
+\subhead{Error Input}
+
+{\small\textbf{Postcode}}\par
+\vspace{1mm}
+\uifieldbox[error]{\color{muted}invalid input}
+\vspace{1mm}\par
+{\small\color{error} Please enter a valid value.}
+
+{\small\color{muted} An error border is always paired with a short, specific message.}
+
+\vspace{4mm}
+\subhead{Textarea}
+
+{\small\textbf{Message}}\par
+\vspace{1mm}
+\uifieldbox[border]{\color{muted}Tell us a little about your project\\
+and what you would like to achieve.}
+
+{\small\color{muted} A multi-line control for longer free text; grows with content.}
+
+\vspace{4mm}
+\subhead{Checkboxes}
+
+\fcolorbox{accent}{accent}{\makebox[2.2mm]{\scriptsize\color{paper}x}}\quad
+Subscribe to the monthly newsletter
+\vspace{2mm}\par
+\fcolorbox{border}{paper}{\makebox[2.2mm]{ }}\quad
+Send me occasional product updates
+
+{\small\color{muted} Independent options; any number may be selected.}
+
+\vspace{4mm}
+\subhead{Radio Group}
+
+\fcolorbox{accent}{accent}{\makebox[2.2mm]{ }}\quad
+Standard delivery (3--5 days)
+\vspace{2mm}\par
+\fcolorbox{border}{paper}{\makebox[2.2mm]{ }}\quad
+Express delivery (next day)
+
+{\small\color{muted} Mutually exclusive options; exactly one is selected.}
+
+\vspace{4mm}
+\subhead{Switch / Toggle}
+
+\makebox[26mm][l]{Email alerts}\quad
+\uibar{accent}{9}\uibar{paper}{0}\fcolorbox{border}{paper}{\makebox[2.2mm]{ }}\quad
+\uibadge[accent]{On}
+\vspace{2mm}\par
+\makebox[26mm][l]{SMS alerts}\quad
+\fcolorbox{border}{paper}{\makebox[2.2mm]{ }}\uibar{muted}{9}\quad
+\uibadge[muted]{Off}
+
+{\small\color{muted} A binary control for settings that take effect immediately.}
+
+\vspace{4mm}
+\subhead{Select}
+
+{\small\textbf{Country}}\par
+\vspace{1mm}
+\uifieldbox[border]{\color{muted}Choose an option\hfill v}
+
+{\small\color{muted} The trailing `v' marks a collapsed dropdown; opens to a list on click.}
+
+\clearpage

@@ -1,6 +1,6 @@
 # Workflow: Wireframes
 
-> **Agent hints — Model:** Sonnet · **MCP:** `figma`
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
@@ -25,16 +25,29 @@ Wireframes must be agreed before frontend development begins.
 ## Key concepts
 
 - Wireframes represent layout and interaction — not final visual design
-- Web and app wireframes are built in Figma using the [team templates](https://www.figma.com/files/team/1593704150140722359/drafts?fuid=1593704145676751629) — use the web wireframe template for Next.js screens and the mobile wireframe template for Expo screens
-- Markdown or Excalidraw is acceptable for early sketches, but final signed-off wireframes live in Figma
 - Documents are saved to `project-management/src/07-WIREFRAMES/`
 - Every interactive element must have a defined state (default, hover, focus, error, empty)
-- Wireframes drive the component structure in `code/src/frontend/src/components/` and `code/src/mobile/src/components/`
+- Wireframes drive the component structure in `code/src/django/components/`
+
+- Before specifying a new UI element in a wireframe, confirm it does not already exist in
+  the django-components library (`code/src/django/components/`). Reuse existing components
+  where possible to avoid redundant design and implementation work.
 
 ## Cross-references
 
+### Hard gates — read before executing Step 1
+
+- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA must be considered at layout stage; interactive element states required from the start
+
+### Soft references — consult during execution
+
+- `code/docs/responsive/BREAKPOINTS.md` — device data and orientation stats; all wireframes start at 360 px portrait and scale up
+- `code/docs/rendering/TEMPLATES-AND-INTERACTIVITY.md` — wireframe page structure determines the server, HTMX and Alpine split
+- `code/docs/URL-STRATEGY.md` — URL and route structure that wireframe navigation must follow
+- `code/docs/performance/FRONTEND-PERFORMANCE.md` — page structure choices affect Core Web Vitals (LCP, CLS)
 - `project-management/src/07-WIREFRAMES/` — where wireframe documents are saved
-- `project-management/docs/RESPONSIVE-DESIGN.md` — mobile-first design rationale and viewport tiers to wireframe against
-- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA requirements for all interactive components
-- `code/docs/RESPONSIVE-DESIGN.md` — breakpoint tokens for annotating layouts
-- `code/workflows/01-new-feature/` — follow this after wireframes are approved
+- `project-management/src/04-USER-FLOW/` — wireframes must implement the agreed user flows
+- `project-management/workflows/06-component-designs/` — component library to draw from
+- `project-management/workflows/08-gdpr-compliance/` — follow this after wireframes are approved
+- `project-management/workflows/09-security-checks/` — run after GDPR compliance
+- `project-management/workflows/10-qa-checks/` — run after security checks

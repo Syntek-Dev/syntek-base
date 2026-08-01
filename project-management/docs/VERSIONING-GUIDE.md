@@ -1,22 +1,30 @@
-# Versioning Guide — project-name
+---
+type: guide
+agent: version
+skills: [global-workflow]
+model: opus
+---
 
-> **Agent hints — Model:** Haiku
+# Versioning Guide — {{PROJECT_NAME}}
 
-**Last Updated**: 29/04/2026 **Version**: 0.9.0 **Maintained By**: Syntek Studio
-**Language**: British English (en_GB)
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Claude Model:** opus — Semantic versioning strategy, version bumping process, changelog and release tracking
+**MCP Servers:** code-review-graph (version impact analysis)
 
 ---
 
 ## Strategy Overview
 
-project-name uses a **two-tier versioning strategy**:
+{{PROJECT_NAME}} uses a **two-tier versioning strategy**:
 
 - **Root project** — single-track semver covering the entire monorepo (documentation,
   infrastructure, PM artefacts, and cross-cutting changes). Tracked by `VERSION`,
   `CHANGELOG.md`, `VERSION-HISTORY.md`, and `RELEASES.md` at the project root.
-- **Sub-packages** — each deployable unit (`backend`, `frontend`, `mobile`, `shared`) has its own
-  independent semver. Sub-package versions move only when that package's code changes — they are
-  never bumped as a side-effect of a root project version bump.
+- **Sub-packages** — each deployable unit (currently just the `django` project
+  bundle) has its own independent semver. Sub-package versions move only when that
+  package's code changes — they are never bumped as a side-effect of a root project
+  version bump.
 
 ---
 
@@ -53,12 +61,9 @@ Do **not** update sub-package version files as part of a root bump — they are 
 
 ### Current sub-packages
 
-| Path                 | Package manifest | Version files                                       |
-| -------------------- | ---------------- | --------------------------------------------------- |
-| `code/src/backend/`  | `pyproject.toml` | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
-| `code/src/frontend/` | `package.json`   | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
-| `code/src/mobile/`   | `package.json`   | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
-| `code/src/shared/`   | `package.json`   | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
+| Path               | Package manifest             | Version files                                       |
+| ------------------ | ---------------------------- | --------------------------------------------------- |
+| `code/src/django/` | `pyproject.toml` (repo root) | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
 
 ### Files to update on every sub-package bump
 
@@ -88,18 +93,18 @@ has no audit trail.
 
 ## Tooling
 
-Use `/syntek-dev-suite:version` to manage all version bumps.
+Use `version` to manage all version bumps.
 
 ```text
-/syntek-dev-suite:version bump patch
-/syntek-dev-suite:version bump minor
-/syntek-dev-suite:version bump major
+version bump patch
+version bump minor
+version bump major
 ```
 
 ### Status check
 
 ```text
-/syntek-dev-suite:version status
+version status
 ```
 
 ---

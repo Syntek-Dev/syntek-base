@@ -1,0 +1,77 @@
+\brandsection{Navigation}
+
+Navigation components orient the user and move them between views. Each pattern
+below is built only from brand tokens so top bars, tabs, and pagination stay
+consistent across the marketing site and the admin portal.
+
+\vspace{4mm}
+\subhead{Navbar --- light}
+
+\colorbox{panel}{\makebox[\linewidth]{%
+\begin{minipage}[c]{0.30\linewidth}
+{\large\color{ink}\textbf{Your Brand}}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.66\linewidth}
+\RaggedLeft
+\uibtnghost[primary]{Home}\ \uibtnghost[primary]{Work}\ \uibtnghost[primary]{About}\ \uibtn[accent]{Contact}
+\end{minipage}%
+}}
+
+{\small\color{muted} Light top bar on a panel surface --- ghost links for
+low-emphasis destinations, one solid accent CTA on the right.}
+
+\vspace{5mm}
+\subhead{Navbar --- dark}
+
+\colorbox{primary}{\makebox[\linewidth]{%
+\begin{minipage}[c]{0.30\linewidth}
+{\large\color{paper}\textbf{Your Brand}}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.66\linewidth}
+\RaggedLeft
+{\color{paper}\textbf{Home}}\quad{\color{paper}\textbf{Work}}\quad{\color{paper}\textbf{About}}\quad\uibtn[accent]{Contact}
+\end{minipage}%
+}}
+
+{\small\color{muted} Same layout inverted onto the primary brand fill ---
+paper-white wordmark and links, accent CTA carried across for continuity.}
+
+\vspace{5mm}
+\subhead{Tabs}
+
+\begin{minipage}[t]{0.30\linewidth}
+{\color{ink}\textbf{Overview}}\\[1mm]
+\uibar{accent}{22}
+\end{minipage}\quad
+\begin{minipage}[t]{0.30\linewidth}
+{\color{muted}Details}\\[1mm]
+\uibar{panel}{22}
+\end{minipage}\quad
+\begin{minipage}[t]{0.30\linewidth}
+{\color{muted}Activity}\\[1mm]
+\uibar{panel}{22}
+\end{minipage}
+
+\vspace{2mm}
+{\small\color{muted} The active tab is inked and underlined in accent; inactive
+tabs stay muted with a neutral panel rule.}
+
+\vspace{5mm}
+\subhead{Breadcrumb}
+
+{\color{muted}Home} \ / \ {\color{muted}Section} \ / \ {\color{ink}\textbf{Current page}}
+
+\vspace{2mm}
+{\small\color{muted} Trail of ancestors in muted text; only the current page is
+inked and bold. Separate levels with a spaced forward slash.}
+
+\vspace{5mm}
+\subhead{Pagination}
+
+\uibtnsm[primary]{<}\ \uichip{1}\ \uichip{2}\ \uichip{3}\ \uibtnsm[primary]{>}
+
+\vspace{2mm}
+{\small\color{muted} Solid primary controls step between pages; soft chips mark
+the numbered range. Disable the prev/next control at the first and last page.}
+
+\clearpage

@@ -5,196 +5,106 @@
 ```text
 project-management/
 ├── CONTEXT.md               ← this file
+├── REFERENCES.md            ← internal and external reference index for this layer
 ├── docs/                    ← PM reference guides
 │   ├── CONTEXT.md
-│   ├── GDPR-GUIDE.md            ← lawful basis, retention, data rights
+│   ├── gdpr/                    ← GDPR sub-documents (COMPLIANCE.md, DATA-RIGHTS.md)
+│   ├── GDPR-GUIDE.md            ← GDPR obligations, data flows, and legal bases (index)
 │   ├── GIT-GUIDE.md             ← branch strategy, commit format, PR flow, PR gates
-│   ├── QA-GUIDE.md              ← QA planning at design stage — test scenario format
-│   ├── RESPONSIVE-DESIGN.md     ← breakpoints, media vs container queries, viewport testing
-│   ├── SECURITY-GUIDE.md        ← STRIDE threat modelling, severity levels, document format
+│   ├── QA-GUIDE.md              ← QA planning and test documentation standards
+│   ├── RESPONSIVE-DESIGN.md     ← breakpoints, mobile-first, responsive patterns
+│   ├── SECURITY-GUIDE.md        ← security standards and threat modelling guide
 │   ├── SEO-CHECKLIST.md         ← SEO and AI discoverability for all frontend pages
-│   ├── SPRINT-PLANNING-GUIDE.md ← sprint plan format, MoSCoW prioritisation, phases
+│   ├── SPRINT-PLANNING-GUIDE.md ← MoSCoW prioritisation and sprint format conventions
 │   └── VERSIONING-GUIDE.md      ← root-only semver, files to update on every bump
-├── src/                        ← live PM artefacts (stories, sprints, bugs, …)
-│   ├── 00-ASSETS/              ← ERD diagrams, user-flow diagrams, logos
-│   │   └── CONTEXT.md
-│   ├── 00-DECISIONS/           ← ADR-###-*.md (architectural decision records)
-│   │   └── CONTEXT.md
-│   ├── 00-PLANS/               ← PLAN-<FEATURE>.md, PLAN-US###-*.md
-│   │   └── CONTEXT.md
-│   ├── 01-STORIES/             ← US###.md
-│   │   └── CONTEXT.md
-│   ├── 02-SPRINTS/             ← SPRINT-##.md
-│   │   └── CONTEXT.md
-│   ├── 03-DATABASE/            ← SCHEMA-*.md, ERD-*.md, MIGRATION-NOTES-*.md
-│   │   └── CONTEXT.md
-│   ├── 04-USER-FLOW/           ← USER-FLOW-<AREA>.md
-│   │   └── CONTEXT.md
-│   ├── 05-BRAND-GUIDE/         ← brand identity, colour palette, typography
-│   │   └── CONTEXT.md
-│   ├── 06-COMPONENTS/          ← component design specs
-│   │   └── CONTEXT.md
-│   ├── 07-WIREFRAMES/          ← WF-<US###>-*.md, WF-<SCREEN>-*.md
-│   │   └── CONTEXT.md
-│   ├── 08-GDPR/                ← data inventory, consent, retention, breach docs
-│   │   └── CONTEXT.md
-│   ├── 09-SECURITY/            ← AUDIT-*.md, threat models, assessments
-│   │   └── CONTEXT.md
-│   ├── 10-QA/                  ← QA-US###-<DESCRIPTION>.md
-│   │   └── CONTEXT.md
-│   ├── 11-SEO/                 ← SEO planning documents
-│   │   ├── CONTEXT.md
-│   │   └── PLANNING/
-│   │       └── CONTEXT.md
-│   ├── 12-API-DESIGN/          ← API-US###-*.md, API-<FEATURE>-*.md
-│   │   └── CONTEXT.md
-│   ├── 13-SPRINT-PLANS/        ← SPRINT-PLAN-##.md
-│   │   └── CONTEXT.md
-│   ├── 14-TESTS/               ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
-│   │   └── CONTEXT.md
-│   ├── 15-REVIEWS/             ← REVIEW-US###-*.md, REVIEW-<TOPIC>.md
-│   │   └── CONTEXT.md
-│   ├── 16-BUGS/                ← BUG-<DESCRIPTOR>-DD-MM-YYYY.md
-│   │   └── CONTEXT.md
-│   └── 17-REFACTORING/         ← REFACTORING-US###-*.md, REFACTORING-<TOPIC>.md
-│       └── CONTEXT.md
-└── workflows/                  ← step-by-step PM workflows
-    ├── CONTEXT.md
-    ├── 01-story-creation/      ← write a well-formed user story
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 02-sprint-planning/     ← organise stories into a balanced sprint
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 03-database-schema/     ← design and sign off a database schema
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 04-user-flow-design/    ← map user journeys before wireframing
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 05-brand-guides/        ← define and document the visual brand identity
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 06-component-designs/   ← design reusable UI components
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 07-wireframes/          ← create and sign off wireframes
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 08-gdpr-compliance/     ← review a feature for GDPR compliance
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 09-security-checks/     ← threat-model planned features before sprint planning
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 10-qa-checks/           ← define QA scenarios for each story before development
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 11-seo-checks/          ← verify SEO requirements before a story is closed
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 12-api-design/          ← design the GraphQL contract before sprint planning
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 13-sprint-plans/        ← write the sprint plan (MoSCoW, phases, definition of done)
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 14-backend-code/        ← implement Django models, services, business logic
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 15-api-code/            ← implement the Strawberry GraphQL API layer
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 16-frontend-code/       ← implement Next.js pages and React components
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 17-app-code/            ← implement Expo React Native screens and components
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 18-pr-and-review/       ← create, review, and merge a feature PR
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    └── 19-release/             ← cut a release (version bump, changelog, deploy)
-        ├── CHECKLIST.md
-        ├── CONTEXT.md
-        └── STEPS.md
+├── export/                  ← PDF exports and zip archives for client delivery
+├── src/                     ← live PM artefacts, in three tiers (see below)
+│   ├── 00-ASSETS/               ← logos, brand assets, export scripts (pre-workflow ref)
+│   │
+│   │   ── Specify (01–12) ──
+│   ├── 01-STORIES/              ← US###.md (user stories)
+│   ├── 02-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation)
+│   ├── 03-DATABASE/             ← SCHEMA-*.md, ERD-*.md, migration notes
+│   ├── 04-USER-FLOW/            ← USER-FLOW-TEMPLATE.md + DIAGRAMS/
+│   ├── 05-BRAND-GUIDE/          ← guide-build/ (Python → LaTeX → PDF brand guide)
+│   ├── 06-COMPONENTS/           ← component-build/ (Python → LaTeX → PDF component sheet)
+│   ├── 07-WIREFRAMES/           ← SCREENS/ (WF-###-*.html) + SHARED/wireframe.css
+│   ├── 08-GDPR/                 ← 6 register skeletons + PLANNING/ + IMPLEMENTATION/
+│   ├── 09-SECURITY/             ← THREAT-MODEL/ ASSESSMENTS/ AUDITS/ VULNERABILITIES/
+│   ├── 10-QA/                   ← PLANNING/ + IMPLEMENTATION/
+│   ├── 11-SEO/                  ← PLANNING/ + IMPLEMENTATION/
+│   ├── 12-API-DESIGN/           ← PLANNING/ + IMPLEMENTATION/
+│   │
+│   │   ── Decide & plan (13–15) ──
+│   ├── 13-DECISIONS/            ← ADR-###-<TITLE>.md
+│   ├── 14-SPRINT-PLANS/         ← detailed sprint execution plans
+│   ├── 15-STORY-PLANS/          ← per-story implementation plan (code master reference)
+│   │
+│   │   ── Implement & record (16–20) ──
+│   ├── 16-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 17-REVIEWS/              ← REVIEW-US###-*.md
+│   ├── 18-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ├── 19-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   └── 20-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+└── workflows/               ← step-by-step PM workflows (01–21)
+    ├── 01-story-creation/ … 12-api-design/     ← specify a feature
+    ├── 13-decisions/ 14-sprint-plans/ 15-story-plans/  ← decide & plan
+    ├── 16-backend-code/ 17-api-code/ 18-frontend-code/  ← implement
+    ├── 19-implementation-documentation/         ← docs + implementation records
+    ├── 20-pr-and-review/                        ← PR, review, merge
+    └── 21-release/                              ← version bump, changelog, deploy
 ```
+
+Every `src/` and `workflows/` sub-folder carries a `CONTEXT.md` + `CLAUDE.md`; each
+workflow folder also has `STEPS.md` + `CHECKLIST.md`.
 
 ## When to read this
 
-- Creating or updating a user story (US###)
-- Sprint planning or retrospective
-- Managing a PR through the review and merge lifecycle
-- Cutting a release (version bump + changelog)
-- GDPR compliance review of a new feature
-- SEO implementation on a page
-- Using Syntek Dev Suite agents (`/syntek-dev-suite:*`)
+- Creating or updating a user story, sprint, decision (ADR), or plan
+- Running a design/compliance spec (DB, user flow, GDPR, security, QA, SEO, API)
+- Managing a PR through review and merge, or cutting a release
 
 ## Contents
 
-- `docs/` — Reference guides for PM, GDPR, SEO
-- `src/` — All live PM artefacts (stories, sprints, plans, reviews, bugs, QA, tests)
-- `workflows/` — Step-by-step guides for PM tasks
+- `docs/` — reference guides for PM, GDPR, SEO, security, QA, versioning, responsive design
+- `export/` — PDF exports and zip archives of PM artefacts for client delivery
+- `src/` — all live PM artefacts, in three tiers (specify → decide & plan → record)
+- `workflows/` — step-by-step guides for PM tasks
 
 ## Do not use for
 
 - Writing code → `code/CONTEXT.md`
 - Environment setup, CLI usage → `how-to/CONTEXT.md`
 
+## src/ structure — the three tiers
+
+`00-ASSETS` is pre-workflow reference. The rest runs in three tiers; **08–15 tie their
+artefacts to a user story** via per-story `PLANNING/` + `IMPLEMENTATION/` templates.
+
+| Tier                      | Paths                                                                                               |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Specify** (01–12)       | stories, sprints, DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
+| **Decide & plan** (13–15) | `13-DECISIONS/` (ADRs) → `14-SPRINT-PLANS/` → `15-STORY-PLANS/` (the code master)                   |
+| **Record** (16–20)        | `16-TESTS/`, `17-REVIEWS/`, `18-FINDINGS/`, `19-BUGS/`, `20-REFACTORING/` — per story               |
+
+The **story plan (15)** is what a developer codes from; it references its sprint plan
+(14), the decisions (13), and every 01–12 spec. Sprint plans (14) feed the story plans.
+
+## Workflow gates
+
+- A feature is not ready to code until the specify → decide → plan tiers are complete
+- A PR is not ready to merge until `workflows/20-pr-and-review/` is signed off
+- A release is not ready until `workflows/21-release/` is followed
+- Every new directory in any layer must have a `CONTEXT.md` (and a `CLAUDE.md`)
+
 ## Key docs
 
-| Guide                           | When to read                                            |
-| ------------------------------- | ------------------------------------------------------- |
-| `docs/GIT-GUIDE.md`             | Branch strategy, commit format, PR gates                |
-| `docs/VERSIONING-GUIDE.md`      | Before any version bump or release                      |
-| `docs/SEO-CHECKLIST.md`         | Before publishing a new page                            |
-| `docs/GDPR-GUIDE.md`            | Before adding any feature that handles personal data    |
-| `docs/RESPONSIVE-DESIGN.md`     | Before wireframing, designing, or testing any UI screen |
-| `docs/QA-GUIDE.md`              | Before writing QA scenarios for a story                 |
-| `docs/SECURITY-GUIDE.md`        | Before threat-modelling a planned feature               |
-| `docs/SPRINT-PLANNING-GUIDE.md` | Before planning or writing a sprint plan                |
+| Guide                       | When to read                                         |
+| --------------------------- | ---------------------------------------------------- |
+| `docs/GIT-GUIDE.md`         | Branch strategy, commit format, PR gates             |
+| `docs/VERSIONING-GUIDE.md`  | Before any version bump or release                   |
+| `docs/SEO-CHECKLIST.md`     | Before publishing a new page                         |
+| `docs/GDPR-GUIDE.md`        | Before adding any feature that handles personal data |
+| `docs/RESPONSIVE-DESIGN.md` | Before brand work, wireframing, or component design  |
 
-## src/ structure
-
-Numbered to mirror the `workflows/` steps. `00-` folders are pre-workflow reference material.
-
-| Path                   | Contains                                     |
-| ---------------------- | -------------------------------------------- |
-| `src/00-ASSETS/`       | ERD diagrams, user-flow diagrams, logos      |
-| `src/00-DECISIONS/`    | Architectural decision records (ADR-###)     |
-| `src/00-PLANS/`        | Architectural and feature plans              |
-| `src/01-STORIES/`      | User stories (US###.md)                      |
-| `src/02-SPRINTS/`      | Sprint plans and logs                        |
-| `src/03-DATABASE/`     | Schema designs, ERDs, migration notes        |
-| `src/04-USER-FLOW/`    | User journey maps per product area           |
-| `src/05-BRAND-GUIDE/`  | Brand identity, colour palette, typography   |
-| `src/06-COMPONENTS/`   | Component design specs                       |
-| `src/07-WIREFRAMES/`   | Wireframes per user story or screen          |
-| `src/08-GDPR/`         | GDPR data inventory, consent, retention docs |
-| `src/09-SECURITY/`     | Security audits, threat models, assessments  |
-| `src/10-QA/`           | QA test files per user story                 |
-| `src/11-SEO/`          | SEO planning documents                       |
-| `src/12-API-DESIGN/`   | GraphQL API design documents                 |
-| `src/13-SPRINT-PLANS/` | Sprint plan documents                        |
-| `src/14-TESTS/`        | Test status and manual testing guides        |
-| `src/15-REVIEWS/`      | Code review notes                            |
-| `src/16-BUGS/`         | Bug reports and related user stories         |
-| `src/17-REFACTORING/`  | Refactoring plans and notes                  |
+**Last Updated**: {{DATE}}

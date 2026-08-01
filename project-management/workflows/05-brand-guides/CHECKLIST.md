@@ -1,32 +1,46 @@
+---
+workflow: 05-brand-guides
+phase: design
+agent: frontend
+skills: [stack-htmx-templates]
+model: fable
+---
+
 # Brand Guides — Checklist
 
-**Last Updated**: 21/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 ---
 
+> **See** `project-management/REFERENCES.md` → **Internal — Guides** (RESPONSIVE-DESIGN.md) · **Internal — Live Artefacts** (src/05-BRAND-GUIDE/) for supporting references.
+
 ## Execution Checklist
 
-- [ ] Claude Design used to generate initial logo, colour, typography, and visual direction concepts
-- [ ] Agreed brand decisions documented in `project-management/src/05-BRAND-GUIDE/` as `BRAND-<TOPIC>.md` files
 - [ ] Brand principles (personality, tone, visual direction) documented
 - [ ] Full colour palette defined with hex values and semantic roles
 - [ ] All colour combinations pass WCAG 2.2 AA contrast ratios
 - [ ] Typography defined: typefaces, scale, weights, line heights
 - [ ] Spacing scale defined with named tokens
-- [ ] Layout breakpoints documented (build-time only — not DB tokens; see `project-management/docs/RESPONSIVE-DESIGN.md`)
-- [ ] Figma brand guide built from [team templates](https://www.figma.com/files/team/1593704150140722359/drafts?fuid=1593704145676751629) — colours, typography, spacing, and logo pages complete
-- [ ] Figma variables set up for all colour, typography, and spacing tokens
-- [ ] Token records created or updated via Django admin
+- [ ] Layout breakpoints documented (build-time only — not DB tokens)
+- [ ] Token records created or updated via the design-token admin area
 - [ ] CSS variables generated and confirmed correct
-- [ ] Tailwind v4 config picks up updated variables
+- [ ] CSS variables consumed correctly by the frontend (no raw hex values or hard-coded sizes)
 - [ ] Token migration plan documented if existing tokens are changing
+
+---
+
+## Context
+
+- [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
+- [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
+- [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+- [ ] Every new directory created during this workflow has a `CONTEXT.md` inside it
 
 ---
 
 ## Definition of Done
 
-- [ ] Brand guide agreed and documented in `project-management/src/05-BRAND-GUIDE/`
-- [ ] Figma brand guide complete and accessible to the team
+- [ ] Brand guide agreed before component design begins
 - [ ] Design token system updated and verified
-- [ ] Documents committed and pushed
+- [ ] Document committed and pushed

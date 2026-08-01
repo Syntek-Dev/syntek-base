@@ -1,0 +1,76 @@
+\brandsection{Avatars \& Feedback}
+
+Identity markers, progress indicators, and loading placeholders. Avatars carry initials in a rounded square; progress and skeleton components share the same bar primitive at different fills.
+
+\subhead{Avatars}
+
+A single avatar renders the member's initials on a coloured tile.
+
+\vspace{2mm}
+\uiavatar[accent]{SB}
+\vspace{2mm}
+
+{\small\color{muted}Single avatar, accent tile with initials.}
+
+\vspace{4mm}
+
+Stacked into a group row, avatars summarise a team; the trailing muted tile counts the overflow.
+
+\vspace{2mm}
+\uiavatar[primary]{AB}\uiavatar[secondary]{CD}\uiavatar[accent]{EF}\uiavatar[muted]{+3}
+\vspace{2mm}
+
+{\small\color{muted}Avatar group -- three members plus a '+3' overflow tile.}
+
+\vspace{4mm}
+
+Beside a name and role, the avatar anchors a member list row.
+
+\vspace{2mm}
+
+\noindent\uiavatar[secondary]{SB}\quad\textbf{Sam Bailey}\ {\small\color{muted}Full Stack Developer}\par
+\vspace{1.5mm}
+\noindent\uiavatar[secondary]{AB}\quad\textbf{Alex Byrne}\ {\small\color{muted}Product Designer}\par
+\vspace{1.5mm}
+\noindent\uiavatar[secondary]{CD}\quad\textbf{Chris Doyle}\ {\small\color{muted}QA Engineer}\par
+
+\vspace{2mm}
+{\small\color{muted}Member list -- avatar, name, and muted role per row.}
+
+\subhead{Progress}
+
+Progress bars compose a filled accent segment against a panel remainder; the two widths always sum to the same track length.
+
+\vspace{3mm}
+
+\noindent\uibar{accent}{25}\uibar{panel}{75}\ \ {\small\color{muted}25\%}\par
+\vspace{2mm}
+\noindent\uibar{accent}{60}\uibar{panel}{40}\ \ {\small\color{muted}60\%}\par
+\vspace{2mm}
+\noindent\uibar{accent}{90}\uibar{panel}{10}\ \ {\small\color{muted}90\%}\par
+
+\vspace{2mm}
+{\small\color{muted}Three fills across a 100mm track. Pair every bar with a numeric label for screen readers.}
+
+\subhead{Skeleton}
+
+Stacked grey bars stand in for content while data loads, hinting at the shape of the rows to come.
+
+\vspace{3mm}
+
+\noindent\uibar{panel}{120}\\[1.5mm]
+\uibar{panel}{90}\\[1.5mm]
+\uibar{panel}{140}
+
+\vspace{3mm}
+{\small\color{muted}Skeleton placeholder -- varied line widths suggest a loading text block; replace with real content on arrival.}
+
+\subhead{Tooltip}
+
+\vspace{2mm}
+\uichip{Tooltip text}
+\vspace{2mm}
+
+{\small\color{muted}A tooltip surfaces supplementary help on hover or keyboard focus, and dismisses on blur. Keep the copy to a short phrase; never place essential actions inside it.}
+
+\clearpage

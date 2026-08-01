@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+"""
+components.py — source-of-truth generator for the Component Library PDF.
+
+This Python file is the single source of truth for the component sheet. Edit the
+INPUTS section below (the shared token palette) and the render_* sections, then
+re-run to regenerate the sibling `components.tex` and `components.pdf`. Do NOT
+hand-edit the generated `.tex` / `.pdf` — they are overwritten on every run.
+
+The sheet ships with a GENERIC PLACEHOLDER brand and shares its palette with the
+brand guide (05-BRAND-GUIDE/guide-build/brand_guide.py), so the two PDFs match.
+Its job is to give a client a feel for the UI — representative components, not a
+full production kit: buttons, form controls, badges, alerts, cards, navigation,
+avatars, and feedback elements, each rendered with LaTeX/tcolorbox.
+
+Pipeline (mirrors the brand guide): the script writes a `.tex` and compiles it to
+PDF with **xelatex** (run twice for stable layout). xelatex, the TeX Gyre Heros
+font, and tcolorbox all ship with a standard `texlive` install, so the template
+is portable.
+
+Usage:
+    python3 components.py             # regenerate components.tex + components.pdf
+    python3 components.py --no-pdf    # regenerate the .tex only (skip xelatex)
+    python3 components.py --check     # verify committed .tex matches; writes nothing
+
+Standard library only (no dependencies). British English throughout.
+"""
+from __future__ import annotations
+
+import argparse
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+TEX_OUT = HERE / "components.tex"
+PDF_OUT = HERE / "components.pdf"
+
+
+# =========================================================================== #
+# INPUTS — the shared token palette (matches the brand guide). Single source of
+# truth for every colour the components use. Edit here and re-run.
+# =========================================================================== #
+
+# name -> hex. The LaTeX preamble turns each into a \definecolor.
+PALETTE = {
+    "primary": "222933",
+    "secondary": "52606D",
+    "accent": "3B82C4",
+    "ink": "1A1D21",
+    "muted": "6B7280",
+    "border": "C7CDD4",
+    "panel": "EEF1F4",
+    "paper": "FFFFFF",
+    "success": "2F9E44",
+    "warning": "E8A317",
+    "error": "D64545",
+    "info": "3B82C4",
+    # Soft tints for alert / badge backgrounds.
+    "successbg": "E7F4EA",
+    "warningbg": "FBF1DD",
+    "errorbg": "FBE9E9",
+    "infobg": "E4F0F9",
+}
+
+BRAND = {
+    "name": "Your Brand",
+    "version": "0.1.0",
+    "date": "DD/MM/YYYY",
+    "intro": (
+        "This is an indicative component set for Your Brand — enough to give a "
+        "feel for how the interface will look, not a full production kit. Every "
+        "component uses the shared token palette, so it matches the brand guide. "
+        "Replace the placeholder tokens in component-build/components.py with your "
+        "own and re-run to regenerate this document."
+    ),
+}
+
+
+# =========================================================================== #
+# LaTeX HELPERS
+# =========================================================================== #
+
+_TEX_SPECIALS = {
+    "\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$",
+    "#": r"\#", "_": r"\_", "{": r"\{", "}": r"\}",
+    "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
+}
+
+
+def tex(s: str) -> str:
+    """Escape a string for safe use as LaTeX body text."""
+    return "".join(_TEX_SPECIALS.get(ch, ch) for ch in str(s))
+
+
+def _palette_defs() -> str:
+    return "\n".join(
+        r"\definecolor{" + name + r"}{HTML}{" + hx + r"}"
+        for name, hx in PALETTE.items()
+    )
+
+
+# The static preamble. `<<FOOTER>>` and `<<COLOURS>>` are substituted before use.
+# Braces here are literal LaTeX (this is a normal string, not an f-string).
+#
+# Shared macro contract — every section is written against THESE macros only:
+#   \uibtn[colour]{label}        filled pill button (white text)
+#   \uibtnoutline[colour]{label} outlined pill button
+#   \uibtnghost[colour]{label}   text-only (ghost) button
+#   \uibtnsm[colour]{label}      small filled button
+#   \uibtnlg[colour]{label}      large filled button
+#   \uibadge[colour]{label}      solid status badge (white text)
+#   \uichip{label}               soft outlined chip
+#   \uialert{frame}{bg}{title}{body}   full-width alert box
+#   \uifieldbox[colour]{content} bordered input-style box (full width)
+#   \uiavatar[colour]{INITIALS}  rounded-square avatar
+#   \uibar{colour}{width_mm}     a solid fill bar (progress/skeleton)
+#   uicard (env)                 bordered white card, use inside a minipage
+#   \subhead{text}               bold subsection heading
+#   \brandsection{text}          page section heading with accent rule
+# Colours available: every key of PALETTE (primary, accent, success, ...).
+PREAMBLE = r"""% !TEX program = xelatex
+% GENERATED by component-build/components.py — do not edit by hand. Edit the INPUTS
+% and render_* sections in the Python source and re-run to regenerate this file.
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=18mm]{geometry}
+\usepackage{fontspec}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+
+\setmainfont{TeX Gyre Heros}
+\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+<<COLOURS>>
+
+\setlist[itemize]{leftmargin=5mm,itemsep=2pt,topsep=2pt}
+
+% ---- Section + subheading -------------------------------------------------- %
+\newcommand{\brandsection}[1]{%
+  \par\addvspace{4mm}%
+  {\LARGE\bfseries\color{ink}#1}\par\vspace{1.5mm}%
+  {\color{accent}\rule{\linewidth}{2pt}}\par\vspace{5mm}%
+}
+\newcommand{\subhead}[1]{\par\addvspace{3mm}{\large\bfseries\color{ink}#1}\par\vspace{2mm}}
+
+% ---- Buttons --------------------------------------------------------------- %
+\newtcbox{\uibtn}[1][accent]{on line, nobeforeafter, colback=#1, colframe=#1,
+  coltext=paper, boxrule=0pt, arc=3pt, boxsep=0pt,
+  left=9pt, right=9pt, top=5pt, bottom=5pt, fontupper=\small\bfseries}
+\newtcbox{\uibtnoutline}[1][primary]{on line, nobeforeafter, colback=paper,
+  colframe=#1, coltext=#1, boxrule=0.8pt, arc=3pt, boxsep=0pt,
+  left=9pt, right=9pt, top=5pt, bottom=5pt, fontupper=\small\bfseries}
+\newtcbox{\uibtnghost}[1][primary]{on line, nobeforeafter, colback=paper,
+  colframe=paper, coltext=#1, boxrule=0pt, arc=3pt, boxsep=0pt,
+  left=9pt, right=9pt, top=5pt, bottom=5pt, fontupper=\small\bfseries}
+\newtcbox{\uibtnsm}[1][accent]{on line, nobeforeafter, colback=#1, colframe=#1,
+  coltext=paper, boxrule=0pt, arc=2.5pt, boxsep=0pt,
+  left=6pt, right=6pt, top=3pt, bottom=3pt, fontupper=\scriptsize\bfseries}
+\newtcbox{\uibtnlg}[1][accent]{on line, nobeforeafter, colback=#1, colframe=#1,
+  coltext=paper, boxrule=0pt, arc=3.5pt, boxsep=0pt,
+  left=13pt, right=13pt, top=7pt, bottom=7pt, fontupper=\bfseries}
+
+% ---- Badges + chips -------------------------------------------------------- %
+\newtcbox{\uibadge}[1][info]{on line, nobeforeafter, colback=#1, colframe=#1,
+  coltext=paper, boxrule=0pt, arc=6pt, boxsep=0pt,
+  left=6pt, right=6pt, top=2pt, bottom=2pt, fontupper=\scriptsize\bfseries}
+\newtcbox{\uichip}{on line, nobeforeafter, colback=panel, colframe=border,
+  coltext=ink, boxrule=0.6pt, arc=6pt, boxsep=0pt,
+  left=6pt, right=6pt, top=2pt, bottom=2pt, fontupper=\scriptsize}
+
+% ---- Alerts ---------------------------------------------------------------- %
+% \uialert{frameColour}{bgColour}{title}{body}
+\newcommand{\uialert}[4]{%
+  \begin{tcolorbox}[colback=#2, colframe=#1, leftrule=3pt, toprule=0pt,
+    rightrule=0pt, bottomrule=0pt, arc=2pt, boxsep=3pt,
+    left=9pt, right=9pt, top=6pt, bottom=6pt, before skip=3pt, after skip=3pt]
+    {\bfseries\color{#1}#3}\\[1pt]{\small\color{ink}#4}
+  \end{tcolorbox}%
+}
+
+% ---- Input fields ---------------------------------------------------------- %
+% \uifieldbox[borderColour]{content}
+\newtcbox{\uifieldbox}[1][border]{nobeforeafter, colback=paper, colframe=#1,
+  boxrule=0.8pt, arc=3pt, boxsep=0pt, left=8pt, right=8pt, top=5pt, bottom=5pt,
+  width=\linewidth, fontupper=\small}
+
+% ---- Avatars --------------------------------------------------------------- %
+\newtcbox{\uiavatar}[1][accent]{on line, nobeforeafter, colback=#1, colframe=#1,
+  coltext=paper, boxrule=0pt, arc=4mm, width=9mm, height=9mm, valign=center,
+  halign=center, boxsep=0pt, fontupper=\small\bfseries}
+
+% ---- Card ------------------------------------------------------------------ %
+\newtcolorbox{uicard}{colback=paper, colframe=border, boxrule=0.8pt, arc=4pt,
+  boxsep=2pt, left=10pt, right=10pt, top=9pt, bottom=9pt,
+  before skip=2pt, after skip=2pt}
+
+% ---- Solid fill bar (progress / skeleton) ---------------------------------- %
+% \uibar{colour}{width_mm}
+\newcommand{\uibar}[2]{\textcolor{#1}{\rule[-0.4mm]{#2mm}{3.6mm}}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{muted}<<FOOTER>>}
+\fancyfoot[R]{\footnotesize\color{muted}\thepage}
+
+\begin{document}
+"""
+
+
+def render_cover() -> str:
+    name = tex(BRAND["name"])
+    version = tex(BRAND["version"])
+    date = tex(BRAND["date"])
+    return (
+        r"\thispagestyle{empty}" "\n"
+        r"\vspace*{28mm}" "\n"
+        r"{\color{accent}\rule{40mm}{4pt}}\par\vspace{10mm}" "\n"
+        r"{\fontsize{52}{58}\selectfont\bfseries\color{ink}" + name + r"}\par\vspace{4mm}" "\n"
+        r"{\fontsize{22}{28}\selectfont\color{muted}Component Library}\par\vspace{8mm}" "\n"
+        r"{\large\color{ink}An indicative UI kit — a feel for the interface.}\par\vspace{18mm}" "\n"
+        r"\uibtn[primary]{Primary}\quad\uibtnoutline[primary]{Secondary}\quad"
+        r"\uibadge[success]{Active}\quad\uichip{Tag}\par" "\n"
+        r"\vfill" "\n"
+        r"{\footnotesize\color{muted}Version " + version + r" \quad\textbullet\quad " + date +
+        r" \quad\textbullet\quad Generated from component-build/components.py}\par" "\n"
+        r"\clearpage" "\n"
+    )
+
+
+def render_intro() -> str:
+    return (
+        r"\brandsection{Overview}" "\n" +
+        r"{\large " + tex(BRAND["intro"]) + r"}\par\vspace{4mm}" "\n"
+        r"\begin{itemize}" "\n"
+        r"\item \textbf{Buttons} — variants, sizes, and states." "\n"
+        r"\item \textbf{Form controls} — inputs, selection, and toggles." "\n"
+        r"\item \textbf{Badges \& alerts} — status indicators and messages." "\n"
+        r"\item \textbf{Cards} — contained content surfaces." "\n"
+        r"\item \textbf{Navigation} — navbar, tabs, breadcrumb, pagination." "\n"
+        r"\item \textbf{Avatars \& feedback} — identity and progress elements." "\n"
+        r"\end{itemize}" "\n"
+        r"\clearpage" "\n"
+    )
+
+
+# --------------------------------------------------------------------------- #
+# COMPONENT SECTIONS
+# --------------------------------------------------------------------------- #
+# Each section is an editable LaTeX partial, `section-<name>.tex`, written against
+# the macro contract in the preamble. Change a component by editing its partial (or
+# add a new one here and to SECTION_ORDER); the palette colours it references resolve
+# from the INPUTS above. Re-run the generator to reassemble.
+
+SECTION_ORDER = [
+    "buttons", "forms", "badges", "alerts", "cards", "navigation", "avfeedback",
+]
+
+
+def _section(name: str) -> str:
+    path = HERE / f"section-{name}.tex"
+    if not path.exists():
+        raise RuntimeError(f"missing component section partial: {path.name}")
+    return path.read_text(encoding="utf-8").rstrip() + "\n"
+
+
+# =========================================================================== #
+# ASSEMBLY
+# =========================================================================== #
+
+def render_tex() -> str:
+    parts = [
+        PREAMBLE
+        .replace("<<COLOURS>>", _palette_defs())
+        .replace("<<FOOTER>>", tex(BRAND["name"]) + " — Component Library"),
+        render_cover(),
+        render_intro(),
+    ]
+    parts += [_section(name) for name in SECTION_ORDER]
+    parts.append(r"\end{document}" + "\n")
+    return "\n".join(parts)
+
+
+# =========================================================================== #
+# OUTPUT + CLI
+# =========================================================================== #
+
+def compile_pdf(tex_path: Path, pdf_path: Path) -> None:
+    """Compile a .tex to PDF with xelatex (run twice for stable layout)."""
+    xelatex = shutil.which("xelatex")
+    if not xelatex:
+        raise RuntimeError(
+            "xelatex not found. Install it with: sudo apt install texlive-xetex")
+    with tempfile.TemporaryDirectory(prefix="components_") as tmp:
+        cmd = [xelatex, "-interaction=nonstopmode", "-halt-on-error",
+               "-output-directory", tmp, str(tex_path)]
+        result = None
+        for _ in range(2):
+            result = subprocess.run(cmd, capture_output=True, text=True,
+                                    cwd=str(tex_path.parent))
+            if result.returncode != 0:
+                break
+        if result is None or result.returncode != 0:
+            log = Path(tmp) / (tex_path.stem + ".log")
+            errs = ""
+            if log.exists():
+                errs = "\n".join(
+                    ln for ln in log.read_text(errors="replace").splitlines()
+                    if ln.startswith("!"))[:1200]
+            raise RuntimeError(f"xelatex failed:\n{errs or (result.stderr[:1000] if result else '')}")
+        produced = Path(tmp) / (tex_path.stem + ".pdf")
+        if not produced.exists():
+            raise RuntimeError("xelatex reported success but produced no PDF.")
+        shutil.move(str(produced), str(pdf_path))
+
+
+def cmd_write(make_pdf: bool) -> int:
+    TEX_OUT.write_text(render_tex(), encoding="utf-8")
+    print(f"wrote {TEX_OUT.name}")
+    if make_pdf:
+        compile_pdf(TEX_OUT, PDF_OUT)
+        print(f"wrote {PDF_OUT.name}  ({PDF_OUT.stat().st_size / 1024:.1f} KB)")
+    return 0
+
+
+def cmd_check() -> int:
+    gen = render_tex()
+    if not TEX_OUT.exists():
+        print(f"MISS {TEX_OUT.name}: no committed file to reconcile against")
+        return 1
+    if TEX_OUT.read_text(encoding="utf-8") == gen:
+        print(f"OK   {TEX_OUT.name}  (byte-identical, {len(gen)} bytes)")
+        return 0
+    print(f"DIFF {TEX_OUT.name}: committed .tex is out of date — re-run to regenerate.")
+    return 1
+
+
+def main(argv=None) -> int:
+    p = argparse.ArgumentParser(description="Generate the Component Library PDF.")
+    p.add_argument("--no-pdf", action="store_true",
+                   help="regenerate the .tex only; skip xelatex")
+    p.add_argument("--check", action="store_true",
+                   help="verify the committed .tex matches; write nothing")
+    args = p.parse_args(argv)
+    if args.check:
+        return cmd_check()
+    return cmd_write(make_pdf=not args.no_pdf)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,9 +1,16 @@
-# QA Guide — project-name
+---
+type: guide
+agent: qa-tester
+skills: [stack-django, stack-htmx-templates]
+model: fable
+---
 
-> **Agent hints — Model:** Sonnet
+# QA Guide — {{PROJECT_NAME}}
 
-**Last Updated**: 28/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
-**Language**: British English (en_GB)
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Claude Model:** fable — QA test scenario design, acceptance criteria, edge case planning, test coverage
+**MCP Servers:** code-review-graph (test coverage analysis)
 
 ---
 
@@ -37,7 +44,7 @@ This guide supports the `workflows/10-qa-checks` workflow.
 QA checks run once per sprint cycle, after security checks and before sprint plans are written:
 
 ```text
-09-security-checks  →  10-qa-checks  →  12-sprint-plans  →  13-backend-code
+09-security-checks  →  10-qa-checks  →  12-api-design  →  13-decisions  →  14-sprint-plans  →  15-story-plans  →  16-backend-code
 ```
 
 QA checks are also the point where missing acceptance criteria in `src/01-STORIES/` are
@@ -209,4 +216,4 @@ Before closing the QA checks workflow:
 - [ ] All acceptance criteria gaps identified and fed back into `US###.md`
 - [ ] No stories with unresolved `AC-GAP` entries remain
 - [ ] Developer notes on testability requirements added where needed
-- [ ] Ready to proceed to `workflows/12-sprint-plans`
+- [ ] Ready to proceed to `workflows/12-api-design` (or `workflows/14-sprint-plans` if API design is already complete)

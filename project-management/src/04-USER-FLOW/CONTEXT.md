@@ -1,24 +1,29 @@
 # project-management/src/04-USER-FLOW
 
-User flow diagrams and journey maps for every primary interaction area of the project-name. Each
-file documents the full sequence of screens, decisions, and transitions a user follows through one
-area of the product.
+User flow diagrams and journey maps — one `USER-FLOW-<AREA>.md` per primary interaction
+area, documenting the full sequence of screens, decisions, and transitions a user follows.
+`USER-FLOW-TEMPLATE.md` is the template; copy it for every new flow.
 
 ## Directory Tree
 
 ```text
 project-management/src/04-USER-FLOW/
-├── CONTEXT.md                   ← this file
-├── USER-FLOW-ADMIN-CONTENT.md   ← admin content management journeys
-├── USER-FLOW-ADMIN-MEMBERS.md   ← admin member management journeys
-├── USER-FLOW-AUTH.md            ← registration, login, logout, password reset
-├── USER-FLOW-CLIENT-PORTAL.md   ← client portal access and document workflows
-├── USER-FLOW-GDPR.md            ← consent, data export, and deletion flows
-├── USER-FLOW-NEWSLETTER.md      ← newsletter subscribe and unsubscribe journeys
-└── USER-FLOW-PUBLIC.md          ← public-facing pages and navigation journeys
+├── CONTEXT.md                  ← this file
+├── CLAUDE.md                   ← operating rules for this folder
+├── USER-FLOW-TEMPLATE.md       ← flow-narrative template — copy for each new area
+├── USER-FLOW-<AREA>.md         ← per-area flow narrative (SCREAMING-SNAKE-CASE area)
+└── DIAGRAMS/                   ← rendered flow images (PNG exports from the Mermaid source)
+    ├── CONTEXT.md
+    ├── CLAUDE.md
+    └── flow-<area>-<screen>.png
 ```
 
-**Naming:** `USER-FLOW-<AREA>.md`
+**Naming:** `USER-FLOW-<AREA>.md` — flow narrative; `flow-<area>-<screen>.png` — rendered image.
+
+A flow narrative documents each screen/journey with a narrative, a rendered diagram, and its
+Mermaid source, plus (where they apply) API-design, security, GDPR, and SEO cross-references.
+A thin flow that belongs to a larger journey becomes a one-line **stub** pointing at the
+canonical section — never a second copy. Full scaffold and stub pattern: `USER-FLOW-TEMPLATE.md`.
 
 ## When to read
 
@@ -33,3 +38,5 @@ project-management/src/04-USER-FLOW/
 - `project-management/src/01-STORIES/` — user stories the flows are derived from
 - `project-management/src/08-GDPR/` — GDPR compliance artefacts for data flows
 - `project-management/CONTEXT.md` — full project-management layer overview
+
+**Last Updated**: {{DATE}}

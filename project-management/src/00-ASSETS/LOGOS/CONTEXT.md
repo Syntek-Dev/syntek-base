@@ -1,16 +1,19 @@
 # project-management/src/00-ASSETS/LOGOS
 
-Syntek logo exports organised by format and resolution.
+Brand logo slot — a placeholder for a project's logo assets. Empty in the base template;
+populate it per project.
 
 ## Directory Tree
 
 ```text
 project-management/src/00-ASSETS/LOGOS/
 ├── CONTEXT.md               ← this file
-├── 8k/                      ← 8K raster exports (PNG)
-├── hd/                      ← HD raster exports (PNG)
-└── svg/                     ← SVG vector source files (source of truth)
+├── CLAUDE.md                ← operating rules for this folder
+└── (add brand logo assets)  ← e.g. svg/ (vector source of truth) + raster exports (hd/, 8k/)
 ```
 
-The SVG files in `svg/` are the source of truth. Raster variants in `hd/` and `8k/` are derived
-exports — re-export from source when the logo changes, do not edit rasters directly.
+**Convention:** keep the vector source (SVG) as the source of truth; derive any raster
+exports (e.g. `hd/`, `8k/` PNGs) from it, and re-export from source whenever the logo
+changes — never hand-edit a raster.
+
+**Last Updated**: {{DATE}}

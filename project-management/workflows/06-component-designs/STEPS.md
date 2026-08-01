@@ -1,28 +1,56 @@
+---
+workflow: 06-component-designs
+phase: design
+agent: frontend
+skills: [stack-htmx-templates, prototype]
+model: fable
+---
+
 # Component Designs — Steps
 
-**Last Updated**: 21/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `project-management/REFERENCES.md` as you work through these steps:
+
+| Step      | Section                                                |
+| --------- | ------------------------------------------------------ |
+| All steps | **Internal — Live Artefacts** → src/06-COMPONENTS/     |
+| All steps | **Internal — Guides** → code/docs/RESPONSIVE-DESIGN.md |
 
 ---
 
 ## Steps
 
-### Step 1 — Identify Required Components
+### Step 1 — Grill, then Identify Required Components
+
+> **Model:** opus · **MCP:** code-review-graph (reference only)
+
+**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+interview {{DEVELOPER_NAME}} one question at a time about the required components, their states and
+variants, and reuse of existing shared components before identifying the component set.
+
+If a design question stays open after grilling, spike it with a throwaway prototype
+(`.claude/skills/prototype/SKILL.md`) to answer that one question before committing to the
+real build.
 
 Review the user flows and user stories for the in-scope area.
 List every UI component needed. For each one, check whether it already exists in:
 
-- `code/src/frontend/src/components/`
+- `code/src/django/components/`
 - The Figma component library
 
 Reuse existing components before designing new ones.
 
 ### Step 2 — Design New Components in Figma
 
-Open the Figma team templates:
-[Figma Drafts — Syntek Studio](https://www.figma.com/files/team/1593704150140722359/drafts?fuid=1593704145676751629)
+> **Model:** opus · **MCP:** figma (reference only)
 
-Use the component design template. For each new component, design all required variants and states:
+For each new component, design all required variants and states:
 
 - Default
 - Hover
@@ -32,7 +60,38 @@ Use the component design template. For each new component, design all required v
 - Success
 - Empty / loading (where applicable)
 
-Use brand tokens (Figma variables from the brand guide file) — never raw hex values or hard-coded sizes.
+Use brand tokens (colour, typography, spacing) — never raw hex values or hard-coded sizes.
+
+#### 2a — Set child constraints (flexible layout)
+
+Every component frame uses `layoutMode: 'NONE'`. Responsive behaviour comes entirely from
+**Figma child constraints** — set them explicitly on every child element before signing off:
+
+| Element role                            | Horizontal | Vertical |
+| --------------------------------------- | ---------- | -------- |
+| Background fill rectangle               | STRETCH    | STRETCH  |
+| Left-pinned content (logo, card start)  | MIN        | CENTER   |
+| Right-pinned content (CTA, hamburger)   | MAX        | CENTER   |
+| Centred content (hero text, quotes)     | CENTER     | MIN      |
+| Full-width text or divider              | STRETCH    | MIN      |
+| Proportionally scaled image placeholder | SCALE      | STRETCH  |
+| Fixed-position badge (e.g. status dot)  | MAX        | MAX      |
+
+Verify by temporarily resizing the component frame to the smallest (320 px) and largest
+(10240 px) widths — backgrounds must fill, and pinned elements must stay correctly positioned.
+
+#### 2b — In-place rebuild via Figma MCP
+
+When rebuilding an existing component programmatically via `mcp__figma__use_figma`:
+
+1. Clear the component's children first (do not create a new COMPONENT node — preserve the key).
+2. Rebuild child elements with correct `constraints` on each node.
+3. Re-publish the library — existing instances in wireframe files auto-update; no re-placing needed.
+
+**Figma MCP page-switch rule**: if the target page is not already current, split into two script
+runs — Run 1: `await figma.setCurrentPageAsync(targetPage)` only. Run 2: build all content on
+`figma.currentPage`. Never switch page and mutate content in the same run (children will not
+persist).
 
 ### Step 3 — Annotate Components
 
@@ -40,7 +99,7 @@ For each component, document in Figma or an accompanying note:
 
 - Props / variants exposed to consumers
 - Accessibility requirements (ARIA role, keyboard interaction, focus management)
-- Responsive behaviour — annotate which breakpoint tiers require layout changes (refer to `project-management/docs/RESPONSIVE-DESIGN.md` for the full viewport tier table)
+- Responsive behaviour
 - Any motion or transition behaviour
 
 ### Step 4 — Accessibility Review
@@ -71,8 +130,21 @@ Record sign-off via PR review or a comment in the Figma file.
 ### Step 7 — Commit
 
 ```text
-/syntek-dev-suite:git
+git
 ```
+
+> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
 
 ---
 

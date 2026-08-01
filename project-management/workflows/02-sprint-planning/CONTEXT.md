@@ -1,6 +1,6 @@
 # Workflow: Sprint Planning
 
-> **Agent hints — Model:** Sonnet
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
@@ -13,44 +13,36 @@ project-management/workflows/02-sprint-planning/
 
 ## When to use this
 
-Use this workflow at the start of each sprint to select, prioritise, and plan user stories.
-No sprint should begin without a completed sprint file.
+Use this workflow early in a sprint cycle to create a high-level sprint record — sprint goal,
+candidate stories, and initial scope. Run it after stories exist and before design work begins.
+
+> **Note:** This workflow produces a high-level sprint record (`SPRINT-##.md`).
+> The detailed sprint plan (story assignments, phase breakdown, GDPR/security/QA constraints)
+> is written later via `workflows/14-sprint-plans/`, after all pre-sprint checks are complete.
 
 ## Prerequisites
 
-- [ ] A backlog of user stories exists in `project-management/src/01-STORIES/`
-- [ ] Each candidate story is marked `Status: Ready` and has no incomplete prerequisites
-- [ ] The previous sprint is closed (its Definition of Done is complete)
-- [ ] The next sprint number has been confirmed by checking `project-management/src/02-SPRINTS/`
+- [ ] Backlog of user stories exists in `project-management/src/01-STORIES/`
+- [ ] Previous sprint is closed or in wind-down
 
 ## Key concepts
 
-- Every sprint is based on `project-management/src/02-SPRINTS/SPRINT-00-TEMPLATE.md` — never start from a blank file
-- Sprints are saved as `SPRINT-##.md` (2-digit zero-padded, e.g. `SPRINT-01.md`)
-- The flags table must be completed before any section is written — flags are rolled up from the stories selected for the sprint
-- The Frontend flag must specify `Web`, `Mobile`, or `Web + Mobile` — never just `Yes`
-- Sections marked `N/A` in the flags table must be removed from the file entirely
-- The Story Summary table replaces the User Story section — it lists every story in the sprint with ID, Title, MoSCoW, and SP
-- The Acceptance Criteria and Task sections are sprint-level rollups — detailed implementation lives in the individual story files
-- The Verification Checks and Definition of Done sections must always be present
-
-## Template sections and flags
-
-| Flag      | When to set                                         | Sections it controls                            |
-| --------- | --------------------------------------------------- | ----------------------------------------------- |
-| DB        | Any story in the sprint creates or modifies a model | DB Acceptance Criteria · DB Tasks               |
-| User Flow | Any story introduces a new user journey             | User Flow Acceptance Criteria · User Flow Tasks |
-| Backend   | Any story involves service layer work               | Backend Acceptance Criteria · Backend Tasks     |
-| API       | Any story changes the GraphQL schema                | API Acceptance Criteria · API Tasks             |
-| Frontend  | Any story has UI work — Web / Mobile / Web + Mobile | Frontend Acceptance Criteria · Frontend Tasks   |
-| GDPR      | Any story processes personal data                   | GDPR Acceptance Criteria · GDPR Tasks           |
-| Security  | Any story has a security concern                    | Security Acceptance Criteria · Security Tasks   |
-| Testing   | Any story requires tests                            | Testing Acceptance Criteria · Testing Tasks     |
+- Sprint records are saved as `SPRINT-##.md` in `project-management/src/02-SPRINTS/`
+- Use MoSCoW prioritisation (Must / Should / Could / Won't) to identify candidate stories
+- This record captures intent; the definitive plan comes from `workflows/14-sprint-plans/`
 
 ## Cross-references
 
-- `project-management/src/02-SPRINTS/SPRINT-00-TEMPLATE.md` — sprint template (always use this as the base)
+### Hard gates — read before executing Step 1
+
+- `project-management/docs/SPRINT-PLANNING-GUIDE.md` — MoSCoW format must be correct before writing any sprint record
+
+### Soft references — consult during execution
+
 - `project-management/src/01-STORIES/` — story backlog
-- `project-management/src/02-SPRINTS/` — sprint history
-- `project-management/docs/SPRINT-PLANNING-GUIDE.md` — capacity and MoSCoW guidance
-- `project-management/docs/VERSIONING-GUIDE.md` — sprint numbering rules
+- `project-management/src/02-SPRINTS/` — sprint records
+- `project-management/src/14-SPRINT-PLANS/` — detailed sprint plans (written after checks)
+- `project-management/workflows/14-sprint-plans/` — detailed planning workflow
+- `project-management/src/08-GDPR/` — check GDPR obligations for candidate stories
+- `project-management/src/09-SECURITY/` — check open security findings
+- `project-management/src/10-QA/` — confirm QA docs exist

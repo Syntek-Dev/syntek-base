@@ -1,13 +1,34 @@
+---
+workflow: 07-wireframes
+phase: design
+agent: frontend
+skills: [stack-htmx-templates]
+model: fable
+---
+
 # Wireframes — Steps
 
-**Last Updated**: 18/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `project-management/REFERENCES.md` as you work through these steps:
+
+| Step      | Section                                                                                   |
+| --------- | ----------------------------------------------------------------------------------------- |
+| All steps | **Internal — Live Artefacts** → src/07-WIREFRAMES/                                        |
+| All steps | **Internal — Guides** → code/docs/RESPONSIVE-DESIGN.md (breakpoints and orientation data) |
 
 ---
 
 ## Steps
 
 ### Step 1 — Define the Page or Feature Scope
+
+> **Model:** opus
 
 From the user story, identify:
 
@@ -17,23 +38,21 @@ From the user story, identify:
 
 ### Step 2 — Sketch the Layout
 
-Read `project-management/docs/RESPONSIVE-DESIGN.md` before sketching. Wireframes must start
-from mobile (360px portrait) and scale up — not the other way around.
+> **Model:** opus · **MCP:** figma (reference only)
 
-Open the Figma team templates:
-[Figma Drafts — Syntek Studio](https://www.figma.com/files/team/1593704150140722359/drafts?fuid=1593704145676751629)
-
-Use the **web wireframe template** for Next.js screens and the **mobile wireframe template** for Expo screens. Early sketches in Excalidraw or Markdown ASCII are fine for exploration, but the final signed-off wireframes must live in Figma.
-
-Produce a wireframe for each distinct view at each relevant viewport tier. Include:
+Produce a wireframe for each distinct view. Include:
 
 - Page/component hierarchy
 - Navigation and routing (where does each action lead?)
 - Form fields, labels, and validation messages
 - Interactive states: default, hover, focus, disabled, error, success, empty
-- Any layout changes between the mobile, xmd (600px), md (768px), and desktop tiers
+
+Tools: Figma, Excalidraw, or a plain Markdown ASCII layout — any format is acceptable
+as long as the document is readable and committed.
 
 ### Step 3 — Document the Wireframe
+
+> **Model:** opus
 
 Save the wireframe document to `project-management/src/07-WIREFRAMES/`.
 
@@ -60,9 +79,30 @@ Review the wireframe for:
 Wireframes must be agreed before frontend implementation starts.
 Record sign-off in the document or via PR review.
 
-### Step 6 — Proceed to Implementation
+### Step 6 — Proceed to the Next Gate
 
-Once approved, follow `code/workflows/01-new-feature/` to build the feature.
+**Not to code.** Signed-off wireframes unlock the remaining design and compliance gates, not
+implementation — a feature is not codeable until workflows 01–15 are complete
+(`project-management/workflows/CLAUDE.md`). Continue in order:
+
+`08-gdpr-compliance` → `09-security-checks` → `10-qa-checks` → `11-seo-checks` (public pages)
+→ `12-api-design` (if the story touches the Ninja API) → `13-decisions` → `14-sprint-plans`
+→ `15-story-plans`.
+
+The story plan produced by `15-story-plans/` is the master a developer codes from. Frontend
+implementation then runs through `18-frontend-code/`, which drives
+`code/workflows/01-new-feature/` and `code/workflows/02-tdd-cycle/`.
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
 
 ---
 

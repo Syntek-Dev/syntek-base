@@ -1,6 +1,6 @@
 # Workflow: QA Checks
 
-> **Agent hints — Model:** Sonnet
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
@@ -33,7 +33,19 @@ Use this workflow after security checks and before sprint planning to:
 
 ## Cross-references
 
+### Hard gates — read before executing Step 1
+
+None — QA planning is pre-code; no safety gates apply.
+
+### Soft references — consult during execution
+
 - `project-management/src/10-QA/` — QA documents output
 - `project-management/src/01-STORIES/` — user stories to map QA scenarios against
 - `project-management/src/07-WIREFRAMES/` — wireframes under review
+- `project-management/src/04-USER-FLOW/` — QA scenarios trace to user flow steps
+- `project-management/src/09-SECURITY/` — security findings that QA must exercise
+- `project-management/docs/QA-GUIDE.md` — QA scenario format, edge case categories, and acceptance criteria feedback
 - `project-management/docs/GIT-GUIDE.md` — commit and PR conventions
+- `code/docs/TESTING.md` — test taxonomy and coverage floors that QA scenarios feed into
+- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA checks that QA must cover for all interactive components
+- `project-management/workflows/14-sprint-plans/` — next step after QA

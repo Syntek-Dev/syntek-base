@@ -1,12 +1,36 @@
 # Changelog
 
-**Last Updated**: {{DATE}} **Version**: 0.7.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.8.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [0.8.0] - 01/08/2026
+
+### Added
+
+- `project-management/src/` renumbered to `00`–`20` across three tiers — specify (`01-STORIES` … `12-API-DESIGN`), decide and plan (`13-DECISIONS`, `14-SPRINT-PLANS`, `15-STORY-PLANS`), and record (`16-TESTS` … `20-REFACTORING`).
+- `project-management/workflows/` extended to `01`–`21`, adding `12-api-design`, `13-decisions`, `14-sprint-plans`, `15-story-plans`, the `16`–`18` implementation phases, `19-implementation-documentation`, `20-pr-and-review`, and `21-release`.
+- `project-management/docs/gdpr/` — `COMPLIANCE.md` and `DATA-RIGHTS.md`, with `GDPR-GUIDE.md` reduced to a thin index over them.
+- `project-management/export/clickup/` and `clickup-task-map.json` — the read-only client export surface regenerated from source stories by the pre-commit hook.
+- `project-management/src/00-ASSETS/scripts/` — the export and sync family: `export-clickup-stories.sh`, `export-design-docs.sh`, `export-pm-files.sh`, `export-wireframes.sh`, `sync-clickup.sh`, and the self-gating `precommit-clickup.sh`.
+- `CLAUDE.md` operating-rules files for the layer root, `docs/`, every `src/` artefact folder, and every numbered workflow.
+
+### Changed
+
+- All eight PM guides rewritten for the Django-only stack — `GIT-GUIDE.md`, `VERSIONING-GUIDE.md` (now a two-tier scheme with the django sub-package), `SEO-CHECKLIST.md`, `SECURITY-GUIDE.md`, `QA-GUIDE.md`, `SPRINT-PLANNING-GUIDE.md`, `GDPR-GUIDE.md`, and the `RESPONSIVE-DESIGN.md` redirect stub.
+- `project-management/CONTEXT.md` and `REFERENCES.md` rewritten around the three-tier structure and the cross-layer workflow pairing map.
+- Story, sprint, and plan templates re-expressed with template placeholders in place of project-specific content.
+
+### Removed
+
+- The pre-renumbering artefact folders `00-DECISIONS/`, `00-PLANS/`, `13-SPRINT-PLANS/`, `14-TESTS/`, `15-REVIEWS/`, `16-BUGS/`, and `17-REFACTORING/` — superseded by their renumbered equivalents.
+- The organisation's logo exports (`00-ASSETS/LOGOS/` at 8k, HD, and SVG) and the project's twelve ERD diagrams (`00-ASSETS/ERD-DIAGRAMS/`) — a template ships the asset pipeline, not one organisation's brand or one project's schema.
 
 ---
 

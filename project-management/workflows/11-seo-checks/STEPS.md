@@ -1,7 +1,27 @@
+---
+workflow: 11-seo-checks
+phase: verify
+agent: seo
+skills: [stack-htmx-templates]
+model: opus
+---
+
 # SEO Checks — Steps
 
-**Last Updated**: 01/05/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `project-management/REFERENCES.md` as you work through these steps:
+
+| Step      | Section                                                                                                                              |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| All steps | **Internal — Guides** → project-management/docs/SEO-CHECKLIST.md                                                                     |
+| All steps | **External — SEO & Discoverability** → Google Search Central, Google Lighthouse, Core Web Vitals, Schema.org, llms.txt specification |
+| Artefacts | **Internal — Live Artefacts** → src/11-SEO/IMPLEMENTATION/ (save SEO-IMPL-US###-\* records here)                                     |
 
 ---
 
@@ -12,13 +32,17 @@
 Run the automated SEO skill against the page or pages in scope:
 
 ```text
-/syntek-dev-suite:seo [describe the page, route, and any specific SEO requirements]
+seo [describe the page, route, and any specific SEO requirements]
 ```
+
+> **↳ New agent:** `seo` · **Model:** opus · **MCP:** none
 
 The skill checks metadata, Open Graph tags, canonical URLs, JSON-LD, sitemap inclusion,
 and heading hierarchy. Review its output before proceeding to manual checks.
 
 ### Step 2 — Verify metadata in the browser
+
+> **Model:** opus · **MCP:** claude-in-chrome (reference only)
 
 Open the page in the browser and inspect the `<head>` tag (DevTools → Elements):
 
@@ -98,8 +122,31 @@ All items must be ticked before the story's Definition of Done can be marked com
 If any SEO issues were found and fixed during this workflow, commit the changes:
 
 ```text
-/syntek-dev-suite:git
+git
 ```
+
+> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+
+---
+
+### Step 12 — Write SEO implementation record
+
+Save an implementation record summarising the SEO audit for this story:
+
+- File: `SEO-IMPL-US###-<descriptor>-DD-MM-YYYY.md`
+- Location: `project-management/src/11-SEO/IMPLEMENTATION/`
+- Include: Lighthouse scores, issues found and resolved, final sign-off status, and a reference to the story's `### SEO Acceptance Criteria`
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
 
 ---
 

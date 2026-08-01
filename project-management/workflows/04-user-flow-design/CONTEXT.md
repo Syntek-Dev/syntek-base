@@ -1,6 +1,6 @@
 # Workflow: User Flow Design
 
-> **Agent hints — Model:** Sonnet · **MCP:** `figma`, `mcp-mermaid` (flow diagrams)
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
@@ -31,7 +31,19 @@ area. Run it after story creation and before brand guides or wireframes.
 
 ## Cross-references
 
+### Hard gates — read before executing Step 1
+
+None — user flow design is a pre-code design phase; no safety gates apply.
+
+### Soft references — consult during execution
+
 - `project-management/src/04-USER-FLOW/` — where user flow documents are saved
 - `project-management/src/01-STORIES/` — stories the flows are derived from
 - `project-management/src/08-GDPR/` — GDPR data-touch artefacts traced from flows
+- `project-management/src/09-SECURITY/` — existing threat findings inform flow decisions
+- `project-management/docs/GDPR-GUIDE.md` — data flows must map to lawful basis and retention rules
+- `project-management/docs/SECURITY-GUIDE.md` — STRIDE threat modelling is applied to flows in workflow 09
+- `code/docs/RESPONSIVE-DESIGN.md` — device and orientation data; flows must account for mobile and desktop paths
+- `code/docs/URL-STRATEGY.md` — URL and route structure that flows must follow
+- `project-management/workflows/06-component-designs/` — component design follows from agreed flows
 - `project-management/workflows/07-wireframes/` — follow this after flows are agreed

@@ -1,18 +1,28 @@
+---
+workflow: 11-seo-checks
+phase: verify
+agent: seo
+skills: [stack-htmx-templates]
+model: opus
+---
+
 # SEO Checks — Checklist
 
-**Last Updated**: 01/05/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 ---
 
+> **See** `project-management/REFERENCES.md` → **Internal — Guides** (SEO-CHECKLIST.md) · **External — SEO & Discoverability** (Lighthouse, Core Web Vitals) · **Internal — Live Artefacts** (src/11-SEO/) for supporting references.
+
 ## Automated checks
 
-- [ ] `/syntek-dev-suite:seo` skill run and output reviewed
+- [ ] `seo` skill run and output reviewed
 - [ ] No errors or warnings remain from the skill output
 
 ## Metadata
 
-- [ ] `<title>` is set via the Next.js metadata API — max 60 chars — contains the primary keyword
+- [ ] `<title>` is set in the Django template `<head>` (apps.seo, `build_seo` helper) — max 60 chars — contains the primary keyword
 - [ ] `<meta name="description">` is set — max 160 chars — unique to this page
 - [ ] `<link rel="canonical">` is present and points to the correct URL
 - [ ] `og:title` is set and matches or complements the page title
@@ -51,7 +61,17 @@
 ## Story sign-off
 
 - [ ] All items in the story's `### SEO Acceptance Criteria` section are ticked
-- [ ] Any fixes committed via `/syntek-dev-suite:git`
+- [ ] Any fixes committed via `git`
+- [ ] SEO implementation record written to `project-management/src/11-SEO/IMPLEMENTATION/SEO-IMPL-US###-<descriptor>-DD-MM-YYYY.md`
+
+---
+
+## Context
+
+- [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
+- [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
+- [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+- [ ] Every new directory created during this workflow has a `CONTEXT.md` inside it
 
 ---
 

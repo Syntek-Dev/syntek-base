@@ -1,9 +1,16 @@
-# Sprint Planning Guide — project-name
+---
+type: guide
+agent: sprint
+skills: [global-workflow]
+model: fable
+---
 
-> **Agent hints — Model:** Sonnet
+# Sprint Planning Guide — {{PROJECT_NAME}}
 
-**Last Updated**: 28/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
-**Language**: British English (en_GB)
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Claude Model:** fable — Sprint structure, MoSCoW prioritisation, phase breakdown, user story planning
+**MCP Servers:** code-review-graph (scope and dependency impact analysis)
 
 ---
 
@@ -12,6 +19,7 @@
 - [Overview](#overview)
 - [When to Write a Sprint Plan](#when-to-write-a-sprint-plan)
 - [MoSCoW Prioritisation](#moscow-prioritisation)
+- [Story Statuses](#story-statuses)
 - [Development Phases](#development-phases)
 - [Sprint Plan Document Format](#sprint-plan-document-format)
 - [Relationship to Other Documents](#relationship-to-other-documents)
@@ -25,8 +33,8 @@ A sprint plan is the **single source of truth** for what is in scope, why, and i
 will be built. It is written once per sprint, after GDPR, security, and QA checks are complete,
 so that developers begin with a full picture of the requirements, constraints, and test criteria.
 
-Sprint plans live in `project-management/src/12-SPRINT-PLANS/`. This guide supports the
-`workflows/12-sprint-plans` workflow.
+Sprint plans live in `project-management/src/14-SPRINT-PLANS/`. This guide supports the
+`workflows/14-sprint-plans` workflow.
 
 ---
 
@@ -36,12 +44,14 @@ Sprint plans are written at the end of the pre-sprint checks phase:
 
 ```text
 08-gdpr-compliance
-09-security-checks   ←  all three must be complete and signed off
+09-security-checks   ←  all of these must be complete and signed off
 10-qa-checks
+11-seo-checks
+12-api-design
           ↓
-12-sprint-plans  ←  sprint plan written here
+14-sprint-plans  ←  sprint plan written here
           ↓
-13-backend-code  ←  development begins
+16-backend-code  ←  development begins
 ```
 
 **Prerequisites** — all of the following must be done before writing the sprint plan:
@@ -71,17 +81,43 @@ scope or split the sprint.
 
 ---
 
+## Story Statuses
+
+Story tracking uses the **ClickUp** board status vocabulary — ClickUp is the template's default
+PM board. Each story's `**Status:**` header in `src/01-STORIES/US###.md` must be one
+of these values — they are the canonical set, mirrored into the client exports under
+`project-management/export/clickup/` and pushed to ClickUp by the `clickup-sync` workflow:
+
+| Status              | Meaning                                                       |
+| ------------------- | ------------------------------------------------------------- |
+| `Open`              | Created, not yet refined or started (default for a new story) |
+| `Pending`           | Refined and queued, awaiting a start                          |
+| `In Progress`       | Actively being worked                                         |
+| `In Review`         | PR raised / under code review                                 |
+| `Accepted`          | Internally QA-accepted                                        |
+| `Accepted Customer` | Signed off by the client                                      |
+| `Rejected`          | Sent back internally                                          |
+| `Rejected Customer` | Sent back by the client                                       |
+| `Blocked`           | Blocked on a dependency                                       |
+| `Completed`         | Done and merged to `testing`; not yet deployed                |
+| `Closed`            | Fully closed / archived                                       |
+
+New stories start as `Open`. This is the canonical set — if a project's board uses a different
+vocabulary, map it here once rather than mixing the two.
+
+---
+
 ## Development Phases
 
 Each sprint follows the same four-phase delivery sequence. Stories are mapped to phases based on
 which layers they touch:
 
-| Phase | Workflow           | What is built                                           |
-| ----- | ------------------ | ------------------------------------------------------- |
-| **1** | `13-backend-code`  | Django models, services, business logic, migrations     |
-| **2** | `14-api-code`      | Strawberry GraphQL types, queries, mutations, resolvers |
-| **3** | `15-frontend-code` | Next.js pages, React components, Apollo integration     |
-| **4** | `17-pr-and-review` | PR, code review, QA sign-off, merge to `testing`        |
+| Phase | Workflow           | What is built                                                 |
+| ----- | ------------------ | ------------------------------------------------------------- |
+| **1** | `16-backend-code`  | Django models, services, business logic, migrations           |
+| **2** | `17-api-code`      | Django Ninja routers, endpoints, and request/response Schemas |
+| **3** | `18-frontend-code` | Django views + templates, django-components (HTMX + Alpine)   |
+| **4** | `20-pr-and-review` | PR, code review, QA sign-off, merge to `testing`              |
 
 Tests are written **alongside** each phase — not after. Backend tests in Phase 1; API tests in
 Phase 2; frontend tests in Phase 3.
@@ -93,7 +129,7 @@ records which phases each story requires.
 
 ## Sprint Plan Document Format
 
-One file per sprint in `project-management/src/12-SPRINT-PLANS/`:
+One file per sprint in `project-management/src/14-SPRINT-PLANS/`:
 
 ```text
 SPRINT-PLAN-##.md  (e.g. SPRINT-PLAN-01.md)
@@ -155,7 +191,7 @@ SPRINT-PLAN-##.md  (e.g. SPRINT-PLAN-01.md)
 
 ## Phase Breakdown
 
-### Phase 1 — Backend (`workflows/13-backend-code`)
+### Phase 1 — Backend (`workflows/16-backend-code`)
 
 **Stories**: US###, US###
 
@@ -164,25 +200,25 @@ Key deliverables:
 - <model or service to implement>
 - <migration to write>
 
-### Phase 2 — API (`workflows/14-api-code`)
+### Phase 2 — API (`workflows/17-api-code`)
 
 **Stories**: US###, US###
 
 Key deliverables:
 
-- <GraphQL type or query to implement>
-- <mutation and permission check>
+- <Ninja endpoint or Schema to implement>
+- <endpoint and permission check>
 
-### Phase 3 — Frontend (`workflows/15-frontend-code`)
+### Phase 3 — Frontend (`workflows/18-frontend-code`)
 
 **Stories**: US###, US###
 
 Key deliverables:
 
 - <page or component to implement>
-- <Apollo hook to wire up>
+- <HTMX/Alpine interaction to wire up>
 
-### Phase 4 — PR & Review (`workflows/17-pr-and-review`)
+### Phase 4 — PR & Review (`workflows/20-pr-and-review`)
 
 All stories. PR opened to `testing`; CI must pass; QA sign-off required before merge.
 

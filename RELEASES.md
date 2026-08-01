@@ -1,9 +1,32 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.7.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.8.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.8.0 — 01/08/2026
+
+**Status:** Documentation release — the PM layer is restructured into three tiers
+
+### Summary
+
+The project-management layer is restructured around three explicit tiers: specify (`01`–`12`),
+decide and plan (`13`–`15`), and record (`16`–`20`). Artefact folders and workflows are renumbered
+to match, with new slots for API design, SEO, decisions, sprint plans, and story plans — the story
+plan is now the master document a developer codes from. Workflows extend to 21, adding
+implementation documentation as a hard gate before the PR, and a release procedure at the end.
+Every guide is rewritten for the Django-only stack, `GDPR-GUIDE.md` is split into a sub-folder,
+and the domain-specific example artefacts are cleared so the template ships templates, not data.
+
+### What's new since v0.7.0
+
+- **Three tiers, explicitly numbered** — specify (01–12) → decide and plan (13–15) → record (16–20), with the story plan as the code master
+- **Workflows to 21** — API design, decisions, sprint and story plans, three implementation phases, implementation documentation, PR and review, and release
+- **Documentation is a hard gate** — `19-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
+- **No project data** — example artefacts and organisation assets are cleared; what ships is the structure and the templates
 
 ---
 

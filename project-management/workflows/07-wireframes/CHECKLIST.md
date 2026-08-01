@@ -1,15 +1,22 @@
+---
+workflow: 07-wireframes
+phase: design
+agent: frontend
+skills: [stack-htmx-templates]
+model: fable
+---
+
 # Wireframes — Checklist
 
-**Last Updated**: 18/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 ---
 
+> **See** `project-management/REFERENCES.md` → **Internal — Guides** (RESPONSIVE-DESIGN.md) · **Internal — Live Artefacts** (src/07-WIREFRAMES/) for supporting references.
+
 ## Execution Checklist
 
-- [ ] `project-management/docs/RESPONSIVE-DESIGN.md` read — mobile-first approach applied
-- [ ] Figma team templates opened: [Figma Drafts — Syntek Studio](https://www.figma.com/files/team/1593704150140722359/drafts?fuid=1593704145676751629)
-- [ ] Web wireframes built in the Figma web wireframe template; mobile wireframes in the Figma mobile wireframe template
 - [ ] All pages and components in scope are covered
 - [ ] Happy path and all edge cases (empty, loading, error) have wireframes
 - [ ] All interactive element states defined (default, hover, focus, disabled, error, success)
@@ -20,8 +27,18 @@
 
 ---
 
+## Context
+
+- [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
+- [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
+- [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+- [ ] Every new directory created during this workflow has a `CONTEXT.md` inside it
+
+---
+
 ## Definition of Done
 
 - [ ] Wireframes reviewed and signed off before frontend development begins
 - [ ] Document committed and pushed
-- [ ] `code/workflows/01-new-feature/` triggered as the next step
+- [ ] `08-gdpr-compliance/` triggered as the next gate — **not** a code workflow; 01–15 must
+      complete before any implementation begins

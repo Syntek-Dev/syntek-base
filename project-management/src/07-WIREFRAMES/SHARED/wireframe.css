@@ -1,0 +1,500 @@
+/* =============================================================================
+   wireframe.css — shared chrome + placeholder-brand tokens for all wireframes
+   -----------------------------------------------------------------------------
+   Self-contained: no CDN, no build step, no external fonts. Every screen in
+   SCREENS/ links this one file with <link rel="stylesheet" href="../SHARED/
+   wireframe.css">, then composes its layout from the classes below.
+
+   The palette mirrors the brand guide and component sheet (05-BRAND-GUIDE /
+   06-COMPONENTS) so the whole design family reads as one system. To rebrand a
+   project, edit the --wf-* custom properties in :root — nothing else references
+   a raw colour. These are indicative wireframe tokens, NOT the code-side
+   DB-canonical design tokens (see code/docs/DESIGN-TOKENS.md).
+   ========================================================================== */
+
+:root {
+  /* Brand palette — shared placeholder values (hex mirrors 05/06) */
+  --wf-primary: #222933;
+  --wf-secondary: #52606d;
+  --wf-accent: #3b82c4;
+  --wf-ink: #1a1d21;
+  --wf-muted: #6b7280;
+  --wf-border: #c7cdd4;
+  --wf-panel: #eef1f4;
+  --wf-paper: #ffffff;
+
+  /* Status palette + tints */
+  --wf-success: #2f9e44;
+  --wf-warning: #e8a317;
+  --wf-error: #d64545;
+  --wf-info: #3b82c4;
+  --wf-success-bg: #e7f4ea;
+  --wf-warning-bg: #fbf1dd;
+  --wf-error-bg: #fbe9e9;
+  --wf-info-bg: #e4f0f9;
+
+  /* Type scale */
+  --wf-font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --wf-mono: ui-monospace, "SFMono-Regular", "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  --wf-fs-xs: 0.75rem;
+  --wf-fs-sm: 0.875rem;
+  --wf-fs-base: 1rem;
+  --wf-fs-lg: 1.25rem;
+  --wf-fs-xl: 1.75rem;
+  --wf-fs-2xl: 2.5rem;
+
+  /* Spacing scale */
+  --wf-sp-1: 0.25rem;
+  --wf-sp-2: 0.5rem;
+  --wf-sp-3: 1rem;
+  --wf-sp-4: 1.5rem;
+  --wf-sp-5: 2rem;
+  --wf-sp-6: 3rem;
+
+  /* Radius + elevation */
+  --wf-radius: 8px;
+  --wf-radius-lg: 14px;
+  --wf-shadow: 0 1px 2px rgba(26, 29, 33, 0.06), 0 4px 12px rgba(26, 29, 33, 0.08);
+
+  /* Layout */
+  --wf-content-max: 1120px;
+}
+
+/* --- Reset / base ---------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--wf-font);
+  font-size: var(--wf-fs-base);
+  line-height: 1.55;
+  color: var(--wf-ink);
+  background: var(--wf-panel);
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--wf-accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--wf-accent);
+  outline-offset: 2px;
+}
+
+/* Skip link — accessibility landmark, hidden until focused */
+.wf-skip {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 100;
+  background: var(--wf-primary);
+  color: var(--wf-paper);
+  padding: var(--wf-sp-2) var(--wf-sp-3);
+  border-radius: 0 0 var(--wf-radius) 0;
+}
+.wf-skip:focus {
+  left: 0;
+}
+
+/* --- Wireframe banner ------------------------------------------------------ */
+/* Marks the page as an indicative wireframe, not a final design. */
+.wf-banner {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--wf-panel),
+    var(--wf-panel) 12px,
+    #e4e8ed 12px,
+    #e4e8ed 24px
+  );
+  border-bottom: 1px solid var(--wf-border);
+  color: var(--wf-secondary);
+  font-size: var(--wf-fs-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: var(--wf-sp-2);
+}
+
+/* --- Layout shell ---------------------------------------------------------- */
+.wf-container {
+  width: 100%;
+  max-width: var(--wf-content-max);
+  margin-inline: auto;
+  padding-inline: var(--wf-sp-4);
+}
+
+.wf-section {
+  padding-block: var(--wf-sp-6);
+}
+
+.wf-section--tight {
+  padding-block: var(--wf-sp-5);
+}
+
+/* --- Header / nav ---------------------------------------------------------- */
+.wf-header {
+  background: var(--wf-paper);
+  border-bottom: 1px solid var(--wf-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.wf-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--wf-sp-4);
+  min-height: 64px;
+}
+
+.wf-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--wf-sp-2);
+  font-weight: 700;
+  color: var(--wf-primary);
+  text-decoration: none;
+  font-size: var(--wf-fs-lg);
+}
+
+.wf-brand__mark {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--wf-radius);
+  background: var(--wf-primary);
+  color: var(--wf-paper);
+  display: grid;
+  place-items: center;
+  font-size: var(--wf-fs-sm);
+}
+
+.wf-nav__links {
+  display: flex;
+  gap: var(--wf-sp-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left: auto;
+}
+
+.wf-nav__links a {
+  color: var(--wf-secondary);
+  text-decoration: none;
+  font-size: var(--wf-fs-sm);
+  font-weight: 600;
+}
+
+.wf-nav__links a:hover {
+  color: var(--wf-primary);
+}
+
+/* --- Buttons --------------------------------------------------------------- */
+.wf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wf-sp-2);
+  padding: var(--wf-sp-2) var(--wf-sp-4);
+  border-radius: var(--wf-radius);
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  font-size: var(--wf-fs-sm);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.wf-btn--primary {
+  background: var(--wf-primary);
+  color: var(--wf-paper);
+}
+.wf-btn--secondary {
+  background: var(--wf-accent);
+  color: var(--wf-paper);
+}
+.wf-btn--ghost {
+  background: transparent;
+  color: var(--wf-primary);
+  border-color: var(--wf-border);
+}
+
+/* --- Hero ------------------------------------------------------------------ */
+.wf-hero {
+  background: var(--wf-paper);
+  border-bottom: 1px solid var(--wf-border);
+}
+
+.wf-hero__grid {
+  display: grid;
+  gap: var(--wf-sp-5);
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+
+.wf-hero h1 {
+  font-size: var(--wf-fs-2xl);
+  color: var(--wf-primary);
+  line-height: 1.1;
+}
+
+.wf-hero p {
+  color: var(--wf-secondary);
+  font-size: var(--wf-fs-lg);
+  margin-top: var(--wf-sp-3);
+  max-width: 46ch;
+}
+
+.wf-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wf-sp-3);
+  margin-top: var(--wf-sp-4);
+}
+
+/* --- Placeholder box (stand-in for imagery / media) ------------------------ */
+.wf-placeholder {
+  background: var(--wf-panel);
+  border: 1px dashed var(--wf-border);
+  border-radius: var(--wf-radius-lg);
+  color: var(--wf-muted);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: var(--wf-fs-sm);
+  min-height: 220px;
+  padding: var(--wf-sp-4);
+}
+
+/* --- Cards ----------------------------------------------------------------- */
+.wf-grid {
+  display: grid;
+  gap: var(--wf-sp-4);
+  grid-template-columns: 1fr;
+}
+
+.wf-card {
+  background: var(--wf-paper);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius-lg);
+  padding: var(--wf-sp-4);
+  box-shadow: var(--wf-shadow);
+}
+
+.wf-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--wf-radius);
+  background: var(--wf-info-bg);
+  color: var(--wf-accent);
+  display: grid;
+  place-items: center;
+  margin-bottom: var(--wf-sp-3);
+}
+
+.wf-card h3 {
+  font-size: var(--wf-fs-lg);
+  color: var(--wf-primary);
+  margin-bottom: var(--wf-sp-2);
+}
+
+.wf-card p {
+  color: var(--wf-secondary);
+  font-size: var(--wf-fs-sm);
+}
+
+.wf-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: var(--wf-fs-xs);
+  font-weight: 700;
+  color: var(--wf-accent);
+}
+
+.wf-section__head {
+  max-width: 60ch;
+  margin-bottom: var(--wf-sp-5);
+}
+
+.wf-section__head h2 {
+  font-size: var(--wf-fs-xl);
+  color: var(--wf-primary);
+  margin-top: var(--wf-sp-2);
+}
+
+.wf-section__head p {
+  color: var(--wf-secondary);
+  margin-top: var(--wf-sp-2);
+}
+
+/* --- Form ------------------------------------------------------------------ */
+.wf-form {
+  background: var(--wf-paper);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius-lg);
+  padding: var(--wf-sp-5);
+  max-width: 560px;
+  box-shadow: var(--wf-shadow);
+}
+
+.wf-field {
+  margin-bottom: var(--wf-sp-4);
+}
+
+.wf-field label {
+  display: block;
+  font-weight: 600;
+  font-size: var(--wf-fs-sm);
+  color: var(--wf-primary);
+  margin-bottom: var(--wf-sp-2);
+}
+
+.wf-field input,
+.wf-field textarea,
+.wf-field select {
+  width: 100%;
+  padding: var(--wf-sp-2) var(--wf-sp-3);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  font: inherit;
+  font-size: var(--wf-fs-sm);
+  background: var(--wf-paper);
+  color: var(--wf-ink);
+}
+
+.wf-field__hint {
+  font-size: var(--wf-fs-xs);
+  color: var(--wf-muted);
+  margin-top: var(--wf-sp-2);
+}
+
+/* --- Footer ---------------------------------------------------------------- */
+.wf-footer {
+  background: var(--wf-primary);
+  color: var(--wf-paper);
+  margin-top: var(--wf-sp-6);
+}
+
+.wf-footer a {
+  color: #cfe0ef;
+  text-decoration: none;
+}
+
+.wf-footer__grid {
+  display: grid;
+  gap: var(--wf-sp-5);
+  grid-template-columns: 1fr;
+  padding-block: var(--wf-sp-6) var(--wf-sp-5);
+}
+
+.wf-footer h4 {
+  font-size: var(--wf-fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--wf-sp-3);
+  color: #aebdcb;
+}
+
+.wf-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--wf-sp-2);
+  font-size: var(--wf-fs-sm);
+}
+
+.wf-footer__legal {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-block: var(--wf-sp-4);
+  font-size: var(--wf-fs-xs);
+  color: #aebdcb;
+}
+
+/* --- Annotation system ----------------------------------------------------- */
+/* Numbered markers keyed to the annotation list — how wireframes carry intent. */
+.wf-note {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.4em;
+  height: 1.4em;
+  padding-inline: 0.2em;
+  border-radius: 999px;
+  background: var(--wf-warning);
+  color: var(--wf-ink);
+  font-size: var(--wf-fs-xs);
+  font-weight: 700;
+  vertical-align: super;
+  line-height: 1;
+}
+
+.wf-annotations {
+  background: var(--wf-warning-bg);
+  border: 1px solid var(--wf-warning);
+  border-radius: var(--wf-radius-lg);
+  padding: var(--wf-sp-4) var(--wf-sp-5);
+}
+
+.wf-annotations h2 {
+  font-size: var(--wf-fs-lg);
+  color: var(--wf-ink);
+  margin-bottom: var(--wf-sp-3);
+}
+
+.wf-annotations ol {
+  margin: 0;
+  padding-left: var(--wf-sp-4);
+  display: grid;
+  gap: var(--wf-sp-2);
+  font-size: var(--wf-fs-sm);
+  color: var(--wf-secondary);
+}
+
+/* --- Breakpoints ----------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .wf-hero__grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+  .wf-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wf-footer__grid {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 64rem) {
+  .wf-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Collapse the nav links on narrow screens (indicative — a real build adds a
+   drawer toggle; the wireframe simply wraps). */
+@media (max-width: 40rem) {
+  .wf-nav__links {
+    display: none;
+  }
+}

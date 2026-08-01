@@ -1,9 +1,19 @@
 ---
 workflow: 12-api-design
 phase: design
+agent: backend
+skills: [stack-django]
+model: fable
 ---
 
 # Checklist — API Design
+
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Language**: British English (en_GB)
+
+---
+
+> **See** `project-management/REFERENCES.md` → **Internal — Live Artefacts** (src/12-API-DESIGN/, src/12-API-DESIGN/PLANNING/) for supporting references.
 
 Use this checklist to verify the API design document is complete before sprint planning.
 
@@ -54,6 +64,15 @@ Use this checklist to verify the API design document is complete before sprint p
 
 - [ ] Deprecated fields are marked with `@deprecated` and a removal version noted
 - [ ] No existing client query is broken without a migration path documented
+
+## Context
+
+- [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
+- [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
+- [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+- [ ] Every new directory created during this workflow has a `CONTEXT.md` inside it
+
+---
 
 ## Sign-off
 

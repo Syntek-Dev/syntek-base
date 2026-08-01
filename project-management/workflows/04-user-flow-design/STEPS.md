@@ -1,13 +1,39 @@
+---
+workflow: 04-user-flow-design
+phase: design
+agent: planner
+skills: [global-workflow]
+model: fable
+---
+
 # User Flow Design — Steps
 
-**Last Updated**: 21/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
+
+---
+
+## Key references
+
+Consult `project-management/REFERENCES.md` as you work through these steps:
+
+| Step      | Section                                                                                       |
+| --------- | --------------------------------------------------------------------------------------------- |
+| All steps | **Internal — Live Artefacts** → src/04-USER-FLOW/                                             |
+| All steps | **Internal — Guides** → code/docs/RESPONSIVE-DESIGN.md (device breakpoints for flow diagrams) |
 
 ---
 
 ## Steps
 
-### Step 1 — Identify the Product Area
+### Step 1 — Grill, then Identify the Product Area
+
+> **Model:** fable
+
+**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+interview {{DEVELOPER_NAME}} one question at a time — the product area's boundaries, the roles and their
+entry points, the decision nodes and their success/failure outcomes, and every
+personal-data touchpoint — before mapping. Record hard-to-reverse calls as an ADR.
 
 Review the in-scope user stories and group them by product area (e.g. auth, client portal,
 public pages, admin content). Confirm which area this flow document covers.
@@ -21,6 +47,8 @@ Identify every point a user can enter the area:
 - External links (emails, notifications)
 
 ### Step 3 — Map the Journey
+
+> **Model:** opus · **MCP:** mcp-mermaid (reference only)
 
 For each entry point, trace the full sequence of screens, decisions, and transitions.
 Include:
@@ -38,6 +66,8 @@ Annotate each step where personal data is collected, displayed, or transmitted.
 This feeds the GDPR compliance review in `project-management/workflows/08-gdpr-compliance/`.
 
 ### Step 5 — Document the Flow
+
+> **Model:** opus
 
 Save the flow document to `project-management/src/04-USER-FLOW/`.
 
@@ -62,8 +92,21 @@ Review the flow for:
 ### Step 7 — Commit
 
 ```text
-/syntek-dev-suite:git
+git
 ```
+
+> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
 
 ---
 

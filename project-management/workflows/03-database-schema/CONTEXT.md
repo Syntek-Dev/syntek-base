@@ -1,6 +1,6 @@
 # Workflow: Database Schema Design
 
-> **Agent hints — Model:** Sonnet · **MCP:** `docfork` + `context7` (Django ORM, PostgreSQL), `mcp-mermaid` (ERD diagrams)
+**Last Updated**: {{DATE}}
 
 ## Directory Tree
 
@@ -27,10 +27,22 @@ data structure, relationship, or schema change is being planned.
 - Schema design happens before code — models must reflect a reviewed, agreed design
 - Documents are saved to `project-management/src/03-DATABASE/`
 - Changes that affect existing data require an explicit migration strategy
-- All schema decisions must align with `code/docs/DATA-STRUCTURES.md`
+- All schema decisions must align with `code/docs/data-structures/SCHEMA-DESIGN.md`
 
 ## Cross-references
 
+### Hard gates — read before executing Step 1
+
+- `code/docs/data-structures/SCHEMA-DESIGN.md` — naming and index conventions; violations block model creation (PostgreSQL, normalisation, indexes, FK, migrations)
+- `code/docs/encryption/FIELD-ENCRYPTION.md` — PII fields must be flagged and encrypted in the schema before coding begins
+
+### Soft references — consult during execution
+
 - `project-management/src/03-DATABASE/` — where schema design documents are saved
-- `code/docs/DATA-STRUCTURES.md` — domain modelling and PostgreSQL conventions
-- `code/workflows/09-database-migration/` — follow this after schema is approved
+- `project-management/src/01-STORIES/` — the story driving the schema change
+- `code/docs/data-structures/DOMAIN-MODELLING.md` — value objects, enums, aggregates, domain modelling conventions
+- `code/docs/rls/FUNDAMENTALS.md` — row-level security policy design alongside schema changes
+- `code/docs/security/AUTH-AND-AUTHZ.md` — database security, enumeration prevention, and IDOR considerations
+- `project-management/docs/GDPR-GUIDE.md` — data classification for new personal data fields
+- `code/workflows/09-database-migration/` — implements this schema, but is entered from
+  `16-backend-code/` once the story plan (15) is signed off — **not** directly from here

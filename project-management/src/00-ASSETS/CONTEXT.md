@@ -1,18 +1,33 @@
 # project-management/src/00-ASSETS
 
-Static assets used across the project — logos, images, and other media.
+Static assets and export tooling for the PM layer — a brand-logo slot and the shell
+scripts that batch-export PM and design artefacts for client delivery.
 
 ## Directory Tree
 
 ```text
 project-management/src/00-ASSETS/
 ├── CONTEXT.md               ← this file
-├── ERD-DIAGRAMS/            ← rendered ERD images (ERD-<DOMAIN>.png)
-├── LOGOS/                   ← Syntek logo variants by format and resolution
-│   ├── 8k/                  ← 8K raster exports (PNG)
-│   ├── hd/                  ← HD raster exports (PNG)
-│   └── svg/                 ← SVG vector source files (source of truth)
-└── USER-FLOW-DIAGRAMS/      ← rendered user flow images (FLOW-<AREA>-<SCREEN>.png)
+├── CLAUDE.md                ← operating rules for this folder
+├── LOGOS/                   ← brand logo slot (empty placeholder — populate per project)
+│   ├── CONTEXT.md
+│   └── CLAUDE.md
+└── scripts/                 ← export helper scripts
+    ├── export-clickup-stories.sh ← per-story client Markdown → export/clickup/ (read-only)
+    ├── export-design-docs.sh  ← exports brand/component design HTML → PDF
+    ├── export-pm-files.sh     ← exports PM artefacts (stories, sprints, plans) → zip
+    ├── export-wireframes.sh   ← exports wireframe HTML → PDF
+    ├── precommit-clickup.sh   ← lefthook guard: regenerates ClickUp exports on commit
+    └── sync-clickup.sh        ← upserts ClickUp exports into ClickUp (clickup-sync CI workflow)
 ```
 
-Do not commit large unoptimised binaries. Re-export from source when diagrams or logos change.
+`LOGOS/` is a placeholder for a project's brand logos — add the vector source (SVG,
+the source of truth) plus any raster exports; never edit a raster directly, re-export
+from source.
+
+The `scripts/` are shell helpers for batch-exporting artefacts — do not run them
+directly; use the project shell-script conventions in `code/src/scripts/`.
+
+Do not commit large unoptimised binaries.
+
+**Last Updated**: {{DATE}}
