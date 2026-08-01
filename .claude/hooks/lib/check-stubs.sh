@@ -1,19 +1,17 @@
-#!/usr/bin/env bash
-#
-# check-stubs.sh — Detect hard-coded stubs via stubs.sh.
-# Exit 0 = pass | Exit 1 = fail
+# check-stubs.sh — stub audit (local only; grep on host-mounted source files).
+# Source: .claude/hooks/pre-pr-check.sh
+# Uses: SCRIPTS, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
-set -uo pipefail
-
-output=$(bash "$SCRIPTS/audits/stubs.sh" 2>&1)
-exit_code=$?
-
-printf '%s\n' "$output"
-
-if [[ $exit_code -eq 0 ]]; then
-  printf '#SUMMARY:No hard stubs found\n'
-else
-  h=$(printf '%s\n' "$output" | grep -oE '[0-9]+ occurrence' | head -1 || true)
-  printf '#SUMMARY:%s\n' "${h:-Hard stubs found}"
-  exit 1
-fi
+_check_stubs() {
+  local output="" exit_code=0
+  output=$(bash "$SCRIPTS/audits/stubs.sh" 2>&1) || exit_code=$?
+  CHECK_OUTPUT["stubs"]="$output"
+  if [[ $exit_code -eq 0 ]]; then
+    CHECK_PASS["stubs"]="true"
+    CHECK_SUMMARY["stubs"]="No hard stubs found"
+  else
+    CHECK_PASS["stubs"]="false"
+    local h; h=$(printf '%s' "$output" | grep -oE '[0-9]+ occurrence' | head -1)
+    CHECK_SUMMARY["stubs"]="${h:-Hard stubs found}"
+  fi
+}

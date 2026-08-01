@@ -1,18 +1,39 @@
-#!/usr/bin/env bash
-#
-# check-format.sh — Dry-run code style check (ruff + Prettier) via format.sh.
-# Exit 0 = pass | Exit 1 = fail
+# check-format.sh — format check.
+# Python (backend): ruff format --check — run local AND in Docker (host/container drift check).
+# Prettier: repo-wide (Markdown, CSS, JSON, YAML, JS), scoped by .prettierignore. It runs in
+#   the host Node toolchain, so this leg is host-only and is folded identically into both
+#   legs (no container to drift against).
+# Source: .claude/hooks/pre-pr-check.sh
+# Uses: PROJECT_ROOT, DEV_COMPOSE, _dual_result, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
-set -uo pipefail
+_check_format() {
+  local local_exit=0 docker_exit=0
+  local local_py="" docker_py="" js_out="" js_exit=0
 
-output=$(bash "$SCRIPTS/syntax/format.sh" 2>&1)
-exit_code=$?
+  # ── Python — local + Docker (drift check) ──────────────────────────────────
+  local_py=$(ruff format --check "$PROJECT_ROOT/code/src/django/" 2>&1) \
+    || local_exit=1
+  docker_py=$(_dc exec -T django \
+    ruff format --check code/src/django/ 2>&1) || docker_exit=1
 
-printf '%s\n' "$output"
+  # ── Prettier — repo-wide, host-only (folded into both legs) ────────────────
+  js_out=$(cd "$PROJECT_ROOT" && pnpm exec prettier --check . 2>&1) || js_exit=1
+  [[ $js_exit -ne 0 ]] && { local_exit=1; docker_exit=1; }
 
-if [[ $exit_code -eq 0 ]]; then
-  printf '#SUMMARY:No style issues\n'
-else
-  printf '#SUMMARY:Style issues found — run format.sh --fix to correct\n'
-  exit 1
-fi
+  local combined_local combined_docker
+  combined_local=$(printf 'Python (ruff format --check):\n%s\n\nPrettier (--check):\n%s' \
+    "$local_py" "$js_out")
+  combined_docker=$(printf 'Python (ruff format --check):\n%s\n\nPrettier (--check):\n%s' \
+    "$docker_py" "$js_out")
+
+  _dual_result "format" "$local_exit" "$docker_exit" "$combined_local" "$combined_docker"
+
+  if [[ "${CHECK_PASS[format]}" == "true" ]]; then
+    CHECK_SUMMARY["format"]="All files correctly formatted (Python local ✓ Docker ✓ · Prettier ✓)"
+  elif [[ -z "${CHECK_SUMMARY[format]:-}" ]]; then
+    local count
+    count=$(printf '%s\n%s' "$local_py" "$js_out" \
+      | grep -cE '(would reformat|needs formatting|Unformatted)' 2>/dev/null || echo "?")
+    CHECK_SUMMARY["format"]="${count} file(s) need formatting — run format.sh --fix"
+  fi
+}

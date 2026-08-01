@@ -1,25 +1,19 @@
-#!/usr/bin/env bash
-#
-# check-cloc.sh — Enforce 800-line file limit.
-# Outputs full cloc audit, then a #SUMMARY: sentinel on the last line.
-# Exit 0 = pass | Exit 1 = fail
+# check-cloc.sh — line-count enforcement via cloc.sh (local only).
+# Source: .claude/hooks/pre-pr-check.sh
+# Uses: PROJECT_ROOT, SCRIPTS, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
-set -uo pipefail
-
-output=$(bash "$SCRIPTS/audits/cloc.sh" 2>&1)
-exit_code=$?
-
-printf '%s\n' "$output"
-
-if [[ $exit_code -eq 0 ]]; then
-  warn=$(printf '%s\n' "$output" | grep -oE '[0-9]+ file' | head -1 || true)
-  if [[ -n "$warn" ]]; then
-    printf '#SUMMARY:%ss approaching limit · All files within 800-line limit\n' "$warn"
+_check_cloc() {
+  local output="" exit_code=0
+  output=$(bash "$SCRIPTS/audits/cloc.sh" 2>&1) || exit_code=$?
+  CHECK_OUTPUT["cloc"]="$output"
+  if [[ $exit_code -eq 0 ]]; then
+    CHECK_PASS["cloc"]="true"
+    local w; w=$(printf '%s' "$output" | grep -oE '[0-9]+ file[s]? approaching' | head -1)
+    CHECK_SUMMARY["cloc"]="${w:+${w} — }All files within 800-line limit"
   else
-    printf '#SUMMARY:All files within 800-line limit\n'
+    CHECK_PASS["cloc"]="false"
+    local e; e=$(printf '%s' "$output" \
+      | grep -oE '[0-9]+ file[s]? exceed' | head -1)
+    CHECK_SUMMARY["cloc"]="${e:-File(s) exceed 800-line hard limit}"
   fi
-else
-  err=$(printf '%s\n' "$output" | grep -oE '[0-9]+ file' | head -1 || true)
-  printf '#SUMMARY:%s\n' "${err:-File(s) exceed 800-line limit}"
-  exit 1
-fi
+}

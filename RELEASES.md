@@ -1,9 +1,34 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.5.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.6.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.6.0 — 01/08/2026
+
+**Status:** Feature release — the agent and skill surface moves from marketplace plugins into the repository
+
+### Summary
+
+The agent and skill surface previously came from two installed marketplace plugins. Those are now
+disabled and their content lives in the repository, so a scaffolded project inherits a complete,
+version-controlled Claude Code configuration with no external installation step. Fifty agents land
+in two tiers — eight orchestrators that act as entry points, and the specialists and document
+writers they delegate to. The skill library covers the stack, workflow, design, learning, and
+document-standard skills. Hooks are consolidated into a single eight-gate pre-PR check plus a
+pre-compact handoff interceptor, and the plugin directory is reduced to read-only inspection
+helpers — dev operations belong to the shell scripts, not to plugins.
+
+### What's new since v0.5.0
+
+- **50 agents, two tiers** — orchestrators are the entry points and delegate scoped work to tool-scoped specialists and document writers
+- **Skill library in-repo** — stack, workflow, design, learning, and document-standard skills load on demand with no marketplace dependency
+- **Eight-gate pre-PR check** — lockfiles, lint, format, typecheck, stubs, tests and coverage, `cloc` limits, and a security audit
+- **Handoff instead of compaction** — auto-compaction is disabled and intercepted; sessions write a committed handoff document and stop
+- **Read-only plugins** — six inspection helpers gather context; they never run dev operations
 
 ---
 

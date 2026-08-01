@@ -1,4 +1,106 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(stat:*)",
+      "Bash(file:*)",
+      "Bash(du:*)",
+      "Bash(df:*)",
+      "Bash(pwd)",
+      "Bash(realpath:*)",
+      "Bash(readlink:*)",
+      "Bash(dirname:*)",
+      "Bash(basename:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(fd:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(cut:*)",
+      "Bash(diff:*)",
+      "Bash(comm:*)",
+      "Bash(column:*)",
+      "Bash(jq:*)",
+      "Bash(cloc:*)",
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(which:*)",
+      "Bash(type:*)",
+      "Bash(whoami)",
+      "Bash(hostname)",
+      "Bash(uname:*)",
+      "Bash(id:*)",
+      "Bash(date:*)",
+      "Bash(env)",
+      "Bash(printenv:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch)",
+      "Bash(git branch -a)",
+      "Bash(git branch -r)",
+      "Bash(git branch -v)",
+      "Bash(git branch -vv)",
+      "Bash(git branch --list:*)",
+      "Bash(git branch --show-current)",
+      "Bash(git remote:*)",
+      "Bash(git fetch:*)",
+      "Bash(git blame:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git rev-list:*)",
+      "Bash(git ls-files:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git describe:*)",
+      "Bash(git tag)",
+      "Bash(git shortlog:*)",
+      "Bash(git stash list:*)",
+      "Bash(git reflog:*)",
+      "Bash(git show-ref:*)",
+      "Bash(git cat-file:*)",
+      "Bash(git diff-tree:*)",
+      "Bash(git merge-base:*)",
+      "Bash(git name-rev:*)",
+      "Bash(git config --get:*)",
+      "Bash(git config --list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr status:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh workflow list:*)",
+      "Bash(gh workflow view:*)",
+      "Bash(gh label list:*)",
+      "Bash(gh browse:*)"
+    ],
+    "deny": [
+      "Edit(project-management/export/clickup/US*-CLIENT.md)",
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "ReportFindings",
+      "DesignSync",
+      "NotebookEdit",
+      "SendMessage",
+      "PushNotification",
+      "RemoteTrigger",
+      "ScheduleWakeup",
+      "CronCreate",
+      "CronDelete",
+      "CronList"
+    ]
+  },
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -6,8 +108,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/pr-gate.sh",
-            "if": "Bash(gh pr *)",
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/pre-pr-check.sh ] && exec bash $ROOT/.claude/hooks/pre-pr-check.sh'",
             "timeout": 900000
           }
         ]
@@ -19,12 +120,73 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/pr-comment.sh",
-            "if": "Bash(gh pr *)",
-            "timeout": 60000
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/post-pr-comment.sh ] && exec bash $ROOT/.claude/hooks/post-pr-comment.sh'",
+            "timeout": 30000
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "code-review-graph update --skip-flows",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "code-review-graph status",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/pre-compact-handoff.sh ] && exec bash $ROOT/.claude/hooks/pre-compact-handoff.sh auto'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "manual",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/pre-compact-handoff.sh ] && exec bash $ROOT/.claude/hooks/pre-compact-handoff.sh manual'",
+            "timeout": 10
           }
         ]
       }
     ]
+  },
+  "effortLevel": "xhigh",
+  "ultracode": true,
+  "enableWorkflows": true,
+  "skipWorkflowUsageWarning": true,
+  "skipAutoPermissionPrompt": true,
+  "disableBundledSkills": true,
+  "disableArtifact": true,
+  "disableClaudeAiConnectors": true,
+  "disableRemoteControl": true,
+  "autoCompactEnabled": false,
+  "enabledPlugins": {
+    "syntek-dev-suite@syntek-marketplace": false,
+    "syntek-doc-writer@syntek-marketplace": false,
+    "syntek-rust-security@syntek-marketplace": false,
+    "syntek-infra@syntek-marketplace": false,
+    "plugin-dev@claude-code-plugins": false,
+    "dnd-dm-planner@dnd-dm-planner": false
   }
 }

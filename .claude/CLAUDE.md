@@ -1,151 +1,156 @@
-# Project: project-name
+# Project: {{PROJECT_NAME}}
 
-**Last Updated**: 29/04/2026 **Version**: 1.0.0 **Maintained By**: Syntek Studio
-**Language**: British English (en_GB) **Timezone**: Europe/London
+**Last Updated**: {{DATE}} | **Version**: 0.1.0 | **Maintained By**: {{ORG_NAME}}
+**Language**: British English (en_GB) | **Timezone**: {{TIMEZONE}}
 
----
-
-> **Dev:** Always use `docker compose exec backend` for Django, `docker compose exec frontend` for
-> Next.js, and `docker compose exec mobile` for Expo. Never run `python`, `pytest`, `pnpm`, or
-> `next` directly outside the container.
+@../CONTEXT.md
+@../REFERENCES.md
+@./CONTEXT.md
 
 ---
 
-## Layer Routing
+## 1. Identity
 
-Read only the layer relevant to your task:
+**Developer:** {{DEVELOPER_NAME}} — Full Stack Software Developer at {{ORG_NAME}}. Senior developer — be concise, focus on architecture and trade-offs.
 
-| Task type                                   | Read first                      |
-| ------------------------------------------- | ------------------------------- |
-| Writing, reviewing, or testing code         | `code/CONTEXT.md`               |
-| Stories, sprints, PRs, releases, GDPR, SEO  | `project-management/CONTEXT.md` |
-| Setup, daily dev, CLI usage, debugging      | `how-to/CONTEXT.md`             |
-| UI/UX design, components, brand, wireframes | `DESIGN.md`                     |
+- **Chat output must be scannable, not an essay.** When reporting information to {{DEVELOPER_NAME}}, be extremely concise — sacrifice grammar for the sake of concision.
+- **Memory functionality** Auto memory is off, if there is anything for this project regarding memory storage, we store it in ../MEMORY.md
 
-Always-applicable guides: `project-management/docs/GIT-GUIDE.md` · `project-management/docs/VERSIONING-GUIDE.md`
+> **Always use the project shell scripts under `code/src/scripts/` for all dev operations.
+> Never run `python`, `pytest`, `pnpm`, or `docker` commands directly — use the scripts.**
 
 ---
 
-## Critical Global Rules
+## 2. Operating Model
 
-**Coding:**
+**Read `.claude/CLAUDE.md` then `.claude/MEMORY.md` first — always, before any work, every
+session and every task.** They are the two authoritative files; everything else is read on the
+way to the work.
 
-- Max 750 lines per file (800 with grace). Split into modules beyond that.
-- Short, focused functions — one purpose each. Favour readability over cleverness.
-- `except (A, B):` not `except A, B:`. Log at ERROR/WARNING before swallowing.
-- `transaction.atomic()` on every service method doing ≥ 2 writes.
-- No inline imports inside functions except where unavoidable (document the reason).
+### 2.1 Read order
 
-**Security (non-negotiable):**
+1. **`.claude/CLAUDE.md`** (this file) — its `@` imports auto-load the root `CONTEXT.md`,
+   `REFERENCES.md`, and `.claude/CONTEXT.md`.
+2. **`.claude/MEMORY.md`** — project memory (feedback, patterns, state). Never skip it.
+3. The **target folder's `CONTEXT.md`** (orientation — tree, what-is-here) then its **`CLAUDE.md`**
+   (operating rules).
+4. The **routing frontmatter** on any `**/docs/*.md` or `**/workflows/**/*.md` file you open
+   (§2.5) — it names the agent, skills, and model for that work.
 
-- Every GraphQL mutation needs explicit permission check (OWASP A01).
-- User-supplied IDs always verified against caller's ownership — no IDOR.
-- Django `DEBUG=False` in all non-local environments.
-- CORS `ALLOWED_ORIGINS` must be an explicit allowlist — never `*` in production.
-- All secrets via environment variables — never hardcoded.
+Every folder `CLAUDE.md` repeats this chain in its own `Read order:` line.
 
-**Testing:**
+### 2.2 How work flows
 
-- Green = real implementation passing. No stubs to get green.
-- Backend coverage floor: 75% all modules; 90% for auth-related code.
-- Frontend coverage floor: 70% minimum.
+A task enters through an **orchestrator agent**, which routes to the matching
+`**/workflows/NN-…/` procedure and **delegates** scoped work to **specialist** agents; the
+specialists load the **stack skills**. The governing `docs/` guide and the workflow
+`STEPS.md`/`CHECKLIST.md` carry routing frontmatter (§2.5) naming who does the work.
 
-**Scripts:**
+### 2.3 Agents (two tiers — full roster: `.claude/agents/CONTEXT.md`)
 
-- Never run `pnpm`, `npm`, `npx`, `uv`, `pip`, or any package-manager command directly.
-- Always use the project shell scripts in `code/src/scripts/**/*.sh` instead.
-- If no script exists for the task, ask the user to create one before proceeding.
+- **Orchestrators (entry points, carry all tools):** `bugfix`, `feature`, `pr`, `refactor`,
+  `release`, `review`, `security`, `story`. Pick the one matching the task and let it delegate.
+- **Specialists (29) + document writers (13):** delegated to for scoped work (e.g. `backend`,
+  `frontend`, `database`, `gdpr`, `test-writer`, `qa-tester`, `privacy-policy-writer`). Each is
+  tool-scoped with a distinct remit; invoke one directly only for a narrow job.
 
-**Documentation (Markdown):**
+Internalised from the (now-disabled) `{{ORG_SLUG}}-dev-suite` / `{{ORG_SLUG}}-doc-writer` plugins; models are
+`fable`/`opus` by tier (§4) — planning agents (`story`, `sprint`, `planner`, `user-story`)
+run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 
-- Every fenced code block must declare its language — ` ```bash `, ` ```python `,
-  ` ```typescript `, ` ```text `, etc. A bare ` ``` ` is a lint error (MD040).
+### 2.4 Skills — load on demand (full table: `.claude/skills/CONTEXT.md`)
 
-**Before every commit:** lint and type-check both layers.
-**Before every push:** run full test suite.
+| Skill                           | Load when                                                                                                                                          |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stack-django`                  | Backend code — models, services, Django Ninja endpoints, pytest                                                                                    |
+| `stack-htmx-templates`          | Public frontend — Django templates, django-components, HTMX, Alpine, token CSS                                                                     |
+| `global-workflow`               | Branches, commits, PRs, version bumps, docs, code comments                                                                                         |
+| `grill-me` · `grill-with-docs`  | Design work — type `/grill-me` (stateless) or `/grill-with-docs` (records decisions); both wrap the `grilling` engine                              |
+| `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test; design it twice) |
+| `domain-modelling`              | Recording a new concept or decision — add the term to the nearest `CONTEXT.md`, or an ADR, as a design crystallises                                |
+| `improve-codebase-architecture` | {{DEVELOPER_NAME}} types `/improve-codebase-architecture` — scan for deepening opportunities, present a visual HTML report, then grill the pick    |
+| `scale-planning`                | Sizing the deployment for a target user count and proving it scales — readiness + envelope on the scaling phase-gates; feeds the NixOS deploy repo |
+| `teach`                         | {{DEVELOPER_NAME}} types `/teach <topic>` — safe learning sandbox; writes only to `learning/`                                                      |
+| `wayfinder`                     | Charting a large epic into a decision map, resolved across sessions                                                                                |
+| `handoff`                       | {{DEVELOPER_NAME}} types `/handoff`, or context nears full — the auto-compaction replacement (committed `handoffs/`; §2.6)                         |
+| `prototype`                     | {{DEVELOPER_NAME}} types `/prototype` — throwaway spike answering one design question                                                              |
+| `research`                      | {{DEVELOPER_NAME}} types `/research` — primary-source-cited note feeding an ADR/PLAN                                                               |
+| `legal-documents`               | Privacy Policy, T&C, GDPR notice, DPA, contract, NDA                                                                                               |
+| `msp-scp-documents`             | Security/compliance policy (InfoSec, incident, retention, …)                                                                                       |
 
-Full detail → `code/CONTEXT.md`
+`cloudinary-*` skills cover Cloudinary upload, delivery, and transformations.
 
----
+**Graph playbooks** — `code-review-graph install` generates four task cards under `.claude/skills/`
+(`explore-codebase`, `debug-issue`, `review-changes`, `refactor-safely`): **auto-generated,
+referenced by path, never hand-edited** (they regenerate on `install`). Canonical guide:
+`code/docs/CODE-REVIEW-GRAPH.md`, wired into the debug/review/refactor/explore agents and
+workflows `06`/`07`/`08`/`10`.
 
-## MCP Servers
+### 2.5 Routing frontmatter
 
-| Server              | Scope                   | Always available                       |
-| ------------------- | ----------------------- | -------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json`      | Yes — auto-loaded for all contributors |
-| `docfork`           | User — `~/.claude.json` | Only if installed locally              |
-| `context7`          | User — `~/.claude.json` | Only if installed locally              |
-| `figma`             | User — `~/.claude.json` | Only if installed locally              |
-| `mcp-mermaid`       | User — `~/.claude.json` | Only if installed locally              |
-| `claude-in-chrome`  | Built-in                | Always available                       |
+Every `**/docs/*.md` and `**/workflows/**/*.md` file carries YAML frontmatter naming the agent,
+skills, and model for that work — **read it first and obey it**:
 
-**Documentation lookups** (`docfork` + `context7`): Always prefer over web search for any library,
-framework, or SDK. Use both tools together:
+- **Docs guides:** `type: guide` · `agent:` · `skills: [..]` · `model:`
+- **Workflow `STEPS.md`/`CHECKLIST.md`:** `workflow:` · `phase:` · `agent:` · `skills: [..]` · `model:`
 
-- `docfork` first — `mcp__docfork__search_docs` for broad discovery across 10,000+ libraries
-  (hybrid BM25 + semantic search), then `mcp__docfork__fetch_doc` to retrieve the full page.
-- `context7` to complement — `mcp__context7__resolve-library-id` →
-  `mcp__context7__query-docs` when docfork results are sparse or a second source is needed.
+### 2.6 Session continuity — hand off, never silently compact
 
-**Code graph** (`code-review-graph`): Use before Grep/Glob/Read. Faster, cheaper on tokens,
-structural context.
-
-**Browser automation** (`claude-in-chrome`): For inspecting rendered output and visual verification.
-Load tool schema with ToolSearch before calling any `mcp__claude-in-chrome__*` tool.
-
-**Design context** (`figma`): Use for reading Figma design files, generating FigJam diagrams, and
-managing Code Connect mappings. Load tool schema with ToolSearch before calling any
-`mcp__figma__*` tool. Prioritise when the user shares a figma.com URL.
-
-**Diagrams** (`mcp-mermaid`): Use for generating architecture, flow, and sequence diagrams.
-Load tool schema with ToolSearch before calling any `mcp__mcp-mermaid__*` tool.
-
----
-
-## Model Selection
-
-Always use the **latest model in the family** — never hardcode version strings. In agent calls:
-`model: "haiku"` / `model: "sonnet"` / `model: "opus"`.
-
-| Family     | Use for                                                                                   |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| **Haiku**  | Fast lookups, single-file reads, CONTEXT.md updates, formatting, simple renames           |
-| **Sonnet** | Standard coding, tests, reviews, documentation, stories, sprints, CI runs _(default)_     |
-| **Opus**   | Complex architecture, security audits, GDPR analysis, cross-layer refactors, novel design |
-
-When in doubt, use **Sonnet**. Escalate to **Opus** only when the problem genuinely requires deeper
-reasoning.
+When the context window nears full, **do not rely on auto-compaction** — it is disabled
+(`settings.json` → `autoCompactEnabled: false`) and intercepted (the `PreCompact` hook,
+`.claude/hooks/pre-compact-handoff.sh`). Instead the **driving session invokes the `handoff`
+skill** → writes `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md` → **stops** and prints the path,
+so {{DEVELOPER_NAME}} can `/clear` and resume in a fresh context window. A hook cannot invoke a skill or stop the
+session — that is the model's job (this rule). This is a top-level session / orchestrator duty;
+delegated specialists return to their orchestrator rather than hand off.
+See `.claude/skills/handoff/SKILL.md`.
 
 ---
 
-## GAPS.md Rule
+## 3. Tooling — MCP Servers & Project Plugins
 
-If Claude encounters a workflow folder (any path matching `*/workflows/[0-9][0-9]-*/`) that is
-missing `STEPS.md` or `CHECKLIST.md`, it must:
+| Server              | When to use                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       |
+| `context7`          | Any library, framework, or SDK docs. `resolve-library-id` → `query-docs`.                    |
+| `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. |
+| `mcp-mermaid`       | Architecture and flow diagrams.                                                              |
+| `figma`             | Figma design reads/writes, Code Connect. Load schema via ToolSearch.                         |
 
-1. Append an entry to `/GAPS.md` at the project root with the missing file path and a suggested
-   description
-2. Proceed using `CONTEXT.md` alone as best-effort guidance
-3. Never generate and silently commit missing files without explicit user instruction
+**Graph ⇄ layer system — work in tandem.** The code-review-graph and the layered
+`CONTEXT.md`/`CLAUDE.md` docs are two synchronised views of the codebase: machine-derived
+structure and human-curated orientation. **Explore with both** — read the target `CONTEXT.md`
+for orientation, then run the code-review-graph explore playbook for structure. **Update both
+together** — whenever you revise the docs, refresh the graph (`code-review-graph update`, or the
+`build_or_update_graph_tool` MCP tool) so neither drifts. Guide: `code/docs/CODE-REVIEW-GRAPH.md`.
 
-Check `/GAPS.md` at the start of any workflow to see if it has been recently updated.
+**Project helper scripts** — `.claude/plugins/*.py` (6 read-only inspection helpers: `project`,
+`env`, `db`, `git`, `log`, `pm`) that agents call to gather context. They do **not** run dev
+operations — those go through `code/src/scripts/**/*.sh`. Registry: `.claude/plugins/CONTEXT.md`.
+
+**Disabled marketplace plugins** — `{{ORG_SLUG}}-dev-suite` and `{{ORG_SLUG}}-doc-writer` are disabled for
+this project (`settings.json` → `enabledPlugins`); their agents and skills are internalised under
+`.claude/`. Never invoke the old `{{ORG_SLUG}}-dev-suite` / `{{ORG_SLUG}}-doc-writer` plugin commands — use
+the internal agents instead.
 
 ---
 
-## Routing Rule
+## 4. Claude Models
 
-Read a workflow's `CONTEXT.md` for decision-making without executing it. Only enter `STEPS.md`
-when the workflow is explicitly triggered by the user or another agent.
+Every session runs on **Opus** with **ultracode** on (`effortLevel: xhigh`, dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: xhigh`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
 
-| Task Type                                              | Domain                | Read First                      |
-| ------------------------------------------------------ | --------------------- | ------------------------------- |
-| Writing code, TDD, security, API design, DB migrations | `code/`               | `code/CONTEXT.md`               |
-| Project setup, daily dev, debugging                    | `how-to/`             | `how-to/CONTEXT.md`             |
-| Stories, sprints, PRs, releases, GDPR compliance       | `project-management/` | `project-management/CONTEXT.md` |
+Sub-agents, workflows, and docs-guides route by **tier** through their `model:` frontmatter (§2.5): **Fable** sets the foundation, **Opus** builds on it and handles every mechanical touch. **Never use `sonnet` or `haiku`.**
+
+| Alias        | Use for                                                                                                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fable`      | **Planning · spec · design.** Architecture, schema & data design, user flows, GDPR/security/QA specs, API design, stories, sprints, plans — the reasoning tier the implementation builds on |
+| `opus`       | **Everything else.** Backend/frontend code, tests, migrations, review, PR, release, docs — and all mechanical touches (renames, version bumps, running scripts, doc-index lookups)          |
+| ~~`sonnet`~~ | **Never used.**                                                                                                                                                                             |
+| ~~`haiku`~~  | **Never used.**                                                                                                                                                                             |
 
 ---
 
-## Naming Conventions
+## 5. Naming Conventions
 
 ### Files
 
@@ -153,118 +158,155 @@ when the workflow is explicitly triggered by the user or another agent.
 | -------------------------------- | --------------------------- | ---------------------------------- |
 | `SCREAMING-SNAKE-CASE.md`        | `CONTEXT.md`, `OVERVIEW.md` | All documentation files            |
 | `US###.md`                       | `US015.md`                  | User stories (3-digit zero-padded) |
-| `SPRINT-##.md`                   | `SPRINT-06.md`              | Sprint plans (2-digit)             |
-| `US###-TEST-STATUS.md`           | `US015-TEST-STATUS.md`      | Test tracking per story            |
-| `US###-MANUAL-TESTING.md`        | `US015-MANUAL-TESTING.md`   | Manual test guide per story        |
+| `SPRINT-##.md`                   | `SPRINT-06.md`              | High-level sprint records          |
+| `SPRINT-PLAN-##.md`              | `SPRINT-PLAN-03.md`         | Detailed sprint plans              |
 | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `BUG-AUTH-18-04-2026.md`    | Bug reports                        |
+| `ADR-###-*.md`                   | `ADR-001-auth-strategy.md`  | Architectural decision records     |
+| `WF-<NNN>-*.html`                | `WF-001-Homepage.html`      | Wireframes                         |
+| `API-US###-*.md`                 | `API-US015-auth.md`         | API design documents               |
+| `QA-US###-*.md`                  | `QA-US015-auth.md`          | QA plans                           |
 
 ### Directories
 
-| Pattern                 | Example                 | Used for                 |
-| ----------------------- | ----------------------- | ------------------------ |
-| `SCREAMING-SNAKE-CASE/` | `STORIES/`, `PLANS/`    | Documentation/PM folders |
-| `kebab-case/`           | `backend/`, `frontend/` | Source code directories  |
+| Pattern                 | Example               | Used for                     |
+| ----------------------- | --------------------- | ---------------------------- |
+| `SCREAMING-SNAKE-CASE/` | `STORIES/`, `PLANS/`  | Documentation and PM folders |
+| `kebab-case/`           | `django/`, `scripts/` | Source code directories      |
 
-### Branches
+**Branches:** `us###/short-description` — full rules in `project-management/docs/GIT-GUIDE.md`.
 
-Format: `us###/short-description` — full rules in `project-management/docs/GIT-GUIDE.md`.
+---
+
+## 6. Non-Negotiable Rules
+
+These apply in every task, regardless of layer:
+
+- Every state-changing Django Ninja endpoint needs an explicit permission check (OWASP A01).
+- User-supplied IDs always verified against caller's ownership — no IDOR.
+- Data invariants are enforced **in the database** — foreign keys with explicit delete behaviour, `NOT NULL`, `UNIQUE`, and `CHECK` on every bounded or enum-like column. Application-level validation is not a substitute (`code/docs/DATABASE.md`).
+- A scope column, the row-security policy that reads it, its supporting index, and the middleware that sets its session variable ship **together** — never write a scope session variable that no policy reads.
+- Migrations never hold a long `ACCESS EXCLUSIVE` lock on a large table — add-nullable → backfill → constrain; build indexes concurrently on populated tables; no manual DDL against a deployed database.
+- `DEBUG=False` in all non-local environments.
+- `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production.
+- All secrets via environment variables — never hardcoded.
+- Django admin must **never** be mounted at `/admin/` — it mounts at the non-obvious `/control/` path.
+- Never commit `.env` files — use `.env.*.example` templates only.
+- Implementation docs and `CONTEXT.md`/`CLAUDE.md` updates must be complete before any commit — hard gate, not optional — and the code-review-graph refreshed alongside them (`code-review-graph update`, or the `build_or_update_graph_tool` MCP tool) so the layered docs and the graph stay in lockstep (`code/docs/CODE-REVIEW-GRAPH.md`).
+- **Token-first.** Design values are DB-canonical (`apps/design_tokens`). New values enter via the `/admin/design-tokens` editor or a migration — never as a raw literal in component/page CSS. Component CSS only ever consumes `var(--token)`, and the var name must resolve in the token layer (`code/src/django/static/css/tokens/*.css` + `surfaces.css`) — enforced by `code/src/scripts/audits/css-tokens.sh`. See `code/docs/DESIGN-TOKENS.md`.
+- New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>` — never run `manage.py startapp` or `django-admin startapp` directly.
+- New public marketing page → `bash code/src/scripts/development/new-django-view.sh <route_path>` — creates a Django view + template + URL entry. Never hand-create page routes outside this script.
+- All documentation (`CONTEXT.md`, `docs/*.md`, `agents/*.md`, `REFERENCES.md`) must reference scripts from `code/src/scripts/` for developer operations — never raw `pnpm`, `npm`, `npx`, `pip`, `uv`, `docker`, or `python manage.py` commands.
+
+---
+
+## 7. Environment
+
+| Setting        | Value                                              |
+| -------------- | -------------------------------------------------- |
+| Frontend (Dev) | `http://localhost:8000`                            |
+| Backend / API  | `http://localhost:8000` · `/api/`                  |
+| Database (Dev) | `{{PROJECT_SLUG}}_dev`                             |
+| Django Admin   | non-obvious path — see `code/docs/URL-STRATEGY.md` |
+| Locale         | {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}           |
+
+URL conventions — full rules in `code/docs/URL-STRATEGY.md`:
+Marketing `/` (slugs) · {{PROJECT_NAME}} Admin `/admin/` (UUIDs) · Client Portal `/portal/` (slugs)
+
+---
+
+## 8. Standards
+
+- **Database:** read `code/docs/DATABASE.md` before any model, migration, or query — scope columns, database-level constraints, lock-safe migrations, search, and the deferred-infrastructure register with its trigger conditions
+- **SEO:** all public pages in `apps.marketing` — checklist: `project-management/docs/SEO-CHECKLIST.md`
+- **Accessibility:** WCAG 2.2 AA on all interactive components — guide: `code/docs/ACCESSIBILITY.md`
+- **Versioning:** single-track semver — rules: `project-management/docs/VERSIONING-GUIDE.md` · bump via the internal `version` agent (or the `release` orchestrator)
+- **Instructional file length:** `.md` files that instruct Claude Code must not exceed **300 code
+  lines** (`cloc --include-lang=Markdown`). Rule applies to: `**/docs/*.md` ·
+  `**/workflows/**/*.md` · `.claude/**/*.md` · all `CONTEXT.md` files. Rule does **NOT** apply
+  to root-level `*.md` files (README.md, CHANGELOG.md, GAPS.md, RELEASES.md, etc.) or
+  `**/src/*.md` files (operational guides for humans, e.g. NIXOS-SETUP.md). Oversized
+  instructional files must be split; the entry point becomes a thin index that cross-references
+  sub-documents.
+- **Directory CONTEXT.md + CLAUDE.md pairing:** Every directory that contains a `CONTEXT.md`
+  must also have a `CLAUDE.md`. `CONTEXT.md` is **orientation** (holds the directory tree and
+  what-is-here); `CLAUDE.md` is **operating rules**. Each `CLAUDE.md` **opens with `@./CONTEXT.md`**
+  (plus `@./REFERENCES.md` where a `REFERENCES.md` exists in that directory) so the tree still
+  auto-loads on navigation, then a `Read order:` line, then four H2 sections — **Purpose (one
+  line)** · **How to work here** (routing, model allocation, concrete steps, definition of done)
+  · **Guardrails** · **Output & naming** — scaled to the folder (a leaf stays short; a layer/app
+  root is fuller). Keep each well within the instructional-file limit. **Never leave a bare
+  `@./CONTEXT.md` import stub** — that is the old convention, replaced 03/07/2026.
+- **Source code file length:** all source files (`.py`, `.html`, `.css`, `.js`, etc.) must not
+  exceed **750 lines** (800 with grace) — split into modules beyond that. Defined in `code/CONTEXT.md`.
+
+---
+
+## 9. Project Memory
+
+`.claude/MEMORY.md` is the authoritative memory store for this project. Read it at the start of
+every session. Write here instead of the global auto-memory system.
+
+**When to write:**
+
+- Feedback {{DEVELOPER_NAME}} gives on approach — corrections or confirmations of non-obvious choices
+- Patterns and conventions discovered during work
+- Project-state facts not derivable from the codebase (stack decisions, business rules)
+- Operational quirks or workarounds
+
+**When NOT to write here:** active gaps, blockers, sprint dependencies → those go in `GAPS.md`.
+Ephemeral task details and in-progress state stay in the conversation only.
+
+---
+
+## 10. GAPS.md Workflow
+
+`GAPS.md` at the project root tracks active architectural gaps, blockers, and sprint dependencies
+only. Do not use it for memory, patterns, or observations — those go in `.claude/MEMORY.md`.
+
+**When to write to GAPS.md:**
+
+- Active gap or blocker discovered during work
+- Sprint dependency (story X must ship before Y)
+- Infrastructure gap (environment setup required before a feature can run)
+- Planned feature deferred from the current story with a named future story as the target
+
+**Promotion cycle** — when an entry is resolved, mark it `✅ CLOSED <date>`. Promote permanent
+decisions to the appropriate doc, then remove the closed entry on the next tidy pass:
+
+| Entry type                      | Target doc                           |
+| ------------------------------- | ------------------------------------ |
+| Architecture decision / pattern | `code/docs/ARCHITECTURE-PATTERNS.md` |
+| Security implementation pattern | `code/docs/SECURITY.md`              |
+| Design system / token spec      | `code/docs/DESIGN-TOKENS.md`         |
+
+**Question-asking policy:** For trivial or mechanical work (a rename, a version bump, a syntax
+fix), make reasonable calls on minor details and proceed — {{DEVELOPER_NAME}} will redirect if wrong. Any
+substantial task in any layer opens with a grilling pass (below), not a fixed question list.
+
+**Grilling — the default across every layer:** Grilling is the project's clarification mechanism
+for **all substantial work — design, code, tests, QA, refactor, review, debug, migration, docs —
+not only planning and design.** Before producing the artefact (a plan, schema, resolver,
+component, test suite, QA plan, refactor, or fix), the responsible agent **opens with a grilling
+pass** (the `grilling` skill): interrogate first, one question at a time, each with a recommended
+answer, looking facts up rather than asking, no action until {{DEVELOPER_NAME}} confirms. Only trivial or
+mechanical work skips it. This **supersedes every static 'Clarify Before Planning' / 'Required
+Information' / 'Clarifying questions' checklist project-wide** — agents open with a grilling pass,
+not a fixed question list. {{DEVELOPER_NAME}} can also invoke it directly with `/grill-me` (stateless) or
+`/grill-with-docs` (records decisions). See `.claude/skills/grilling/SKILL.md`.
 
 ---
 
 ## Skill Targets
 
-- **Stack Skill (Backend):** `stack-django`
-- **Stack Skill (Frontend):** `stack-react`
-- **Global Skill:** `global-workflow`
+<!-- DO NOT REMOVE — names the skills the specialist agents load from .claude/skills/ -->
 
----
+The skills the internal agents load on demand (full when-to-load table: `.claude/skills/CONTEXT.md`):
 
-## Stack Overview
-
-| Component           | Technology                                                          |
-| ------------------- | ------------------------------------------------------------------- |
-| **Type**            | Full-Stack Monorepo (Backend + Web + Mobile)                        |
-| **Backend Lang**    | Python 3.14                                                         |
-| **Backend Frame**   | Django 6.0.4                                                        |
-| **GraphQL**         | Strawberry GraphQL 0.314.3                                          |
-| **Database**        | PostgreSQL 18                                                       |
-| **Backend Server**  | Gunicorn + Uvicorn / Nginx                                          |
-| **Cache / Queue**   | Valkey (latest stable at release)                                   |
-| **Frontend Frame**  | Next.js 16.2.4 (App Router)                                         |
-| **Mobile Frame**    | Expo SDK (latest) + Expo Router + React Native 0.85.x               |
-| **Mobile Styling**  | NativeWind 4.2.3 + react-native-css-interop 0.2.3 (Tailwind CSS v3) |
-| **Frontend Lang**   | TypeScript 6.0.3                                                    |
-| **UI Library**      | React 19.2 / React Native                                           |
-| **Shared UI**       | `code/src/shared/` (cross-platform components)                      |
-| **Styling**         | Tailwind CSS 4.2                                                    |
-| **GraphQL Client**  | Apollo Client                                                       |
-| **Code Generation** | GraphQL Code Generator                                              |
-| **Node Runtime**    | Node.js 24.15.0                                                     |
-| **Package Manager** | pnpm 10.33.0 (JS) / uv 0.11.7 (Python)                              |
-| **Backend Tests**   | pytest, pytest-django                                               |
-| **Frontend Tests**  | Vitest, React Testing Library                                       |
-| **Mobile Tests**    | Jest + React Native Testing Library (unit/TDD), Detox (E2E/BDD)     |
-| **Container**       | Docker Compose                                                      |
-
----
-
-## Key Locations
-
-| Path                                       | Purpose                                          |
-| ------------------------------------------ | ------------------------------------------------ |
-| `code/src/backend/`                        | Django project root                              |
-| `code/src/backend/apps/`                   | Django apps (users, core, content, etc.)         |
-| `code/src/backend/apps/core/schema.py`     | Root Strawberry GraphQL schema                   |
-| `code/src/backend/config/settings/`        | Environment-specific Django settings             |
-| `code/src/frontend/`                       | Next.js project root                             |
-| `code/src/frontend/src/app/`               | Next.js App Router pages                         |
-| `code/src/frontend/src/components/`        | Page-specific React components                   |
-| `code/src/frontend/src/graphql/`           | Web GraphQL queries, mutations, fragments        |
-| `code/src/frontend/src/graphql/generated/` | Auto-generated TypeScript types and hooks        |
-| `code/src/mobile/`                         | Expo React Native app root                       |
-| `code/src/mobile/app/`                     | Expo Router screens                              |
-| `code/src/mobile/src/graphql/`             | Mobile GraphQL queries, mutations, fragments     |
-| `code/src/mobile/src/graphql/generated/`   | Auto-generated TypeScript types and hooks        |
-| `code/src/shared/`                         | Cross-platform components, hooks, and utilities  |
-| `project-management/src/`                  | Stories, sprints, GDPR docs, security audits, QA |
-
----
-
-## Environment
-
-| Setting                | Value                                |
-| ---------------------- | ------------------------------------ |
-| **Frontend URL (Dev)** | http://localhost:3000                |
-| **Backend URL (Dev)**  | http://localhost:8000                |
-| **GraphQL Endpoint**   | http://localhost:8000/graphql/       |
-| **GraphQL Playground** | http://localhost:8000/graphql/ (dev) |
-| **Django Admin**       | http://localhost:8000/admin/         |
-| **Database (Dev)**     | project_name_dev                     |
-| **Locale**             | en_GB                                |
-| **Timezone**           | Europe/London                        |
-| **Currency**           | GBP (£)                              |
-
----
-
-## Design
-
-Entry point for all UI/UX, component, brand, and wireframe work: `DESIGN.md` (project root).
-Links to all relevant standards and workflows across `code/docs/`, `code/workflows/`,
-`project-management/docs/`, and `project-management/workflows/`.
-
----
-
-## SEO & Accessibility
-
-SEO applies to all Next.js pages in `code/src/frontend/src/app/`. Full checklist:
-`project-management/docs/SEO-CHECKLIST.md`. Use `/syntek-dev-suite:seo` to implement.
-
-WCAG 2.2 AA compliance required on all interactive frontend components.
-Full guide: `code/docs/ACCESSIBILITY.md`.
-
----
-
-## Versioning
-
-Single-track semver for this project. Full rules: `project-management/docs/VERSIONING-GUIDE.md`.
-Use `/syntek-dev-suite:version` to manage all version bumps.
+- **Stack Skill (Backend):** `stack-django` — `.claude/skills/stack-django/`
+- **Stack Skill (Frontend):** `stack-htmx-templates` — `.claude/skills/stack-htmx-templates/`
+- **Global Skill:** `global-workflow` — `.claude/skills/global-workflow/`
+- **Design / Grilling Skills:** `grilling` (engine) · `grill-me` (stateless) · `grill-with-docs` (records decisions) — `.claude/skills/{grilling,grill-me,grill-with-docs}/`
+- **Architecture / Design Skills:** `codebase-design` (deep-module vocabulary) · `domain-modelling` (keep the model current) · `improve-codebase-architecture` (`/improve-codebase-architecture` — deepening review → HTML report → grill) · `scale-planning` (`/scale-planning` — size for a target user count + prove scalability; feeds the NixOS deploy repo) — `.claude/skills/{codebase-design,domain-modelling,improve-codebase-architecture,scale-planning}/`
+- **Learning & Session Skills:** `teach` (learn in the `learning/` sandbox) · `wayfinder` (chart an epic) · `handoff` (session handoff / auto-compaction replacement, §2.6) · `prototype` (throwaway spike) · `research` (primary-source note) — `.claude/skills/{teach,wayfinder,handoff,prototype,research}/`
+- **Legal Documents Skill:** `legal-documents` — `.claude/skills/legal-documents/`
+- **Security/Compliance Skill:** `msp-scp-documents` — `.claude/skills/msp-scp-documents/`

@@ -1,0 +1,29 @@
+# .claude/MEMORY.md — Project Memory
+
+Read this at the start of every session. Write here instead of the global auto-memory system.
+
+Sections: **Feedback** ({{DEVELOPER_NAME}}'s guidance on approach) · **Project Patterns** (conventions discovered
+during work) · **Project State** (business/stack facts not derivable from the codebase)
+
+To add an entry: append a subsection under the correct heading. Keep entries concise — one paragraph
+max. Update or remove stale entries rather than appending contradictions.
+
+**Do not write here:** active gaps, blockers, sprint dependencies → those go in `GAPS.md`.
+
+---
+
+## Feedback
+
+_No entries yet._
+
+---
+
+## Project Patterns
+
+_No entries yet._
+
+---
+
+## Project State
+
+_No entries yet._
