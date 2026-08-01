@@ -1,9 +1,9 @@
 {
-  "name": "docker",
+  "name": "host",
   "variables": [
     {
       "name": "api_url",
-      "value": "http://django-test:8000",
+      "value": "http://test.{{PROJECT_SLUG}}.localhost:83",
       "enabled": true
     },
     {

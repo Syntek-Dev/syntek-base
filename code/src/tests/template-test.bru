@@ -1,0 +1,96 @@
+##
+## Bruno Test Template — GraphQL
+##
+## Copy this file into the appropriate folder under api/ and rename it.
+## Folder structure:
+##   api/auth/         → authentication mutations
+##   api/users/        → user queries
+##   api/content/      → content queries
+##   api/performance/  → response time assertions
+##
+## Remove comment blocks and unused sections before committing.
+##
+
+meta {
+  ##
+  ## name:  Short, descriptive test name (shown in CI build log).
+  ##        Convention: "<Action> (<Context>)" e.g. "Login (Valid Credentials)"
+  ## type:  Always "http" for GraphQL requests.
+  ## seq:   Execution order within this folder (1, 2, 3...).
+  ##        Tests run alphabetically by folder, then by seq within the folder.
+  ##
+  name: <Your Test Name Here>
+  type: http
+  seq: 1
+}
+
+##
+## All GraphQL requests POST to the /graphql/ endpoint.
+## auth: use "bearer" for authenticated queries/mutations, "none" for public ones.
+##
+post {
+  url: {{api_url}}/graphql/
+  body: graphql
+  auth: bearer
+}
+
+auth:bearer {
+  ##
+  ## {{auth_token}} is populated by auth/login.bru (seq 1) via bru.setVar.
+  ## Ensure auth/login.bru runs before any requests that require authentication.
+  ##
+  token: {{auth_token}}
+}
+
+##
+## GRAPHQL BODY
+## Write the query or mutation here. Variables go in body:graphql:vars.
+##
+body:graphql {
+  query YourOperationName($id: ID!) {
+    yourField(id: $id) {
+      id
+      name
+    }
+  }
+}
+
+body:graphql:vars {
+  {
+    "id": "{{some_variable}}"
+  }
+}
+
+##
+## ASSERTIONS (tests block)
+## Bruno uses Chai.js assertion syntax: https://www.chaijs.com/api/bdd/
+##
+## Standard assertions to include:
+##   1. HTTP status code (GraphQL always returns 200 even on errors)
+##   2. No GraphQL errors in response body
+##   3. Required fields present in data
+##   4. Response time threshold
+##
+## Thresholds:
+##   - Standard queries:        < 500ms
+##   - Complex/paginated:       < 2000ms
+##   - Expensive operations:    < 5000ms  ({{slow_threshold_ms}})
+##
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("No GraphQL errors", function() {
+    expect(res.body).to.not.have.property("errors");
+  });
+
+  test("Response contains data", function() {
+    expect(res.body).to.have.property("data");
+    expect(res.body.data).to.not.be.null;
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

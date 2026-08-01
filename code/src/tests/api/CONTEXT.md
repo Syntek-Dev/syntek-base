@@ -1,8 +1,8 @@
 # tests/api — Bruno API Test Collection
 
-**Last Updated**: 24/04/2026
-**Version**: 1.0.0
-**Maintained By**: Syntek Studio
+**Last Updated**: {{DATE}}
+**Version**: 0.1.0
+**Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 ---
@@ -11,54 +11,63 @@
 
 ```text
 api/
-├── CONTEXT.md
+├── CONTEXT.md              ← this file
+├── CLAUDE.md               ← operating rules
 ├── bruno.json              # Bruno collection config: name, version, ignore patterns
-├── template-test.bru       # Example/template request file for new collections
-├── auth/                   # Authentication requests (login, refresh, invalid password)
-├── environments/           # Environment variable files (local, staging, production)
-├── orders/                 # Orders CRUD requests
-├── performance/            # Load and stress test requests
-└── users/                  # Users CRUD requests
+└── environments/           # per-environment variable files (host, docker, local, staging, production)
 ```
+
+**The collection holds no requests at baseline.** The Django project serves no API — there
+is no `NinjaAPI` and no router — so there is nothing to assert against yet. Domain folders
+appear here as endpoints ship, one folder per domain (`auth/`, `users/`, …).
+
+`code/src/scripts/tests/api.sh` exits `0` without starting the test stack while that is the
+case, so the suite is green rather than red.
+
+> The annotated request template lives one level up at `../template-test.bru`, **outside**
+> the collection root. The Bruno CLI runs the collection recursively, so any `.bru` inside
+> `api/` executes — a placeholder kept here would run and fail. Copy it into the right
+> folder and rename when adding a request.
 
 ---
 
 ## Purpose
 
-Bruno API testing collection for this project. Run against a live backend to verify endpoint contracts, auth flows, and performance thresholds.
+Bruno API testing collection for the {{PROJECT_NAME}} Django Ninja API. Run against a live
+backend to verify endpoint contracts, auth flows, and performance thresholds.
 
-- **Local dev**: select the `local` environment (points to `http://localhost:8000`)
-- **CI / staging**: select the `staging` environment
-- **Manual production checks**: select the `production` environment
+All requests target the Django Ninja API at `{{api_url}}/api/`.
 
----
-
-## What's Inside
-
-| Entry               | Purpose                                                            |
-| ------------------- | ------------------------------------------------------------------ |
-| `bruno.json`        | Collection metadata                                                |
-| `template-test.bru` | Annotated starter file — copy and rename when adding a new request |
-| `auth/`             | Login, token refresh, and invalid-password test requests           |
-| `environments/`     | `local.json`, `staging.json`, `production.json`, `variables.json`  |
-| `orders/`           | CRUD requests for the orders resource                              |
-| `performance/`      | Load test and stress test `.bru` files                             |
-| `users/`            | CRUD requests for the users resource                               |
+- **Host runner (default)**: the `host` environment — the test stack's nginx on `:83`
+- **CI / inside the Docker network**: the `docker` environment (`http://django-test:8000`)
+- **Local dev**: the `local` environment (`http://localhost:8000`)
+- **Staging / production checks**: the `staging` and `production` environments
 
 ---
 
-## Running Tests
+## Adding the first requests
+
+1. Build the endpoint first, and confirm it in the OpenAPI schema at `/api/docs`.
+2. Create the domain folder (`kebab-case/`) with its `CONTEXT.md` + `CLAUDE.md` pair.
+3. Copy `../template-test.bru` in, rename it `snake_case.bru`, and set its `seq`.
+4. Run the folder, then the whole suite:
 
 ```bash
-# All tests against staging (Bruno CLI)
-bruno run --env staging
+# Whole collection against the Docker test stack
+bash code/src/scripts/tests/api.sh
 
 # Single folder
-bruno run auth/ --env local
+bash code/src/scripts/tests/api.sh --folder auth
+
+# Against staging
+bash code/src/scripts/tests/api.sh --env staging
 
 # With JSON reporter (CI)
-bruno run --env staging --reporter-json results.json
+bash code/src/scripts/tests/api.sh --env docker --output reports/api
 ```
+
+Requests needing an authenticated caller also need a fixture-user seed command
+(`seed_api_test_user`); `api.sh` skips seeding, with a warning, while none is registered.
 
 ---
 
@@ -66,5 +75,8 @@ bruno run --env staging --reporter-json results.json
 
 - Parent: `../CONTEXT.md`
 - Bruno collection format: plain `.bru` files, human-readable and version-control-friendly
-- Never commit real credentials — use Bruno's secret variable feature or inject via CI environment
-- `auth_token` is populated automatically by `auth/login.bru` (seq 1) and used by all subsequent bearer-auth requests
+- Never commit real credentials — use Bruno's secret variable feature or inject via CI
+- The CLI does **not** honour `bruno.json`'s `ignore` list — tag environment-dependent or
+  destructive requests (`wip`, `manual`) and exclude them with `--exclude-tags`
+- All endpoints must be verified against the live Django Ninja OpenAPI schema before
+  committing new `.bru` files

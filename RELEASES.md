@@ -1,9 +1,30 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.4.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.5.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.5.0 — 01/08/2026
+
+**Status:** Feature release — the API test suite becomes a template, not a fixture set
+
+### Summary
+
+A base template must ship the shape of a test suite without shipping anybody's domain. The Bruno
+collections for authentication, orders, users, and performance are removed and replaced with one
+annotated request template that new suites are copied from. Bruno environments are re-expressed as
+native `.bru` files covering local, host, docker, staging, and production. Two runtime directories
+gain their tracked scaffolding: `logs/` and a new `improvement-architecture/` scratch area whose
+contents are git-ignored but whose orientation files are not.
+
+### What's new since v0.4.0
+
+- **One request template** — copy `template-test.bru` to start a suite; no invented domain endpoints to delete first
+- **Five Bruno environments** — local, host, docker, staging, and production, in Bruno's native format
+- **Runtime scaffolding** — `logs/` and `improvement-architecture/` carry tracked orientation files and ignored contents
 
 ---
 

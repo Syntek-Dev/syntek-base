@@ -3,7 +3,7 @@
   "variables": [
     {
       "name": "api_url",
-      "value": "https://api-staging.project-name.com",
+      "value": "https://staging.{{PRIMARY_DOMAIN}}",
       "enabled": true
     },
     {

@@ -1,12 +1,34 @@
 # Changelog
 
-**Last Updated**: {{DATE}} **Version**: 0.4.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.5.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [0.5.0] - 01/08/2026
+
+### Added
+
+- `code/src/tests/api/environments/*.bru` — native Bruno environment files for `local`, `host`, `docker`, `staging`, and `production`, alongside the retained JSON definitions.
+- `code/src/tests/api/environments/host.json` — the host-machine environment, for running the suite outside the Docker network.
+- `code/src/tests/template-test.bru` — a single annotated request template that every new Bruno suite is copied from, relocated from `api/template-test.bru`.
+- `code/src/improvement-architecture/` — scratch area for architecture improvement reports; contents are git-ignored, orientation files are tracked.
+- `CLAUDE.md` operating-rules files for `code/src/tests/`, `code/src/tests/api/`, `code/src/tests/api/environments/`, and `code/src/logs/`.
+
+### Changed
+
+- `code/src/tests/api/bruno.json` and the `docker`, `staging`, `production`, and `variables` JSON environments re-pointed at the Django service and its `/api/` prefix.
+- `code/src/tests/CONTEXT.md`, `api/CONTEXT.md`, and `logs/CONTEXT.md` rewritten for the template layout.
+
+### Removed
+
+- The illustrative Bruno collections — `api/auth/`, `api/orders/`, `api/users/`, and `api/performance/` — a template ships no domain fixtures.
+- `code/src/tests/api/template-test.bru` — relocated up one level to `code/src/tests/template-test.bru`.
 
 ---
 
