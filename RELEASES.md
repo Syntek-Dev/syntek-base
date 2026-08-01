@@ -1,9 +1,29 @@
 # Releases — {{PROJECT_NAME}}
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: {{DATE}} **Version**: 0.2.0 **Maintained By**: {{ORG_NAME}}
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.2.0 — 01/08/2026
+
+**Status:** Breaking change to the stack — the JavaScript client layers are removed
+
+### Summary
+
+First half of the stack replacement. The template drops both JavaScript client layers: the
+Next.js/React web frontend and the Expo React Native mobile application, together with their
+Docker images and CI pipelines. Nothing replaces them in this release — the server-rendered
+Django presentation layer arrives with the `django` package in 0.3.0. Removing the client layers
+first keeps the change reviewable: this release is purely subtractive.
+
+### What's new since v0.1.0
+
+- **No JavaScript client layers** — the React/Next frontend and React Native mobile app are gone; the template targets a single Django monolith
+- **Docker surface reduced** — frontend and mobile images are removed from the Compose stack
+- **CI trimmed** — the two front-end test pipelines are deleted; the remaining workflows are re-pointed in 0.10.0
 
 ---
 
