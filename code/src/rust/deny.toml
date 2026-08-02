@@ -25,6 +25,12 @@ allow = [
   "Zlib",
 ]
 confidence-threshold = 0.9
+# Do not warn about allow-list entries no current dependency uses — the list is a policy
+# statement, not an inventory.
+unused-allowed-license = "allow"
+# Skip our own unpublished crates. Their `license` field carries the project's LICENCE
+# answer, which is free text and generally not a valid SPDX expression.
+private = { ignore = true }
 
 [bans]
 # Two versions of the same crate in one binary usually means a transitive dependency
