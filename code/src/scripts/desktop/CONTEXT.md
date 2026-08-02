@@ -37,9 +37,13 @@ sold desktop applications at no cost **provided the use of Slint is disclosed**.
 widget is that disclosure. Shipping without it is a licence breach, so the check is a build gate
 rather than a review note.
 
-The check is deliberately crude — it greps `ui/` for the identifier. It cannot prove the widget is
-reachable in the running UI, only that nobody deleted it. After restructuring the UI, confirm by
-eye. Detail: `code/docs/desktop/LICENSING.md`.
+The check matches the widget **instantiation** (`AboutSlint {`) after stripping `//` comments —
+not the bare word. Both near-misses it guards against leave the string in the file while the
+widget is gone: the comment above it explaining the obligation, and the `import { ..., AboutSlint }`
+line. Matching the bare word passes in both cases, which is the bug this shape fixes.
+
+It still cannot prove the widget is **reachable** in the running UI, only that it is instantiated
+somewhere. After restructuring the UI, confirm by eye. Detail: `code/docs/desktop/LICENSING.md`.
 
 ## Cross-references
 

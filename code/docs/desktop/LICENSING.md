@@ -45,10 +45,13 @@ The Royalty-free grant is conditional on disclosing that you use Slint. Either s
 2. **On the web** — the Slint attribution badge on a public page, preferably where the binaries can
    be downloaded.
 
-`code/src/scripts/desktop/package.sh` greps the `ui/` directory for `AboutSlint` and **refuses to
-build a release binary** without it. That check is deliberately crude: it cannot prove the widget
-is reachable in the running UI, only that it has not been deleted. If you restructure the UI,
-confirm by eye that a user can still get to it.
+`code/src/scripts/desktop/package.sh` **refuses to build a release binary** without it. The check
+matches the widget _instantiation_ (`AboutSlint {`) after stripping `//` comments, because two
+things keep the bare word in the file when the widget is gone — the comment explaining the
+obligation, and the `import { ..., AboutSlint }` line.
+
+It still cannot prove the widget is **reachable** in the running UI, only that it is instantiated.
+If you restructure the UI, confirm by eye that a user can still get to it.
 
 Removing the disclosure without a Commercial licence is a breach of the grant, which means the app
 falls back to having no licence to use Slint at all.

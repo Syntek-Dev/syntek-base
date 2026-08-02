@@ -32,7 +32,12 @@ done
 bold "▸ package.sh (desktop)"
 log ""
 
-if ! grep -rq 'AboutSlint' "$DESKTOP_DIR/ui"; then
+# Match the widget INSTANTIATION (`AboutSlint {`), not the bare word, and strip //
+# comments first. Two near-misses this guards against, both of which leave the string
+# present while the widget is gone:
+#   - the comment above it explaining the obligation
+#   - the `import { ..., AboutSlint } from "std-widgets.slint"` line (closing brace)
+if ! sed 's|//.*||' "$DESKTOP_DIR"/ui/*.slint | grep -Eq 'AboutSlint[[:space:]]*\{'; then
   printf '%s error: %s\n' "$SCRIPT_NAME" \
     "AboutSlint not found in $DESKTOP_DIR/ui — Slint's Royalty-free licence requires the use of Slint to be disclosed. Restore it, or buy a Commercial licence. See code/docs/DESKTOP.md." >&2
   exit 1
