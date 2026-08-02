@@ -1,0 +1,34 @@
+
+# Cargo workspace for <%PROJECT_NAME%>.
+#
+# Every crate in this repository is a member. Dependencies shared by more than one crate
+# are pinned once in [workspace.dependencies] and inherited with `dep.workspace = true`,
+# so a security patch is applied in exactly one place.
+#
+# Rust operations run through code/src/scripts/rust/*.sh — never raw `cargo`.
+
+[workspace]
+members = ["crates/*"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "<%LICENCE%>"
+authors = ["<%DEVELOPER_NAME%> <<%DEVELOPER_EMAIL%>>"]
+repository = "https://github.com/<%ORG_NAME%>/<%PROJECT_SLUG%>"
+rust-version = "1.85"
+
+[workspace.dependencies]
+pyo3 = { version = "0.23", features = ["extension-module", "abi3-py314"] }
+zeroize = { version = "1.8", features = ["derive"] }
+secrecy = "0.10"
+
+# Release profile for the extension module. `panic = "abort"` is NOT set: a Rust panic
+# crossing the PyO3 boundary is converted into a Python exception, and aborting would
+# take the whole Gunicorn worker with it.
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

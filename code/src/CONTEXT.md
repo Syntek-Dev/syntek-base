@@ -3,8 +3,9 @@
 All deployable source code lives here. The **web surface** is server-rendered by Django
 (`django/`) — every page is a template and there is no client-side build behind it. The
 API layer is Django Ninja (JSON at `/api/`, OpenAPI at `/api/docs`), serving machine
-clients only. A project may also carry a second, **optional** surface — the React Native
-mobile app at `mobile/` — which is a separate deployable, not a build step for the pages.
+clients only. A project may also carry two **optional** surfaces: the React Native mobile app at
+`mobile/`, a separate deployable rather than a build step for the pages, and the Rust workspace at
+`rust/`, whose PyO3 extension is compiled into the Django process itself.
 
 ## Directory Tree
 
@@ -22,6 +23,9 @@ code/src/
 │   ├── app/                  ← expo-router routes (routes only — tests live in __tests__/)
 │   ├── __tests__/            ← jest-expo + React Native Testing Library
 │   └── CONTEXT.md            ← the mobile surface: layout, scripts, versioning
+├── rust/                     ← RUST-ONLY — the Cargo workspace (absent unless opted in)
+│   ├── crates/nativecore/    ← the PyO3 extension module Django imports
+│   └── CONTEXT.md            ← the Rust surface: tree, house-constant name, build rationale
 ├── docker/                   ← Dockerfiles and Compose files for all environments
 │   └── CONTEXT.md            ← images, environments, Nginx proxy config
 ├── scripts/                  ← shell scripts for all development operations
@@ -31,6 +35,7 @@ code/src/
 │   ├── deployment/           ← deployment scripts
 │   ├── development/          ← dev stack lifecycle (server, shell, logs)
 │   ├── mobile/               ← MOBILE-ONLY — Metro, lint, typecheck, test, bundle (host)
+│   ├── rust/                 ← RUST-ONLY — build, test, lint, supply-chain audit (host)
 │   ├── reports/              ← generated audit/coverage reports (gitignored)
 │   ├── syntax/               ← code quality (lint, type-check, format)
 │   └── tests/                ← test suite runners (pytest, Bruno, playwright-python)
@@ -50,6 +55,7 @@ code/src/
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
 | `django/`                   | The Django project — at **baseline**: an empty `apps/` package, the environment-split settings, and root URL routing. No application code yet | `django/CONTEXT.md`                   |
 | `mobile/`                   | **Mobile-only.** The Expo React Native app — one route at baseline. Absent unless the project opted in                                        | `mobile/CONTEXT.md`                   |
+| `rust/`                     | **Rust-only.** The Cargo workspace — one PyO3 crate at baseline. Absent unless the project opted in                                           | `rust/CONTEXT.md`                     |
 | `docker/`                   | Dockerfiles and Compose files for all environments                                                                                            | `docker/CONTEXT.md`                   |
 | `scripts/`                  | Shell scripts for **every** development operation — the only sanctioned way to run dev, test, db, and syntax tooling                          | `scripts/CONTEXT.md`                  |
 | `tests/`                    | API integration tests (Bruno collection)                                                                                                      | `tests/CONTEXT.md`                    |
@@ -77,13 +83,19 @@ See `code/docs/MCP-SERVER.md`.
 ## Surfaces
 
 **Surface** is load-bearing vocabulary here: a _surface_ is one delivery target with its own
-runtime, toolchain and release cycle. This repository has at most two, and every doctrine
+runtime, toolchain and release cycle. This repository has at most three, and every doctrine
 statement about builds, bundlers, TypeScript or rendering is scoped to one of them.
 
 | Surface    | Lives in  | Runtime                                       | Present                      |
 | ---------- | --------- | --------------------------------------------- | ---------------------------- |
 | **Web**    | `django/` | Django ASGI — server-rendered pages + `/api/` | Always                       |
 | **Mobile** | `mobile/` | React Native (Expo) on a device               | Only if the project opted in |
+| **Native** | `rust/`   | Rust compiled into the Django process         | Only if the project opted in |
+
+The native surface is the odd one of the three: it has no separate runtime of its own. A PyO3
+extension is loaded **into** the web surface's process and shares its address space, which is
+precisely why its supply chain is gated harder than any Python dependency
+(`code/docs/rust/SUPPLY-CHAIN.md`).
 
 The two are **peers, not layers**. The mobile app consumes the same Django Ninja API a
 third-party client would; it never renders a Django page and Django never bundles it. That is

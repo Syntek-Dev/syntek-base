@@ -53,6 +53,21 @@ _exclude:
   # is the rule these entries exist to protect.
   - "<: if not INCLUDE_MOBILE :>/.claude/agents/mobile.md<: endif :>"
   - "<: if not INCLUDE_MOBILE :>/.claude/skills/stack-react-native<: endif :>"
+  # Optional Rust surface, gated by INCLUDE_RUST — the same one-mechanism rule as mobile
+  # above. Rust is for PyO3 extensions, standalone binaries, CLI tools and services;
+  # consuming a published wheel needs none of it, so this gates AUTHORING only.
+  - "<: if not INCLUDE_RUST :>/code/src/rust<: endif :>"
+  - "<: if not INCLUDE_RUST :>/code/src/scripts/rust<: endif :>"
+  - "<: if not INCLUDE_RUST :>/code/docs/RUST.md<: endif :>"
+  - "<: if not INCLUDE_RUST :>/code/docs/rust<: endif :>"
+  - "<: if not INCLUDE_RUST :>/code/docs/encryption/RUST-CRYPTO.md<: endif :>"
+  - "<: if not INCLUDE_RUST :>/code/workflows/12-rust-extension<: endif :>"
+  - "<: if not INCLUDE_RUST :>/.github/workflows/syntax-rust.yml<: endif :>"
+  # Governance goes with the tree, exactly as for mobile: a Rust agent with no Rust to
+  # work on is worse than no agent at all. The shipped INDEXES still list both
+  # unconditionally, flagged rust-only.
+  - "<: if not INCLUDE_RUST :>/.claude/agents/rust.md<: endif :>"
+  - "<: if not INCLUDE_RUST :>/.claude/skills/stack-rust<: endif :>"
   # Binaries cannot be rendered when _templates_suffix is "". Both are generated
   # artefacts — a new project rebuilds them from the sources beside them.
   - "*.pdf"
@@ -239,6 +254,25 @@ MOBILE_BUNDLE_ID:
     Use reverse-domain form: lowercase letters and digits, dot-separated, no hyphens or
     underscores (e.g. com.acme.acmeportal).
     <: endif :>
+
+# ── Rust surface (optional) ──────────────────────────────────────────────────
+# Opt-in Rust workspace at code/src/rust/, for PyO3 extension modules, standalone
+# binaries, CLI tools and services. When INCLUDE_RUST is false the tree, its scripts,
+# its guides, its workflow, its CI job, and its agent+skill pair are all excluded above.
+#
+# This gates AUTHORING, not consuming: a project that merely depends on a published
+# PyO3 wheel installs it like any other dependency and needs no Rust toolchain, so it
+# should answer false. Answer true only when this repository compiles Rust itself.
+#
+# Turning it on makes rustup a prerequisite for `uv sync` and adds a Rust stage to the
+# backend image, because the PyO3 crate is a uv workspace member built by maturin.
+
+INCLUDE_RUST:
+  type: bool
+  help: >-
+    Include the optional Rust workspace (PyO3 extensions, binaries, CLI tools).
+    Answer false if you only consume prebuilt wheels — this gates authoring.
+  default: false
 
 # ── Meta ─────────────────────────────────────────────────────────────────────
 

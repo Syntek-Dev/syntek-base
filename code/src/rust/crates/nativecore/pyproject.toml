@@ -1,0 +1,30 @@
+# Build manifest for the nativecore extension module.
+#
+# The ROOT pyproject.toml sets `[tool.uv] package = false` — it is a virtual project that
+# declares dependencies and is never itself built into a wheel. This crate is the
+# opposite: a real distribution, built by maturin, and pulled in from the root via
+# [tool.uv.sources] as a path dependency. That is why the build backend lives here and
+# not at the root.
+
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "nativecore"
+description = "First-party native extension for <%PROJECT_NAME%> — crypto and secret-handling primitives"
+requires-python = ">=3.14"
+license = { text = "<%LICENCE%>" }
+authors = [{ name = "<%DEVELOPER_NAME%>", email = "<%DEVELOPER_EMAIL%>" }]
+# Version is read from Cargo.toml by maturin — declaring it here too would let the two
+# drift silently.
+dynamic = ["version"]
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.maturin]
+# The extension is a bare module (no mixed Python/Rust package layout), so there is no
+# python-source directory. abi3-py314 in the workspace means one wheel covers every
+# CPython from 3.14 up, rather than one wheel per minor version.
+module-name = "nativecore"
+features = ["pyo3/extension-module"]
+strip = true

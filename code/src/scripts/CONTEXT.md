@@ -19,6 +19,7 @@ code/src/scripts/
 ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
 │   └── reports/             ← reserved for future report output (gitignored)
 ├── mobile/                  ← MOBILE-ONLY — Metro, lint, typecheck, test, bundle (host, not Docker)
+├── rust/                    ← RUST-ONLY — build, test, lint, supply-chain audit (host, not Docker)
 ├── reports/                 ← top-level generated reports (gitignored)
 ├── syntax/                  ← code quality (lint, type-check, format)
 │   └── reports/             ← generated report output (gitignored)
@@ -32,17 +33,18 @@ code/src/scripts/
 
 ## Subdirectories
 
-| Directory      | Purpose                                                                                                                                                     |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `_lib/`        | Internal shell helpers sourced by other scripts — not invoked directly                                                                                      |
-| `audits/`      | Codebase health: line-count enforcement, stub detection                                                                                                     |
-| `database/`    | Django migration management, PostgreSQL backup / restore / reset                                                                                            |
-| `deployment/`  | Deployment automation scripts (planned)                                                                                                                     |
-| `development/` | Dev stack lifecycle: server up/down, container shell, log tailing, scaffolding                                                                              |
-| `mobile/`      | **Mobile-only.** Every mobile-surface operation — and the one group that runs on the **host** rather than in Docker, because Expo Go needs Metro on the LAN |
-| `reports/`     | Top-level generated reports (gitignored)                                                                                                                    |
-| `syntax/`      | Code quality: ruff, basedpyright, markdownlint, Prettier                                                                                                    |
-| `tests/`       | Test suite: pytest (backend), Bruno (API), playwright-python (browser e2e)                                                                                  |
+| Directory      | Purpose                                                                                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `_lib/`        | Internal shell helpers sourced by other scripts — not invoked directly                                                                                       |
+| `audits/`      | Codebase health: line-count enforcement, stub detection                                                                                                      |
+| `database/`    | Django migration management, PostgreSQL backup / restore / reset                                                                                             |
+| `deployment/`  | Deployment automation scripts (planned)                                                                                                                      |
+| `development/` | Dev stack lifecycle: server up/down, container shell, log tailing, scaffolding                                                                               |
+| `mobile/`      | **Mobile-only.** Every mobile-surface operation — and the one group that runs on the **host** rather than in Docker, because Expo Go needs Metro on the LAN  |
+| `rust/`        | **Rust-only.** Every Rust operation — the second group running on the **host** rather than in Docker, so the pinned toolchain governs it and the image alike |
+| `reports/`     | Top-level generated reports (gitignored)                                                                                                                     |
+| `syntax/`      | Code quality: ruff, basedpyright, markdownlint, Prettier                                                                                                     |
+| `tests/`       | Test suite: pytest (backend), Bruno (API), playwright-python (browser e2e)                                                                                   |
 
 ## Rules
 

@@ -23,6 +23,7 @@ code/
 │   ├── RENDERING.md                 (sub-docs: rendering/)
 │   ├── RESPONSIVE-DESIGN.md         (sub-docs: responsive/)
 │   ├── RLS-GUIDE.md                 (sub-docs: rls/)
+│   ├── RUST.md                      (sub-docs: rust/) ← RUST-ONLY — the Cargo workspace
 │   ├── SECURITY.md                  (sub-docs: security/)
 │   ├── TESTING.md                   (sub-docs: testing/)
 │   ├── URL-STRATEGY.md
@@ -32,6 +33,8 @@ code/
 │   ├── django/                      ← the Django project (backend + server-rendered frontend)
 │   │   └── CONTEXT.md
 │   ├── mobile/                      ← MOBILE-ONLY — the Expo React Native app
+│   │   └── CONTEXT.md
+│   ├── rust/                        ← RUST-ONLY — the Cargo workspace (PyO3, binaries, CLI)
 │   │   └── CONTEXT.md
 │   ├── docker/                      ← Dockerfiles and Compose files
 │   │   └── CONTEXT.md
@@ -46,6 +49,7 @@ code/
 │   │   ├── deployment/              ← deployment scripts (planned)
 │   │   ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
 │   │   ├── mobile/                  ← MOBILE-ONLY — Metro, lint, typecheck, test, bundle
+│   │   ├── rust/                    ← RUST-ONLY — build, test, lint, supply-chain audit
 │   │   ├── syntax/                  ← code quality (lint, type-check, format)
 │   │   └── tests/                   ← test suite runners (pytest, Bruno)
 │   └── tests/                       ← API integration tests (Bruno collection)
@@ -65,7 +69,9 @@ code/
     │   ── Diagnose & improve (09–11) ──
     ├── 09-debugging-with-logs/      ← find the cause: logs, Glitchtip, Loki, Grafana
     ├── 10-debug/                    ← fix it: isolate, regression test, patch
-    └── 11-refactor/                 ← improve it: no behaviour change
+    ├── 11-refactor/                 ← improve it: no behaviour change
+    │   ── Build, opt-in (12) ──
+    └── 12-rust-extension/           ← RUST-ONLY — PyO3 extensions in the Cargo workspace
 
 Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 ```
@@ -91,41 +97,44 @@ Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 
 ## Key docs
 
-| Guide                           | When to read                                                           |
-| ------------------------------- | ---------------------------------------------------------------------- |
-| `docs/CODING-PRINCIPLES.md`     | Before writing any code                                                |
-| `docs/TESTING.md`               | Before writing tests                                                   |
-| `docs/SECURITY.md`              | Before writing auth, permissions, or any endpoint                      |
-| `docs/API-DESIGN.md`            | Before adding Django Ninja endpoints or Schema models                  |
-| `docs/MCP-SERVER.md`            | Before exposing anything to an LLM agent (the FastMCP `/mcp/` surface) |
-| `docs/ACCESSIBILITY.md`         | Before building any frontend component                                 |
-| `docs/RESPONSIVE-DESIGN.md`     | Before building any frontend component or layout                       |
-| `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or page route                        |
-| `docs/DATABASE.md`              | **Before any model, migration, or query** — the pre-flight rules       |
-| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change                                 |
-| `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics                      |
-| `docs/RENDERING.md`             | Before choosing server vs HTMX vs Alpine for an interaction            |
-| `docs/PERFORMANCE.md`           | Before optimising a query or page                                      |
-| `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                                 |
-| `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                       |
-| `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                      |
+| Guide                           | When to read                                                                           |
+| ------------------------------- | -------------------------------------------------------------------------------------- |
+| `docs/CODING-PRINCIPLES.md`     | Before writing any code                                                                |
+| `docs/TESTING.md`               | Before writing tests                                                                   |
+| `docs/SECURITY.md`              | Before writing auth, permissions, or any endpoint                                      |
+| `docs/API-DESIGN.md`            | Before adding Django Ninja endpoints or Schema models                                  |
+| `docs/MCP-SERVER.md`            | Before exposing anything to an LLM agent (the FastMCP `/mcp/` surface)                 |
+| `docs/ACCESSIBILITY.md`         | Before building any frontend component                                                 |
+| `docs/RESPONSIVE-DESIGN.md`     | Before building any frontend component or layout                                       |
+| `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or page route                                        |
+| `docs/DATABASE.md`              | **Before any model, migration, or query** — the pre-flight rules                       |
+| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change                                                 |
+| `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics                                      |
+| `docs/RENDERING.md`             | Before choosing server vs HTMX vs Alpine for an interaction                            |
+| `docs/PERFORMANCE.md`           | Before optimising a query or page                                                      |
+| `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                                                 |
+| `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                                       |
+| `docs/RUST.md`                  | **Rust-only.** Before any native code — starting with whether it should be Rust at all |
+| `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                                      |
 
 ## Surfaces — where source may live
 
 `code/` owns **all deployable source**, and `code/src/` is the only place it lives. A project has
-one surface always, and a second only if it opted in:
+the web surface always, and each of the other two only if it opted in:
 
 | Surface    | Path          | Standards                                                     |
 | ---------- | ------------- | ------------------------------------------------------------- |
 | **Web**    | `src/django/` | The `docs/` guides below — the default reading of every rule  |
 | **Mobile** | `src/mobile/` | The same `docs/` tree, plus the React Native technique guides |
+| **Native** | `src/rust/`   | The same `docs/` tree, plus `docs/RUST.md` and its sub-docs   |
 
-The mobile app is placed **inside `code/src/`, beside the Django project**, rather than as a
-fifth root layer. That keeps this layer's definition intact — the other three root layers
-(`how-to/`, `project-management/`, `.claude/`) hold documentation and process, never source —
-and, more importantly, keeps **one `docs/` tree for both surfaces** so web and mobile standards
-cannot drift into separate doctrines. A parallel `mobile/docs/` was rejected for exactly that
-reason. Definitions and the full rationale: `code/src/CONTEXT.md` → _Surfaces_.
+The mobile app and the Rust workspace are placed **inside `code/src/`, beside the Django
+project**, rather than as further root layers. That keeps this layer's definition intact — the
+other three root layers (`how-to/`, `project-management/`, `.claude/`) hold documentation and
+process, never source — and, more importantly, keeps **one `docs/` tree for every surface** so
+their standards cannot drift into separate doctrines. A parallel `mobile/docs/` was rejected for
+exactly that reason, and `rust/docs/` for the same one. Definitions and the full rationale:
+`code/src/CONTEXT.md` → _Surfaces_.
 
 ## Global constraints
 

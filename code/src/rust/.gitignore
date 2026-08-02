@@ -1,0 +1,8 @@
+# Cargo build output. Never committed — it is large, machine-specific, and contains
+# binaries this repository's Copier template cannot render.
+target/
+
+# maturin build artefacts
+*.so
+*.pyd
+*.dylib

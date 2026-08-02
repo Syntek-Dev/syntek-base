@@ -1,0 +1,40 @@
+# cargo-deny policy for <%PROJECT_NAME%>.
+#
+# Run by code/src/scripts/rust/audit.sh and by the syntax-rust CI job. This is the
+# supply-chain gate: crates.io has no review process, and a PyO3 extension runs in the
+# same address space as Django with no sandbox between them. A dependency here is
+# strictly more dangerous than a pure-Python one.
+
+[advisories]
+# Fail on any crate with a filed RUSTSEC advisory. No ignore list at baseline — add an
+# entry only with a dated comment saying why the advisory does not apply here.
+yanked = "deny"
+ignore = []
+
+[licenses]
+# Permissive only. A copyleft dependency would propagate to anything linking this crate,
+# which for a shared package layer is a licence decision, never an incidental one.
+allow = [
+  "MIT",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "Unicode-3.0",
+  "Zlib",
+]
+confidence-threshold = 0.9
+
+[bans]
+# Two versions of the same crate in one binary usually means a transitive dependency
+# lagged behind. It is a warning rather than an error because it is often outside your
+# control, but it is never noise: for a crypto crate it can mean two implementations.
+multiple-versions = "warn"
+wildcards = "deny"
+deny = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

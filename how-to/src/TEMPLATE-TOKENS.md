@@ -123,6 +123,29 @@ identical to one produced before the mobile option existed.
 `<%MOBILE_BUNDLE_ID%>` is **permanent once the app is published** to either store — changing it
 later creates a new app rather than updating the existing one.
 
+### Rust surface (optional)
+
+The opt-in Cargo workspace at `code/src/rust/` — PyO3 extension modules, standalone binaries and
+CLI tools. `<%INCLUDE_RUST%>` gates the whole feature: when it is false, the workspace, its
+scripts, its guides, its workflow, its CI job, and its `rust` agent + `stack-rust` skill are all
+excluded by templated `_exclude` entries.
+
+| Token              | Meaning                                     | Example value | Format |
+| ------------------ | ------------------------------------------- | ------------- | ------ |
+| `<%INCLUDE_RUST%>` | Generate the Rust workspace and its tooling | `false`       | `bool` |
+
+**It gates authoring, not consuming.** A project that merely depends on a prebuilt PyO3 wheel
+installs it like any other dependency and needs no Rust toolchain — such a project answers
+`false`. Answer `true` only when the repository itself compiles Rust.
+
+Answering `true` makes `rustup` a prerequisite for `uv sync` and adds a Rust stage to the backend
+image, because the extension crate is a uv workspace member built by maturin. That cost is why
+the default is `false`.
+
+The crate and its Python module are named `nativecore` in every project — a **house constant**
+like `apps.marketing`, deliberately not tokenised so `import nativecore` means the same thing
+across the estate.
+
 ### Meta
 
 | Token      | Meaning                                                   | Example value | Format       |

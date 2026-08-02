@@ -2,8 +2,8 @@
 
 **Last Updated**: 02/08/2026
 
-Copier asks twenty-two questions — twenty-four if you opt into the mobile surface, which adds two
-of its own. Most have a good default. A few are load-bearing and awkward to
+Copier asks twenty-three questions — twenty-five if you opt into the mobile surface, which adds
+two of its own. Most have a good default. A few are load-bearing and awkward to
 change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is
@@ -120,19 +120,38 @@ that mention it afterwards.
 `apps.marketing`, `apps.seo` and `apps.design_tokens` are house constants. They are the same in
 every project and are never asked about.
 
+## Optional surfaces
+
+Two questions add a whole toolchain. Both default to `false`, and both are cheap to turn on later
+with `copier update` — so answer `false` when unsure.
+
+| Question         | Turn it on when                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------- |
+| `INCLUDE_MOBILE` | The project ships a React Native app. Adds Node, pnpm and the Expo toolchain                            |
+| `INCLUDE_RUST`   | **This repository compiles Rust.** Adds `rustup` as a prerequisite for `uv sync` and a Rust image stage |
+
+`INCLUDE_RUST` gates **authoring, not consuming** — the distinction that decides the answer. A
+project that merely depends on a prebuilt PyO3 wheel installs it like any other dependency and
+needs no toolchain: answer `false`. Answer `true` only if source in this repository is compiled
+by `cargo`.
+
+Getting that backwards is the common mistake, and it is expensive in the wrong direction: every
+contributor to a `true` project needs a Rust toolchain, and every CI run builds one.
+
 ---
 
 ## Getting it wrong
 
 Everything is recoverable; the cost varies.
 
-| Answer                         | Fixing it later                                                                    |
-| ------------------------------ | ---------------------------------------------------------------------------------- |
-| `DATE`, `SERVER_TIER`, licence | Trivial — edit in place, or edit `.copier-answers.yml` and re-run `copier update`. |
-| `DEVELOPER_*`, app names       | Easy — a scoped find-and-replace.                                                  |
-| `PRIMARY_DOMAIN`, `ENV_PREFIX` | Moderate — dozens of occurrences, all in docs and config.                          |
-| `ORG_SLUG`                     | Moderate — also touches the server namespace and cache prefix.                     |
-| `PROJECT_SLUG`                 | Painful — databases, volumes, hostnames, secret filenames.                         |
+| Answer                           | Fixing it later                                                                                                       |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `DATE`, `SERVER_TIER`, licence   | Trivial — edit in place, or edit `.copier-answers.yml` and re-run `copier update`.                                    |
+| `INCLUDE_MOBILE`, `INCLUDE_RUST` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand. |
+| `DEVELOPER_*`, app names         | Easy — a scoped find-and-replace.                                                                                     |
+| `PRIMARY_DOMAIN`, `ENV_PREFIX`   | Moderate — dozens of occurrences, all in docs and config.                                                             |
+| `ORG_SLUG`                       | Moderate — also touches the server namespace and cache prefix.                                                        |
+| `PROJECT_SLUG`                   | Painful — databases, volumes, hostnames, secret filenames.                                                            |
 
 If you realise within minutes, the cheapest fix is to delete the directory and generate again.
 

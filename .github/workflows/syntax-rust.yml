@@ -1,0 +1,65 @@
+# Quality gates for the RUST surface — the sibling of syntax-python.yml.
+#
+# This workflow file is itself rust-only: one _exclude entry removes it on a project
+# generated without INCLUDE_RUST, so there is no job to guard. That is why no step-level
+# directory check appears here, unlike the mobile jobs in test.yml.
+#
+# Path filters are safe on this workflow because it is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md on why a path-filtered required check can block a
+# merge forever.
+name: Syntax — Rust
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/rust/**"
+      - "code/src/scripts/rust/**"
+      - ".github/workflows/syntax-rust.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/rust/**"
+      - "code/src/scripts/rust/**"
+      - ".github/workflows/syntax-rust.yml"
+  workflow_dispatch:
+
+jobs:
+  rust:
+    name: Rust lint, test and supply chain
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # rustup reads code/src/rust/rust-toolchain.toml, so the channel and components
+      # come from the pin rather than being restated here. Restating them would let CI
+      # and a developer laptop drift.
+      - name: Show the pinned toolchain
+        run: |
+          cd code/src/rust
+          rustup show active-toolchain
+          cargo --version
+
+      - name: Cache cargo registry and build output
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            code/src/rust/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('code/src/rust/Cargo.lock', 'code/src/rust/rust-toolchain.toml') }}
+          restore-keys: cargo-${{ runner.os }}-
+
+      - name: Lint (rustfmt + clippy at -D warnings)
+        run: bash code/src/scripts/rust/lint.sh
+
+      - name: Test (Rust side)
+        run: bash code/src/scripts/rust/test.sh
+
+      # The supply-chain gate. A crate shares its address space with Django, so this is
+      # a gate and not a report — see code/docs/rust/SUPPLY-CHAIN.md.
+      - name: Install cargo-deny
+        run: cargo install --locked cargo-deny
+
+      - name: Audit the dependency tree
+        run: bash code/src/scripts/rust/audit.sh

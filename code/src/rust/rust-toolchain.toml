@@ -1,0 +1,11 @@
+# Pins the toolchain for every Rust operation in this repository.
+#
+# rustup reads this file automatically, so `cargo` invoked anywhere under code/src/rust/
+# uses this exact toolchain — CI, the Docker build stage, and a developer's laptop all
+# compile with the same compiler. Bumping it is a template release, not a routine change:
+# the channel here and `rust-version` in Cargo.toml move together.
+
+[toolchain]
+channel = "1.85.0"
+components = ["rustfmt", "clippy"]
+profile = "minimal"
