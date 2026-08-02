@@ -6,6 +6,6 @@
 # the channel here and `rust-version` in Cargo.toml move together.
 
 [toolchain]
-channel = "1.85.0"
+channel = "1.92.0"
 components = ["rustfmt", "clippy"]
 profile = "minimal"

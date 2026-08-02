@@ -15,8 +15,13 @@ User-facing release notes for each published version.
 
 `syntek-base` gains a third surface: an opt-in **Rust workspace** at `code/src/rust/`, for PyO3
 extension modules, standalone binaries, CLI tools and services. It is gated by one new question,
-`INCLUDE_RUST`, which defaults to `false` — so **a project generated without it is byte-identical
-to one generated from `1.0.0`.**
+`INCLUDE_RUST`, which defaults to `false` — so **a project generated without it gains no files and
+loses none.**
+
+That is not the same as byte-identical, and the difference is worth knowing before you read a
+`copier update` diff: sixteen files change content. The documentation indexes gain **rust-only**
+flagged rows, the version metadata moves, and `pyproject.toml` gains one comment. Nothing in the
+tree changes.
 
 ### The distinction that decides your answer
 

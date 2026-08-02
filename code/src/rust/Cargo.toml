@@ -16,11 +16,12 @@ version = "0.1.0"
 edition = "2024"
 license = "<%LICENCE%>"
 authors = ["<%DEVELOPER_NAME%> <<%DEVELOPER_EMAIL%>>"]
-repository = "https://github.com/<%ORG_NAME%>/<%PROJECT_SLUG%>"
+# rust-version is the edition-2024 floor for OUR code. The toolchain everyone actually
+# compiles with is pinned in rust-toolchain.toml — that pin is the operative version.
 rust-version = "1.85"
 
 [workspace.dependencies]
-pyo3 = { version = "0.23", features = ["extension-module", "abi3-py314"] }
+pyo3 = { version = "0.29", features = ["extension-module", "abi3-py314"] }
 zeroize = { version = "1.8", features = ["derive"] }
 secrecy = "0.10"
 

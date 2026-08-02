@@ -197,7 +197,7 @@ complete.
 | ---------------------- | ------- | ------------------------------------------------------- |
 | Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
 | Rust (rust-only)       | 1.85+   | https://doc.rust-lang.org/stable/book/                  |
-| PyO3 (rust-only)       | 0.23    | https://pyo3.rs/                                        |
+| PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
 | Django Ninja           | 1.x     | https://django-ninja.dev/                               |
 | FastMCP                | 3.x     | https://gofastmcp.com/                                  |

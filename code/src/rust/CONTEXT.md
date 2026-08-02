@@ -18,6 +18,7 @@ code/src/rust/
 ├── Cargo.toml              ← workspace root; shared pins in [workspace.dependencies]
 ├── rust-toolchain.toml     ← the pinned compiler — rustup reads it automatically
 ├── deny.toml               ← cargo-deny supply-chain policy (advisories, licences, bans)
+├── clippy.toml             ← doc_markdown ident allow-list (PyO3, CPython, …)
 ├── .gitignore              ← target/ and build artefacts — never committed
 └── crates/
     └── nativecore/         ← the first-party PyO3 extension module
