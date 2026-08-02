@@ -64,4 +64,4 @@ observable behaviour. New behaviour belongs to a story, not here.
 - `code/workflows/08-refactor/` — the behaviour-preserving refactor procedure
 - `code/CONTEXT.md` — the 750/800-line source-file limit this record answers to
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

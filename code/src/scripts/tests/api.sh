@@ -20,7 +20,7 @@
 #
 # Exits 0 without starting anything when the collection holds no requests.
 #
-# The default `host` env targets http://test.{{PROJECT_SLUG}}.localhost:83 (the test
+# The default `host` env targets http://test.<%PROJECT_SLUG%>.localhost:83 (the test
 # nginx, published on 127.0.0.1:83). The .localhost hostname resolves to 127.0.0.1;
 # add it to /etc/hosts if your resolver does not handle *.localhost. Override the
 # target with API_BASE_URL, or pass `--env docker` to run inside the compose network.
@@ -76,7 +76,7 @@ fi
 
 mkdir -p "$OUTPUT_DIR"
 
-API_BASE_URL="${API_BASE_URL:-http://test.{{PROJECT_SLUG}}.localhost:83}"
+API_BASE_URL="${API_BASE_URL:-http://test.<%PROJECT_SLUG%>.localhost:83}"
 # The path used to prove the stack is answering before Bruno starts. At baseline
 # `/control/` is the only route the URLconf registers; point this at a real liveness
 # route (e.g. /health/) once the project has one.

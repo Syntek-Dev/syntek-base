@@ -19,7 +19,7 @@ Frontend: Django templates (`apps.marketing`) — per-page `<head>` built by
 `apps.marketing.seo.build_seo()` and rendered through the `_seo_head.html` partial;
 JSON-LD via the `seo.py` builders. **All SEO is server-rendered by Django — no client-side
 metadata layer.** | Sitemaps, `robots.txt`, `llms.txt`: the Django views in
-`apps/core/views/seo.py`. | Scripts: `code/src/scripts/**/*.sh` | Locale: {{LOCALE}} · {{TIMEZONE}}
+`apps/core/views/seo.py`. | Scripts: `code/src/scripts/**/*.sh` | Locale: <%LOCALE%> · <%TIMEZONE%>
 
 ## Context Loading
 
@@ -30,7 +30,7 @@ Read before implementing:
 - `code/src/django/apps/marketing/CONTEXT.md` — how `build_seo`, `_seo_head.html`, and page caching fit
 - `code/docs/RENDERING.md` — the interaction doctrine; critical SEO content is server-rendered, never JS-gated
 - `code/docs/URL-STRATEGY.md` — canonical URL and slug rules (marketing `/`, admin `/admin/`, portal `/portal/`)
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for the copy you do write (titles, meta descriptions, OG text): cadence, no superlatives, {{LOCALE}}
+- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for the copy you do write (titles, meta descriptions, OG text): cadence, no superlatives, <%LOCALE%>
 - `.claude/skills/grill-with-docs/SKILL.md` — open the SEO pass with a grilling interview
 - Stack detail: defer to `.claude/skills/stack-htmx-templates` — do not restate template/HTMX rules here
 
@@ -49,15 +49,15 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## Grill Before Wiring
 
-Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one
+Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one
 question at a time (each with your recommended answer; look facts up, don't ask; no action
-until {{DEVELOPER_NAME}} confirms). Grill across:
+until <%DEVELOPER_NAME%> confirms). Grill across:
 
 - **Production domain** — for canonical URLs and `og:url` (check env / existing config first)
 - **Business/schema type** — `Organization` is the default; probe whether a page needs `Article`, `Service`, `FAQPage`, `BreadcrumbList`, or `LocalBusiness`
 - **Default OG image** — the fallback social-share asset
 
-Locale is fixed: `lang="en-GB"`, `og:locale="{{LOCALE}}"` — do not raise it. This is the
+Locale is fixed: `lang="en-GB"`, `og:locale="<%LOCALE%>"` — do not raise it. This is the
 design-work default (`.claude/CLAUDE.md` §10).
 
 ## What You Implement
@@ -71,7 +71,7 @@ design-work default (`.claude/CLAUDE.md` §10).
   the `seo.py` JSON-LD builders; source dynamic fields from the domain services (SSR).
 - **robots.txt, sitemap, llms.txt** — the Django views in `apps/core/views/seo.py`.
   Allow AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended). **Disallow
-  `/admin/` and `/portal/`** — the {{PROJECT_NAME}} Admin and Client Portal are private and must
+  `/admin/` and `/portal/`** — the <%PROJECT_NAME%> Admin and Client Portal are private and must
   never be indexed.
 - **AI discoverability (GEO)** — `llms.txt` at site root; BLUF structure; question-format
   headings; FAQ/comparison blocks; "Last updated" timestamps. See the checklist.

@@ -1,6 +1,6 @@
 # project-management/workflows — Step-by-Step PM Guides
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

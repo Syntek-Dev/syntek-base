@@ -41,4 +41,4 @@ Edit the palette in `component-build/components.py`, or a `section-<name>.tex` p
 - `code/docs/DESIGN-TOKENS.md` — the code-side, DB-canonical design-token system
 - `project-management/workflows/06-component-designs/` — the component-design workflow
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -38,8 +38,8 @@ loaded on demand by the agents in `.claude/agents/`.
 ## Guardrails
 
 - **Frontmatter is `name` + `description` only** (the Claude Code skill spec) — no other keys.
-- **No plugin references** — never `${{ENV_PREFIX}}_DIR`, `./skills/`, `./plugins/`, `/{{ORG_SLUG}}-dev-suite:`,
-  or `/{{ORG_SLUG}}-doc-writer:`; use project paths (`.claude/plugins/*.py`, `code/docs/*`,
+- **No plugin references** — never `$<%ENV_PREFIX%>_DIR`, `./skills/`, `./plugins/`, `/<%ORG_SLUG%>-dev-suite:`,
+  or `/<%ORG_SLUG%>-doc-writer:`; use project paths (`.claude/plugins/*.py`, `code/docs/*`,
   `code/src/scripts/**/*.sh`) and internal agent names.
 - Skills reference `code/src/scripts/**/*.sh` for dev operations — never raw `pnpm`, `next`,
   `pytest`, `python`, or `docker`.

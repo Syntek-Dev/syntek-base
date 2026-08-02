@@ -7,11 +7,11 @@ model: opus
 
 # Security
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — OWASP controls, Django Ninja API security, IDOR prevention, incident response
 
-Security documentation for the {{PROJECT_NAME}} stack. Covers authentication, authorisation,
+Security documentation for the <%PROJECT_NAME%> stack. Covers authentication, authorisation,
 cryptography, data classification, input validation, Django Ninja API security, supply chain,
 monitoring, and incident response.
 

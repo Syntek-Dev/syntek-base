@@ -45,4 +45,4 @@ Everything is placeholder brand. Rebrand by editing `../SHARED/wireframe.css`
 - `../CONTEXT.md` — the wireframes folder overview and workflow
 - `../../06-COMPONENTS/` — the component sheet the chrome mirrors
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

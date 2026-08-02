@@ -7,8 +7,8 @@ model: opus
 
 # SEO & AI Discoverability Checklist
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **MCP Servers:** context7 (SEO, OpenGraph, structured data docs)
 
 ---

@@ -13,7 +13,7 @@ component. Once the register is signed off, hand any publication or portal-integ
 work to the `feature`/`frontend` path; the register itself is a compliance artefact,
 not source.
 
-Locale: en_GB · {{TIMEZONE}} · date format DD/MM/YYYY · currency GBP (£).
+Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 ## Governing procedures (route here — do not restate at length)
 

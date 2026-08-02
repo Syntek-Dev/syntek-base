@@ -8,7 +8,7 @@ model: opus
 
 # API Code (Django Ninja) — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -33,7 +33,7 @@ This workflow produces code — consult **both** layer reference files:
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time — the endpoint and contract details (read and
+interview <%DEVELOPER_NAME%> one question at a time — the endpoint and contract details (read and
 write endpoints), the permission check guarding every mutating endpoint (OWASP A01)
 and ownership checks (no IDOR), and the error shapes returned before writing any code.
 

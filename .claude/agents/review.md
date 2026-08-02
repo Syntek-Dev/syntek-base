@@ -8,7 +8,7 @@ model: opus
 
 Backend: Django + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -54,7 +54,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `DEBUG=False` in all non-local environments
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production
 - All secrets via env vars — never hardcoded
-- Django admin never at `/admin/` (that prefix belongs to the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix belongs to the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 - Never commit `.env` files — use `.env.*.example` templates only
 
 ## Pre-flight

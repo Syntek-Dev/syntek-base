@@ -7,7 +7,7 @@ description: >-
   /grill-with-docs, or as the opening move of architecture, database, API, or story design.
 ---
 
-# Skill: grill-with-docs ({{PROJECT_NAME}})
+# Skill: grill-with-docs (<%PROJECT_NAME%>)
 
 Run a grilling session that leaves a paper trail. Load `.claude/skills/grilling/SKILL.md`
 and follow it, and as each decision resolves, record it in the right **existing** artifact —

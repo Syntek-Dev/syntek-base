@@ -1,6 +1,6 @@
 # Workflow: User Story Creation
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

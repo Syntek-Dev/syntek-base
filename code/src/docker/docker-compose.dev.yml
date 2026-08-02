@@ -3,15 +3,15 @@
 #   docker compose --env-file code/src/docker/.env.dev -f code/src/docker/docker-compose.dev.yml up
 #
 # Required env vars: POSTGRES_PASSWORD, SECRET_KEY
-# Optional:          POSTGRES_USER (default: {{PROJECT_SLUG}}), DEBUG (default: true)
-name: "{{PROJECT_SLUG}}-dev"
+# Optional:          POSTGRES_USER (default: <%PROJECT_SLUG%>), DEBUG (default: true)
+name: "<%PROJECT_SLUG%>-dev"
 
 services:
   db:
     image: postgres:18-alpine
     environment:
-      POSTGRES_DB: "{{PROJECT_SLUG}}_dev"
-      POSTGRES_USER: ${POSTGRES_USER:-{{PROJECT_SLUG}}}
+      POSTGRES_DB: "<%PROJECT_SLUG%>_dev"
+      POSTGRES_USER: ${POSTGRES_USER:-<%PROJECT_SLUG%>}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       POSTGRES_INITDB_ARGS: "--no-data-checksums"
     volumes:
@@ -19,7 +19,8 @@ services:
       - ./postgres/postgresql.dev.conf:/etc/postgresql/postgresql.conf:ro
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-{{PROJECT_SLUG}}} -d {{PROJECT_SLUG}}_dev"]
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-<%PROJECT_SLUG%>} -d <%PROJECT_SLUG%>_dev"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -46,7 +47,7 @@ services:
       - ../django:/workspace/code/src/django
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.dev
-      DATABASE_URL: postgresql://${POSTGRES_USER:-{{PROJECT_SLUG}}}:${POSTGRES_PASSWORD}@db:5432/{{PROJECT_SLUG}}_dev
+      DATABASE_URL: postgresql://${POSTGRES_USER:-<%PROJECT_SLUG%>}:${POSTGRES_PASSWORD}@db:5432/<%PROJECT_SLUG%>_dev
       REDIS_URL: redis://cache:6379/0
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
       DEBUG: "${DEBUG:-true}"

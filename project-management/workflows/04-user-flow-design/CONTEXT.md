@@ -1,6 +1,6 @@
 # Workflow: User Flow Design
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

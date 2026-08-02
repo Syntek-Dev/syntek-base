@@ -1,6 +1,6 @@
 # code/src/scripts/tests
 
-**Last Updated**: {{DATE}} (browser e2e moved to playwright-python; runner set trimmed to the
+**Last Updated**: <%DATE%> (browser e2e moved to playwright-python; runner set trimmed to the
 Django baseline)
 
 Shell scripts for running the automated test suites. The backend and API runners invoke Docker

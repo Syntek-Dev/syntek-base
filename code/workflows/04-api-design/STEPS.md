@@ -8,7 +8,7 @@ model: opus
 
 # Django Ninja API Design — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -34,7 +34,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 > **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time — each endpoint (operation), request and response
+interview <%DEVELOPER_NAME%> one question at a time — each endpoint (operation), request and response
 Schema, the named Policy guarding every state-changing endpoint (OWASP A01), ownership
 checks (no IDOR), error shapes, and idempotency. Record hard-to-reverse calls as an ADR in
 the project's decision register.

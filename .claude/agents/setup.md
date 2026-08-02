@@ -18,7 +18,7 @@ tests, CI pipelines, or stories — see _Handoffs_.
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Frontend: Django templates +
 django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}} | All dev ops via `code/src/scripts/**/*.sh`.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> | All dev ops via `code/src/scripts/**/*.sh`.
 
 ## Context Loading
 
@@ -49,10 +49,10 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ### Grill first
 
 Substantial setup opens with a grilling pass — load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time (what to configure or initialise — a Django app, a
+interview <%DEVELOPER_NAME%> one question at a time (what to configure or initialise — a Django app, a
 marketing view, environment templates, a directory CONTEXT/CLAUDE pair, or root config —
 and the exact scope and location), each with a recommended answer, looking facts up rather
-than asking, no action until {{DEVELOPER_NAME}} confirms. A single config edit or a mechanical touch skips
+than asking, no action until <%DEVELOPER_NAME%> confirms. A single config edit or a mechanical touch skips
 it. Project-wide design-work default (`.claude/CLAUDE.md` §10).
 
 ### Scaffolding — always via scripts, never by hand
@@ -77,7 +77,7 @@ bash code/src/scripts/development/server.sh status   # confirm dev stack state
 
 - Templates only in the repo: `.env.dev.example`, `.env.staging.example`,
   `.env.production.example`, `.env.test.example`. Separate database per environment
-  (`{{PROJECT_SLUG}}_dev`, `_staging`, `_production`, `_test`).
+  (`<%PROJECT_SLUG%>_dev`, `_staging`, `_production`, `_test`).
 - Copy to real `.env.*` for local work only — **never commit a real `.env`**.
 - All secrets via env vars; `DEBUG=False` outside local; `CORS_ALLOWED_ORIGINS` an
   explicit allowlist (never `*`) in staging/production.
@@ -108,7 +108,7 @@ root `CONTEXT.md` tree. Docker/Compose lives in `code/src/docker/`.
   `**/workflows/**`, all `CONTEXT.md`). Oversized files split into a thin index +
   sub-documents.
 - **Source files ≤ 750 lines** (800 grace) — split into modules beyond that.
-- Django admin is **never** mounted at `/admin/` — that prefix belongs to the {{PROJECT_NAME}}
+- Django admin is **never** mounted at `/admin/` — that prefix belongs to the <%PROJECT_NAME%>
   Admin area (Django views + templates + HTMX; Django
   contrib admin lives at `/control/`). See `code/docs/URL-STRATEGY.md`.
 - **Token-first CSS:** any new stylesheet consumes `var(--token)` only; new design

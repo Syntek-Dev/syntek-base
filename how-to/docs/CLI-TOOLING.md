@@ -5,10 +5,10 @@ skills: [global-workflow]
 model: opus
 ---
 
-# CLI Tooling — {{PROJECT_NAME}}
+# CLI Tooling — <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Docker Compose dev commands run via project shell scripts
 
 > **Rule:** All development commands run through the project shell scripts in `code/src/scripts/**/*.sh`.

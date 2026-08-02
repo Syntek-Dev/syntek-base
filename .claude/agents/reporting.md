@@ -24,7 +24,7 @@ Backend: Django 6.0.6 + Django Ninja + PostgreSQL 18 | Valkey cache
 Report data lives in service modules under the owning app (typically
 `code/src/django/apps/analytics/services/`; audit rollups under
 `apps/audit/`). Scripts: `code/src/scripts/**/*.sh` — never raw `python`,
-`pytest`, `psql`, or `docker`. Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}.
+`pytest`, `psql`, or `docker`. Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
 ## Context Loading
 
@@ -59,9 +59,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## Grill Before Building
 
-Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one
+Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one
 question at a time (each with your recommended answer; look facts up, don't ask; no action
-until {{DEVELOPER_NAME}} confirms) before writing a query — a wrong assumption here means a rewritten
+until <%DEVELOPER_NAME%> confirms) before writing a query — a wrong assumption here means a rewritten
 query layer. Grill across:
 
 | Need               | Why                         |
@@ -104,7 +104,7 @@ apps/<app>/services/
 ```
 
 Return a standardised result dataclass carrying `data` plus `metadata`
-(generation timestamp, timezone, query params). Format currency as {{CURRENCY}} and dates as
+(generation timestamp, timezone, query params). Format currency as <%CURRENCY%> and dates as
 `DD/MM/YYYY` per the global-workflow skill.
 
 ### 3. PII protection (non-negotiable)
@@ -136,7 +136,7 @@ Reports aggregate personal data — treat it as hazardous by default:
 - Queries scoped to caller role/ownership with an explicit permission check.
 - No raw PII in aggregate output; individual-record PII gated and documented.
 - All DB-side aggregation; recommended indexes listed for `database`.
-- Result shape localised ({{CURRENCY}}, {{LOCALE}}, {{TIMEZONE}}).
+- Result shape localised (<%CURRENCY%>, <%LOCALE%>, <%TIMEZONE%>).
 - Owning app's `CONTEXT.md` updated for any new service module — docs are a hard gate
   before commit.
 

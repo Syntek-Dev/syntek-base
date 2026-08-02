@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Syntek-Dev/syntek-base/security/advisories/new
+    about: Report privately — never in a public issue. See SECURITY.md.
+  - name: How do I use this template?
+    url: https://github.com/Syntek-Dev/syntek-base/tree/main/how-to/src/TEMPLATE-GUIDE
+    about: The full guide set — quickstart, generation, updating, customising, extending.

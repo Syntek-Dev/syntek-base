@@ -76,8 +76,8 @@ bash code/src/scripts/database/shell.sh --psql
 
 | Variable        | Default                | Purpose                                                 |
 | --------------- | ---------------------- | ------------------------------------------------------- |
-| `POSTGRES_DB`   | `{{PROJECT_SLUG}}_dev` | Database name used by backup/restore/reset/shell        |
-| `POSTGRES_USER` | `{{PROJECT_SLUG}}`     | PostgreSQL user for backup/restore/reset/shell          |
+| `POSTGRES_DB`   | `<%PROJECT_SLUG%>_dev` | Database name used by backup/restore/reset/shell        |
+| `POSTGRES_USER` | `<%PROJECT_SLUG%>`     | PostgreSQL user for backup/restore/reset/shell          |
 | `SEED_COMMANDS` | _(empty)_              | Space-separated `manage.py` commands `seed-dev.sh` runs |
 
 These are read from `code/src/docker/.env.dev`; the defaults match

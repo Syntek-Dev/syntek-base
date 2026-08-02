@@ -7,8 +7,8 @@ model: opus
 
 # Responsive Design — Container Queries
 
-**Project:** {{PROJECT_NAME}} **Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:**
-{{ORG_NAME}} **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Project:** <%PROJECT_NAME%> **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:**
+<%ORG_NAME%> **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Container query patterns, container-type, size-responsive component layouts
 
 ---

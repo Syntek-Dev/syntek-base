@@ -7,8 +7,8 @@ model: opus
 
 # Data Structures — Domain Modelling
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Domain-driven modelling, ubiquitous language, business-aligned model naming
 
 ---

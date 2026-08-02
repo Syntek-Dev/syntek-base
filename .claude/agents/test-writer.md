@@ -25,7 +25,7 @@ Backend: Django 6.0.6 + Django Ninja + PostgreSQL · pytest / pytest-django
 Frontend: Django templates (pytest) · Playwright (E2E, Chrome only)
 API: Bruno integration tests in `code/src/tests/`
 All test runs go through `code/src/scripts/**/*.sh` — never raw `pytest` or `pnpm`.
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}} — apply to all test data and assertions.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> — apply to all test data and assertions.
 
 ## Governing docs
 
@@ -52,7 +52,7 @@ duplicate. Group new cases in a clearly named block referencing the story ID.
 ## Seams before tests
 
 Before writing a single test, name the **seams** you will cover — the service boundary, endpoint,
-or component contract on the story's critical path — and confirm that list with {{DEVELOPER_NAME}} (grill first —
+or component contract on the story's critical path — and confirm that list with <%DEVELOPER_NAME%> (grill first —
 `.claude/CLAUDE.md` §10). Test those seams, not every reachable edge case. Two hard rules on every
 assertion:
 

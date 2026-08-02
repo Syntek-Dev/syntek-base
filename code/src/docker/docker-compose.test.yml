@@ -2,15 +2,15 @@
 # Run from the project root:
 #   docker compose -f code/src/docker/docker-compose.test.yml up --abort-on-container-exit
 # Tests exit with pytest's exit code.
-name: "{{PROJECT_SLUG}}-test"
+name: "<%PROJECT_SLUG%>-test"
 
 services:
   db:
     image: postgres:18-alpine
     command: postgres -N 200
     environment:
-      POSTGRES_DB: "{{PROJECT_SLUG}}_test"
-      POSTGRES_USER: ${POSTGRES_USER:-{{PROJECT_SLUG}}}
+      POSTGRES_DB: "<%PROJECT_SLUG%>_test"
+      POSTGRES_USER: ${POSTGRES_USER:-<%PROJECT_SLUG%>}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-test_password_change_me}
       # PG18 defaults pg_hba.conf to requiring SSL for remote hosts; scram-sha-256
       # without SSL is fine on the isolated test network.
@@ -20,7 +20,8 @@ services:
       - type: tmpfs
         target: /var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-{{PROJECT_SLUG}}} -d {{PROJECT_SLUG}}_test"]
+      test:
+        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-<%PROJECT_SLUG%>} -d <%PROJECT_SLUG%>_test"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -41,7 +42,7 @@ services:
       dockerfile: code/src/docker/django/Dockerfile.test
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.test
-      DATABASE_URL: postgresql://${POSTGRES_USER:-{{PROJECT_SLUG}}}:${POSTGRES_PASSWORD:-test_password_change_me}@db:5432/{{PROJECT_SLUG}}_test
+      DATABASE_URL: postgresql://${POSTGRES_USER:-<%PROJECT_SLUG%>}:${POSTGRES_PASSWORD:-test_password_change_me}@db:5432/<%PROJECT_SLUG%>_test
       REDIS_URL: redis://cache:6379/0
       SECRET_KEY: ${SECRET_KEY:-test-secret-key-not-for-production}
     volumes:

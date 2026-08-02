@@ -1,8 +1,8 @@
 # Compute Allocation — Assigned Compute + Buffer
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{PROJECT_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
@@ -57,17 +57,17 @@ observability wiring is therefore a precondition of the whole gating model.
 
 ## Current tier — the host
 
-The current tier is **{{SERVER_TIER}}** — the bare-metal host. It runs the shared
+The current tier is **<%SERVER_TIER%>** — the bare-metal host. It runs the shared
 bare-metal services (Nginx, PostgreSQL, Valkey, SeaweedFS) alongside the Docker app
 containers. The concrete host spec (CPU cores/threads, RAM, NVMe layout, network)
 is a placeholder — **TBD — regenerate via `/scale-planning` against this project's
 live code and the deploy repo's host definition**. Size the deployment so a single
-{{PROJECT_NAME}} stack retains host-level headroom by construction; the deploy
+<%PROJECT_NAME%> stack retains host-level headroom by construction; the deploy
 repo's own sizing table records how many medium stacks the tier carries (TBD).
 
 ## The connection plane — how containers reach the bare-metal services
 
-The app containers sit on the `{{PROJECT_SLUG}}-net` Docker bridge and cannot reach
+The app containers sit on the `<%PROJECT_SLUG%>-net` Docker bridge and cannot reach
 the host's loopback, so every stateful bare-metal service is consumed through a
 bare-metal proxy the bridge can reach. The app's connection strings therefore
 always point at `<bridge-gw>:<proxyPort>` — never at a service port directly:
@@ -80,14 +80,14 @@ always point at `<bridge-gw>:<proxyPort>` — never at a service port directly:
 | SeaweedFS S3         | `objectstore-proxy` **:9501** (bucket isolation + AV) | S3 gateway `:8333`         | `OBJECT_STORE_ENDPOINT_URL`       |
 
 - `<bridge-gw>` is discovered post-boot via
-  `docker network inspect {{PROJECT_SLUG}}-net` (typically `172.16.x.1`) and baked
+  `docker network inspect <%PROJECT_SLUG%>-net` (typically `172.16.x.1`) and baked
   into the app-env plane (`NIXOS-HANDOFF.md`).
 - **Engine-neutral object store.** SeaweedFS S3 is consumed via boto3 — the app
   knows only the `OBJECT_STORE_*` variables (`code/src/docker/.env.prod.example`),
   never a specific vendor. Swapping the backing S3 engine changes nothing app-side.
 - The Valkey DB split is a locked convention: **DB 0 = Celery broker + pub/sub +
   rate-limit store; DB 1 = Django cache** (`.env.prod.example`). Per-app ACL
-  passwords come from the `{{PROJECT_SLUG}}-env.age` secret (`NIXOS-HANDOFF.md`).
+  passwords come from the `<%PROJECT_SLUG%>-env.age` secret (`NIXOS-HANDOFF.md`).
 - An optional `security-proxy` layer (header stripping, per-app rate limits) can be
   interposed between Nginx and the containers (the deploy repo's `security-proxy`
   module); enabling it moves the Nginx upstream ports but changes nothing in this
@@ -97,7 +97,7 @@ always point at `<bridge-gw>:<proxyPort>` — never at a service port directly:
 
 The provisioning defaults below are the **current assigned compute** — they live in
 this repo's compose files/entrypoints and are tuned per environment via env vars in
-`/etc/{{ORG_SLUG}}/.env.<env>` (never by editing images). Every concrete figure is a
+`/etc/<%ORG_SLUG%>/.env.<env>` (never by editing images). Every concrete figure is a
 placeholder: **TBD — regenerate via `/scale-planning` against this project's live
 code** (the compose files and entrypoints below are where the real values live):
 
@@ -152,7 +152,7 @@ assigned-compute table gains a per-value "envelope × buffer = assigned" column.
 
 ## Change control
 
-- Assigned-compute changes are env-var changes on the server (`/etc/{{ORG_SLUG}}/.env.*`)
+- Assigned-compute changes are env-var changes on the server (`/etc/<%ORG_SLUG%>/.env.*`)
   plus a container restart — no image rebuild (`docker-compose.prod.yml`).
 - A _tier_ change (Phase 1 replica, Phase 2 Citus, or a host upgrade to a larger
   tier) is a decision gated by the project's Postgres horizontal-scaling ADR,

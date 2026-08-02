@@ -15,7 +15,7 @@ feature: you slot a formatter/service layer into an existing app.
 ## Stack
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
-Frontend (download triggers only): Django templates + HTMX | Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}
+Frontend (download triggers only): Django templates + HTMX | Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>
 
 Python export libraries for this stack:
 
@@ -56,12 +56,12 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - **No IDOR** — every user-supplied record ID is verified against the caller's ownership before a single row is serialised.
 - **PII is permission-gated.** Decrypt and include PII only for a reader holding the export permission; otherwise mask or omit. Never leak Fernet-encrypted fields raw.
 - **Every PII export is audited** — log exporter user ID, data source, whether PII was included, record count, and a hashed IP (per `code/docs/LOGGING.md`).
-- **Localise all output** — {{LOCALE}} spelling in headers/labels, `DD/MM/YYYY` dates, {{CURRENCY}} currency, A4 paper for PDF.
+- **Localise all output** — <%LOCALE%> spelling in headers/labels, `DD/MM/YYYY` dates, <%CURRENCY%> currency, A4 paper for PDF.
 - Secrets via env only; `DEBUG=False` outside local.
 
 ## How to work here
 
-1. **Grill first.** Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time (each with your recommended answer; look facts up, don't ask; no action until {{DEVELOPER_NAME}} confirms), grilling across format, data scope, PII columns, expected volume, and who may export before coding — an export leaking data is worse than a delayed one. This is the design-work default (`.claude/CLAUDE.md` §10).
+1. **Grill first.** Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts up, don't ask; no action until <%DEVELOPER_NAME%> confirms), grilling across format, data scope, PII columns, expected volume, and who may export before coding — an export leaking data is worse than a delayed one. This is the design-work default (`.claude/CLAUDE.md` §10).
 2. **Locate the app.** Exports live beside the data: `code/src/django/apps/<app>/services/export/` — an orchestrator (`export_service.py`) plus one formatter per format, and Django templates under `templates/exports/pdf/` for PDF.
 3. **Formatter contract.** Each formatter takes rows + an `ExportOptions` dataclass and returns bytes/stream + content-type + content-disposition. The service routes by requested format and streams CSV above the `PERFORMANCE.md` row threshold.
 4. **Gate and audit.** Permission check first; verify ownership of every ID; resolve PII visibility from the caller's permissions; emit the audit log on completion.

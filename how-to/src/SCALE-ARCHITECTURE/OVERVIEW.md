@@ -1,13 +1,13 @@
 # Scale Architecture — Overview
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{ORG_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%ORG_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
 
-This directory answers one question about the {{PROJECT_NAME}} application: **how does it
+This directory answers one question about the <%PROJECT_NAME%> application: **how does it
 scale?** Not "how big should the server be" (that is `how-to/src/SERVER-ARCHITECTURE/`), and
 not "what growth do we expect" (this repo deliberately refuses to forecast) — but: given the
 system as it is actually built and deployed today, which parts absorb more load by turning a
@@ -16,7 +16,7 @@ knob, which parts need structural work, and which observable signals tell us whe
 ## The pipeline
 
 ```text
-codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)──▶ how-to/src/SERVER-ARCHITECTURE ──▶ {{DEPLOY_REPO}}
+codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)──▶ how-to/src/SERVER-ARCHITECTURE ──▶ <%DEPLOY_REPO%>
 ```
 
 1. **Reconcile.** Each `/scale-planning` run diffs this snapshot against the live codebase —
@@ -29,7 +29,7 @@ codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)�
 3. **Buffer and assign.** `SERVER-ARCHITECTURE/` takes the envelope's current-tier peak,
    applies the headroom buffer (below), and expresses the result as assigned compute and edge
    duties for the deploy repo.
-4. **Provision.** The `{{DEPLOY_REPO}}` repo (handoff map:
+4. **Provision.** The `<%DEPLOY_REPO%>` repo (handoff map:
    `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md`) turns the server spec into
    declarative NixOS configuration and Compose deployment.
 
@@ -54,7 +54,7 @@ The consequences for these documents:
 - **Reconciliation is a readiness audit plus a sizing envelope** — never a purchase order.
 - **No tier target is invented.** No concrete target-user or traffic figure exists in this
   template yet. All tier targets in `LOAD-PROFILES.md` are marked
-  `TBD — set via /scale-planning grilling` until {{DEVELOPER_NAME}} settles them.
+  `TBD — set via /scale-planning grilling` until <%DEVELOPER_NAME%> settles them.
 
 ## The load-target model
 

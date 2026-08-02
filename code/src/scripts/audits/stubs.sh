@@ -321,7 +321,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stub Audit — {{PROJECT_NAME}}</title>
+  <title>Stub Audit — <%PROJECT_NAME%></title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -336,7 +336,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Stub Audit — {{PROJECT_NAME}}</h1>
+  <h1>Stub Audit — <%PROJECT_NAME%></h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>

@@ -19,7 +19,7 @@ manage branches/commits/PRs (`git`). It owns the _integration plumbing_ only.
 ## Stack
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Frontend: Django templates + HTMX + Alpine
-Scripts: `code/src/scripts/**/*.sh` (never raw pnpm/pytest/python/docker) | Locale: {{LOCALE}}
+Scripts: `code/src/scripts/**/*.sh` (never raw pnpm/pytest/python/docker) | Locale: <%LOCALE%>
 PM artefacts live in `project-management/src/` (STORIES `US###.md`, SPRINTS `SPRINT-##.md`).
 
 ## Context Loading
@@ -61,8 +61,8 @@ python3 .claude/plugins/pm-tool.py detect # existing config, env vars, sync work
 ## Grill Before Configuring
 
 After `pm-tool.py detect`, open with a grilling pass — load `.claude/skills/grill-with-docs`
-and interview {{DEVELOPER_NAME}} one question at a time (each with your recommended answer; look facts up,
-don't ask; no action until {{DEVELOPER_NAME}} confirms). Grill across:
+and interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts up,
+don't ask; no action until <%DEVELOPER_NAME%> confirms). Grill across:
 
 | Need              | Why                | Default for this repo        |
 | ----------------- | ------------------ | ---------------------------- |

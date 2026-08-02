@@ -1,0 +1,17 @@
+# Every change requests a review from the maintainers.
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+* @Syntek-Studio
+
+# The template contract and its generation mechanics — a break here breaks every
+# project generated from this repository, so these always want a close read.
+/copier.yml                     @Syntek-Studio
+/.copier-answers.yml            @Syntek-Studio
+/how-to/src/TEMPLATE-TOKENS.md  @Syntek-Studio
+/how-to/src/TEMPLATE-GUIDE/     @Syntek-Studio
+
+# Governance
+/LICENSE                        @Syntek-Studio
+/SECURITY.md                    @Syntek-Studio
+/CONTRIBUTING.md                @Syntek-Studio
+/.github/                       @Syntek-Studio

@@ -7,8 +7,8 @@ model: opus
 
 # Frontend Coding Principles — Django Templates + HTMX + Alpine + Vanilla CSS
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Frontend code review, naming conventions, error handling patterns
 **MCP Servers:** code-review-graph (structural analysis, design pattern detection)
 
@@ -85,7 +85,7 @@ written**. Implement from the code that exists, not from the plan in the abstrac
 - **Verify against the running app, not the mock** — the actual rendered page and the component
   catalogue, not just the wireframe.
 
-The visual counterpart — the {{ORG_NAME}} signature and the anti-generic mandate — is
+The visual counterpart — the <%ORG_NAME%> signature and the anti-generic mandate — is
 [VISUAL-DESIGN.md](VISUAL-DESIGN.md).
 
 ---
@@ -205,7 +205,7 @@ In addition to the [global checklist in CODING-PRINCIPLES.md](CODING-PRINCIPLES.
 - [ ] Pills/eyebrows only for real taxonomy (blog topics, case studies, testimonials), not on every heading
 - [ ] Responsive mobile-first across the breakpoint scale (`RESPONSIVE-DESIGN.md`); no horizontal scroll
 - [ ] Footer carries the full legal set (Terms, Privacy, Accessibility, Cookies, DPA) via the shared footer
-- [ ] Not the generic "AI-look" — {{ORG_NAME}} signature met (`VISUAL-DESIGN.md`)
+- [ ] Not the generic "AI-look" — <%ORG_NAME%> signature met (`VISUAL-DESIGN.md`)
 - [ ] CSS: `@import` at top, queries at the bottom; logical properties; BEM; no per-component focus
       ring; no declaration block repeated in 4+ files
 - [ ] Any hand-written JS is a static file, data via `{% json_script %}`, no new dependency

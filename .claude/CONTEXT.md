@@ -1,6 +1,6 @@
 # .claude
 
-Claude Code configuration for the {{PROJECT_NAME}} project.
+Claude Code configuration for the <%PROJECT_NAME%> project.
 
 ## Directory Tree
 

@@ -24,4 +24,4 @@ Output is saved to `project-management/export/`. `sync-clickup.sh` runs in CI (t
 - `project-management/src/00-ASSETS/CONTEXT.md` — parent directory
 - `project-management/export/` — output destination for all exports
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

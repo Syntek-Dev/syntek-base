@@ -7,8 +7,8 @@ model: opus
 
 # Celery First-Run Review — Enabling the Worker & Beat per Environment
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — first-run rollout review for the Celery worker + beat schedule
 
 > **Read this before you first start the Celery `worker`/`beat` in any long-lived
@@ -101,10 +101,10 @@ Reach a Django shell:
 - **dev** — `bash code/src/scripts/development/shell.sh` (backend service), then
   `python manage.py shell`.
 - **staging / prod** — run the same read-only count in that environment's Django shell via
-  the `{{DEPLOY_REPO}}` runbooks.
+  the `<%DEPLOY_REPO%>` runbooks.
 
 If the count is a surprising backlog, hold the schedule and confirm the retention decision
-with {{DEVELOPER_NAME}} before the first tick. Repeat the count-first check for **every** destructive
+with <%DEVELOPER_NAME%> before the first tick. Repeat the count-first check for **every** destructive
 sweep in the schedule, swapping in that sweep's model and predicate.
 
 ### 3.2 Verify every beat entry resolves to a registered task
@@ -161,7 +161,7 @@ Run top-to-bottom for each environment in turn (dev → staging → prod):
    repeat for `beat`). On dev, reach the container via
    `bash code/src/scripts/development/shell.sh`.
 7. **Watch the first ticks** — tail the logs
-   (`bash code/src/scripts/development/logs.sh` on dev; the `{{DEPLOY_REPO}}` runbooks on a
+   (`bash code/src/scripts/development/logs.sh` on dev; the `<%DEPLOY_REPO%>` runbooks on a
    server) and confirm the sweeps report expected counts and no `unregistered task` errors,
    then move to the next environment.
 
@@ -170,6 +170,6 @@ Run top-to-bottom for each environment in turn (dev → staging → prod):
 ## 6. GAPS cross-reference
 
 - Track the deliberate per-environment enablement as a `<GAP-…>` entry in `GAPS.md` until
-  every environment is live — {{DEVELOPER_NAME}}'s rollout call. Owner: `cicd`.
+  every environment is live — <%DEVELOPER_NAME%>'s rollout call. Owner: `cicd`.
 - Any beat task-name fix (§3.2) is a separate `<GAP-…>` in `config/settings`. Owner:
   `backend`.

@@ -15,7 +15,7 @@ Lifecycle control for the local dev Docker Compose stack — `server.sh`, `logs.
 ## How to work here
 
 - **Routing:** the day-to-day entry point — `server.sh up [--seed]` starts everything
-  behind nginx at `http://dev.{{PROJECT_SLUG}}.localhost`. **New Django app →
+  behind nginx at `http://dev.<%PROJECT_SLUG%>.localhost`. **New Django app →
   `new-django-app.sh <name>`; new public marketing page → `new-django-view.sh <path>`**
   (Django view + template + urls entry) — never `manage.py startapp` or a
   hand-made route. The site is server-rendered by Django (templates +
@@ -34,7 +34,7 @@ Lifecycle control for the local dev Docker Compose stack — `server.sh`, `logs.
 
 - **`server.sh down --volumes` wipes the PostgreSQL data** — for a targeted DB reset
   that keeps volumes, use `database/reset.sh` instead.
-- **`/admin/` is the {{PROJECT_NAME}} Admin hub** — Django's own admin lives at
+- **`/admin/` is the <%PROJECT_NAME%> Admin hub** — Django's own admin lives at
   `/control/`; never mount it at `/admin/`.
 - **Every new `src/` directory a scaffolder creates needs a `CONTEXT.md`** (and a
   paired `CLAUDE.md` where a `CONTEXT.md` exists).

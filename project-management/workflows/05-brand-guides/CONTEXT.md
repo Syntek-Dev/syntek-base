@@ -1,6 +1,6 @@
 # Workflow: Brand Guides
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

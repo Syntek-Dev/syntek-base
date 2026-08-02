@@ -1,0 +1,72 @@
+name: Template improvement
+description: Propose a change to what the template ships — a new guide, a workflow, a default, a token, or a stack decision
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open this **before** writing the code for anything structural. Stack changes, new tokens
+        and layer restructures have a high bar, and it is cheaper to argue it here than in a PR
+        that has to be unpicked. See
+        [CONTRIBUTING.md](https://github.com/Syntek-Dev/syntek-base/blob/main/CONTRIBUTING.md).
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of change?
+      options:
+        - New guide or documentation
+        - New workflow (code / how-to / project-management)
+        - New or changed Claude Code agent or skill
+        - Change a default the template ships
+        - Add a token
+        - Stack change (add, remove or replace a dependency)
+        - Restructure the layer system
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: >
+        What goes wrong today, in concrete terms. "Every project I generate has to hand-fix X"
+        is a problem. "It would be nice to have Y" is not — yet.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+      description: What the template would ship instead, and what a generated project would look like.
+    validations:
+      required: true
+
+  - type: textarea
+    id: blast-radius
+    attributes:
+      label: Effect on existing projects
+      description: >
+        Every project already generated from this template can pull changes with `copier update`.
+        Would this conflict for them, need a manual migration, or pass through cleanly?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: Including doing nothing, and why that is worse.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: This is not project-specific — it makes sense for most projects generated from the template
+          required: true
+        - label: If it adds a token, I have justified a question every future project must answer
+        - label: I have read the *What stays fixed* section of `how-to/src/TEMPLATE-TOKENS.md`
+          required: true

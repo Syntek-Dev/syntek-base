@@ -13,7 +13,7 @@ components, and it does not implement data-labelling in source. Once a policy is
 off, hand any implementation (e.g. a published policy page or classification metadata on
 records) to the `feature`/`frontend`/`backend` path.
 
-Locale: en_GB · {{TIMEZONE}} · date format DD/MM/YYYY · currency GBP (£).
+Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 ## Governing procedures (route here — do not restate at length)
 

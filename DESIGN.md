@@ -1,6 +1,6 @@
 # DESIGN.md
 
-**Project**: {{PROJECT_NAME}} Website | **Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}}
+**Project**: <%PROJECT_NAME%> Website | **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%>
 **Stack** (ADR-019): Django Templates + django-components · HTMX · Alpine.js · Vanilla CSS (design tokens). Server-rendered throughout — no client-side framework, no bundler.
 
 This file is the **design-time** entry point for all design work — the quick context source when producing wireframes and component designs with the Figma MCP or Claude Design. It maps the relevant standards, guides, and workflows, and points those tools at the brand and component sources they should read.
@@ -8,7 +8,7 @@ This file is the **design-time** entry point for all design work — the quick c
 **Design-time → code-time.** DESIGN.md governs the _design_ phase (produce the artefacts); its code-time counterpart is [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md), which governs _implementing_ those artefacts against the live codebase. The two are one pipeline:
 
 - **Design-time (here):** Figma MCP / Claude Design read [`project-management/src/05-BRAND-GUIDE/`](project-management/src/05-BRAND-GUIDE) (foundations — colour, type, motion, spacing, icons, logo) and [`project-management/src/06-COMPONENTS/`](project-management/src/06-COMPONENTS) (component designs, states, variants) to produce the wireframes in [`project-management/src/07-WIREFRAMES/`](project-management/src/07-WIREFRAMES).
-- **Code-time ([VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)):** the `frontend` agent implements those artefacts — grounded in the live code, which drifts from planning — in the {{PROJECT_NAME}} visual signature.
+- **Code-time ([VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)):** the `frontend` agent implements those artefacts — grounded in the live code, which drifts from planning — in the <%PROJECT_NAME%> visual signature.
 
 ---
 
@@ -18,7 +18,7 @@ This file is the **design-time** entry point for all design work — the quick c
 
 | Guide                                                                      | Purpose                                                                                    |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md)                 | {{PROJECT_NAME}} visual language — anti-generic layout, signature, design-artefact routing |
+| [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md)                 | <%PROJECT_NAME%> visual language — anti-generic layout, signature, design-artefact routing |
 | [`code/docs/ACCESSIBILITY.md`](code/docs/ACCESSIBILITY.md)                 | WCAG 2.2 AA requirements for all interactive frontend components                           |
 | [`code/docs/RESPONSIVE-DESIGN.md`](code/docs/RESPONSIVE-DESIGN.md)         | Breakpoints, fluid layouts, mobile-first patterns                                          |
 | [`code/docs/ARCHITECTURE-PATTERNS.md`](code/docs/ARCHITECTURE-PATTERNS.md) | Component architecture, composition patterns, shared UI conventions                        |

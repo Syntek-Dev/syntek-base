@@ -1,6 +1,6 @@
 # Failure Modes — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 These are the characteristic ways an AI coding agent goes wrong — and the mechanics underneath them. The first four cover what the model believes and where those beliefs come from; the last five trace how a growing session quietly erodes the model's grip on what it already knows. Naming the exact failure mode matters because the fixes pull in opposite directions: some problems are cured by adding context, others only by taking it away.
 

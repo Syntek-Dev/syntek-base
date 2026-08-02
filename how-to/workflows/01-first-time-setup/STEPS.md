@@ -8,7 +8,7 @@ model: opus
 
 # First-Time Setup — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,8 +30,8 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone git@github.com:{{ORG_SLUG}}/{{PROJECT_SLUG}}.git
-cd {{PROJECT_SLUG}}
+git clone git@github.com:<%ORG_SLUG%>/<%PROJECT_SLUG%>.git
+cd <%PROJECT_SLUG%>
 ```
 
 > **Model:** opus
@@ -102,7 +102,7 @@ Open:
 
 - Public site: http://localhost:8000/
 - API docs (OpenAPI): http://localhost:8000/api/docs
-- Django Admin: http://localhost:8000/control/ (non-obvious path — never `/admin/`, which is reserved for the {{PROJECT_NAME}} Admin surface; see `code/docs/URL-STRATEGY.md`)
+- Django Admin: http://localhost:8000/control/ (non-obvious path — never `/admin/`, which is reserved for the <%PROJECT_NAME%> Admin surface; see `code/docs/URL-STRATEGY.md`)
 - Mail (dev): http://localhost:1080
 
 > **Model:** opus · **MCP:** claude-in-chrome (rendered verification)

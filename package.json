@@ -1,5 +1,5 @@
 {
-  "name": "{{PROJECT_SLUG}}",
+  "name": "<%PROJECT_SLUG%>",
   "private": true,
   "packageManager": "pnpm@11.15.1",
   "engines": {

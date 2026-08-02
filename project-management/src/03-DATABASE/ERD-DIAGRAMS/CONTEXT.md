@@ -17,4 +17,4 @@ project-management/src/03-DATABASE/ERD-DIAGRAMS/
 Source ERDs live in the `DB-<FEATURE>-DD-MM-YYYY.md` schema-design docs one level up (the
 `## ERD (Mermaid)` section). Re-export here when a schema changes — never edit a PNG directly.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

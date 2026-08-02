@@ -95,7 +95,7 @@ def ${MODULE}(request):
     """${TITLE} page (\`/${ROUTE_PATH}/\`)."""
     ctx = {
         "seo": seo_lib.build_seo(
-            title="${TITLE} | {{PROJECT_NAME}}",
+            title="${TITLE} | <%PROJECT_NAME%>",
             description="TODO: SEO description for the ${TITLE} page (<= 160 characters).",
             path="/${ROUTE_PATH}/",
         ),

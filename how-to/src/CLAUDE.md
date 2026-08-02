@@ -2,53 +2,57 @@
 
 # CLAUDE.md — how-to/src/
 
-Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(contributing + code-quality guide, imported above) → this file.
+Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → `how-to/CONTEXT.md` → this folder's
+`CONTEXT.md` (tree + what-is-here, imported above) → this file → the target sub-folder's
+`CONTEXT.md`/`CLAUDE.md`.
 
 ## Purpose (one line)
 
-The human-facing operational guides that don't fit the instructional-doc limits — the
-full contributing and code-quality guide (`CONTEXT.md`), the base-template token
-manifest (`TEMPLATE-TOKENS.md`), the two scale-planner snapshots
-(`SCALE-ARCHITECTURE/`, `SERVER-ARCHITECTURE/`), and the `NIXOS-SETUP.md` pointer stub
-(server provisioning lives in the deploy repo; the app→server contract sits in
-`SERVER-ARCHITECTURE/`).
+The human-facing operator guides that do not fit the instructional-doc limits — the contributing
+and code-quality standard (`CONTRIBUTING.md`), the base-template contract and its guide set
+(`TEMPLATE-TOKENS.md`, `TEMPLATE-GUIDE/`), the two scale-planner snapshots, and the
+`NIXOS-SETUP.md` pointer stub.
 
 ## How to work here
 
-- **Routing:** contributing-standard edits → `global-workflow` skill. The two
-  architecture snapshots → the `scale-planner` agent via `/scale-planning` (see
-  their own `CLAUDE.md` files). Server provisioning → the `{{DEPLOY_REPO}}` repo.
-  These are `**/src/*.md` operator guides, **exempt** from the 300-line instructional
-  limit — write them for humans in full.
-- **Model:** Opus for substantive guide edits and renames and command/link fixes;
-  Fable where the snapshot dirs say so.
-- **Concrete steps:** edit `CONTEXT.md` (contributing) → keep dev
-  commands aligned with `code/src/scripts/**/*.sh` and the coverage floors (backend
-  75% / auth 90% / frontend 70%) → keep branch/commit rules in step with
-  `project-management/docs/GIT-GUIDE.md`.
-- **Definition of done:** commands verified against the scripts and Compose files;
-  British English; docs hard-gate satisfied.
+- **Routing:** contributing-standard edits → `global-workflow` skill, `doc-writer` agent. The
+  template contract and guides → see `TEMPLATE-GUIDE/CLAUDE.md`. The two architecture snapshots →
+  the `scale-planner` agent via `/scale-planning` (each has its own `CLAUDE.md`). Server
+  provisioning → the `<%DEPLOY_REPO%>` repository.
+- **Model:** Opus for substantive guide edits and for mechanical touches (renames, command and
+  link fixes); Fable where the snapshot directories say so.
+- **Concrete steps:** edit the guide → keep every developer command aligned with
+  `code/src/scripts/**/*.sh` and the coverage floors (75 % / 90 % auth) → keep branch and commit
+  rules in step with `project-management/docs/GIT-GUIDE.md` → update this folder's `CONTEXT.md`
+  tree if the structure changed.
+- **Definition of done:** commands verified against the scripts and Compose files; cross-references
+  resolve; British English; docs hard gate satisfied before any commit.
 
 ## Guardrails
 
+- **These are `**/src/\*.md`operator guides — the sanctioned exception to the 300-line
+instructional limit.** Write them for humans, in full. The`CONTEXT.md`/`CLAUDE.md` pairs here
+  and in each sub-directory still keep within it.
+- **`TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/` are excluded from generation.** They describe the
+  template rather than the project, may quote token syntax freely, and must never be relied on by
+  a file that _is_ rendered — a generated project does not have them.
 - **Never commit secrets or real credentials** — dev accounts live in the gitignored
   `code/src/docker/.env.dev`; reference `.env.*.example` templates only.
-- **Proprietary licence:** do not introduce GPL/AGPL-incompatible dependencies into
-  guidance without prior written approval (per the Licensing section).
-- Contributing guidance must stay script-first; the illustrative raw `uv`/`pnpm`
-  examples here are documenting the tools behind the scripts, not endorsing bypassing
-  them for routine operations.
-- The `**/src/*.md` operator guides here are the sanctioned exception to the
-  300-line limit — do not treat them as instructional `.md` for splitting (each
-  snapshot dir's `CONTEXT.md`/`CLAUDE.md` pair still keeps within it).
+- **Licence compatibility:** this project is licensed <%LICENCE%>. Do not introduce dependencies
+  incompatible with it — where that licence is commercial or proprietary, GPL/AGPL needs prior
+  written approval (per the Licensing section of `CONTRIBUTING.md`).
+- **Script-first.** Every operational command resolves to `code/src/scripts/**/*.sh`. The one
+  sanctioned exception is the template guide set, which necessarily documents `copier`, `uvx` and
+  `install.sh` — they run before the scripts exist.
 
 ## Output & naming
 
-- **Hand-written:** `CONTEXT.md` (contributing guide), `TEMPLATE-TOKENS.md` (the
-  base-template manifest), the `NIXOS-SETUP.md` pointer stub, and the snapshot
-  directories; nothing generated.
-- Documentation files `SCREAMING-SNAKE-CASE.md`.
-- **Template discipline:** project-specific values are `{{…}}` from
-  `TEMPLATE-TOKENS.md`; org identity (`{{ORG_NAME}}`/`{{ORG_SLUG}}`) and the standard stack stay
-  literal. Verify no stray tokens leak: `grep -rn '{{' how-to/src`.
+- **Hand-written:** every file here. Nothing is generated.
+- Documentation files `SCREAMING-SNAKE-CASE.md`; sub-directories `SCREAMING-SNAKE-CASE/`.
+- **Template discipline:** project-specific values are double-angle tokens drawn from
+  `TEMPLATE-TOKENS.md`; the standard stack and house engineering standards stay literal.
+
+  > **This file is rendered by Copier.** Writing a token's delimiters literally in prose here
+  > makes Jinja try to parse them, and generation fails with `TemplateSyntaxError`. If you must
+  > show the syntax, wrap the example in a `raw` block — or describe it in words, as above. The
+  > place to quote token syntax freely is `TEMPLATE-GUIDE/`, which is excluded from rendering.

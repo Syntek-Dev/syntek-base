@@ -17,7 +17,7 @@ Governing procedure: `code/workflows/06-review/CONTEXT.md` → `STEPS.md`.
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Frontend: Django templates +
 django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}. Dev ops run only via `code/src/scripts/**/*.sh`.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>. Dev ops run only via `code/src/scripts/**/*.sh`.
 
 ## Context Loading
 
@@ -167,7 +167,7 @@ Distinctive, on-brand UI is a review gate peer to WCAG. Flag:
 - **Pill/eyebrow overuse** — a pill stamped on every heading. Pills label taxonomy only (blog
   topics, case studies, testimonials); a pill on a plain section is filler.
 - **The generic AI-look** — centred single-band layout, three-equal-card-only vocabulary,
-  emoji chrome, rounded-everything. Expect the {{ORG_NAME}} signature instead.
+  emoji chrome, rounded-everything. Expect the <%ORG_NAME%> signature instead.
 - **Missing legal footer** — the shared `site_footer` must carry the full legal set (Terms,
   Privacy, Accessibility, Cookies, DPA) via `navigation.py::FOOTER_LEGAL_LINKS`.
 - **Non-responsive layout** — not mobile-first across the breakpoint scale, or horizontal
@@ -175,7 +175,7 @@ Distinctive, on-brand UI is a review gate peer to WCAG. Flag:
 
 ### Localisation
 
-{{LOCALE}} spelling in comments and user-facing strings; {{TIMEZONE}} for date/time; {{CURRENCY}}
+<%LOCALE%> spelling in comments and user-facing strings; <%TIMEZONE%> for date/time; <%CURRENCY%>
 for currency; no hardcoded locale values that should be configurable.
 
 ## Output Format

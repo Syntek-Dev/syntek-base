@@ -47,4 +47,4 @@ AI discoverability (`llms.txt`) where relevant.
 - `project-management/src/01-STORIES/` — a story's `### SEO Acceptance Criteria` section
 - `code/docs/RENDERING.md` — the code-side metadata/JSON-LD/sitemap implementation
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

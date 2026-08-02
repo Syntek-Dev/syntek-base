@@ -1,6 +1,6 @@
 # learning — Skill Practice Workspace
 
-A committed, synced sandbox where {{DEVELOPER_NAME}} practises new skills without touching the product.
+A committed, synced sandbox where <%DEVELOPER_NAME%> practises new skills without touching the product.
 Every learning session (the `teach` skill) reads the real codebase and docs as reference and
 writes only here. Content under each topic folder is throwaway practice, not shipped code.
 
@@ -19,7 +19,7 @@ learning/
 
 ## Why this exists
 
-Committed (not gitignored) so lessons sync across {{DEVELOPER_NAME}}'s devices. Driven by the `teach` skill
+Committed (not gitignored) so lessons sync across <%DEVELOPER_NAME%>'s devices. Driven by the `teach` skill
 (`.claude/skills/teach/SKILL.md`): a safe space to learn PM/agile process (stories, sprints,
 plans, ADRs) and the stack (HTMX, Alpine, vanilla CSS, Django, django-ninja, django-components,
 architecture, security, testing).

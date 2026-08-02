@@ -13,7 +13,7 @@ and does not touch source. Once a notice is signed off, hand implementation (e.g
 surfacing it at a collection point) to the `feature`/`frontend` path; the copy lives
 token-first behind the relevant page.
 
-Locale: en_GB · {{TIMEZONE}} · date format DD/MM/YYYY · currency GBP (£).
+Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 ## Governing procedures (route here — do not restate at length)
 

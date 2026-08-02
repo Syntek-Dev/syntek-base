@@ -7,10 +7,10 @@ model: opus
 
 # Internal Agents — Reference
 
-**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/`) **Maintained by:** {{ORG_NAME}} Developers **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/`) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — the internal agents by category, with model allocation
 
-The agents below are internalised under `.claude/agents/` (the `{{ORG_SLUG}}-dev-suite` plugin is
+The agents below are internalised under `.claude/agents/` (the `<%ORG_SLUG%>-dev-suite` plugin is
 disabled — see `.claude/CLAUDE.md` §3). Claude Code selects an agent automatically when a task
 matches its description, or you invoke one explicitly via the Agent tool with the agent name as
 `subagent_type`. Full roster (including the 13 document-writer agents) and models:

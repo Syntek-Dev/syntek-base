@@ -27,7 +27,7 @@ set of plain-English AI-coding term definitions.
 
 - **≤ 300 code lines** per file (`cloc`); split an oversized theme.
 - British English (en_GB); no hyperlinked cross-references between terms (italics only).
-- Vendor-neutral reference — no {{PROJECT_SLUG}} secrets, paths, or commands beyond the occasional
+- Vendor-neutral reference — no <%PROJECT_SLUG%> secrets, paths, or commands beyond the occasional
   `.claude/` illustration.
 
 ## Output & naming

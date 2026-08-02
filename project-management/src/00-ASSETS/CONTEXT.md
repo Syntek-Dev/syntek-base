@@ -30,4 +30,4 @@ directly; use the project shell-script conventions in `code/src/scripts/`.
 
 Do not commit large unoptimised binaries.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

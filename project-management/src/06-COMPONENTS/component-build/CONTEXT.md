@@ -56,4 +56,4 @@ interface. The base template ships a generic placeholder brand.
 - `../../05-BRAND-GUIDE/guide-build/brand_guide.py` — the brand guide, which shares this palette
 - `code/docs/DESIGN-TOKENS.md` — the code-side (DB-canonical) design-token system
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -7,8 +7,8 @@ model: opus
 
 # Backend Coding Principles — Django / Python / Celery
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Standard backend code review, naming conventions, error handling patterns
 **MCP Servers:** code-review-graph (structural analysis, design pattern detection)
 

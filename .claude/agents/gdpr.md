@@ -19,7 +19,7 @@ retention periods — see "What I do not do".
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-PII encryption: Fernet pipeline — `code/docs/ENCRYPTION-GUIDE.md` | Locale: {{LOCALE}} · {{TIMEZONE}}
+PII encryption: Fernet pipeline — `code/docs/ENCRYPTION-GUIDE.md` | Locale: <%LOCALE%> · <%TIMEZONE%>
 
 ## Context Loading
 
@@ -59,8 +59,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Required inputs (ask only if genuinely unresolved)
 
 **Grill first.** Data-protection design **opens with a grilling pass** — load
-`.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time (each with your
-recommended answer; look facts up, don't ask; no action until {{DEVELOPER_NAME}} confirms) across
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (each with your
+recommended answer; look facts up, don't ask; no action until <%DEVELOPER_NAME%> confirms) across
 personal-data categories, lawful basis, data flows and touchpoints, retention, consent, and
 DSAR/erasure scope before designing the mechanism. This inverts the proceed-by-default posture
 (`.claude/CLAUDE.md` §10); record resolved calls into the inputs table below and offer an ADR
@@ -98,7 +98,7 @@ core deliverables:
    (irreversible) for lookup-only or auth data. Keep identifiers separate from PII
    where the schema allows (pseudonymisation).
 2. **Consent records** — a Django model capturing consent type, granted/withdrawn
-   timestamp ({{TIMEZONE}}), version, and source. Granular categories (necessary /
+   timestamp (<%TIMEZONE%>), version, and source. Granular categories (necessary /
    functional / analytics / marketing); double opt-in for marketing.
 3. **DSAR export (Art. 15/20)** — a Django Ninja endpoint, permission-checked and
    ownership-scoped, returning the subject's data in a machine-readable format. Use the

@@ -13,7 +13,7 @@ governing procedure and guide rather than restating rules at length.
 ## Stack
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL · Scripts: `code/src/scripts/**/*.sh`
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}. Apply British spelling in code comments and docstrings.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>. Apply British spelling in code comments and docstrings.
 
 ## Remit
 
@@ -75,7 +75,7 @@ python3 .claude/plugins/env-tool.py find
 ## Before you code
 
 0. **Designing a new API surface or data model? Grill first.** Load
-   `.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time — each Django Ninja
+   `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time — each Django Ninja
    endpoint (operation), inputs/outputs, the named Policy guarding every state-changing endpoint
    (OWASP A01), ownership checks (no IDOR), error shapes, idempotency — before writing the
    contract. Record hard-to-reverse calls as an ADR. Design-work default (`.claude/CLAUDE.md` §10).
@@ -94,7 +94,7 @@ python3 .claude/plugins/env-tool.py find
   interpolate raw SQL.
 - Secrets via environment variables only — never hardcoded. `DEBUG=False` outside local;
   `CORS_ALLOWED_ORIGINS` an explicit allowlist, never `*` in production.
-- Django admin is **never** mounted at `/admin/` — that prefix is the {{PROJECT_NAME}} Admin (Django views + templates + HTMX; Django contrib admin lives at `/control/`).
+- Django admin is **never** mounted at `/admin/` — that prefix is the <%PROJECT_NAME%> Admin (Django views + templates + HTMX; Django contrib admin lives at `/control/`).
 - New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>`.
 - Never commit `.env` files — use `.env.*.example` templates only.
 
@@ -116,7 +116,7 @@ policy conventions live in `code/docs/RLS-GUIDE.md`; the pre-flight rules in
 Endpoints handling personal data must: filter PII fields by permission in the response type;
 guard PII endpoints with a permission check plus audit logging; hash for lookup and encrypt for
 storage via the Fernet pipeline; never expose sequential IDs in the API — use UUIDs (see the URL
-strategy: {{PROJECT_NAME}} Admin surfaces UUIDs). Detail and code patterns: `code/docs/ENCRYPTION-GUIDE.md`
+strategy: <%PROJECT_NAME%> Admin surfaces UUIDs). Detail and code patterns: `code/docs/ENCRYPTION-GUIDE.md`
 and `code/docs/SECURITY.md`.
 
 ## Documentation in code

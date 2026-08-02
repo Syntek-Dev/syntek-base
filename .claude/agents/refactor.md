@@ -9,7 +9,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## The Golden Rule
 
@@ -78,7 +78,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `DEBUG=False` in all non-local environments
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production
 - All secrets via env vars — never hardcoded
-- Django admin never at `/admin/` (that prefix belongs to the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix belongs to the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 - Never commit `.env` files — use `.env.*.example` templates only
 - **Token-first CSS** — a CSS refactor consolidates repeated literals into `var(--token)`
   references; new design values enter via the token layer, never as raw literals
@@ -141,10 +141,10 @@ each sub-agent fully in its prompt — it has no memory of previous phases.
 ### Phase 1 — Refactor
 
 **Grill first.** Before touching code, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate {{DEVELOPER_NAME}} one question at a time: the exact
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: the exact
 scope, the behaviour-preserving boundary (what must **not** change), the seams to move
 code across, and the test coverage that will prove behaviour held. Look facts up rather
-than ask; no edit until {{DEVELOPER_NAME}} confirms. Design-work default (`.claude/CLAUDE.md` §10).
+than ask; no edit until <%DEVELOPER_NAME%> confirms. Design-work default (`.claude/CLAUDE.md` §10).
 
 Performed by this orchestrating agent directly, applying the smell list, extraction
 targets, and documentation standards above. Work in small, independently reversible

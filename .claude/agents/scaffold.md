@@ -70,9 +70,9 @@ extend.
 ### 0 — Grill first
 
 Substantial scaffolding opens with a grilling pass — load `.claude/skills/grill-with-docs`
-and interview {{DEVELOPER_NAME}} one question at a time (what to create — directories, CONTEXT/CLAUDE
+and interview <%DEVELOPER_NAME%> one question at a time (what to create — directories, CONTEXT/CLAUDE
 pairs, numbered workflow folders — and exactly where in the tree it lands), each with a
-recommended answer, looking facts up rather than asking, no action until {{DEVELOPER_NAME}} confirms. A
+recommended answer, looking facts up rather than asking, no action until <%DEVELOPER_NAME%> confirms. A
 single-file tweak or a mechanical rename skips it; the §1 scope list below is the grill
 agenda. Design-work default (`.claude/CLAUDE.md` §10).
 

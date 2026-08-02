@@ -7,7 +7,7 @@ model: opus
 
 # Internal Agents — End-to-End Development Workflow
 
-**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/`) **Maintained by:** {{ORG_NAME}} Developers **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/`) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Full dev cycle: setup, planning, TDD, QA, docs, PR
 
 ---

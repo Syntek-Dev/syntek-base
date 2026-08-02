@@ -1,13 +1,13 @@
-# NixOS Handoff — Feeding {{DEPLOY_REPO}}
+# NixOS Handoff — Feeding <%DEPLOY_REPO%>
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{PROJECT_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
 
-How this directory lands in the deploy repo ({{DEPLOY_REPO}}). The boundary is
+How this directory lands in the deploy repo (<%DEPLOY_REPO%>). The boundary is
 strict: **SERVER-ARCHITECTURE specifies; the deploy repo implements.** This file maps
 which artefact feeds which module, and the discipline for changing either side.
 
@@ -15,11 +15,11 @@ which artefact feeds which module, and the discipline for changing either side.
 
 ## The consumer — what the deploy repo actually is
 
-A forked-per-deployment NixOS template ({{SERVER_TIER}}-class host), `flake.nix` +
+A forked-per-deployment NixOS template (<%SERVER_TIER%>-class host), `flake.nix` +
 `Justfile` driven, structured as:
 
 ```text
-{{DEPLOY_REPO}}/
+<%DEPLOY_REPO%>/
 ├── flake.nix / Justfile               ← flake outputs + deploy/ops commands
 ├── code/src/hosts/<hostname>/         ← per-server configuration.nix (the values land HERE)
 ├── code/src/modules/                  ← one folder per service, incl.:
@@ -37,7 +37,7 @@ Two value planes, and this directory feeds both:
 | Plane                 | Mechanism                                                                                             | Fed by                                                     |
 | --------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | **NixOS host config** | `custom.*` options in `hosts/<hostname>/configuration.nix` (+ agenix secrets — plane detail below)    | `EDGE-REQUIREMENTS.md`                                     |
-| **App container env** | `/etc/{{ORG_SLUG}}/.env.<env>` on the server (chmod 640 root:deploy, not agenix — plane detail below) | `COMPUTE-ALLOCATION.md` + the relevant edge-catalogue rows |
+| **App container env** | `/etc/<%ORG_SLUG%>/.env.<env>` on the server (chmod 640 root:deploy, not agenix — plane detail below) | `COMPUTE-ALLOCATION.md` + the relevant edge-catalogue rows |
 
 ## Artefact → module map
 
@@ -53,14 +53,14 @@ the reusable template; the three-surface default (public/marketing · authentica
 | Edge — CSP nonce (dormant)                 | `modules/nginx/` — future `x-csp-nonce` read + `proxy_hide_header`; agenix `CSP_INSTANCE_TOKEN`                                                         |
 | Edge — `client_max_body_size`              | `modules/nginx/` vhost/location extraConfig                                                                                                             |
 | Edge — URL routing                         | Host nginx location overlay — mirror `code/src/docker/nginx/dev.conf` at each release                                                                   |
-| Edge — TLS, trusted proxies                | CF edge TLS + `nginx.ssl`; `TRUSTED_PROXIES` in `/etc/{{ORG_SLUG}}/.env.<env>`                                                                          |
+| Edge — TLS, trusted proxies                | CF edge TLS + `nginx.ssl`; `TRUSTED_PROXIES` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                                          |
 | Edge — CF Tunnel, edge rate rule           | `custom.cloudflared.tunnels` + Cloudflare zone config (edge rate rule per the project's rate-limit plan)                                                |
 | Edge — health/metrics                      | `modules/gatus/` + `custom.prometheus.extraScrapeConfigs` (jobs from `code/src/docker/prometheus/prometheus.yml`) + loopback-only `/metrics/` locations |
 | Edge — Cloudinary token, object-store host | App `.env` (`CLOUDINARY_AUTH_TOKEN_KEY`) · new tunnel hostname + vhost → SeaweedFS gateway                                                              |
 | Edge — deploy steps                        | `deploy.sh` restart-after-migrate; `worker`/`beat` services in the server compose                                                                       |
-| Edge — mail relay                          | `modules/mail/` (Postfix + DKIM) + SPF/DKIM/DMARC DNS; `EMAIL_*` in `/etc/{{ORG_SLUG}}/.env.<env>`                                                      |
-| `COMPUTE-ALLOCATION.md` assigned compute   | `GUNICORN_*` / `CELERY_*` in `/etc/{{ORG_SLUG}}/.env.<env>`; Postgres/PgBouncer/Valkey sizing in `custom.database` / `custom.valkey`                    |
-| `COMPUTE-ALLOCATION.md` tier changes       | Host hardware decision ({{SERVER_TIER}} → RAM upgrade / bigger tier) + the Postgres horizontal-scaling ADR phase modules — only on a gate-trip          |
+| Edge — mail relay                          | `modules/mail/` (Postfix + DKIM) + SPF/DKIM/DMARC DNS; `EMAIL_*` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                      |
+| `COMPUTE-ALLOCATION.md` assigned compute   | `GUNICORN_*` / `CELERY_*` in `/etc/<%ORG_SLUG%>/.env.<env>`; Postgres/PgBouncer/Valkey sizing in `custom.database` / `custom.valkey`                    |
+| `COMPUTE-ALLOCATION.md` tier changes       | Host hardware decision (<%SERVER_TIER%> → RAM upgrade / bigger tier) + the Postgres horizontal-scaling ADR phase modules — only on a gate-trip          |
 
 ## The agenix plane — secrets the app stack requires (names only, never contents)
 
@@ -70,11 +70,11 @@ rotation commands live in the deploy repo (`how-to/src/03-MANAGING-SECRETS.md` +
 
 | Secret (`code/src/secrets/*.age`)        | Feeds                                                                                                  |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `cloudflared-{{PROJECT_SLUG}}-token.age` | the CF Tunnel service                                                                                  |
-| `{{PROJECT_SLUG}}-env.age`               | Valkey per-app ACLs — exports `VALKEY_{{ENV_PREFIX}}_BROKER_PASS` + `VALKEY_{{ENV_PREFIX}}_CACHE_PASS` |
+| `cloudflared-<%PROJECT_SLUG%>-token.age` | the CF Tunnel service                                                                                  |
+| `<%PROJECT_SLUG%>-env.age`               | Valkey per-app ACLs — exports `VALKEY_<%ENV_PREFIX%>_BROKER_PASS` + `VALKEY_<%ENV_PREFIX%>_CACHE_PASS` |
 | `objectstore-s3-credentials.age`         | SeaweedFS S3 access key + secret                                                                       |
 | `mail-relay-credentials.age`             | Postfix SASL relay auth                                                                                |
-| `mail-dkim-{{PROJECT_SLUG}}.age`         | DKIM signing key — publish the DNS TXT before enabling                                                 |
+| `mail-dkim-<%PROJECT_SLUG%>.age`         | DKIM signing key — publish the DNS TXT before enabling                                                 |
 | `prometheus-remote-write-token.age`      | metrics shipping to the central monitoring server                                                      |
 | `alloy-loki-token.age`                   | log shipping (Alloy → Loki)                                                                            |
 
@@ -83,10 +83,10 @@ backup keys and passphrases) are the deploy repo's own concern — they exist
 regardless of which app stack the box carries; this contract does not enumerate
 them.
 
-## The app-env plane — `/etc/{{ORG_SLUG}}/.env.<env>`
+## The app-env plane — `/etc/<%ORG_SLUG%>/.env.<env>`
 
 The app `.env` is **not** an agenix secret: it is placed at
-`/etc/{{ORG_SLUG}}/.env.<env>` (`chmod 640 root:deploy`) and read by the Compose services
+`/etc/<%ORG_SLUG%>/.env.<env>` (`chmod 640 root:deploy`) and read by the Compose services
 via `env_file`. The canonical variable set is this repo's template
 `code/src/docker/.env.prod.example` — the deploy side fills it. The
 server-topology-coupled values it must supply:
@@ -131,7 +131,7 @@ post-deploy service checks — live in the deploy repo:
    in the deploy plane (host config or `.env`). If they disagree, this directory is
    the intent and the deploy repo is drifted — not the other way round.
 5. **Secrets never cross.** This directory names agenix secrets and env vars
-   (`cloudflared-{{PROJECT_SLUG}}-token.age`, `CLOUDINARY_AUTH_TOKEN_KEY`, …) but
+   (`cloudflared-<%PROJECT_SLUG%>-token.age`, `CLOUDINARY_AUTH_TOKEN_KEY`, …) but
    never their contents. Secret material exists only as `.age` ciphertext in the
    deploy repo or in the server-side `.env` files.
 
@@ -140,7 +140,7 @@ post-deploy service checks — live in the deploy repo:
 | Question                                           | Owner                                                                |
 | -------------------------------------------------- | -------------------------------------------------------------------- |
 | _What_ must the edge/server provide?               | **This directory**                                                   |
-| _How_ is it provided (Nix modules, vhosts, units)? | `{{DEPLOY_REPO}}`                                                    |
+| _How_ is it provided (Nix modules, vhosts, units)? | `<%DEPLOY_REPO%>`                                                    |
 | What does the app need at current peak?            | `how-to/src/SCALE-ARCHITECTURE/`                                     |
 | How much is provisioned (envelope + buffer)?       | `COMPUTE-ALLOCATION.md` here                                         |
 | When does the architecture change?                 | the Postgres horizontal-scaling ADR gates (observed, never forecast) |

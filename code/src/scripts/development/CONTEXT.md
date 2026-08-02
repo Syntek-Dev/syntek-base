@@ -86,7 +86,7 @@ bash code/src/scripts/development/server.sh status
 
 | Service  | Shell  | Notes                                                                |
 | -------- | ------ | -------------------------------------------------------------------- |
-| `nginx`  | `sh`   | Reverse proxy — http://dev.{{PROJECT_SLUG}}.localhost:81 (host port) |
+| `nginx`  | `sh`   | Reverse proxy — http://dev.<%PROJECT_SLUG%>.localhost:81 (host port) |
 | `django` | `bash` | Django/Uvicorn — internal, hot-reload via `--reload`                 |
 | `db`     | `bash` | PostgreSQL 18 — internal only                                        |
 | `cache`  | `sh`   | Valkey 8 — internal only                                             |
@@ -96,7 +96,7 @@ There are four services and no more. `shell.sh` rejects any other name.
 ## Routing
 
 All traffic enters through the `nginx` service at
-`http://dev.{{PROJECT_SLUG}}.localhost:81`. Host port **81**, not 80 — a local router
+`http://dev.<%PROJECT_SLUG%>.localhost:81`. Host port **81**, not 80 — a local router
 (e.g. DDEV) commonly holds `127.0.0.1:80`. Config: `code/src/docker/nginx/dev.conf`.
 
 | Path prefix | Proxied to                                         |

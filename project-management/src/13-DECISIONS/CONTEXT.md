@@ -37,4 +37,4 @@ Copy `ADR-000-TEMPLATE.md` → take the next free `ADR-###` index → fill the f
 → cross-link the `US###` that drove or consumes it → set **Status** to `Accepted` on
 sign-off.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

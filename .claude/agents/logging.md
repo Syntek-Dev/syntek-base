@@ -73,7 +73,7 @@ bash code/src/scripts/development/logs.sh
 ## How to work here
 
 **Grill first.** Before instrumenting, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate {{DEVELOPER_NAME}} one question at a time: which events and at
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: which events and at
 what levels, the channels (file / Pino / GlitchTip / Loki / Prometheus) per environment, the
 PII-redaction rules, and the retention expected. Look facts up rather than ask; the steps below
 are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
@@ -85,7 +85,7 @@ are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
    in Django `LOGGING` per `DJANGO-LOGGING.md` — do not hand-roll a parallel config.
 3. **Error tracking / metrics** — GlitchTip and Prometheus are staging/prod only; gate
    them by environment. DSNs and endpoints come from env vars — never hardcoded.
-4. **Localisation** — messages in British English (en_GB); timestamps {{TIMEZONE}}.
+4. **Localisation** — messages in British English (en_GB); timestamps <%TIMEZONE%>.
 5. **Verify** — run the affected layer's log path via `logs.sh` (dev) and confirm no
    sensitive fields appear. Hand tests to `test-writer`; do not write them yourself.
 

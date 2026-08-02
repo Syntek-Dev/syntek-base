@@ -1,6 +1,6 @@
 # SPRINT-00
 
-**Last Updated**: DD/MM/YYYY **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: DD/MM/YYYY **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---

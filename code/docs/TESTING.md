@@ -5,13 +5,13 @@ skills: [stack-django, stack-htmx-templates]
 model: opus
 ---
 
-# Testing Guide — {{PROJECT_NAME}}
+# Testing Guide — <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Testing strategy, coverage floors, pytest + playwright-python tooling
 
-This guide covers testing strategy, tooling, and standards across the {{PROJECT_NAME}} stack.
+This guide covers testing strategy, tooling, and standards across the <%PROJECT_NAME%> stack.
 All tests run inside Docker containers via the scripts in `code/src/scripts/tests/`. Never invoke
 `pytest` directly on the host machine.
 

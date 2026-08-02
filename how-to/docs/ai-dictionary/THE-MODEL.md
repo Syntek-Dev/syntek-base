@@ -1,6 +1,6 @@
 # The Model — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 This section covers the model itself — the frozen bundle of numbers that does one thing, next-token prediction, and nothing else. The terms move outward from what a model _is_ (parameters set by training, run at inference) to what surrounds a single request to a provider, and end on the token economics that decide what an AI-coding session actually costs. Get these straight and most "the model got worse" conversations resolve into precise, diagnosable claims.
 

@@ -8,7 +8,7 @@ model: fable
 
 # Decisions (ADRs) — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -42,7 +42,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 ### Step 1 — Grill, then confirm the decision is ADR-worthy
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time — what is the forces at play, what options are
+interview <%DEVELOPER_NAME%> one question at a time — what is the forces at play, what options are
 realistically on the table, what happens if we do nothing, and who owns the call —
 before writing anything. Not every choice needs an ADR: reserve it for a decision that
 is hard to reverse, or that a later decision would need to explicitly supersede. A
@@ -112,7 +112,7 @@ one-directional link.
 
 Add a reference to `ADR-###-<TITLE>.md` under a **Decisions** section in the driving
 `US###.md` (and, where relevant, in the spec document that surfaced the trade-off).
-Once {{DEVELOPER_NAME}} signs off, flip Status from `Proposed` to `Accepted` — this is the point the
+Once <%DEVELOPER_NAME%> signs off, flip Status from `Proposed` to `Accepted` — this is the point the
 record becomes immutable.
 
 ### Step 11 — Commit

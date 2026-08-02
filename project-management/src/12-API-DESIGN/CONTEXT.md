@@ -51,4 +51,4 @@ permission matrix, error strategy, breaking changes, peer review, and cross-refe
 - `code/docs/SECURITY.md` — the permission/IDOR rules the design specifies and code enforces
 - `project-management/src/01-STORIES/` — the story a design is written for
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

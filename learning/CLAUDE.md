@@ -32,6 +32,6 @@ the product.
 
 ## Output & naming
 
-- **Hand-written:** everything here is {{DEVELOPER_NAME}}'s throwaway practice, created via `/teach`.
+- **Hand-written:** everything here is <%DEVELOPER_NAME%>'s throwaway practice, created via `/teach`.
 - Topic folders `kebab-case/`; the fixed files are `MISSION.md`, `RESOURCES.md`, `PROGRESS.md`,
   and the `LESSONS/` folder.

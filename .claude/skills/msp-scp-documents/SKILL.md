@@ -7,7 +7,7 @@ description: "Shared drafting standard for Managed Service Provider (MSP) and Se
 
 This skill is the shared drafting standard loaded by the internalised security,
 compliance, and GDPR policy-writer agents under
-`/home/sam-dev/Repos/{{PROJECT_SLUG}}/{{PROJECT_SLUG}}/.claude/agents/` (for example
+`/home/sam-dev/Repos/<%PROJECT_SLUG%>/<%PROJECT_SLUG%>/.claude/agents/` (for example
 `information-security-policy-writer`, `password-auth-policy-writer`,
 `incident-response-plan-writer`, `acceptable-use-policy-writer`,
 `business-continuity-plan-writer`, `network-security-policy-writer`,
@@ -23,7 +23,7 @@ final or as legal advice, and never build routes, run migrations, or touch sourc
 Publishing a signed-off policy behind a marketing legal page is a separate task for the
 `feature` / `frontend` path.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · date format DD/MM/YYYY · currency {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
 
 ---
 

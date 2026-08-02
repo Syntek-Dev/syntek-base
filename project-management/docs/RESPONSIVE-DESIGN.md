@@ -7,7 +7,7 @@ model: fable
 
 # Responsive Design
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** fable — Redirect stub; authoritative responsive design docs live in code/docs
 
 > **This file is a redirect stub.**

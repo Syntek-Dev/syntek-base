@@ -1,22 +1,14 @@
-# {{PROJECT_NAME}} — Project Overview
+# <%PROJECT_NAME%> — Project Overview
 
-This is the source repository for `{{PROJECT_SLUG}}`, built as a **Django-only monolith**:
+This is the source repository for `<%PROJECT_SLUG%>`, built as a **Django-only monolith**:
 Django 6 + Django Ninja + PostgreSQL on the server, Django templates + django-components +
 HTMX + Alpine + token-driven vanilla CSS on the client. There is no separate frontend or
 mobile application — one deployable serves the API and the rendered pages.
 
-> **This repository is a reusable base template.** Project-, organisation-, and
-> deployment-specific values are written as `{{DOUBLE_BRACE}}` tokens. Run `bash setup.sh`
-> before treating a fresh clone as a real project — it reads the token contract in
-> `how-to/src/TEMPLATE-TOKENS.md`, prompts for each value, substitutes every token, and
-> verifies that none survive.
->
-> Delete this note once `setup.sh` has run, alongside `git rm setup.sh how-to/src/TEMPLATE-TOKENS.md`.
-
 ## Directory Tree
 
 ```text
-{{PROJECT_SLUG}}/
+<%PROJECT_SLUG%>/
 ├── .claude/                         ← Claude Code configuration — the authoritative rules
 │   ├── CLAUDE.md                    ← global rules, routing, model selection, non-negotiables
 │   ├── CONTEXT.md
@@ -47,7 +39,8 @@ mobile application — one deployable serves the API and the rendered pages.
 │   ├── REFERENCES.md
 │   ├── docs/                        ← operational reference guides (CLI, tooling, worktrees)
 │   ├── src/
-│   │   ├── TEMPLATE-TOKENS.md       ← the token contract setup.sh reads — start here
+│   │   ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements
+│   │   ├── TEMPLATE-GUIDE/          ← full guides for using this repo as a template
 │   │   ├── NIXOS-SETUP.md           ← host provisioning guide
 │   │   ├── SCALE-ARCHITECTURE/      ← sizing envelope snapshot (regenerated per project)
 │   │   └── SERVER-ARCHITECTURE/     ← server/edge contract for the deploy repo
@@ -74,7 +67,7 @@ mobile application — one deployable serves the API and the rendered pages.
 ├── RELEASES.md
 ├── VERSION
 ├── VERSION-HISTORY.md
-├── setup.sh                         ← instantiate the template — substitutes every {{TOKEN}}
+├── copier.yml                       ← template contract — questions, delimiters, post-tasks
 ├── install.sh                       ← install the toolchain and dependencies
 ├── skills-lock.json                 ← installed Claude Code skills (versions and hashes)
 ├── lefthook.yml                     ← pre-commit hook runner config
@@ -96,8 +89,9 @@ mobile application — one deployable serves the API and the rendered pages.
 ```
 
 Note: `uv.lock` is **absent by design** in the base template — it would pin the root project
-under the literal `{{PROJECT_SLUG}}` name. `setup.sh` generates it and removes the ignore rule,
-because an instantiated project must commit it (every Dockerfile builds with `uv sync --frozen`).
+under the literal `<%PROJECT_SLUG%>` name. Copier generates it and removes the ignore rule at
+generation time, because a generated project must commit it (every Dockerfile builds with
+`uv sync --frozen`).
 
 ## Layer Map
 
@@ -115,7 +109,7 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 
 ## Starting Points
 
-- **Fresh clone of the template?** → `how-to/src/TEMPLATE-TOKENS.md`, then `bash setup.sh`
+- **Generating a project from this template?** → `how-to/src/TEMPLATE-GUIDE/`
 - **First time developing here?** → `how-to/CONTEXT.md`
 - **Writing or reviewing code?** → `code/CONTEXT.md`
 - **Planning or PM work?** → `project-management/CONTEXT.md`
@@ -136,7 +130,7 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 
 ## Repository State
 
-Current version: **0.11.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **0.12.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and
 `code/src/django/` carries its own independent semver (manifest: root `pyproject.toml`).

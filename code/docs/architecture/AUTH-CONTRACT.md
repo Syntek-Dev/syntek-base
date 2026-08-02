@@ -7,8 +7,8 @@ model: fable
 
 # Architecture Patterns — AdminMember/ModulePermission Auth Contract
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — AdminMember/ModulePermission endpoint auth contract, privilege escalation gates
 
 ---

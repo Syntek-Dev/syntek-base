@@ -1,6 +1,6 @@
 # Memory and Steering — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 A model is stateless, so continuity and direction have to be engineered around it. These terms cover the two sides of that: persisting what an agent learns and standing instructions that steer it (_Memory system_, _AGENTS.md_), and the discipline of loading detail only when a task needs it rather than paying for it every turn (_Progressive disclosure_, _Context pointer_, _Skill_, _Subagent_).
 

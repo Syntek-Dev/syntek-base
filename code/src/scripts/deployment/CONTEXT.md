@@ -1,6 +1,6 @@
 # code/src/scripts/deployment
 
-Planned deployment scripts for the {{PROJECT_NAME}} website. No scripts exist yet — this directory is a
+Planned deployment scripts for the <%PROJECT_NAME%> website. No scripts exist yet — this directory is a
 scaffold placeholder awaiting CI/CD pipeline implementation.
 
 ## Directory Tree

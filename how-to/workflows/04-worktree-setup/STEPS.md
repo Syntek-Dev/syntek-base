@@ -8,7 +8,7 @@ model: opus
 
 # Worktree Setup — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -51,15 +51,15 @@ Repeat for each story you are working on in parallel. Branch names must follow t
 ### Step 3 — Create the worktrees
 
 ```bash
-git worktree add ../{{PROJECT_SLUG}}-us### us###/short-description
+git worktree add ../<%PROJECT_SLUG%>-us### us###/short-description
 ```
 
-This creates a new directory at `../{{PROJECT_SLUG}}-us###` checked out on the new branch.
+This creates a new directory at `../<%PROJECT_SLUG%>-us###` checked out on the new branch.
 Repeat for each story:
 
 ```bash
-git worktree add ../{{PROJECT_SLUG}}-us003 us003/abac-membership-model
-git worktree add ../{{PROJECT_SLUG}}-us004 us004/enforce-one-area-admin
+git worktree add ../<%PROJECT_SLUG%>-us003 us003/abac-membership-model
+git worktree add ../<%PROJECT_SLUG%>-us004 us004/enforce-one-area-admin
 ```
 
 Verify:
@@ -92,8 +92,8 @@ bash code/src/scripts/development/hosts-story-remove.sh 003
 ### Step 5 — Open each worktree in a new Zed window
 
 ```bash
-zed ~/Repos/{{PROJECT_SLUG}}/{{PROJECT_SLUG}}-us003
-zed ~/Repos/{{PROJECT_SLUG}}/{{PROJECT_SLUG}}-us004
+zed ~/Repos/<%PROJECT_SLUG%>/<%PROJECT_SLUG%>-us003
+zed ~/Repos/<%PROJECT_SLUG%>/<%PROJECT_SLUG%>-us004
 ```
 
 Each Zed window is now an independent Claude Code session for its own feature branch.

@@ -8,7 +8,7 @@ model: fable
 
 # Sprint Planning — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -32,7 +32,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time about the sprint goal, capacity, and candidate
+interview <%DEVELOPER_NAME%> one question at a time about the sprint goal, capacity, and candidate
 stories before reviewing the backlog and identifying candidates.
 
 Read open stories in `project-management/src/01-STORIES/` and identify candidates.

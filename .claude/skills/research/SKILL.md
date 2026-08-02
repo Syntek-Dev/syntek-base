@@ -8,7 +8,7 @@ description: >-
   beyond one library's API docs (those go to context7).
 ---
 
-# Skill: research ({{PROJECT_SLUG}})
+# Skill: research (<%PROJECT_SLUG%>)
 
 Research answers a question the codebase cannot — a stack choice, ADR groundwork, or how a
 spec actually behaves — by reading **primary sources** and leaving a per-claim-cited **note**
@@ -21,7 +21,7 @@ config, a version migration — the `context7` MCP is the first and only stop
 across primary sources** that no single doc answers: weighing two libraries for an ADR,
 grounding a decision, or establishing how X behaves per the spec.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}} · dates DD/MM/YYYY.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 
 ## How to research
 

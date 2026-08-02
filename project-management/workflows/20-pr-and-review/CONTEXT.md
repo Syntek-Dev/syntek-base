@@ -1,6 +1,6 @@
 # Workflow: PR and Code Review
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

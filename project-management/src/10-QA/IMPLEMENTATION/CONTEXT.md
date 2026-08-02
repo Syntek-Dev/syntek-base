@@ -50,4 +50,4 @@ scenario against the running build.
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/20-pr-and-review/` — where these reviews are written
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

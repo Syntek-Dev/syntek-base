@@ -6,12 +6,12 @@ description: >-
   or when the user asks to be grilled or interviewed about a plan without recording it.
 ---
 
-# Skill: grill-me ({{PROJECT_SLUG}})
+# Skill: grill-me (<%PROJECT_SLUG%>)
 
 Run a grilling session and save nothing. Load `.claude/skills/grilling/SKILL.md` and follow
 it exactly: one question at a time via the `AskUserQuestion` tool, each carrying your
-recommended answer, looking facts up yourself and putting only genuine decisions to {{DEVELOPER_NAME}},
-until the design is settled and {{DEVELOPER_NAME}} confirms shared understanding.
+recommended answer, looking facts up yourself and putting only genuine decisions to <%DEVELOPER_NAME%>,
+until the design is settled and <%DEVELOPER_NAME%> confirms shared understanding.
 
 Use this when the interview itself is the point — sharpening thinking in conversation — and
 there is no repo artifact to update yet. For a session that records its decisions as plan

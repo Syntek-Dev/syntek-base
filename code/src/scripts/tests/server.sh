@@ -120,11 +120,11 @@ case "$COMMAND" in
     bold "✓ Test stack is up."
     if [[ -n "$OVERRIDE_TEST_FILE" ]]; then
       _n=$((10#$WORKTREE_US_NUM))
-      log "  Site:      http://test-us${WORKTREE_US_NUM}.{{PROJECT_SLUG}}.localhost:${_n}081"
-      log "  API:       http://test-us${WORKTREE_US_NUM}.{{PROJECT_SLUG}}.localhost:${_n}081/api/"
+      log "  Site:      http://test-us${WORKTREE_US_NUM}.<%PROJECT_SLUG%>.localhost:${_n}081"
+      log "  API:       http://test-us${WORKTREE_US_NUM}.<%PROJECT_SLUG%>.localhost:${_n}081/api/"
     else
-      log "  Site:      http://test.{{PROJECT_SLUG}}.localhost:83"
-      log "  API:       http://test.{{PROJECT_SLUG}}.localhost:83/api/"
+      log "  Site:      http://test.<%PROJECT_SLUG%>.localhost:83"
+      log "  API:       http://test.<%PROJECT_SLUG%>.localhost:83/api/"
     fi
     log ""
     log "  Run tests: bash code/src/scripts/tests/backend.sh"

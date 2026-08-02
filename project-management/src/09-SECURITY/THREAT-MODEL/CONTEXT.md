@@ -64,4 +64,4 @@ and a **review** after, mirroring each other.
 - `project-management/workflows/09-security-checks/` — the workflow that produces these
 - `code/docs/SECURITY.md` — the code-side enforcement these models specify
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -1,4 +1,4 @@
-# References — {{PROJECT_SLUG}}
+# References — <%PROJECT_SLUG%>
 
 A curated index of internal documentation and external resources Claude should
 consult when working in this repository.

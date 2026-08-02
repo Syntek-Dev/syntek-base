@@ -7,12 +7,12 @@ model: opus
 
 # Row Level Security Guide
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Row-level security policies, user isolation, migration and endpoint integration
 
 Row Level Security (RLS) enforces data isolation at the PostgreSQL engine level, independent of
-application-layer filtering. This guide covers the full RLS implementation for {{PROJECT_NAME}}: when
+application-layer filtering. This guide covers the full RLS implementation for <%PROJECT_NAME%>: when
 to enable it, how to configure it in migrations, middleware and Django Ninja endpoint integration,
 background task patterns, policy templates, and testing requirements.
 

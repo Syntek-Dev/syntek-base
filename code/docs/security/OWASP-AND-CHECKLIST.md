@@ -7,8 +7,8 @@ model: opus
 
 # Security — OWASP Top 10, Stack-Specific Security, and Checklist
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — OWASP Top 10 mitigations, stack-specific hardening, pre-launch security checklist
 
 ---

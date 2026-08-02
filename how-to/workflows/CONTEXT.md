@@ -1,6 +1,6 @@
 # how-to/workflows — Step-by-Step Operational Guides
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

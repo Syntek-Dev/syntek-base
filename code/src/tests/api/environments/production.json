@@ -3,7 +3,7 @@
   "variables": [
     {
       "name": "api_url",
-      "value": "https://{{PRIMARY_DOMAIN}}",
+      "value": "https://<%PRIMARY_DOMAIN%>",
       "enabled": true
     },
     {

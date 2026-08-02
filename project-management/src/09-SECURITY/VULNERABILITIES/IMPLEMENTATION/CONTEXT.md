@@ -49,4 +49,4 @@ remediation story ships. Copy `VULN-IMPL-US000-TEMPLATE.md`, open the finding in
 - `code/docs/SECURITY.md` — the code-side enforcement these closures track
 - `project-management/workflows/20-pr-and-review/` — where these closures are written
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

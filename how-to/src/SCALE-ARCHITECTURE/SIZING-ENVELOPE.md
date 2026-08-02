@@ -1,8 +1,8 @@
 # Sizing Envelope — The Knobs, Their Baselines, and the Phase-Gates
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{ORG_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%ORG_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
@@ -29,7 +29,7 @@ This document guarantees the _structure_ the targets will fill.
 
 > The six knobs below are the reusable catalogue — the app-tier, connection, cache, background,
 > request-ceiling, and substrate dials. The catalogue and its phase-gate mapping are stable
-> across {{ORG_NAME}} projects; every **baseline** value is a placeholder to reconcile against this
+> across <%ORG_NAME%> projects; every **baseline** value is a placeholder to reconcile against this
 > project's live code.
 
 ### 1. Gunicorn/Uvicorn workers — the app-tier throughput and stream-capacity knob
@@ -66,7 +66,7 @@ ADR's router); at Phase 2 it points at the shard coordinator. Tier values: **TBD
 | Setting                                      | Where                                                                             | Baseline                                                                                                                                 |
 | -------------------------------------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `maxmemory` + `maxmemory-policy allkeys-lfu` | Valkey NixOS config — **deploy-repo knob** (the cache-stampede-mitigation ADR)    | `maxmemory` **TBD — regenerate**; policy `allkeys-lfu` (default)                                                                         |
-| Cache client behaviour                       | `config/settings/base.py`                                                         | django-valkey, DB 1, `KEY_PREFIX {{ORG_SLUG}}`, default TTL **TBD — regenerate**, `IGNORE_EXCEPTIONS=True` (outage → misses, not errors) |
+| Cache client behaviour                       | `config/settings/base.py`                                                         | django-valkey, DB 1, `KEY_PREFIX <%ORG_SLUG%>`, default TTL **TBD — regenerate**, `IGNORE_EXCEPTIONS=True` (outage → misses, not errors) |
 | DB split                                     | locked convention (`SERVER-ARCHITECTURE/COMPUTE-ALLOCATION.md`, connection plane) | DB 0 broker + pub/sub + rate-limit; DB 1 cache                                                                                           |
 
 Serves: public/marketing (page cache, stampede posture), authenticated app (pub/sub channels +
@@ -105,7 +105,7 @@ Tier values: **TBD**.
 
 | Setting          | Where                   | Baseline                                                                  |
 | ---------------- | ----------------------- | ------------------------------------------------------------------------- |
-| Dedicated server | deploy repo `README.md` | **{{SERVER_TIER}}**, single box: all bare-metal services + all containers |
+| Dedicated server | deploy repo `README.md` | **<%SERVER_TIER%>**, single box: all bare-metal services + all containers |
 
 Serves: everything — cores bound worker counts, RAM bounds Valkey `maxmemory` + Postgres
 `shared_buffers`, disk I/O bounds the Phase 2 gate metric directly.
@@ -128,7 +128,7 @@ Postgres phases. The gate thresholds and Phase-0 baselines are placeholders.
 | Valkey           | memory headroom (deploy knob)     | unchanged                                                  | + cache warming for cross-shard aggregate caches    |
 | Celery           | concurrency **TBD**, single queue | unchanged                                                  | becomes the sole cross-shard query path — resize    |
 | Request budget   | both ends aligned (**TBD**)       | raise with measured marketing peak                         | raise with measured marketing peak                  |
-| Server tier      | {{SERVER_TIER}}; vertical first   | + replica machine                                          | + coordinator + ≥ 2 workers                         |
+| Server tier      | <%SERVER_TIER%>; vertical first   | + replica machine                                          | + coordinator + ≥ 2 workers                         |
 
 **The discipline, restated:** every column right of "Phase 0" is entered only on its observed
 trigger — never on a date, a target, or a hunch. The envelope's job is to make sure that when

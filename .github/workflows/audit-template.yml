@@ -1,0 +1,94 @@
+name: Audit — Template Integrity
+
+# No path filter: this must run on every pull request so it can be a required check.
+# A path-filtered workflow that never reports leaves a PR blocked on "Expected".
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tokens:
+    name: "[1/2] Template Tokens"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check token syntax integrity
+        run: bash .github/scripts/check-template-tokens.sh
+
+  generate:
+    name: "[2/2] Template Generation"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Copier reads the template over git
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Generate a project from this ref
+        run: |
+          uvx copier copy --trust --defaults --vcs-ref=HEAD \
+            --data PROJECT_NAME="CI Probe" \
+            --data ORG_NAME="CI Org" \
+            --data DEVELOPER_NAME="CI Runner" \
+            --data DEVELOPER_EMAIL="ci@example.com" \
+            --data DATE="01/01/2027" \
+            . "$RUNNER_TEMP/generated"
+
+      - name: No token may survive rendering
+        run: |
+          cd "$RUNNER_TEMP/generated"
+          left=$(grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l)
+          if [ "$left" -ne 0 ]; then
+            echo "::error::$left unrendered token(s) survived generation"
+            grep -rIn '<%[A-Z_]*%>' . --exclude-dir=.git | head -20
+            exit 1
+          fi
+          echo "0 unrendered tokens"
+
+      - name: Template-only files must not leak into a generated project
+        run: |
+          cd "$RUNNER_TEMP/generated"
+          status=0
+          for f in copier.yml LICENSE SECURITY.md CONTRIBUTING.md \
+                   .github/CODEOWNERS .github/ISSUE_TEMPLATE \
+                   .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
+                   .github/workflows/audit-template.yml \
+                   how-to/src/TEMPLATE-GUIDE how-to/src/TEMPLATE-TOKENS.md .copier; do
+            if [ -e "$f" ]; then echo "::error::$f leaked into the generated project"; status=1; fi
+          done
+          exit $status
+
+      - name: The generated project must be complete
+        run: |
+          cd "$RUNNER_TEMP/generated"
+          status=0
+          for f in README.md uv.lock .copier-answers.yml pyproject.toml \
+                   how-to/src/CONTRIBUTING.md .github/workflows/claude.yml; do
+            if [ ! -e "$f" ]; then echo "::error::$f missing from the generated project"; status=1; fi
+          done
+          exit $status
+
+      # NOTE: this file must never contain the literal dollar-brace-brace sequence.
+      # GitHub Actions parses its expression syntax anywhere in a workflow file,
+      # including inside run blocks, so writing it out — even quoted or backslashed —
+      # makes the whole workflow invalid. The patterns below are assembled from
+      # escaped braces so the sequence never appears.
+      - name: Syntax that must survive rendering untouched
+        run: |
+          cd "$RUNNER_TEMP/generated"
+          status=0
+          gha=$(grep -rIoE '\$\{\{' .github/workflows | wc -l)
+          bash_tests=$(grep -rIoE '\[\[' code/src/scripts | wc -l)
+          [ "$gha" -gt 50 ] || { echo "::error::workflow expressions were eaten by rendering (found $gha)"; status=1; }
+          [ "$bash_tests" -gt 200 ] || { echo "::error::bash test syntax was eaten by rendering (found $bash_tests)"; status=1; }
+          echo "workflow expressions: $gha · bash test brackets: $bash_tests"
+          exit $status

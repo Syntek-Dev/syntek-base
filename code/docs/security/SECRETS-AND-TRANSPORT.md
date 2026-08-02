@@ -7,8 +7,8 @@ model: opus
 
 # Security — Secrets Management, Transport Security, Container Security
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Secrets management, transport encryption, and container security hardening
 
 ---

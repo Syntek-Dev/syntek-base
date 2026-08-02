@@ -7,8 +7,8 @@ model: opus
 
 # Security — Authentication and Authorisation
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Authentication, authorisation, MFA, RBAC, session and IDOR controls
 
 ---
@@ -165,7 +165,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — i
 | `apps.audit.services.AuditDecryptionService.resolve` — PII resolution | Superuser incident investigation must resolve another user's encrypted email/username; default connection's RLS restricts `users_user` SELECT to the calling user's own row |
 
 Adding a new `admin_db` call site requires a documented security justification and code review
-sign-off from a {{ORG_NAME}} core maintainer. Any grep for `using=admin_db` outside the three
+sign-off from a <%ORG_NAME%> core maintainer. Any grep for `using=admin_db` outside the three
 authorised locations should trigger a review comment.
 
 Pre-commit hook pattern to enforce this:

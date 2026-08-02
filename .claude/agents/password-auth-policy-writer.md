@@ -13,7 +13,7 @@ Django Ninja endpoints, or migrations. Once a policy is signed off, hand any imp
 (MFA enrolment, password rules, session handling) to the `authentication` or
 `feature`/`backend` path.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · date format DD/MM/YYYY · currency {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
 
 ## Governing procedures (route here — do not restate at length)
 

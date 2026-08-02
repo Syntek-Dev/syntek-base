@@ -8,7 +8,7 @@ description: >-
   grilling pass.
 ---
 
-# Skill: wayfinder ({{PROJECT_SLUG}})
+# Skill: wayfinder (<%PROJECT_SLUG%>)
 
 Wayfinder takes on work too big to hold in one head — a whole epic, a cross-cutting migration,
 an ambiguous programme — and turns the fog into a navigable **map** of open decisions resolved
@@ -28,7 +28,7 @@ links to. The decisions it graduates land in their existing homes (ADRs, plans, 
 `clickup-sync` workflow — wayfinder writes markdown only, never to ClickUp directly.
 
 Facts are looked up, not asked: `code-review-graph` MCP → Read/Grep/Glob → `.claude/plugins/*.py`
-(and `context7` for library docs). Only genuine decisions with a real trade-off go to {{DEVELOPER_NAME}}.
+(and `context7` for library docs). Only genuine decisions with a real trade-off go to <%DEVELOPER_NAME%>.
 
 Wayfinder runs in one of two modes per session: **CHART** (one session — pin the destination,
 map the frontier, write the map) or **RESOLVE** (later sessions — settle the next frontier node,
@@ -36,14 +36,14 @@ graduate it, redraw the frontier). A live worked example of this shape is the De
 `the project's plans folderPLAN-US207-DESIGN-STUDIO.md` (umbrella → US208–US214, the relevant decision records,
 with its cross-story blocker recorded in `GAPS.md`).
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
 ## Steps — CHART (one session)
 
 1. **Pin the destination.** Open a `/grill-with-docs` pass to name what "done" looks like in one
    or two lines, and the epic's bounds — what is in, what is consciously out. Look the repo up
    before asking (`code-review-graph` → Read/Grep/Glob → `.claude/plugins/*.py`). _Done when the
-   Destination and Out-of-scope bounds are written and {{DEVELOPER_NAME}} has confirmed them._
+   Destination and Out-of-scope bounds are written and <%DEVELOPER_NAME%> has confirmed them._
 2. **Map the frontier breadth-first.** Explore the epic's surface with the `code-review-graph`
    explore playbook (`code/docs/CODE-REVIEW-GRAPH.md`) plus the target `CONTEXT.md`, surfacing
    every currently-knowable open decision. Anything still too vague to state as a decision goes to
@@ -66,8 +66,8 @@ Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}.
 1. **Load the map.** Read `MAP-<EPIC>.md` for the low-resolution view; pull the linked ADRs,
    plans, and closed nodes only as you need them. _Done when the Destination and current Frontier
    are in view._
-2. **Take the next node.** Pick the node {{DEVELOPER_NAME}} names, or the first unblocked Frontier node, and
-   confirm it is genuinely unblocked. _Done when one Frontier node is chosen and confirmed takeable._
+2. **Take the next node.** Pick the node <%DEVELOPER_NAME%> names, or the first unblocked Frontier node, and
+   confirm it is genuinely unblocked. **Done when one Frontier node is chosen and confirmed takeable.**
 3. **Settle it by its type.** A **grilling** node opens `/grill-with-docs` (one surface, one
    sitting); a **research** node is looked up; a **tracer** builds a rough spike to raise fidelity
    on a foggy area; a **task** does the manual unblocking work. _Done when the node's decision is
@@ -132,7 +132,7 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
 - **Resolving during a chart session** — charting draws the frontier; it settles nothing.
 - **Storing decision detail in the map** — the map is a low-resolution index; detail lives in the
   ADR, plan, or story it links to.
-- **Asking what the repo can answer** — look facts up before putting a question to {{DEVELOPER_NAME}}.
+- **Asking what the repo can answer** — look facts up before putting a question to <%DEVELOPER_NAME%>.
 - **Grilling the whole epic in one sitting** — that is what the frontier is for; each node gets its
   own grilling.
 - **Writing to ClickUp directly** — spawn the `US###` markdown and let the `clickup-sync` workflow

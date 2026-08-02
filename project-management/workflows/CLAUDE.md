@@ -22,7 +22,7 @@ security, QA, SEO and API gates, into code, documentation, PR, and release.
   steps.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
   opens with a grilling pass; the owning agent loads `.claude/skills/grill-with-docs` and
-  interviews {{DEVELOPER_NAME}} one question at a time before producing the artefact (`.claude/CLAUDE.md` §10).
+  interviews <%DEVELOPER_NAME%> one question at a time before producing the artefact (`.claude/CLAUDE.md` §10).
   Only trivial/mechanical steps skip it.
 - **Model:** Fable to author a design/spec procedure (01–10, 12–15); Opus for SEO (11),
   the code procedures (16–18), documentation (19), and PR/release (20–21); Opus to fix a checklist typo,

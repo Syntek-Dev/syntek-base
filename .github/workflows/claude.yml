@@ -224,11 +224,11 @@ jobs:
       db:
         image: postgres:18-alpine
         env:
-          POSTGRES_DB: "{{PROJECT_SLUG}}_test"
-          POSTGRES_USER: "{{PROJECT_SLUG}}"
+          POSTGRES_DB: "<%PROJECT_SLUG%>_test"
+          POSTGRES_USER: "<%PROJECT_SLUG%>"
           POSTGRES_PASSWORD: test_password_change_me
         options: >-
-          --health-cmd "pg_isready -U {{PROJECT_SLUG}} -d {{PROJECT_SLUG}}_test"
+          --health-cmd "pg_isready -U <%PROJECT_SLUG%> -d <%PROJECT_SLUG%>_test"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
@@ -245,7 +245,7 @@ jobs:
           - 6379:6379
     env:
       DJANGO_SETTINGS_MODULE: config.settings.test
-      DATABASE_URL: postgresql://{{PROJECT_SLUG}}:test_password_change_me@localhost:5432/{{PROJECT_SLUG}}_test
+      DATABASE_URL: postgresql://<%PROJECT_SLUG%>:test_password_change_me@localhost:5432/<%PROJECT_SLUG%>_test
       REDIS_URL: redis://localhost:6379/0
       SECRET_KEY: test-secret-key-not-for-production-ci-only
       ENCRYPTION_KEY: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
@@ -334,7 +334,6 @@ jobs:
         with:
           pytest-xml-coverage-path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           title: Backend Coverage
-
 
   # ── [8/8] Security ───────────────────────────────────────────────────────────
   # Mirrors check-security.sh: ruff --select S (Python) + pnpm audit --audit-level low (JS).

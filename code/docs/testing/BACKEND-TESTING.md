@@ -7,8 +7,8 @@ model: opus
 
 # Testing — Backend Testing (Python/Django)
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Backend test setup, pytest-django, type-checking, coverage workflow
 
 ---

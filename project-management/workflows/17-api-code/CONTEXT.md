@@ -1,6 +1,6 @@
 # Workflow: API Code (Django Ninja)
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

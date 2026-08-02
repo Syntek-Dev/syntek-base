@@ -17,4 +17,4 @@ project-management/src/04-USER-FLOW/DIAGRAMS/
 Source diagrams live in the `USER-FLOW-<AREA>.md` narratives one level up (each screen's
 Mermaid `flowchart` block). Re-export here when a flow changes — never edit a PNG directly.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

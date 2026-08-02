@@ -22,9 +22,10 @@ site is server-rendered by Django, so the image carries no Node toolchain.
 `uv.lock`. The build context is the **project root** (`context: ../../..`), so both files
 are reachable; paths inside the Dockerfiles are therefore repo-root-relative.
 
-`uv.lock` is **not shipped by the base template** — `setup.sh` generates it at instantiation
-(see `how-to/src/TEMPLATE-TOKENS.md`). Every build here `COPY`s it, so a build attempted before
-`setup.sh` has run fails on that `COPY`. Run `setup.sh` first, or `uv lock` by hand.
+`uv.lock` is **not shipped by the base template** — Copier generates it at generation time
+(see `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md`). Every build here `COPY`s it, so a build
+attempted before generation fails on that `COPY`. Generate the project first, or run
+`uv lock` by hand.
 
 ## Server per environment
 

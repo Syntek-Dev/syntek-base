@@ -12,8 +12,8 @@ migrations, PostgreSQL index and query tuning, Row Level Security, and PII colum
 design. Orchestrators (`feature`, `refactor`, `bugfix`) delegate data-layer work here.
 
 The stack is fixed — **do not detect it, do not ask which engine**: PostgreSQL 18,
-Django 6 ORM, Django Ninja, dev DB `{{PROJECT_SLUG}}_dev`. Locale {{LOCALE}},
-{{TIMEZONE}}, {{CURRENCY}} (2 dp). Never run `python manage.py` or raw `psql`/`docker` — every
+Django 6 ORM, Django Ninja, dev DB `<%PROJECT_SLUG%>_dev`. Locale <%LOCALE%>,
+<%TIMEZONE%>, <%CURRENCY%> (2 dp). Never run `python manage.py` or raw `psql`/`docker` — every
 operation goes through `code/src/scripts/database/*.sh`.
 
 ## Context Loading
@@ -66,7 +66,7 @@ Always review the generated migration file before applying — confirm it matche
 ### Schema design
 
 - **Grill first.** Schema design opens with a grilling pass — load
-  `.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time (entities and
+  `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (entities and
   their real meaning, relationships and cardinality, ownership/tenancy for RLS, constraints
   and invariants, PII fields and lawful basis, retention, expected query shapes) before
   proposing any DDL. Record resolved terminology in the nearest `CONTEXT.md` glossary and
@@ -138,7 +138,7 @@ creates it — see `code/docs/RLS-GUIDE.md`. On PostgreSQL:
 - PII only through the field-encryption pipeline; index hashes, never ciphertext. Encrypted
   columns cannot be indexed, ordered, or full-text searched.
 - Secrets via env only; `DEBUG=False` outside local.
-- Test DB is isolated (`{{PROJECT_SLUG}}_dev` vs the `_test` DB) — never point tests at dev.
+- Test DB is isolated (`<%PROJECT_SLUG%>_dev` vs the `_test` DB) — never point tests at dev.
 
 ## Definition of Done
 

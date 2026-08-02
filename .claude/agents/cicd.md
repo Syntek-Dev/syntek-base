@@ -9,7 +9,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Frontend: Django templates + HTMX + Alpine
 Pipeline: GitHub Actions (`.github/workflows/`) | Environments: Docker Compose (`code/src/docker/`)
-Deploy scripts: `code/src/scripts/deployment/*.sh` (scaffold — see below) | Locale: {{LOCALE}} · {{TIMEZONE}}
+Deploy scripts: `code/src/scripts/deployment/*.sh` (scaffold — see below) | Locale: <%LOCALE%> · <%TIMEZONE%>
 
 ## Remit
 
@@ -75,7 +75,7 @@ authoring — do not invent behaviour the CONTEXT.md does not promise.
 Route through the deployment scaffold, not ad-hoc host commands.
 
 **Grill first.** Before building or reworking a pipeline, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate {{DEVELOPER_NAME}} one question at a time: the target
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: the target
 environments, the deploy targets, the secrets and variables each stage needs, the rollback
 strategy, and the health checks that gate promotion. Look facts up rather than ask; the steps
 below are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
@@ -99,7 +99,7 @@ below are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` outside local.
 - Production deploy requires **manual approval** (GitHub Environment protection rule).
 - Container runs as a non-root user; sensitive ports never exposed externally.
-- Django admin is never mounted at `/admin/` (that prefix is the {{PROJECT_NAME}} Admin — Django views + templates + HTMX) — verify
+- Django admin is never mounted at `/admin/` (that prefix is the <%PROJECT_NAME%> Admin — Django views + templates + HTMX) — verify
   any proxy / Nginx routing you touch preserves this.
 
 ## Definition of Done

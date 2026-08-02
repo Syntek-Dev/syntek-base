@@ -1,6 +1,6 @@
 # References — project-management layer
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 Internal and external references for PM, stories, sprints, GDPR, security, SEO, and QA.
 

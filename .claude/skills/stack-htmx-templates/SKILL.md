@@ -1,19 +1,19 @@
 ---
 name: stack-htmx-templates
-description: Frontend stack reference for {{PROJECT_NAME}} — Django templates + django-components + HTMX + Alpine + token-driven vanilla CSS, served by the `apps.marketing` app. Load when building or reviewing public frontend pages/components, choosing where an interaction runs (server vs HTMX vs Alpine), wiring per-page SEO/JSON-LD, or the page cache. Cited by the frontend, seo, backend, security, and review agents.
+description: Frontend stack reference for <%PROJECT_NAME%> — Django templates + django-components + HTMX + Alpine + token-driven vanilla CSS, served by the `apps.marketing` app. Load when building or reviewing public frontend pages/components, choosing where an interaction runs (server vs HTMX vs Alpine), wiring per-page SEO/JSON-LD, or the page cache. Cited by the frontend, seo, backend, security, and review agents.
 ---
 
-Reference for the **Django-templated** frontend of {{PROJECT_NAME}}. The `frontend` agent loads
+Reference for the **Django-templated** frontend of <%PROJECT_NAME%>. The `frontend` agent loads
 this for stack idioms; `seo`, `backend`, `security`, and
 `review` cite it at the UI boundary. Aligns with `project-management/workflows/18-frontend-code/`,
 `code/docs/RENDERING.md` (the interaction doctrine), and `apps/marketing/CONTEXT.md`.
 
-British English throughout ({{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}) — in templates, Python, and copy.
+British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>) — in templates, Python, and copy.
 All user-facing copy follows the brand voice — `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md`
 (direct, considered, plainly British; substantiate or cut). Load it when writing or reviewing page
 copy or microcopy.
 
-The **visual** language is `code/docs/VISUAL-DESIGN.md` — the {{ORG_NAME}} signature (alternating
+The **visual** language is `code/docs/VISUAL-DESIGN.md` — the <%ORG_NAME%> signature (alternating
 page/sunken bands, left-oriented editorial headings, the 3px hero/CTA accent border, per-sector
 gradient tones) and the banned generic "AI-look". Build each screen against its wireframe
 (`07-WIREFRAMES/WF-###`) and component design (`06-COMPONENTS`); never invent a generic layout.

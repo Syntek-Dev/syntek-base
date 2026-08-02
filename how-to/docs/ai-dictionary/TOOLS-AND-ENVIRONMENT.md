@@ -1,6 +1,6 @@
 # Tools & Environment — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 These terms describe the boundary between the model and the world it acts on. An agent never touches the environment directly — it perceives through tool results and changes through tool calls, and the harness gates every one of those actions through permissions, modes, and sandboxes. Get this layer right and the agent works safely in a repository far larger than its context window.
 

@@ -9,11 +9,11 @@
 #
 # Required env vars (server-side .env or CI secrets):
 #   DATABASE_URL, REDIS_URL, SECRET_KEY, ALLOWED_HOSTS, IMAGE_TAG
-name: "{{PROJECT_SLUG}}-staging"
+name: "<%PROJECT_SLUG%>-staging"
 
 services:
   django:
-    image: ghcr.io/{{ORG_SLUG}}/{{PROJECT_SLUG}}/django:${IMAGE_TAG:-staging}
+    image: ghcr.io/<%ORG_SLUG%>/<%PROJECT_SLUG%>/django:${IMAGE_TAG:-staging}
     build:
       context: ../../..
       dockerfile: code/src/docker/django/Dockerfile.staging

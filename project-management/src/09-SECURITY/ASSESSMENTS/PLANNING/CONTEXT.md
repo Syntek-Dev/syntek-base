@@ -52,4 +52,4 @@ Open CRITICAL/HIGH findings are blockers — sprint planning cannot begin until 
 - `project-management/workflows/09-security-checks/` — the workflow that produces these
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -51,4 +51,4 @@ surface. Copy `AUDIT-IMPL-US000-TEMPLATE.md`, open the story's plan in
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF reference tables
 - `code/docs/SECURITY.md` — the coding-layer security controls these audits verify
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

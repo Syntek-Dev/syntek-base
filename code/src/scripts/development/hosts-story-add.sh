@@ -6,7 +6,7 @@
 #   hosts-story-add.sh <story-number>   e.g. hosts-story-add.sh 3   or   hosts-story-add.sh 003
 #
 # Adds:
-#   127.0.0.<N> dev-us<NNN>.{{PROJECT_SLUG}}.localhost test-us<NNN>.{{PROJECT_SLUG}}.localhost
+#   127.0.0.<N> dev-us<NNN>.<%PROJECT_SLUG%>.localhost test-us<NNN>.<%PROJECT_SLUG%>.localhost
 #
 # Idempotent — does nothing if the entry already exists.
 # Pair with hosts-story-remove.sh when the worktree is torn down.
@@ -31,10 +31,10 @@ N=$(( 10#$INPUT ))
 PAD=$(printf '%03d' "$N")
 # One hostname per stack the worktree publishes — dev and test. Add another only
 # when the compose override actually publishes a service behind it.
-ENTRY="127.0.0.${N} dev-us${PAD}.{{PROJECT_SLUG}}.localhost test-us${PAD}.{{PROJECT_SLUG}}.localhost"
+ENTRY="127.0.0.${N} dev-us${PAD}.<%PROJECT_SLUG%>.localhost test-us${PAD}.<%PROJECT_SLUG%>.localhost"
 
-if grep -qF "dev-us${PAD}.{{PROJECT_SLUG}}.localhost" /etc/hosts; then
-  ok "already present — dev-us${PAD}.{{PROJECT_SLUG}}.localhost"
+if grep -qF "dev-us${PAD}.<%PROJECT_SLUG%>.localhost" /etc/hosts; then
+  ok "already present — dev-us${PAD}.<%PROJECT_SLUG%>.localhost"
   exit 0
 fi
 

@@ -7,8 +7,8 @@ model: opus
 
 # URL Strategy
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Quick reference for URL patterns, path conventions, route naming
 **MCP Servers:** code-review-graph (route structure analysis)
 
@@ -21,10 +21,10 @@ server-rendered — there is **no Node/Next server** anywhere in the stack.
 
 | Surface        | Prefix      | Example                               |
 | -------------- | ----------- | ------------------------------------- |
-| Marketing site | `/`         | `{{PRIMARY_DOMAIN}}/services/`        |
-| Custom admin   | `/admin/`   | `{{PRIMARY_DOMAIN}}/admin/projects/`  |
-| Client portal  | `/portal/`  | `{{PRIMARY_DOMAIN}}/portal/projects/` |
-| Built-in admin | `/control/` | `{{PRIMARY_DOMAIN}}/control/`         |
+| Marketing site | `/`         | `<%PRIMARY_DOMAIN%>/services/`        |
+| Custom admin   | `/admin/`   | `<%PRIMARY_DOMAIN%>/admin/projects/`  |
+| Client portal  | `/portal/`  | `<%PRIMARY_DOMAIN%>/portal/projects/` |
+| Built-in admin | `/control/` | `<%PRIMARY_DOMAIN%>/control/`         |
 
 ### The four surfaces
 
@@ -60,9 +60,9 @@ helpers change.
 
 | Surface        | Subdomain                   | Example                               |
 | -------------- | --------------------------- | ------------------------------------- |
-| Marketing site | `{{PRIMARY_DOMAIN}}`        | `{{PRIMARY_DOMAIN}}/services/`        |
-| Custom admin   | `admin.{{PRIMARY_DOMAIN}}`  | `admin.{{PRIMARY_DOMAIN}}/projects/`  |
-| Client portal  | `portal.{{PRIMARY_DOMAIN}}` | `portal.{{PRIMARY_DOMAIN}}/projects/` |
+| Marketing site | `<%PRIMARY_DOMAIN%>`        | `<%PRIMARY_DOMAIN%>/services/`        |
+| Custom admin   | `admin.<%PRIMARY_DOMAIN%>`  | `admin.<%PRIMARY_DOMAIN%>/projects/`  |
+| Client portal  | `portal.<%PRIMARY_DOMAIN%>` | `portal.<%PRIMARY_DOMAIN%>/projects/` |
 
 **Migration approach:** Wrap all admin/portal URL construction in a single `build_admin_url()` /
 `build_portal_url()` helper — never hand-build these paths in templates or views. Phase 2 then
@@ -129,8 +129,8 @@ If a slug collision occurs, append a short numeric suffix: `my-project-2`.
 
 - **Phase 1:** Single domain — cookies are `SameSite=Lax`, and no CORS configuration is needed
   between the admin and portal surfaces.
-- **Phase 2:** Cross-subdomain cookies must use `SESSION_COOKIE_DOMAIN = ".{{PRIMARY_DOMAIN}}"` and
-  `CSRF_COOKIE_DOMAIN = ".{{PRIMARY_DOMAIN}}"`. Admin and portal sessions remain separate — a portal login
+- **Phase 2:** Cross-subdomain cookies must use `SESSION_COOKIE_DOMAIN = ".<%PRIMARY_DOMAIN%>"` and
+  `CSRF_COOKIE_DOMAIN = ".<%PRIMARY_DOMAIN%>"`. Admin and portal sessions remain separate — a portal login
   does not grant admin access. Implement subdomain migration only after explicit security review.
   Where a real cross-origin caller exists, `CORS_ALLOWED_ORIGINS` must be an explicit allowlist —
   never `*` in production.

@@ -7,8 +7,8 @@ model: opus
 
 # Rendering Strategy — Common Pitfalls and Implementation Examples
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — HTMX / Alpine pitfalls and worked examples
 
 ---

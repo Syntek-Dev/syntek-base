@@ -7,8 +7,8 @@ model: opus
 
 # Testing — Frontend Testing (Django templates + HTMX)
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Template, component, and HTMX-partial tests through the Django test client
 
 The frontend is HTML produced by Django. There is no client-side bundle and no JavaScript test

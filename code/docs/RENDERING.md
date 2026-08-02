@@ -7,8 +7,8 @@ model: opus
 
 # Rendering Strategy — the Interaction-Model Doctrine
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — where an interaction runs (server / HTMX / Alpine) and why
 
 Governs the **Django-templated** frontend. Every page is server-rendered Django templates with

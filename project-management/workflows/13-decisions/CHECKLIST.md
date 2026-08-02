@@ -8,7 +8,7 @@ model: fable
 
 # Decisions (ADRs) — Checklist
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -39,7 +39,7 @@ model: fable
 - [ ] Any superseded ADR is cross-linked in both directions (this record's
       `Supersedes`, the old record's `Superseded by` and Status)
 - [ ] Driving `US###.md` (and spec document, where relevant) references this ADR
-- [ ] Status flipped from `Proposed` to `Accepted` only once {{DEVELOPER_NAME}} has signed off
+- [ ] Status flipped from `Proposed` to `Accepted` only once <%DEVELOPER_NAME%> has signed off
 
 ---
 
@@ -55,5 +55,5 @@ model: fable
 ## Definition of Done
 
 - [ ] `ADR-###-<TITLE>.md` committed and pushed with Status `Accepted`
-- [ ] {{DEVELOPER_NAME}} (or the named Decider) has signed off the record
+- [ ] <%DEVELOPER_NAME%> (or the named Decider) has signed off the record
 - [ ] Ready to proceed to `workflows/14-sprint-plans/` and `workflows/15-story-plans/`

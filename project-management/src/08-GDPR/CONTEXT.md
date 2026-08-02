@@ -60,4 +60,4 @@ a **record** after, mirroring each other.
 - `code/docs/SECURITY.md` · `code/workflows/05-gdpr-enforcement/` — the code-side
   enforcement these documents specify
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

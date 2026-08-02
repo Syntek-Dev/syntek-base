@@ -8,7 +8,7 @@ model: opus
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -59,7 +59,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `DEBUG=False` in all non-local environments
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production
 - All secrets via env vars — never hardcoded
-- Django admin never at `/admin/` (that prefix belongs to the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix belongs to the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 - Never commit `.env` files — use `.env.*.example` templates only
 
 ## Pre-flight
@@ -79,10 +79,10 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ### Phase 1 — Reproduce & Isolate
 
 **Grill first (before delegating).** This orchestrator opens with a grilling pass — load
-`.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time (the exact
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (the exact
 expected-vs-actual behaviour, the precise reproduction steps, and the intended scope of the
 fix), each with a recommended answer, looking facts up rather than asking, no action until
-{{DEVELOPER_NAME}} confirms. An obvious one-line fix skips it. The confirmed answers become the `debugger`
+<%DEVELOPER_NAME%> confirms. An obvious one-line fix skips it. The confirmed answers become the `debugger`
 brief below. Design-work default (`.claude/CLAUDE.md` §10).
 
 ↳ debugger [opus]

@@ -53,4 +53,4 @@ duplicate them here.
   artefacts a QA plan is written against
 - `project-management/src/16-TESTS/` — post-development test status and manual guides
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

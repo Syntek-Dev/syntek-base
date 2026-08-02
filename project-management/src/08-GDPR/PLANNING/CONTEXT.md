@@ -45,4 +45,4 @@ and needs nothing further.
 - `../CONTEXT.md` — the GDPR folder overview and the six live registers
 - `project-management/docs/GDPR-GUIDE.md` — the governing GDPR guide
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

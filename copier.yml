@@ -1,0 +1,236 @@
+# copier.yml — the contract a new project is generated from.
+#
+#   uvx copier copy gh:Syntek-Dev/syntek-base my-project
+#
+# Full guide: how-to/src/TEMPLATE-GUIDE/. Token reference: how-to/src/TEMPLATE-TOKENS.md.
+
+_min_copier_version: "9.0.0"
+
+# Every file is a template — tokens are not confined to a suffixed subset.
+_templates_suffix: ""
+
+# Tokens are written <%TOKEN%> rather than {{TOKEN}} so they cannot collide with
+# anything already in the tree: Django templates ({{ }} / {% %}), GitHub Actions
+# expressions (${{ }}), Bruno variables ({{ }}) or bash test syntax ([[ ]]).
+_envops:
+  variable_start_string: "<%"
+  variable_end_string: "%>"
+  block_start_string: "<:"
+  block_end_string: ":>"
+  comment_start_string: "<|"
+  comment_end_string: "|>"
+  keep_trailing_newline: true
+
+# Files that belong to syntek-base itself and must not land in your project.
+# NOTE: these are gitignore patterns — an unanchored name matches at ANY depth, so
+# the template-only files are anchored with a leading slash. Without it, `README.md`
+# would also swallow .copier/README.md and `CONTRIBUTING.md` would swallow
+# how-to/src/CONTRIBUTING.md, which the generated project needs.
+_exclude:
+  - /copier.yml
+  - .git
+  - /.github/CODEOWNERS
+  - /.github/ISSUE_TEMPLATE
+  - /.github/PULL_REQUEST_TEMPLATE.md
+  - /.github/scripts # template-integrity checks — meaningless once rendered
+  - /.github/workflows/audit-template.yml
+  - /README.md # the project's README ships from .copier/README.md (see _tasks)
+  - /LICENSE
+  - /SECURITY.md
+  - /CONTRIBUTING.md
+  - /how-to/src/TEMPLATE-GUIDE
+  - /how-to/src/TEMPLATE-TOKENS.md
+  # Binaries cannot be rendered when _templates_suffix is "". Both are generated
+  # artefacts — a new project rebuilds them from the sources beside them.
+  - "*.pdf"
+  # Never part of a checkout
+  - node_modules
+  - .code-review-graph
+  - .venv
+  - __pycache__
+  - "*.py[co]"
+  - .DS_Store
+
+# ── Identity ─────────────────────────────────────────────────────────────────
+
+PROJECT_NAME:
+  type: str
+  help: Project / product display name, as a human would write it
+  placeholder: Acme Portal
+
+PROJECT_SLUG:
+  type: str
+  help: Machine slug — Python package, databases, Compose project, hostnames
+  default: "<% PROJECT_NAME | lower | replace(' ', '-') %>"
+  validator: >-
+    <: if PROJECT_SLUG != PROJECT_SLUG | lower or ' ' in PROJECT_SLUG or '_' in PROJECT_SLUG :>
+    Use kebab-case: lowercase letters, digits and hyphens only.
+    <: endif :>
+
+ORG_NAME:
+  type: str
+  help: Organisation / maintainer name, used in doc headers and the licence
+  placeholder: Acme Ltd
+
+ORG_SLUG:
+  type: str
+  help: Organisation machine slug — plugin names, server namespace, cache prefix
+  default: "<% ORG_NAME | lower | replace(' ', '-') %>"
+  validator: >-
+    <: if ORG_SLUG != ORG_SLUG | lower or ' ' in ORG_SLUG or '_' in ORG_SLUG :>
+    Use kebab-case: lowercase letters, digits and hyphens only.
+    <: endif :>
+
+# ── Infrastructure ───────────────────────────────────────────────────────────
+
+PRIMARY_DOMAIN:
+  type: str
+  help: The project's apex domain, with no scheme
+  default: "<% PROJECT_SLUG %>.com"
+  validator: >-
+    <: if '.' not in PRIMARY_DOMAIN or '/' in PRIMARY_DOMAIN :>
+    Give a bare apex domain, e.g. acme.com — no https:// and no path.
+    <: endif :>
+
+DEPLOY_REPO:
+  type: str
+  help: The forked NixOS deploy repo that provisions this project's host
+  default: "<% PROJECT_SLUG %>-nixos-client-deployment"
+
+SERVER_TIER:
+  type: str
+  help: Provisioned host tier and its spec — set it later if the host is not chosen yet
+  default: TBD — set on provisioning
+
+ENV_PREFIX:
+  type: str
+  help: Uppercase env-var and server-namespace prefix
+  default: "<% ORG_SLUG | upper | replace('-', '_') %>"
+  validator: >-
+    <: if ENV_PREFIX != ENV_PREFIX | upper or '-' in ENV_PREFIX :>
+    Use UPPER_SNAKE: capitals, digits and underscores only.
+    <: endif :>
+
+# ── Locale, licence and people ───────────────────────────────────────────────
+
+LOCALE:
+  type: str
+  help: Default application locale (the docs stay in British English regardless)
+  default: en_GB
+  validator: >-
+    <: if '_' not in LOCALE or LOCALE | length != 5 :>
+    Use a POSIX locale, e.g. en_GB.
+    <: endif :>
+
+TIMEZONE:
+  type: str
+  help: Default application timezone, IANA name
+  default: Europe/London
+  validator: >-
+    <: if '/' not in TIMEZONE :>
+    Use an IANA timezone, e.g. Europe/London.
+    <: endif :>
+
+CURRENCY:
+  type: str
+  help: Default currency, ISO 4217
+  default: GBP
+  validator: >-
+    <: if CURRENCY | length != 3 or CURRENCY != CURRENCY | upper :>
+    Use a three-letter ISO 4217 code, e.g. GBP.
+    <: endif :>
+
+LICENCE:
+  type: str
+  help: >-
+    Licence for YOUR project. syntek-base is MIT, which places no obligation on
+    what you generate from it — proprietary is a perfectly valid answer.
+  default: Proprietary — all rights reserved
+
+DEVELOPER_NAME:
+  type: str
+  help: Lead developer — named in the Claude Code identity block and as commit co-author
+  placeholder: Alex Doe
+
+DEVELOPER_EMAIL:
+  type: str
+  help: Lead developer email
+  validator: >-
+    <: if '@' not in DEVELOPER_EMAIL or '.' not in DEVELOPER_EMAIL :>
+    That does not look like an email address.
+    <: endif :>
+
+# ── Django apps ──────────────────────────────────────────────────────────────
+# Only the app NAMES are configurable; the layout code/src/django/apps/<app>/ is
+# fixed. apps.marketing, apps.seo and apps.design_tokens are house constants and
+# are never tokenised. Keep a default for an app this project will not have —
+# the doc rows mentioning it can be deleted after generation.
+
+IDENTITY_APP:
+  type: str
+  help: App owning users, credentials, sessions and consent
+  default: users
+
+AUDIT_APP:
+  type: str
+  help: App owning the append-only audit / event log
+  default: audit
+
+CONTENT_APP:
+  type: str
+  help: App owning user-authored content
+  default: content
+
+NOTIFICATIONS_APP:
+  type: str
+  help: App owning notifications and their delivery
+  default: notifications
+
+LEGAL_APP:
+  type: str
+  help: App owning cookie consent and legal pages
+  default: legal
+
+CORE_APP:
+  type: str
+  help: App owning shared primitives such as encryption
+  default: core
+
+# ── Meta ─────────────────────────────────────────────────────────────────────
+
+DATE:
+  type: str
+  help: >-
+    Baseline date stamped into every doc header (DD/MM/YYYY). It is answered once
+    and kept, so `copier update` will not churn 280 headers on you.
+  placeholder: 01/08/2026
+  validator: >-
+    <: if DATE | length != 10 or DATE[2] != '/' or DATE[5] != '/' :>
+    Use DD/MM/YYYY.
+    <: endif :>
+
+# ── Post-generation ──────────────────────────────────────────────────────────
+
+_tasks:
+  # The project's own README ships from .copier/ because the repo root README
+  # belongs to syntek-base and is excluded above.
+  - command: mv .copier/README.md README.md && rmdir .copier
+    when: "<% _copier_operation == 'copy' %>"
+
+  # The template gitignores uv.lock so a wrongly-named lock can never be committed
+  # during template development. A generated project is the opposite case: it MUST
+  # commit the lock, because every Dockerfile builds with `uv sync --frozen`.
+  - command: >-
+      perl -0777 -i -pe
+      's/^# Python lockfile — BASE TEMPLATE ONLY\.\n(?:#.*\n)*uv\.lock\n\n//m'
+      .gitignore
+    when: "<% _copier_operation == 'copy' %>"
+
+  # Generate the lock the Dockerfiles need. Non-fatal: the guide tells you to run
+  # `uv lock` by hand if uv is not installed yet.
+  - command: >-
+      command -v uv >/dev/null 2>&1 && uv lock
+      || echo 'uv not found — run `uv lock` before your first container build.'
+
+  - command: git init --initial-branch=main
+    when: "<% _copier_operation == 'copy' %>"

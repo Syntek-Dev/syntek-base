@@ -7,11 +7,11 @@ model: opus
 
 # Git Worktrees — Parallel Feature Development
 
-**Last Updated**: {{DATE}}\
+**Last Updated**: <%DATE%>\
 **Version**: 0.1.0\
 **Language**: British English (en_GB)\
-**Timezone**: {{TIMEZONE}}
-**Maintained By:** {{ORG_NAME}}
+**Timezone**: <%TIMEZONE%>
+**Maintained By:** <%ORG_NAME%>
 **Claude Model:** opus — Git worktree workflow, naming conventions, Docker isolation setup
 **MCP Servers:** None (operational documentation)
 
@@ -52,13 +52,13 @@ The full workflow for creating worktrees: `how-to/workflows/04-worktree-setup/`
 | Slot                 | Main dev                          | Worktree pattern                           |
 | -------------------- | --------------------------------- | ------------------------------------------ |
 | Branch               | `us###/desc`                      | `us###/desc`                               |
-| Worktree path        | _(main repo)_                     | `../{{PROJECT_SLUG}}-usXXX`                |
-| Dev Docker project   | `{{PROJECT_SLUG}}-dev`            | `{{PROJECT_SLUG}}-dev-usXXX`               |
-| Test Docker project  | `{{PROJECT_SLUG}}-test`           | `{{PROJECT_SLUG}}-test-usXXX`              |
-| Dev container names  | `{{PROJECT_SLUG}}-dev-*-1`        | `{{PROJECT_SLUG}}-dev-usXXX-*-1`           |
-| Test container names | `{{PROJECT_SLUG}}-test-*-1`       | `{{PROJECT_SLUG}}-test-usXXX-*-1`          |
-| Dev URL              | `dev.{{PROJECT_SLUG}}.localhost`  | `dev-usXXX.{{PROJECT_SLUG}}.localhost`     |
-| Test URL             | `test.{{PROJECT_SLUG}}.localhost` | `test-usXXX.{{PROJECT_SLUG}}.localhost:81` |
+| Worktree path        | _(main repo)_                     | `../<%PROJECT_SLUG%>-usXXX`                |
+| Dev Docker project   | `<%PROJECT_SLUG%>-dev`            | `<%PROJECT_SLUG%>-dev-usXXX`               |
+| Test Docker project  | `<%PROJECT_SLUG%>-test`           | `<%PROJECT_SLUG%>-test-usXXX`              |
+| Dev container names  | `<%PROJECT_SLUG%>-dev-*-1`        | `<%PROJECT_SLUG%>-dev-usXXX-*-1`           |
+| Test container names | `<%PROJECT_SLUG%>-test-*-1`       | `<%PROJECT_SLUG%>-test-usXXX-*-1`          |
+| Dev URL              | `dev.<%PROJECT_SLUG%>.localhost`  | `dev-usXXX.<%PROJECT_SLUG%>.localhost`     |
+| Test URL             | `test.<%PROJECT_SLUG%>.localhost` | `test-usXXX.<%PROJECT_SLUG%>.localhost:81` |
 | Nginx loopback IP    | `127.0.0.1`                       | `127.0.0.X` (X = story number)             |
 
 **Loopback IP rule:** the final octet equals the story number (usXXX → `.XXX`). The entire
@@ -83,9 +83,9 @@ machine — you do not need to repeat it for each session.
 
 ```bash
 sudo tee -a /etc/hosts <<'HOSTS'
-# {{PROJECT_SLUG}} main stacks
-127.0.0.1  dev.{{PROJECT_SLUG}}.localhost
-127.0.0.1  test.{{PROJECT_SLUG}}.localhost
+# <%PROJECT_SLUG%> main stacks
+127.0.0.1  dev.<%PROJECT_SLUG%>.localhost
+127.0.0.1  test.<%PROJECT_SLUG%>.localhost
 HOSTS
 ```
 
@@ -93,7 +93,7 @@ For each worktree you create, append one entry following this pattern — the fi
 the story number:
 
 ```bash
-echo "127.0.0.X  dev-usXXX.{{PROJECT_SLUG}}.localhost test-usXXX.{{PROJECT_SLUG}}.localhost" | sudo tee -a /etc/hosts
+echo "127.0.0.X  dev-usXXX.<%PROJECT_SLUG%>.localhost test-usXXX.<%PROJECT_SLUG%>.localhost" | sudo tee -a /etc/hosts
 ```
 
 ---
@@ -107,7 +107,7 @@ Run from the main workspace, on the `testing` branch:
 git branch usXXX/short-description testing
 
 # 2. Create the worktree in a sibling directory
-git worktree add ../{{PROJECT_SLUG}}-usXXX usXXX/short-description
+git worktree add ../<%PROJECT_SLUG%>-usXXX usXXX/short-description
 
 # 3. Verify
 git worktree list
@@ -116,7 +116,7 @@ git worktree list
 Open the worktree in a new Zed window:
 
 ```bash
-zed ~/Repos/{{ORG_SLUG}}/{{PROJECT_SLUG}}-usXXX
+zed ~/Repos/<%ORG_SLUG%>/<%PROJECT_SLUG%>-usXXX
 ```
 
 ---
@@ -137,10 +137,10 @@ The printed output will confirm the worktree-specific URLs:
 
 ```text
 ✓ Stack is up.
-  Site:           http://dev-usXXX.{{PROJECT_SLUG}}.localhost
-  API (Ninja):    http://dev-usXXX.{{PROJECT_SLUG}}.localhost/api/
-  Admin surface:  http://dev-usXXX.{{PROJECT_SLUG}}.localhost/admin/
-  Django Admin:   http://dev-usXXX.{{PROJECT_SLUG}}.localhost/control/
+  Site:           http://dev-usXXX.<%PROJECT_SLUG%>.localhost
+  API (Ninja):    http://dev-usXXX.<%PROJECT_SLUG%>.localhost/api/
+  Admin surface:  http://dev-usXXX.<%PROJECT_SLUG%>.localhost/admin/
+  Django Admin:   http://dev-usXXX.<%PROJECT_SLUG%>.localhost/control/
 ```
 
 The `/api/` surface is the Django Ninja router; the admin surface (`/admin/`) is
@@ -167,7 +167,7 @@ bash code/src/scripts/tests/api.sh
 bash code/src/scripts/tests/all.sh --api
 ```
 
-Container names for the test stack will be `{{PROJECT_SLUG}}-test-us###-*-1`, keeping them isolated
+Container names for the test stack will be `<%PROJECT_SLUG%>-test-us###-*-1`, keeping them isolated
 from other running test stacks.
 
 ---
@@ -192,10 +192,10 @@ When a story is merged and the worktree is no longer needed:
 
 ```bash
 # From the main workspace (not inside the worktree being removed)
-git worktree remove ../{{PROJECT_SLUG}}-us###
+git worktree remove ../<%PROJECT_SLUG%>-us###
 
 # If the worktree has uncommitted changes, force-remove:
-git worktree remove --force ../{{PROJECT_SLUG}}-us###
+git worktree remove --force ../<%PROJECT_SLUG%>-us###
 
 # Clean up stale worktree references:
 git worktree prune
@@ -219,7 +219,7 @@ bash code/src/scripts/development/server.sh down --volumes
 - **One override file per story number.** If you create a second worktree for the same story
   number, it will share the same Docker project name and cause container conflicts. Always
   use unique story numbers for parallel worktrees.
-- **Docker volumes are isolated per worktree** by the project name (`{{PROJECT_SLUG}}-dev-us###`), but
+- **Docker volumes are isolated per worktree** by the project name (`<%PROJECT_SLUG%>-dev-us###`), but
   they persist after `server.sh down`. Use `server.sh down --volumes` to destroy them.
 
 ---
@@ -257,8 +257,8 @@ bash code/src/scripts/development/server.sh status
 ### Worktree directory already exists
 
 ```bash
-git worktree add ../{{PROJECT_SLUG}}-usXXX usXXX/short-description
-# error: '../{{PROJECT_SLUG}}-usXXX' already exists
+git worktree add ../<%PROJECT_SLUG%>-usXXX usXXX/short-description
+# error: '../<%PROJECT_SLUG%>-usXXX' already exists
 ```
 
 Either the directory from a previous worktree was not cleaned up, or the worktree still
@@ -266,7 +266,7 @@ exists. Check:
 
 ```bash
 git worktree list
-ls ../{{PROJECT_SLUG}}-usXXX
+ls ../<%PROJECT_SLUG%>-usXXX
 ```
 
 If it was not properly removed, run `git worktree prune` first.

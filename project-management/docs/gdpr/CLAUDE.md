@@ -20,14 +20,14 @@ read via the parent index `project-management/docs/GDPR-GUIDE.md`.
   version-header bump or a cross-link fix.
 - **Concrete steps:** edit the relevant sub-document → keep it ≤ 300 code lines →
   ensure `GDPR-GUIDE.md` still links it and the split stays coherent → check
-  consistency with the enforcing code in `apps.{{LEGAL_APP}}` and `code/docs/SECURITY.md`.
+  consistency with the enforcing code in `apps.<%LEGAL_APP%>` and `code/docs/SECURITY.md`.
 - **Definition of done:** obligation or right accurately documented, linked from the
   parent index, ≤ 300 code lines, British English.
 
 ## Guardrails
 
 - **Specify, do not implement.** These docs state GDPR obligations; enforcement lives
-  in `code/` (`apps.{{LEGAL_APP}}` cookie consent, Fernet PII encryption) — keep the two in
+  in `code/` (`apps.<%LEGAL_APP%>` cookie consent, Fernet PII encryption) — keep the two in
   step, never contradictory.
 - **Instructional cap: ≤ 300 code lines** per file — split further if either grows.
 - No personal data, secrets, or `.env` content ever appears in these guides.

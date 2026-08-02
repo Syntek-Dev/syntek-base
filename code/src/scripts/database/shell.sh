@@ -30,8 +30,8 @@ if [[ -f "$ENV_FILE" ]]; then
   set +a
 fi
 
-DB_NAME="${POSTGRES_DB:-{{PROJECT_SLUG}}_dev}"
-DB_USER="${POSTGRES_USER:-{{PROJECT_SLUG}}}"
+DB_NAME="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
+DB_USER="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 USE_PSQL=false
@@ -53,7 +53,7 @@ Options:
   --psql     Open psql directly in the db container instead of Django dbshell
 
 Django dbshell connects using the DATABASE_URL / DATABASES setting from Django config.
-psql connects as POSTGRES_USER to POSTGRES_DB (env vars, defaults: {{PROJECT_SLUG}} / {{PROJECT_SLUG}}_dev).
+psql connects as POSTGRES_USER to POSTGRES_DB (env vars, defaults: <%PROJECT_SLUG%> / <%PROJECT_SLUG%>_dev).
 
 Exit codes:  0 = exited normally   1 = container error   2 = script error
 EOF

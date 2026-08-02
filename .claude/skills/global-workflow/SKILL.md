@@ -1,11 +1,11 @@
 ---
 name: global-workflow
-description: "Cross-cutting engineering standards for {{PROJECT_NAME}} — localisation (en_GB), Git branch strategy, commit and pull-request conventions, semantic versioning, Markdown documentation style, and code-comment rules. Load when creating a branch, writing a commit message or PR, bumping the version, or authoring documentation or code comments — i.e. the conventions every agent shares regardless of layer."
+description: "Cross-cutting engineering standards for <%PROJECT_NAME%> — localisation (en_GB), Git branch strategy, commit and pull-request conventions, semantic versioning, Markdown documentation style, and code-comment rules. Load when creating a branch, writing a commit message or PR, bumping the version, or authoring documentation or code comments — i.e. the conventions every agent shares regardless of layer."
 ---
 
 # Global Workflow & Standards
 
-Project-wide conventions that sit beneath every layer of {{PROJECT_NAME}}. The
+Project-wide conventions that sit beneath every layer of <%PROJECT_NAME%>. The
 per-layer guides (`code/docs/*`, `project-management/docs/*`) own the deep detail;
 this skill is the shared baseline that the orchestrating agents (`feature`,
 `bugfix`, `refactor`, `review`, `security`, `pr`, `release`, `story`) all carry.
@@ -16,7 +16,7 @@ frontend · vanilla CSS/design tokens · django-components UI library.
 All dev operations run through `code/src/scripts/**/*.sh` — never raw `pnpm`,
 `pytest`, `python`, `manage.py`, or `docker`.
 
-**Locale:** British English (en_GB) · {{TIMEZONE}} · {{CURRENCY}}.
+**Locale:** British English (en_GB) · <%TIMEZONE%> · <%CURRENCY%>.
 
 ---
 
@@ -30,7 +30,7 @@ All dev operations run through `code/src/scripts/**/*.sh` — never raw `pnpm`,
 | **Currency**    | GBP (£) with format `£1,234.56`                   |
 | **Date format** | DD/MM/YYYY                                        |
 | **Time format** | 24-hour clock (HH:MM)                             |
-| **Timezone**    | {{TIMEZONE}}                                      |
+| **Timezone**    | <%TIMEZONE%>                                      |
 
 **Code-syntax exception:** keep US English for language reserved words and
 framework APIs (CSS `color`, Django `Meta`), but use GB

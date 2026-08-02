@@ -7,15 +7,15 @@ model: opus
 
 # Data Structures — Fundamentals
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Choosing data structures across the stack, when each fits
 
 ---
 
 ## Overview
 
-This document covers fundamental data structures and when to use them in the {{PROJECT_NAME}}
+This document covers fundamental data structures and when to use them in the <%PROJECT_NAME%>
 stack. Everything runs in Python on the server — there is no client-side code holding application
 data, so these are the only structures in play.
 

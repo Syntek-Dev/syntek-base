@@ -1,6 +1,6 @@
 # Workflow 19 — Implementation Documentation
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

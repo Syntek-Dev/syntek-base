@@ -75,4 +75,4 @@ Three frameworks are applied at every review (guide: `docs/SECURITY-GUIDE.md`):
 - `project-management/src/08-GDPR/` — the GDPR compliance scaffold (prerequisite)
 - `code/docs/SECURITY.md` — the coding-layer security implementation guide
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -288,7 +288,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Line-Count Audit — {{PROJECT_SLUG}}</title>
+  <title>Line-Count Audit — <%PROJECT_SLUG%></title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 960px;
@@ -303,7 +303,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   </style>
 </head>
 <body>
-  <h1>Line-Count Audit — {{PROJECT_SLUG}}</h1>
+  <h1>Line-Count Audit — <%PROJECT_SLUG%></h1>
   <table>
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Warn threshold</th><td>≥${WARN_THRESHOLD} lines</td></tr>

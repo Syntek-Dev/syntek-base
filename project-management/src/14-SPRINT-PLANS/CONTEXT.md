@@ -56,4 +56,4 @@ Both are written **before any code**, after the specify tier (01–12).
 - Written after `08-GDPR`, `09-SECURITY`, `10-QA`, `11-SEO`, and `12-API-DESIGN` are complete
 - Read throughout the development phases (`../../workflows/16-backend-code` → `20-pr-and-review`)
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -1,6 +1,6 @@
 # how-to/docs/ai-dictionary — AI Coding Dictionary sub-documents
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 The themed sub-documents behind [`../AI-DICTIONARY.md`](../AI-DICTIONARY.md) — the
 plain-English glossary of AI-coding terms. The entry-point guide is the index; each file
@@ -30,4 +30,4 @@ how-to/docs/ai-dictionary/
 ## Source
 
 Adapted from Matt Pocock's AI Coding Dictionary (aicodingdictionary.com), condensed to
-en_GB and the {{PROJECT_SLUG}} doc-guide shape. Extend via the entry-point guide `../AI-DICTIONARY.md`.
+en_GB and the <%PROJECT_SLUG%> doc-guide shape. Extend via the entry-point guide `../AI-DICTIONARY.md`.

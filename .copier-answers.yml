@@ -1,0 +1,8 @@
+# This file is rendered by Copier into every generated project.
+#
+# In the generated project it records the template source, the commit it was
+# generated from, and every answer given — which is what makes `copier update`
+# able to three-way-merge later syntek-base improvements into a live project.
+#
+# Do not edit it by hand in a generated project: `copier update` overwrites it.
+<% _copier_answers|to_nice_yaml -%>

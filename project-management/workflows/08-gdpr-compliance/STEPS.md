@@ -8,7 +8,7 @@ model: fable
 
 # GDPR Compliance Review — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -33,7 +33,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time about the personal data collected, its lawful basis,
+interview <%DEVELOPER_NAME%> one question at a time about the personal data collected, its lawful basis,
 retention, and data subject rights before documenting the data flows.
 
 Document what personal data is collected, why, and how it is stored.

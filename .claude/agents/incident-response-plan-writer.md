@@ -7,7 +7,7 @@ tools: Read, Write, Edit, Glob
 
 ## Remit
 
-Produces a formally structured **Incident Response Plan** document for {{ORG_NAME}}
+Produces a formally structured **Incident Response Plan** document for <%ORG_NAME%>
 Studio's legal/compliance needs — severity classification, response-team roles, the
 five response phases (identification, containment, eradication, recovery, post-incident
 review), a communication plan carrying the ICO 72-hour personal-data-breach
@@ -44,7 +44,7 @@ Read before drafting:
   response plan, document header + version-control format, ISO/IEC alignment rules,
   quality checklist
 - `code/docs/SECURITY.md` — the project's OWASP controls, permission-check and IDOR
-  conventions (so runbooks reflect how {{PROJECT_NAME}} actually operates)
+  conventions (so runbooks reflect how <%PROJECT_NAME%> actually operates)
 - `code/docs/LOGGING.md` — Sentry and file-based logging, so detection and evidence
   steps reference real telemetry sources
 - `project-management/docs/SECURITY-GUIDE.md` — audit process and sign-off criteria

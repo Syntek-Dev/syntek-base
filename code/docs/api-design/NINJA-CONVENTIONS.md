@@ -7,8 +7,8 @@ model: opus
 
 # API Design — Django Ninja Conventions
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Django Ninja router/schema naming, endpoint design, per-endpoint auth, and module conventions
 
 ---
@@ -67,7 +67,7 @@ The project root wires every module router onto one `NinjaAPI`:
 from ninja import NinjaAPI
 from apps.orders.api import router as orders_router
 
-api = NinjaAPI(title="{{PROJECT_NAME}} API", version="1.0.0", docs_url="/docs")
+api = NinjaAPI(title="<%PROJECT_NAME%> API", version="1.0.0", docs_url="/docs")
 api.add_router("/", orders_router)
 # urls.py: path("api/", api.urls)  → endpoints under /api/, docs at /api/docs
 ```
@@ -234,7 +234,7 @@ Hardening is applied once, on the mounted `NinjaAPI` — it is not inherited by 
 from django.conf import settings
 
 api = NinjaAPI(
-    title="{{PROJECT_NAME}} API",
+    title="<%PROJECT_NAME%> API",
     version="1.0.0",
     docs_url="/docs" if settings.API_DOCS_ENABLED else None,
     csrf=True,

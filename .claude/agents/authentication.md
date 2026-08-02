@@ -16,7 +16,7 @@ story; return to them for the wider workflow.
 ## Stack
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
-Frontend: Django templates + django-components + HTMX + Alpine | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Frontend: Django templates + django-components + HTMX + Alpine | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 Use Django's built-in auth, password hashers (Argon2/PBKDF2), and session framework —
 never hand-roll crypto or a bespoke hasher.
 
@@ -64,8 +64,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Grill Before Building (if not settled in the story or `code/docs/`)
 
 Auth-flow design **opens with a grilling pass** — load `.claude/skills/grill-with-docs`
-and interview {{DEVELOPER_NAME}} one question at a time (each with your recommended answer; look facts
-up, don't ask; no action until {{DEVELOPER_NAME}} confirms) before writing any auth code. This inverts
+and interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts
+up, don't ask; no action until <%DEVELOPER_NAME%> confirms) before writing any auth code. This inverts
 the proceed-by-default posture (`.claude/CLAUDE.md` §10) because the credential and
 session layer is expensive to get wrong. Grill across:
 

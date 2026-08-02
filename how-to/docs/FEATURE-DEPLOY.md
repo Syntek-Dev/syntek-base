@@ -7,13 +7,13 @@ model: opus
 
 # Feature Deploy-Coordination — Edge & Account Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — deploy-coordination checklist for a feature's edge & account steps
 
 > These are the classes of item a feature needs that are **not** configured in this
 > repository. They live at the **edge** (the NixOS deploy repo / Cloudflare) or in a
-> **provider account** (media CDN, object store, secret store), and must be applied by {{DEVELOPER_NAME}}
+> **provider account** (media CDN, object store, secret store), and must be applied by <%DEVELOPER_NAME%>
 > during the staging/prod rollout. The in-repo work (dev/test body-size caps, seeded tokens,
 > the beat-schedule entry) ships committed with the feature; this guide covers only what the
 > application repo cannot set for itself.
@@ -47,17 +47,17 @@ than a plain element load).
 **Production directives (paste into the edge CSP):**
 
 ```text
-img-src   'self' data: https://res.cloudinary.com https://storage.{{PRIMARY_DOMAIN}};
-media-src 'self' https://res.cloudinary.com https://storage.{{PRIMARY_DOMAIN}};
-connect-src 'self' https://res.cloudinary.com https://storage.{{PRIMARY_DOMAIN}};
+img-src   'self' data: https://res.cloudinary.com https://storage.<%PRIMARY_DOMAIN%>;
+media-src 'self' https://res.cloudinary.com https://storage.<%PRIMARY_DOMAIN%>;
+connect-src 'self' https://res.cloudinary.com https://storage.<%PRIMARY_DOMAIN%>;
 ```
 
 **Staging directives** (object-store host differs):
 
 ```text
-img-src   'self' data: https://res.cloudinary.com https://storage.staging.{{PRIMARY_DOMAIN}};
-media-src 'self' https://res.cloudinary.com https://storage.staging.{{PRIMARY_DOMAIN}};
-connect-src 'self' https://res.cloudinary.com https://storage.staging.{{PRIMARY_DOMAIN}};
+img-src   'self' data: https://res.cloudinary.com https://storage.staging.<%PRIMARY_DOMAIN%>;
+media-src 'self' https://res.cloudinary.com https://storage.staging.<%PRIMARY_DOMAIN%>;
+connect-src 'self' https://res.cloudinary.com https://storage.staging.<%PRIMARY_DOMAIN%>;
 ```
 
 **Notes:**

@@ -58,4 +58,4 @@ implementation begins, and a closure record before that story ships.
 - `project-management/workflows/09-security-checks/` — the workflow that produces these
 - `code/docs/SECURITY.md` — the code-side enforcement these records track
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

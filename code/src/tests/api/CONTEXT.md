@@ -1,8 +1,8 @@
 # tests/api — Bruno API Test Collection
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 **Version**: 0.1.0
-**Maintained By**: {{ORG_NAME}}
+**Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -33,7 +33,7 @@ case, so the suite is green rather than red.
 
 ## Purpose
 
-Bruno API testing collection for the {{PROJECT_NAME}} Django Ninja API. Run against a live
+Bruno API testing collection for the <%PROJECT_NAME%> Django Ninja API. Run against a live
 backend to verify endpoint contracts, auth flows, and performance thresholds.
 
 All requests target the Django Ninja API at `{{api_url}}/api/`.

@@ -9,7 +9,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Remit
 
@@ -59,7 +59,7 @@ If the orchestrator's brief lacks these, ask before proceeding rather than guess
 - Environment (dev / staging / production) and whether it is consistent or intermittent
 - Recent changes (deploys, migrations, config) before onset
 
-Watch for locale-shaped bugs: {{LOCALE}} dates (DD/MM/YYYY) and {{TIMEZONE}} timezone handling.
+Watch for locale-shaped bugs: <%LOCALE%> dates (DD/MM/YYYY) and <%TIMEZONE%> timezone handling.
 
 ## Non-Negotiables (uphold, and flag if the bug touches them)
 
@@ -103,7 +103,7 @@ races), state mutation / shared references, off-by-one, timezone/locale parsing,
 cache, and dev-vs-prod environment drift.
 
 For rendered-UI faults, use the `claude-in-chrome` MCP (load schema via ToolSearch) to inspect
-console, network, and rendered HTML at `http://dev.{{PROJECT_SLUG}}.localhost`.
+console, network, and rendered HTML at `http://dev.<%PROJECT_SLUG%>.localhost`.
 
 ## Output
 

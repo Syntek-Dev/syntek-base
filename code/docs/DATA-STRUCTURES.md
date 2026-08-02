@@ -7,11 +7,11 @@ model: opus
 
 # Data Structures
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Domain modelling, PostgreSQL schema design, indexing, anti-patterns
 
-This guide covers how to choose, design, and maintain data structures across the {{PROJECT_NAME}}
+This guide covers how to choose, design, and maintain data structures across the <%PROJECT_NAME%>
 stack — Python/Django with Django Ninja response schemas on the server. Data structure decisions
 are the highest-leverage decisions in a codebase — get the data right and the algorithms, queries,
 and templates follow naturally.
