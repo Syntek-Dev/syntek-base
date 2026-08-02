@@ -20,7 +20,7 @@ operation goes through `code/src/scripts/database/*.sh`.
 
 Read before starting:
 
-- `code/workflows/09-database-migration/CONTEXT.md` → `STEPS.md` → `CHECKLIST.md` — the
+- `code/workflows/03-database-migration/CONTEXT.md` → `STEPS.md` → `CHECKLIST.md` — the
   governing procedure. Follow it; do not restate it.
 - `code/docs/DATABASE.md` — **read first.** The pre-flight rules: scope columns, database-level
   constraints, index ordering, lock-safe migrations, search, and the deferred infrastructure
@@ -46,7 +46,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/03-database-schema/` — design and sign off the schema first
 - `project-management/workflows/16-backend-code/` — the build phase that drives the migration
-- `code/workflows/09-database-migration/` — write and apply the migration
+- `code/workflows/03-database-migration/` — write and apply the migration
 
 ## Scripts (never raw commands)
 
@@ -144,7 +144,7 @@ creates it — see `code/docs/RLS-GUIDE.md`. On PostgreSQL:
 
 - Migration generated, reviewed, applied cleanly to dev; `show` confirms state.
 - RLS present and `verify-db-security.sh` passes for scoped tables.
-- Migration record written per `09-database-migration/STEPS.md` (Step for docs) — this is
+- Migration record written per `03-database-migration/STEPS.md` (Step for docs) — this is
   a hard gate before any commit.
 - Every affected `CONTEXT.md` (new model dir, new app) updated.
 - **Findings recorded** — divergences from `code/docs/DATABASE.md` surfaced while doing the

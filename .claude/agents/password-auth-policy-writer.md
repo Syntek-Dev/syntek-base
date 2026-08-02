@@ -45,7 +45,7 @@ Before drafting, read in this order:
    conventions the policy must stay consistent with.
 3. `project-management/docs/SECURITY-GUIDE.md` — the governing security audit and
    sign-off procedure.
-4. `code/workflows/03-security-hardening/CONTEXT.md` — the hardening steps this
+4. `code/workflows/08-security-hardening/CONTEXT.md` — the hardening steps this
    document should align with.
 5. `.claude/skills/global-workflow/SKILL.md` and
    `.claude/skills/msp-scp-documents/SKILL.md`, if present — shared drafting standards

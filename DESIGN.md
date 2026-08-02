@@ -60,8 +60,8 @@ This file is the **design-time** entry point for all design work — the quick c
 | ---------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [`code/workflows/01-new-feature/`](code/workflows/01-new-feature/CONTEXT.md) | Full cycle for implementing a new frontend feature        |
 | [`code/workflows/02-tdd-cycle/`](code/workflows/02-tdd-cycle/CONTEXT.md)     | TDD for UI components — write tests first, then implement |
-| [`code/workflows/06-review/`](code/workflows/06-review/CONTEXT.md)           | Code review checklist with UI-specific checks             |
-| [`code/workflows/08-refactor/`](code/workflows/08-refactor/CONTEXT.md)       | Refactoring UI components without regressions             |
+| [`code/workflows/07-review/`](code/workflows/07-review/CONTEXT.md)           | Code review checklist with UI-specific checks             |
+| [`code/workflows/11-refactor/`](code/workflows/11-refactor/CONTEXT.md)       | Refactoring UI components without regressions             |
 
 ### Design Skills
 

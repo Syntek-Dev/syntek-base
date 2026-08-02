@@ -41,8 +41,8 @@ reuse existing patterns, and never re-scaffold what already exists.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `how-to/workflows/01-first-time-setup/` — clone, configure, and first start
-- `how-to/workflows/02-daily-development/` — the daily session loop the setup must support
-- `how-to/workflows/04-worktree-setup/` — parallel-story worktrees
+- `how-to/workflows/03-daily-development/` — the daily session loop the setup must support
+- `how-to/workflows/02-worktree-setup/` — parallel-story worktrees
 
 ## How to Work Here
 

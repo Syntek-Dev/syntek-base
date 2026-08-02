@@ -103,8 +103,8 @@ code-review-graph after the doc change so structure and docs stay in lockstep
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/08-refactor/` — reasoning about module depth before restructuring
-- `code/workflows/06-review/` — the review lens on seams and boundaries
+- `code/workflows/11-refactor/` — reasoning about module depth before restructuring
+- `code/workflows/07-review/` — the review lens on seams and boundaries
 - `project-management/workflows/13-decisions/` — the vocabulary an ADR's options are argued in
 
 ## Cross-references

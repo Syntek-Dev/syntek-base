@@ -4,67 +4,78 @@ Each workflow is a numbered folder with three files:
 
 ## Directory Tree
 
+The numbers run in three families — build, verify, then diagnose & improve. Within the
+build family the layers read bottom-up (data → `/api/` → `/mcp/`); within diagnose they
+read in handoff order (find → fix → improve).
+
 ```text
 code/workflows/
 ├── CONTEXT.md               ← this file
+│
+│   ── Build (01–06) ──
 ├── 01-new-feature/          ← add a new full-stack feature (backend + frontend)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 02-tdd-cycle/            ← TDD: Red → Green → Refactor
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 03-security-hardening/   ← security review and hardening of existing code
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
+├── 02-tdd-cycle/            ← TDD: Red → Green → Refactor (the method the others use)
+├── 03-database-migration/   ← create and run a new Django database migration
 ├── 04-api-design/           ← design and implement a new Django Ninja API surface
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 05-gdpr-enforcement/     ← implement GDPR requirements in code (encryption, consent, deletion)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 06-review/               ← code quality review (OWASP, principles, coverage)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 07-debug/                ← code-logic debugging and regression test writing
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 08-refactor/             ← systematic refactoring without behaviour change
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 09-database-migration/   ← create and run a new Django database migration
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-└── 10-debugging-with-logs/ ← debug using local logs, Glitchtip, Loki, and Grafana
-    ├── CHECKLIST.md
-    ├── CONTEXT.md
-    └── STEPS.md
+├── 05-mcp-server/           ← add a FastMCP tool to the /mcp/ agent surface
+├── 06-gdpr-enforcement/     ← implement GDPR requirements in code (encryption, consent, deletion)
+│
+│   ── Verify (07–08) ──
+├── 07-review/               ← code quality review (OWASP, principles, coverage)
+├── 08-security-hardening/   ← security review and hardening of existing code
+│
+│   ── Diagnose & improve (09–11) ──
+├── 09-debugging-with-logs/  ← FIND the cause: local logs, Glitchtip, Loki, Grafana
+├── 10-debug/                ← FIX it: isolate in code, regression test, minimal fix
+└── 11-refactor/             ← IMPROVE it: restructure without changing behaviour
 ```
 
-- `CONTEXT.md` — When to use this workflow and prerequisites
-- `STEPS.md` — Ordered steps to execute
-- `CHECKLIST.md` — Verification checklist before marking complete
+Every folder carries the same four files: `CONTEXT.md` (when to use this workflow and
+its prerequisites), `STEPS.md` (ordered steps to execute), `CHECKLIST.md` (verification
+before marking complete), and `CLAUDE.md` (operating rules).
 
-| Workflow                  | Purpose                                                             |
-| ------------------------- | ------------------------------------------------------------------- |
-| `01-new-feature/`         | Add a new full-stack feature (backend + frontend)                   |
-| `02-tdd-cycle/`           | Test-driven development cycle (Red → Green → Refactor)              |
-| `03-security-hardening/`  | Security review and hardening of existing code                      |
-| `04-api-design/`          | Design and implement a new Django Ninja API surface                 |
-| `05-gdpr-enforcement/`    | Implement GDPR requirements in code (encryption, consent, deletion) |
-| `06-review/`              | Code quality review (OWASP, coding principles, coverage)            |
-| `07-debug/`               | Code-logic debugging and regression test writing                    |
-| `08-refactor/`            | Systematic refactoring without behaviour change                     |
-| `09-database-migration/`  | Create and run a new Django database migration                      |
-| `10-debugging-with-logs/` | Debug using local logs, Glitchtip, Loki, and Grafana                |
+## The three families
+
+### Build (01–06) — making something new
+
+| Workflow                 | Purpose                                                              |
+| ------------------------ | -------------------------------------------------------------------- |
+| `01-new-feature/`        | Add a new full-stack feature (backend + frontend)                    |
+| `02-tdd-cycle/`          | Test-driven development cycle — the method `01`/`03`–`06` build by   |
+| `03-database-migration/` | The data layer — new models, altered fields, any schema change       |
+| `04-api-design/`         | The JSON layer at `/api/` — Django Ninja routers, Schemas, endpoints |
+| `05-mcp-server/`         | The agent layer at `/mcp/` — FastMCP tools over the service layer    |
+| `06-gdpr-enforcement/`   | Cross-cutting — encryption, consent, deletion in code                |
+
+### Verify (07–08) — checking what already exists
+
+| Workflow                 | Purpose                                                               |
+| ------------------------ | --------------------------------------------------------------------- |
+| `07-review/`             | Code **content** review — patterns, coverage, principles, before a PR |
+| `08-security-hardening/` | OWASP A01–A10 audit and hardening of built code                       |
+
+### Diagnose & improve (09–11) — in handoff order
+
+| Workflow                  | Purpose                                                                       |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `09-debugging-with-logs/` | **Find** the cause — local logs, Glitchtip, Loki, Grafana. Observational only |
+| `10-debug/`               | **Fix** it — isolate the fault in code, write the regression test, patch      |
+| `11-refactor/`            | **Improve** it — restructure with behaviour held identical                    |
+
+`09` and `10` are two halves of one activity and are read together: `09` locates a fault
+and hands over, `10` fixes it and proves the fix with a test. If you have a log line or a
+Glitchtip exception, start at `09`. If you already know which code is wrong, start at `10`.
+
+## Numbers are identifiers, not a sequence
+
+Unlike `project-management/workflows/`, which runs 01 → 21 through a story's life, these
+are a **catalogue entered by task type** — you never "run 01 through 11". The number is a
+stable identifier and a shelf position, nothing more, and roughly 110 files across the
+repository cite these paths.
+
+So: **append a new workflow, never renumber an existing one.** Group it by editing the
+family tables above, which cost nothing to reorder. A stale number in an agent definition
+is a silent routing failure, which is far worse than an untidy shelf.
 
 Read the workflow's `CONTEXT.md` first. Only enter `STEPS.md` when explicitly triggered.
 

@@ -101,8 +101,8 @@ Three PM phases drive the code workflows:
 
 | Phase               | Drives                                                      |
 | ------------------- | ----------------------------------------------------------- |
-| `16-backend-code/`  | `code/workflows/02-tdd-cycle/`, `09-database-migration/`    |
-| `17-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `03-security-hardening/` |
+| `16-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`    |
+| `17-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/` |
 | `18-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`                          |
 
 Test-first throughout — Red, Green, Refactor:
@@ -129,7 +129,7 @@ acceptable — the stub audit catches them.
 Run a review pass on this branch before I raise a PR.
 ```
 
-`code/workflows/06-review/` — OWASP coverage, coding principles, coverage floors. A different
+`code/workflows/07-review/` — OWASP coverage, coding principles, coverage floors. A different
 agent than the one that wrote the code.
 
 For anything touching auth, permissions or personal data, also run the `security` orchestrator.

@@ -43,7 +43,7 @@ images, and reapply database migrations. With worktrees, each story's environmen
 and isolated. There is one app process family (Django ASGI) per stack — it serves the
 templates, the HTMX/Alpine frontend, and the Django Ninja `/api/`.
 
-The full workflow for creating worktrees: `how-to/workflows/04-worktree-setup/`
+The full workflow for creating worktrees: `how-to/workflows/02-worktree-setup/`
 
 ---
 

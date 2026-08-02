@@ -83,9 +83,9 @@ consumed at two points:
 | --------------------------------------- | -------------------------------------------------------------------------- |
 | `12-api-design/`                        | Next design gate — the Ninja Schema models must reflect this schema        |
 | `16-backend-code/`                      | Implementation phase — the models and services are built from it           |
-| `code/workflows/09-database-migration/` | Driven **from** `16-backend-code/`, once the story plan (15) is signed off |
+| `code/workflows/03-database-migration/` | Driven **from** `16-backend-code/`, once the story plan (15) is signed off |
 
-Never write the migration here, and do not enter `code/workflows/09-database-migration/`
+Never write the migration here, and do not enter `code/workflows/03-database-migration/`
 directly from this workflow — it runs inside the backend build phase.
 
 ---

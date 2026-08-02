@@ -17,7 +17,7 @@ models and services exist and are tested.
 
 - **Routing:** this workflow _drives code_ under the `stack-django` skill (Opus),
   alongside `code/workflows/04-api-design/`, `02-tdd-cycle/`, and
-  `03-security-hardening/`. Hard gates to read first:
+  `08-security-hardening/`. Hard gates to read first:
   `api-design/NINJA-CONVENTIONS.md`, `security/AUTH-AND-AUTHZ.md`,
   `testing/COVERAGE.md`.
 - **Model:** Opus for routers, endpoints, Schemas, and tests and renames or running

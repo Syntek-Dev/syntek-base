@@ -1,9 +1,56 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 0.13.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 0.14.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.14.0 — 02/08/2026
+
+**Status:** Documentation release — the agent-facing surface, specified; CI made green
+
+### Summary
+
+Two unrelated things, both about what a generated project inherits.
+
+The first is **guidance for serving LLM agents**. A generated project can already serve people
+(Django pages) and machines (the Django Ninja JSON API). This release documents the third
+caller — an AI agent that must _carry out_ domain operations — and the FastMCP tool surface at
+`/mcp/` that serves it. Nothing is built: `fastmcp` is not a declared dependency and nothing is
+mounted, exactly as Django Ninja itself sits declared-but-unwired. What ships is the design of
+record, so the first project to need one does not have to invent it.
+
+The shape is deliberately conservative. MCP tools and Ninja endpoints are **peers over one
+service layer** — neither calls the other, neither holds logic. That is not a stylistic
+preference: one adapter over a service layer is a seam you could always collapse back; a second
+adapter is what makes it real. The alternative on offer — generating tools automatically from
+the API's OpenAPI document — is documented as an explicitly rejected default, with the trigger
+for reconsidering it.
+
+The second is **CI**. Six of the eight Claude Code quality gates, the nightly dependency sweep,
+the ClickUp sync and all three Python syntax jobs were failing on every run in this repository —
+not because anything is broken, but because a template legitimately lacks the things they check.
+They now report green here and work unchanged in a generated project.
+
+### What's new
+
+- **A guide for exposing domain operations to an AI agent** — when it is the right call, and, more often, when a plain API endpoint already does the job
+- **A security model for a surface Django does not protect.** The `/mcp/` mount sits beside Django, not inside it: no session, no login checks, no CSRF. The guide treats that as the defining constraint rather than a footnote
+- **One rule stated more firmly than any other:** the caller's identity comes from its token and never from a tool argument. The caller is a language model, so a `user_id` parameter is not a risk — it is the vulnerability, already shipped
+- **A `stack-fastmcp` skill and an eleventh code workflow**, so Claude Code applies MCP conventions when working on tools and Django Ninja conventions when working on endpoints, without confusing the two
+- **No new agent** — MCP tools are backend work, and the existing `backend`, `security` and `test-writer` agents gained the routing instead
+- **Five new operational workflows** covering things the project could already do but had never written down — database backup and restore, running the test suites, the pre-PR quality gates, and dependency updates. Each one drives scripts that already existed
+- **A way to write your own operator documentation.** A generated project inherits a workflow, a specialist agent and a skill for authoring the guides that tell a human how to run _that_ project — the part the template cannot write on your behalf. The rule it enforces is the one people skip: a guide you have not executed start to finish is a guess
+- **The eleven coding workflows regrouped into three families** — build, verify, then diagnose & improve — so the list reads in the order work actually happens. Debugging-with-logs and debug now sit side by side: one finds the cause, the other fixes it, and they were previously three apart with unrelated workflows in between
+
+### Worth knowing
+
+- **Nothing is installed.** `fastmcp` sits in the register of dependencies deliberately left undeclared, with the condition that should trigger adding it. A project that never needs an agent surface pays nothing for this release
+- **The one file it would change is `config/asgi.py`**, which becomes a small router placing FastMCP at `/mcp/` and Django everywhere else. The guide covers the four details that fail silently when wrong
+- **The workflow renumber is a path change.** If you have bookmarks, scripts, or notes pointing at the old `07-debug`, `08-refactor` or `09-database-migration` numbering, eight of the eleven directories moved — the mapping is in the changelog. Nothing inside any workflow changed
+- **The CI fixes change no behaviour in a generated project.** Every guard detects an absence specific to the template — a missing lockfile, an empty backlog — and steps aside. Where a check still applies here (Prettier, ESLint, dependency auditing), it keeps running: the guards sit on individual steps rather than whole jobs, so fixing the Python half never disabled the JavaScript half
 
 ---
 

@@ -61,7 +61,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/07-wireframes/` — the screen designs consumed here
 - `code/workflows/01-new-feature/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — screen and component tests
-- `how-to/workflows/02-daily-development/` — starting a session; Metro is the one host process
+- `how-to/workflows/03-daily-development/` — starting a session; Metro is the one host process
 
 ## Non-Negotiables
 

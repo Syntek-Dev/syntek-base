@@ -43,7 +43,7 @@ test-first (TDD), impact & related stories, and verification via the project tes
 
 ## When to write it
 
-File a report when a defect is isolated — during `code/workflows/07-debug/`, or in
+File a report when a defect is isolated — during `code/workflows/10-debug/`, or in
 `project-management/workflows/10-qa-checks/` / `20-pr-and-review/` review, or from a
 production incident. Copy the template, complete every section, link the story, and flip the
 status to `Fixed` (then `Verified`) as the fix lands.
@@ -54,6 +54,6 @@ status to `Fixed` (then `Verified`) as the fix lands.
 - `../01-STORIES/` — the stories bugs are anchored to
 - `../15-STORY-PLANS/` — the code master a fix closes the loop on
 - `../17-REVIEWS/` · `../16-TESTS/` — the review and test records from the same PR
-- `code/workflows/07-debug/` · `code/workflows/10-debugging-with-logs/` — the debug procedures
+- `code/workflows/10-debug/` · `code/workflows/09-debugging-with-logs/` — the debug procedures
 
 **Last Updated**: <%DATE%>

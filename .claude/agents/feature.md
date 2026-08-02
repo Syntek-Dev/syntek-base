@@ -23,7 +23,7 @@ Read in this order before spawning any sub-agents:
 
 - `code/workflows/01-new-feature/CONTEXT.md` → `code/workflows/01-new-feature/STEPS.md`
 - `code/workflows/02-tdd-cycle/CONTEXT.md` — TDD red/green/refactor cycle
-- `code/workflows/09-database-migration/CONTEXT.md` — migration conventions
+- `code/workflows/03-database-migration/CONTEXT.md` — migration conventions
 - `project-management/workflows/16-backend-code/CONTEXT.md`
 - `project-management/workflows/17-api-code/CONTEXT.md`
 - `project-management/workflows/18-frontend-code/CONTEXT.md`
@@ -54,7 +54,7 @@ Read in this order before spawning any sub-agents:
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/15-story-plans/` — the master plan you build from — a story is not codeable without it
-- `project-management/workflows/16-backend-code/` — backend phase — drives `code/workflows/02-tdd-cycle/` and `09-database-migration/`
+- `project-management/workflows/16-backend-code/` — backend phase — drives `code/workflows/02-tdd-cycle/` and `03-database-migration/`
 - `project-management/workflows/17-api-code/` — API phase — drives `code/workflows/04-api-design/`
 - `project-management/workflows/18-frontend-code/` — frontend phase — drives `code/workflows/01-new-feature/`
 - `code/workflows/01-new-feature/` — the full-stack build procedure itself

@@ -25,8 +25,8 @@ yourself — you route those to the correct sibling (see Handoffs).
 - `project-management/workflows/20-pr-and-review/CONTEXT.md` — PR-and-review procedure
 - `project-management/workflows/21-release/CONTEXT.md` — release procedure
 - `project-management/workflows/19-implementation-documentation/` — must be complete before you raise the PR; docs and graph refresh are a hard gate on the commit
-- `how-to/workflows/04-worktree-setup/` — creating and starting a parallel-story worktree
-- `code/workflows/06-review/` — the content review that precedes the PR
+- `how-to/workflows/02-worktree-setup/` — creating and starting a parallel-story worktree
+- `code/workflows/07-review/` — the content review that precedes the PR
 - `.claude/hooks/pre-pr-check.sh` — the 8 quality gates that must pass before a PR is marked ready
 
 Read the guide relevant to the operation before acting. When the guide and this file disagree,

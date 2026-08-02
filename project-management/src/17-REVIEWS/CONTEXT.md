@@ -50,7 +50,7 @@ the loop on the `15-STORY-PLANS` plan the story was coded from and reading again
 ## When to write it
 
 During `project-management/workflows/20-pr-and-review/` (and the code-review workflow
-`code/workflows/06-review/`), once a story's code is ready for review and before it merges.
+`code/workflows/07-review/`), once a story's code is ready for review and before it merges.
 Copy the template, complete every section against the branch, and drive every finding to a
 resolution. A `Changes-requested` verdict blocks the merge until re-review.
 

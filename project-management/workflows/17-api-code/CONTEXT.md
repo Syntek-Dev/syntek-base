@@ -56,7 +56,7 @@ JSON (`/api/*`). Backend models and services must exist before this workflow beg
 | --------------------------------------- | ------------------------------------------------------------------ |
 | `code/workflows/04-api-design/`         | Ninja router and Schema design steps — follow before writing code  |
 | `code/workflows/02-tdd-cycle/`          | Red-green-refactor steps for read and write endpoint tests         |
-| `code/workflows/03-security-hardening/` | Security checklist to run after mutating endpoints are implemented |
+| `code/workflows/08-security-hardening/` | Security checklist to run after mutating endpoints are implemented |
 
 #### Source locations
 

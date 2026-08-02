@@ -52,6 +52,24 @@ interface. Restrict it to `is_superuser`, and keep the path out of the sitemap a
 **Non-negotiable:** never mount `django.contrib.admin` at `/admin/`. The `/admin/` prefix is
 exclusively owned by the custom admin area above; the built-in admin always lives at `/control/`.
 
+### Machine prefixes — `/api/` and `/mcp/`
+
+The four surfaces above are for people. Two further prefixes serve machines, and neither
+renders a page:
+
+| Prefix  | Served by            | Audience             | Middleware                       |
+| ------- | -------------------- | -------------------- | -------------------------------- |
+| `/api/` | Django Ninja         | Machine HTTP clients | Full Django chain                |
+| `/mcp/` | FastMCP (ASGI mount) | LLM agent clients    | **None** — mounted beside Django |
+
+`/mcp/` is a **sibling of `/api/`, never nested inside it**. The two speak different protocols,
+authenticate differently, and — decisively — sit on opposite sides of Django's middleware
+chain: a `/mcp/` request is handled by Starlette in `config/asgi.py` and never enters Django's
+request cycle, so it has no session, no `login_required`, and no CSRF. Nesting it under `/api/`
+would imply a containment and an inherited security posture that do not exist. Neither prefix
+is mounted at baseline. See [`MCP-SERVER.md`](MCP-SERVER.md) and
+[`mcp-server/MOUNTING.md`](mcp-server/MOUNTING.md).
+
 ## Phase 2: Subdomain routing (future migration)
 
 When the platform matures, the admin and portal surfaces move to dedicated subdomains. No

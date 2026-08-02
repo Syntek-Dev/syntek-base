@@ -58,7 +58,33 @@ jobs:
         with:
           python-version: "3.x"
 
+      # Guarded at STEP level on the story exports, the same shape as the uv.lock guard in
+      # claude.yml and test.yml — for the same class of reason, a different absence.
+      #
+      # The base template ships US000-TEMPLATE.md and no real stories, so
+      # export/clickup/ holds no US###-CLIENT.md files at all. sync-clickup.sh treats that
+      # as a preflight error and exits 2 ("no export files ... run export-clickup-stories.sh
+      # first"), failing the workflow in this repository every time it is triggered.
+      #
+      # Note this is NOT the missing-credentials case: the script already degrades to a
+      # harmless DRY RUN by itself when CLICKUP_API_TOKEN or the target list is unset (see
+      # its preflight). An empty backlog is the template-only condition, so it is the one
+      # guarded here — a generated project gets its first story and the job starts working
+      # with no further change.
+      - name: Detect exported stories
+        id: detect
+        run: |
+          if ls project-management/export/clickup/US[0-9]*-CLIENT.md >/dev/null 2>&1; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "Story exports present — syncing."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No US###-CLIENT.md exports — the backlog is empty."
+            echo "This is the base template, not a generated project. Nothing to sync."
+          fi
+
       - name: Sync to ClickUp
+        if: steps.detect.outputs.present == 'true'
         env:
           CLICKUP_API_TOKEN: ${{ secrets.CLICKUP_API_TOKEN }}
           CLICKUP_BACKLOG_LIST_ID: ${{ secrets.CLICKUP_BACKLOG_LIST_ID }}
@@ -72,6 +98,7 @@ jobs:
         run: bash project-management/src/00-ASSETS/scripts/sync-clickup.sh
 
       - name: Commit updated task map
+        if: steps.detect.outputs.present == 'true'
         run: |
           if ! git diff --quiet -- project-management/export/clickup-task-map.json; then
             git config user.name "github-actions[bot]"

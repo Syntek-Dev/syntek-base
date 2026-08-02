@@ -165,7 +165,7 @@ is fixed by prior decisions vs what this story is free to choose.]
   HMAC lookup tokens per `encryption/LOOKUP-TOKENS.md`.]
 - [Row-scoped? → RLS policy per `rls/POLICY-TEMPLATES.md`, updated in the same migration.]
 - Migration via `bash code/src/scripts/database/migrate.sh make` → review the generated file →
-  `bash code/src/scripts/database/migrate.sh run`. Follows **code workflow `09-database-migration`**.
+  `bash code/src/scripts/database/migrate.sh run`. Follows **code workflow `03-database-migration`**.
 - Register/update the model in Django admin (mounted at the non-obvious control path, **not**
   `/admin/`).
 
@@ -223,7 +223,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 ### Pre-existing bug fixes
 
 <!-- ◇ Keep only if fixing pre-existing bugs en route. Mark resolved with ✅. Prefer a separate
-     bugfix (code workflow 07-debug) + a `19-BUGS/BUG-<DESC>-DD-MM-YYYY.md` report if non-trivial. -->
+     bugfix (code workflow 10-debug) + a `19-BUGS/BUG-<DESC>-DD-MM-YYYY.md` report if non-trivial. -->
 
 - [ ] [Bug] — [fix] — ✅ Resolved / pending
 
@@ -260,7 +260,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 ## GDPR
 
 <!-- ◇ MANDATORY if any personal data is touched; delete only if the story handles zero PII.
-     Drives PM workflow 08-gdpr-compliance and code workflow 05-gdpr-enforcement. -->
+     Drives PM workflow 08-gdpr-compliance and code workflow 06-gdpr-enforcement. -->
 
 - **Personal data touched:** [fields → add/confirm in `project-management/src/08-GDPR/DATA-INVENTORY.md`].
 - **Lawful basis (per processing activity):**
@@ -280,7 +280,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 ## Security
 
 <!-- ◇ Keep for any non-trivial security surface (auth, input, uploads, secrets, crypto).
-     Drives PM workflow 09-security-checks and code workflow 03-security-hardening. -->
+     Drives PM workflow 09-security-checks and code workflow 08-security-hardening. -->
 
 | Check                            | Requirement                                                                         |
 | -------------------------------- | ----------------------------------------------------------------------------------- |
@@ -366,13 +366,13 @@ is fixed by prior decisions vs what this story is free to choose.]
 | `code/workflows/01-new-feature/`         | The build spine for a full-stack capability                                 |
 | `code/workflows/02-tdd-cycle/`           | ✓ always — Red → Green → Refactor for every unit of behaviour               |
 | `code/workflows/04-api-design/`          | Any Django Ninja endpoint / schema work                                     |
-| `code/workflows/09-database-migration/`  | Any schema change / migration                                               |
-| `code/workflows/05-gdpr-enforcement/`    | Any PII / consent / erasure code                                            |
-| `code/workflows/03-security-hardening/`  | Security-sensitive surface; pre-PR security pass                            |
-| `code/workflows/06-review/`              | ✓ always — code-content quality/security/coverage gate before PR            |
-| `code/workflows/08-refactor/`            | Behaviour-preserving cleanup / debt / files &gt;750 lines (separate commit) |
-| `code/workflows/07-debug/`               | A reproducible logic bug (failing regression test first)                    |
-| `code/workflows/10-debugging-with-logs/` | Observability-driven debugging; hands off to `07-debug` for the fix         |
+| `code/workflows/03-database-migration/`  | Any schema change / migration                                               |
+| `code/workflows/06-gdpr-enforcement/`    | Any PII / consent / erasure code                                            |
+| `code/workflows/08-security-hardening/`  | Security-sensitive surface; pre-PR security pass                            |
+| `code/workflows/07-review/`              | ✓ always — code-content quality/security/coverage gate before PR            |
+| `code/workflows/11-refactor/`            | Behaviour-preserving cleanup / debt / files &gt;750 lines (separate commit) |
+| `code/workflows/10-debug/`               | A reproducible logic bug (failing regression test first)                    |
+| `code/workflows/09-debugging-with-logs/` | Observability-driven debugging; hands off to `10-debug` for the fix         |
 
 ### Standards gates
 
@@ -440,12 +440,12 @@ re-run after each `--fix` until clean). Each maps 1:1 to the pre-PR hook (`.clau
 
 ### Stage 3 — Review (before raising the PR)
 
-- Run `code/workflows/06-review/`: a quality/security/coverage review of the _code content_. Drive it
+- Run `code/workflows/07-review/`: a quality/security/coverage review of the _code content_. Drive it
   with the `review` and `security` orchestrator agents (delegating to `code-reviewer` / `qa-tester`),
   and the `review-changes` graph playbook (`.claude/skills/review-changes.md`) for structural context.
 - For findings, **adversarially verify** each before acting: spawn independent skeptics to confirm a
   finding is real (majority vote) — avoids churning on false positives.
-- Refactor cleanups go through `code/workflows/08-refactor/` in a **separate commit** (behaviour
+- Refactor cleanups go through `code/workflows/11-refactor/` in a **separate commit** (behaviour
   unchanged, coverage not reduced; re-run `syntax/lint.sh` + `syntax/check.sh` + `audits/cloc.sh`).
 
 ### Stage 4 — Behavioural verification
@@ -456,7 +456,7 @@ re-run after each `--fix` until clean). Each maps 1:1 to the pre-PR hook (`.clau
 
 ### Stage 5 — PR & release
 
-- `code/workflows/06-review/` clean → PM `20-pr-and-review/` (branch promotion + write back the
+- `code/workflows/07-review/` clean → PM `20-pr-and-review/` (branch promotion + write back the
   implementation records in §Documentation Write-Ups) → PM `21-release/` when cutting a version
   (`version` per `project-management/docs/VERSIONING-GUIDE.md`).
 
@@ -585,16 +585,16 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 | Schema / ERD / migration notes             | `SCHEMA-*.md`, `ERD-*.md`, `MIGRATION-NOTES-*.md`                   | `…/src/03-DATABASE/`                                                                             | PM `03-database-schema`                                                  | Conditional                |
 | GDPR gap report (planning)                 | `GDPR-PLAN-US###-*.md`                                              | `…/src/08-GDPR/PLANNING/`                                                                        | PM `08-gdpr-compliance`                                                  | Conditional                |
 | GDPR implementation record                 | `GDPR-IMPL-US###-*.md`                                              | `…/src/08-GDPR/IMPLEMENTATION/`                                                                  | PM `20-pr-and-review` (write-back)                                       | Conditional                |
-| Security audit / assessment / threat model | `AUDIT-…`, `ASSESSMENT-…`, threat-model, `VULN-…` (`-DD-MM-YYYY`)   | `…/src/09-SECURITY/{AUDITS,ASSESSMENTS,THREAT-MODEL,VULNERABILITIES}/{PLANNING,IMPLEMENTATION}/` | PM `09-security-checks` + `17` write-back / code `03-security-hardening` | Conditional                |
+| Security audit / assessment / threat model | `AUDIT-…`, `ASSESSMENT-…`, threat-model, `VULN-…` (`-DD-MM-YYYY`)   | `…/src/09-SECURITY/{AUDITS,ASSESSMENTS,THREAT-MODEL,VULNERABILITIES}/{PLANNING,IMPLEMENTATION}/` | PM `09-security-checks` + `17` write-back / code `08-security-hardening` | Conditional                |
 | QA plan (pre-dev)                          | `QA-PLAN-US###-<DESC>.md`                                           | `…/src/10-QA/PLANNING/`                                                                          | PM `10-qa-checks`                                                        | Always                     |
 | QA implementation review                   | `QA-IMPL-US###-<DESC>.md`                                           | `…/src/10-QA/IMPLEMENTATION/`                                                                    | PM `20-pr-and-review`                                                    | Always                     |
 | SEO implementation record                  | `SEO-IMPL-US###-<DESC>-DD-MM-YYYY.md`                               | `…/src/11-SEO/IMPLEMENTATION/`                                                                   | PM `18-frontend-code` → `11-seo-checks`                                  | Conditional (public pages) |
 | API design doc                             | `API-PLAN-US###-<DESC>.md`                                          | `…/src/12-API-DESIGN/PLANNING/`                                                                  | PM `12-api-design`                                                       | Conditional                |
 | API implementation record                  | `API-IMPL-US###-<DESC>-DD-MM-YYYY.md`                               | `…/src/12-API-DESIGN/IMPLEMENTATION/`                                                            | PM `17-api-code` (write-back)                                            | Conditional                |
 | Test status / manual testing               | `US###-TEST-STATUS.md`, `US###-MANUAL-TESTING.md`                   | `…/src/16-TESTS/`                                                                                | PM `14/15/16` code workflows                                             | Always                     |
-| Code review record                         | `REVIEW-US###-<DESC>.md`                                            | `…/src/17-REVIEWS/`                                                                              | PM `20-pr-and-review` / code `06-review`                                 | Always                     |
-| Bug report (if a bug surfaced)             | `BUG-<DESC>-DD-MM-YYYY.md`                                          | `…/src/19-BUGS/`                                                                                 | code `07-debug` / `10-debugging-with-logs`                               | Conditional                |
-| Refactoring record                         | `REFACTOR-<DESC>.md` / `REFACTORING-US###-*.md`                     | `…/src/20-REFACTORING/`                                                                          | code `08-refactor`                                                       | Conditional                |
+| Code review record                         | `REVIEW-US###-<DESC>.md`                                            | `…/src/17-REVIEWS/`                                                                              | PM `20-pr-and-review` / code `07-review`                                 | Always                     |
+| Bug report (if a bug surfaced)             | `BUG-<DESC>-DD-MM-YYYY.md`                                          | `…/src/19-BUGS/`                                                                                 | code `10-debug` / `09-debugging-with-logs`                               | Conditional                |
+| Refactoring record                         | `REFACTOR-<DESC>.md` / `REFACTORING-US###-*.md`                     | `…/src/20-REFACTORING/`                                                                          | code `11-refactor`                                                       | Conditional                |
 | Release (version bump)                     | root `VERSION`, `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md` | repo root                                                                                        | PM `21-release`                                                          | Conditional                |
 
 > **Folder gotchas (from the workflow↔folder map):** design/compliance folders `08-GDPR`–
@@ -756,7 +756,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
 <!-- ★ Always. -->
 
 - [ ] Acceptance criteria in `US###.md` met and demonstrated
-- [ ] Code workflows `02-tdd-cycle` + `06-review` complete; security pass where applicable
+- [ ] Code workflows `02-tdd-cycle` + `07-review` complete; security pass where applicable
 - [ ] Behaviour verified in the running app (dev stack up; UI walked in a browser)
 - [ ] All quality gates green locally and in Docker; coverage floors met
 - [ ] Documentation hard gate satisfied — all records + `CONTEXT.md` updates complete **before** commit

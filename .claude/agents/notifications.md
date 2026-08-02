@@ -45,7 +45,7 @@ python3 .claude/plugins/env-tool.py find
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/01-new-feature/` — building a new notification surface
-- `code/workflows/07-debug/` — a broken send
+- `code/workflows/10-debug/` — a broken send
 - `project-management/workflows/08-gdpr-compliance/` — consent and PII rules for message content
 
 ## Grill Before Building
@@ -139,5 +139,5 @@ After implementing, hand off via the Agent tool (`subagent_type`):
 - `doc-writer` — document notification types, triggers, and template structure
 
 Governing procedure: the delegating orchestrator's workflow
-(`code/workflows/01-new-feature/` for feature work, `07-debug/` for a broken send).
+(`code/workflows/01-new-feature/` for feature work, `10-debug/` for a broken send).
 Route detail to the docs above rather than restating rules.

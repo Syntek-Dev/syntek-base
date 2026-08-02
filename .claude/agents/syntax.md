@@ -44,8 +44,8 @@ Defer language-idiom detail to the stack skills rather than restating it here.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `how-to/workflows/03-debugging/` — when a lint or type failure is really a broken environment
-- `code/workflows/06-review/` — clean linters are a precondition of review
+- `how-to/workflows/08-debugging/` — when a lint or type failure is really a broken environment
+- `code/workflows/07-review/` — clean linters are a precondition of review
 
 ## Tooling — never run raw linters
 

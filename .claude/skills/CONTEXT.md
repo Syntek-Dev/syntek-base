@@ -17,10 +17,14 @@ project carries its own tooling; plugin references were rewritten to internal pa
 │   └── SKILL.md
 ├── stack-react-native/     ← MOBILE-ONLY — Expo + React Native + TypeScript + expo-router
 │   └── SKILL.md
+├── stack-fastmcp/          ← the FastMCP tool surface at /mcp/ (available but unwired)
+│   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
 │   ├── GIT-AND-PR.md
 │   └── VERSIONING-AND-DOCS.md
+├── runbook/                ← operator-doc craft: the runbook spine, execute-to-verify
+│   └── SKILL.md
 ├── legal-documents/        ← shared drafting standard for legal/GDPR doc agents
 │   └── SKILL.md
 ├── msp-scp-documents/      ← shared standard for security/compliance policy agents
@@ -72,7 +76,9 @@ project carries its own tooling; plugin references were rewritten to internal pa
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                   |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                        |
+| `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                   |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                            |
+| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; loaded by `operator-docs`                                        |
 | `grilling`                      | Design work (architecture, DB, API, story) — the one-question-at-a-time interview engine                                                        |
 | `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                          |
 | `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or a design agent opens design work — grilling that records decisions                              |

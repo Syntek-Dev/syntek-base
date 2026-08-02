@@ -48,7 +48,7 @@ Use this workflow after wireframes and before sprint planning to:
 - `project-management/src/07-WIREFRAMES/` — wireframes under review
 - `project-management/src/08-GDPR/` — GDPR review findings inform the threat model
 - `project-management/docs/GIT-GUIDE.md` — commit and PR conventions
-- `code/workflows/03-security-hardening/` — **the code-layer counterpart**: this workflow
+- `code/workflows/08-security-hardening/` — **the code-layer counterpart**: this workflow
   threat-models the design and produces findings; that one audits and hardens the built code
   against OWASP A01–A10 and NIST SP 800-63B. Design-stage findings recorded here are what it
   verifies; it is entered from `17-api-code/` (after mutating endpoints exist) or as a

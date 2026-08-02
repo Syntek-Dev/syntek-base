@@ -18,7 +18,7 @@ PII-handling feature into code.
 - **Routing:** GDPR work runs through `project-management/workflows/08-gdpr-compliance/`
   (`STEPS.md` + `CHECKLIST.md`) against `project-management/docs/GDPR-GUIDE.md`, using
   the `gdpr` agent (Fable). Write a story's `PLANNING/` plan before implementing it; the
-  code-side enforcement lives in `code/workflows/05-gdpr-enforcement/`.
+  code-side enforcement lives in `code/workflows/06-gdpr-enforcement/`.
 - **Model:** Fable for all register content, plans, and records; Opus for mechanical
   touches — a date-header bump, moving a file, a status flip.
 - **Concrete steps:** fill the relevant register skeleton (replace `[EXAMPLE]` rows and

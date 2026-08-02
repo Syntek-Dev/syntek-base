@@ -17,7 +17,7 @@ nothing observable changed._
 | **Date**            | {DD/MM/YYYY}                                                                 |
 | **Author**          | {name / agent}                                                               |
 | **Status**          | {Proposed · In Progress · Complete}                                          |
-| **Refactor commit** | `{sha}` — separate from any feature commit (code workflow `08-refactor`)     |
+| **Refactor commit** | `{sha}` — separate from any feature commit (code workflow `11-refactor`)     |
 
 ---
 
@@ -93,7 +93,7 @@ line below must hold and carry evidence — an unresolved item blocks the record
   lost its test. Evidence: `bash code/src/scripts/tests/backend-coverage.sh {module}` (or
   `backend-coverage.sh`) — {before}% → {after}%.
 - **Separate commit** — the refactor ships as its **own commit**, isolated from any feature or
-  fix, executed through code workflow [`08-refactor`](../../../code/workflows/08-refactor/)
+  fix, executed through code workflow [`11-refactor`](../../../code/workflows/11-refactor/)
   (or the `refactor` agent). Evidence: commit `{sha}`, message `refactor: {summary}`.
 - **Public surface intact** — signatures, Ninja Schema models, URLs, and rendered output are
   byte-for-byte unchanged (or diff-verified equivalent). Evidence: {OpenAPI snapshot clean /
@@ -144,5 +144,5 @@ re-introducing the old shape. "None." is a valid entry.
 - [`../01-STORIES/US###.md`](../01-STORIES/US###.md) — the story this refactor closes the loop on
 - [`../15-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`](../15-STORY-PLANS/) — the code master
 - [`../17-REVIEWS/`](../17-REVIEWS/) — the review that may have flagged the refactor
-- [`../../../code/workflows/08-refactor/`](../../../code/workflows/08-refactor/) — the behaviour-preserving refactor procedure
+- [`../../../code/workflows/11-refactor/`](../../../code/workflows/11-refactor/) — the behaviour-preserving refactor procedure
 - `code/CONTEXT.md` — the 750/800-line source-file limit this record answers to

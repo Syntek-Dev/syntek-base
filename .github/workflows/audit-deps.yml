@@ -45,7 +45,26 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      # Guarded at STEP level on the lockfile, the same way claude.yml and test.yml are.
+      # uv.lock is ABSENT BY DESIGN in the base template — Copier writes it at generation
+      # time — so `uv sync --frozen` cannot resolve here and this sweep failed on every
+      # nightly run, opening a tracking issue about a Python tree that does not yet exist.
+      # The JS half is unguarded: pnpm-lock.yaml IS committed here, so the template's own
+      # dependency tree keeps getting its nightly CVE scan, which is the point of the job.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — auditing both dependency trees."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — this is the base template, not a generated project."
+            echo "Auditing the JS dependency tree only."
+          fi
+
       - name: Install backend deps (uv)
+        if: steps.detect.outputs.present == 'true'
         run: uv sync --frozen
         working-directory: code/src/django
 
@@ -64,6 +83,7 @@ jobs:
 
       - name: Python — pip-audit (CVE scan)
         id: pip_audit
+        if: steps.detect.outputs.present == 'true'
         continue-on-error: true
         working-directory: code/src/django
         run: |

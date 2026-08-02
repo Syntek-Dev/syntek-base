@@ -14,7 +14,7 @@ modelling, anti-patterns, refactoring, and PostgreSQL schema design — behind t
 ## How to work here
 
 - **Routing:** `doc-writer` (Opus) to author; consumed before any model or
-  schema change and by the `09-database-migration` workflow.
+  schema change and by the `03-database-migration` workflow.
 - **Model:** Opus for substantive guidance and typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc (`FUNDAMENTALS.md`,
   `DOMAIN-MODELLING.md`, `ANTI-PATTERNS.md`, `REFACTORING.md`, `SCHEMA-DESIGN.md`) →

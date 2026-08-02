@@ -10,32 +10,41 @@ Internal and external references for setup, daily development, and debugging.
 
 ### Context files
 
-| File                                               | Purpose                                                        |
-| -------------------------------------------------- | -------------------------------------------------------------- |
-| `how-to/CONTEXT.md`                                | Layer entry point — when to read and what lives here           |
-| `how-to/docs/CONTEXT.md`                           | Operational reference guides index                             |
-| `how-to/src/CONTEXT.md`                            | Operator-guide index — contributing, template, snapshots       |
-| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`             | Using syntek-base as a template — index over 14 guides         |
-| `how-to/src/SCALE-ARCHITECTURE/CONTEXT.md`         | How the app scales — load profiles, readiness, sizing envelope |
-| `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md`        | What the server/edge must provide; feeds the NixOS deploy repo |
-| `how-to/workflows/CONTEXT.md`                      | Workflow index — all step-by-step guides                       |
-| `how-to/workflows/01-first-time-setup/CONTEXT.md`  | First-time setup prerequisites and key concepts                |
-| `how-to/workflows/02-daily-development/CONTEXT.md` | Daily development session prerequisites                        |
-| `how-to/workflows/03-debugging/CONTEXT.md`         | Debugging prerequisites and key concepts                       |
-| `how-to/workflows/04-worktree-setup/CONTEXT.md`    | Worktree setup prerequisites and key concepts                  |
+| File                                                  | Purpose                                                        |
+| ----------------------------------------------------- | -------------------------------------------------------------- |
+| `how-to/CONTEXT.md`                                   | Layer entry point — when to read and what lives here           |
+| `how-to/docs/CONTEXT.md`                              | Operational reference guides index                             |
+| `how-to/src/CONTEXT.md`                               | Operator-guide index — contributing, template, snapshots       |
+| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`                | Using syntek-base as a template — index over 14 guides         |
+| `how-to/src/SCALE-ARCHITECTURE/CONTEXT.md`            | How the app scales — load profiles, readiness, sizing envelope |
+| `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md`           | What the server/edge must provide; feeds the NixOS deploy repo |
+| `how-to/workflows/CONTEXT.md`                         | Workflow index — nine workflows in four families               |
+| `how-to/workflows/01-first-time-setup/CONTEXT.md`     | First-time setup prerequisites and key concepts                |
+| `how-to/workflows/02-worktree-setup/CONTEXT.md`       | Worktree setup prerequisites and key concepts                  |
+| `how-to/workflows/03-daily-development/CONTEXT.md`    | Daily development session prerequisites                        |
+| `how-to/workflows/04-database-operations/CONTEXT.md`  | Backup, restore, reset, seed, users — state, never schema      |
+| `how-to/workflows/05-testing-and-coverage/CONTEXT.md` | Running the suites and reading coverage against the floors     |
+| `how-to/workflows/06-quality-gates/CONTEXT.md`        | The eight pre-PR gates and the standalone audits               |
+| `how-to/workflows/07-dependency-updates/CONTEXT.md`   | Adding, upgrading, removing a dependency; clearing advisories  |
+| `how-to/workflows/08-debugging/CONTEXT.md`            | Debugging prerequisites and key concepts                       |
+| `how-to/workflows/09-write-operator-guide/CONTEXT.md` | Authoring operator documentation — the two homes and the spine |
 
 ### Steps and checklists
 
-| File                                                 | Purpose                                                |
-| ---------------------------------------------------- | ------------------------------------------------------ |
-| `how-to/workflows/01-first-time-setup/STEPS.md`      | Ordered steps for first-time project setup             |
-| `how-to/workflows/01-first-time-setup/CHECKLIST.md`  | Verification checklist for first-time setup            |
-| `how-to/workflows/02-daily-development/STEPS.md`     | Ordered steps for starting a daily development session |
-| `how-to/workflows/02-daily-development/CHECKLIST.md` | Verification checklist for daily development           |
-| `how-to/workflows/03-debugging/STEPS.md`             | Ordered steps for debugging failures and errors        |
-| `how-to/workflows/03-debugging/CHECKLIST.md`         | Verification checklist for debugging workflow          |
-| `how-to/workflows/04-worktree-setup/STEPS.md`        | Ordered steps for creating a git worktree              |
-| `how-to/workflows/04-worktree-setup/CHECKLIST.md`    | Verification checklist for worktree setup              |
+| File                                                | Purpose                                                |
+| --------------------------------------------------- | ------------------------------------------------------ |
+| `how-to/workflows/01-first-time-setup/STEPS.md`     | Ordered steps for first-time project setup             |
+| `how-to/workflows/02-worktree-setup/STEPS.md`       | Ordered steps for creating a git worktree              |
+| `how-to/workflows/03-daily-development/STEPS.md`    | Ordered steps for starting a daily development session |
+| `how-to/workflows/04-database-operations/STEPS.md`  | Ordered steps for backup, restore, reset, seed, users  |
+| `how-to/workflows/05-testing-and-coverage/STEPS.md` | Ordered steps for running the suites and coverage      |
+| `how-to/workflows/06-quality-gates/STEPS.md`        | Ordered steps for the eight pre-PR gates and audits    |
+| `how-to/workflows/07-dependency-updates/STEPS.md`   | Ordered steps for a dependency change                  |
+| `how-to/workflows/08-debugging/STEPS.md`            | Ordered steps for debugging failures and errors        |
+| `how-to/workflows/09-write-operator-guide/STEPS.md` | Ordered steps for authoring an operator guide          |
+
+Each workflow's `CHECKLIST.md` sits beside its `STEPS.md` and carries the verification
+points for that procedure.
 
 ### Reference guides
 

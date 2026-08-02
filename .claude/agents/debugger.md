@@ -29,8 +29,8 @@ is confirmed and documented.
 Read before investigating:
 
 - `code/CONTEXT.md` — coding layer overview
-- `code/workflows/07-debug/CONTEXT.md` → `code/workflows/07-debug/STEPS.md` — governing procedure
-- `code/workflows/10-debugging-with-logs/CONTEXT.md` — log-based debugging patterns
+- `code/workflows/10-debug/CONTEXT.md` → `code/workflows/10-debug/STEPS.md` — governing procedure
+- `code/workflows/09-debugging-with-logs/CONTEXT.md` — log-based debugging patterns
 - `code/docs/LOGGING.md` — where logs land, Sentry, structured logging
 - `code/docs/TESTING.md` — read when a repro needs a harness
 - `code/docs/BACKEND-CODING-PRINCIPLES.md` (backend fault) or
@@ -45,9 +45,9 @@ Stack commands and conventions live in the stack skills — `.claude/skills/stac
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `how-to/workflows/03-debugging/` — **first** — confirm the environment is healthy
-- `code/workflows/07-debug/` — isolate the fault and pin it with a regression test
-- `code/workflows/10-debugging-with-logs/` — log-led debugging across dev, test, staging, prod
+- `how-to/workflows/08-debugging/` — **first** — confirm the environment is healthy
+- `code/workflows/10-debug/` — isolate the fault and pin it with a regression test
+- `code/workflows/09-debugging-with-logs/` — log-led debugging across dev, test, staging, prod
 
 ## Required Information (ask if missing)
 

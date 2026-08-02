@@ -41,7 +41,7 @@ Node/Next server — server logging is Django-only; browser logging is captured 
 ## Cross-references
 
 - `code/src/logs/CONTEXT.md` — where local log files are written in dev/test
-- `code/workflows/10-debugging-with-logs/` — step-by-step debugging workflow
+- `code/workflows/09-debugging-with-logs/` — step-by-step debugging workflow
 - `code/src/docker/CONTEXT.md` — observability section (per-environment summary)
 - `code/docs/SECURITY.md` — security logging requirements (audit trails, sensitive data)
 - `code/docs/PERFORMANCE.md` — Prometheus metrics for performance monitoring

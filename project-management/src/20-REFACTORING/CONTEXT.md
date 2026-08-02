@@ -46,14 +46,14 @@ A behaviour-preserving structural change to a story's code — never a feature:
 - Motivation & trigger, and the scope of files/modules touched
 - A before → after summary of structure and line counts
 - A **behaviour-preservation proof**: the same tests run green before and after, coverage not
-  reduced, shipped as a separate commit via code workflow `08-refactor`
+  reduced, shipped as a separate commit via code workflow `11-refactor`
 - Risk & rollback, and the verification commands run (`syntax/lint.sh`, `syntax/check.sh`,
   `audits/cloc.sh`, `tests/all.sh`)
 
 ## When to write it
 
 When a refactor is identified — a code review note, a sprint retro, or a `cloc` limit breach —
-and executed under `code/workflows/08-refactor/` (or the `refactor` agent) with no change in
+and executed under `code/workflows/11-refactor/` (or the `refactor` agent) with no change in
 observable behaviour. New behaviour belongs to a story, not here.
 
 ## Cross-references
@@ -61,7 +61,7 @@ observable behaviour. New behaviour belongs to a story, not here.
 - `../01-STORIES/` — the story a record closes the loop on
 - `../15-STORY-PLANS/` — the code master the refactor tidies
 - `../17-REVIEWS/` · `../18-FINDINGS/` · `../19-BUGS/` — sibling record-tier folders
-- `code/workflows/08-refactor/` — the behaviour-preserving refactor procedure
+- `code/workflows/11-refactor/` — the behaviour-preserving refactor procedure
 - `code/CONTEXT.md` — the 750/800-line source-file limit this record answers to
 
 **Last Updated**: <%DATE%>

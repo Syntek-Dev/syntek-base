@@ -34,7 +34,7 @@ Read in this order before spawning any sub-agents:
 **Layer context:** `code/CONTEXT.md`
 
 **Workflow (governing procedure):**
-`code/workflows/08-refactor/CONTEXT.md` → `code/workflows/08-refactor/STEPS.md`
+`code/workflows/11-refactor/CONTEXT.md` → `code/workflows/11-refactor/STEPS.md`
 
 **Docs:**
 
@@ -67,7 +67,7 @@ folder's purpose and local conventions the refactor must preserve.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/08-refactor/` — the refactor procedure
+- `code/workflows/11-refactor/` — the refactor procedure
 - `code/workflows/02-tdd-cycle/` — the green baseline required before any refactor step
 - `project-management/workflows/19-implementation-documentation/` — how a refactor is commissioned — findings routed to `src/20-REFACTORING/`
 

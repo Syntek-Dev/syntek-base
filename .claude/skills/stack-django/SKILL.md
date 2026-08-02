@@ -310,4 +310,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/17-api-code/` — the Django Ninja API layer
 - `code/workflows/02-tdd-cycle/` — Red → Green → Refactor
 - `code/workflows/04-api-design/` — routers, Schemas, endpoints
-- `code/workflows/09-database-migration/` — schema changes
+- `code/workflows/03-database-migration/` — schema changes

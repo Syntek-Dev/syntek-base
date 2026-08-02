@@ -41,7 +41,7 @@ read a mobile-only row as "not present here".
 | Agent              | Purpose                                                           |
 | ------------------ | ----------------------------------------------------------------- |
 | `authentication`   | Secure auth: passwords, MFA/TOTP, sessions, lockout, reset        |
-| `backend`          | Django models, service layer, Django Ninja endpoints              |
+| `backend`          | Django models, service layer, Ninja endpoints + MCP tools         |
 | `cicd`             | CI/CD pipelines, Docker environments, deploy automation           |
 | `code-reviewer`    | Read-only review: security, PII, DRY, performance, style          |
 | `completion`       | Mark user stories and sprints complete once verified              |
@@ -56,6 +56,7 @@ read a mobile-only row as "not present here".
 | `logging`          | Structured logging and observability instrumentation              |
 | `mobile`           | **Mobile-only.** Expo/React Native screens; a11y, token styling   |
 | `notifications`    | Multi-channel branded, PII-safe notification delivery             |
+| `operator-docs`    | Operator guides + runbooks in `how-to/docs/` and `how-to/src/`    |
 | `planner`          | Architect a feature into a phased, testable plan                  |
 | `pm`               | Set up and maintain PM-tool integration and sync                  |
 | `qa-tester`        | Hostile QA — bugs, security flaws, edge cases                     |

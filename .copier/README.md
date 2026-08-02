@@ -182,14 +182,14 @@ Two things to do on a freshly generated project:
 │   └── workflows/                       ← 10 step-by-step coding workflows
 │       ├── 01-new-feature/
 │       ├── 02-tdd-cycle/
-│       ├── 03-security-hardening/
+│       ├── 08-security-hardening/
 │       ├── 04-api-design/
-│       ├── 05-gdpr-enforcement/
-│       ├── 06-review/
-│       ├── 07-debug/
-│       ├── 08-refactor/
-│       ├── 09-database-migration/
-│       └── 10-debugging-with-logs/
+│       ├── 06-gdpr-enforcement/
+│       ├── 07-review/
+│       ├── 10-debug/
+│       ├── 11-refactor/
+│       ├── 03-database-migration/
+│       └── 09-debugging-with-logs/
 ├── how-to/                              ← setup, daily dev, and debugging guides
 │   ├── CONTEXT.md
 │   ├── docs/                            ← operational reference guides
@@ -210,9 +210,9 @@ Two things to do on a freshly generated project:
 │   │   └── SERVER-ARCHITECTURE/         ← app→server contract (feeds the NixOS deploy repo)
 │   └── workflows/                       ← 4 step-by-step operational workflows
 │       ├── 01-first-time-setup/
-│       ├── 02-daily-development/
-│       ├── 03-debugging/
-│       └── 04-worktree-setup/
+│       ├── 03-daily-development/
+│       ├── 08-debugging/
+│       └── 02-worktree-setup/
 ├── project-management/                  ← stories, sprints, plans, GDPR, security
 │   ├── CONTEXT.md
 │   ├── docs/                            ← PM reference guides
@@ -700,14 +700,14 @@ workflow is explicitly triggered.
 | --- | ------------------------- | ------------------------------------------------------------------------ |
 | 01  | `01-new-feature/`         | Add a full-stack feature (backend + frontend) from story to commit       |
 | 02  | `02-tdd-cycle/`           | Test-driven development — Red → Green → Refactor                         |
-| 03  | `03-security-hardening/`  | OWASP A01–A10 security review and hardening                              |
+| 03  | `08-security-hardening/`  | OWASP A01–A10 security review and hardening                              |
 | 04  | `04-api-design/`          | Design and implement a new Django Ninja API surface                      |
-| 05  | `05-gdpr-enforcement/`    | Implement GDPR requirements in code (encryption, consent, deletion)      |
-| 06  | `06-review/`              | Code quality review before raising a PR (security, principles, coverage) |
-| 07  | `07-debug/`               | Isolate a code logic bug, write a regression test, apply the minimal fix |
-| 08  | `08-refactor/`            | Systematic refactoring without behaviour change                          |
-| 09  | `09-database-migration/`  | Create and run a new Django database migration                           |
-| 10  | `10-debugging-with-logs/` | Debug using local logs, Glitchtip, Loki, and Grafana                     |
+| 05  | `06-gdpr-enforcement/`    | Implement GDPR requirements in code (encryption, consent, deletion)      |
+| 06  | `07-review/`              | Code quality review before raising a PR (security, principles, coverage) |
+| 07  | `10-debug/`               | Isolate a code logic bug, write a regression test, apply the minimal fix |
+| 08  | `11-refactor/`            | Systematic refactoring without behaviour change                          |
+| 09  | `03-database-migration/`  | Create and run a new Django database migration                           |
+| 10  | `09-debugging-with-logs/` | Debug using local logs, Glitchtip, Loki, and Grafana                     |
 
 ### Documentation hard gate
 
@@ -731,26 +731,26 @@ PR is opened.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 20-pr-and-review
+01-new-feature  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 20-pr-and-review
 ```
 
 - Start with `01-new-feature` to plan the feature scope.
 - Work in `02-tdd-cycle` — write failing tests first, then implement.
 - If the feature exposes a new Django Ninja API, follow `04-api-design` in parallel.
-- If the feature touches PII, run `05-gdpr-enforcement` before raising a PR.
-- Before opening the PR, run `06-review` to verify OWASP coverage, coding principles, and
+- If the feature touches PII, run `06-gdpr-enforcement` before raising a PR.
+- Before opening the PR, run `07-review` to verify OWASP coverage, coding principles, and
   coverage floors.
 - Hand off to the PM layer with `project-management/workflows/20-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/03-debugging  →  07-debug  →  06-review  →  PM: 20-pr-and-review
+how-to/08-debugging  →  10-debug  →  07-review  →  PM: 20-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
-`07-debug` to isolate and fix the logic. Never refactor and fix a bug in the same commit — if the
-fix reveals a design problem, open a separate refactoring task using `08-refactor`.
+`10-debug` to isolate and fix the logic. Never refactor and fix a bug in the same commit — if the
+fix reveals a design problem, open a separate refactoring task using `11-refactor`.
 
 ---
 

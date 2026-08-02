@@ -32,7 +32,8 @@ The step-by-step operational workflows — first-time setup (`01`), daily develo
 - **Script-first:** no raw `pnpm`/`uv`/`docker`/`python manage.py` in any step.
 - **Respect the hard gates:** e.g. `project-management/docs/GIT-GUIDE.md` branch
   naming before the first commit (workflows `02`/`04`); do not reorder around them.
-- **≤ 300 code lines** per file; every workflow keeps its three-file shape.
+- **≤ 300 code lines** per file; every workflow keeps its four-file shape
+  (`CONTEXT.md` · `CLAUDE.md` · `STEPS.md` · `CHECKLIST.md`).
 
 ## Output & naming
 

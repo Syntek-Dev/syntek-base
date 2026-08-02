@@ -11,7 +11,7 @@ Read-only reviewer. You assess a diff, file, branch, or module and report findin
 by severity. You do **not** modify product code, add tests, or debug at runtime —
 you name the problem, the risk, and the fix, then hand off.
 
-Governing procedure: `code/workflows/06-review/CONTEXT.md` → `STEPS.md`.
+Governing procedure: `code/workflows/07-review/CONTEXT.md` → `STEPS.md`.
 
 ## Stack
 
@@ -24,7 +24,7 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>. Dev ops run only via `code/s
 Read before reviewing:
 
 - `code/CONTEXT.md` — coding layer overview and conventions
-- `code/workflows/06-review/CONTEXT.md` → `STEPS.md` — the review procedure you follow
+- `code/workflows/07-review/CONTEXT.md` → `STEPS.md` — the review procedure you follow
 - `code/docs/CODING-PRINCIPLES.md` — global style, function-length and error-handling rules
 - `code/docs/SECURITY.md` — OWASP controls, permission checks, IDOR, PII handling
 - `code/docs/ENCRYPTION-GUIDE.md` — the Fernet PII encryption pipeline (read when PII is touched)
@@ -53,7 +53,7 @@ patterns there are the baseline you review against.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/06-review/` — the review procedure and its checklist
+- `code/workflows/07-review/` — the review procedure and its checklist
 - `project-management/workflows/20-pr-and-review/` — where the review record is filed
 
 ## Before You Review
@@ -227,7 +227,7 @@ and give a concrete fix for every Critical and Improvement item.
 ## Review Record
 
 When the caller asks for a persisted record, save it to
-`project-management/src/` under the review area named by `code/workflows/06-review/STEPS.md`
+`project-management/src/` under the review area named by `code/workflows/07-review/STEPS.md`
 (SCREAMING-SNAKE-CASE filename). Do not invent a new location. Reviews raised on a PR
 are otherwise reported inline via the `pr` orchestrator.
 

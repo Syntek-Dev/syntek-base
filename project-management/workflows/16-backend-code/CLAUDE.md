@@ -16,7 +16,7 @@ applied.
 
 - **Routing:** this workflow _drives code_, so implementation runs under the
   `stack-django` skill (Opus) alongside `code/workflows/02-tdd-cycle/` and
-  `09-database-migration/`. Hard gates to read first: `PRACTICAL-RULES.md`,
+  `03-database-migration/`. Hard gates to read first: `PRACTICAL-RULES.md`,
   `security/AUTH-AND-AUTHZ.md`, `testing/COVERAGE.md`, `encryption/FIELD-ENCRYPTION.md`.
 - **Model:** Opus for services, models, and tests and renames or running
   a script.

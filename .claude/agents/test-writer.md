@@ -18,6 +18,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/workflows/02-tdd-cycle/` — the Red phase you produce
 - `project-management/workflows/10-qa-checks/` — the QA plan your tests must cover
+- `code/workflows/05-mcp-server/` — when the story adds an MCP tool; its Red phase is an in-memory `Client` test
 
 ## Stack
 
@@ -40,6 +41,12 @@ Route to these rather than restating rules (the **procedures** are listed above)
   `code/src/mobile/`. You do not own React Native conventions; the skill carries them. Note the two
   that bite hardest: mobile tests live in `__tests__/` (never under `app/`, where expo-router would
   treat them as routes and bundle them), and they mount the real router via `renderRouter`.
+- **MCP tools:** `code/docs/mcp-server/TESTING-AND-OPS.md` + `.claude/skills/stack-fastmcp/SKILL.md` —
+  load when the story touches `apps/**/mcp_tools.py`. `fastmcp.Client(mcp)` connects in-process, so
+  no server runs. Three seams are mandatory per tool, because no Django middleware covers them: **no
+  token → rejected**, **another user's reference → not found**, and the mutation's policy-denial path.
+  Assert the tool list and schemas too — an agent client holds them the way an HTTP client holds the
+  OpenAPI document, so a renamed parameter is a breaking change.
 
 Read the story's acceptance criteria first — tests cover **only** that story's scope.
 

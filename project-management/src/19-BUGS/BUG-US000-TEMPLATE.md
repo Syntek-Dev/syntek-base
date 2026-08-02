@@ -59,7 +59,7 @@ Numbered, deterministic, from a known starting state. Redact any PII or token th
 ## 5. Root-cause analysis
 
 Why it happens — the underlying cause, not the symptom. Trace it to the line(s) responsible;
-use `code/workflows/10-debugging-with-logs/` when the trail runs through structured logs.
+use `code/workflows/09-debugging-with-logs/` when the trail runs through structured logs.
 
 _[EXAMPLE] `{call}` fires before `{precondition}` is set, so `{state}` is read as `{wrong}`; the
 guard at `{module}:{line}` only checked `{X}`, never `{Y}`._
@@ -82,7 +82,7 @@ own branch — this record describes intent and points at the change, it does no
 
 ## 7. Regression test (write the failing test FIRST — TDD)
 
-Follow `code/workflows/07-debug/`: **write the test that reproduces the defect and watch it fail
+Follow `code/workflows/10-debug/`: **write the test that reproduces the defect and watch it fail
 BEFORE applying the fix**, then make it pass. The test is what proves the bug is dead and keeps it
 dead. State the name, location, and what it asserts.
 
@@ -121,6 +121,6 @@ Commands are project scripts under `code/src/scripts/**/*.sh` — never raw pyte
 
 - `../01-STORIES/US###.md` — the story this defect belongs to
 - `../15-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` — the code master the fix closes the loop on
-- `code/workflows/07-debug/` — the TDD debug procedure (failing test first)
-- `code/workflows/10-debugging-with-logs/` — tracing a defect through structured logs
+- `code/workflows/10-debug/` — the TDD debug procedure (failing test first)
+- `code/workflows/09-debugging-with-logs/` — tracing a defect through structured logs
 - `../17-REVIEWS/` · `../16-TESTS/` — the review and test records from the same PR

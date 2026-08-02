@@ -181,7 +181,7 @@ The generated migration history for \`${APP_NAME}\` — the schema's audit trail
 
 ## How to work here
 
-- **Routing:** \`database\` agent (Opus); the \`09-database-migration\` workflow.
+- **Routing:** \`database\` agent (Opus); the \`03-database-migration\` workflow.
 - **Model:** Opus.
 - **Concrete steps:** change the model → \`code/src/scripts/database/migrate.sh make --app
   ${APP_NAME} --name <desc>\` → review the generated file → \`migrate.sh run\` →

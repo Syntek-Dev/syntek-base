@@ -26,7 +26,7 @@ model: opus
 - [ ] All read endpoints apply pagination or result limits — no unbounded queries
 - [ ] Every mutating endpoint has an explicit permission check (OWASP A01)
 - [ ] Every user-supplied ID verified against caller ownership before use (no IDOR)
-- [ ] `code/workflows/03-security-hardening/` run — all security checks passed
+- [ ] `code/workflows/08-security-hardening/` run — all security checks passed
 - [ ] `code/workflows/02-tdd-cycle/` followed — tests written before implementation (no stubs)
 - [ ] Tests cover: authenticated success, unauthenticated rejection, ownership boundaries, invalid input
 - [ ] All tests pass against a real implementation

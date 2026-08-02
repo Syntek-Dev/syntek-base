@@ -55,7 +55,7 @@ code/
 │   ├── docker/      ← Dockerfiles and Compose files per environment
 │   ├── scripts/     ← every dev operation — you run these, not raw commands
 │   └── tests/       ← Bruno API collections
-└── workflows/       ← 01-new-feature … 10-debugging-with-logs
+└── workflows/       ← 01-new-feature … 09-debugging-with-logs
 ```
 
 **`code/src/scripts/` is the interface to everything.** Five groups:

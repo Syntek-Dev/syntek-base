@@ -65,6 +65,15 @@ a single `NinjaAPI` with router modules (`api.py`) per app, Ninja Schema (Pydant
 request/response models, and a named permission check on every endpoint. Build it when the
 first endpoint is needed; see `code/docs/API-DESIGN.md`.
 
+**The agent-facing counterpart** — a FastMCP tool server at `/mcp/`, for LLM clients that must
+carry out this project's domain operations — is likewise designed and not built. `fastmcp` is
+not even a declared dependency; it sits in the "deliberately NOT declared" register in the root
+`pyproject.toml` with its trigger condition. When it is built, it is a **peer adapter over the
+same service layer**, not a layer above the API: `apps/<name>/mcp_tools.py` beside
+`apps/<name>/api.py`, both delegating to `apps/<name>/services.py`, neither calling the other.
+That second adapter is what makes the service layer a real seam rather than a hypothetical one.
+See `code/docs/MCP-SERVER.md`.
+
 ## Surfaces
 
 **Surface** is load-bearing vocabulary here: a _surface_ is one delivery target with its own

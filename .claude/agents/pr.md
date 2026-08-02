@@ -36,10 +36,10 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/06-review/` — content review — security, patterns, coverage, principles
+- `code/workflows/07-review/` — content review — security, patterns, coverage, principles
 - `project-management/workflows/19-implementation-documentation/` — must be complete before the PR is raised
 - `project-management/workflows/20-pr-and-review/` — the PR lifecycle — branch promotion, approvals, merge gates
-- `how-to/workflows/04-worktree-setup/` — when the story runs in a parallel worktree
+- `how-to/workflows/02-worktree-setup/` — when the story runs in a parallel worktree
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 

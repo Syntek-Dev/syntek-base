@@ -68,7 +68,9 @@ run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 | `stack-django`                  | Backend code — models, services, Django Ninja endpoints, pytest                                                                                    |
 | `stack-htmx-templates`          | Public frontend — Django templates, django-components, HTMX, Alpine, token CSS                                                                     |
 | `stack-react-native`            | **Mobile-only.** The mobile surface — Expo, TypeScript, expo-router, StyleSheet over tokens                                                        |
+| `stack-fastmcp`                 | The MCP tool surface at `/mcp/` — FastMCP tools over the service layer, token auth, in-memory client tests                                         |
 | `global-workflow`               | Branches, commits, PRs, version bumps, docs, code comments                                                                                         |
+| `runbook`                       | Authoring operator documentation — `how-to/docs/` and `how-to/src/` guides a human executes                                                        |
 | `grill-me` · `grill-with-docs`  | Design work — type `/grill-me` (stateless) or `/grill-with-docs` (records decisions); both wrap the `grilling` engine                              |
 | `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test; design it twice) |
 | `domain-modelling`              | Recording a new concept or decision — add the term to the nearest `CONTEXT.md`, or an ADR, as a design crystallises                                |
@@ -88,7 +90,7 @@ run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 (`explore-codebase`, `debug-issue`, `review-changes`, `refactor-safely`): **auto-generated,
 referenced by path, never hand-edited** (they regenerate on `install`). Canonical guide:
 `code/docs/CODE-REVIEW-GRAPH.md`, wired into the debug/review/refactor/explore agents and
-workflows `06`/`07`/`08`/`10`.
+workflows `07`/`09`/`10`/`11`.
 
 ### 2.5 Routing frontmatter
 
@@ -309,7 +311,9 @@ The skills the internal agents load on demand (full when-to-load table: `.claude
 - **Stack Skill (Backend):** `stack-django` — `.claude/skills/stack-django/`
 - **Stack Skill (Frontend, web):** `stack-htmx-templates` — `.claude/skills/stack-htmx-templates/`
 - **Stack Skill (Mobile) — mobile-only:** `stack-react-native` — `.claude/skills/stack-react-native/` (paired with the `mobile` agent; both absent on a web-only project)
+- **Stack Skill (Agent-facing):** `stack-fastmcp` — `.claude/skills/stack-fastmcp/` (the `/mcp/` tool surface; loaded by `backend`, `security`, and `test-writer` — no dedicated agent, because MCP tools are backend service-layer work)
 - **Global Skill:** `global-workflow` — `.claude/skills/global-workflow/`
+- **Operator-Docs Skill:** `runbook` — `.claude/skills/runbook/` (paired with the `operator-docs` agent; the craft for guides a human executes)
 - **Design / Grilling Skills:** `grilling` (engine) · `grill-me` (stateless) · `grill-with-docs` (records decisions) — `.claude/skills/{grilling,grill-me,grill-with-docs}/`
 - **Architecture / Design Skills:** `codebase-design` (deep-module vocabulary) · `domain-modelling` (keep the model current) · `improve-codebase-architecture` (`/improve-codebase-architecture` — deepening review → HTML report → grill) · `scale-planning` (`/scale-planning` — size for a target user count + prove scalability; feeds the NixOS deploy repo) — `.claude/skills/{codebase-design,domain-modelling,improve-codebase-architecture,scale-planning}/`
 - **Learning & Session Skills:** `teach` (learn in the `learning/` sandbox) · `wayfinder` (chart an epic) · `handoff` (session handoff / auto-compaction replacement, §2.6) · `prototype` (throwaway spike) · `research` (primary-source note) — `.claude/skills/{teach,wayfinder,handoff,prototype,research}/`

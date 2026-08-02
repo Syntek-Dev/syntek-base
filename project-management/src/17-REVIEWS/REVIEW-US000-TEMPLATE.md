@@ -154,7 +154,7 @@ rationale, or a forward-compatibility pattern accepted. Keep it factual.
 - `../19-BUGS/` — file a `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` for any defect this review surfaces
 - `code/docs/SECURITY.md` — the OWASP / IDOR obligations §3.1 checks against
 - `project-management/workflows/20-pr-and-review/` — the PM workflow where this review is written
-- `code/workflows/06-review/` — the code-review workflow the reviewer runs
+- `code/workflows/07-review/` — the code-review workflow the reviewer runs
 
 > **Cross-cutting reviews** — an audit not tied to a single story (e.g. a cross-module
 > alignment or design-token sweep) is filed as `REVIEW-<DESCRIPTOR>-DD-MM-YYYY.md` instead

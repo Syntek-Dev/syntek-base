@@ -21,7 +21,7 @@ model: opus
 - [ ] `code/docs/coding-principles/PRACTICAL-RULES.md` read — transaction rules and error handling applied
 - [ ] `code/docs/security/AUTH-AND-AUTHZ.md` read — permission and ownership checks applied
 - [ ] Approved schema document reviewed before any code written
-- [ ] `code/workflows/09-database-migration/` followed — migrations generated and applied cleanly
+- [ ] `code/workflows/03-database-migration/` followed — migrations generated and applied cleanly
 - [ ] `code/workflows/02-tdd-cycle/` followed — tests written before implementation (no stubs)
 - [ ] Models match the approved schema exactly
 - [ ] PII fields encrypted per `code/docs/encryption/FIELD-ENCRYPTION.md` where applicable

@@ -46,6 +46,12 @@ dependencies = [
 #   channels / channels-redis  — ASGI WebSockets; note the stack is one app process
 #                                family, so real-time is a stack change argued in an ADR
 #   cairosvg                   — SVG rasterisation for an asset pipeline
+#   fastmcp                    — the MCP tool surface at /mcp/, for LLM agent clients.
+#                                Trigger: an agent must carry out this project's domain
+#                                operations. NOT for "exposing the API to AI" — a Ninja
+#                                endpoint is already callable by anything speaking HTTP.
+#                                Brings starlette into the request path (config/asgi.py
+#                                becomes a router). See code/docs/MCP-SERVER.md.
 
 [tool.uv]
 package = false
