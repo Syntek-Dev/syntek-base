@@ -14,6 +14,7 @@ code/
 │   ├── CODING-PRINCIPLES.md         (sub-docs: coding-principles/)
 │   ├── CONTEXT.md
 │   ├── DATA-STRUCTURES.md           (sub-docs: data-structures/)
+│   ├── DESKTOP.md                   (sub-docs: desktop/) ← DESKTOP-ONLY — the Slint app
 │   ├── DESIGN-TOKENS.md             ← CSS design token catalogue and usage rules
 │   ├── ENCRYPTION-GUIDE.md          (sub-docs: encryption/)
 │   ├── FRONTEND-CODING-PRINCIPLES.md ← Django templates + HTMX + Alpine + CSS
@@ -50,6 +51,7 @@ code/
 │   │   ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
 │   │   ├── mobile/                  ← MOBILE-ONLY — Metro, lint, typecheck, test, bundle
 │   │   ├── rust/                    ← RUST-ONLY — build, test, lint, supply-chain audit
+│   │   ├── desktop/                 ← DESKTOP-ONLY — run the app, package the release binary
 │   │   ├── syntax/                  ← code quality (lint, type-check, format)
 │   │   └── tests/                   ← test suite runners (pytest, Bruno)
 │   └── tests/                       ← API integration tests (Bruno collection)
@@ -71,7 +73,8 @@ code/
     ├── 10-debug/                    ← fix it: isolate, regression test, patch
     ├── 11-refactor/                 ← improve it: no behaviour change
     │   ── Build, opt-in (12) ──
-    └── 12-rust-extension/           ← RUST-ONLY — PyO3 extensions in the Cargo workspace
+    ├── 12-rust-extension/           ← RUST-ONLY — PyO3 extensions in the Cargo workspace
+    └── 13-desktop-app/              ← DESKTOP-ONLY — the native Slint application
 
 Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 ```
@@ -115,6 +118,7 @@ Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 | `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                                                 |
 | `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                                       |
 | `docs/RUST.md`                  | **Rust-only.** Before any native code — starting with whether it should be Rust at all |
+| `docs/DESKTOP.md`               | **Desktop-only.** Before any desktop work — the licence obligation comes first         |
 | `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                                      |
 
 ## Surfaces — where source may live
@@ -122,11 +126,12 @@ Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 `code/` owns **all deployable source**, and `code/src/` is the only place it lives. A project has
 the web surface always, and each of the other two only if it opted in:
 
-| Surface    | Path          | Standards                                                     |
-| ---------- | ------------- | ------------------------------------------------------------- |
-| **Web**    | `src/django/` | The `docs/` guides below — the default reading of every rule  |
-| **Mobile** | `src/mobile/` | The same `docs/` tree, plus the React Native technique guides |
-| **Native** | `src/rust/`   | The same `docs/` tree, plus `docs/RUST.md` and its sub-docs   |
+| Surface     | Path                       | Standards                                                     |
+| ----------- | -------------------------- | ------------------------------------------------------------- |
+| **Web**     | `src/django/`              | The `docs/` guides below — the default reading of every rule  |
+| **Mobile**  | `src/mobile/`              | The same `docs/` tree, plus the React Native technique guides |
+| **Native**  | `src/rust/`                | The same `docs/` tree, plus `docs/RUST.md` and its sub-docs   |
+| **Desktop** | `src/rust/crates/desktop/` | The same `docs/` tree, plus `docs/DESKTOP.md`                 |
 
 The mobile app and the Rust workspace are placed **inside `code/src/`, beside the Django
 project**, rather than as further root layers. That keeps this layer's definition intact — the

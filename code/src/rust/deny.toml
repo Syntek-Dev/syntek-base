@@ -4,12 +4,30 @@
 # supply-chain gate: crates.io has no review process, and a PyO3 extension runs in the
 # same address space as Django with no sandbox between them. A dependency here is
 # strictly more dangerous than a pure-Python one.
-
 [advisories]
-# Fail on any crate with a filed RUSTSEC advisory. No ignore list at baseline — add an
-# entry only with a dated comment saying why the advisory does not apply here.
 yanked = "deny"
-ignore = []
+# Only flag "unmaintained" for crates this workspace depends on DIRECTLY.
+unmaintained = "workspace"
+ignore = [
+  # ── Desktop surface only. Both are DoS advisories in quick-xml 0.38.4, reached ONLY
+  # through Slint's accessibility stack:
+  #   quick-xml <- zbus_xml <- zbus-lockstep <- atspi-common <- accesskit_atspi_common
+  #             <- accesskit_unix <- accesskit_winit <- i-slint-backend-winit <- slint
+  #
+  # Not fixable here: 0.41.0 is the patched line, and every version pin up that chain
+  # blocks it, ending at Slint's own `=1.17.1`. Vendoring or forking AccessKit to reach
+  # it would be a far larger risk than the advisory.
+  #
+  # Why the residual risk is accepted: this parser handles D-Bus introspection XML from
+  # the LOCAL AT-SPI session bus, not network or user input. An attacker able to publish
+  # malicious XML on that bus already owns the user's session. Both are denial-of-service,
+  # not code execution.
+  #
+  # Removing AccessKit is NOT the mitigation — it is what makes the app usable with a
+  # screen reader. Re-check 02/11/2026, or sooner if Slint bumps accesskit. — 02/08/2026
+  "RUSTSEC-2026-0194",
+  "RUSTSEC-2026-0195",
+]
 
 [licenses]
 # Permissive only. A copyleft dependency would propagate to anything linking this crate,
@@ -23,6 +41,9 @@ allow = [
   "ISC",
   "Unicode-3.0",
   "Zlib",
+  "BSL-1.0",   # Boost Software License — permissive (clipboard-win, error-code)
+  "NCSA",      # University of Illinois/NCSA — permissive (libfuzzer-sys)
+  "Unlicense", # public-domain dedication (ksni)
 ]
 confidence-threshold = 0.9
 # Do not warn about allow-list entries no current dependency uses — the list is a policy
@@ -31,6 +52,70 @@ unused-allowed-license = "allow"
 # Skip our own unpublished crates. Their `license` field carries the project's LICENCE
 # answer, which is free text and generally not a valid SPDX expression.
 private = { ignore = true }
+
+# ── Slint — DESKTOP SURFACE ONLY ─────────────────────────────────────────────
+# Present unconditionally (no file in this template has conditional contents). On a
+# project without the desktop surface these simply match nothing, which cargo-deny
+# reports as an informational note, not an error.
+#
+# Slint ships as `GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR
+# LicenseRef-Slint-Software-3.0`. We take the ROYALTY-FREE arm: free for proprietary and
+# commercially sold desktop applications, in exchange for disclosing our use of Slint —
+# the AboutSlint widget, enforced by code/src/scripts/desktop/package.sh.
+#
+# Per-crate exceptions rather than allow-list entries on purpose: this is a deliberate,
+# conditional licence choice carrying an obligation, and it must be impossible to acquire
+# by accident for an unrelated dependency.
+#
+# It does NOT cover embedded systems, nor redistributing a library that exposes Slint's
+# own APIs. Full detail: code/docs/DESKTOP.md.
+[[licenses.exceptions]]
+crate = "slint"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "slint-build"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "slint-macros"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-common"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-compiler"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-core"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-core-macros"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-backend-selector"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-backend-winit"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-renderer-femtovg"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-renderer-skia"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
+
+[[licenses.exceptions]]
+crate = "i-slint-renderer-software"
+allow = ["LicenseRef-Slint-Royalty-free-2.0"]
 
 [bans]
 # Two versions of the same crate in one binary usually means a transitive dependency

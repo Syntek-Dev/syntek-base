@@ -1,4 +1,4 @@
 # Words clippy's `doc_markdown` lint must not demand backticks around. Without this,
 # `pedantic` + `-D warnings` rejects ordinary prose naming the tools we depend on.
 # ".." extends clippy's built-in list rather than replacing it.
-doc-valid-idents = ["PyO3", "CPython", "RustSec", "RustCrypto", "SecretBytes", ".."]
+doc-valid-idents = ["PyO3", "CPython", "RustSec", "RustCrypto", "SecretBytes", "AboutSlint", "AppWindow", ".."]

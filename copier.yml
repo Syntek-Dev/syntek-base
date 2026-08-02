@@ -68,6 +68,21 @@ _exclude:
   # unconditionally, flagged rust-only.
   - "<: if not INCLUDE_RUST :>/.claude/agents/rust.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/.claude/skills/stack-rust<: endif :>"
+  # Optional native desktop app (Slint), gated by INCLUDE_DESKTOP — which is itself only
+  # asked when INCLUDE_RUST is true, because Slint is Rust. The crate is a member of the
+  # existing workspace rather than a second one: `members = ["crates/*"]` is a glob, so it
+  # adapts automatically and there is still ONE toolchain pin, deny.toml and clippy.toml.
+  # Those two shared files carry Slint's licence exceptions and advisory notes
+  # UNCONDITIONALLY — on a project without the desktop surface they match nothing, which
+  # cargo-deny reports as an informational note rather than an error. That keeps the
+  # no-templated-file-contents rule intact.
+  - "<: if not INCLUDE_DESKTOP :>/code/src/rust/crates/desktop<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/code/src/scripts/desktop<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/code/docs/DESKTOP.md<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/code/docs/desktop<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/code/workflows/13-desktop-app<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/.claude/agents/desktop.md<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/.claude/skills/stack-slint<: endif :>"
   # Binaries cannot be rendered when _templates_suffix is "". Both are generated
   # artefacts — a new project rebuilds them from the sources beside them.
   - "*.pdf"
@@ -273,6 +288,32 @@ INCLUDE_RUST:
     Include the optional Rust workspace (PyO3 extensions, binaries, CLI tools).
     Answer false if you only consume prebuilt wheels — this gates authoring.
   default: false
+
+# ── Desktop surface (optional) ───────────────────────────────────────────────
+# Opt-in native desktop application built with Slint, living as a member of the Rust
+# workspace above. Gated on INCLUDE_RUST because Slint is Rust — the question is not
+# asked at all on a project without it, and a skipped question keeps its default.
+#
+# LICENCE OBLIGATION: the app ships under Slint's Royalty-free licence, which permits
+# proprietary and commercially sold desktop applications at no cost BUT REQUIRES that you
+# disclose the use of Slint — the baseline app does this with the AboutSlint widget in its
+# About dialog. Removing that disclosure without buying a Commercial licence is a breach.
+# The Royalty-free licence also does not cover embedded systems, nor redistributing a
+# library that exposes Slint's own APIs. See code/docs/DESKTOP.md.
+
+INCLUDE_DESKTOP:
+  type: bool
+  help: >-
+    Include the optional native desktop app (Slint). Ships under Slint's
+    Royalty-free licence — commercial sale is fine, attribution is required.
+  default: false
+  when: "<% INCLUDE_RUST %>"
+
+DESKTOP_APP_NAME:
+  type: str
+  help: Window title and application name shown to the user
+  default: "<% PROJECT_NAME %>"
+  when: "<% INCLUDE_DESKTOP %>"
 
 # ── Meta ─────────────────────────────────────────────────────────────────────
 

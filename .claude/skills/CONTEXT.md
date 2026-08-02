@@ -21,6 +21,8 @@ project carries its own tooling; plugin references were rewritten to internal pa
 │   └── SKILL.md
 ├── stack-rust/             ← RUST-ONLY — the Cargo workspace, PyO3 boundary, supply-chain gate
 │   └── SKILL.md
+├── stack-slint/            ← DESKTOP-ONLY — the native Slint app and its licence obligation
+│   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
 │   ├── GIT-AND-PR.md
@@ -73,31 +75,32 @@ project carries its own tooling; plugin references were rewritten to internal pa
 
 ## Which skill, when
 
-| Skill                           | Load when                                                                                                                                       |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                |
-| `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                   |
-| `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                        |
-| `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                   |
-| `stack-rust`                    | **Rust-only.** Writing/reviewing `code/src/rust/` — PyO3 boundary, secret zeroizing, cargo-deny. Also: deciding if work belongs in Rust at all  |
-| `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                            |
-| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; loaded by `operator-docs`                                        |
-| `grilling`                      | Design work (architecture, DB, API, story) — the one-question-at-a-time interview engine                                                        |
-| `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                          |
-| `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or a design agent opens design work — grilling that records decisions                              |
-| `teach`                         | <%DEVELOPER_NAME%> types `/teach <topic>` — a safe learning sandbox that writes only to `learning/`                                             |
-| `wayfinder`                     | Charting a large epic into a decision map resolved across sessions (`/wayfinder`)                                                               |
-| `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement; write a committed `handoffs/` doc, then stop      |
-| `prototype`                     | <%DEVELOPER_NAME%> types `/prototype` — a throwaway spike answering one design question, then discarded                                         |
-| `research`                      | <%DEVELOPER_NAME%> types `/research` — a primary-source-cited note that feeds an ADR/PLAN decision                                              |
-| `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test)               |
-| `domain-modelling`              | Recording a new concept or decision — add the term to the nearest `CONTEXT.md`, or an ADR, as a design crystallises                             |
-| `improve-codebase-architecture` | <%DEVELOPER_NAME%> types `/improve-codebase-architecture` — scan for deepening opportunities, present a visual HTML report, then grill the pick |
-| `scale-planning`                | Sizing the stack for a target user count / proving it scales / preparing the server contract the NixOS deploy repo consumes (`/scale-planning`) |
-| `legal-documents`               | Drafting a Privacy Policy, T&C, GDPR notice, DPA, contract, or NDA                                                                              |
-| `msp-scp-documents`             | Drafting a security/compliance policy (InfoSec, incident, retention, …)                                                                         |
-| `cloudinary-*`                  | Cloudinary uploads, delivery, or transformation work                                                                                            |
-| graph cards                     | Explore/debug/review/refactor via the code-review-graph MCP — auto-generated, referenced by path (`code/docs/CODE-REVIEW-GRAPH.md`)             |
+| Skill                           | Load when                                                                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                 |
+| `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                    |
+| `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                         |
+| `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                    |
+| `stack-rust`                    | **Rust-only.** Writing/reviewing `code/src/rust/` — PyO3 boundary, secret zeroizing, cargo-deny. Also: deciding if work belongs in Rust at all   |
+| `stack-slint`                   | **Desktop-only.** Building/reviewing the native Slint app — the AboutSlint licence disclosure, the generated-code lint boundary, threading, a11y |
+| `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                             |
+| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; loaded by `operator-docs`                                         |
+| `grilling`                      | Design work (architecture, DB, API, story) — the one-question-at-a-time interview engine                                                         |
+| `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                           |
+| `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or a design agent opens design work — grilling that records decisions                               |
+| `teach`                         | <%DEVELOPER_NAME%> types `/teach <topic>` — a safe learning sandbox that writes only to `learning/`                                              |
+| `wayfinder`                     | Charting a large epic into a decision map resolved across sessions (`/wayfinder`)                                                                |
+| `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement; write a committed `handoffs/` doc, then stop       |
+| `prototype`                     | <%DEVELOPER_NAME%> types `/prototype` — a throwaway spike answering one design question, then discarded                                          |
+| `research`                      | <%DEVELOPER_NAME%> types `/research` — a primary-source-cited note that feeds an ADR/PLAN decision                                               |
+| `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test)                |
+| `domain-modelling`              | Recording a new concept or decision — add the term to the nearest `CONTEXT.md`, or an ADR, as a design crystallises                              |
+| `improve-codebase-architecture` | <%DEVELOPER_NAME%> types `/improve-codebase-architecture` — scan for deepening opportunities, present a visual HTML report, then grill the pick  |
+| `scale-planning`                | Sizing the stack for a target user count / proving it scales / preparing the server contract the NixOS deploy repo consumes (`/scale-planning`)  |
+| `legal-documents`               | Drafting a Privacy Policy, T&C, GDPR notice, DPA, contract, or NDA                                                                               |
+| `msp-scp-documents`             | Drafting a security/compliance policy (InfoSec, incident, retention, …)                                                                          |
+| `cloudinary-*`                  | Cloudinary uploads, delivery, or transformation work                                                                                             |
+| graph cards                     | Explore/debug/review/refactor via the code-review-graph MCP — auto-generated, referenced by path (`code/docs/CODE-REVIEW-GRAPH.md`)              |
 
 > **Full-Django direction — on the web surface.** Every page is React-free and server-rendered:
 > Django templates + HTMX + Alpine + vanilla CSS (tokens) + django-components + django-ninja,

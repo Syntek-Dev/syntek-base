@@ -21,7 +21,8 @@ code/src/rust/
 ├── clippy.toml             ← doc_markdown ident allow-list (PyO3, CPython, …)
 ├── .gitignore              ← target/ and build artefacts — never committed
 └── crates/
-    └── nativecore/         ← the first-party PyO3 extension module
+    ├── nativecore/         ← the first-party PyO3 extension module
+    └── desktop/            ← DESKTOP-ONLY — the native Slint app (absent unless opted in)
         ├── Cargo.toml      ← lint table: unsafe/unwrap/expect/panic/indexing denied
         ├── pyproject.toml  ← maturin build backend — this crate IS a distribution
         └── src/lib.rs      ← baseline: constant_time_eq + SecretBytes
@@ -57,9 +58,22 @@ What does **not** belong: anything the service layer already does adequately. A 
 working Python is a cost with no named benefit, and every crate added here widens a supply-chain
 surface that shares its address space with Django.
 
+## The desktop crate is a member, not a second workspace
+
+When `INCLUDE_DESKTOP` is on, the Slint application lives at `crates/desktop/`. `members =
+["crates/*"]` is a glob, so the workspace adapts with no edit and there stays exactly one
+`rust-toolchain.toml`, one `deny.toml` and one `clippy.toml`. A second workspace would mean two of
+each, drifting apart.
+
+`slint` is pinned in that crate rather than `[workspace.dependencies]` — one member uses it. The
+shared `deny.toml` does carry Slint's licence exceptions and two AccessKit advisory notes
+unconditionally; on a project without the desktop surface they match nothing, which cargo-deny
+reports as an informational note rather than an error.
+
 ## Cross-references
 
 - `code/docs/RUST.md` — the guide, and its `rust/` sub-docs (boundary, memory, supply chain)
+- `code/docs/DESKTOP.md` — **desktop-only** — the Slint app and its licence obligation
 - `code/src/scripts/rust/CONTEXT.md` — the scripts that drive this tree
 - `code/workflows/12-rust-extension/CONTEXT.md` — the procedure for adding to it
 - `code/docs/encryption/RUST-CRYPTO.md` — the rust-only branch of the encryption guide

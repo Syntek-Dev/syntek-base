@@ -1,0 +1,45 @@
+// UI for <%PROJECT_NAME%> Desktop.
+//
+// ATTRIBUTION IS A LICENCE OBLIGATION, NOT DECORATION.
+// This app ships under Slint's Royalty-free licence, which permits proprietary and
+// commercially sold desktop applications at no cost *provided the use of Slint is
+// disclosed*. The AboutSlint widget below is that disclosure. Removing it without buying
+// a Commercial licence from Slint is a breach. See code/docs/DESKTOP.md.
+
+import { Button, VerticalBox, HorizontalBox, AboutSlint } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    title: "<%DESKTOP_APP_NAME%>";
+    preferred-width: 800px;
+    preferred-height: 560px;
+
+    // Set from Rust so the greeting is not hardcoded in markup.
+    in property <string> status: "Ready";
+    callback refresh();
+
+    VerticalBox {
+        Text {
+            text: "<%DESKTOP_APP_NAME%>";
+            font-size: 22px;
+            horizontal-alignment: center;
+        }
+
+        Text {
+            text: root.status;
+            horizontal-alignment: center;
+        }
+
+        HorizontalBox {
+            alignment: center;
+            Button {
+                text: "Refresh";
+                clicked => { root.refresh(); }
+            }
+        }
+
+        Rectangle { vertical-stretch: 1; }
+
+        // ── Required attribution — do not remove (see the note at the top) ──
+        AboutSlint { }
+    }
+}

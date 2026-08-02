@@ -13,7 +13,8 @@ uvx copier copy gh:Syntek-Dev/syntek-base my-project
 cd my-project
 ```
 
-Copier asks twenty-three questions, plus two more if you opt into the mobile surface. Every one has
+Copier asks twenty-four questions, plus two more for the mobile surface and one more for the
+desktop surface, if you opt into them. Every one has
 either a sensible default or a value derived from
 an earlier answer — pressing Enter through the infrastructure and locale sections is a reasonable
 first pass. If you want to think about them properly, read `05-ANSWERS.md` first.

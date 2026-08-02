@@ -2,9 +2,9 @@
 
 **Last Updated**: 02/08/2026
 
-Copier asks twenty-three questions — twenty-five if you opt into the mobile surface, which adds
-two of its own. Most have a good default. A few are load-bearing and awkward to
-change later — this explains which is which.
+Copier asks twenty-four questions — twenty-six with the mobile surface, which adds two of its own,
+and twenty-seven with the desktop surface too. Most have a good default. A few are load-bearing
+and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is
 the advice.
@@ -125,10 +125,11 @@ every project and are never asked about.
 Two questions add a whole toolchain. Both default to `false`, and both are cheap to turn on later
 with `copier update` — so answer `false` when unsure.
 
-| Question         | Turn it on when                                                                                         |
-| ---------------- | ------------------------------------------------------------------------------------------------------- |
-| `INCLUDE_MOBILE` | The project ships a React Native app. Adds Node, pnpm and the Expo toolchain                            |
-| `INCLUDE_RUST`   | **This repository compiles Rust.** Adds `rustup` as a prerequisite for `uv sync` and a Rust image stage |
+| Question          | Turn it on when                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------- |
+| `INCLUDE_MOBILE`  | The project ships a React Native app. Adds Node, pnpm and the Expo toolchain                            |
+| `INCLUDE_RUST`    | **This repository compiles Rust.** Adds `rustup` as a prerequisite for `uv sync` and a Rust image stage |
+| `INCLUDE_DESKTOP` | The project ships a **native desktop app** (Slint). Only offered when `INCLUDE_RUST` is true            |
 
 `INCLUDE_RUST` gates **authoring, not consuming** — the distinction that decides the answer. A
 project that merely depends on a prebuilt PyO3 wheel installs it like any other dependency and
@@ -137,6 +138,13 @@ by `cargo`.
 
 Getting that backwards is the common mistake, and it is expensive in the wrong direction: every
 contributor to a `true` project needs a Rust toolchain, and every CI run builds one.
+
+`INCLUDE_DESKTOP` carries a **licence obligation**. The app ships under Slint's Royalty-free tier,
+which is free for proprietary applications _and commercial sale_ — provided you disclose that you
+use Slint. The generated app does that with an `AboutSlint` widget, and the packaging script
+refuses to build a release without it. The tier does **not** cover embedded systems (an appliance
+screen, a POS terminal, a car dashboard), nor redistributing anything that exposes Slint's own
+APIs. If either applies to you, budget for a paid Commercial licence before you start.
 
 ---
 
