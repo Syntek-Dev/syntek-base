@@ -1,18 +1,14 @@
 name: Markdown — Lint
 
+# No path filter, deliberately. markdownlint-cli2 is a required status check on the
+# default branch, and a path-filtered workflow never reports on a pull request that
+# misses its paths — GitHub then blocks the merge on a check that will never arrive.
+# The job takes ~20s; running it every time is cheaper than that failure mode.
 on:
   push:
     branches: [main, staging, dev, testing]
-    paths:
-      - "**/*.md"
-      - ".markdownlint-cli2.jsonc"
-      - ".github/workflows/syntax-markdown.yml"
   pull_request:
     branches: [main, staging, dev, testing]
-    paths:
-      - "**/*.md"
-      - ".markdownlint-cli2.jsonc"
-      - ".github/workflows/syntax-markdown.yml"
   workflow_dispatch:
 
 jobs:

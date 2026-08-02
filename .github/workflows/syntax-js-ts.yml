@@ -3,43 +3,16 @@
 # repo-wide (formatting only). There is no TypeScript, so there is no typecheck job.
 name: JS/TS — Lint & Format
 
+# No path filter, deliberately. ESLint and Prettier are required status checks on the
+# default branch, and a path-filtered workflow never reports on a pull request that
+# misses its paths — GitHub then blocks the merge on a check that will never arrive.
+# Both jobs finish in well under a minute; running them every time is cheaper than
+# that failure mode.
 on:
   push:
     branches: [main, staging, dev, testing]
-    paths:
-      - "**/*.js"
-      - "**/*.jsx"
-      - "**/*.mjs"
-      - "**/*.cjs"
-      - "**/*.json"
-      - "**/*.yaml"
-      - "**/*.yml"
-      - "**/*.css"
-      - "**/*.html"
-      - "package.json"
-      - "pnpm-workspace.yaml"
-      - "eslint.config.mjs"
-      - ".prettierrc"
-      - ".prettierignore"
-      - ".github/workflows/syntax-js-ts.yml"
   pull_request:
     branches: [main, staging, dev, testing]
-    paths:
-      - "**/*.js"
-      - "**/*.jsx"
-      - "**/*.mjs"
-      - "**/*.cjs"
-      - "**/*.json"
-      - "**/*.yaml"
-      - "**/*.yml"
-      - "**/*.css"
-      - "**/*.html"
-      - "package.json"
-      - "pnpm-workspace.yaml"
-      - "eslint.config.mjs"
-      - ".prettierrc"
-      - ".prettierignore"
-      - ".github/workflows/syntax-js-ts.yml"
   workflow_dispatch:
 
 jobs:
