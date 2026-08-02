@@ -1,9 +1,50 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 0.14.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 1.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.0.0 — 02/08/2026
+
+**Status:** Stable release — the template leaves `0.x` and commits to its interface
+
+### Summary
+
+**Nothing in the generated project changes.** Generate from `1.0.0` and you get the repository
+`0.14.0` produced, byte for byte. This release is a statement about **support**, not a change to
+the code — which makes the only question worth answering: what is now promised that was not
+promised yesterday?
+
+Under semver, a `0.x` track may break anything in any minor bump, and this one used that latitude
+freely. Workflow directories were renumbered twice — the PM layer in `0.8.0`, both workflow layers
+in `0.14.0` — and each move silently invalidated every path a downstream project had written down.
+Under the `1.x` policy those are major-version events.
+
+Four things are now the template's **public interface**, and a breaking change to any of them
+requires `2.0.0`:
+
+- the **Copier answer contract** — twenty-two questions, or twenty-four with the mobile surface
+- the **three-layer directory contract** — `code/` · `how-to/` · `project-management/`
+- the **`CONTEXT.md` + `CLAUDE.md` pairing rule**, and the routing frontmatter that drives it
+- the **numbered workflow identifiers** — stable identifiers, appended to and never renumbered
+
+Everything else — the content of a guide, the wording of an agent definition, an added skill —
+stays a minor or patch concern, exactly as before.
+
+### What's new
+
+- **A stability guarantee where there was none.** Pin `1.x` and a `copier update` will not move your workflow paths, rename a layer, or change what the answer file means
+- **`.claude/MEMORY.md` ships empty.** It had accumulated five notes written while `syntek-base` itself was being built — the Expo pin matrix, a `glob` override, the route-collision rule, and two design conventions. Useful to whoever built the template; noise to a project generated from it, since it describes decisions already taken in a repository the reader is not working in. The three headings and the write-policy preamble remain, so the first thing you record goes into an empty store rather than on top of someone else's notes
+- **The fourteen `0.x` releases are now published as pre-releases**, with `1.0.0` the first marked latest. Their notes, commits and changelog entries are untouched — only the label moved
+
+### Worth knowing
+
+- **There is no upgrade step.** A project generated from `0.14.0` is already on the `1.0.0` surface; nothing needs re-running, and `copier update` will report no changes beyond the version string
+- **The durable half of the deleted memory notes was never only there.** `code/src/CONTEXT.md` defines _surface_, and `how-to/src/TEMPLATE-GUIDE/10-CUSTOMISING.md` carries the one-way optional-content gate with its rejected alternatives. Emptying the memory store loses no reasoning that a generated project can act on
+- **The pre-`1.0.0` tag numbers are not the ones GitHub carried before.** This repository previously ran to `v1.11.0` under an older Next.js/Expo scaffold, then reset its version track to `0.1.0` at `a1ec114` when it became a template. Those legacy tags and releases have been removed; the commits behind them remain in git history, as `v0.1.0` said they would
 
 ---
 
