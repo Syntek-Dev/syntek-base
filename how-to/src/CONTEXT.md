@@ -22,7 +22,8 @@ how-to/src/
 │   ├── 04-QUICKSTART.md · 05-ANSWERS.md · 06-GENERATION.md
 │   ├── 07-REPO-TOUR.md · 08-CLAUDE-CODE.md · 09-FIRST-STORY.md
 │   ├── 10-CUSTOMISING.md · 11-EXTENDING.md
-│   └── 12-DEPLOYMENT.md · 13-UPDATING.md · 14-TROUBLESHOOTING.md
+│   ├── 12-DEPLOYMENT.md · 13-UPDATING.md · 14-TROUBLESHOOTING.md
+│   └── TEMPLATE-GAPS.md     ← syntek-base's own open items (the root GAPS.md ships, so it stays empty)
 ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 ├── SCALE-ARCHITECTURE/      ← how the app scales: load profiles, readiness audit, sizing envelope
 └── SERVER-ARCHITECTURE/     ← what the server/edge must provide; feeds the NixOS deploy repo

@@ -21,7 +21,9 @@ and troubleshooting.
   (link fixes, command corrections, tree updates).
 - **Concrete steps:** edit the guide → verify every command by running it → update this
   folder's `CONTEXT.md` tree and reading-order table if you add or remove a file → update
-  the pointer table in the root `README.md`, which indexes all fourteen.
+  the pointer table in the root `README.md`, which indexes the fourteen numbered guides.
+  `TEMPLATE-GAPS.md` is deliberately **not** in that index: it is a maintainer's register,
+  not a guide for someone using the template.
 - **Definition of done:** every command in the guide has been executed and its output
   matches what is documented; cross-references resolve; British English; the root README
   index and this `CONTEXT.md` both list the file.
@@ -38,6 +40,11 @@ and troubleshooting.
 - **`copier.yml` is the source of truth for behaviour**, `../TEMPLATE-TOKENS.md` for the
   token vocabulary. This directory explains and sequences them — it does not redefine them.
   Where a fact belongs to one of those two, link rather than restate.
+- **The template's own open items go in `TEMPLATE-GAPS.md`, never in the root `GAPS.md`.**
+  `GAPS.md` is a **shipped** file — `copier.yml` does not exclude it — so anything written
+  there is rendered into every generated project, where syntek-base's internal state is
+  meaningless. The root `GAPS.md` stays an empty stub. The same test applies to any
+  register: check `_exclude` before writing repo-specific state into a tracked file.
 - **Script-first.** Every operational command resolves to `code/src/scripts/**/*.sh` — never
   a raw `pnpm`/`uv`/`docker`/`python manage.py` invocation. The exceptions are `copier`
   itself, `uvx`, and `install.sh`, which necessarily run before the scripts exist.

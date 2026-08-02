@@ -11,7 +11,7 @@ consult when working in this repository.
 | -------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [CONTEXT.md](CONTEXT.md)                                       | Project overview, directory tree, layer map                      |
 | [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, Figma workflows      |
-| [GAPS.md](GAPS.md)                                             | Missing workflow files flagged by Claude                         |
+| [GAPS.md](GAPS.md)                                             | Active architectural gaps, blockers, and sprint dependencies     |
 | [.claude/CLAUDE.md](.claude/CLAUDE.md)                         | Global rules, model selection, routing, security non-negotiables |
 | [code/CONTEXT.md](code/CONTEXT.md)                             | Code layer entry point                                           |
 | [how-to/CONTEXT.md](how-to/CONTEXT.md)                         | Setup and daily development entry point                          |

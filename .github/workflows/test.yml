@@ -1,8 +1,10 @@
 # Every test suite, both surfaces. Renamed from test-backend.yml when the optional mobile
 # surface arrived: a stack-neutral name is what lets one workflow hold both job sets.
 #
-# BRANCH PROTECTION: the required check name moved with this rename. Update it in the
-# repository settings in the same change, or merges block on a check that never arrives.
+# BRANCH PROTECTION: `jest-expo + coverage` and `Bundle export` are required status checks.
+# `pytest + coverage` is NOT yet required — see the lockfile guard on that job. It can only
+# join the required set once it reports success in this repository, which the guard now
+# makes possible.
 name: test
 
 # No path filter, deliberately — the same reasoning as the lint workflows. These jobs are
@@ -33,18 +35,45 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Guarded at STEP level on the lockfile, for the same reason the mobile jobs guard on
+      # the mobile directory: the job reports SUCCESS where there is nothing to run, rather
+      # than failing or skipping.
+      #
+      # uv.lock is ABSENT BY DESIGN in the base template — it would pin the root project
+      # under the literal project-slug token, so Copier generates it at generation time
+      # (see the root CONTEXT.md). Every Dockerfile here builds with `COPY pyproject.toml
+      # uv.lock ./`, so the image build cannot succeed in the template repository itself.
+      # Without this guard the job fails on every single pull request raised against the
+      # template, which is exactly what happened before it was added — and it made the
+      # check unusable as a required status check.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — running the backend suite."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — this is the base template, not a generated project."
+            echo "The Django image cannot build without it. Nothing to test."
+          fi
+
       - name: Create .env.test
+        if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.test.example code/src/docker/.env.test
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
       - name: Build django-test image
+        if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE build django-test
 
       - name: Start db and cache
+        if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE up -d db cache
 
       - name: Wait for database
+        if: steps.detect.outputs.present == 'true'
         run: |
           for i in $(seq 1 30); do
             docker compose -f $COMPOSE_FILE exec db \
@@ -54,6 +83,7 @@ jobs:
           done
 
       - name: Determine coverage threshold
+        if: steps.detect.outputs.present == 'true'
         id: threshold
         run: |
           BRANCH="${{ github.base_ref || github.ref_name }}"
@@ -64,6 +94,7 @@ jobs:
           fi
 
       - name: Run pytest with coverage (two phases)
+        if: steps.detect.outputs.present == 'true'
         run: |
           mkdir -p reports
           docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
@@ -84,7 +115,7 @@ jobs:
             "
 
       - name: Upload coverage report
-        if: always()
+        if: always() && steps.detect.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: backend-coverage
@@ -92,14 +123,14 @@ jobs:
           retention-days: 30
 
       - name: Post coverage comment
-        if: always() && github.event_name == 'pull_request'
+        if: always() && steps.detect.outputs.present == 'true' && github.event_name == 'pull_request'
         uses: MishaKav/pytest-coverage-comment@main
         with:
           pytest-xml-coverage-path: reports/coverage.xml
           title: Backend Coverage
 
       - name: Tear down
-        if: always()
+        if: always() && steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE down -v
 
   # ── Mobile surface ──────────────────────────────────────────────────────────
