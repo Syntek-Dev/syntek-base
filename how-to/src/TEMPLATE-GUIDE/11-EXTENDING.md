@@ -54,7 +54,14 @@ model: opus
 ---
 ```
 
-Then: take the next free number, register it in the layer's `workflows/CONTEXT.md` and the root
+Then: **take the next free number — append, never renumber an existing workflow.** Around a
+hundred files cite these paths, including agent definitions, so a stale number is a silent
+routing failure. The numbers are stable identifiers and a shelf position, not a sequence: you
+never run `01` through `11`.
+
+Group it instead by editing the family tables in the layer's `workflows/CONTEXT.md`, which cost
+nothing to reorder — `code/workflows/` runs build → verify → diagnose, `how-to/workflows/` runs
+set up → run → diagnose → author. Then register it in that `CONTEXT.md` and the root
 `REFERENCES.md`, and — if it pairs with a workflow in another layer — add the row to the
 cross-layer pairing table in `REFERENCES.md`.
 
@@ -110,6 +117,19 @@ Skills can carry supporting files; reference them by path from `SKILL.md`.
 
 ## A documentation guide
 
+**Which kind matters, because it picks the owner and the length rule:**
+
+| Kind                                                 | Owner              | Length               |
+| ---------------------------------------------------- | ------------------ | -------------------- |
+| Standards for writing code (`code/docs/`)            | `doc-writer`       | ≤ 300 lines          |
+| Operating the system (`how-to/docs/`, `how-to/src/`) | `operator-docs`    | `src/` is **exempt** |
+| End-user help for the product                        | `support-articles` | n/a                  |
+
+For an operator guide, follow `how-to/workflows/09-write-operator-guide/` and load the `runbook`
+skill. Its one hard rule is the one people skip: **execute the procedure start to finish before
+publishing it** — a guide you have not run is a guess, and prose review will not find the
+prerequisite you forgot to state.
+
 Guides live in a layer's `docs/` and carry routing frontmatter:
 
 ```yaml
@@ -147,11 +167,20 @@ bash code/src/scripts/development/install-frontend.sh --local
 Commit the updated lockfile. `[2/8] Lockfile Alignment` in CI fails if the lock and manifest
 disagree. Check the licence is compatible with your project's `LICENCE` answer.
 
-## An MCP server
+## An MCP server you _consume_
 
 Repo-scoped servers go in `.mcp.json` and are available to everyone who clones. Machine-global
 servers are your own business. Document any new one in `.claude/CLAUDE.md` §3 so agents know it
 exists.
+
+## An MCP server you _serve_
+
+The opposite direction — letting an LLM agent call **your** domain operations — is a FastMCP tool
+surface at `/mcp/`, and it is a different thing entirely. It is designed but deliberately
+unwired: `fastmcp` is not a declared dependency and nothing is mounted. Follow
+`code/workflows/05-mcp-server/`, which opens by asking whether an agent is genuinely the caller —
+a plain Ninja endpoint is already callable by anything that speaks HTTP. Guide:
+`code/docs/MCP-SERVER.md`.
 
 ## An optional subtree
 

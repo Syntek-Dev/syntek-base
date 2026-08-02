@@ -23,7 +23,7 @@ how-to/src/TEMPLATE-GUIDE/
 │
 │   ── Generating ──
 ├── 04-QUICKSTART.md         ← generate → running stack, the short path
-├── 05-ANSWERS.md            ← the twenty-one questions, and how to answer each
+├── 05-ANSWERS.md            ← the Copier questions, and how to answer each
 ├── 06-GENERATION.md         ← what Copier does to the tree, step by step
 │
 │   ── Living with it ──

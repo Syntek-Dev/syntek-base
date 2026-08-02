@@ -18,7 +18,9 @@ actually carries is:
 
 1. **A documentation system** that an agent can navigate deterministically.
 2. **A process** — numbered workflows for specifying, building, reviewing and releasing.
-3. **An agent configuration** — 50 Claude Code agents and 16 skills, tool-scoped and routed.
+3. **An agent configuration** — the Claude Code agents and skills, tool-scoped and routed. No
+   total is quoted: the roster differs between two correct projects once the mobile surface is
+   optional. `.claude/agents/CONTEXT.md` and `.claude/skills/CONTEXT.md` are the registries.
 4. **Gates** — CI, pre-commit hooks and hard documentation requirements that stop drift.
 
 The stack is real and production-shaped, but you could swap Django out and most of the value

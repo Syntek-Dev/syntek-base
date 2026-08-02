@@ -99,11 +99,11 @@ documentation. Full rules in `project-management/docs/GIT-GUIDE.md`.
 
 Three PM phases drive the code workflows:
 
-| Phase               | Drives                                                      |
-| ------------------- | ----------------------------------------------------------- |
-| `16-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`    |
-| `17-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/` |
-| `18-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`                          |
+| Phase               | Drives                                                                                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `16-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`                                                                 |
+| `17-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
+| `18-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`                                                                                       |
 
 Test-first throughout — Red, Green, Refactor:
 

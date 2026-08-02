@@ -2,7 +2,8 @@
 
 **Last Updated**: 02/08/2026
 
-Copier asks twenty-one questions. Most have a good default. A few are load-bearing and awkward to
+Copier asks twenty-two questions — twenty-four if you opt into the mobile surface, which adds two
+of its own. Most have a good default. A few are load-bearing and awkward to
 change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is

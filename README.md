@@ -12,8 +12,9 @@ Code agent suite.**
 uvx copier copy gh:Syntek-Dev/syntek-base my-project
 ```
 
-That is the whole install. Copier asks twenty-one questions, renders the tree, generates
-`uv.lock`, and runs `git init`.
+That is the whole install. Copier asks its questions, renders the tree, generates `uv.lock`, and
+runs `git init`. How many it asks depends on your answers — the mobile ones only appear if you
+opt in. The full list is [`TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md).
 
 ---
 
@@ -26,18 +27,18 @@ the product, and the application skeleton is almost incidental.
 
 Generate a project from it and you get, on day one:
 
-| You get                      | What it means                                                                                                           |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.  |
-| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows.             |
-| **50 Claude Code agents**    | 8 orchestrators that delegate to specialists and document writers, each tool-scoped, each with a defined remit.         |
-| **16 skills**                | Stack idioms, design grilling, architecture vocabulary, session handoff, scale planning, legal and compliance drafting. |
-| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Celery, Nginx, Mailpit — plus scripts to drive them.     |
-| **CI that already bites**    | 15 GitHub Actions workflows: lint, format, type-check, tests, secrets, line-count, stub and CSS-token audits.           |
-| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.           |
+| You get                       | What it means                                                                                                                                                       |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A Django 6 monolith**       | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
+| **A three-layer doc system**  | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
+| **A Claude Code agent suite** | 8 orchestrators that delegate to specialists and document writers, each tool-scoped, each with a defined remit. Roster: `.claude/agents/CONTEXT.md`.                |
+| **Skills, loaded on demand**  | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
+| **A working dev stack**       | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Celery, Nginx, Mailpit — plus scripts to drive them.                                                 |
+| **CI that already bites**     | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
+| **Compliance scaffolding**    | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
 
 It is opinionated on purpose. The stack is fixed, the coverage floors are fixed, the file-length
-limits are fixed. What varies between projects is captured in twenty-one tokens and nothing else.
+limits are fixed. What varies between projects is captured in the template tokens and nothing else.
 
 ## The stack
 
@@ -46,7 +47,9 @@ HTMX · Alpine · vanilla token CSS · Gunicorn/Uvicorn · Nginx · Docker Compo
 SeaweedFS · pytest · Playwright · Bruno · uv · pnpm
 
 One app process family. No React, no Next.js, no GraphQL, no client bundle. The JSON API serves
-machine clients; pages are rendered by Django and made interactive with HTMX and Alpine.
+machine clients; pages are rendered by Django and made interactive with HTMX and Alpine. A third
+surface is designed but deliberately unwired: a FastMCP tool server at `/mcp/` for LLM agent
+clients, specified in `code/docs/MCP-SERVER.md` and built only when a project needs it.
 
 Full rationale: [`how-to/src/TEMPLATE-GUIDE/02-STACK.md`](how-to/src/TEMPLATE-GUIDE/02-STACK.md).
 
@@ -88,7 +91,7 @@ The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE
 | [PREREQUISITES.md](how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md)     | Setting up the host tooling                                  |
 | [QUICKSTART.md](how-to/src/TEMPLATE-GUIDE/04-QUICKSTART.md)           | Generating your first project and getting it running         |
 | [GENERATION.md](how-to/src/TEMPLATE-GUIDE/06-GENERATION.md)           | You want to know exactly what Copier does to the tree        |
-| [ANSWERS.md](how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md)                 | Deciding how to answer the twenty-one questions              |
+| [ANSWERS.md](how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md)                 | Deciding how to answer the Copier questions                  |
 | [UPDATING.md](how-to/src/TEMPLATE-GUIDE/13-UPDATING.md)               | Pulling later template improvements into a live project      |
 | [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)             | Finding your way around the three layers                     |
 | [STACK.md](how-to/src/TEMPLATE-GUIDE/02-STACK.md)                     | You want to know why each piece was chosen                   |
@@ -124,8 +127,8 @@ Copier three-way-merges the change against your edits, using the answers recorde
 MIT — see [LICENSE](LICENSE).
 
 Use it, fork it, rebrand it, build commercial products with it. You owe nothing back. Projects
-you generate carry **their own** licence, which is one of the twenty-one questions and defaults
-to proprietary; MIT places no obligation on your output.
+you generate carry **their own** licence, which is one of the Copier questions and defaults to
+proprietary; MIT places no obligation on your output.
 
 ## Contributing
 
