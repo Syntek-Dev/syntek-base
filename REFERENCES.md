@@ -48,6 +48,7 @@ consult when working in this repository.
 | [code/docs/RENDERING.md](code/docs/RENDERING.md)                                         | Rendering strategies — where each interaction runs: server template, HTMX, or Alpine                                                                                   |
 | [code/docs/RESPONSIVE-DESIGN.md](code/docs/RESPONSIVE-DESIGN.md)                         | Breakpoints, fluid layouts, mobile-first rules                                                                                                                         |
 | [code/docs/RLS-GUIDE.md](code/docs/RLS-GUIDE.md)                                         | PostgreSQL row-level security policy conventions                                                                                                                       |
+| [code/docs/RUST.md](code/docs/RUST.md)                                                   | **Rust-only.** The Cargo workspace: the gate question, the PyO3 boundary, secret memory hygiene, and the cargo-deny supply-chain policy                                |
 | [code/docs/SECURITY.md](code/docs/SECURITY.md)                                           | OWASP controls, permission checks, IDOR prevention                                                                                                                     |
 | [code/docs/TESTING.md](code/docs/TESTING.md)                                             | Coverage floors, test structure, mocking strategy                                                                                                                      |
 | [code/docs/URL-STRATEGY.md](code/docs/URL-STRATEGY.md)                                   | URL naming, slug patterns, API endpoint conventions                                                                                                                    |
@@ -96,9 +97,11 @@ consult when working in this repository.
 | 09 — Debugging with logs | [code/workflows/09-debugging-with-logs/CONTEXT.md](code/workflows/09-debugging-with-logs/CONTEXT.md) |
 | 10 — Debug               | [code/workflows/10-debug/CONTEXT.md](code/workflows/10-debug/CONTEXT.md)                             |
 | 11 — Refactor            | [code/workflows/11-refactor/CONTEXT.md](code/workflows/11-refactor/CONTEXT.md)                       |
+| 12 — Rust extension      | [code/workflows/12-rust-extension/CONTEXT.md](code/workflows/12-rust-extension/CONTEXT.md)           |
 
-> Grouped in three families: **build** (01–06), **verify** (07–08), **diagnose & improve**
-> (09–11). The numbers are stable identifiers, not a sequence — append, never renumber.
+> Grouped in four families: **build** (01–06), **verify** (07–08), **diagnose & improve**
+> (09–11), and **build, opt-in** (12 — rust-only, absent unless the project opted in). The
+> numbers are stable identifiers, not a sequence — append, never renumber.
 
 ### How-to workflows (`how-to/workflows/`)
 
@@ -162,7 +165,7 @@ complete.
 | `08-gdpr-compliance`              | `06-gdpr-enforcement`                                                        | Obligations specified → enforced in code; review is a hard prerequisite          |
 | `09-security-checks`              | `08-security-hardening`                                                      | Design threat model → built-code audit, **entered via `17`** or `21`             |
 | `12-api-design`                   | `04-api-design`                                                              | Ninja contract decided → expressed as routers/Schemas, **entered via `17`**      |
-| `16-backend-code`                 | `02-tdd-cycle` · `03-database-migration`                                     | PM phase drives both code workflows                                              |
+| `16-backend-code`                 | `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | PM phase drives all three; `12` is **rust-only** and absent without that surface |
 | `17-api-code`                     | `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | PM phase drives all four; `05` only when the story needs an agent-facing surface |
 | `18-frontend-code`                | `01-new-feature` · `02-tdd-cycle`                                            | PM phase drives both                                                             |
 | `19-implementation-documentation` | _(receives from `01`, `02`)_                                                 | **Owns** all records, findings, docs, and the graph refresh                      |
@@ -193,6 +196,9 @@ complete.
 | Technology             | Version | Documentation URL                                       |
 | ---------------------- | ------- | ------------------------------------------------------- |
 | Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
+| Rust (rust-only)       | 1.85+   | https://doc.rust-lang.org/stable/book/                  |
+| PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
+| maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
 | Django Ninja           | 1.x     | https://django-ninja.dev/                               |
 | FastMCP                | 3.x     | https://gofastmcp.com/                                  |
 | Model Context Protocol | latest  | https://modelcontextprotocol.io/                        |

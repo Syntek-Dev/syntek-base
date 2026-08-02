@@ -1,9 +1,71 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 1.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 1.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.1.0 — 02/08/2026
+
+**Status:** Minor release — a new optional surface, off by default
+
+### Summary
+
+`syntek-base` gains a third surface: an opt-in **Rust workspace** at `code/src/rust/`, for PyO3
+extension modules, standalone binaries, CLI tools and services. It is gated by one new question,
+`INCLUDE_RUST`, which defaults to `false` — so **a project generated without it gains no files and
+loses none.**
+
+That is not the same as byte-identical, and the difference is worth knowing before you read a
+`copier update` diff: sixteen files change content. The documentation indexes gain **rust-only**
+flagged rows, the version metadata moves, and `pyproject.toml` gains one comment. Nothing in the
+tree changes.
+
+### The distinction that decides your answer
+
+`INCLUDE_RUST` gates **authoring, not consuming**.
+
+A project that merely depends on a prebuilt PyO3 wheel installs it like any other dependency and
+needs no toolchain at all — that project answers `false`. Answer `true` only when source in _this_
+repository is compiled by `cargo`.
+
+Getting it backwards is expensive in one direction only: on a `true` project every contributor
+needs `rustup` before `uv sync` works, and every CI run builds a toolchain. That is the whole
+reason the default is `false`.
+
+### What `true` gives you
+
+- A Cargo workspace with `nativecore`, a baseline PyO3 crate — `constant_time_eq` and a
+  `SecretBytes` type that wipes itself on drop
+- `code/src/scripts/rust/` — build, test, lint and a `cargo-deny` supply-chain gate
+- `code/docs/RUST.md` plus three sub-documents: the PyO3 boundary, memory hygiene, supply chain
+- `code/workflows/12-rust-extension/`, entered from PM `16-backend-code`
+- A `rust` agent and a `stack-rust` skill, excluded together with the tree
+- `syntax-rust.yml` — clippy at `-D warnings`, the Rust suite, and the dependency audit
+
+### Why the guidance is opinionated about _whether_ to use it
+
+Every document here opens with the same gate: **does this need to be Rust at all?** Rust earns its
+place on two grounds — a guarantee Python cannot make (constant-time comparison; erasing key
+material, which immutable garbage-collected `bytes` make impossible), or a **measured** hot path.
+
+A rewrite of working Python fails that gate. The reason is not taste: a PyO3 extension is loaded
+into the same process as Django, with the same privileges and no sandbox, so every crate you add
+sits between a `build.rs` and your database credentials. That is why `cargo-deny` is a gate rather
+than a report.
+
+### Encryption is unchanged
+
+**Fernet remains canonical** for field encryption. Native crypto is a branch for what Fernet
+structurally cannot do — never a replacement, and nothing is migrated automatically. Two
+implementations of the _same_ concern is a parity burden that drifts; two covering _different_
+concerns is a boundary.
+
+### Upgrading
+
+`copier update` and answer `INCLUDE_RUST`. Answering `false` changes nothing.
 
 ---
 

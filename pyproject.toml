@@ -46,6 +46,12 @@ dependencies = [
 #   channels / channels-redis  — ASGI WebSockets; note the stack is one app process
 #                                family, so real-time is a stack change argued in an ADR
 #   cairosvg                   — SVG rasterisation for an asset pipeline
+#   maturin                    — RUST-ONLY. The build backend for the PyO3 extension at
+#                                code/src/rust/crates/nativecore/. It is declared in THAT
+#                                crate's own pyproject.toml, not here, because this root is
+#                                `package = false` — a virtual project never built into a
+#                                wheel. On a project generated with INCLUDE_RUST, install it
+#                                with `uv tool install maturin`; the scripts check for it.
 #   fastmcp                    — the MCP tool surface at /mcp/, for LLM agent clients.
 #                                Trigger: an agent must carry out this project's domain
 #                                operations. NOT for "exposing the API to AI" — a Ninja

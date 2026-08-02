@@ -19,6 +19,8 @@ project carries its own tooling; plugin references were rewritten to internal pa
 │   └── SKILL.md
 ├── stack-fastmcp/          ← the FastMCP tool surface at /mcp/ (available but unwired)
 │   └── SKILL.md
+├── stack-rust/             ← RUST-ONLY — the Cargo workspace, PyO3 boundary, supply-chain gate
+│   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
 │   ├── GIT-AND-PR.md
@@ -77,6 +79,7 @@ project carries its own tooling; plugin references were rewritten to internal pa
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                   |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                        |
 | `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                   |
+| `stack-rust`                    | **Rust-only.** Writing/reviewing `code/src/rust/` — PyO3 boundary, secret zeroizing, cargo-deny. Also: deciding if work belongs in Rust at all  |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                            |
 | `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; loaded by `operator-docs`                                        |
 | `grilling`                      | Design work (architecture, DB, API, story) — the one-question-at-a-time interview engine                                                        |
@@ -100,6 +103,11 @@ project carries its own tooling; plugin references were rewritten to internal pa
 > Django templates + HTMX + Alpine + vanilla CSS (tokens) + django-components + django-ninja,
 > with no client build step. Backend is `stack-django`; the web frontend is
 > `stack-htmx-templates`.
+>
+> **Rust-only skills gate authoring, not consuming.** `stack-rust` and the `rust` agent exist
+> only where the repository **compiles** Rust. A project that merely depends on a prebuilt PyO3
+> wheel installs it like any other dependency and has neither. Listed unconditionally and
+> flagged, on the same principle as the mobile rows.
 >
 > **Mobile-only skills exist but never apply to the web.** `stack-react-native` governs a
 > **separate deployable** that consumes the JSON API — it is not a client framework for these

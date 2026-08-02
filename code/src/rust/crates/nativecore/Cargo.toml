@@ -1,0 +1,47 @@
+# nativecore — the first-party PyO3 extension module for <%PROJECT_NAME%>.
+#
+# `nativecore` is a HOUSE CONSTANT, not a token: like apps.marketing and
+# apps.design_tokens, the name is the same in every generated project so the import path
+# is stable across the estate. Python imports it as `import nativecore`.
+
+[package]
+name = "nativecore"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+# Never published to crates.io. This is a first-party crypto crate consumed as a path
+# dependency; publishing it would be a deliberate act, not an accident. It is also what
+# lets cargo-deny skip the licence check on it (deny.toml -> private.ignore), because
+# LICENCE renders to free text that is not a valid SPDX expression.
+publish = false
+description = "First-party native extension for <%PROJECT_NAME%> — crypto and secret-handling primitives"
+
+[lib]
+# `cdylib` is what Python loads. `rlib` is kept alongside it so other crates in the
+# workspace — and `cargo test` — can link this crate as an ordinary Rust library; a
+# cdylib-only crate cannot be unit-tested from a sibling.
+name = "nativecore"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3.workspace = true
+zeroize.workspace = true
+secrecy.workspace = true
+
+[lints.rust]
+# `unsafe` is not banned outright — PyO3 and FFI need it — but every block must be
+# justified. Denying it here means an author has to write an explicit, reviewable
+# `#[allow(unsafe_code)]` with a SAFETY comment rather than slipping it in.
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Panicking paths are denied: a panic crossing the FFI boundary is a Python exception at
+# best and a crashed worker at worst. Return a Result and let PyO3 map it.
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"

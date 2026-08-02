@@ -13,7 +13,10 @@ a specific choice rather than the whole thing.
 page. There is no separate frontend service, no bundler, no client-side framework, and no build
 step between writing a template and seeing it in the browser.
 
-That is the whole stack unless you answer `INCLUDE_MOBILE` with yes, which adds a **second,
+That is the whole stack unless you opt into a surface. `INCLUDE_RUST` adds a **Cargo workspace**
+at `code/src/rust/` whose PyO3 extension is compiled **into** the Django process — it is the one
+surface with no separate runtime, which is why its supply chain is gated harder than any Python
+dependency. And `INCLUDE_MOBILE` adds a **second,
 optional deployable** — a React Native app that talks to the same `/api/` a third-party client
 would. It is a peer surface, not a layer: it never renders a Django page, and Django never
 bundles it. See _Mobile_ below. Everything on this page describes the **web surface** unless it

@@ -3,12 +3,12 @@
 # CLAUDE.md — code/workflows/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(the eleven numbered workflows + their purpose table, imported above) → this file →
+(the twelve numbered workflows + their purpose table, imported above) → this file →
 the target workflow's `CONTEXT.md`/`CLAUDE.md`.
 
 ## Purpose (one line)
 
-The step-by-step coding procedures (`01`–`11`) that govern how anything in
+The step-by-step coding procedures (`01`–`12`) that govern how anything in
 `code/src/` is designed, written, tested, reviewed, and debugged — each a numbered
 folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
 `CHECKLIST.md` (verification).
@@ -16,11 +16,12 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
 ## How to work here
 
 - **Routing:** pick the workflow that matches the task (`01` full-stack feature,
-  `02` TDD, `03` security, `04` API, `05` GDPR, `06` review, `07` debug,
-  `08` refactor, `09` migration, `10` log-debugging, `11` MCP tool surface). Read its
-  `CONTEXT.md` first; enter `STEPS.md` only when explicitly triggered. Backend steps run
-  through the `stack-django` skill, frontend through `stack-htmx-templates`, MCP tools
-  through `stack-fastmcp` — all Opus.
+  `02` TDD, `03` migration, `04` API, `05` MCP tool surface, `06` GDPR, `07` review,
+  `08` security hardening, `09` log-debugging, `10` debug, `11` refactor, `12` Rust
+  extension). Read its `CONTEXT.md` first; enter `STEPS.md` only when explicitly
+  triggered. Backend steps run through the `stack-django` skill, frontend through
+  `stack-htmx-templates`, MCP tools through `stack-fastmcp`, native code through
+  `stack-rust` — all Opus.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
   opens with a grilling pass; the owning agent loads `.claude/skills/grill-with-docs` and
   interviews <%DEVELOPER_NAME%> one question at a time before producing the artefact (`.claude/CLAUDE.md` §10).
@@ -43,8 +44,10 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
 - Hard gates are load-bearing: a workflow that touches mutations must cite the
   permission-check / IDOR requirement; one that touches PII must cite field
   encryption; keep those references accurate.
-- Do not add a twelfth workflow without also registering it in `CONTEXT.md`,
-  `code/REFERENCES.md`, and the root `REFERENCES.md` workflow index.
+- Do not add a thirteenth workflow without also registering it in `CONTEXT.md`,
+  `code/REFERENCES.md`, and the root `REFERENCES.md` workflow index. A workflow that
+  belongs to an optional surface also needs its `_exclude` entry in `copier.yml` and a
+  flagged row in every index, exactly as `12-rust-extension` has.
 
 ## Output & naming
 

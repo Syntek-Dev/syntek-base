@@ -27,6 +27,7 @@ Internal and external references for all coding work in this repository.
 - `code/workflows/09-debugging-with-logs/CONTEXT.md` — debug using logs and observability tools
 - `code/workflows/10-debug/CONTEXT.md` — code-logic debugging and regression tests
 - `code/workflows/11-refactor/CONTEXT.md` — systematic refactoring without behaviour change
+- `code/workflows/12-rust-extension/CONTEXT.md` — **rust-only** — PyO3 extensions in the Cargo workspace
 
 ### Guides in code/docs/
 
@@ -45,6 +46,7 @@ Internal and external references for all coding work in this repository.
 - `code/docs/RENDERING.md` — server-rendered templates, HTMX partials, Alpine, and where each interaction runs
 - `code/docs/RESPONSIVE-DESIGN.md` — mobile-first CSS, media queries, breakpoints, CSS custom properties
 - `code/docs/RLS-GUIDE.md` — row-level security patterns for multi-tenant scope
+- `code/docs/RUST.md` — **rust-only** — the Cargo workspace: the gate question, the PyO3 boundary, memory hygiene for secrets, and the cargo-deny supply-chain policy
 - `code/docs/SECURITY.md` — OWASP A01–A10, Django Ninja API security, CORS, IDOR prevention
 - `code/docs/TESTING.md` — TDD phases, coverage floors, pytest setup
 - `code/docs/URL-STRATEGY.md` — route naming, slug patterns, Django URL conventions
@@ -67,6 +69,16 @@ Internal and external references for all coding work in this repository.
 - **Starlette** — <https://www.starlette.io/> — the ASGI toolkit that composes the `/mcp/` and Django mounts in `config/asgi.py` (arrives with FastMCP)
 - **Gunicorn** — <https://docs.gunicorn.org/en/stable/> — WSGI HTTP server
 - **Uvicorn** — <https://www.uvicorn.org/> — ASGI server used alongside Gunicorn
+
+### Native (rust-only)
+
+- **Rust** — <https://doc.rust-lang.org/stable/book/> — the language reference
+- **PyO3** — <https://pyo3.rs/> — the Rust↔Python bindings the extension module is built on
+- **maturin** — <https://www.maturin.rs/> — the build backend that turns the crate into a wheel
+- **zeroize** — <https://docs.rs/zeroize/> — volatile, non-elidable wiping of secret material
+- **cargo-deny** — <https://embarkstudios.github.io/cargo-deny/> — the advisory, licence and source gate
+- **RustSec advisory database** — <https://rustsec.org/> — what `audit.sh` checks against
+- **RustCrypto** — <https://github.com/RustCrypto> — audited primitives; never implement your own
 
 ### Frontend
 

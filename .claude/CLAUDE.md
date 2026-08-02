@@ -54,8 +54,9 @@ specialists load the **stack skills**. The governing `docs/` guide and the workf
   `database`, `gdpr`, `test-writer`, `qa-tester`, `privacy-policy-writer`). Each is tool-scoped
   with a distinct remit; invoke one directly only for a narrow job. The roster in
   `.claude/agents/CONTEXT.md` is the count — no number is repeated here, because it goes stale on
-  every roster change and, with the optional mobile surface, differs between two correct
-  projects. Rows flagged **mobile-only** (`mobile`) are absent on a web-only project.
+  every roster change and, with the optional surfaces, differs between two correct
+  projects. Rows flagged **mobile-only** (`mobile`) are absent on a web-only project, and rows
+  flagged **rust-only** (`rust`) are absent unless the project opted into the Rust surface.
 
 Internalised from the (now-disabled) `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer` plugins; models are
 `fable`/`opus` by tier (§4) — planning agents (`story`, `sprint`, `planner`, `user-story`)
@@ -68,6 +69,7 @@ run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 | `stack-django`                  | Backend code — models, services, Django Ninja endpoints, pytest                                                                                    |
 | `stack-htmx-templates`          | Public frontend — Django templates, django-components, HTMX, Alpine, token CSS                                                                     |
 | `stack-react-native`            | **Mobile-only.** The mobile surface — Expo, TypeScript, expo-router, StyleSheet over tokens                                                        |
+| `stack-rust`                    | **Rust-only.** The Rust workspace — PyO3 extensions, the never-panic boundary, secret zeroizing, the cargo-deny gate                               |
 | `stack-fastmcp`                 | The MCP tool surface at `/mcp/` — FastMCP tools over the service layer, token auth, in-memory client tests                                         |
 | `global-workflow`               | Branches, commits, PRs, version bumps, docs, code comments                                                                                         |
 | `runbook`                       | Authoring operator documentation — `how-to/docs/` and `how-to/src/` guides a human executes                                                        |
@@ -311,6 +313,7 @@ The skills the internal agents load on demand (full when-to-load table: `.claude
 - **Stack Skill (Backend):** `stack-django` — `.claude/skills/stack-django/`
 - **Stack Skill (Frontend, web):** `stack-htmx-templates` — `.claude/skills/stack-htmx-templates/`
 - **Stack Skill (Mobile) — mobile-only:** `stack-react-native` — `.claude/skills/stack-react-native/` (paired with the `mobile` agent; both absent on a web-only project)
+- **Stack Skill (Native) — rust-only:** `stack-rust` — `.claude/skills/stack-rust/` (paired with the `rust` agent; both absent unless the project opted into the Rust surface. Gates **authoring**: a project that merely consumes a prebuilt PyO3 wheel needs neither)
 - **Stack Skill (Agent-facing):** `stack-fastmcp` — `.claude/skills/stack-fastmcp/` (the `/mcp/` tool surface; loaded by `backend`, `security`, and `test-writer` — no dedicated agent, because MCP tools are backend service-layer work)
 - **Global Skill:** `global-workflow` — `.claude/skills/global-workflow/`
 - **Operator-Docs Skill:** `runbook` — `.claude/skills/runbook/` (paired with the `operator-docs` agent; the craft for guides a human executes)

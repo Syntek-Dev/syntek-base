@@ -33,10 +33,11 @@ the implementation agents build on (see `.claude/CLAUDE.md` §4).
 
 ## Specialists (delegated implementation & analysis)
 
-Rows flagged **mobile-only** exist only in a project generated with the mobile surface. They are
+Rows flagged **mobile-only** exist only in a project generated with the mobile surface, and rows
+flagged **rust-only** only in one generated with the Rust surface. They are
 listed unconditionally and flagged, rather than templated in or out: that keeps this index free
-of conditional contents, which is the rule the whole opt-in rests on. On a web-only project,
-read a mobile-only row as "not present here".
+of conditional contents, which is the rule the whole opt-in rests on. On a project without that
+surface, read the flagged row as "not present here".
 
 | Agent              | Purpose                                                           |
 | ------------------ | ----------------------------------------------------------------- |
@@ -61,6 +62,7 @@ read a mobile-only row as "not present here".
 | `pm`               | Set up and maintain PM-tool integration and sync                  |
 | `qa-tester`        | Hostile QA — bugs, security flaws, edge cases                     |
 | `reporting`        | Role-based backend report data queries and aggregations           |
+| `rust`             | **Rust-only.** PyO3 extensions, native crypto primitives, crates  |
 | `scaffold`         | Scaffold CONTEXT/CLAUDE docs, workflow folders, routing           |
 | `scale-planner`    | Deployment sizing + scalability; the app↔server/deploy contract   |
 | `seo`              | Technical SEO / AI discoverability for the Django marketing pages |

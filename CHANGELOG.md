@@ -1,12 +1,36 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 1.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 1.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.1.0] - 02/08/2026
+
+### Added
+
+- **An optional Rust surface, gated by the new `INCLUDE_RUST` question.** A Cargo workspace at `code/src/rust/` for PyO3 extension modules, standalone binaries, CLI tools and services — with `nativecore`, a baseline PyO3 crate, as its first member. It follows the `INCLUDE_MOBILE` precedent exactly: templated `_exclude` entries are the single conditionalisation mechanism, no file gains templated contents, and the indexes list the new rows unconditionally with a **rust-only** flag. A project generated with `INCLUDE_RUST: false` gets **no new or removed files** — verified by diffing a `1.1.0` web-only generation against a `1.0.0` one. Sixteen files differ in content: the documentation indexes gaining flagged rows, the version metadata, and one comment in `pyproject.toml`. The tree is unchanged; it is not byte-identical, and that distinction matters when reviewing a `copier update` diff.
+- **The flag gates authoring, not consuming.** A project that merely depends on a prebuilt PyO3 wheel installs it like any other dependency and needs no toolchain — it answers `false`. `true` means _this repository compiles Rust_, which makes `rustup` a prerequisite for `uv sync` and adds a Rust stage to the backend image. That cost is why the default is `false`, and why the distinction is stated in `TEMPLATE-TOKENS.md`, `05-ANSWERS.md`, the guide, the skill and the agent.
+- **`rust` agent and `stack-rust` skill**, excluded together with the tree — a Rust agent with no Rust to work on is worse than no agent at all. Both carry the gate question as their opening move: Rust earns its place only on a guarantee Python cannot make, or a **measured** hot path.
+- **`code/docs/RUST.md` and three sub-documents** — `rust/PYO3-BOUNDARY.md` (never panic across FFI, thin-boundary shape, error mapping, the GIL, `abi3`), `rust/MEMORY-HYGIENE.md` (why Python cannot erase a secret, zeroize-on-drop, constant-time comparison, and the limits it does _not_ cover — copies, swap, core dumps), and `rust/SUPPLY-CHAIN.md` (why a crate is more dangerous than a Python package, and what `deny.toml` enforces).
+- **`code/workflows/12-rust-extension/`** — appended, never renumbered, per the stable-identifier rule. Entered from PM `16-backend-code`; Step 1 is a grilling pass whose first question is the gate.
+- **`code/src/scripts/rust/`** — `build.sh`, `test.sh`, `lint.sh`, `audit.sh` plus `_common.sh`. The second script group keyed by stack rather than operation, and the second to run on the host rather than in Docker; the toolchain pin is what keeps a host run and the image's build stage identical.
+- **`syntax-rust.yml`** — clippy at `-D warnings`, the Rust test suite, and `cargo-deny`. The workflow file is itself rust-only, so there is no job to guard on a project without the surface.
+- **`code/docs/encryption/RUST-CRYPTO.md`** — the dual-path branch of the encryption guide.
+
+### Changed
+
+- **`code/src/` now describes three surfaces rather than two.** The native surface is the odd one: it has no separate runtime, because a PyO3 extension is loaded **into** the web surface's process and shares its address space. That is precisely why its supply chain is gated harder than any Python dependency.
+- **Fernet remains canonical for field encryption.** Native crypto is a branch for what Fernet structurally cannot do — constant-time comparison, and wiping key material Python cannot erase — never a replacement. Keeping the two paths separate is deliberate: two implementations of the _same_ concern is a parity burden that drifts, whereas two covering _different_ concerns is a boundary. It also keeps `syntek-base` usable by anyone outside <%ORG_NAME%>, which a hard dependency on a private wheel would not.
+
+### Fixed
+
+- Nothing. No defect is addressed in this release.
 
 ---
 
