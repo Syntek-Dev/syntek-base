@@ -7,6 +7,22 @@ name: Claude Code
 #   (backend.sh) are Docker-only and cannot be called here.
 #   Coverage thresholds match the hooks: 75% pytest floor always, 80% CI floor on
 #   staging/main (same logic as _apply_coverage_floor in check-tests.sh).
+#
+# LOCKFILE GUARD — read this before touching any `uv` step below.
+# uv.lock is ABSENT BY DESIGN in the base template: it would pin the root project under
+# the literal project-slug token, so Copier generates it at generation time and removes
+# the ignore rule (see the root CONTEXT.md). Every `uv sync --frozen` here therefore
+# cannot resolve in THIS repository, which made six of these eight gates fail on every
+# single push and pull request raised against the template.
+#
+# The fix is the same one test.yml/test-api.yml/test-e2e.yml already carry: a
+# `Detect the backend lockfile` step, and `if:` on the steps that need the lockfile — so
+# the job reports SUCCESS where there is nothing to run, rather than failing or skipping.
+#
+# Guarded at STEP level, not job level, and deliberately so: the JS half of these jobs
+# (pnpm install, prettier, eslint, pnpm audit) works perfectly well in the template and
+# genuinely gates its docs, configs and scripts. Guarding the whole job would throw that
+# away to fix the Python half. Only the `uv` steps are conditional.
 
 on:
   issue_comment:
@@ -96,7 +112,20 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
+      # See the LOCKFILE GUARD note at the top of this file.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — checking Python lockfile alignment."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — this is the base template, not a generated project."
+            echo "Copier writes it at generation time. Checking the JS lockfile only."
+          fi
       - name: Python — uv sync --frozen
+        if: steps.detect.outputs.present == 'true'
         run: uv sync --frozen
         working-directory: code/src/django
       - name: JS — pnpm install --frozen-lockfile
@@ -125,10 +154,22 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      - run: uv sync --frozen
+      # See the LOCKFILE GUARD note at the top of this file.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template. Running Prettier only."
+          fi
+      - if: steps.detect.outputs.present == 'true'
+        run: uv sync --frozen
         working-directory: code/src/django
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff format --check
+        if: steps.detect.outputs.present == 'true'
         run: uv run ruff format --check .
         working-directory: code/src/django
       - name: Prettier — --check
@@ -157,10 +198,22 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      - run: uv sync --frozen
+      # See the LOCKFILE GUARD note at the top of this file.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template. Running ESLint only."
+          fi
+      - if: steps.detect.outputs.present == 'true'
+        run: uv sync --frozen
         working-directory: code/src/django
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff check
+        if: steps.detect.outputs.present == 'true'
         run: uv run ruff check .
         working-directory: code/src/django
       - name: JS — eslint
@@ -200,10 +253,24 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      - run: uv sync --frozen
+      # See the LOCKFILE GUARD note at the top of this file. This gate is Python-only, so
+      # everything below is conditional and the job reports success with nothing to run.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template. There is no Python environment to type-check."
+          fi
+      - if: steps.detect.outputs.present == 'true'
+        run: uv sync --frozen
         working-directory: code/src/django
-      - run: pnpm install --frozen-lockfile
+      - if: steps.detect.outputs.present == 'true'
+        run: pnpm install --frozen-lockfile
       - name: Python — basedpyright
+        if: steps.detect.outputs.present == 'true'
         run: uv run basedpyright
 
   # ── [7/8] Tests ──────────────────────────────────────────────────────────────
@@ -268,11 +335,26 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      - run: uv sync --frozen --group test
+      # See the LOCKFILE GUARD note at the top of this file. This gate is Python-only, so
+      # everything below is conditional and the job reports success with nothing to run.
+      # test.yml's `pytest + coverage` job carries the identical guard.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template. There is no test suite to run."
+          fi
+      - if: steps.detect.outputs.present == 'true'
+        run: uv sync --frozen --group test
         working-directory: code/src/django
-      - run: pnpm install --frozen-lockfile
+      - if: steps.detect.outputs.present == 'true'
+        run: pnpm install --frozen-lockfile
 
       - name: Backend — pytest
+        if: steps.detect.outputs.present == 'true'
         run: |
           mkdir -p ../scripts/tests/reports/backend-coverage
           if [[ "$GITHUB_REF" == "refs/heads/staging" || "$GITHUB_REF" == "refs/heads/main" || \
@@ -292,8 +374,9 @@ jobs:
 
       - name: Enforce 80% coverage floor (staging/main)
         if: |
-          github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main' ||
-          github.base_ref == 'staging' || github.base_ref == 'main'
+          steps.detect.outputs.present == 'true' &&
+          (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main' ||
+           github.base_ref == 'staging' || github.base_ref == 'main')
         run: |
           python3 - <<'EOF'
           import xml.etree.ElementTree as ET, json, sys
@@ -328,6 +411,7 @@ jobs:
       - name: Backend — post coverage comment
         if: |
           always() &&
+          steps.detect.outputs.present == 'true' &&
           github.event_name == 'pull_request' &&
           (github.base_ref == 'staging' || github.base_ref == 'main')
         uses: MishaKav/pytest-coverage-comment@main
@@ -359,14 +443,28 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      - run: uv sync --frozen
+      # See the LOCKFILE GUARD note at the top of this file. `pnpm audit` is unguarded and
+      # keeps scanning the template's own JS dependency tree.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template. Auditing the JS dependency tree only."
+          fi
+      - if: steps.detect.outputs.present == 'true'
+        run: uv sync --frozen
         working-directory: code/src/django
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff security (flake8-bandit rules)
+        if: steps.detect.outputs.present == 'true'
         run: uv run ruff check --select S .
         working-directory: code/src/django
       - name: JS — pnpm audit
         run: pnpm audit --audit-level low
       - name: Python — pip-audit (CVE scan)
+        if: steps.detect.outputs.present == 'true'
         run: uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes)
         working-directory: code/src/django

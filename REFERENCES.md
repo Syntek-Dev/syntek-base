@@ -43,6 +43,7 @@ consult when working in this repository.
 | [code/docs/DATA-STRUCTURES.md](code/docs/DATA-STRUCTURES.md)                             | Shared data models and type conventions                                                                                                                                |
 | [code/docs/ENCRYPTION-GUIDE.md](code/docs/ENCRYPTION-GUIDE.md)                           | Fernet PII encryption pipeline                                                                                                                                         |
 | [code/docs/LOGGING.md](code/docs/LOGGING.md)                                             | Structured logging with Sentry and file-based logs                                                                                                                     |
+| [code/docs/MCP-SERVER.md](code/docs/MCP-SERVER.md)                                       | The FastMCP tool surface at `/mcp/` — mounting, tool design, auth and threats, testing and ops (available but unwired)                                                 |
 | [code/docs/PERFORMANCE.md](code/docs/PERFORMANCE.md)                                     | Caching, query optimisation, and response-time targets                                                                                                                 |
 | [code/docs/RENDERING.md](code/docs/RENDERING.md)                                         | Rendering strategies — where each interaction runs: server template, HTMX, or Alpine                                                                                   |
 | [code/docs/RESPONSIVE-DESIGN.md](code/docs/RESPONSIVE-DESIGN.md)                         | Breakpoints, fluid layouts, mobile-first rules                                                                                                                         |
@@ -86,24 +87,36 @@ consult when working in this repository.
 | Index                    | [code/workflows/CONTEXT.md](code/workflows/CONTEXT.md)                                               |
 | 01 — New feature         | [code/workflows/01-new-feature/CONTEXT.md](code/workflows/01-new-feature/CONTEXT.md)                 |
 | 02 — TDD cycle           | [code/workflows/02-tdd-cycle/CONTEXT.md](code/workflows/02-tdd-cycle/CONTEXT.md)                     |
-| 03 — Security hardening  | [code/workflows/03-security-hardening/CONTEXT.md](code/workflows/03-security-hardening/CONTEXT.md)   |
+| 03 — Database migration  | [code/workflows/03-database-migration/CONTEXT.md](code/workflows/03-database-migration/CONTEXT.md)   |
 | 04 — API design          | [code/workflows/04-api-design/CONTEXT.md](code/workflows/04-api-design/CONTEXT.md)                   |
-| 05 — GDPR enforcement    | [code/workflows/05-gdpr-enforcement/CONTEXT.md](code/workflows/05-gdpr-enforcement/CONTEXT.md)       |
-| 06 — Review              | [code/workflows/06-review/CONTEXT.md](code/workflows/06-review/CONTEXT.md)                           |
-| 07 — Debug               | [code/workflows/07-debug/CONTEXT.md](code/workflows/07-debug/CONTEXT.md)                             |
-| 08 — Refactor            | [code/workflows/08-refactor/CONTEXT.md](code/workflows/08-refactor/CONTEXT.md)                       |
-| 09 — Database migration  | [code/workflows/09-database-migration/CONTEXT.md](code/workflows/09-database-migration/CONTEXT.md)   |
-| 10 — Debugging with logs | [code/workflows/10-debugging-with-logs/CONTEXT.md](code/workflows/10-debugging-with-logs/CONTEXT.md) |
+| 05 — MCP server          | [code/workflows/05-mcp-server/CONTEXT.md](code/workflows/05-mcp-server/CONTEXT.md)                   |
+| 06 — GDPR enforcement    | [code/workflows/06-gdpr-enforcement/CONTEXT.md](code/workflows/06-gdpr-enforcement/CONTEXT.md)       |
+| 07 — Review              | [code/workflows/07-review/CONTEXT.md](code/workflows/07-review/CONTEXT.md)                           |
+| 08 — Security hardening  | [code/workflows/08-security-hardening/CONTEXT.md](code/workflows/08-security-hardening/CONTEXT.md)   |
+| 09 — Debugging with logs | [code/workflows/09-debugging-with-logs/CONTEXT.md](code/workflows/09-debugging-with-logs/CONTEXT.md) |
+| 10 — Debug               | [code/workflows/10-debug/CONTEXT.md](code/workflows/10-debug/CONTEXT.md)                             |
+| 11 — Refactor            | [code/workflows/11-refactor/CONTEXT.md](code/workflows/11-refactor/CONTEXT.md)                       |
+
+> Grouped in three families: **build** (01–06), **verify** (07–08), **diagnose & improve**
+> (09–11). The numbers are stable identifiers, not a sequence — append, never renumber.
 
 ### How-to workflows (`how-to/workflows/`)
 
-| Workflow               | CONTEXT.md                                                                                           |
-| ---------------------- | ---------------------------------------------------------------------------------------------------- |
-| Index                  | [how-to/workflows/CONTEXT.md](how-to/workflows/CONTEXT.md)                                           |
-| 01 — First-time setup  | [how-to/workflows/01-first-time-setup/CONTEXT.md](how-to/workflows/01-first-time-setup/CONTEXT.md)   |
-| 02 — Daily development | [how-to/workflows/02-daily-development/CONTEXT.md](how-to/workflows/02-daily-development/CONTEXT.md) |
-| 03 — Debugging         | [how-to/workflows/03-debugging/CONTEXT.md](how-to/workflows/03-debugging/CONTEXT.md)                 |
-| 04 — Worktree setup    | [how-to/workflows/04-worktree-setup/CONTEXT.md](how-to/workflows/04-worktree-setup/CONTEXT.md)       |
+| Workflow                  | CONTEXT.md                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Index                     | [how-to/workflows/CONTEXT.md](how-to/workflows/CONTEXT.md)                                                 |
+| 01 — First-time setup     | [how-to/workflows/01-first-time-setup/CONTEXT.md](how-to/workflows/01-first-time-setup/CONTEXT.md)         |
+| 02 — Worktree setup       | [how-to/workflows/02-worktree-setup/CONTEXT.md](how-to/workflows/02-worktree-setup/CONTEXT.md)             |
+| 03 — Daily development    | [how-to/workflows/03-daily-development/CONTEXT.md](how-to/workflows/03-daily-development/CONTEXT.md)       |
+| 04 — Database operations  | [how-to/workflows/04-database-operations/CONTEXT.md](how-to/workflows/04-database-operations/CONTEXT.md)   |
+| 05 — Testing & coverage   | [how-to/workflows/05-testing-and-coverage/CONTEXT.md](how-to/workflows/05-testing-and-coverage/CONTEXT.md) |
+| 06 — Quality gates        | [how-to/workflows/06-quality-gates/CONTEXT.md](how-to/workflows/06-quality-gates/CONTEXT.md)               |
+| 07 — Dependency updates   | [how-to/workflows/07-dependency-updates/CONTEXT.md](how-to/workflows/07-dependency-updates/CONTEXT.md)     |
+| 08 — Debugging            | [how-to/workflows/08-debugging/CONTEXT.md](how-to/workflows/08-debugging/CONTEXT.md)                       |
+| 09 — Write operator guide | [how-to/workflows/09-write-operator-guide/CONTEXT.md](how-to/workflows/09-write-operator-guide/CONTEXT.md) |
+
+> Grouped in four families: **set up** (01–02), **run** (03–07), **diagnose** (08),
+> **author** (09). Numbers are stable identifiers, not a sequence.
 
 ### Project-management workflows (`project-management/workflows/`)
 
@@ -143,19 +156,19 @@ single source of truth for how the two sets interlock — neither layer's `CONTE
 only through the PM build phases (`16`–`18`), which are themselves gated on `01`–`15` being
 complete.
 
-| PM workflow                       | Paired code workflow                                       | Relationship                                                                |
-| --------------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `03-database-schema`              | `09-database-migration`                                    | Schema designed (Fable) → migration written (Opus), **entered via `16`**    |
-| `08-gdpr-compliance`              | `05-gdpr-enforcement`                                      | Obligations specified → enforced in code; review is a hard prerequisite     |
-| `09-security-checks`              | `03-security-hardening`                                    | Design threat model → built-code audit, **entered via `17`** or `21`        |
-| `12-api-design`                   | `04-api-design`                                            | Ninja contract decided → expressed as routers/Schemas, **entered via `17`** |
-| `16-backend-code`                 | `02-tdd-cycle` · `09-database-migration`                   | PM phase drives both code workflows                                         |
-| `17-api-code`                     | `04-api-design` · `02-tdd-cycle` · `03-security-hardening` | PM phase drives all three                                                   |
-| `18-frontend-code`                | `01-new-feature` · `02-tdd-cycle`                          | PM phase drives both                                                        |
-| `19-implementation-documentation` | _(receives from `01`, `02`)_                               | **Owns** all records, findings, docs, and the graph refresh                 |
-| `20-pr-and-review`                | `06-review`                                                | Content review (code layer) → process, merge, verification (PM layer)       |
-| _no PM workflow_                  | `07-debug` · `10-debugging-with-logs`                      | Entered from `19` findings routed to `src/19-BUGS/`                         |
-| _no PM workflow_                  | `08-refactor`                                              | Entered from `19` findings routed to `src/20-REFACTORING/`                  |
+| PM workflow                       | Paired code workflow                                                         | Relationship                                                                     |
+| --------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `03-database-schema`              | `03-database-migration`                                                      | Schema designed (Fable) → migration written (Opus), **entered via `16`**         |
+| `08-gdpr-compliance`              | `06-gdpr-enforcement`                                                        | Obligations specified → enforced in code; review is a hard prerequisite          |
+| `09-security-checks`              | `08-security-hardening`                                                      | Design threat model → built-code audit, **entered via `17`** or `21`             |
+| `12-api-design`                   | `04-api-design`                                                              | Ninja contract decided → expressed as routers/Schemas, **entered via `17`**      |
+| `16-backend-code`                 | `02-tdd-cycle` · `03-database-migration`                                     | PM phase drives both code workflows                                              |
+| `17-api-code`                     | `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | PM phase drives all four; `05` only when the story needs an agent-facing surface |
+| `18-frontend-code`                | `01-new-feature` · `02-tdd-cycle`                                            | PM phase drives both                                                             |
+| `19-implementation-documentation` | _(receives from `01`, `02`)_                                                 | **Owns** all records, findings, docs, and the graph refresh                      |
+| `20-pr-and-review`                | `07-review`                                                                  | Content review (code layer) → process, merge, verification (PM layer)            |
+| _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                        | Entered from `19` findings routed to `src/19-BUGS/`                              |
+| _no PM workflow_                  | `11-refactor`                                                                | Entered from `19` findings routed to `src/20-REFACTORING/`                       |
 
 **PM-only, no code counterpart:** `01-story-creation`, `02-sprint-planning`, `04-user-flow-design`,
 `05-brand-guides`, `06-component-designs`, `07-wireframes`, `10-qa-checks`, `11-seo-checks`,
@@ -169,7 +182,7 @@ complete.
 | Findings, `GAPS.md` / `DEFERRED.md` routing            | PM `19-implementation-documentation` |
 | `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `19-implementation-documentation` |
 | Branch promotion, approvals, merge gates               | PM `20-pr-and-review`                |
-| Code content review (OWASP, coverage, principles)      | code `06-review`                     |
+| Code content review (OWASP, coverage, principles)      | code `07-review`                     |
 | Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`      |
 | Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)   |
 
@@ -177,24 +190,26 @@ complete.
 
 ## External — Stack Documentation
 
-| Technology            | Version | Documentation URL                                       |
-| --------------------- | ------- | ------------------------------------------------------- |
-| Django                | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
-| Django Ninja          | 1.x     | https://django-ninja.dev/                               |
-| HTMX                  | latest  | https://htmx.org/docs/                                  |
-| Alpine.js             | latest  | https://alpinejs.dev/start-here                         |
-| PostgreSQL            | 18      | https://www.postgresql.org/docs/18/                     |
-| Valkey                | latest  | https://valkey.io/docs/                                 |
-| django-htmx           | latest  | https://django-htmx.readthedocs.io/                     |
-| pytest                | latest  | https://docs.pytest.org/en/stable/                      |
-| pytest-django         | latest  | https://pytest-django.readthedocs.io/en/latest/         |
-| Playwright (Python)   | latest  | https://playwright.dev/python/docs/intro                |
-| pnpm                  | 11.x    | https://pnpm.io/motivation                              |
-| uv                    | 0.11.x  | https://docs.astral.sh/uv/                              |
-| Docker / Compose      | latest  | https://docs.docker.com/compose/                        |
-| Nginx                 | latest  | https://nginx.org/en/docs/                              |
-| Gunicorn              | latest  | https://docs.gunicorn.org/en/stable/                    |
-| Cloudinary Python SDK | latest  | https://cloudinary.com/documentation/django_integration |
+| Technology             | Version | Documentation URL                                       |
+| ---------------------- | ------- | ------------------------------------------------------- |
+| Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
+| Django Ninja           | 1.x     | https://django-ninja.dev/                               |
+| FastMCP                | 3.x     | https://gofastmcp.com/                                  |
+| Model Context Protocol | latest  | https://modelcontextprotocol.io/                        |
+| HTMX                   | latest  | https://htmx.org/docs/                                  |
+| Alpine.js              | latest  | https://alpinejs.dev/start-here                         |
+| PostgreSQL             | 18      | https://www.postgresql.org/docs/18/                     |
+| Valkey                 | latest  | https://valkey.io/docs/                                 |
+| django-htmx            | latest  | https://django-htmx.readthedocs.io/                     |
+| pytest                 | latest  | https://docs.pytest.org/en/stable/                      |
+| pytest-django          | latest  | https://pytest-django.readthedocs.io/en/latest/         |
+| Playwright (Python)    | latest  | https://playwright.dev/python/docs/intro                |
+| pnpm                   | 11.x    | https://pnpm.io/motivation                              |
+| uv                     | 0.11.x  | https://docs.astral.sh/uv/                              |
+| Docker / Compose       | latest  | https://docs.docker.com/compose/                        |
+| Nginx                  | latest  | https://nginx.org/en/docs/                              |
+| Gunicorn               | latest  | https://docs.gunicorn.org/en/stable/                    |
+| Cloudinary Python SDK  | latest  | https://cloudinary.com/documentation/django_integration |
 
 ---
 

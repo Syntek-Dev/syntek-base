@@ -32,6 +32,8 @@ code/docs/
 │   └── encryption/                   ← field-encryption/ lookup-tokens/
 ├── LOGGING.md               ← logging, Glitchtip, Loki, Prometheus, Grafana, Cloudinary
 │   └── logging/                      ← django-logging/ frontend-logging/ observability/ health-contract/ cloudinary/
+├── MCP-SERVER.md            ← the FastMCP tool surface at /mcp/ (available but unwired)
+│   └── mcp-server/                   ← mounting/ tool-design/ auth-and-threats/ testing-and-ops/
 ├── PERFORMANCE.md           ← N+1 prevention, caching, page-weight and template tuning
 │   └── performance/                  ← database-performance/ frontend-performance/ api-and-monitoring/
 ├── RENDERING.md             ← interaction model: server templates, HTMX, Alpine
@@ -58,6 +60,7 @@ code/docs/
 | `SECURITY.md`                   | OWASP A01–A10, Django Ninja API security, CORS, IDOR prevention                                                                                        |
 | `ACCESSIBILITY.md`              | WCAG 2.2 AA, semantic HTML, ARIA patterns                                                                                                              |
 | `API-DESIGN.md`                 | Django Ninja JSON API and REST conventions                                                                                                             |
+| `MCP-SERVER.md`                 | The FastMCP tool surface at `/mcp/` — mounting, tool design, auth, testing (available but unwired)                                                     |
 | `ARCHITECTURE-PATTERNS.md`      | Service layer, Django app structure, template/HTMX routing                                                                                             |
 | `CODE-REVIEW-GRAPH.md`          | code-review-graph MCP playbooks: explore, debug, review, refactor                                                                                      |
 | `DATABASE.md`                   | **Read first for data-layer work** — scope columns, database-level constraints, lock-safe migrations, search, deferred infrastructure and its triggers |

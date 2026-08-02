@@ -214,8 +214,11 @@ costs.
 | **Channels / WebSockets** | Real-time changes the process model. It is an ADR conversation, not a dependency addition.                                                                                                                      |
 
 Dependencies deliberately not declared at baseline — `pyotp`, `qrcode`, `webauthn`, `bleach`,
-`python-magic`, `cairosvg` — are listed in `pyproject.toml` with the feature that should introduce
-each one.
+`python-magic`, `cairosvg`, `fastmcp` — are listed in `pyproject.toml` with the feature that
+should introduce each one. `fastmcp` is the largest of them: it would add a FastMCP tool surface
+at `/mcp/` for LLM agent clients, mounted beside Django in `config/asgi.py` and therefore outside
+Django's middleware entirely. Fully specified in `code/docs/MCP-SERVER.md`, built only when an
+agent genuinely needs to carry out this project's domain operations.
 
 ---
 

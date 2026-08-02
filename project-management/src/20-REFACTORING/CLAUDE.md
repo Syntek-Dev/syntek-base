@@ -14,7 +14,7 @@ during or after the code/PR phase.
 ## How to work here
 
 - **Routing:** this is the PM-side record; the refactor itself is executed under `code/` via
-  code workflow `08-refactor` (or the `refactor` agent), and the record is filed during PM
+  code workflow `11-refactor` (or the `refactor` agent), and the record is filed during PM
   workflow `20-pr-and-review`. Draft it with **Opus** — an implementation record, not a
   planning artefact.
 - **Concrete steps:** copy `REFACTORING-US000-TEMPLATE.md` →

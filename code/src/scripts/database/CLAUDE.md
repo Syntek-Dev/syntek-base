@@ -14,7 +14,7 @@ all run inside Docker via `docker compose exec`.
 
 ## How to work here
 
-- **Routing:** these scripts back the `09-database-migration` workflow. **The dev
+- **Routing:** these scripts back the `03-database-migration` workflow. **The dev
   stack must be up first** (`development/server.sh up`). Migrations always go through
   `migrate.sh` (`run` / `make` / `show` / `check` / `fake`) — **never**
   `manage.py makemigrations` or `migrate` directly.

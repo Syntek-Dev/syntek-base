@@ -44,5 +44,5 @@ data structure, relationship, or schema change is being planned.
 - `code/docs/rls/FUNDAMENTALS.md` — row-level security policy design alongside schema changes
 - `code/docs/security/AUTH-AND-AUTHZ.md` — database security, enumeration prevention, and IDOR considerations
 - `project-management/docs/GDPR-GUIDE.md` — data classification for new personal data fields
-- `code/workflows/09-database-migration/` — implements this schema, but is entered from
+- `code/workflows/03-database-migration/` — implements this schema, but is entered from
   `16-backend-code/` once the story plan (15) is signed off — **not** directly from here

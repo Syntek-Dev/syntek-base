@@ -21,7 +21,7 @@ Read in this order before spawning any sub-agents:
 
 **Workflows:**
 
-- `code/workflows/06-review/CONTEXT.md`
+- `code/workflows/07-review/CONTEXT.md`
 
 **Docs:**
 
@@ -43,9 +43,9 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/06-review/` — the code-quality review procedure (content of the change)
+- `code/workflows/07-review/` — the code-quality review procedure (content of the change)
 - `project-management/workflows/20-pr-and-review/` — the PR merge process (verification and gates)
-- `code/workflows/03-security-hardening/` — where a security finding raised in review is fixed
+- `code/workflows/08-security-hardening/` — where a security finding raised in review is fixed
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 

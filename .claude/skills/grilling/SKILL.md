@@ -99,4 +99,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/13-decisions/` — the options behind an ADR
 - `project-management/workflows/15-story-plans/` — approach and phasing
 - `code/workflows/01-new-feature/` — before decomposing a feature
-- `code/workflows/08-refactor/` — before restructuring
+- `code/workflows/11-refactor/` — before restructuring

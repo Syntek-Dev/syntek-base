@@ -51,6 +51,13 @@ Both read `DJANGO_SETTINGS_MODULE` from the environment, defaulting to
 `config.settings.dev`. `asgi.py` is a plain Django ASGI application — no Channels
 `ProtocolTypeRouter`, no WebSocket route.
 
+> **`asgi.py` is the one file a FastMCP surface changes.** Adding an MCP tool server turns it
+> into a Starlette router mounting FastMCP at `/mcp/` beside Django at `/`, with the FastMCP
+> lifespan hoisted to the outer application. That mount sits **outside Django's middleware
+> chain** — no session, no CSRF, no `login_required` — which is why it authenticates itself.
+> Nothing is mounted at baseline; the shape, the import-order trap, and the session-mode
+> decision are in `code/docs/mcp-server/MOUNTING.md`.
+
 ## Cross-references
 
 - `code/src/django/config/settings/CONTEXT.md` — settings detail per environment

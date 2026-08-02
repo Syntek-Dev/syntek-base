@@ -15,7 +15,11 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
 
 ## How to work here
 
-- **Routing:** contributing-standard edits → `global-workflow` skill, `doc-writer` agent. The
+- **Routing:** contributing-standard edits and every other operator guide here → the
+  `operator-docs` agent, loading `.claude/skills/runbook/`; procedure of record is
+  `how-to/workflows/09-write-operator-guide/`. (This previously named `doc-writer`, whose
+  own remit is `code/docs/*` — operator guides are a different audience and a different
+  length standard.) The
   template contract and guides → see `TEMPLATE-GUIDE/CLAUDE.md`. The two architecture snapshots →
   the `scale-planner` agent via `/scale-planning` (each has its own `CLAUDE.md`). Server
   provisioning → the `<%DEPLOY_REPO%>` repository.

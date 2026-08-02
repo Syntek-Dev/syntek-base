@@ -51,4 +51,4 @@ docker compose -f code/src/docker/docker-compose.dev.yml exec backend \
 ## Cross-references
 
 - `code/docs/LOGGING.md` — full logging and observability guide
-- `code/workflows/10-debugging-with-logs/` — debugging workflow using logs
+- `code/workflows/09-debugging-with-logs/` — debugging workflow using logs

@@ -2,7 +2,7 @@
 
 Required section lists for the data retention & disposal policy and the sub-processor
 register. Both are GDPR-adjacent — cross-check `project-management/docs/GDPR-GUIDE.md`
-and `code/workflows/05-gdpr-enforcement/CONTEXT.md`. Every document also carries the
+and `code/workflows/06-gdpr-enforcement/CONTEXT.md`. Every document also carries the
 standard header, version history, ISO alignment note, and disclaimer defined in
 [STANDARDS.md](STANDARDS.md).
 

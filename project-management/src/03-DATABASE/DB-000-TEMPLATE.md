@@ -99,7 +99,7 @@
 
 ## Migration Strategy
 
-<!-- How this reaches the DB. Implementation follows in code/workflows/09-database-migration/. -->
+<!-- How this reaches the DB. Implementation follows in code/workflows/03-database-migration/. -->
 
 - **New tables:** [list]
 - **Data-affecting changes:** [backfill / migration ordering / staging row-count checks]

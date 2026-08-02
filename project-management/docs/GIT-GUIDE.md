@@ -18,7 +18,7 @@ model: opus
 
 When two or more stories can be worked on simultaneously, use git worktrees to run each
 branch in its own directory with an isolated Docker stack. Full guide and naming convention:
-`how-to/docs/GIT-WORKTREES.md` · Workflow: `how-to/workflows/04-worktree-setup/`
+`how-to/docs/GIT-WORKTREES.md` · Workflow: `how-to/workflows/02-worktree-setup/`
 
 **Naming rules (summary):**
 

@@ -48,9 +48,9 @@ matching card.
 | Task                  | Playbook card                        | Wired into                                  |
 | --------------------- | ------------------------------------ | ------------------------------------------- |
 | Explore / understand  | `.claude/skills/explore-codebase.md` | `planner`, feature recon · workflow `01`    |
-| Debug / trace a fault | `.claude/skills/debug-issue.md`      | `debugger`, `bugfix` · workflows `07`, `10` |
-| Review a change       | `.claude/skills/review-changes.md`   | `code-reviewer`, `review` · workflow `06`   |
-| Refactor safely       | `.claude/skills/refactor-safely.md`  | `refactor` · workflow `08`                  |
+| Debug / trace a fault | `.claude/skills/debug-issue.md`      | `debugger`, `bugfix` · workflows `09`, `10` |
+| Review a change       | `.claude/skills/review-changes.md`   | `code-reviewer`, `review` · workflow `07`   |
+| Refactor safely       | `.claude/skills/refactor-safely.md`  | `refactor` · workflow `11`                  |
 
 ## Shared discipline (every playbook)
 
@@ -77,8 +77,8 @@ Start broad (stats, architecture), then narrow. `find_large_functions` surfaces 
 
 ## Debug playbook — trace a fault
 
-Card: `.claude/skills/debug-issue.md`. The `debugger` agent's structural pass (workflow `07`
-Step 2); `10-debugging-with-logs` pairs it with observability signals.
+Card: `.claude/skills/debug-issue.md`. The `debugger` agent's structural pass (workflow `10`
+Step 2); `09-debugging-with-logs` pairs it with observability signals.
 
 1. `get_minimal_context(task=…)`.
 2. `semantic_search_nodes` — find code related to the symptom.
@@ -88,12 +88,12 @@ Step 2); `10-debugging-with-logs` pairs it with observability signals.
 6. `get_impact_radius` on the suspected file — what else the fault reaches.
 
 This informs the root cause; it does **not** license a fix. The failing regression test still
-comes first (workflow `07`).
+comes first (workflow `10`).
 
 ## Review playbook — assess a change
 
 Card: `.claude/skills/review-changes.md`. The `review`/`code-reviewer` structural pass
-(workflow `06` Steps 1–3), run alongside the two review axes (Standards, Spec).
+(workflow `07` Steps 1–3), run alongside the two review axes (Standards, Spec).
 
 1. `detect_changes` — risk-scored analysis of what changed.
 2. `get_affected_flows` — which execution paths the change touches.
@@ -106,7 +106,7 @@ Group findings by risk (high / medium / low) with a merge recommendation; feed t
 
 ## Refactor playbook — restructure safely
 
-Card: `.claude/skills/refactor-safely.md`. The `refactor` agent's impact pass (workflow `08`
+Card: `.claude/skills/refactor-safely.md`. The `refactor` agent's impact pass (workflow `11`
 Step 2), run before moving any code.
 
 1. `refactor_tool` `mode="suggest"` — community-driven refactoring candidates.
@@ -117,7 +117,7 @@ Step 2), run before moving any code.
 5. `find_large_functions` — decomposition targets.
 6. `detect_changes` after — verify the refactor's structural footprint.
 
-Always preview before applying; behaviour must stay identical (workflow `08` golden rule).
+Always preview before applying; behaviour must stay identical (workflow `11` golden rule).
 
 ## Maintenance — build, update, hooks
 

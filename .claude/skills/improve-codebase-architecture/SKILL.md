@@ -125,7 +125,7 @@ Refresh the code-review-graph after any doc change so the layered docs and the g
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/08-refactor/` — where a picked deepening opportunity is executed
+- `code/workflows/11-refactor/` — where a picked deepening opportunity is executed
 - `project-management/workflows/13-decisions/` — where the resulting decision is recorded
 
 ## Cross-references
@@ -134,4 +134,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/domain-modelling/SKILL.md` — record the names and decisions this review produces
 - `.claude/skills/grill-with-docs/SKILL.md` — the grilling engine step 3 drives
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` — the canonical "Deep modules" write-up
-- The refactor / review agents and workflows `08-refactor` / `06-review` route to this review
+- The refactor / review agents and workflows `11-refactor` / `07-review` route to this review

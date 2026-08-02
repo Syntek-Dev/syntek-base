@@ -14,7 +14,7 @@ predicts a clean CI run. Full inventory: `CONTEXT.md`.
 
 ## How to work here
 
-- **Routing:** run these before raising a PR; they back the `06-review` workflow and
+- **Routing:** run these before raising a PR; they back the `07-review` workflow and
   the pre-PR quality gates. `cloc.sh`/`stubs.sh`/`css-tokens.sh` run on the host with
   no Docker; `security.sh` runs on the host by default, `--docker` to audit inside
   the running dev containers.

@@ -82,7 +82,7 @@ Every mutating endpoint must:
 - Have an explicit permission check (OWASP A01) — see `code/docs/security/AUTH-AND-AUTHZ.md`
 - Verify any user-supplied IDs against the caller's ownership before use (no IDOR)
 
-Run `code/workflows/03-security-hardening/` after the mutating endpoints are implemented
+Run `code/workflows/08-security-hardening/` after the mutating endpoints are implemented
 to verify all security requirements are met.
 
 ### Step 5 — Write Tests

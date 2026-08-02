@@ -13,10 +13,10 @@ verification, cross-linked to the `US###` it belongs to.
 
 ## How to work here
 
-- **Routing:** file a report here from `code/workflows/07-debug/` when a defect is isolated,
+- **Routing:** file a report here from `code/workflows/10-debug/` when a defect is isolated,
   or during `project-management/workflows/20-pr-and-review/` / `10-qa-checks/` review, or
   from a production incident. Trace elusive defects through structured logs with
-  `code/workflows/10-debugging-with-logs/`. The record is written during the code/PR phase;
+  `code/workflows/09-debugging-with-logs/`. The record is written during the code/PR phase;
   the fix itself lands in `code/` under the story's own branch — this folder records the
   defect, not the patch.
 - **Model:** Opus — diagnosing a root cause, writing up the report, and flipping the status
@@ -24,7 +24,7 @@ verification, cross-linked to the `US###` it belongs to.
 - **Concrete steps:** copy `BUG-US000-TEMPLATE.md` → `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`
   (or the story-less fallback for a cross-cutting defect) → fill metadata, summary,
   environment, numbered repro, Expected vs Actual, root cause, and the fix → **write the
-  regression test first and watch it fail before the fix** (TDD, per `07-debug`) → link the
+  regression test first and watch it fail before the fix** (TDD, per `10-debug`) → link the
   story (`../01-STORIES/US###.md`) and its plan (`../15-STORY-PLANS/STORY-PLAN-US###-*.md`) →
   verify with `bash code/src/scripts/tests/all.sh`.
 - **Definition of done:** report named to convention with a real `DD/MM/YYYY` discovery date,

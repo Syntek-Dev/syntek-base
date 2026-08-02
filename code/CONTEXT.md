@@ -18,6 +18,7 @@ code/
 │   ├── ENCRYPTION-GUIDE.md          (sub-docs: encryption/)
 │   ├── FRONTEND-CODING-PRINCIPLES.md ← Django templates + HTMX + Alpine + CSS
 │   ├── LOGGING.md                   (sub-docs: logging/)
+│   ├── MCP-SERVER.md                (sub-docs: mcp-server/) ← FastMCP tools at /mcp/
 │   ├── PERFORMANCE.md               (sub-docs: performance/)
 │   ├── RENDERING.md                 (sub-docs: rendering/)
 │   ├── RESPONSIVE-DESIGN.md         (sub-docs: responsive/)
@@ -49,48 +50,24 @@ code/
 │   │   └── tests/                   ← test suite runners (pytest, Bruno)
 │   └── tests/                       ← API integration tests (Bruno collection)
 │       └── CONTEXT.md
-└── workflows/                       ← step-by-step coding workflows
+└── workflows/                       ← step-by-step coding workflows (three families)
     ├── CONTEXT.md
+    │   ── Build (01–06) ──
     ├── 01-new-feature/              ← full-stack feature development
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
     ├── 02-tdd-cycle/                ← Red → Green → Refactor
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 03-security-hardening/       ← OWASP security audit and hardening
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 04-api-design/               ← Django Ninja API design
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 05-gdpr-enforcement/         ← GDPR code implementation (encryption, consent, deletion)
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 06-review/                   ← code quality review (OWASP, principles, coverage)
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 07-debug/                    ← code-logic debugging and regression test writing
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 08-refactor/                 ← systematic refactoring without behaviour change
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    ├── 09-database-migration/       ← Django model and migration workflow
-    │   ├── CHECKLIST.md
-    │   ├── CONTEXT.md
-    │   └── STEPS.md
-    └── 10-debugging-with-logs/      ← debug using local logs, Glitchtip, Loki, Grafana
-        ├── CHECKLIST.md
-        ├── CONTEXT.md
-        └── STEPS.md
+    ├── 03-database-migration/       ← Django model and migration workflow
+    ├── 04-api-design/               ← Django Ninja API design (/api/)
+    ├── 05-mcp-server/               ← FastMCP tool surface (/mcp/)
+    ├── 06-gdpr-enforcement/         ← GDPR code implementation
+    │   ── Verify (07–08) ──
+    ├── 07-review/                   ← code quality review (principles, coverage)
+    ├── 08-security-hardening/       ← OWASP security audit and hardening
+    │   ── Diagnose & improve (09–11) ──
+    ├── 09-debugging-with-logs/      ← find the cause: logs, Glitchtip, Loki, Grafana
+    ├── 10-debug/                    ← fix it: isolate, regression test, patch
+    └── 11-refactor/                 ← improve it: no behaviour change
+
+Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 ```
 
 ## When to read this
@@ -114,23 +91,24 @@ code/
 
 ## Key docs
 
-| Guide                           | When to read                                                     |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `docs/CODING-PRINCIPLES.md`     | Before writing any code                                          |
-| `docs/TESTING.md`               | Before writing tests                                             |
-| `docs/SECURITY.md`              | Before writing auth, permissions, or any endpoint                |
-| `docs/API-DESIGN.md`            | Before adding Django Ninja endpoints or Schema models            |
-| `docs/ACCESSIBILITY.md`         | Before building any frontend component                           |
-| `docs/RESPONSIVE-DESIGN.md`     | Before building any frontend component or layout                 |
-| `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or page route                  |
-| `docs/DATABASE.md`              | **Before any model, migration, or query** — the pre-flight rules |
-| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change                           |
-| `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics                |
-| `docs/RENDERING.md`             | Before choosing server vs HTMX vs Alpine for an interaction      |
-| `docs/PERFORMANCE.md`           | Before optimising a query or page                                |
-| `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                           |
-| `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                 |
-| `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                |
+| Guide                           | When to read                                                           |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| `docs/CODING-PRINCIPLES.md`     | Before writing any code                                                |
+| `docs/TESTING.md`               | Before writing tests                                                   |
+| `docs/SECURITY.md`              | Before writing auth, permissions, or any endpoint                      |
+| `docs/API-DESIGN.md`            | Before adding Django Ninja endpoints or Schema models                  |
+| `docs/MCP-SERVER.md`            | Before exposing anything to an LLM agent (the FastMCP `/mcp/` surface) |
+| `docs/ACCESSIBILITY.md`         | Before building any frontend component                                 |
+| `docs/RESPONSIVE-DESIGN.md`     | Before building any frontend component or layout                       |
+| `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or page route                        |
+| `docs/DATABASE.md`              | **Before any model, migration, or query** — the pre-flight rules       |
+| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change                                 |
+| `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics                      |
+| `docs/RENDERING.md`             | Before choosing server vs HTMX vs Alpine for an interaction            |
+| `docs/PERFORMANCE.md`           | Before optimising a query or page                                      |
+| `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                                 |
+| `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                       |
+| `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                      |
 
 ## Surfaces — where source may live
 

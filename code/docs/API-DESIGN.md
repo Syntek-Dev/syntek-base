@@ -29,4 +29,13 @@ Design it carefully, document it explicitly, and change it deliberately.
 | [`api-design/API-DOCS.md`](api-design/API-DOCS.md)                   | Auto-generated Ninja OpenAPI at `/api/docs`; pre-release API checklist                                                                         |
 | [`api-design/CLIENT-PATTERNS.md`](api-design/CLIENT-PATTERNS.md)     | How the browser consumes the server: HTMX partials, CSRF, errors, swaps                                                                        |
 
+## Not this guide: the MCP tool surface
+
+An LLM agent calling this project's domain operations is a **different contract**, served by
+FastMCP at `/mcp/` — not by Ninja. It is a peer adapter over the same service layer, with its
+own transport, auth model and threat surface, and it sits outside Django's middleware entirely.
+See [`MCP-SERVER.md`](MCP-SERVER.md). Do not add MCP tools to a Ninja router, and do not
+generate tools from this API's OpenAPI document — the reasoning is in
+[`mcp-server/TOOL-DESIGN.md`](mcp-server/TOOL-DESIGN.md).
+
 _Part of the `code/docs/` documentation family._

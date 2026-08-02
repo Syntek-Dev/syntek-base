@@ -39,7 +39,7 @@ delegate:
 | `release`  | Version bump, changelog, deploy              |
 
 **Specialists and document writers** are delegated to for scoped work — `backend`, `frontend`,
-`database`, `gdpr`, `test-writer`, `qa-tester`, `seo`, `authentication`,
+`database`, `gdpr`, `test-writer`, `qa-tester`, `seo`, `authentication`, `operator-docs`,
 `privacy-policy-writer`, `incident-response-plan-writer`, and so on. Each is tool-scoped with a
 distinct remit. `.claude/agents/CONTEXT.md` is the roster; no total is quoted here, because it
 moves on every roster change and differs between two correct projects.
@@ -83,6 +83,8 @@ Sessions run on Opus. Sub-agents and workflows route by tier through their `mode
 | ------------------------------------------- | ------------------------------------------------------------ |
 | `stack-django`                              | Backend code — models, services, Ninja endpoints, pytest     |
 | `stack-htmx-templates`                      | Frontend — templates, components, HTMX, Alpine, token CSS    |
+| `stack-fastmcp`                             | The MCP tool surface at `/mcp/` — tools, token auth, tests   |
+| `runbook`                                   | Writing operator guides a human executes under pressure      |
 | `global-workflow`                           | Branches, commits, PRs, version bumps, docs, comments        |
 | `grilling` · `grill-me` · `grill-with-docs` | Design interrogation (see below)                             |
 | `codebase-design`                           | Architecture and refactor — the deep-module vocabulary       |

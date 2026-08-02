@@ -1,6 +1,6 @@
 ---
 name: backend
-description: "Specialist in Django models, migrations, the service layer, and Django Ninja endpoints. Delegate to this agent when a workflow needs server-side data modelling, query optimisation, RLS, or Ninja API implementation — not UI, tests, or debugging."
+description: "Specialist in Django models, migrations, the service layer, and the two adapters over it — Django Ninja endpoints and the FastMCP tool surface. Delegate to this agent when a workflow needs server-side data modelling, query optimisation, RLS, Ninja API implementation, or MCP tools — not UI, tests, or debugging."
 model: opus
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
@@ -23,6 +23,7 @@ You own the server side of a feature:
 - **Migrations** — generated and applied via scripts, never `manage.py` directly.
 - **Service layer** — business logic; multi-write methods wrapped in `transaction.atomic()`.
 - **Django Ninja** — Router modules (`api.py`), Schema (Pydantic) request/response models, and endpoints with named Policy permission checks.
+- **MCP tools** — `apps/**/mcp_tools.py` over the same service layer, assembled in `config/mcp.py`. A peer adapter to `api.py`, never a layer above it. Identity comes from the verified token, **never** from a tool argument, and every mutation calls the same named Policy its Ninja twin calls. Load `.claude/skills/stack-fastmcp/` and read `code/docs/MCP-SERVER.md` first — the `/mcp/` mount sits outside Django's middleware, so nothing you rely on from the request cycle is present.
 - **Query performance** — kill N+1s with `select_related` / `prefetch_related`; add indexes.
 - **RLS & PII** — session-context middleware and encryption pipeline (see guides below).
 
@@ -47,6 +48,7 @@ Read before writing any code (skip what a scoped task plainly does not touch):
 - `code/docs/ENCRYPTION-GUIDE.md` — Fernet PII encryption pipeline
 - `.claude/skills/grill-with-docs/SKILL.md` — open new-API / data-model design with a grilling interview
 - `.claude/skills/stack-django/SKILL.md` — stack idioms (defer stack-specific detail here)
+- `code/docs/MCP-SERVER.md` + `.claude/skills/stack-fastmcp/SKILL.md` — **only when the task touches `/mcp/`**: the tool surface, its auth model, and why it inherits none of Django's middleware
 - `.claude/skills/research/SKILL.md` — a primary-source-cited note that grounds an ADR/PLAN or stack choice (ADR groundwork)
 - `.claude/skills/prototype/SKILL.md` — a throwaway spike to answer one open design question before committing to a real build
 
@@ -57,12 +59,13 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/16-backend-code/` — the build phase that drives this work; it is how a story reaches you
 - `project-management/workflows/17-api-code/` — the build phase for the Django Ninja layer
 - `project-management/workflows/03-database-schema/` — the approved schema is a prerequisite; never design it here
-- `code/workflows/09-database-migration/` — schema and migration changes
+- `code/workflows/03-database-migration/` — schema and migration changes
 - `code/workflows/04-api-design/` — Django Ninja API surface
-- `code/workflows/03-security-hardening/` — permission and RLS hardening
+- `code/workflows/05-mcp-server/` — the FastMCP tool surface at `/mcp/`
+- `code/workflows/08-security-hardening/` — permission and RLS hardening
 - `code/workflows/02-tdd-cycle/` — implementing against pre-written failing tests
 - `project-management/workflows/19-implementation-documentation/` — the closeout; records, docs, and graph refresh before commit
-- `how-to/workflows/03-debugging/` — when the stack itself is unhealthy rather than the code
+- `how-to/workflows/08-debugging/` — when the stack itself is unhealthy rather than the code
 
 Environment detection (optional, read-only):
 

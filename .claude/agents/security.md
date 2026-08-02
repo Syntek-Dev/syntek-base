@@ -22,7 +22,7 @@ Read in this order before spawning any sub-agents:
 
 **Workflows:**
 
-- `code/workflows/03-security-hardening/CONTEXT.md` → `code/workflows/03-security-hardening/STEPS.md`
+- `code/workflows/08-security-hardening/CONTEXT.md` → `code/workflows/08-security-hardening/STEPS.md`
 - `project-management/workflows/09-security-checks/CONTEXT.md`
 
 **Docs:**
@@ -49,8 +49,9 @@ Read in this order before spawning any sub-agents:
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/09-security-checks/` — design-stage threat model — STRIDE, OWASP Top 10, NIST CSF 2.0
-- `code/workflows/03-security-hardening/` — audit and harden built code against OWASP A01–A10
-- `code/workflows/05-gdpr-enforcement/` — when the surface touches personal data
+- `code/workflows/08-security-hardening/` — audit and harden built code against OWASP A01–A10
+- `code/workflows/06-gdpr-enforcement/` — when the surface touches personal data
+- `code/workflows/05-mcp-server/` — auditing the `/mcp/` tool surface, which no Django middleware protects
 
 ## Remit
 
@@ -104,6 +105,13 @@ release-blocking until triaged:
   endpoint and on any endpoint returning another user's data. Role alone is never sufficient.
 - Django Ninja endpoints gate through a named Policy class (see `code/docs/API-DESIGN.md`);
   the server-side check is authoritative — never trust the client.
+- **The `/mcp/` FastMCP surface, where present, is audited separately and to the same standard.**
+  It is mounted beside Django in `config/asgi.py`, so **no Django middleware runs** — no session,
+  no `login_required`, no CSRF, no API rate limiting. Two checks are specific to it: identity must
+  come from the verified token and **never** from a tool argument (a `user_id` parameter is an IDOR
+  by construction, because the caller is a language model), and every state-changing tool must call
+  the same named Policy as its Ninja twin. Full threat model and checklist:
+  `code/docs/mcp-server/AUTH-AND-THREATS.md`.
 - Prefer **404 over 403** for resources the caller may not even know exist (avoids enumeration
   disclosure). Log every authorisation failure (see `code/docs/LOGGING.md`).
 

@@ -23,7 +23,7 @@ migration strategy — **before** any Django model or migration is written.
   → design tables, relationships, indexes, and the migration strategy for existing data
   → flag every PII field for encryption → save the design to
   `project-management/src/03-DATABASE/`. Implementation follows in
-  `code/workflows/09-database-migration/` — never write the migration here.
+  `code/workflows/03-database-migration/` — never write the migration here.
 - **Definition of done:** design aligns with `SCHEMA-DESIGN.md`, PII fields are flagged
   and classified, a migration strategy exists for affected data, checklist satisfied.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).

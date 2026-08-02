@@ -110,4 +110,4 @@ worktree stack reuses them unchanged.
 
 - `code/src/django/CONTEXT.md` — the Django project and its settings
 - `how-to/workflows/01-first-time-setup/` — first run of the dev stack
-- `how-to/workflows/02-daily-development/` — daily Compose commands
+- `how-to/workflows/03-daily-development/` — daily Compose commands

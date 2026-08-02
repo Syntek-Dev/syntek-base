@@ -55,7 +55,8 @@ code/
 │   ├── docker/      ← Dockerfiles and Compose files per environment
 │   ├── scripts/     ← every dev operation — you run these, not raw commands
 │   └── tests/       ← Bruno API collections
-└── workflows/       ← 01-new-feature … 10-debugging-with-logs
+└── workflows/       ← 11 workflows in three families:
+                     build (01–06) · verify (07–08) · diagnose & improve (09–11)
 ```
 
 **`code/src/scripts/` is the interface to everything.** Five groups:
@@ -73,8 +74,10 @@ scripts handle the container, the environment and the compose overrides for your
 
 ## `how-to/`
 
-Operational guides and the four setup/daily/debug/worktree workflows. `how-to/docs/CLI-TOOLING.md`
-is the command reference you will use most.
+Operational guides and nine workflows in four families — set up (`01`–`02`), run (`03`–`07`,
+covering daily development, database operations, testing, quality gates and dependency updates),
+diagnose (`08`), and author (`09`, for writing operator guides of your own).
+`how-to/docs/CLI-TOOLING.md` is the command reference you will use most.
 
 `how-to/src/` holds the human-facing operator guides, exempt from the 300-line limit:
 the contributing standard, this template guide, and the two architecture snapshots.
@@ -105,8 +108,8 @@ specification.
 .claude/
 ├── CLAUDE.md    ← the authoritative operating manual — read first, always
 ├── MEMORY.md    ← project memory: feedback, patterns, project state
-├── agents/      ← 50 agent definitions
-├── skills/      ← 16 skills
+├── agents/      ← agent definitions (roster: agents/CONTEXT.md)
+├── skills/      ← skills, loaded on demand (skills/CONTEXT.md)
 ├── hooks/       ← pre-PR quality gates and the pre-compact handoff interceptor
 └── plugins/     ← 6 read-only inspection helpers agents call for context
 ```

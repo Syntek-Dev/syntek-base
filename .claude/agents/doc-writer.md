@@ -9,7 +9,10 @@ tools: Read, Write, Edit, Glob
 
 Developer-facing documentation only: docstrings and inline comments, `CONTEXT.md`
 (orientation) and `CLAUDE.md` (operating rules) pairs, guides under `code/docs/*`,
-workflow `CONTEXT.md`/`STEPS.md`, and root README sections. A specialist the
+workflow `CONTEXT.md`/`STEPS.md`, and root README sections. **Not `how-to/`** — the
+operator guides in `how-to/docs/` and `how-to/src/` belong to `operator-docs`, which
+writes for someone _running_ the system rather than writing code, and to a different
+length standard (`how-to/src/` is exempt from the 300-line cap). A specialist the
 orchestrators delegate to — it routes to the governing procedure and guide rather
 than restating rules.
 
@@ -50,7 +53,7 @@ Read before writing anything:
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/19-implementation-documentation/` — the closeout you own — records, findings, `CONTEXT.md`/`CLAUDE.md`, graph refresh
-- `code/workflows/06-review/` — docs are a hard gate before the review hands to the PR
+- `code/workflows/07-review/` — docs are a hard gate before the review hands to the PR
 
 ## Non-Negotiables
 

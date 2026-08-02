@@ -152,7 +152,7 @@ The rules are strict because they are the ones that cause outages:
 - build indexes concurrently on populated tables
 - **no manual DDL against a deployed database**
 
-`code/docs/DATABASE.md` and `code/workflows/09-database-migration/` are the authority.
+`code/docs/DATABASE.md` and `code/workflows/03-database-migration/` are the authority.
 
 ---
 

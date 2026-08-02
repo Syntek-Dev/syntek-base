@@ -181,6 +181,6 @@ driver is multi-tenancy rather than volume, evaluate schema-per-tenant first.
 
 Findings against these rules are recorded per story in
 `project-management/src/18-FINDINGS/`; the governing procedure is
-`code/workflows/09-database-migration/`.
+`code/workflows/03-database-migration/`.
 
 _Part of the `code/docs/` documentation family._

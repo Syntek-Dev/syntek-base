@@ -15,7 +15,7 @@ dimension checks, required actions, and the merge verdict.
 ## How to work here
 
 - **Routing:** reviews are produced during `project-management/workflows/20-pr-and-review/`
-  and the code-review workflow `code/workflows/06-review/`, run through the `review` /
+  and the code-review workflow `code/workflows/07-review/`, run through the `review` /
   `code-reviewer` agents (security + quality), with findings written here.
 - **Model:** Opus — these are implementation-phase records written during the code/PR
   phase; the write-up (findings, severities, verdict) and every mechanical touch (status

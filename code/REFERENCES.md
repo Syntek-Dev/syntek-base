@@ -18,14 +18,15 @@ Internal and external references for all coding work in this repository.
 
 - `code/workflows/01-new-feature/CONTEXT.md` — add a new full-stack feature
 - `code/workflows/02-tdd-cycle/CONTEXT.md` — Red → Green → Refactor TDD cycle
-- `code/workflows/03-security-hardening/CONTEXT.md` — OWASP security audit and hardening
+- `code/workflows/03-database-migration/CONTEXT.md` — Django model and migration workflow
 - `code/workflows/04-api-design/CONTEXT.md` — Django Ninja API design
-- `code/workflows/05-gdpr-enforcement/CONTEXT.md` — GDPR code implementation
-- `code/workflows/06-review/CONTEXT.md` — code quality review before raising a PR
-- `code/workflows/07-debug/CONTEXT.md` — code-logic debugging and regression tests
-- `code/workflows/08-refactor/CONTEXT.md` — systematic refactoring without behaviour change
-- `code/workflows/09-database-migration/CONTEXT.md` — Django model and migration workflow
-- `code/workflows/10-debugging-with-logs/CONTEXT.md` — debug using logs and observability tools
+- `code/workflows/05-mcp-server/CONTEXT.md` — add a FastMCP tool to the `/mcp/` surface
+- `code/workflows/06-gdpr-enforcement/CONTEXT.md` — GDPR code implementation
+- `code/workflows/07-review/CONTEXT.md` — code quality review before raising a PR
+- `code/workflows/08-security-hardening/CONTEXT.md` — OWASP security audit and hardening
+- `code/workflows/09-debugging-with-logs/CONTEXT.md` — debug using logs and observability tools
+- `code/workflows/10-debug/CONTEXT.md` — code-logic debugging and regression tests
+- `code/workflows/11-refactor/CONTEXT.md` — systematic refactoring without behaviour change
 
 ### Guides in code/docs/
 
@@ -39,6 +40,7 @@ Internal and external references for all coding work in this repository.
 - `code/docs/DESIGN-TOKENS.md` — CSS design-token catalogue and `var(--token)`-only usage rules
 - `code/docs/ENCRYPTION-GUIDE.md` — field-level encryption patterns for PII storage
 - `code/docs/LOGGING.md` — logging config, Glitchtip, Loki, Prometheus, Grafana
+- `code/docs/MCP-SERVER.md` — the FastMCP tool surface at `/mcp/`: mounting, tool design, auth and threats, testing and ops (available but unwired)
 - `code/docs/PERFORMANCE.md` — N+1 prevention, caching, template/HTMX optimisation
 - `code/docs/RENDERING.md` — server-rendered templates, HTMX partials, Alpine, and where each interaction runs
 - `code/docs/RESPONSIVE-DESIGN.md` — mobile-first CSS, media queries, breakpoints, CSS custom properties
@@ -60,6 +62,9 @@ Internal and external references for all coding work in this repository.
 - **Django 6.x** — <https://docs.djangoproject.com/en/6.0/> — official Django reference
 - **Python 3.14** — <https://docs.python.org/3.14/> — language reference and standard library
 - **Django Ninja** — <https://django-ninja.dev/> — Python JSON API framework used for all API endpoints and Schema (Pydantic) models
+- **FastMCP** — <https://gofastmcp.com/> — the Python MCP server framework behind the `/mcp/` tool surface (not installed at baseline)
+- **Model Context Protocol** — <https://modelcontextprotocol.io/> — the protocol specification FastMCP implements; read for transport and session semantics
+- **Starlette** — <https://www.starlette.io/> — the ASGI toolkit that composes the `/mcp/` and Django mounts in `config/asgi.py` (arrives with FastMCP)
 - **Gunicorn** — <https://docs.gunicorn.org/en/stable/> — WSGI HTTP server
 - **Uvicorn** — <https://www.uvicorn.org/> — ASGI server used alongside Gunicorn
 

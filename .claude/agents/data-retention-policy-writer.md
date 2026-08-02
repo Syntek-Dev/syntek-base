@@ -44,7 +44,7 @@ Before drafting, read in this order:
 1. `.claude/CLAUDE.md` → `.claude/MEMORY.md` — global rules, British English, locale.
 2. `project-management/docs/GDPR-GUIDE.md` — the governing UK GDPR compliance
    procedure: lawful bases, storage limitation, records of processing, ICO obligations.
-3. `code/workflows/05-gdpr-enforcement/CONTEXT.md` and
+3. `code/workflows/06-gdpr-enforcement/CONTEXT.md` and
    `project-management/workflows/08-gdpr-compliance/CONTEXT.md` — the enforcement and
    compliance steps this document must stay consistent with.
 4. `code/docs/ENCRYPTION-GUIDE.md` and `code/docs/RLS-GUIDE.md` — how PII is encrypted

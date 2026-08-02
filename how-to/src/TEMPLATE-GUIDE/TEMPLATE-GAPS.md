@@ -28,6 +28,24 @@ generated from it.
 
 ---
 
+## 02/08/2026 — The five new how-to workflows have never been executed
+
+**Type:** Active gap — **verification debt**
+**Summary:** `04-database-operations`, `05-testing-and-coverage`, `06-quality-gates`,
+`07-dependency-updates` and `09-write-operator-guide` were written against the real scripts and
+their real flags, and every command in them was confirmed to exist. But they have not been **run
+start to finish on a clean environment**, which is precisely the rule the `runbook` skill and
+workflow `09` impose on every operator guide. They are currently verified by review only, and
+review does not find a missing prerequisite.
+
+The same root cause as the entry below applies to two of them: without `uv.lock` the Django image
+cannot build here, so `04` and `05` cannot execute in this repository at all.
+**Blocked by / Action:** Execute all five in a freshly generated project — `04` and `05` require
+it — and correct each from what actually happens rather than from what was intended. Until then,
+treat their step-by-step commands as reviewed, not proven.
+
+---
+
 ## 02/08/2026 — The backend test suites never execute in this repository
 
 **Type:** Active gap — **known limitation, accepted**

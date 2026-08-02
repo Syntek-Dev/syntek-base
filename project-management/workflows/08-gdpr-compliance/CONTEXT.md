@@ -32,7 +32,7 @@ Use this workflow when:
 
 ### Downstream — the code-layer counterpart
 
-- `code/workflows/05-gdpr-enforcement/` — **enforces in code what this workflow specifies**:
+- `code/workflows/06-gdpr-enforcement/` — **enforces in code what this workflow specifies**:
   field encryption, consent gating, anonymising deletion, DSAR support. It names this review as
   a hard prerequisite and will not start until it is complete. Obligations are specified here
   and enforced there — keep the two consistent.

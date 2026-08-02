@@ -40,5 +40,5 @@ model: fable
 - [ ] Schema reviewed and signed off before any model code is written
 - [ ] Document committed and pushed
 - [ ] Handed forward to `12-api-design/` (next design gate) and recorded as the prerequisite for
-      `16-backend-code/`, which drives `code/workflows/09-database-migration/` — the migration is
+      `16-backend-code/`, which drives `code/workflows/03-database-migration/` — the migration is
       **not** triggered from here

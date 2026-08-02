@@ -166,6 +166,7 @@ Two things to do on a freshly generated project:
 │   │   ├── ENCRYPTION-GUIDE.md         (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
 │   │   ├── FRONTEND-CODING-PRINCIPLES.md
 │   │   ├── LOGGING.md                  (+ logging/ — DJANGO-LOGGING, FRONTEND-LOGGING, OBSERVABILITY, CLOUDINARY)
+│   │   ├── MCP-SERVER.md               (+ mcp-server/ — MOUNTING, TOOL-DESIGN, AUTH-AND-THREATS, TESTING-AND-OPS)
 │   │   ├── PERFORMANCE.md              (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
 │   │   ├── RENDERING.md                (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
 │   │   ├── RESPONSIVE-DESIGN.md        (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
@@ -179,17 +180,18 @@ Two things to do on a freshly generated project:
 │   │   ├── logs/                        ← runtime log files (dev/test; gitignored)
 │   │   ├── scripts/                     ← dev, database, test, syntax, and audit scripts
 │   │   └── tests/                       ← Bruno API test collections (one collection per domain)
-│   └── workflows/                       ← 10 step-by-step coding workflows
-│       ├── 01-new-feature/
+│   └── workflows/                       ← 11 coding workflows in three families
+│       ├── 01-new-feature/              ← build
 │       ├── 02-tdd-cycle/
-│       ├── 03-security-hardening/
+│       ├── 03-database-migration/
 │       ├── 04-api-design/
-│       ├── 05-gdpr-enforcement/
-│       ├── 06-review/
-│       ├── 07-debug/
-│       ├── 08-refactor/
-│       ├── 09-database-migration/
-│       └── 10-debugging-with-logs/
+│       ├── 05-mcp-server/
+│       ├── 06-gdpr-enforcement/
+│       ├── 07-review/                   ← verify
+│       ├── 08-security-hardening/
+│       ├── 09-debugging-with-logs/      ← diagnose & improve
+│       ├── 10-debug/
+│       └── 11-refactor/
 ├── how-to/                              ← setup, daily dev, and debugging guides
 │   ├── CONTEXT.md
 │   ├── docs/                            ← operational reference guides
@@ -208,11 +210,16 @@ Two things to do on a freshly generated project:
 │   │   ├── NIXOS-SETUP.md               ← pointer stub → NixOS deploy repo + SERVER-ARCHITECTURE/
 │   │   ├── SCALE-ARCHITECTURE/          ← how the app scales (scale-planner snapshot)
 │   │   └── SERVER-ARCHITECTURE/         ← app→server contract (feeds the NixOS deploy repo)
-│   └── workflows/                       ← 4 step-by-step operational workflows
-│       ├── 01-first-time-setup/
-│       ├── 02-daily-development/
-│       ├── 03-debugging/
-│       └── 04-worktree-setup/
+│   └── workflows/                       ← 9 operational workflows in four families
+│       ├── 01-first-time-setup/         ← set up
+│       ├── 02-worktree-setup/
+│       ├── 03-daily-development/        ← run
+│       ├── 04-database-operations/
+│       ├── 05-testing-and-coverage/
+│       ├── 06-quality-gates/
+│       ├── 07-dependency-updates/
+│       ├── 08-debugging/                ← diagnose
+│       └── 09-write-operator-guide/     ← author
 ├── project-management/                  ← stories, sprints, plans, GDPR, security
 │   ├── CONTEXT.md
 │   ├── docs/                            ← PM reference guides
@@ -684,30 +691,38 @@ Full detail with examples → `code/docs/CODING-PRINCIPLES.md`
 
 ## Writing Code — Workflows
 
-All coding work follows one or more of the ten workflows in `code/workflows/`. Each workflow
-folder contains three files:
+All coding work follows one or more of the eleven workflows in `code/workflows/`. Each workflow
+folder contains four files:
 
 - `CONTEXT.md` — when to use it and prerequisites
+- `CLAUDE.md` — the operating rules for that workflow
 - `STEPS.md` — the ordered steps to execute
 - `CHECKLIST.md` — verification checklist before marking the work complete
 
 **Rule:** read `CONTEXT.md` first for decision-making context. Only enter `STEPS.md` when the
 workflow is explicitly triggered.
 
-### The ten coding workflows
+### The eleven coding workflows
 
-| #   | Workflow                  | Purpose                                                                  |
-| --- | ------------------------- | ------------------------------------------------------------------------ |
-| 01  | `01-new-feature/`         | Add a full-stack feature (backend + frontend) from story to commit       |
-| 02  | `02-tdd-cycle/`           | Test-driven development — Red → Green → Refactor                         |
-| 03  | `03-security-hardening/`  | OWASP A01–A10 security review and hardening                              |
-| 04  | `04-api-design/`          | Design and implement a new Django Ninja API surface                      |
-| 05  | `05-gdpr-enforcement/`    | Implement GDPR requirements in code (encryption, consent, deletion)      |
-| 06  | `06-review/`              | Code quality review before raising a PR (security, principles, coverage) |
-| 07  | `07-debug/`               | Isolate a code logic bug, write a regression test, apply the minimal fix |
-| 08  | `08-refactor/`            | Systematic refactoring without behaviour change                          |
-| 09  | `09-database-migration/`  | Create and run a new Django database migration                           |
-| 10  | `10-debugging-with-logs/` | Debug using local logs, Glitchtip, Loki, and Grafana                     |
+Grouped in three families. The numbers are stable identifiers, not a sequence — you never run
+`01` through `11`.
+
+| Family                 | #   | Workflow                  | Purpose                                                                  |
+| ---------------------- | --- | ------------------------- | ------------------------------------------------------------------------ |
+| **Build**              | 01  | `01-new-feature/`         | Add a full-stack feature (backend + frontend) from story to commit       |
+|                        | 02  | `02-tdd-cycle/`           | Test-driven development — Red → Green → Refactor                         |
+|                        | 03  | `03-database-migration/`  | The data layer — create and run a new Django migration                   |
+|                        | 04  | `04-api-design/`          | The JSON layer at `/api/` — Django Ninja routers, Schemas, endpoints     |
+|                        | 05  | `05-mcp-server/`          | The agent layer at `/mcp/` — FastMCP tools over the service layer        |
+|                        | 06  | `06-gdpr-enforcement/`    | Cross-cutting — encryption, consent, deletion in code                    |
+| **Verify**             | 07  | `07-review/`              | Code quality review before raising a PR (security, principles, coverage) |
+|                        | 08  | `08-security-hardening/`  | OWASP A01–A10 security review and hardening                              |
+| **Diagnose & improve** | 09  | `09-debugging-with-logs/` | **Find** the cause — local logs, Glitchtip, Loki, Grafana                |
+|                        | 10  | `10-debug/`               | **Fix** it — isolate in code, write a regression test, apply the fix     |
+|                        | 11  | `11-refactor/`            | **Improve** it — restructure without changing behaviour                  |
+
+`09` and `10` are two halves of one activity: `09` locates a fault and hands over, `10` fixes it
+and proves the fix with a test.
 
 ### Documentation hard gate
 
@@ -731,26 +746,26 @@ PR is opened.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  05-gdpr-enforcement  →  06-review  →  PM: 20-pr-and-review
+01-new-feature  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 20-pr-and-review
 ```
 
 - Start with `01-new-feature` to plan the feature scope.
 - Work in `02-tdd-cycle` — write failing tests first, then implement.
 - If the feature exposes a new Django Ninja API, follow `04-api-design` in parallel.
-- If the feature touches PII, run `05-gdpr-enforcement` before raising a PR.
-- Before opening the PR, run `06-review` to verify OWASP coverage, coding principles, and
+- If the feature touches PII, run `06-gdpr-enforcement` before raising a PR.
+- Before opening the PR, run `07-review` to verify OWASP coverage, coding principles, and
   coverage floors.
 - Hand off to the PM layer with `project-management/workflows/20-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/03-debugging  →  07-debug  →  06-review  →  PM: 20-pr-and-review
+how-to/08-debugging  →  10-debug  →  07-review  →  PM: 20-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
-`07-debug` to isolate and fix the logic. Never refactor and fix a bug in the same commit — if the
-fix reveals a design problem, open a separate refactoring task using `08-refactor`.
+`10-debug` to isolate and fix the logic. Never refactor and fix a bug in the same commit — if the
+fix reveals a design problem, open a separate refactoring task using `11-refactor`.
 
 ---
 

@@ -57,7 +57,7 @@ a **record** after, mirroring each other.
 - `PLANNING/CONTEXT.md` · `IMPLEMENTATION/CONTEXT.md` — the two per-story sub-folders
 - `project-management/docs/GDPR-GUIDE.md` — the governing GDPR guide
 - `project-management/workflows/08-gdpr-compliance/` — the planning workflow
-- `code/docs/SECURITY.md` · `code/workflows/05-gdpr-enforcement/` — the code-side
+- `code/docs/SECURITY.md` · `code/workflows/06-gdpr-enforcement/` — the code-side
   enforcement these documents specify
 
 **Last Updated**: <%DATE%>

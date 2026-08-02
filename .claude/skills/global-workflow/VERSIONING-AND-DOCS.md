@@ -79,7 +79,7 @@ BUG-<DESCRIPTOR>-DD-MM-YYYY.md      e.g. BUG-AUTH-18-04-2026.md
 ```
 
 Store it under the PM bugs directory (`project-management/src/**/BUGS/`). The
-`bugfix` agent owns the full format via `code/workflows/07-debug/`. Each record
+`bugfix` agent owns the full format via `code/workflows/10-debug/`. Each record
 must include:
 
 - **Root-cause analysis** — what actually caused the defect.

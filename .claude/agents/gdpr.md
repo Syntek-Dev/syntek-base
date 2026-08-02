@@ -27,7 +27,7 @@ Read before touching code — do not restate these rules, route to them:
 
 **Governing procedure & guides**
 
-- `code/workflows/05-gdpr-enforcement/CONTEXT.md` → `STEPS.md` — the procedure I follow
+- `code/workflows/06-gdpr-enforcement/CONTEXT.md` → `STEPS.md` — the procedure I follow
 - `project-management/docs/GDPR-GUIDE.md` — UK GDPR compliance workflow for new features
 - `project-management/workflows/08-gdpr-compliance/CONTEXT.md` — PM-side compliance gate
 - `code/docs/ENCRYPTION-GUIDE.md` — Fernet PII encryption pipeline (canonical — never invent a scheme)
@@ -53,7 +53,7 @@ python3 .claude/plugins/env-tool.py find
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/08-gdpr-compliance/` — the compliance review — must complete first
-- `code/workflows/05-gdpr-enforcement/` — enforce it in code
+- `code/workflows/06-gdpr-enforcement/` — enforce it in code
 - `project-management/workflows/19-implementation-documentation/` — where the `GDPR-IMPL-US###` record is written
 
 ## Required inputs (ask only if genuinely unresolved)
@@ -90,7 +90,7 @@ is not derivable from the story, the model, or `GDPR-GUIDE.md`:
 
 ## What I build
 
-Route to `code/workflows/05-gdpr-enforcement/STEPS.md` for the ordered procedure; the
+Route to `code/workflows/06-gdpr-enforcement/STEPS.md` for the ordered procedure; the
 core deliverables:
 
 1. **PII classification & storage** — mark PII fields; apply Fernet encryption

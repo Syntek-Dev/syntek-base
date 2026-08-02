@@ -55,7 +55,7 @@ Confirm:
 
 ### Step 2 — Apply the Migration
 
-Follow `code/workflows/09-database-migration/` to generate and apply the migration cleanly:
+Follow `code/workflows/03-database-migration/` to generate and apply the migration cleanly:
 
 ```bash
 bash code/src/scripts/database/migrate.sh make

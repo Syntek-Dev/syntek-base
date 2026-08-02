@@ -29,12 +29,21 @@ how-to/
 │   ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 │   ├── SCALE-ARCHITECTURE/      ← OVERVIEW · LOAD-PROFILES · READINESS · SIZING-ENVELOPE · TOPOLOGY
 │   └── SERVER-ARCHITECTURE/     ← OVERVIEW · COMPUTE-ALLOCATION · EDGE-REQUIREMENTS · NIXOS-HANDOFF
-└── workflows/                   ← step-by-step operational workflows
+└── workflows/                   ← step-by-step operational workflows (four families)
     ├── CONTEXT.md · CLAUDE.md
+    │   ── Set up ──
     ├── 01-first-time-setup/     ← clone, configure, and start the project
-    ├── 02-daily-development/    ← start a development session, work on a story
-    ├── 03-debugging/            ← debug failing tests, broken builds, runtime errors
-    └── 04-worktree-setup/       ← create and start a git worktree
+    ├── 02-worktree-setup/       ← create and start a git worktree
+    │   ── Run ──
+    ├── 03-daily-development/    ← start a session, work on a story
+    ├── 04-database-operations/  ← backup, restore, reset, seed, users (not migrations)
+    ├── 05-testing-and-coverage/ ← run the suites; read coverage against the floors
+    ├── 06-quality-gates/        ← the eight pre-PR gates and the audits
+    ├── 07-dependency-updates/   ← add/upgrade/remove a dependency; clear advisories
+    │   ── Diagnose ──
+    ├── 08-debugging/            ← failing test, broken build, runtime error
+    │   ── Author ──
+    └── 09-write-operator-guide/ ← write the guides in docs/ and src/
 ```
 
 Each `workflows/NN-…/` directory carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.

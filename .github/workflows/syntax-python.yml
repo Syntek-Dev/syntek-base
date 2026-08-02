@@ -1,5 +1,16 @@
 name: Python — Lint, Format & Typecheck
 
+# These three jobs deliberately carry NO lockfile guard, unlike claude.yml / test.yml /
+# audit-deps.yml. They run `uv sync` WITHOUT `--frozen`, so uv resolves from
+# pyproject.toml and needs no committed uv.lock — which means they work in the base
+# template and in a generated project alike. That is also why they are the only Python
+# gate this repository actually enforces on itself.
+#
+# All three previously failed at the `astral-sh/setup-uv` step: they were pinned to @v4
+# with `enable-cache: true` and no `version:`, while every other workflow here pins @v5
+# with an explicit UV_VERSION. That was a stale action pin, not a template artefact, so
+# it is fixed rather than skipped — keep these aligned with the other workflows.
+
 on:
   push:
     branches: [main, staging, dev, testing]
@@ -15,6 +26,10 @@ on:
       - ".github/workflows/syntax-python.yml"
   workflow_dispatch:
 
+env:
+  UV_VERSION: "0.11.7"
+  PYTHON_VERSION: "3.14"
+
 jobs:
   ruff-lint:
     name: Ruff — Lint
@@ -25,8 +40,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
         with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
 
       - name: Install dev dependencies
@@ -44,8 +61,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
         with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
 
       - name: Install dev dependencies
@@ -63,8 +82,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
         with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
 
       - name: Install dependencies

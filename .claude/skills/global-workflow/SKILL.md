@@ -80,4 +80,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/20-pr-and-review/` — branches, commits, PRs
 - `project-management/workflows/21-release/` — version bumps and releases
-- `how-to/workflows/04-worktree-setup/` — parallel-story worktrees
+- `how-to/workflows/02-worktree-setup/` — parallel-story worktrees

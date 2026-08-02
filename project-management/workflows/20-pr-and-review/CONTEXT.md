@@ -31,11 +31,11 @@ and merged through the branch promotion chain.
 
 ### Upstream — the code-layer counterpart
 
-- `code/workflows/06-review/` — reviews the **content** of the change (security, patterns,
+- `code/workflows/07-review/` — reviews the **content** of the change (security, patterns,
   coverage, coding principles) and must be signed off before this workflow runs. This workflow
   owns the **process**: branch promotion, approvals, merge gates. Content there, process here —
   do not duplicate either side's checklist.
-- `code/workflows/03-security-hardening/` — where any security finding raised in review is fixed.
+- `code/workflows/08-security-hardening/` — where any security finding raised in review is fixed.
 
 ### Soft references — consult during execution
 

@@ -19,8 +19,8 @@ This is a **token-first, script-only** repo. Never run `python`, `pnpm`, `next`,
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/10-debugging-with-logs/` — the observability procedure
-- `how-to/workflows/03-debugging/` — operational debugging when the stack itself is unhealthy
+- `code/workflows/09-debugging-with-logs/` — the observability procedure
+- `how-to/workflows/08-debugging/` — operational debugging when the stack itself is unhealthy
 
 ## Stack
 

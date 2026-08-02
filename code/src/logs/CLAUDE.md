@@ -12,7 +12,7 @@ Runtime log files written by the Django backend in **dev and test only**
 
 ## How to work here
 
-- **Routing:** debugging with logs → workflow `code/workflows/10-debugging-with-logs/`;
+- **Routing:** debugging with logs → workflow `code/workflows/09-debugging-with-logs/`;
   configuration lives in `code/docs/LOGGING.md`. Read logs with **`logs.sh`**
   (`--service backend --follow`) or tail the files directly — never invoke
   `docker` or `python` directly to run the stack.

@@ -20,8 +20,8 @@ Read in this order before spawning any sub-agents:
 
 **Workflows:**
 
-- `code/workflows/07-debug/CONTEXT.md` → `code/workflows/07-debug/STEPS.md`
-- `code/workflows/10-debugging-with-logs/CONTEXT.md` — log-based debugging patterns
+- `code/workflows/10-debug/CONTEXT.md` → `code/workflows/10-debug/STEPS.md`
+- `code/workflows/09-debugging-with-logs/CONTEXT.md` — log-based debugging patterns
 - `code/workflows/02-tdd-cycle/CONTEXT.md` — regression test cycle
 
 **Docs:**
@@ -47,9 +47,9 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `how-to/workflows/03-debugging/` — **first** — confirm the environment is healthy (containers, logs, build)
-- `code/workflows/07-debug/` — then isolate the fault, pin it with a regression test, apply the minimal fix
-- `code/workflows/10-debugging-with-logs/` — staging/prod faults via Glitchtip, Loki, and Grafana
+- `how-to/workflows/08-debugging/` — **first** — confirm the environment is healthy (containers, logs, build)
+- `code/workflows/10-debug/` — then isolate the fault, pin it with a regression test, apply the minimal fix
+- `code/workflows/09-debugging-with-logs/` — staging/prod faults via Glitchtip, Loki, and Grafana
 - `project-management/workflows/19-implementation-documentation/` — routes the finding to `project-management/src/19-BUGS/`
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
