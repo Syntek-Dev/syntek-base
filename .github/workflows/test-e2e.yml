@@ -34,10 +34,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # See the equivalent guard in test.yml. uv.lock is absent by design in the base
+      # template, and every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, so the
+      # dev stack cannot start here. Report success rather than failing on every pull
+      # request raised against the template itself.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — running the browser suite."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — this is the base template. The dev stack cannot build."
+          fi
+
       - name: Install uv
+        if: steps.detect.outputs.present == 'true'
         uses: astral-sh/setup-uv@v5
 
       - name: Create .env.dev
+        if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.dev.example code/src/docker/.env.dev
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.dev
@@ -46,9 +63,11 @@ jobs:
       # if the stack is unreachable, so bring it up first and let the compose
       # healthchecks settle before handing over.
       - name: Start the dev stack
+        if: steps.detect.outputs.present == 'true'
         run: bash code/src/scripts/development/server.sh up --build
 
       - name: Wait for the stack
+        if: steps.detect.outputs.present == 'true'
         run: |
           for _ in $(seq 1 60); do
             if curl -sf -o /dev/null http://localhost:81/control/; then
@@ -61,6 +80,7 @@ jobs:
           exit 1
 
       - name: Run the e2e suite
+        if: steps.detect.outputs.present == 'true'
         env:
           # localhost, not the dev hostname — no /etc/hosts entry on the runner.
           E2E_BASE_URL: http://localhost:81
@@ -72,7 +92,7 @@ jobs:
           fi
 
       - name: Upload axe results
-        if: always()
+        if: always() && steps.detect.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: a11y-results
@@ -81,5 +101,5 @@ jobs:
           retention-days: 30
 
       - name: Tear down
-        if: always()
+        if: always() && steps.detect.outputs.present == 'true'
         run: bash code/src/scripts/development/server.sh down --volumes || true

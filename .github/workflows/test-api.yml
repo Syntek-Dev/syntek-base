@@ -46,18 +46,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # See the equivalent guard in test.yml. uv.lock is absent by design in the base
+      # template, and every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, so the
+      # django-test image cannot build here. Report success rather than failing on every
+      # pull request raised against the template itself.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — running the API suite."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — this is the base template. The image cannot build."
+          fi
+
       - name: Create .env.test
+        if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.test.example code/src/docker/.env.test
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
       - name: Build images
+        if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE build django-test
 
       - name: Start db and cache
+        if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE up -d db cache
 
       - name: Wait for database
+        if: steps.detect.outputs.present == 'true'
         run: |
           for i in $(seq 1 30); do
             docker compose -f $COMPOSE_FILE exec db \
@@ -67,9 +86,11 @@ jobs:
           done
 
       - name: Start backend
+        if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE up -d django-test
 
       - name: Wait for backend
+        if: steps.detect.outputs.present == 'true'
         run: |
           for i in $(seq 1 30); do
             docker compose -f $COMPOSE_FILE exec django-test \
@@ -83,6 +104,7 @@ jobs:
       # authenticated endpoint, or the authenticated requests will fail at login.
 
       - name: Run Bruno API tests
+        if: steps.detect.outputs.present == 'true'
         run: |
           mkdir -p reports/api
           FOLDER="${{ github.event.inputs.folder }}"
@@ -103,7 +125,7 @@ jobs:
             --reporter-json reports/api/results.json
 
       - name: Upload test results
-        if: always()
+        if: always() && steps.detect.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: bruno-api-results
@@ -111,7 +133,7 @@ jobs:
           retention-days: 30
 
       - name: Generate API test summary
-        if: always() && github.event_name == 'pull_request'
+        if: always() && steps.detect.outputs.present == 'true' && github.event_name == 'pull_request'
         run: |
           python3 - <<'EOF'
           import json, os
@@ -149,12 +171,12 @@ jobs:
           EOF
 
       - name: Post API test comment
-        if: always() && github.event_name == 'pull_request'
+        if: always() && steps.detect.outputs.present == 'true' && github.event_name == 'pull_request'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: api-tests
           path: reports/api/comment.md
 
       - name: Tear down
-        if: always()
+        if: always() && steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE down -v

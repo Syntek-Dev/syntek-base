@@ -36,8 +36,14 @@ how-to/src/TEMPLATE-GUIDE/
 │   ── Beyond the laptop ──
 ├── 12-DEPLOYMENT.md         ← the path to a server and the NixOS deploy repo
 ├── 13-UPDATING.md           ← copier update, conflicts, and re-sync policy
-└── 14-TROUBLESHOOTING.md    ← what breaks, and what to do about it
+├── 14-TROUBLESHOOTING.md    ← what breaks, and what to do about it
+│
+│   ── Maintaining the template itself ──
+└── TEMPLATE-GAPS.md         ← syntek-base's OWN open items (the root GAPS.md ships, so it stays empty)
 ```
+
+`TEMPLATE-GAPS.md` is unnumbered deliberately: the numbered files are a reading order for
+someone **using** the template, while it is a working register for someone **maintaining** it.
 
 ## Reading order
 
