@@ -28,6 +28,30 @@ generated from it.
 
 ---
 
+## 02/08/2026 — Two accepted Rust advisories have a re-check date but no mechanism
+
+**Type:** Active gap — **decision debt**
+**Summary:** `code/src/rust/deny.toml` ignores `RUSTSEC-2026-0194` and `-0195` (denial-of-service
+in `quick-xml` 0.38.4), reached only through Slint's Linux/BSD accessibility stack
+(`accesskit_unix` → `atspi` → `zbus_xml`). The acceptance is sound — the chain is target-gated
+away from Windows and macOS, the input is the local AT-SPI session bus rather than network data,
+and both are DoS rather than code execution. It is also **not fixable downstream**: every version
+pin from `accesskit_unix` up to Slint's own `=1.17.1` blocks the patched `quick-xml` 0.41.0.
+
+The gap is not the decision, it is the **expiry**. cargo-deny ignores do not expire, so the
+"re-check 02/11/2026" written in the TOML comment is enforced by nothing. Left alone, the entry
+outlives its justification silently — which is exactly the failure `SUPPLY-CHAIN.md` warns about
+when it says an ignore list of other people's transitive crates rots.
+
+**Blocked by / Action:** On or before **02/11/2026**, or sooner if Slint releases a version
+bumping `accesskit`: re-run `bash code/src/scripts/rust/audit.sh` with the two `ignore` entries
+removed. If they no longer fire, delete them. If they do, extend the date **with a fresh
+justification** rather than renewing the old one unread. Consider whether the template should
+carry a CI step that fails when an `ignore` entry's stated re-check date has passed — that would
+make this class of decay self-reporting rather than needing a register entry at all.
+
+---
+
 ## 02/08/2026 — The five new how-to workflows have never been executed
 
 **Type:** Active gap — **verification debt**
