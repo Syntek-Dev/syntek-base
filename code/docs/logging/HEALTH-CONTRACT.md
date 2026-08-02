@@ -7,11 +7,11 @@ model: opus
 
 # Health Monitoring Contract
 
-**Last Updated:** {{DATE}} **Maintained By:** {{ORG_NAME}} **Language:** British English (en_GB)
+**Last Updated:** <%DATE%> **Maintained By:** <%ORG_NAME%> **Language:** British English (en_GB)
 **Claude Model:** opus — Contract between the app repo (endpoints) and the NixOS deploy repo (Gatus, scrape)
 
 The app exposes health/metrics endpoints; the deployment server (the NixOS deploy repo,
-`{{DEPLOY_REPO}}`) consumes them to drive Gatus (public status page) and Prometheus
+`<%DEPLOY_REPO%>`) consumes them to drive Gatus (public status page) and Prometheus
 (metrics). This is the same app-exposes / server-provisions split used for `/metrics/`. This doc is
 the single source of truth for **what the app exposes** and **what the server must provision**.
 
@@ -38,13 +38,13 @@ endpoint that requires the `health.view` permission.
 
 ## What the deploy repo must provision (Phase B)
 
-All of the following live in `{{DEPLOY_REPO}}`, not in this repo.
+All of the following live in `<%DEPLOY_REPO%>`, not in this repo.
 
-### 1. Gatus service + public status page (`status.{{PRIMARY_DOMAIN}}`)
+### 1. Gatus service + public status page (`status.<%PRIMARY_DOMAIN%>`)
 
 - New module `modules/gatus/default.nix` running `services.gatus` (localhost-only), state
   on a ZFS dataset (e.g. `/tank/data/gatus`).
-- Add `status.{{PRIMARY_DOMAIN}}` as a `custom.cloudflared.tunnels.tunnels` entry + a
+- Add `status.<%PRIMARY_DOMAIN%>` as a `custom.cloudflared.tunnels.tunnels` entry + a
   `custom.nginx.apps` vhost → the Gatus listen port, following the established hostname pattern.
 - Create the tunnel token: `agenix -e secrets/cloudflared-status-token.age`.
 
@@ -54,20 +54,20 @@ Reference Gatus config (config-as-data — adapt hostnames per environment):
 endpoints:
   - name: Website
     group: { { PROJECT_NAME } }
-    url: "https://{{PRIMARY_DOMAIN}}/"
+    url: "https://<%PRIMARY_DOMAIN%>/"
     interval: 60s
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 2000"
   - name: API
     group: { { PROJECT_NAME } }
-    url: "https://{{PRIMARY_DOMAIN}}/health/"
+    url: "https://<%PRIMARY_DOMAIN%>/health/"
     interval: 60s
     conditions:
       - "[STATUS] == 200"
   - name: Readiness
     group: { { PROJECT_NAME } }
-    url: "https://{{PRIMARY_DOMAIN}}/health/ready/"
+    url: "https://<%PRIMARY_DOMAIN%>/health/ready/"
     interval: 60s
     conditions:
       - "[STATUS] == 200"
@@ -86,7 +86,7 @@ metrics-deploy gap):
 ```nix
 scrapeConfigs = [
   # … existing node + zfs …
-  { job_name = "{{ORG_SLUG}}-web"; metrics_path = "/metrics/"; static_configs = [ { targets = [ "127.0.0.1:8000" ]; labels = { service = "web"; }; } ]; }
+  { job_name = "<%ORG_SLUG%>-web"; metrics_path = "/metrics/"; static_configs = [ { targets = [ "127.0.0.1:8000" ]; labels = { service = "web"; }; } ]; }
 ];
 ```
 

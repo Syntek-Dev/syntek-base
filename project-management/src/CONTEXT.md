@@ -1,6 +1,6 @@
 # project-management/src
 
-**Last Updated**: {{DATE}} · **Language**: British English (en_GB)
+**Last Updated**: <%DATE%> · **Language**: British English (en_GB)
 
 Source artefacts for project management, planning, and compliance — a base-repo
 scaffold. The numbered folders run in **three tiers**: _specify_ (01–12), _decide &

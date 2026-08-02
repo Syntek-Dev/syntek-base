@@ -1,10 +1,10 @@
 # how-to/src/SERVER-ARCHITECTURE — Deploy-Facing Server/Edge Contract
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
 The deploy-facing specification of **what the server and edge must provide** for the
-{{PROJECT_NAME}} application. This directory is the contract the NixOS deploy repo
-(`{{DEPLOY_REPO}}`) implements — the consolidation point for edge requirements that
+<%PROJECT_NAME%> application. This directory is the contract the NixOS deploy repo
+(`<%DEPLOY_REPO%>`) implements — the consolidation point for edge requirements that
 were previously scattered across `GAPS.md`, the ADRs, and `NIXOS-SETUP.md`, plus the
 application's sizing envelope expressed as **assigned compute with a headroom buffer**.
 
@@ -21,7 +21,7 @@ how-to/src/SERVER-ARCHITECTURE/
 │                             what the deploy repo must implement
 ├── COMPUTE-ALLOCATION.md   ← sizing envelope → assigned compute + buffer, keyed to
 │                             the Postgres horizontal-scaling ADR phase-gates
-└── NIXOS-HANDOFF.md        ← how this directory feeds {{DEPLOY_REPO}}
+└── NIXOS-HANDOFF.md        ← how this directory feeds <%DEPLOY_REPO%>
 ```
 
 ## What is here
@@ -44,7 +44,7 @@ how-to/src/SERVER-ARCHITECTURE/
 ## Do not use for
 
 - Provisioning walkthrough (disks, agenix, nixos-anywhere) → the deploy repo:
-  `{{DEPLOY_REPO}}/how-to/src/01–11` + `how-to/workflows/01-server-setup/`
+  `<%DEPLOY_REPO%>/how-to/src/01–11` + `how-to/workflows/01-server-setup/`
 - The readiness audit and raw sizing envelope → `how-to/src/SCALE-ARCHITECTURE/`
 - Application-side health endpoint shapes → `code/docs/logging/HEALTH-CONTRACT.md`
 - The scaling decision itself → the project's Postgres horizontal-scaling ADR +
@@ -92,4 +92,4 @@ repo implements it.
 - `how-to/src/SCALE-ARCHITECTURE/` — the sibling snapshot this directory consumes
 - `code/docs/logging/HEALTH-CONTRACT.md` — the app ↔ deploy health/metrics contract
 - `code/docs/architecture/CORE-AND-SCALING.md` — the scaling phase-gates
-- `{{DEPLOY_REPO}}` — the consumer repo
+- `<%DEPLOY_REPO%>` — the consumer repo

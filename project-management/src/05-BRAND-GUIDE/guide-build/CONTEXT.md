@@ -38,4 +38,4 @@ python3 brand_guide.py --check    # verify the committed .tex is up to date; wri
 - `../../00-ASSETS/LOGOS/` — logo source files referenced by the guide's logo rules
 - `code/docs/DESIGN-TOKENS.md` — the code-side (DB-canonical) design-token system
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

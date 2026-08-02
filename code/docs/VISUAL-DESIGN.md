@@ -7,16 +7,16 @@ model: opus
 
 # Visual Design Language
 
-**Last Updated:** {{DATE}}
+**Last Updated:** <%DATE%>
 **Version:** 0.1.0
-**Maintained By:** {{ORG_NAME}}
+**Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
 **Status:** Template. Codifies the visual-design discipline for the public site (`apps.marketing`)
 and the shared component library.
 
 > **Scope note (template).** §1 (the mandate) and §4 (the AI-look ban) are the generic, portable
 > core — they travel to any project unchanged. §2 (artefact locations), §3 (the brand signature),
-> and §5 (the component catalogue) carry `{{ORG_NAME}}`-level placeholders and generic token roles:
+> and §5 (the component catalogue) carry `<%ORG_NAME%>`-level placeholders and generic token roles:
 > fill them with the project's real brand system, component vocabulary, and design-artefact
 > locations. See [Adopting this guide](#adopting-this-guide).
 
@@ -24,13 +24,13 @@ and the shared component library.
 
 ## 1. The mandate (portable)
 
-Every page must be **unmistakably {{ORG_NAME}}**. The default failure mode of machine-authored UI is
+Every page must be **unmistakably <%ORG_NAME%>**. The default failure mode of machine-authored UI is
 the "AI-look": a symmetrical centred hero, one flat background, a single row of three equal cards,
 rounded-everything with a soft drop shadow, and no vertical rhythm. It is competent, generic, and
 forgettable — and it is a **review gate defect**, peer to the WCAG and HTMX-indicator gates.
 
 The mandate, in one line: **never ship generic, centred, single-band UI — implement the design that
-was already decided, in the {{ORG_NAME}} signature.** You are not inventing a layout; you are
+was already decided, in the <%ORG_NAME%> signature.** You are not inventing a layout; you are
 building one.
 
 ---
@@ -66,9 +66,9 @@ own artefact locations.
 
 ---
 
-## 3. The {{ORG_NAME}} signature
+## 3. The <%ORG_NAME%> signature
 
-The concrete moves that make a page read as {{ORG_NAME}}. Values are DB-canonical tokens — consume
+The concrete moves that make a page read as <%ORG_NAME%>. Values are DB-canonical tokens — consume
 `var(--token)` only, never a literal (see `DESIGN-TOKENS.md`); the brand guide holds the exact
 values, this guide holds the **composition**. Fill the specific hues, typefaces, and variants below
 from the project's own brand guide.
@@ -155,7 +155,7 @@ quickly and neatly.
 If a page does any of these, it is off-brand — fix it before hand-off:
 
 - **Centred everything.** Centred hero headline + subtitle + two pill buttons, centred section
-  headings, centred body. {{ORG_NAME}} is left-oriented and editorial.
+  headings, centred body. <%ORG_NAME%> is left-oriented and editorial.
 - **One flat background** for the whole page — no alternating bands, no rhythm.
 - **The three-equal-card grid as the _only_ device**, repeated down the page. Vary the vocabulary
   (split hero, timeline, sector grid, feature rows, CTA banner).

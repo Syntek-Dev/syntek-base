@@ -1,11 +1,11 @@
 # how-to/src/SCALE-ARCHITECTURE — How the Application Scales
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
 The application-side scaling snapshot: what the running system looks like today, how each
 surface loads it, how ready the architecture is to move up the Postgres scaling phase-gates, and
 which knobs a tier change turns. This directory is the **reconciled substrate** that
-`how-to/src/SERVER-ARCHITECTURE/` (the server-facing spec) and the separate `{{DEPLOY_REPO}}`
+`how-to/src/SERVER-ARCHITECTURE/` (the server-facing spec) and the separate `<%DEPLOY_REPO%>`
 repo consume — it describes _how it scales_, never _what to buy_.
 
 ## Directory Tree
@@ -35,7 +35,7 @@ how-to/src/SCALE-ARCHITECTURE/
 
 - **Not the server spec.** Assigned compute, edge duties, and the applied headroom buffer live
   in `how-to/src/SERVER-ARCHITECTURE/` (seeded separately) and are provisioned by the
-  `{{DEPLOY_REPO}}` repo.
+  `<%DEPLOY_REPO%>` repo.
 - **Not a forecast.** The Postgres-scaling ADR and `code/docs/PERFORMANCE.md` are explicit:
   measure first, scale on observable phase-gates, "do not pre-emptively add infrastructure". No
   document here authorises buying capacity.
@@ -90,5 +90,5 @@ verified reading. Decisions (tier targets, headroom values) are settled through
 - the project's decision register — where the scaling and cache-posture decisions are recorded
 - `code/docs/architecture/CORE-AND-SCALING.md` — the day-to-day scaling rules
 - `code/docs/PERFORMANCE.md` (+ `performance/API-AND-MONITORING.md`) — budgets and load-test triggers
-- `{{DEPLOY_REPO}}` (deploy repo) — the provisioning this snapshot's topology maps
+- `<%DEPLOY_REPO%>` (deploy repo) — the provisioning this snapshot's topology maps
   onto, via `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md`

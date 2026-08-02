@@ -1,7 +1,7 @@
 # code/docs — Coding Reference Guides
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Quick index reference, file navigation, directory tree lookups
 **MCP Servers:** code-review-graph (codebase structure context)
 
@@ -43,7 +43,7 @@ code/docs/
 │   └── security/                     ← crypto-and-data/ supply-chain/ monitoring-and-incident/ owasp-and-checklist/
 ├── TESTING.md               ← TDD phases, coverage floors, pytest setup
 ├── URL-STRATEGY.md          ← route naming, slug patterns, Django URL conventions
-├── VISUAL-DESIGN.md         ← visual language: anti-generic layout + {{ORG_NAME}} signature
+├── VISUAL-DESIGN.md         ← visual language: anti-generic layout + <%ORG_NAME%> signature
 └── cloudinary/              ← Cloudinary SDK reference docs (Python)
     └── CONTEXT.md
 ```
@@ -69,5 +69,5 @@ code/docs/
 | `RLS-GUIDE.md`                  | Row-level security patterns (if multi-tenant scope added)                                                                                              |
 | `URL-STRATEGY.md`               | Route naming, slug patterns, Django URL conventions                                                                                                    |
 | `DESIGN-TOKENS.md`              | CSS design-token catalogue and `var(--token)`-only usage rules                                                                                         |
-| `VISUAL-DESIGN.md`              | Visual language — anti-generic layout, {{ORG_NAME}} signature                                                                                          |
+| `VISUAL-DESIGN.md`              | Visual language — anti-generic layout, <%ORG_NAME%> signature                                                                                          |
 | `cloudinary/CONTEXT.md`         | Cloudinary SDK docs index — Python SDK                                                                                                                 |

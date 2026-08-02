@@ -16,7 +16,7 @@ implementers to work from without further clarification. You are a specialist th
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Frontend: Django templates +
 django-components + HTMX + Alpine + vanilla CSS (design tokens).
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}} — spelling, dates (DD/MM/YYYY), and currency
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> — spelling, dates (DD/MM/YYYY), and currency
 in every example must follow this.
 
 ## Context Loading
@@ -43,7 +43,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Grill Before Writing
 
 Story work **opens with a grilling pass** — load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time (each with your recommended answer, facts looked up not
+interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer, facts looked up not
 asked): the specific **user role**, the measurable **goal + value**, the **success signal**,
 **constraints/dependencies**, **priority**, and at least one edge/error case. This inverts the
 usual proceed-by-default posture (`.claude/CLAUDE.md` §10). Record the resolved behaviour

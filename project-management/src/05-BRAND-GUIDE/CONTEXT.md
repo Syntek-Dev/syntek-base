@@ -39,4 +39,4 @@ Edit the `INPUTS` in `guide-build/brand_guide.py`, then run `python3 brand_guide
 - `code/docs/DESIGN-TOKENS.md` — the code-side, DB-canonical design-token system
 - `project-management/workflows/05-brand-guides/` — the brand-guide workflow (STEPS + CHECKLIST)
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

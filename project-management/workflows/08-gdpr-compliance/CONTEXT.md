@@ -1,6 +1,6 @@
 # Workflow: GDPR Compliance Review
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

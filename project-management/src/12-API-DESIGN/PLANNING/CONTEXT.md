@@ -61,4 +61,4 @@ served by the per-story designs, as in 08-GDPR).
 - `code/docs/API-DESIGN.md` — Django Ninja conventions the design is written against
 - `code/docs/SECURITY.md` — the permission/IDOR rules the design specifies and code enforces
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

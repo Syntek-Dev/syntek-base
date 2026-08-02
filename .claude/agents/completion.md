@@ -16,7 +16,7 @@ rules at length.
 Monorepo: Django 6.0.6 + Django Ninja backend · Django-templated frontend
 (HTMX + Alpine). Scripts:
 `code/src/scripts/**/*.sh`.
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}. Write completion notes in British English;
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>. Write completion notes in British English;
 dates as **DD/MM/YYYY**.
 
 ## Remit

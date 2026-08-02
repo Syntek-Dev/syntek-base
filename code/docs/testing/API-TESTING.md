@@ -7,8 +7,8 @@ model: opus
 
 # Testing — API Testing (Django Ninja + Bruno)
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Django Ninja endpoint tests, input-validation & authorisation negatives, Bruno HTTP
 
 The JSON API is built with Django Ninja: a `NinjaAPI` mounts one or more `Router`s, each endpoint

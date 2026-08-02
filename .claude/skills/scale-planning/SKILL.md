@@ -7,22 +7,22 @@ description: >-
   (how-to/src/SCALE-ARCHITECTURE and how-to/src/SERVER-ARCHITECTURE) that feed the NixOS
   deploy repo with headroom. Invoke by typing /scale-planning, or when sizing the stack
   for growth, reconciling the architecture against what the server must provide, or
-  preparing the server/edge contract the {{DEPLOY_REPO}} repo consumes.
+  preparing the server/edge contract the <%DEPLOY_REPO%> repo consumes.
 ---
 
-# Skill: scale-planning ({{PROJECT_SLUG}})
+# Skill: scale-planning (<%PROJECT_SLUG%>)
 
 Scale planning answers two questions the project has never pinned down: **is the deployment
 sized correctly for a target number of users, and is it built so that reaching the next tier
 is a config change, not a rewrite?** It owns the app↔server/deploy contract — the spec the
-separate NixOS deploy repo (`{{DEPLOY_REPO}}`) provisions against.
+separate NixOS deploy repo (`<%DEPLOY_REPO%>`) provisions against.
 
 It runs as a **wayfinder-charted epic** — the frontier is too big for one sitting and it
 spans another repo — with **grilling** settling each decision node. The governing decision is
 recorded in the project's decision register; the deep vocabulary (module / interface / depth / seam) comes from
 `.claude/skills/codebase-design`.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
 ## The one rule: reconcile, never forecast
 
@@ -44,7 +44,7 @@ stop and record why in the scale-planning contract (supersede/amend — never re
 ## Two snapshots, one pipeline
 
 ```text
-codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)──▶ how-to/src/SERVER-ARCHITECTURE ──▶ {{DEPLOY_REPO}}
+codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)──▶ how-to/src/SERVER-ARCHITECTURE ──▶ <%DEPLOY_REPO%>
           (live code)     how it scales                  headroom      what the server must provide       (template flake repo)
 ```
 
@@ -169,4 +169,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/PERFORMANCE.md` · `code/docs/architecture/CORE-AND-SCALING.md` — the budgets and scaling rules (do not duplicate).
 - `code/docs/logging/HEALTH-CONTRACT.md` — the app→deploy contract precedent.
 - `how-to/src/SCALE-ARCHITECTURE/` · `how-to/src/SERVER-ARCHITECTURE/` — the two living snapshots.
-- `{{DEPLOY_REPO}}` — the deploy repo that implements the contract (`how-to/src/01–11`); `how-to/src/NIXOS-SETUP.md` here is now a pointer stub.
+- `<%DEPLOY_REPO%>` — the deploy repo that implements the contract (`how-to/src/01–11`); `how-to/src/NIXOS-SETUP.md` here is now a pointer stub.

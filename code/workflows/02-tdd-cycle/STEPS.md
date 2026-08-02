@@ -8,7 +8,7 @@ model: opus
 
 # TDD Cycle — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -59,14 +59,14 @@ hardcoded `"test@test.com"`). Structure with parametrize and markers so the suit
 runnable as it grows.
 
 **Agree the seams first — grill first** (`.claude/CLAUDE.md` §10): load
-`.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time about which seams and
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time about which seams and
 behaviours to test — the service boundary, Ninja endpoint, or component contract on the story's critical
-path — before writing any test, then confirm that list with {{DEVELOPER_NAME}}. Test those seams, not every
+path — before writing any test, then confirm that list with <%DEVELOPER_NAME%>. Test those seams, not every
 reachable edge case. Two rules hold on every assertion: the expected value comes from an **independent source of
 truth** (a known literal, a worked example, or the acceptance criteria) and is never recomputed the
 way the code computes it (**no tautological tests**); and every assertion runs **through the public
 interface** so it survives Phases 2–3 unchanged. Framing:
-`code/docs/testing/COVERAGE.md` → _Test Discipline_.
+`code/docs/testing/COVERAGE.md` → **Test Discipline**.
 
 Cover all four tiers relevant to the scope:
 

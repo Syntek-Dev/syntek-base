@@ -7,16 +7,16 @@ model: fable
 
 # GDPR Guide — Data Subject Rights
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** fable — Data subject rights, per-app erasure and export service logic
 
 ---
 
-## GDPR Compliance in {{PROJECT_NAME}}
+## GDPR Compliance in <%PROJECT_NAME%>
 
 GDPR compliance is built directly into whichever Django apps hold personal data — typically an
-identity app (`apps/{{IDENTITY_APP}}`), an audit log (`apps/{{AUDIT_APP}}`), and any app storing
+identity app (`apps/<%IDENTITY_APP%>`), an audit log (`apps/<%AUDIT_APP%>`), and any app storing
 user-authored content or notifications. There is no external GDPR orchestration package: each
 app owns its own erasure and export logic, and the GDPR views/tasks call those service functions
 directly.
@@ -29,12 +29,12 @@ not shipped code.
 
 | App                          | Personal data held                                                         | On erasure                                  |
 | ---------------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
-| `apps.{{IDENTITY_APP}}`      | Email, full name, password hash, MFA secrets, login sessions, IP addresses | Delete or nullify PII fields                |
-| `apps.{{CONTENT_APP}}`       | User-authored content, if applicable                                       | Delete or anonymise                         |
-| `apps.{{AUDIT_APP}}`         | Actor IDs, IP addresses                                                    | Anonymise — **do not delete** the event row |
-| `apps.{{NOTIFICATIONS_APP}}` | User IDs and notification content                                          | Delete                                      |
+| `apps.<%IDENTITY_APP%>`      | Email, full name, password hash, MFA secrets, login sessions, IP addresses | Delete or nullify PII fields                |
+| `apps.<%CONTENT_APP%>`       | User-authored content, if applicable                                       | Delete or anonymise                         |
+| `apps.<%AUDIT_APP%>`         | Actor IDs, IP addresses                                                    | Anonymise — **do not delete** the event row |
+| `apps.<%NOTIFICATIONS_APP%>` | User IDs and notification content                                          | Delete                                      |
 
-**Consent records** (stored in `apps.{{IDENTITY_APP}}`) must never be erased — they are evidence of the
+**Consent records** (stored in `apps.<%IDENTITY_APP%>`) must never be erased — they are evidence of the
 lawful basis for processing.
 
 ---
@@ -48,7 +48,7 @@ functions is a **blocking criterion** for merge on any new PII-bearing table.
 ### Service function signatures
 
 ```python
-# apps/{{IDENTITY_APP}}/services/gdpr.py
+# apps/<%IDENTITY_APP%>/services/gdpr.py
 from __future__ import annotations
 
 from django.db import transaction
@@ -56,12 +56,12 @@ from django.db import transaction
 
 @transaction.atomic
 def gdpr_erase(user_id: str) -> None:
-    """Delete or anonymise all personal data for ``user_id`` in apps.{{IDENTITY_APP}}.
+    """Delete or anonymise all personal data for ``user_id`` in apps.<%IDENTITY_APP%>.
 
     Must be idempotent — calling twice must not raise.
     Uses admin_db to bypass RLS (the user's session may be compromised).
     """
-    from apps.{{IDENTITY_APP}}.models import User, LoginSession, VerificationCode
+    from apps.<%IDENTITY_APP%>.models import User, LoginSession, VerificationCode
 
     User.objects.using("admin_db").filter(pk=user_id).update(
         email=None,
@@ -77,13 +77,13 @@ def gdpr_erase(user_id: str) -> None:
 
 
 def gdpr_export(user_id: str) -> dict:
-    """Return all personal data held for ``user_id`` in apps.{{IDENTITY_APP}} as a serialisable dict.
+    """Return all personal data held for ``user_id`` in apps.<%IDENTITY_APP%> as a serialisable dict.
 
     Decrypts fields before returning — the export is for the data subject (plaintext).
     Never includes data belonging to other users.
     """
-    from apps.{{CORE_APP}}.encryption import decrypt_field, get_field_key
-    from apps.{{IDENTITY_APP}}.models import User
+    from apps.<%CORE_APP%>.encryption import decrypt_field, get_field_key
+    from apps.<%IDENTITY_APP%>.models import User
 
     user = User.objects.using("admin_db").get(pk=user_id)
     key_email = get_field_key("EMAIL")
@@ -97,11 +97,11 @@ def gdpr_export(user_id: str) -> dict:
 ```
 
 ```python
-# apps/{{AUDIT_APP}}/services/gdpr.py
+# apps/<%AUDIT_APP%>/services/gdpr.py
 @transaction.atomic
 def gdpr_erase(user_id: str) -> None:
     """Anonymise audit log entries for ``user_id`` — do not delete the event rows."""
-    from apps.{{AUDIT_APP}}.models import AuditEntry
+    from apps.<%AUDIT_APP%>.models import AuditEntry
 
     AuditEntry.objects.using("admin_db").filter(actor_id=user_id).update(
         actor_id="[anonymised]",
@@ -112,7 +112,7 @@ def gdpr_erase(user_id: str) -> None:
 
 def gdpr_export(user_id: str) -> dict:
     """Return audit entries for ``user_id`` as a serialisable list."""
-    from apps.{{AUDIT_APP}}.models import AuditEntry
+    from apps.<%AUDIT_APP%>.models import AuditEntry
 
     entries = list(
         AuditEntry.objects.using("admin_db")
@@ -126,10 +126,10 @@ def gdpr_export(user_id: str) -> dict:
 
 | App                          | Must provide? | Notes                                                                  |
 | ---------------------------- | ------------- | ---------------------------------------------------------------------- |
-| `apps.{{IDENTITY_APP}}`      | **Yes**       | Holds email, full name, MFA secrets, login sessions, IP addresses      |
-| `apps.{{AUDIT_APP}}`         | **Yes**       | Holds actor IDs and IP addresses — anonymise on erasure, do not delete |
-| `apps.{{CONTENT_APP}}`       | Yes           | Holds user-authored content — delete or anonymise on erasure           |
-| `apps.{{NOTIFICATIONS_APP}}` | Yes           | Holds user IDs and notification content                                |
+| `apps.<%IDENTITY_APP%>`      | **Yes**       | Holds email, full name, MFA secrets, login sessions, IP addresses      |
+| `apps.<%AUDIT_APP%>`         | **Yes**       | Holds actor IDs and IP addresses — anonymise on erasure, do not delete |
+| `apps.<%CONTENT_APP%>`       | Yes           | Holds user-authored content — delete or anonymise on erasure           |
+| `apps.<%NOTIFICATIONS_APP%>` | Yes           | Holds user IDs and notification content                                |
 
 ---
 

@@ -51,4 +51,4 @@ code-level audit in `../../AUDITS/IMPLEMENTATION/` is complete. Copy
 - `project-management/workflows/20-pr-and-review/` — where these records are written
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -50,4 +50,4 @@ plan in `../PLANNING/THREAT-MODEL-PLAN-US###-*.md`, and re-assess each threat.
 - `../../VULNERABILITIES/IMPLEMENTATION/` — newly found CRITICAL/HIGH findings
 - `project-management/workflows/09-security-checks/` — where these reviews are written
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

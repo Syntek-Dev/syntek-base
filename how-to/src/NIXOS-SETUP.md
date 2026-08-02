@@ -1,13 +1,13 @@
 # NixOS Server Setup — Pointer
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
 A contract split keeps this repo and the deploy repo cleanly separated: this repo
 **specifies** what the server and edge must provide; the deploy repo **implements** it.
 
 ## Provisioning the server (how the box is stood up)
 
-Lives in the deploy repo, `{{DEPLOY_REPO}}`:
+Lives in the deploy repo, `<%DEPLOY_REPO%>`:
 
 - `how-to/src/01-FORK-THE-REPO.md` … `11-HETZNER-CLOUDFLARE-SECURITY.md` — fork/rename,
   secrets, server setup, flake deploys, WireGuard, CLI, Docker apps, Hetzner/Cloudflare

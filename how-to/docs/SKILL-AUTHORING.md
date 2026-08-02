@@ -7,7 +7,7 @@ model: opus
 
 # Authoring Skills
 
-**Version:** 0.1.0 **Maintained by:** {{ORG_NAME}} Developers **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Version:** 0.1.0 **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — how to write and edit skills under `.claude/skills/` so they stay predictable
 
 A skill exists to wrangle determinism out of a stochastic system. The root virtue is
@@ -16,7 +16,7 @@ output. A brainstorming skill should predictably diverge; its tokens vary, its b
 not. Cost and maintainability are symptoms of predictability, not rivals to it. Every lever in
 this guide serves it.
 
-This adapts the general craft of skill-writing to {{PROJECT_NAME}}'s hard constraints. Read them first —
+This adapts the general craft of skill-writing to <%PROJECT_NAME%>'s hard constraints. Read them first —
 they change the mechanics of every axis below:
 
 - **Frontmatter is `name` + `description` only.** No `tools`, `model`, `license`, or
@@ -43,7 +43,7 @@ content is arranged), **steering** (how the agent's runtime behaviour is shaped)
 
 ## 1. Invocation — how the skill is reached
 
-Two ways in, trading two different costs. Because {{PROJECT_NAME}} has no `disable-model-invocation` key,
+Two ways in, trading two different costs. Because <%PROJECT_NAME%> has no `disable-model-invocation` key,
 the **description wording is the whole lever**.
 
 - **Model-auto-loaded.** A description opening with a leading word and a rich "**Load when…**"
@@ -92,7 +92,7 @@ Rank every piece on the ladder by how immediately the agent needs it:
    `SCREAMING-SNAKE-CASE.md` file beside it, reached by a **context pointer** and loaded only when
    the pointer fires.
 
-**Progressive disclosure** is the move down that ladder, and in {{PROJECT_NAME}} the **300-line cap forces
+**Progressive disclosure** is the move down that ladder, and in <%PROJECT_NAME%> the **300-line cap forces
 it**: when a `SKILL.md` would breach 300 code lines, disclose its reference into sub-documents and
 leave the `SKILL.md` a thin index that points at them. `global-workflow` (index +
 `GIT-AND-PR.md` + `VERSIONING-AND-DOCS.md`) and `msp-scp-documents` (index + six sub-documents)
@@ -128,11 +128,11 @@ pretrained word gives free.
 Make it **checkable** (can the agent tell done from not-done?) and, where it matters,
 **exhaustive** ("every modified model accounted for", not "produce a change list") — a vague
 criterion invites premature completion and thin legwork. `grilling` ends on a sharp,
-non-negotiable bar: the design is summarised and {{DEVELOPER_NAME}} gives an explicit "yes" before any
+non-negotiable bar: the design is summarised and <%DEVELOPER_NAME%> gives an explicit "yes" before any
 downstream work begins.
 
 **Look up facts; ask about decisions.** Steer the agent to _discover_ anything derivable from the
-codebase or environment rather than offload the question to the human. In {{PROJECT_NAME}} the lookup order
+codebase or environment rather than offload the question to the human. In <%PROJECT_NAME%> the lookup order
 is `code-review-graph` (structural context) → Read/Grep/Glob → `.claude/plugins/*.py`
 (`project`/`db`/`env`), and every dev operation runs through `code/src/scripts/**/*.sh`. Reserve
 questions for genuine decisions with a real trade-off. `grilling` rule 3 is the canonical

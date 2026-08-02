@@ -12,7 +12,7 @@ The application-side scaling snapshot — per-surface load profiles, the
 config-flip-vs-rewrite readiness audit, and the sizing envelope keyed to the
 scaling phase-gates — reconciled against live code by the
 `scale-planner` agent and consumed downstream by `how-to/src/SERVER-ARCHITECTURE/`
-and the `{{DEPLOY_REPO}}` deploy repo.
+and the `<%DEPLOY_REPO%>` deploy repo.
 
 ## How to work here
 
@@ -43,7 +43,7 @@ and the `{{DEPLOY_REPO}}` deploy repo.
   by an observed phase-gate, never by a date or a projection.
 - **Never fabricate a number.** No concrete target-user or traffic figure exists in
   this template yet. Tier targets stay `TBD — set via /scale-planning grilling` until
-  {{DEVELOPER_NAME}} settles them. A fabricated figure is worse than an honest placeholder.
+  <%DEVELOPER_NAME%> settles them. A fabricated figure is worse than an honest placeholder.
 - **Reference, don't restate.** The cache-stampede, Postgres horizontal-scaling, and
   object-store ADRs, `CORE-AND-SCALING.md`, and the `PERFORMANCE.md` family are
   linked, not copied — a restated table drifts.

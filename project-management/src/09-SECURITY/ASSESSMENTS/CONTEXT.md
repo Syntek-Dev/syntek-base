@@ -73,4 +73,4 @@ CRITICAL/HIGH findings are release blockers — escalate each to `../VULNERABILI
 - `project-management/workflows/09-security-checks/` — the workflow that produces these
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

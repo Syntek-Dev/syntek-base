@@ -5,7 +5,7 @@
 # Usage:
 #   hosts-story-remove.sh <story-number>   e.g. hosts-story-remove.sh 3   or   hosts-story-remove.sh 003
 #
-# Removes the line containing dev-us<NNN>.{{PROJECT_SLUG}}.localhost from /etc/hosts.
+# Removes the line containing dev-us<NNN>.<%PROJECT_SLUG%>.localhost from /etc/hosts.
 # Does nothing if the entry is not present.
 #
 # Exit codes:  0 = success / not present   1 = bad input   2 = write failed
@@ -27,18 +27,18 @@ N=$(( 10#$INPUT ))
 
 PAD=$(printf '%03d' "$N")
 
-if ! grep -qF "dev-us${PAD}.{{PROJECT_SLUG}}.localhost" /etc/hosts; then
+if ! grep -qF "dev-us${PAD}.<%PROJECT_SLUG%>.localhost" /etc/hosts; then
   ok "not present — nothing to remove for us${PAD}"
   exit 0
 fi
 
 TMPFILE=$(mktemp)
-if grep -vF "dev-us${PAD}.{{PROJECT_SLUG}}.localhost" /etc/hosts > "$TMPFILE" && sudo cp "$TMPFILE" /etc/hosts; then
+if grep -vF "dev-us${PAD}.<%PROJECT_SLUG%>.localhost" /etc/hosts > "$TMPFILE" && sudo cp "$TMPFILE" /etc/hosts; then
   rm -f "$TMPFILE"
   ok "Removed us${PAD} entries from /etc/hosts"
 else
   rm -f "$TMPFILE"
   warn "Could not update /etc/hosts — remove the line manually:"
-  warn "  127.0.0.${N} dev-us${PAD}.{{PROJECT_SLUG}}.localhost ..."
+  warn "  127.0.0.${N} dev-us${PAD}.<%PROJECT_SLUG%>.localhost ..."
   exit 2
 fi

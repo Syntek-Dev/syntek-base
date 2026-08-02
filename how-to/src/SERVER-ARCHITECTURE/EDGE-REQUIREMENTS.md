@@ -1,21 +1,21 @@
 # Edge Requirements — Consolidated Catalogue
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{PROJECT_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
 
-Every requirement the {{PROJECT_NAME}} application places on the edge and server,
+Every requirement the <%PROJECT_NAME%> application places on the edge and server,
 reconciled against this project's live codebase. Each entry carries **Source** (the
-file in this repo, or prefixed `deploy:` for {{DEPLOY_REPO}}), **Current status**, and
-**Deploy repo must implement** — the obligation on {{DEPLOY_REPO}}. Statuses here track
+file in this repo, or prefixed `deploy:` for <%DEPLOY_REPO%>), **Current status**, and
+**Deploy repo must implement** — the obligation on <%DEPLOY_REPO%>. Statuses here track
 the sources; when a `GAPS.md` gap closes or a NixOS module lands, update the row.
 
 Traffic path (context for every entry): **Cloudflare Edge → CF Tunnel (outbound-only)
 → bare-metal Nginx `:8081` → the Django app container** (ASGI: Gunicorn + Uvicorn
-workers, `:8000`) on the `{{PROJECT_SLUG}}-net` bridge — serving Django-templated pages
+workers, `:8000`) on the `<%PROJECT_SLUG%>-net` bridge — serving Django-templated pages
 (django-components + HTMX + Alpine + token CSS), the Django Ninja JSON API (`/api/...`),
 serving every surface as HTML. Celery worker + Celery beat (singleton)
 run alongside, plus any optional project-defined Rust service(s); the container↔service
@@ -37,7 +37,7 @@ family — no second frontend upstream to size or route.
   (`default-src 'self'`, `frame-ancestors 'none'`, …) with per-app overrides
   (`enableStrictHeaders = true` + `cspDirectives` on the host's `custom.nginx.apps`
   entry).
-- **Deploy repo must implement:** the full security-header set on the {{PRIMARY_DOMAIN}}
+- **Deploy repo must implement:** the full security-header set on the <%PRIMARY_DOMAIN%>
   vhost — CSP (with the host allowances in entries 2–3), `X-Frame-Options`/
   `frame-ancestors`, and the strict-header baseline — via
   `custom.nginx.apps[].enableStrictHeaders` + `cspDirectives`. The app container must
@@ -77,7 +77,7 @@ family — no second frontend upstream to size or route.
   mechanism this lands through. On a CSP-enforcing environment, media attachments are
   blocked from rendering until this lands. Not a dev/test blocker (no enforced CSP
   there).
-- **Deploy repo must implement:** add to the {{PRIMARY_DOMAIN}} vhost `cspDirectives`:
+- **Deploy repo must implement:** add to the <%PRIMARY_DOMAIN%> vhost `cspDirectives`:
   `img-src` and `media-src` allowing `https://res.cloudinary.com` and the object-store
   public host; `connect-src` too if any attachment is ever fetched via XHR/`fetch`
   rather than a plain element load.
@@ -139,10 +139,10 @@ family — no second frontend upstream to size or route.
 
 ## 7. Cloudflare + CF Tunnel
 
-- **Source:** the tunnel topology — **one tunnel** carries all {{PRIMARY_DOMAIN}}
-  traffic: `cloudflared-{{PROJECT_SLUG}}`, `listenPort 8081` (matching the Nginx vhost),
-  token via the agenix secret `cloudflared-{{PROJECT_SLUG}}-token.age`, Cloudflare
-  dashboard ingress `{{PRIMARY_DOMAIN}} → http://localhost:8081`, and `www`→apex handled
+- **Source:** the tunnel topology — **one tunnel** carries all <%PRIMARY_DOMAIN%>
+  traffic: `cloudflared-<%PROJECT_SLUG%>`, `listenPort 8081` (matching the Nginx vhost),
+  token via the agenix secret `cloudflared-<%PROJECT_SLUG%>-token.age`, Cloudflare
+  dashboard ingress `<%PRIMARY_DOMAIN%> → http://localhost:8081`, and `www`→apex handled
   by a Cloudflare Redirect Rule (301) rather than a second tunnel. Deploy side:
   `deploy:README.md` (outbound-only tunnels, zero inbound ports, per-app tokens) and
   `deploy:modules/cloudflared/`.
@@ -152,7 +152,7 @@ family — no second frontend upstream to size or route.
   middleware keyed to a `GLOBAL_RATE_LIMIT_MAX` setting); the complementary Cloudflare
   zone rule that sheds a distributed flood before the tunnel lives with the deploy repo
   (this project's distributed-rate-limit plan).
-- **Deploy repo must implement:** the `cloudflared-{{PROJECT_SLUG}}` tunnel
+- **Deploy repo must implement:** the `cloudflared-<%PROJECT_SLUG%>` tunnel
   (`tokenSecretPath` via agenix, `listenPort` matching the Nginx vhost), the `www`→apex
   redirect rule, and — when enabled — the CF edge rate rule aligned to
   `GLOBAL_RATE_LIMIT_MAX`, with admin traffic exempted via the trusted secret header and
@@ -165,18 +165,18 @@ family — no second frontend upstream to size or route.
 - **Source:** `code/docs/logging/HEALTH-CONTRACT.md` — the single source of truth:
   endpoints table (`/health/` liveness · `/health/ready/` dependency-aware readiness,
   `200/503`, overall-status-only · `/metrics/` loopback-only Prometheus exposition);
-  "All of the following live in {{DEPLOY_REPO}}, not in this repo".
+  "All of the following live in <%DEPLOY_REPO%>, not in this repo".
   `code/src/docker/prometheus/prometheus.yml` — the canonical scrape-target contract
-  (job `{{ORG_SLUG}}-backend` → `127.0.0.1:8000` `/metrics/`). Gaps: `GAPS.md` (Gatus deploy,
+  (job `<%ORG_SLUG%>-backend` → `127.0.0.1:8000` `/metrics/`). Gaps: `GAPS.md` (Gatus deploy,
   metrics deploy).
 - **Current status:** _TBD — set per deployment._ App side ships the endpoints; deploy
   side supplies the Gatus module, the Prometheus `extraScrapeConfigs` for the single app
   job, and the **host-level wiring** — the actual scrape entries, the
-  `status.{{PRIMARY_DOMAIN}}` tunnel hostname + vhost + agenix token, and the Gatus
+  `status.<%PRIMARY_DOMAIN%>` tunnel hostname + vhost + agenix token, and the Gatus
   endpoint list.
 - **Deploy repo must implement:** the Gatus endpoint set from `HEALTH-CONTRACT.md`
   (Website + `/health/` + `/health/ready/` keyed on `[BODY].status == operational`), the
-  `status.` hostname (tunnel + vhost + token), the single `{{ORG_SLUG}}-backend`
+  `status.` hostname (tunnel + vhost + token), the single `<%ORG_SLUG%>-backend`
   `extraScrapeConfigs` app job (→ `127.0.0.1:8000` `/metrics/`), and the `/metrics/`
   `allow 127.0.0.1; deny all` restriction on the vhost. There is exactly **one** scrape
   job — the single Django app process — no second frontend job.
@@ -192,7 +192,7 @@ family — no second frontend upstream to size or route.
 - **Deploy repo must implement:** strictly a _deployment-coordination_ item rather than
   a NixOS module: enable the add-on on the Cloudinary account and set
   `CLOUDINARY_AUTH_TOKEN_KEY` in the per-env app `.env` (deployed to
-  `/etc/{{ORG_SLUG}}/.env.<env>`, not agenix — see `NIXOS-HANDOFF.md`, the app-env plane).
+  `/etc/<%ORG_SLUG%>/.env.<env>`, not agenix — see `NIXOS-HANDOFF.md`, the app-env plane).
   Pairs with the CSP allowance in entry 3.
 
 ## 10. Object-store public endpoint (SeaweedFS presign host)
@@ -205,7 +205,7 @@ family — no second frontend upstream to size or route.
 - **Current status:** _TBD — set per deployment._ Design intent: the deploy repo runs
   SeaweedFS bare-metal, nftables-gated to the Docker bridge + WireGuard — the
   **internal** leg. The browser-reachable **public** presign hostname (the prod analogue
-  of dev `s3.{{PROJECT_SLUG}}.localhost`) is per-deployment edge wiring.
+  of dev `s3.<%PROJECT_SLUG%>.localhost`) is per-deployment edge wiring.
 - **Deploy repo must implement:** a public HTTPS hostname (CF Tunnel ingress + Nginx
   vhost → the SeaweedFS S3 gateway, via the objectstore-proxy where bucket isolation /
   AV scanning applies) matching the app's `OBJECT_STORE_PUBLIC_ENDPOINT_URL`; the same
@@ -229,17 +229,16 @@ family — no second frontend upstream to size or route.
   app's SMTP env contract: `EMAIL_BACKEND` (default
   `django.core.mail.backends.smtp.EmailBackend`), `EMAIL_HOST`, `EMAIL_PORT` (587),
   `EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`, and `DEFAULT_FROM_EMAIL`
-  (`noreply@{{PRIMARY_DOMAIN}}`). Deploy side: `deploy:code/src/modules/mail/` (Postfix
+  (`noreply@<%PRIMARY_DOMAIN%>`). Deploy side: `deploy:code/src/modules/mail/` (Postfix
   submission relay + per-app DKIM).
 - **Current status:** _TBD — set per deployment._ App is relay-agnostic — plain Django
   SMTP; a provider-specific Anymail backend remains an _option_ per the template
   comment, but nothing in the app requires one.
 - **Deploy repo must implement:** an authenticated SMTP submission path reachable from
-  the app container, with SPF/DKIM/DMARC DNS published for {{PRIMARY_DOMAIN}} **before**
+  the app container, with SPF/DKIM/DMARC DNS published for <%PRIMARY_DOMAIN%> **before**
   DKIM signing is enabled (relay credentials + DKIM key are agenix secrets —
-  `mail-dkim-{{PROJECT_SLUG}}.age`, see `NIXOS-HANDOFF.md` secret list); the resulting
-  host/port/credentials are supplied to the app via the `EMAIL_*` variables in
-  `/etc/{{ORG_SLUG}}/.env.<env>`.
+  `mail-dkim-<%PROJECT_SLUG%>.age`, see `NIXOS-HANDOFF.md` secret list); the resulting
+  host/port/credentials are supplied to the app via the `EMAIL*\*`variables in`/etc/<%ORG_SLUG%>/.env.<env>`.
 
 ---
 
@@ -250,10 +249,10 @@ path — service-level `systemctl`/`docker` checks are the deploy repo's own wor
 
 | Check            | Path                                                | Expect                                                   |
 | ---------------- | --------------------------------------------------- | -------------------------------------------------------- |
-| Liveness         | `https://{{PRIMARY_DOMAIN}}/health/`                | `200`; CSP + `X-Frame-Options` headers present (entry 1) |
-| Readiness        | `https://{{PRIMARY_DOMAIN}}/health/ready/`          | `200`, `status: operational` (`HEALTH-CONTRACT.md`)      |
-| API              | `GET https://{{PRIMARY_DOMAIN}}/api/…` health route | `200` JSON from the Django Ninja API                     |
-| Marketing        | `https://{{PRIMARY_DOMAIN}}/`                       | `200` served by **Django** (entry 5)                     |
+| Liveness         | `https://<%PRIMARY_DOMAIN%>/health/`                | `200`; CSP + `X-Frame-Options` headers present (entry 1) |
+| Readiness        | `https://<%PRIMARY_DOMAIN%>/health/ready/`          | `200`, `status: operational` (`HEALTH-CONTRACT.md`)      |
+| API              | `GET https://<%PRIMARY_DOMAIN%>/api/…` health route | `200` JSON from the Django Ninja API                     |
+| Marketing        | `https://<%PRIMARY_DOMAIN%>/`                       | `200` served by **Django** (entry 5)                     |
 | Metrics lockdown | `/metrics/` from a public client                    | denied (`403`) — loopback-only (entry 8)                 |
 | Workers          | `worker` + `beat` containers up alongside `backend` | entry 11 — scheduled tasks silently stop without beat    |
 
@@ -270,7 +269,7 @@ path — service-level `systemctl`/`docker` checks are the deploy repo's own wor
 | 5   | Routing carve                   | Single Django app + Ninja `/api/` | Mirror `dev.conf` location set                   |
 | 6   | TLS + `TRUSTED_PROXIES`         | Fail-safe proxy trust             | CF TLS; env value per deployment                 |
 | 7   | CF Tunnel + edge rate rule      | In-app rate budget                | Tunnel + edge rate rule                          |
-| 8   | Health/metrics (Gatus + scrape) | Endpoints shipped                 | Gatus + single `{{ORG_SLUG}}-backend` scrape job |
+| 8   | Health/metrics (Gatus + scrape) | Endpoints shipped                 | Gatus + single `<%ORG_SLUG%>-backend` scrape job |
 | 9   | Cloudinary token auth           | Ready                             | Account add-on + env var                         |
 | 10  | Object-store public host        | boto3/presign                     | Public vhost matching endpoint URL               |
 | 11  | Cache bust + worker/beat        | Mechanism in place                | Restart-after-migrate + run worker/beat          |

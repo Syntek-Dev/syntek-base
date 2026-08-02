@@ -49,4 +49,4 @@ There is no cross-cutting by-scope report folder; SEO is planned per story.
 - `../../01-STORIES/` — the story whose SEO acceptance criteria this plan sets
 - `project-management/docs/SEO-CHECKLIST.md` — the governing SEO & AI discoverability checklist
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

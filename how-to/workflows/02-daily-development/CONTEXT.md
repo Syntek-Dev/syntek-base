@@ -1,6 +1,6 @@
 # Workflow: Daily Development
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

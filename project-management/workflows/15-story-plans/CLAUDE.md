@@ -21,7 +21,7 @@ reference a developer codes from.
   relevant 01–12 spec.
 - **Model:** Fable for the plan's substance (approach, decisions table, dependency DAG,
   test strategy, risks); Opus for mechanical touches (status flips, Plans Index updates).
-- **Concrete steps:** grill {{DEVELOPER_NAME}} on scope and phasing (`.claude/skills/grill-with-docs`) →
+- **Concrete steps:** grill <%DEVELOPER_NAME%> on scope and phasing (`.claude/skills/grill-with-docs`) →
   copy `STORY-PLAN-US000-TEMPLATE.md` → gather the sprint plan, ADRs, and every 01–12 spec
   in scope → fix the technical approach and key decisions → break the story into phased
   implementation tasks mapped to `16-backend-code` → `17-api-code` → `18-frontend-code` →

@@ -7,8 +7,8 @@ model: opus
 
 # Encryption Guide
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 
 **Applies to:** `code/src/django/apps/` **Reference implementation:**
 `code/src/django/apps/users/`

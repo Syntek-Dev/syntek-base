@@ -1,7 +1,7 @@
 ---
 name: codebase-design
 description: >-
-  The shared architecture vocabulary and design principles for {{PROJECT_NAME}} — module, interface,
+  The shared architecture vocabulary and design principles for <%PROJECT_NAME%> — module, interface,
   implementation, depth, seam, adapter, leverage, locality, and the rules that go with them (the
   deletion test, "the interface is the test surface", "one adapter is a hypothetical seam, two are
   real", design it twice). Load when reasoning about module depth during architecture, refactor, or

@@ -17,7 +17,7 @@ jurisdiction rules, the mandatory disclaimer wording, and the quality checklist.
 substantive UK GDPR procedure to `project-management/docs/GDPR-GUIDE.md` rather than
 restating it here.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · date format DD/MM/YYYY · currency {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
 
 ---
 
@@ -198,7 +198,7 @@ Before delivering any legal document, verify:
 
 All legal documents must begin with this exact blockquote before any numbered clause:
 
-> **Important Notice**: This document has been generated as a starting point only and does not constitute legal, financial, or professional advice. It must be reviewed and approved by a qualified legal, financial, or compliance professional before use. {{ORG_NAME}} accepts no liability for the use of this document without professional review.
+> **Important Notice**: This document has been generated as a starting point only and does not constitute legal, financial, or professional advice. It must be reviewed and approved by a qualified legal, financial, or compliance professional before use. <%ORG_NAME%> accepts no liability for the use of this document without professional review.
 
 Do not paraphrase or abbreviate this notice. Advise users not to remove it until their solicitor confirms the document is fit for purpose.
 

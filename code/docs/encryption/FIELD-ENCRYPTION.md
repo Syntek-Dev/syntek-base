@@ -7,8 +7,8 @@ model: opus
 
 # Encryption Guide — Field Encryption
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Field-level PII encryption: Fernet fields, AES-256-GCM service-layer pattern
 
 **Applies to:** `code/src/django/apps/` **Reference implementation:**
@@ -154,7 +154,7 @@ from django.conf import settings
 
 def _load_field_key(setting_path: str) -> bytes:
     """Load and validate a 32-byte AES-256 field key from settings."""
-    cfg = getattr(settings, "{{ENV_PREFIX}}_<MODULE>", {})
+    cfg = getattr(settings, "<%ENV_PREFIX%>_<MODULE>", {})
     raw = cfg.get("FIELD_KEY", "")
     key: bytes = raw.encode("utf-8") if isinstance(raw, str) else bytes(raw)
     if len(key) < 32:
@@ -180,7 +180,7 @@ def decrypt_field(ciphertext: str, key: bytes, model: str, field: str) -> str:
 
 # ── Usage ────────────────────────────────────────────────────────────────────
 
-_key = _load_field_key("{{ENV_PREFIX}}_<MODULE>['FIELD_KEY']")
+_key = _load_field_key("<%ENV_PREFIX%>_<MODULE>['FIELD_KEY']")
 
 # Encrypt before save
 model.full_name = encrypt_field(plaintext_name, _key, "MyModel", "full_name")
@@ -246,17 +246,17 @@ model.save()
 
 ## Settings Required
 
-Every module that uses encrypted fields must define two keys in its `{{ENV_PREFIX}}_<MODULE>`
+Every module that uses encrypted fields must define two keys in its `<%ENV_PREFIX%>_<MODULE>`
 settings dict, both read from environment variables. The `cryptography` package
 (`cryptography>=42.0`) must be listed in the app's Python dependencies.
 
 ```python
-{{ENV_PREFIX}}_PAYMENTS = {
+<%ENV_PREFIX%>_PAYMENTS = {
     # 32-byte key for field encryption (AES-256-GCM via cryptography.hazmat)
-    "FIELD_KEY": env("{{ENV_PREFIX}}_PAYMENTS_FIELD_KEY"),
+    "FIELD_KEY": env("<%ENV_PREFIX%>_PAYMENTS_FIELD_KEY"),
 
     # 32-byte key for HMAC lookup tokens (only needed when unique fields exist)
-    "FIELD_HMAC_KEY": env("{{ENV_PREFIX}}_PAYMENTS_FIELD_HMAC_KEY"),
+    "FIELD_HMAC_KEY": env("<%ENV_PREFIX%>_PAYMENTS_FIELD_HMAC_KEY"),
 }
 ```
 
@@ -279,15 +279,15 @@ encryptions; all loaded versions remain available for decrypting existing cipher
 
 ```bash
 # Initial deployment (V1 only):
-{{ENV_PREFIX}}_FIELD_KEY_V1_USER_EMAIL=<base64-key-1>
+<%ENV_PREFIX%>_FIELD_KEY_V1_USER_EMAIL=<base64-key-1>
 
 # After rotation (V1 + V2 — new encryptions use V2):
-{{ENV_PREFIX}}_FIELD_KEY_V1_USER_EMAIL=<base64-key-1>
-{{ENV_PREFIX}}_FIELD_KEY_V2_USER_EMAIL=<base64-key-2>
+<%ENV_PREFIX%>_FIELD_KEY_V1_USER_EMAIL=<base64-key-1>
+<%ENV_PREFIX%>_FIELD_KEY_V2_USER_EMAIL=<base64-key-2>
 ```
 
 ```python
-def load_versioned_keys(field: str, *, env_prefix: str = "{{ENV_PREFIX}}_FIELD_KEY") -> dict[int, bytes]:
+def load_versioned_keys(field: str, *, env_prefix: str = "<%ENV_PREFIX%>_FIELD_KEY") -> dict[int, bytes]:
     """Return a ``{version: key_bytes}`` mapping for *field*.
 
     Scans ``{env_prefix}_{FIELD}_V1``, ``_V2``, … stopping at the first gap.
@@ -380,6 +380,6 @@ When adding a new encrypted field to any Django model:
 - [ ] `cryptography` package listed in Python dependencies (`cryptography>=42.0`)
 - [ ] 3+ encrypted fields → use `encrypt_fields_batch` / `decrypt_fields_batch`
 - [ ] Migration follows the 5-step pattern (add nullable → backfill → tighten)
-- [ ] Tests set `FIELD_HMAC_KEY` in the conftest `{{ENV_PREFIX}}_<MODULE>` dict
+- [ ] Tests set `FIELD_HMAC_KEY` in the conftest `<%ENV_PREFIX%>_<MODULE>` dict
 
 _Part of the `code/docs/` documentation family. See [`../ENCRYPTION-GUIDE.md`](../ENCRYPTION-GUIDE.md) for the full index._

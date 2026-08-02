@@ -1,0 +1,79 @@
+name: Bug report
+description: Something in the template is broken — it does not generate, does not render, or does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **If this is a security vulnerability, stop** — use
+        [private reporting](https://github.com/Syntek-Dev/syntek-base/security) instead, per
+        [SECURITY.md](https://github.com/Syntek-Dev/syntek-base/blob/main/SECURITY.md).
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where is it?
+      options:
+        - Generation (copier copy / copier update)
+        - Tokens rendering incorrectly
+        - Docker / Compose / the dev stack
+        - Project scripts (code/src/scripts)
+        - CI workflows
+        - Claude Code agents, skills or hooks
+        - Documentation is wrong or contradicts the code
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, including the exact error output.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: The exact commands, starting from a clean directory.
+      value: |
+        1. `uvx copier copy gh:Syntek-Dev/syntek-base my-project`
+        2. Answered: …
+        3. Ran: …
+        4. Got: …
+    validations:
+      required: true
+
+  - type: input
+    id: commit
+    attributes:
+      label: Template version
+      description: The commit or tag you generated from — `_commit` in your `.copier-answers.yml`.
+      placeholder: 7038204 or v0.12.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, and the versions of the tools involved.
+      value: |
+        - OS:
+        - copier:
+        - uv:
+        - Docker:
+        - Node / pnpm:
+      render: markdown
+    validations:
+      required: true

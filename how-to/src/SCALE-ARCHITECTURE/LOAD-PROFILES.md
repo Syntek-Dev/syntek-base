@@ -1,8 +1,8 @@
 # Load Profiles — The Three Surfaces and Their Binding Metrics
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{ORG_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%ORG_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
@@ -130,7 +130,7 @@ discipline (background aggregates, bounded queries), not capacity.
 Tiers are **launch · 6-month · 2-year**. The structure below is locked; the volume targets and
 current baselines are deliberately unset — a fresh template carries **no measured figures**, and
 inventing one here would violate the anti-forecast principle. Baselines are regenerated from live
-code on the first `/scale-planning` run; targets are settled by {{DEVELOPER_NAME}} through `/scale-planning`
+code on the first `/scale-planning` run; targets are settled by <%DEVELOPER_NAME%> through `/scale-planning`
 grilling and recorded on `MAP-SCALE-PLANNING.md`; the envelope (`SIZING-ENVELOPE.md`) then states
 what each tier requires.
 

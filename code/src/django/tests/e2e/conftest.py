@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 
 # The dev stack serves the whole site through nginx on host port 81. `e2e-py.sh` uses the
 # same default, so the script and the suite point at one place.
-DEFAULT_BASE_URL = "http://dev.{{PROJECT_SLUG}}.localhost:81"
+DEFAULT_BASE_URL = "http://dev.<%PROJECT_SLUG%>.localhost:81"
 
 # The viewport matrix a Playwright config would express as "projects".
 VIEWPORTS: dict[str, dict[str, int]] = {

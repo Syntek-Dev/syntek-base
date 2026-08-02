@@ -7,10 +7,10 @@ model: opus
 
 # Internal Development Tooling — Agents & Skills
 
-**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/` + `.claude/skills/`) **Maintained by:** {{ORG_NAME}} Developers **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/` + `.claude/skills/`) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — index of the internal agents, skills, and development workflow
 
-The project carries its own agents and skills under `.claude/`. The `{{ORG_SLUG}}-dev-suite`
+The project carries its own agents and skills under `.claude/`. The `<%ORG_SLUG%>-dev-suite`
 marketplace plugin is **disabled** (`.claude/settings.json` → `enabledPlugins`) and its agents
 and skills were internalised, so every contributor gets the tooling without installing a plugin.
 The authoritative model is `.claude/CLAUDE.md` §2–§3.

@@ -10,7 +10,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 The agent definitions — invoked via the Agent tool with `subagent_type` — in two tiers:
 **8 orchestrators** (`bugfix`, `feature`, `pr`, `refactor`, `release`, `review`, `security`,
 `story`) that route a whole workflow end-to-end, and the **specialists + document writers**
-(internalised from the `{{ORG_SLUG}}-dev-suite` and `{{ORG_SLUG}}-doc-writer` plugins) that orchestrators
+(internalised from the `<%ORG_SLUG%>-dev-suite` and `<%ORG_SLUG%>-doc-writer` plugins) that orchestrators
 delegate scoped work to. Full roster + tiers: this folder's `CONTEXT.md`.
 
 ## How to work here
@@ -19,7 +19,7 @@ delegate scoped work to. Full roster + tiers: this folder's `CONTEXT.md`.
   documentation. A change here reshapes how an agent orchestrates; treat it with the
   weight of a workflow change, not a cosmetic one.
 - **Grill first:** agents open any substantial task with a grilling pass — not a static
-  question list — loading `.claude/skills/grill-with-docs` and interviewing {{DEVELOPER_NAME}} one question
+  question list — loading `.claude/skills/grill-with-docs` and interviewing <%DEVELOPER_NAME%> one question
   at a time before producing the artefact; only trivial/mechanical work skips it
   (`.claude/CLAUDE.md` §10).
 - **Model — runtime vs editing (two axes):** an agent's own `model:` frontmatter sets

@@ -7,8 +7,8 @@ model: opus
 
 # Design Tokens — Editor, Governance & Known Limits
 
-**Last Updated:** {{DATE}}
-**Maintained By:** {{ORG_NAME}}
+**Last Updated:** <%DATE%>
+**Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
 **Claude Model:** opus — Admin editor UX, token governance, extension tracking
 

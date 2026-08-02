@@ -10,7 +10,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 ## Purpose (one line)
 
 The operations layer — how to set up the environment, run the dev stack, use the
-{{ORG_NAME}} Dev Suite, specify the app→server contract (`src/SERVER-ARCHITECTURE/`), and
+<%ORG_NAME%> Dev Suite, specify the app→server contract (`src/SERVER-ARCHITECTURE/`), and
 debug failures; the `docs/` guides plus the step-by-step `workflows/` that drive them.
 
 ## How to work here

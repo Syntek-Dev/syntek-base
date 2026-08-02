@@ -1,6 +1,6 @@
 # Workflow: Database Schema Design
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

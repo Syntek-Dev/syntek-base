@@ -8,7 +8,7 @@ model: opus
 
 # Add a New Full-Stack Feature — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -46,7 +46,7 @@ planner [feature name and scope]
 > **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time about the feature's scope, data model, API surface,
+interview <%DEVELOPER_NAME%> one question at a time about the feature's scope, data model, API surface,
 permissions, and edge cases before producing the plan.
 
 Save the plan to `project-management/src/15-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`.

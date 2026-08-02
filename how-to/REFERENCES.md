@@ -1,6 +1,6 @@
 # References — how-to layer
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 Internal and external references for setup, daily development, and debugging.
 
@@ -14,7 +14,8 @@ Internal and external references for setup, daily development, and debugging.
 | -------------------------------------------------- | -------------------------------------------------------------- |
 | `how-to/CONTEXT.md`                                | Layer entry point — when to read and what lives here           |
 | `how-to/docs/CONTEXT.md`                           | Operational reference guides index                             |
-| `how-to/src/CONTEXT.md`                            | Contributing standards, testing, and code-quality              |
+| `how-to/src/CONTEXT.md`                            | Operator-guide index — contributing, template, snapshots       |
+| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`             | Using syntek-base as a template — index over 14 guides         |
 | `how-to/src/SCALE-ARCHITECTURE/CONTEXT.md`         | How the app scales — load profiles, readiness, sizing envelope |
 | `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md`        | What the server/edge must provide; feeds the NixOS deploy repo |
 | `how-to/workflows/CONTEXT.md`                      | Workflow index — all step-by-step guides                       |
@@ -38,14 +39,25 @@ Internal and external references for setup, daily development, and debugging.
 
 ### Reference guides
 
-| File                             | Purpose                                                               |
-| -------------------------------- | --------------------------------------------------------------------- |
-| `how-to/docs/DEVELOPMENT.md`     | First-time setup, Docker Compose commands, env vars, troubleshooting  |
-| `how-to/docs/AI-DICTIONARY.md`   | Plain-English glossary of AI-coding terms (index over ai-dictionary/) |
-| `how-to/docs/SKILL-AUTHORING.md` | How to write predictable skills under .claude/skills/                 |
-| `how-to/docs/CLI-TOOLING.md`     | CLI reference for all Docker Compose development commands             |
-| `how-to/docs/GIT-WORKTREES.md`   | Parallel development with git worktrees, Docker isolation, URLs       |
-| `how-to/docs/TOOLING-GUIDE.md`   | Internal agents and skills reference (index)                          |
+| File                              | Purpose                                                               |
+| --------------------------------- | --------------------------------------------------------------------- |
+| `how-to/docs/DEVELOPMENT.md`      | First-time setup, Docker Compose commands, env vars, troubleshooting  |
+| `how-to/docs/AI-DICTIONARY.md`    | Plain-English glossary of AI-coding terms (index over ai-dictionary/) |
+| `how-to/docs/SKILL-AUTHORING.md`  | How to write predictable skills under .claude/skills/                 |
+| `how-to/docs/CLI-TOOLING.md`      | CLI reference for all Docker Compose development commands             |
+| `how-to/docs/GIT-WORKTREES.md`    | Parallel development with git worktrees, Docker isolation, URLs       |
+| `how-to/docs/TOOLING-GUIDE.md`    | Internal agents and skills reference (index)                          |
+| `how-to/docs/CELERY-FIRST-RUN.md` | Getting the Celery worker and beat running the first time             |
+| `how-to/docs/FEATURE-DEPLOY.md`   | Deploying a feature branch                                            |
+
+### Operator guides (`how-to/src/`)
+
+| File                            | Purpose                                                           |
+| ------------------------------- | ----------------------------------------------------------------- |
+| `how-to/src/CONTRIBUTING.md`    | Contributing, branching, commits, testing, code quality, PR gates |
+| `how-to/src/TEMPLATE-TOKENS.md` | The token contract `copier.yml` implements _(template-only)_      |
+| `how-to/src/TEMPLATE-GUIDE/`    | Fourteen guides on using the template _(template-only)_           |
+| `how-to/src/NIXOS-SETUP.md`     | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/        |
 
 ### Cross-layer references
 

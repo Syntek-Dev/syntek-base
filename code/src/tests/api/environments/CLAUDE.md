@@ -36,8 +36,8 @@ thresholds, plus `variables.json` declaring the shared runtime variables.
   `docker.*` is the CI default (inside the network, hostname `django-test`). Do not
   repoint either at the other's target.
 - **Environment URLs come from tokens, not hand-typed hostnames** — `host` from
-  `{{PROJECT_SLUG}}`, `staging`/`production` from `{{PRIMARY_DOMAIN}}`, so `setup.sh`
-  resolves them at instantiation. A literal hostname here survives instantiation and
+  `<%PROJECT_SLUG%>`, `staging`/`production` from `<%PRIMARY_DOMAIN%>`, so Copier
+  resolves them at generation. A literal hostname here survives generation and
   silently points a new project at the template's domain.
 - Never point a mutation run at `production` by accident.
 

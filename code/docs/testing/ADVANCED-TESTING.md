@@ -7,8 +7,8 @@ model: opus
 
 # Testing — Advanced Testing Techniques
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Property-based, mutation, and advanced test techniques
 
 ---

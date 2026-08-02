@@ -5,10 +5,10 @@ skills: [global-workflow]
 model: opus
 ---
 
-# Versioning Guide — {{PROJECT_NAME}}
+# Versioning Guide — <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Semantic versioning strategy, version bumping process, changelog and release tracking
 **MCP Servers:** code-review-graph (version impact analysis)
 
@@ -16,7 +16,7 @@ model: opus
 
 ## Strategy Overview
 
-{{PROJECT_NAME}} uses a **two-tier versioning strategy**:
+<%PROJECT_NAME%> uses a **two-tier versioning strategy**:
 
 - **Root project** — single-track semver covering the entire monorepo (documentation,
   infrastructure, PM artefacts, and cross-cutting changes). Tracked by `VERSION`,

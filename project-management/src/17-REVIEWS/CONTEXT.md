@@ -64,4 +64,4 @@ resolution. A `Changes-requested` verdict blocks the merge until re-review.
 - `project-management/workflows/20-pr-and-review/` — where these reviews are written
 - `code/docs/SECURITY.md` — the OWASP / IDOR obligations the security checklist rests on
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -1,0 +1,163 @@
+# The Stack — What Ships and Why
+
+**Last Updated**: 02/08/2026
+
+Every component the template ships, and the reasoning behind it. Written so you can disagree with
+a specific choice rather than the whole thing.
+
+---
+
+## The shape
+
+**One deployable.** A single Django ASGI process family serves the JSON API and every rendered
+page. There is no separate frontend service, no bundler, no client-side framework, and no build
+step between writing a template and seeing it in the browser.
+
+```text
+                     ┌──────────────────────────────┐
+  browser  ──HTML──▶ │  Django 6 (ASGI)             │ ──▶ PostgreSQL 18
+           ◀─HTMX──  │   templates + components     │ ──▶ Valkey (cache, broker)
+                     │   Django Ninja  →  /api/     │ ──▶ Cloudinary / SeaweedFS
+  API client ─JSON─▶ └──────────────────────────────┘
+                              │
+                     Celery worker + beat
+```
+
+---
+
+## Server
+
+| Component              | Version | Why this                                                                                                                                                                                                                                           |
+| ---------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Python**             | 3.14    | Current stable; the template pins it in `.python-version` and every Dockerfile.                                                                                                                                                                    |
+| **Django**             | 6.x     | The batteries — ORM, migrations, auth, admin, forms — are the reason this is a monolith at all. Rewriting them is where template time goes to die.                                                                                                 |
+| **Django Ninja**       | 1.x     | Typed request/response Schemas over plain Django views, with automatic OpenAPI. Chosen over DRF for Pydantic types and less ceremony; chosen over GraphQL because a single-client app does not need query flexibility and does pay its complexity. |
+| **PostgreSQL**         | 18      | Row-level security, real constraints, `CHECK`, partial and concurrent indexes, full-text search. The template enforces invariants in the database, which needs a database that can hold them.                                                      |
+| **Valkey**             | latest  | BSD-licensed Redis fork. DB 0 is the Celery broker, pub/sub and rate limiting; DB 1 is the cache.                                                                                                                                                  |
+| **Celery**             | 5.3+    | Worker and beat. Background work, scheduled jobs, anything that must not block a request.                                                                                                                                                          |
+| **Gunicorn + Uvicorn** | latest  | Gunicorn process management with Uvicorn ASGI workers.                                                                                                                                                                                             |
+| **Nginx**              | latest  | Reverse proxy in dev and test. In staging and production the edge is Cloudflare and the server deploy repo — security headers are set there, never in this repo.                                                                                   |
+
+## Client
+
+| Component             | Why this                                                                                                                                                                                |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Django templates**  | The page is rendered where the data is. No serialisation round-trip for content that was already in the database.                                                                       |
+| **django-components** | One server-side component library with co-located template, CSS and Python. (django-cotton was dropped — it conflicts with django-components' global template-compilation monkeypatch.) |
+| **HTMX**              | Server operations that swap HTML fragments. Covers the overwhelming majority of interactivity without shipping an application to the browser.                                           |
+| **Alpine**            | Local, instant interactions that should not touch the network — disclosure, tabs, menus.                                                                                                |
+| **Vanilla CSS**       | Custom properties driven by design tokens. No preprocessor, no utility framework, no build.                                                                                             |
+
+**The three-tier rule.** Full template for navigation and content; HTMX for server operations;
+Alpine for local state. Anything that appears to need a fourth tier is a stack change and needs an
+ADR. `code/docs/RENDERING.md` is the arbiter.
+
+**Consequences accepted:** pages must work with JavaScript disabled, every link is a real
+`<a href>`, `hx-boost` is banned, and a page never calls the JSON API — Ninja serves machine
+clients only.
+
+## Data, media and identity
+
+| Component      | Role                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------- |
+| **Cloudinary** | Public media — upload, transformation, delivery. Vendored SDK docs and skills ship with it. |
+| **SeaweedFS**  | S3-compatible private document storage, self-hosted.                                        |
+| **Fernet**     | Field-level PII encryption with lookup tokens (`code/docs/ENCRYPTION-GUIDE.md`).            |
+| **Argon2**     | Password hashing.                                                                           |
+
+## Testing
+
+| Tool                       | Covers                                                                                 |
+| -------------------------- | -------------------------------------------------------------------------------------- |
+| **pytest + pytest-django** | Services, Ninja endpoints, views, templates, components and HTMX partials — one suite. |
+| **Bruno**                  | HTTP-layer API integration tests, committed as `.bru` files.                           |
+| **Playwright + axe-core**  | The few things needing a real browser, plus automated accessibility checks.            |
+| **mutmut**                 | Mutation testing, for when coverage percentage stops being informative.                |
+
+Coverage floors: **75 % line and branch, 90 % on auth code.** Stubs written to reach the floor are
+explicitly not acceptable.
+
+## Tooling
+
+| Tool                  | Role                                                                           |
+| --------------------- | ------------------------------------------------------------------------------ |
+| **uv**                | Python dependency resolution and locking. Every Dockerfile `uv sync --frozen`. |
+| **pnpm**              | Repo tooling only — there is no client bundle to build.                        |
+| **ruff**              | Python lint and format, 100-column lines.                                      |
+| **basedpyright**      | Static type checking in `standard` mode; annotations required.                 |
+| **Prettier**          | CSS, JSON, YAML, Markdown, HTML.                                               |
+| **markdownlint-cli2** | Markdown, including the fenced-language rule.                                  |
+| **Lefthook**          | Pre-commit hooks, run in parallel.                                             |
+| **Docker Compose**    | dev, test, staging and prod, plus per-worktree overrides.                      |
+
+## Deployment target
+
+**You can deploy this anywhere.** The application is an ordinary Docker Compose deployable — a
+single Django ASGI container plus a Celery worker and beat, talking to a Postgres and a Valkey it
+does not care about the provenance of. Anything that runs Linux and Docker will host it: a
+DigitalOcean droplet, an EC2 instance, Fly.io, Railway, a Kubernetes cluster, or a box under your
+desk. Managed Postgres and managed Redis-compatible caches drop straight in — they are reached by
+URL, not by assumption.
+
+**But the documentation is written against one specific target**, because a contract nobody has
+implemented is a contract nobody has tested:
+
+| Layer             | What Syntek uses          | Why it is written that way                                           |
+| ----------------- | ------------------------- | -------------------------------------------------------------------- |
+| Host              | Hetzner bare metal        | Best price per core for a monolith that scales vertically first      |
+| OS / provisioning | NixOS + a deploy repo     | Declarative hosts, reproducible rebuilds, `agenix` for secrets       |
+| Edge              | Cloudflare with CF Tunnel | No inbound ports open; TLS, WAF, caching and CSP all set at the edge |
+| Reverse proxy     | Nginx                     | In dev and test only — the edge handles it in staging and production |
+
+So: **if you deploy elsewhere, expect to adjust — not to fight.** The split is deliberate. This
+repository _specifies_ what the server must provide, in provider-neutral terms, and never
+implements it. The specification lives in `how-to/src/SERVER-ARCHITECTURE/`: processes, ports,
+volumes, environment variables, health and metrics endpoints, edge requirements, and compute
+allocation. Read it as a checklist for whatever platform you actually use.
+
+What travels unchanged to any provider:
+
+- the application, its Dockerfiles and its Compose files
+- the `SERVER-ARCHITECTURE/` contract — it names requirements, not products
+- the health and metrics endpoints (`code/docs/logging/HEALTH-CONTRACT.md`)
+- the promotion chain, CI, and the GHCR image build
+
+What is Hetzner/NixOS/Cloudflare-shaped and will need rework:
+
+- the `DEPLOY_REPO` answer and the NixOS deploy repository it names
+- `SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` — the handoff format, and `agenix` secret names
+- `how-to/src/NIXOS-SETUP.md` — a pointer stub to provisioning runbooks that assume NixOS
+- the CF Tunnel assumption. This one has a real consequence: **because the edge terminates TLS and
+  sets the security headers, this repo deliberately ships no CSP middleware and no TLS config.**
+  On a platform without an equivalent edge, you must put those somewhere — a reverse proxy you
+  control, or middleware you add — or the controls simply do not exist. `SERVER-ARCHITECTURE/`
+  flags every such requirement.
+
+None of this is load-bearing for the application. It is load-bearing for the _runbooks_.
+
+See `12-DEPLOYMENT.md` for the path to a server, and `10-CUSTOMISING.md` for what changing it
+costs.
+
+---
+
+## Deliberately absent
+
+| Not shipped               | Why                                                                                                                                    |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **React / Next.js**       | A second process family, a build step, and a serialisation boundary — for interactivity HTMX already covers.                           |
+| **GraphQL**               | Solves client-driven query flexibility. There is one client, and it is the server.                                                     |
+| **django-csp**            | Security headers are set at the edge in the deploy repo. Setting them in two places means they disagree.                               |
+| **A CSS framework**       | Design values are DB-canonical tokens; component CSS consumes `var(--token)` only, audited by `code/src/scripts/audits/css-tokens.sh`. |
+| **Channels / WebSockets** | Real-time changes the process model. It is an ADR conversation, not a dependency addition.                                             |
+
+Dependencies deliberately not declared at baseline — `pyotp`, `qrcode`, `webauthn`, `bleach`,
+`python-magic`, `cairosvg` — are listed in `pyproject.toml` with the feature that should introduce
+each one.
+
+---
+
+## Next
+
+- What you need installed → `03-PREREQUISITES.md`
+- Generate a project → `04-QUICKSTART.md`
+- Change one of these choices → `10-CUSTOMISING.md`

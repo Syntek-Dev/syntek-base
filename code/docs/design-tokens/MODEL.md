@@ -7,8 +7,8 @@ model: opus
 
 # Design Tokens — Data Model
 
-**Last Updated:** {{DATE}}
-**Maintained By:** {{ORG_NAME}}
+**Last Updated:** <%DATE%>
+**Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
 **Claude Model:** opus — Token schema design, category/value-kind modelling
 

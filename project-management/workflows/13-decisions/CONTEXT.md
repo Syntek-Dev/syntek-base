@@ -1,6 +1,6 @@
 # Workflow 13 — Decisions (ADRs)
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Purpose
 

@@ -1,6 +1,6 @@
 # Sessions, Context Windows & Turns — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 These terms describe how a fundamentally forgetful model is wrapped into something that feels continuous. A stateless _model_ is harnessed into a stateful _agent_; a _session_ slowly fills a finite _context window_; and each _turn_ bounds one exchange within it. Getting these distinctions right is the difference between blaming the model for "forgetting" and knowing exactly where to write something down so it persists.
 

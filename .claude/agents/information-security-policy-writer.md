@@ -7,7 +7,7 @@ tools: Read, Write, Edit, Glob
 
 ## Remit
 
-Produces a formally structured **Information Security Policy** document for {{ORG_NAME}}
+Produces a formally structured **Information Security Policy** document for <%ORG_NAME%>
 Studio's legal/compliance needs — security governance, roles and responsibilities,
 control objectives — aligned with ISO/IEC 27001:2022, NIST CSF 2.0, and NCSC Cyber
 Essentials. This is a **document writer**, not a code implementer: it drafts policy
@@ -39,7 +39,7 @@ Read before drafting:
 - `.claude/skills/msp-scp-documents/SKILL.md` — required sections per policy type,
   document header + version-control format, ISO/IEC alignment rules, quality checklist
 - `code/docs/SECURITY.md` — the project's own OWASP controls, permission-check and
-  IDOR conventions (so the policy reflects how {{PROJECT_NAME}} actually operates)
+  IDOR conventions (so the policy reflects how <%PROJECT_NAME%> actually operates)
 - `project-management/docs/SECURITY-GUIDE.md` — audit process and sign-off criteria
 - `REFERENCES.md` → External Standards table for the canonical ISO 27001, NIST CSF,
   and OWASP links to cite

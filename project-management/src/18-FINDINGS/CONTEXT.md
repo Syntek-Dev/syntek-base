@@ -76,4 +76,4 @@ nothing, record that explicitly rather than skipping the file.
 - `code/docs/DATABASE.md` — the data-layer rules findings are assessed against
 - `project-management/workflows/19-implementation-documentation/` — where these are written
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

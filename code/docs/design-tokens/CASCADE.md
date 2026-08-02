@@ -7,8 +7,8 @@ model: opus
 
 # Design Tokens — Preference Cascade & Delivery
 
-**Last Updated:** {{DATE}}
-**Maintained By:** {{ORG_NAME}}
+**Last Updated:** <%DATE%>
+**Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
 **Claude Model:** opus — CSS cascade generation, preference axes, delivery pipeline
 
@@ -108,7 +108,7 @@ page cache is invalidated, with no frontend rebuild.
 
 `git_writeback.py` is a **provider-agnostic Contents-API adapter** (GitHub / GitLab / Forgejo) and
 is a **no-op when unconfigured**, so local and CI runs never attempt a write. Configuration is
-environment-only: `{{ENV_PREFIX}}_DESIGN_TOKENS_GIT_*` — never hard-coded.
+environment-only: `<%ENV_PREFIX%>_DESIGN_TOKENS_GIT_*` — never hard-coded.
 
 State-changing endpoints queue regeneration **post-commit** (after the atomic DB write succeeds),
 so a failed transaction never triggers a publish.

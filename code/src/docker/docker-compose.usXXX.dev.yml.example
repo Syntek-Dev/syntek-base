@@ -10,10 +10,10 @@
 #     --env-file code/src/docker/.env.dev \
 #     up -d
 #
-# Container names: {{PROJECT_SLUG}}-dev-usNNN-*-1
-# Named volumes:   {{PROJECT_SLUG}}-dev-usNNN_postgres_dev_data
-#                  {{PROJECT_SLUG}}-dev-usNNN_valkey_dev_data
-# Dev URL:         http://dev-usNNN.{{PROJECT_SLUG}}.localhost:3080
+# Container names: <%PROJECT_SLUG%>-dev-usNNN-*-1
+# Named volumes:   <%PROJECT_SLUG%>-dev-usNNN_postgres_dev_data
+#                  <%PROJECT_SLUG%>-dev-usNNN_valkey_dev_data
+# Dev URL:         http://dev-usNNN.<%PROJECT_SLUG%>.localhost:3080
 #
 # Every host-facing port the base file binds MUST be re-scoped here, or the worktree
 # stack collides with the main dev stack. The host loopback IP is 127.0.0.NNN and must
@@ -21,9 +21,9 @@
 # main stack). The host port is never 80 — only the container side is.
 #
 # /etc/hosts required (one-time):
-#   127.0.0.NNN dev-usNNN.{{PROJECT_SLUG}}.localhost
+#   127.0.0.NNN dev-usNNN.<%PROJECT_SLUG%>.localhost
 
-name: {{PROJECT_SLUG}}-dev-usNNN
+name: <%PROJECT_SLUG%>-dev-usNNN
 
 services:
   nginx:

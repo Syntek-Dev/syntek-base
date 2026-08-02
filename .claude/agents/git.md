@@ -9,7 +9,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Default branch: main | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Default branch: main | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Purpose
 

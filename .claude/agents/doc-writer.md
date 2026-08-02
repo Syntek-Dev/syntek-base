@@ -26,7 +26,7 @@ Not this agent:
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Frontend: Django templates +
 django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Scripts: `code/src/scripts/**/*.sh` | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Scripts: `code/src/scripts/**/*.sh` | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -66,7 +66,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - **Naming.** Documentation files are `SCREAMING-SNAKE-CASE.md` (`CONTEXT.md`,
   `URL-STRATEGY.md`); source directories are `kebab-case/`. Full table in
   `.claude/CLAUDE.md` §5.
-- **British English (en_GB)**, DD/MM/YYYY dates, {{TIMEZONE}}, {{CURRENCY}}.
+- **British English (en_GB)**, DD/MM/YYYY dates, <%TIMEZONE%>, <%CURRENCY%>.
 
 ## CONTEXT.md + CLAUDE.md pairing
 
@@ -85,7 +85,7 @@ convention (`.claude/CLAUDE.md` §8):
 ## How to work
 
 **Grill first.** For any non-trivial document, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate {{DEVELOPER_NAME}} one question at a time: the doc's scope, its
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: the doc's scope, its
 audience, what to cover, and what to leave out. Look facts up rather than ask; a routine
 `CONTEXT.md` tree refresh or docstring pass is mechanical and skips this. Design-work default
 (`.claude/CLAUDE.md` §10).

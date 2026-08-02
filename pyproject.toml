@@ -1,5 +1,5 @@
 [project]
-name = "{{PROJECT_SLUG}}"
+name = "<%PROJECT_SLUG%>"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [

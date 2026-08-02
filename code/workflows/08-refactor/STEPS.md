@@ -8,7 +8,7 @@ model: opus
 
 # Refactor — Steps
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -37,7 +37,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 ### Step 1 — Grill, then Confirm Tests Green
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
-{{DEVELOPER_NAME}} one question at a time about the refactor scope and the behaviour-preserving boundary before
+<%DEVELOPER_NAME%> one question at a time about the refactor scope and the behaviour-preserving boundary before
 touching any code.
 
 Establish a clean baseline before touching any code.

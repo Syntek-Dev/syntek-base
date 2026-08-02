@@ -66,11 +66,11 @@ Every instructional `.md` carries this compact header immediately after the H1:
 ```markdown
 # Document Title
 
-**Last Updated**: DD/MM/YYYY **Version**: X.Y.Z **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: DD/MM/YYYY **Version**: X.Y.Z **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 ```
 
-- `Maintained By` is **{{ORG_NAME}}** (not "Development Team").
+- `Maintained By` is **<%ORG_NAME%>** (not "Development Team").
 - Dates are `DD/MM/YYYY`; `RELEASES.md` entry titles use `vX.Y.Z — DD/MM/YYYY`.
 - Update `Version` and `Last Updated` whenever a file's content changes or a bump ships.
 

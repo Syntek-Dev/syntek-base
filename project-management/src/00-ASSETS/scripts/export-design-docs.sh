@@ -38,7 +38,7 @@ die()  { printf '\033[31mERROR:\033[0m %s\n' "$*" >&2; exit 1; }
 if [[ "${1:-}" == "--help" ]]; then
   bold "export-design-docs.sh"
   echo ""
-  echo "  Exports all six {{PROJECT_NAME}} design-system HTML files to a single merged PDF."
+  echo "  Exports all six <%PROJECT_NAME%> design-system HTML files to a single merged PDF."
   echo ""
   echo "  Usage: bash export-design-docs.sh [OUTPUT_NAME]"
   echo ""

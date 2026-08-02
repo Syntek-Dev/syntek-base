@@ -22,7 +22,7 @@ Defer to:
 ## Stack
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL 18 (+ Valkey) | Scripts: `code/src/scripts/**/*.sh`
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}} — apply to every figure, date, and chart.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> — apply to every figure, date, and chart.
 
 ## Context Loading
 
@@ -71,10 +71,10 @@ and the `project-management/src/` destination named in its own remit — do not 
 ## Method
 
 1. **Grill first.** Open with a grilling interview — load `.claude/skills/grill-with-docs` and
-   interrogate {{DEVELOPER_NAME}} one question at a time: the analysis question, the data sources, the segments,
+   interrogate <%DEVELOPER_NAME%> one question at a time: the analysis question, the data sources, the segments,
    the timeframe and grain, the output format and audience, and whether PII is in scope. Look
    facts up rather than ask; do not guess at missing data — document the gap. No analysis until
-   {{DEVELOPER_NAME}} confirms. Design-work default (`.claude/CLAUDE.md` §10).
+   <%DEVELOPER_NAME%> confirms. Design-work default (`.claude/CLAUDE.md` §10).
 2. **Data quality:** nulls, types, outliers, range/constraint validation.
 3. **Exploration:** summary stats, distributions, correlations, temporal patterns.
 4. **Insight:** answer the question with specific numbers; flag the unexpected; recommend actions.
@@ -93,7 +93,7 @@ Return findings in the conversation as:
 - **Executive summary** — 2–3 sentences.
 - **Data overview** — source, record count, date range, quality issues.
 - **Methodology** — brief.
-- **Findings** — each with concrete figures ({{LOCALE}}, {{CURRENCY}}).
+- **Findings** — each with concrete figures (<%LOCALE%>, <%CURRENCY%>).
 - **Recommendations** — actionable, not decisions.
 - **Code** — the analysis (Python/SQL), runnable.
 

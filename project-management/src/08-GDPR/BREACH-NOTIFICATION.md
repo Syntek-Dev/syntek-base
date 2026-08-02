@@ -192,7 +192,7 @@ Create at `docs/INCIDENTS/BREACH-{YYYY-MM-DD}-{SHORT-TITLE}.md`.
 # Breach Record — {SHORT-TITLE}
 
 **Date of occurrence:** DD/MM/YYYY (estimated if unknown)
-**Date of discovery:** DD/MM/YYYY HH:MM ({{TIMEZONE}})
+**Date of discovery:** DD/MM/YYYY HH:MM (<%TIMEZONE%>)
 **Date of containment:** DD/MM/YYYY HH:MM
 **Severity:** Critical / High / Medium / Low
 **ICO notified:** Yes / No — Reference: {ICO-REF} (if yes)

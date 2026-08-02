@@ -7,8 +7,8 @@ model: opus
 
 # API Design
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Django Ninja JSON API contract conventions, auth, webhooks, client patterns
 
 Django Ninja is the project's first-party JSON API (`NinjaAPI` mounted at `/api/`, auto OpenAPI at

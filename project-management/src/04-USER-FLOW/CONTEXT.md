@@ -39,4 +39,4 @@ canonical section — never a second copy. Full scaffold and stub pattern: `USER
 - `project-management/src/08-GDPR/` — GDPR compliance artefacts for data flows
 - `project-management/CONTEXT.md` — full project-management layer overview
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

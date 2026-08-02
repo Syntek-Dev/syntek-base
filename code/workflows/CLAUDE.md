@@ -22,7 +22,7 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
   `stack-django` skill, frontend through `stack-htmx-templates` — both Opus.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
   opens with a grilling pass; the owning agent loads `.claude/skills/grill-with-docs` and
-  interviews {{DEVELOPER_NAME}} one question at a time before producing the artefact (`.claude/CLAUDE.md` §10).
+  interviews <%DEVELOPER_NAME%> one question at a time before producing the artefact (`.claude/CLAUDE.md` §10).
   Only trivial/mechanical steps skip it.
 - **Model:** Opus for authoring or revising a workflow and mechanical
   touches (renumbering, fixing a broken cross-reference, version headers).

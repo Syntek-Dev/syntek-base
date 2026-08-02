@@ -1,9 +1,71 @@
-# Releases — {{PROJECT_NAME}}
+# Releases — <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} **Version**: 0.11.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.12.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.12.0 — 02/08/2026
+
+**Status:** Feature release — the template becomes installable, updatable, and open source
+
+### Summary
+
+Three things change together, and they reinforce each other.
+
+**Scaffolding moves to [Copier](https://copier.readthedocs.io/).** `setup.sh` did literal string
+substitution and then severed the connection: a project generated from the template could never
+receive a later fix. Copier keeps the link. A generated project carries `.copier-answers.yml`
+recording the source, the commit and every answer, and `copier update` three-way-merges upstream
+improvements against local edits. That single capability — fix once, propagate everywhere — is the
+whole reason for the migration, and it is the one thing that could not have been bolted on later.
+
+The move forced a delimiter change. Copier renders through Jinja2, and its default double-brace
+delimiters collide with four things already in this repository: GitHub Actions expressions, Django
+template syntax, Bruno variables, and — for the obvious double-square-bracket alternative — bash
+test syntax, of which there are over three hundred instances in the project scripts. A bespoke set
+of variable, block and comment delimiters replaces them, each verified to appear nowhere in the
+tree before being adopted. The set and the full reasoning are in
+`how-to/src/TEMPLATE-TOKENS.md`.
+
+**The repository becomes properly open source.** MIT, with a `LICENSE`, a `SECURITY.md`
+disclosure policy, a contributor guide, CODEOWNERS, issue and pull-request templates, and branch
+protection on `main`. Version 0.10.0 retired the licence on the reasoning that a template should
+not choose one for the project generated from it — that reasoning was sound but the conclusion was
+wrong. MIT covers the template; `<%LICENCE%>` remains a question, so a generated project still
+picks its own, and proprietary is still the default answer.
+
+**The documentation catches up.** `how-to/src/TEMPLATE-GUIDE/` is fourteen numbered guides taking
+a reader from "should I use this at all" through generation, orientation, the first story,
+customisation, deployment and updating. The root README stops impersonating a shipped product and
+describes the template — 1160 lines down to 140.
+
+### What's new since v0.11.0
+
+- **One-command generation** — `uvx copier copy gh:Syntek-Dev/syntek-base my-project`
+- **`copier update`** — pull later template fixes into projects already built from it
+- **MIT licence, `SECURITY.md`, `CONTRIBUTING.md`, CODEOWNERS, issue and PR templates**
+- **Branch protection on `main`** — PR required, conversation resolution required, force-push and deletion blocked, eleven required checks, admin bypass retained
+- **Two new CI gates** — token-syntax integrity, and a generation smoke test that builds a real project on every pull request
+- **Fourteen template guides** plus a contributing standard split out of `how-to/src/CONTEXT.md`
+- **Platform-aware `install.sh`** — Linux, macOS (Docker Desktop or Colima), WSL 2; rejects native Windows shells and warns on WSL 1 and `/mnt/c` checkouts
+- **Provider-neutral deployment docs** — any Linux host with Docker works; Hetzner, NixOS and Cloudflare are the documented target, not a requirement
+- **Grilling versus wayfinder** explained, with the rule for choosing between them
+
+### Upgrading an existing project
+
+There is no automatic path from a `setup.sh`-generated project. Those projects have no
+`.copier-answers.yml` and cannot be updated. Recreate the file by hand from a fresh generation's
+format, filling in your values with `_src_path` and `_commit`, and `copier update` will work from
+there. `how-to/src/TEMPLATE-GUIDE/13-UPDATING.md` covers it.
+
+### Known requirements
+
+The agent suite routes across two model tiers and uses Fable for planning and design work, so it
+assumes **Claude Max 20× or above, or the Anthropic API**. On a smaller plan, or another provider,
+retarget the `model:` frontmatter — the documentation system and gates are provider-agnostic.
 
 ---
 
@@ -40,8 +102,8 @@ is the root's operating-rules counterpart.
 ### Summary
 
 The final batch closes the conversion. Every hardcoded project identifier at the repository root
-becomes a substitution placeholder — `{{PROJECT_NAME}}`, `{{PROJECT_SLUG}}`, `{{ORG_NAME}}`,
-`{{LOCALE}}`, `{{TIMEZONE}}`, `{{CURRENCY}}`, `{{LICENCE}}` — and an `install.sh`/`setup.sh` pair
+becomes a substitution placeholder — `<%PROJECT_NAME%>`, `<%PROJECT_SLUG%>`, `<%ORG_NAME%>`,
+`<%LOCALE%>`, `<%TIMEZONE%>`, `<%CURRENCY%>`, `<%LICENCE%>` — and an `install.sh`/`setup.sh` pair
 resolves them when a project is scaffolded. CI gains six audit workflows matching the audit scripts
 added in 0.4.0, plus a ClickUp sync pipeline, while the frontend and mobile pipelines are gone. Three
 session sandboxes are established — `handoffs/` for the compaction replacement, `learning/` for the
@@ -54,7 +116,7 @@ the project generated from it.
 - **Placeholders throughout** — every project identifier is a substitution token resolved by `setup.sh` when a project is scaffolded
 - **Six audit pipelines** — design tokens, CSS gradients, copy, secrets, and dependencies now fail CI, matching the audit scripts
 - **Session sandboxes** — `handoffs/`, `learning/`, and `research/` give the handoff, teach, and research skills a committed home
-- **Licence deferred to the consumer** — the template ships `{{LICENCE}}`, not a decision
+- **Licence deferred to the consumer** — the template ships `<%LICENCE%>`, not a decision
 
 ---
 
@@ -245,7 +307,7 @@ first keeps the change reviewable: this release is purely subtractive.
 
 ### Summary
 
-Opens the `{{PROJECT_SLUG}}-base` template track. The repository stops being a single delivered
+Opens the `<%PROJECT_SLUG%>-base` template track. The repository stops being a single delivered
 project and becomes the scaffold other projects are generated from, so the root version track is
 reset from `1.11.0` to `0.1.0` and the release documents are truncated to a clean baseline. The
 pre-template 1.x history remains available in git history and is deliberately not back-filled here.

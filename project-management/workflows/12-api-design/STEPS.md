@@ -8,7 +8,7 @@ model: fable
 
 # Steps — API Design
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -37,7 +37,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time about each read and state-changing
+interview <%DEVELOPER_NAME%> one question at a time about each read and state-changing
 endpoint, its permission rules, and ownership checks before identifying the API surface.
 
 Review the user story acceptance criteria and wireframes. List every data operation the story

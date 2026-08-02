@@ -1,6 +1,6 @@
 # Workflow 15 — Story Plans
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Purpose
 

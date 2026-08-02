@@ -7,8 +7,8 @@ model: opus
 
 # Encryption Guide — Lookup Tokens
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Keyed HMAC blind-index lookup tokens for encrypted fields
 
 ---
@@ -175,10 +175,10 @@ project's operational runbook. The key patterns are summarised here:
 
 | Pattern                  | Format                                           | Example                                     | Use Case                                           |
 | ------------------------ | ------------------------------------------------ | ------------------------------------------- | -------------------------------------------------- |
-| **Legacy (deprecated)**  | `{{ENV_PREFIX}}_<MODULE>_FIELD_KEY`              | `{{ENV_PREFIX}}_AUTH_FIELD_KEY`             | Old deployments — upgrade via `migrate_field_keys` |
-| **Per-field (standard)** | `{{ENV_PREFIX}}_<MODULE>_FIELD_KEY_{FIELD}`      | `{{ENV_PREFIX}}_AUTH_FIELD_KEY_EMAIL`       | All new modules                                    |
-| **Per-field versioned**  | `{{ENV_PREFIX}}_<MODULE>_FIELD_KEY_V{N}_{FIELD}` | `{{ENV_PREFIX}}_AUTH_FIELD_KEY_V2_EMAIL`    | 90-day key rotation                                |
-| **Batch group**          | `{{ENV_PREFIX}}_<MODULE>_FIELD_KEY_{GROUP}`      | `{{ENV_PREFIX}}_SHIPPING_FIELD_KEY_ADDRESS` | 3+ related fields                                  |
-| **HMAC lookup**          | `{{ENV_PREFIX}}_{MODULE}_FIELD_HMAC_KEY`         | `{{ENV_PREFIX}}_AUTH_FIELD_HMAC_KEY`        | Unique field lookups                               |
+| **Legacy (deprecated)**  | `<%ENV_PREFIX%>_<MODULE>_FIELD_KEY`              | `<%ENV_PREFIX%>_AUTH_FIELD_KEY`             | Old deployments — upgrade via `migrate_field_keys` |
+| **Per-field (standard)** | `<%ENV_PREFIX%>_<MODULE>_FIELD_KEY_{FIELD}`      | `<%ENV_PREFIX%>_AUTH_FIELD_KEY_EMAIL`       | All new modules                                    |
+| **Per-field versioned**  | `<%ENV_PREFIX%>_<MODULE>_FIELD_KEY_V{N}_{FIELD}` | `<%ENV_PREFIX%>_AUTH_FIELD_KEY_V2_EMAIL`    | 90-day key rotation                                |
+| **Batch group**          | `<%ENV_PREFIX%>_<MODULE>_FIELD_KEY_{GROUP}`      | `<%ENV_PREFIX%>_SHIPPING_FIELD_KEY_ADDRESS` | 3+ related fields                                  |
+| **HMAC lookup**          | `<%ENV_PREFIX%>_{MODULE}_FIELD_HMAC_KEY`         | `<%ENV_PREFIX%>_AUTH_FIELD_HMAC_KEY`        | Unique field lookups                               |
 
 _Part of the `code/docs/` documentation family. See [`../ENCRYPTION-GUIDE.md`](../ENCRYPTION-GUIDE.md) for the full index._

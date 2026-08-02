@@ -1,7 +1,7 @@
 # handoffs — Session Handoff Documents
 
 Committed, synced home for `/handoff` documents. Each file compacts one conversation so a fresh
-agent — or {{DEVELOPER_NAME}} on another device — resumes the work without re-deriving it. A handoff is a
+agent — or <%DEVELOPER_NAME%> on another device — resumes the work without re-deriving it. A handoff is a
 transient bridge, not a memory store: durable knowledge lives in `.claude/MEMORY.md`, `GAPS.md`,
 and `DEFERRED.md`.
 

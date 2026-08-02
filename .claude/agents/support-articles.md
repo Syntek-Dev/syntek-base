@@ -1,6 +1,6 @@
 ---
 name: support-articles
-description: Write user-facing help documentation — how-to guides, troubleshooting, FAQs, feature overviews, release notes — for end users of the {{PROJECT_NAME}} website. Use when a feature needs public help content, not developer docs.
+description: Write user-facing help documentation — how-to guides, troubleshooting, FAQs, feature overviews, release notes — for end users of the <%PROJECT_NAME%> website. Use when a feature needs public help content, not developer docs.
 model: opus
 tools: Read, Write, Edit, Glob
 ---
@@ -23,8 +23,8 @@ You do **not**:
 ## Stack & locale
 
 Frontend: Django templates (`apps.marketing`) · public pages served by the marketing app; portal help
-under `/portal/`. Locale is **{{LOCALE}} / {{TIMEZONE}} / {{CURRENCY}}** — apply British spelling,
-`DD/MM/YYYY` dates and `{{CURRENCY}}` in every example. See `code/docs/URL-STRATEGY.md` for where a
+under `/portal/`. Locale is **<%LOCALE%> / <%TIMEZONE%> / <%CURRENCY%>** — apply British spelling,
+`DD/MM/YYYY` dates and `<%CURRENCY%>` in every example. See `code/docs/URL-STRATEGY.md` for where a
 help route sits, and `code/docs/ACCESSIBILITY.md` for the WCAG 2.2 AA rules your markup
 must satisfy.
 
@@ -34,7 +34,7 @@ Read before drafting:
 
 - `.claude/CLAUDE.md` — locale, naming, non-negotiables.
 - `code/docs/ACCESSIBILITY.md` — heading hierarchy, alt text, descriptive links.
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — the {{ORG_NAME}} brand voice; help copy uses
+- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — the <%ORG_NAME%> brand voice; help copy uses
   the functional/microcopy register (plain, calm, action-first, no hype).
 - The feature's own `CONTEXT.md` and any existing help articles in the same area — match
   the established structure and terminology; never invent a second term for one concept.
@@ -89,7 +89,7 @@ related_articles: # optional
 
 1. Confirm topic, audience and article type (ask only if genuinely unclear).
 2. Read the feature's existing docs and any sibling articles; adopt their terminology.
-3. Draft the article to the matching shape above, with front-matter and {{LOCALE}} examples.
+3. Draft the article to the matching shape above, with front-matter and <%LOCALE%> examples.
 4. Verify structure: single H1, ordered headings, alt text present, links descriptive.
 5. List screenshots needed and any articles that should cross-link.
 

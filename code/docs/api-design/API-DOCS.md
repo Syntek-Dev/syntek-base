@@ -7,8 +7,8 @@ model: opus
 
 # API Design — API Documentation
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — auto-generated Django Ninja OpenAPI documentation, pre-release API checklist
 
 ---
@@ -35,7 +35,7 @@ from django.conf import settings
 from ninja import NinjaAPI
 
 api = NinjaAPI(
-    title="{{PROJECT_NAME}} API",
+    title="<%PROJECT_NAME%> API",
     version="1.0.0",
     docs_url="/docs" if settings.API_DOCS_ENABLED else None,
 )

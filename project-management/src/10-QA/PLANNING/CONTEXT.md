@@ -44,4 +44,4 @@ its date) in the story first.
 - `../../01-STORIES/` · `../../07-WIREFRAMES/` — the story and wireframe a plan is written against
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

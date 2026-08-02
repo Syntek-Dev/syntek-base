@@ -1,7 +1,7 @@
-# Project: {{PROJECT_NAME}}
+# Project: <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} | **Version**: 0.1.0 | **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) | **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> | **Version**: 0.1.0 | **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) | **Timezone**: <%TIMEZONE%>
 
 @../CONTEXT.md
 @../REFERENCES.md
@@ -11,9 +11,9 @@
 
 ## 1. Identity
 
-**Developer:** {{DEVELOPER_NAME}} — Full Stack Software Developer at {{ORG_NAME}}. Senior developer — be concise, focus on architecture and trade-offs.
+**Developer:** <%DEVELOPER_NAME%> — Full Stack Software Developer at <%ORG_NAME%>. Senior developer — be concise, focus on architecture and trade-offs.
 
-- **Chat output must be scannable, not an essay.** When reporting information to {{DEVELOPER_NAME}}, be extremely concise — sacrifice grammar for the sake of concision.
+- **Chat output must be scannable, not an essay.** When reporting information to <%DEVELOPER_NAME%>, be extremely concise — sacrifice grammar for the sake of concision.
 - **Memory functionality** Auto memory is off, if there is anything for this project regarding memory storage, we store it in ../MEMORY.md
 
 > **Always use the project shell scripts under `code/src/scripts/` for all dev operations.
@@ -54,7 +54,7 @@ specialists load the **stack skills**. The governing `docs/` guide and the workf
   `frontend`, `database`, `gdpr`, `test-writer`, `qa-tester`, `privacy-policy-writer`). Each is
   tool-scoped with a distinct remit; invoke one directly only for a narrow job.
 
-Internalised from the (now-disabled) `{{ORG_SLUG}}-dev-suite` / `{{ORG_SLUG}}-doc-writer` plugins; models are
+Internalised from the (now-disabled) `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer` plugins; models are
 `fable`/`opus` by tier (§4) — planning agents (`story`, `sprint`, `planner`, `user-story`)
 run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 
@@ -68,13 +68,13 @@ run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 | `grill-me` · `grill-with-docs`  | Design work — type `/grill-me` (stateless) or `/grill-with-docs` (records decisions); both wrap the `grilling` engine                              |
 | `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test; design it twice) |
 | `domain-modelling`              | Recording a new concept or decision — add the term to the nearest `CONTEXT.md`, or an ADR, as a design crystallises                                |
-| `improve-codebase-architecture` | {{DEVELOPER_NAME}} types `/improve-codebase-architecture` — scan for deepening opportunities, present a visual HTML report, then grill the pick    |
+| `improve-codebase-architecture` | <%DEVELOPER_NAME%> types `/improve-codebase-architecture` — scan for deepening opportunities, present a visual HTML report, then grill the pick    |
 | `scale-planning`                | Sizing the deployment for a target user count and proving it scales — readiness + envelope on the scaling phase-gates; feeds the NixOS deploy repo |
-| `teach`                         | {{DEVELOPER_NAME}} types `/teach <topic>` — safe learning sandbox; writes only to `learning/`                                                      |
+| `teach`                         | <%DEVELOPER_NAME%> types `/teach <topic>` — safe learning sandbox; writes only to `learning/`                                                      |
 | `wayfinder`                     | Charting a large epic into a decision map, resolved across sessions                                                                                |
-| `handoff`                       | {{DEVELOPER_NAME}} types `/handoff`, or context nears full — the auto-compaction replacement (committed `handoffs/`; §2.6)                         |
-| `prototype`                     | {{DEVELOPER_NAME}} types `/prototype` — throwaway spike answering one design question                                                              |
-| `research`                      | {{DEVELOPER_NAME}} types `/research` — primary-source-cited note feeding an ADR/PLAN                                                               |
+| `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement (committed `handoffs/`; §2.6)                         |
+| `prototype`                     | <%DEVELOPER_NAME%> types `/prototype` — throwaway spike answering one design question                                                              |
+| `research`                      | <%DEVELOPER_NAME%> types `/research` — primary-source-cited note feeding an ADR/PLAN                                                               |
 | `legal-documents`               | Privacy Policy, T&C, GDPR notice, DPA, contract, NDA                                                                                               |
 | `msp-scp-documents`             | Security/compliance policy (InfoSec, incident, retention, …)                                                                                       |
 
@@ -100,7 +100,7 @@ When the context window nears full, **do not rely on auto-compaction** — it is
 (`settings.json` → `autoCompactEnabled: false`) and intercepted (the `PreCompact` hook,
 `.claude/hooks/pre-compact-handoff.sh`). Instead the **driving session invokes the `handoff`
 skill** → writes `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md` → **stops** and prints the path,
-so {{DEVELOPER_NAME}} can `/clear` and resume in a fresh context window. A hook cannot invoke a skill or stop the
+so <%DEVELOPER_NAME%> can `/clear` and resume in a fresh context window. A hook cannot invoke a skill or stop the
 session — that is the model's job (this rule). This is a top-level session / orchestrator duty;
 delegated specialists return to their orchestrator rather than hand off.
 See `.claude/skills/handoff/SKILL.md`.
@@ -128,9 +128,9 @@ together** — whenever you revise the docs, refresh the graph (`code-review-gra
 `env`, `db`, `git`, `log`, `pm`) that agents call to gather context. They do **not** run dev
 operations — those go through `code/src/scripts/**/*.sh`. Registry: `.claude/plugins/CONTEXT.md`.
 
-**Disabled marketplace plugins** — `{{ORG_SLUG}}-dev-suite` and `{{ORG_SLUG}}-doc-writer` are disabled for
+**Disabled marketplace plugins** — `<%ORG_SLUG%>-dev-suite` and `<%ORG_SLUG%>-doc-writer` are disabled for
 this project (`settings.json` → `enabledPlugins`); their agents and skills are internalised under
-`.claude/`. Never invoke the old `{{ORG_SLUG}}-dev-suite` / `{{ORG_SLUG}}-doc-writer` plugin commands — use
+`.claude/`. Never invoke the old `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer` plugin commands — use
 the internal agents instead.
 
 ---
@@ -205,12 +205,12 @@ These apply in every task, regardless of layer:
 | -------------- | -------------------------------------------------- |
 | Frontend (Dev) | `http://localhost:8000`                            |
 | Backend / API  | `http://localhost:8000` · `/api/`                  |
-| Database (Dev) | `{{PROJECT_SLUG}}_dev`                             |
+| Database (Dev) | `<%PROJECT_SLUG%>_dev`                             |
 | Django Admin   | non-obvious path — see `code/docs/URL-STRATEGY.md` |
-| Locale         | {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}           |
+| Locale         | <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>           |
 
 URL conventions — full rules in `code/docs/URL-STRATEGY.md`:
-Marketing `/` (slugs) · {{PROJECT_NAME}} Admin `/admin/` (UUIDs) · Client Portal `/portal/` (slugs)
+Marketing `/` (slugs) · <%PROJECT_NAME%> Admin `/admin/` (UUIDs) · Client Portal `/portal/` (slugs)
 
 ---
 
@@ -248,7 +248,7 @@ every session. Write here instead of the global auto-memory system.
 
 **When to write:**
 
-- Feedback {{DEVELOPER_NAME}} gives on approach — corrections or confirmations of non-obvious choices
+- Feedback <%DEVELOPER_NAME%> gives on approach — corrections or confirmations of non-obvious choices
 - Patterns and conventions discovered during work
 - Project-state facts not derivable from the codebase (stack decisions, business rules)
 - Operational quirks or workarounds
@@ -280,7 +280,7 @@ decisions to the appropriate doc, then remove the closed entry on the next tidy 
 | Design system / token spec      | `code/docs/DESIGN-TOKENS.md`         |
 
 **Question-asking policy:** For trivial or mechanical work (a rename, a version bump, a syntax
-fix), make reasonable calls on minor details and proceed — {{DEVELOPER_NAME}} will redirect if wrong. Any
+fix), make reasonable calls on minor details and proceed — <%DEVELOPER_NAME%> will redirect if wrong. Any
 substantial task in any layer opens with a grilling pass (below), not a fixed question list.
 
 **Grilling — the default across every layer:** Grilling is the project's clarification mechanism
@@ -288,10 +288,10 @@ for **all substantial work — design, code, tests, QA, refactor, review, debug,
 not only planning and design.** Before producing the artefact (a plan, schema, resolver,
 component, test suite, QA plan, refactor, or fix), the responsible agent **opens with a grilling
 pass** (the `grilling` skill): interrogate first, one question at a time, each with a recommended
-answer, looking facts up rather than asking, no action until {{DEVELOPER_NAME}} confirms. Only trivial or
+answer, looking facts up rather than asking, no action until <%DEVELOPER_NAME%> confirms. Only trivial or
 mechanical work skips it. This **supersedes every static 'Clarify Before Planning' / 'Required
 Information' / 'Clarifying questions' checklist project-wide** — agents open with a grilling pass,
-not a fixed question list. {{DEVELOPER_NAME}} can also invoke it directly with `/grill-me` (stateless) or
+not a fixed question list. <%DEVELOPER_NAME%> can also invoke it directly with `/grill-me` (stateless) or
 `/grill-with-docs` (records decisions). See `.claude/skills/grilling/SKILL.md`.
 
 ---

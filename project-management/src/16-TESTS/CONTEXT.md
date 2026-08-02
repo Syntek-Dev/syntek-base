@@ -61,4 +61,4 @@ step with the story and its suites; append the update date on every change.
 - `code/docs/TESTING.md` · `code/docs/ACCESSIBILITY.md` — coverage floors and WCAG rules
 - `project-management/workflows/20-pr-and-review/` — where the records are finalised
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

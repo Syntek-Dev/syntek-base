@@ -56,4 +56,4 @@ status to `Fixed` (then `Verified`) as the fix lands.
 - `../17-REVIEWS/` · `../16-TESTS/` — the review and test records from the same PR
 - `code/workflows/07-debug/` · `code/workflows/10-debugging-with-logs/` — the debug procedures
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

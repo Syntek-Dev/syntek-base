@@ -9,7 +9,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -74,7 +74,7 @@ does not restate the rules at length — it applies the docs above and defers de
 - `DEBUG=False` in all non-local environments
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production
 - All secrets via env vars — never hardcoded; never commit `.env` (use `.env.*.example`)
-- Django admin never at `/admin/` (that prefix belongs to the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix belongs to the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 
 ## Specialist Reference
 
@@ -115,7 +115,7 @@ rules in `code/docs/URL-STRATEGY.md`:
 | Surface                          | Identifier                         | Rationale                          |
 | -------------------------------- | ---------------------------------- | ---------------------------------- |
 | Marketing `/` (public)           | slug                               | SEO; no sensitive object behind it |
-| {{PROJECT_NAME}} Admin `/admin/` | UUIDv4                             | non-sequential, non-enumerable     |
+| <%PROJECT_NAME%> Admin `/admin/` | UUIDv4                             | non-sequential, non-enumerable     |
 | Client Portal `/portal/`         | slug + server-side ownership check | slug is not authorisation          |
 | One-time actions                 | signed / single-use HMAC token     | password reset, email verify       |
 | Time-limited downloads           | signed URL with expiry             | no long-lived public asset links   |
@@ -130,7 +130,7 @@ rules in `code/docs/URL-STRATEGY.md`:
   a scoped `Content-Security-Policy`, and `Permissions-Policy`. HSTS in non-local envs.
 - **Edge contract.** The edge-enforced header/routing/TLS/body-size catalogue is consolidated as the
   deploy contract in `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` — this repo specifies it,
-  the `{{DEPLOY_REPO}}` NixOS repo implements it.
+  the `<%DEPLOY_REPO%>` NixOS repo implements it.
 - **Rate limiting** by route class — tune in code, but as a baseline: general API ~60/min,
   auth ~5/min, password reset ~3/hour, admin actions ~30/min.
 - **IP allowlisting** for admin surfaces is available via env var where the threat model warrants it.
@@ -172,8 +172,8 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ## Workflow
 
 Threat-model / hardening design **opens with a grilling pass** — load
-`.claude/skills/grill-with-docs` and interview {{DEVELOPER_NAME}} one question at a time (each with your
-recommended answer; look facts up, don't ask; no action until {{DEVELOPER_NAME}} confirms) across assets,
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (each with your
+recommended answer; look facts up, don't ask; no action until <%DEVELOPER_NAME%> confirms) across assets,
 trust boundaries, roles, the STRIDE surface, and abuse cases before the audit/hardening plan.
 This inverts the proceed-by-default posture (`.claude/CLAUDE.md` §10); record hard-to-reverse
 calls as an ADR.

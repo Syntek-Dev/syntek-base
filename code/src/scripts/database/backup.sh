@@ -25,8 +25,8 @@ if [[ -f "$ENV_FILE" ]]; then
   DB_NAME="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB='   "$ENV_FILE" | cut -d= -f2- || true)}"
   DB_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
 fi
-DB_NAME="${DB_NAME:-{{PROJECT_SLUG}}_dev}"
-DB_USER="${DB_USER:-{{PROJECT_SLUG}}}"
+DB_NAME="${DB_NAME:-<%PROJECT_SLUG%>_dev}"
+DB_USER="${DB_USER:-<%PROJECT_SLUG%>}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 OUTPUT_DIR="$REPORTS_DIR"
@@ -53,8 +53,8 @@ Options:
                         plain  → .sql   (can be piped directly to psql)
 
 Environment:
-  POSTGRES_DB    Database name (default: {{PROJECT_SLUG}}_dev)
-  POSTGRES_USER  Database user (default: {{PROJECT_SLUG}})
+  POSTGRES_DB    Database name (default: <%PROJECT_SLUG%>_dev)
+  POSTGRES_USER  Database user (default: <%PROJECT_SLUG%>)
 
 Exit codes:  0 = success   1 = command failed   2 = script error
 EOF

@@ -110,7 +110,7 @@ _sync_db_password() {
   [[ -n "$SERVICE" ]] && return 0
   # shellcheck source=/dev/null
   set -a; source "$ENV_FILE"; set +a
-  local db_user="${POSTGRES_USER:-{{PROJECT_SLUG}}}"
+  local db_user="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
   [[ -z "${POSTGRES_PASSWORD:-}" ]] && return 0
   # Password is piped to psql stdin — never appears in the process list.
   printf 'ALTER USER "%s" WITH PASSWORD '"'"'%s'"'"';\n' \
@@ -143,10 +143,10 @@ case "$COMMAND" in
     if [[ -n "$OVERRIDE_DEV_FILE" ]]; then
       # Worktree stacks isolate by host IP (127.0.0.<story>) — see
       # docker-compose.us<NNN>.dev.yml for the port that override publishes.
-      _host="dev-us${WORKTREE_US_NUM}.{{PROJECT_SLUG}}.localhost"
+      _host="dev-us${WORKTREE_US_NUM}.<%PROJECT_SLUG%>.localhost"
     else
       # Host 81, not 80 — a local router (e.g. DDEV) commonly holds 127.0.0.1:80.
-      _host="dev.{{PROJECT_SLUG}}.localhost:81"
+      _host="dev.<%PROJECT_SLUG%>.localhost:81"
     fi
     log "  Site:          http://${_host}/"
     log "  Django Admin:  http://${_host}/control/   (superuser/staff only)"

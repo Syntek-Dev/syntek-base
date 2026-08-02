@@ -1,21 +1,21 @@
 ---
 name: stack-django
 description: >-
-  Django 6 + Django Ninja + PostgreSQL backend idioms for {{PROJECT_NAME}} —
+  Django 6 + Django Ninja + PostgreSQL backend idioms for <%PROJECT_NAME%> —
   service-layer boundaries, model conventions, Django Ninja endpoints and Schema models with
   named Policy permission checks, strict type hints, and pytest via the project scripts. Load
   this when writing or reviewing server-side code (models, migrations, services, Django Ninja
   endpoints), or when a backend/security/refactor agent needs the canonical stack idioms.
 ---
 
-# Stack: Django & Django Ninja ({{PROJECT_NAME}})
+# Stack: Django & Django Ninja (<%PROJECT_NAME%>)
 
 Reference material for the backend layer. The `backend`, `security`, and `refactor`
 agents cite this file for stack idioms so they need not restate them. It is the
 authoritative statement of **how backend code is shaped here** — the governing
 procedures (`code/workflows/*`) and reference guides (`code/docs/*`) own the _why_.
 
-**Locale:** British English (en_GB) · {{TIMEZONE}} · {{CURRENCY}}. Apply British spelling
+**Locale:** British English (en_GB) · <%TIMEZONE%> · <%CURRENCY%>. Apply British spelling
 in code comments, docstrings, and identifiers where a choice exists.
 
 ---
@@ -92,7 +92,7 @@ with the models; Django Ninja emits the OpenAPI schema at `/api/docs` automatica
 - **Aim for 3NF.** Add `db_index=True` / composite indexes for every field that filters or
   orders a hot query; add `constraints` for invariants the DB should enforce.
 - **UUID primary keys on anything the API exposes** — never leak sequential IDs (IDOR and
-  enumeration risk). {{PROJECT_NAME}} Admin surfaces UUIDs; see `code/docs/URL-STRATEGY.md`.
+  enumeration risk). <%PROJECT_NAME%> Admin surfaces UUIDs; see `code/docs/URL-STRATEGY.md`.
 - Kill N+1s with `select_related` (FK/1:1) and `prefetch_related` (reverse/M2M) at the
   service boundary. See `code/docs/PERFORMANCE.md`. Bound every list query — keyset over
   offset for scale-readiness (`code/docs/architecture/CORE-AND-SCALING.md`).

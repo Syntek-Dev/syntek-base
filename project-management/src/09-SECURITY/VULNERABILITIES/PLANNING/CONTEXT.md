@@ -47,4 +47,4 @@ before the vulnerable code proceeds. Lower-severity items stay in the originatin
 - `project-management/docs/SECURITY-GUIDE.md` — the governing STRIDE / OWASP / NIST guide
 - `project-management/workflows/09-security-checks/` — the workflow that produces these
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

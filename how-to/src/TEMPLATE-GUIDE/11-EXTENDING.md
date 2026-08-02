@@ -1,0 +1,176 @@
+# Extending — Adding Your Own Pieces
+
+**Last Updated**: 02/08/2026
+
+How to add a Django app, a page, a workflow, an agent, a skill, or a guide — following the
+conventions so the rest of the system keeps working.
+
+---
+
+## A Django app
+
+```bash
+bash code/src/scripts/development/new-django-app.sh <app_name>
+```
+
+Never `manage.py startapp` or `django-admin startapp`. The script creates the per-model-file
+structure, the tests directory, and the `CONTEXT.md`/`CLAUDE.md` pair the documentation gate
+requires — the bare Django command creates none of it.
+
+Afterwards: add it to `INSTALLED_APPS`, and update the tree in `code/src/django/CONTEXT.md`.
+
+## A public page
+
+```bash
+bash code/src/scripts/development/new-django-view.sh <route_path>
+```
+
+Creates the view, template and URL entry together. Hand-creating page routes is explicitly
+disallowed — the script keeps the SEO wiring and URL conventions consistent.
+
+Then work through `project-management/docs/SEO-CHECKLIST.md` before the page ships.
+
+## A workflow
+
+Workflows are numbered directories in a layer's `workflows/`, each containing four files:
+
+```text
+project-management/workflows/22-your-workflow/
+├── CONTEXT.md      ← when to use it, prerequisites, key concepts
+├── CLAUDE.md       ← operating rules
+├── STEPS.md        ← the ordered procedure
+└── CHECKLIST.md    ← verification before it can be called done
+```
+
+`STEPS.md` and `CHECKLIST.md` carry routing frontmatter naming who does the work:
+
+```yaml
+---
+workflow: 22-your-workflow
+phase: implementation
+agent: backend
+skills: [stack-django, global-workflow]
+model: opus
+---
+```
+
+Then: take the next free number, register it in the layer's `workflows/CONTEXT.md` and the root
+`REFERENCES.md`, and — if it pairs with a workflow in another layer — add the row to the
+cross-layer pairing table in `REFERENCES.md`.
+
+Or ask the `scaffold` agent, which exists for exactly this.
+
+## An agent
+
+A single Markdown file in `.claude/agents/` with YAML frontmatter:
+
+```yaml
+---
+name: your-agent
+description: >
+  One paragraph: what it does and, crucially, when to route to it. This is what
+  Claude matches against, so be concrete about the trigger.
+tools: Read, Write, Edit, Glob, Grep, Bash
+model: opus
+---
+```
+
+Then the body: remit, the workflow it follows, its guardrails, and its definition of done.
+
+Conventions to keep:
+
+- **Tool-scope it.** Only orchestrators carry all tools. A specialist that only writes docs gets
+  `Read, Write, Edit, Glob`.
+- **`fable` for planning and design; `opus` for everything else.** Never `sonnet` or `haiku`.
+- **No agent reviews its own work** — if yours produces something, a different agent checks it.
+- Register it in `.claude/agents/CONTEXT.md`.
+
+## A skill
+
+A directory under `.claude/skills/` containing `SKILL.md` with frontmatter:
+
+```yaml
+---
+name: your-skill
+description: >
+  What it covers and exactly when to load it. Claude reads this to decide, so
+  "load when X" phrasing works better than a topic summary.
+---
+```
+
+Read `how-to/docs/SKILL-AUTHORING.md` first — it covers writing skills that behave predictably
+rather than vaguely. Register the skill in `.claude/skills/CONTEXT.md` and, if it is broadly
+useful, in the table in `.claude/CLAUDE.md` §2.4.
+
+Skills can carry supporting files; reference them by path from `SKILL.md`.
+
+> The four graph playbooks (`explore-codebase`, `debug-issue`, `review-changes`,
+> `refactor-safely`) are **generated** by `code-review-graph install`. Never hand-edit them —
+> they regenerate.
+
+## A documentation guide
+
+Guides live in a layer's `docs/` and carry routing frontmatter:
+
+```yaml
+---
+type: guide
+agent: backend
+skills: [stack-django]
+model: opus
+---
+```
+
+Rules:
+
+- **Under 300 lines.** Over that, split into a sub-directory and leave a thin index — the pattern
+  `code/docs/SECURITY.md` and `code/docs/security/` already demonstrates.
+- Register it in the layer `docs/CONTEXT.md`, the layer `REFERENCES.md`, and the root
+  `REFERENCES.md`.
+- British English.
+
+## A dependency
+
+**Python:**
+
+```bash
+# edit pyproject.toml, then
+bash code/src/scripts/development/install-backend.sh --sync
+```
+
+**JavaScript** (repo tooling only — there is no client bundle):
+
+```bash
+bash code/src/scripts/development/install-frontend.sh --local
+```
+
+Commit the updated lockfile. `[2/8] Lockfile Alignment` in CI fails if the lock and manifest
+disagree. Check the licence is compatible with your project's `LICENCE` answer.
+
+## An MCP server
+
+Repo-scoped servers go in `.mcp.json` and are available to everyone who clones. Machine-global
+servers are your own business. Document any new one in `.claude/CLAUDE.md` §3 so agents know it
+exists.
+
+---
+
+## The checklist for anything new
+
+1. Does every new directory have **both** `CONTEXT.md` and `CLAUDE.md`?
+2. Is the parent `CONTEXT.md` tree updated?
+3. Is it registered in the relevant `REFERENCES.md`?
+4. If instructional, is it under 300 lines?
+5. Does it carry routing frontmatter, if it is a guide or workflow file?
+6. British English?
+7. Do all developer commands resolve to `code/src/scripts/**`?
+8. Have you refreshed the code-review-graph (`code-review-graph update`)?
+
+Points 1–7 are the documentation hard gate, and it is checked before commit — not optional.
+
+---
+
+## Next
+
+- What not to change → `10-CUSTOMISING.md`
+- Contributing it back to the template → the root `CONTRIBUTING.md`

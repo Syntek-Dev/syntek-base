@@ -1,8 +1,8 @@
 # SERVER-ARCHITECTURE — Overview
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{PROJECT_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
@@ -10,8 +10,8 @@
 ## What this directory is
 
 `SERVER-ARCHITECTURE/` is the **deploy-facing consolidation** of everything the
-{{PROJECT_NAME}} application requires from the server and the edge. It exists so the
-deploy repo (`{{DEPLOY_REPO}}`) has a single document to implement against, rather than
+<%PROJECT_NAME%> application requires from the server and the edge. It exists so the
+deploy repo (`<%DEPLOY_REPO%>`) has a single document to implement against, rather than
 requirements scattered across `GAPS.md`, the ADRs, the nginx configs, the CF Tunnel
 topology, and the health/metrics contract in `code/docs/logging/HEALTH-CONTRACT.md`.
 
@@ -28,7 +28,7 @@ It holds exactly two things:
 ## The pipeline
 
 ```text
-codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)──▶ how-to/src/SERVER-ARCHITECTURE (THIS dir) ──▶ {{DEPLOY_REPO}}
+codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)──▶ how-to/src/SERVER-ARCHITECTURE (THIS dir) ──▶ <%DEPLOY_REPO%>
 ```
 
 - **codebase → SCALE-ARCHITECTURE** — the `/scale-planning` skill reconciles what the
@@ -39,7 +39,7 @@ codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)�
   envelope and adds the headroom buffer (policy in `COMPUTE-ALLOCATION.md`),
   producing assigned compute the server can provision against. It also carries the
   edge-requirement catalogue, which is independent of sizing.
-- **SERVER-ARCHITECTURE → {{DEPLOY_REPO}}** — the deploy repo reads this directory and
+- **SERVER-ARCHITECTURE → <%DEPLOY_REPO%>** — the deploy repo reads this directory and
   implements it in its NixOS modules and host configuration (`NIXOS-HANDOFF.md` maps
   which file feeds which module).
 
@@ -55,7 +55,7 @@ already ships two app↔deploy contracts:
   contract** that the NixOS `services.prometheus.scrapeConfigs` must implement. No
   Prometheus runs in this repo; the file specifies, the deploy repo implements.
 - `code/docs/logging/HEALTH-CONTRACT.md` — the health/metrics endpoints live in
-  `{{DEPLOY_REPO}}`, not in this repo. The deploy repo's Gatus module header cites it
+  `<%DEPLOY_REPO%>`, not in this repo. The deploy repo's Gatus module header cites it
   back as its endpoint contract.
 
 Every document here keeps that discipline: **this repo specifies; the deploy repo

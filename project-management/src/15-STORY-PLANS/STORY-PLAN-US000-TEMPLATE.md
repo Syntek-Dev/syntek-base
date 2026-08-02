@@ -5,7 +5,7 @@
 | Date   | DD/MM/YYYY                                                                                                                                                            |
 | Branch | `us000/short-kebab-description`                                                                                                                                       |
 | Sprint | SPRINT-## · Wave # · —                                                                                                                                                |
-| Author | {{ORG_NAME}}                                                                                                                                                          |
+| Author | <%ORG_NAME%>                                                                                                                                                          |
 | Status | `Open` (default) · `Pending` · `In Progress` · `In Review` · `Accepted` · `Accepted Customer` · `Rejected` · `Rejected Customer` · `Blocked` · `Completed` · `Closed` |
 
 <!--
@@ -691,13 +691,13 @@ Four per-story worktree-isolation files (create alongside the worktree):
 | ----------------------------------------------- | -------------------------------------------------------------------- |
 | `code/src/docker/docker-compose.us###.dev.yml`  | Dev stack override — IP `127.0.0.N`, ports `3080`/`3082`/`3180`      |
 | `code/src/docker/docker-compose.us###.test.yml` | Test stack override — IP `127.0.0.N`, port `3081`                    |
-| `code/src/docker/nginx/dev-us###.conf`          | Nginx dev reverse proxy for `dev-us###.{{PROJECT_SLUG}}.localhost`   |
-| `code/src/docker/nginx/test-us###.conf`         | Nginx test reverse proxy for `test-us###.{{PROJECT_SLUG}}.localhost` |
+| `code/src/docker/nginx/dev-us###.conf`          | Nginx dev reverse proxy for `dev-us###.<%PROJECT_SLUG%>.localhost`   |
+| `code/src/docker/nginx/test-us###.conf`         | Nginx test reverse proxy for `test-us###.<%PROJECT_SLUG%>.localhost` |
 
 `/etc/hosts` (one-time per story — use `bash code/src/scripts/development/hosts-story-add.sh us###`):
 
 ```text
-127.0.0.N dev-us###.{{PROJECT_SLUG}}.localhost test-us###.{{PROJECT_SLUG}}.localhost
+127.0.0.N dev-us###.<%PROJECT_SLUG%>.localhost test-us###.<%PROJECT_SLUG%>.localhost
 ```
 
 > The worktree-aware scripts auto-detect the `us###/...` branch (`_lib/worktree-detect.sh`) and layer

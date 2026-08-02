@@ -7,16 +7,16 @@ model: opus
 
 # AI Coding Dictionary
 
-**Version:** 0.1.0 **Maintained by:** {{ORG_NAME}} Developers **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Version:** 0.1.0 **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — plain-English glossary of AI-coding terms, split by theme over `ai-dictionary/`
 
-The vocabulary of AI coding, in plain English — adapted for {{PROJECT_NAME}} from Matt
+The vocabulary of AI coding, in plain English — adapted for <%PROJECT_NAME%> from Matt
 Pocock's [AI Coding Dictionary](https://aicodingdictionary.com). Sixty-nine terms across
 seven themed sub-documents, each a tight definition plus why it matters in practice. Read
 it to understand why context degrades, why the same prompt behaves differently from one
 run to the next, and what a session actually costs — the mental model the rest of the
-agent tooling assumes. The `grilling` skill cites it for _sycophancy_, _human-in-the-loop_,
-and _design concept_.
+agent tooling assumes. The `grilling` skill cites it for **sycophancy**, **human-in-the-loop**,
+and **design concept**.
 
 ## Sub-documents
 

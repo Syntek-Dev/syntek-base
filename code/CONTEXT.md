@@ -25,7 +25,7 @@ code/
 │   ├── SECURITY.md                  (sub-docs: security/)
 │   ├── TESTING.md                   (sub-docs: testing/)
 │   ├── URL-STRATEGY.md
-│   └── VISUAL-DESIGN.md             ← visual language: anti-generic layout + {{ORG_NAME}} signature
+│   └── VISUAL-DESIGN.md             ← visual language: anti-generic layout + <%ORG_NAME%> signature
 ├── src/                             ← all deployable source code
 │   ├── CONTEXT.md
 │   ├── django/                      ← the Django project (backend + server-rendered frontend)

@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "{{PROJECT_NAME}} API Tests",
+  "name": "<%PROJECT_NAME%> API Tests",
   "type": "collection",
   "ignore": ["node_modules", ".git"]
 }

@@ -8,7 +8,7 @@ model: opus
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -69,7 +69,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `DEBUG=False` in all non-local environments
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production
 - All secrets via env vars — never hardcoded
-- Django admin never at `/admin/` (that prefix belongs to the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix belongs to the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 - Never commit `.env` files — use `.env.*.example` templates only
 
 ## Pre-flight
@@ -90,7 +90,7 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ### Phase 1 — Plan
 
 ↳ planner [opus]
-The planning phase **opens with a grilling pass** — `planner` loads `.claude/skills/grill-with-docs` and interviews {{DEVELOPER_NAME}} one question at a time (each with its recommended answer, facts looked up not asked) before producing the plan, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
+The planning phase **opens with a grilling pass** — `planner` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> one question at a time (each with its recommended answer, facts looked up not asked) before producing the plan, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
 Must complete before any implementation phase starts.
 Save to: `project-management/src/15-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`
 

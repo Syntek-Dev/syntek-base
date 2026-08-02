@@ -7,8 +7,8 @@ model: fable
 
 # GDPR Guide — Compliance Obligations
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** fable — GDPR retention tasks, Celery Beat purge scheduling, anonymisation
 
 ---
@@ -56,16 +56,16 @@ def purge_expired_data(self) -> dict:
 from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
-    "apps.{{IDENTITY_APP}}.purge_expired_tokens": {
-        "task": "apps.{{IDENTITY_APP}}.tasks.purge_expired_tokens",
+    "apps.<%IDENTITY_APP%>.purge_expired_tokens": {
+        "task": "apps.<%IDENTITY_APP%>.tasks.purge_expired_tokens",
         "schedule": crontab(hour=1, minute=0),   # daily 01:00 UTC
     },
-    "apps.{{AUDIT_APP}}.purge_expired_entries": {
-        "task": "apps.{{AUDIT_APP}}.tasks.purge_expired_entries",
+    "apps.<%AUDIT_APP%>.purge_expired_entries": {
+        "task": "apps.<%AUDIT_APP%>.tasks.purge_expired_entries",
         "schedule": crontab(hour=1, minute=30),  # daily 01:30 UTC
     },
-    "apps.{{AUDIT_APP}}.run_audit_integrity_check": {
-        "task": "apps.{{AUDIT_APP}}.tasks.run_audit_integrity_check",
+    "apps.<%AUDIT_APP%>.run_audit_integrity_check": {
+        "task": "apps.<%AUDIT_APP%>.tasks.run_audit_integrity_check",
         "schedule": crontab(hour=3, minute=0),   # daily 03:00 UTC
     },
 }
@@ -86,13 +86,13 @@ CELERY_BEAT_SCHEDULE = {
 Authentication tokens, verification codes, and session tokens that expire must be purged
 regularly to prevent unbounded table growth and to comply with data minimisation obligations.
 
-`apps.{{IDENTITY_APP}}` provides `apps.{{IDENTITY_APP}}.tasks.purge_expired_tokens` as a Celery task. It purges:
+`apps.<%IDENTITY_APP%>` provides `apps.<%IDENTITY_APP%>.tasks.purge_expired_tokens` as a Celery task. It purges:
 
 - `VerificationCode` rows past their TTL
 - `AccessTokenDenylist` rows past their TTL
 - `LoginSession` rows past `SESSION_TIMEOUT`
 
-The purge task writes an audit entry via `apps.{{AUDIT_APP}}` summarising how many rows were deleted.
+The purge task writes an audit entry via `apps.<%AUDIT_APP%>` summarising how many rows were deleted.
 This audit entry is itself subject to the audit retention policy.
 
 ---
@@ -119,14 +119,14 @@ See [`code/docs/RLS-GUIDE.md`](../../code/docs/RLS-GUIDE.md) for PostgreSQL Row 
 All data-subject rights operations must be recorded in the audit log:
 
 ```python
-from apps.{{AUDIT_APP}}.services import write_audit
+from apps.<%AUDIT_APP%>.services import write_audit
 
 # When an erasure request is processed
 write_audit(
     "gdpr_erasure",
     actor_pk=requesting_user_pk,
     resource_id=str(subject_user_pk),
-    extra={"apps_erased": ["apps.{{IDENTITY_APP}}", "apps.{{CONTENT_APP}}"]},
+    extra={"apps_erased": ["apps.<%IDENTITY_APP%>", "apps.<%CONTENT_APP%>"]},
 )
 
 # When a SAR export is generated
@@ -206,7 +206,7 @@ When adding a new app or new PII fields to an existing app:
 - [ ] Audit log entries are anonymised, not deleted, in the `gdpr_erase` handler
 - [ ] The app's RLS policies are in place
 - [ ] The lawful basis for each type of personal data processing is documented
-- [ ] `apps.{{AUDIT_APP}}` writes an event for every data-subject rights operation
+- [ ] `apps.<%AUDIT_APP%>` writes an event for every data-subject rights operation
 - [ ] Tests cover: erase handler deletes PII, export handler returns plaintext PII, no data for
       other users is returned or deleted
 

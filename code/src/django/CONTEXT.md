@@ -4,7 +4,7 @@ The Django project at its **baseline**: Django's own defaults plus the infrastru
 wiring this repository provides (PostgreSQL, Valkey, the environment-split settings).
 No application code — `apps/` is an empty package awaiting the first domain module.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Stack
 

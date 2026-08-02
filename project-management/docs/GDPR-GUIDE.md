@@ -7,11 +7,11 @@ model: fable
 
 # GDPR Guide
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** fable — GDPR compliance patterns, lawful basis, retention, data rights
 
-GDPR compliance patterns for {{PROJECT_NAME}} Django apps. Compliance is **mandatory, non-optional**
+GDPR compliance patterns for <%PROJECT_NAME%> Django apps. Compliance is **mandatory, non-optional**
 and wired in from the initial migration — not a phase that happens at the end of a story.
 
 **Key principles:**

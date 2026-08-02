@@ -36,7 +36,7 @@ Read before planning:
 - `.claude/skills/grill-with-docs/SKILL.md` — open sprint design with a grilling interview
 - `.claude/skills/wayfinder/SKILL.md` — chart a large, ambiguous epic into a decision map resolved across sessions (before decomposing a big feature/epic)
 
-Locale is **{{LOCALE}} / {{TIMEZONE}}** — DD/MM/YYYY dates, British spelling throughout.
+Locale is **<%LOCALE%> / <%TIMEZONE%>** — DD/MM/YYYY dates, British spelling throughout.
 
 ## Governing procedures (route here — do not restate at length)
 
@@ -48,8 +48,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Grill Before Slicing
 
 Sprint planning **opens with a grilling pass** — load `.claude/skills/grill-with-docs` and
-interview {{DEVELOPER_NAME}} one question at a time (each with your recommended answer; look facts up, don't
-ask; no action until {{DEVELOPER_NAME}} confirms) before slicing the backlog into sprints. This inverts the
+interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts up, don't
+ask; no action until <%DEVELOPER_NAME%> confirms) before slicing the backlog into sprints. This inverts the
 usual proceed-by-default posture (`.claude/CLAUDE.md` §10). Grill across **scope** (what the
 sprint delivers), **priority** (the MoSCoW mix), **capacity** (the point ceiling and buffer),
 and **dependencies** (blocker order), then apply the resolved decisions in the sprint record.
@@ -63,7 +63,7 @@ Most inputs are derivable from the repo. Read first, ask second. Resolve from:
 - **Existing sprints** → `project-management/src/02-SPRINTS/SPRINT-##.md`
 - **Capacity, duration, velocity** → `SPRINT-PLANNING-GUIDE.md` + `.claude/MEMORY.md`
 
-Ask {{DEVELOPER_NAME}} only when a decision has real consequence and cannot be inferred: the **sprint
+Ask <%DEVELOPER_NAME%> only when a decision has real consequence and cannot be inferred: the **sprint
 goal/theme**, a **release deadline**, or **carry-over** from an in-flight sprint.
 
 ## Story validation (hard gate before a story enters a sprint)

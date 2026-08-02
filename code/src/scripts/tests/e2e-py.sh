@@ -32,7 +32,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 E2E_DIR="code/src/django/tests/e2e"
 
-E2E_BASE_URL="${E2E_BASE_URL:-http://dev.{{PROJECT_SLUG}}.localhost:81}"
+E2E_BASE_URL="${E2E_BASE_URL:-http://dev.<%PROJECT_SLUG%>.localhost:81}"
 
 log() { printf '[e2e-py] %s\n' "$*"; }
 die() { printf '[e2e-py] error: %s\n' "$*" >&2; exit 2; }

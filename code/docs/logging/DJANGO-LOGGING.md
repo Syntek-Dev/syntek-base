@@ -7,8 +7,8 @@ model: opus
 
 # Logging — Django Configuration
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Django logging config, logger usage, structured-logging patterns
 
 ---
@@ -217,7 +217,7 @@ from ninja.errors import ValidationError
 
 logger = logging.getLogger("api")
 
-api = NinjaAPI(title="{{PROJECT_NAME}} API", docs_url="/api/docs")
+api = NinjaAPI(title="<%PROJECT_NAME%> API", docs_url="/api/docs")
 
 
 @api.exception_handler(ValidationError)

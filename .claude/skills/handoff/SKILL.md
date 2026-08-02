@@ -4,11 +4,11 @@ description: >-
   Compact the current conversation into a handoff document so a fresh agent resumes the work
   cleanly after a session boundary. Invoke by typing /handoff, or when a session must end before
   the work does. Most importantly, this is the project's replacement for auto-compaction: when the
-  context window nears full, run this instead of compacting, then stop so {{DEVELOPER_NAME}} can /clear and resume
+  context window nears full, run this instead of compacting, then stop so <%DEVELOPER_NAME%> can /clear and resume
   from the file. Also for a day ending or a different specialist taking over.
 ---
 
-# Skill: Handoff ({{PROJECT_SLUG}})
+# Skill: Handoff (<%PROJECT_SLUG%>)
 
 Handoff **compacts the current conversation** into a single document so a **fresh agent** can
 resume the work cleanly across a session boundary — a context window filling up, a day ending, a
@@ -20,19 +20,19 @@ The default posture in `.claude/CLAUDE.md` §2 is that context flows through the
 layered docs. A handoff is the exception: when a conversation must end before the work does, this
 skill serialises just enough continuity for the next agent to start without re-deriving it.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
 ## The auto-compaction replacement
 
 This skill is the project's designated alternative to auto-compaction (`.claude/CLAUDE.md` §2.6).
 Auto-compaction is disabled (`settings.json` → `autoCompactEnabled: false`) and intercepted (the
 `PreCompact` hook). So when the context window nears full, **do not let the session compact** —
-run this skill, write the handoff, **stop**, and let {{DEVELOPER_NAME}} `/clear` and resume from the file. A hook
+run this skill, write the handoff, **stop**, and let <%DEVELOPER_NAME%> `/clear` and resume from the file. A hook
 cannot do this for you: writing the handoff and stopping is the model's job.
 
 ## Where the handoff lives
 
-A handoff is a **portable bridge to the work's next session**, committed so it syncs across {{DEVELOPER_NAME}}'s
+A handoff is a **portable bridge to the work's next session**, committed so it syncs across <%DEVELOPER_NAME%>'s
 devices. It lives in the repo at `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md`. It stays a transient
 bridge, not a memory store — prune a handoff once its work has resumed.
 
@@ -65,9 +65,9 @@ bridge, not a memory store — prune a handoff once its work has resumed.
    every artefact is a path and no secret value or PII appears in the doc.
 
 7. **Write the file, print the path, then stop.** Write the assembled handoff to
-   `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md`, print that path for {{DEVELOPER_NAME}}, and **end the turn** —
-   do not carry on working, so {{DEVELOPER_NAME}} can `/clear` and resume from the file in a fresh context window.
-   _Complete when:_ the file exists under `handoffs/`, its path is printed, and the turn has stopped.
+   `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md`, print that path for <%DEVELOPER_NAME%>, and **end the turn** —
+   do not carry on working, so <%DEVELOPER_NAME%> can `/clear` and resume from the file in a fresh context window.
+   **Complete when:** the file exists under `handoffs/`, its path is printed, and the turn has stopped.
 
 ## What the handoff carries
 

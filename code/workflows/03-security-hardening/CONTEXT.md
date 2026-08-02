@@ -58,4 +58,4 @@ Use this workflow when:
 - `code/docs/logging/DJANGO-LOGGING.md` — security event logging configuration
 - `code/docs/logging/FRONTEND-LOGGING.md` — frontend security event logging
 - `code/docs/testing/ADVANCED-TESTING.md` — security and property-based test coverage
-- `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` — where edge-enforced controls (headers, TLS, body-size, CF/CF-Tunnel) are specified as the deploy contract for `{{DEPLOY_REPO}}`
+- `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` — where edge-enforced controls (headers, TLS, body-size, CF/CF-Tunnel) are specified as the deploy contract for `<%DEPLOY_REPO%>`

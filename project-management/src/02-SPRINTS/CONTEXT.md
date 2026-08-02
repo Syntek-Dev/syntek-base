@@ -29,4 +29,4 @@ table · dependencies → keep capacity within the team's SP ceiling → honour 
 chain (sprint numbering is not execution order — never schedule a story ahead of its
 blocker). Detailed planning continues in `14-SPRINT-PLANS/`.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

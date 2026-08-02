@@ -7,7 +7,7 @@ model: opus
 
 # Internal Tooling — Configuration & Environment
 
-**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/` + `.claude/skills/`) **Maintained by:** {{ORG_NAME}} Developers **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/` + `.claude/skills/`) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Version management, skills, environment scripts, and browser/E2E setup
 
 ---
@@ -34,8 +34,8 @@ Instructional `.md` files carry a metadata header the `version` agent keeps in s
 ```markdown
 # Document Title
 
-**Last Updated**: DD/MM/YYYY **Version**: X.Y.Z **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: DD/MM/YYYY **Version**: X.Y.Z **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 
 ---
 ```
@@ -64,7 +64,7 @@ table: `.claude/skills/CONTEXT.md`. The stack targets are named in `.claude/CLAU
 The `cloudinary-*` skills cover Cloudinary upload, delivery, and transformations.
 
 `global-workflow` carries the conventions every agent honours: en_GB localisation,
-DD/MM/YYYY dates, the 24-hour clock, {{TIMEZONE}}, {{CURRENCY}}, Git commit standards, and
+DD/MM/YYYY dates, the 24-hour clock, <%TIMEZONE%>, <%CURRENCY%>, Git commit standards, and
 Markdown formatting rules.
 
 ---

@@ -7,9 +7,9 @@ model: opus
 
 # Design Token System
 
-**Last Updated:** {{DATE}}
+**Last Updated:** <%DATE%>
 **Version:** 0.1.0
-**Maintained By:** {{ORG_NAME}}
+**Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
 **Status:** Django-served token CSS + git write-back delivery in place.
 **Claude Model:** opus — Architecture review, schema design, frontend integration patterns

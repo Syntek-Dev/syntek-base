@@ -7,8 +7,8 @@ model: opus
 
 # Logging, Observability & Media — Reference Guide
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Structured logging, error tracking, metrics, and Cloudinary media storage
 
 Logging configuration, observability tooling, and media storage patterns for the Django-served

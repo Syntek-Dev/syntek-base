@@ -47,4 +47,4 @@ applied to every threat. Full guidance: `project-management/docs/SECURITY-GUIDE.
 - `../../VULNERABILITIES/PLANNING/` — escalated CRITICAL/HIGH findings
 - `project-management/workflows/09-security-checks/` — the workflow that produces these
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

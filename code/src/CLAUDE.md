@@ -44,7 +44,7 @@ gitignored `improvement-architecture/` reports that support it.
   state-changing Django Ninja endpoint; user IDs verified against caller
   ownership (no IDOR); `DEBUG=False` outside local; never `CORS *` in production;
   secrets via environment only; Django's built-in admin lives at a non-obvious prefix
-  (`/control/`), **never `/admin/`** (that prefix is the {{PROJECT_NAME}} Admin surface);
+  (`/control/`), **never `/admin/`** (that prefix is the <%PROJECT_NAME%> Admin surface);
   token-first CSS (components consume `var(--token)` only).
 - **No client-side build.** There is no bundler and no JavaScript source tree — every
   surface is a Django template. Adding one is an ADR-level stack change, never an

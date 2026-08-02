@@ -46,7 +46,7 @@ Internal and external references for all coding work in this repository.
 - `code/docs/SECURITY.md` — OWASP A01–A10, Django Ninja API security, CORS, IDOR prevention
 - `code/docs/TESTING.md` — TDD phases, coverage floors, pytest setup
 - `code/docs/URL-STRATEGY.md` — route naming, slug patterns, Django URL conventions
-- `code/docs/VISUAL-DESIGN.md` — visual language: anti-generic layout, {{ORG_NAME}} signature, design-artefact routing
+- `code/docs/VISUAL-DESIGN.md` — visual language: anti-generic layout, <%ORG_NAME%> signature, design-artefact routing
 - `code/docs/cloudinary/CONTEXT.md` — Cloudinary SDK docs index (Python SDK)
 - `code/docs/cloudinary/PYTHON_SDK.md` — Cloudinary Python SDK: upload, admin API, exceptions
 - `code/docs/cloudinary/CROSS_SDK_INFO.md` — Cross-SDK: config params, action syntax, browser support, input validation

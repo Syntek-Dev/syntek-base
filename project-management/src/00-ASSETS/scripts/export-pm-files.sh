@@ -146,77 +146,77 @@ case "$DOC_TYPE" in
     SORT_TYPE="numeric-us"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="USER-STORIES"
-    DOC_TITLE="{{PROJECT_NAME}} — User Stories"
+    DOC_TITLE="<%PROJECT_NAME%> — User Stories"
     ;;
   sprints)
     SRC_DIR="$PM_SRC/02-SPRINTS"
     SORT_TYPE="numeric-sprint"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SPRINTS"
-    DOC_TITLE="{{PROJECT_NAME}} — Sprints"
+    DOC_TITLE="<%PROJECT_NAME%> — Sprints"
     ;;
   database)
     SRC_DIR="$PM_SRC/03-DATABASE"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="DATABASE"
-    DOC_TITLE="{{PROJECT_NAME}} — Database"
+    DOC_TITLE="<%PROJECT_NAME%> — Database"
     ;;
   user-flow)
     SRC_DIR="$PM_SRC/04-USER-FLOW"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="USER-FLOWS"
-    DOC_TITLE="{{PROJECT_NAME}} — User Flows"
+    DOC_TITLE="<%PROJECT_NAME%> — User Flows"
     ;;
   gdpr)
     SRC_DIR="$PM_SRC/08-GDPR"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="GDPR"
-    DOC_TITLE="{{PROJECT_NAME}} — GDPR"
+    DOC_TITLE="<%PROJECT_NAME%> — GDPR"
     ;;
   security)
     SRC_DIR="$PM_SRC/09-SECURITY"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SECURITY"
-    DOC_TITLE="{{PROJECT_NAME}} — Security"
+    DOC_TITLE="<%PROJECT_NAME%> — Security"
     ;;
   qa)
     SRC_DIR="$PM_SRC/10-QA"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="QA"
-    DOC_TITLE="{{PROJECT_NAME}} — QA"
+    DOC_TITLE="<%PROJECT_NAME%> — QA"
     ;;
   seo)
     SRC_DIR="$PM_SRC/11-SEO"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SEO"
-    DOC_TITLE="{{PROJECT_NAME}} — SEO"
+    DOC_TITLE="<%PROJECT_NAME%> — SEO"
     ;;
   api-design)
     SRC_DIR="$PM_SRC/12-API-DESIGN"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="API-DESIGN"
-    DOC_TITLE="{{PROJECT_NAME}} — API Design"
+    DOC_TITLE="<%PROJECT_NAME%> — API Design"
     ;;
   sprint-plans)
     SRC_DIR="$PM_SRC/14-SPRINT-PLANS"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SPRINT-PLANS"
-    DOC_TITLE="{{PROJECT_NAME}} — Sprint Plans"
+    DOC_TITLE="<%PROJECT_NAME%> — Sprint Plans"
     ;;
   client-approval)
     SRC_DIR="$PM_SRC"
     SORT_TYPE="client-approval"
     EXCLUDE_NAMES="CONTEXT.md,US000-TEMPLATE.md"
     DEFAULT_NAME="CLIENT-APPROVAL"
-    DOC_TITLE="{{PROJECT_NAME}} — Client Approval Pack"
+    DOC_TITLE="<%PROJECT_NAME%> — Client Approval Pack"
     ;;
   *)
     die "Unknown type: '$DOC_TYPE'. Valid types: stories sprints database user-flow gdpr security qa seo api-design sprint-plans client-approval. Omit --type to export all."

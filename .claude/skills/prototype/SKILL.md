@@ -7,7 +7,7 @@ description: >-
   before committing to a real build.
 ---
 
-# Skill: Prototype ({{PROJECT_SLUG}})
+# Skill: Prototype (<%PROJECT_SLUG%>)
 
 A prototype is **throwaway code that answers one question**, then is discarded. It is a
 **spike** — a tracer bullet fired to see where it lands, not a foundation to build on. The
@@ -15,7 +15,7 @@ A prototype is **throwaway code that answers one question**, then is discarded. 
 relax inside a spike because nothing ships — that is the licence of a spike, and it is earned
 only by the paired boundary that a spike never merges to a release branch.
 
-Locale: {{LOCALE}} · {{TIMEZONE}} · {{CURRENCY}}.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
 ## Steps
 
@@ -38,7 +38,7 @@ The question type chooses the branch:
 - **UI** — "what should this screen look like?" → several variants of one screen, rendered on
   a single throwaway route in the real stack.
 
-Ambiguous and {{DEVELOPER_NAME}} unreachable? Default by surrounding code — a backend module leans LOGIC, a
+Ambiguous and <%DEVELOPER_NAME%> unreachable? Default by surrounding code — a backend module leans LOGIC, a
 page or component leans UI — and state the assumption at the top of the spike.
 
 **Done when:** the branch is named in the spike header, with the assumption noted if it was
@@ -72,7 +72,7 @@ after every transition.
 `bash code/src/scripts/development/server.sh up`. Render several genuinely different variants
 on that single route, switched by a URL search param and a floating variant bar, built in the
 real stack — Django templates + django-components + HTMX + Alpine + token CSS (skill
-`stack-htmx-templates`; the {{ORG_NAME}} signature is `code/docs/VISUAL-DESIGN.md`). The token-first
+`stack-htmx-templates`; the <%ORG_NAME%> signature is `code/docs/VISUAL-DESIGN.md`). The token-first
 CSS audit, mutation permission checks, coverage floors, and docs gate are all relaxed here —
 this is a spike, nothing ships.
 
@@ -139,7 +139,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   interview, and the process that records a settled domain decision.
 - `how-to/docs/GIT-WORKTREES.md` · `.claude/worktrees/` — isolating a spike in a worktree.
 - `code/docs/VISUAL-DESIGN.md` · `.claude/skills/stack-htmx-templates/SKILL.md` — the real
-  stack and {{ORG_NAME}} signature a UI spike is built in.
+  stack and <%ORG_NAME%> signature a UI spike is built in.
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the modelling reference for a LOGIC verdict.
 - `code/src/scripts/development/shell.sh` · `new-django-view.sh` · `server.sh` — the run
   commands; `code/src/scripts/audits/css-tokens.sh` — the relaxed token gate.

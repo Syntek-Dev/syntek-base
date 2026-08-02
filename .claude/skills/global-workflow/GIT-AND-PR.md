@@ -14,19 +14,19 @@ and signed commits.
 
 ```bash
 # Correct
-git clone git@github.com:{{ORG_NAME}}-Dev/{{PROJECT_SLUG}}.git
+git clone git@github.com:<%ORG_NAME%>-Dev/<%PROJECT_SLUG%>.git
 
 # Wrong — do not use HTTPS
-git clone https://github.com/{{ORG_NAME}}-Dev/{{PROJECT_SLUG}}.git
+git clone https://github.com/<%ORG_NAME%>-Dev/<%PROJECT_SLUG%>.git
 ```
 
 Convert an existing HTTPS checkout:
 
 ```bash
-git remote set-url origin git@github.com:{{ORG_NAME}}-Dev/{{PROJECT_SLUG}}.git
+git remote set-url origin git@github.com:<%ORG_NAME%>-Dev/<%PROJECT_SLUG%>.git
 ```
 
-One-time SSH setup: generate a key (`ssh-keygen -t ed25519 -C "you@{{PRIMARY_DOMAIN}}"`),
+One-time SSH setup: generate a key (`ssh-keygen -t ed25519 -C "you@<%PRIMARY_DOMAIN%>"`),
 add it to the agent (`ssh-add ~/.ssh/id_ed25519`), register the public key in
 GitHub → Settings → SSH and GPG keys, then verify with `ssh -T git@github.com`.
 

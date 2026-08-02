@@ -1,6 +1,6 @@
 # Patterns of Work — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 These terms name the recurring shapes of working with a coding agent: how you divide
 your attention (_Human-in-the-loop_ versus _AFK_), how the work gets verified (_automated

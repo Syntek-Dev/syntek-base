@@ -1,8 +1,8 @@
 # api/environments
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 **Version**: 0.1.0
-**Maintained By**: {{ORG_NAME}}
+**Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -47,7 +47,7 @@ Credentials are never stored here — inject via Bruno's secret panel or CI envi
 - `docker.json` — the `test-api.yml` CI default, for running inside the Docker network
   (`django-test` is the hostname there)
 - `local.json` — use in the Bruno desktop app against a running dev stack
-- `staging.bru` / `production.bru` — resolved from `{{PRIMARY_DOMAIN}}` at instantiation
+- `staging.bru` / `production.bru` — resolved from `<%PRIMARY_DOMAIN%>` at instantiation
 - `variables.json` — runtime variables with no committed value (currently `auth_token`,
   populated by the login request). Credentials are injected per-run with the `BRUNO_VAR_`
   prefix (e.g. `BRUNO_VAR_test_password`), never stored here

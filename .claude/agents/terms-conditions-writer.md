@@ -12,7 +12,7 @@ Terms & Conditions text as Markdown — it does not build the `(marketing)/terms
 or edit components. Once the terms are signed off, hand implementation to the
 `feature`/`frontend` path; the copy lives token-first behind the marketing legal page.
 
-Locale: en_GB · {{TIMEZONE}} · date format DD/MM/YYYY · currency GBP (£).
+Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 ## Governing procedures (route here — do not restate at length)
 

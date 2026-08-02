@@ -24,8 +24,8 @@ if [[ -f "$ENV_FILE" ]]; then
   DB_NAME="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB=' "$ENV_FILE" | cut -d= -f2- || true)}"
   DB_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
 else
-  DB_NAME="${POSTGRES_DB:-{{PROJECT_SLUG}}_dev}"
-  DB_USER="${POSTGRES_USER:-{{PROJECT_SLUG}}}"
+  DB_NAME="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
+  DB_USER="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
 fi
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -50,8 +50,8 @@ Usage:
   reset.sh --yes       Skip confirmation prompt (for scripted use)
 
 Environment (all read from .env.dev):
-  POSTGRES_DB                 Database name (default: {{PROJECT_SLUG}}_dev)
-  POSTGRES_USER               Database user (default: {{PROJECT_SLUG}})
+  POSTGRES_DB                 Database name (default: <%PROJECT_SLUG%>_dev)
+  POSTGRES_USER               Database user (default: <%PROJECT_SLUG%>)
   DJANGO_SUPERUSER_USERNAME   Superuser username  (--seed only)
   DJANGO_SUPERUSER_EMAIL      Superuser email     (--seed only)
   DJANGO_SUPERUSER_PASSWORD   Superuser password  (--seed only)

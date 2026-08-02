@@ -9,10 +9,10 @@
 
 # Python lockfile — BASE TEMPLATE ONLY.
 # The template ships no uv.lock: it pins the root project by name, which is the literal
-# {{PROJECT_SLUG}} until setup.sh runs. setup.sh generates the lock AND deletes this rule,
-# because an instantiated project MUST commit it — every Dockerfile does
+# <%PROJECT_SLUG%> until Copier renders it. A _tasks entry in copier.yml generates the lock
+# AND deletes this rule, because a generated project MUST commit it — every Dockerfile does
 # `COPY pyproject.toml uv.lock ./` and builds with `uv sync --frozen`, so a deploy from a
-# clone without the lock fails. See how-to/src/TEMPLATE-TOKENS.md.
+# clone without the lock fails. See how-to/src/TEMPLATE-GUIDE/06-GENERATION.md.
 uv.lock
 
 # Python / Django

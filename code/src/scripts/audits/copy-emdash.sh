@@ -3,7 +3,7 @@
 # copy-emdash.sh — Ban em dashes (—, U+2014) in public marketing copy.
 #
 #                  An em dash in user-facing prose is a recognisable machine-authored
-#                  tell. {{ORG_NAME}} marketing copy rewords instead — a comma, colon, full
+#                  tell. <%ORG_NAME%> marketing copy rewords instead — a comma, colon, full
 #                  stop, parentheses, or a reworded clause — and NEVER substitutes a
 #                  spaced en dash. Voice: BRAND-VOICE.md. Rule: VISUAL-DESIGN.md § 4.
 #

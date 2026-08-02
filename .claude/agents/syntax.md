@@ -16,7 +16,7 @@ syntax gates are red. A narrow, mechanical agent — `opus`, per the lightest-ta
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL (Python 3.14, ruff + basedpyright)
 Frontend: Django templates + HTMX/Alpine
-Docs: Markdown (markdownlint-cli2) | Locale: {{LOCALE}} — British English in all output
+Docs: Markdown (markdownlint-cli2) | Locale: <%LOCALE%> — British English in all output
 
 ## The Golden Rule
 

@@ -107,4 +107,4 @@ The **story plan (15)** is what a developer codes from; it references its sprint
 | `docs/GDPR-GUIDE.md`        | Before adding any feature that handles personal data |
 | `docs/RESPONSIVE-DESIGN.md` | Before brand work, wireframing, or component design  |
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

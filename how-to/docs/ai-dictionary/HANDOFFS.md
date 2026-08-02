@@ -1,6 +1,6 @@
 # Handoffs — AI Coding Dictionary
 
-**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** {{TIMEZONE}}
+**Part of:** [`AI-DICTIONARY.md`](../AI-DICTIONARY.md) · **Language:** British English (en_GB) · **Timezone:** <%TIMEZONE%>
 
 Because a model is stateless, nothing a session knows survives its ending — so any work larger than a single context window has to be passed on deliberately. This section covers the vocabulary of that transfer: how a session is ended (_clearing_), how state is carried across (_handoff_, via _compaction_ or a _handoff artifact_), the documents that carry it (_spec_, _ticket_), and the distinction between the truth itself (_primary source_) and an account of it (_secondary source_) that governs whether a handoff can be trusted.
 

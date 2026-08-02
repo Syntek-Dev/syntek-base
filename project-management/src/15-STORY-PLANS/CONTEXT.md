@@ -60,4 +60,4 @@ Copy `STORY-PLAN-US000-TEMPLATE.md` → name it `STORY-PLAN-US###-<SCREAMING-KEB
 → complete every section → keep the `blocked-by` / `blocks` callout honest so the
 dependency DAG stays accurate.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

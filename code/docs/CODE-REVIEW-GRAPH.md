@@ -7,13 +7,13 @@ model: opus
 
 # Code Review Graph — Structural Playbooks
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}} **Language**:
-British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
+British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — graph-first navigation for explore, debug, review, and refactor tasks
 
-{{PROJECT_NAME}} runs a persistent **code-review-graph** MCP server. It parses the codebase with
+<%PROJECT_NAME%> runs a persistent **code-review-graph** MCP server. It parses the codebase with
 Tree-sitter into a structural graph (nodes, edges, execution flows, communities) and exposes ~30
-MCP tools that answer _callers-of / dependents-of / tests-for / blast-radius_ questions directly.
+MCP tools that answer **callers-of / dependents-of / tests-for / blast-radius** questions directly.
 
 **Graph-first is a project rule** (`.claude/CLAUDE.md` §3): reach for the graph tools **before**
 Grep/Glob/Read for any structural question — it is faster, token-cheaper, and returns relationship

@@ -8,7 +8,7 @@ model: fable
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -47,7 +47,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `DEBUG=False` in all non-local environments
 - `CORS_ALLOWED_ORIGINS` explicit allowlist — never `*` in production
 - All secrets via env vars — never hardcoded
-- Django admin never at `/admin/` (that prefix belongs to the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix belongs to the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 - Never commit `.env` files — use `.env.*.example` templates only
 
 ## Spawn Protocol
@@ -63,7 +63,7 @@ For a large, ambiguous epic — bigger than one session can hold — open with `
 ### Phase 1 — Story Creation
 
 ↳ user-story [opus]
-Story design **opens with a grilling pass** — `user-story` loads `.claude/skills/grill-with-docs` and interviews {{DEVELOPER_NAME}} one question at a time (each with its recommended answer) before writing the story, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
+Story design **opens with a grilling pass** — `user-story` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> one question at a time (each with its recommended answer) before writing the story, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
 Save output to: `project-management/src/01-STORIES/US###.md`
 Use the next available US### number. Story must include: title, role, goal, acceptance criteria, and definition of done.
 

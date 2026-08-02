@@ -20,7 +20,7 @@ later phase reads. It must land before any implementation phase starts.
 
 Backend: Django 6.0.6 + Django Ninja + PostgreSQL | Scripts: `code/src/scripts/**/*.sh`
 Frontend: Django templates + django-components + HTMX + Alpine + vanilla CSS (design tokens)
-Branch naming: us###/short-description | Locale: {{LOCALE}} | Timezone: {{TIMEZONE}}
+Branch naming: us###/short-description | Locale: <%LOCALE%> | Timezone: <%TIMEZONE%>
 
 ## Context Loading
 
@@ -70,7 +70,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 Architecture design **opens with a grilling pass** — load `.claude/skills/grill-with-docs`
 and run it (one question at a time via `AskUserQuestion`, each with your recommended answer,
-facts looked up not asked, no action until {{DEVELOPER_NAME}} confirms). This inverts the usual
+facts looked up not asked, no action until <%DEVELOPER_NAME%> confirms). This inverts the usual
 proceed-by-default posture (`.claude/CLAUDE.md` §10) because a plan is expensive to get
 wrong. Grill across these dimensions, then record resolved decisions into the plan's
 `### Requirements` / `### Open Questions` and offer an ADR for any hard-to-reverse call:
@@ -83,7 +83,7 @@ wrong. Grill across these dimensions, then record resolved decisions into the pl
 - **Non-functional** — performance, security, scalability constraints; when the feature adds a route/upload/SSE surface or a user-owned table, treat scale-readiness (statelessness, keyset pagination, `tenant_id`, async-safe I/O) as a grill dimension and consult `code/docs/architecture/CORE-AND-SCALING.md` — hand sizing to `scale-planner`, don't size in the plan (anti-forecast, the scale-planning contract)
 
 Grill only decisions with real scope or architectural consequence; make reasonable calls on
-minor details and note them. Grilling ends when the design is settled and {{DEVELOPER_NAME}} confirms.
+minor details and note them. Grilling ends when the design is settled and <%DEVELOPER_NAME%> confirms.
 
 ## Planning Process
 
@@ -106,7 +106,7 @@ Downstream agents inherit these from your plan — make them explicit where rele
 - User-supplied IDs verified against caller's ownership — no IDOR
 - `DEBUG=False` outside local; `CORS_ALLOWED_ORIGINS` never `*` in production
 - All secrets via env vars; never commit `.env` (use `.env.*.example` templates)
-- Django admin never at `/admin/` (that prefix is the {{PROJECT_NAME}} Admin — Django views + templates + HTMX)
+- Django admin never at `/admin/` (that prefix is the <%PROJECT_NAME%> Admin — Django views + templates + HTMX)
 - Token-first CSS — components consume `var(--token)` only; new values via the
   design-tokens editor or a migration, never raw literals
 - Source files ≤ 750 lines (800 grace) — if a phase would breach this, plan the split
@@ -159,7 +159,7 @@ in decisions the implementer should own.
 
 - **Save to:** `project-management/src/15-STORY-PLANS/`
 - **Filename:** `PLAN-<FEATURE-NAME>.md`, SCREAMING-SNAKE-CASE
-- British English (en_GB); dates DD/MM/YYYY; currency {{CURRENCY}} for any estimate
+- British English (en_GB); dates DD/MM/YYYY; currency <%CURRENCY%> for any estimate
 - New environment variables the feature needs: document them in the plan against
   `.env.*.example` templates — never write real secret values
 

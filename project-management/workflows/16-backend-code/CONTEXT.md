@@ -1,6 +1,6 @@
 # Workflow: Backend Code
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

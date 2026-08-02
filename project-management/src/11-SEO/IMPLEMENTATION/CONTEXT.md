@@ -53,4 +53,4 @@ A story that ships no public URL records `SEO: N/A` in the header with a one-lin
 - `project-management/workflows/20-pr-and-review/` — where these records are written
 - `project-management/docs/SEO-CHECKLIST.md` — the governing SEO standard
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

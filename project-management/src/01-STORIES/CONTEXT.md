@@ -31,4 +31,4 @@ Copy `US000-TEMPLATE.md` → next free `US###` number (gaps are intentional, nev
 backfilled) → write role / goal / benefit / acceptance criteria → set the authoritative
 `**Epic:**` line → satisfy the workflow `CHECKLIST.md`.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

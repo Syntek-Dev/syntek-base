@@ -101,7 +101,7 @@ Open Grafana → Explore → select the Loki datasource.
 ### Find errors around the time of the incident
 
 ```logql
-{container="{{PROJECT_SLUG}}-backend"}
+{container="<%PROJECT_SLUG%>-backend"}
   | json
   | level=~"ERROR|CRITICAL"
   | __error__=""
@@ -114,7 +114,7 @@ Set the Grafana time picker to ±5 minutes around the incident time.
 ### Narrow to a specific request path
 
 ```logql
-{container="{{PROJECT_SLUG}}-backend"}
+{container="<%PROJECT_SLUG%>-backend"}
   | json
   | message=~".*api.*"
   | level="ERROR"
@@ -123,7 +123,7 @@ Set the Grafana time picker to ±5 minutes around the incident time.
 ### Find all logs for a specific Django logger
 
 ```logql
-{container="{{PROJECT_SLUG}}-backend"}
+{container="<%PROJECT_SLUG%>-backend"}
   | json
   | logger=~"apps.users.*"
 ```
@@ -133,12 +133,12 @@ Set the Grafana time picker to ±5 minutes around the incident time.
 The template ships Django-only — one ASGI process family, no separate frontend
 container — so there is no frontend log stream in Loki. Server-side logs for pages,
 HTMX partials, and Django Ninja endpoints all live in the single
-`{{PROJECT_SLUG}}-backend` stream (queried above); scope them to the app serving the
+`<%PROJECT_SLUG%>-backend` stream (queried above); scope them to the app serving the
 page or endpoint:
 
 ```logql
 # Narrow to the app that rendered the failing page or partial
-{container="{{PROJECT_SLUG}}-backend"}
+{container="<%PROJECT_SLUG%>-backend"}
   | json
   | logger=~"apps.marketing.*"
   | level=~"ERROR|CRITICAL"
@@ -159,7 +159,7 @@ the exception often contain the root cause (invalid input, failed external call,
 
 > **Model:** opus · **MCP:** none
 
-Open Grafana → Dashboards → {{PROJECT_NAME}} Backend.
+Open Grafana → Dashboards → <%PROJECT_NAME%> Backend.
 
 Check in this order:
 

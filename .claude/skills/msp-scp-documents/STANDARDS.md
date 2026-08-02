@@ -98,7 +98,7 @@ and before the body:
 > **Important Notice**: This document has been generated as a starting point only and
 > does not constitute professional security, compliance, or legal advice. It must be
 > reviewed and approved by a qualified information security professional and, where
-> applicable, a legal adviser before adoption. {{ORG_NAME}} accepts no liability for
+> applicable, a legal adviser before adoption. <%ORG_NAME%> accepts no liability for
 > the use of this document without professional review.
 
 ---

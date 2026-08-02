@@ -57,4 +57,4 @@ on a placeholder brand. A project creating wireframes copies it per screen
 - `project-management/workflows/07-wireframes/` — the wireframe workflow
 - `code/docs/DESIGN-TOKENS.md` — the code-side, DB-canonical design-token system
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

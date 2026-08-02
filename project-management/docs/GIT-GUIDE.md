@@ -5,10 +5,10 @@ skills: [global-workflow]
 model: opus
 ---
 
-# Git Guide — {{PROJECT_NAME}}
+# Git Guide — <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Maintained By**: {{ORG_NAME}}
-**Language**: British English (en_GB) **Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Git workflow, branch strategy, commit conventions, PR process, git worktree naming
 **MCP Servers:** None (process/workflow documentation)
 
@@ -24,11 +24,11 @@ branch in its own directory with an isolated Docker stack. Full guide and naming
 
 | Slot                | Pattern                                     | Example                                     |
 | ------------------- | ------------------------------------------- | ------------------------------------------- |
-| Worktree path       | `../{{PROJECT_SLUG}}-us###`                 | `../{{PROJECT_SLUG}}-us003`                 |
-| Dev Docker project  | `{{PROJECT_SLUG}}-dev-us###`                | `{{PROJECT_SLUG}}-dev-us003`                |
-| Test Docker project | `{{PROJECT_SLUG}}-test-us###`               | `{{PROJECT_SLUG}}-test-us003`               |
-| Dev URL             | `dev-us###.{{PROJECT_SLUG}}.localhost:3080` | `dev-us003.{{PROJECT_SLUG}}.localhost:3080` |
-| Test URL            | `test-us###.{{PROJECT_SLUG}}.localhost`     | `test-us003.{{PROJECT_SLUG}}.localhost`     |
+| Worktree path       | `../<%PROJECT_SLUG%>-us###`                 | `../<%PROJECT_SLUG%>-us003`                 |
+| Dev Docker project  | `<%PROJECT_SLUG%>-dev-us###`                | `<%PROJECT_SLUG%>-dev-us003`                |
+| Test Docker project | `<%PROJECT_SLUG%>-test-us###`               | `<%PROJECT_SLUG%>-test-us003`               |
+| Dev URL             | `dev-us###.<%PROJECT_SLUG%>.localhost:3080` | `dev-us003.<%PROJECT_SLUG%>.localhost:3080` |
+| Test URL            | `test-us###.<%PROJECT_SLUG%>.localhost`     | `test-us003.<%PROJECT_SLUG%>.localhost`     |
 | Nginx loopback IP   | `127.0.0.X` (X = story number)              | `127.0.0.3`                                 |
 
 ---

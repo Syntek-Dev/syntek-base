@@ -7,8 +7,8 @@ model: opus
 
 # Logging — Observability Stack
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Observability stack: GlitchTip error tracking, Loki, Prometheus, Grafana
 
 ---
@@ -96,19 +96,19 @@ Django web container (stdout — structured JSON)   Celery worker container (std
 
 ```logql
 # All backend errors
-{container="{{PROJECT_SLUG}}-web"} | json | level="ERROR"
+{container="<%PROJECT_SLUG%>-web"} | json | level="ERROR"
 
 # Slow API operations (requires duration_ms field in log)
-{container="{{PROJECT_SLUG}}-web"} | json | logger="api" | duration_ms > 500
+{container="<%PROJECT_SLUG%>-web"} | json | logger="api" | duration_ms > 500
 
 # Specific Django logger
-{container="{{PROJECT_SLUG}}-web"} | json | logger=~"apps.users.*"
+{container="<%PROJECT_SLUG%>-web"} | json | logger=~"apps.users.*"
 
 # Celery worker errors
-{container="{{PROJECT_SLUG}}-worker"} | json | level="ERROR"
+{container="<%PROJECT_SLUG%>-worker"} | json | level="ERROR"
 
 # Combined error stream across app containers
-{container=~"{{PROJECT_SLUG}}-(web|worker)"} | json | level=~"ERROR|CRITICAL"
+{container=~"<%PROJECT_SLUG%>-(web|worker)"} | json | level=~"ERROR|CRITICAL"
 ```
 
 ### Retention
@@ -177,7 +177,7 @@ location /metrics/ {
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: {{ORG_SLUG}}-web
+  - job_name: <%ORG_SLUG%>-web
     static_configs:
       - targets: ["127.0.0.1:8000"]
     metrics_path: /metrics/
@@ -198,7 +198,7 @@ Grafana queries Loki (logs) and Prometheus (Django metrics).
 | Error rate (5xx)         | Prometheus  | `rate(django_http_requests_total{status=~"5.."}[5m])`                             |
 | P95 latency              | Prometheus  | `histogram_quantile(0.95, rate(django_http_request_duration_seconds_bucket[5m]))` |
 | DB query rate            | Prometheus  | `rate(django_db_execute_total[5m])`                                               |
-| Backend error log stream | Loki        | `{container="{{PROJECT_SLUG}}-web"} \| json \| level="ERROR"`                     |
+| Backend error log stream | Loki        | `{container="<%PROJECT_SLUG%>-web"} \| json \| level="ERROR"`                     |
 
 ### Browser errors
 
@@ -209,7 +209,7 @@ panels above.
 ## Health endpoints + status page
 
 Live system health (the admin Health tab, the public `/health/ready/` readiness endpoint, and the
-Gatus public status page at `status.{{PRIMARY_DOMAIN}}`) is documented separately — including the reference
+Gatus public status page at `status.<%PRIMARY_DOMAIN%>`) is documented separately — including the reference
 Gatus config and the Prometheus app-scrape jobs the deploy repo must provision. See
 [`HEALTH-CONTRACT.md`](HEALTH-CONTRACT.md).
 

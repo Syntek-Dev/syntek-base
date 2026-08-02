@@ -8,7 +8,7 @@ sub-folder's `CONTEXT.md`/`CLAUDE.md`.
 
 ## Purpose (one line)
 
-The Bruno API test collection for the {{PROJECT_NAME}} Django Ninja API — one `kebab-case/`
+The Bruno API test collection for the <%PROJECT_NAME%> Django Ninja API — one `kebab-case/`
 folder of `.bru` requests per domain, all targeting `{{api_url}}/api/` against a live
 backend. **Empty at baseline: the project serves no API yet.**
 

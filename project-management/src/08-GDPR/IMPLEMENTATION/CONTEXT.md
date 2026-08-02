@@ -44,4 +44,4 @@ in `../PLANNING/GDPR-PLAN-US###-*.md`, and document how each planned requirement
 - `../CONTEXT.md` — the GDPR folder overview and the six live registers
 - `project-management/workflows/20-pr-and-review/` — where these records are written
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

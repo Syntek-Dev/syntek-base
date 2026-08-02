@@ -10,11 +10,11 @@
 #
 # Required env vars (managed secrets on the server — never a committed .env):
 #   DATABASE_URL, REDIS_URL, SECRET_KEY, ALLOWED_HOSTS, IMAGE_TAG
-name: "{{PROJECT_SLUG}}-prod"
+name: "<%PROJECT_SLUG%>-prod"
 
 services:
   django:
-    image: ghcr.io/{{ORG_SLUG}}/{{PROJECT_SLUG}}/django:${IMAGE_TAG:?IMAGE_TAG is required}
+    image: ghcr.io/<%ORG_SLUG%>/<%PROJECT_SLUG%>/django:${IMAGE_TAG:?IMAGE_TAG is required}
     ports:
       - "127.0.0.1:8000:8000"
     environment:

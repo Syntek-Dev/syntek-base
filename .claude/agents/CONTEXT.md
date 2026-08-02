@@ -3,7 +3,7 @@
 Agent definitions for Claude Code. Each file is a named agent invoked via the Agent tool
 with `subagent_type` (the value equals the frontmatter `name`, which equals the filename).
 
-Internalised from the `{{ORG_SLUG}}-dev-suite` and `{{ORG_SLUG}}-doc-writer` marketplace plugins so the
+Internalised from the `<%ORG_SLUG%>-dev-suite` and `<%ORG_SLUG%>-doc-writer` marketplace plugins so the
 project carries its own tooling — every contributor gets the agents without installing plugins.
 Plugin/command references were rewritten to internal paths, and models were remapped to the
 project policy (`sonnet` → `opus`, `haiku` → `opus`; never `sonnet` or `haiku`). Planning agents

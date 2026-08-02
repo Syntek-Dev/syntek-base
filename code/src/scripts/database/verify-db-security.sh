@@ -67,9 +67,9 @@ log ""
 # ── Check 2: PostgreSQL log_statement ─────────────────────────────────────────
 bold "2. PostgreSQL log_statement"
 PG_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
-PG_USER="${PG_USER:-{{PROJECT_SLUG}}}"
+PG_USER="${PG_USER:-<%PROJECT_SLUG%>}"
 PG_DB="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB=' "$ENV_FILE" | cut -d= -f2- || true)}"
-PG_DB="${PG_DB:-{{PROJECT_SLUG}}_dev}"
+PG_DB="${PG_DB:-<%PROJECT_SLUG%>_dev}"
 LOG_STMT=$("${DC[@]}" exec -T db \
   psql -U "$PG_USER" -d "$PG_DB" -tAc "SHOW log_statement;")
 

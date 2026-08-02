@@ -7,8 +7,8 @@ model: fable
 
 # Architecture Patterns — Frontend State, Routing, and Project Structure
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Frontend state, routing, project structure, SEO and JSON-LD patterns
 
 ---
@@ -178,7 +178,7 @@ from apps.marketing.seo import build_seo
 def blog_post(request, slug):
     post = get_published_post(slug)
     seo = build_seo(
-        title=f"{post.title} — {{ORG_NAME}}",
+        title=f"{post.title} — <%ORG_NAME%>",
         description=post.excerpt,
         canonical=f"{settings.SITE_URL}/blog/{post.slug}",
         image=post.hero_image_url,
@@ -197,7 +197,7 @@ def blog_post(request, slug):
 </head>
 ```
 
-`SITE_URL` defaults to `https://{{PRIMARY_DOMAIN}}` and is overridden per environment. The
+`SITE_URL` defaults to `https://<%PRIMARY_DOMAIN%>` and is overridden per environment. The
 `build_seo()` helper and `_seo_head.html` partial live in `apps/marketing/`.
 
 ---

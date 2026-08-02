@@ -53,4 +53,4 @@ completes only the CORS / `DEBUG` / secrets checklist rows.
 - `project-management/workflows/09-security-checks/` — the workflow that produces this
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF reference tables
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

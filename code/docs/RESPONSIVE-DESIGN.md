@@ -7,8 +7,8 @@ model: opus
 
 # Responsive Design
 
-**Project:** {{PROJECT_NAME}} **Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:**
-{{ORG_NAME}} **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Project:** <%PROJECT_NAME%> **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:**
+<%ORG_NAME%> **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Mobile-first CSS, breakpoints, media queries, user preference queries
 
 Mobile-first responsive design using vanilla CSS with custom properties and Django-generated design

@@ -61,4 +61,4 @@ header outcome and needs nothing further.
   permission/IDOR enforcement these records must stay consistent with
 - `project-management/workflows/20-pr-and-review/` — where these records are written
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

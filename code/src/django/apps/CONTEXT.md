@@ -3,7 +3,7 @@
 Django applications for the project backend. **Currently empty** — the package exists so
 the first domain module has a home, and so `apps.<name>` resolves as an import root.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

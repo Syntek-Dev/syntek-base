@@ -9,7 +9,7 @@ this folder's `CONTEXT.md` (tree + glossary, imported above) → this file →
 ## Purpose (one line)
 
 The deploy-facing server/edge contract — the consolidated edge-requirement catalogue
-and the assigned-compute-plus-buffer allocation that `{{DEPLOY_REPO}}` implements,
+and the assigned-compute-plus-buffer allocation that `<%DEPLOY_REPO%>` implements,
 maintained by the `scale-planner` agent via the `scale-planning` skill.
 
 ## How to work here
@@ -38,15 +38,15 @@ maintained by the `scale-planner` agent via the `scale-planning` skill.
 - **Specify, never implement.** No Nix, no nginx.conf bodies, no Cloudflare rule
   exports here — state _what must hold_ and cite where the deploy repo implements it
   (the `prometheus.yml` / `HEALTH-CONTRACT.md` precedent). Working config belongs in
-  `{{DEPLOY_REPO}}`.
+  `<%DEPLOY_REPO%>`.
 - **Anti-forecast is a hard rule.** The Postgres horizontal-scaling ADR: scale on
   observable phase-gates — "do not pre-emptively add infrastructure". Compute here is
   current-tier envelope + buffer only. Never invent target-user figures: no ratified
   target exists in this repo; targets stay `TBD — set via /scale-planning grilling`
-  until {{DEVELOPER_NAME}} settles them.
+  until <%DEVELOPER_NAME%> settles them.
 - **Do not duplicate the sources.** The scaling ADR's mechanics stay in that ADR /
   `code/docs/architecture/CORE-AND-SCALING.md`; provisioning steps stay in the
-  deploy repo (`{{DEPLOY_REPO}}/how-to/`); health endpoint shapes
+  deploy repo (`<%DEPLOY_REPO%>/how-to/`); health endpoint shapes
   stay in `HEALTH-CONTRACT.md`; the sizing envelope stays in
   `SCALE-ARCHITECTURE/`. This directory consolidates and references — a duplicated
   table is a future contradiction.

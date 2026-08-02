@@ -7,8 +7,8 @@ model: opus
 
 # Responsive Design — Breakpoints and Device Reference
 
-**Project:** {{PROJECT_NAME}} **Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:**
-{{ORG_NAME}} **Language:** British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Project:** <%PROJECT_NAME%> **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:**
+<%ORG_NAME%> **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Responsive breakpoint tokens, device share, mobile-first viewport reference
 
 ---

@@ -10,14 +10,14 @@
 #     --env-file code/src/docker/.env.test \
 #     up -d
 #
-# Container names: {{PROJECT_SLUG}}-test-usNNN-*-1
-# Named volumes:   {{PROJECT_SLUG}}-test-usNNN_staticfiles_test
-# Test URL:        http://test-usNNN.{{PROJECT_SLUG}}.localhost:3081
+# Container names: <%PROJECT_SLUG%>-test-usNNN-*-1
+# Named volumes:   <%PROJECT_SLUG%>-test-usNNN_staticfiles_test
+# Test URL:        http://test-usNNN.<%PROJECT_SLUG%>.localhost:3081
 #
 # /etc/hosts required (one-time):
-#   127.0.0.NNN test-usNNN.{{PROJECT_SLUG}}.localhost
+#   127.0.0.NNN test-usNNN.<%PROJECT_SLUG%>.localhost
 
-name: {{PROJECT_SLUG}}-test-usNNN
+name: <%PROJECT_SLUG%>-test-usNNN
 
 services:
   nginx:

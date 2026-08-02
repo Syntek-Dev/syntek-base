@@ -1,6 +1,6 @@
 # Workflow: Wireframes
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

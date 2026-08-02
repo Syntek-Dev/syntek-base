@@ -16,4 +16,4 @@ project-management/src/00-ASSETS/LOGOS/
 exports (e.g. `hd/`, `8k/` PNGs) from it, and re-export from source whenever the logo
 changes — never hand-edit a raster.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

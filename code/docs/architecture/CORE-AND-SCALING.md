@@ -7,8 +7,8 @@ model: fable
 
 # Architecture Patterns — Core Decisions and Scaling
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Decisions to settle before the first migration, and the scaling phase-gates
 
 Two things belong here: the decisions a project must settle **before its first migration**,

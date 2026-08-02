@@ -12,7 +12,7 @@ Acceptable Use Policy text as Markdown — it does not build any route, migratio
 component. Once the policy is signed off, hand any publishing or intranet work to the
 `feature`/`frontend` path.
 
-Locale: en_GB · {{TIMEZONE}} · date format DD/MM/YYYY · currency GBP (£).
+Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 ## Governing procedures (route here — do not restate at length)
 

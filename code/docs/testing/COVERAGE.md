@@ -7,8 +7,8 @@ model: opus
 
 # Testing — Coverage Thresholds, Output & Readability
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Coverage floors, pytest-cov config, readable test output
 
 ---
@@ -128,7 +128,7 @@ coverage floors (which govern only _how much_).
 
 - **Test only at pre-agreed seams.** Before writing any test, write down the seams you intend to
   cover — the service boundary, Ninja endpoint, or rendered-fragment contract on a critical path — and confirm
-  that list with {{DEVELOPER_NAME}}. Effort then lands on the seams that carry risk, not on every reachable edge
+  that list with <%DEVELOPER_NAME%>. Effort then lands on the seams that carry risk, not on every reachable edge
   case. Settle the seams in the design pass (grill first — see `.claude/CLAUDE.md` §10) so the Red
   phase starts from an agreed target.
 - **No tautological tests.** The expected value must come from an independent source of truth — a

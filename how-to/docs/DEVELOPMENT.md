@@ -5,10 +5,10 @@ skills: [global-workflow]
 model: opus
 ---
 
-# Development Workflow — {{PROJECT_NAME}}
+# Development Workflow — <%PROJECT_NAME%>
 
-**Last Updated**: {{DATE}} **Version**: 0.1.0 **Language**: British English (en_GB)
-**Timezone**: {{TIMEZONE}}
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Language**: British English (en_GB)
+**Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — First-time setup, Docker Compose dev commands, env vars, troubleshooting
 
 > All development commands run through shell scripts in `code/src/scripts/**/*.sh`.
@@ -20,13 +20,13 @@ model: opus
 
 | Layer                 | Technology                                                                                                                                     | Container | Dev URL                                           |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------- |
-| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.{{PROJECT_SLUG}}.localhost:8000        |
-| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.{{PROJECT_SLUG}}.localhost:8000/admin/ |
+| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:8000        |
+| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.<%PROJECT_SLUG%>.localhost:8000/admin/ |
 | **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                       |
 | **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                       |
 
 One app process family (Django ASGI) serves the public site, the `/admin/` surface, and the
-Django Ninja API at `http://dev.{{PROJECT_SLUG}}.localhost:8000/api/`. Django admin is mounted at
+Django Ninja API at `http://dev.<%PROJECT_SLUG%>.localhost:8000/api/`. Django admin is mounted at
 `/control/`, never `/admin/`.
 
 ---
@@ -36,7 +36,7 @@ Django Ninja API at `http://dev.{{PROJECT_SLUG}}.localhost:8000/api/`. Django ad
 - **Docker** (latest stable)
 - **Docker Compose** v2.x (bundled with Docker Desktop, or `docker compose` plugin for Linux)
 - **Git** 2.x
-- **SSH key** registered with `git.{{PRIMARY_DOMAIN}}`
+- **SSH key** registered with `git.<%PRIMARY_DOMAIN%>`
 
 No host-level Python, Node.js, or Rust installation required — all runtimes live inside containers.
 
@@ -46,8 +46,8 @@ No host-level Python, Node.js, or Rust installation required — all runtimes li
 
 ```bash
 # 1. Clone
-git clone git@git.{{PRIMARY_DOMAIN}}:{{ORG_SLUG}}/{{PROJECT_SLUG}}.git
-cd {{PROJECT_SLUG}}
+git clone git@git.<%PRIMARY_DOMAIN%>:<%ORG_SLUG%>/<%PROJECT_SLUG%>.git
+cd <%PROJECT_SLUG%>
 
 # 2. Run installer (copies .env.dev.example → .env.dev, installs dependencies)
 bash code/src/scripts/development/install.sh
@@ -71,8 +71,8 @@ bash code/src/scripts/database/manageusers.sh create-superuser
 bash code/src/scripts/database/manageusers.sh create-staff --email your@email.com --username you
 ```
 
-Verify at http://dev.{{PROJECT_SLUG}}.localhost:8000 and the API at
-http://dev.{{PROJECT_SLUG}}.localhost:8000/api/.
+Verify at http://dev.<%PROJECT_SLUG%>.localhost:8000 and the API at
+http://dev.<%PROJECT_SLUG%>.localhost:8000/api/.
 
 ---
 
@@ -183,7 +183,7 @@ ENCRYPTION_KEY=CHANGE_ME       # generate: python -c "from cryptography.fernet i
 PASSWORD_PEPPER=CHANGE_ME      # generate: python -c "import secrets; print(secrets.token_hex(32))"
 
 # Database
-POSTGRES_USER={{PROJECT_SLUG}}
+POSTGRES_USER=<%PROJECT_SLUG%>
 POSTGRES_PASSWORD=CHANGE_ME
 
 # Media (Cloudinary public delivery)

@@ -3,7 +3,7 @@ name: improve-codebase-architecture
 description: >-
   Scan the codebase for deepening opportunities — refactors that turn shallow modules into deep
   ones — present them as a visual HTML report, then grill through whichever one is picked. Invoke by
-  typing /improve-codebase-architecture, or when {{DEVELOPER_NAME}} asks to review architectural friction, find
+  typing /improve-codebase-architecture, or when <%DEVELOPER_NAME%> asks to review architectural friction, find
   deepening opportunities, or map where the code is shallow. Built on the `codebase-design`
   vocabulary; records decisions via `domain-modelling`; grills via `grill-with-docs`.
 ---

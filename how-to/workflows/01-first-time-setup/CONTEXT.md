@@ -1,6 +1,6 @@
 # Workflow: First-Time Setup
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
 
 ## Directory Tree
 

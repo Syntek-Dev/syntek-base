@@ -38,4 +38,4 @@ built product.
 - `../../05-BRAND-GUIDE/` — the brand guide this palette mirrors
 - `../../06-COMPONENTS/` — the component sheet sharing the same placeholder palette
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>

@@ -1,15 +1,15 @@
 # Topology — What Runs, and Where State Lives
 
-**Last Updated**: {{DATE}} | **Maintained By**: {{ORG_NAME}} (via `/scale-planning`)
+**Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the {{PROJECT_NAME}} base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
 
 The deployment/runtime topology as it bears on scaling: every process, whether it is
 stateless (scales by adding copies) or stateful (scales by policy), and what holds
-connections or state. Provisioning detail lives in the `{{DEPLOY_REPO}}` repo (handoff:
+connections or state. Provisioning detail lives in the `<%DEPLOY_REPO%>` repo (handoff:
 `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md`) — this document only records what matters
 for scale.
 
@@ -57,7 +57,7 @@ at a non-obvious path (`/control/`), never `/admin/`.
 | Valkey                   | Bare-metal NixOS, loopback; proxies :6501 (DB 0) / :6502 (DB 1) | **Stateful** (but reconstructible) | Single instance; multi-node is later territory in the project's cache-posture ADR     | Broker queue, pub/sub channels, cache, session cache tier, presence keys, rate-limit counters |
 | SeaweedFS S3             | Server-side S3 object store                                     | **Stateful**                       | Engine-neutral boto3 seam; a geo-scale engine is the named future trigger (**TBD**)   | Private documents, attachments (non-media)                                                    |
 | Cloudinary               | External (public media)                                         | Yes (external)                     | n/a — provider-managed                                                                | Public media                                                                                  |
-| Mail relay + API         | Bare-metal relay + transactional API                            | Yes                                | n/a                                                                                   | Outbound mail only (`noreply@{{PRIMARY_DOMAIN}}`)                                             |
+| Mail relay + API         | Bare-metal relay + transactional API                            | Yes                                | n/a                                                                                   | Outbound mail only (`noreply@<%PRIMARY_DOMAIN%>`)                                             |
 
 ## Where connections and state actually live
 
@@ -82,7 +82,7 @@ concurrency + beat) per container — all placeholder figures, **TBD — regener
 (e.g. PgBouncer) as the Phase-0 baseline in front of the single primary; whether it is
 deployed is a readiness item (see `READINESS.md`).
 
-**Caches.** Django cache = django-valkey on DB 1, `KEY_PREFIX "{{ORG_SLUG}}"`, default TTL
+**Caches.** Django cache = django-valkey on DB 1, `KEY_PREFIX "<%ORG_SLUG%>"`, default TTL
 **TBD — regenerate**, `IGNORE_EXCEPTIONS=True` so a Valkey outage degrades to misses rather
 than errors. Any full-page cache is version-keyed in the same store. `maxmemory` / eviction
 policy are Valkey NixOS config — deploy-repo knobs, owned by the project's cache-posture ADR.

@@ -7,8 +7,8 @@ model: opus
 
 # Database
 
-**Last Updated:** {{DATE}} **Version:** 0.1.0 **Maintained By:** {{ORG_NAME}} **Language:**
-British English (en_GB) **Timezone:** {{TIMEZONE}}
+**Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
+British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Pre-flight data-layer rules, migration safety, search, deferred infrastructure
 
 Read this before writing a model, a migration, or a query. It is the short, directive

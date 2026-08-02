@@ -2,7 +2,7 @@
 
 Read this at the start of every session. Write here instead of the global auto-memory system.
 
-Sections: **Feedback** ({{DEVELOPER_NAME}}'s guidance on approach) · **Project Patterns** (conventions discovered
+Sections: **Feedback** (<%DEVELOPER_NAME%>'s guidance on approach) · **Project Patterns** (conventions discovered
 during work) · **Project State** (business/stack facts not derivable from the codebase)
 
 To add an entry: append a subsection under the correct heading. Keep entries concise — one paragraph

@@ -45,4 +45,4 @@ strategy, and the ERD (Mermaid). Full scaffold: `DB-000-TEMPLATE.md`.
 Copy `DB-000-TEMPLATE.md` → name it `DB-<FEATURE>-DD-MM-YYYY.md` → complete every section
 → export the ERD to `ERD-DIAGRAMS/erd-<domain>.png` on sign-off.
 
-**Last Updated**: {{DATE}}
+**Last Updated**: <%DATE%>
