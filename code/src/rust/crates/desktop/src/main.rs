@@ -1,4 +1,4 @@
-//! Native desktop client for <%PROJECT_NAME%>.
+//! Native desktop client for `<%PROJECT_NAME%>`.
 //!
 //! The desktop app is a **peer of the web surface, not a layer on it** — it talks to the
 //! Django Ninja API at `/api/` exactly as any third-party client would, and never renders
