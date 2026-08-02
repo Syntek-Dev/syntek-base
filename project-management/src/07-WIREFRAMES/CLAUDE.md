@@ -43,10 +43,14 @@ and user flows and carrying the placeholder-brand palette.
 - **Placeholder brand.** The base template ships one generic screen; keep the palette
   in step with `../05-BRAND-GUIDE/` and `../06-COMPONENTS/` so the family reads as one
   system. Every new directory here needs a `CONTEXT.md` and a `CLAUDE.md`.
+- **A mobile wireframe must not depend on hover, scrollbars, or browser chrome.** None
+  of the three exists natively, so intent carried by them does not survive the crossing.
+  HTML is the medium here, not the target — see `CONTEXT.md` → _Mobile screens_.
 
 ## Output & naming
 
 - **Hand-written:** `SHARED/wireframe.css`, `SCREENS/*.html`.
 - **Generated:** none — screens are authored by hand from the template.
-- Screens `WF-###-<Screen-Name>.html` (zero-padded number); sub-folders
-  `SCREAMING-SNAKE-CASE/`; dates DD/MM/YYYY.
+- Screens `WF-###-<Screen-Name>.html` (zero-padded number); **mobile screens
+  `WF-###-MOBILE-<Screen-Name>.html`**, sharing the number of their web counterpart where
+  one exists; sub-folders `SCREAMING-SNAKE-CASE/`; dates DD/MM/YYYY.

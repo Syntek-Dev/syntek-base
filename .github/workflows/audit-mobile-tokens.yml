@@ -1,0 +1,42 @@
+# Token-first guard for the MOBILE surface — the sibling of audit-css-tokens.yml.
+#
+# No step-level directory guard is needed here, unlike the mobile jobs in test.yml and
+# syntax-js-ts.yml: mobile-tokens.sh guards itself and exits 0 with a note when
+# code/src/mobile is absent, so a web-only project reports a green job rather than a
+# skipped one. Path filters are safe on this workflow because it is NOT a required
+# status check — see project-management/docs/GIT-GUIDE.md on why a path-filtered
+# required check can block a merge forever.
+name: Audit — Mobile Tokens
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/mobile/**"
+      - "code/src/scripts/audits/mobile-tokens.sh"
+      - ".github/workflows/audit-mobile-tokens.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/mobile/**"
+      - "code/src/scripts/audits/mobile-tokens.sh"
+      - ".github/workflows/audit-mobile-tokens.yml"
+  workflow_dispatch:
+
+jobs:
+  mobile-tokens:
+    name: Mobile token audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run mobile token audit
+        run: bash code/src/scripts/audits/mobile-tokens.sh --output md
+
+      - name: Upload mobile token report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-tokens-report
+          path: code/src/scripts/audits/reports/mobile-tokens-report.md
+          if-no-files-found: ignore

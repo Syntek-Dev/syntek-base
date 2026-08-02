@@ -1,9 +1,52 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 0.12.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 0.13.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v0.13.0 — 02/08/2026
+
+**Status:** Feature release — the template can now generate a mobile application
+
+### Summary
+
+The template gains a **second surface**. Answer yes to one question at generation and you get a
+bootable React Native application at `code/src/mobile/` alongside the Django project — Expo,
+TypeScript, expo-router, its own test suite at the same coverage floors, and its own CI jobs.
+Answer no, which is the default, and you get a repository functionally identical to the one
+0.12.0 produced.
+
+That second half is the harder promise, and it is the one the release is built around. The opt-in
+is gated by **one mechanism** — a single templated exclusion entry — so no shared file carries
+conditional contents and every file outside the mobile tree is byte-identical on both paths. CI
+now proves it: the template audit generates the project **both ways** on every run and compares
+the results file by file.
+
+The mobile app is a **peer of the Django project, not a client for it**. It renders no Django
+page, Django never bundles it, and it reaches the server through the same JSON API any
+third-party client would. That distinction is why the project's long-standing rule — no
+client-side build, no bundler, no client framework — survives this release **unweakened**. The
+rule was narrowed in scope to "the web surface", not relaxed. Adding a bundler to the Django
+pages remains as forbidden as it was.
+
+### What's new
+
+- **An opt-in mobile application** — Expo SDK 57 with Continuous Native Generation, so the iOS and Android directories are generated rather than committed. One placeholder screen; mobile work starts from a user story exactly as web work does
+- **Six mobile scripts** covering install, Metro, lint, typecheck, test and bundle export. Metro runs on your machine rather than in Docker, because a phone cannot reach a container's loopback address
+- **Four new CI jobs**, each reporting green on a web-only project rather than showing as skipped
+- **A mobile specialist agent and stack skill**, so Claude Code applies React Native conventions to the mobile tree and Django-template conventions to the web tree, without confusing the two
+- **The design-token bridge, specified** — how database-canonical design values reach an application that cannot read CSS, including which preference settings survive the crossing and which cannot
+- **Mobile accessibility guidance** — the same WCAG 2.2 AA standard, with the React Native techniques that satisfy it
+
+### Worth knowing
+
+- **Design-token changes are live on the web, but not on mobile.** A token edit reaches an installed application only through a rebuild and a store release. The web surface keeps its no-rebuild behaviour unchanged
+- **Automated accessibility scanning has no mobile equivalent.** The web surface has an automated WCAG scan; nothing comparable exists for React Native, so mobile accessibility is verified by hand on both VoiceOver and TalkBack. A mobile screen is never "scanned clean"
+- **The mobile application versions independently**, like the Django bundle. App-store versions must only ever increase, so tying it to the repository version would force pointless releases
+- **Existing projects are unaffected.** Updating from 0.12.0 asks three new questions, all with defaults, and changes nothing unless you opt in
 
 ---
 

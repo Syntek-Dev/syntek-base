@@ -44,7 +44,7 @@ also contains a token.
 ### `TemplateSyntaxError` during generation
 
 A file contains something Jinja tried to parse with the custom delimiters — a literal `<%`, `<:`
-or `<|`. The fix in the template is to wrap it:
+or `<~`. The fix in the template is to wrap it:
 
 ```text
 <: raw :>

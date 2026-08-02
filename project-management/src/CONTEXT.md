@@ -12,9 +12,12 @@ templates, mirroring the 08-GDPR pattern.
 server-rendered stack: **Django** (+ **Gunicorn**/**Uvicorn**) · **Django Ninja** for the
 JSON API at `/api/` · **Django templates** + **django-components** · **HTMX** and
 **Alpine** for interactivity · **vanilla token CSS** · **PostgreSQL** · **Valkey** ·
-**Celery** for background and scheduled work. There is no client-side framework and no
-build step — an artefact that assumes one is wrong. Interaction tiers and the
-page-vs-API split: `code/docs/RENDERING.md` · `code/docs/api-design/CLIENT-PATTERNS.md`.
+**Celery** for background and scheduled work. On the **web surface** there is no client-side
+framework and no build step — an artefact that assumes one is wrong. A project that opted into
+the optional React Native **mobile surface** has a second delivery target with its own
+toolchain; artefacts covering it must say so explicitly, because silence still means the web
+surface. Interaction tiers and the page-vs-API split: `code/docs/RENDERING.md` ·
+`code/docs/api-design/CLIENT-PATTERNS.md`.
 
 ---
 

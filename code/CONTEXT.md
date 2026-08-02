@@ -30,6 +30,8 @@ code/
 │   ├── CONTEXT.md
 │   ├── django/                      ← the Django project (backend + server-rendered frontend)
 │   │   └── CONTEXT.md
+│   ├── mobile/                      ← MOBILE-ONLY — the Expo React Native app
+│   │   └── CONTEXT.md
 │   ├── docker/                      ← Dockerfiles and Compose files
 │   │   └── CONTEXT.md
 │   ├── logs/                        ← runtime log files (dev/test; all gitignored)
@@ -42,6 +44,7 @@ code/
 │   │   ├── database/                ← database management (migrate, backup, restore, shell)
 │   │   ├── deployment/              ← deployment scripts (planned)
 │   │   ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
+│   │   ├── mobile/                  ← MOBILE-ONLY — Metro, lint, typecheck, test, bundle
 │   │   ├── syntax/                  ← code quality (lint, type-check, format)
 │   │   └── tests/                   ← test suite runners (pytest, Bruno)
 │   └── tests/                       ← API integration tests (Bruno collection)
@@ -128,6 +131,23 @@ code/
 | `docs/ENCRYPTION-GUIDE.md`      | Before adding any PII field or storage                           |
 | `docs/RLS-GUIDE.md`             | Before adding multi-tenant or row-scoped queries                 |
 | `docs/URL-STRATEGY.md`          | Before adding routes, redirects, or slug patterns                |
+
+## Surfaces — where source may live
+
+`code/` owns **all deployable source**, and `code/src/` is the only place it lives. A project has
+one surface always, and a second only if it opted in:
+
+| Surface    | Path          | Standards                                                     |
+| ---------- | ------------- | ------------------------------------------------------------- |
+| **Web**    | `src/django/` | The `docs/` guides below — the default reading of every rule  |
+| **Mobile** | `src/mobile/` | The same `docs/` tree, plus the React Native technique guides |
+
+The mobile app is placed **inside `code/src/`, beside the Django project**, rather than as a
+fifth root layer. That keeps this layer's definition intact — the other three root layers
+(`how-to/`, `project-management/`, `.claude/`) hold documentation and process, never source —
+and, more importantly, keeps **one `docs/` tree for both surfaces** so web and mobile standards
+cannot drift into separate doctrines. A parallel `mobile/docs/` was rejected for exactly that
+reason. Definitions and the full rationale: `code/src/CONTEXT.md` → _Surfaces_.
 
 ## Global constraints
 

@@ -41,6 +41,17 @@ model: opus
 
 ---
 
+## Mobile surface (mobile-only)
+
+**Skip if `code/src/mobile/` does not exist** — inapplicable, not unmet. The items themselves are
+owned by `project-management/workflows/18-frontend-code/CHECKLIST.md` → _Mobile surface_; they are
+not restated here.
+
+- [ ] Step 7M completed and 18-frontend-code's mobile checklist fully satisfied
+- [ ] `bash code/src/scripts/mobile/test.sh --coverage` and `bundle.sh` both pass
+
+---
+
 ## Documentation closeout — verified, not written here
 
 Workflow 19 writes these; this checklist only confirms they exist before the PR. The record

@@ -37,7 +37,9 @@ Read before reviewing:
 Touching backend? also `code/docs/BACKEND-CODING-PRINCIPLES.md`.
 Touching frontend? also `code/docs/FRONTEND-CODING-PRINCIPLES.md` and
 `code/docs/ACCESSIBILITY.md`. Stack conventions live in the skills
-`.claude/skills/stack-django/SKILL.md` and `.claude/skills/stack-htmx-templates/SKILL.md` —
+`.claude/skills/stack-django/SKILL.md`, `.claude/skills/stack-htmx-templates/SKILL.md`, and —
+mobile-only — `.claude/skills/stack-react-native/SKILL.md` when the diff touches
+`code/src/mobile/` —
 defer to them rather than restating rules. Structural impact analysis: run the
 `code-review-graph` **review playbook** (`.claude/skills/review-changes.md`; guide
 `code/docs/CODE-REVIEW-GRAPH.md`) — `detect_changes` → `get_affected_flows` →

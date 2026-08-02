@@ -42,7 +42,7 @@ The delimiters below were chosen by scanning every tracked file and verifying ze
 | -------- | ----- | ------ |
 | Variable | `<%`  | `%>`   |
 | Block    | `<:`  | `:>`   |
-| Comment  | `<\|` | `\|>`  |
+| Comment  | `<~`  | `~>`   |
 
 They are set in `copier.yml` under `_envops`. If you ever add content to the template containing
 one of these six sequences literally, wrap it in `<: raw :>` … `<: endraw :>`.
@@ -51,7 +51,8 @@ one of these six sequences literally, wrap it in `<: raw :>` … `<: endraw :>`.
 
 ## The tokens
 
-Twenty-one tokens carry every project-specific value. Copier prompts for all of them. Example
+Twenty-four tokens carry every project-specific value. Copier prompts for all of them, except the
+two mobile tokens, which are asked only when the mobile frontend is included. Example
 values are illustrative — replace them.
 
 ### Identity
@@ -106,6 +107,22 @@ content) keeps its default, and the doc rows that mention it can be deleted afte
 `apps.marketing`, `apps.seo`, and `apps.design_tokens` are **house constants**, not tokens — they
 are the same in every project and stay literal.
 
+### Mobile frontend (optional)
+
+The opt-in React Native + TypeScript app at `code/src/mobile/`. `<%INCLUDE_MOBILE%>` gates the
+whole feature: when it is false, the mobile tree and `code/src/scripts/mobile/` are excluded by a
+templated `_exclude` entry, and the two tokens below are never asked. A web-only generation is
+identical to one produced before the mobile option existed.
+
+| Token                  | Meaning                                   | Example value | Format         |
+| ---------------------- | ----------------------------------------- | ------------- | -------------- |
+| `<%INCLUDE_MOBILE%>`   | Generate the React Native mobile frontend | `false`       | `bool`         |
+| `<%MOBILE_APP_NAME%>`  | Display name under the app icon on device | `Acme Portal` | free text      |
+| `<%MOBILE_BUNDLE_ID%>` | iOS bundle identifier / Android app ID    | `com.acme`    | reverse-domain |
+
+`<%MOBILE_BUNDLE_ID%>` is **permanent once the app is published** to either store — changing it
+later creates a new app rather than updating the existing one.
+
 ### Meta
 
 | Token      | Meaning                                                   | Example value | Format       |
@@ -121,13 +138,15 @@ are the same in every project and stay literal.
 
 Copier derives these from earlier answers — press Enter to accept:
 
-| Token                | Derived from                                |
-| -------------------- | ------------------------------------------- |
-| `<%PROJECT_SLUG%>`   | `<%PROJECT_NAME%>` lowercased, spaces → `-` |
-| `<%ORG_SLUG%>`       | `<%ORG_NAME%>` lowercased, spaces → `-`     |
-| `<%ENV_PREFIX%>`     | `<%ORG_SLUG%>` uppercased, `-` → `_`        |
-| `<%PRIMARY_DOMAIN%>` | `<%PROJECT_SLUG%>.com`                      |
-| `<%DEPLOY_REPO%>`    | `<%PROJECT_SLUG%>-nixos-client-deployment`  |
+| Token                  | Derived from                                     |
+| ---------------------- | ------------------------------------------------ |
+| `<%PROJECT_SLUG%>`     | `<%PROJECT_NAME%>` lowercased, spaces → `-`      |
+| `<%ORG_SLUG%>`         | `<%ORG_NAME%>` lowercased, spaces → `-`          |
+| `<%ENV_PREFIX%>`       | `<%ORG_SLUG%>` uppercased, `-` → `_`             |
+| `<%PRIMARY_DOMAIN%>`   | `<%PROJECT_SLUG%>.com`                           |
+| `<%DEPLOY_REPO%>`      | `<%PROJECT_SLUG%>-nixos-client-deployment`       |
+| `<%MOBILE_APP_NAME%>`  | `<%PROJECT_NAME%>`                               |
+| `<%MOBILE_BUNDLE_ID%>` | `<%PRIMARY_DOMAIN%>` label-reversed, `-` removed |
 
 ---
 

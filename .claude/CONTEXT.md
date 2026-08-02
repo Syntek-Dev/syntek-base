@@ -11,7 +11,7 @@ Claude Code configuration for the <%PROJECT_NAME%> project.
 ├── MEMORY.md          ← project memory store (feedback, patterns, project state)
 ├── settings.json      ← Claude Code permission settings (project-level)
 ├── settings.local.json ← local permission overrides (gitignored)
-├── agents/            ← agent definitions (50: 8 orchestrators + specialists + doc-writers)
+├── agents/            ← agent definitions (8 orchestrators + specialists + doc-writers)
 ├── skills/            ← internalised skills (stack, global-workflow, document standards)
 ├── hooks/             ← pre-PR quality gate hooks
 ├── plugins/           ← agent helper scripts (6 read-only inspection scripts)

@@ -1,0 +1,214 @@
+# Every test suite, both surfaces. Renamed from test-backend.yml when the optional mobile
+# surface arrived: a stack-neutral name is what lets one workflow hold both job sets.
+#
+# BRANCH PROTECTION: the required check name moved with this rename. Update it in the
+# repository settings in the same change, or merges block on a check that never arrives.
+name: test
+
+# No path filter, deliberately — the same reasoning as the lint workflows. These jobs are
+# required status checks, and a path-filtered workflow never reports on a pull request
+# that misses its paths, leaving the merge blocked on an "Expected" check that will never
+# arrive. That failure mode is worse than the runtime. It matters more here than anywhere
+# else, because the paths would now have to cover two surfaces: a filter listing only the
+# Django paths would silently stop gating mobile changes.
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    name: pytest + coverage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    env:
+      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create .env.test
+        run: |
+          cp code/src/docker/.env.test.example code/src/docker/.env.test
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+
+      - name: Build django-test image
+        run: docker compose -f $COMPOSE_FILE build django-test
+
+      - name: Start db and cache
+        run: docker compose -f $COMPOSE_FILE up -d db cache
+
+      - name: Wait for database
+        run: |
+          for i in $(seq 1 30); do
+            docker compose -f $COMPOSE_FILE exec db \
+              pg_isready -U <%PROJECT_SLUG%> -d <%PROJECT_SLUG%>_test && break
+            echo "Waiting for db... ($i/30)"
+            sleep 2
+          done
+
+      - name: Determine coverage threshold
+        id: threshold
+        run: |
+          BRANCH="${{ github.base_ref || github.ref_name }}"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "staging" ]]; then
+            echo "value=80" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=75" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run pytest with coverage (two phases)
+        run: |
+          mkdir -p reports
+          docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
+            -v "${{ github.workspace }}/reports:/workspace/reports" \
+            django-test bash -c "
+              pytest -m unit \
+                --cov=apps \
+                --cov-branch \
+                --cov-report= &&
+              pytest -m integration \
+                --cov=apps \
+                --cov-branch \
+                --cov-append \
+                --cov-fail-under=${{ steps.threshold.outputs.value }} \
+                --cov-report=xml:/workspace/reports/coverage.xml \
+                --cov-report=term-missing &&
+              coverage report --include='apps/users/*' --fail-under=90
+            "
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: reports/coverage.xml
+          retention-days: 30
+
+      - name: Post coverage comment
+        if: always() && github.event_name == 'pull_request'
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: reports/coverage.xml
+          title: Backend Coverage
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f $COMPOSE_FILE down -v
+
+  # ── Mobile surface ──────────────────────────────────────────────────────────
+  # Guarded at STEP level, not job level: the job runs and reports SUCCESS on a web-only
+  # project rather than skipping. A skipped job and a passing job look different to
+  # branch protection, and "never ran" is not the same claim as "nothing to run".
+  mobile:
+    name: jest-expo + coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect the mobile surface
+        id: detect
+        run: |
+          if [ -d code/src/mobile ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "Mobile surface present — running the suite."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No code/src/mobile/ — this project is web-only. Nothing to test."
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.detect.outputs.present == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "24"
+
+      - name: Get pnpm store directory
+        if: steps.detect.outputs.present == 'true'
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/install.sh
+
+      # Coverage floors live in code/src/mobile/jest.config.js — the same numbers as the
+      # backend, enforced once per runtime. coverage.py and Jest share no accumulator, so
+      # a single combined percentage across both surfaces was never achievable.
+      - name: Run the suite with coverage
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/test.sh --coverage
+
+      - name: Upload coverage report
+        if: always() && steps.detect.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-coverage
+          path: code/src/mobile/coverage/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  # Where CI stops, deliberately. A JS bundle export runs on an ordinary Ubuntu runner and
+  # catches a bad import, a missing asset or a Metro resolution error. Compiling a native
+  # binary would need a paid macOS runner on every pull request, for a template that ships
+  # no native code.
+  mobile-bundle:
+    name: Bundle export
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect the mobile surface
+        id: detect
+        run: |
+          if [ -d code/src/mobile ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No code/src/mobile/ — this project is web-only. Nothing to bundle."
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.detect.outputs.present == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "24"
+
+      - name: Get pnpm store directory
+        if: steps.detect.outputs.present == 'true'
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/install.sh
+
+      - name: Export the iOS and Android bundles
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/bundle.sh

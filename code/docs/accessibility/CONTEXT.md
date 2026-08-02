@@ -8,10 +8,11 @@ WCAG 2.2 AA.
 
 ## Files
 
-| File                        | Purpose                                                       |
-| --------------------------- | ------------------------------------------------------------- |
-| `HTML-AND-ARIA.md`          | Semantic HTML, ARIA, and server-rendered (Django + HTMX) a11y |
-| `INTERACTION.md`            | Keyboard navigation and focus management                      |
-| `TESTING-AND-COMPONENTS.md` | django-component patterns, touch targets, and testing         |
+| File                        | Purpose                                                                           |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| `HTML-AND-ARIA.md`          | Semantic HTML, ARIA, and server-rendered (Django + HTMX) a11y                     |
+| `INTERACTION.md`            | Keyboard navigation and focus management                                          |
+| `TESTING-AND-COMPONENTS.md` | django-component patterns, touch targets, and testing                             |
+| `MOBILE.md`                 | **Mobile-only.** The React Native technique set for the same WCAG 2.2 AA criteria |
 
 Parent guide: `code/docs/ACCESSIBILITY.md`

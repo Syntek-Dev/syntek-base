@@ -16,6 +16,13 @@ django-components, enhanced by HTMX (server ops) and Alpine (local interactions)
 client-side framework and no Node server**: Django renders every page, and the browser receives
 HTML rather than a bundle that renders HTML.
 
+**Scope: the web surface only.** This document decides where a _page_ interaction runs. A project
+that opted into the optional React Native mobile app is running a second, peer surface with its
+own runtime and release cycle (`code/src/CONTEXT.md` → _Surfaces_); it consumes the Ninja API
+exactly as any third-party client would and renders no Django page. Nothing below changes because
+it exists — in particular, the no-fourth-row rule is untouched, because a separate deployable is
+not a client framework rendering these pages.
+
 ## Why SSR/HTMX is right for _this_ app
 
 For content, forms, and CMS-style sites serving broad audiences on ordinary hardware, the

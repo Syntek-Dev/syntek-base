@@ -23,7 +23,20 @@ model: fable
 - [ ] Navigation and routing annotated — no dead ends
 - [ ] Accessibility notes included (focus order, ARIA roles, colour contrast)
 - [ ] Linked to the corresponding user story (`US###.md`)
-- [ ] Document saved at `project-management/src/07-WIREFRAMES/WF-US###-<DESCRIPTOR>.md`
+- [ ] Screen saved at `project-management/src/07-WIREFRAMES/SCREENS/WF-###-<Screen-Name>.html`
+- [ ] Self-contained — opens over `file://` with nothing to fetch; only dependency is `SHARED/wireframe.css`
+- [ ] Composed from `wf-*` classes and `--wf-*` tokens — no raw colour or spacing literals
+
+### Mobile screens (mobile-only)
+
+**Skip if the project has no mobile surface** — inapplicable, not unmet.
+
+- [ ] Named `WF-###-MOBILE-<Screen-Name>.html`, sharing its web counterpart's number where one exists
+- [ ] Composed at a phone viewport (390 × 844 reference), not full window width
+- [ ] No intent carried by **hover** — there is no hover on touch
+- [ ] No intent carried by a **scrollbar** — a native scroll view shows none
+- [ ] Navigation drawn explicitly — there is no URL bar, back button, or tab
+- [ ] Touch targets sized to the platform minimum (44 pt iOS / 48 dp Android)
 
 ---
 

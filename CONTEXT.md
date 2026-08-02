@@ -14,7 +14,7 @@ mobile application — one deployable serves the API and the rendered pages.
 │   ├── CONTEXT.md
 │   ├── MEMORY.md                    ← project memory (feedback, patterns, project state)
 │   ├── settings.json                ← project-level permissions, model, hooks
-│   ├── agents/                      ← 50 agents (8 orchestrators + specialists + doc-writers)
+│   ├── agents/                      ← 8 orchestrators + specialists + doc-writers (roster: agents/CONTEXT.md)
 │   ├── hooks/                       ← pre-PR quality gates
 │   ├── plugins/                     ← read-only inspection helpers agents call for context
 │   └── skills/                      ← internalised stack, workflow, and document skills
@@ -130,11 +130,13 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 
 ## Repository State
 
-Current version: **0.12.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **0.13.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
-Versioning is two-tier: the root project tracks the monorepo on single-track semver, and
-`code/src/django/` carries its own independent semver (manifest: root `pyproject.toml`).
-Sub-package versions never move as a side-effect of a root bump. Rules:
+Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
+deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root
+`pyproject.toml`) always, plus `code/src/mobile/` (manifest: its own `package.json`, with the
+same number mirrored in `app.json`) in a project that opted into the mobile surface. Sub-package
+versions never move as a side-effect of a root bump. Rules:
 `project-management/docs/VERSIONING-GUIDE.md`.
 
 The template ships with no application code beyond the Django project skeleton — feature work

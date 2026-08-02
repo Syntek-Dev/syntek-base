@@ -184,13 +184,16 @@ instruments nothing — counting it would inflate the figure without testing a l
 
 ## CI
 
-These scripts are used by two GitHub Actions workflows:
+These scripts are used by three GitHub Actions workflows. `test.yml` was renamed from
+`test-backend.yml` when the mobile surface arrived — one stack-neutral workflow now holds both
+job sets, with the mobile jobs guarded at **step** level so they report success rather than
+"skipped" on a web-only project:
 
-| Workflow                             | Trigger                                      | Scripts used          |
-| ------------------------------------ | -------------------------------------------- | --------------------- |
-| `.github/workflows/test-backend.yml` | Push/PR on `.py` changes                     | `backend-coverage.sh` |
-| `.github/workflows/test-api.yml`     | Push/PR on `.py` or Bruno collection changes | `api.sh`              |
-| `.github/workflows/test-e2e.yml`     | Push/PR on Django or Docker changes          | `e2e-py.sh`           |
+| Workflow                         | Trigger                                      | Scripts used                                                |
+| -------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
+| `.github/workflows/test.yml`     | Every push/PR (no path filter)               | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
+| `.github/workflows/test-api.yml` | Push/PR on `.py` or Bruno collection changes | `api.sh`                                                    |
+| `.github/workflows/test-e2e.yml` | Push/PR on Django or Docker changes          | `e2e-py.sh`                                                 |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

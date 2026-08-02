@@ -1,0 +1,24 @@
+# Native projects are GENERATED ARTEFACTS, not source.
+#
+# Expo's Continuous Native Generation rebuilds ios/ and android/ from app.json and the
+# config plugins. Committing them would put a Gradle wrapper JAR, launcher icon PNGs and
+# iOS asset catalogues in the tree — and this repository is a Copier template with
+# _templates_suffix set to "", which renders every file through Jinja and CANNOT render
+# binaries. Keeping these generated is what keeps the tree text-only.
+#
+# If your project outgrows config plugins, run `expo prebuild`, decide deliberately
+# whether to commit the output, and record it as an ADR. See TEMPLATE-GUIDE/11-EXTENDING.md.
+/ios/
+/android/
+
+# Expo build and cache output
+.expo/
+.expo-bundle/
+expo-env.d.ts
+
+# Test output
+coverage/
+
+# Metro / bundler
+.metro-health-check*
+*.jsbundle

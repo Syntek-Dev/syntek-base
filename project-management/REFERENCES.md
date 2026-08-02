@@ -19,7 +19,7 @@ Every file in `project-management/docs/`, with path and purpose.
 | `project-management/docs/SECURITY-GUIDE.md`        | STRIDE threat modelling, OWASP mapping, severity levels, and documentation format  |
 | `project-management/docs/SEO-CHECKLIST.md`         | SEO and AI discoverability checklist for all public-facing pages                   |
 | `project-management/docs/SPRINT-PLANNING-GUIDE.md` | MoSCoW prioritisation rules, sprint record format, and phase breakdown schema      |
-| `project-management/docs/VERSIONING-GUIDE.md`      | Root-only semver strategy and list of files to update on every version bump        |
+| `project-management/docs/VERSIONING-GUIDE.md`      | Two-tier semver, independent sub-package tracks, and the files each bump touches   |
 
 ---
 

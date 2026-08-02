@@ -15,6 +15,8 @@ project carries its own tooling; plugin references were rewritten to internal pa
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
 │   └── SKILL.md
+├── stack-react-native/     ← MOBILE-ONLY — Expo + React Native + TypeScript + expo-router
+│   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
 │   ├── GIT-AND-PR.md
@@ -69,6 +71,7 @@ project carries its own tooling; plugin references were rewritten to internal pa
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                   |
+| `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                        |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                            |
 | `grilling`                      | Design work (architecture, DB, API, story) — the one-question-at-a-time interview engine                                                        |
 | `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                          |
@@ -87,10 +90,16 @@ project carries its own tooling; plugin references were rewritten to internal pa
 | `cloudinary-*`                  | Cloudinary uploads, delivery, or transformation work                                                                                            |
 | graph cards                     | Explore/debug/review/refactor via the code-review-graph MCP — auto-generated, referenced by path (`code/docs/CODE-REVIEW-GRAPH.md`)             |
 
-> **Full-Django direction:** the whole site is React-free and server-rendered — Django
-> templates + HTMX + Alpine + vanilla CSS (tokens) + django-components + django-ninja.
-> Backend is `stack-django`; the frontend is `stack-htmx-templates`. There is no client
-> build step.
+> **Full-Django direction — on the web surface.** Every page is React-free and server-rendered:
+> Django templates + HTMX + Alpine + vanilla CSS (tokens) + django-components + django-ninja,
+> with no client build step. Backend is `stack-django`; the web frontend is
+> `stack-htmx-templates`.
+>
+> **Mobile-only skills exist but never apply to the web.** `stack-react-native` governs a
+> **separate deployable** that consumes the JSON API — it is not a client framework for these
+> pages, and it neither weakens nor extends the rule above. It is listed here unconditionally and
+> flagged, rather than templated in or out, so this index carries no conditional contents.
+> Load it only when working under `code/src/mobile/`.
 
 ## Cross-references
 

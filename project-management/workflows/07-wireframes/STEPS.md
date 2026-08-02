@@ -47,16 +47,26 @@ Produce a wireframe for each distinct view. Include:
 - Form fields, labels, and validation messages
 - Interactive states: default, hover, focus, disabled, error, success, empty
 
-Tools: Figma, Excalidraw, or a plain Markdown ASCII layout — any format is acceptable
-as long as the document is readable and committed.
+**The medium is fixed: a self-contained HTML screen.** Copy
+`project-management/src/07-WIREFRAMES/SCREENS/WF-000-TEMPLATE.html` and compose from the `wf-*`
+classes in `SHARED/wireframe.css`. No CDN, no framework, no external fonts — it must open over
+`file://`. Figma and Excalidraw are **not** alternatives here: a second medium would put the
+design tier behind a hosted dependency and make it undiffable.
+
+**Mobile-only.** A screen on the mobile surface is wireframed the same way, in the same folder,
+through this same gate — composed at a phone viewport (390 × 844 reference). Do not let intent
+rest on **hover, scrollbars, or browser chrome**: none exists natively, so a wireframe depending
+on them is a web design in a phone-shaped frame.
 
 ### Step 3 — Document the Wireframe
 
 > **Model:** opus
 
-Save the wireframe document to `project-management/src/07-WIREFRAMES/`.
+Save the screen to `project-management/src/07-WIREFRAMES/SCREENS/`.
 
-Name the file: `WF-US###-<DESCRIPTOR>.md` (or `.png` / `.fig` if a visual format).
+Name the file `WF-###-<Screen-Name>.html`, or `WF-###-MOBILE-<Screen-Name>.html` for a mobile
+screen — which shares the number of its web counterpart where one exists. Full convention:
+`project-management/src/07-WIREFRAMES/CONTEXT.md`.
 
 Include in the document:
 

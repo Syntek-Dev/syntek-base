@@ -78,14 +78,14 @@ grep -rIo '<%[A-Z_]*%>' /tmp/syntek-check --exclude-dir=.git | wc -l   # must be
 
 ### 2. Respect the delimiter contract
 
-Tokens are written `<%TOKEN%>`, blocks `<: … :>`, comments `<| … |>`. **Not `{{ }}`.**
+Tokens are written `<%TOKEN%>`, blocks `<: … :>`, comments `<~ … ~>`. **Not `{{ }}`.**
 
 This is not a style preference. The repository contains GitHub Actions expressions (`${{ }}`),
 Django template syntax (`{% %}` and `{{ }}`), Bruno variables (`{{api_url}}`) and bash tests
 (`[[ ]]`) — Jinja's usual delimiters, and the obvious alternatives, all collide with real content.
 The chosen set was verified to appear nowhere in the tree.
 
-If you add content that literally contains `<%`, `%>`, `<:`, `:>`, `<|` or `|>`, wrap it in
+If you add content that literally contains `<%`, `%>`, `<:`, `:>`, `<~` or `~>`, wrap it in
 `<: raw :>` … `<: endraw :>`, and say so in the PR.
 
 Full reasoning: [`how-to/src/TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md).
