@@ -3,10 +3,19 @@ pre-commit:
   commands:
     eslint:
       glob: "*.{js,mjs,cjs}"
+      exclude:
+        - "code/src/mobile/**"
       run: pnpm exec eslint {staged_files}
 
+    # The mobile surface lints with its own eslint and typescript-eslint (see
+    # code/src/mobile/eslint.config.mjs). Self-gating: the guard exits instantly on a
+    # web-only project, where the directory does not exist.
+    eslint-mobile:
+      glob: "code/src/mobile/**/*.{ts,tsx,js,mjs,cjs}"
+      run: if [ -d code/src/mobile ]; then bash code/src/scripts/mobile/lint.sh; fi
+
     prettier:
-      glob: "*.{js,mjs,cjs,json,yaml,yml,css,html,md}"
+      glob: "*.{js,mjs,cjs,ts,tsx,json,yaml,yml,css,html,md}"
       exclude:
         - "project-management/export/**"
       run: pnpm exec prettier --check {staged_files}

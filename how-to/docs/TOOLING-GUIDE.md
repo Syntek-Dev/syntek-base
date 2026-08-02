@@ -15,8 +15,9 @@ marketplace plugin is **disabled** (`.claude/settings.json` → `enabledPlugins`
 and skills were internalised, so every contributor gets the tooling without installing a plugin.
 The authoritative model is `.claude/CLAUDE.md` §2–§3.
 
-- `.claude/agents/` — 49 agents (8 orchestrators + 28 specialists + 13 document writers).
-  Registry: `.claude/agents/CONTEXT.md`.
+- `.claude/agents/` — 8 orchestrators plus tool-scoped specialists and document writers. The
+  registry is the count: `.claude/agents/CONTEXT.md`. No total is repeated here — it goes stale
+  on every roster change, and with the optional mobile surface two correct projects differ.
 - `.claude/skills/` — the stack and workflow skills the agents load on demand. Registry:
   `.claude/skills/CONTEXT.md`.
 - `.claude/skills/teach/SKILL.md` — a safe `learning/` sandbox to practise a skill without
@@ -43,6 +44,7 @@ auto-select one from the task. A typical feature cycle:
 | Plan     | `planner`     | Break a feature into a phased, testable plan       |
 | Backend  | `backend`     | Django models, services, Ninja API routers         |
 | Frontend | `frontend`    | django-components + HTMX, accessibility, token CSS |
+| Mobile   | `mobile`      | _Mobile-only._ Expo/React Native screens, a11y     |
 | Tests    | `test-writer` | Failing tests plus minimal stubs (TDD Red)         |
 | QA       | `qa-tester`   | Hostile QA — bugs, security flaws, edge cases      |
 

@@ -38,9 +38,22 @@ the baseline is already broken — tests written on top of it give false results
 
 > **Model:** opus · **MCP:** none
 
-This runs basedpyright plus lint. There is no TypeScript in this stack, so there is no
+This runs basedpyright plus lint. **On the web surface there is no TypeScript**, so there is no
 frontend typecheck — the templates, components, and HTMX partials are covered by pytest.
 Fix all errors before proceeding. Do not suppress type errors to unblock this step.
+
+**Mobile-only.** A project with the mobile surface has a second runtime with its own typecheck;
+`check.sh` delegates to it automatically when `code/src/mobile/` is present. To run it alone:
+
+```bash
+bash code/src/scripts/mobile/typecheck.sh
+```
+
+The two runtimes share **the same coverage numbers, enforced once each** — `coverage.py` and Jest
+share no accumulator, so a single combined percentage was never achievable. Mobile tests run via
+`bash code/src/scripts/mobile/test.sh --coverage` and live in `code/src/mobile/__tests__/`, never
+inside `app/` (every file there is an expo-router route, and a co-located test would enter the
+production bundle).
 
 ---
 

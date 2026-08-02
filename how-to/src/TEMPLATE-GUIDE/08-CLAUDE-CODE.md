@@ -38,10 +38,17 @@ delegate:
 | `pr`       | Raising a PR and moving it through promotion |
 | `release`  | Version bump, changelog, deploy              |
 
-**Specialists (29) and document writers (13)** are delegated to for scoped work — `backend`,
-`frontend`, `database`, `gdpr`, `test-writer`, `qa-tester`, `seo`, `authentication`,
+**Specialists and document writers** are delegated to for scoped work — `backend`, `frontend`,
+`database`, `gdpr`, `test-writer`, `qa-tester`, `seo`, `authentication`,
 `privacy-policy-writer`, `incident-response-plan-writer`, and so on. Each is tool-scoped with a
-distinct remit.
+distinct remit. `.claude/agents/CONTEXT.md` is the roster; no total is quoted here, because it
+moves on every roster change and differs between two correct projects.
+
+**If you answered yes to the mobile question**, you also get a `mobile` specialist paired with a
+`stack-react-native` skill — mirroring `backend`/`stack-django` and
+`frontend`/`stack-htmx-templates`. Answer no and neither exists. Either way the registries list
+them, flagged mobile-only: that keeps `.claude/CLAUDE.md` free of conditional contents, which is
+the rule the whole opt-in rests on. `frontend` stays Django-templates-only in both cases.
 
 Two rules that shape the output:
 

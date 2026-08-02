@@ -50,9 +50,12 @@ specialists load the **stack skills**. The governing `docs/` guide and the workf
 
 - **Orchestrators (entry points, carry all tools):** `bugfix`, `feature`, `pr`, `refactor`,
   `release`, `review`, `security`, `story`. Pick the one matching the task and let it delegate.
-- **Specialists (29) + document writers (13):** delegated to for scoped work (e.g. `backend`,
-  `frontend`, `database`, `gdpr`, `test-writer`, `qa-tester`, `privacy-policy-writer`). Each is
-  tool-scoped with a distinct remit; invoke one directly only for a narrow job.
+- **Specialists + document writers:** delegated to for scoped work (e.g. `backend`, `frontend`,
+  `database`, `gdpr`, `test-writer`, `qa-tester`, `privacy-policy-writer`). Each is tool-scoped
+  with a distinct remit; invoke one directly only for a narrow job. The roster in
+  `.claude/agents/CONTEXT.md` is the count — no number is repeated here, because it goes stale on
+  every roster change and, with the optional mobile surface, differs between two correct
+  projects. Rows flagged **mobile-only** (`mobile`) are absent on a web-only project.
 
 Internalised from the (now-disabled) `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer` plugins; models are
 `fable`/`opus` by tier (§4) — planning agents (`story`, `sprint`, `planner`, `user-story`)
@@ -64,6 +67,7 @@ run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `stack-django`                  | Backend code — models, services, Django Ninja endpoints, pytest                                                                                    |
 | `stack-htmx-templates`          | Public frontend — Django templates, django-components, HTMX, Alpine, token CSS                                                                     |
+| `stack-react-native`            | **Mobile-only.** The mobile surface — Expo, TypeScript, expo-router, StyleSheet over tokens                                                        |
 | `global-workflow`               | Branches, commits, PRs, version bumps, docs, code comments                                                                                         |
 | `grill-me` · `grill-with-docs`  | Design work — type `/grill-me` (stateless) or `/grill-with-docs` (records decisions); both wrap the `grilling` engine                              |
 | `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test; design it twice) |
@@ -303,7 +307,8 @@ not a fixed question list. <%DEVELOPER_NAME%> can also invoke it directly with `
 The skills the internal agents load on demand (full when-to-load table: `.claude/skills/CONTEXT.md`):
 
 - **Stack Skill (Backend):** `stack-django` — `.claude/skills/stack-django/`
-- **Stack Skill (Frontend):** `stack-htmx-templates` — `.claude/skills/stack-htmx-templates/`
+- **Stack Skill (Frontend, web):** `stack-htmx-templates` — `.claude/skills/stack-htmx-templates/`
+- **Stack Skill (Mobile) — mobile-only:** `stack-react-native` — `.claude/skills/stack-react-native/` (paired with the `mobile` agent; both absent on a web-only project)
 - **Global Skill:** `global-workflow` — `.claude/skills/global-workflow/`
 - **Design / Grilling Skills:** `grilling` (engine) · `grill-me` (stateless) · `grill-with-docs` (records decisions) — `.claude/skills/{grilling,grill-me,grill-with-docs}/`
 - **Architecture / Design Skills:** `codebase-design` (deep-module vocabulary) · `domain-modelling` (keep the model current) · `improve-codebase-architecture` (`/improve-codebase-architecture` — deepening review → HTML report → grill) · `scale-planning` (`/scale-planning` — size for a target user count + prove scalability; feeds the NixOS deploy repo) — `.claude/skills/{codebase-design,domain-modelling,improve-codebase-architecture,scale-planning}/`

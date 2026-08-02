@@ -51,12 +51,12 @@ The pipeline already exists — extend it, do not replace it.
 
 **Existing CI workflows** (`.github/workflows/`):
 
-| Group  | Files                                                                              |
-| ------ | ---------------------------------------------------------------------------------- |
-| Syntax | `syntax-build`, `syntax-js-ts`, `syntax-python`, `syntax-markdown`                 |
-| Tests  | `test-backend`, `test-frontend`, `test-api`, `test-e2e`, `test-pact`, `a11y-tests` |
-| Audits | `audit-cloc`, `audit-css-tokens`, `audit-deps`, `audit-secrets`, `audit-stubs`     |
-| Other  | `claude`, `clickup-sync`                                                           |
+| Group  | Files                                                                          |
+| ------ | ------------------------------------------------------------------------------ |
+| Syntax | `syntax-build`, `syntax-js-ts`, `syntax-python`, `syntax-markdown`             |
+| Tests  | `test` (pytest + the mobile suite and bundle), `test-api`, `test-e2e`          |
+| Audits | `audit-cloc`, `audit-css-tokens`, `audit-deps`, `audit-secrets`, `audit-stubs` |
+| Other  | `claude`, `clickup-sync`                                                       |
 
 **Environments** — three-tier, driven by Compose files in `code/src/docker/`:
 

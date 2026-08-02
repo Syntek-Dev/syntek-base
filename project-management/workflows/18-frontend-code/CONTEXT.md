@@ -19,6 +19,11 @@ editor is needed, the same server-rendered stack. Wireframes and component desig
 signed off, and any Django Ninja API the feature consumes must
 be available before this workflow begins.
 
+**It also covers the optional mobile surface**, in one clearly-flagged step (`STEPS.md` → Step 4M,
+`CHECKLIST.md` → _Mobile surface_) rather than a separate workflow — one story's frontend is one
+piece of work regardless of how many surfaces it lands on. A web-only project skips that step and
+that section entirely; nothing else in this workflow changes.
+
 ## Prerequisites
 
 - [ ] Wireframes are signed off (`project-management/src/07-WIREFRAMES/`)

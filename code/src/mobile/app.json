@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "<%MOBILE_APP_NAME%>",
+    "slug": "<%PROJECT_SLUG%>",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "<%PROJECT_SLUG%>",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "<%MOBILE_BUNDLE_ID%>",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "<%MOBILE_BUNDLE_ID%>",
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

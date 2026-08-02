@@ -1,6 +1,6 @@
 # Version History — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 0.12.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 0.13.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                                                                          |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 02/08/2026 | 0.13.0  | Add the opt-in React Native mobile surface — Expo skeleton, scripts, CI jobs, governance pair, token bridge and accessibility guides, all gated by one `INCLUDE_MOBILE` boolean.     |
 | 02/08/2026 | 0.12.0  | Migrate scaffolding from `setup.sh` to Copier with collision-free delimiters, open-source under MIT with governance and branch protection, and add the fourteen-part template guide. |
 | 01/08/2026 | 0.11.0  | Reinstate the root `CONTEXT.md` as the project overview, repairing the `@../CONTEXT.md` import in `.claude/CLAUDE.md`.                                                               |
 | 01/08/2026 | 0.10.0  | Templatise the root configuration, extend CI with six audit workflows, and add the handoffs, learning, and research sandboxes.                                                       |

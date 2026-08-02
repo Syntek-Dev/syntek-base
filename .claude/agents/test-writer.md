@@ -36,6 +36,10 @@ Route to these rather than restating rules (the **procedures** are listed above)
 - `code/docs/BACKEND-CODING-PRINCIPLES.md` / `code/docs/FRONTEND-CODING-PRINCIPLES.md` — stack specifics
 - `code/docs/SECURITY.md` — the permission/IDOR behaviours your tests must assert
 - Stack skills: `.claude/skills/stack-django/SKILL.md`, `.claude/skills/stack-htmx-templates/SKILL.md`
+- **Mobile-only:** `.claude/skills/stack-react-native/SKILL.md` — load it when writing tests under
+  `code/src/mobile/`. You do not own React Native conventions; the skill carries them. Note the two
+  that bite hardest: mobile tests live in `__tests__/` (never under `app/`, where expo-router would
+  treat them as routes and bundle them), and they mount the real router via `renderRouter`.
 
 Read the story's acceptance criteria first — tests cover **only** that story's scope.
 

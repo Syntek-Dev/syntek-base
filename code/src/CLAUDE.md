@@ -46,9 +46,11 @@ gitignored `improvement-architecture/` reports that support it.
   secrets via environment only; Django's built-in admin lives at a non-obvious prefix
   (`/control/`), **never `/admin/`** (that prefix is the <%PROJECT_NAME%> Admin surface);
   token-first CSS (components consume `var(--token)` only).
-- **No client-side build.** There is no bundler and no JavaScript source tree — every
-  surface is a Django template. Adding one is an ADR-level stack change, never an
-  incidental dependency (`code/docs/RENDERING.md`).
+- **No client-side build for the web surface.** Django renders every page and there is no
+  bundler and no JavaScript source tree behind it. Adding one is an ADR-level stack
+  change, never an incidental dependency (`code/docs/RENDERING.md`). The rule is scoped
+  by surface, not weakened: the optional mobile app is a **separate deployable with its
+  own toolchain**, not a bundler for Django pages, so it leaves this absolute.
 - **Never read** `node_modules/`, `django/static/vendor/`, `.git/`.
 
 ## Output & naming

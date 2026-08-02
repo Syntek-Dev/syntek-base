@@ -1,13 +1,29 @@
-# No workspace packages — the site is server-rendered by Django and there is no client
-# build. The root package.json carries the repo tooling (markdownlint, prettier, eslint,
-# lefthook, bruno) and nothing else.
-packages: []
+# The web surface is server-rendered by Django and has no client build: the root
+# package.json carries repo tooling only (markdownlint, prettier, eslint, lefthook,
+# bruno). The glob below exists for the OPTIONAL React Native mobile surface at
+# code/src/mobile/, which is a real workspace member with its own package.json.
+#
+# Why a glob and not a named entry: pnpm treats a matched directory as a package only
+# when it contains a package.json, so this resolves to the mobile app when the project
+# opted in and to NOTHING when it did not. That keeps this file byte-identical on both
+# template render paths, which is what lets the opt-in stay gated entirely by one
+# templated `_exclude` entry in copier.yml — one conditionalisation mechanism, with no
+# file anywhere carrying templated contents.
+#
+# Trade-off accepted: the glob is implicit. Any future directory under code/src/ that
+# carries a package.json joins this workspace without anyone declaring it.
+packages:
+  - "code/src/*"
 allowBuilds:
   esbuild: false
   lefthook: false
   msw: false
   protobufjs: false
   sharp: false
+  # Native resolver pulled in by the mobile surface's eslint plugins. Left unbuilt like
+  # every other entry here — it ships prebuilt binaries, and mobile lint passes without
+  # running its install script.
+  unrs-resolver: false
 auditConfig:
   ignoreGhsas:
     - GHSA-jxxr-4gwj-5jf2
@@ -42,6 +58,23 @@ overrides:
   lodash: ">=4.18.0"
   uuid: ">=11.0.0"
   glob: ">=11.0.0"
+  # istanbul's coverage instrumentation reaches Jest through test-exclude. Version 6
+  # calls promisify() on glob's default export, which stopped being a function in glob
+  # 11 — so the `glob: ">=11.0.0"` line above silently breaks mobile coverage collection.
+  # v7 uses glob's named export and satisfies that floor, keeping the security posture.
+  test-exclude: ">=7.0.1"
+  # Same root cause, second consumer — but the real constraint is an INTEROP SHAPE, not a
+  # version floor. @jest/reporters@29.7.0 does `_interopRequireDefault(require('glob'))` and
+  # then calls glob.sync. glob 10 and 11 both set __esModule with no `default` export, so
+  # `.default.sync` is undefined and the coverage reporter dies — upgrading is not an option,
+  # and jest-expo pins the Jest 29 line so the reporter cannot be replaced either.
+  # glob 9 is the NEWEST version that still works: it ships a CJS wrapper
+  # (module.exports = Object.assign(globFn, { default: globFn, glob: globFn })) whose default
+  # carries .sync. Preferred over glob 7 because its dependencies are minipass / minimatch 8 /
+  # fs.realpath / path-scurry — it drops inflight@1.0.6, the unbounded-memory-leak package the
+  # repo-wide floor above removes everywhere else. Scoped to that ONE dev-only, test-time
+  # package; the floor is untouched and nothing in the delivery path is affected.
+  "@jest/reporters>glob": "^9.3.5"
   ws: ">=8.21.0"
   brace-expansion: ">=5.0.6"
   qs: ">=6.15.2"

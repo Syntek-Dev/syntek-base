@@ -11,7 +11,8 @@ project-management/src/07-WIREFRAMES/SCREENS/
 ├── CONTEXT.md            ← this file
 ├── CLAUDE.md             ← operating rules for this folder
 ├── WF-000-TEMPLATE.html  ← the screen template — copy this to start a new screen
-└── WF-###-<Screen-Name>.html  ← one file per screen (a project's own screens)
+├── WF-###-<Screen-Name>.html         ← one file per web screen
+└── WF-###-MOBILE-<Screen-Name>.html  ← one file per mobile screen (mobile-only projects)
 ```
 
 The base template ships **only** `WF-000-TEMPLATE.html`. A project creating its
@@ -38,6 +39,11 @@ Everything is placeholder brand. Rebrand by editing `../SHARED/wireframe.css`
    in the `wf-annotations` list.
 4. Open the file in a browser to check every declared breakpoint.
 5. Cross-link the driving user story.
+
+**Mobile screens** follow the same five steps, named `WF-###-MOBILE-<Screen-Name>.html`
+and composed at a phone viewport (390 × 844 reference). They share the number of their
+web counterpart where one exists. Do not let intent rest on hover, scrollbars, or browser
+chrome — none exists natively. Full convention: `../CONTEXT.md` → _Mobile screens_.
 
 ## Cross-references
 

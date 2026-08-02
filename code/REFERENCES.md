@@ -85,7 +85,7 @@ Internal and external references for all coding work in this repository.
 - **Hypothesis** — <https://hypothesis.readthedocs.io/> — property-based testing
 - **Bruno** — <https://docs.usebruno.com/> — HTTP-layer API integration tests
 - **pytest-playwright** — <https://playwright.dev/python/docs/test-runners> — the browser e2e suite
-- **axe-core-python** — <https://github.com/mdn/axe-core-python> — the WCAG 2.2 AA scan, no Node required
+- **axe-core-python** — <https://github.com/mdn/axe-core-python> — the WCAG 2.2 AA scan, no Node required. **Web surface only** — there is no React Native equivalent, so mobile accessibility verification is manual (React Native Testing Library queries, then VoiceOver and TalkBack on device). Mobile a11y is never "scanned clean"; see `code/docs/accessibility/MOBILE.md`
 
 ---
 

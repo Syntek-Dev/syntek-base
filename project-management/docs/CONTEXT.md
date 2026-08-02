@@ -17,13 +17,13 @@ project-management/docs/
 ├── SECURITY-GUIDE.md          ← STRIDE threat modelling, severity levels, security documentation
 ├── SEO-CHECKLIST.md           ← SEO and AI discoverability checklist for all frontend pages
 ├── SPRINT-PLANNING-GUIDE.md   ← MoSCoW prioritisation, SPRINT-PLAN-##.md format, phase breakdown
-└── VERSIONING-GUIDE.md        ← root-only semver strategy, files to update on every bump
+└── VERSIONING-GUIDE.md        ← two-tier semver, per-package tracks, files to update on a bump
 ```
 
 | Guide                      | Scope                                                                      |
 | -------------------------- | -------------------------------------------------------------------------- |
 | `GIT-GUIDE.md`             | Branch strategy, commit format, PR flow, PR gates                          |
-| `VERSIONING-GUIDE.md`      | Root-only semver strategy, files to update on every bump                   |
+| `VERSIONING-GUIDE.md`      | Two-tier semver, independent sub-package tracks, files to update on a bump |
 | `SEO-CHECKLIST.md`         | SEO and AI discoverability checklist for all frontend pages                |
 | `GDPR-GUIDE.md`            | GDPR compliance guide — lawful basis, retention, data rights               |
 | `SECURITY-GUIDE.md`        | STRIDE threat modelling — use before `workflows/09-security-checks`        |

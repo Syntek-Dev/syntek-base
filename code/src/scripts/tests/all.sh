@@ -105,5 +105,19 @@ if [[ "$RUN_API" == "true" ]]; then
   "$SCRIPT_DIR/api.sh"
 fi
 
+# Mobile surface — delegated, not reimplemented. The existence guard is what keeps "all"
+# honest without templated file contents: a web-only project has no code/src/mobile/, so
+# nothing here changes for it. Runs on the host (Metro and Jest are not containerised).
+MOBILE_SCRIPTS="$SCRIPT_DIR/../mobile"
+if [[ -d "$MOBILE_SCRIPTS" && -d "$SCRIPT_DIR/../../mobile" ]]; then
+  sep
+  log "[all] mobile (jest-expo)…"
+  if [[ "$COVERAGE" == "true" ]]; then
+    "$MOBILE_SCRIPTS/test.sh" --coverage
+  else
+    "$MOBILE_SCRIPTS/test.sh"
+  fi
+fi
+
 sep
 bold "✓ all.sh — all suites passed."

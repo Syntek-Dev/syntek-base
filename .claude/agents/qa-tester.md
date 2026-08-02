@@ -30,7 +30,10 @@ Read before analysing, in this order:
 - `project-management/docs/QA-GUIDE.md` — the governing manual/automated QA checklists
 - `.claude/skills/grill-with-docs/SKILL.md` — open the QA pass with a grilling interview
 
-Stack detail lives in the skills — defer to `.claude/skills/stack-django/SKILL.md` (backend
+Stack detail lives in the skills — defer to `.claude/skills/stack-react-native/SKILL.md` when a
+project carries the mobile surface (mobile-only; note that React Native has no `axe-core`
+equivalent, so mobile accessibility findings are manual, never "scanned clean"),
+`.claude/skills/stack-django/SKILL.md` (backend
 test patterns) and `.claude/skills/stack-htmx-templates/SKILL.md` (frontend/component test patterns)
 rather than restating them. Apply `.claude/skills/global-workflow/SKILL.md` localisation rules
 to every report.

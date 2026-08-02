@@ -7,10 +7,10 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-Host-run codebase-health audits — `cloc.sh` (line-count enforcement), `stubs.sh`
-(stub detection), `css-tokens.sh` (phantom-token guard), and `security.sh`
-(dependency CVE audit) — each mirroring a CI gate so a clean local run predicts a
-clean CI run.
+Host-run codebase-health audits — line-count enforcement, stub detection, the token-first
+guards for both surfaces (`css-tokens.sh`, `mobile-tokens.sh`), the copy and gradient
+guards, and the dependency CVE audit — each mirroring a CI gate so a clean local run
+predicts a clean CI run. Full inventory: `CONTEXT.md`.
 
 ## How to work here
 
@@ -31,7 +31,12 @@ clean CI run.
 
 - **`css-tokens.sh` enforces token-first CSS** — a `var(--x)` that resolves to no
   defined token fails the run; add the token in the token layer, never silence the
-  audit.
+  audit. **`mobile-tokens.sh` is its mobile counterpart** and enforces the same law with
+  a different clause (no raw literals in `StyleSheet`); its `token-allow` annotation is
+  for genuinely structural values only, never to defer real design debt.
+- **A self-guarding audit must exit 0, not fail, when its surface is absent.**
+  `mobile-tokens.sh` returns success with a note on a web-only project — that is what
+  lets it run unconditionally in CI without a step-level guard.
 - **Line limit is a hard gate:** ≥ 800 lines fails — split the file, do not raise the
   ceiling.
 - TDD/BDD red phase is the _only_ sanctioned stub bypass, via `STUBS_TDD_RED=1`;

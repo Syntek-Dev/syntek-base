@@ -140,9 +140,32 @@ request rate. See `code/docs/SECURITY.md` and `code/docs/API-DESIGN.md`.
 
 ---
 
+---
+
+## The second emitter — mobile
+
+Everything above describes the **web surface**. A project with the optional mobile surface has a
+**second emitter over the same rows**: `render_tokens_ts()`, a sibling of `render_tokens_css()`
+sharing the same pure-renderer / DB-backed-wrapper split, emitting a typed TypeScript module and
+riding the same git write-back adapter.
+
+It is a sibling, not a consumer — React Native has no custom properties, no `oklch()`, no CSS
+units and no media queries, so nothing in the rendered CSS can cross. Three of the six axes
+(`color_scheme`, `motion`, `transparency`) resolve at runtime through React Native APIs; the other
+three, and **every compound variant**, collapse to BASE and are dropped.
+
+The important consequence for this document: **the no-rebuild delivery promise above is web-only.**
+A token change reaches an installed mobile application only via a rebuild and a store release.
+
+Full specification — colour forms, gamut mapping, the emitted module, and the mobile token-first
+gate: [MOBILE.md](MOBILE.md).
+
+---
+
 ## Cross-references
 
 - `code/docs/DESIGN-TOKENS.md` — entry point + the token-first law
 - `design-tokens/MODEL.md` — the two models and their fields
 - `design-tokens/EDITOR.md` — editor, governance, extension points, drift
+- `design-tokens/MOBILE.md` — the mobile emitter and what does not cross the boundary
 - `code/docs/responsive/USER-PREFERENCES.md` — preference-query semantics

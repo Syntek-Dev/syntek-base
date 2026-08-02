@@ -1,6 +1,12 @@
-# ESLint covers the repo's JavaScript — the site is server-rendered, so that is the
-# progressive-enhancement scripts under code/src/django/static/js/. Prettier stays
-# repo-wide (formatting only). There is no TypeScript, so there is no typecheck job.
+# ESLint covers the WEB SURFACE's JavaScript — the pages are server-rendered, so that is
+# the progressive-enhancement scripts under code/src/django/static/js/. Prettier stays
+# repo-wide (formatting only).
+#
+# TypeScript exists on the MOBILE SURFACE only, and that workspace is self-contained: its
+# own eslint, typescript-eslint and tsconfig live under code/src/mobile/. The root config
+# ignores that tree, so root `eslint .` genuinely does not cover it — hence the two extra
+# jobs below rather than a wider glob. They are guarded at step level so they report
+# success, not "skipped", on a web-only project.
 name: JS/TS — Lint & Format
 
 # No path filter, deliberately. ESLint and Prettier are required status checks on the
@@ -69,3 +75,89 @@ jobs:
 
       - name: Check formatting
         run: pnpm format:check
+
+  mobile-lint:
+    name: ESLint (mobile surface)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect the mobile surface
+        id: detect
+        run: |
+          if [ -d code/src/mobile ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No code/src/mobile/ — this project is web-only. Nothing to lint."
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.detect.outputs.present == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "24"
+
+      - name: Get pnpm store directory
+        if: steps.detect.outputs.present == 'true'
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/install.sh
+
+      - name: Run ESLint
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/lint.sh
+
+  mobile-typecheck:
+    name: TypeScript (mobile surface)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect the mobile surface
+        id: detect
+        run: |
+          if [ -d code/src/mobile ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No code/src/mobile/ — this project is web-only. No TypeScript to check."
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.detect.outputs.present == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "24"
+
+      - name: Get pnpm store directory
+        if: steps.detect.outputs.present == 'true'
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/install.sh
+
+      - name: Run tsc
+        if: steps.detect.outputs.present == 'true'
+        run: bash code/src/scripts/mobile/typecheck.sh

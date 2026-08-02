@@ -124,7 +124,13 @@ for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
     *) die "Invalid --file-type '$ft'. Choose: python javascript" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python)
+# Default to Python, plus the mobile surface when this project has one. The existence
+# guard is what keeps "check everything" honest without templated file contents: a
+# web-only project has no code/src/mobile/, so the default is unchanged for it.
+if [[ ${#FILE_TYPES[@]} -eq 0 ]]; then
+  FILE_TYPES=(python)
+  [[ -d "$PROJECT_ROOT/code/src/mobile" ]] && FILE_TYPES+=(javascript)
+fi
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -133,7 +139,12 @@ fi
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 cd "$PROJECT_ROOT"
-check_any_container
+# Only the Python step needs the stack: basedpyright runs in the django container, while
+# the mobile type-check runs on the host. A mobile-only run works with the stack down,
+# mirroring how a Markdown-only lint.sh run does.
+if [[ " ${FILE_TYPES[*]} " == *" python "* ]]; then
+  check_any_container
+fi
 
 TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE"' EXIT
@@ -180,6 +191,25 @@ if wants python; then
     log ""
   else
     log "  ⚠  django container not running — skipping Python type-check"
+    log ""
+  fi
+fi
+
+# ── TypeScript — the mobile surface ───────────────────────────────────────────
+# Delegated, not reimplemented: the mobile app owns its own tsconfig and TypeScript
+# version, so this aggregate only decides WHETHER to run it. Runs on the host, like
+# Prettier and markdownlint — no container mounts the mobile tree.
+if wants javascript; then
+  if [[ -d "$PROJECT_ROOT/code/src/mobile" ]]; then
+    bold "── TypeScript (tsc — mobile surface) ──────────────────────────────────────"
+    if bash "$PROJECT_ROOT/code/src/scripts/mobile/typecheck.sh" 2>&1 | tee -a "$TMPFILE"; then
+      :
+    else
+      OVERALL_EXIT=1
+    fi
+    log ""
+  else
+    log "  ⚠  no code/src/mobile/ — this project has no mobile surface; skipping"
     log ""
   fi
 fi

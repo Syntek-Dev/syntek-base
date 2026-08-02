@@ -75,6 +75,16 @@ formats, templates, and destinations live in
 
 ---
 
+## Mobile surface (mobile-only)
+
+**Skip if `code/src/mobile/` does not exist** — inapplicable, not unmet.
+
+- [ ] `bash code/src/scripts/mobile/typecheck.sh` passes before any test is written (Phase 0)
+- [ ] Mobile tests live in `code/src/mobile/__tests__/`, never inside `app/`
+- [ ] `bash code/src/scripts/mobile/test.sh --coverage` passes — same floors, enforced per runtime
+
+---
+
 ## Definition of Done
 
 - [ ] All tests pass with real implementation — no stubs, no `NotImplementedError`

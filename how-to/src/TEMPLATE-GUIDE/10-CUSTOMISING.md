@@ -59,6 +59,57 @@ documentation. Adding scripts is cheap; renaming is not.
 Nine of the fifteen are path-filtered. If you move source out of the paths they watch, they
 silently stop running. Check `.github/workflows/*.yml` `paths:` after any structural move.
 
+### The opt-in mechanism
+
+Optional content — today, the mobile surface — is gated by **one mechanism and one only**: a
+templated `_exclude` entry in `copier.yml`.
+
+```yaml
+_exclude:
+  - "<: if not INCLUDE_MOBILE :>/code/src/mobile<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/code/src/scripts/mobile<: endif :>"
+```
+
+Three properties make this worth protecting, and all three are lost the moment a second
+mechanism appears:
+
+- **No file anywhere has templated contents.** Shared files gain **inert no-ops** instead — an
+  ignore entry pointing at a path that may not exist, a glob that may match nothing, a `ts,tsx`
+  extension in a lint target. Each costs a web-only project exactly nothing.
+- **The excluded tree is never rendered at all.** A Jinja syntax error inside a mobile file
+  cannot break a web-only generation, because Copier never opens it.
+- **When the condition is false the entry renders to an empty string**, which Copier tolerates.
+
+Two alternatives were tried and rejected. **Conditional directory names** degenerate here because
+`_templates_suffix: ""` makes Copier's "suffix outside the condition" rule meaningless. A
+**post-generation delete task** renders the tree first and deletes after — so a broken mobile
+file still kills a web-only generation.
+
+If you add your own optional subtree, copy this pattern rather than inventing a second one, and
+extend the CI matrix that generates **both** boolean values so the negative case stays tested.
+
+### Binaries and `_templates_suffix`
+
+`copier.yml` sets `_templates_suffix: ""`, which means **every file in the tree passes through
+Jinja** — there is no `.jinja` opt-in marker. The consequence is easy to trip over: **binaries
+cannot be rendered**, which is why `*.pdf` is excluded and why the mobile app uses Expo's
+Continuous Native Generation rather than committed `ios/` and `android/` directories
+(`02-STACK.md`).
+
+If you add a binary asset anywhere in the tree — a font, an image, a JAR — you must add an
+exclusion entry for it or generation fails. This is the single most common cause of a template
+that worked yesterday and does not today.
+
+### The pnpm workspace glob
+
+`pnpm-workspace.yaml` declares `packages: ["code/src/*"]` rather than naming the mobile app.
+pnpm treats a matched directory as a package only when it has a `package.json`, so the glob
+resolves to the mobile app when you opted in and to nothing when you did not — leaving the file
+**byte-identical on both paths**. That is what lets `_exclude` remain the single mechanism.
+
+Cost: any future directory you add under `code/src/` carrying a `package.json` joins the
+workspace silently. Nothing warns you.
+
 ## House rules — change knowingly
 
 | Rule                             | Where                           | If you change it                                             |

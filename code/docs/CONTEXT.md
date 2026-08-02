@@ -13,7 +13,7 @@ starting any task in the `code/` layer.
 ```text
 code/docs/
 ├── ACCESSIBILITY.md                  ← WCAG 2.2 AA, semantic HTML, ARIA patterns
-│   └── accessibility/                ← html-and-aria/ interaction/ testing-and-components/
+│   └── accessibility/                ← html-and-aria/ interaction/ testing-and-components/ mobile/
 ├── API-DESIGN.md                     ← Django Ninja JSON API + REST conventions
 │   └── api-design/                   ← rest-conventions/ ninja-conventions/ auth-and-errors/ auth-strategy/ webhooks/ event-tracking/ api-docs/ client-patterns/
 ├── ARCHITECTURE-PATTERNS.md          ← service layer, Django app structure, template/HTMX routing
@@ -27,6 +27,7 @@ code/docs/
 ├── DATABASE.md              ← pre-flight data-layer rules: scope, constraints, locks, search, deferrals
 ├── DATA-STRUCTURES.md       ← domain modelling, PostgreSQL schema design, indexing
 ├── DESIGN-TOKENS.md         ← CSS design-token catalogue and var(--token)-only usage rules
+│   └── design-tokens/                ← model/ cascade/ editor/ mobile/
 ├── ENCRYPTION-GUIDE.md      ← field-level encryption patterns (PII storage)
 │   └── encryption/                   ← field-encryption/ lookup-tokens/
 ├── LOGGING.md               ← logging, Glitchtip, Loki, Prometheus, Grafana, Cloudinary

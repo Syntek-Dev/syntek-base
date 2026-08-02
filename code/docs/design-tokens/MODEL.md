@@ -57,6 +57,23 @@ grammar for the token's kind is rejected before write (validated by the Ninja re
 Colour tokens use `oklch` — see [../responsive/USER-PREFERENCES.md](../responsive/USER-PREFERENCES.md)
 for the OKLCH rule.
 
+### Colour storage — six forms, one canonical
+
+Both models carry **all six colour forms** for a colour token: OKLCH, HSL, HSLA, RGB, RGBA and
+HEX. **OKLCH is canonical**, and the service **derives the other five on every write**, inside the
+same transaction.
+
+The alternative — store one form, convert on read — lets each consumer convert independently and
+drift. Deriving on write makes drift structurally impossible: five of the six are never
+hand-authored, so no edit path can desynchronise them. `value_kind` stays coherent because it
+describes the **canonical** form, not the emitted one, and remains `oklch` for every colour token.
+
+Never hand-author a derived form, and never write one in a migration without recomputing the
+whole set. Non-colour kinds have a single form each and are unaffected.
+
+Why six rather than two, which form mobile consumes, and how out-of-sRGB colours are resolved:
+[MOBILE.md](MOBILE.md).
+
 ---
 
 ## `DesignTokenValue` — NON-BASE preference overrides only
@@ -113,4 +130,5 @@ seeded per-selector as `data_theme` + `media` row pairs (see [CASCADE.md](CASCAD
 - `code/docs/DESIGN-TOKENS.md` — entry point + the token-first law
 - `design-tokens/CASCADE.md` — preference axes, render order, delivery
 - `design-tokens/EDITOR.md` — editor, governance, extension points
+- `design-tokens/MOBILE.md` — the six colour forms, gamut mapping, and the mobile emitter
 - `code/src/django/apps/design_tokens/CONTEXT.md` — live models, Ninja endpoints, tasks

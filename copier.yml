@@ -17,8 +17,8 @@ _envops:
   variable_end_string: "%>"
   block_start_string: "<:"
   block_end_string: ":>"
-  comment_start_string: "<|"
-  comment_end_string: "|>"
+  comment_start_string: "<~"
+  comment_end_string: "~>"
   keep_trailing_newline: true
 
 # Files that belong to syntek-base itself and must not land in your project.
@@ -40,6 +40,19 @@ _exclude:
   - /CONTRIBUTING.md
   - /how-to/src/TEMPLATE-GUIDE
   - /how-to/src/TEMPLATE-TOKENS.md
+  # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
+  # SINGLE conditionalisation mechanism — no file ever has templated contents. When the
+  # answer is false these paths are never rendered at all, so a Jinja error inside a mobile
+  # file cannot break a web-only generation. When it is true each entry renders to an empty
+  # string, which Copier ignores.
+  - "<: if not INCLUDE_MOBILE :>/code/src/mobile<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/code/src/scripts/mobile<: endif :>"
+  # The governance pair goes with the tree: a mobile agent with no mobile app to work on
+  # is worse than no agent at all. The shipped INDEXES still list both unconditionally,
+  # flagged mobile-only — that keeps .claude/CLAUDE.md free of templated contents, which
+  # is the rule these entries exist to protect.
+  - "<: if not INCLUDE_MOBILE :>/.claude/agents/mobile.md<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/.claude/skills/stack-react-native<: endif :>"
   # Binaries cannot be rendered when _templates_suffix is "". Both are generated
   # artefacts — a new project rebuilds them from the sources beside them.
   - "*.pdf"
@@ -195,6 +208,37 @@ CORE_APP:
   type: str
   help: App owning shared primitives such as encryption
   default: core
+
+# ── Mobile frontend (optional) ───────────────────────────────────────────────
+# Opt-in React Native + TypeScript app (Expo, Continuous Native Generation) at
+# code/src/mobile/. When INCLUDE_MOBILE is false the tree is excluded above and the two
+# tokens below are never asked. Defaults keep a web-only generation identical to a
+# project generated before mobile existed.
+
+INCLUDE_MOBILE:
+  type: bool
+  help: Include the optional React Native mobile frontend
+  default: false
+
+MOBILE_APP_NAME:
+  type: str
+  help: Display name shown under the app icon on the device
+  default: "<% PROJECT_NAME %>"
+  when: "<% INCLUDE_MOBILE %>"
+
+MOBILE_BUNDLE_ID:
+  type: str
+  help: >-
+    iOS bundle identifier and Android application ID. Reverse-domain form; it is
+    permanent once the app is published to either store.
+  default: "<% PRIMARY_DOMAIN.split('.') | reverse | join('.') | replace('-', '') %>"
+  when: "<% INCLUDE_MOBILE %>"
+  validator: >-
+    <: if MOBILE_BUNDLE_ID != MOBILE_BUNDLE_ID | lower or '.' not in MOBILE_BUNDLE_ID
+       or ' ' in MOBILE_BUNDLE_ID or '_' in MOBILE_BUNDLE_ID or '-' in MOBILE_BUNDLE_ID :>
+    Use reverse-domain form: lowercase letters and digits, dot-separated, no hyphens or
+    underscores (e.g. com.acme.acmeportal).
+    <: endif :>
 
 # ── Meta ─────────────────────────────────────────────────────────────────────
 

@@ -59,7 +59,7 @@ byte-identical.
 | -------- | ----- | ------ |
 | Variable | `<%`  | `%>`   |
 | Block    | `<:`  | `:>`   |
-| Comment  | `<\|` | `\|>`  |
+| Comment  | `<~`  | `~>`   |
 
 Not `{{ }}`. The repository already contains four dialects that collide with Jinja's defaults:
 

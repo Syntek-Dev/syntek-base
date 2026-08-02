@@ -45,6 +45,27 @@ model: opus
 
 ---
 
+## Mobile surface (mobile-only)
+
+**Skip this whole section if `code/src/mobile/` does not exist** — the project is web-only and
+every item below is inapplicable, not unmet.
+
+- [ ] `code/src/mobile/CLAUDE.md` read — the surface boundary understood before any code
+- [ ] Screens implemented as expo-router routes under `app/`; **no test file inside `app/`** (every file there is a route, and a co-located test enters the production bundle)
+- [ ] Styling is `StyleSheet.create` over the token module — no raw literals; any `token-allow` annotation carries a reason
+- [ ] `code/docs/accessibility/MOBILE.md` applied — `accessibilityRole` on every interactive element, state in `accessibilityState`, decorative content hidden on **both** platforms
+- [ ] Touch targets meet the **platform** minimum (44 pt iOS / 48 dp Android), not merely WCAG's 24 × 24
+- [ ] `bash code/src/scripts/mobile/lint.sh` passes
+- [ ] `bash code/src/scripts/mobile/typecheck.sh` passes
+- [ ] `bash code/src/scripts/mobile/test.sh --coverage` passes — 75% line and branch, enforced per runtime
+- [ ] `bash code/src/scripts/audits/mobile-tokens.sh` passes — token-first enforced
+- [ ] `bash code/src/scripts/mobile/bundle.sh` passes — nothing test-only leaked into the bundle
+- [ ] Screen reader verified manually on **both** VoiceOver and TalkBack — recorded as manual, never as "scanned clean"
+- [ ] `ios/` and `android/` are absent from the diff — they are Expo-generated, never committed
+- [ ] Mobile version bumped in **both** `package.json` and `app.json` if this story ships a release
+
+---
+
 ## Context
 
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow

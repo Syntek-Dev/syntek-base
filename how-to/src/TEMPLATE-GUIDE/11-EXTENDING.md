@@ -153,6 +153,41 @@ Repo-scoped servers go in `.mcp.json` and are available to everyone who clones. 
 servers are your own business. Document any new one in `.claude/CLAUDE.md` §3 so agents know it
 exists.
 
+## An optional subtree
+
+If a piece should ship only when the user opts in, gate it the way the mobile surface is gated —
+**a templated `_exclude` entry, and nothing else** (`10-CUSTOMISING.md` has the full reasoning).
+
+1. Add the boolean question to `copier.yml`, defaulting to **false**, so an existing project
+   pulling `copier update` gets no surprise.
+2. Add one `_exclude` entry per top-level path the feature owns. Keep the count low — a single
+   directory per concern removes cleanly; a `feature-*` glob scattered across four directories
+   fails silently the day someone misses one.
+3. Give dependent questions a `when:` so they are asked only if the boolean is true.
+4. Touch shared files with **inert no-ops only** — never templated contents. An ignore entry, a
+   glob, an added file extension. Each must cost a project that opted out exactly nothing.
+5. Guard CI at **step** level on the directory existing, so the job reports success on both
+   paths rather than skipping. Add the negative case to the generate matrix.
+6. Document the tokens in `../TEMPLATE-TOKENS.md` and the choice in `05-ANSWERS.md`.
+
+Verify by generating into `/tmp` **both ways** and diffing the trees. Everything except
+`.copier-answers.yml` should be identical on the opted-out path.
+
+## A development build (graduating from Expo Go)
+
+The mobile skeleton ships on Expo Go, which only runs libraries already in the Expo SDK. The
+first dependency with custom native code forces the graduation, and it is **your project's
+decision, not the template's**:
+
+1. Run `expo prebuild` to generate `ios/` and `android/`.
+2. Decide whether they stay gitignored. Keeping them generated preserves the config-driven
+   upgrade path; committing them means you now own native maintenance — and, if you still
+   generate from this template, an exclusion entry for every binary they contain
+   (`10-CUSTOMISING.md` → _Binaries_).
+3. Record it as an ADR in `project-management/src/13-DECISIONS/`. It changes your upgrade story.
+
+iOS development builds need macOS or a paid cloud build service; neither is assumed here.
+
 ---
 
 ## The checklist for anything new

@@ -21,16 +21,25 @@ model: opus
 
 The design-token system makes every UI value (colour, typography, spacing, shadow, radius, motion,
 surface, z-index, breakpoint) **database-canonical** and editable from the custom `/admin/` admin
-area without a frontend rebuild. PostgreSQL is the source of truth; a generator renders the values
-to a single CSS cascade that Django serves as a stylesheet and persists back to the repo (git
-write-back). There is **no Node server** — the CSS is a plain file served by Django.
+area. PostgreSQL is the source of truth; a generator renders the values to a single CSS cascade
+that Django serves as a stylesheet and persists back to the repo (git write-back). There is **no
+Node server** — the CSS is a plain file served by Django.
 
 ```text
 PostgreSQL (DesignToken + DesignTokenValue rows)
   → services/render.py  (renders :root + theme + preference cascade)
     → Django-served CSS file (/assets/tokens.css)  +  git write-back (tokens CSS file)
-      → CSS custom properties consumed by every component via var(--token)
+      → CSS custom properties consumed by every component via var(--token)      [web surface]
+
+  → services/render.py  (render_tokens_ts — same rows, second emitter)
+    → typed TypeScript module, published by the same git write-back
+      → StyleSheet values imported from @/tokens                            [mobile surface]
 ```
+
+> **The no-rebuild promise is web-only.** Editing a token is live on the web with no frontend
+> rebuild. On the **mobile surface** the emitted module is compiled into the application, so a
+> token change reaches an installed app only via a rebuild and a store release. Never state the
+> promise unqualified. See [design-tokens/MOBILE.md](design-tokens/MOBILE.md).
 
 The seed source of the database is the CSS token layer at
 `code/src/django/static/css/tokens/*.css` (plus `surfaces.css`), so the DB and the committed CSS
@@ -54,6 +63,15 @@ Rule 3 is **enforced in CI** by `code/src/scripts/audits/css-tokens.sh` (and the
 phantom custom property is silently dropped by Lightning CSS. There is **no separate raw-literal
 gate** — `css-tokens.sh` is the single enforcement point. A raw-literal detector would only be
 advisory; do not add it as a failing script.
+
+### The law on the mobile surface
+
+Rules 1–3 are written in CSS, so the **enforcement clause** — not the law — is restated for the
+optional mobile surface. There, `StyleSheet` values come only from the generated token module,
+never a raw literal, enforced by `code/src/scripts/audits/mobile-tokens.sh`. Only the
+no-raw-literals half needs a script: the emitted module is typed, so an unresolved token import
+does not compile and `typecheck.sh` already fails the build. Detail:
+[design-tokens/MOBILE.md](design-tokens/MOBILE.md).
 
 Run the guard locally before raising a PR:
 
@@ -93,6 +111,7 @@ need:
 | [design-tokens/MODEL.md](design-tokens/MODEL.md)     | The two models, 9 categories, `value_kind`, reference-only/themeable/editable flags |
 | [design-tokens/CASCADE.md](design-tokens/CASCADE.md) | The six preference axes, the justification rule, the render cascade, and delivery   |
 | [design-tokens/EDITOR.md](design-tokens/EDITOR.md)   | The `/admin/design-tokens` editor, governance, extension points, and known drift    |
+| [design-tokens/MOBILE.md](design-tokens/MOBILE.md)   | The mobile bridge — six colour forms, gamut mapping, the TS emitter, what collapses |
 
 ---
 

@@ -37,7 +37,7 @@
   ```
 
 - [ ] Any new token is registered in **both** `copier.yml` and `how-to/src/TEMPLATE-TOKENS.md`
-- [ ] No `{{ }}` used for tokens; any literal `<% %> <: :> <| |>` is wrapped in `<: raw :>`
+- [ ] No `{{ }}` used for tokens; any literal `<% %> <: :> <~ ~>` is wrapped in `<: raw :>`
 - [ ] This does not break `copier update` for projects already generated from the template
 
 ## Documentation gate

@@ -25,6 +25,24 @@ This workflow produces code — consult **both** layer reference files:
 | Tests      | `code/REFERENCES.md`               | **External — Testing** → pytest, pytest-django, factory_boy                                                                                        |
 | Standards  | `code/REFERENCES.md`               | **External — Security & Standards** → WCAG 2.2 AA                                                                                                  |
 | Artefacts  | `project-management/REFERENCES.md` | **Internal — Live Artefacts** → src/07-WIREFRAMES/, src/06-COMPONENTS/                                                                             |
+| **Mobile** | `code/REFERENCES.md`               | **Mobile-only** → `code/docs/accessibility/MOBILE.md`, `code/docs/design-tokens/MOBILE.md`, `code/src/mobile/CONTEXT.md`                           |
+
+---
+
+## Surfaces
+
+This workflow covers the frontend of **whichever surfaces the story touches**. Steps 1–11 are the
+**web surface** (Django templates + django-components + HTMX + Alpine). **Step 4M is mobile-only**
+and applies solely to a project generated with the mobile surface.
+
+**Why the frontmatter still says `agent: frontend`.** The `mobile` agent and the
+`stack-react-native` skill do not exist in a web-only project, so routing frontmatter naming them
+would point at nothing on half of all generated projects. The mobile route is therefore named at
+its point of use, in Step 4M, where its absence is self-explanatory. This is deliberate, not an
+omission.
+
+`frontend` keeps its remit unchanged and is **web-only** — it hands mobile work over rather than
+applying Django-template assumptions to React Native.
 
 ---
 
@@ -111,6 +129,53 @@ Build each component against its Figma design:
 - Implement all required states (default, hover, focus, disabled, error, success, empty)
 - Match the annotated accessibility requirements from the component design
 - Follow naming and structure conventions in `code/docs/coding-principles/STYLE-AND-PROCESS.md`
+
+### Step 4M — Implement Mobile Screens (mobile-only)
+
+> **Skip entirely if `code/src/mobile/` does not exist** — the project has no mobile surface and
+> this step, the `mobile` agent, and the `stack-react-native` skill are all absent.
+
+```text
+mobile [describe the screens to implement]
+```
+
+> **↳ New agent:** `mobile` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
+
+The mobile app is a **separate deployable that consumes the same Django Ninja API** — it renders
+no Django page and Django never bundles it. Do not carry template, HTMX, or CSS assumptions
+across; read `code/src/mobile/CLAUDE.md` first.
+
+- **Routes** are expo-router files under `code/src/mobile/app/`. That directory is **routes only** —
+  every file in it becomes a route, so tests go in `code/src/mobile/__tests__/`, never beside their
+  subject
+- **Styling** is `StyleSheet.create` over the generated token module — never a raw literal.
+  A genuinely structural value carries a `token-allow` comment with a reason
+  (`code/docs/design-tokens/MOBILE.md`)
+- **Accessibility** is the same WCAG 2.2 AA standard with a different technique set —
+  `accessibilityRole` on everything interactive, state in `accessibilityState` and never baked
+  into the label, and platform touch-target minimums (44 pt iOS / 48 dp Android), which are
+  stricter than WCAG's 24 × 24 (`code/docs/accessibility/MOBILE.md`)
+- **Never commit `ios/` or `android/`** — Expo regenerates them, and committing them would put
+  binaries in a tree that Copier cannot render
+
+Run every operation through the scripts — never raw `pnpm`, `expo`, `tsc`, or `jest`:
+
+```bash
+bash code/src/scripts/mobile/lint.sh
+bash code/src/scripts/mobile/typecheck.sh
+bash code/src/scripts/mobile/test.sh --coverage
+bash code/src/scripts/audits/mobile-tokens.sh
+bash code/src/scripts/mobile/bundle.sh
+```
+
+`bundle.sh` is the gate that catches a test or dev-only import leaking into the production
+bundle. Run it before raising a PR, not after.
+
+**Accessibility verification here is manual.** There is no React Native counterpart to
+`axe-core-python`, so Step 8's automated browser suite has no mobile equivalent. React Native
+Testing Library queries (`getByRole`, `getByLabelText`) catch missing props in unit tests; the
+rest is VoiceOver on iOS **and** TalkBack on Android — neither is a proxy for the other. Never
+record mobile a11y as "scanned clean".
 
 ### Step 5 — Write Tests
 

@@ -1,0 +1,16 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    // expo/tsconfig.base leaves `types` unset, which under this resolution mode does not
+    // surface Jest's globals (describe/it/expect). Naming it explicitly fixes the test
+    // files. React and React Native types are unaffected — they resolve through imports
+    // and the react-jsx runtime, not through global type acquisition.
+    "types": ["jest"],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "exclude": ["node_modules", ".expo", ".expo-bundle", "coverage"]
+}

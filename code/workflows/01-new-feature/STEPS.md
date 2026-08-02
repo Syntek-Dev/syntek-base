@@ -159,6 +159,25 @@ frontend [implement the Django template, components, and HTMX partials]
 Place each interaction by class — server, HTMX, or Alpine (`code/docs/RENDERING.md`). Every HTMX
 request carries an `hx-indicator`. All interactive elements must meet WCAG 2.2 AA.
 
+### Step 7M — Frontend: Mobile Screens (mobile-only)
+
+> **Skip entirely if `code/src/mobile/` does not exist** — the project is web-only, and this step,
+> the `mobile` agent, and the `stack-react-native` skill are all absent.
+
+```text
+mobile [describe the screens to implement]
+```
+
+> **↳ New agent:** `mobile` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
+
+The mobile app consumes the **same Django Ninja API built in Steps 5–6** — it is a separate
+deployable, not a client for the Django pages, so nothing from Step 7 carries across. Routes are
+expo-router files under `code/src/mobile/app/`; styling is `StyleSheet` over the token module;
+WCAG 2.2 AA holds with a React Native technique set (`code/docs/accessibility/MOBILE.md`).
+
+Full procedure, including the checklist: `project-management/workflows/18-frontend-code/`
+→ Step 4M.
+
 ### Step 8 — Make Tests Green
 
 ```bash
@@ -166,6 +185,13 @@ bash code/src/scripts/tests/backend.sh
 ```
 
 All tests written in Step 2 must be green. Return to the relevant step if any fail.
+
+**Mobile-only:** the mobile suite is a second runtime and is not covered by the command above.
+
+```bash
+bash code/src/scripts/mobile/test.sh --coverage
+bash code/src/scripts/mobile/bundle.sh
+```
 
 ### Step 9 — Code Review and QA
 

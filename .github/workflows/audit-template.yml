@@ -33,49 +33,117 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
-      - name: Generate a project from this ref
+      # BOTH render paths, every time. The negative case is the one that rots silently:
+      # a mobile-only mistake that leaks into a web-only generation is invisible unless
+      # the web-only path is generated and asserted on. A shell loop rather than a job
+      # matrix, because a matrix needs GitHub expression syntax and this file must not
+      # contain it (see the note further down).
+      - name: Generate a project both ways
         run: |
-          uvx copier copy --trust --defaults --vcs-ref=HEAD \
-            --data PROJECT_NAME="CI Probe" \
-            --data ORG_NAME="CI Org" \
-            --data DEVELOPER_NAME="CI Runner" \
-            --data DEVELOPER_EMAIL="ci@example.com" \
-            --data DATE="01/01/2027" \
-            . "$RUNNER_TEMP/generated"
+          for mobile in false true; do
+            uvx copier copy --trust --defaults --vcs-ref=HEAD \
+              --data PROJECT_NAME="CI Probe" \
+              --data ORG_NAME="CI Org" \
+              --data DEVELOPER_NAME="CI Runner" \
+              --data DEVELOPER_EMAIL="ci@example.com" \
+              --data DATE="01/01/2027" \
+              --data INCLUDE_MOBILE=$mobile \
+              . "$RUNNER_TEMP/gen-$mobile"
+          done
 
       - name: No token may survive rendering
         run: |
-          cd "$RUNNER_TEMP/generated"
-          left=$(grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l)
-          if [ "$left" -ne 0 ]; then
-            echo "::error::$left unrendered token(s) survived generation"
-            grep -rIn '<%[A-Z_]*%>' . --exclude-dir=.git | head -20
-            exit 1
-          fi
-          echo "0 unrendered tokens"
+          status=0
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+            left=$(grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l)
+            if [ "$left" -ne 0 ]; then
+              echo "::error::INCLUDE_MOBILE=$mobile — $left unrendered token(s) survived"
+              grep -rIn '<%[A-Z_]*%>' . --exclude-dir=.git | head -20
+              status=1
+            fi
+            echo "INCLUDE_MOBILE=$mobile — 0 unrendered tokens"
+          done
+          exit $status
 
       - name: Template-only files must not leak into a generated project
         run: |
-          cd "$RUNNER_TEMP/generated"
           status=0
-          for f in copier.yml LICENSE SECURITY.md CONTRIBUTING.md \
-                   .github/CODEOWNERS .github/ISSUE_TEMPLATE \
-                   .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
-                   .github/workflows/audit-template.yml \
-                   how-to/src/TEMPLATE-GUIDE how-to/src/TEMPLATE-TOKENS.md .copier; do
-            if [ -e "$f" ]; then echo "::error::$f leaked into the generated project"; status=1; fi
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+            for f in copier.yml LICENSE SECURITY.md CONTRIBUTING.md \
+                     .github/CODEOWNERS .github/ISSUE_TEMPLATE \
+                     .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
+                     .github/workflows/audit-template.yml \
+                     how-to/src/TEMPLATE-GUIDE how-to/src/TEMPLATE-TOKENS.md .copier; do
+              if [ -e "$f" ]; then
+                echo "::error::INCLUDE_MOBILE=$mobile — $f leaked into the generated project"
+                status=1
+              fi
+            done
           done
           exit $status
 
       - name: The generated project must be complete
         run: |
-          cd "$RUNNER_TEMP/generated"
           status=0
-          for f in README.md uv.lock .copier-answers.yml pyproject.toml \
-                   how-to/src/CONTRIBUTING.md .github/workflows/claude.yml; do
-            if [ ! -e "$f" ]; then echo "::error::$f missing from the generated project"; status=1; fi
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+            for f in README.md uv.lock .copier-answers.yml pyproject.toml \
+                     how-to/src/CONTRIBUTING.md .github/workflows/claude.yml; do
+              if [ ! -e "$f" ]; then
+                echo "::error::INCLUDE_MOBILE=$mobile — $f missing from the generated project"
+                status=1
+              fi
+            done
           done
           exit $status
+
+      # The opt-in is gated by ONE mechanism: a templated _exclude entry. This step is
+      # what proves it still works in both directions — present when asked for, and
+      # genuinely absent, not merely empty, when not.
+      - name: The mobile surface must obey the opt-in
+        run: |
+          status=0
+          for p in code/src/mobile code/src/scripts/mobile \
+                   .claude/agents/mobile.md .claude/skills/stack-react-native; do
+            if [ ! -e "$RUNNER_TEMP/gen-true/$p" ]; then
+              echo "::error::INCLUDE_MOBILE=true — $p is missing"; status=1
+            fi
+            if [ -e "$RUNNER_TEMP/gen-false/$p" ]; then
+              echo "::error::INCLUDE_MOBILE=false — $p leaked into a web-only project"; status=1
+            fi
+          done
+          for f in code/src/mobile/package.json code/src/mobile/app/index.tsx \
+                   code/src/scripts/mobile/server.sh; do
+            if [ ! -e "$RUNNER_TEMP/gen-true/$f" ]; then
+              echo "::error::INCLUDE_MOBILE=true — $f is missing"; status=1
+            fi
+          done
+          exit $status
+
+      # The single-mechanism rule in prose is worth nothing without this assertion: no
+      # file may carry templated contents, so every shared file must be byte-identical
+      # across the two paths. Only the answers file may differ.
+      - name: Shared files must be byte-identical across both paths
+        run: |
+          drift=$(diff -rq --exclude=.git --exclude=.copier-answers.yml \
+                    "$RUNNER_TEMP/gen-false" "$RUNNER_TEMP/gen-true" \
+                    2>/dev/null | grep -v '^Only in ' || true)
+          if [ -n "$drift" ]; then
+            echo "::error::a shared file differs between the two render paths"
+            echo "$drift"
+            exit 1
+          fi
+          echo "every shared file is byte-identical"
+
+      # NOT CHECKED, deliberately: "a web-only project contains no reference to
+      # scripts/mobile/". It does contain them — the CI workflows and the two script
+      # aggregates name those paths behind a directory-existence guard, which is the
+      # whole point of guarding rather than templating. A grep for the string cannot
+      # tell a guarded reference from an orphaned one, so it would fail a correct repo.
+      # The byte-identical check above is the real guarantee: nothing about the web-only
+      # path differs from the mobile path except the files the opt-in removes.
 
       # NOTE: this file must never contain the literal dollar-brace-brace sequence.
       # GitHub Actions parses its expression syntax anywhere in a workflow file,
@@ -84,11 +152,13 @@ jobs:
       # escaped braces so the sequence never appears.
       - name: Syntax that must survive rendering untouched
         run: |
-          cd "$RUNNER_TEMP/generated"
           status=0
-          gha=$(grep -rIoE '\$\{\{' .github/workflows | wc -l)
-          bash_tests=$(grep -rIoE '\[\[' code/src/scripts | wc -l)
-          [ "$gha" -gt 50 ] || { echo "::error::workflow expressions were eaten by rendering (found $gha)"; status=1; }
-          [ "$bash_tests" -gt 200 ] || { echo "::error::bash test syntax was eaten by rendering (found $bash_tests)"; status=1; }
-          echo "workflow expressions: $gha · bash test brackets: $bash_tests"
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+            gha=$(grep -rIoE '\$\{\{' .github/workflows | wc -l)
+            bash_tests=$(grep -rIoE '\[\[' code/src/scripts | wc -l)
+            [ "$gha" -gt 50 ] || { echo "::error::INCLUDE_MOBILE=$mobile — workflow expressions were eaten by rendering (found $gha)"; status=1; }
+            [ "$bash_tests" -gt 200 ] || { echo "::error::INCLUDE_MOBILE=$mobile — bash test syntax was eaten by rendering (found $bash_tests)"; status=1; }
+            echo "INCLUDE_MOBILE=$mobile — workflow expressions: $gha · bash test brackets: $bash_tests"
+          done
           exit $status

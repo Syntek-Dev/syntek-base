@@ -24,9 +24,30 @@ drops any metric below the floor is blocked.
 | Branch coverage   | 75%     | Both sides of every `if`/`else` exercised   |
 | Auth-related code | 90%     | `apps/users/` and any auth-adjacent service |
 
-There is **one floor**, not one per layer: template, component, and HTMX-partial tests are pytest
-tests and count towards the same number (see [`FRONTEND-TESTING.md`](FRONTEND-TESTING.md)). The
-floors are **minimums**, not targets. Auth-related code must maintain ≥ 90% line and branch
+There is **one standard, enforced once per runtime** — not one floor per layer. Template,
+component, and HTMX-partial tests are pytest tests and count towards the same number as the rest
+of the backend (see [`FRONTEND-TESTING.md`](FRONTEND-TESTING.md)); there is no separate frontend
+floor.
+
+"Per runtime" is the precise phrasing, and it matters only where a second runtime exists. A
+project with the optional **mobile surface** runs Jest, and `coverage.py` and Jest **share no
+accumulator** — a single combined percentage across both was never achievable, so the same
+numbers are enforced twice, independently:
+
+| Runtime              | Enforced by                     | Configuration                    |
+| -------------------- | ------------------------------- | -------------------------------- |
+| Python (always)      | `coverage.py` via pytest-cov    | `fail_under` (below)             |
+| Mobile (mobile-only) | Jest `coverageThreshold.global` | `code/src/mobile/jest.config.js` |
+
+**Two gates to keep in step.** If a floor moves, it moves in both places or the standard has
+silently forked.
+
+> **The 90% auth entry is not inert on the mobile side.** Jest fails a run whose
+> `coverageThreshold` glob matches nothing, so the per-glob auth entry ships as a **commented
+> template** in `jest.config.js`, to be enabled with the first auth-adjacent mobile code. Adding
+> it early breaks every run.
+
+The floors are **minimums**, not targets. Auth-related code must maintain ≥ 90% line and branch
 coverage.
 
 ### Python — pytest-cov configuration

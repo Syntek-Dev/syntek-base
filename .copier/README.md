@@ -150,7 +150,7 @@ Two things to do on a freshly generated project:
 │       ├── syntax-markdown.yml
 │       ├── syntax-python.yml
 │       ├── test-api.yml
-│       ├── test-backend.yml
+│       ├── test.yml                    ← pytest + coverage, and the mobile suite and bundle
 │       └── test-e2e.yml               ← playwright-python browser suite
 ├── code/                                ← source code, coding standards, tests
 │   ├── CONTEXT.md                       ← coding layer index

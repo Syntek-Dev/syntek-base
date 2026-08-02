@@ -21,10 +21,14 @@ model: opus
 - **Root project** — single-track semver covering the entire monorepo (documentation,
   infrastructure, PM artefacts, and cross-cutting changes). Tracked by `VERSION`,
   `CHANGELOG.md`, `VERSION-HISTORY.md`, and `RELEASES.md` at the project root.
-- **Sub-packages** — each deployable unit (currently just the `django` project
-  bundle) has its own independent semver. Sub-package versions move only when that
-  package's code changes — they are never bumped as a side-effect of a root project
-  version bump.
+- **Sub-packages** — each deployable unit has its own independent semver: the `django`
+  project bundle always, and the `mobile` application in a project that opted into the
+  mobile surface. Sub-package versions move only when that package's code changes — they
+  are never bumped as a side-effect of a root project version bump.
+
+For the mobile application the independence is not merely tidy, it is forced: app-store
+versions must increase monotonically, so coupling to the root track would produce either
+spurious store releases or gaps in the version sequence.
 
 ---
 
@@ -61,15 +65,33 @@ Do **not** update sub-package version files as part of a root bump — they are 
 
 ### Current sub-packages
 
-| Path               | Package manifest             | Version files                                       |
-| ------------------ | ---------------------------- | --------------------------------------------------- |
-| `code/src/django/` | `pyproject.toml` (repo root) | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
+| Path               | Package manifest                | Version files                                       |
+| ------------------ | ------------------------------- | --------------------------------------------------- |
+| `code/src/django/` | `pyproject.toml` (repo root)    | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
+| `code/src/mobile/` | `package.json` **+ `app.json`** | `CHANGELOG.md`, `VERSION-HISTORY.md`, `RELEASES.md` |
+
+`code/src/mobile/` is **mobile-only** — absent from a web-only project. Read its row as "not
+present here" in that case.
+
+### Mobile: two files, one number
+
+The mobile application is the one package whose version lives in **two** manifests. Both must
+carry the identical string and move in the same edit:
+
+| File                           | Field          | Consumed by                              |
+| ------------------------------ | -------------- | ---------------------------------------- |
+| `code/src/mobile/package.json` | `version`      | the pnpm workspace and the toolchain     |
+| `code/src/mobile/app.json`     | `expo.version` | Expo — the version shipped to the stores |
+
+Bumping only `package.json` is the easy mistake: nothing fails, the tests still pass, and the
+build still succeeds — but the store release goes out under the previous version number. Treat a
+disagreement between the two as a bug.
 
 ### Files to update on every sub-package bump
 
 | File                              | What to update                                                               |
 | --------------------------------- | ---------------------------------------------------------------------------- |
-| `package.json` / `pyproject.toml` | Update the `version` field                                                   |
+| `package.json` / `pyproject.toml` | Update the `version` field — **plus `app.json` for mobile** (above)          |
 | `CHANGELOG.md`                    | Add a detailed entry grouped by Added / Changed / Fixed / Removed / Security |
 | `VERSION-HISTORY.md`              | Add one summary row (date, version, one-line description)                    |
 | `RELEASES.md`                     | Add a full release notes section for the new version                         |

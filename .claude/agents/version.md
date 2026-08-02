@@ -31,8 +31,9 @@ Read before any work, in order:
 2. `project-management/docs/VERSIONING-GUIDE.md` — the canonical versioning contract.
 3. `.claude/skills/global-workflow/SKILL.md` — versioning standards, British English.
 4. Stack skill only if a sub-package version is in scope:
-   `.claude/skills/stack-django/SKILL.md` (backend) or
-   `.claude/skills/stack-htmx-templates/SKILL.md` (frontend).
+   `.claude/skills/stack-django/SKILL.md` (backend),
+   `.claude/skills/stack-htmx-templates/SKILL.md` (web frontend), or
+   `.claude/skills/stack-react-native/SKILL.md` (mobile — mobile-only projects).
 
 Repository state (use the project plugins, never raw git):
 
@@ -52,9 +53,16 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - **Root** — single-track semver for the whole monorepo. Files: `VERSION`,
   `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md` at the project root.
-- **Sub-packages** — `backend`, `frontend`, `shared` each carry an independent
-  semver, moved **only** when that package's own code changes. Never bump a
-  sub-package as a side-effect of a root bump.
+- **Sub-packages** — `code/src/django/` always, and `code/src/mobile/` in a project that
+  opted into the mobile surface, each carry an independent semver, moved **only** when
+  that package's own code changes. Never bump a sub-package as a side-effect of a root
+  bump. Each keeps its own `CHANGELOG.md`, `VERSION-HISTORY.md` and `RELEASES.md`
+  beside its manifest.
+- **Mobile carries its version in two files** — `code/src/mobile/package.json`
+  (`version`) and `code/src/mobile/app.json` (`expo.version`). They must hold the
+  identical string and move in the same edit. Bumping only `package.json` fails
+  silently: tests pass, the bundle builds, and the store release ships under the old
+  number. Check both, every time. Mobile-only — a web-only project has neither file.
 
 Increment rule (both tiers): MAJOR = breaking API/schema · MINOR = new feature,
 backwards-compatible · PATCH = fix, copy, or docs. Detail: VERSIONING-GUIDE.md.
@@ -121,6 +129,7 @@ past it while editing a header.
 ```bash
 python3 .claude/plugins/git-tool.py add VERSION VERSION-HISTORY.md CHANGELOG.md RELEASES.md
 # plus any sub-package version files and header-updated .md files
+# mobile bump also stages: code/src/mobile/package.json code/src/mobile/app.json
 ```
 
 Report a concise summary: previous → new version (root and any sub-package), which

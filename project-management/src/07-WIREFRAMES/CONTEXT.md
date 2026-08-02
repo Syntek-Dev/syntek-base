@@ -38,10 +38,43 @@ on a placeholder brand. A project creating wireframes copies it per screen
 
 ## Naming Convention
 
-| Pattern                     | Example                | Used for                    |
-| --------------------------- | ---------------------- | --------------------------- |
-| `WF-000-TEMPLATE.html`      | (as shipped)           | The starting-point template |
-| `WF-###-<Screen-Name>.html` | `WF-001-Homepage.html` | One file per project screen |
+| Pattern                            | Example                      | Used for                       |
+| ---------------------------------- | ---------------------------- | ------------------------------ |
+| `WF-000-TEMPLATE.html`             | (as shipped)                 | The starting-point template    |
+| `WF-###-<Screen-Name>.html`        | `WF-001-Homepage.html`       | One file per web screen        |
+| `WF-###-MOBILE-<Screen-Name>.html` | `WF-004-MOBILE-Sign-In.html` | One file per **mobile** screen |
+
+## Mobile screens
+
+A project with the optional mobile surface wireframes its screens **here, in the same folder,
+against the same `SHARED/wireframe.css`, through the same sign-off gate** — not in a second
+medium and not in a hosted tool. The design tier stays self-contained, diffable and offline,
+which is the property that makes it reviewable at all.
+
+Two conventions:
+
+- **The `MOBILE` marker sits in the filename**, so the surface is obvious in a directory listing
+  and in a diff.
+- **A mobile screen shares the number of its web counterpart** where one exists —
+  `WF-004-Sign-In.html` and `WF-004-MOBILE-Sign-In.html` are the same screen on two surfaces. A
+  mobile-only screen takes the next free number.
+
+Compose at a **phone viewport** — 390 × 844 is the reference — rather than letting the layout run
+to full window width.
+
+### What NOT to infer from a mobile wireframe
+
+HTML is the medium, not the target. Three affordances exist in the browser and have **no native
+equivalent**, so a mobile wireframe must never depend on them to communicate intent:
+
+- **Hover.** There is no hover state on touch. Anything a hover would reveal needs a different
+  affordance — always-visible, on-press, or on long-press.
+- **Scrollbars.** A native scroll view gives no persistent scrollbar, so "the user can see there
+  is more below" is not something the platform provides. Show it in the layout instead.
+- **The browser chrome** — no URL bar, no back button, no tab. Navigation must be drawn.
+
+Anything that survives those three constraints is a fair wireframe. Anything relying on them is a
+web design in a phone-shaped frame.
 
 ## Dependencies
 

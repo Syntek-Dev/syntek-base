@@ -33,6 +33,11 @@ the implementation agents build on (see `.claude/CLAUDE.md` §4).
 
 ## Specialists (delegated implementation & analysis)
 
+Rows flagged **mobile-only** exist only in a project generated with the mobile surface. They are
+listed unconditionally and flagged, rather than templated in or out: that keeps this index free
+of conditional contents, which is the rule the whole opt-in rests on. On a web-only project,
+read a mobile-only row as "not present here".
+
 | Agent              | Purpose                                                           |
 | ------------------ | ----------------------------------------------------------------- |
 | `authentication`   | Secure auth: passwords, MFA/TOTP, sessions, lockout, reset        |
@@ -49,6 +54,7 @@ the implementation agents build on (see `.claude/CLAUDE.md` §4).
 | `gdpr`             | UK GDPR mechanics: PII encryption, consent, DSAR, erasure         |
 | `git`              | Branch, commit, PR, and versioning git operations                 |
 | `logging`          | Structured logging and observability instrumentation              |
+| `mobile`           | **Mobile-only.** Expo/React Native screens; a11y, token styling   |
 | `notifications`    | Multi-channel branded, PII-safe notification delivery             |
 | `planner`          | Architect a feature into a phased, testable plan                  |
 | `pm`               | Set up and maintain PM-tool integration and sync                  |

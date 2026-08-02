@@ -34,9 +34,17 @@ component designs are signed off.
 
 ## Guardrails
 
-- **WCAG 2.2 AA is non-negotiable** on every interactive component (CLAUDE.md §8).
+- **WCAG 2.2 AA is non-negotiable** on every interactive component (CLAUDE.md §8) — on
+  **both** surfaces. One standard, two technique sets
+  (`code/docs/accessibility/MOBILE.md`).
 - **Token-first CSS:** components consume `var(--token)` only — never a raw colour,
-  spacing, or size literal.
+  spacing, or size literal. The same law binds the mobile surface with a different
+  enforcement clause (`mobile-tokens.sh`).
+- **`frontend` is web-only and its remit is unchanged.** Mobile work is handed to the
+  `mobile` agent at Step 4M — never approached by applying Django-template assumptions to
+  React Native. Both that agent and the `stack-react-native` skill are absent from a
+  web-only project, which is why the frontmatter routes to `frontend` and names the
+  mobile route at its point of use instead.
 - **Reuse before build:** always check the django-components library first; public pages
   are server-rendered Django templates (SEO-critical content must not depend on
   client-side JS).

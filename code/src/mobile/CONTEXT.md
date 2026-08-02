@@ -1,0 +1,78 @@
+# code/src/mobile — The Mobile Surface
+
+The optional React Native + TypeScript application, built on **Expo** with Continuous Native
+Generation. It is a **peer of `django/`, not a layer on top of it**: it renders no Django page,
+Django never bundles it, and it reaches the server through the same Django Ninja API at `/api/`
+that any third-party client would. Surface vocabulary: `code/src/CONTEXT.md` → _Surfaces_.
+
+Present only when the project answered yes to the mobile question at generation. A web-only
+project has no such directory, and nothing in the repository assumes one.
+
+## Directory Tree
+
+```text
+code/src/mobile/
+├── CONTEXT.md          ← this file
+├── CLAUDE.md           ← operating rules for the mobile surface
+├── app/                ← expo-router routes — file-system routing, ROUTES ONLY
+│   ├── _layout.tsx     ← root Stack; one route, no navigation shape
+│   └── index.tsx       ← the single placeholder screen
+├── __tests__/          ← jest-expo + React Native Testing Library
+│   └── app.test.tsx    ← mounts the real router, covering layout and route
+├── app.json            ← Expo config — name, slug, scheme, bundle identifiers
+├── CHANGELOG.md        ← this package's changelog (independent semver track)
+├── eslint.config.mjs   ← self-contained: eslint + typescript-eslint for this tree only
+├── jest.config.js      ← jest-expo preset + the coverage floors
+├── package.json        ← workspace member; its own independent semver track
+├── RELEASES.md         ← this package's release notes
+├── tsconfig.json       ← extends expo/tsconfig.base, strict
+├── VERSION-HISTORY.md  ← this package's version summary table
+└── .gitignore          ← ios/ and android/ are GENERATED, never committed
+```
+
+`ios/` and `android/` are absent by design — Expo regenerates them from `app.json` and the
+config plugins. See `CLAUDE.md` for why that is load-bearing rather than a preference.
+
+## What is here at baseline
+
+One route that renders the app name and a line of placeholder copy. That is the whole
+application, deliberately: the template ships no feature code on either surface, and mobile work
+starts from a user story exactly as web work does.
+
+**No binary assets.** There is no `assets/` directory, and `app.json` names no icon, splash image
+or favicon — Expo falls back to its defaults. This is not an oversight: the repository is a
+Copier template that renders every file through Jinja and **cannot render binaries**. Adding
+branded icons is a per-project step, and it needs a matching exclusion entry if the project is
+still generated from the template (`TEMPLATE-GUIDE/10-CUSTOMISING.md`).
+
+## Running it
+
+Every operation goes through the scripts — never raw `pnpm`, `expo` or `jest`:
+
+| Task                  | Script                                 |
+| --------------------- | -------------------------------------- |
+| Install dependencies  | `code/src/scripts/mobile/install.sh`   |
+| Start Metro (Expo Go) | `code/src/scripts/mobile/server.sh`    |
+| Lint                  | `code/src/scripts/mobile/lint.sh`      |
+| Type-check            | `code/src/scripts/mobile/typecheck.sh` |
+| Test (and coverage)   | `code/src/scripts/mobile/test.sh`      |
+| Prove it bundles      | `code/src/scripts/mobile/bundle.sh`    |
+
+**Metro runs on the host, not in Docker** — the one dev operation that is not containerised,
+because Expo Go runs on a physical device and a device cannot reach a `127.0.0.N` loopback alias.
+Full reasoning: `code/src/scripts/mobile/CONTEXT.md`.
+
+## Versioning
+
+The mobile app is a **third independent semver track**, mirroring `code/src/django/`. A root
+version bump never moves it, and store versions must increase monotonically, so coupling would
+force spurious releases or version gaps. `app.json` and `package.json` carry the same number —
+two files, one version. Rules: `project-management/docs/VERSIONING-GUIDE.md`.
+
+## Cross-references
+
+- `code/src/CONTEXT.md` — the surfaces model and why this directory sits here
+- `code/src/scripts/mobile/CONTEXT.md` — the scripts that drive everything above
+- `code/docs/RENDERING.md` — the web surface's interaction doctrine (does not govern here)
+
+**Last Updated**: <%DATE%>

@@ -135,7 +135,7 @@ QA-US###-<DESCRIPTION>.md  (e.g. QA-US015-HOMEPAGE.md)
 ```markdown
 # QA — US### <Story Title>
 
-**Date**: DD/MM/YYYY **Sprint**: ## **Wireframe**: WF-US###-<NAME>.md
+**Date**: DD/MM/YYYY **Sprint**: ## **Wireframe**: WF-###-<Screen-Name>.html
 
 ## Acceptance Criteria Gaps
 
