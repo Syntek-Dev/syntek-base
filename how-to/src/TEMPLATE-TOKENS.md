@@ -146,6 +146,26 @@ The crate and its Python module are named `nativecore` in every project — a **
 like `apps.marketing`, deliberately not tokenised so `import nativecore` means the same thing
 across the estate.
 
+### Desktop surface (optional)
+
+The opt-in native desktop application built with **Slint**, living as a member of the Rust
+workspace at `code/src/rust/crates/desktop/`. `<%INCLUDE_DESKTOP%>` gates it, and is only asked
+when `<%INCLUDE_RUST%>` is true — Slint is Rust.
+
+| Token                  | Meaning                           | Example value | Format    |
+| ---------------------- | --------------------------------- | ------------- | --------- |
+| `<%INCLUDE_DESKTOP%>`  | Generate the native desktop app   | `false`       | `bool`    |
+| `<%DESKTOP_APP_NAME%>` | Window title and application name | `Acme Portal` | free text |
+
+**Licence obligation.** The app ships under Slint's **Royalty-free** tier: free for proprietary
+applications _and commercial sale_, in exchange for **disclosing that you use Slint**. The
+generated app does this with the `AboutSlint` widget, and `code/src/scripts/desktop/package.sh`
+refuses a release build without it.
+
+Two things that tier does not cover: **embedded systems** (an appliance screen, a POS terminal, a
+car dashboard — those need a paid Commercial licence), and **redistributing anything that exposes
+Slint's own APIs**, which is why desktop UI is never moved into a shared package layer.
+
 ### Meta
 
 | Token      | Meaning                                                   | Example value | Format       |

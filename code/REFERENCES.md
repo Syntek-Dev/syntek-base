@@ -28,6 +28,7 @@ Internal and external references for all coding work in this repository.
 - `code/workflows/10-debug/CONTEXT.md` — code-logic debugging and regression tests
 - `code/workflows/11-refactor/CONTEXT.md` — systematic refactoring without behaviour change
 - `code/workflows/12-rust-extension/CONTEXT.md` — **rust-only** — PyO3 extensions in the Cargo workspace
+- `code/workflows/13-desktop-app/CONTEXT.md` — **desktop-only** — the native Slint application
 
 ### Guides in code/docs/
 
@@ -39,6 +40,7 @@ Internal and external references for all coding work in this repository.
 - `code/docs/DATABASE.md` — pre-flight data-layer rules: scope columns, database-level constraints, lock-safe migrations, search, deferred infrastructure with trigger conditions
 - `code/docs/DATA-STRUCTURES.md` — domain modelling, PostgreSQL schema design, indexing
 - `code/docs/DESIGN-TOKENS.md` — CSS design-token catalogue and `var(--token)`-only usage rules
+- `code/docs/DESKTOP.md` — **desktop-only** — the native Slint application: the Royalty-free licence obligation and its AboutSlint disclosure, the generated-code lint boundary, threading, and AccessKit accessibility
 - `code/docs/ENCRYPTION-GUIDE.md` — field-level encryption patterns for PII storage
 - `code/docs/LOGGING.md` — logging config, Glitchtip, Loki, Prometheus, Grafana
 - `code/docs/MCP-SERVER.md` — the FastMCP tool surface at `/mcp/`: mounting, tool design, auth and threats, testing and ops (available but unwired)
@@ -79,6 +81,9 @@ Internal and external references for all coding work in this repository.
 - **cargo-deny** — <https://embarkstudios.github.io/cargo-deny/> — the advisory, licence and source gate
 - **RustSec advisory database** — <https://rustsec.org/> — what `audit.sh` checks against
 - **RustCrypto** — <https://github.com/RustCrypto> — audited primitives; never implement your own
+- **Slint** — <https://slint.dev/docs> — the desktop UI toolkit (desktop-only)
+- **Slint licensing** — <https://github.com/slint-ui/slint/blob/master/FAQ.md> — the three tiers, and what triggers the paid one
+- **AccessKit** — <https://accesskit.dev/> — the accessibility layer Slint ships; keep it enabled
 
 ### Frontend
 

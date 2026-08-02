@@ -1,0 +1,41 @@
+# The native desktop application for <%PROJECT_NAME%>, built with Slint.
+#
+# A member of the workspace above rather than a second workspace: one toolchain pin, one
+# deny.toml, one clippy.toml. `slint` is pinned HERE rather than in
+# [workspace.dependencies] because exactly one member uses it — which also means turning
+# INCLUDE_DESKTOP on adds files without editing a single shared one.
+
+[package]
+name = "desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+# Never published. It is an application, not a library, and the Royalty-free Slint licence
+# does not permit redistributing something that exposes Slint's own APIs.
+publish = false
+description = "Native desktop application for <%PROJECT_NAME%>"
+
+[[bin]]
+name = "<%PROJECT_SLUG%>-desktop"
+path = "src/main.rs"
+
+[dependencies]
+slint = "1.17"
+
+[build-dependencies]
+slint-build = "1.17"
+
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Same reasoning as nativecore: a panic here kills the user's application window with no
+# error they can act on. Return Result and surface the failure in the UI.
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"

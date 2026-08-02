@@ -26,6 +26,8 @@ code/docs/
 ├── FRONTEND-CODING-PRINCIPLES.md     ← Django templates + HTMX + Alpine + CSS (read with CODING-PRINCIPLES)
 ├── DATABASE.md              ← pre-flight data-layer rules: scope, constraints, locks, search, deferrals
 ├── DATA-STRUCTURES.md       ← domain modelling, PostgreSQL schema design, indexing
+├── DESKTOP.md               ← DESKTOP-ONLY — the native Slint app and its licence obligation
+│   └── desktop/                      ← licensing/ ui-and-state/
 ├── DESIGN-TOKENS.md         ← CSS design-token catalogue and var(--token)-only usage rules
 │   └── design-tokens/                ← model/ cascade/ editor/ mobile/
 ├── ENCRYPTION-GUIDE.md      ← field-level encryption patterns (PII storage)
@@ -73,5 +75,6 @@ code/docs/
 | `RLS-GUIDE.md`                  | Row-level security patterns (if multi-tenant scope added)                                                                                              |
 | `URL-STRATEGY.md`               | Route naming, slug patterns, Django URL conventions                                                                                                    |
 | `DESIGN-TOKENS.md`              | CSS design-token catalogue and `var(--token)`-only usage rules                                                                                         |
+| `DESKTOP.md`                    | **Desktop-only.** The native Slint app — read `desktop/LICENSING.md` before shipping or selling                                                        |
 | `VISUAL-DESIGN.md`              | Visual language — anti-generic layout, <%ORG_NAME%> signature                                                                                          |
 | `cloudinary/CONTEXT.md`         | Cloudinary SDK docs index — Python SDK                                                                                                                 |

@@ -33,8 +33,8 @@ the implementation agents build on (see `.claude/CLAUDE.md` §4).
 
 ## Specialists (delegated implementation & analysis)
 
-Rows flagged **mobile-only** exist only in a project generated with the mobile surface, and rows
-flagged **rust-only** only in one generated with the Rust surface. They are
+Rows flagged **mobile-only**, **rust-only** or **desktop-only** exist only in a project generated
+with that surface. They are
 listed unconditionally and flagged, rather than templated in or out: that keeps this index free
 of conditional contents, which is the rule the whole opt-in rests on. On a project without that
 surface, read the flagged row as "not present here".
@@ -47,6 +47,7 @@ surface, read the flagged row as "not present here".
 | `code-reviewer`    | Read-only review: security, PII, DRY, performance, style          |
 | `completion`       | Mark user stories and sprints complete once verified              |
 | `database`         | Schema design, Django migrations, RLS, PostgreSQL tuning          |
+| `desktop`          | **Desktop-only.** Native Slint app; UI, threading, accessibility  |
 | `data-scientist`   | Python/SQL data analysis and insight from project data            |
 | `debugger`         | Root-cause debugging: reproduce, trace, document — no fix         |
 | `doc-writer`       | Developer docs, docstrings, CONTEXT/CLAUDE pairs                  |

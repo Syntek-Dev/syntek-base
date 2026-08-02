@@ -1,12 +1,42 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 1.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 1.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.2.0] - 02/08/2026
+
+### Added
+
+- **An optional native desktop surface, gated by the new `INCLUDE_DESKTOP` question.** A **Slint** application at `code/src/rust/crates/desktop/` — a real native binary, not a webview or an Electron shell. The question is only asked when `INCLUDE_RUST` is true, because Slint is Rust, and both default to `false`.
+- **It is a member of the existing Rust workspace, not a second one.** `members = ["crates/*"]` is a glob, so the workspace adapts with no edit and there stays exactly one `rust-toolchain.toml`, one `deny.toml` and one `clippy.toml`. `slint` is pinned in the crate rather than `[workspace.dependencies]`, since one member uses it. Lint, test, audit and build therefore come from the existing Rust script group — `code/src/scripts/desktop/` carries only the two genuinely desktop-specific operations, `run.sh` and `package.sh`.
+- **`desktop` agent, `stack-slint` skill, `code/docs/DESKTOP.md` + two sub-docs, and `code/workflows/13-desktop-app/`** — all excluded together with the crate.
+
+### Changed
+
+- **`deny.toml` now carries Slint's licence exceptions and two accepted advisories.** These are unconditional, because no file in this template has conditional contents; on a project without the desktop surface they match nothing and cargo-deny reports an informational note rather than an error.
+- **`code/src/` describes four surfaces.** Desktop is a distinct _surface_ (its own delivery target and release cycle) inside a shared _workspace_ — the first time those two ideas come apart in this repository, and worth reading `code/src/CONTEXT.md` for.
+
+### Security
+
+- **Two `quick-xml` advisories (RUSTSEC-2026-0194, -0195) are accepted, with justification and a re-check date.** Both are denial-of-service issues reached **only** through Slint's accessibility stack (`accesskit_unix` → `atspi` → `zbus_xml` → `quick-xml`), and every version pin up that chain to Slint's own `=1.17.1` blocks the patched 0.41.0. The parser handles D-Bus introspection XML from the **local** AT-SPI session bus, not network or user input; an attacker able to publish malicious XML there already owns the session. **Removing AccessKit is not the mitigation** — it is what makes the app usable with a screen reader. Re-check 02/11/2026.
+- **`unmaintained` is now scoped to `workspace`.** You can act on your own direct dependency choices; you cannot act on one buried three levels inside a GUI toolkit, and a permanent ignore list of other people's transitive crates rots silently.
+
+### Licensing — read before enabling
+
+- **The app ships under Slint's Royalty-free tier**, which permits proprietary **and commercially sold** desktop applications at no cost, in exchange for **disclosing that you use Slint**. The `AboutSlint` widget is that disclosure and `code/src/scripts/desktop/package.sh` refuses a release build without it — a licence gate, not a lint.
+- **The tier does not cover embedded systems** (an appliance screen, a POS terminal, a car dashboard), **nor redistributing anything that exposes Slint's own APIs.** The second is why desktop UI is never moved into a shared package layer, and why desktop panels are duplicated across applications rather than shared. That duplication is a deliberate, priced decision.
+- This is a reading of the licence text, not legal advice.
+
+### Fixed
+
+- Nothing. No defect is addressed in this release.
 
 ---
 

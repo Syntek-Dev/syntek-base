@@ -29,11 +29,12 @@ mobile application — one deployable serves the API and the rendered pages.
 │   ├── src/
 │   │   ├── django/                  ← the Django project — backend and server-rendered frontend
 │   │   ├── rust/                    ← RUST-ONLY — the Cargo workspace (PyO3, binaries, CLI)
+│   │   │                              ← incl. crates/desktop/ — DESKTOP-ONLY Slint app
 │   │   ├── docker/                  ← Dockerfiles and Compose files (dev/test/staging/prod)
 │   │   ├── logs/                    ← runtime log files (dev/test; gitignored)
 │   │   ├── scripts/                 ← shell scripts — ALL dev operations run through here
 │   │   └── tests/                   ← API integration tests (Bruno collection)
-│   └── workflows/                   ← step-by-step coding workflows (01–12)
+│   └── workflows/                   ← step-by-step coding workflows (01–13)
 ├── how-to/                          ← setup, daily development, debugging, scaling
 │   ├── CONTEXT.md                   ← how-to layer entry point
 │   ├── CLAUDE.md
@@ -96,15 +97,16 @@ generation time, because a generated project must commit it (every Dockerfile bu
 
 ## Layer Map
 
-| Layer                 | Purpose                                                              |
-| --------------------- | -------------------------------------------------------------------- |
-| `code/`               | Source code, coding standards, and the coding workflows              |
-| `how-to/`             | Setup, daily development, debugging, scaling, template instantiation |
-| `project-management/` | User stories, sprints, design artefacts, GDPR, security, releases    |
-| `.claude/`            | Global rules, agent and skill routing, model selection, hooks        |
-| `DESIGN.md`           | Design entry point — standards, constraints, and UI/UX workflows     |
-| `code/src/django/`    | The single deployable — API and server-rendered pages                |
-| `code/src/rust/`      | **Rust-only.** Native primitives compiled into that deployable       |
+| Layer                           | Purpose                                                              |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `code/`                         | Source code, coding standards, and the coding workflows              |
+| `how-to/`                       | Setup, daily development, debugging, scaling, template instantiation |
+| `project-management/`           | User stories, sprints, design artefacts, GDPR, security, releases    |
+| `.claude/`                      | Global rules, agent and skill routing, model selection, hooks        |
+| `DESIGN.md`                     | Design entry point — standards, constraints, and UI/UX workflows     |
+| `code/src/django/`              | The single deployable — API and server-rendered pages                |
+| `code/src/rust/`                | **Rust-only.** Native primitives compiled into that deployable       |
+| `code/src/rust/crates/desktop/` | **Desktop-only.** The native Slint application                       |
 
 The PM layer **specifies and gates**; the code layer **builds and verifies**. The canonical
 cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTEXT.md` restates it.

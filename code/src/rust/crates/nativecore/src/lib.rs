@@ -1,4 +1,4 @@
-//! First-party native primitives for <%PROJECT_NAME%>.
+//! First-party native primitives for `<%PROJECT_NAME%>`.
 //!
 //! This is the **baseline** module: two primitives that demonstrate the boundary rules
 //! the guides describe, and nothing more. Real functionality arrives with the story that

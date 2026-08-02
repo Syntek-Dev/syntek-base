@@ -5,7 +5,7 @@ Each workflow is a numbered folder with three files:
 ## Directory Tree
 
 The numbers run in four families — build, verify, diagnose & improve, then the opt-in
-build family. Within the
+build family (one per optional surface). Within the
 build family the layers read bottom-up (data → `/api/` → `/mcp/`); within diagnose they
 read in handoff order (find → fix → improve).
 
@@ -30,15 +30,16 @@ code/workflows/
 ├── 10-debug/                ← FIX it: isolate in code, regression test, minimal fix
 ├── 11-refactor/             ← IMPROVE it: restructure without changing behaviour
 │
-│   ── Build, opt-in (12) ──
-└── 12-rust-extension/       ← RUST-ONLY — PyO3 extensions in the Cargo workspace
+│   ── Build, opt-in (12–13) ──
+├── 12-rust-extension/       ← RUST-ONLY — PyO3 extensions in the Cargo workspace
+└── 13-desktop-app/          ← DESKTOP-ONLY — the native Slint application
 ```
 
 Every folder carries the same four files: `CONTEXT.md` (when to use this workflow and
 its prerequisites), `STEPS.md` (ordered steps to execute), `CHECKLIST.md` (verification
 before marking complete), and `CLAUDE.md` (operating rules).
 
-## The three families
+## The four families
 
 ### Build (01–06) — making something new
 
@@ -66,15 +67,17 @@ before marking complete), and `CLAUDE.md` (operating rules).
 | `10-debug/`               | **Fix** it — isolate the fault in code, write the regression test, patch      |
 | `11-refactor/`            | **Improve** it — restructure with behaviour held identical                    |
 
-### Build, opt-in (12) — present only on a Rust project
+### Build, opt-in (12–13) — present only on the matching surface
 
 | Workflow             | Purpose                                                          |
 | -------------------- | ---------------------------------------------------------------- |
 | `12-rust-extension/` | The native tier — PyO3 extensions, crates, the supply-chain gate |
+| `13-desktop-app/`    | The desktop tier — the Slint application and its licence gate    |
 
-Listed unconditionally and flagged, like every other optional-surface row. It sits apart from the
-build family because it is the only workflow that may be absent: a project generated without
-`INCLUDE_RUST` has no `code/src/rust/` for it to govern.
+Listed unconditionally and flagged, like every other optional-surface row. They sit apart from the
+build family because they are the only workflows that may be absent: a project generated without
+`INCLUDE_RUST` has no `code/src/rust/` for `12` to govern, and `13` additionally needs
+`INCLUDE_DESKTOP`.
 
 `09` and `10` are two halves of one activity and are read together: `09` locates a fault
 and hands over, `10` fixes it and proves the fix with a test. If you have a log line or a
@@ -83,7 +86,7 @@ Glitchtip exception, start at `09`. If you already know which code is wrong, sta
 ## Numbers are identifiers, not a sequence
 
 Unlike `project-management/workflows/`, which runs 01 → 21 through a story's life, these
-are a **catalogue entered by task type** — you never "run 01 through 12". The number is a
+are a **catalogue entered by task type** — you never "run 01 through 13". The number is a
 stable identifier and a shelf position, nothing more, and roughly 110 files across the
 repository cite these paths.
 

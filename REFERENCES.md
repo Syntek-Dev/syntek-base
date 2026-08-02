@@ -48,6 +48,7 @@ consult when working in this repository.
 | [code/docs/RENDERING.md](code/docs/RENDERING.md)                                         | Rendering strategies — where each interaction runs: server template, HTMX, or Alpine                                                                                   |
 | [code/docs/RESPONSIVE-DESIGN.md](code/docs/RESPONSIVE-DESIGN.md)                         | Breakpoints, fluid layouts, mobile-first rules                                                                                                                         |
 | [code/docs/RLS-GUIDE.md](code/docs/RLS-GUIDE.md)                                         | PostgreSQL row-level security policy conventions                                                                                                                       |
+| [code/docs/DESKTOP.md](code/docs/DESKTOP.md)                                             | **Desktop-only.** The native Slint app: the Royalty-free licence obligation, the generated-code lint boundary, threading, AccessKit accessibility                      |
 | [code/docs/RUST.md](code/docs/RUST.md)                                                   | **Rust-only.** The Cargo workspace: the gate question, the PyO3 boundary, secret memory hygiene, and the cargo-deny supply-chain policy                                |
 | [code/docs/SECURITY.md](code/docs/SECURITY.md)                                           | OWASP controls, permission checks, IDOR prevention                                                                                                                     |
 | [code/docs/TESTING.md](code/docs/TESTING.md)                                             | Coverage floors, test structure, mocking strategy                                                                                                                      |
@@ -98,10 +99,12 @@ consult when working in this repository.
 | 10 — Debug               | [code/workflows/10-debug/CONTEXT.md](code/workflows/10-debug/CONTEXT.md)                             |
 | 11 — Refactor            | [code/workflows/11-refactor/CONTEXT.md](code/workflows/11-refactor/CONTEXT.md)                       |
 | 12 — Rust extension      | [code/workflows/12-rust-extension/CONTEXT.md](code/workflows/12-rust-extension/CONTEXT.md)           |
+| 13 — Desktop app         | [code/workflows/13-desktop-app/CONTEXT.md](code/workflows/13-desktop-app/CONTEXT.md)                 |
 
 > Grouped in four families: **build** (01–06), **verify** (07–08), **diagnose & improve**
-> (09–11), and **build, opt-in** (12 — rust-only, absent unless the project opted in). The
-> numbers are stable identifiers, not a sequence — append, never renumber.
+> (09–11), and **build, opt-in** (12 rust-only, 13 desktop-only — each absent unless the project
+> opted into that surface). The numbers are stable identifiers, not a sequence — append, never
+> renumber.
 
 ### How-to workflows (`how-to/workflows/`)
 
@@ -167,7 +170,7 @@ complete.
 | `12-api-design`                   | `04-api-design`                                                              | Ninja contract decided → expressed as routers/Schemas, **entered via `17`**      |
 | `16-backend-code`                 | `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | PM phase drives all three; `12` is **rust-only** and absent without that surface |
 | `17-api-code`                     | `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | PM phase drives all four; `05` only when the story needs an agent-facing surface |
-| `18-frontend-code`                | `01-new-feature` · `02-tdd-cycle`                                            | PM phase drives both                                                             |
+| `18-frontend-code`                | `01-new-feature` · `02-tdd-cycle` · `13-desktop-app`                         | PM phase drives all three; `13` is **desktop-only** and absent without it        |
 | `19-implementation-documentation` | _(receives from `01`, `02`)_                                                 | **Owns** all records, findings, docs, and the graph refresh                      |
 | `20-pr-and-review`                | `07-review`                                                                  | Content review (code layer) → process, merge, verification (PM layer)            |
 | _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                        | Entered from `19` findings routed to `src/19-BUGS/`                              |
@@ -199,6 +202,7 @@ complete.
 | Rust (rust-only)       | 1.85+   | https://doc.rust-lang.org/stable/book/                  |
 | PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
+| Slint (desktop-only)   | 1.17    | https://slint.dev/docs                                  |
 | Django Ninja           | 1.x     | https://django-ninja.dev/                               |
 | FastMCP                | 3.x     | https://gofastmcp.com/                                  |
 | Model Context Protocol | latest  | https://modelcontextprotocol.io/                        |

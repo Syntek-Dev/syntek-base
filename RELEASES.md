@@ -1,9 +1,65 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 1.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 1.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v1.2.0 — 02/08/2026
+
+**Status:** Minor release — a fourth surface, off by default, with a licence obligation attached
+
+### Summary
+
+A native **desktop** surface: a Slint application, gated by `INCLUDE_DESKTOP`, which is only asked
+when `INCLUDE_RUST` is true. Both default to `false`, so a project that opts into neither is
+unaffected.
+
+It is a real native binary — not a webview, not Electron — and it lives as a **member of the
+existing Rust workspace** rather than a second one. That means one toolchain pin, one `deny.toml`,
+one `clippy.toml`, and lint/test/audit already covered by the Rust script group.
+
+### Read this before enabling it
+
+The app ships under Slint's **Royalty-free** licence. That tier is free for proprietary
+applications **and commercial sale** — the paid Commercial licence is triggered by _embedded
+systems_, not by charging money.
+
+What you owe in return is **disclosure**: the `AboutSlint` widget in the About dialog.
+`code/src/scripts/desktop/package.sh` refuses to build a release binary without it. That is a
+licence gate, not a lint — if it fires, restore the widget rather than editing the check.
+
+Two exclusions matter architecturally:
+
+- **Embedded systems** — an appliance screen, a POS terminal, a car dashboard — need the paid tier.
+- **Redistributing anything that exposes Slint's APIs** is not permitted. This is why desktop UI
+  is never moved into a shared package layer, and why desktop panels are rebuilt per application
+  rather than shared. That duplication is a priced decision, not an oversight.
+
+This is a reading of the licence text, not legal advice.
+
+### Two advisories are accepted, deliberately
+
+Enabling the desktop surface brings `RUSTSEC-2026-0194` and `-0195` — denial-of-service issues in
+`quick-xml`, reached **only** through Slint's accessibility stack. Every version pin from
+`accesskit_unix` up to Slint's own `=1.17.1` blocks the patched release, so they are not fixable
+downstream.
+
+They are accepted because the parser handles D-Bus introspection XML from the **local** AT-SPI
+session bus — an attacker able to publish there already owns the session — and because the
+alternative would be dropping the accessibility layer, which is not a mitigation but a regression.
+Recorded in `deny.toml` with a re-check date of 02/11/2026.
+
+`unmaintained` is now scoped to `workspace`: you can act on your own direct dependencies, not on
+one buried three levels inside a GUI toolkit.
+
+### Upgrading
+
+`copier update`. Answering `false` to `INCLUDE_DESKTOP` — or leaving `INCLUDE_RUST` false, in
+which case the question is never asked — changes nothing but the documentation indexes and
+version metadata.
 
 ---
 
