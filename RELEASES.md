@@ -1,9 +1,40 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.1.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.1.1 — 03/08/2026
+
+**Status:** Patch — repairs the template's own CI, which 2.1.0 broke. Generated projects are
+unaffected.
+
+### What went wrong
+
+`PROJECT_DESCRIPTION`, added in 2.1.0, deliberately has no default — the whole point is that
+someone writes it. But the `Audit — Template Integrity` job generates its probe project with
+`copier copy --defaults` plus a fixed list of `--data` answers, and that list was never extended.
+The job failed at the first step with `Question "PROJECT_DESCRIPTION" is required`, before any of
+its six assertions ran.
+
+The same gap sat in `.github/PULL_REQUEST_TEMPLATE.md`, whose "I generated a project from this
+branch" snippet would have failed identically for every contributor who followed it.
+
+Both now pass the question. Verified by running the workflow's generation step locally across
+both render paths: zero surviving tokens, no template-only files leaked, the mobile surface
+obeying its opt-in, and the shared tree byte-identical between the two.
+
+### Nothing to do
+
+`.github/workflows/audit-template.yml` and `.github/PULL_REQUEST_TEMPLATE.md` are both in
+`copier.yml` → `_exclude`, so neither has ever existed in a generated project. `copier update`
+from 2.1.0 to 2.1.1 changes version metadata and nothing else.
+
+Worth stating plainly, since 2.1.0's release notes did not: a question with no default is a
+question every automated caller must be taught about. This release is the cost of that.
 
 ---
 

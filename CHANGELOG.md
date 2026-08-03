@@ -1,12 +1,21 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.1.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.1.1] - 03/08/2026
+
+### Fixed
+
+- **The template-integrity CI probe could not generate a project.** `PROJECT_DESCRIPTION`, added in 2.1.0, has no default, so the `Audit — Template Integrity` job's `copier copy --defaults` invocation failed with `Question "PROJECT_DESCRIPTION" is required` before any of its assertions ran. Both render paths now pass the new question, and so does the equivalent snippet in `.github/PULL_REQUEST_TEMPLATE.md`, which had the same gap and would have sent every contributor down the same dead end.
+- **No effect on generated projects.** Both files are in `copier.yml` → `_exclude`, so nothing a generated project holds changes in this release; `copier update` from 2.1.0 to 2.1.1 is a no-op beyond the version metadata.
 
 ---
 

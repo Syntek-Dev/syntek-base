@@ -25,6 +25,7 @@
   ```bash
   uvx copier copy --trust --defaults \
     --data PROJECT_NAME="Test Project" --data ORG_NAME="Test Org" \
+    --data PROJECT_DESCRIPTION="A test project for checking that the template renders end to end." \
     --data DEVELOPER_NAME="You" --data DEVELOPER_EMAIL="you@example.com" \
     --data DATE="01/01/2027" . /tmp/syntek-check
   grep -rIo '<%[A-Z_]*%>' /tmp/syntek-check --exclude-dir=.git | wc -l   # 0
