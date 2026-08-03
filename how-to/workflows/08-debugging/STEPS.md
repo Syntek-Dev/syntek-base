@@ -86,7 +86,7 @@ debugger [describe the problem and what you have tried]
 ### Step 6 — Document and Fix
 
 If the bug warrants a bug report:
-Save to `project-management/src/19-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
+Save to `project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
 
 > **Model:** opus
 

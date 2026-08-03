@@ -20,7 +20,7 @@ Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/08-gdpr-compliance/` — the retention rules recorded there are authoritative
+- `project-management/workflows/09-gdpr-compliance/` — the retention rules recorded there are authoritative
 
 ## What this agent is (and is not)
 
@@ -45,7 +45,7 @@ Before drafting, read in this order:
 2. `project-management/docs/GDPR-GUIDE.md` — the governing UK GDPR compliance
    procedure: lawful bases, storage limitation, records of processing, ICO obligations.
 3. `code/workflows/06-gdpr-enforcement/CONTEXT.md` and
-   `project-management/workflows/08-gdpr-compliance/CONTEXT.md` — the enforcement and
+   `project-management/workflows/09-gdpr-compliance/CONTEXT.md` — the enforcement and
    compliance steps this document must stay consistent with.
 4. `code/docs/ENCRYPTION-GUIDE.md` and `code/docs/RLS-GUIDE.md` — how PII is encrypted
    and row-scoped, so disposal wording matches how data is actually held and purged.

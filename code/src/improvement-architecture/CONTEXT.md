@@ -21,7 +21,7 @@ it in a browser directly.
 
 - The skill definition + report format → `.claude/skills/improve-codebase-architecture/`
 - A resolved decision from a review → a decision record in the project's decision register
-- Refactor notes → `project-management/src/20-REFACTORING/`
+- Refactor notes → `project-management/src/21-REFACTORING/`
 - Runtime application logs → `code/src/logs/`
 
 ## Opening a report

@@ -25,7 +25,7 @@ never changes what the database _is_, only what state it holds.
 | Add a model or alter a field         | `code/workflows/03-database-migration/`            |
 | Take or restore a backup             | here                                               |
 | Get back to a clean dev database     | here                                               |
-| Design the schema in the first place | `project-management/workflows/03-database-schema/` |
+| Design the schema in the first place | `project-management/workflows/04-database-schema/` |
 
 ## Prerequisites
 

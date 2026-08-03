@@ -26,11 +26,11 @@ metadata layer.** | Sitemaps, `robots.txt`, `llms.txt`: the Django views in
 Read before implementing:
 
 - `project-management/docs/SEO-CHECKLIST.md` — the audit baseline; identify done vs. outstanding items
-- `project-management/workflows/11-seo-checks/STEPS.md` — the governing procedure (via its `CONTEXT.md`)
+- `project-management/workflows/12-seo-checks/STEPS.md` — the governing procedure (via its `CONTEXT.md`)
 - `code/src/django/apps/marketing/CONTEXT.md` — how `build_seo`, `_seo_head.html`, and page caching fit
 - `code/docs/RENDERING.md` — the interaction doctrine; critical SEO content is server-rendered, never JS-gated
 - `code/docs/URL-STRATEGY.md` — canonical URL and slug rules (marketing `/`, admin `/admin/`, portal `/portal/`)
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for the copy you do write (titles, meta descriptions, OG text): cadence, no superlatives, <%LOCALE%>
+- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for the copy you do write (titles, meta descriptions, OG text): cadence, no superlatives, <%LOCALE%>
 - `.claude/skills/grill-with-docs/SKILL.md` — open the SEO pass with a grilling interview
 - Stack detail: defer to `.claude/skills/stack-htmx-templates` — do not restate template/HTMX rules here
 
@@ -44,8 +44,8 @@ python3 .claude/plugins/project-tool.py info
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/11-seo-checks/` — the SEO verification procedure
-- `project-management/workflows/18-frontend-code/` — the frontend phase the SEO wiring lands in
+- `project-management/workflows/12-seo-checks/` — the SEO verification procedure
+- `project-management/workflows/20-frontend-code/` — the frontend phase the SEO wiring lands in
 
 ## Grill Before Wiring
 

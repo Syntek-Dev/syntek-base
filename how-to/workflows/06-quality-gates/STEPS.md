@@ -108,4 +108,4 @@ In **this template repository** several gates report success with nothing to run
 `uv.lock` is absent by design. That is expected here and not a sign of a broken gate; in a
 generated project every gate executes.
 
-Only then raise the PR — `project-management/workflows/20-pr-and-review/`.
+Only then raise the PR — `project-management/workflows/22-pr-and-review/`.

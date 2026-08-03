@@ -3,7 +3,7 @@
 Client-friendly, ClickUp-ready exports — **one `US###-CLIENT.md` per user story**.
 
 > **Generated output — read-only. Do not hand-edit.** These files are produced from the
-> source stories in `project-management/src/01-STORIES/`. Change the source story, then
+> source stories in `project-management/src/02-STORIES/`. Change the source story, then
 > regenerate — never edit a `US###-CLIENT.md` directly (`README.md` is the only editable file here).
 
 ## Read-only enforcement

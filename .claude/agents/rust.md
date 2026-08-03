@@ -55,8 +55,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/workflows/12-rust-extension/` — the procedure for this surface
 - `code/workflows/02-tdd-cycle/` — both suites are written test-first
 - `code/workflows/08-security-hardening/` — the audit any crypto crate must pass
-- `project-management/workflows/16-backend-code/` — **this surface is entered from there**
-- `project-management/workflows/19-implementation-documentation/` — owns the record and the graph
+- `project-management/workflows/18-backend-code/` — **this surface is entered from there**
+- `project-management/workflows/21-implementation-documentation/` — owns the record and the graph
 - `how-to/workflows/07-dependency-updates/` — the cadence a toolchain or crate bump follows
 
 ## Non-Negotiables

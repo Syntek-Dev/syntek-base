@@ -46,6 +46,14 @@ A task enters through an **orchestrator agent**, which routes to the matching
 specialists load the **stack skills**. The governing `docs/` guide and the workflow
 `STEPS.md`/`CHECKLIST.md` carry routing frontmatter (§2.5) naming who does the work.
 
+**PM planning runs a per-story loop, not a phase batch.** A human thinks each story through
+end-to-end so implementation is mechanical: one story runs `02`→`14` before the next starts;
+when the open sprint reaches `<%SPRINT_CAPACITY_SP%>` SP (grace `<%SPRINT_GRACE_SP%>`), `14`
+and `15` run for that sprint; once every story is planned, `17-consolidate-design-work` unifies
+the per-story design and schema work before any code. Never batch a gate across the backlog.
+Full cadence: `project-management/workflows/CONTEXT.md` and
+`project-management/docs/PLANNING-GUIDE.md`.
+
 ### 2.3 Agents (two tiers — full roster: `.claude/agents/CONTEXT.md`)
 
 - **Orchestrators (entry points, carry all tools):** `bugfix`, `feature`, `pr`, `refactor`,

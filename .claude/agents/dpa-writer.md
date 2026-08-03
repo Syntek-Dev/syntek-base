@@ -37,7 +37,7 @@ state the assumption in the draft.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/08-gdpr-compliance/` — the controller/processor facts the DPA formalises
+- `project-management/workflows/09-gdpr-compliance/` — the controller/processor facts the DPA formalises
 
 ## When a DPA Is — and Is Not — Required
 

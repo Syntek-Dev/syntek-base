@@ -38,7 +38,7 @@ copier copy --vcs-ref=HEAD    gh:Syntek-Dev/syntek-base my-project   # tip of th
 
 ## 2 — Questions
 
-Twenty-one, defined in `copier.yml`. Three behaviours worth knowing:
+Twenty-nine, defined in `copier.yml`. Three behaviours worth knowing:
 
 - **Derived defaults** — `PROJECT_SLUG` from `PROJECT_NAME`, `ENV_PREFIX` from `ORG_SLUG`,
   `PRIMARY_DOMAIN` and `DEPLOY_REPO` from `PROJECT_SLUG`.
@@ -104,7 +104,7 @@ your project's README ships from `.copier/README.md` and is moved into place by 
 `.copier-answers.yml` is written with every answer plus `_src_path` and `_commit`.
 
 **Commit this file.** It is what makes `copier update` possible — without it a project is severed
-from the template and upstream fixes have to be applied by hand. See `13-UPDATING.md`.
+from the template and upstream fixes have to be applied by hand. See `14-UPDATING.md`.
 
 ## 6 — Post-generation tasks
 
@@ -162,5 +162,5 @@ copier copy --trust --defaults /tmp/tmpl /tmp/check
 
 ## Next
 
-- Pull later template changes in → `13-UPDATING.md`
-- Something failed → `14-TROUBLESHOOTING.md`
+- Pull later template changes in → `14-UPDATING.md`
+- Something failed → `15-TROUBLESHOOTING.md`

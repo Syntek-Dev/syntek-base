@@ -179,7 +179,7 @@ Check coverage floors are still met:
 
 ## Phase 4 — Implementation Documentation (hand off to PM 19)
 
-Hand the story to `project-management/workflows/19-implementation-documentation/`. That
+Hand the story to `project-management/workflows/21-implementation-documentation/`. That
 workflow **owns** the closeout and is its single source of truth — do not restate the record
 formats, destinations, or templates here; a second copy is exactly how they drift.
 
@@ -190,7 +190,7 @@ doc-writer
 > **↳ New agent:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
 
 It covers the IMPLEMENTATION record for every applicable spec (GDPR, security, QA, SEO, API),
-the story's findings record in `project-management/src/18-FINDINGS/`, the `/GAPS.md` and
+the story's findings record in `project-management/src/19-FINDINGS/`, the `/GAPS.md` and
 `/DEFERRED.md` routing, the `CONTEXT.md`/`CLAUDE.md` closeout across every touched layer, and
 the code-review-graph refresh.
 

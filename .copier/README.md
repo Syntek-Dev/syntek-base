@@ -232,51 +232,51 @@ Two things to do on a freshly generated project:
 │   │   ├── RESPONSIVE-DESIGN.md         ← breakpoints, fluid layout, and mobile-first rules
 │   │   ├── SECURITY-GUIDE.md            ← security sprint dependencies and hardening checklist
 │   │   ├── SEO-CHECKLIST.md             ← per-page SEO requirements for marketing pages
-│   │   ├── SPRINT-PLANNING-GUIDE.md     ← sprint format, capacity, and MoSCoW conventions
+│   │   ├── PLANNING-GUIDE.md     ← sprint format, capacity, and MoSCoW conventions
 │   │   └── VERSIONING-GUIDE.md          ← semver rules, VERSION file, and CHANGELOG format
 │   ├── export/                          ← PDF/ZIP exports for client review + clickup/ (read-only ClickUp story exports)
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
-│   │   ├── 01-STORIES/
-│   │   ├── 02-SPRINTS/
-│   │   ├── 03-DATABASE/
-│   │   ├── 04-USER-FLOW/
-│   │   ├── 05-BRAND-GUIDE/
-│   │   ├── 06-COMPONENTS/
-│   │   ├── 07-WIREFRAMES/
-│   │   ├── 08-GDPR/
-│   │   ├── 09-SECURITY/
-│   │   ├── 10-QA/
-│   │   ├── 11-SEO/
-│   │   ├── 12-API-DESIGN/
-│   │   ├── 13-DECISIONS/
-│   │   ├── 14-SPRINT-PLANS/
-│   │   ├── 15-STORY-PLANS/
-│   │   ├── 16-TESTS/
-│   │   ├── 17-REVIEWS/
-│   │   ├── 18-FINDINGS/
-│   │   ├── 19-BUGS/
-│   │   └── 20-REFACTORING/
+│   │   ├── 02-STORIES/
+│   │   ├── 03-SPRINTS/
+│   │   ├── 04-DATABASE/
+│   │   ├── 05-USER-FLOW/
+│   │   ├── 06-BRAND-GUIDE/
+│   │   ├── 07-COMPONENTS/
+│   │   ├── 08-WIREFRAMES/
+│   │   ├── 09-GDPR/
+│   │   ├── 10-SECURITY/
+│   │   ├── 11-QA/
+│   │   ├── 12-SEO/
+│   │   ├── 13-API-DESIGN/
+│   │   ├── 14-DECISIONS/
+│   │   ├── 15-SPRINT-PLANS/
+│   │   ├── 16-STORY-PLANS/
+│   │   ├── 17-TESTS/
+│   │   ├── 18-REVIEWS/
+│   │   ├── 19-FINDINGS/
+│   │   ├── 20-BUGS/
+│   │   └── 21-REFACTORING/
 │   └── workflows/                       ← 21 step-by-step PM workflows
-│       ├── 01-story-creation/
-│       ├── 02-sprint-planning/
-│       ├── 03-database-schema/
-│       ├── 04-user-flow-design/
-│       ├── 05-brand-guides/
-│       ├── 06-component-designs/
-│       ├── 07-wireframes/
-│       ├── 08-gdpr-compliance/
-│       ├── 09-security-checks/
-│       ├── 10-qa-checks/
-│       ├── 11-seo-checks/
-│       ├── 12-api-design/
-│       ├── 14-sprint-plans/
-│       ├── 16-backend-code/
-│       ├── 17-api-code/
-│       ├── 18-frontend-code/
-│       ├── 20-pr-and-review/
-│       └── 21-release/
+│       ├── 02-story-creation/
+│       ├── 03-sprint-planning/
+│       ├── 04-database-schema/
+│       ├── 05-user-flow-design/
+│       ├── 06-brand-guides/
+│       ├── 07-component-designs/
+│       ├── 08-wireframes/
+│       ├── 09-gdpr-compliance/
+│       ├── 10-security-checks/
+│       ├── 11-qa-checks/
+│       ├── 12-seo-checks/
+│       ├── 13-api-design/
+│       ├── 15-sprint-plans/
+│       ├── 18-backend-code/
+│       ├── 19-api-code/
+│       ├── 20-frontend-code/
+│       ├── 22-pr-and-review/
+│       └── 23-release/
 ├── CHANGELOG.md                         ← human-readable changelog
 ├── CONTEXT.md                           ← project overview and layer map
 ├── DEFERRED.md                          ← items explicitly deferred to future stories (checked at sprint planning)
@@ -461,12 +461,12 @@ gets lost.
 
 ### User stories
 
-Stories live in `project-management/src/01-STORIES/` and follow the naming convention `US###.md`
+Stories live in `project-management/src/02-STORIES/` and follow the naming convention `US###.md`
 (three-digit zero-padded: `US001.md`, `US042.md`).
 
 Each story should define acceptance criteria, the affected layer (backend / frontend / both), and
 any GDPR or accessibility considerations. Use the PM workflow
-`project-management/workflows/01-story-creation/` to write stories consistently.
+`project-management/workflows/02-story-creation/` to write stories consistently.
 
 ### ClickUp story sync — client-facing exports
 
@@ -479,7 +479,7 @@ story** in `project-management/export/clickup/US###-CLIENT.md`, containing just 
 Status · MoSCoW · Story Points table, the Client Summary, and the User Story. Acceptance criteria,
 tasks, and all technical detail stay internal.
 
-**Flow:** edit the status (or other client-facing field) in the source story under `01-STORIES/`,
+**Flow:** edit the status (or other client-facing field) in the source story under `02-STORIES/`,
 then regenerate the export:
 
 ```bash
@@ -503,22 +503,22 @@ until the `CLICKUP_API_TOKEN` and `CLICKUP_BACKLOG_LIST_ID` repo secrets are set
 
 Sprint work follows a two-stage process:
 
-**Stage 1 — Early sprint record** (`project-management/src/02-SPRINTS/`, `SPRINT-##.md`):
+**Stage 1 — Early sprint record** (`project-management/src/03-SPRINTS/`, `SPRINT-##.md`):
 A high-level record capturing the sprint goal and candidate stories. Written at the start of a
-cycle using `project-management/workflows/02-sprint-planning/`.
+cycle using `project-management/workflows/03-sprint-planning/`.
 
-**Stage 2 — Detailed sprint plan** (`project-management/src/14-SPRINT-PLANS/`, `SPRINT-PLAN-##.md`):
+**Stage 2 — Detailed sprint plan** (`project-management/src/15-SPRINT-PLANS/`, `SPRINT-PLAN-##.md`):
 Written _after_ GDPR, security, and QA checks are complete. Records the definitive story
 assignments, per-phase breakdown (backend → API → frontend → PR), developer constraints from the
-checks, and the sprint definition of done. Use `project-management/workflows/14-sprint-plans/`.
+checks, and the sprint definition of done. Use `project-management/workflows/15-sprint-plans/`.
 
 Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
-`project-management/docs/SPRINT-PLANNING-GUIDE.md` for the full format and conventions.
+`project-management/docs/PLANNING-GUIDE.md` for the full format and conventions.
 
 ### Database ERDs with mcp-mermaid
 
 Database schemas and entity-relationship diagrams are documented in
-`project-management/src/03-DATABASE/` using Mermaid diagrams.
+`project-management/src/04-DATABASE/` using Mermaid diagrams.
 
 The `mcp-mermaid` MCP server renders Mermaid diagrams inside Claude Code sessions. Install it once
 on your machine:
@@ -531,9 +531,9 @@ Full installation guide: [github.com/hustcc/mcp-mermaid](https://github.com/hust
 
 Once installed, use the `mcp__mcp-mermaid__generate_mermaid_diagram` tool inside Claude Code to
 render diagrams from Mermaid syntax. Schema design is formalised before any migration is written —
-use `project-management/workflows/03-database-schema/` to go through the sign-off process.
+use `project-management/workflows/04-database-schema/` to go through the sign-off process.
 
-Example ERD syntax committed to `03-DATABASE/`:
+Example ERD syntax committed to `04-DATABASE/`:
 
 ```text
 erDiagram
@@ -553,26 +553,26 @@ erDiagram
 ### Wireframes with Figma
 
 UI wireframes are designed in Figma and linked (not embedded) from
-`project-management/src/07-WIREFRAMES/`. Each wireframe entry records the Figma URL, the story it
+`project-management/src/08-WIREFRAMES/`. Each wireframe entry records the Figma URL, the story it
 belongs to, and the sign-off status. No frontend work begins on a feature until the wireframe is
-signed off — use `project-management/workflows/07-wireframes/`.
+signed off — use `project-management/workflows/08-wireframes/`.
 
 ### User flow diagrams
 
-User flows are documented as Mermaid flowcharts in `project-management/src/04-USER-FLOW/`. They capture the end-to-end journey through a feature before implementation
+User flows are documented as Mermaid flowcharts in `project-management/src/05-USER-FLOW/`. They capture the end-to-end journey through a feature before implementation
 begins.
 
 ### QA and testing documentation
 
 | Document type                   | Naming convention                | Location                                       |
 | ------------------------------- | -------------------------------- | ---------------------------------------------- |
-| QA gap analysis report          | `QA-REPORT-<AREA>.md`            | `project-management/src/10-QA/PLANNING/`       |
-| QA plan (pre-development)       | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/10-QA/PLANNING/`       |
-| QA review (post-implementation) | `QA-IMPL-US###-<DESCRIPTION>.md` | `project-management/src/10-QA/IMPLEMENTATION/` |
-| Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/14-SPRINT-PLANS/`      |
-| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/16-TESTS/`             |
-| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/16-TESTS/`             |
-| Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/19-BUGS/`              |
+| QA gap analysis report          | `QA-REPORT-<AREA>.md`            | `project-management/src/11-QA/PLANNING/`       |
+| QA plan (pre-development)       | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/11-QA/PLANNING/`       |
+| QA review (post-implementation) | `QA-IMPL-US###-<DESCRIPTION>.md` | `project-management/src/11-QA/IMPLEMENTATION/` |
+| Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/15-SPRINT-PLANS/`      |
+| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/17-TESTS/`             |
+| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/17-TESTS/`             |
+| Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/20-BUGS/`              |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
 tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
@@ -581,24 +581,24 @@ tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to
 
 | Workflow                | Trigger                                                      |
 | ----------------------- | ------------------------------------------------------------ |
-| `01-story-creation/`    | Writing a new user story                                     |
-| `02-sprint-planning/`   | Creating the initial high-level sprint record                |
-| `03-database-schema/`   | Designing a new model or schema change                       |
-| `04-user-flow-design/`  | Mapping user journeys before wireframing                     |
-| `05-brand-guides/`      | Establishing or updating the visual brand identity           |
-| `06-component-designs/` | Designing reusable UI components before frontend work        |
-| `07-wireframes/`        | Creating or updating wireframes before frontend work         |
-| `08-gdpr-compliance/`   | Reviewing a feature for GDPR compliance                      |
-| `09-security-checks/`   | Threat modelling and security review of designs              |
-| `10-qa-checks/`         | QA planning from wireframes before any code is written       |
-| `11-seo-checks/`        | SEO review and metadata checks before frontend work          |
-| `12-api-design/`        | Designing the Django Ninja API surface                       |
-| `14-sprint-plans/`      | Writing the detailed sprint plan after all pre-sprint checks |
-| `16-backend-code/`      | Implementing Django models, services, and business logic     |
-| `17-api-code/`          | Implementing the Django Ninja API layer                      |
-| `18-frontend-code/`     | Implementing Django templates, components, and HTMX partials |
-| `20-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
-| `21-release/`           | Cutting a release (version bump, changelog, deploy)          |
+| `02-story-creation/`    | Writing a new user story                                     |
+| `03-sprint-planning/`   | Creating the initial high-level sprint record                |
+| `04-database-schema/`   | Designing a new model or schema change                       |
+| `05-user-flow-design/`  | Mapping user journeys before wireframing                     |
+| `06-brand-guides/`      | Establishing or updating the visual brand identity           |
+| `07-component-designs/` | Designing reusable UI components before frontend work        |
+| `08-wireframes/`        | Creating or updating wireframes before frontend work         |
+| `09-gdpr-compliance/`   | Reviewing a feature for GDPR compliance                      |
+| `10-security-checks/`   | Threat modelling and security review of designs              |
+| `11-qa-checks/`         | QA planning from wireframes before any code is written       |
+| `12-seo-checks/`        | SEO review and metadata checks before frontend work          |
+| `13-api-design/`        | Designing the Django Ninja API surface                       |
+| `15-sprint-plans/`      | Writing the detailed sprint plan after all pre-sprint checks |
+| `18-backend-code/`      | Implementing Django models, services, and business logic     |
+| `19-api-code/`          | Implementing the Django Ninja API layer                      |
+| `20-frontend-code/`     | Implementing Django templates, components, and HTMX partials |
+| `22-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
+| `23-release/`           | Cutting a release (version bump, changelog, deploy)          |
 
 ---
 
@@ -746,7 +746,7 @@ PR is opened.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 20-pr-and-review
+01-new-feature  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 22-pr-and-review
 ```
 
 - Start with `01-new-feature` to plan the feature scope.
@@ -755,12 +755,12 @@ PR is opened.
 - If the feature touches PII, run `06-gdpr-enforcement` before raising a PR.
 - Before opening the PR, run `07-review` to verify OWASP coverage, coding principles, and
   coverage floors.
-- Hand off to the PM layer with `project-management/workflows/20-pr-and-review/`.
+- Hand off to the PM layer with `project-management/workflows/22-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/08-debugging  →  10-debug  →  07-review  →  PM: 20-pr-and-review
+how-to/08-debugging  →  10-debug  →  07-review  →  PM: 22-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
@@ -1059,7 +1059,7 @@ A commit is rejected if any lint hook fails. Fix the reported issues and recommi
 
 A separate non-blocking pre-commit step — `clickup-export` (`precommit-clickup.sh`) — regenerates
 and re-stages the read-only `export/clickup/` ClickUp story exports whenever a source story or a
-generated file is staged, keeping them in sync with `01-STORIES/`.
+generated file is staged, keeping them in sync with `02-STORIES/`.
 
 ---
 

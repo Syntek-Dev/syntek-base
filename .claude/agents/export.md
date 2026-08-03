@@ -46,9 +46,9 @@ Read the target app's `CONTEXT.md` first to learn its structure and data sources
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/16-backend-code/` — the formatter and service layer
-- `project-management/workflows/17-api-code/` — the download endpoint
-- `project-management/workflows/08-gdpr-compliance/` — when the export is an Article 15 data-access export
+- `project-management/workflows/18-backend-code/` — the formatter and service layer
+- `project-management/workflows/19-api-code/` — the download endpoint
+- `project-management/workflows/09-gdpr-compliance/` — when the export is an Article 15 data-access export
 
 ## Non-negotiables (this remit)
 

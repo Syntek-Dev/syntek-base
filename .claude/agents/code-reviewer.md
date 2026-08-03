@@ -54,7 +54,7 @@ patterns there are the baseline you review against.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/07-review/` — the review procedure and its checklist
-- `project-management/workflows/20-pr-and-review/` — where the review record is filed
+- `project-management/workflows/22-pr-and-review/` — where the review record is filed
 
 ## Before You Review
 

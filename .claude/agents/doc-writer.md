@@ -52,7 +52,7 @@ Read before writing anything:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/19-implementation-documentation/` — the closeout you own — records, findings, `CONTEXT.md`/`CLAUDE.md`, graph refresh
+- `project-management/workflows/21-implementation-documentation/` — the closeout you own — records, findings, `CONTEXT.md`/`CLAUDE.md`, graph refresh
 - `code/workflows/07-review/` — docs are a hard gate before the review hands to the PR
 
 ## Non-Negotiables

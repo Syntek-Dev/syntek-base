@@ -89,17 +89,17 @@ The heaviest layer, and the one that makes the process real.
 ```text
 project-management/src/
 ├── 00-ASSETS/                    ← logos, export scripts
-│   ── specify (01–12) ──
-├── 01-STORIES/ 02-SPRINTS/ 03-DATABASE/ 04-USER-FLOW/ 05-BRAND-GUIDE/
-├── 06-COMPONENTS/ 07-WIREFRAMES/ 08-GDPR/ 09-SECURITY/ 10-QA/ 11-SEO/ 12-API-DESIGN/
-│   ── decide & plan (13–15) ──
-├── 13-DECISIONS/ 14-SPRINT-PLANS/ 15-STORY-PLANS/
-│   ── record (16–20) ──
-└── 16-TESTS/ 17-REVIEWS/ 18-FINDINGS/ 19-BUGS/ 20-REFACTORING/
+│   ── specify (02–13) ──
+├── 02-STORIES/ 03-SPRINTS/ 04-DATABASE/ 05-USER-FLOW/ 06-BRAND-GUIDE/
+├── 07-COMPONENTS/ 08-WIREFRAMES/ 09-GDPR/ 10-SECURITY/ 11-QA/ 12-SEO/ 13-API-DESIGN/
+│   ── decide & plan (14–16) ──
+├── 14-DECISIONS/ 15-SPRINT-PLANS/ 16-STORY-PLANS/
+│   ── record (17–21) ──
+└── 17-TESTS/ 18-REVIEWS/ 19-FINDINGS/ 20-BUGS/ 21-REFACTORING/
 ```
 
-The numbered `src/` folders mirror the numbered `workflows/`. **`15-STORY-PLANS/` is what a
-developer actually codes from** — it references the sprint plan, the decisions, and every 01–12
+The numbered `src/` folders mirror the numbered `workflows/`. **`16-STORY-PLANS/` is what a
+developer actually codes from** — it references the sprint plan, the decisions, and every 02–13
 specification.
 
 ## `.claude/`
@@ -139,7 +139,7 @@ Covered properly in `08-CLAUDE-CODE.md`.
 | How to do a task properly           | The matching `workflows/NN-…/STEPS.md`       |
 | What a directory is for             | Its `CONTEXT.md`                             |
 | What I am allowed to do here        | Its `CLAUDE.md`                              |
-| Why a decision was made             | `project-management/src/13-DECISIONS/`       |
+| Why a decision was made             | `project-management/src/14-DECISIONS/`       |
 | What is currently broken or blocked | `GAPS.md`                                    |
 
 Or ask Claude — the structure exists so it can answer accurately.
@@ -149,4 +149,4 @@ Or ask Claude — the structure exists so it can answer accurately.
 ## Next
 
 - The agent and skill setup → `08-CLAUDE-CODE.md`
-- Build something → `09-FIRST-STORY.md`
+- Build something → `10-FIRST-FEATURE.md`

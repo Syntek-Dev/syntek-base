@@ -42,8 +42,8 @@ Read before touching any pipeline or deployment file:
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `how-to/workflows/01-first-time-setup/` — the environment a pipeline must reproduce
-- `project-management/workflows/21-release/` — the release and deploy procedure the pipeline serves
-- `project-management/workflows/20-pr-and-review/` — the PR gates CI enforces
+- `project-management/workflows/23-release/` — the release and deploy procedure the pipeline serves
+- `project-management/workflows/22-pr-and-review/` — the PR gates CI enforces
 
 ## Project Reality (do not reinvent)
 

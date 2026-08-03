@@ -29,9 +29,9 @@ user story through to a review-ready branch.
   `GAPS.md` clear, containers up) → read the four hard-gate docs → implement backend
   then frontend → commit the OpenAPI schema after any Ninja Schema
   change → tests to the coverage floor via `code/src/scripts/tests/*.sh` →
-  `CHECKLIST.md` before handing to `project-management/workflows/19-implementation-documentation/`
+  `CHECKLIST.md` before handing to `project-management/workflows/21-implementation-documentation/`
   (records, findings, docs, graph refresh — the hard gate before commit), which then hands to
-  `20-pr-and-review/`.
+  `22-pr-and-review/`.
 - **Definition of done:** every item in `CHECKLIST.md` ticked; coverage floors met;
   docs hard-gate satisfied before commit.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).

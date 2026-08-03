@@ -130,7 +130,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 ## Acceptance criteria
 
-A story's Gherkin acceptance criteria (`project-management/src/01-STORIES/`) are discharged by
+A story's Gherkin acceptance criteria (`project-management/src/02-STORIES/`) are discharged by
 integration tests through the Django test client, not by a separate BDD suite. Each `Scenario:`
 maps to one test; the `Given` is the factory setup, the `When` is the client call, the `Then` is
 the assertion. Only a scenario that genuinely needs a browser goes to

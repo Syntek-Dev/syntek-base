@@ -33,7 +33,7 @@ model: fable
 
 Security is reviewed at **design stage** — before code is written. Catching a structural
 vulnerability in a wireframe costs nothing to fix; catching it after implementation costs a
-sprint. This guide supports the `workflows/09-security-checks` workflow.
+sprint. This guide supports the `workflows/10-security-checks` workflow.
 
 Three complementary frameworks are applied at each review:
 
@@ -42,8 +42,8 @@ Three complementary frameworks are applied at each review:
 - **NIST CSF 2.0** — risk management function mapped to each finding (Govern, Identify, Protect,
   Detect, Respond, Recover)
 
-All three are applied to the user flows and wireframes produced in `src/04-USER-FLOW/` and
-`src/07-WIREFRAMES/`.
+All three are applied to the user flows and wireframes produced in `src/05-USER-FLOW/` and
+`src/08-WIREFRAMES/`.
 
 ---
 
@@ -53,7 +53,7 @@ Security checks run once per sprint cycle, after wireframes are signed off and b
 plans are written:
 
 ```text
-07-wireframes  →  08-gdpr-compliance  →  09-security-checks  →  10-qa-checks  →  12-api-design  →  13-decisions  →  14-sprint-plans  →  15-story-plans
+08-wireframes  →  09-gdpr-compliance  →  10-security-checks  →  11-qa-checks  →  13-api-design  →  14-decisions  →  15-sprint-plans  →  16-story-plans
 ```
 
 Any `HIGH` or `CRITICAL` findings must be resolved (by updating the design or adding explicit
@@ -151,7 +151,7 @@ addressed during development, with explicit acceptance criteria added to the rel
 
 ## What to Document
 
-All security review output goes into `project-management/src/09-SECURITY/`.
+All security review output goes into `project-management/src/10-SECURITY/`.
 
 ### Threat Model — `THREAT-MODEL/<NAME>-DD-MM-YYYY.md`
 
@@ -269,11 +269,11 @@ Before closing the security checks workflow:
 - [ ] All user flows and wireframes reviewed against STRIDE
 - [ ] OWASP A01–A10 category mapped to each finding
 - [ ] NIST CSF 2.0 function mapped to each finding (GV / ID / PR / DE / RS / RC)
-- [ ] Threat model document saved in `src/09-SECURITY/THREAT-MODEL/`
-- [ ] Assessment document saved in `src/09-SECURITY/ASSESSMENTS/`
-- [ ] Individual vulnerability reports created for all `CRITICAL` and `HIGH` findings in `src/09-SECURITY/VULNERABILITIES/`
+- [ ] Threat model document saved in `src/10-SECURITY/THREAT-MODEL/`
+- [ ] Assessment document saved in `src/10-SECURITY/ASSESSMENTS/`
+- [ ] Individual vulnerability reports created for all `CRITICAL` and `HIGH` findings in `src/10-SECURITY/VULNERABILITIES/`
 - [ ] No unresolved `CRITICAL` or `HIGH` findings
 - [ ] All `MEDIUM` and `LOW` findings have explicit developer constraints documented
 - [ ] Developer constraints added to relevant `US###.md` acceptance criteria
 - [ ] Wireframes or user flows updated if structural changes were required
-- [ ] Findings ready to feed into `workflows/12-api-design`
+- [ ] Findings ready to feed into `workflows/13-api-design`

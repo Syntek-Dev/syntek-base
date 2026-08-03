@@ -7,7 +7,7 @@ This file is the **design-time** entry point for all design work — the quick c
 
 **Design-time → code-time.** DESIGN.md governs the _design_ phase (produce the artefacts); its code-time counterpart is [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md), which governs _implementing_ those artefacts against the live codebase. The two are one pipeline:
 
-- **Design-time (here):** Figma MCP / Claude Design read [`project-management/src/05-BRAND-GUIDE/`](project-management/src/05-BRAND-GUIDE) (foundations — colour, type, motion, spacing, icons, logo) and [`project-management/src/06-COMPONENTS/`](project-management/src/06-COMPONENTS) (component designs, states, variants) to produce the wireframes in [`project-management/src/07-WIREFRAMES/`](project-management/src/07-WIREFRAMES).
+- **Design-time (here):** Figma MCP / Claude Design read [`project-management/src/06-BRAND-GUIDE/`](project-management/src/06-BRAND-GUIDE) (foundations — colour, type, motion, spacing, icons, logo) and [`project-management/src/07-COMPONENTS/`](project-management/src/07-COMPONENTS) (component designs, states, variants) to produce the wireframes in [`project-management/src/08-WIREFRAMES/`](project-management/src/08-WIREFRAMES).
 - **Code-time ([VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)):** the `frontend` agent implements those artefacts — grounded in the live code, which drifts from planning — in the <%PROJECT_NAME%> visual signature.
 
 ---
@@ -34,7 +34,7 @@ This file is the **design-time** entry point for all design work — the quick c
 | [`project-management/docs/SEO-CHECKLIST.md`](project-management/docs/SEO-CHECKLIST.md)                         | SEO requirements for all public pages                                          |
 | [`project-management/docs/GDPR-GUIDE.md`](project-management/docs/GDPR-GUIDE.md)                               | Consent UI, data collection forms, privacy notices                             |
 | [`project-management/docs/QA-GUIDE.md`](project-management/docs/QA-GUIDE.md)                                   | QA expectations for frontend features                                          |
-| [`project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md`](project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md) | Brand voice & copy — tone, registers, casing, cadence for all user-facing text |
+| [`project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md`](project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md) | Brand voice & copy — tone, registers, casing, cadence for all user-facing text |
 
 ---
 
@@ -44,15 +44,15 @@ This file is the **design-time** entry point for all design work — the quick c
 
 | Workflow                                                                                                             | Purpose                                                     |
 | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [`project-management/workflows/04-user-flow-design/`](project-management/workflows/04-user-flow-design/CONTEXT.md)   | Define user journeys before implementation begins           |
-| [`project-management/workflows/05-brand-guides/`](project-management/workflows/05-brand-guides/CONTEXT.md)           | Establish colour, typography, spacing, and tone             |
-| [`project-management/workflows/06-component-designs/`](project-management/workflows/06-component-designs/CONTEXT.md) | Design individual UI components with states and variants    |
-| [`project-management/workflows/07-wireframes/`](project-management/workflows/07-wireframes/CONTEXT.md)               | Low- and mid-fidelity wireframes for layout decisions       |
-| [`project-management/workflows/08-gdpr-compliance/`](project-management/workflows/08-gdpr-compliance/CONTEXT.md)     | GDPR-compliant UI patterns — consent, data forms, notices   |
-| [`project-management/workflows/10-qa-checks/`](project-management/workflows/10-qa-checks/CONTEXT.md)                 | QA verification before a feature ships                      |
-| [`project-management/workflows/18-frontend-code/`](project-management/workflows/18-frontend-code/CONTEXT.md)         | Translating designs into Django templates + components      |
-| [`project-management/workflows/20-pr-and-review/`](project-management/workflows/20-pr-and-review/CONTEXT.md)         | PR review process including visual and accessibility checks |
-| [`project-management/workflows/21-release/`](project-management/workflows/21-release/CONTEXT.md)                     | Cutting a release after all design and frontend work ships  |
+| [`project-management/workflows/05-user-flow-design/`](project-management/workflows/05-user-flow-design/CONTEXT.md)   | Define user journeys before implementation begins           |
+| [`project-management/workflows/06-brand-guides/`](project-management/workflows/06-brand-guides/CONTEXT.md)           | Establish colour, typography, spacing, and tone             |
+| [`project-management/workflows/07-component-designs/`](project-management/workflows/07-component-designs/CONTEXT.md) | Design individual UI components with states and variants    |
+| [`project-management/workflows/08-wireframes/`](project-management/workflows/08-wireframes/CONTEXT.md)               | Low- and mid-fidelity wireframes for layout decisions       |
+| [`project-management/workflows/09-gdpr-compliance/`](project-management/workflows/09-gdpr-compliance/CONTEXT.md)     | GDPR-compliant UI patterns — consent, data forms, notices   |
+| [`project-management/workflows/11-qa-checks/`](project-management/workflows/11-qa-checks/CONTEXT.md)                 | QA verification before a feature ships                      |
+| [`project-management/workflows/20-frontend-code/`](project-management/workflows/20-frontend-code/CONTEXT.md)         | Translating designs into Django templates + components      |
+| [`project-management/workflows/22-pr-and-review/`](project-management/workflows/22-pr-and-review/CONTEXT.md)         | PR review process including visual and accessibility checks |
+| [`project-management/workflows/23-release/`](project-management/workflows/23-release/CONTEXT.md)                     | Cutting a release after all design and frontend work ships  |
 
 ### Code Layer — Implementation Workflows
 
@@ -79,9 +79,9 @@ This file is the **design-time** entry point for all design work — the quick c
 | `code/src/django/apps/marketing/`        | Public page views + Django templates (SSR)                     |
 | `code/src/django/components/`            | django-components server component library (`{% component %}`) |
 | `code/src/django/static/css/tokens/`     | Design token CSS (consumed as `var(--token)`)                  |
-| `project-management/src/05-BRAND-GUIDE/` | Brand foundations (canonical `DESIGN/Foundations*.html`)       |
-| `project-management/src/06-COMPONENTS/`  | Component designs — states, variants, patterns                 |
-| `project-management/src/07-WIREFRAMES/`  | Screen wireframes (`WF-###`)                                   |
+| `project-management/src/06-BRAND-GUIDE/` | Brand foundations (canonical `DESIGN/Foundations*.html`)       |
+| `project-management/src/07-COMPONENTS/`  | Component designs — states, variants, patterns                 |
+| `project-management/src/08-WIREFRAMES/`  | Screen wireframes (`WF-###`)                                   |
 
 ---
 

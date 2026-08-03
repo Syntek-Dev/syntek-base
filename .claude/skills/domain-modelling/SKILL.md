@@ -66,9 +66,9 @@ Do these **inline, as the decision lands** — never batch them for later.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/03-database-schema/` — naming the concepts the schema encodes
-- `project-management/workflows/13-decisions/` — recording a load-bearing decision
-- `project-management/workflows/19-implementation-documentation/` — where a new term lands in the touched `CONTEXT.md`
+- `project-management/workflows/04-database-schema/` — naming the concepts the schema encodes
+- `project-management/workflows/14-decisions/` — recording a load-bearing decision
+- `project-management/workflows/21-implementation-documentation/` — where a new term lands in the touched `CONTEXT.md`
 
 ## Cross-references
 

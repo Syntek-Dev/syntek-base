@@ -44,5 +44,5 @@ model: opus
 ## Definition of Done
 
 - [ ] Regression test committed alongside the fix
-- [ ] Bug report in `project-management/src/19-BUGS/` updated or closed if one exists
+- [ ] Bug report in `project-management/src/20-BUGS/` updated or closed if one exists
 - [ ] Committed and pushed

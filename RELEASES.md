@@ -1,9 +1,83 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 1.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.0.0 — 03/08/2026
+
+**Status:** Major release — breaking. The PM layer is restructured around a per-story planning
+cadence, and every workflow and `src/` folder is renumbered.
+
+### Read this first if you have a project on 1.x
+
+`copier update` **will not apply cleanly**. Every `project-management/workflows/` and
+`project-management/src/` path has moved by one, two folders were deleted, and two new questions
+were added. Plan the update as a piece of work, not a routine pull. `14-UPDATING.md` covers the
+conflict flow; the safest route is to update into a scratch directory first and diff.
+
+### What changed, and why
+
+**Planning now runs one story at a time.** Previously the numbered gates read as a batch — write
+every story, then every schema, then every flow. That guaranteed the same cross-cutting questions
+got answered slightly differently at every gate. A story now runs the whole specify tier
+(`02`–`13`) and finishes at `14-decisions` before the next one starts, so story 7 is planned with
+six stories' worth of settled decisions already in hand.
+
+**Sprint planning fires on fill, not per story.** Each finished story is slotted into the open
+sprint record with its points. When it reaches the ceiling — `SPRINT_CAPACITY_SP`, default 11,
+grace 13 — `15-sprint-plans` and `16-story-plans` run for that sprint, then planning resumes. Both
+figures are new Copier questions and are meant to be retuned against measured velocity after two
+sprints.
+
+**Work starts with a feature, not a story.** The new `01-feature` gate charts the decision
+frontier with wayfinder and settles it node by node. Stories are cut from the resolved
+`MAP-<FEATURE>.md`, which is what stops each one rediscovering the same questions.
+
+**Design work is consolidated before code.** Planning per story means design arrives per story and
+drifts by construction — two stories will model the same entity differently or invent the same
+badge twice. The design and schema folders now carry three stages:
+
+```text
+USER-STORY-IDEAS/  →  CONSOLIDATED-IDEAS/  →  IMPLEMENTATION/
+  per story            workflow 17              what shipped
+  frozen once 17 runs  ← this is what gets built
+```
+
+`17-consolidate-design-work` reconciles the accumulated work once every story is planned. It
+resolves the schema first, because a fragmented schema gets costlier with every story that ships
+on top of it. Stage 1 is frozen rather than deleted — it is the record of what each story asked
+for, and the evidence when a consolidated decision is later questioned.
+
+### Also in this release
+
+- `12-seo-checks` became a **planning** gate. It sat in the specify tier but required a deployed
+  page, which made it impossible to run in its own slot. Auditing the built page and writing the
+  `IMPLEMENTATION/` record moved to `21-implementation-documentation`, which already owned every
+  other implementation record.
+- `SPRINT-PLANNING-GUIDE.md` split into `PLANNING-GUIDE.md` over
+  `planning/{CADENCE,STORIES,SPRINTS}.md`. The old name had stopped describing its contents once
+  the cadence — which governs `01`–`17` — moved into it.
+- A new template guide, `09-PROJECT-MANAGEMENT.md`, on using `project-management/src/` properly.
+
+### Fixes worth knowing about
+
+- Twenty `IMPLEMENTATION/` folders credited the PR workflow for writing their records, which
+  workflow `21` had already absorbed.
+- Three workflows — brand guides, wireframes, sprint plans — had no grilling pass at all, despite
+  `.claude/CLAUDE.md` §10 making it the default for substantial work.
+- The wayfinder skill referenced its map through a token substitution that had lost its separator.
+
+### Upgrade notes
+
+- Two new questions on `copier update`: `SPRINT_CAPACITY_SP` (11) and `SPRINT_GRACE_SP` (13).
+  Press Enter on both unless you already know your velocity.
+- `code/workflows/` and `how-to/workflows/` numbering is **unchanged** — those are catalogues,
+  where numbers are stable identifiers and are never reused. Only the PM layer renumbered, because
+  there the number _is_ the running order.
 
 ---
 
@@ -97,7 +171,7 @@ reason the default is `false`.
   `SecretBytes` type that wipes itself on drop
 - `code/src/scripts/rust/` — build, test, lint and a `cargo-deny` supply-chain gate
 - `code/docs/RUST.md` plus three sub-documents: the PyO3 boundary, memory hygiene, supply chain
-- `code/workflows/12-rust-extension/`, entered from PM `16-backend-code`
+- `code/workflows/12-rust-extension/`, entered from PM `18-backend-code`
 - A `rust` agent and a `stack-rust` skill, excluded together with the tree
 - `syntax-rust.yml` — clippy at `-D warnings`, the Rust suite, and the dependency audit
 
@@ -161,7 +235,7 @@ stays a minor or patch concern, exactly as before.
 ### Worth knowing
 
 - **There is no upgrade step.** A project generated from `0.14.0` is already on the `1.0.0` surface; nothing needs re-running, and `copier update` will report no changes beyond the version string
-- **The durable half of the deleted memory notes was never only there.** `code/src/CONTEXT.md` defines _surface_, and `how-to/src/TEMPLATE-GUIDE/10-CUSTOMISING.md` carries the one-way optional-content gate with its rejected alternatives. Emptying the memory store loses no reasoning that a generated project can act on
+- **The durable half of the deleted memory notes was never only there.** `code/src/CONTEXT.md` defines _surface_, and `how-to/src/TEMPLATE-GUIDE/11-CUSTOMISING.md` carries the one-way optional-content gate with its rejected alternatives. Emptying the memory store loses no reasoning that a generated project can act on
 - **The pre-`1.0.0` tag numbers are not the ones GitHub carried before.** This repository previously ran to `v1.11.0` under an older Next.js/Expo scaffold, then reset its version track to `0.1.0` at `a1ec114` when it became a template. Those legacy tags and releases have been removed; the commits behind them remain in git history, as `v0.1.0` said they would
 
 ---
@@ -308,7 +382,7 @@ describes the template — 1160 lines down to 140.
 There is no automatic path from a `setup.sh`-generated project. Those projects have no
 `.copier-answers.yml` and cannot be updated. Recreate the file by hand from a fresh generation's
 format, filling in your values with `_src_path` and `_commit`, and `copier update` will work from
-there. `how-to/src/TEMPLATE-GUIDE/13-UPDATING.md` covers it.
+there. `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md` covers it.
 
 ### Known requirements
 
@@ -412,7 +486,7 @@ and the domain-specific example artefacts are cleared so the template ships temp
 
 - **Three tiers, explicitly numbered** — specify (01–12) → decide and plan (13–15) → record (16–20), with the story plan as the code master
 - **Workflows to 21** — API design, decisions, sprint and story plans, three implementation phases, implementation documentation, PR and review, and release
-- **Documentation is a hard gate** — `19-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
+- **Documentation is a hard gate** — `21-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
 - **No project data** — example artefacts and organisation assets are cleared; what ships is the structure and the templates
 
 ---

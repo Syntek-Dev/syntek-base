@@ -207,11 +207,11 @@ Do not paraphrase or abbreviate this notice. Advise users not to remove it until
 ## Related Project Guides
 
 - `project-management/docs/GDPR-GUIDE.md` — governing UK GDPR compliance procedure (lawful bases, DSAR handling, records of processing, ICO obligations).
-- `code/workflows/06-gdpr-enforcement/CONTEXT.md` and `project-management/workflows/08-gdpr-compliance/CONTEXT.md` — the enforcement and compliance steps these documents must stay consistent with.
+- `code/workflows/06-gdpr-enforcement/CONTEXT.md` and `project-management/workflows/09-gdpr-compliance/CONTEXT.md` — the enforcement and compliance steps these documents must stay consistent with.
 - Once a document is signed off, implementation (publishing behind the `(marketing)/` legal page, token-first) is handed to the `feature` / `frontend` path — the writer agents produce Markdown only and never touch source.
 
 ## Governing procedures (route here — do not restate at length)
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/08-gdpr-compliance/` — the compliance facts a GDPR-family document must reflect
+- `project-management/workflows/09-gdpr-compliance/` — the compliance facts a GDPR-family document must reflect

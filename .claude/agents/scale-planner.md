@@ -52,7 +52,7 @@ token-cheaper for the topology. Fall back to `.claude/plugins/project-tool.py` f
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/13-decisions/` — a sizing choice that is hard to reverse becomes an ADR
+- `project-management/workflows/14-decisions/` — a sizing choice that is hard to reverse becomes an ADR
 
 ## Grill Before Planning
 

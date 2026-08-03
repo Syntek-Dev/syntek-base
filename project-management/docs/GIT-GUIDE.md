@@ -172,7 +172,7 @@ must not be merged.
 
 Every migration that adds an **encrypted, uniquely-looked-up PII field** must add its HMAC
 companion column in the same migration. Cross-check it against the encryption spec in the
-story's database-design and QA docs (`src/03-DATABASE/`, `src/10-QA/`).
+story's database-design and QA docs (`src/04-DATABASE/`, `src/11-QA/`).
 
 For each such field, verify **all** of the following before approving:
 

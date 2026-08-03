@@ -116,8 +116,8 @@ document, so a renamed parameter is a breaking change. Auth code (the verifier,
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/17-api-code/` — the PM build phase this surface is entered through
-- `project-management/workflows/09-security-checks/` — threat-modelling an agent-facing surface before it ships
+- `project-management/workflows/19-api-code/` — the PM build phase this surface is entered through
+- `project-management/workflows/10-security-checks/` — threat-modelling an agent-facing surface before it ships
 - `code/workflows/05-mcp-server/` — adding or changing a tool
 - `code/workflows/02-tdd-cycle/` — Red → Green → Refactor for tools
 - `code/workflows/08-security-hardening/` — the audit `/mcp/` must pass before public exposure

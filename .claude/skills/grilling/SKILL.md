@@ -93,10 +93,10 @@ resolves — see that skill for exactly which artifact receives it.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/01-story-creation/` — story scope and acceptance criteria
-- `project-management/workflows/03-database-schema/` — schema shape
-- `project-management/workflows/12-api-design/` — the API contract
-- `project-management/workflows/13-decisions/` — the options behind an ADR
-- `project-management/workflows/15-story-plans/` — approach and phasing
+- `project-management/workflows/02-story-creation/` — story scope and acceptance criteria
+- `project-management/workflows/04-database-schema/` — schema shape
+- `project-management/workflows/13-api-design/` — the API contract
+- `project-management/workflows/14-decisions/` — the options behind an ADR
+- `project-management/workflows/16-story-plans/` — approach and phasing
 - `code/workflows/01-new-feature/` — before decomposing a feature
 - `code/workflows/11-refactor/` — before restructuring

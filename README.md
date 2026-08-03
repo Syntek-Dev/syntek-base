@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code agent suite.**
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -85,22 +85,23 @@ the `model:` lines in `**/docs/*.md` and `**/workflows/**/*.md` routing frontmat
 
 The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE-GUIDE/)**:
 
-| Guide                                                                 | Read it when                                                 |
-| --------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [OVERVIEW.md](how-to/src/TEMPLATE-GUIDE/01-OVERVIEW.md)               | You want the design philosophy before committing to it       |
-| [PREREQUISITES.md](how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md)     | Setting up the host tooling                                  |
-| [QUICKSTART.md](how-to/src/TEMPLATE-GUIDE/04-QUICKSTART.md)           | Generating your first project and getting it running         |
-| [GENERATION.md](how-to/src/TEMPLATE-GUIDE/06-GENERATION.md)           | You want to know exactly what Copier does to the tree        |
-| [ANSWERS.md](how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md)                 | Deciding how to answer the Copier questions                  |
-| [UPDATING.md](how-to/src/TEMPLATE-GUIDE/13-UPDATING.md)               | Pulling later template improvements into a live project      |
-| [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)             | Finding your way around the three layers                     |
-| [STACK.md](how-to/src/TEMPLATE-GUIDE/02-STACK.md)                     | You want to know why each piece was chosen                   |
-| [CUSTOMISING.md](how-to/src/TEMPLATE-GUIDE/10-CUSTOMISING.md)         | Working out what is yours to change and what is load-bearing |
-| [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)         | Understanding the agent, skill and hook configuration        |
-| [EXTENDING.md](how-to/src/TEMPLATE-GUIDE/11-EXTENDING.md)             | Adding your own agent, skill, workflow or guide              |
-| [FIRST-STORY.md](how-to/src/TEMPLATE-GUIDE/09-FIRST-STORY.md)         | Walking a feature from user story to merged PR               |
-| [DEPLOYMENT.md](how-to/src/TEMPLATE-GUIDE/12-DEPLOYMENT.md)           | Taking it to a server                                        |
-| [TROUBLESHOOTING.md](how-to/src/TEMPLATE-GUIDE/14-TROUBLESHOOTING.md) | Something went wrong                                         |
+| Guide                                                                       | Read it when                                                         |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [OVERVIEW.md](how-to/src/TEMPLATE-GUIDE/01-OVERVIEW.md)                     | You want the design philosophy before committing to it               |
+| [PREREQUISITES.md](how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md)           | Setting up the host tooling                                          |
+| [QUICKSTART.md](how-to/src/TEMPLATE-GUIDE/04-QUICKSTART.md)                 | Generating your first project and getting it running                 |
+| [GENERATION.md](how-to/src/TEMPLATE-GUIDE/06-GENERATION.md)                 | You want to know exactly what Copier does to the tree                |
+| [ANSWERS.md](how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md)                       | Deciding how to answer the Copier questions                          |
+| [UPDATING.md](how-to/src/TEMPLATE-GUIDE/14-UPDATING.md)                     | Pulling later template improvements into a live project              |
+| [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)                   | Finding your way around the three layers                             |
+| [STACK.md](how-to/src/TEMPLATE-GUIDE/02-STACK.md)                           | You want to know why each piece was chosen                           |
+| [CUSTOMISING.md](how-to/src/TEMPLATE-GUIDE/11-CUSTOMISING.md)               | Working out what is yours to change and what is load-bearing         |
+| [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)               | Understanding the agent, skill and hook configuration                |
+| [EXTENDING.md](how-to/src/TEMPLATE-GUIDE/12-EXTENDING.md)                   | Adding your own agent, skill, workflow or guide                      |
+| [PROJECT-MANAGEMENT.md](how-to/src/TEMPLATE-GUIDE/09-PROJECT-MANAGEMENT.md) | Using `project-management/src/` — tiers, patterns, which folder when |
+| [FIRST-FEATURE.md](how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md)           | Walking a feature from idea to merged PR                             |
+| [DEPLOYMENT.md](how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md)                 | Taking it to a server                                                |
+| [TROUBLESHOOTING.md](how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md)       | Something went wrong                                                 |
 
 Reference material behind the guides:
 [`TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md) (the token contract) and
@@ -118,7 +119,7 @@ copier update
 
 Copier three-way-merges the change against your edits, using the answers recorded in
 `.copier-answers.yml`. This is the main reason the template is Copier-based rather than a
-`git clone` you then sever. See [UPDATING.md](how-to/src/TEMPLATE-GUIDE/13-UPDATING.md).
+`git clone` you then sever. See [UPDATING.md](how-to/src/TEMPLATE-GUIDE/14-UPDATING.md).
 
 ---
 

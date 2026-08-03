@@ -122,5 +122,5 @@ bash code/src/scripts/desktop/package.sh
 never edit the check. That is a licence breach, not a lint failure.
 
 Work through `CHECKLIST.md`. Hand off to
-`project-management/workflows/19-implementation-documentation/` for the implementation record, the
+`project-management/workflows/21-implementation-documentation/` for the implementation record, the
 `CONTEXT.md` closeout and the code-review-graph refresh — do not write those here.

@@ -20,7 +20,7 @@ model: opus
 - [ ] Root cause identified and documented · _opus_
 - [ ] Fix implemented and tested · _opus_
 - [ ] Tests passing (no regressions introduced) · _opus_
-- [ ] If a significant bug: bug report saved to `project-management/src/19-BUGS/` · _opus_
+- [ ] If a significant bug: bug report saved to `project-management/src/20-BUGS/` · _opus_
 
 ---
 

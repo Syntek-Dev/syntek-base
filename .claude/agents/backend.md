@@ -56,15 +56,15 @@ Read before writing any code (skip what a scoped task plainly does not touch):
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/16-backend-code/` — the build phase that drives this work; it is how a story reaches you
-- `project-management/workflows/17-api-code/` — the build phase for the Django Ninja layer
-- `project-management/workflows/03-database-schema/` — the approved schema is a prerequisite; never design it here
+- `project-management/workflows/18-backend-code/` — the build phase that drives this work; it is how a story reaches you
+- `project-management/workflows/19-api-code/` — the build phase for the Django Ninja layer
+- `project-management/workflows/04-database-schema/` — the approved schema is a prerequisite; never design it here
 - `code/workflows/03-database-migration/` — schema and migration changes
 - `code/workflows/04-api-design/` — Django Ninja API surface
 - `code/workflows/05-mcp-server/` — the FastMCP tool surface at `/mcp/`
 - `code/workflows/08-security-hardening/` — permission and RLS hardening
 - `code/workflows/02-tdd-cycle/` — implementing against pre-written failing tests
-- `project-management/workflows/19-implementation-documentation/` — the closeout; records, docs, and graph refresh before commit
+- `project-management/workflows/21-implementation-documentation/` — the closeout; records, docs, and graph refresh before commit
 - `how-to/workflows/08-debugging/` — when the stack itself is unhealthy rather than the code
 
 Environment detection (optional, read-only):

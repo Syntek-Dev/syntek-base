@@ -20,9 +20,10 @@ how-to/src/
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── 01-OVERVIEW.md · 02-STACK.md · 03-PREREQUISITES.md
 │   ├── 04-QUICKSTART.md · 05-ANSWERS.md · 06-GENERATION.md
-│   ├── 07-REPO-TOUR.md · 08-CLAUDE-CODE.md · 09-FIRST-STORY.md
-│   ├── 10-CUSTOMISING.md · 11-EXTENDING.md
-│   ├── 12-DEPLOYMENT.md · 13-UPDATING.md · 14-TROUBLESHOOTING.md
+│   ├── 07-REPO-TOUR.md · 08-CLAUDE-CODE.md
+│   ├── 09-PROJECT-MANAGEMENT.md · 10-FIRST-FEATURE.md
+│   ├── 11-CUSTOMISING.md · 12-EXTENDING.md
+│   ├── 13-DEPLOYMENT.md · 14-UPDATING.md · 15-TROUBLESHOOTING.md
 │   └── TEMPLATE-GAPS.md     ← syntek-base's own open items (the root GAPS.md ships, so it stays empty)
 ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 ├── SCALE-ARCHITECTURE/      ← how the app scales: load profiles, readiness audit, sizing envelope

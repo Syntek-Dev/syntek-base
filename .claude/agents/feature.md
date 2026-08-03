@@ -24,9 +24,9 @@ Read in this order before spawning any sub-agents:
 - `code/workflows/01-new-feature/CONTEXT.md` → `code/workflows/01-new-feature/STEPS.md`
 - `code/workflows/02-tdd-cycle/CONTEXT.md` — TDD red/green/refactor cycle
 - `code/workflows/03-database-migration/CONTEXT.md` — migration conventions
-- `project-management/workflows/16-backend-code/CONTEXT.md`
-- `project-management/workflows/17-api-code/CONTEXT.md`
-- `project-management/workflows/18-frontend-code/CONTEXT.md`
+- `project-management/workflows/18-backend-code/CONTEXT.md`
+- `project-management/workflows/19-api-code/CONTEXT.md`
+- `project-management/workflows/20-frontend-code/CONTEXT.md`
 
 **Docs:**
 
@@ -53,14 +53,14 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/15-story-plans/` — the master plan you build from — a story is not codeable without it
-- `project-management/workflows/16-backend-code/` — backend phase — drives `code/workflows/02-tdd-cycle/` and `03-database-migration/`
-- `project-management/workflows/17-api-code/` — API phase — drives `code/workflows/04-api-design/`
-- `project-management/workflows/18-frontend-code/` — frontend phase — drives `code/workflows/01-new-feature/`
+- `project-management/workflows/16-story-plans/` — the master plan you build from — a story is not codeable without it
+- `project-management/workflows/18-backend-code/` — backend phase — drives `code/workflows/02-tdd-cycle/` and `03-database-migration/`
+- `project-management/workflows/19-api-code/` — API phase — drives `code/workflows/04-api-design/`
+- `project-management/workflows/20-frontend-code/` — frontend phase — drives `code/workflows/01-new-feature/`
 - `code/workflows/01-new-feature/` — the full-stack build procedure itself
 - `code/workflows/02-tdd-cycle/` — Red → Green → Refactor within every phase
-- `project-management/workflows/19-implementation-documentation/` — records, findings, docs, graph refresh — hard gate before commit
-- `project-management/workflows/20-pr-and-review/` — PR, review, merge
+- `project-management/workflows/21-implementation-documentation/` — records, findings, docs, graph refresh — hard gate before commit
+- `project-management/workflows/22-pr-and-review/` — PR, review, merge
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 
@@ -92,7 +92,7 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ↳ planner [opus]
 The planning phase **opens with a grilling pass** — `planner` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> one question at a time (each with its recommended answer, facts looked up not asked) before producing the plan, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
 Must complete before any implementation phase starts.
-Save to: `project-management/src/15-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`
+Save to: `project-management/src/16-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`
 
 ### Phase 2 — Failing Tests (TDD Red Phase)
 

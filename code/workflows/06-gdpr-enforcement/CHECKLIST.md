@@ -17,7 +17,7 @@ model: opus
 
 ## Pre-Conditions
 
-- [ ] `project-management/src/08-GDPR/DATA-INVENTORY.md` exists and covers this feature
+- [ ] `project-management/src/09-GDPR/DATA-INVENTORY.md` exists and covers this feature
 - [ ] PM-layer GDPR compliance review is complete
 - [ ] Feature implementation is in place and tests are green
 
@@ -46,6 +46,6 @@ model: opus
 
 ## Definition of Done
 
-- [ ] `project-management/src/08-GDPR/` documentation updated to reflect implementation
+- [ ] `project-management/src/09-GDPR/` documentation updated to reflect implementation
 - [ ] All tests green
 - [ ] Committed and pushed

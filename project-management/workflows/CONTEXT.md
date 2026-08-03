@@ -2,120 +2,139 @@
 
 **Last Updated**: <%DATE%>
 
+## Why this layer exists
+
+**A human thinks the work through before any code is written.** That is the whole bet.
+Every gate here — schema, flow, brand, components, wireframes, GDPR, security, QA, SEO,
+API contract, the decision records, the plans — exists so that by the time implementation
+starts there is nothing left to decide. Done properly, writing the code becomes the easy
+part: mechanical, unsurprising, and fast, because every question that would have stalled
+it was answered upstream by a person.
+
+The cost is real and worth stating plainly. This assumes genuine project-management and
+software-development knowledge — it is built for someone who has it. Someone who does not
+can still use it: the numbered gates, their `STEPS.md`, and their `CHECKLIST.md` carry you
+through the questions you would not have known to ask. You will move slower and lean
+harder on the grilling passes, and the output will still be a designed system rather than
+an accreted one.
+
+If that is too much for what you are doing — a spike, a proof of concept, a question you
+want answered in an hour — use `/prototype` instead. The process is not the only option.
+
+## The planning cadence
+
+**Plan one story at a time, all the way through.** Take a single user story from
+`02-story-creation` through to `14-decisions` before starting the next one. Do not batch:
+do not write every story, then every schema, then every flow.
+
+The reason is compounding. Story 2 is planned with everything story 1 settled already in
+hand — its tables, its flows, its tokens, its ADRs. Story 7 inherits six stories' worth of
+resolved decisions. Batching throws that away and re-litigates the same questions at every
+gate.
+
+```text
+01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13
+                                                              │
+                                          sprint full? ───────┤
+                                            │            no → └→ next story
+                                           yes
+                                            ↓
+                                     14 → 15  (for that sprint's stories)
+                                            │
+                                            └→ next story
+```
+
+**When a sprint fills, plan it.** Each story that clears `14-decisions` is slotted into the
+open `SPRINT-##.md` record with its story points. When the accepted total reaches
+`<%SPRINT_CAPACITY_SP%>` SP — stretching to `<%SPRINT_GRACE_SP%>` only where the next
+story would otherwise split badly — run `15-sprint-plans` and `16-story-plans` for that
+sprint's stories before planning resumes. A completed sprint plan then informs the next
+set of stories, the same way each story informs the next. Rules and the ceiling:
+`project-management/docs/PLANNING-GUIDE.md`.
+
+**Then consolidate.** Planning per story means design work arrives per story: five stories
+produce five sets of tables, flows, tokens, components, and screens, and they will drift.
+That is the accepted cost of the loop, not an accident. Once every story is through `16`,
+`17-consolidate-design-work` reconciles the accumulated per-story work into one coherent
+design. Only then does implementation begin.
+
+Design and schema folders (`src/03`–`src/07`) carry that two-stage shape directly:
+
+```text
+USER-STORY-IDEAS/   →   CONSOLIDATED-IDEAS/   →   IMPLEMENTATION/
+  stage 1, per story      stage 2, workflow 17      what shipped
+  frozen once 16 runs
+```
+
 ## Directory Tree
 
 ```text
 project-management/workflows/
 ├── CONTEXT.md                  ← this file
-├── 01-story-creation/          ← write a well-formed user story with acceptance criteria
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 02-sprint-planning/         ← organise stories into a balanced sprint (MoSCoW)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 03-database-schema/         ← design and sign off a database schema before coding
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 04-user-flow-design/        ← map user journeys before wireframing
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 05-brand-guides/            ← define and document the visual brand identity
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 06-component-designs/       ← design reusable UI components before frontend work
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 07-wireframes/              ← create and sign off wireframes before frontend work
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 08-gdpr-compliance/         ← review a feature for GDPR compliance
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 09-security-checks/         ← threat model and security review of designs
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 10-qa-checks/               ← QA planning from wireframes before development
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 11-seo-checks/              ← verify SEO on all public-facing pages
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 12-api-design/              ← design the Django Ninja API contract before sprint planning
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 13-decisions/               ← author an Architectural Decision Record (ADR)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 14-sprint-plans/            ← write detailed sprint plans after all checks
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 15-story-plans/             ← write the per-story implementation plan (code master)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 16-backend-code/            ← implement Django models, services, and business logic
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 17-api-code/                ← implement the Django Ninja API layer
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 18-frontend-code/           ← implement Django templates + django-components (HTMX/Alpine)
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 19-implementation-documentation/ ← update docs + write IMPLEMENTATION records after code
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-├── 20-pr-and-review/           ← create, review, and merge a feature PR
-│   ├── CHECKLIST.md
-│   ├── CONTEXT.md
-│   └── STEPS.md
-└── 21-release/                 ← cut a release (version bump, changelog, deployment)
-    ├── CHECKLIST.md
-    ├── CONTEXT.md
-    └── STEPS.md
+├── CLAUDE.md                   ← operating rules for this folder
+│
+│   ── Discover, once per feature (01) ──
+├── 01-feature/                 ← wayfinder: chart the decision frontier, resolve it
+│
+│   ── Specify, one story at a time (02–13) ──
+├── 02-story-creation/          ← write a well-formed user story with acceptance criteria
+├── 03-sprint-planning/         ← open a sprint record; accumulate stories against capacity
+├── 04-database-schema/         ← design and sign off this story's schema before coding
+├── 05-user-flow-design/        ← map this story's user journeys before wireframing
+├── 06-brand-guides/            ← the brand tokens this story needs
+├── 07-component-designs/       ← the components this story needs
+├── 08-wireframes/              ← this story's screens
+├── 09-gdpr-compliance/         ← review this story for GDPR compliance
+├── 10-security-checks/         ← threat model and security review of the design
+├── 11-qa-checks/               ← QA planning from wireframes before development
+├── 12-seo-checks/              ← verify SEO on any public-facing page
+├── 13-api-design/              ← design the Django Ninja API contract
+│
+│   ── Decide & plan (14–16) ──
+├── 14-decisions/               ← author an ADR; end of the per-story loop
+├── 15-sprint-plans/            ← on sprint fill: the detailed sprint plan
+├── 16-story-plans/             ← on sprint fill: the per-story implementation plan
+│
+│   ── Consolidate (17) ──
+├── 17-consolidate-design-work/ ← unify the per-story design + schema work, once
+│
+│   ── Implement (18–20) ──
+├── 18-backend-code/            ← implement Django models, services, and business logic
+├── 19-api-code/                ← implement the Django Ninja API layer
+├── 20-frontend-code/           ← implement Django templates + django-components
+│
+│   ── Record & ship (21–23) ──
+├── 21-implementation-documentation/ ← update docs + write IMPLEMENTATION records
+├── 22-pr-and-review/           ← create, review, and merge a feature PR
+└── 23-release/                 ← cut a release (version bump, changelog, deployment)
 ```
 
-| Workflow                           | Purpose                                                        |
-| ---------------------------------- | -------------------------------------------------------------- |
-| `01-story-creation/`               | Write a well-formed user story with acceptance criteria        |
-| `02-sprint-planning/`              | Organise stories into a balanced sprint                        |
-| `03-database-schema/`              | Design and sign off a database schema before coding            |
-| `04-user-flow-design/`             | Map user journeys and data touchpoints before wireframing      |
-| `05-brand-guides/`                 | Define and document the visual brand identity and token system |
-| `06-component-designs/`            | Design reusable UI components before frontend implementation   |
-| `07-wireframes/`                   | Create and sign off wireframes before frontend work            |
-| `08-gdpr-compliance/`              | Review a feature for GDPR compliance                           |
-| `09-security-checks/`              | Threat model and security review of designs before development |
-| `10-qa-checks/`                    | QA planning from wireframes — test scenarios before any code   |
-| `11-seo-checks/`                   | Verify SEO on all public-facing pages before story closes      |
-| `12-api-design/`                   | Design the Django Ninja API contract before sprint planning    |
-| `13-decisions/`                    | Author an Architectural Decision Record (ADR)                  |
-| `14-sprint-plans/`                 | Write detailed sprint plans after GDPR, security, and QA       |
-| `15-story-plans/`                  | Write the per-story implementation plan — the code master      |
-| `16-backend-code/`                 | Implement Django models, services, and business logic (TDD)    |
-| `17-api-code/`                     | Implement the Django Ninja API layer                           |
-| `18-frontend-code/`                | Implement Django templates + django-components (HTMX/Alpine)   |
-| `19-implementation-documentation/` | Update docs + write IMPLEMENTATION records after code          |
-| `20-pr-and-review/`                | Create, review, and merge a feature PR                         |
-| `21-release/`                      | Cut a release (version bump, changelog, deployment)            |
+Every folder carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.
+
+| Workflow                           | Purpose                                                         |
+| ---------------------------------- | --------------------------------------------------------------- |
+| `02-story-creation/`               | Write a well-formed user story with acceptance criteria         |
+| `03-sprint-planning/`              | Open the sprint record and accumulate stories against capacity  |
+| `04-database-schema/`              | Design and sign off this story's schema before coding           |
+| `05-user-flow-design/`             | Map this story's journeys and data touchpoints                  |
+| `06-brand-guides/`                 | The brand tokens this story introduces or consumes              |
+| `07-component-designs/`            | The components this story introduces or reuses                  |
+| `08-wireframes/`                   | This story's screens, on the components it needs                |
+| `09-gdpr-compliance/`              | Review this story for GDPR compliance                           |
+| `10-security-checks/`              | Threat model and security review of the story's design          |
+| `11-qa-checks/`                    | QA planning from wireframes — test scenarios before any code    |
+| `12-seo-checks/`                   | Verify SEO on any public-facing page the story adds             |
+| `13-api-design/`                   | Design the Django Ninja API contract for the story              |
+| `14-decisions/`                    | Author an ADR — the last gate in the per-story loop             |
+| `15-sprint-plans/`                 | On sprint fill: the detailed sprint plan                        |
+| `16-story-plans/`                  | On sprint fill: the per-story implementation plan (code master) |
+| `17-consolidate-design-work/`      | Unify the per-story design and schema work into one system      |
+| `18-backend-code/`                 | Implement Django models, services, and business logic (TDD)     |
+| `19-api-code/`                     | Implement the Django Ninja API layer                            |
+| `20-frontend-code/`                | Implement Django templates + django-components (HTMX/Alpine)    |
+| `21-implementation-documentation/` | Update docs + write IMPLEMENTATION records after code           |
+| `22-pr-and-review/`                | Create, review, and merge a feature PR                          |
+| `23-release/`                      | Cut a release (version bump, changelog, deployment)             |
 
 ## Pairing with the code layer
 
@@ -124,11 +143,22 @@ These workflows are the **specify and gate** half of a two-layer chain; `code/wo
 workflow, which PM phase enters it, and who owns each fact — is in
 [`REFERENCES.md` → Cross-layer workflow pairing](../../REFERENCES.md). Do not restate it here.
 
-Two rules follow from it:
+Three rules follow from it:
 
-- **Design gates never trigger a code workflow directly.** `03-database-schema` and `07-wireframes`
+- **Design gates never trigger a code workflow directly.** `04-database-schema` and `08-wireframes`
   hand forward to the next gate, not to `code/workflows/`. Implementation is reached only through
-  `16-backend-code`, `17-api-code`, and `18-frontend-code`, once `01`–`15` are complete.
-- **`19-implementation-documentation` owns the whole closeout** — records, findings,
+  `18-backend-code`, `19-api-code`, and `20-frontend-code`, once `02`–`17` are complete.
+- **`17-consolidate-design-work` is a hard gate on implementation.** No code starts from
+  unconsolidated per-story design; that is what makes planning per story safe.
+- **`21-implementation-documentation` owns the whole closeout** — records, findings,
   `GAPS.md`/`DEFERRED.md`, the `CONTEXT.md`/`CLAUDE.md` update, and the graph refresh. Workflow
-  `20` verifies them; the code workflows hand off to `19` and restate nothing.
+  `22` verifies them; the code workflows hand off to `21` and restate nothing.
+
+## The numbers are the running order
+
+Unlike `code/workflows/` and `how-to/workflows/` — which are catalogues entered by task type,
+where numbers are stable identifiers and are never reused — **these numbers are a sequence**.
+`02` runs before `03`; `17` gates `18`. Inserting a workflow mid-sequence therefore means
+renumbering everything after it and sweeping every reference, including the agent definitions
+in `.claude/agents/`, where a stale number is a silent routing failure. Do it deliberately or
+not at all.

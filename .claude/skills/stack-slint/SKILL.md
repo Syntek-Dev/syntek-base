@@ -175,7 +175,7 @@ the AT-SPI stack, and dropping accessibility is not the mitigation.
 
 - `code/workflows/13-desktop-app/` — the procedure for this surface
 - `code/workflows/12-rust-extension/` — when a window needs a native primitive behind it
-- `project-management/workflows/18-frontend-code/` — the build phase this is entered from
+- `project-management/workflows/20-frontend-code/` — the build phase this is entered from
 - `how-to/workflows/07-dependency-updates/` — the cadence a Slint bump follows
 
 ## Cross-references

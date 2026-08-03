@@ -107,7 +107,7 @@ decisions live — the code, not the spike, keeps only what was validated:
 
 A prototype is disposable. It is **not** the Design Studio epic
 (`the project's plans folderPLAN-US207-DESIGN-STUDIO.md`) and **not** the wireframes
-workflow (`project-management/workflows/07-wireframes/`) — those build production
+workflow (`project-management/workflows/08-wireframes/`) — those build production
 component-preview and wireframe tooling that ships. Reach for a spike to answer a question
 fast; reach for those to build the product.
 
@@ -129,8 +129,8 @@ in `DEFERRED.md`; a reusable pattern the spike taught belongs in `.claude/MEMORY
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/04-user-flow-design/` — answering one open flow question
-- `project-management/workflows/07-wireframes/` — answering one open screen question
+- `project-management/workflows/05-user-flow-design/` — answering one open flow question
+- `project-management/workflows/08-wireframes/` — answering one open screen question
 - `code/workflows/01-new-feature/` — before committing to a real build
 
 ## Cross-references
@@ -144,8 +144,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/src/scripts/development/shell.sh` · `new-django-view.sh` · `server.sh` — the run
   commands; `code/src/scripts/audits/css-tokens.sh` — the relaxed token gate.
 - `the project's plans folderPLAN-US000-TEMPLATE.md` · `PLAN-US207-DESIGN-STUDIO.md` ·
-  `project-management/workflows/07-wireframes/` — plan template, the epic and workflow to
+  `project-management/workflows/08-wireframes/` — plan template, the epic and workflow to
   distinguish a spike from.
-- the project's decision register · `project-management/src/01-STORIES/US###.md` —
+- the project's decision register · `project-management/src/02-STORIES/US###.md` —
   ADR home (next `a decision record`) and story home.
 - `GAPS.md` · `DEFERRED.md` · `.claude/MEMORY.md` — where non-verdict findings go.

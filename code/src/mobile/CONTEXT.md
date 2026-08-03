@@ -43,7 +43,7 @@ starts from a user story exactly as web work does.
 or favicon — Expo falls back to its defaults. This is not an oversight: the repository is a
 Copier template that renders every file through Jinja and **cannot render binaries**. Adding
 branded icons is a per-project step, and it needs a matching exclusion entry if the project is
-still generated from the template (`TEMPLATE-GUIDE/10-CUSTOMISING.md`).
+still generated from the template (`TEMPLATE-GUIDE/11-CUSTOMISING.md`).
 
 ## Running it
 

@@ -24,8 +24,8 @@ second contract for no new capability. If the caller is an HTTP client, use `04-
 
 - [ ] `code/docs/MCP-SERVER.md` and its `mcp-server/` sub-docs have been read
 - [ ] The service layer the tools will call already exists — tools never carry logic
-- [ ] The story's API contract is signed off (`project-management/src/12-API-DESIGN/PLANNING/`)
-- [ ] Entered from `project-management/workflows/17-api-code/`, never directly from a design gate
+- [ ] The story's API contract is signed off (`project-management/src/13-API-DESIGN/PLANNING/`)
+- [ ] Entered from `project-management/workflows/19-api-code/`, never directly from a design gate
 - [ ] `fastmcp` added to `pyproject.toml` and the lockfile refreshed (first mount only)
 
 ## Key concepts
@@ -60,6 +60,6 @@ second contract for no new capability. If the caller is an HTTP client, use `04-
 - `code/docs/URL-STRATEGY.md` — why `/mcp/` is a sibling of `/api/`, never nested inside it
 - `code/workflows/02-tdd-cycle/` — the Red → Green → Refactor cycle tools are built through
 - `code/workflows/08-security-hardening/` — the audit `/mcp/` must pass before public exposure
-- `project-management/workflows/17-api-code/` — **this workflow is entered from there**
-- `project-management/workflows/19-implementation-documentation/` — writes the implementation
+- `project-management/workflows/19-api-code/` — **this workflow is entered from there**
+- `project-management/workflows/21-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

@@ -31,7 +31,7 @@ Runtime log files written by the Django backend in **dev and test only**
 - **Everything except the tracked marker files is gitignored** — never commit a log,
   and never add application code here.
 - Exception reports go to Glitchtip, metrics to Prometheus, aggregated logs to Loki,
-  bug notes to `project-management/src/19-BUGS/` — not here.
+  bug notes to `project-management/src/20-BUGS/` — not here.
 
 ## Output & naming
 

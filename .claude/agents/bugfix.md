@@ -50,7 +50,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/workflows/08-debugging/` — **first** — confirm the environment is healthy (containers, logs, build)
 - `code/workflows/10-debug/` — then isolate the fault, pin it with a regression test, apply the minimal fix
 - `code/workflows/09-debugging-with-logs/` — staging/prod faults via Glitchtip, Loki, and Grafana
-- `project-management/workflows/19-implementation-documentation/` — routes the finding to `project-management/src/19-BUGS/`
+- `project-management/workflows/21-implementation-documentation/` — routes the finding to `project-management/src/20-BUGS/`
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 
@@ -120,7 +120,7 @@ Must be a separate agent from Phase 3. Check for regressions in surrounding feat
 No sub-agent. **Hard gate — must complete before Phase 7.**
 
 1. Update any `CONTEXT.md` affected by new files, directories, or constraints introduced by this fix
-2. Write bug report artefact if it does not exist: `project-management/src/19-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`
+2. Write bug report artefact if it does not exist: `project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`
 3. Update `/GAPS.md` if the fix exposed a broader architectural or security gap
 4. Update `/DEFERRED.md` for anything explicitly deferred to a future story
 

@@ -62,9 +62,9 @@ tree and local conventions before you commit them to a phase.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/13-decisions/` — record a hard-to-reverse choice as an ADR
-- `project-management/workflows/14-sprint-plans/` — sprint sequencing
-- `project-management/workflows/15-story-plans/` — the per-story plan you produce
+- `project-management/workflows/14-decisions/` — record a hard-to-reverse choice as an ADR
+- `project-management/workflows/15-sprint-plans/` — sprint sequencing
+- `project-management/workflows/16-story-plans/` — the per-story plan you produce
 
 ## Grill Before Planning
 
@@ -157,7 +157,7 @@ in decisions the implementer should own.
 
 ## Output & Naming
 
-- **Save to:** `project-management/src/15-STORY-PLANS/`
+- **Save to:** `project-management/src/16-STORY-PLANS/`
 - **Filename:** `PLAN-<FEATURE-NAME>.md`, SCREAMING-SNAKE-CASE
 - British English (en_GB); dates DD/MM/YYYY; currency <%CURRENCY%> for any estimate
 - New environment variables the feature needs: document them in the plan against

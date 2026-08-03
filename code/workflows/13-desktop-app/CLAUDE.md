@@ -16,7 +16,7 @@ Slint attribution.
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Windows and
   markup → `desktop` + `stack-slint` (Opus); native primitives behind them → `rust`; the API the
   app calls → `backend`; tests → `test-writer`. Read `CONTEXT.md` first. **Entered from
-  `project-management/workflows/18-frontend-code/`**, never directly from a design gate. Hard
+  `project-management/workflows/20-frontend-code/`**, never directly from a design gate. Hard
   gates before Step 1: `code/docs/desktop/LICENSING.md` and `code/docs/desktop/UI-AND-STATE.md`.
 - **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`) — window
   structure, every state, keyboard and screen-reader behaviour — before any markup is written.
@@ -52,6 +52,6 @@ Slint attribution.
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`, `CONTEXT.md` — the workflow itself.
 - **Produced by following it:** `ui/*.slint`, `src/*.rs` in the desktop crate, and their tests.
   The implementation record is written by
-  `project-management/workflows/19-implementation-documentation/`, not here.
+  `project-management/workflows/21-implementation-documentation/`, not here.
 - Numeric `NN-` folder prefix; documentation `SCREAMING-SNAKE-CASE.md`; markup files
   `kebab-case.slint`.

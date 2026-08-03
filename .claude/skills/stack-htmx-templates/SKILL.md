@@ -5,18 +5,18 @@ description: Frontend stack reference for <%PROJECT_NAME%> — Django templates 
 
 Reference for the **Django-templated** frontend of <%PROJECT_NAME%>. The `frontend` agent loads
 this for stack idioms; `seo`, `backend`, `security`, and
-`review` cite it at the UI boundary. Aligns with `project-management/workflows/18-frontend-code/`,
+`review` cite it at the UI boundary. Aligns with `project-management/workflows/20-frontend-code/`,
 `code/docs/RENDERING.md` (the interaction doctrine), and `apps/marketing/CONTEXT.md`.
 
 British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>) — in templates, Python, and copy.
-All user-facing copy follows the brand voice — `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md`
+All user-facing copy follows the brand voice — `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md`
 (direct, considered, plainly British; substantiate or cut). Load it when writing or reviewing page
 copy or microcopy.
 
 The **visual** language is `code/docs/VISUAL-DESIGN.md` — the <%ORG_NAME%> signature (alternating
 page/sunken bands, left-oriented editorial headings, the 3px hero/CTA accent border, per-sector
 gradient tones) and the banned generic "AI-look". Build each screen against its wireframe
-(`07-WIREFRAMES/WF-###`) and component design (`06-COMPONENTS`); never invent a generic layout.
+(`08-WIREFRAMES/WF-###`) and component design (`07-COMPONENTS`); never invent a generic layout.
 
 ---
 
@@ -152,6 +152,6 @@ namespaced by a `marketing:cache-version` counter. Any content publish
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/18-frontend-code/` — the frontend build phase
+- `project-management/workflows/20-frontend-code/` — the frontend build phase
 - `code/workflows/01-new-feature/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — template, component, and HTMX-partial tests

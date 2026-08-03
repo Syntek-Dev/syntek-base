@@ -43,18 +43,18 @@ Read before writing any template or component:
 
 - `code/src/django/apps/marketing/CONTEXT.md` → `CLAUDE.md` — how the page layer is structured
 - `code/src/django/components/CONTEXT.md` → `CLAUDE.md` — the django-components library
-- `project-management/workflows/18-frontend-code/CONTEXT.md` → `STEPS.md` — the governing procedure
+- `project-management/workflows/20-frontend-code/CONTEXT.md` → `STEPS.md` — the governing procedure
 - `code/docs/RENDERING.md` — the interaction-model doctrine (read every time)
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract (read every time)
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA + ARIA patterns
 - `code/docs/RESPONSIVE-DESIGN.md` — breakpoints, mobile-first
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — the brand voice for any user-facing
+- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the brand voice for any user-facing
   copy you write (headings, body, microcopy): direct, considered, plainly British
 - `code/docs/VISUAL-DESIGN.md` — the <%ORG_NAME%> **visual** language: implement against the design
   artefacts below; never a generic centred, single-band "AI-look" layout (read every time)
-- `project-management/src/07-WIREFRAMES/WF-###-*.md` — the screen's wireframe (layout, sections,
-  content order) · `project-management/src/06-COMPONENTS/` — component designs (states, variants,
-  patterns) · `project-management/src/05-BRAND-GUIDE/` — foundations (`DESIGN/Foundations*.html`
+- `project-management/src/08-WIREFRAMES/WF-###-*.md` — the screen's wireframe (layout, sections,
+  content order) · `project-management/src/07-COMPONENTS/` — component designs (states, variants,
+  patterns) · `project-management/src/06-BRAND-GUIDE/` — foundations (`DESIGN/Foundations*.html`
   is canonical). Produced upstream by the design phases via grilling — build them, don't reinvent.
 - `.claude/skills/grill-with-docs/SKILL.md` — open UI design with a grilling interview
 - `.claude/skills/stack-htmx-templates/SKILL.md` — stack idioms (defer detail here, don't restate).
@@ -68,9 +68,9 @@ before editing, prefer the `code-review-graph` MCP over broad Grep/Glob.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/06-component-designs/` — component designs consumed here
-- `project-management/workflows/07-wireframes/` — wireframes consumed here
-- `project-management/workflows/18-frontend-code/` — the frontend build phase
+- `project-management/workflows/07-component-designs/` — component designs consumed here
+- `project-management/workflows/08-wireframes/` — wireframes consumed here
+- `project-management/workflows/20-frontend-code/` — the frontend build phase
 - `code/workflows/01-new-feature/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — template, component, and HTMX-partial tests
 
@@ -102,8 +102,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   keyboard operability, visible focus, focus trapping on modals, 4.5:1 text contrast.
 - **Distinctive, on-brand UI — never the generic "AI-look".** Build the design the
   planning/design phases already decided: implement the screen's wireframe
-  (`07-WIREFRAMES/WF-###`), the component designs (`06-COMPONENTS`), and the brand foundations
-  (`05-BRAND-GUIDE`). Hit the <%ORG_NAME%> signature — alternating page/sunken bands, left-oriented
+  (`08-WIREFRAMES/WF-###`), the component designs (`07-COMPONENTS`), and the brand foundations
+  (`06-BRAND-GUIDE`). Hit the <%ORG_NAME%> signature — alternating page/sunken bands, left-oriented
   editorial headings (not centred), the 3px hero/CTA accent border, per-sector gradient tones, a
   real hero variant. No artefact **and** no established code pattern → flag it, do **not**
   improvise a generic centred, single-band, three-card layout. Full language + signature:

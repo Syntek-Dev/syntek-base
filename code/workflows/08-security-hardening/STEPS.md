@@ -50,7 +50,7 @@ qa-tester [verify security fixes]
 
 ### Step 4 — Log Audit
 
-Save a security audit summary to `project-management/src/09-SECURITY/AUDITS/`.
+Save a security audit summary to `project-management/src/10-SECURITY/AUDITS/`.
 
 ### Step 5 — Update Context and Documentation
 

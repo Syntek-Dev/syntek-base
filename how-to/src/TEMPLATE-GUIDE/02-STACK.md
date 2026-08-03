@@ -110,7 +110,7 @@ forfeits the regeneration-based upgrade path that is the main reason to adopt Ex
 
 1. **Native directories stay gitignored.** The template optimises for the generation moment. If
    your project later needs custom native code, run `expo prebuild` and own that maintenance as
-   your decision — see `11-EXTENDING.md`.
+   your decision — see `12-EXTENDING.md`.
 2. **The Expo SDK is pinned exactly**, matching the frozen posture of every other toolchain here
    (`uv sync --frozen`, `pnpm install --frozen-lockfile`, pinned `.nvmrc` and `.python-version`).
    An SDK bump is a versioned template release you pull through `copier update`.
@@ -203,7 +203,7 @@ What is Hetzner/NixOS/Cloudflare-shaped and will need rework:
 
 None of this is load-bearing for the application. It is load-bearing for the _runbooks_.
 
-See `12-DEPLOYMENT.md` for the path to a server, and `10-CUSTOMISING.md` for what changing it
+See `13-DEPLOYMENT.md` for the path to a server, and `11-CUSTOMISING.md` for what changing it
 costs.
 
 ---
@@ -231,4 +231,4 @@ agent genuinely needs to carry out this project's domain operations.
 
 - What you need installed → `03-PREREQUISITES.md`
 - Generate a project → `04-QUICKSTART.md`
-- Change one of these choices → `10-CUSTOMISING.md`
+- Change one of these choices → `11-CUSTOMISING.md`

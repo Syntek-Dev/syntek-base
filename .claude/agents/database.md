@@ -44,8 +44,8 @@ For structural/impact context before touching an existing model, prefer the
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/03-database-schema/` — design and sign off the schema first
-- `project-management/workflows/16-backend-code/` — the build phase that drives the migration
+- `project-management/workflows/04-database-schema/` — design and sign off the schema first
+- `project-management/workflows/18-backend-code/` — the build phase that drives the migration
 - `code/workflows/03-database-migration/` — write and apply the migration
 
 ## Scripts (never raw commands)
@@ -148,8 +148,8 @@ creates it — see `code/docs/RLS-GUIDE.md`. On PostgreSQL:
   a hard gate before any commit.
 - Every affected `CONTEXT.md` (new model dir, new app) updated.
 - **Findings recorded** — divergences from `code/docs/DATABASE.md` surfaced while doing the
-  work go to `project-management/src/18-FINDINGS/` as part of
-  `project-management/workflows/19-implementation-documentation/`. Record them; do not fix
+  work go to `project-management/src/19-FINDINGS/` as part of
+  `project-management/workflows/21-implementation-documentation/`. Record them; do not fix
   them in the same pass. Where a migration or model carries no explanation for its shape,
   **flag the absence rather than inventing the reasoning**, and mark anything inferred
   `TODO(verify)`.

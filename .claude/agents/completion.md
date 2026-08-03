@@ -50,14 +50,14 @@ review and QA have passed. Never skip straight from `Pending`/`Open` to `Complet
 Read before making changes (skip what the task plainly does not touch):
 
 - `project-management/CONTEXT.md` — PM layer overview, artefact locations
-- `project-management/src/01-STORIES/CONTEXT.md` + `CLAUDE.md` — story conventions
-- `project-management/src/01-STORIES/STORY-INDEX.md` — authoritative story listing
-- `project-management/src/02-SPRINTS/` — sprint records; read the sprint the story sits in
+- `project-management/src/02-STORIES/CONTEXT.md` + `CLAUDE.md` — story conventions
+- `project-management/src/02-STORIES/STORY-INDEX.md` — authoritative story listing
+- `project-management/src/03-SPRINTS/` — sprint records; read the sprint the story sits in
 - `.claude/skills/global-workflow/SKILL.md` — localisation and cross-cutting workflow rules
 
 Governing procedure — route to it, do not duplicate it:
 
-- `project-management/workflows/21-release/` — where story/sprint completion is recorded
+- `project-management/workflows/23-release/` — where story/sprint completion is recorded
   as part of cutting a release.
 
 Read-only environment detection (optional):
@@ -75,12 +75,12 @@ Never run `pnpm`, `next`, `pytest`, `python manage.py`, or `docker` directly —
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/20-pr-and-review/` — a story is not complete until its PR is merged
-- `project-management/workflows/21-release/` — sprint and release completion
+- `project-management/workflows/22-pr-and-review/` — a story is not complete until its PR is merged
+- `project-management/workflows/23-release/` — sprint and release completion
 
 ## Before you mark anything complete
 
-1. **Locate the story** — `project-management/src/01-STORIES/US###.md`. Read the whole
+1. **Locate the story** — `project-management/src/02-STORIES/US###.md`. Read the whole
    file: the `**Status:**` line and the Acceptance Criteria checklist.
 2. **Verify, do not assume** — every acceptance-criteria checkbox is ticked, tests are
    green, and review/QA have signed off. If any criterion is unmet, stop and report the

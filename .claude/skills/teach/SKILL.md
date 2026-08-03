@@ -77,14 +77,14 @@ learning/<topic>/
 **Process / PM.** Practise the project's _own_ conventions in the real house format, drafting a
 **throwaway** sample inside `learning/<topic>/LESSONS/` — never in `project-management/src/`:
 
-- **Stories** — `project-management/workflows/01-story-creation/`; template
-  `project-management/src/01-STORIES/US000-TEMPLATE.md`.
-- **Sprints & plans** — `project-management/workflows/02-sprint-planning/` and
-  `14-sprint-plans/`; plan template `the project's plans folderPLAN-US000-TEMPLATE.md`.
+- **Stories** — `project-management/workflows/02-story-creation/`; template
+  `project-management/src/02-STORIES/US000-TEMPLATE.md`.
+- **Sprints & plans** — `project-management/workflows/03-sprint-planning/` and
+  `15-sprint-plans/`; plan template `the project's plans folderPLAN-US000-TEMPLATE.md`.
 - **ADRs** — the three-test gate and glossary discipline in
   `.claude/skills/grill-with-docs/SKILL.md`; naming `ADR-###-NAME.md` under
   the project's decision register (next free number is the project's decision register).
-- **Conventions** — `project-management/docs/{GIT-GUIDE,VERSIONING-GUIDE,SPRINT-PLANNING-GUIDE}.md`.
+- **Conventions** — `project-management/docs/{GIT-GUIDE,VERSIONING-GUIDE,PLANNING-GUIDE}.md`.
 
 **Stack / coding.** Learn by building small **runnable** throwaway examples under `LESSONS/`,
 mirroring the real task-runner scripts so the muscle transfers, while never wiring into
@@ -130,10 +130,10 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `.claude/skills/grill-with-docs/SKILL.md` — the glossary + three-test ADR gate (domain-modelling process).
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the domain-modelling reference.
 - `.claude/skills/stack-htmx-templates/SKILL.md` · `.claude/skills/stack-django/SKILL.md` — stack references for coding lessons.
-- `project-management/workflows/01-story-creation/` · `02-sprint-planning/` · `14-sprint-plans/` — house process procedures.
-- `project-management/src/01-STORIES/US000-TEMPLATE.md` · `the project's plans folderPLAN-US000-TEMPLATE.md` — throwaway-sample templates.
+- `project-management/workflows/02-story-creation/` · `03-sprint-planning/` · `15-sprint-plans/` — house process procedures.
+- `project-management/src/02-STORIES/US000-TEMPLATE.md` · `the project's plans folderPLAN-US000-TEMPLATE.md` — throwaway-sample templates.
 - the project's decision register — ADR home (next free number the scale-planning contract).
-- `project-management/docs/GIT-GUIDE.md` · `VERSIONING-GUIDE.md` · `SPRINT-PLANNING-GUIDE.md` — process conventions.
+- `project-management/docs/GIT-GUIDE.md` · `VERSIONING-GUIDE.md` · `PLANNING-GUIDE.md` — process conventions.
 - `code/src/scripts/development/*.sh` · `code/src/scripts/tests/*.sh` — the task-runner scripts coding lessons mirror.
 - `.claude/plugins/*.py` — read-only project inspection for step 2's lookups.
 - `how-to/docs/AI-DICTIONARY.md` — glossary of the AI-coding terms used here.

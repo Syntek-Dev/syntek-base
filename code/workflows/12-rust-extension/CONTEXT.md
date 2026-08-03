@@ -19,7 +19,7 @@ a new dependency.
 Use it only when the work meets one of the two grounds in `code/docs/RUST.md`: **a guarantee
 Python cannot make** (constant-time comparison, wiping key material), or **work Python is
 genuinely bad at** (a hot path, with a measurement behind the claim). If neither holds, the work
-belongs in the service layer — use `project-management/workflows/16-backend-code/` and the
+belongs in the service layer — use `project-management/workflows/18-backend-code/` and the
 `backend` agent.
 
 **Rust-only.** This workflow exists only in a project generated with `INCLUDE_RUST`.
@@ -30,7 +30,7 @@ belongs in the service layer — use `project-management/workflows/16-backend-co
 - [ ] The gate question is answered — and the answer is not "it would be faster in Rust, probably"
 - [ ] The service layer the extension supports already exists — a crate is a primitive, not a
       place for business logic
-- [ ] Entered from `project-management/workflows/16-backend-code/`, never directly from a design
+- [ ] Entered from `project-management/workflows/18-backend-code/`, never directly from a design
       gate
 - [ ] `rustup` installed; the toolchain pin in `code/src/rust/rust-toolchain.toml` resolves
 
@@ -68,6 +68,6 @@ belongs in the service layer — use `project-management/workflows/16-backend-co
 - `code/src/scripts/rust/CONTEXT.md` — the scripts every operation runs through
 - `code/workflows/02-tdd-cycle/` — the Red → Green → Refactor cycle both suites are built through
 - `code/workflows/08-security-hardening/` — the audit any crypto crate must pass
-- `project-management/workflows/16-backend-code/` — **this workflow is entered from there**
-- `project-management/workflows/19-implementation-documentation/` — writes the implementation
+- `project-management/workflows/18-backend-code/` — **this workflow is entered from there**
+- `project-management/workflows/21-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

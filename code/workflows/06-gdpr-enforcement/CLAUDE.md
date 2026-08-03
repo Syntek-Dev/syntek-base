@@ -16,11 +16,11 @@ personal data.
 
 - **Routing:** execute via `STEPS.md`, typically with the `gdpr` skill/agent (Opus)
   and `stack-django`. The PM-layer compliance review in
-  `project-management/workflows/08-gdpr-compliance/` must finish first.
+  `project-management/workflows/09-gdpr-compliance/` must finish first.
 - **Model:** Opus throughout — data-protection decisions are substantive
   and mechanical edits to the workflow files.
 - **Concrete steps:** confirm the compliance review is complete and data flows are in
-  `project-management/src/08-GDPR/DATA-INVENTORY.md` → read the hard-gate docs
+  `project-management/src/09-GDPR/DATA-INVENTORY.md` → read the hard-gate docs
   (`encryption/FIELD-ENCRYPTION.md`, `encryption/LOOKUP-TOKENS.md`) → encrypt PII at
   rest, gate access on consent, make deletion anonymise where audit trails are
   required → test DSAR deletion end-to-end via `code/src/scripts/tests/*.sh` →
@@ -43,5 +43,5 @@ personal data.
 
 - **Hand-written:** these workflow files; the GDPR code lands in
   `code/src/django/apps/`; live GDPR documentation sits under
-  `project-management/src/08-GDPR/`.
+  `project-management/src/09-GDPR/`.
 - Workflow files `SCREAMING-SNAKE-CASE.md`.

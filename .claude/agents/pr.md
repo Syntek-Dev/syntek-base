@@ -21,7 +21,7 @@ Read in this order before spawning any sub-agents:
 
 **Workflows:**
 
-- `project-management/workflows/20-pr-and-review/CONTEXT.md` → `project-management/workflows/20-pr-and-review/STEPS.md`
+- `project-management/workflows/22-pr-and-review/CONTEXT.md` → `project-management/workflows/22-pr-and-review/STEPS.md`
 
 **Docs:**
 
@@ -37,8 +37,8 @@ Read in this order before spawning any sub-agents:
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/07-review/` — content review — security, patterns, coverage, principles
-- `project-management/workflows/19-implementation-documentation/` — must be complete before the PR is raised
-- `project-management/workflows/20-pr-and-review/` — the PR lifecycle — branch promotion, approvals, merge gates
+- `project-management/workflows/21-implementation-documentation/` — must be complete before the PR is raised
+- `project-management/workflows/22-pr-and-review/` — the PR lifecycle — branch promotion, approvals, merge gates
 - `how-to/workflows/02-worktree-setup/` — when the story runs in a parallel worktree
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
@@ -103,11 +103,11 @@ Note: `post-pr-comment.sh` posts gate results to GitHub automatically — no act
 
 **Implementation records** — create a record for every active compliance domain:
 
-- GDPR in scope → `project-management/src/08-GDPR/IMPLEMENTATION/`
-- Security changes → `project-management/src/09-SECURITY/ASSESSMENTS/IMPLEMENTATION/`
-- QA artefacts → `project-management/src/10-QA/IMPLEMENTATION/`
-- SEO changes → `project-management/src/11-SEO/IMPLEMENTATION/`
-- API design changes → `project-management/src/12-API-DESIGN/IMPLEMENTATION/`
+- GDPR in scope → `project-management/src/09-GDPR/IMPLEMENTATION/`
+- Security changes → `project-management/src/10-SECURITY/ASSESSMENTS/IMPLEMENTATION/`
+- QA artefacts → `project-management/src/11-QA/IMPLEMENTATION/`
+- SEO changes → `project-management/src/12-SEO/IMPLEMENTATION/`
+- API design changes → `project-management/src/13-API-DESIGN/IMPLEMENTATION/`
 
 ### Phase 5 — Exit Worktree (conditional)
 

@@ -16,7 +16,7 @@ the service-layer wiring.
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Crates →
   `rust` + `stack-rust` (Opus); the service-layer call sites → `backend`; the threat model and
   crypto audit → `security`; tests → `test-writer`. Read `CONTEXT.md` first. **Entered from
-  `project-management/workflows/16-backend-code/`**, never directly from a design gate. Hard
+  `project-management/workflows/18-backend-code/`**, never directly from a design gate. Hard
   gates before Step 1: `code/docs/RUST.md`, `code/docs/rust/PYO3-BOUNDARY.md` and
   `code/docs/rust/SUPPLY-CHAIN.md`.
 - **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`), and its opening
@@ -57,6 +57,6 @@ the service-layer wiring.
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`, `CONTEXT.md` — the workflow itself.
 - **Produced by following it:** crates under `code/src/rust/crates/`, their Rust tests, the
   Python-side boundary tests, and the `services.py` call sites. The implementation record is
-  written by `project-management/workflows/19-implementation-documentation/`, not here.
+  written by `project-management/workflows/21-implementation-documentation/`, not here.
 - Numeric `NN-` folder prefix; documentation `SCREAMING-SNAKE-CASE.md`; crate directories
   `snake_case/` (a Python module name cannot contain a hyphen).

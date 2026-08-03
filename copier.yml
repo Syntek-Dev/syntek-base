@@ -239,6 +239,32 @@ CORE_APP:
   help: App owning shared primitives such as encryption
   default: core
 
+# ── Planning cadence ─────────────────────────────────────────────────────────
+# The sprint point ceiling that triggers the sprint-planning pass. Stories are
+# planned one at a time through workflows 01–13; when the open sprint's accepted
+# story points reach SPRINT_CAPACITY_SP, workflows 14 and 15 run for that sprint
+# before the next story is planned. The grace value is the hard ceiling a sprint
+# may reach to avoid splitting a story badly — never a routine target.
+# Rules: project-management/docs/PLANNING-GUIDE.md (planning/CADENCE.md).
+
+SPRINT_CAPACITY_SP:
+  type: int
+  help: >-
+    Story points that fill a sprint and trigger the sprint-planning pass
+    (workflows 14 + 15). Tune to your team's measured velocity after two sprints.
+  default: 11
+
+SPRINT_GRACE_SP:
+  type: int
+  help: >-
+    Hard ceiling a sprint may stretch to when the next story would otherwise
+    split badly. Must be greater than the capacity.
+  default: 13
+  validator: >-
+    <: if SPRINT_GRACE_SP <= SPRINT_CAPACITY_SP :>
+    The grace ceiling must be greater than SPRINT_CAPACITY_SP.
+    <: endif :>
+
 # ── Mobile frontend (optional) ───────────────────────────────────────────────
 # Opt-in React Native + TypeScript app (Expo, Continuous Native Generation) at
 # code/src/mobile/. When INCLUDE_MOBILE is false the tree is excluded above and the two

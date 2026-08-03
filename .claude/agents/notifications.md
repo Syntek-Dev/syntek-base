@@ -27,7 +27,7 @@ Read before implementing:
 - `code/docs/LOGGING.md` — audit-log a send without leaking PII
 - `code/docs/ENCRYPTION-GUIDE.md` — Fernet PII pipeline; how recipient data is stored
 - `code/docs/DESIGN-TOKENS.md` — in-app notification styling (token-first)
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for notification copy
+- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for notification copy
   (subject lines, bodies, SMS): the microcopy register — plain, calm, no hype
 - `.claude/skills/grill-with-docs/SKILL.md` — open notification design with a grilling interview
 - `.claude/skills/stack-django/SKILL.md` and `.claude/skills/stack-htmx-templates/SKILL.md`
@@ -46,7 +46,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/workflows/01-new-feature/` — building a new notification surface
 - `code/workflows/10-debug/` — a broken send
-- `project-management/workflows/08-gdpr-compliance/` — consent and PII rules for message content
+- `project-management/workflows/09-gdpr-compliance/` — consent and PII rules for message content
 
 ## Grill Before Building
 
@@ -124,7 +124,7 @@ details once the agenda is resolved.
 - **Cross-client render QA and edge-case verification** → `qa-tester`.
 - **Documenting notification types and triggers** → `doc-writer`.
 - **Notification copywriting / tone** — governed by the brand voice
-  (`project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md`, microcopy register); you wire the
+  (`project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md`, microcopy register); you wire the
   templating and defer substantive copy decisions to content.
 - You do not invent email infrastructure or set `DEBUG`; you consume configured backends.
 

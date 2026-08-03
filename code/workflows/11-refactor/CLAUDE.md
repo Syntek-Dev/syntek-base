@@ -40,5 +40,5 @@ behaviour held identical throughout.
 
 - **Hand-written:** these workflow files; the refactored source stays under
   `code/src/`.
-- Refactoring notes saved under `project-management/src/20-REFACTORING/`; workflow
+- Refactoring notes saved under `project-management/src/21-REFACTORING/`; workflow
   files `SCREAMING-SNAKE-CASE.md`.

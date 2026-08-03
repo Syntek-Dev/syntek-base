@@ -88,7 +88,7 @@ Full procedure, decision table, and the maintenance-window criteria:
 
 Where a migration denormalises, adds a partial index, or takes a heavy lock, it carries a
 comment saying **why**. A migration without that comment is a finding, not a judgement
-call — record it in `project-management/src/18-FINDINGS/`.
+call — record it in `project-management/src/19-FINDINGS/`.
 
 ## Search
 
@@ -180,7 +180,7 @@ driver is multi-tenancy rather than volume, evaluate schema-per-tenant first.
 | Scaling phase-gates and core decisions                             | [`architecture/CORE-AND-SCALING.md`](architecture/CORE-AND-SCALING.md)         |
 
 Findings against these rules are recorded per story in
-`project-management/src/18-FINDINGS/`; the governing procedure is
+`project-management/src/19-FINDINGS/`; the governing procedure is
 `code/workflows/03-database-migration/`.
 
 _Part of the `code/docs/` documentation family._

@@ -28,9 +28,9 @@ itself only offered when `INCLUDE_RUST` is true.
       before anything that touches the About dialog or a release**
 - [ ] The API endpoints the app will call already exist — the desktop client holds no business
       logic
-- [ ] The screen is wireframed (`project-management/src/07-WIREFRAMES/`) — build the design, do
+- [ ] The screen is wireframed (`project-management/src/08-WIREFRAMES/`) — build the design, do
       not invent one
-- [ ] Entered from `project-management/workflows/18-frontend-code/`, never directly from a design
+- [ ] Entered from `project-management/workflows/20-frontend-code/`, never directly from a design
       gate
 - [ ] `rustup` installed and a display server available (`DISPLAY` or `WAYLAND_DISPLAY`)
 
@@ -66,7 +66,7 @@ itself only offered when `INCLUDE_RUST` is true.
 - `code/src/scripts/desktop/CONTEXT.md` — the two scripts and the attribution gate
 - `code/workflows/12-rust-extension/` — when the window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
-- `project-management/workflows/07-wireframes/` — the screen designs consumed here
-- `project-management/workflows/18-frontend-code/` — **this workflow is entered from there**
-- `project-management/workflows/19-implementation-documentation/` — writes the implementation
+- `project-management/workflows/08-wireframes/` — the screen designs consumed here
+- `project-management/workflows/20-frontend-code/` — **this workflow is entered from there**
+- `project-management/workflows/21-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

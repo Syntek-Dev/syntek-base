@@ -67,16 +67,16 @@ consult when working in this repository.
 
 ### Project-management guides (`project-management/docs/`)
 
-| Document                                                                                             | Purpose                                        |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| [project-management/docs/GDPR-GUIDE.md](project-management/docs/GDPR-GUIDE.md)                       | UK GDPR compliance workflow for new features   |
-| [project-management/docs/GIT-GUIDE.md](project-management/docs/GIT-GUIDE.md)                         | Branch naming, commit conventions, PR process  |
-| [project-management/docs/QA-GUIDE.md](project-management/docs/QA-GUIDE.md)                           | Manual and automated QA checklists             |
-| [project-management/docs/RESPONSIVE-DESIGN.md](project-management/docs/RESPONSIVE-DESIGN.md)         | PM-level responsive design requirements        |
-| [project-management/docs/SECURITY-GUIDE.md](project-management/docs/SECURITY-GUIDE.md)               | Security audit process and sign-off criteria   |
-| [project-management/docs/SEO-CHECKLIST.md](project-management/docs/SEO-CHECKLIST.md)                 | Per-page SEO checklist for Django routes       |
-| [project-management/docs/SPRINT-PLANNING-GUIDE.md](project-management/docs/SPRINT-PLANNING-GUIDE.md) | Sprint sizing, velocity, and capacity rules    |
-| [project-management/docs/VERSIONING-GUIDE.md](project-management/docs/VERSIONING-GUIDE.md)           | Semantic versioning rules and changelog format |
+| Document                                                                                     | Purpose                                        |
+| -------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| [project-management/docs/GDPR-GUIDE.md](project-management/docs/GDPR-GUIDE.md)               | UK GDPR compliance workflow for new features   |
+| [project-management/docs/GIT-GUIDE.md](project-management/docs/GIT-GUIDE.md)                 | Branch naming, commit conventions, PR process  |
+| [project-management/docs/QA-GUIDE.md](project-management/docs/QA-GUIDE.md)                   | Manual and automated QA checklists             |
+| [project-management/docs/RESPONSIVE-DESIGN.md](project-management/docs/RESPONSIVE-DESIGN.md) | PM-level responsive design requirements        |
+| [project-management/docs/SECURITY-GUIDE.md](project-management/docs/SECURITY-GUIDE.md)       | Security audit process and sign-off criteria   |
+| [project-management/docs/SEO-CHECKLIST.md](project-management/docs/SEO-CHECKLIST.md)         | Per-page SEO checklist for Django routes       |
+| [project-management/docs/PLANNING-GUIDE.md](project-management/docs/PLANNING-GUIDE.md)       | Sprint sizing, velocity, and capacity rules    |
+| [project-management/docs/VERSIONING-GUIDE.md](project-management/docs/VERSIONING-GUIDE.md)   | Semantic versioning rules and changelog format |
 
 ---
 
@@ -129,27 +129,29 @@ consult when working in this repository.
 | Workflow                          | CONTEXT.md                                                                                                                                         |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Index                             | [project-management/workflows/CONTEXT.md](project-management/workflows/CONTEXT.md)                                                                 |
-| 01 — Story creation               | [project-management/workflows/01-story-creation/CONTEXT.md](project-management/workflows/01-story-creation/CONTEXT.md)                             |
-| 02 — Sprint planning              | [project-management/workflows/02-sprint-planning/CONTEXT.md](project-management/workflows/02-sprint-planning/CONTEXT.md)                           |
-| 03 — Database schema              | [project-management/workflows/03-database-schema/CONTEXT.md](project-management/workflows/03-database-schema/CONTEXT.md)                           |
-| 04 — User flow design             | [project-management/workflows/04-user-flow-design/CONTEXT.md](project-management/workflows/04-user-flow-design/CONTEXT.md)                         |
-| 05 — Brand guides                 | [project-management/workflows/05-brand-guides/CONTEXT.md](project-management/workflows/05-brand-guides/CONTEXT.md)                                 |
-| 06 — Component designs            | [project-management/workflows/06-component-designs/CONTEXT.md](project-management/workflows/06-component-designs/CONTEXT.md)                       |
-| 07 — Wireframes                   | [project-management/workflows/07-wireframes/CONTEXT.md](project-management/workflows/07-wireframes/CONTEXT.md)                                     |
-| 08 — GDPR compliance              | [project-management/workflows/08-gdpr-compliance/CONTEXT.md](project-management/workflows/08-gdpr-compliance/CONTEXT.md)                           |
-| 09 — Security checks              | [project-management/workflows/09-security-checks/CONTEXT.md](project-management/workflows/09-security-checks/CONTEXT.md)                           |
-| 10 — QA checks                    | [project-management/workflows/10-qa-checks/CONTEXT.md](project-management/workflows/10-qa-checks/CONTEXT.md)                                       |
-| 11 — SEO checks                   | [project-management/workflows/11-seo-checks/CONTEXT.md](project-management/workflows/11-seo-checks/CONTEXT.md)                                     |
-| 12 — API design                   | [project-management/workflows/12-api-design/CONTEXT.md](project-management/workflows/12-api-design/CONTEXT.md)                                     |
-| 13 — Decisions                    | [project-management/workflows/13-decisions/CONTEXT.md](project-management/workflows/13-decisions/CONTEXT.md)                                       |
-| 14 — Sprint plans                 | [project-management/workflows/14-sprint-plans/CONTEXT.md](project-management/workflows/14-sprint-plans/CONTEXT.md)                                 |
-| 15 — Story plans                  | [project-management/workflows/15-story-plans/CONTEXT.md](project-management/workflows/15-story-plans/CONTEXT.md)                                   |
-| 16 — Backend code                 | [project-management/workflows/16-backend-code/CONTEXT.md](project-management/workflows/16-backend-code/CONTEXT.md)                                 |
-| 17 — API code                     | [project-management/workflows/17-api-code/CONTEXT.md](project-management/workflows/17-api-code/CONTEXT.md)                                         |
-| 18 — Frontend code                | [project-management/workflows/18-frontend-code/CONTEXT.md](project-management/workflows/18-frontend-code/CONTEXT.md)                               |
-| 19 — Implementation documentation | [project-management/workflows/19-implementation-documentation/CONTEXT.md](project-management/workflows/19-implementation-documentation/CONTEXT.md) |
-| 20 — PR and review                | [project-management/workflows/20-pr-and-review/CONTEXT.md](project-management/workflows/20-pr-and-review/CONTEXT.md)                               |
-| 21 — Release                      | [project-management/workflows/21-release/CONTEXT.md](project-management/workflows/21-release/CONTEXT.md)                                           |
+| 01 — Feature                      | [project-management/workflows/01-feature/CONTEXT.md](project-management/workflows/01-feature/CONTEXT.md)                                           |
+| 02 — Story creation               | [project-management/workflows/02-story-creation/CONTEXT.md](project-management/workflows/02-story-creation/CONTEXT.md)                             |
+| 03 — Sprint planning              | [project-management/workflows/03-sprint-planning/CONTEXT.md](project-management/workflows/03-sprint-planning/CONTEXT.md)                           |
+| 04 — Database schema              | [project-management/workflows/04-database-schema/CONTEXT.md](project-management/workflows/04-database-schema/CONTEXT.md)                           |
+| 05 — User flow design             | [project-management/workflows/05-user-flow-design/CONTEXT.md](project-management/workflows/05-user-flow-design/CONTEXT.md)                         |
+| 06 — Brand guides                 | [project-management/workflows/06-brand-guides/CONTEXT.md](project-management/workflows/06-brand-guides/CONTEXT.md)                                 |
+| 07 — Component designs            | [project-management/workflows/07-component-designs/CONTEXT.md](project-management/workflows/07-component-designs/CONTEXT.md)                       |
+| 08 — Wireframes                   | [project-management/workflows/08-wireframes/CONTEXT.md](project-management/workflows/08-wireframes/CONTEXT.md)                                     |
+| 09 — GDPR compliance              | [project-management/workflows/09-gdpr-compliance/CONTEXT.md](project-management/workflows/09-gdpr-compliance/CONTEXT.md)                           |
+| 10 — Security checks              | [project-management/workflows/10-security-checks/CONTEXT.md](project-management/workflows/10-security-checks/CONTEXT.md)                           |
+| 11 — QA checks                    | [project-management/workflows/11-qa-checks/CONTEXT.md](project-management/workflows/11-qa-checks/CONTEXT.md)                                       |
+| 12 — SEO checks                   | [project-management/workflows/12-seo-checks/CONTEXT.md](project-management/workflows/12-seo-checks/CONTEXT.md)                                     |
+| 13 — API design                   | [project-management/workflows/13-api-design/CONTEXT.md](project-management/workflows/13-api-design/CONTEXT.md)                                     |
+| 14 — Decisions                    | [project-management/workflows/14-decisions/CONTEXT.md](project-management/workflows/14-decisions/CONTEXT.md)                                       |
+| 15 — Sprint plans                 | [project-management/workflows/15-sprint-plans/CONTEXT.md](project-management/workflows/15-sprint-plans/CONTEXT.md)                                 |
+| 16 — Story plans                  | [project-management/workflows/16-story-plans/CONTEXT.md](project-management/workflows/16-story-plans/CONTEXT.md)                                   |
+| 17 — Consolidate design work      | [project-management/workflows/17-consolidate-design-work/CONTEXT.md](project-management/workflows/17-consolidate-design-work/CONTEXT.md)           |
+| 18 — Backend code                 | [project-management/workflows/18-backend-code/CONTEXT.md](project-management/workflows/18-backend-code/CONTEXT.md)                                 |
+| 19 — API code                     | [project-management/workflows/19-api-code/CONTEXT.md](project-management/workflows/19-api-code/CONTEXT.md)                                         |
+| 20 — Frontend code                | [project-management/workflows/20-frontend-code/CONTEXT.md](project-management/workflows/20-frontend-code/CONTEXT.md)                               |
+| 21 — Implementation documentation | [project-management/workflows/21-implementation-documentation/CONTEXT.md](project-management/workflows/21-implementation-documentation/CONTEXT.md) |
+| 22 — PR and review                | [project-management/workflows/22-pr-and-review/CONTEXT.md](project-management/workflows/22-pr-and-review/CONTEXT.md)                               |
+| 23 — Release                      | [project-management/workflows/23-release/CONTEXT.md](project-management/workflows/23-release/CONTEXT.md)                                           |
 
 ---
 
@@ -159,35 +161,35 @@ The PM layer **specifies and gates**; the code layer **builds and verifies**. Th
 single source of truth for how the two sets interlock — neither layer's `CONTEXT.md` restates it.
 
 **Rule: a code workflow is never entered directly from a design gate.** Implementation is reached
-only through the PM build phases (`16`–`18`), which are themselves gated on `01`–`15` being
+only through the PM build phases (`18`–`20`), which are themselves gated on `02`–`17` being
 complete.
 
 | PM workflow                       | Paired code workflow                                                         | Relationship                                                                     |
 | --------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `03-database-schema`              | `03-database-migration`                                                      | Schema designed (Fable) → migration written (Opus), **entered via `16`**         |
-| `08-gdpr-compliance`              | `06-gdpr-enforcement`                                                        | Obligations specified → enforced in code; review is a hard prerequisite          |
-| `09-security-checks`              | `08-security-hardening`                                                      | Design threat model → built-code audit, **entered via `17`** or `21`             |
-| `12-api-design`                   | `04-api-design`                                                              | Ninja contract decided → expressed as routers/Schemas, **entered via `17`**      |
-| `16-backend-code`                 | `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | PM phase drives all three; `12` is **rust-only** and absent without that surface |
-| `17-api-code`                     | `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | PM phase drives all four; `05` only when the story needs an agent-facing surface |
-| `18-frontend-code`                | `01-new-feature` · `02-tdd-cycle` · `13-desktop-app`                         | PM phase drives all three; `13` is **desktop-only** and absent without it        |
-| `19-implementation-documentation` | _(receives from `01`, `02`)_                                                 | **Owns** all records, findings, docs, and the graph refresh                      |
-| `20-pr-and-review`                | `07-review`                                                                  | Content review (code layer) → process, merge, verification (PM layer)            |
-| _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                        | Entered from `19` findings routed to `src/19-BUGS/`                              |
-| _no PM workflow_                  | `11-refactor`                                                                | Entered from `19` findings routed to `src/20-REFACTORING/`                       |
+| `04-database-schema`              | `03-database-migration`                                                      | Schema designed (Fable) → migration written (Opus), **entered via `18`**         |
+| `09-gdpr-compliance`              | `06-gdpr-enforcement`                                                        | Obligations specified → enforced in code; review is a hard prerequisite          |
+| `10-security-checks`              | `08-security-hardening`                                                      | Design threat model → built-code audit, **entered via `19`** or `23`             |
+| `13-api-design`                   | `04-api-design`                                                              | Ninja contract decided → expressed as routers/Schemas, **entered via `19`**      |
+| `18-backend-code`                 | `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | PM phase drives all three; `12` is **rust-only** and absent without that surface |
+| `19-api-code`                     | `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | PM phase drives all four; `05` only when the story needs an agent-facing surface |
+| `20-frontend-code`                | `01-new-feature` · `02-tdd-cycle` · `13-desktop-app`                         | PM phase drives all three; `13` is **desktop-only** and absent without it        |
+| `21-implementation-documentation` | _(receives from `01`, `02`)_                                                 | **Owns** all records, findings, docs, and the graph refresh                      |
+| `22-pr-and-review`                | `07-review`                                                                  | Content review (code layer) → process, merge, verification (PM layer)            |
+| _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                        | Entered from `21` findings routed to `src/20-BUGS/`                              |
+| _no PM workflow_                  | `11-refactor`                                                                | Entered from `21` findings routed to `src/21-REFACTORING/`                       |
 
-**PM-only, no code counterpart:** `01-story-creation`, `02-sprint-planning`, `04-user-flow-design`,
-`05-brand-guides`, `06-component-designs`, `07-wireframes`, `10-qa-checks`, `11-seo-checks`,
-`13-decisions`, `14-sprint-plans`, `15-story-plans`, `21-release`.
+**PM-only, no code counterpart:** `02-story-creation`, `03-sprint-planning`, `05-user-flow-design`,
+`06-brand-guides`, `07-component-designs`, `08-wireframes`, `11-qa-checks`, `12-seo-checks`,
+`14-decisions`, `15-sprint-plans`, `16-story-plans`, `23-release`.
 
 **Ownership boundaries — do not duplicate across the seam:**
 
 | Fact                                                   | Sole owner                           |
 | ------------------------------------------------------ | ------------------------------------ |
-| Implementation record formats, templates, destinations | PM `19-implementation-documentation` |
-| Findings, `GAPS.md` / `DEFERRED.md` routing            | PM `19-implementation-documentation` |
-| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `19-implementation-documentation` |
-| Branch promotion, approvals, merge gates               | PM `20-pr-and-review`                |
+| Implementation record formats, templates, destinations | PM `21-implementation-documentation` |
+| Findings, `GAPS.md` / `DEFERRED.md` routing            | PM `21-implementation-documentation` |
+| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `21-implementation-documentation` |
+| Branch promotion, approvals, merge gates               | PM `22-pr-and-review`                |
 | Code content review (OWASP, coverage, principles)      | code `07-review`                     |
 | Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`      |
 | Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)   |
