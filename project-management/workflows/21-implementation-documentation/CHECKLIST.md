@@ -48,6 +48,9 @@ model: opus
       (`src/20-BUGS/`, `src/21-REFACTORING/`, `src/14-DECISIONS/`, `DEFERRED.md`, `GAPS.md`)
 - [ ] No rationale invented — absent explanations flagged, inferences marked `TODO(verify)`
 - [ ] `Next story` rows carried into the next `src/16-STORY-PLANS/` plan
+- [ ] Every _Register claimed_ row on the story's feature map checked: retired entries closed
+      here (`GAPS.md` → `✅ CLOSED DD/MM/YYYY`, `DEFERRED.md` → row removed) **against shipped
+      code**; a claim the story did not retire left open, with the reason recorded as a finding
 
 ---
 

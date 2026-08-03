@@ -17,12 +17,34 @@
 
 ## Notes
 
-| Field                | Value                                                       |
-| -------------------- | ----------------------------------------------------------- |
-| Domain               | [PLACEHOLDER]                                               |
-| Skills to load       | [PLACEHOLDER]                                               |
-| Standing preferences | [PLACEHOLDER — decisions already made that bound this work] |
-| Umbrella ADRs        | [PLACEHOLDER]                                               |
+| Field                    | Value                                                       |
+| ------------------------ | ----------------------------------------------------------- |
+| Domain                   | [PLACEHOLDER]                                               |
+| Skills to load           | [PLACEHOLDER]                                               |
+| Standing preferences     | [PLACEHOLDER — decisions already made that bound this work] |
+| Umbrella ADRs            | [PLACEHOLDER]                                               |
+| Register entries triaged | [n] closes · [n] blocks · [n] unrelated                     |
+
+---
+
+## Register claimed
+
+Open `GAPS.md` and `DEFERRED.md` entries this feature touches, from the Step 2 triage. **Every
+open entry gets a verdict** — the unrelated count in Notes is what makes the triage provably
+exhaustive.
+
+**This is a claim, not a close.** Nothing here edits `GAPS.md` or `DEFERRED.md`. The entry is
+marked `✅ CLOSED` (or the `DEFERRED.md` row removed) by
+`workflows/21-implementation-documentation/`, against shipped code.
+
+| Register    | Entry                                   | Verdict | Retired by                     |
+| ----------- | --------------------------------------- | ------- | ------------------------------ |
+| GAPS.md     | [EXAMPLE] DD/MM/YYYY — {title}          | closes  | [EXAMPLE] `US###` / node N-00# |
+| DEFERRED.md | [EXAMPLE] {item} → target `US###`       | closes  | [PLACEHOLDER]                  |
+| GAPS.md     | [EXAMPLE] DD/MM/YYYY — {blocking title} | blocks  | node N-00# (frontier)          |
+
+**closes** — this feature retires it; it belongs in the destination, not a footnote.
+**blocks** — it stands in the way, so it is a frontier node below, never an assumption.
 
 ---
 
@@ -88,6 +110,8 @@ One row per RESOLVE session, so the map's history is legible without git archaeo
 ## Gate to stories
 
 - [ ] Destination and out-of-scope bounds confirmed
+- [ ] Every open `GAPS.md` / `DEFERRED.md` entry triaged — closes / blocks / unrelated
+- [ ] Every claimed entry names what will retire it; **neither register file edited here**
 - [ ] Every knowable decision is a node or in fog of war
 - [ ] Every node typed and blocker-wired
 - [ ] **Every node marked "blocking a story" is resolved**

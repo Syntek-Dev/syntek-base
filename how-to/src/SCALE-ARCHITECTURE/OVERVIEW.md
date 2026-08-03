@@ -92,7 +92,7 @@ The `scale-planning` skill drives a `scale-planner` agent under the project's st
 decision machinery:
 
 - **Wayfinder** charts the epic's open decisions onto
-  the project's plans folder (`MAP-SCALE-PLANNING.md`), resolved node-by-node across
+  `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`, resolved node-by-node across
   sessions.
 - **`grill-with-docs`** settles each decision — one question at a time, each with a
   recommended answer — and records the outcome (to the map, an ADR, or these documents).

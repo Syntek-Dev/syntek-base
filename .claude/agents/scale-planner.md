@@ -32,7 +32,7 @@ Read before planning:
 - `code/docs/PERFORMANCE.md` (+ `performance/` sub-docs) — budgets, load-test rules, "measure first"
 - `code/docs/architecture/CORE-AND-SCALING.md` — the day-to-day scaling rules (do not duplicate)
 - `code/docs/architecture/CORE-AND-SCALING.md` — the phase-gates you key to
-- the project's own decision register — where the governing decision is recorded
+- `project-management/src/14-DECISIONS/` — where the governing decision is recorded
 - `code/docs/logging/HEALTH-CONTRACT.md` — the app→deploy contract precedent and the health/metrics signals
 - `<%DEPLOY_REPO%>` (deploy repo — `how-to/src/01–11` + `workflows/01-server-setup`) — the provisioning runbook the contract targets; `how-to/src/NIXOS-SETUP.md` here is now a pointer stub
 - `how-to/src/SCALE-ARCHITECTURE/` + `how-to/src/SERVER-ARCHITECTURE/` — the snapshots you own (if present)
@@ -98,9 +98,9 @@ not asked, no action until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` §10
 
 - **Snapshots:** `how-to/src/SCALE-ARCHITECTURE/*.md` and `how-to/src/SERVER-ARCHITECTURE/*.md`
   (human-operational; each dir carries a `CONTEXT.md` + `CLAUDE.md` pair, those ≤ 300 lines).
-- **Map:** the project's plans folder (`MAP-SCALE-PLANNING.md`) (wayfinder — a low-resolution
-  index; detail lives in the ADR/plan/snapshot it links to).
-- **Decision:** ADRs at the project's decision register (three-test gate).
+- **Map:** `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md` (wayfinder — a
+  low-resolution index; detail lives in the ADR/plan/snapshot it links to).
+- **Decision:** ADRs in `project-management/src/14-DECISIONS/` (three-test gate).
 - British English (en_GB); dates DD/MM/YYYY; <%CURRENCY%> for any estimate. New env vars documented against
   `.env.*.example` templates — never real secret values.
 

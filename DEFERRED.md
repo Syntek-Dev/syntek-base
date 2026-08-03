@@ -8,4 +8,10 @@ order.
 **Add a row when:** an implementation doc (assessment, audit, or sprint plan) marks something
 `DEFERRED (US###)` or `DEFERRED (apps.xxx)`. Remove the row when the target story ships it.
 
+**Read at the discovery gate.** `project-management/workflows/01-feature/` reads this file and
+`GAPS.md` before charting a feature — to **suggest** candidate features from what has
+accumulated, and to triage every open row against the feature being charted (closes / blocks /
+unrelated). A row a feature will close is **claimed** on its `MAP-<FEATURE>.md`; the row is only
+removed by `workflows/21-implementation-documentation/`, against shipped code.
+
 ---

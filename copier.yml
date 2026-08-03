@@ -101,6 +101,26 @@ PROJECT_NAME:
   help: Project / product display name, as a human would write it
   placeholder: Acme Portal
 
+# The first question that is about the PRODUCT rather than its labels. Every agent reads
+# this before it reads anything else, because CONTEXT.md opens with it — so a vague answer
+# here is a vague answer echoed through every planning gate downstream.
+PROJECT_DESCRIPTION:
+  type: str
+  help: >-
+    In one or two sentences: what does this project do, who is it for, and what does it
+    replace? This is the brief every agent reads first — write it as a brief, not a tagline.
+  placeholder: >-
+    A client portal where Acme's customers track orders, download invoices and raise support
+    tickets, replacing an email-and-spreadsheet process.
+  validator: >-
+    <: if PROJECT_DESCRIPTION | trim | length < 40 :>
+    Write at least a full sentence — a tagline is not a brief, and this is what every agent
+    reads before it reads anything else.
+    <: endif :>
+    <: if '"' in PROJECT_DESCRIPTION :>
+    Avoid double quotes — this value is written into pyproject.toml and package.json.
+    <: endif :>
+
 PROJECT_SLUG:
   type: str
   help: Machine slug — Python package, databases, Compose project, hostnames

@@ -91,49 +91,88 @@ must include:
 
 ## 4. Code-comment standards
 
-All agents writing code follow these rules (they match the `backend` and
-`frontend` agent expectations and `code/docs/CODING-PRINCIPLES.md`).
+All agents writing code follow these rules (they match the `backend`, `frontend`
+and `refactor` agent expectations and `code/docs/CODING-PRINCIPLES.md`).
 
-### File headers
+**Comments and docstrings inside a code file carry the _why_ and nothing else.**
+The code states the what — names, types, and structure already say what happens,
+and a comment restating them is a duplicate fact that drifts. When the what is
+not obvious from the code, rename or split the code rather than describe it.
 
-Every source file opens with a module docstring/header comment stating its
-purpose — no pronouns.
+Everything else — the what, the who, the how, the when, the where, the history,
+the story it came from — belongs in the developer documentation, which is free to
+carry all of it: `code/docs/*`, `CONTEXT.md`, `CHANGELOG.md`,
+`VERSION-HISTORY.md`, and the PM artefacts. A code file never repeats it.
+
+**Scope:** application source that ships in a deployable — `.py`, `.html`, `.css`,
+`.js`, `.ts`, `.tsx`, `.rs`, `.slint`. Two exemptions, both because the reference
+_is_ the content: **declarative configuration** (`deny.toml`, `pyproject.toml`,
+`.gitignore`, CI YAML), where a policy exception needs the trail that justifies
+it; and the **dev scripts** under `code/src/scripts/`, operator tooling under the
+`runbook` discipline that often names the very rule or document it enforces.
+
+### When to write one
+
+Only when the reason is non-obvious and cannot be expressed in code:
+
+- A constraint the code must satisfy but cannot state (a protocol quirk, a driver
+  or browser bug, an ordering nothing else enforces).
+- An invariant holding across a distance the reader cannot see locally.
+- A deliberate trade-off, and what it rejected.
+- A workaround, and the condition under which it can be removed.
+
+If deleting the comment would not confuse the next reader, do not write it.
+
+### No outside references
+
+A comment never points out of the code file. **Never** cite a story (`US###`),
+sprint, ADR, plan, bug record, ticket or issue number, PR, commit hash,
+`code/docs/*` path, URL, person, or date. The reason travels _in_ the comment — a
+reader who cannot open the reference still has to understand why.
+
+```python
+# WRONG — points outward, ages badly, says nothing on its own
+# Set per US042; see code/docs/URL-STRATEGY.md. TODO(sam): revisit 2026-Q4.
+DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
+
+# CORRECT — the reason is self-contained
+# A guessable admin path attracts credential-stuffing traffic, so the prefix is
+# configurable and a deployment can move it without a code change.
+DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
+```
 
 ### Docstrings
 
-Every public function, method, endpoint, or component has a docstring covering:
-
-- What it does (not how).
-- Parameters with types.
-- Return value with type.
-- Exceptions raised.
-
-Django Ninja example:
+One short line, stating **why** the module, function, or component exists. The
+typed signature already carries the parameters, the return, and (with the raising
+path) the exceptions, so no `Args:` / `Returns:` / `Raises:` block restates them.
 
 ```python
-def list_client_projects(user_id: UUID) -> list[Project]:
-    """Return the projects owned by the given user.
-
-    Args:
-        user_id: UUID of the authenticated caller, verified for ownership.
-
-    Returns:
-        Projects visible to the caller under row-level security.
-
-    Raises:
-        PermissionDenied: When the caller lacks the projects.view policy.
-    """
+def constant_time_eq(left: bytes, right: bytes) -> bool:
+    """Compare without leaking the matching prefix length through timing."""
 ```
+
+### The one exception — published interface text
+
+A docstring **emitted to a consumer** is interface documentation, not a comment,
+and states the full what: Django Ninja endpoint docstrings and `summary` (both
+render on the OpenAPI page) and FastMCP tool docstrings (the prompt a model reads
+when choosing a tool). Rules: `code/docs/api-design/API-DOCS.md` and
+`code/docs/mcp-server/TOOL-DESIGN.md`. Django `verbose_name` and `help_text` are
+user-facing copy and follow the same logic.
 
 ### No-pronouns rule
 
-Never use pronouns referring to code in comments or docstrings.
+Never use pronouns referring to code.
 
-| Do                                   | Don't                    |
-| ------------------------------------ | ------------------------ |
-| `The function validates input`       | `It validates the input` |
-| `Returns the user object`            | `Returns this`           |
-| `The service handles authentication` | `We handle auth here`    |
+| Do                                             | Don't                              |
+| ---------------------------------------------- | ---------------------------------- |
+| `Ordering matters — the index is partial`      | `It has to run first or it breaks` |
+| `Retried because the provider 502s under load` | `We retry this here`               |
 
-Complex logic gets an inline comment explaining **what** and **why**, never a
-restatement of the code.
+### Never in a committed file
+
+- **Commented-out code** — git history is the recovery mechanism.
+- **`TODO` / `FIXME`** — deferred work goes to `DEFERRED.md` or `GAPS.md`, which
+  are read and triaged; a comment is neither.
+- **A restatement** of a configuration value, a signature, or the line below it.

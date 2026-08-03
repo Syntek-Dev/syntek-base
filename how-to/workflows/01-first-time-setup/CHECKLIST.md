@@ -26,6 +26,21 @@ model: opus
 
 ---
 
+## Before any feature work
+
+These two run once, before the first feature is charted — they are what the planning gates
+downstream are measured against.
+
+- [ ] `CONTEXT.md` → _What this project is_ expanded beyond the raw Copier answer and confirmed:
+      what it does, who for, what it replaces, what it deliberately is not · _fable_
+- [ ] `/scale-planning` run against live code · _fable_
+- [ ] `how-to/src/SCALE-ARCHITECTURE/` carries real figures, not `TBD — regenerate` markers · _fable_
+- [ ] `how-to/src/SERVER-ARCHITECTURE/` carries the server/edge contract the deploy repo consumes · _fable_
+- [ ] The scaling phase-gate this project is designing under is named, and so is what it therefore
+      does **not** need · _fable_
+
+---
+
 ## Context
 
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow

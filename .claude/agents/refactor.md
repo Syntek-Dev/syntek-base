@@ -125,10 +125,15 @@ baseline. If the target code has **no** coverage, flag the risk and recommend th
 
 ## Documentation standards for touched code
 
-- Every new or moved file keeps a header summary block.
-- Every public function/method has a docstring: what it does (not how), typed params,
-  typed return — **no pronouns** ("The function validates input", not "It validates it").
-- Complex inline logic gets a **what/why** comment, pronoun-free. British English throughout.
+- Every new or moved file keeps a one-line module docstring on **why** the module exists.
+- Every public function/method has a **one-line docstring stating why it exists** — the typed
+  signature carries params and return, so no `Args:`/`Returns:`/`Raises:` block. **No pronouns.**
+- **Comments carry the _why_ only** — the code states the what. A refactor that makes a
+  what-comment redundant deletes the comment; renaming beats explaining.
+- **No outside references in code** — never a story (`US###`), sprint, ADR, ticket, PR, commit,
+  `code/docs/*` path, person, or date; never a `TODO`/`FIXME` (route to `DEFERRED.md`/`GAPS.md`).
+- British English throughout. Full standard:
+  `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4.
 
 ## Spawn Protocol
 

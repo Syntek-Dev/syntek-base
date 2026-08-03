@@ -122,19 +122,43 @@ Keep `.copier-answers.yml` too; `copier update` needs it.
 ## 9. Point Claude Code at it
 
 Open the project and let Claude read `.claude/CLAUDE.md` then `.claude/MEMORY.md`. From there it
-routes itself. Good first prompts:
+routes itself.
 
 ```text
 Read .claude/CLAUDE.md and .claude/MEMORY.md, then give me a tour of this repository.
 ```
 
+## 10. Describe it, then size it — before any feature
+
+These two are `how-to/workflows/01-first-time-setup/` Steps 7–8. Run them **once, now**, in this
+order. They are the cheapest work you will ever do on this project and the most expensive to
+retrofit.
+
+**First, sharpen the brief.**
+
+```text
+Open CONTEXT.md — What this project is. Expand it into a real brief with me: what it
+does, who for, what it replaces, and what it deliberately is not.
+```
+
+`PROJECT_DESCRIPTION` put your generation-time answer at the top of `CONTEXT.md`, which
+`.claude/CLAUDE.md` imports — so it is the first thing every agent reads in every session, and
+what every scope decision is measured against. A one-liner typed at a prompt is not that yet.
+
+**Then size it.**
+
 ```text
 /scale-planning
 ```
 
-`/scale-planning` regenerates the two architecture snapshots (`how-to/src/SCALE-ARCHITECTURE/`
-and `SERVER-ARCHITECTURE/`) against your actual code — they ship as skeletons full of
+Regenerates the two architecture snapshots (`how-to/src/SCALE-ARCHITECTURE/` and
+`SERVER-ARCHITECTURE/`) against your actual code — they ship as skeletons full of
 `TBD — regenerate via /scale-planning` markers and are not meaningful until you do.
+
+Run it now rather than later, because its value is the questions it forces while everything is
+still cheap to change — target users, read/write mix, which scaling phase-gate the design must
+not foreclose — and because it is where **what you do not need** gets written down. That list is
+what stops the first feature carrying machinery it will never use.
 
 ---
 

@@ -12,7 +12,7 @@ want to know what ran on your machine.
 
 ```text
 1. fetch template        git clone of the template at the requested ref
-2. ask questions         21 prompts, defaults and validators from copier.yml
+2. ask questions         26 prompts (+4 conditional), defaults and validators from copier.yml
 3. render                every non-excluded file through Jinja2, custom delimiters
 4. write                 tree written to the destination
 5. record answers        .copier-answers.yml, including _src_path and _commit
@@ -38,14 +38,17 @@ copier copy --vcs-ref=HEAD    gh:Syntek-Dev/syntek-base my-project   # tip of th
 
 ## 2 — Questions
 
-Twenty-nine, defined in `copier.yml`. Three behaviours worth knowing:
+Thirty, defined in `copier.yml` — twenty-six always asked, four conditional on the optional
+surfaces. Three behaviours worth knowing:
 
 - **Derived defaults** — `PROJECT_SLUG` from `PROJECT_NAME`, `ENV_PREFIX` from `ORG_SLUG`,
   `PRIMARY_DOMAIN` and `DEPLOY_REPO` from `PROJECT_SLUG`.
 - **Validators** — slugs must be kebab-case, `ENV_PREFIX` upper-snake, `CURRENCY` three upper
-  letters, `DATE` `DD/MM/YYYY`, email must contain `@`. A bad answer re-prompts.
+  letters, `DATE` `DD/MM/YYYY`, email must contain `@`, and `PROJECT_DESCRIPTION` must be at
+  least a sentence with no double quotes. A bad answer re-prompts.
 - **`--defaults`** takes every default without asking; combine with `--data KEY=value` for the
-  five questions that have no default.
+  six questions that have no default — `PROJECT_NAME`, `PROJECT_DESCRIPTION`, `ORG_NAME`,
+  `DEVELOPER_NAME`, `DEVELOPER_EMAIL`, `DATE`.
 
 ## 3 — Render
 

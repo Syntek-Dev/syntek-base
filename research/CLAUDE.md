@@ -14,7 +14,7 @@ The committed home for `/research` primary-source notes that feed decisions.
 - **Routing:** all writes here run through the `research` skill
   (`.claude/skills/research/SKILL.md`). Model: Opus.
 - **Concrete steps:** `/research` writes `<TOPIC>.md` with a Question, Verdict, per-claim cited
-  Claims, a Sources list, and the `ADR-###`/`PLAN-US###` it Feeds → the consuming ADR or PLAN links
+  Claims, a Sources list, and the `ADR-###`/`STORY-PLAN-US###` it Feeds → the consuming ADR or PLAN links
   back to the note by path.
 - **Definition of done:** every claim cites a primary source; the note is wired to its decision.
 

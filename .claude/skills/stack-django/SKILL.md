@@ -218,23 +218,22 @@ from apps.users.models import User
 
 
 def get_active_users(limit: int | None = None) -> QuerySet[User]:
-    """Retrieve active users.
-
-    Args:
-        limit: Maximum number of users to return; None returns all.
-
-    Returns:
-        QuerySet[User]: Active user records, newest first.
-    """
+    """Newest-first so the caller can slice a preview without a second ordering."""
     users = User.objects.filter(is_active=True).order_by("-date_joined")
     if limit is not None:
         users = users[:limit]
     return users
 ```
 
-Every module opens with a docstring stating its purpose (no pronouns). Every public
-function/method documents what it does (not how), typed args, return, and raised
-exceptions — "The function validates input", never "It validates it".
+**Comments and docstrings carry the _why_ only** — the code states the what, and the
+typed signature already carries args, return, and raises, so no
+`Args:`/`Returns:`/`Raises:` block. Every module opens with a one-line docstring on why it
+exists. No pronouns. **Never reference a story (`US###`), sprint, ADR, ticket, PR, commit,
+`code/docs/*` path, person, or date from inside a code file**, and never leave a
+`TODO`/`FIXME` — deferred work belongs in `DEFERRED.md`/`GAPS.md`. The one exception is
+published interface text: a Ninja endpoint docstring and `summary` render on the OpenAPI
+page, and a FastMCP tool docstring is the prompt the model reads, so both state the full
+what. Full standard: `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4.
 
 ---
 

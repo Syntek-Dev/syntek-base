@@ -2,9 +2,10 @@
 
 **Last Updated**: 02/08/2026
 
-Copier asks twenty-four questions — twenty-six with the mobile surface, which adds two of its own,
-and twenty-seven with the desktop surface too. Most have a good default. A few are load-bearing
-and awkward to change later — this explains which is which.
+Copier asks **twenty-six questions** on a web-only project. The optional surfaces add four more
+between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
+desktop app name — thirty if you take all three. Most have a good default. A few are
+load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is
 the advice.
@@ -59,10 +60,42 @@ Put today's date in and leave it.
 
 ## Identity
 
-| Question       | Guidance                                                                                 |
-| -------------- | ---------------------------------------------------------------------------------------- |
-| `PROJECT_NAME` | Human-readable, as it appears in the UI and doc headers. `Acme Portal`.                  |
-| `ORG_NAME`     | The maintaining organisation. Appears in doc headers and the licence notice. `Acme Ltd`. |
+| Question              | Guidance                                                                                                                   |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `PROJECT_NAME`        | Human-readable, as it appears in the UI and doc headers. `Acme Portal`.                                                    |
+| `PROJECT_DESCRIPTION` | **The one to think about.** One or two sentences: what it does, who for, what it replaces. See below — this one has teeth. |
+| `ORG_NAME`            | The maintaining organisation. Appears in doc headers and the licence notice. `Acme Ltd`.                                   |
+
+### `PROJECT_DESCRIPTION` — write this one properly
+
+It is the only question about the **product** rather than its labels, and it is the one with the
+longest reach. It opens the root `CONTEXT.md`, which `.claude/CLAUDE.md` imports, so it is the
+first thing every agent reads in every session — before the stack, before the rules, before the
+task. A vague answer is a vague answer echoed through every planning gate downstream.
+
+Three things, in order:
+
+1. **What it does** — the capability, not the technology.
+2. **Who it is for** — the actual user, named.
+3. **What it replaces** — the spreadsheet, the inbox, the incumbent tool, the manual process.
+
+The third is the one people skip and the one that carries the most information: it says what
+"better" means, which is what every scope decision is eventually measured against.
+
+```text
+Good  A client portal where Acme's customers track orders, download invoices and raise
+      support tickets, replacing an email-and-spreadsheet process.
+
+Poor  A modern, scalable web platform for enterprise workflow management.
+```
+
+The second says nothing an agent can act on. Copier enforces a 40-character floor and rejects
+double quotes (the value lands in `pyproject.toml` and `package.json`), but it cannot enforce
+that you meant it.
+
+**You are not stuck with it.** Edit the paragraph in `CONTEXT.md` whenever the project's shape
+changes — the first Claude Code session will ask you to expand it, and re-reading it before each
+feature is charted is exactly the point.
 
 ## Infrastructure
 

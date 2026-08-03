@@ -27,6 +27,8 @@ questions, story by story, and answering them inconsistently.
 - A new feature, epic, or body of work larger than a single story
 - Before `02-story-creation` — the map is what the stories are cut from
 - When an existing feature is being materially reshaped
+- **When the next feature is not obvious** — Step 0 mines `GAPS.md` and `DEFERRED.md` for
+  candidates, ranked by how much of the standing register each retires
 
 ## When NOT to use this
 
@@ -40,6 +42,15 @@ questions, story by story, and answering them inconsistently.
 - [ ] The feature idea exists as a paragraph or a conversation — not yet as stories
 - [ ] `.claude/skills/wayfinder/SKILL.md` read (CHART and RESOLVE modes)
 - [ ] The layered context is loadable (see _Reading order_ below)
+- [ ] **`CONTEXT.md` → _What this project is_ is a real brief**, not the raw generation-time
+      answer — a feature is scoped against it, so a placeholder scopes against nothing
+- [ ] **`/scale-planning` has been run at least once** — `how-to/src/SCALE-ARCHITECTURE/` and
+      `SERVER-ARCHITECTURE/` carry real figures rather than `TBD — regenerate` markers
+
+The last two are `how-to/workflows/01-first-time-setup/` Steps 7–8 and run **once per project**,
+before the first feature. They are not a hard gate on the map — a feature can be charted without
+them — but charting without them means every sizing question surfaces as a decision node here
+instead, one feature at a time, which is the expensive way to answer them.
 
 ## Key concepts
 
@@ -56,19 +67,30 @@ questions, story by story, and answering them inconsistently.
 - **Not every node resolves before stories start.** A map with its blocking nodes settled and its
   fog honestly marked is enough. The bar is "no story will be written on an unanswered blocker",
   not "nothing is unknown".
+- **The standing register is an input, not just an output.** `GAPS.md` and `DEFERRED.md` are where
+  earlier work recorded its unfinished business. This gate reads them at both ends: to **suggest**
+  what the next feature should be (Step 0), and to **triage** every open entry against the feature
+  being charted (Step 2) — closes, blocks, or unrelated. What a feature closes is part of what
+  "done" means; what blocks it is a decision node, not an assumption discovered at implementation.
+- **Claiming is not closing.** This gate records on the map that a feature will retire an entry.
+  Marking `✅ CLOSED` — or removing a `DEFERRED.md` row — belongs to
+  `21-implementation-documentation`, against shipped code. A claim is a promise; a close is
+  evidence.
 
 ## Reading order — what wayfinder loads, in order
 
 The map is only as good as the ground truth behind it. Load in this order, each layer narrowing
 the next:
 
-1. **`CONTEXT.md` then `CLAUDE.md`** from the root down to the areas in play — orientation, then
-   operating rules.
+1. **The root `CONTEXT.md`** — _What this project is_ first (the brief every scope decision is
+   measured against), then the rest of it and `CLAUDE.md`, down to the areas in play.
 2. **The relevant docs guides** — `code/docs/DATABASE.md`, `code/docs/SECURITY.md`,
    `code/docs/ARCHITECTURE-PATTERNS.md` and the like, for the constraints a decision must
    respect.
-3. **The whole of `project-management/src/`** — every story, spec, decision, plan, and record.
-4. **The codebase itself**, via the `code-review-graph` explore playbook.
+3. **`GAPS.md` and `DEFERRED.md`** — the standing register: what is currently blocked, and what a
+   shipped story explicitly handed to a future one.
+4. **The whole of `project-management/src/`** — every story, spec, decision, plan, and record.
+5. **The codebase itself**, via the `code-review-graph` explore playbook.
 
 **`src/` is the living state of the project, not an archive.** Because every story closes with
 `IMPLEMENTATION/` records that state what shipped _and where it diverged from the plan_, reading
@@ -80,9 +102,10 @@ a map drawn from the plans alone loses the drift.
 
 ### Hard gates — read before executing Step 1
 
-- `.claude/skills/wayfinder/SKILL.md` — CHART and RESOLVE, the map artefact, node types, and
-  the graduation table
+- `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART and RESOLVE, the map artefact, node types,
+  the graduation table, and the claiming-versus-closing line
 - `project-management/docs/PLANNING-GUIDE.md` — the cadence this map feeds
+- `GAPS.md` · `DEFERRED.md` — the standing register, read at Step 0 and Step 2
 
 ### Soft references — consult during execution
 

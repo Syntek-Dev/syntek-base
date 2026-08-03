@@ -43,10 +43,11 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
    primary-source citation — a URL with its section, or a repo path with the line. Match any
    convention already in `research/`; yours is the first note if it is empty. _Completion:_ the
    note exists at that path and every claim carries a citation.
-5. **Wire the note to its decision.** The consuming `ADR-###` (next free number is `a decision record`)
-   or `PLAN-US###` links back to the note by path. When the research grounds a data-model
-   decision, hand the outcome to `grill-with-docs` — its glossary-into-nearest-`CONTEXT.md`
-   and three-test ADR gate record it (reference: `code/docs/data-structures/DOMAIN-MODELLING.md`).
+5. **Wire the note to its decision.** The consuming `ADR-###` (take the next free number in
+   `…/14-DECISIONS/`) or `STORY-PLAN-US###` links back to the note by path. When the research
+   grounds a data-model decision, hand the outcome to `grill-with-docs` — its
+   glossary-into-nearest-`CONTEXT.md` and three-test ADR gate record it (reference:
+   `code/docs/data-structures/DOMAIN-MODELLING.md`).
    _Completion:_ the ADR or PLAN references the note.
 
 ## What counts as a primary source
@@ -71,7 +72,7 @@ Give each note these parts, so a reader reaches the verdict fast and can audit e
 - **Verdict** — the synthesised answer in a sentence or two.
 - **Claims** — each finding on its own line, ending in its primary-source citation.
 - **Sources** — the primary sources consulted, listed once.
-- **Feeds** — the `ADR-###` or `PLAN-US###` this note grounds, plus the date (DD/MM/YYYY).
+- **Feeds** — the `ADR-###` or `STORY-PLAN-US###` this note grounds, plus the date (DD/MM/YYYY).
 
 A durable finding that is _not_ tied to a decision — a reusable fact about the stack — belongs
 in `.claude/MEMORY.md`, not a note.
@@ -90,8 +91,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   - the three-test ADR gate).
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the reference when a note feeds a data model.
 - `research/` — the committed, synced home for research notes (`<TOPIC>.md`).
-- the project's decision register — the ADRs a note feeds; next free number is `a decision record`.
-- `the project's plans folderPLAN-US000-TEMPLATE.md` — the PLAN template a note may feed.
+- `project-management/src/14-DECISIONS/` — the ADRs a note feeds; take the next free `ADR-###`.
+- `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the story-plan template
+  a note may feed.
 - `project-management/src/02-STORIES/US###.md` — a story a note may inform.
 - `GAPS.md` · `DEFERRED.md` — open blockers, and items deferred to a named future story.
 - `.claude/plugins/pm-tool.py` — read-only PM inspection (the next ADR number, the plan list).

@@ -124,10 +124,18 @@ and `code/docs/SECURITY.md`.
 
 ## Documentation in code
 
-- Every file opens with a module docstring stating its purpose (no pronouns).
-- Every public function/method has a docstring: what it does (not how), typed args, return,
-  and raised exceptions — no pronouns ("The function validates input", not "It validates it").
-- Complex logic gets an inline comment explaining **what** and **why**.
+- **Comments and docstrings carry the _why_ only** — the code states the what. A comment that
+  restates a name, a type, or the line below it is deleted, not reworded.
+- **No outside references in code** — never a story (`US###`), sprint, ADR, ticket, PR, commit,
+  `code/docs/*` path, person, or date. The reason lives in the comment itself. Deferred work goes
+  to `DEFERRED.md`/`GAPS.md`, never a `TODO`/`FIXME`.
+- Every file opens with a module docstring: one line on why the module exists (no pronouns).
+- Every public function/method has a **one-line docstring stating why it exists** — the typed
+  signature carries args, return, and raises, so no `Args:`/`Returns:`/`Raises:` block.
+- **Exception:** a Django Ninja endpoint docstring and `summary` render on the OpenAPI page, and a
+  FastMCP tool docstring is the prompt the model reads — both are published interface text and
+  state the full what (`code/docs/api-design/API-DOCS.md`, `code/docs/mcp-server/TOOL-DESIGN.md`).
+- Full standard: `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4.
 
 ## Running migrations and checks
 

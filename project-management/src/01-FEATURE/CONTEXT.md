@@ -28,14 +28,15 @@ story is cut from the settled answers.
 
 ## What a map holds
 
-| Section                | Holds                                                             |
-| ---------------------- | ----------------------------------------------------------------- |
-| **Destination**        | One or two lines: what "done" looks like                          |
-| **Notes**              | Domain, skills to load, standing preferences, umbrella plans/ADRs |
-| **Resolved decisions** | Settled nodes, each linking to the ADR / plan / story it became   |
-| **Frontier**           | Open decisions in dependency order, with blocking edges           |
-| **Fog of war**         | In scope, not yet sharp enough to state as a decision             |
-| **Out of scope**       | Consciously ruled out, and why                                    |
+| Section                | Holds                                                                  |
+| ---------------------- | ---------------------------------------------------------------------- |
+| **Destination**        | One or two lines: what "done" looks like                               |
+| **Notes**              | Domain, skills to load, standing preferences, umbrella plans/ADRs      |
+| **Register claimed**   | `GAPS.md` / `DEFERRED.md` entries this feature closes or is blocked by |
+| **Resolved decisions** | Settled nodes, each linking to the ADR / plan / story it became        |
+| **Frontier**           | Open decisions in dependency order, with blocking edges                |
+| **Fog of war**         | In scope, not yet sharp enough to state as a decision                  |
+| **Out of scope**       | Consciously ruled out, and why                                         |
 
 **The map is an index, not a vault.** Detail lives in the artefact each node graduates to.
 
@@ -56,7 +57,10 @@ story is written is a feature that never starts.
 ## Cross-references
 
 - `MAP-000-TEMPLATE.md` — the map template
-- `.claude/skills/wayfinder/SKILL.md` — CHART and RESOLVE, node types, the graduation table
+- `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART and RESOLVE, node types, the graduation
+  table, and the claiming-versus-closing line
+- `GAPS.md` · `DEFERRED.md` — the standing register a map claims from; closed by
+  `project-management/workflows/21-implementation-documentation/`, never here
 - `../14-DECISIONS/` — where hard-to-reverse resolutions graduate
 - `../02-STORIES/` — the stories cut from a resolved map
 - `../16-STORY-PLANS/` — per-story plans, which cite the ADRs this map produced

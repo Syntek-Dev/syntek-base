@@ -48,6 +48,17 @@ re-asking the same questions.
   written during discovery bypasses its own gate.
 - **Every resolved node graduates.** An answer left only on the map is lost the moment the map is
   superseded — it belongs in an ADR, a plan, a story, `GAPS.md`, or `DEFERRED.md`.
+- **Read the register before charting, and triage all of it.** `GAPS.md` and `DEFERRED.md` are not
+  write-only. Every open entry gets a verdict — closes / blocks / unrelated — because a feature
+  charted without them re-decides what a past story already deferred, and silently leaves the debt
+  it happens to retire unrecorded.
+- **Claim, never close.** This workflow writes claimed entries onto the map; it does not mark
+  `✅ CLOSED` or delete a `DEFERRED.md` row. That is
+  `21-implementation-documentation`'s, against shipped code — editing the register here puts a gap
+  in the closed state with nothing built behind it.
+- **Step 0 suggests; it never chooses.** Candidates are put to <%DEVELOPER_NAME%> ranked, and nothing is
+  written until one is picked. A candidate that is really one story routes to `02-story-creation`
+  rather than being inflated into a map.
 - Documentation workflow — no code. Instructional `.md` files ≤ 300 code lines (the map artefact
   itself is exempt).
 

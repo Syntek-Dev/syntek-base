@@ -21,7 +21,7 @@ This command is _informed_ by the project's domain model and built on a shared d
   are real"). Use these terms exactly in every suggestion — don't drift into "component," "service"
   (as a loose synonym), "API," or "boundary."
 - The domain language in the layered **`CONTEXT.md`** files gives names to good seams
-  (**`.claude/skills/domain-modelling`**); the ADRs in **the project's decision register**
+  (**`.claude/skills/domain-modelling`**); the ADRs in **`project-management/src/14-DECISIONS/`**
   record decisions this review must **not** re-litigate.
 
 ## Process
@@ -39,7 +39,7 @@ to look before you look:
   attention first. If the changes are scattered with no clear hot spot, widen the net.
 
 Read the area's domain orientation (its `CONTEXT.md`) and any relevant ADR
-(the project's decision register) first.
+(`project-management/src/14-DECISIONS/`) first.
 
 Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid
 heuristics — explore organically and note where you experience friction:
@@ -111,7 +111,7 @@ keep the domain model current as you go:
 - **Sharpening a fuzzy term during the conversation?** Update the `CONTEXT.md` where it's defined,
   right there.
 - **User rejects the candidate with a load-bearing reason?** Offer an ADR
-  (the project's decision register), framed as: _"Want me to record this as
+  (`project-management/src/14-DECISIONS/`), framed as: _"Want me to record this as
   an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would
   actually be needed by a future explorer — skip ephemeral reasons ("not worth it right now") and
   self-evident ones.

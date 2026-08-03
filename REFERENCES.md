@@ -184,15 +184,16 @@ complete.
 
 **Ownership boundaries — do not duplicate across the seam:**
 
-| Fact                                                   | Sole owner                           |
-| ------------------------------------------------------ | ------------------------------------ |
-| Implementation record formats, templates, destinations | PM `21-implementation-documentation` |
-| Findings, `GAPS.md` / `DEFERRED.md` routing            | PM `21-implementation-documentation` |
-| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `21-implementation-documentation` |
-| Branch promotion, approvals, merge gates               | PM `22-pr-and-review`                |
-| Code content review (OWASP, coverage, principles)      | code `07-review`                     |
-| Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`      |
-| Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)   |
+| Fact                                                   | Sole owner                             |
+| ------------------------------------------------------ | -------------------------------------- |
+| Implementation record formats, templates, destinations | PM `21-implementation-documentation`   |
+| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `21-implementation-documentation`   |
+| `GAPS.md` / `DEFERRED.md` reads — suggest and triage   | PM `01-feature` (claims, never closes) |
+| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `21-implementation-documentation`   |
+| Branch promotion, approvals, merge gates               | PM `22-pr-and-review`                  |
+| Code content review (OWASP, coverage, principles)      | code `07-review`                       |
+| Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`        |
+| Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)     |
 
 ---
 

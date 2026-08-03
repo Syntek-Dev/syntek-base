@@ -1,12 +1,37 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.1.0] - 03/08/2026
+
+### Added
+
+- **`PROJECT_DESCRIPTION` — a Copier question for the project brief.** One or two sentences on what the project does, who it is for, and what it replaces. It opens the root `CONTEXT.md` under a new _What this project is_ heading, and because `.claude/CLAUDE.md` imports that file it becomes the first thing every agent reads in every session. It also fills the `description` field of `pyproject.toml` and `package.json` (neither had one) and the blurb in the generated `README.md`. Two validators: a 40-character floor, because a tagline is not a brief, and a rejection of double quotes, because the value lands in two manifests.
+- **Describe-then-size runs before the first feature.** `how-to/workflows/01-first-time-setup/` gains Steps 7 and 8, which run once per project after the stack is up and before anything is charted: sharpen the generated brief into a real one (what it does, who for, what it replaces, what it deliberately is **not**), then run `/scale-planning`. The value of the second is not the server tier — it is forcing the sizing questions while they are still cheap, and producing the explicit **not required** list that stops the first feature carrying machinery it will never use. `01-feature` lists both as prerequisites and reads `SCALE-ARCHITECTURE/` as ground truth; neither is a hard gate, because charting without them is possible — it just surfaces every sizing question as a decision node, one feature at a time.
+- **`GAPS.md` and `DEFERRED.md` are read at the discovery gate, not only written.** A new `/wayfinder suggest` mode mines the standing register for candidate features, clustering entries by shared cause, surface, or dependency — five deferrals waiting on the same missing table are one feature, not five — and puts them to the developer ranked. Charting then triages **every** open entry against the feature being planned: **closes** (recorded under a new _Register claimed_ section on the map, and part of what "done" means), **blocks** (a frontier node, not an assumption), or **unrelated** (counted, so the triage is provably exhaustive).
+- **The claim/close boundary.** `01-feature` claims a register entry; `21-implementation-documentation` closes it against shipped code, and is now the only place that marks `✅ CLOSED` or removes a `DEFERRED.md` row. A claim the story did not in fact retire stays open, and the reason becomes a finding. A claim is a promise; a close is evidence.
+
+### Changed
+
+- **Code comments and docstrings carry the _why_ only.** The canonical standard (`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4, mirrored in `code/docs/coding-principles/STYLE-AND-PROCESS.md`) previously mandated the opposite in three places — "what it does (not how)" for docstrings, and inline comments explaining "**what** and **why**". The code states the what; a comment restating a name or a type is a duplicate fact that drifts. Docstrings are now one line on why the thing exists, with no `Args:`/`Returns:`/`Raises:` block, because the typed signature already carries them.
+- **A comment never points outside its own file.** No story (`US###`), sprint, ADR, plan, bug record, ticket, PR, commit, `code/docs/*` path, URL, person, or date — the reason must travel in the comment, because a reader who cannot open the reference still has to understand why. Scope is application source that ships in a deployable; declarative configuration and `code/src/scripts/**/*.sh` are exempt, because there the reference **is** the content. The one exception is published interface text: Django Ninja endpoint docstrings and `summary` render on the OpenAPI page, and a FastMCP tool docstring is the prompt a model reads, so both state the full what.
+- **`TODO`/`FIXME` are no longer permitted in committed code.** The old rule required a ticket reference, which is exactly the outward pointer now banned. Deferred work goes to `DEFERRED.md` or `GAPS.md`, which are read and triaged.
+
+### Fixed
+
+- **Broken token substitutions across sixteen files.** The de-tokenisation pass left three distinct defects: paths concatenated with their filename (`` `the project's plans folderPLAN-US000-TEMPLATE.md` ``), placeholder prose where a number belongs ("next free number is `` `a decision record` ``", and in `wayfinder` the doubly-garbled "a new ADR — the project's decision register (next free number is the project's decision register)"), and prose standing in for a path. All now resolve to `project-management/src/14-DECISIONS/` and `.../16-STORY-PLANS/`, verified to exist on disk.
+- **Origin-project references leaking into the template.** `wayfinder` cited "the Design Studio epic … US208–US214" and `prototype` cited `PLAN-US207-DESIGN-STUDIO.md` as live worked examples; the template ships no stories, so both were dangling. `MAP-SCALE-PLANNING.md` was placed in the plans folder in four files — it is a map, so it belongs in `src/01-FEATURE/`.
+- **`PLAN-US###` normalised to `STORY-PLAN-US###`** in six files, matching the naming convention the PM layer has always used.
+- **Five comments in the shipped Django, mobile, Rust and Slint skeletons** pointed at `code/docs/*` paths, in breach of the standard added above. Each reworded so the reason travels in the comment.
+- **Copier question counts were stale in three guides** — `TEMPLATE-TOKENS.md` claimed twenty-four tokens and `05-ANSWERS.md` twenty-four questions when the real figure was twenty-nine; `06-GENERATION.md`'s pipeline diagram still said twenty-one. All corrected to thirty (twenty-six always asked, four conditional on the optional surfaces).
 
 ---
 

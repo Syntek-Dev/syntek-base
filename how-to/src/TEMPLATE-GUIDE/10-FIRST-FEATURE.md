@@ -34,6 +34,51 @@ answered in an hour — use `/prototype` instead. It exists so the process is no
 
 ---
 
+## Before any of it — describe, then size
+
+Two passes run **once per project**, upstream of the numbering above. They are
+`how-to/workflows/01-first-time-setup/` Steps 7 and 8, and they are the two easiest things to
+skip and the two most expensive to retrofit.
+
+### Describe what this actually is
+
+`CONTEXT.md` opens with the answer you gave to `PROJECT_DESCRIPTION` at generation. Expand it
+into a real brief and confirm it:
+
+- **What it does** — the capability, not the technology.
+- **Who it is for** — the actual user, named.
+- **What it replaces** — the process, tool, or spreadsheet being displaced.
+- **What it deliberately is not** — the nearest thing it will be mistaken for.
+
+That paragraph is the first thing every agent reads in every session, because
+`.claude/CLAUDE.md` imports `CONTEXT.md`. Every scope argument you will have — is this in the
+feature or not, is this story a Must or a Could — resolves against it. Leave it as a
+generation-time one-liner and those arguments resolve against nothing.
+
+### Size it before you build it
+
+```text
+/scale-planning
+```
+
+Regenerates `how-to/src/SCALE-ARCHITECTURE/` and `how-to/src/SERVER-ARCHITECTURE/`, which ship
+as skeletons full of `TBD — regenerate via /scale-planning`.
+
+The point is not the server tier. It is that this pass asks — while everything is still cheap to
+change — how many users, what the read/write mix is, which scaling phase-gate the design must
+not foreclose, and what the server and edge have to provide.
+
+**And it is where "not required" gets written down.** The repo is deliberately anti-forecast:
+you are not authorised to provision for a million users because you hope for a million users.
+What you get instead is a trajectory the architecture must stay _able_ to follow, and an
+explicit list of what that means you are **not** building now. That list is what stops the first
+feature carrying machinery it will never use — and what stops the fifth one being cornered by a
+schema decision made in week one.
+
+Do it after ten features and you are not planning; you are auditing choices already made.
+
+---
+
 ## 0. Chart the feature
 
 ```text

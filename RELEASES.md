@@ -1,9 +1,104 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.1.0 — 03/08/2026
+
+**Status:** Minor release — one new Copier question, two passes that run before the first feature,
+and a comment standard that finally says one thing.
+
+### The project describes itself now
+
+A new Copier question, `PROJECT_DESCRIPTION`, asks what the project does, who it is for, and what
+it replaces. The answer opens the root `CONTEXT.md`, which `.claude/CLAUDE.md` imports — so it is
+the first thing every agent reads in every session, before the stack, before the rules, before
+the task. It also fills the `description` field in `pyproject.toml` and `package.json`, neither of
+which had one.
+
+Copier enforces a 40-character floor and rejects double quotes. It cannot enforce that you meant
+it, which is why the first session asks you to expand it.
+
+### Describe it, then size it, then build it
+
+`how-to/workflows/01-first-time-setup/` gains two steps that run **once per project**, after the
+stack is up and before anything is charted:
+
+1. **Sharpen the brief** — what it does, who for, what it replaces, and what it deliberately is
+   not. Every scope argument you will have resolves against this paragraph; leave it as a
+   generation-time one-liner and those arguments resolve against nothing.
+2. **`/scale-planning`** — not for the server tier, which can wait. For the questions it forces
+   while everything is still cheap to change: how many users, what the read/write mix is, which
+   scaling phase-gate the design must not foreclose.
+
+The second produces something the repo did not have an explicit home for: the **not required**
+list. A project sized for hundreds of users does not need what one sized for hundreds of
+thousands needs, and naming which you are building is what licenses leaving things out. Answer
+these after ten features and you are not planning — you are auditing decisions already made.
+
+Neither is a hard gate on `01-feature`. Charting without them works; it just surfaces every
+sizing question as a decision node, one feature at a time, which is the expensive way round.
+
+### The register is a loop, not a dead end
+
+`GAPS.md` and `DEFERRED.md` were write-only: every workflow put things in, nothing took them out
+except by accident. Two changes close the loop.
+
+`/wayfinder suggest` mines the register for candidate features, clustering by shared cause or
+dependency — five deferrals waiting on the same missing table are one feature, not five — and
+ranks them by how much debt each retires. Charting then triages every open entry against the
+feature in hand: **closes**, **blocks**, or **unrelated**, with the unrelated count recorded so
+the triage is provably exhaustive.
+
+**Claiming is not closing.** `01-feature` records on the map that a feature will retire an entry;
+`21-implementation-documentation` marks it closed against shipped code, and is now the only place
+that can. A claim the story did not actually retire stays open, and the reason becomes a finding.
+
+### Comments say why, and nothing else
+
+The comment standard contradicted itself. `code/docs/coding-principles/STYLE-AND-PROCESS.md` said
+"why, not what"; the canonical rule that every agent actually routes to said the opposite — "what
+it does (not how)" for docstrings, and inline comments explaining "**what** and **why**".
+
+It now says one thing. Comments and docstrings in a code file carry the **why**; the code states
+the what. Docstrings are one line, with no `Args:`/`Returns:`/`Raises:` block, because the typed
+signature already carries them.
+
+And a comment never points outside its own file — no story, sprint, ADR, ticket, PR, commit, doc
+path, person, or date. The reason has to travel in the comment, because a reader who cannot open
+the reference still needs to understand why. `TODO`/`FIXME` go with it: the old rule required a
+ticket reference, which is exactly the outward pointer now banned, so deferred work goes to
+`DEFERRED.md` or `GAPS.md` instead.
+
+Two exemptions, both because the reference _is_ the content: declarative configuration, where a
+policy exception needs its trail, and the dev scripts, which often name the rule they enforce.
+One exception for published interface text: a Ninja endpoint docstring renders on the OpenAPI
+page and a FastMCP tool docstring is the prompt a model reads, so both state the full what.
+
+### Fixes
+
+- **Sixteen files carried broken token substitutions** — paths concatenated with their filenames,
+  placeholder prose where a number belongs, and prose standing in for a path. `wayfinder`'s
+  graduation table read "a new ADR — the project's decision register (next free number is the
+  project's decision register)". All resolve to real paths now, verified against disk.
+- **Origin-project references had leaked in** — a "live worked example" citing US208–US214 in a
+  template that ships no stories. `MAP-SCALE-PLANNING.md` was filed under plans in four files; it
+  is a map, so it belongs in `src/01-FEATURE/`.
+- **Five comments in the shipped skeletons** pointed at `code/docs/*`, in breach of the standard
+  above.
+- **Copier question counts were wrong in three guides** — twenty-four, twenty-four, and
+  twenty-one, against a real figure of twenty-nine. Now thirty: twenty-six always asked, four
+  conditional on the optional surfaces.
+
+### Upgrading
+
+`copier update` prompts for `PROJECT_DESCRIPTION` — the one new question. Write it properly; it
+is the sentence every agent reads first. Everything else is documentation and applies on the next
+session without action.
 
 ---
 

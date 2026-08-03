@@ -1,8 +1,7 @@
 //! First-party native primitives for `<%PROJECT_NAME%>`.
 //!
-//! This is the **baseline** module: two primitives that demonstrate the boundary rules
-//! the guides describe, and nothing more. Real functionality arrives with the story that
-//! needs it. See `code/docs/RUST.md` and `code/docs/rust/PYO3-BOUNDARY.md`.
+//! This is the **baseline** module: two primitives that demonstrate the boundary rules,
+//! and nothing more, so that nothing lives in Rust until something needs to.
 //!
 //! Two rules govern everything added here:
 //!
@@ -48,7 +47,7 @@ fn constant_time_eq(left: &[u8], right: &[u8]) -> bool {
 ///
 /// **Honest limit:** this wipes *this* buffer. It cannot retract copies Python already
 /// made, and it does not stop the OS paging the page to swap — that needs `mlock`, which
-/// is a per-deployment decision (`code/docs/rust/MEMORY-HYGIENE.md`).
+/// is a per-deployment decision rather than a property of this type.
 #[pyclass(name = "SecretBytes")]
 struct SecretBytes {
     inner: Vec<u8>,

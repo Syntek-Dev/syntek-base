@@ -51,18 +51,26 @@ one of these six sequences literally, wrap it in `<: raw :>` … `<: endraw :>`.
 
 ## The tokens
 
-Twenty-four tokens carry every project-specific value. Copier prompts for all of them, except the
-two mobile tokens, which are asked only when the mobile frontend is included. Example
-values are illustrative — replace them.
+Thirty tokens carry every project-specific value. **Twenty-six are always asked**; the remaining
+four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile surface is
+included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only when the
+desktop surface is. Example values are illustrative — replace them.
 
 ### Identity
 
-| Token              | Meaning                                                   | Example value | Format       |
-| ------------------ | --------------------------------------------------------- | ------------- | ------------ |
-| `<%PROJECT_NAME%>` | Human-readable project / product name                     | `Acme Portal` | free text    |
-| `<%PROJECT_SLUG%>` | Kebab machine slug — packages, DB, infra resource names   | `acme-portal` | `kebab-case` |
-| `<%ORG_NAME%>`     | Organisation / maintainer / brand (doc headers, licence)  | `Acme Ltd`    | free text    |
-| `<%ORG_SLUG%>`     | Org machine slug — marketplace, plugins, server namespace | `acme`        | `kebab-case` |
+| Token                     | Meaning                                                         | Example value                                            | Format             |
+| ------------------------- | --------------------------------------------------------------- | -------------------------------------------------------- | ------------------ |
+| `<%PROJECT_NAME%>`        | Human-readable project / product name                           | `Acme Portal`                                            | free text          |
+| `<%PROJECT_DESCRIPTION%>` | **The brief** — what the project does, for whom, replacing what | `A client portal where Acme's customers track orders, …` | ≥ 40 chars, no `"` |
+| `<%PROJECT_SLUG%>`        | Kebab machine slug — packages, DB, infra resource names         | `acme-portal`                                            | `kebab-case`       |
+| `<%ORG_NAME%>`            | Organisation / maintainer / brand (doc headers, licence)        | `Acme Ltd`                                               | free text          |
+| `<%ORG_SLUG%>`            | Org machine slug — marketplace, plugins, server namespace       | `acme`                                                   | `kebab-case`       |
+
+`<%PROJECT_DESCRIPTION%>` reaches further than the other identity tokens: it opens the root
+`CONTEXT.md`, which `.claude/CLAUDE.md` imports, so it is the **first thing every agent reads
+in every session**. It is also the `description` field of `pyproject.toml` and `package.json`,
+and the blurb under the title in the generated `README.md`. The no-double-quotes rule exists
+because of those two manifests; the 40-character floor exists because a tagline is not a brief.
 
 ### Infrastructure
 

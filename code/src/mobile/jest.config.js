@@ -1,9 +1,7 @@
 // Jest for the mobile surface.
 //
-// COVERAGE: the same numbers as the backend, enforced once per runtime. coverage.py and
-// Jest share no accumulator, so one combined percentage across both surfaces was never
-// achievable — "one standard, enforced once per runtime" is what the floor has always
-// meant. See code/docs/testing/COVERAGE.md.
+// The floors match the backend but are enforced per runtime: coverage.py and Jest share no
+// accumulator, so a single combined percentage across both surfaces is not achievable.
 module.exports = {
   preset: "jest-expo",
   // No setupFilesAfterEnv: React Native Testing Library ships its Jest matchers

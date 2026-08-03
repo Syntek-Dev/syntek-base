@@ -85,11 +85,11 @@ turns on are exercised.
 Exercise the spike until the question has a clear verdict, then land the answer where design
 decisions live — the code, not the spike, keeps only what was validated:
 
-- Record the verdict and the question it settled in a PLAN's `### Open Questions` /
-  `### Requirements` (`the project's plans folderPLAN-US###-*.md`, template
-  `PLAN-US000-TEMPLATE.md`).
+- Record the verdict and the question it settled in a story plan's `### Open Questions` /
+  `### Requirements` (`project-management/src/16-STORY-PLANS/STORY-PLAN-US###-*.md`, template
+  `STORY-PLAN-US000-TEMPLATE.md`).
 - If the answer settles a hard-to-reverse, surprising, genuine trade-off, lay ADR groundwork —
-  next free record `a decision record` under the project's decision register.
+  the next free `ADR-###-<TITLE>.md` under `project-management/src/14-DECISIONS/`.
 - If the answer pins a domain model or its terminology, record it through the grill-with-docs
   process — glossary into the nearest `CONTEXT.md` plus the three-test ADR gate
   (`.claude/skills/grill-with-docs/SKILL.md`); the modelling reference is
@@ -105,11 +105,11 @@ decisions live — the code, not the spike, keeps only what was validated:
 
 ### Spike, not a product surface
 
-A prototype is disposable. It is **not** the Design Studio epic
-(`the project's plans folderPLAN-US207-DESIGN-STUDIO.md`) and **not** the wireframes
-workflow (`project-management/workflows/08-wireframes/`) — those build production
-component-preview and wireframe tooling that ships. Reach for a spike to answer a question
-fast; reach for those to build the product.
+A prototype is disposable. It is **not** a charted epic
+(`project-management/src/01-FEATURE/MAP-<FEATURE>.md` and the story plans it fans into) and
+**not** the wireframes workflow (`project-management/workflows/08-wireframes/`) — those build
+production component-preview and wireframe tooling that ships. Reach for a spike to answer a
+question fast; reach for those to build the product.
 
 ### The licence of a spike, and its boundary
 
@@ -143,9 +143,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the modelling reference for a LOGIC verdict.
 - `code/src/scripts/development/shell.sh` · `new-django-view.sh` · `server.sh` — the run
   commands; `code/src/scripts/audits/css-tokens.sh` — the relaxed token gate.
-- `the project's plans folderPLAN-US000-TEMPLATE.md` · `PLAN-US207-DESIGN-STUDIO.md` ·
-  `project-management/workflows/08-wireframes/` — plan template, the epic and workflow to
-  distinguish a spike from.
-- the project's decision register · `project-management/src/02-STORIES/US###.md` —
-  ADR home (next `a decision record`) and story home.
+- `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` ·
+  `project-management/src/01-FEATURE/` · `project-management/workflows/08-wireframes/` — plan
+  template, and the charted epics and workflow to distinguish a spike from.
+- `project-management/src/14-DECISIONS/` · `project-management/src/02-STORIES/US###.md` —
+  ADR home (take the next free `ADR-###`) and story home.
 - `GAPS.md` · `DEFERRED.md` · `.claude/MEMORY.md` — where non-verdict findings go.

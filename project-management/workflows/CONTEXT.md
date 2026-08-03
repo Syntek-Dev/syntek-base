@@ -21,6 +21,23 @@ an accreted one.
 If that is too much for what you are doing — a spike, a proof of concept, a question you
 want answered in an hour — use `/prototype` instead. The process is not the only option.
 
+## Before the first feature — describe it, then size it
+
+Two things run **once per project**, upstream of everything numbered here
+(`how-to/workflows/01-first-time-setup/` Steps 7–8):
+
+1. **Describe the project.** The brief in the root `CONTEXT.md` — what it does, who for, what it
+   replaces, what it deliberately is not. It is the first thing every agent reads in every
+   session, and the thing every scope decision is eventually measured against.
+2. **Plan scale and architecture** — `/scale-planning`. Not for the server sizing, but for the
+   questions it forces while everything is still cheap to change: how many users, what the
+   read/write mix is, which scaling phase-gate the design must not foreclose.
+
+The second is where **required versus not required** gets settled. A project sized for hundreds
+of users does not need what one sized for hundreds of thousands needs, and knowing which you are
+building is what stops the first feature carrying machinery it will never use. Answer these
+after ten features and you are answering them against decisions already made.
+
 ## The planning cadence
 
 **Plan one story at a time, all the way through.** Take a single user story from
@@ -153,6 +170,12 @@ Three rules follow from it:
 - **`21-implementation-documentation` owns the whole closeout** — records, findings,
   `GAPS.md`/`DEFERRED.md`, the `CONTEXT.md`/`CLAUDE.md` update, and the graph refresh. Workflow
   `22` verifies them; the code workflows hand off to `21` and restate nothing.
+
+**The register is a loop, not a dead end.** `GAPS.md` and `DEFERRED.md` are written at `21` and
+**read at `01`**: the discovery gate mines them for candidate features and triages every open
+entry against the feature being charted — closes, blocks, or unrelated. `01` **claims**; only
+`21` **closes**, against shipped code. Without the read half, the register accumulates while
+features are chosen from memory.
 
 ## The numbers are the running order
 

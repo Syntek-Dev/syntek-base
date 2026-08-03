@@ -30,16 +30,39 @@ Summary of requirements:
 
 ## Comments and Documentation
 
-Comments explain **why**, not **what**. If code needs a comment to explain what it does, rewrite
-the code to be clearer instead.
+Comments and docstrings in a code file carry the **why** — never the what, who, how, when, or
+where. The code states what it does; names, types, and structure already carry it, and a comment
+that repeats them is a duplicate fact that drifts out of date. If the what is not clear from the
+code, rename or split the code instead of describing it.
 
-- **Docstrings** are mandatory on all public APIs. Every Django view and django-component opens
-  with a one-line purpose docstring; templates carry a one-line `{# #}` comment.
-- **TODO comments** must include a name or ticket reference:
-  `# TODO(name): remove after the follow-up change ships`.
-- Avoid commented-out code in committed files. Delete it; git history is the recovery mechanism.
-- Do not restate configuration in prose. Comments explain architectural decisions or operational
-  constraints, not repeat what the code already says.
+Everything else — the what, the how, the history, the story it came from, the decision behind it —
+lives in the developer documentation (`code/docs/*`, `CONTEXT.md`, `CHANGELOG.md`, the PM
+artefacts), which is free to carry all of it. A code file never repeats it.
+
+**Scope:** application source that ships in a deployable — `.py`, `.html`, `.css`, `.js`, `.ts`,
+`.tsx`, `.rs`, `.slint`. Two exemptions, both because the reference _is_ the content: declarative
+configuration (`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML) — where a policy exception
+needs the trail that justifies it; and `code/src/scripts/**/*.sh`, operator tooling that often
+names the rule or document it enforces.
+
+- **Write a comment only for a non-obvious reason** — a constraint the code cannot state, an
+  invariant holding across a distance, a deliberate trade-off, or a workaround plus the condition
+  for removing it. If deleting the comment would not confuse the next reader, delete it.
+- **No outside references.** Never cite a story (`US###`), sprint, ADR, plan, bug record, ticket,
+  issue, PR, commit, `code/docs/*` path, URL, person, or date. The reason belongs in the comment
+  itself — a reader who cannot open the reference still has to understand why.
+- **No `TODO` / `FIXME` in committed code.** Deferred work goes to `DEFERRED.md` or `GAPS.md`,
+  which are read and triaged.
+- **Docstrings** are mandatory on all public APIs and are **one line stating why the thing
+  exists** — no `Args:` / `Returns:` / `Raises:` blocks, because the typed signature already
+  carries them. Every Django view and django-component opens with one; templates carry a one-line
+  `{# #}` comment on the same terms.
+- **Exception — published interface text.** A Django Ninja endpoint docstring and `summary` (both
+  render on the OpenAPI page) and a FastMCP tool docstring (the prompt a model reads when choosing
+  a tool) are interface documentation, not comments: they state the full what. See
+  [`../api-design/API-DOCS.md`](../api-design/API-DOCS.md) and
+  [`../mcp-server/TOOL-DESIGN.md`](../mcp-server/TOOL-DESIGN.md).
+- **No commented-out code** in committed files. Delete it; git history is the recovery mechanism.
 
 ---
 
@@ -126,6 +149,13 @@ Before submitting code for review or marking a task complete, verify:
 - [ ] Every modified file stays within the 750-line limit
 - [ ] Relevant documentation has been updated
 - [ ] No commented-out code was left in the diff
+- [ ] Every comment and docstring in the diff carries a **why** — none restates a name, a type,
+      or the line below it
+- [ ] No comment points outside the code file — no `US###`, sprint, ADR, ticket, PR, commit,
+      documentation path, URL, person, or date
+- [ ] No `TODO` / `FIXME` was introduced — deferred work is recorded in `DEFERRED.md` or `GAPS.md`
+- [ ] Docstrings are one line, with no `Args:` / `Returns:` / `Raises:` block (except a published
+      Ninja endpoint or FastMCP tool docstring, which states the full what)
 - [ ] All imports are at the top of the file — no imports inside functions, methods, or classes
       unless a documented justified exception applies
 - [ ] Conditional chains of three or more branches encoding a named business rule are extracted to

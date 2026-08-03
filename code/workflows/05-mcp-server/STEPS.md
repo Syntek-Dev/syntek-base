@@ -50,7 +50,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
 5. **Who the clients are** — that decides the verifier (project API key by default; OAuth proxy
    only for third-party clients).
 
-Record hard-to-reverse calls as an ADR in the project's decision register. Save the design
+Record hard-to-reverse calls as an ADR in `project-management/src/14-DECISIONS/`. Save the design
 alongside the story's API design in `project-management/src/13-API-DESIGN/PLANNING/`.
 
 ### Step 2 — Mount the Server (first mount only)

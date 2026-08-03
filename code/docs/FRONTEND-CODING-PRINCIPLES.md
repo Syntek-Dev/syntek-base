@@ -49,7 +49,9 @@ Shared UI is a **django-component**, never inline markup. One folder per compone
   logic lives in the service layer, never the view or the template. Public pages pull published
   content from services directly (SSR).
 - **Templates hold no logic.** Presentation only — no queries, no branching beyond display. Every
-  view/template opens with a one-line purpose comment; components carry pronoun-free doc comments.
+  view/template and component opens with a one-line, pronoun-free comment on **why** it exists —
+  never what the markup renders, and never a story, ticket, doc path, or date
+  ([`coding-principles/STYLE-AND-PROCESS.md`](coding-principles/STYLE-AND-PROCESS.md)).
 - **CSP-clean.** No inline `<script>` or `<style>`. Alpine reads HTML attributes; HTMX is configured
   via `<meta>`; per-page JS is a static file. Content must be usable with JavaScript disabled — every
   link is a real `<a>`, Alpine only enhances.

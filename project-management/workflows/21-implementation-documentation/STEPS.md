@@ -126,6 +126,13 @@ Route each finding onward by disposition: a defect to `src/20-BUGS/`, structural
 `src/21-REFACTORING/`, a reopened hard-to-reverse trade-off to `src/14-DECISIONS/`, a
 deferral with a named target story to `DEFERRED.md`, an active blocker to `GAPS.md`.
 
+**Then close what the story actually retired.** If the story's feature map
+(`src/01-FEATURE/MAP-<FEATURE>.md` → _Register claimed_) claimed a `GAPS.md` or `DEFERRED.md`
+entry, settle it here — **this workflow is the only place the register closes**. Mark the
+`GAPS.md` entry `✅ CLOSED DD/MM/YYYY`, or remove the `DEFERRED.md` row, **only against shipped
+code**; a claim the story did not in fact retire stays open, and the reason why becomes a finding.
+Charting made the promise; this step is the evidence.
+
 Rows marked `Next story` are inputs to the next `src/16-STORY-PLANS/` plan — that is what
 this record is for.
 

@@ -66,6 +66,12 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   them. Root-level `*.md` and `**/src/*.md` are exempt.
 - **Scripts, never raw commands.** All docs reference `code/src/scripts/**/*.sh` for dev
   operations — never raw `pnpm`, `npm`, `npx`, `pip`, `uv`, `docker`, or `python manage.py`.
+- **Two audiences, two rules.** Markdown documentation carries everything — the what, who,
+  how, when, where, and the history. **Comments and docstrings inside a code file carry the
+  _why_ only**: the code states the what, docstrings are one line, and nothing points outward
+  (no `US###`, sprint, ADR, ticket, PR, commit, `code/docs/*` path, person, date, or
+  `TODO`/`FIXME`). A docstring pass that adds an `Args:` block or a doc cross-reference is a
+  regression. Standard: `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4.
 - **Naming.** Documentation files are `SCREAMING-SNAKE-CASE.md` (`CONTEXT.md`,
   `URL-STRATEGY.md`); source directories are `kebab-case/`. Full table in
   `.claude/CLAUDE.md` §5.

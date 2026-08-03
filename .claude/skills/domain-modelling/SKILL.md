@@ -13,7 +13,7 @@ description: >-
 
 The project's domain vocabulary is **distributed, not a single glossary file**: every directory's
 `CONTEXT.md` is the orientation ("what is here") for its area, and the ADRs in
-the project's decision register record the decisions behind the names. This skill keeps that
+`project-management/src/14-DECISIONS/` record the decisions behind the names. This skill keeps that
 model current as a design or refactor crystallises new concepts — so a name enters the model the
 moment it earns its place, not in a later doc sweep.
 
@@ -37,7 +37,7 @@ Do these **inline, as the decision lands** — never batch them for later.
 
 3. **Settle a load-bearing decision → offer an ADR.**
    When a design choice would otherwise be re-suggested or re-litigated by a future review, record it
-   as the project's decision register (naming per `.claude/CLAUDE.md` §5),
+   as an ADR in `project-management/src/14-DECISIONS/` (naming per `.claude/CLAUDE.md` §5),
    framed as: _"recording this so future architecture reviews don't re-propose it."_ Only for reasons
    a future explorer would actually need — skip the ephemeral ("not worth it right now") and the
    self-evident. A rejected refactor with a real reason is an ADR; a rejected refactor with no

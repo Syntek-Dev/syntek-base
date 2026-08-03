@@ -59,7 +59,7 @@ bridge, not a memory store — prune a handoff once its work has resumed.
    `stack-htmx-templates`, `database` + `grilling` (roster: `.claude/agents/CONTEXT.md`; skills:
    `.claude/skills/CONTEXT.md`). _Complete when:_ the doc names one next agent and its skills.
 
-6. **Reference artefacts by path, never paste them.** Point at plans (`PLAN-US###`), ADRs
+6. **Reference artefacts by path, never paste them.** Point at plans (`STORY-PLAN-US###`), ADRs
    (`ADR-###`), stories (`US###.md`), commits, and diffs by their repo path — the fresh agent
    opens them itself. Reference any secret or PII by name and location only. _Complete when:_
    every artefact is a path and no secret value or PII appears in the doc.
@@ -109,7 +109,7 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `.claude/skills/CONTEXT.md` — the skills table the suggested skills are drawn from.
 - `.claude/plugins/` · `code/docs/CODE-REVIEW-GRAPH.md` — read-only lookup for session facts before Grep/Glob.
 - `.claude/MEMORY.md` · `GAPS.md` · `DEFERRED.md` — the homes for durable knowledge kept out of the handoff.
-- `project-management/src/16-STORY-PLANS/` · the project's decision register
+- `project-management/src/16-STORY-PLANS/` · `project-management/src/14-DECISIONS/`
   (`ADR-###`) · `project-management/src/02-STORIES/US###.md` — artefacts referenced by path.
 - `handoffs/` — the committed, synced home for handoff documents (`HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md`).
 - `how-to/docs/GIT-WORKTREES.md` · `.claude/worktrees/` — worktree context a handoff often spans.

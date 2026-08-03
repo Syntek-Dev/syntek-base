@@ -19,8 +19,22 @@ separate NixOS deploy repo (`<%DEPLOY_REPO%>`) provisions against.
 
 It runs as a **wayfinder-charted epic** — the frontier is too big for one sitting and it
 spans another repo — with **grilling** settling each decision node. The governing decision is
-recorded in the project's decision register; the deep vocabulary (module / interface / depth / seam) comes from
-`.claude/skills/codebase-design`.
+recorded in `project-management/src/14-DECISIONS/`; the deep vocabulary (module / interface /
+depth / seam) comes from `.claude/skills/codebase-design`.
+
+**Run this before the first feature, not after the tenth.** It is Step 8 of
+`how-to/workflows/01-first-time-setup/`, immediately after the project brief is sharpened, and
+before `project-management/workflows/01-feature/` charts anything. The reason is not the server
+sizing — that can wait. It is that this is the pass which forces the questions while they are
+still cheap: how many users, what the read/write mix is, which phase-gate the design must not
+foreclose, and what the server and edge must provide. Answering those after ten features means
+answering them against decisions already made.
+
+**Its most useful output is the _not required_ list.** A project sized for hundreds of users
+does not need the infrastructure one sized for hundreds of thousands needs. Naming the gate the
+project is designing under is what licenses leaving things out — and the anti-forecast rule
+below is what keeps that honest in the other direction. State both: what the architecture must
+stay _able_ to do, and what it is therefore not building now.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
@@ -77,7 +91,8 @@ features add new server needs (a new route needs a CSP source; a new upload need
 
 ### 2. Chart or resolve (wayfinder)
 
-Load `.claude/skills/wayfinder`. The map is the project's plans folder (`MAP-SCALE-PLANNING.md`).
+Load `.claude/skills/wayfinder`. The map is
+`project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`.
 
 - **CHART** (one session) — pin the destination, map the frontier breadth-first across both
   tracks (SCALE and SERVER), wire the blocking edges, fire the research nodes, then stop.
@@ -126,9 +141,9 @@ for scalability" = the flips stay flips.
 
 Follow wayfinder's graduation table:
 
-- **Architectural, hard-to-reverse, real trade-off** → a new ADR (three-test gate; next free
-  number tracked in the project's decision register).
-- **A buildable slice** → a `US###` story + `PLAN-US###-*.md` (synced to ClickUp by the
+- **Architectural, hard-to-reverse, real trade-off** → a new ADR (three-test gate; take the next
+  free number in `project-management/src/14-DECISIONS/`).
+- **A buildable slice** → a `US###` story + `STORY-PLAN-US###-*.md` (synced to ClickUp by the
   `clickup-sync` workflow — never write ClickUp directly).
 - **A sizing / readiness / edge fact** → the living `SCALE-ARCHITECTURE` / `SERVER-ARCHITECTURE`
   snapshot.

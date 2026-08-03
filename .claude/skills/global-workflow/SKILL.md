@@ -63,7 +63,7 @@ user-facing copy, docstrings, and comments.
 - **Bumping a version** — MAJOR/MINOR/PATCH rules, pre-commit steps → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
 - **Authoring Markdown docs** — headings, tables, lists, code fences → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
 - **Documenting a bug fix** — required format and location → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
-- **Writing code comments** — file headers, docstrings, no-pronouns rule → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
+- **Writing code comments** — why-only rule, no outside references, one-line docstrings, no-pronouns rule → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
 
 ## Authoritative cross-references
 

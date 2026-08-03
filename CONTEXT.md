@@ -1,5 +1,16 @@
 # <%PROJECT_NAME%> — Project Overview
 
+## What this project is
+
+> <%PROJECT_DESCRIPTION%>
+
+**Read that first, every session.** It is the only statement of what is being built and for
+whom; every gate downstream — the feature map, the stories, the schema, the sizing envelope —
+is judged against it. If it has drifted from what the project has become, correcting it is a
+task in its own right, not a side-effect of some other change.
+
+## How it is built
+
 This is the source repository for `<%PROJECT_SLUG%>`, built as a **Django-only monolith**:
 Django 6 + Django Ninja + PostgreSQL on the server, Django templates + django-components +
 HTMX + Alpine + token-driven vanilla CSS on the client. There is no separate frontend or

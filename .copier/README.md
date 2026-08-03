@@ -1,8 +1,9 @@
 # <%PROJECT_NAME%>
 
-> Full-stack monorepo for the <%PROJECT_NAME%> website — Django + Django Ninja JSON API backend,
-> server-rendered Django templates + django-components + HTMX + Alpine throughout, vanilla token
-> CSS, deployed via Docker Compose.
+> <%PROJECT_DESCRIPTION%>
+
+Built as a Django monolith — Django + Django Ninja JSON API, server-rendered Django templates +
+django-components + HTMX + Alpine throughout, vanilla token CSS, deployed via Docker Compose.
 
 ![Version](https://img.shields.io/badge/version-0.1.0-blue)
 ![Licence](https://img.shields.io/badge/licence-see%20LICENSE-lightgrey)
@@ -632,11 +633,24 @@ Do not comment what the code does — well-named identifiers already do that. On
 when the WHY is non-obvious: a hidden constraint, a subtle invariant, a workaround for a specific
 bug. If removing the comment would not confuse a future reader, do not write it.
 
+### Comments never point outside the code file
+
+The reason travels in the comment. Never cite a story (`US###`), sprint, ADR, plan, bug record,
+ticket, issue, PR, commit, documentation path, URL, person, or date — a reader who cannot open the
+reference still has to understand why. The developer documentation carries all of that; a code
+file never repeats it. Deferred work goes to `DEFERRED.md` or `GAPS.md`, never a `TODO`/`FIXME`
+left in committed code.
+
 ### Doc strings — one line maximum
 
-A public function's doc string is one short line describing its purpose. No multi-paragraph blocks.
-No restating the parameter list in prose. If the function is complex enough to need a paragraph,
-split it into smaller functions first.
+A public function's doc string is one short line saying **why** the function exists. No
+multi-paragraph blocks, and no `Args:`/`Returns:`/`Raises:` block — the typed signature already
+carries them. If the function is complex enough to need a paragraph, split it into smaller
+functions first.
+
+The exception is a doc string that is _published_: a Django Ninja endpoint doc string and
+`summary` render on the OpenAPI page, and a FastMCP tool doc string is the prompt a model reads
+when choosing a tool. Those are interface documentation, not comments, and state the full what.
 
 ### Error handling
 

@@ -22,6 +22,7 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 | 2    | **Internal → Reference guides** → how-to/docs/DEVELOPMENT.md (prerequisites and troubleshooting) |
 | 2–4  | **External — Tools & CLI** → Docker Compose v2 reference, uv documentation, pnpm documentation   |
 | 5–6  | **External — IDE & Editor** → Claude Code CLI documentation                                      |
+| 7–8  | `CONTEXT.md` → _What this project is_ · `.claude/skills/scale-planning/SKILL.md`                 |
 
 ---
 
@@ -106,6 +107,59 @@ Open:
 - Mail (dev): http://localhost:1080
 
 > **Model:** opus · **MCP:** claude-in-chrome (rendered verification)
+
+---
+
+## Before any feature work
+
+Steps 1–6 give a running stack. **Steps 7 and 8 are what make the work that follows worth
+doing** — and both run once, before the first feature is charted.
+
+### Step 7 — Sharpen the project description
+
+> **Model:** fable
+
+Open `CONTEXT.md` → _What this project is_. It holds the one or two sentences answered at
+generation (`PROJECT_DESCRIPTION`). Read them back to <%DEVELOPER_NAME%> and ask whether they still
+describe the project, then expand them into a real brief:
+
+- **What it does** — the capability, not the technology.
+- **Who it is for** — the actual user, named.
+- **What it replaces** — the process, tool, or spreadsheet it is displacing.
+- **What it is deliberately not** — the nearest thing it will be mistaken for.
+
+Write the result back into `CONTEXT.md`. That paragraph is the first thing every agent reads in
+every session, and every scope decision downstream is measured against it — an unedited
+generation-time placeholder is a silent tax on every gate that follows.
+
+_Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not the raw Copier answer._
+
+### Step 8 — Plan scale and architecture before the first feature
+
+> **Model:** fable
+
+```text
+/scale-planning
+```
+
+Runs the `scale-planner` agent against the live code and regenerates
+`how-to/src/SCALE-ARCHITECTURE/` and `how-to/src/SERVER-ARCHITECTURE/`, which ship as skeletons
+full of `TBD — regenerate via /scale-planning` markers.
+
+**Do this before the first feature, not after the tenth.** Its value is not the server sizing —
+it is the questions it forces while everything is still cheap to change: how many users, what
+the read/write mix is, which of the scaling phase-gates the design must not foreclose, and what
+the server and edge have to provide. Answering those after ten features means answering them
+against decisions already made.
+
+The output is also the honest **not-required** list. A project sized for hundreds of users does
+not need the infrastructure a project sized for hundreds of thousands does, and knowing which
+one you are building is what stops the first feature carrying machinery it will never use.
+
+_Done when both snapshots carry real figures rather than `TBD` markers, and the scaling
+phase-gate the project is designing under is named._
+
+Next: `project-management/workflows/01-feature/` — chart the first feature against both.
 
 ---
 

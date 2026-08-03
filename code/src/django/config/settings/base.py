@@ -103,8 +103,9 @@ SESSION_COOKIE_SAMESITE = "Lax"
 # SESSION_COOKIE_SECURE is intentionally absent — dev inherits Django's default of
 # False (correct for localhost over HTTP); staging and production each set it True.
 
-# Django's own admin never mounts at /admin/ — that prefix is reserved for the
-# project's admin surface. See code/docs/URL-STRATEGY.md.
+# Django's own admin never mounts at /admin/: that prefix is reserved for the project's
+# own admin surface, and a guessable path draws credential-stuffing traffic. Configurable
+# so a deployment can move it again without a code change.
 DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
 
 LANGUAGE_CODE = "en-gb"

@@ -147,8 +147,11 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 4. **Rich admin editing is server-rendered too.** Where an admin screen needs richer
    interaction than HTMX affords, reach for Alpine over a client framework; a new build
    step is an architectural decision, not a frontend one.
-5. **Document as you go.** Every view/template opens with a purpose comment; components
-   carry pronoun-free doc comments.
+5. **Document as you go — the _why_ only.** Every view/template and component opens with a
+   one-line, pronoun-free comment on why it exists; the markup states the what. No story
+   (`US###`), ticket, `code/docs/*` path, person, or date in a comment; no `TODO`/`FIXME`
+   (route to `DEFERRED.md`/`GAPS.md`). Standard:
+   `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4.
 6. **Verify before hand-off:**
    ```bash
    bash code/src/scripts/audits/css-tokens.sh

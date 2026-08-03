@@ -82,12 +82,12 @@ This snapshot is **regenerated if missing and reconciled on every `/scale-planni
 ADRs, app CONTEXT.md files) and patches drift before any new decision is grilled. Nothing here
 is authoritative over the code — the code is the source; these documents are its current,
 verified reading. Decisions (tier targets, headroom values) are settled through
-`grill-with-docs` and charted on the project's plans folder (`MAP-SCALE-PLANNING.md`).
+`grill-with-docs` and charted on `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`.
 
 ## Cross-references
 
 - `how-to/src/SERVER-ARCHITECTURE/` — the downstream server-facing spec (assigned compute + buffer)
-- the project's decision register — where the scaling and cache-posture decisions are recorded
+- `project-management/src/14-DECISIONS/` — where the scaling and cache-posture decisions are recorded
 - `code/docs/architecture/CORE-AND-SCALING.md` — the day-to-day scaling rules
 - `code/docs/PERFORMANCE.md` (+ `performance/API-AND-MONITORING.md`) — budgets and load-test triggers
 - `<%DEPLOY_REPO%>` (deploy repo) — the provisioning this snapshot's topology maps

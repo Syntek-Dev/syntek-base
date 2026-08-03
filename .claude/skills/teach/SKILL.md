@@ -80,10 +80,11 @@ learning/<topic>/
 - **Stories** — `project-management/workflows/02-story-creation/`; template
   `project-management/src/02-STORIES/US000-TEMPLATE.md`.
 - **Sprints & plans** — `project-management/workflows/03-sprint-planning/` and
-  `15-sprint-plans/`; plan template `the project's plans folderPLAN-US000-TEMPLATE.md`.
+  `15-sprint-plans/`; plan template
+  `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md`.
 - **ADRs** — the three-test gate and glossary discipline in
-  `.claude/skills/grill-with-docs/SKILL.md`; naming `ADR-###-NAME.md` under
-  the project's decision register (next free number is the project's decision register).
+  `.claude/skills/grill-with-docs/SKILL.md`; naming `ADR-###-<TITLE>.md` under
+  `project-management/src/14-DECISIONS/`, taking the next free number.
 - **Conventions** — `project-management/docs/{GIT-GUIDE,VERSIONING-GUIDE,PLANNING-GUIDE}.md`.
 
 **Stack / coding.** Learn by building small **runnable** throwaway examples under `LESSONS/`,
@@ -131,8 +132,8 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the domain-modelling reference.
 - `.claude/skills/stack-htmx-templates/SKILL.md` · `.claude/skills/stack-django/SKILL.md` — stack references for coding lessons.
 - `project-management/workflows/02-story-creation/` · `03-sprint-planning/` · `15-sprint-plans/` — house process procedures.
-- `project-management/src/02-STORIES/US000-TEMPLATE.md` · `the project's plans folderPLAN-US000-TEMPLATE.md` — throwaway-sample templates.
-- the project's decision register — ADR home (next free number the scale-planning contract).
+- `project-management/src/02-STORIES/US000-TEMPLATE.md` · `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — throwaway-sample templates.
+- `project-management/src/14-DECISIONS/` — ADR home; take the next free `ADR-###`.
 - `project-management/docs/GIT-GUIDE.md` · `VERSIONING-GUIDE.md` · `PLANNING-GUIDE.md` — process conventions.
 - `code/src/scripts/development/*.sh` · `code/src/scripts/tests/*.sh` — the task-runner scripts coding lessons mirror.
 - `.claude/plugins/*.py` — read-only project inspection for step 2's lookups.

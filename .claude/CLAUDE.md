@@ -46,6 +46,12 @@ A task enters through an **orchestrator agent**, which routes to the matching
 specialists load the **stack skills**. The governing `docs/` guide and the workflow
 `STEPS.md`/`CHECKLIST.md` carry routing frontmatter (§2.5) naming who does the work.
 
+**Two things precede all of it, once per project** (`how-to/workflows/01-first-time-setup/`
+Steps 7–8): the **project brief** in the root `CONTEXT.md` — what this builds, for whom,
+replacing what — and **`/scale-planning`**, which settles the size the system is designed for and
+therefore what it does _not_ need. Both are cheap before the first feature and expensive after
+the tenth. If the brief is still the raw generation-time answer, say so before planning anything.
+
 **PM planning runs a per-story loop, not a phase batch.** A human thinks each story through
 end-to-end so implementation is mechanical: one story runs `02`→`14` before the next starts;
 when the open sprint reaches `<%SPRINT_CAPACITY_SP%>` SP (grace `<%SPRINT_GRACE_SP%>`), `14`
@@ -287,6 +293,12 @@ only. Do not use it for memory, patterns, or observations — those go in `.clau
 - Sprint dependency (story X must ship before Y)
 - Infrastructure gap (environment setup required before a feature can run)
 - Planned feature deferred from the current story with a named future story as the target
+
+**Read as well as written.** `GAPS.md` and `DEFERRED.md` are the standing register of unfinished
+business, and `project-management/workflows/01-feature/` reads both before charting a feature —
+to **suggest** candidate features from what has accumulated, and to triage every open entry
+against the feature being charted (closes / blocks / unrelated). `01` **claims** an entry on the
+feature map; only `21-implementation-documentation` **closes** it, against shipped code.
 
 **Promotion cycle** — when an entry is resolved, mark it `✅ CLOSED <date>`. Promote permanent
 decisions to the appropriate doc, then remove the closed entry on the next tidy pass:
