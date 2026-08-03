@@ -17,7 +17,7 @@ job — you hand off green.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/02-tdd-cycle/` — the Red phase you produce
-- `project-management/workflows/10-qa-checks/` — the QA plan your tests must cover
+- `project-management/workflows/11-qa-checks/` — the QA plan your tests must cover
 - `code/workflows/05-mcp-server/` — when the story adds an MCP tool; its Red phase is an in-memory `Client` test
 
 ## Stack

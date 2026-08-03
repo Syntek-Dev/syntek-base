@@ -34,7 +34,7 @@ environments with different tooling at each tier.
 
 - Root cause identified and documented
 - A regression test added to prevent recurrence (see `code/workflows/10-debug/`)
-- If a staging/prod incident: a bug report filed in `project-management/src/19-BUGS/`
+- If a staging/prod incident: a bug report filed in `project-management/src/20-BUGS/`
 
 ## Cross-references
 
@@ -53,5 +53,5 @@ None — log-based debugging is observational; start with whichever signal is av
 - `code/workflows/10-debug/` — code-logic debugging workflow (complements this one)
 - `how-to/workflows/08-debugging/` — operational complement to this observability workflow
 - `code/src/logs/CONTEXT.md` — local log file location and access commands
-- `project-management/workflows/19-implementation-documentation/` — routes a defect finding to
-  `project-management/src/19-BUGS/`, which is what a staging/prod incident report here becomes
+- `project-management/workflows/21-implementation-documentation/` — routes a defect finding to
+  `project-management/src/20-BUGS/`, which is what a staging/prod incident report here becomes

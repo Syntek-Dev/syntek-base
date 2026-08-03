@@ -16,7 +16,7 @@ Use this workflow when adding any new capability to the website that requires bo
 
 ## Prerequisites
 
-- [ ] A user story exists in `project-management/src/01-STORIES/` covering this feature
+- [ ] A user story exists in `project-management/src/02-STORIES/` covering this feature
 - [ ] Branch created from `dev`: `us###/feature-name`
 - [ ] No blocking items in `/GAPS.md`
 - [ ] `.env.dev` is populated and containers are running
@@ -58,11 +58,11 @@ Use this workflow when adding any new capability to the website that requires bo
 - `code/docs/performance/DATABASE-PERFORMANCE.md` — N+1 prevention in new endpoints and services
 - `code/docs/cloudinary/CONTEXT.md` — if this feature involves media upload, delivery, or transformation; see the individual SDK docs and invoke the Cloudinary skills at the relevant step
 - `code/docs/architecture/CORE-AND-SCALING.md` — readiness invariants (statelessness, keyset, `tenant_id`, async-safe I/O) a new capability must not break; a new route/upload/SSE surface → flag `scale-planner` for the `how-to/src/SERVER-ARCHITECTURE/` edge requirement (soft, non-blocking — anti-forecast)
-- `project-management/workflows/19-implementation-documentation/` — **the next workflow after
+- `project-management/workflows/21-implementation-documentation/` — **the next workflow after
   this one.** It owns the implementation records, the findings record, the `CONTEXT.md`/`CLAUDE.md`
   closeout, and the code-review-graph refresh — all a hard gate before commit. Never duplicate
   its record formats here.
-- `project-management/workflows/20-pr-and-review/` — follows 19; raises and merges the PR, and
+- `project-management/workflows/22-pr-and-review/` — follows 19; raises and merges the PR, and
   only **verifies** the records 19 wrote
-- `project-management/workflows/18-frontend-code/` · `16-backend-code/` · `17-api-code/` — the
+- `project-management/workflows/20-frontend-code/` · `18-backend-code/` · `19-api-code/` — the
   PM-layer build phases that drive this workflow; a story reaches here through them, not directly

@@ -6,7 +6,7 @@ description: Mobile stack reference for <%PROJECT_NAME%> — Expo (Continuous Na
 Reference for the **mobile surface** of <%PROJECT_NAME%> — `code/src/mobile/`. The `mobile` agent
 loads this for stack idioms; `test-writer`, `qa-tester`, and `code-reviewer` cite it at the mobile
 boundary without owning React Native conventions themselves. Aligns with
-`project-management/workflows/18-frontend-code/` (its mobile-flagged steps) and
+`project-management/workflows/20-frontend-code/` (its mobile-flagged steps) and
 `code/src/mobile/CLAUDE.md`.
 
 **This skill is mobile-only.** A project generated without the mobile surface has neither this
@@ -165,6 +165,6 @@ the run, so the 90% entry is added with the first auth screen, not before.
 
 ## Governing procedures (route here — do not restate at length)
 
-- `project-management/workflows/18-frontend-code/` — the build phase; its mobile-flagged steps
+- `project-management/workflows/20-frontend-code/` — the build phase; its mobile-flagged steps
 - `code/workflows/01-new-feature/` · `02-tdd-cycle/` — the feature and TDD procedures
 - `code/src/mobile/CLAUDE.md` — the operating rules for the tree itself

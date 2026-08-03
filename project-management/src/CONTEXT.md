@@ -3,10 +3,10 @@
 **Last Updated**: <%DATE%> · **Language**: British English (en_GB)
 
 Source artefacts for project management, planning, and compliance — a base-repo
-scaffold. The numbered folders run in **three tiers**: _specify_ (01–12), _decide &
-plan_ (13–15), then _implement & record_ (16–20). `00-ASSETS` is pre-workflow reference.
+scaffold. The numbered folders run in **three tiers**: _specify_ (02–13), _decide &
+plan_ (14–16), then _implement & record_ (17–21). `00-ASSETS` is pre-workflow reference.
 Each design/compliance folder (08–15) carries per-story `PLANNING/` + `IMPLEMENTATION/`
-templates, mirroring the 08-GDPR pattern.
+templates, mirroring the 09-GDPR pattern.
 
 **The stack these artefacts specify.** Every template here is written against one
 server-rendered stack: **Django** (+ **Gunicorn**/**Uvicorn**) · **Django Ninja** for the
@@ -25,13 +25,13 @@ surface. Interaction tiers and the page-vs-API split: `code/docs/RENDERING.md` �
 
 | Tier                   | Folders | What happens                                                                                                                                                      |
 | ---------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Specify**            | 01–12   | Write the story, organise sprints, and produce every design & compliance spec — DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
-| **Decide & plan**      | 13–15   | Make the architectural decisions (ADRs), then plan each sprint, then plan each story — all **before any code**                                                    |
-| **Implement & record** | 16–20   | After code ships: record tests, reviews, findings, bugs, and refactoring, **per story**                                                                           |
+| **Specify**            | 02–13   | Write the story, organise sprints, and produce every design & compliance spec — DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
+| **Decide & plan**      | 14–16   | Make the architectural decisions (ADRs), then plan each sprint, then plan each story — all **before any code**                                                    |
+| **Implement & record** | 17–21   | After code ships: record tests, reviews, findings, bugs, and refactoring, **per story**                                                                           |
 
-The **story plan (15) is the master reference the developer codes from** — it points
-back up to its sprint plan (14), the decisions (13), and every 01–12 spec. Sprint plans
-(14) feed the story plans; the sprint plan sets the goal, story set, and sequence.
+The **story plan (16) is the master reference the developer codes from** — it points
+back up to its sprint plan (15), the decisions (14), and every 02–13 spec. Sprint plans
+(15) feed the story plans; the sprint plan sets the goal, story set, and sequence.
 
 ---
 
@@ -41,32 +41,36 @@ back up to its sprint plan (14), the decisions (13), and every 01–12 spec. Spr
 project-management/src/
 ├── 00-ASSETS/          ← logos, brand assets, export scripts (pre-workflow reference)
 │
-│   ── Specify (01–12) ──
-├── 01-STORIES/         ← US###.md (+ US000-TEMPLATE.md)
-├── 02-SPRINTS/         ← SPRINT-##.md — backlog → sprint organisation (high-level)
-├── 03-DATABASE/        ← SCHEMA-*.md, ERD-*.md, migration notes
-├── 04-USER-FLOW/       ← USER-FLOW-TEMPLATE.md + DIAGRAMS/
-├── 05-BRAND-GUIDE/     ← guide-build/ (Python → LaTeX → PDF brand guide)
-├── 06-COMPONENTS/      ← component-build/ (Python → LaTeX → PDF component sheet)
-├── 07-WIREFRAMES/      ← SCREENS/ (WF-###-*.html) + SHARED/wireframe.css
-├── 08-GDPR/            ← 6 register skeletons + PLANNING/ + IMPLEMENTATION/ (per story)
-├── 09-SECURITY/        ← THREAT-MODEL/ ASSESSMENTS/ AUDITS/ VULNERABILITIES/
+│   ── Discover (01) ──
+├── 01-FEATURE/         ← MAP-<FEATURE>.md — wayfinder decision maps
+│
+│   ── Specify (02–13) ──
+├── 02-STORIES/         ← US###.md (+ US000-TEMPLATE.md)
+├── 03-SPRINTS/         ← SPRINT-##.md — backlog → sprint organisation (high-level)
+│   (03–07 are three-stage: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/)
+├── 04-DATABASE/        ← 3 stages + ERD-DIAGRAMS/ (cumulative)
+├── 05-USER-FLOW/       ← 3 stages + DIAGRAMS/ (cumulative)
+├── 06-BRAND-GUIDE/     ← 3 stages + guide-build/ (Python → LaTeX → PDF, cumulative)
+├── 07-COMPONENTS/      ← 3 stages + component-build/ (Python → LaTeX → PDF, cumulative)
+├── 08-WIREFRAMES/      ← 3 stages + SHARED/wireframe.css (cumulative)
+├── 09-GDPR/            ← 6 register skeletons + PLANNING/ + IMPLEMENTATION/ (per story)
+├── 10-SECURITY/        ← THREAT-MODEL/ ASSESSMENTS/ AUDITS/ VULNERABILITIES/
 │                          (each PLANNING/ + IMPLEMENTATION/, per story)
-├── 10-QA/              ← PLANNING/ + IMPLEMENTATION/ (per story)
-├── 11-SEO/             ← PLANNING/ + IMPLEMENTATION/ (per story)
-├── 12-API-DESIGN/      ← PLANNING/ + IMPLEMENTATION/ (per story)
+├── 11-QA/              ← PLANNING/ + IMPLEMENTATION/ (per story)
+├── 12-SEO/             ← PLANNING/ + IMPLEMENTATION/ (per story)
+├── 13-API-DESIGN/      ← PLANNING/ + IMPLEMENTATION/ (per story)
 │
-│   ── Decide & plan (13–15) ──
-├── 13-DECISIONS/       ← ADR-###-<TITLE>.md (architectural decision records)
-├── 14-SPRINT-PLANS/    ← detailed sprint execution plans
-├── 15-STORY-PLANS/     ← per-story implementation plan (the code master reference)
+│   ── Decide & plan (14–16) ──
+├── 14-DECISIONS/       ← ADR-###-<TITLE>.md (architectural decision records)
+├── 15-SPRINT-PLANS/    ← detailed sprint execution plans
+├── 16-STORY-PLANS/     ← per-story implementation plan (the code master reference)
 │
-│   ── Implement & record (16–20) ──
-├── 16-TESTS/           ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
-├── 17-REVIEWS/         ← REVIEW-US###-<DESCRIPTOR>.md
-├── 18-FINDINGS/        ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-├── 19-BUGS/            ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-└── 20-REFACTORING/     ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ── Implement & record (17–21) ──
+├── 17-TESTS/           ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+├── 18-REVIEWS/         ← REVIEW-US###-<DESCRIPTOR>.md
+├── 19-FINDINGS/        ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+├── 20-BUGS/            ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+└── 21-REFACTORING/     ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
 ```
 
 Every folder carries a `CONTEXT.md` + `CLAUDE.md`; the 08–15 folders scaffold their
@@ -76,42 +80,64 @@ Every folder carries a `CONTEXT.md` + `CLAUDE.md`; the 08–15 folders scaffold 
 
 ## Naming Conventions
 
-| Pattern                                             | Directory                                                                                            |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `US###.md`                                          | `01-STORIES/`                                                                                        |
-| `SPRINT-##.md`                                      | `02-SPRINTS/`                                                                                        |
-| `USER-FLOW-<AREA>.md`                               | `04-USER-FLOW/`                                                                                      |
-| `WF-###-<Screen-Name>.html`                         | `07-WIREFRAMES/SCREENS/`                                                                             |
-| `GDPR-PLAN-US###-*.md` · `GDPR-IMPL-US###-*.md`     | `08-GDPR/PLANNING` · `/IMPLEMENTATION`                                                               |
-| `<TYPE>-PLAN-US###-*.md` · `<TYPE>-IMPL-US###-*.md` | `09-SECURITY/<CATEGORY>/PLANNING` · `/IMPLEMENTATION` (TYPE ∈ THREAT-MODEL, ASSESSMENT, AUDIT, VULN) |
-| `QA-PLAN-US###-*.md` · `QA-IMPL-US###-*.md`         | `10-QA/PLANNING` · `/IMPLEMENTATION`                                                                 |
-| `SEO-PLAN-US###-*.md` · `SEO-IMPL-US###-*.md`       | `11-SEO/PLANNING` · `/IMPLEMENTATION`                                                                |
-| `API-PLAN-US###-*.md` · `API-IMPL-US###-*.md`       | `12-API-DESIGN/PLANNING` · `/IMPLEMENTATION`                                                         |
-| `ADR-###-<TITLE>.md`                                | `13-DECISIONS/`                                                                                      |
-| `##-SPRINT-PLAN-##.md`                              | `14-SPRINT-PLANS/`                                                                                   |
-| `STORY-PLAN-US###-<DESCRIPTOR>.md`                  | `15-STORY-PLANS/`                                                                                    |
-| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`  | `16-TESTS/`                                                                                          |
-| `REVIEW-US###-<DESCRIPTOR>.md`                      | `17-REVIEWS/`                                                                                        |
-| `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`          | `18-FINDINGS/`                                                                                       |
-| `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`              | `19-BUGS/`                                                                                           |
-| `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`      | `20-REFACTORING/`                                                                                    |
+| Pattern                                                                 | Directory                                                                                            |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `US###.md`                                                              | `02-STORIES/`                                                                                        |
+| `SPRINT-##.md`                                                          | `03-SPRINTS/`                                                                                        |
+| `<TYPE>-IDEA-US###-*` · `<TYPE>-CONSOLIDATED-*` · `<TYPE>-IMPL-US###-*` | `04-DATABASE/` … `08-WIREFRAMES/` (TYPE ∈ DB, USER-FLOW, BRAND, COMP, WF)                            |
+| `WF-###-<Screen-Name>.html`                                             | `08-WIREFRAMES/CONSOLIDATED-IDEAS/`                                                                  |
+| `GDPR-PLAN-US###-*.md` · `GDPR-IMPL-US###-*.md`                         | `09-GDPR/PLANNING` · `/IMPLEMENTATION`                                                               |
+| `<TYPE>-PLAN-US###-*.md` · `<TYPE>-IMPL-US###-*.md`                     | `10-SECURITY/<CATEGORY>/PLANNING` · `/IMPLEMENTATION` (TYPE ∈ THREAT-MODEL, ASSESSMENT, AUDIT, VULN) |
+| `QA-PLAN-US###-*.md` · `QA-IMPL-US###-*.md`                             | `11-QA/PLANNING` · `/IMPLEMENTATION`                                                                 |
+| `SEO-PLAN-US###-*.md` · `SEO-IMPL-US###-*.md`                           | `12-SEO/PLANNING` · `/IMPLEMENTATION`                                                                |
+| `API-PLAN-US###-*.md` · `API-IMPL-US###-*.md`                           | `13-API-DESIGN/PLANNING` · `/IMPLEMENTATION`                                                         |
+| `ADR-###-<TITLE>.md`                                                    | `14-DECISIONS/`                                                                                      |
+| `##-SPRINT-PLAN-##.md`                                                  | `15-SPRINT-PLANS/`                                                                                   |
+| `STORY-PLAN-US###-<DESCRIPTOR>.md`                                      | `16-STORY-PLANS/`                                                                                    |
+| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `17-TESTS/`                                                                                          |
+| `REVIEW-US###-<DESCRIPTOR>.md`                                          | `18-REVIEWS/`                                                                                        |
+| `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                              | `19-FINDINGS/`                                                                                       |
+| `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                  | `20-BUGS/`                                                                                           |
+| `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                          | `21-REFACTORING/`                                                                                    |
 
 Descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY; story numbers zero-padded (`US043`).
 
 ---
 
-## PLANNING / IMPLEMENTATION Pattern
+## The two sub-folder patterns
 
-Folders 08–15 tie their artefacts to a **user story at both ends**:
+Design and compliance folders both tie artefacts to a user story — but the design folders carry
+an extra stage, because design fragments across stories in a way compliance does not.
+
+### Three-stage — `04-DATABASE` … `08-WIREFRAMES`
+
+Stories are planned **one at a time** (`workflows/CONTEXT.md` → _The planning cadence_), so each
+story designs the schema, flows, tokens, components, and screens it needs in isolation. That
+drifts by construction. `17-consolidate-design-work` reconciles it once every story is planned.
+
+| Sub-folder            | When           | Holds                                            |
+| --------------------- | -------------- | ------------------------------------------------ |
+| `USER-STORY-IDEAS/`   | workflow 04–08 | the per-story design — **frozen** once `17` runs |
+| `CONSOLIDATED-IDEAS/` | workflow 17    | the unified design; **this is what gets built**  |
+| `IMPLEMENTATION/`     | workflow 21    | the per-story record of what actually shipped    |
+
+Each also keeps one **cumulative** asset outside the stages — `ERD-DIAGRAMS/`, `DIAGRAMS/`,
+`guide-build/`, `component-build/`, `SHARED/wireframe.css`. The brand and component PDFs are
+regenerated once, at consolidation.
+
+### Two-stage — `09-GDPR` … `13-API-DESIGN`
 
 | Sub-folder        | When to write                         | Holds                                                      |
 | ----------------- | ------------------------------------- | ---------------------------------------------------------- |
 | `PLANNING/`       | Pre-implementation, before code       | the per-story plan/design/spec                             |
 | `IMPLEMENTATION/` | Post-implementation, during PR review | the per-story verification, closing the plan with evidence |
 
-Applies to `08-GDPR/`, `09-SECURITY/` (each of its four categories), `10-QA/`, `11-SEO/`,
-and `12-API-DESIGN/`. There is no cross-cutting by-scope report folder — the per-story
-plans serve that role.
+Applies to `09-GDPR/`, `10-SECURITY/` (each of its four categories), `11-QA/`, `12-SEO/`,
+and `13-API-DESIGN/`. These need no consolidation stage: a GDPR lawful basis or an API contract
+is genuinely per story and does not fragment a shared system.
+
+There is no cross-cutting by-scope report folder in either pattern — the per-story artefacts
+serve that role.
 
 ---
 

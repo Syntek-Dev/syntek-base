@@ -42,7 +42,7 @@ Three checks, in order, before touching a manifest:
    advisory surface. A dozen lines of your own code often beats a package that brings forty.
 
 For anything load-bearing, record the decision as an ADR
-(`project-management/workflows/13-decisions/`).
+(`project-management/workflows/14-decisions/`).
 
 ---
 

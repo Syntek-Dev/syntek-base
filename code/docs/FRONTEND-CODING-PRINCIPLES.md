@@ -73,8 +73,8 @@ Place every interaction by class (full doctrine: [RENDERING.md](RENDERING.md)):
 ## Ground in the Live Code
 
 The **live codebase is the source of truth for how things are built** — the shipped components,
-CSS, tokens, and page structure. Planning artefacts (wireframes in `07-WIREFRAMES`, component
-designs in `06-COMPONENTS`) capture _intent_, but a project's code **drifts from its planning once
+CSS, tokens, and page structure. Planning artefacts (wireframes in `08-WIREFRAMES`, component
+designs in `07-COMPONENTS`) capture _intent_, but a project's code **drifts from its planning once
 written**. Implement from the code that exists, not from the plan in the abstract:
 
 - **Read the shipped code first.** Reuse and extend the real components, tokens, and conventions

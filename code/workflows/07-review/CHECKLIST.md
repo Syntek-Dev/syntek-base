@@ -48,5 +48,5 @@ model: opus
 ## Definition of Done
 
 - [ ] All review findings resolved or explicitly accepted with rationale
-- [ ] Review notes saved to `project-management/src/17-REVIEWS/` if significant findings were made
+- [ ] Review notes saved to `project-management/src/18-REVIEWS/` if significant findings were made
 - [ ] Committed and pushed

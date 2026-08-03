@@ -106,7 +106,7 @@ PM workflow, which PM phase enters it, and who owns each fact — is in
 Two rules follow from it:
 
 - **A code workflow is never entered directly from a PM design gate.** A story reaches here only
-  through the PM build phases (`16-backend-code`, `17-api-code`, `18-frontend-code`), which are
+  through the PM build phases (`18-backend-code`, `19-api-code`, `20-frontend-code`), which are
   themselves gated on PM `01`–`15` being complete.
-- **Records, findings, docs, and the graph refresh belong to PM `19-implementation-documentation`.**
+- **Records, findings, docs, and the graph refresh belong to PM `21-implementation-documentation`.**
   Code workflows hand off to it; they never restate its formats or destinations.

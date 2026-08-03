@@ -163,7 +163,7 @@ the crate, so changing the allow-list is an ADR, never a config tweak.
 
 - `code/workflows/12-rust-extension/` — the procedure for this surface
 - `code/workflows/02-tdd-cycle/` · `08-security-hardening/` — both suites, then the audit
-- `project-management/workflows/16-backend-code/` — the build phase this is entered from
+- `project-management/workflows/18-backend-code/` — the build phase this is entered from
 - `how-to/workflows/07-dependency-updates/` — the cadence a crate or toolchain bump follows
 
 ## Cross-references

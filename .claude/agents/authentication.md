@@ -44,7 +44,7 @@ facts with `.claude/plugins/project-tool.py`.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/09-security-checks/` — design-stage threat model for the auth surface
+- `project-management/workflows/10-security-checks/` — design-stage threat model for the auth surface
 - `code/workflows/08-security-hardening/` — hardening the built auth surface
 - `code/workflows/04-api-design/` — auth endpoints and Schema models
 - `code/workflows/02-tdd-cycle/` — auth code carries the 90% coverage floor

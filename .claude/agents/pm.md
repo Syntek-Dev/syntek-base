@@ -28,7 +28,7 @@ Read before acting:
 
 - `project-management/CONTEXT.md` — PM layer overview, story/sprint state
 - `project-management/docs/GIT-GUIDE.md` — branch/commit/PR conventions (ticket IDs)
-- `project-management/docs/SPRINT-PLANNING-GUIDE.md` — sprint/cycle semantics to map
+- `project-management/docs/PLANNING-GUIDE.md` — sprint/cycle semantics to map
 - `.claude/plugins/CONTEXT.md` — plugin tool catalogue
 - `.claude/skills/grill-with-docs/SKILL.md` — open integration design with a grilling interview
 
@@ -39,8 +39,8 @@ stack detail: `stack-django` (backend), `stack-htmx-templates` (frontend).
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/01-story-creation/` — the story artefacts synced to the PM tool
-- `project-management/workflows/02-sprint-planning/` — the sprint records synced to the PM tool
+- `project-management/workflows/02-story-creation/` — the story artefacts synced to the PM tool
+- `project-management/workflows/03-sprint-planning/` — the sprint records synced to the PM tool
 
 ## Non-Negotiables
 

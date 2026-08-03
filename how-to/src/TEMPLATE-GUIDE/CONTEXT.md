@@ -29,14 +29,15 @@ how-to/src/TEMPLATE-GUIDE/
 │   ── Living with it ──
 ├── 07-REPO-TOUR.md          ← the three layers and how to navigate them
 ├── 08-CLAUDE-CODE.md        ← agents, skills, hooks, MCP servers, settings
-├── 09-FIRST-STORY.md        ← a feature from user story to merged PR
-├── 10-CUSTOMISING.md        ← what is yours to change, what is load-bearing
-├── 11-EXTENDING.md          ← add an agent, skill, workflow, guide or Django app
+├── 09-PROJECT-MANAGEMENT.md ← how to use project-management/src/ — tiers, patterns, which folder when
+├── 10-FIRST-FEATURE.md      ← one feature end to end: chart → specify → build → ship
+├── 11-CUSTOMISING.md        ← what is yours to change, what is load-bearing
+├── 12-EXTENDING.md          ← add an agent, skill, workflow, guide or Django app
 │
 │   ── Beyond the laptop ──
-├── 12-DEPLOYMENT.md         ← the path to a server and the NixOS deploy repo
-├── 13-UPDATING.md           ← copier update, conflicts, and re-sync policy
-├── 14-TROUBLESHOOTING.md    ← what breaks, and what to do about it
+├── 13-DEPLOYMENT.md         ← the path to a server and the NixOS deploy repo
+├── 14-UPDATING.md           ← copier update, conflicts, and re-sync policy
+├── 15-TROUBLESHOOTING.md    ← what breaks, and what to do about it
 │
 │   ── Maintaining the template itself ──
 └── TEMPLATE-GAPS.md         ← syntek-base's OWN open items (the root GAPS.md ships, so it stays empty)
@@ -47,7 +48,7 @@ someone **using** the template, while it is a working register for someone **mai
 
 ## Reading order
 
-Nobody should read all fourteen. Pick the entry point that matches where you are:
+Nobody should read all fifteen. Pick the entry point that matches where you are:
 
 | You are…                                     | Read                                       |
 | -------------------------------------------- | ------------------------------------------ |
@@ -55,11 +56,12 @@ Nobody should read all fourteen. Pick the entry point that matches where you are
 | Ready to generate your first project         | `03-PREREQUISITES.md` → `04-QUICKSTART.md` |
 | Sitting at the prompt, unsure what to answer | `05-ANSWERS.md`                            |
 | Staring at a generated project, lost         | `07-REPO-TOUR.md` → `08-CLAUDE-CODE.md`    |
-| About to build the first feature             | `09-FIRST-STORY.md`                        |
-| Wanting to change what the template gave you | `10-CUSTOMISING.md` → `11-EXTENDING.md`    |
-| Taking it to a server                        | `12-DEPLOYMENT.md`                         |
-| Months in, wanting upstream fixes            | `13-UPDATING.md`                           |
-| Stuck                                        | `14-TROUBLESHOOTING.md`                    |
+| Facing 22 numbered PM folders                | `09-PROJECT-MANAGEMENT.md`                 |
+| About to build the first feature             | `10-FIRST-FEATURE.md`                      |
+| Wanting to change what the template gave you | `11-CUSTOMISING.md` → `12-EXTENDING.md`    |
+| Taking it to a server                        | `13-DEPLOYMENT.md`                         |
+| Months in, wanting upstream fixes            | `14-UPDATING.md`                           |
+| Stuck                                        | `15-TROUBLESHOOTING.md`                    |
 
 ## Related reference
 

@@ -7,18 +7,18 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-The PM reference guides — Git, versioning, SEO, GDPR, security, QA, sprint-planning
+The PM reference guides — Git, versioning, SEO, GDPR, security, QA, planning
 and responsive-design standards that the numbered `workflows/` cite when producing
 artefacts under `src/`.
 
 ## How to work here
 
 - **Routing:** these are _reference_ guides, not artefacts. Read the relevant guide
-  before its workflow — `SECURITY-GUIDE.md` before `workflows/09-security-checks`,
-  `QA-GUIDE.md` before `workflows/10-qa-checks`, `SPRINT-PLANNING-GUIDE.md` before
-  `workflows/14-sprint-plans`. Substantive guide edits use the matching internal
+  before its workflow — `SECURITY-GUIDE.md` before `workflows/10-security-checks`,
+  `QA-GUIDE.md` before `workflows/11-qa-checks`, `PLANNING-GUIDE.md` (and its
+  `planning/` sub-documents) before any planning workflow. Substantive guide edits use the matching internal
   agent (`security`, `qa-tester`, `seo`, `gdpr`, `git`, `version`).
-- **Model:** Fable to rewrite a planning/spec guide (GDPR, security, QA, sprint-planning,
+- **Model:** Fable to rewrite a planning/spec guide (GDPR, security, QA, planning,
   responsive-design); Opus for the process guides (git, versioning, SEO); Opus for
   mechanical touches — version-header bumps, a redirect stub, a doc-index lookup.
 - **Concrete steps:** edit the guide → keep it under the 300-code-line instructional

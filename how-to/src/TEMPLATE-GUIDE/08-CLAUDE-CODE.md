@@ -232,5 +232,5 @@ or skill directory removes it. If grilling is not for you, the rule lives in `.c
 
 ## Next
 
-- Add your own agent, skill or workflow → `11-EXTENDING.md`
-- Put it to work → `09-FIRST-STORY.md`
+- Add your own agent, skill or workflow → `12-EXTENDING.md`
+- Put it to work → `10-FIRST-FEATURE.md`

@@ -28,7 +28,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ## Prerequisites
 
-- [ ] `project-management/src/08-GDPR/DATA-INVENTORY.md` exists and is up to date
+- [ ] `project-management/src/09-GDPR/DATA-INVENTORY.md` exists and is up to date
 - [ ] PM-layer GDPR compliance review is complete
 
 ---
@@ -39,7 +39,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 > **Model:** opus · **MCP:** none
 
-Read `project-management/src/08-GDPR/DATA-INVENTORY.md` and confirm which fields in
+Read `project-management/src/09-GDPR/DATA-INVENTORY.md` and confirm which fields in
 the current feature are classified as personal data. Cross-reference
 `code/docs/encryption/FIELD-ENCRYPTION.md` for the encryption strategy.
 

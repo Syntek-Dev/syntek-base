@@ -107,6 +107,23 @@ content) keeps its default, and the doc rows that mention it can be deleted afte
 `apps.marketing`, `apps.seo`, and `apps.design_tokens` are **house constants**, not tokens — they
 are the same in every project and stay literal.
 
+### Planning cadence
+
+The story-point ceiling that drives the planning loop. Stories are planned one at a time through
+workflows `01`–`13`; when the open sprint's accepted points reach `<%SPRINT_CAPACITY_SP%>`,
+workflows `14` and `15` run for that sprint before the next story is planned. The grace value is
+a hard ceiling for the case where the next story would otherwise split badly — not a routine
+target. Full rules: `project-management/docs/PLANNING-GUIDE.md`.
+
+| Token                    | Meaning                                                  | Example value | Format           |
+| ------------------------ | -------------------------------------------------------- | ------------- | ---------------- |
+| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `14`+`15` pass | `11`          | `int`            |
+| `<%SPRINT_GRACE_SP%>`    | Hard ceiling a sprint may stretch to                     | `13`          | `int` > capacity |
+
+Both default to the house values (11 / 13). Tune them to your team's **measured** velocity after
+two sprints rather than guessing up front — the cadence works at any ceiling, and a number that
+does not match reality makes every sprint either starve or overrun.
+
 ### Mobile frontend (optional)
 
 The opt-in React Native + TypeScript app at `code/src/mobile/`. `<%INCLUDE_MOBILE%>` gates the

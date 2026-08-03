@@ -57,7 +57,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/workflows/06-quality-gates/` — the length, Markdown and format gates a guide must pass
 - `how-to/workflows/01-first-time-setup/` · `03-daily-development/` · `08-debugging/` — the procedures you most often document against
 - `code/workflows/07-review/` — when a guide also states code-level standards
-- `project-management/workflows/19-implementation-documentation/` — owns implementation records; a guide is not one
+- `project-management/workflows/21-implementation-documentation/` — owns implementation records; a guide is not one
 
 ## Before you write
 

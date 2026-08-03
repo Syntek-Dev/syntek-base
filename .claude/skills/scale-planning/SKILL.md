@@ -156,7 +156,7 @@ lockstep (`code/docs/CODE-REVIEW-GRAPH.md`).
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/13-decisions/` — where a hard-to-reverse sizing choice is recorded
+- `project-management/workflows/14-decisions/` — where a hard-to-reverse sizing choice is recorded
 
 ## Cross-references
 

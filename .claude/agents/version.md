@@ -47,7 +47,7 @@ python3 .claude/plugins/project-tool.py info
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/21-release/` — the release procedure that bumps the version
+- `project-management/workflows/23-release/` — the release procedure that bumps the version
 
 ## Two-tier versioning (summary — guide is canonical)
 

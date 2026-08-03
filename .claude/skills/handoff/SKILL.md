@@ -109,7 +109,7 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `.claude/skills/CONTEXT.md` — the skills table the suggested skills are drawn from.
 - `.claude/plugins/` · `code/docs/CODE-REVIEW-GRAPH.md` — read-only lookup for session facts before Grep/Glob.
 - `.claude/MEMORY.md` · `GAPS.md` · `DEFERRED.md` — the homes for durable knowledge kept out of the handoff.
-- `project-management/src/15-STORY-PLANS/` · the project's decision register
-  (`ADR-###`) · `project-management/src/01-STORIES/US###.md` — artefacts referenced by path.
+- `project-management/src/16-STORY-PLANS/` · the project's decision register
+  (`ADR-###`) · `project-management/src/02-STORIES/US###.md` — artefacts referenced by path.
 - `handoffs/` — the committed, synced home for handoff documents (`HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md`).
 - `how-to/docs/GIT-WORKTREES.md` · `.claude/worktrees/` — worktree context a handoff often spans.

@@ -37,8 +37,8 @@ plans that gate a feature into code, and the post-implementation records, plus t
 ## Guardrails
 
 - **Workflow gates bite here:** a feature is not codeable until the specify → decide →
-  plan tiers (`src/01–15`) are complete; a PR is not mergeable until
-  `workflows/20-pr-and-review/` is signed off; a release follows `workflows/21-release/`.
+  plan tiers (`src/02–16`) are complete; a PR is not mergeable until
+  `workflows/22-pr-and-review/` is signed off; a release follows `workflows/23-release/`.
 - **This layer is documentation, not code** — no source, secrets, or `.env` content
   ever lands in `src/`. GDPR, security, and IDOR obligations are _specified_ here and
   _enforced_ in `code/`; keep them consistent with `code/docs/SECURITY.md`.

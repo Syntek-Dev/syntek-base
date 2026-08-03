@@ -25,7 +25,7 @@ debugging (`how-to/workflows/08-debugging/`) and log-based debugging (workflow `
   the minimal fix → run the suite via `code/src/scripts/tests/*.sh` → complete
   `CHECKLIST.md`.
 - **Definition of done:** regression test now green, no unrelated code touched,
-  behaviour corrected, bug artefact updated under `project-management/src/19-BUGS/`.
+  behaviour corrected, bug artefact updated under `project-management/src/20-BUGS/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
@@ -40,5 +40,5 @@ debugging (`how-to/workflows/08-debugging/`) and log-based debugging (workflow `
 
 - **Hand-written:** these workflow files; the fix and its regression test land beside
   the code under `code/src/`.
-- Bug reports `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` under `project-management/src/19-BUGS/`;
+- Bug reports `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` under `project-management/src/20-BUGS/`;
   workflow files `SCREAMING-SNAKE-CASE.md`.

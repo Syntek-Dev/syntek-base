@@ -40,13 +40,13 @@ Read before writing any screen or component:
 
 - `code/src/mobile/CONTEXT.md` → `CLAUDE.md` — the tree, scripts, versioning, guardrails
 - `code/src/scripts/mobile/CONTEXT.md` — why these scripts run on the host, and Metro's port
-- `project-management/workflows/18-frontend-code/CONTEXT.md` → `STEPS.md` — the governing
+- `project-management/workflows/20-frontend-code/CONTEXT.md` → `STEPS.md` — the governing
   procedure; follow its **mobile-flagged** steps, not the Django-templated ones
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract (read every time)
 - `code/docs/accessibility/MOBILE.md` — the React Native techniques that satisfy WCAG 2.2 AA
-- `project-management/src/07-WIREFRAMES/` — mobile screens are wireframed at phone viewport in
+- `project-management/src/08-WIREFRAMES/` — mobile screens are wireframed at phone viewport in
   the same `SCREENS/` folder; build them, don't reinvent
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — the voice for any user-facing copy
+- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the voice for any user-facing copy
 - `.claude/skills/stack-react-native/SKILL.md` — stack idioms (defer detail here, don't restate)
 - `.claude/skills/grill-with-docs/SKILL.md` — open UI design with a grilling interview
 
@@ -57,8 +57,8 @@ For a specific link, check `code/REFERENCES.md`. For impact analysis before edit
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/18-frontend-code/` — the build phase (its mobile-flagged steps)
-- `project-management/workflows/07-wireframes/` — the screen designs consumed here
+- `project-management/workflows/20-frontend-code/` — the build phase (its mobile-flagged steps)
+- `project-management/workflows/08-wireframes/` — the screen designs consumed here
 - `code/workflows/01-new-feature/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — screen and component tests
 - `how-to/workflows/03-daily-development/` — starting a session; Metro is the one host process

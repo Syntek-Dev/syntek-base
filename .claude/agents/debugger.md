@@ -133,13 +133,13 @@ Report to the orchestrator:
 
 ### Documentation
 
-Bug report written at: project-management/src/19-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md
+Bug report written at: project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md
 ```
 
 ## Bug Report Artefact
 
 For any non-trivial fix, write the report to
-`project-management/src/19-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md` (filename per the project naming
+`project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md` (filename per the project naming
 convention — SCREAMING-KEBAB descriptor, DD-MM-YYYY). Cover: overview (severity, branch, dates),
 symptoms and repro steps, root cause analysis (the most important section — _why_ it occurred),
 the recommended fix and why it works, files implicated, prevention (practice, review, test, or a

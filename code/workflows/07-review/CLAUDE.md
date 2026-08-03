@@ -9,7 +9,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The code-quality review procedure applied before raising a PR — security, patterns,
 coverage, and coding principles on the _content_ of the change, distinct from the PR
-merge process in `project-management/workflows/20-pr-and-review/`.
+merge process in `project-management/workflows/22-pr-and-review/`.
 
 ## How to work here
 

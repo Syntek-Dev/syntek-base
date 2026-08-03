@@ -40,7 +40,7 @@ checks (no IDOR), error shapes, and idempotency. Record hard-to-reverse calls as
 the project's decision register.
 
 Then document the intended Schema models and endpoints before writing any code.
-Save the design to `project-management/src/12-API-DESIGN/PLANNING/`.
+Save the design to `project-management/src/13-API-DESIGN/PLANNING/`.
 
 ### Step 2 — Implement Schema Models
 

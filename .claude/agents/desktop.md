@@ -50,8 +50,8 @@ Read before writing any window or component:
 - `code/src/rust/CONTEXT.md` → `CLAUDE.md` — the workspace this crate belongs to
 - `code/src/scripts/desktop/CONTEXT.md` — why these run on the host, and the attribution gate
 - `code/workflows/13-desktop-app/CONTEXT.md` → `STEPS.md` — the governing procedure
-- `project-management/src/07-WIREFRAMES/` — build the designed screens, don't reinvent them
-- `project-management/src/05-BRAND-GUIDE/BRAND-VOICE.md` — the voice for user-facing copy
+- `project-management/src/08-WIREFRAMES/` — build the designed screens, don't reinvent them
+- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the voice for user-facing copy
 - `.claude/skills/stack-slint/SKILL.md` — stack idioms (defer detail here, don't restate)
 - `.claude/skills/grill-with-docs/SKILL.md` — open UI design with a grilling interview
 
@@ -65,9 +65,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/workflows/13-desktop-app/` — the procedure for this surface
 - `code/workflows/12-rust-extension/` — when the window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
-- `project-management/workflows/18-frontend-code/` — **this surface is entered from there**
-- `project-management/workflows/07-wireframes/` — the screen designs consumed here
-- `project-management/workflows/19-implementation-documentation/` — owns the record and the graph
+- `project-management/workflows/20-frontend-code/` — **this surface is entered from there**
+- `project-management/workflows/08-wireframes/` — the screen designs consumed here
+- `project-management/workflows/21-implementation-documentation/` — owns the record and the graph
 - `how-to/workflows/07-dependency-updates/` — the cadence a Slint bump follows
 
 ## Non-Negotiables

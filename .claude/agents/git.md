@@ -22,9 +22,9 @@ yourself — you route those to the correct sibling (see Handoffs).
 
 - `project-management/docs/GIT-GUIDE.md` — **authoritative** branch naming, commit format, PR process
 - `project-management/docs/VERSIONING-GUIDE.md` — single-track semver rules and changelog format
-- `project-management/workflows/20-pr-and-review/CONTEXT.md` — PR-and-review procedure
-- `project-management/workflows/21-release/CONTEXT.md` — release procedure
-- `project-management/workflows/19-implementation-documentation/` — must be complete before you raise the PR; docs and graph refresh are a hard gate on the commit
+- `project-management/workflows/22-pr-and-review/CONTEXT.md` — PR-and-review procedure
+- `project-management/workflows/23-release/CONTEXT.md` — release procedure
+- `project-management/workflows/21-implementation-documentation/` — must be complete before you raise the PR; docs and graph refresh are a hard gate on the commit
 - `how-to/workflows/02-worktree-setup/` — creating and starting a parallel-story worktree
 - `code/workflows/07-review/` — the content review that precedes the PR
 - `.claude/hooks/pre-pr-check.sh` — the 8 quality gates that must pass before a PR is marked ready
@@ -124,7 +124,7 @@ End PR bodies with:
 ```
 
 Target branch, review requirements, and merge strategy per stage are defined in
-`GIT-GUIDE.md` and `project-management/workflows/20-pr-and-review/`. Do not invent a flow.
+`GIT-GUIDE.md` and `project-management/workflows/22-pr-and-review/`. Do not invent a flow.
 
 ## Bug-fix commits
 
@@ -134,7 +134,7 @@ commit body. If no record exists, hand back to `debugger` before committing.
 
 ## Releases
 
-For cutting a release or deploying, follow `project-management/workflows/21-release/CONTEXT.md`.
+For cutting a release or deploying, follow `project-management/workflows/23-release/CONTEXT.md`.
 Tagging and the version bump go through the `version` sibling; deployment is the `release`
 orchestrator's remit — you handle the git mechanics (branch, tag, merge) it directs.
 

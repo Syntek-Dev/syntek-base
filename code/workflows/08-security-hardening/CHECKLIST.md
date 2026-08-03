@@ -39,5 +39,5 @@ model: opus
 ## Definition of Done
 
 - [ ] All critical and high findings resolved
-- [ ] Audit summary saved to `project-management/src/09-SECURITY/AUDITS/`
+- [ ] Audit summary saved to `project-management/src/10-SECURITY/AUDITS/`
 - [ ] Committed and pushed

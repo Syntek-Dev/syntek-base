@@ -17,7 +17,7 @@ Ninja API, never a client-side build for the Django-served pages.
   `stack-react-native` skill. The `frontend` agent stays Django-templates-only and does **not**
   own this tree; `test-writer`, `qa-tester` and `code-reviewer` may load the skill without owning
   React Native conventions. Start substantive work from
-  `project-management/workflows/18-frontend-code/`, whose mobile steps are flagged mobile-only.
+  `project-management/workflows/20-frontend-code/`, whose mobile steps are flagged mobile-only.
 - **Model:** Opus for code, tests and review; Fable only where a design or schema decision is
   being made upstream of the code.
 - **Every operation runs through `code/src/scripts/mobile/*.sh`** — never raw `pnpm`, `expo`,

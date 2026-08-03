@@ -59,8 +59,14 @@ gates (schema, user flow, GDPR, security, QA, SEO, API contract), becomes a deci
 plan, and only then reaches implementation.
 
 ```text
-specify (01–12)  →  decide & plan (13–15)  →  implement (16–18)  →  record (19–21)
+specify (02–13)  →  decide & plan (14–16)  →  consolidate (16)  →  implement (18–20)  →  record (21–23)
 ```
+
+Specify through plan runs **one story at a time** — a story goes all the way to `14-decisions`
+before the next one starts, so each story is planned against everything the previous ones
+established. When the open sprint fills, `14` and `15` run for that sprint before planning
+resumes. Once every story is planned, `16` unifies the per-story design and schema work into one
+coherent whole, and only then does implementation begin.
 
 A code workflow is never entered directly from a design gate. If that sounds heavy for a
 throwaway prototype, it is — use the `/prototype` skill instead, which exists precisely so the

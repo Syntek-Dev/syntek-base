@@ -23,7 +23,7 @@ Read in this order before spawning any sub-agents:
 **Workflows:**
 
 - `code/workflows/08-security-hardening/CONTEXT.md` → `code/workflows/08-security-hardening/STEPS.md`
-- `project-management/workflows/09-security-checks/CONTEXT.md`
+- `project-management/workflows/10-security-checks/CONTEXT.md`
 
 **Docs:**
 
@@ -48,7 +48,7 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/09-security-checks/` — design-stage threat model — STRIDE, OWASP Top 10, NIST CSF 2.0
+- `project-management/workflows/10-security-checks/` — design-stage threat model — STRIDE, OWASP Top 10, NIST CSF 2.0
 - `code/workflows/08-security-hardening/` — audit and harden built code against OWASP A01–A10
 - `code/workflows/06-gdpr-enforcement/` — when the surface touches personal data
 - `code/workflows/05-mcp-server/` — auditing the `/mcp/` tool surface, which no Django middleware protects
@@ -194,7 +194,7 @@ authentication/MFA factors; UK Cyber Essentials & Cyber Essentials Plus (the fiv
 controls + CE+ authenticated verification).
 Cover: access control (A01), IDOR/enumeration, injection, PII at rest (A02), misconfiguration
 (A05: DEBUG, CORS, headers), and secret handling. Save findings to:
-`project-management/src/09-SECURITY/ASSESSMENTS/`.
+`project-management/src/10-SECURITY/ASSESSMENTS/`.
 
 ### Phase 2 — Hostile QA
 
@@ -207,7 +207,7 @@ enumeration via predictable IDs, privilege escalation, injection, missing endpoi
 No sub-agent. **Hard gate — must complete before Phase 4.**
 
 1. Update any `CONTEXT.md` affected by security changes (new patterns, constraints, access rules)
-2. Verify Phase 1 records are saved to `project-management/src/09-SECURITY/ASSESSMENTS/` and `AUDITS/`
+2. Verify Phase 1 records are saved to `project-management/src/10-SECURITY/ASSESSMENTS/` and `AUDITS/`
 3. Promote any reusable security pattern to `code/docs/SECURITY.md` (per the GAPS promotion cycle)
 4. Update `/GAPS.md` for any Critical or High finding that cannot be closed in this PR
 5. Update `/DEFERRED.md` for hardening explicitly deferred to a named future story

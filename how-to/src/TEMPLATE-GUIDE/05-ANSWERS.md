@@ -120,6 +120,24 @@ that mention it afterwards.
 `apps.marketing`, `apps.seo` and `apps.design_tokens` are house constants. They are the same in
 every project and are never asked about.
 
+## Planning cadence
+
+Two questions setting the story-point ceiling that drives the planning loop. **Press Enter on
+both** — the defaults are the house values, and you cannot sensibly pick a number before your
+team has a measured velocity.
+
+| Question             | Default | Means                                                    |
+| -------------------- | ------- | -------------------------------------------------------- |
+| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `14`+`15` pass |
+| `SPRINT_GRACE_SP`    | `13`    | Hard ceiling, for when the next story would split badly  |
+
+These drive the cadence in `project-management/docs/PLANNING-GUIDE.md`: you plan one story
+at a time through workflows `01`–`13`, and when the open sprint reaches the capacity figure you
+run `15-sprint-plans` and `16-story-plans` for that sprint before starting the next story.
+
+Revisit them after two sprints, once you know what you actually deliver. Changing them later is a
+one-line edit in `project-management/docs/PLANNING-GUIDE.md` — no regeneration needed.
+
 ## Optional surfaces
 
 Two questions add a whole toolchain. Both default to `false`, and both are cheap to turn on later

@@ -20,12 +20,12 @@ Read in this order before spawning any sub-agents:
 
 **Workflows:**
 
-- `project-management/workflows/01-story-creation/CONTEXT.md` → `project-management/workflows/01-story-creation/STEPS.md`
-- `project-management/workflows/02-sprint-planning/CONTEXT.md` → `project-management/workflows/02-sprint-planning/STEPS.md` (only if sprint planning was requested)
+- `project-management/workflows/02-story-creation/CONTEXT.md` → `project-management/workflows/02-story-creation/STEPS.md`
+- `project-management/workflows/03-sprint-planning/CONTEXT.md` → `project-management/workflows/03-sprint-planning/STEPS.md` (only if sprint planning was requested)
 
 **Docs:**
 
-- `project-management/docs/SPRINT-PLANNING-GUIDE.md`
+- `project-management/docs/PLANNING-GUIDE.md`
 
 **References** (check when you need a specific link):
 
@@ -35,10 +35,10 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/01-story-creation/` — write the `US###` story
-- `project-management/workflows/02-sprint-planning/` — the high-level sprint record
-- `project-management/workflows/14-sprint-plans/` — the detailed sprint plan
-- `project-management/workflows/15-story-plans/` — the per-story implementation plan
+- `project-management/workflows/02-story-creation/` — write the `US###` story
+- `project-management/workflows/03-sprint-planning/` — the high-level sprint record
+- `project-management/workflows/15-sprint-plans/` — the detailed sprint plan
+- `project-management/workflows/16-story-plans/` — the per-story implementation plan
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 
@@ -64,14 +64,14 @@ For a large, ambiguous epic — bigger than one session can hold — open with `
 
 ↳ user-story [opus]
 Story design **opens with a grilling pass** — `user-story` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> one question at a time (each with its recommended answer) before writing the story, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
-Save output to: `project-management/src/01-STORIES/US###.md`
+Save output to: `project-management/src/02-STORIES/US###.md`
 Use the next available US### number. Story must include: title, role, goal, acceptance criteria, and definition of done.
 
 ### Phase 2 — Sprint Planning (conditional)
 
 Only run if the request explicitly asks for sprint planning or "plan a sprint".
 ↳ sprint [opus]
-Save output to: `project-management/src/02-SPRINTS/SPRINT-##.md`
+Save output to: `project-management/src/03-SPRINTS/SPRINT-##.md`
 
 ### Phase 3 — Commit
 

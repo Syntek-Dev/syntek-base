@@ -90,7 +90,7 @@ most often skipped.
   `how-to/src/NIXOS-SETUP.md` is a pointer stub on purpose — never grow it into a runbook.
 - **The two architecture snapshots belong to `scale-planner`** via `/scale-planning`, not
   to hand-editing.
-- **Implementation records belong to PM `19-implementation-documentation`.**
+- **Implementation records belong to PM `21-implementation-documentation`.**
 - **Skills are a different standard** — `how-to/docs/SKILL-AUTHORING.md`.
 
 ## Governing procedures (route here — do not restate at length)
@@ -100,7 +100,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/workflows/09-write-operator-guide/` — authoring or restructuring a guide
 - `how-to/workflows/06-quality-gates/` — the Markdown, length and format gates a guide must pass
 - `code/workflows/07-review/` — when the guide documents code-level standards as well
-- `project-management/workflows/19-implementation-documentation/` — owns implementation
+- `project-management/workflows/21-implementation-documentation/` — owns implementation
   records; a guide is not one
 
 ## Cross-references

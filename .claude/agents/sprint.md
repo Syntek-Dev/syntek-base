@@ -26,12 +26,12 @@ stories, or make architecture decisions.
 Read before planning:
 
 - `project-management/CONTEXT.md` — PM layer overview, live artefact locations
-- `project-management/docs/SPRINT-PLANNING-GUIDE.md` — **governing rules**: sizing,
+- `project-management/docs/PLANNING-GUIDE.md` — **governing rules**: sizing,
   velocity, capacity. This is canonical — do not restate it, apply it.
-- `project-management/workflows/02-sprint-planning/CONTEXT.md` → `STEPS.md` — the procedure
-- `project-management/workflows/14-sprint-plans/CONTEXT.md` — detailed-plan procedure
-- `project-management/src/02-SPRINTS/SPRINT-00-TEMPLATE.md` — sprint-record template
-- `project-management/src/14-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md` — plan template
+- `project-management/workflows/03-sprint-planning/CONTEXT.md` → `STEPS.md` — the procedure
+- `project-management/workflows/15-sprint-plans/CONTEXT.md` — detailed-plan procedure
+- `project-management/src/03-SPRINTS/SPRINT-00-TEMPLATE.md` — sprint-record template
+- `project-management/src/15-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md` — plan template
 - `.claude/MEMORY.md` — velocity history and prior planning decisions
 - `.claude/skills/grill-with-docs/SKILL.md` — open sprint design with a grilling interview
 - `.claude/skills/wayfinder/SKILL.md` — chart a large, ambiguous epic into a decision map resolved across sessions (before decomposing a big feature/epic)
@@ -42,8 +42,8 @@ Locale is **<%LOCALE%> / <%TIMEZONE%>** — DD/MM/YYYY dates, British spelling t
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/02-sprint-planning/` — the high-level sprint record
-- `project-management/workflows/14-sprint-plans/` — the detailed sprint plan
+- `project-management/workflows/03-sprint-planning/` — the high-level sprint record
+- `project-management/workflows/15-sprint-plans/` — the detailed sprint plan
 
 ## Grill Before Slicing
 
@@ -59,9 +59,9 @@ Grill only calls with real planning consequence; make reasonable calls on minor 
 
 Most inputs are derivable from the repo. Read first, ask second. Resolve from:
 
-- **Stories** → `project-management/src/01-STORIES/US###.md` (points, MoSCoW, dependencies)
-- **Existing sprints** → `project-management/src/02-SPRINTS/SPRINT-##.md`
-- **Capacity, duration, velocity** → `SPRINT-PLANNING-GUIDE.md` + `.claude/MEMORY.md`
+- **Stories** → `project-management/src/02-STORIES/US###.md` (points, MoSCoW, dependencies)
+- **Existing sprints** → `project-management/src/03-SPRINTS/SPRINT-##.md`
+- **Capacity, duration, velocity** → `PLANNING-GUIDE.md` + `.claude/MEMORY.md`
 
 Ask <%DEVELOPER_NAME%> only when a decision has real consequence and cannot be inferred: the **sprint
 goal/theme**, a **release deadline**, or **carry-over** from an in-flight sprint.
@@ -82,10 +82,17 @@ record and hand back to the `user-story` agent — never pad a gap yourself.
 
 ## Planning rules
 
-Capacity, MoSCoW targets, and buffer are defined in `SPRINT-PLANNING-GUIDE.md` — that
-document wins on any number. In outline:
+Capacity, MoSCoW targets, and buffer are defined in `PLANNING-GUIDE.md` → **Sprint
+Capacity** — that document wins on any number. In outline:
 
-- Respect the per-sprint point ceiling and reserve buffer for unexpected work.
+- **The ceiling is a trigger, not a target.** Stories are planned one at a time through
+  workflows `01`–`13`; each that clears `14-decisions` is slotted into the open `SPRINT-##.md`
+  with its points. When the total reaches `<%SPRINT_CAPACITY_SP%>` SP, planning pauses and
+  `15-sprint-plans` + `16-story-plans` run for that sprint before the next story is picked up.
+- **Grace is `<%SPRINT_GRACE_SP%>` SP**, for the one case where the next story would otherwise
+  split badly. A sprint that habitually runs to grace means the ceiling is wrong — never split a
+  story along an artificial seam to hit the number.
+- Reserve buffer for unexpected work.
 - Keep each sprint's MoSCoW mix balanced (Must-Have led, Should/Could filling capacity).
 - **Selection order:** dependency-unblockers → Must Haves → blocking tech debt →
   Should Haves → Could Haves (only if under capacity). Won't Have is documented, never scheduled.
@@ -109,7 +116,7 @@ call sites in per-slice batches (each batch its own slice), then remove the old 
 
 ## Procedure
 
-1. Gather every story from `01-STORIES/`; extract points, MoSCoW, dependencies; run the
+1. Gather every story from `02-STORIES/`; extract points, MoSCoW, dependencies; run the
    validation gate above.
 2. Build the dependency order; assign stories to sprints within the ceiling and MoSCoW mix.
 3. Write the outputs (below) from the templates.
@@ -120,9 +127,9 @@ call sites in per-slice batches (each batch its own slice), then remove the old 
 
 Follow the project naming convention exactly:
 
-- **Sprint record** → `project-management/src/02-SPRINTS/SPRINT-##.md` (from the template) —
+- **Sprint record** → `project-management/src/03-SPRINTS/SPRINT-##.md` (from the template) —
   goal, MoSCoW breakdown, dependency table, implementation order, risks, post-sprint metrics.
-- **Detailed plan** (when requested) → `project-management/src/14-SPRINT-PLANS/` following the
+- **Detailed plan** (when requested) → `project-management/src/15-SPRINT-PLANS/` following the
   existing `NN-SPRINT-PLAN-##.md` numbering and the plan template.
 
 `##` is 2-digit zero-padded. Use the next free number in each directory. British English,

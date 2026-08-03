@@ -34,7 +34,7 @@ mobile application — one deployable serves the API and the rendered pages.
 │   │   ├── logs/                    ← runtime log files (dev/test; gitignored)
 │   │   ├── scripts/                 ← shell scripts — ALL dev operations run through here
 │   │   └── tests/                   ← API integration tests (Bruno collection)
-│   └── workflows/                   ← step-by-step coding workflows (01–13)
+│   └── workflows/                   ← step-by-step coding workflows (02–14)
 ├── how-to/                          ← setup, daily development, debugging, scaling
 │   ├── CONTEXT.md                   ← how-to layer entry point
 │   ├── CLAUDE.md
@@ -53,8 +53,8 @@ mobile application — one deployable serves the API and the rendered pages.
 │   ├── REFERENCES.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR, QA)
 │   ├── export/                      ← ClickUp sync artefacts and task map
-│   ├── src/                         ← live PM artefacts (00-ASSETS … 20-REFACTORING)
-│   └── workflows/                   ← step-by-step PM workflows (01–21)
+│   ├── src/                         ← live PM artefacts (00-ASSETS … 21-REFACTORING)
+│   └── workflows/                   ← step-by-step PM workflows (01–22)
 ├── handoffs/                        ← session handoff documents (auto-compaction replacement)
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
@@ -134,7 +134,7 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 
 ## Repository State
 
-Current version: **1.0.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **2.0.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root
@@ -144,4 +144,4 @@ versions never move as a side-effect of a root bump. Rules:
 `project-management/docs/VERSIONING-GUIDE.md`.
 
 The template ships with no application code beyond the Django project skeleton — feature work
-starts from a user story in `project-management/src/01-STORIES/`.
+starts from a user story in `project-management/src/02-STORIES/`.

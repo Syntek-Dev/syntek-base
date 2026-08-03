@@ -39,4 +39,4 @@ model: opus
 
 - [ ] `bash code/src/scripts/development/server.sh up` inside each worktree prints the worktree-specific URL (e.g. `http://dev-us003.<%PROJECT_SLUG%>.localhost`) · _opus_
 - [ ] `docker ps` shows isolated container sets — `<%PROJECT_SLUG%>-dev-us###-*-1` — with no name collisions between worktrees · _opus_
-- [ ] Both story plan files (`STORY-PLAN-US###-*.md`) are present in `project-management/src/15-STORY-PLANS/` · _opus_
+- [ ] Both story plan files (`STORY-PLAN-US###-*.md`) are present in `project-management/src/16-STORY-PLANS/` · _opus_

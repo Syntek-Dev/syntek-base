@@ -35,7 +35,7 @@ from wireframes and user flows, not from a completed implementation. This ensure
 - Developers know what constitutes "done" before they begin
 - Edge cases and error states are designed for, not discovered in code review
 
-This guide supports the `workflows/10-qa-checks` workflow.
+This guide supports the `workflows/11-qa-checks` workflow.
 
 ---
 
@@ -44,10 +44,10 @@ This guide supports the `workflows/10-qa-checks` workflow.
 QA checks run once per sprint cycle, after security checks and before sprint plans are written:
 
 ```text
-09-security-checks  →  10-qa-checks  →  12-api-design  →  13-decisions  →  14-sprint-plans  →  15-story-plans  →  16-backend-code
+10-security-checks  →  11-qa-checks  →  13-api-design  →  14-decisions  →  15-sprint-plans  →  16-story-plans  →  18-backend-code
 ```
 
-QA checks are also the point where missing acceptance criteria in `src/01-STORIES/` are
+QA checks are also the point where missing acceptance criteria in `src/02-STORIES/` are
 identified and fed back before sprint planning locks the scope.
 
 ---
@@ -126,7 +126,7 @@ AND the redirect URL preserves /admin/ as the `next` parameter
 
 ## QA Document Format
 
-One file per user story in `project-management/src/10-QA/`:
+One file per user story in `project-management/src/11-QA/`:
 
 ```text
 QA-US###-<DESCRIPTION>.md  (e.g. QA-US015-HOMEPAGE.md)
@@ -192,7 +192,7 @@ have aria-live='polite' for screen reader announcement">
 ## Feeding Back to User Stories
 
 Any `AC-GAP` identified during QA review must be added to the story's acceptance criteria in
-`project-management/src/01-STORIES/US###.md` before the sprint plan is written.
+`project-management/src/02-STORIES/US###.md` before the sprint plan is written.
 
 **Do not proceed to sprint planning if stories have unresolved acceptance criteria gaps.**
 
@@ -212,8 +212,8 @@ Before closing the QA checks workflow:
 - [ ] All in-scope user stories identified
 - [ ] Every wireframe reviewed for happy path, error states, edge cases, and permissions
 - [ ] Accessibility and responsive behaviour noted for each screen
-- [ ] `QA-US###-<DESCRIPTION>.md` created for every in-scope story in `src/10-QA/`
+- [ ] `QA-US###-<DESCRIPTION>.md` created for every in-scope story in `src/11-QA/`
 - [ ] All acceptance criteria gaps identified and fed back into `US###.md`
 - [ ] No stories with unresolved `AC-GAP` entries remain
 - [ ] Developer notes on testability requirements added where needed
-- [ ] Ready to proceed to `workflows/12-api-design` (or `workflows/14-sprint-plans` if API design is already complete)
+- [ ] Ready to proceed to `workflows/13-api-design` (or `workflows/15-sprint-plans` if API design is already complete)

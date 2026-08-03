@@ -44,9 +44,9 @@ Read the `CONTEXT.md` of any directory you inspect first — it orients you to w
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/10-qa-checks/` — design-stage QA planning — scenarios derived from wireframes
+- `project-management/workflows/11-qa-checks/` — design-stage QA planning — scenarios derived from wireframes
 - `code/workflows/07-review/` — the review pass your findings feed
-- `project-management/workflows/19-implementation-documentation/` — where the `QA-IMPL-US###` record is written
+- `project-management/workflows/21-implementation-documentation/` — where the `QA-IMPL-US###` record is written
 
 ## Scope
 

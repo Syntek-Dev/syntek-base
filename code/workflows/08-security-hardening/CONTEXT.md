@@ -40,12 +40,12 @@ Use this workflow when:
 
 ### Upstream — the PM-layer counterpart
 
-- `project-management/workflows/09-security-checks/` — the **design-stage** threat model
+- `project-management/workflows/10-security-checks/` — the **design-stage** threat model
   (STRIDE + OWASP + NIST CSF) whose findings this workflow verifies in built code. Read the
-  story's `src/09-SECURITY/` artefacts before auditing: they name what was supposed to be built.
-- Entered from `project-management/workflows/17-api-code/` once mutating endpoints exist, or as
-  a release gate (`21-release/`) or a reported-issue pass.
-- `project-management/workflows/19-implementation-documentation/` — writes the post-build audit
+  story's `src/10-SECURITY/` artefacts before auditing: they name what was supposed to be built.
+- Entered from `project-management/workflows/19-api-code/` once mutating endpoints exist, or as
+  a release gate (`23-release/`) or a reported-issue pass.
+- `project-management/workflows/21-implementation-documentation/` — writes the post-build audit
   record that closes the `PLANNING/` artefact; do not write it here.
 
 ### Soft references — consult during execution

@@ -49,7 +49,7 @@ how-to/src/SCALE-ARCHITECTURE/
 concurrency, DB pool, Valkey maxmemory, server tier) that together bound what the current
 deployment can absorb, expressed per tier with headroom. Defined in `SIZING-ENVELOPE.md`.
 _Avoid_ "capacity" — repo-wide that means sprint story-point capacity
-(`project-management/docs/SPRINT-PLANNING-GUIDE.md`). _Avoid_ "provisioning plan" — that is
+(`project-management/docs/PLANNING-GUIDE.md`). _Avoid_ "provisioning plan" — that is
 the deploy repo's output, downstream of here.
 
 **Readiness audit** — the per-dimension assessment in `READINESS.md` of whether reaching the

@@ -1,6 +1,6 @@
 # Template Gaps — syntek-base's own open items
 
-**Last Updated**: 02/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 03/08/2026 | **Maintained By**: Syntek Studio
 
 Open items belonging to **`syntek-base` itself** — the template repository, not any project
 generated from it.
@@ -12,8 +12,8 @@ generated from it.
 > is therefore kept as an empty stub, and the template's own items live here — in
 > `TEMPLATE-GUIDE/`, which **is** excluded, so it is durable in git yet never ships.
 >
-> The same reasoning that put ADR-era design rationale in `02-STACK.md` and `10-CUSTOMISING.md`
-> rather than in `13-DECISIONS/`. See `.claude/MEMORY.md` → _Template-development reasoning
+> The same reasoning that put ADR-era design rationale in `02-STACK.md` and `11-CUSTOMISING.md`
+> rather than in `14-DECISIONS/`. See `.claude/MEMORY.md` → _Template-development reasoning
 > lives in `TEMPLATE-GUIDE/`_.
 
 **Format** matches the root `GAPS.md` so entries can move either way:
@@ -25,6 +25,33 @@ generated from it.
 **Summary:** …
 **Blocked by / Action:** …
 ```
+
+---
+
+## 03/08/2026 — The Python pre-commit hooks cannot run in syntek-base itself
+
+**Type:** Infrastructure gap
+**Summary:** `lefthook.yml` runs `ruff-lint`, `ruff-format` and `basedpyright` on `glob: "*.py"`
+via `uv run`. In a **generated** project that works. In syntek-base it cannot: the repo's own
+`pyproject.toml` legitimately contains `name = "<%PROJECT_SLUG%>"`, which is not a valid PEP 508
+name, so `uv` fails to resolve the project before any linter starts:
+
+```text
+error: Failed to parse: `pyproject.toml`
+  Not a valid package or extra name: "<%PROJECT_SLUG%>"
+```
+
+Any commit in this repository that stages a `.py` file therefore fails pre-commit — including a
+pure rename, since the glob matches the path rather than the diff. The v2.0.0 release commit hit
+exactly this: `brand_guide.py` and `components.py` moved with their folders and carried no content
+change at all. Markdown, Prettier, ClickUp-export and code-review-graph hooks all passed.
+
+**Blocked by / Action:** Guard the three Python hooks the same way the CI jobs are guarded for the
+missing `uv.lock` — skip when `pyproject.toml` still contains an unrendered token. Something like
+a `skip:` predicate testing `grep -q '<%' pyproject.toml`. Until then, template-repo commits that
+touch a `.py` file need `--no-verify`, which is a blunt instrument: it also skips the Markdown and
+Prettier gates that _do_ work here, so run `code/src/scripts/syntax/lint.sh` and `format.sh`
+manually first.
 
 ---
 

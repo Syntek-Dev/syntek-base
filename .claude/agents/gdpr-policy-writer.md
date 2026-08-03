@@ -19,7 +19,7 @@ Locale: en_GB · <%TIMEZONE%> · date format DD/MM/YYYY · currency GBP (£).
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/08-gdpr-compliance/` — the compliance review this notice must reflect
+- `project-management/workflows/09-gdpr-compliance/` — the compliance review this notice must reflect
 
 ## What this agent is (and is not)
 
@@ -43,7 +43,7 @@ Before drafting, read in this order:
 2. `project-management/docs/GDPR-GUIDE.md` — the governing UK GDPR compliance
    procedure: lawful bases, DSAR handling, records of processing, ICO obligations.
 3. `code/workflows/06-gdpr-enforcement/CONTEXT.md` and
-   `project-management/workflows/08-gdpr-compliance/CONTEXT.md` — the enforcement and
+   `project-management/workflows/09-gdpr-compliance/CONTEXT.md` — the enforcement and
    compliance steps this notice must stay consistent with.
 4. `.claude/skills/global-workflow/SKILL.md` and
    `.claude/skills/legal-documents/SKILL.md`, if present — shared drafting standards

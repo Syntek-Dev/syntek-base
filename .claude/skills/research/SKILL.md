@@ -80,9 +80,9 @@ in `.claude/MEMORY.md`, not a note.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/13-decisions/` — ADR groundwork
-- `project-management/workflows/12-api-design/` — grounding a contract decision
-- `project-management/workflows/03-database-schema/` — grounding a schema or stack choice
+- `project-management/workflows/14-decisions/` — ADR groundwork
+- `project-management/workflows/13-api-design/` — grounding a contract decision
+- `project-management/workflows/04-database-schema/` — grounding a schema or stack choice
 
 ## Cross-references
 
@@ -92,7 +92,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `research/` — the committed, synced home for research notes (`<TOPIC>.md`).
 - the project's decision register — the ADRs a note feeds; next free number is `a decision record`.
 - `the project's plans folderPLAN-US000-TEMPLATE.md` — the PLAN template a note may feed.
-- `project-management/src/01-STORIES/US###.md` — a story a note may inform.
+- `project-management/src/02-STORIES/US###.md` — a story a note may inform.
 - `GAPS.md` · `DEFERRED.md` — open blockers, and items deferred to a named future story.
 - `.claude/plugins/pm-tool.py` — read-only PM inspection (the next ADR number, the plan list).
 - `.claude/MEMORY.md` — durable stack findings that are facts, not decisions.

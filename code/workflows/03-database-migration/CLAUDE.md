@@ -23,7 +23,7 @@ migration — from `STEPS.md` through the `CHECKLIST.md` sign-off.
 - **Concrete steps:** generate migrations with `code/src/scripts/database/migrate.sh make`
   → verify with `migrate.sh check` → apply and inspect state with `showmigrations`.
   **Never run `manage.py`, `python`, or `docker` directly.** An approved schema
-  document from `project-management/workflows/03-database-schema/` must precede this work.
+  document from `project-management/workflows/04-database-schema/` must precede this work.
 - **Definition of done:** every `CHECKLIST.md` item ticked; migrations green in
   `migrate.sh check`; RLS policy updated alongside the schema where scoped.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).

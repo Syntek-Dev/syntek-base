@@ -126,7 +126,7 @@ Refresh the code-review-graph after any doc change so the layered docs and the g
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/11-refactor/` — where a picked deepening opportunity is executed
-- `project-management/workflows/13-decisions/` — where the resulting decision is recorded
+- `project-management/workflows/14-decisions/` — where the resulting decision is recorded
 
 ## Cross-references
 

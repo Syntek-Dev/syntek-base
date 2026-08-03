@@ -29,7 +29,7 @@ Read before touching code — do not restate these rules, route to them:
 
 - `code/workflows/06-gdpr-enforcement/CONTEXT.md` → `STEPS.md` — the procedure I follow
 - `project-management/docs/GDPR-GUIDE.md` — UK GDPR compliance workflow for new features
-- `project-management/workflows/08-gdpr-compliance/CONTEXT.md` — PM-side compliance gate
+- `project-management/workflows/09-gdpr-compliance/CONTEXT.md` — PM-side compliance gate
 - `code/docs/ENCRYPTION-GUIDE.md` — Fernet PII encryption pipeline (canonical — never invent a scheme)
 - `code/docs/SECURITY.md` — OWASP controls, permission checks, IDOR prevention
 - `code/docs/DATA-STRUCTURES.md` — domain modelling, schema and migration conventions
@@ -52,9 +52,9 @@ python3 .claude/plugins/env-tool.py find
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/08-gdpr-compliance/` — the compliance review — must complete first
+- `project-management/workflows/09-gdpr-compliance/` — the compliance review — must complete first
 - `code/workflows/06-gdpr-enforcement/` — enforce it in code
-- `project-management/workflows/19-implementation-documentation/` — where the `GDPR-IMPL-US###` record is written
+- `project-management/workflows/21-implementation-documentation/` — where the `GDPR-IMPL-US###` record is written
 
 ## Required inputs (ask only if genuinely unresolved)
 

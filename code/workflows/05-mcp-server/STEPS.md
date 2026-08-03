@@ -51,7 +51,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
    only for third-party clients).
 
 Record hard-to-reverse calls as an ADR in the project's decision register. Save the design
-alongside the story's API design in `project-management/src/12-API-DESIGN/PLANNING/`.
+alongside the story's API design in `project-management/src/13-API-DESIGN/PLANNING/`.
 
 ### Step 2 — Mount the Server (first mount only)
 
@@ -130,7 +130,7 @@ tool call into a timeout.
 
 Update `code/docs/mcp-server/`, `config/CONTEXT.md`'s route table, and `code/docs/URL-STRATEGY.md`
 if the prefix set changed; refresh the code-review-graph. The implementation record itself is
-written by `project-management/workflows/19-implementation-documentation/` — not here.
+written by `project-management/workflows/21-implementation-documentation/` — not here.
 
 **Rollout:** ship read-only tools first, watch the per-tool failure rate (a tool the model calls
 then abandons has a docstring problem, not a code problem), then add mutations one at a time.

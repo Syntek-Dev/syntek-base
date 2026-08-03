@@ -69,7 +69,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/workflows/11-refactor/` — the refactor procedure
 - `code/workflows/02-tdd-cycle/` — the green baseline required before any refactor step
-- `project-management/workflows/19-implementation-documentation/` — how a refactor is commissioned — findings routed to `src/20-REFACTORING/`
+- `project-management/workflows/21-implementation-documentation/` — how a refactor is commissioned — findings routed to `src/21-REFACTORING/`
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 
@@ -179,7 +179,7 @@ No sub-agent. **Hard gate — must complete before Phase 5.**
 1. Update any `CONTEXT.md` affected by files moved, renamed, or restructured
    (directory trees, Last Updated dates, new structural patterns).
 2. Create a `CONTEXT.md` + `CLAUDE.md` pair inside every new directory this refactor created.
-3. Record significant refactoring notes under `project-management/src/20-REFACTORING/`
+3. Record significant refactoring notes under `project-management/src/21-REFACTORING/`
    if the change is material.
 4. Update `/GAPS.md` for any technical debt surfaced but not addressed here.
 

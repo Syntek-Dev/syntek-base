@@ -1,12 +1,51 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 1.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.0.0] - 03/08/2026
+
+### Added
+
+- **The planning cadence is now explicit: plan one story at a time, all the way through.** A story runs `02-story-creation` → `14-decisions` before the next one starts, so each story is planned against everything the previous ones settled. The rationale is recorded where the loop lives (`project-management/workflows/CONTEXT.md`): a human thinks the work through at plan time so implementation is mechanical. It assumes real PM and development knowledge — and the gate sequence is what carries someone who does not yet have it.
+- **A sprint is planned when it fills, not at the end of a backlog-wide checks phase.** Each story clearing `13` is slotted into the open `SPRINT-##.md` with its points; at `SPRINT_CAPACITY_SP` (grace `SPRINT_GRACE_SP`) planning pauses while `15-sprint-plans` and `16-story-plans` run for that sprint, then resumes. Canonical rules and the ceiling: `project-management/docs/PLANNING-GUIDE.md` → _Sprint Capacity_.
+- **Two Copier questions — `SPRINT_CAPACITY_SP` (11) and `SPRINT_GRACE_SP` (13)**, with a validator forcing grace above capacity. These close a real hole: `.claude/agents/sprint.md` already claimed the guide defined a point ceiling, and it never did.
+- **`project-management/workflows/01-feature/` and `src/01-FEATURE/` — discovery, once per feature.** Wayfinder charts the feature's decision frontier, then each node is settled one at a time and graduated to an ADR, plan, or story. The resolved `MAP-<FEATURE>.md` is what stories are cut from, and what stops every later grilling pass re-asking the same cross-cutting questions. Its reading order is deliberate: `CONTEXT.md` → `CLAUDE.md` → the relevant `docs/` guides → **the whole of `project-management/src/`** → the codebase. Because every story closes with `IMPLEMENTATION/` records stating where the build diverged from the plan, reading `src/` shows what was actually built rather than what was once intended.
+- **`how-to/src/TEMPLATE-GUIDE/09-PROJECT-MANAGEMENT.md`** — how to use `project-management/src/`: the five tiers, the workflow↔`src` mirroring, the three-stage vs two-stage folder patterns, a which-folder-when table, and the four ways people get it wrong. `09-FIRST-STORY.md` became `10-FIRST-FEATURE.md` and now opens by charting the feature, because work no longer starts with a story.
+- **`project-management/docs/planning/`** — `CADENCE.md`, `STORIES.md`, `SPRINTS.md`, behind the thin `PLANNING-GUIDE.md` index, on the `GDPR-GUIDE.md` → `gdpr/` precedent. The capacity figure is stated once, in `CADENCE.md`.
+- **`project-management/workflows/17-consolidate-design-work/`** — the second half of the per-story bargain. Planning per story means design arrives per story and drifts by construction; once every story is through `15`, this workflow reconciles it into one coherent design before any code. It resolves `04-DATABASE` first, because schema fragmentation is the expensive kind, and its Step 7 corrects any story plan the consolidation invalidated — otherwise the developer codes from a plan asserting a superseded design.
+
+### Changed
+
+- **PM workflows renumbered again, +1 across the board** (`01`–`22` → `02`–`23`) to open `01` for the feature-discovery gate, and `src/` `01`–`20` → `02`–`21` alongside it so the `01`–`16` workflow↔`src` mirroring survives. ~2,455 references across every layer. `code/workflows/` and `how-to/workflows/` numbering is untouched — those are catalogues, where numbers are stable identifiers.
+- **`SPRINT-PLANNING-GUIDE.md` → `PLANNING-GUIDE.md` + `planning/`.** The old name had stopped describing its contents once the cadence — which governs `01`–`17`, not sprint planning — moved into it.
+- **`12-seo-checks` is now a planning gate, not a verification one.** It sat in the specify tier but required a deployed page, which made it impossible to run in its own slot. It now sets per-dimension SEO targets before the page exists; auditing the built page, Lighthouse, and the `IMPLEMENTATION/` record moved to `21-implementation-documentation`, which already owned every other implementation record. Its model moves Opus → Fable, because choosing a schema type and an indexing posture is judgement, not measurement.
+
+- **`src/04-DATABASE` … `src/08-WIREFRAMES` are now three-stage:** `USER-STORY-IDEAS/` → `CONSOLIDATED-IDEAS/` → `IMPLEMENTATION/`. Stage 1 is **frozen** once workflow `16` runs — it is the audit trail of what each story asked for. Stage 2 is **what gets built**. Each folder keeps one cumulative asset outside the stages (`ERD-DIAGRAMS/`, `DIAGRAMS/`, `guide-build/`, `component-build/`, `SHARED/wireframe.css`); the brand and component PDFs are regenerated once, at consolidation, not per story. `08-WIREFRAMES/SCREENS/` is absorbed into the stage folders.
+- **Folders `09-GDPR` … `13-API-DESIGN` keep their two-stage `PLANNING/` + `IMPLEMENTATION/` split.** A lawful basis or an API contract is genuinely per story and does not fragment a shared system, so it needs no consolidation pass.
+- **PM workflows `16`–`21` renumbered to `17`–`22`** to make room at `16`. Unlike `code/workflows/` and `how-to/workflows/` — catalogues where numbers are stable identifiers and are never reused — PM workflow numbers are a **running order**, so inserting mid-sequence is legitimate here. 413 references updated across 161 files. Historical entries in this file and `RELEASES.md` are left as written: they record what those releases actually shipped.
+
+### Removed
+
+- **`project-management/docs/SPRINT-PLANNING-GUIDE.md`** — replaced by `PLANNING-GUIDE.md` and `planning/{CADENCE,STORIES,SPRINTS}.md`.
+- **`project-management/src/08-WIREFRAMES/SCREENS/`** — absorbed into the three-stage folders: per-story screens to `USER-STORY-IDEAS/`, the built set to `CONSOLIDATED-IDEAS/`.
+
+### Fixed
+
+- **Twenty `IMPLEMENTATION/` folders credited `pr-and-review` for writing their records.** Workflow `21-implementation-documentation` explicitly absorbed that duty — its own `CONTEXT.md` says the PR workflow "now only **verifies** these records". Every one now routes correctly.
+- **Three workflows had no grilling pass at all** — brand guides, wireframes, and sprint plans — despite `.claude/CLAUDE.md` §10 making it the default for substantial work. Each now opens with one.
+- `.claude/skills/wayfinder/SKILL.md` referenced the map as `` `the project's plans folderMAP-<EPIC>.md` `` — a token substitution that had lost its separator. Maps now resolve to `src/01-FEATURE/`.
+- `21-implementation-documentation/CONTEXT.md` was still titled "Workflow 19".
+
+- `PLANNING-GUIDE.md` documented sprint plans as `SPRINT-PLAN-##.md`; `src/15-SPRINT-PLANS/` has always used `{exec-order}-SPRINT-PLAN-{sprint-number}.md`. The guide now matches, and explains why the two segments diverge.
+- `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` claimed twenty-one Copier questions; there were twenty-seven before this change and are now twenty-nine.
 
 ---
 
@@ -48,7 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **The flag gates authoring, not consuming.** A project that merely depends on a prebuilt PyO3 wheel installs it like any other dependency and needs no toolchain — it answers `false`. `true` means _this repository compiles Rust_, which makes `rustup` a prerequisite for `uv sync` and adds a Rust stage to the backend image. That cost is why the default is `false`, and why the distinction is stated in `TEMPLATE-TOKENS.md`, `05-ANSWERS.md`, the guide, the skill and the agent.
 - **`rust` agent and `stack-rust` skill**, excluded together with the tree — a Rust agent with no Rust to work on is worse than no agent at all. Both carry the gate question as their opening move: Rust earns its place only on a guarantee Python cannot make, or a **measured** hot path.
 - **`code/docs/RUST.md` and three sub-documents** — `rust/PYO3-BOUNDARY.md` (never panic across FFI, thin-boundary shape, error mapping, the GIL, `abi3`), `rust/MEMORY-HYGIENE.md` (why Python cannot erase a secret, zeroize-on-drop, constant-time comparison, and the limits it does _not_ cover — copies, swap, core dumps), and `rust/SUPPLY-CHAIN.md` (why a crate is more dangerous than a Python package, and what `deny.toml` enforces).
-- **`code/workflows/12-rust-extension/`** — appended, never renumbered, per the stable-identifier rule. Entered from PM `16-backend-code`; Step 1 is a grilling pass whose first question is the gate.
+- **`code/workflows/12-rust-extension/`** — appended, never renumbered, per the stable-identifier rule. Entered from PM `18-backend-code`; Step 1 is a grilling pass whose first question is the gate.
 - **`code/src/scripts/rust/`** — `build.sh`, `test.sh`, `lint.sh`, `audit.sh` plus `_common.sh`. The second script group keyed by stack rather than operation, and the second to run on the host rather than in Docker; the toolchain pin is what keeps a host run and the image's build stage identical.
 - **`syntax-rust.yml`** — clippy at `-D warnings`, the Rust test suite, and `cargo-deny`. The workflow file is itself rust-only, so there is no job to guard on a project without the surface.
 - **`code/docs/encryption/RUST-CRYPTO.md`** — the dual-path branch of the encryption guide.
@@ -74,7 +113,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- **`.claude/MEMORY.md` emptied of its template-development entries.** It carried five notes accumulated while `syntek-base` itself was built — the "surface" vocabulary, the one-way optional-content gate, the Expo pin matrix, the `glob` override, and the expo-router route-collision rule. Every one is reasoning about **how the template was constructed**, which a generated project inherits as noise: it describes decisions already made, in a repository the reader is not working in. The file ships with its three headings (`Feedback`, `Project Patterns`, `Project State`) and its write-policy preamble intact, so a generated project starts recording against an empty store rather than deleting someone else's notes first. Where that reasoning is durable it already lives in the right place — `code/src/CONTEXT.md` defines _surface_, and `how-to/src/TEMPLATE-GUIDE/10-CUSTOMISING.md` holds the gating rationale.
+- **`.claude/MEMORY.md` emptied of its template-development entries.** It carried five notes accumulated while `syntek-base` itself was built — the "surface" vocabulary, the one-way optional-content gate, the Expo pin matrix, the `glob` override, and the expo-router route-collision rule. Every one is reasoning about **how the template was constructed**, which a generated project inherits as noise: it describes decisions already made, in a repository the reader is not working in. The file ships with its three headings (`Feedback`, `Project Patterns`, `Project State`) and its write-policy preamble intact, so a generated project starts recording against an empty store rather than deleting someone else's notes first. Where that reasoning is durable it already lives in the right place — `code/src/CONTEXT.md` defines _surface_, and `how-to/src/TEMPLATE-GUIDE/11-CUSTOMISING.md` holds the gating rationale.
 
 ### Fixed
 
@@ -92,7 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Five new `how-to/` workflows**, each mapping onto scripts that already exist: `04-database-operations` (backup, restore, reset, seed, users — 8 scripts that had no workflow), `05-testing-and-coverage` (8 runners), `06-quality-gates` (the 8 pre-PR gates + 7 audits), `07-dependency-updates`, and `09-write-operator-guide` — the meta-workflow for authoring operator documentation.
 - **`.claude/agents/operator-docs.md`** — a specialist owning `how-to/docs/*` and `how-to/src/*`. Justified by three testable differences from `doc-writer`: different audience (running the system vs writing code), different length standard (`how-to/src/` is the sanctioned exemption from the 300-line cap), and different verification (a runbook is proven by executing it). Completes a three-way split with `support-articles`, which owns end-user help.
 - **`.claude/skills/runbook/`** — the operator-doc craft: the fixed spine (purpose → prerequisites → steps with expected output → failure modes → rollback → verification), script-first command discipline, and the execute-to-verify rule.
-- **`code/workflows/05-mcp-server/`** — the procedure, opening with a gate question (is an agent genuinely the caller, or would an HTTP client do?) and running through mount, verifier, tools, tests and hardening. Entered from PM `17-api-code`, never from a design gate.
+- **`code/workflows/05-mcp-server/`** — the procedure, opening with a gate question (is an agent genuinely the caller, or would an HTTP client do?) and running through mount, verifier, tools, tests and hardening. Entered from PM `19-api-code`, never from a design gate.
 - `/api/` and `/mcp/` documented as **machine prefixes** in `code/docs/URL-STRATEGY.md`, which previously named only the four human-facing surfaces. `/mcp/` is a sibling of `/api/`, never nested inside it.
 - `fastmcp` added to the "deliberately NOT declared at baseline" register in `pyproject.toml`, with its trigger condition — an agent must carry out this project's domain operations, **not** "expose the API to AI".
 
@@ -113,7 +152,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`.copier/README.md` shipped a workflow table whose `#` column had decoupled from the workflow names** — row `03` pointed at `08-security-hardening/`, row `09` at `03-database-migration/`. The renumber sweep corrected every slug but had no way to know a separate hand-maintained column encoded the same number. Every generated project would have carried it. Rebuilt as a family-grouped table, along with both directory trees (`10 coding workflows` → 11, `4 operational` → 9) and the "three files" claim (workflows carry four).
 - **Stale hard counts removed from `README.md`, `01-OVERVIEW.md` and `07-REPO-TOUR.md`** — "50 agents" (52), "16 skills" (23), "15 GitHub Actions workflows" (17). The 0.13.0 release deliberately removed such counts because one differs between two correct projects once the roster is conditional; that removal reached `08-CLAUDE-CODE.md` and missed these three, which had gone stale exactly as predicted. The Copier question count is now stated accurately as twenty-two, or twenty-four with the mobile surface, rather than the stale "twenty-one".
 - `07-REPO-TOUR.md` described the code workflows as a **range** ending at `10-debugging-with-logs`; the sweep renumbered that token to `09`, leaving a semantically wrong but syntactically valid endpoint. A path check cannot catch this class of error.
-- `11-EXTENDING.md`'s "An MCP server" section was about servers the project **consumes** via `.mcp.json`, and would now be read as covering the FastMCP surface the project **serves**. Split into two sections.
+- `12-EXTENDING.md`'s "An MCP server" section was about servers the project **consumes** via `.mcp.json`, and would now be read as covering the FastMCP surface the project **serves**. Split into two sections.
 
 - **Six of the eight `claude.yml` quality gates failed on every push and pull request** raised against this template — `uv sync --frozen` cannot resolve without a `uv.lock`, which is absent by design here because it would pin the root project under the literal project-slug token. Each now carries the same `Detect the backend lockfile` step `test.yml` already used, guarded at **step** level so the JS half (Prettier, ESLint, `pnpm audit`) keeps gating this repository rather than being thrown away with the Python half.
 - `audit-deps.yml` failed on its nightly schedule for the same reason, opening a tracking issue about a Python dependency tree that does not exist yet. The JS half is unguarded and keeps its nightly CVE scan.
@@ -135,7 +174,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `code/docs/accessibility/MOBILE.md` — the React Native technique set for the unchanged WCAG 2.2 AA standard, including why verification here is manual.
 - `code/src/scripts/audits/mobile-tokens.sh` and `.github/workflows/audit-mobile-tokens.yml` — the mobile half of the token-first law. Self-guarding: exits 0 with a note when there is no mobile surface.
 - `code/src/mobile/CHANGELOG.md`, `VERSION-HISTORY.md` and `RELEASES.md` — the mobile application is a third independent semver track, starting at 0.1.0.
-- Mobile-flagged steps in `project-management/workflows/18-frontend-code/` (Step 4M), `code/workflows/01-new-feature/` (Step 7M) and `code/workflows/02-tdd-cycle/`, plus the mobile wireframe convention in `project-management/src/07-WIREFRAMES/`.
+- Mobile-flagged steps in `project-management/workflows/20-frontend-code/` (Step 4M), `code/workflows/01-new-feature/` (Step 7M) and `code/workflows/02-tdd-cycle/`, plus the mobile wireframe convention in `project-management/src/08-WIREFRAMES/`.
 
 ### Changed
 
@@ -147,7 +186,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `VERSIONING-GUIDE.md` documents the mobile track and its **two-files-one-number** rule (`package.json` and `app.json`); the `version` agent learned it, and its stale `backend`/`frontend`/`shared` sub-package list was corrected.
 - `code/docs/testing/COVERAGE.md` reworded from "one floor, not one per layer" to **one standard, enforced once per runtime** — `coverage.py` and Jest share no accumulator.
 - **Hard agent counts removed rather than incremented** across `.claude/CLAUDE.md`, `CONTEXT.md`, `.claude/CONTEXT.md`, `how-to/docs/TOOLING-GUIDE.md` and `TEMPLATE-GUIDE/08-CLAUDE-CODE.md` — a count differs between two correct projects once the roster is conditional, and one was already stale.
-- `project-management/workflows/07-wireframes/` corrected to match the artefact folder it drives: self-contained HTML screens named `WF-###-<Screen-Name>.html`, not `WF-US###-<DESCRIPTOR>.md`, and Figma/Excalidraw are no longer offered as alternative media.
+- `project-management/workflows/08-wireframes/` corrected to match the artefact folder it drives: self-contained HTML screens named `WF-###-<Screen-Name>.html`, not `WF-US###-<DESCRIPTOR>.md`, and Figma/Excalidraw are no longer offered as alternative media.
 
 ### Fixed
 
@@ -274,8 +313,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `project-management/src/` renumbered to `00`–`20` across three tiers — specify (`01-STORIES` … `12-API-DESIGN`), decide and plan (`13-DECISIONS`, `14-SPRINT-PLANS`, `15-STORY-PLANS`), and record (`16-TESTS` … `20-REFACTORING`).
-- `project-management/workflows/` extended to `01`–`21`, adding `12-api-design`, `13-decisions`, `14-sprint-plans`, `15-story-plans`, the `16`–`18` implementation phases, `19-implementation-documentation`, `20-pr-and-review`, and `21-release`.
+- `project-management/src/` renumbered to `00`–`20` across three tiers — specify (`02-STORIES` … `13-API-DESIGN`), decide and plan (`14-DECISIONS`, `15-SPRINT-PLANS`, `16-STORY-PLANS`), and record (`17-TESTS` … `21-REFACTORING`).
+- `project-management/workflows/` extended to `01`–`21`, adding `13-api-design`, `14-decisions`, `15-sprint-plans`, `16-story-plans`, the `16`–`18` implementation phases, `21-implementation-documentation`, `22-pr-and-review`, and `23-release`.
 - `project-management/docs/gdpr/` — `COMPLIANCE.md` and `DATA-RIGHTS.md`, with `GDPR-GUIDE.md` reduced to a thin index over them.
 - `project-management/export/clickup/` and `clickup-task-map.json` — the read-only client export surface regenerated from source stories by the pre-commit hook.
 - `project-management/src/00-ASSETS/scripts/` — the export and sync family: `export-clickup-stories.sh`, `export-design-docs.sh`, `export-pm-files.sh`, `export-wireframes.sh`, `sync-clickup.sh`, and the self-gating `precommit-clickup.sh`.
@@ -283,7 +322,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- All eight PM guides rewritten for the Django-only stack — `GIT-GUIDE.md`, `VERSIONING-GUIDE.md` (now a two-tier scheme with the django sub-package), `SEO-CHECKLIST.md`, `SECURITY-GUIDE.md`, `QA-GUIDE.md`, `SPRINT-PLANNING-GUIDE.md`, `GDPR-GUIDE.md`, and the `RESPONSIVE-DESIGN.md` redirect stub.
+- All eight PM guides rewritten for the Django-only stack — `GIT-GUIDE.md`, `VERSIONING-GUIDE.md` (now a two-tier scheme with the django sub-package), `SEO-CHECKLIST.md`, `SECURITY-GUIDE.md`, `QA-GUIDE.md`, `PLANNING-GUIDE.md`, `GDPR-GUIDE.md`, and the `RESPONSIVE-DESIGN.md` redirect stub.
 - `project-management/CONTEXT.md` and `REFERENCES.md` rewritten around the three-tier structure and the cross-layer workflow pairing map.
 - Story, sprint, and plan templates re-expressed with template placeholders in place of project-specific content.
 

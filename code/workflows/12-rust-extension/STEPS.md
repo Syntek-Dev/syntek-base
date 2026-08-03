@@ -141,6 +141,6 @@ Then the Python side through `code/src/scripts/syntax/*.sh` and `code/src/script
 Work through `CHECKLIST.md`. If the crate touches crypto or secret material, run
 `code/workflows/08-security-hardening/` before it ships.
 
-Hand off to `project-management/workflows/19-implementation-documentation/` for the
+Hand off to `project-management/workflows/21-implementation-documentation/` for the
 implementation record, the `CONTEXT.md` closeout and the code-review-graph refresh — do not write
 those here.

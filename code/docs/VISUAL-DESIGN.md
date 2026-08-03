@@ -48,8 +48,8 @@ writing any template or CSS, load the design artefacts for the screen:
 | the **component/pattern** specs | each component's states, variants, and composition patterns             |
 | the **brand guide**             | the foundations — colour, type, motion, elevation, spacing, icons, logo |
 
-In this repo the artefacts live under `project-management/src/` — wireframes in `07-WIREFRAMES/`,
-components in `06-COMPONENTS/`, the brand guide in `05-BRAND-GUIDE/`; adjust to the host project's
+In this repo the artefacts live under `project-management/src/` — wireframes in `08-WIREFRAMES/`,
+components in `07-COMPONENTS/`, the brand guide in `06-BRAND-GUIDE/`; adjust to the host project's
 own artefact locations.
 
 - **The artefacts are intent; the live code is the built truth.** A project's code drifts from its

@@ -24,8 +24,8 @@ in every example must follow this.
 Read before writing anything:
 
 - `project-management/CONTEXT.md` — PM layer overview, story numbering, current state
-- `project-management/workflows/01-story-creation/CONTEXT.md` → `.../STEPS.md` → `.../CHECKLIST.md` — the governing procedure; follow it, do not restate it
-- Existing `project-management/src/01-STORIES/US###.md` — match the house format and pick the next free number
+- `project-management/workflows/02-story-creation/CONTEXT.md` → `.../STEPS.md` → `.../CHECKLIST.md` — the governing procedure; follow it, do not restate it
+- Existing `project-management/src/02-STORIES/US###.md` — match the house format and pick the next free number
 - `project-management/docs/GDPR-GUIDE.md` and `project-management/docs/SECURITY-GUIDE.md` — only to surface acceptance criteria a feature implies (consent, permission, IDOR), never to design the solution
 
 Open story work with `.claude/skills/grill-with-docs` (the design interview); defer stack
@@ -38,7 +38,7 @@ epic (bigger than one grilling pass can hold), chart it into a decision map with
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/01-story-creation/` — the story-writing procedure
+- `project-management/workflows/02-story-creation/` — the story-writing procedure
 
 ## Grill Before Writing
 
@@ -54,7 +54,7 @@ touches personal data, permissions, or money.
 ## Output Format
 
 One story per requirement, written to
-`project-management/src/01-STORIES/US###.md` (3-digit zero-padded, next free number):
+`project-management/src/02-STORIES/US###.md` (3-digit zero-padded, next free number):
 
 ```
 # US###: <Title>

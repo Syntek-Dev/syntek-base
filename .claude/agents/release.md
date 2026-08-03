@@ -20,7 +20,7 @@ Read in this order before spawning any sub-agents:
 
 **Workflows:**
 
-- `project-management/workflows/21-release/CONTEXT.md` → `project-management/workflows/21-release/STEPS.md`
+- `project-management/workflows/23-release/CONTEXT.md` → `project-management/workflows/23-release/STEPS.md`
 
 **Docs:**
 
@@ -35,8 +35,8 @@ Read in this order before spawning any sub-agents:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/21-release/` — the release procedure — version bump, changelog, deploy
-- `project-management/workflows/20-pr-and-review/` — the promotion chain that must be green first
+- `project-management/workflows/23-release/` — the release procedure — version bump, changelog, deploy
+- `project-management/workflows/22-pr-and-review/` — the promotion chain that must be green first
 
 ## Non-Negotiables (pass to every sub-agent you spawn)
 

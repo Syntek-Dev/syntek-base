@@ -38,9 +38,9 @@ that requires a Django migration.
 - `code/docs/rls/TESTING-AND-AUDIT.md` — row-level security policy updates and new module checklist
 - `code/docs/rls/FUNDAMENTALS.md` — RLS policy must be updated alongside schema changes
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — domain constraints on new fields
-- `project-management/workflows/03-database-schema/` — the approved schema document is a hard
+- `project-management/workflows/04-database-schema/` — the approved schema document is a hard
   prerequisite; that workflow designs the schema, this one implements it
-- `project-management/workflows/16-backend-code/` — **this workflow is entered from there**, not
-  directly from `03-database-schema/`: the migration is written during the backend build phase,
-  once the story plan (`15-story-plans/`) is signed off
+- `project-management/workflows/18-backend-code/` — **this workflow is entered from there**, not
+  directly from `04-database-schema/`: the migration is written during the backend build phase,
+  once the story plan (`16-story-plans/`) is signed off
 - `code/docs/architecture/CORE-AND-SCALING.md` — shard key is `tenant_id`; a new user-owned table must carry it (readiness + ADR-016 co-location)

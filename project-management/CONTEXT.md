@@ -15,44 +15,48 @@ project-management/
 │   ├── RESPONSIVE-DESIGN.md     ← breakpoints, mobile-first, responsive patterns
 │   ├── SECURITY-GUIDE.md        ← security standards and threat modelling guide
 │   ├── SEO-CHECKLIST.md         ← SEO and AI discoverability for all frontend pages
-│   ├── SPRINT-PLANNING-GUIDE.md ← MoSCoW prioritisation and sprint format conventions
+│   ├── PLANNING-GUIDE.md ← MoSCoW prioritisation and sprint format conventions
 │   └── VERSIONING-GUIDE.md      ← root-only semver, files to update on every bump
 ├── export/                  ← PDF exports and zip archives for client delivery
 ├── src/                     ← live PM artefacts, in three tiers (see below)
 │   ├── 00-ASSETS/               ← logos, brand assets, export scripts (pre-workflow ref)
 │   │
-│   │   ── Specify (01–12) ──
-│   ├── 01-STORIES/              ← US###.md (user stories)
-│   ├── 02-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation)
-│   ├── 03-DATABASE/             ← SCHEMA-*.md, ERD-*.md, migration notes
-│   ├── 04-USER-FLOW/            ← USER-FLOW-TEMPLATE.md + DIAGRAMS/
-│   ├── 05-BRAND-GUIDE/          ← guide-build/ (Python → LaTeX → PDF brand guide)
-│   ├── 06-COMPONENTS/           ← component-build/ (Python → LaTeX → PDF component sheet)
-│   ├── 07-WIREFRAMES/           ← SCREENS/ (WF-###-*.html) + SHARED/wireframe.css
-│   ├── 08-GDPR/                 ← 6 register skeletons + PLANNING/ + IMPLEMENTATION/
-│   ├── 09-SECURITY/             ← THREAT-MODEL/ ASSESSMENTS/ AUDITS/ VULNERABILITIES/
-│   ├── 10-QA/                   ← PLANNING/ + IMPLEMENTATION/
-│   ├── 11-SEO/                  ← PLANNING/ + IMPLEMENTATION/
-│   ├── 12-API-DESIGN/           ← PLANNING/ + IMPLEMENTATION/
+│   │   ── Discover (01) ──
+│   ├── 01-FEATURE/              ← MAP-<FEATURE>.md (wayfinder decision maps)
 │   │
-│   │   ── Decide & plan (13–15) ──
-│   ├── 13-DECISIONS/            ← ADR-###-<TITLE>.md
-│   ├── 14-SPRINT-PLANS/         ← detailed sprint execution plans
-│   ├── 15-STORY-PLANS/          ← per-story implementation plan (code master reference)
+│   │   ── Specify (02–13) ──
+│   ├── 02-STORIES/              ← US###.md (user stories)
+│   ├── 03-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation)
+│   │   (03–07: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/ + a cumulative asset)
+│   ├── 04-DATABASE/             ← 3 stages + ERD-DIAGRAMS/
+│   ├── 05-USER-FLOW/            ← 3 stages + DIAGRAMS/
+│   ├── 06-BRAND-GUIDE/          ← 3 stages + guide-build/ (Python → LaTeX → PDF)
+│   ├── 07-COMPONENTS/           ← 3 stages + component-build/ (Python → LaTeX → PDF)
+│   ├── 08-WIREFRAMES/           ← 3 stages + SHARED/wireframe.css
+│   ├── 09-GDPR/                 ← 6 register skeletons + PLANNING/ + IMPLEMENTATION/
+│   ├── 10-SECURITY/             ← THREAT-MODEL/ ASSESSMENTS/ AUDITS/ VULNERABILITIES/
+│   ├── 11-QA/                   ← PLANNING/ + IMPLEMENTATION/
+│   ├── 12-SEO/                  ← PLANNING/ + IMPLEMENTATION/
+│   ├── 13-API-DESIGN/           ← PLANNING/ + IMPLEMENTATION/
 │   │
-│   │   ── Implement & record (16–20) ──
-│   ├── 16-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
-│   ├── 17-REVIEWS/              ← REVIEW-US###-*.md
-│   ├── 18-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-│   ├── 19-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-│   └── 20-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-└── workflows/               ← step-by-step PM workflows (01–21)
-    ├── 01-story-creation/ … 12-api-design/     ← specify a feature
-    ├── 13-decisions/ 14-sprint-plans/ 15-story-plans/  ← decide & plan
-    ├── 16-backend-code/ 17-api-code/ 18-frontend-code/  ← implement
-    ├── 19-implementation-documentation/         ← docs + implementation records
-    ├── 20-pr-and-review/                        ← PR, review, merge
-    └── 21-release/                              ← version bump, changelog, deploy
+│   │   ── Decide & plan (14–16) ──
+│   ├── 14-DECISIONS/            ← ADR-###-<TITLE>.md
+│   ├── 15-SPRINT-PLANS/         ← detailed sprint execution plans
+│   ├── 16-STORY-PLANS/          ← per-story implementation plan (code master reference)
+│   │
+│   │   ── Implement & record (17–21) ──
+│   ├── 17-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 18-REVIEWS/              ← REVIEW-US###-*.md
+│   ├── 19-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ├── 20-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   └── 21-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+└── workflows/               ← step-by-step PM workflows (01–22)
+    ├── 02-story-creation/ … 13-api-design/     ← specify a feature
+    ├── 14-decisions/ 15-sprint-plans/ 16-story-plans/  ← decide & plan
+    ├── 18-backend-code/ 19-api-code/ 20-frontend-code/  ← implement
+    ├── 21-implementation-documentation/         ← docs + implementation records
+    ├── 22-pr-and-review/                        ← PR, review, merge
+    └── 23-release/                              ← version bump, changelog, deploy
 ```
 
 Every `src/` and `workflows/` sub-folder carries a `CONTEXT.md` + `CLAUDE.md`; each
@@ -83,18 +87,18 @@ artefacts to a user story** via per-story `PLANNING/` + `IMPLEMENTATION/` templa
 
 | Tier                      | Paths                                                                                               |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Specify** (01–12)       | stories, sprints, DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
-| **Decide & plan** (13–15) | `13-DECISIONS/` (ADRs) → `14-SPRINT-PLANS/` → `15-STORY-PLANS/` (the code master)                   |
-| **Record** (16–20)        | `16-TESTS/`, `17-REVIEWS/`, `18-FINDINGS/`, `19-BUGS/`, `20-REFACTORING/` — per story               |
+| **Specify** (02–13)       | stories, sprints, DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
+| **Decide & plan** (14–16) | `14-DECISIONS/` (ADRs) → `15-SPRINT-PLANS/` → `16-STORY-PLANS/` (the code master)                   |
+| **Record** (17–21)        | `17-TESTS/`, `18-REVIEWS/`, `19-FINDINGS/`, `20-BUGS/`, `21-REFACTORING/` — per story               |
 
-The **story plan (15)** is what a developer codes from; it references its sprint plan
-(14), the decisions (13), and every 01–12 spec. Sprint plans (14) feed the story plans.
+The **story plan (16)** is what a developer codes from; it references its sprint plan
+(15), the decisions (14), and every 02–13 spec. Sprint plans (15) feed the story plans.
 
 ## Workflow gates
 
 - A feature is not ready to code until the specify → decide → plan tiers are complete
-- A PR is not ready to merge until `workflows/20-pr-and-review/` is signed off
-- A release is not ready until `workflows/21-release/` is followed
+- A PR is not ready to merge until `workflows/22-pr-and-review/` is signed off
+- A release is not ready until `workflows/23-release/` is followed
 - Every new directory in any layer must have a `CONTEXT.md` (and a `CLAUDE.md`)
 
 ## Key docs

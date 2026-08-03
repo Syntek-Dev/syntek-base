@@ -148,7 +148,7 @@ and `SERVER-ARCHITECTURE/`) against your actual code — they ship as skeletons 
 | `permission denied` on a script                  | `bash install.sh` sets the executable bits; run it, or `chmod +x` the script. |
 | Docker asks for `sudo`                           | Add yourself to the `docker` group and log back in.                           |
 
-More: `14-TROUBLESHOOTING.md`.
+More: `15-TROUBLESHOOTING.md`.
 
 ---
 
@@ -156,4 +156,4 @@ More: `14-TROUBLESHOOTING.md`.
 
 - Find your way around what you just generated → `07-REPO-TOUR.md`
 - Understand the agent setup → `08-CLAUDE-CODE.md`
-- Build the first feature → `09-FIRST-STORY.md`
+- Build the first feature → `10-FIRST-FEATURE.md`
