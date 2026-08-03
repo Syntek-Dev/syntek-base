@@ -91,9 +91,68 @@ jobs:
           for mobile in false true; do
             cd "$RUNNER_TEMP/gen-$mobile"
             for f in README.md uv.lock .copier-answers.yml pyproject.toml \
+                     VERSION VERSION-HISTORY.md CHANGELOG.md RELEASES.md \
                      how-to/src/CONTRIBUTING.md .github/workflows/claude.yml; do
               if [ ! -e "$f" ]; then
                 echo "::error::INCLUDE_MOBILE=$mobile — $f missing from the generated project"
+                status=1
+              fi
+            done
+          done
+          exit $status
+
+      # A new project owns its version state. It must start at 0.1.0 with a single
+      # entry of its own — never syntek-base's number, and never syntek-base's history.
+      # These four files ship from .copier/ and are moved into place by a _tasks
+      # entry, so this also proves that move ran.
+      - name: A generated project starts fresh at 0.1.0
+        run: |
+          status=0
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+
+            version="$(cat VERSION)"
+            if [ "$version" != "0.1.0" ]; then
+              echo "::error::INCLUDE_MOBILE=$mobile — VERSION is '$version', expected 0.1.0."
+              echo "::error::The template's root version leaked into the generated project."
+              status=1
+            fi
+
+            for f in CHANGELOG.md RELEASES.md VERSION-HISTORY.md; do
+              # One entry only. More means syntek-base's own history came along.
+              entries="$(grep -cE '^## \[|^## v|^\| [0-9]{2}/' "$f" || true)"
+              if [ "$entries" -ne 1 ]; then
+                echo "::error::INCLUDE_MOBILE=$mobile — $f has $entries entries, expected exactly 1."
+                echo "::error::A new project must not inherit the template's release history."
+                status=1
+              fi
+            done
+
+            # The staging directory must be gone — _tasks moves all five files then rmdirs it.
+            if [ -d .copier ]; then
+              echo "::error::INCLUDE_MOBILE=$mobile — .copier/ survived generation: $(ls .copier)"
+              status=1
+            fi
+          done
+          exit $status
+
+      # Seed content for a generated project's sub-packages. Bumping these in
+      # syntek-base would hand every new project a sub-package history describing the
+      # template's development rather than its own. See CONTRIBUTING.md § 1b.
+      - name: Sub-package version files are pinned at 0.1.0
+        run: |
+          status=0
+          cd "$RUNNER_TEMP/gen-true"
+          for pkg in code/src/django code/src/mobile; do
+            for f in CHANGELOG.md VERSION-HISTORY.md RELEASES.md; do
+              [ -e "$pkg/$f" ] || continue
+              if ! grep -q '0\.1\.0' "$pkg/$f"; then
+                echo "::error::$pkg/$f does not mention 0.1.0 — sub-package seeds must stay at 0.1.0"
+                status=1
+              fi
+              entries="$(grep -cE '^## \[|^## v|^\| [0-9]{2}/' "$pkg/$f" || true)"
+              if [ "$entries" -ne 1 ]; then
+                echo "::error::$pkg/$f has $entries entries, expected exactly 1 (seed content)."
                 status=1
               fi
             done

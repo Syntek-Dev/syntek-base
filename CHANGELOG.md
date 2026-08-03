@@ -1,12 +1,31 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.3.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.3.0] - 03/08/2026
+
+### Fixed
+
+- **Every generated project inherited syntek-base's version and release history.** `VERSION`, `CHANGELOG.md`, `RELEASES.md` and `VERSION-HISTORY.md` shipped from the repo root unmodified, so a brand-new project declared itself version `2.1.1` and its changelog documented twenty releases of the template's own development. Verified against the four projects generated before this release: each carried twenty `CHANGELOG.md` entries, twenty `RELEASES.md` sections and twenty `VERSION-HISTORY.md` rows, none of which were theirs.
+
+### Changed
+
+- **Root version state is now seeded fresh from `.copier/`.** The four files are `_exclude`d from generation and shipped from a staging directory that a post-generation task moves into place, exactly as `README.md` already worked. A new project starts at `0.1.0` with one entry describing its own scaffold.
+- **Seeded once, never updated.** `_tasks` run on `copier copy` and never on `copier update`, so a template update can no longer overwrite a project's release history with the template's. The corollary is deliberate and now documented: template improvements to those four files never reach an existing project either — they are the project's own from the moment it exists.
+
+### Added
+
+- **Two CI assertions in `Audit — Template Integrity`.** _A generated project starts fresh at 0.1.0_ checks `VERSION`, requires exactly one entry in each of the three history files, and confirms the `.copier/` staging directory was removed. _Sub-package version files are pinned at 0.1.0_ checks that `code/src/django/` and `code/src/mobile/` version documents remain single-entry seed content.
+- **The rule, written down where it cannot leak downstream.** `CONTRIBUTING.md` § 1b: in this repository a version bump edits exactly six root files and never a versioning document elsewhere in the tree. The sub-package documents are seed content for generated projects and stay pinned at `0.1.0`; bumping them here would hand every new project a sub-package history describing the template's development. Scoped to syntek-base — a generated project has real sub-packages that legitimately release on their own tracks.
+- **`VERSIONING-GUIDE.md` → _Your version history is yours_**, explaining the seed-once mechanism and its trade-off to the people who inherit it.
 
 ---
 

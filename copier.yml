@@ -35,6 +35,18 @@ _exclude:
   - /.github/scripts # template-integrity checks — meaningless once rendered
   - /.github/workflows/audit-template.yml
   - /README.md # the project's README ships from .copier/README.md (see _tasks)
+  # Root version state belongs to syntek-base, not to your project. A generated
+  # project starts at 0.1.0 with an empty history, seeded from .copier/ by _tasks —
+  # otherwise every new project would claim the template's version number and
+  # inherit twenty entries of the template's own development as its changelog.
+  #
+  # Shipping via .copier/ also makes them seed-once: _tasks run on `copy` and never
+  # on `update`, so `copier update` can never overwrite a project's release history
+  # with the template's. That is the same mechanism README.md already relies on.
+  - /VERSION
+  - /VERSION-HISTORY.md
+  - /CHANGELOG.md
+  - /RELEASES.md
   # Update migrations are read from the template clone, never rendered into a
   # project — a generated project has no use for the migrations that produced it.
   - /.copier/migrations
@@ -402,9 +414,17 @@ _migrations:
 # ── Post-generation ──────────────────────────────────────────────────────────
 
 _tasks:
-  # The project's own README ships from .copier/ because the repo root README
-  # belongs to syntek-base and is excluded above.
-  - command: mv .copier/README.md README.md && rmdir .copier
+  # The project's README and its root version state ship from .copier/, because the
+  # repo-root originals belong to syntek-base and are excluded above. Moving them
+  # here — on `copy` only — is what makes them seed-once: `copier update` never runs
+  # _tasks, so it can never overwrite a project's changelog with the template's.
+  - command: >-
+      mv .copier/README.md README.md &&
+      mv .copier/VERSION VERSION &&
+      mv .copier/VERSION-HISTORY.md VERSION-HISTORY.md &&
+      mv .copier/CHANGELOG.md CHANGELOG.md &&
+      mv .copier/RELEASES.md RELEASES.md &&
+      rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 
   # The template gitignores uv.lock so a wrongly-named lock can never be committed

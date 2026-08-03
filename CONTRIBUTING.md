@@ -68,13 +68,37 @@ everything generated from it.
 ```bash
 uvx copier copy --trust --defaults \
   --data PROJECT_NAME="Test Project" --data ORG_NAME="Test Org" \
+  --data PROJECT_DESCRIPTION="A test project for checking that the template renders end to end." \
   --data DEVELOPER_NAME="You" --data DEVELOPER_EMAIL="you@example.com" \
   --data DATE="01/01/2027" \
   . /tmp/syntek-check
 
 # no token should survive
 grep -rIo '<%[A-Z_]*%>' /tmp/syntek-check --exclude-dir=.git | wc -l   # must be 0
+
+# a new project starts at 0.1.0 with its own empty history, not ours
+cat /tmp/syntek-check/VERSION                                          # must be 0.1.0
+grep -c '^## \[' /tmp/syntek-check/CHANGELOG.md                        # must be 1
 ```
+
+### 1b. Never touch a versioning document outside the root
+
+**In this repository, a version bump edits exactly six files, all at the root:** `VERSION`,
+`VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, the `README.md` badge, and the `CONTEXT.md`
+repo-state line. Nothing else, ever.
+
+The versioning documents under `code/src/django/` and `code/src/mobile/` are **seed content**.
+They ship to every generated project as that project's starting point and must stay pinned at
+`0.1.0` with their single scaffold entry. Bumping them here would hand a brand-new project a
+sub-package history describing the template's development instead of its own.
+
+The same applies in reverse to the four root files: they are excluded from generation and shipped
+fresh from `.copier/`, so editing them changes syntek-base's history and nothing downstream. That
+is deliberate — see `project-management/docs/VERSIONING-GUIDE.md` → _Your version history is
+yours_.
+
+> This is a syntek-base rule, not a rule for projects generated from it. A generated project has
+> real sub-packages that legitimately release on their own tracks.
 
 ### 2. Respect the delimiter contract
 

@@ -59,6 +59,12 @@ All of the following must be updated. Missing any one leaves the project inconsi
 
 Do **not** update sub-package version files as part of a root bump — they are independent.
 
+**Only the root files above move on a root bump. Never a versioning document anywhere else in
+the tree.** A sub-package's `CHANGELOG.md`, `VERSION-HISTORY.md` and `RELEASES.md` move only when
+that sub-package itself changes, on its own track, in its own commit. Sweeping them along with a
+root bump is the easy mistake: nothing fails, and the sub-package's history silently becomes a
+mirror of the root's, which is precisely the information the two-tier scheme exists to keep apart.
+
 ---
 
 ## Sub-Package Versioning
@@ -135,3 +141,18 @@ version status
 
 Root project starts at `0.1.0`. Sub-packages start at `0.1.0` independently.
 Do not back-fill version history. Current branch is the starting point.
+
+### Your version history is yours
+
+`VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md` and `RELEASES.md` at the root are **seeded once
+at generation and never touched again by the template**. They arrive at `0.1.0` with a single
+entry describing the scaffold, and everything after that is your project's own record.
+
+The mechanism: the template ships them from a `.copier/` staging directory and moves them into
+place with a post-generation task. Those tasks run on `copier copy` and never on `copier update`,
+so a template update cannot overwrite your release history with the template's — the same
+arrangement `README.md` uses, and for the same reason.
+
+A corollary worth knowing: because updates never touch these four files, template improvements to
+them never reach you either. That is the intended trade. They are yours from the moment the
+project exists.

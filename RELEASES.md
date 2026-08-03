@@ -1,9 +1,70 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.3.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.3.0 — 03/08/2026
+
+**Status:** Minor release — a generated project's version history is its own now. Existing
+projects need a one-time manual correction; see below.
+
+### What was wrong
+
+`VERSION`, `CHANGELOG.md`, `RELEASES.md` and `VERSION-HISTORY.md` shipped from the repository root
+unmodified. So every project generated from this template opened life declaring itself **version
+2.1.1**, with a changelog documenting twenty releases of syntek-base's own development and not one
+line about itself.
+
+This is not hypothetical. The four projects generated before this release each carried twenty
+`CHANGELOG.md` entries, twenty `RELEASES.md` sections and twenty `VERSION-HISTORY.md` rows,
+none of them theirs.
+
+### What changed
+
+Those four files now ship from the `.copier/` staging directory and are moved into place by a
+post-generation task — the arrangement `README.md` has always used. A new project starts at:
+
+```text
+VERSION              0.1.0
+CHANGELOG.md         one entry: [0.1.0] — generated from the base template
+RELEASES.md          one section: v0.1.0 — initial scaffold, nothing built yet
+VERSION-HISTORY.md   one row
+```
+
+**And they are seeded once, never updated.** Post-generation tasks run on `copier copy` and never
+on `copier update`, so a template update cannot overwrite your release history with ours. The
+trade is deliberate and worth stating: template improvements to those four files will never reach
+you either. They are yours from the moment the project exists.
+
+### If you already have a generated project
+
+Your root version files are wrong and this release cannot fix them — updates deliberately do not
+touch them, which is the whole point. A one-time correction, once:
+
+```bash
+printf '0.1.0\n' > VERSION
+```
+
+Then empty `CHANGELOG.md`, `RELEASES.md` and `VERSION-HISTORY.md` of syntek-base's history and
+start your own. Copy the shape from a freshly generated project if you want the exact format. Do
+this before your first real release, or your first release notes will sit beneath twenty entries
+about a template.
+
+### The rule behind it
+
+`CONTRIBUTING.md` § 1b, which never ships downstream: in syntek-base a version bump edits exactly
+six root files and **never a versioning document anywhere else in the tree**. The documents under
+`code/src/django/` and `code/src/mobile/` are seed content for generated projects and stay pinned
+at `0.1.0` — bumping them here would hand every new project a sub-package history describing the
+template's development rather than its own.
+
+Two CI assertions now enforce it, because a rule nothing checks is a rule that rots: one proves a
+generated project starts at `0.1.0` with single-entry history files and no leftover staging
+directory, the other proves the sub-package seeds stay single-entry.
 
 ---
 
