@@ -54,16 +54,43 @@ model: opus
 ---
 ```
 
-Then: **take the next free number — append, never renumber an existing workflow.** Around a
-hundred files cite these paths, including agent definitions, so a stale number is a silent
-routing failure. The numbers are stable identifiers and a shelf position, not a sequence: you
-never run `01` through `11`.
+Then: **take the next free number — append.** Around a hundred files cite these paths, including
+agent definitions, so a stale number is a silent routing failure.
 
-Group it instead by editing the family tables in the layer's `workflows/CONTEXT.md`, which cost
-nothing to reorder — `code/workflows/` runs build → verify → diagnose, `how-to/workflows/` runs
-set up → run → diagnose → author. Then register it in that `CONTEXT.md` and the root
-`REFERENCES.md`, and — if it pairs with a workflow in another layer — add the row to the
-cross-layer pairing table in `REFERENCES.md`.
+The three trees do not treat numbers the same way, and the difference matters:
+
+| Tree                            | Numbers are…                           | Inserting mid-sequence                                                  |
+| ------------------------------- | -------------------------------------- | ----------------------------------------------------------------------- |
+| `code/workflows/`               | stable identifiers, a shelf position   | Never. Append and regroup via the family tables                         |
+| `how-to/workflows/`             | stable identifiers, a shelf position   | Never. Append and regroup via the family tables                         |
+| `project-management/workflows/` | a **running order** — `02` before `03` | Legitimate, but renumbers everything after it and every reference to it |
+| `project-management/src/`       | **frozen — append only**               | **Never, under any circumstances.** See below                           |
+
+For the first two, group by editing the family tables in the layer's `workflows/CONTEXT.md`, which
+cost nothing to reorder — `code/workflows/` runs build → verify → diagnose, `how-to/workflows/`
+runs set up → run → diagnose → author.
+
+### Never renumber a `src/` folder
+
+`project-management/workflows/` folders are documentation the template owns end to end, so
+renumbering one is a reference sweep and the worst case is a broken link.
+
+`project-management/src/NN-…/` folders hold **artefacts a developer wrote**. Renumbering one is a
+schema migration, and **Copier cannot perform it**: on `copier update` it moves the scaffolding it
+owns to the new path and deletes the old, while every story, ADR and sprint record stays behind in
+a folder nothing references. No conflict, no error, update reports success, work silently
+orphaned.
+
+So a new artefact folder takes the next free number **at the end**, even where that breaks the
+workflow↔`src` mirroring. The mirroring is a convenience; somebody's work is not.
+
+If a release genuinely must move such a directory, it ships a migration in the same commit —
+`copier.yml` → `_migrations`, with the script in `.copier/migrations/`. Verify it with
+`code/src/scripts/audits/template-orphans.sh`.
+
+Then register the workflow in its `CONTEXT.md` and the root `REFERENCES.md`, and — if it pairs
+with a workflow in another layer — add the row to the cross-layer pairing table in
+`REFERENCES.md`.
 
 Or ask the `scaffold` agent, which exists for exactly this.
 

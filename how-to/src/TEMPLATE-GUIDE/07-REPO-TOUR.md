@@ -61,13 +61,13 @@ code/
 
 **`code/src/scripts/` is the interface to everything.** Five groups:
 
-| Group          | Examples                                                |
-| -------------- | ------------------------------------------------------- |
-| `development/` | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh` |
-| `database/`    | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh` |
-| `tests/`       | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh` |
-| `syntax/`      | `lint.sh`, `check.sh`, `format.sh`                      |
-| `audits/`      | `cloc.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`   |
+| Group          | Examples                                                                      |
+| -------------- | ----------------------------------------------------------------------------- |
+| `development/` | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `template-update.sh` |
+| `database/`    | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh`                       |
+| `tests/`       | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh`                       |
+| `syntax/`      | `lint.sh`, `check.sh`, `format.sh`                                            |
+| `audits/`      | `cloc.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`  |
 
 Every script takes `--help`. Never run `python`, `pytest`, `pnpm` or `docker` directly — the
 scripts handle the container, the environment and the compose overrides for your branch.

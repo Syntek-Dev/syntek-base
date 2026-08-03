@@ -1,0 +1,41 @@
+name: Audit — Template Orphans
+
+# Catches artefacts a template update stranded. Copier moves the scaffolding it owns
+# and deletes the old path; developer-authored files were never template files, so
+# they stay behind — silently, with no conflict and no error. Runs on any change to
+# the PM artefact tree, which is where the damage lands.
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "project-management/src/**"
+      - ".copier-answers.yml"
+      - "code/src/scripts/audits/template-orphans.sh"
+      - ".github/workflows/audit-template-orphans.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "project-management/src/**"
+      - ".copier-answers.yml"
+      - "code/src/scripts/audits/template-orphans.sh"
+      - ".github/workflows/audit-template-orphans.yml"
+  workflow_dispatch:
+
+jobs:
+  template-orphans:
+    name: Template orphan audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run template orphan audit
+        run: bash code/src/scripts/audits/template-orphans.sh --output md
+
+      - name: Upload orphan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-orphan-report
+          path: code/src/scripts/audits/reports/template-orphans.md
+          if-no-files-found: ignore

@@ -1,6 +1,6 @@
 # Version History — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.1.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ---------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 03/08/2026 | 2.2.0   | Make template updates safe on a project with real work in it: freeze `project-management/src/` numbering (a data store, not a procedure), add `template-orphans.sh` to detect artefacts a renumbering stranded, add `template-update.sh` to predict them against a scratch copy before applying, and add `copier.yml` `_migrations` with a v2.0.0 entry that moves stranded artefacts into the new numbering.                                  |
 | 03/08/2026 | 2.1.1   | Teach the template-integrity CI probe and the PR-template snippet about `PROJECT_DESCRIPTION`, which has no default and so broke both `copier copy --defaults` invocations in 2.1.0. Both files are `_exclude`d, so no generated project is affected.                                                                                                                                                                                          |
 | 03/08/2026 | 2.1.0   | Add the `PROJECT_DESCRIPTION` Copier question and open the root `CONTEXT.md` with it; make describing the project and running `/scale-planning` the two passes that precede the first feature; read `GAPS.md`/`DEFERRED.md` at the discovery gate (`/wayfinder suggest` + a closes/blocks/unrelated triage, claimed on the map and closed only by workflow `21`); and settle the code-comment standard on why-only with no outward references. |
 | 03/08/2026 | 2.0.0   | **Breaking.** Restructure the PM layer around a per-story planning cadence: add the `01-feature` wayfinder discovery gate and `17-consolidate-design-work`, renumber every workflow (`01`–`22` → `02`–`23`) and `src/` folder (`01`–`20` → `02`–`21`), give the design folders a three-stage IDEAS → CONSOLIDATED → IMPLEMENTATION shape, and split `SPRINT-PLANNING-GUIDE.md` into `PLANNING-GUIDE.md` + `planning/`.                         |

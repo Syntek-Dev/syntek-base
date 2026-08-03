@@ -1,12 +1,32 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.1.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.2.0] - 03/08/2026
+
+### Added
+
+- **`code/src/scripts/audits/template-orphans.sh` — detects artefacts a template update stranded.** When a release renumbers or moves a directory, Copier relocates the scaffolding it owns and deletes the old path, but developer-authored files were never template files, so they stay behind. No conflict is raised, nothing fails, and the update reports success. Every template-owned directory under `project-management/src/` ships a `CONTEXT.md`, which makes the signature exact: **content present, `CONTEXT.md` absent**. Wired into CI as `Audit — Template Orphans`.
+- **`code/src/scripts/development/template-update.sh` — preview an update before it touches anything.** Clones the project to a scratch directory, runs the update against the copy, and reports what changes, what is deleted, what conflicts, and what would be orphaned. Refuses to `--apply` when orphans are predicted unless `--force-orphans` is given. This is `14-UPDATING.md`'s "diff in a scratch directory first" advice turned into one command, because prose nobody executes prevents nothing.
+- **`copier.yml` → `_migrations`, with a v2.0.0 entry.** Copier has supported migrations since 9.0.0 and this template required 9.0.0 without using them. The new `.copier/migrations/v2.0.0-renumber-src.sh` moves developer artefacts out of the twenty folders that 2.0.0 renumbered and into their replacements, preserving sub-paths, never overwriting on a name collision, and idempotent on re-run. Anyone still on 1.x now gets their stories and ADRs carried across instead of silently stranded.
+
+### Changed
+
+- **`project-management/src/` folder numbers are frozen — append only.** The distinction that was missing: a `workflows/` folder is a **procedure**, wholly owned by the template, so renumbering it is a reference sweep whose worst case is a broken link. A `src/` folder is a **data store** holding work the template has never seen, so renumbering it is a schema migration Copier cannot perform. A new artefact folder now takes the next free number at the end even where that breaks the workflow↔`src` mirroring — the mirroring is a convenience, the developer's work is not. Recorded in `project-management/src/CONTEXT.md`, `src/CLAUDE.md`, `workflows/CONTEXT.md` and `workflows/CLAUDE.md`.
+- **Any release that must move a directory holding developer artefacts ships a migration in the same commit.** Stated in `copier.yml` beside `_migrations` and in `12-EXTENDING.md`.
+
+### Fixed
+
+- **`12-EXTENDING.md` told you PM workflow numbers were not a sequence.** They are — that layer's numbers are a running order, unlike `code/workflows/` and `how-to/workflows/`, whose numbers are stable identifiers. The guide now distinguishes all four trees, including the frozen `src/` rule.
+- **`14-UPDATING.md` and `15-TROUBLESHOOTING.md` documented conflicts but not the silent failure.** Both now lead with it, including a "my stories vanished after an update" entry that names the audit and the recovery.
 
 ---
 

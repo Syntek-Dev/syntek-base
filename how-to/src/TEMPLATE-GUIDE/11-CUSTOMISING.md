@@ -168,6 +168,13 @@ Two tactics:
 - **Put project-specific rules in project-specific files.** A new `code/docs/OUR-CONVENTIONS.md`
   never conflicts; edits to `code/docs/CODING-PRINCIPLES.md` do.
 
+**One thing that is not about conflicts at all: never renumber a
+`project-management/src/NN-…/` folder.** Those hold your artefacts, and Copier only tracks files
+it generated — so on the next update it moves its own scaffolding to wherever the template says
+and leaves your stories and ADRs behind, with no conflict and no warning. Conflicts are noisy and
+survivable; this one is silent. `code/src/scripts/audits/template-orphans.sh` detects it, and
+`template-update.sh` predicts it before you apply anything (`14-UPDATING.md`).
+
 If you have diverged so far that updates are pure conflict, that is a legitimate end state —
 delete `.copier-answers.yml` and treat it as an ordinary repository.
 

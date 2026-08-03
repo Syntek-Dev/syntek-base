@@ -43,6 +43,13 @@ folders that run in three tiers: specify (02–13), decide & plan (14–16), rec
   design is the audit trail of what each story asked for — never rewritten. Corrections go to
   `CONSOLIDATED-IDEAS/`, which is also **what gets built**: an artefact traced back to a
   stage-1 design instead of the consolidated one reintroduces the drift `17` removed.
+- **The `NN-` numbers here are frozen — append only.** These folders hold artefacts a developer
+  wrote, which the template has never seen. Renumbering one is a schema migration Copier cannot
+  perform: on update it moves its own scaffolding to the new path and leaves every
+  developer-created file behind, with no conflict and no error. A new artefact folder takes the
+  next free number at the end, even where that breaks the workflow↔`src` mirroring — that
+  mirroring is a convenience, the developer's work is not. Enforced by
+  `code/src/scripts/audits/template-orphans.sh`.
 - **Every new directory needs a `CONTEXT.md` and a `CLAUDE.md`.**
 - Instructional `.md` under `src/` (the `CONTEXT.md`/`CLAUDE.md` files) stay ≤ 300 code
   lines; the artefacts and templates themselves are exempt.

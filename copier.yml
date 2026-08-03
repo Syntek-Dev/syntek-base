@@ -35,6 +35,9 @@ _exclude:
   - /.github/scripts # template-integrity checks — meaningless once rendered
   - /.github/workflows/audit-template.yml
   - /README.md # the project's README ships from .copier/README.md (see _tasks)
+  # Update migrations are read from the template clone, never rendered into a
+  # project — a generated project has no use for the migrations that produced it.
+  - /.copier/migrations
   - /LICENSE
   - /SECURITY.md
   - /CONTRIBUTING.md
@@ -373,6 +376,28 @@ DATE:
     <: if DATE | length != 10 or DATE[2] != '/' or DATE[5] != '/' :>
     Use DD/MM/YYYY.
     <: endif :>
+
+# ── Migrations ───────────────────────────────────────────────────────────────
+#
+# Run on `copier update` only, never on `copier copy`, when the update crosses the
+# declared version. They exist for the one thing Copier's merge cannot do on its
+# own: move files the DEVELOPER wrote. Copier only tracks what it generated, so a
+# renumbered or renamed directory takes its scaffolding to the new path and leaves
+# every hand-written artefact behind — with no conflict and no error.
+#
+# The rule this implies: any release that moves a directory holding developer
+# artefacts ships a migration in the same commit, or it silently eats work. The
+# prevention is the frozen-numbering rule in project-management/src/CONTEXT.md;
+# this is the cure for the one release that predated it.
+#
+# Scripts live in .copier/migrations/ and are read from the template clone
+# (_copier_conf.src_path), which is why they are excluded from generation above —
+# a project has no use for the migrations that produced it.
+
+_migrations:
+  - version: v2.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v2.0.0-renumber-src.sh"
+    when: "<% _stage == 'after' %>"
 
 # ── Post-generation ──────────────────────────────────────────────────────────
 

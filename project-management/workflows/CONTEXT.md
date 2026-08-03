@@ -185,3 +185,24 @@ where numbers are stable identifiers and are never reused — **these numbers ar
 renumbering everything after it and sweeping every reference, including the agent definitions
 in `.claude/agents/`, where a stale number is a silent routing failure. Do it deliberately or
 not at all.
+
+### …but `src/` numbers are frozen
+
+**This applies to workflow folders only.** A workflow folder is a **procedure** — pure
+documentation, wholly owned by the template, so renumbering it is a reference sweep and the
+worst case is a broken link.
+
+A `project-management/src/NN-…/` folder is a **data store**. It holds artefacts a developer
+wrote — stories, ADRs, sprint records — that the template has never seen. Renumbering one is a
+**schema migration, and Copier cannot perform it**: on `copier update` it moves the scaffolding
+it owns to the new path and deletes the old, while every file the developer created stays
+behind in a folder nothing points at any more. No conflict is raised. Nothing fails. The work is
+simply orphaned, and the more of it there is, the more is lost.
+
+So the `src/` numbers are **frozen — append only**, on the same rule `code/workflows/` and
+`how-to/workflows/` already follow. If a new artefact folder is needed it takes the next free
+number at the end, whatever the workflow order says. The workflow↔`src` mirroring is a
+convenience, not an invariant; when the two disagree, the mirroring gives way, because one side
+is documentation and the other is somebody's work.
+
+Enforced by `code/src/scripts/audits/template-orphans.sh`.

@@ -58,6 +58,12 @@ security, QA, SEO and API gates, into code, documentation, PR, and release.
   `how-to/workflows/`, inserting one mid-sequence means renumbering everything after it
   and sweeping every reference — including `.claude/agents/`, where a stale number is a
   silent routing failure.
+- **Never renumber a `project-management/src/NN-…/` folder to match.** Workflow folders are
+  documentation the template owns; `src/` folders hold artefacts a developer wrote. Copier
+  cannot move those on update — it relocates its own scaffolding and silently strands the
+  developer's files in a folder nothing references. `src/` numbers are **frozen, append only**;
+  when the mirroring breaks, the mirroring gives way (`CONTEXT.md` → _…but `src/` numbers are
+  frozen_).
 - British English throughout; dates DD/MM/YYYY.
 
 ## Output & naming

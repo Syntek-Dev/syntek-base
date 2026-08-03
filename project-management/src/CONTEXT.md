@@ -78,6 +78,29 @@ Every folder carries a `CONTEXT.md` + `CLAUDE.md`; the 08–15 folders scaffold 
 
 ---
 
+## The numbers here are frozen
+
+**Append only. Never renumber a folder in this tree.**
+
+`project-management/workflows/` numbers are a running order, and inserting one mid-sequence
+legitimately renumbers the rest — those folders are documentation the template owns end to end.
+These folders are different in kind: they hold **artefacts a developer wrote**, which the
+template has never seen.
+
+Renumbering one is therefore a **schema migration, and Copier cannot perform it.** On
+`copier update` it moves the scaffolding it owns to the new path and deletes the old, while
+every story, ADR and sprint record the developer created stays behind in a folder nothing
+references any more. No conflict is raised, nothing fails, and the update reports success. The
+work is silently orphaned — and the longer the project has run, the more of it goes.
+
+So a new artefact folder takes the **next free number at the end**, even where that breaks the
+workflow↔`src` mirroring. The mirroring is a convenience; the developer's work is not.
+
+Enforced by `code/src/scripts/audits/template-orphans.sh`, which fails on any artefact sitting
+in a directory the current template no longer defines.
+
+---
+
 ## Naming Conventions
 
 | Pattern                                                                 | Directory                                                                                            |

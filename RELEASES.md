@@ -1,9 +1,94 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.1.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.2.0 — 03/08/2026
+
+**Status:** Minor release — makes template updates safe to run on a project that has real work in
+it. If you are on 1.x, read this before updating.
+
+### The failure this fixes
+
+Conflicts are the loud failure, and they were never the problem: markers in a file, you resolve
+them, you move on. The dangerous one is silent, and v2.0.0 shipped it.
+
+Copier only knows about files it generated. When a release renumbers a directory, it moves its own
+scaffolding to the new path and deletes the old — and every story, ADR and sprint record **you**
+wrote stays exactly where it was. No conflict. No error. The update reports success.
+
+What you are left with:
+
+```text
+project-management/src/
+├── 01-STORIES/          ← your US001.md, US002.md, and nothing else.
+│                          No CONTEXT.md. Nothing references this folder any more.
+└── 02-STORIES/          ← CONTEXT.md, CLAUDE.md, US000-TEMPLATE.md.
+                           Every workflow and agent now looks here. It is empty.
+```
+
+This was reproduced, not theorised: a v1.2.0 project with two stories, an ADR, a sprint record, a
+Django app and a local `.claude/CLAUDE.md` edit, updated to v2.1.1. The app and the local edit
+merged fine. The four PM artefacts were stranded, with zero conflicts reported.
+
+### Four layers, in order
+
+**1. The numbers stopped moving.** `project-management/src/` folder numbers are now frozen, append
+only. The distinction that was missing: a `workflows/` folder is a **procedure** the template owns
+end to end, so renumbering it is a reference sweep. A `src/` folder is a **data store** holding
+work the template has never seen, so renumbering it is a schema migration — and Copier cannot
+perform one. A new artefact folder now takes the next free number at the end, even where that
+breaks the workflow↔`src` mirroring. The mirroring is a convenience; your work is not.
+
+**2. An audit that finds them.**
+
+```bash
+bash code/src/scripts/audits/template-orphans.sh
+```
+
+Every template-owned directory ships a `CONTEXT.md`, so the signature is exact — content present,
+`CONTEXT.md` absent. Nothing else produces that. It runs in CI as `Audit — Template Orphans`.
+
+**3. A preview that predicts them.**
+
+```bash
+bash code/src/scripts/development/template-update.sh
+```
+
+Clones your project to a scratch directory, runs the update against the copy, and reports what
+changes, what is deleted, what conflicts, and what would be orphaned — with your project
+untouched. `--apply` when you are satisfied; it refuses while orphans are predicted.
+
+`14-UPDATING.md` has advised diffing in a scratch directory since it was written. Prose nobody
+executes prevents nothing, so it is now one command.
+
+**4. A migration that rescues them.** `copier.yml` gained `_migrations` — a mechanism Copier has
+had since 9.0.0, which this template required and never used. The v2.0.0 entry moves your
+artefacts out of the twenty renumbered folders into their replacements: sub-paths preserved, never
+overwriting on a name collision, idempotent if re-run.
+
+### Updating from 1.x
+
+The 2.0.0 notes told you `copier update` would not apply cleanly and to plan it as a piece of
+work. That is now much less true — the migration does the folder move for you. Still:
+
+```bash
+bash code/src/scripts/development/template-update.sh --ref v2.2.0 \
+  -- --data PROJECT_DESCRIPTION="..." --data SPRINT_CAPACITY_SP=11 --data SPRINT_GRACE_SP=13
+```
+
+Preview first, read what it says, then `--apply`. Afterwards run the orphan audit and confirm it
+is clean before you commit.
+
+### The general rule, now written down
+
+**Any release that moves a directory holding developer artefacts ships a migration in the same
+commit, or it silently eats work.** That is in `copier.yml` beside `_migrations` and in
+`12-EXTENDING.md`, because the next person to renumber something will not have this context.
 
 ---
 

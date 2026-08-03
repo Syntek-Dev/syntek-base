@@ -248,6 +248,37 @@ The project predates Copier (generated with the old `setup.sh`), or the file was
 Recreate it by hand from a fresh generation's format, filling in your values with `_src_path` and
 `_commit`, then updates will work. See `14-UPDATING.md`.
 
+### The update wants an answer and will not proceed
+
+```text
+Interactive session required: Use `--defaults` and/or `--data`/`--data-file`
+```
+
+A release added a question with no default, and Copier will not guess. Supply it:
+
+```bash
+bash code/src/scripts/development/template-update.sh -- --data KEY=value
+```
+
+The release notes name any such question. `PROJECT_DESCRIPTION` in v2.1.0 is the current example.
+
+### My stories/ADRs vanished after an update
+
+They have not vanished — they are in the folder they were always in, which the template no longer
+uses. A release that renumbered a directory took its own scaffolding to the new path and left your
+files behind, because Copier only tracks files it generated. Nothing warned you, because from
+Copier's point of view nothing went wrong.
+
+```bash
+bash code/src/scripts/audits/template-orphans.sh
+```
+
+That lists every stranded file. Move each into the folder that replaced it — check
+`project-management/src/CONTEXT.md` for the current numbering — then re-run until clean.
+
+To not be here again: preview updates with `template-update.sh`, which runs this same audit
+against a throwaway copy and refuses to apply when it finds anything.
+
 ---
 
 ## Still stuck
