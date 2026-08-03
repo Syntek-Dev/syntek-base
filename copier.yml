@@ -411,6 +411,17 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v2.0.0-renumber-src.sh"
     when: "<% _stage == 'after' %>"
 
+  # .copier/ is a staging directory, not project content. _tasks empty it and remove
+  # it — but _tasks run on `copy` only, so on an `update` the staged seeds land in the
+  # project and simply sit there, looking like version files a developer might edit.
+  #
+  # Deliberately NOT version-scoped: it must hold for every future release that stages
+  # a file this way, not just the one that introduced the problem. `rm -rf` on a
+  # directory that is normally absent is a no-op, so running it on every update costs
+  # nothing.
+  - command: rm -rf .copier
+    when: "<% _stage == 'after' %>"
+
 # ── Post-generation ──────────────────────────────────────────────────────────
 
 _tasks:

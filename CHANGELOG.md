@@ -1,12 +1,23 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.3.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.3.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.3.1] - 03/08/2026
+
+### Fixed
+
+- **`.copier/` survived an update, leaving four stray staging files in the project.** 2.3.0 began shipping the root version files from a `.copier/` staging directory that a post-generation task moves into place and removes. Those tasks run on `copier copy` and never on `copier update` — which is what makes the seeds seed-once, and is therefore the point — but it also meant an updating project received `.copier/CHANGELOG.md`, `.copier/RELEASES.md`, `.copier/VERSION` and `.copier/VERSION-HISTORY.md` and simply kept them. Harmless to the build, actively confusing to read: four files that look like the project's version state, sitting next to the real ones.
+- **Fixed with a `_migrations` entry that removes `.copier/` after any update.** Deliberately not version-scoped: it must hold for every future release that stages a file this way, not only the one that introduced the problem. `rm -rf` on a normally-absent directory is a no-op, so running it on every update costs nothing.
+
+Caught by updating a real project rather than by review — the same lesson as 2.1.1, which is that a mechanism split across `copy` and `update` needs exercising on both paths before it ships.
 
 ---
 

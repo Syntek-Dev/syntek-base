@@ -1,9 +1,53 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.3.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.3.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.3.1 — 03/08/2026
+
+**Status:** Patch — cleans up after 2.3.0 on projects that update. Take this with 2.3.0 rather
+than instead of it.
+
+### What 2.3.0 left behind
+
+2.3.0 started shipping the root version files from a `.copier/` staging directory, moved into
+place by a post-generation task. Those tasks run on `copier copy` and never on `copier update` —
+which is exactly what makes the seeds seed-once, and is the entire point of the arrangement.
+
+The consequence nobody looked for: a project that **updates** receives the staged files and keeps
+them. You end up with
+
+```text
+.copier/
+├── CHANGELOG.md
+├── RELEASES.md
+├── VERSION
+└── VERSION-HISTORY.md
+```
+
+sitting in your project. Harmless to the build, and actively confusing to read — four files that
+look like your version state, next to the four that actually are.
+
+### The fix
+
+A `_migrations` entry that removes `.copier/` after any update. It is deliberately **not**
+version-scoped: the rule needs to hold for every future release that stages a file this way, not
+just the one that introduced the problem. Removing a directory that is normally absent is a no-op,
+so running it on every update costs nothing.
+
+### How this was found
+
+By updating a real project and reading the result, not by reviewing the diff. That is twice now —
+2.1.1 was the same shape of mistake, a mechanism that behaved differently on `copy` than on
+`update` and was only exercised on one path.
+
+The lesson, which is now the practice: **anything split across `copy` and `update` gets tested on
+both before it ships.** `template-update.sh` exists precisely to make the second path cheap to
+check.
 
 ---
 

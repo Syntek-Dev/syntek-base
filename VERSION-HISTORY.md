@@ -1,6 +1,6 @@
 # Version History — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.3.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.3.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All version increments are recorded here with a one-line technical summary.
@@ -9,6 +9,7 @@ All version increments are recorded here with a one-line technical summary.
 
 | Date       | Version | Description                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ---------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 03/08/2026 | 2.3.1   | Remove the `.copier/` staging directory after any update via an unversioned `_migrations` entry — 2.3.0's post-generation move runs on `copy` only, so updating projects kept four stray staged version files.                                                                                                                                                                                                                                 |
 | 03/08/2026 | 2.3.0   | Seed a generated project's root version state fresh from `.copier/` at 0.1.0 instead of shipping syntek-base's own `VERSION` and twenty entries of its history; make those four files seed-once so `copier update` can never overwrite a project's release notes; add the never-bump-outside-root rule to `CONTRIBUTING.md` with two CI assertions enforcing it.                                                                               |
 | 03/08/2026 | 2.2.0   | Make template updates safe on a project with real work in it: freeze `project-management/src/` numbering (a data store, not a procedure), add `template-orphans.sh` to detect artefacts a renumbering stranded, add `template-update.sh` to predict them against a scratch copy before applying, and add `copier.yml` `_migrations` with a v2.0.0 entry that moves stranded artefacts into the new numbering.                                  |
 | 03/08/2026 | 2.1.1   | Teach the template-integrity CI probe and the PR-template snippet about `PROJECT_DESCRIPTION`, which has no default and so broke both `copier copy --defaults` invocations in 2.1.0. Both files are `_exclude`d, so no generated project is affected.                                                                                                                                                                                          |
