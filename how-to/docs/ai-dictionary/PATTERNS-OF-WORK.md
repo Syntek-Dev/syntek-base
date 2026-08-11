@@ -101,8 +101,9 @@ misalignment in a more durable form.
 ## Grilling
 
 **Grilling** is a technique for developing a _design concept_ with an agent: the agent
-interviews the user Socratically, one decision at a time, proposing a recommended answer for
-each. It slows the rush to a finished plan — no _handoff artefact_ is written until the
+interviews the user Socratically in rounds — every question whose prerequisites are already
+settled, asked together, each proposing a recommended answer — and the answers unblock the
+next round. It slows the rush to a finished plan — no _handoff artefact_ is written until the
 concept stabilises.
 
 **Why it matters:** Asked to write a _spec_ from a two-line prompt, an agent picks defaults

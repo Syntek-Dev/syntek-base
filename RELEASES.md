@@ -1,11 +1,52 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.12.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.13.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.13.0 — 11/08/2026
+
+**Status:** Minor — one new hook and a deny-list. Both are Claude Code configuration; no
+application behaviour changes.
+
+### A warning that arrives while it can still be acted on
+
+This template disables auto-compaction and replaces it with `/handoff`: the session writes a
+handoff document, stops, and you resume in a fresh window from the file. That has been the rule
+since the skill was added, and it was hooked to `PreCompact`.
+
+`PreCompact` is too late. By the time compaction fires, the window is already spent — so the
+handoff gets written in the least context the session will ever have, about work nobody can now
+re-read. It is the worst handoff of the session, produced at exactly the moment the best one is
+needed.
+
+The model also cannot read its own context usage, which is why this could never be a rule on its
+own. A `UserPromptSubmit` hook now measures it:
+
+- **50% — advise**, once per session. Finish the step in flight, start no new scoped work, name the
+  stopping point, offer `/handoff`.
+- **75% — insist**, on every prompt. Write the handoff and stop the turn.
+
+The split is the same one `pre-compact-handoff.sh` already used: a hook cannot invoke a skill or
+stop a turn, so the script measures and reminds, and `.claude/CLAUDE.md` § 2.6 carries the
+behaviour. Both halves are needed; neither works alone.
+
+Two details worth knowing. The window size is a constant — nothing in the transcript reports it —
+defaulting to this project's observed 1M and overridable with `CLAUDE_CONTEXT_WINDOW` for a 200k
+plan, with both thresholds overridable too. And the hook **always exits 0**: a miscounted token
+must never block your prompt, because a warning system that can refuse input is worse than none.
+
+### `.env` files are now unreadable to the agent
+
+Every variant — `.env`, `.env.dev`, `.env.test`, `.env.prod`, `.env.staging`, `.env.local`,
+`.env.probe`, `.env.backup`, `.env.bak*` and the long-form spellings — denied for both `Read` and
+`Bash`.
+
+The `.example` templates stay explicitly allowed, and that is the useful half: an agent needs to
+know **which** variables exist to wire a feature. It has never needed their values.
 
 ## v2.12.0 — 11/08/2026
 

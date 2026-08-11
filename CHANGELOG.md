@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.12.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.13.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.13.0] - 11/08/2026
+
+### Added
+
+- **`.claude/hooks/context-threshold-handoff.sh`, registered as a `UserPromptSubmit` hook.** The model cannot read its own context usage, so a hook measures it and the rule in `.claude/CLAUDE.md` §2.6 reacts. **At 50%** — advise, once per session: finish the step in flight, start no new scoped work, name the stopping point and offer `/handoff`. **At 75%** — insist, on every prompt: write the handoff and stop the turn.
+- **A deny-list covering every `.env` variant** — `.env`, `.env.dev`, `.env.test`, `.env.prod`, `.env.staging`, `.env.local`, `.env.probe`, `.env.backup`, `.env.bak*` and the long-form spellings — for both `Read` and `Bash`. The `.example` templates are explicitly allowed, because reading those is how an agent learns which variables exist without learning their values.
+
+### Changed
+
+- **The handoff trigger moved earlier, and the reason is the point.** `PreCompact` alone is too late: by the time compaction fires the window is already spent, and a handoff written under that pressure is the worst one of the session. The new hook keeps the same split as `pre-compact-handoff.sh` — a hook cannot invoke a skill or stop a turn, so the script measures and reminds while the rule carries the behaviour.
+- **The window size is a constant with an environment override.** Nothing in the transcript reports it. The default is this project's observed 1M window; `CLAUDE_CONTEXT_WINDOW` overrides it for a 200k plan, and both thresholds are overridable too.
+- **The hook always exits 0.** A miscounted token must never block a prompt — a warning system that can refuse input is worse than no warning system.
+- **`how-to/docs/ai-dictionary/PATTERNS-OF-WORK.md`** describes the two-threshold pattern, so the vocabulary matches the behaviour.
 
 ## [2.12.0] - 11/08/2026
 

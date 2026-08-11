@@ -82,9 +82,35 @@
       "Bash(gh workflow list:*)",
       "Bash(gh workflow view:*)",
       "Bash(gh label list:*)",
-      "Bash(gh browse:*)"
+      "Bash(gh browse:*)",
+      "Read(**/.env.example)",
+      "Read(**/.env.*.example)"
     ],
     "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.dev)",
+      "Read(**/.env.test)",
+      "Read(**/.env.prod)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.development)",
+      "Read(**/.env.testing)",
+      "Read(**/.env.production)",
+      "Read(**/.env.local)",
+      "Read(**/.env.probe)",
+      "Read(**/.env.backup)",
+      "Read(**/.env.bak*)",
+      "Bash(*.env)",
+      "Bash(*.env.dev)",
+      "Bash(*.env.test)",
+      "Bash(*.env.prod)",
+      "Bash(*.env.staging)",
+      "Bash(*.env.development)",
+      "Bash(*.env.testing)",
+      "Bash(*.env.production)",
+      "Bash(*.env.local)",
+      "Bash(*.env.probe)",
+      "Bash(*.env.backup)",
+      "Bash(*.env.bak*)",
       "Edit(project-management/export/clickup/US*-CLIENT.md)",
       "AskUserQuestion",
       "EnterPlanMode",
@@ -145,6 +171,18 @@
             "type": "command",
             "command": "code-review-graph status",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/context-threshold-handoff.sh ] && exec bash $ROOT/.claude/hooks/context-threshold-handoff.sh'",
+            "timeout": 5000
           }
         ]
       }

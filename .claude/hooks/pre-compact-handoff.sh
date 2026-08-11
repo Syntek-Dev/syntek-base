@@ -18,8 +18,8 @@ remind() {
 
 House rule (.claude/CLAUDE.md §2.6): replace compaction with a handoff.
   1. Invoke the `handoff` skill → write handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md
-  2. Stop the turn and print the handoff path for Sam.
-  3. Sam runs /clear and resumes from the handoff file in a fresh context window.
+  2. Stop the turn and print the handoff path for <%DEVELOPER_NAME%>.
+  3. <%DEVELOPER_NAME%> runs /clear and resumes from the handoff file in a fresh context window.
 MSG
 }
 
