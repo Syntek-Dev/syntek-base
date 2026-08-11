@@ -27,14 +27,6 @@ the matching `../IMPLEMENTATION/ASSESSMENT-IMPL-US###-*.md` record.
 The baseline synthesises the story's STRIDE model in `../../THREAT-MODEL/PLANNING/` and
 escalates any CRITICAL/HIGH finding to `../../VULNERABILITIES/PLANNING/`.
 
-## File naming
-
-| Pattern                                 | Example                               |
-| --------------------------------------- | ------------------------------------- |
-| `ASSESSMENT-PLAN-US###-<DESCRIPTOR>.md` | `ASSESSMENT-PLAN-US000-ADMIN-AUTH.md` |
-
-`<DESCRIPTOR>` in `SCREAMING-KEBAB-CASE`.
-
 ## When to write one
 
 - Before implementing any story that touches a security-relevant surface

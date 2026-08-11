@@ -1,9 +1,14 @@
 # project-management — PM Workflow, Stories & Compliance
 
+This layer decides what gets built and holds the gates; the code layer builds it. Keeping the
+two apart is what lets a story be argued with before it is expensive — and what stops a
+design decision being made, unrecorded, at the keyboard.
+
 ## Directory Tree
 
 ```text
 project-management/
+├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
 ├── REFERENCES.md            ← internal and external reference index for this layer
 ├── docs/                    ← PM reference guides
@@ -15,9 +20,10 @@ project-management/
 │   ├── RESPONSIVE-DESIGN.md     ← breakpoints, mobile-first, responsive patterns
 │   ├── SECURITY-GUIDE.md        ← security standards and threat modelling guide
 │   ├── SEO-CHECKLIST.md         ← SEO and AI discoverability for all frontend pages
-│   ├── PLANNING-GUIDE.md ← MoSCoW prioritisation and sprint format conventions
+│   ├── planning/                ← planning sub-documents (CADENCE.md, STORIES.md, SPRINTS.md)
+│   ├── PLANNING-GUIDE.md        ← MoSCoW prioritisation and sprint format conventions
 │   └── VERSIONING-GUIDE.md      ← root-only semver, files to update on every bump
-├── export/                  ← PDF exports and zip archives for client delivery
+├── export/                  ← ClickUp sync artefacts + PDF/zip exports for client delivery
 ├── src/                     ← live PM artefacts, in three tiers (see below)
 │   ├── 00-ASSETS/               ← logos, brand assets, export scripts (pre-workflow ref)
 │   │
@@ -27,7 +33,7 @@ project-management/
 │   │   ── Specify (02–13) ──
 │   ├── 02-STORIES/              ← US###.md (user stories)
 │   ├── 03-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation)
-│   │   (03–07: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/ + a cumulative asset)
+│   │   (04–08: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/ + a cumulative asset)
 │   ├── 04-DATABASE/             ← 3 stages + ERD-DIAGRAMS/
 │   ├── 05-USER-FLOW/            ← 3 stages + DIAGRAMS/
 │   ├── 06-BRAND-GUIDE/          ← 3 stages + guide-build/ (Python → LaTeX → PDF)
@@ -44,15 +50,20 @@ project-management/
 │   ├── 15-SPRINT-PLANS/         ← detailed sprint execution plans
 │   ├── 16-STORY-PLANS/          ← per-story implementation plan (code master reference)
 │   │
-│   │   ── Implement & record (17–21) ──
+│   │   ── Implement & record (17–21, per story) ──
 │   ├── 17-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
 │   ├── 18-REVIEWS/              ← REVIEW-US###-*.md
 │   ├── 19-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
 │   ├── 20-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-│   └── 21-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-└── workflows/               ← step-by-step PM workflows (01–22)
+│   ├── 21-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   │
+│   │   ── Record, not per story (22) ──
+│   └── 22-INCIDENTS/            ← INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md + INCIDENT-INDEX.md (PII-free)
+└── workflows/               ← step-by-step PM workflows (01–23)
+    ├── 01-feature/                              ← discover: chart the feature
     ├── 02-story-creation/ … 13-api-design/     ← specify a feature
     ├── 14-decisions/ 15-sprint-plans/ 16-story-plans/  ← decide & plan
+    ├── 17-consolidate-design-work/              ← consolidate the per-story design work
     ├── 18-backend-code/ 19-api-code/ 20-frontend-code/  ← implement
     ├── 21-implementation-documentation/         ← docs + implementation records
     ├── 22-pr-and-review/                        ← PR, review, merge
@@ -71,7 +82,8 @@ workflow folder also has `STEPS.md` + `CHECKLIST.md`.
 ## Contents
 
 - `docs/` — reference guides for PM, GDPR, SEO, security, QA, versioning, responsive design
-- `export/` — PDF exports and zip archives of PM artefacts for client delivery
+- `export/` — ClickUp sync artefacts (`clickup/`, `clickup-task-map.json`), plus PDF and zip
+  exports of PM artefacts for client delivery
 - `src/` — all live PM artefacts, in three tiers (specify → decide & plan → record)
 - `workflows/` — step-by-step guides for PM tasks
 
@@ -82,14 +94,16 @@ workflow folder also has `STEPS.md` + `CHECKLIST.md`.
 
 ## src/ structure — the three tiers
 
-`00-ASSETS` is pre-workflow reference. The rest runs in three tiers; **08–15 tie their
-artefacts to a user story** via per-story `PLANNING/` + `IMPLEMENTATION/` templates.
+`00-ASSETS` is pre-workflow reference. The rest runs in three tiers; **09–13 tie their
+artefacts to a user story** via per-story `PLANNING/` + `IMPLEMENTATION/` templates
+(`10-SECURITY` nests the pair under each of its four category folders).
 
 | Tier                      | Paths                                                                                               |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
 | **Specify** (02–13)       | stories, sprints, DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
 | **Decide & plan** (14–16) | `14-DECISIONS/` (ADRs) → `15-SPRINT-PLANS/` → `16-STORY-PLANS/` (the code master)                   |
 | **Record** (17–21)        | `17-TESTS/`, `18-REVIEWS/`, `19-FINDINGS/`, `20-BUGS/`, `21-REFACTORING/` — per story               |
+| **Record** (22)           | `22-INCIDENTS/` — the PII-free incident register; **not** per story, and has no workflow            |
 
 The **story plan (16)** is what a developer codes from; it references its sprint plan
 (15), the decisions (14), and every 02–13 spec. Sprint plans (15) feed the story plans.

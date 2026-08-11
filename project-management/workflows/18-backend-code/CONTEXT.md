@@ -2,12 +2,17 @@
 
 **Last Updated**: <%DATE%>
 
+The service layer is built first because everything above it — the API, the MCP tools, the
+pages — is an adapter over it. Building an adapter first is how business logic ends up in a
+view.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/18-backend-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,12 +20,6 @@ project-management/workflows/18-backend-code/
 
 Use this workflow when implementing Django models, services, and business logic for a
 feature. The database schema must be approved before this workflow begins.
-
-## Prerequisites
-
-- [ ] Database schema is approved (`project-management/src/04-DATABASE/`)
-- [ ] Migrations are applied and the app is in a clean state
-- [ ] User story and acceptance criteria are understood
 
 ## Key concepts
 
@@ -31,14 +30,14 @@ feature. The database schema must be approved before this workflow begins.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/coding-principles/PRACTICAL-RULES.md` — transaction rules (2+ writes → `atomic()`), DRY, Decision Structuring (Policy/Strategy)
 - `code/docs/security/AUTH-AND-AUTHZ.md` — permission and IDOR checks required before any service method; OWASP A01
 - `code/docs/testing/COVERAGE.md` — coverage floors (75% all modules / 90% auth-related) block PR
 - `code/docs/encryption/FIELD-ENCRYPTION.md` — PII fields must be encrypted before the first commit; AES-256-GCM
 
-### Soft references — consult during execution
+### Related reading
 
 #### code/ layer
 
@@ -63,7 +62,7 @@ feature. The database schema must be approved before this workflow begins.
 | `code/workflows/03-database-migration/` | Apply and verify the approved migration in the container |
 | `code/workflows/01-new-feature/`        | Full-stack feature checklist that wraps this workflow    |
 
-#### project-management/ — prerequisites and next step
+#### project-management/ — what precedes this, and what follows
 
 - `project-management/workflows/04-database-schema/` — schema must be approved before this workflow
 - `project-management/workflows/19-api-code/` — follow this after backend logic is tested

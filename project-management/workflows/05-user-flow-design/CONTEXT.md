@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+A flow shows the seams a story does not own — the transitions where one slice hands to
+another. Those are where products break, and they are invisible from inside a single story.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/05-user-flow-design/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,12 +19,6 @@ project-management/workflows/05-user-flow-design/
 
 Use this workflow when mapping out how users move through the product for a given feature
 area. Run it after story creation and before brand guides or wireframes.
-
-## Prerequisites
-
-- [ ] User stories covering the area exist in `project-management/src/02-STORIES/`
-- [ ] Acceptance criteria are understood for all in-scope stories
-- [ ] The product area (auth, client portal, public, admin, etc.) is identified
 
 ## Key concepts
 
@@ -31,11 +29,11 @@ area. Run it after story creation and before brand guides or wireframes.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 None — user flow design is a pre-code design phase; no safety gates apply.
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/05-USER-FLOW/` — where user flow documents are saved
 - `project-management/src/02-STORIES/` — stories the flows are derived from

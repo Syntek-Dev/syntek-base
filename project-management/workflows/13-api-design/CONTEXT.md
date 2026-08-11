@@ -1,4 +1,18 @@
-# Workflow 12 — API Design
+# Workflow 13 — API Design
+
+The API is a contract other clients hold, so it is decided rather than discovered. Designing it
+before implementation is what stops the schema being whatever the first endpoint happened to
+return.
+
+## Directory Tree
+
+```text
+project-management/workflows/13-api-design/
+├── CHECKLIST.md   ← verification checklist before marking complete
+├── CLAUDE.md      ← operating rules
+├── CONTEXT.md     ← this file (when to use, key concepts, governing documents)
+└── STEPS.md       ← ordered steps to execute
+```
 
 ## Purpose
 
@@ -35,13 +49,6 @@ the backend and frontend teams use as the single source of truth for the interfa
 7. Pagination pattern — cursor vs offset, page size limits
 8. Breaking-change and deprecation decisions
 
-## Quality gates
-
-- Every state-changing endpoint must have an explicit permission check documented
-- User-supplied IDs must have ownership verification noted
-- No operation may be left with an open `*` permission
-- Design must be reviewed by at least one other team member before sprint planning
-
 ## Related workflows
 
 | Workflow                        | Relationship                                                                                                                                        |
@@ -58,12 +65,12 @@ decides how that contract is expressed in Django Ninja code (Opus). Design here,
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — design must be convention-compliant; Schema model design, router/endpoint patterns, and pagination conventions
 - `code/docs/security/AUTH-AND-AUTHZ.md` — permission matrix must be complete before design is signed off; IDOR prevention and OWASP A01 requirements
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE findings from workflow 09 that inform permission rules
 - `project-management/src/04-DATABASE/` — approved schema that the API types must reflect

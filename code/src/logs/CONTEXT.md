@@ -5,6 +5,19 @@ Runtime log files written by the Django backend in **dev and test environments o
 > **Staging and production do not write logs to disk.** Those environments log to stdout
 > (JSON format), which Grafana Alloy captures and ships to Loki. See `code/docs/LOGGING.md`.
 
+## Directory Tree
+
+```text
+code/src/logs/
+├── CLAUDE.md     ← operating rules
+├── CONTEXT.md    ← this file
+├── .gitignore    ← ignores every log file written here
+└── .gitkeep      ← keeps the directory in git while its contents stay out
+```
+
+The directory is tracked and its contents are not: Django's file handler needs the path to
+exist before it will start, and git does not track empty directories.
+
 ## What goes here
 
 | File                            | Written by                   | Contains                           |

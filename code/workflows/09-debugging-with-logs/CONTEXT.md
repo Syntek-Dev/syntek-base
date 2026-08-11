@@ -1,4 +1,18 @@
-# Workflow 10 — Debugging with Logs and Observability
+# Workflow 09 — Debugging with Logs and Observability
+
+Finding the cause is a different job from fixing it, which is why this workflow is separate from
+`10-debug/`: the signal you need lives in a different place in each environment, and reaching for
+the wrong tier wastes the most time on the environments where debugging is already hardest.
+
+## Directory Tree
+
+```text
+code/workflows/09-debugging-with-logs/
+├── CHECKLIST.md   ← verification checklist before marking complete
+├── CLAUDE.md      ← operating rules
+├── CONTEXT.md     ← this file (when to use, tool availability per environment)
+└── STEPS.md       ← ordered steps to execute
+```
 
 ## Purpose
 
@@ -23,13 +37,6 @@ environments with different tooling at each tier.
 | Loki / Alloy (LogQL queries in Grafana) | ❌  | ❌   | ✅      | ✅   |
 | Prometheus + Grafana dashboards         | ❌  | ❌   | ✅      | ✅   |
 
-## Prerequisites
-
-- Docker Compose stack is running for the target environment
-- For staging/prod: access to the Grafana instance on the server
-- For staging/prod: Glitchtip DSN is set and exceptions are flowing
-- Read `code/docs/logging/DJANGO-LOGGING.md` (backend) and `code/docs/logging/FRONTEND-LOGGING.md` (frontend) before using this workflow for the first time
-
 ## Outputs
 
 - Root cause identified and documented
@@ -38,11 +45,11 @@ environments with different tooling at each tier.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 None — log-based debugging is observational; start with whichever signal is available.
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **debug playbook**
   (`.claude/skills/debug-issue.md`): trace the code path structurally once a log signal points

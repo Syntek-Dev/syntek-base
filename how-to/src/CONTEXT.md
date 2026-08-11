@@ -14,7 +14,10 @@ instructional limit that applies to `docs/` and `workflows/`.
 how-to/src/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
+├── BRAND-VOICE.md           ← how the project writes: tone, four registers, banned machine tells
 ├── CONTRIBUTING.md          ← contributing, testing, and code-quality standards for this project
+├── INVARIANTS.md            ← the register: every invariant, its one enforcement point, its breach
+├── PLATFORM-PROVIDERS.md    ← the register: every infra dependency, its seam kind, its alternates
 ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (template-only)
 ├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (template-only)
 │   ├── CONTEXT.md · CLAUDE.md
@@ -36,14 +39,17 @@ how-to/src/
 
 ## What is here
 
-| Document / folder      | Read it when                                                                     |
-| ---------------------- | -------------------------------------------------------------------------------- |
-| `CONTRIBUTING.md`      | Contributing to this codebase — branching, commits, testing, code quality, gates |
-| `TEMPLATE-GUIDE/`      | Generating a project from syntek-base, or maintaining the template               |
-| `TEMPLATE-TOKENS.md`   | You need the token vocabulary and what each one reaches                          |
-| `NIXOS-SETUP.md`       | Looking for host provisioning — it points at the deploy repository               |
-| `SCALE-ARCHITECTURE/`  | Sizing the deployment, or checking scaling readiness                             |
-| `SERVER-ARCHITECTURE/` | Specifying what the server and edge must provide                                 |
+| Document / folder       | Read it when                                                                      |
+| ----------------------- | --------------------------------------------------------------------------------- |
+| `BRAND-VOICE.md`        | Writing any user-facing copy — and settling the voice at first-time setup         |
+| `CONTRIBUTING.md`       | Contributing to this codebase — branching, commits, testing, code quality, gates  |
+| `INVARIANTS.md`         | Adding a constraint or a guard — recording the one place an invariant is enforced |
+| `PLATFORM-PROVIDERS.md` | Choosing or swapping an infrastructure provider, or classifying a new dependency  |
+| `TEMPLATE-GUIDE/`       | Generating a project from syntek-base, or maintaining the template                |
+| `TEMPLATE-TOKENS.md`    | You need the token vocabulary and what each one reaches                           |
+| `NIXOS-SETUP.md`        | Looking for host provisioning — it points at the deploy repository                |
+| `SCALE-ARCHITECTURE/`   | Sizing the deployment, or checking scaling readiness                              |
+| `SERVER-ARCHITECTURE/`  | Specifying what the server and edge must provide                                  |
 
 ## The two snapshots
 

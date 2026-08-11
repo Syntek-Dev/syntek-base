@@ -58,16 +58,6 @@ Three frameworks are applied at every review (guide: `docs/SECURITY-GUIDE.md`):
 - **`VULNERABILITIES/`** — one Critical/High finding per file; `PLANNING/` is the
   sprint-blocking triage, `IMPLEMENTATION/` is the closure with evidence.
 
-## Naming conventions
-
-| Phase          | Pattern                                        |
-| -------------- | ---------------------------------------------- |
-| Planning       | `<TYPE>-PLAN-US###-<DESCRIPTOR>.md`            |
-| Implementation | `<TYPE>-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
-
-`<TYPE>` ∈ {`THREAT-MODEL`, `ASSESSMENT`, `AUDIT`, `VULN`}; `<DESCRIPTOR>` in
-`SCREAMING-KEBAB-CASE`.
-
 ## Cross-references
 
 - `project-management/workflows/10-security-checks/` — the workflow that produces these

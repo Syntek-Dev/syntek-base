@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/11-refactor/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when to use, refactor concepts, prerequisites — imported above) → this file.
+(when to use, refactor concepts — imported above) → this file.
 
 ## Purpose (one line)
 

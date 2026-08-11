@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/22-pr-and-review/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when-to-use, prerequisites, hard gate — imported above) → this file → `STEPS.md`
+(when-to-use, governing documents — imported above) → this file → `STEPS.md`
 then `CHECKLIST.md`.
 
 ## Purpose (one line)

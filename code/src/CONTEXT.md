@@ -14,7 +14,7 @@ code/src/
 ├── CONTEXT.md                ← this file (source-root sub-layer map)
 ├── CLAUDE.md                 ← operating rules for the source root
 ├── django/                   ← the Django project — at baseline, no application code yet
-│   ├── apps/                 ← Django apps (domain modules) — currently empty
+│   ├── apps/                 ← Django apps — `core` ships; domain modules are added per project
 │   ├── config/               ← settings/, urls.py, asgi.py, wsgi.py
 │   ├── static/               ← static asset source (empty)
 │   ├── templates/            ← project template directory (empty)

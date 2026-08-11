@@ -15,15 +15,6 @@ project-management/src/10-SECURITY/ASSESSMENTS/IMPLEMENTATION/
 └── ASSESSMENT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one record per story
 ```
 
-## File naming
-
-```text
-ASSESSMENT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `ASSESSMENT-IMPL-US000-ADMIN-AUTH-01-01-2026.md`. Reuse the `<DESCRIPTOR>` of the
-corresponding planning baseline; `<DESCRIPTOR>` in `SCREAMING-KEBAB-CASE`.
-
 ## When to create a file here
 
 Write a record during `project-management/workflows/21-implementation-documentation/` (or the

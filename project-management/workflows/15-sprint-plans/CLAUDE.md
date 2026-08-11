@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/15-sprint-plans/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when-to-use, prerequisites, key concepts — imported above) → this file → `STEPS.md`
+(when-to-use, key concepts — imported above) → this file → `STEPS.md`
 then `CHECKLIST.md`.
 
 ## Purpose (one line)

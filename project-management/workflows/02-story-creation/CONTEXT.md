@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+A story is the unit everything downstream is traced to — schema, flow, QA, SEO, the plan, the
+branch. Written vaguely it stays vague through all of them.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/02-story-creation/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,11 +19,6 @@ project-management/workflows/02-story-creation/
 
 Use this workflow when you need to create a new user story before development begins.
 Every feature must have a corresponding user story.
-
-## Prerequisites
-
-- [ ] Feature requirements are understood
-- [ ] You know the user role, goal, and acceptance criteria
 
 ## Key concepts
 
@@ -29,11 +28,11 @@ Every feature must have a corresponding user story.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 None — story creation is pre-code; no safety gates apply.
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/02-STORIES/` — where stories are saved
 - `project-management/docs/PLANNING-GUIDE.md` — MoSCoW prioritisation and story format requirements

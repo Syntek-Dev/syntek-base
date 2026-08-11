@@ -1,12 +1,16 @@
 # Workflow: Dependency Updates
 
+A dependency change is a supply-chain decision wearing the clothes of a version bump. This
+workflow keeps the lockfile, the advisory check and the toolchain pins moving together instead
+of separately.
+
 ## Directory Tree
 
 ```text
 how-to/workflows/07-dependency-updates/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,12 +19,6 @@ how-to/workflows/07-dependency-updates/
 Use this workflow when adding, upgrading, or removing a dependency in any ecosystem —
 Python (`uv`), JavaScript (`pnpm`), or the toolchain pins themselves — and when the
 `Dependency Audit Sweep` opens a tracking issue for a published advisory.
-
-## Prerequisites
-
-- [ ] Working tree clean, on a branch — lockfile churn should not ride on a feature diff
-- [ ] The dev stack can be rebuilt (upgrades are not real until the image builds)
-- [ ] For a new dependency: you have read the baseline's "deliberately NOT declared" register
 
 ## Key concepts
 
@@ -42,12 +40,12 @@ Python (`uv`), JavaScript (`pnpm`), or the toolchain pins themselves — and whe
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `how-to/src/CONTRIBUTING.md` — the licensing constraint on any new dependency
 - `pyproject.toml` — the "deliberately NOT declared at baseline" register and its triggers
 
-### Soft references — consult during execution
+### Related reading
 
 - `how-to/docs/CLI-TOOLING.md` — the install and update scripts
 - `code/src/docker/CONTEXT.md` — how the images consume the lockfiles

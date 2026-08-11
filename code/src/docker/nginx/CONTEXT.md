@@ -6,6 +6,18 @@ Reverse-proxy config for the dev and test stacks.
 > deployment server's own Nginx, provisioned by the NixOS deploy repo, does the reverse
 > proxy there.
 
+## Directory Tree
+
+```text
+code/src/docker/nginx/
+├── CLAUDE.md    ← operating rules
+├── CONTEXT.md   ← this file
+├── dev.conf     ← reverse proxy → django:8000, for the dev stack
+└── test.conf    ← reverse proxy → django-test:8000, for the test stack
+```
+
+Two files and no more, because only two environments run Nginx in a container here.
+
 ## Files
 
 | File        | Used by                     | Purpose                       |

@@ -15,14 +15,6 @@ project-management/src/11-QA/IMPLEMENTATION/
 └── QA-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one review per implemented story
 ```
 
-## File naming
-
-```text
-QA-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `QA-IMPL-US000-CONTACT-FORM-01-01-2026.md`. Descriptor in SCREAMING-KEBAB-CASE.
-
 ## When to create a file here
 
 Write a review during `project-management/workflows/21-implementation-documentation/`, once a story's

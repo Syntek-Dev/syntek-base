@@ -1,6 +1,6 @@
 # code/workflows — Step-by-Step Coding Guides
 
-Each workflow is a numbered folder with three files:
+Each workflow is a numbered folder with four files:
 
 ## Directory Tree
 
@@ -11,6 +11,7 @@ read in handoff order (find → fix → improve).
 
 ```text
 code/workflows/
+├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
 │
 │   ── Build (01–06) ──
@@ -36,7 +37,7 @@ code/workflows/
 ```
 
 Every folder carries the same four files: `CONTEXT.md` (when to use this workflow and
-its prerequisites), `STEPS.md` (ordered steps to execute), `CHECKLIST.md` (verification
+its key concepts), `STEPS.md` (ordered steps to execute), `CHECKLIST.md` (verification
 before marking complete), and `CLAUDE.md` (operating rules).
 
 ## The four families

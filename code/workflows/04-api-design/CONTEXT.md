@@ -1,11 +1,15 @@
 # Workflow: Django Ninja API Design
 
+The API is a contract other clients hold. Designing it as its own step — before endpoints
+exist — is what stops the schema being whatever the first implementation happened to return.
+
 ## Directory Tree
 
 ```text
 code/workflows/04-api-design/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -13,12 +17,6 @@ code/workflows/04-api-design/
 
 Use this workflow when adding or modifying the Django Ninja JSON API surface —
 new Router modules, Schema request/response models, or endpoints.
-
-## Prerequisites
-
-- [ ] Data model is agreed and documented
-- [ ] `code/docs/api-design/NINJA-CONVENTIONS.md` has been read
-- [ ] Django backend containers are running
 
 ## Key concepts
 
@@ -30,12 +28,12 @@ new Router modules, Schema request/response models, or endpoints.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — Router/`api.py` module rule, Schema models, endpoints, error handling, throttling
 - `code/docs/security/AUTH-AND-AUTHZ.md` — endpoint permission requirements and IDOR prevention
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/api-design/REST-CONVENTIONS.md` — REST URLs, methods, status codes, pagination, versioning
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — value objects, enums, aggregates, Schema/type design

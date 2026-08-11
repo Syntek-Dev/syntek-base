@@ -33,7 +33,7 @@ screens one story introduces, composed from `../SHARED/wireframe.css`.
   annotations; the need is recorded in `../../07-COMPONENTS/USER-STORY-IDEAS/`. A bespoke
   component drawn into a wireframe is a design decision made in the wrong place.
 - **Do not reconcile with another story's screens.** Inconsistency between stories is expected
-  and is `16`'s to resolve — smoothing it over here hides what consolidation needs to see.
+  and is `17`'s to resolve — smoothing it over here hides what consolidation needs to see.
 - **Mobile screens must not rest intent on hover, scrollbars, or browser chrome** — none exists
   natively. Compose at 390 × 844.
 - **Documentation, not shipped code** — never imports from or deploys with `code/src/`.

@@ -37,7 +37,7 @@ re-asking the same questions.
 - **Charting is one session and settles nothing but research nodes.** The temptation is to answer
   a node while it is in front of you. Do not — a frontier drawn and a frontier resolved are
   different acts, and mixing them produces a map shaped by whatever was easiest to answer first.
-- **Look facts up; only ask about genuine trade-offs.** `code-review-graph` → Read/Grep/Glob →
+- **Facts up, decisions asked** — the `grilling` skill's rule, not restated here. `code-review-graph` → Read/Grep/Glob →
   `.claude/plugins/*.py` → `context7`. A question whose answer is in the repo is not a decision
   node, and asking it spends the one resource this workflow is protecting: <%DEVELOPER_NAME%>'s attention.
 - **The map is an index, never a vault.** A node's detail lives in the ADR, plan, or story it

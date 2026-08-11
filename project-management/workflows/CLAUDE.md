@@ -3,14 +3,14 @@
 # CLAUDE.md — project-management/workflows/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(the why, the planning cadence, and the 22-step index, imported above) → this file →
+(the why, the planning cadence, and the 23-step index, imported above) → this file →
 the target `NN-…/` workflow's `CONTEXT.md`/`CLAUDE.md`.
 
 ## Purpose (one line)
 
-The ordered PM playbook — twenty-two numbered procedures (`02-story-creation` …
-`23-release`) that carry a feature from a written story, through design, GDPR,
-security, QA, SEO and API gates, into code, documentation, PR, and release.
+The ordered PM playbook — twenty-three numbered procedures (`01-feature` …
+`23-release`) that carry a feature from its decision map and a written story, through
+design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and release.
 
 ## How to work here
 
@@ -25,7 +25,7 @@ security, QA, SEO and API gates, into code, documentation, PR, and release.
   and schema work. Do not batch a gate across the whole backlog.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
   opens with a grilling pass; the owning agent loads `.claude/skills/grill-with-docs` and
-  interviews <%DEVELOPER_NAME%> one question at a time before producing the artefact (`.claude/CLAUDE.md` §10).
+  interviews <%DEVELOPER_NAME%> before producing the artefact (`.claude/CLAUDE.md` §10).
   Only trivial/mechanical steps skip it.
 - **Model:** Fable to author a design/spec procedure (01–10, 12–16); Opus for SEO (11),
   the code procedures (18–20), documentation (21), and PR/release (22–23); Opus to fix a

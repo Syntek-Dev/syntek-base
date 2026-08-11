@@ -1,11 +1,67 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.3.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.4.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.4.0 — 11/08/2026
+
+**Status:** Minor — a documentation standard that was already being followed by habit becomes a
+standard with a name, a guide, and two gates. Around two hundred files change; none of them
+changes what the template does.
+
+### The problem with a rule everybody knows
+
+Every directory here carries two files: a `CONTEXT.md` and a `CLAUDE.md`. Everyone working in the
+repository knew roughly what went in which. Nothing said it precisely, and nothing checked.
+
+So it drifted in one direction, reliably: an operating rule gets written into an orientation file
+because it was useful the moment someone arrived, and the paired `CLAUDE.md` keeps its own copy in
+slightly different words. Two wordings of one rule is one rule nobody can change safely — you fix
+it in the place you happened to open, and the other copy quietly becomes the wrong answer for
+whoever opens that one instead.
+
+### The line, and where it now lives
+
+**`CONTEXT.md` says what is here and why it is here. `CLAUDE.md` says how to work here.**
+
+`code/docs/DOCUMENTATION-PAIRING.md` owns that sentence, the decision test for anything that could
+plausibly go in either, the headings that never belong in an orientation file, and the
+route-don't-restate rule. `.claude/CLAUDE.md` § 8 states the rule in one bullet and routes here for
+the procedure, rather than carrying a second copy of it — which is the standard applied to itself.
+
+### Three gates, because a rule nothing checks is a rule that rots
+
+- **`docs-pairing.sh`** — pairing in both directions, the four required `CLAUDE.md` headings, the
+  `@./CONTEXT.md` import, the `Read order:` line, and the banned orientation headings.
+- **`docs-length.sh`** — the 300-line instructional cap. This previously pointed at `cloc.sh`,
+  which excludes Markdown by design and therefore measured nothing at all.
+- **`sync-trees.sh`** — reconciles the Directory Tree block of any `CONTEXT.md` whose directory has
+  a staged change. It only ever **adds** a row, and an added row arrives as
+  `← TODO: what this is and why it is here` and fails the commit. You write the description while
+  you still know the answer, which is the only moment anyone does.
+
+The first two run in CI and at pre-commit; the third runs at pre-commit and re-stages what it fixed.
+
+### What actually changed in the files
+
+Mostly deletions. `Prerequisites`, `Quality gates` and `Naming` sections came out of orientation
+files — each was an operating rule in the wrong half, and each already existed in the paired
+`CLAUDE.md` or the workflow `CHECKLIST.md`. _Hard gates_ and _Soft references_ became **Governing
+documents** and **Related reading**, because the old names described when to read a file rather
+than what it is.
+
+Most orientation files also gained an opening line saying why the thing they describe exists. A
+directory tree tells you what is there. It does not tell you why you would go.
+
+### If you are updating an existing project
+
+This release rewrites files Copier owns, and Copier will three-way-merge them against your edits.
+Where you have added your own sections to a `CONTEXT.md`, expect to resolve a conflict and decide
+which half each of your additions belongs in — which is the release working as intended, once.
 
 ## v2.3.1 — 03/08/2026
 

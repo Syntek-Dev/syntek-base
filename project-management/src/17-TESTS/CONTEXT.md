@@ -19,13 +19,6 @@ To record a story, copy each template to its `US###-…` name — e.g.
 `US000-TEST-STATUS.md` → `US###-TEST-STATUS.md`. The folder stays flat: every real file
 is `US###-TEST-STATUS.md` or `US###-MANUAL-TESTING.md` at the root.
 
-## Naming
-
-- `US###-TEST-STATUS.md` — automated test status tracker (suites, counts, coverage vs floors)
-- `US###-MANUAL-TESTING.md` — manual testing guide a human follows and signs off
-
-Story numbers are zero-padded three digits (`US###`); dates DD/MM/YYYY.
-
 ## Record-tier position
 
 This is a **record** folder. A feature flows

@@ -33,13 +33,19 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 The structure you produce is defined by the project itself, not by any external
 template. Mirror existing siblings and follow these rules:
 
-- `.claude/CLAUDE.md` §8 — **CONTEXT.md + CLAUDE.md pairing** spec. Every directory
-  with a `CONTEXT.md` must also have a `CLAUDE.md`, and every `CLAUDE.md` opens with
-  `@./CONTEXT.md` (plus `@./REFERENCES.md` where one exists), a `Read order:` line,
-  then four H2s: **Purpose (one line)** · **How to work here** · **Guardrails** ·
-  **Output & naming**. Never leave a bare `@./CONTEXT.md` import stub.
-- `CONTEXT.md` = orientation (directory tree, what-is-here). `CLAUDE.md` = operating
-  rules. Keep them distinct.
+- `code/docs/DOCUMENTATION-PAIRING.md` — the **owning guide** for the pairing, and the
+  first thing to read before generating either file: the test that separates orientation
+  from operating rules, the headings banned from a `CONTEXT.md` and where each moves, and
+  the two exceptions to the pairing.
+- `.claude/CLAUDE.md` §8 — the same rule in one bullet. Every directory with a
+  `CONTEXT.md` also has a `CLAUDE.md`, and every `CLAUDE.md` opens with `@./CONTEXT.md`
+  (plus `@./REFERENCES.md` where one exists), a `Read order:` line, then four H2s:
+  **Purpose (one line)** · **How to work here** · **Guardrails** · **Output & naming**.
+  Never leave a bare `@./CONTEXT.md` import stub.
+- `CONTEXT.md` = **what is here and why it is here** (an annotated directory tree,
+  what-is-here). `CLAUDE.md` = **how to work here**. A gate, a prerequisite, a reading
+  order or a naming rule is never orientation, however useful it is on arrival — verify
+  with `code/src/scripts/audits/docs-pairing.sh`.
 - Naming — `.claude/CLAUDE.md` §5: `SCREAMING-SNAKE-CASE.md` docs,
   `SCREAMING-SNAKE-CASE/` doc dirs, `kebab-case/` source dirs, `NN-name/` workflows.
 - Instructional-file limit — **300 code lines** (`cloc --include-lang=Markdown`) for
@@ -70,9 +76,8 @@ extend.
 ### 0 — Grill first
 
 Substantial scaffolding opens with a grilling pass — load `.claude/skills/grill-with-docs`
-and interview <%DEVELOPER_NAME%> one question at a time (what to create — directories, CONTEXT/CLAUDE
-pairs, numbered workflow folders — and exactly where in the tree it lands), each with a
-recommended answer, looking facts up rather than asking, no action until <%DEVELOPER_NAME%> confirms. A
+and interview <%DEVELOPER_NAME%> (what to create — directories, CONTEXT/CLAUDE
+pairs, numbered workflow folders — and exactly where in the tree it lands). A
 single-file tweak or a mechanical rename skips it; the §1 scope list below is the grill
 agenda. Design-work default (`.claude/CLAUDE.md` §10).
 
@@ -86,10 +91,11 @@ touch and confirm none already exist with content you would clobber.
 
 For a **new directory** that will hold instructional docs:
 
-1. Write `CONTEXT.md` — orientation: purpose line, directory tree, a "what is here"
-   table. Mirror the parent domain's `CONTEXT.md`.
-2. Write the paired `CLAUDE.md` per §8 — `@./CONTEXT.md` first, `Read order:`, then the
-   four H2 sections scaled to the folder (leaf = short; layer/app root = fuller).
+1. Write `CONTEXT.md` — orientation: what the directory is **and why it exists**, a
+   `## Directory Tree` fence with every top-level row annotated, a "what is here" table.
+   Mirror the parent domain's `CONTEXT.md`.
+2. Write the paired `CLAUDE.md` — `@./CONTEXT.md` first, `Read order:`, then the four H2
+   sections scaled to the folder (leaf = short; layer/app root = fuller).
 
 For a **new numbered workflow** (`NN-short-name/`): create the folder and write
 `CONTEXT.md` (trigger conditions, what it is / is not for, outputs, related agents) and
@@ -120,7 +126,8 @@ duplicate an existing row. An empty gaps table is the correct end state.
 ### 5 — Verify
 
 ```bash
-bash code/src/scripts/audits/cloc.sh 2>/dev/null || true   # 300-line instructional cap
+bash code/src/scripts/audits/docs-length.sh   # 300-line instructional cap
+bash code/src/scripts/audits/docs-pairing.sh  # the CONTEXT.md / CLAUDE.md split
 ```
 
 Confirm: every new `CONTEXT.md` has a paired `CLAUDE.md`; every `CLAUDE.md` opens with

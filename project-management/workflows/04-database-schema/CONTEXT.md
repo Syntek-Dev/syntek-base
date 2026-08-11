@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+Schema is the most expensive thing to change after it ships, and the cheapest before the first
+migration. This gate exists to spend the thinking while it is still cheap.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/04-database-schema/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,12 +19,6 @@ project-management/workflows/04-database-schema/
 
 Use this workflow before writing any Django model or migration — whenever a new
 data structure, relationship, or schema change is being planned.
-
-## Prerequisites
-
-- [ ] User story exists covering the feature that requires the schema change
-- [ ] Domain requirements are understood (fields, relationships, constraints)
-- [ ] No existing migration is uncommitted for the affected app
 
 ## Key concepts
 
@@ -31,12 +29,12 @@ data structure, relationship, or schema change is being planned.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/data-structures/SCHEMA-DESIGN.md` — naming and index conventions; violations block model creation (PostgreSQL, normalisation, indexes, FK, migrations)
 - `code/docs/encryption/FIELD-ENCRYPTION.md` — PII fields must be flagged and encrypted in the schema before coding begins
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/04-DATABASE/` — where schema design documents are saved
 - `project-management/src/02-STORIES/` — the story driving the schema change

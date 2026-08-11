@@ -30,8 +30,11 @@ signed off and before sprint planning, producing `API-US###-<descriptor>.md` in
   `API-US###-<descriptor>.md` into
   `src/13-API-DESIGN/` → have it reviewed by one other team member → satisfy
   `CHECKLIST.md`.
-- **Definition of done:** the signed-off doc is the single source of truth for
-  `workflows/19-api-code/`; it feeds estimates into `workflows/15-sprint-plans/`.
+- **Definition of done:** every state-changing endpoint carries a documented explicit
+  permission check; every user-supplied ID has ownership verification noted; no operation
+  is left with an open `*` permission; the design has had a second pair of eyes before
+  sprint planning. The signed-off doc is then the single source of truth for
+  `workflows/19-api-code/`, and feeds estimates into `workflows/15-sprint-plans/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails

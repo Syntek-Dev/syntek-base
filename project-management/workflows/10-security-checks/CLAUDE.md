@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/10-security-checks/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when-to-use, prerequisites, frameworks — imported above) → this file → `STEPS.md`
+(when-to-use, frameworks — imported above) → this file → `STEPS.md`
 then `CHECKLIST.md`.
 
 ## Purpose (one line)

@@ -15,12 +15,13 @@ exists because **this repository compiles Rust itself**.
 code/src/rust/
 ├── CONTEXT.md              ← this file
 ├── CLAUDE.md               ← operating rules
+├── Cargo.lock               ← the resolved dependency graph — committed
 ├── Cargo.toml              ← workspace root; shared pins in [workspace.dependencies]
 ├── rust-toolchain.toml     ← the pinned compiler — rustup reads it automatically
 ├── deny.toml               ← cargo-deny supply-chain policy (advisories, licences, bans)
 ├── clippy.toml             ← doc_markdown ident allow-list (PyO3, CPython, …)
 ├── .gitignore              ← target/ and build artefacts — never committed
-└── crates/
+└── crates/                 ← the workspace members — one directory per crate
     ├── nativecore/         ← the first-party PyO3 extension module
     └── desktop/            ← DESKTOP-ONLY — the native Slint app (absent unless opted in)
         ├── Cargo.toml      ← lint table: unsafe/unwrap/expect/panic/indexing denied

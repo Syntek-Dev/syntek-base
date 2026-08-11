@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/10-debug/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when to use, debug concepts, prerequisites — imported above) → this file.
+(when to use, debug concepts — imported above) → this file.
 
 ## Purpose (one line)
 

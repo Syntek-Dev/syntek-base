@@ -10,7 +10,8 @@ above) → this file → the target numbered folder's `CONTEXT.md`/`CLAUDE.md`.
 
 The live PM artefact store — every story, sprint, spec, decision, and plan that gates a
 feature into code, plus the post-implementation records, filed under numbered `NN-…/`
-folders that run in three tiers: specify (02–13), decide & plan (14–16), record (17–21).
+folders that run in three tiers: specify (02–13), decide & plan (14–16), record (17–21) —
+plus `22-INCIDENTS`, the one record that is not anchored to a story.
 
 ## How to work here
 
@@ -23,7 +24,7 @@ folders that run in three tiers: specify (02–13), decide & plan (14–16), rec
   plans, GDPR / security / QA / SEO / API specs); Opus for mechanical touches — status
   flips, version-header bumps, moving or renaming a file.
 - **Concrete steps:** read the workflow `STEPS.md` → copy the target folder's per-story
-  template — the stage folder for 03–07, `PLANNING/` vs `IMPLEMENTATION/` for 08–12 — using its fixed
+  template — the stage folder for 04–08, `PLANNING/` vs `IMPLEMENTATION/` for 09–13 — using its fixed
   naming pattern → cross-link the `US###` (and, for a story plan, its sprint plan and the
   decisions it rests on) → satisfy the workflow `CHECKLIST.md`.
 - **Definition of done:** artefact in the right numbered folder and phase, named to
@@ -38,8 +39,12 @@ folders that run in three tiers: specify (02–13), decide & plan (14–16), rec
   decide (ADRs) then plan sprints then plan stories, all before code; `17–21` record
   tests, reviews, findings, bugs, and refactoring after code. The **story plan (16) is the master
   the developer codes from**; it references its sprint plan (15) and the decisions (14).
-  Do not invent a new top-level folder without a matching workflow.
-- **`USER-STORY-IDEAS/` is frozen once workflow `17` runs.** In folders `03–07` the per-story
+  Do not invent a new top-level folder without a matching workflow — **with one shipped
+  exception, `22-INCIDENTS`, and the reason generalises**: an incident is _unplanned_, so it has
+  no gate to pass through, and its procedure is a guide plus the `/incident` skill
+  (`how-to/docs/INCIDENT-PRACTICE.md`). A folder may go workflow-less only when the work that
+  fills it cannot be scheduled; everything schedulable still needs its gate.
+- **`USER-STORY-IDEAS/` is frozen once workflow `17` runs.** In folders `04–08` the per-story
   design is the audit trail of what each story asked for — never rewritten. Corrections go to
   `CONSOLIDATED-IDEAS/`, which is also **what gets built**: an artefact traced back to a
   stage-1 design instead of the consolidated one reintroduces the drift `17` removed.

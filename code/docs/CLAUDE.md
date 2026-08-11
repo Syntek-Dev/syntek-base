@@ -25,7 +25,8 @@ Cloudinary SDK docs. Read the relevant guide _before_ touching the code it gover
   the 300-line limit, split the detail into a `kebab-case/` sub-folder and leave the
   top-level file a thin index that cross-references the parts → keep each sub-folder's
   `CONTEXT.md` file table in step → verify length with
-  `code/src/scripts/audits/cloc.sh` (or the pre-PR gate).
+  `code/src/scripts/audits/docs-length.sh` (or the lefthook pre-commit hook — it is not one
+  of the eight pre-PR gates).
 - **Definition of done:** every instructional `.md` ≤ 300 code lines; entry-point
   guide is an index, not a monolith; cross-references resolve; British English; the
   `CONTEXT.md` index and any parent `REFERENCES.md` list the same set of files.

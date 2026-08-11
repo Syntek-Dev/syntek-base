@@ -8,6 +8,16 @@ were surfaced, and when.
 > **Reports are gitignored, never committed.** Only this `CONTEXT.md`, `CLAUDE.md`, `.gitignore`,
 > and `.gitkeep` are tracked. The history lives on each developer's machine, not in the repo.
 
+## Directory Tree
+
+```text
+code/src/improvement-architecture/
+├── CLAUDE.md     ← operating rules
+├── CONTEXT.md    ← this file
+├── .gitignore    ← ignores every generated report
+└── .gitkeep      ← keeps the directory in git while the reports stay out
+```
+
 ## What goes here
 
 | File                                   | Written by                            | Contains                                                               |

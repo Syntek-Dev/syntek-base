@@ -3,7 +3,7 @@
 # CLAUDE.md — how-to/workflows/03-daily-development/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when-to-use, prerequisites, key concepts — imported above) → this file.
+(when-to-use, key concepts — imported above) → this file.
 
 ## Purpose (one line)
 

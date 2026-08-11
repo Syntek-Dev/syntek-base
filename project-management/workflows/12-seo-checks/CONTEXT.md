@@ -2,13 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+SEO targets set after a page is built become a retrofit; set before, they are simply part of
+the page. This gate produces the criteria the frontend implements against.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/12-seo-checks/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -41,13 +44,6 @@ impossible to run in its own slot.
 - To verify a built page — that is `21-implementation-documentation`
 - For a story with no public URL — record `SEO: N/A` with a reason and move on
 
-## Prerequisites
-
-- [ ] The story exists in `src/02-STORIES/` with acceptance criteria
-- [ ] The story's wireframes exist (`src/08-WIREFRAMES/USER-STORY-IDEAS/`) — page structure drives
-      heading hierarchy and Core Web Vitals targets
-- [ ] `project-management/docs/SEO-CHECKLIST.md` read
-
 ## Key concepts
 
 - **Targets, not measurements.** Every dimension gets a concrete planned value — the intended
@@ -79,11 +75,11 @@ impossible to run in its own slot.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/SEO-CHECKLIST.md` — the canonical checklist these targets are set from
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/12-SEO/PLANNING/` — where the plan lands
 - `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/` — the page structure being planned for

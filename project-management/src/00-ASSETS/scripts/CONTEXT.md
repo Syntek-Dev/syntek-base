@@ -2,6 +2,23 @@
 
 Shell scripts for exporting project artefacts to PDF and zip archives for client delivery.
 
+## Directory Tree
+
+```text
+project-management/src/00-ASSETS/scripts/
+├── CLAUDE.md                    ← operating rules
+├── CONTEXT.md                   ← this file
+├── export-clickup-stories.sh    ← stories → the ClickUp import format
+├── export-design-docs.sh        ← design artefacts → client-ready PDF
+├── export-pm-files.sh           ← the PM tree → a delivery zip
+├── export-wireframes.sh         ← wireframe HTML → PDF
+├── precommit-clickup.sh         ← regenerates the ClickUp exports on commit; self-gating
+└── sync-clickup.sh              ← pushes stories and sprints to the ClickUp workspace
+```
+
+These live beside the artefacts they export rather than in `code/src/scripts/`, because their
+input is the PM tree and their output is a client deliverable — neither is a dev operation.
+
 ## Contents
 
 | Script                      | Purpose                                                                                                                                                                                                                                        |

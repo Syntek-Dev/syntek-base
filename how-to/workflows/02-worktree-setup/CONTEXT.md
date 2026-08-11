@@ -1,5 +1,9 @@
 # Workflow: Worktree Setup
 
+Two stories in one checkout means one Docker stack, one database and one set of ports. A
+worktree per story is what makes parallel work possible without the two contaminating each
+other.
+
 **Last Updated**: <%DATE%>
 
 ## Directory Tree
@@ -8,7 +12,7 @@
 how-to/workflows/02-worktree-setup/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -24,16 +28,6 @@ interfere with each other.
   workflow instead.
 - The story does not require running the full dev stack locally.
 
-## Prerequisites
-
-- [ ] First-time setup has been completed (`how-to/workflows/01-first-time-setup/`)
-- [ ] You are on the `testing` branch and it is up to date
-- [ ] The Docker override files for your story numbers exist in
-      `code/src/docker/docker-compose.us###.dev.yml` and `docker-compose.us###.test.yml`
-- [ ] If you have run this workflow before, the one-time `/etc/hosts` entries for your
-      worktree hostnames already exist — otherwise Step 4 adds them on the first run
-      (see `how-to/docs/GIT-WORKTREES.md` for the full list)
-
 ## Key concepts
 
 - A git worktree is a separate checkout of the same repository in a sibling directory
@@ -44,10 +38,10 @@ interfere with each other.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/GIT-GUIDE.md` — branch naming must be correct before creating a worktree
 
-### Soft references — consult during execution
+### Related reading
 
 - `how-to/docs/GIT-WORKTREES.md` — full naming convention, `/etc/hosts` setup, remove workflow

@@ -88,5 +88,5 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] Every claimed register entry names the node or story that will retire it
 - [ ] No story has been written — that is `02-story-creation`
 - [ ] `src/01-FEATURE/CONTEXT.md` index current
-- [ ] Instructional `.md` files ≤ 300 code lines
+- [ ] Instructional `.md` files ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY

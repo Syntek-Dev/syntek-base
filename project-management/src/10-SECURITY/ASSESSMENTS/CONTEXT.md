@@ -57,13 +57,6 @@ A posture assessment is tied to a story at both ends, the two mirroring each oth
 
 CRITICAL/HIGH findings are release blockers — escalate each to `../VULNERABILITIES/`.
 
-## File naming
-
-| Phase          | Pattern                                            | Descriptor      |
-| -------------- | -------------------------------------------------- | --------------- |
-| Planning       | `ASSESSMENT-PLAN-US###-<DESCRIPTOR>.md`            | SCREAMING-KEBAB |
-| Implementation | `ASSESSMENT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` | SCREAMING-KEBAB |
-
 ## Cross-references
 
 - `PLANNING/CONTEXT.md` · `IMPLEMENTATION/CONTEXT.md` — the two per-story sub-folders

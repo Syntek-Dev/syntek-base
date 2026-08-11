@@ -28,8 +28,14 @@ reference a developer codes from.
   define the test strategy → carry in GDPR/security/QA constraints from their source specs
   → write `STORY-PLAN-US###-<descriptor>.md` into `src/16-STORY-PLANS/` → add its row to
   the Plans Index → satisfy `CHECKLIST.md`.
-- **Definition of done:** the plan is the single source of truth a developer codes from; it
-  unlocks the implementation phase (`workflows/18-backend-code/`).
+- **Definition of done:** every state-changing endpoint the plan introduces carries an
+  explicit permission check and ownership verification (OWASP A01, no IDOR); the GDPR,
+  security and QA constraints from the `02`–`13` specs are present and traced back to their
+  source; a test strategy is defined per layer; the `Blocked by` / `Blocks` /
+  `Can be done now` callout is accurate, because the parallel-worktree DAG depends on it;
+  and one adversarial pass has looked for missing layers, wrong references and
+  dependency-order errors. The plan is then what a developer codes from, and it unlocks
+  `workflows/18-backend-code/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (see
   `.claude/CLAUDE.md` §2.5).

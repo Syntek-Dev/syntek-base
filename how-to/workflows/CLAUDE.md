@@ -15,7 +15,7 @@ The step-by-step operational workflows — first-time setup (`01`), daily develo
 ## How to work here
 
 - **Routing:** operational procedure → `global-workflow` skill. Pick the numbered
-  workflow that matches the task; read its `CONTEXT.md` (when-to-use, prerequisites,
+  workflow that matches the task; read its `CONTEXT.md` (when-to-use,
   hard gates) before executing `STEPS.md`, then verify against `CHECKLIST.md`.
 - **Model:** Opus to author or restructure a workflow and renames and link
   fixes.

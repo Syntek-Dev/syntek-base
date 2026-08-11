@@ -8,7 +8,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-The Django application registry — currently empty; each domain module added here owns its
+The Django application registry — `core` ships with the template; each domain module added here owns its
 own models, services, and endpoints, and registers as `apps.<name>`.
 
 ## How to work here
@@ -21,7 +21,7 @@ own models, services, and endpoints, and registers as `apps.<name>`.
 - **Model:** Opus for all app logic, tests, and mechanical touches.
 - **Concrete steps:** read the target app's `CONTEXT.md` → business logic in
   `services.py`/`services/` (endpoints stay thin) → schema models under the app's
-  `schema/` package → migrations via `code/src/scripts/database/migrate.sh make` →
+  `schemas/` package → migrations via `code/src/scripts/database/migrate.sh make` →
   tests via `code/src/scripts/tests/*.sh`.
 - **Definition of done:** app registered as `apps.<name>`; permission module in place
   where visibility is scoped; coverage floor met; the app's `CONTEXT.md` + `CLAUDE.md`
@@ -46,3 +46,6 @@ own models, services, and endpoints, and registers as `apps.<name>`.
 - **Generated (never hand-edit):** per-app `migrations/NNNN_*.py`.
 - App packages `snake_case`, registered `apps.<name>`; documentation
   `SCREAMING-SNAKE-CASE.md`; stories referenced as `US###`.
+- **Within an app:** business logic in `services.py` / `services/`, Ninja Schema models in
+  `schemas.py` / `schemas/`, the router in `api.py`, MCP tools in `mcp_tools.py`. Scaffold a
+  new app with `code/src/scripts/development/new-django-app.sh` — never `manage.py startapp`.

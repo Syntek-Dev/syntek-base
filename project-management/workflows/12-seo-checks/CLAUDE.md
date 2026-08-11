@@ -17,7 +17,7 @@ writing `SEO-PLAN-US###-<DESCRIPTOR>.md` into `src/12-SEO/PLANNING/`.
   `docs/SEO-CHECKLIST.md` must be read before Step 1. Inputs: the story
   (`src/02-STORIES/`) and its wireframes (`src/08-WIREFRAMES/USER-STORY-IDEAS/`).
 - **Grill first:** open with a grilling pass — the primary keyword, the schema type, whether the
-  page should be indexed at all — one question at a time (`.claude/CLAUDE.md` §10). These are
+  page should be indexed at all — (`.claude/CLAUDE.md` §10). These are
   judgement calls, and getting them wrong is expensive once the page ships and ranks.
 - **Model:** Fable — choosing a schema type, a canonical strategy, and an indexing posture is
   substantive SEO judgement, not mechanical verification. (This gate previously ran on Opus

@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+Deciding how a story will be tested while it is still a design is what surfaces the
+requirements nobody can verify. A story that cannot be tested has not finished being specified.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/11-qa-checks/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -19,11 +23,6 @@ Use this workflow after security checks and before sprint planning to:
 - Identify edge cases, error states, and boundary conditions from the designs
 - Produce a QA plan for each user story in the upcoming sprint
 
-## Prerequisites
-
-- [ ] Wireframes signed off in `project-management/src/08-WIREFRAMES/`
-- [ ] Security checks complete (`workflows/10-security-checks`)
-
 ## Key concepts
 
 - QA is planned at design stage — test scenarios are derived from wireframes, not from completed code
@@ -33,11 +32,11 @@ Use this workflow after security checks and before sprint planning to:
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 None — QA planning is pre-code; no safety gates apply.
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/11-QA/` — QA documents output
 - `project-management/src/02-STORIES/` — user stories to map QA scenarios against

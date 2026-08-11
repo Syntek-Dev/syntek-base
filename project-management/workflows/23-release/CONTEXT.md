@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+A release is the one operation where a mistake reaches users. The version, the changelog and
+the deploy move together so that what shipped can always be identified afterwards.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/23-release/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,19 +19,13 @@ project-management/workflows/23-release/
 
 Use this workflow when cutting a release — version bump, changelog update, and deployment.
 
-## Prerequisites
-
-- [ ] Staging branch is green and accepted
-- [ ] All stories for this release are marked complete
-- [ ] Changelog entries are up to date
-
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/VERSIONING-GUIDE.md` — version bump rules and file checklist; must be followed exactly
 - `project-management/docs/GIT-GUIDE.md` — branch promotion chain and staging verification gates
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/security/OWASP-AND-CHECKLIST.md` — pre-release security checklist (DB13, DB16 gates)

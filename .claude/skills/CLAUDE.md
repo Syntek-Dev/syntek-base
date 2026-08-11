@@ -23,21 +23,23 @@ loaded on demand by the agents in `.claude/agents/`.
   `description` an accurate "when to load" trigger → if a `SKILL.md` would exceed the 300-line
   limit, split into sub-docs (`SCREAMING-SNAKE-CASE.md`) with the `SKILL.md` a thin index →
   update this folder's `CONTEXT.md` tree if a file is added or removed.
-- **Every skill carries a `## Governing procedures (route here — do not restate at length)`
-  section**, placed immediately before `## Cross-references`. It names the procedures across
-  **all three workflow layers** — `project-management/workflows/`, `code/workflows/`, and
-  `how-to/workflows/` — that the skill is loaded in service of, each with a one-line "when".
-  A skill that is a session or sandbox mechanic (`handoff`, `teach`, `msp-scp-documents`) says
-  it has none rather than leaving the absence ambiguous. Because skill frontmatter is
-  `name` + `description` only, this section is the **only** place routing can live. Pairing
-  map: `REFERENCES.md` → Cross-layer workflow pairing.
-- **Definition of done:** frontmatter is `name` + `description` only; every file ≤ 300 lines;
-  no reference points outside the project; British English; the skill still matches the agents
-  that load it; the `## Governing procedures` section is present and its paths resolve.
+- **The frontmatter shape, the `## Governing procedures` section and the whole authoring
+  standard belong to `how-to/docs/SKILL-AUTHORING.md`** — read it before writing, and do not
+  restate its rules here. It carries the six specification fields, which two this project
+  authors and why, the vendored exception, and the pre-ship checklist.
+- **Definition of done:** `bash code/src/scripts/audits/skill-conformance.sh` and
+  `bash code/src/scripts/audits/docs-length.sh --path .claude/skills` both exit 0; no
+  reference points outside the project; British English; the skill still matches the agents
+  that load it; every path in its `## Governing procedures` section resolves.
 
 ## Guardrails
 
-- **Frontmatter is `name` + `description` only** (the Claude Code skill spec) — no other keys.
+- **The authoring standard has exactly one home** — `how-to/docs/SKILL-AUTHORING.md` — and this
+  file routes to it rather than repeating it. A rule restated in two places drifts the moment
+  one of them changes, and the copy is believed as readily as the original. That is how the
+  sentence which used to sit here came to call a **project narrowing** ("`name` + `description`
+  only") the **specification** — the spec defines six fields, and three shipped skills already
+  used two of the other four. Enforced by `audits/skill-conformance.sh`.
 - **No plugin references** — never `$<%ENV_PREFIX%>_DIR`, `./skills/`, `./plugins/`, `/<%ORG_SLUG%>-dev-suite:`,
   or `/<%ORG_SLUG%>-doc-writer:`; use project paths (`.claude/plugins/*.py`, `code/docs/*`,
   `code/src/scripts/**/*.sh`) and internal agent names.

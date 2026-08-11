@@ -21,7 +21,7 @@ ARIA, keyboard/focus interaction, and django-component patterns/testing — behi
 - **Concrete steps:** edit the relevant sub-doc (`HTML-AND-ARIA.md`,
   `INTERACTION.md`, `TESTING-AND-COMPONENTS.md`, `MOBILE.md`) → keep the parent
   `ACCESSIBILITY.md` a thin index and update the `CONTEXT.md` file table if a file is
-  added, renamed, or removed → check length with `code/src/scripts/audits/cloc.sh`.
+  added, renamed, or removed → check length with `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** guidance is testable against WCAG 2.2 AA; each file ≤ 300
   lines; cross-references resolve; British English.
 

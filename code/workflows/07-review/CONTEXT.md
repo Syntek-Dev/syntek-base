@@ -1,11 +1,15 @@
 # Workflow: Code Review
 
+Reviewing the content of a change and running the merge process are separate jobs with separate
+failure modes. Splitting them keeps a green pipeline from being mistaken for a reviewed change.
+
 ## Directory Tree
 
 ```text
 code/workflows/07-review/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -16,40 +20,39 @@ covers the _content_ of the code — security, patterns, coverage, and coding pr
 For the PR merge process (branch promotion, approvals, gates) use
 `project-management/workflows/22-pr-and-review/`.
 
-## Prerequisites
-
-- [ ] TDD cycle complete — tests are green
-- [ ] Linters are clean (`ruff`, ESLint, markdownlint)
-- [ ] No known outstanding bugs on this scope
-
 ## Key concepts
 
-- OWASP A01–A10 are the security baseline — all must be addressed before a PR is raised
-- NIST SP 800-63B governs authentication, password policy, and MFA requirements
-- Every state-changing Django Ninja endpoint must verify authentication and permissions explicitly via named Policy classes
-- User-supplied IDs must be validated against caller ownership (no IDOR)
-- Coverage floor: 75% line and branch (90% auth) — one floor, not one per layer
-- No hardcoded secrets, no bare `except:`, no inline imports without documentation
+What this review is judged against, and where each standard is decided:
 
-- Frontend PRs must not introduce components that duplicate existing the django-components library ones —
-  verify the shared library was checked before each new component was built.
+- **OWASP A01–A10** is the security baseline; **NIST SP 800-63B** governs authentication,
+  password policy and MFA (`code/docs/security/OWASP-AND-CHECKLIST.md`)
+- **Named Policy classes** are how a Django Ninja endpoint expresses its permission check, and
+  ownership verification is what separates a permission check from an IDOR
+  (`code/docs/security/AUTH-AND-AUTHZ.md`)
+- **One coverage floor** covers every layer — template and HTMX tests are pytest tests and count
+  towards it (`code/docs/testing/COVERAGE.md`)
+- **The django-components library is the first place to look** before a new component is written;
+  a duplicate is a review finding, not a style preference
 
-- M2M prefetches on soft-deleting models must use `Prefetch()` with `deleted_at__isnull=True` —
-  a bare `prefetch_related()` silently returns deleted records in API responses.
-  See `code/docs/api-design/NINJA-CONVENTIONS.md` — "Soft-Delete Filtering in M2M Prefetches".
-- Every constraint guard before a destructive operation must check **all** M2M consumer models,
-  not just the primary one.
-- Django Ninja response Schema models must expose every field that request Schema inputs accept as writable.
+Three recurring bites this review exists to catch, each with a non-obvious failure mode:
+
+- A bare `prefetch_related()` on a **soft-deleting M2M** silently returns deleted records in API
+  responses; `Prefetch(..., deleted_at__isnull=True)` is what filters them
+  (`code/docs/api-design/NINJA-CONVENTIONS.md` — "Soft-Delete Filtering in M2M Prefetches")
+- A constraint guard before a destructive operation that checks only the primary M2M consumer
+  leaves the others unguarded
+- A response Schema narrower than its request Schema makes a field writable and unreadable, which
+  no test asserting a round-trip will notice
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/security/AUTH-AND-AUTHZ.md` — permission and IDOR requirements
 - `code/docs/security/OWASP-AND-CHECKLIST.md` — OWASP A01–A10 and NIST SP 800-63B pre-release checklist
 - `code/docs/testing/COVERAGE.md` — coverage floors and test philosophy
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **review playbook**
   (`.claude/skills/review-changes.md`): `detect_changes` → `get_affected_flows` →

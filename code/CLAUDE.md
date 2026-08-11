@@ -21,8 +21,7 @@ anything in `src/` is designed, written, tested, and reviewed.
   **Never run `pytest`, `python`, or `docker` directly** — only the shell scripts
   under `src/scripts/`.
 - **Grill first:** any substantial task — design, code, tests, review, refactor, debug —
-  opens with a grilling pass (the owning agent loads `.claude/skills/grill-with-docs`, one
-  question at a time) before code is written; only trivial/mechanical work skips it
+  opens with a grilling pass (the owning agent loads `.claude/skills/grill-with-docs`, which owns the round shape and question format) before code is written; only trivial/mechanical work skips it
   (`.claude/CLAUDE.md` §10).
 - **Model:** Opus for all substantive work (design, code, tests, reviews, security)
   and mechanical touches (renames, version bumps, running scripts).
@@ -31,9 +30,10 @@ anything in `src/` is designed, written, tested, and reviewed.
   `src/scripts/syntax/*.sh` and `src/scripts/tests/*.sh` → update the touched
   directory's `CONTEXT.md` if structure changed → refresh the code-review-graph
   (`code-review-graph update`) so it matches → docs hard-gate before any commit.
-- **Definition of done:** file ≤ 750 lines (800 grace); coverage floors met (75% line
-  and branch / 90% auth); every state-changing Django Ninja endpoint
-  permission-checked; no IDOR; British English; `CONTEXT.md` updated; quality gates green.
+- **Definition of done:** file within the length limit (`docs/CODING-PRINCIPLES.md`);
+  coverage floors met (`docs/testing/COVERAGE.md`); every state-changing Django Ninja
+  endpoint permission-checked; no IDOR; British English; the touched `CONTEXT.md` and
+  `CLAUDE.md` updated; quality gates green.
 
 ## Guardrails
 
@@ -42,7 +42,8 @@ anything in `src/` is designed, written, tested, and reviewed.
   `DEBUG=False` outside local;
   no `CORS *` in production; secrets via env only; Django admin never at `/admin/`;
   token-first CSS (components consume `var(--token)` only).
-- **File length 750** (800 grace); **every new `src/` directory gets a `CONTEXT.md`.**
+- **File length 750** (800 grace); **every new `src/` directory gets a `CONTEXT.md` +
+  `CLAUDE.md` pair** (`docs/DOCUMENTATION-PAIRING.md`).
 - **Never read** `node_modules/`, `src/django/staticfiles/`, `.git/`.
 
 ## Output & naming

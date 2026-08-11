@@ -33,12 +33,16 @@ other dependency declared but unwired.
 ## Guardrails
 
 - **Anything re-added to `INSTALLED_APPS` or `MIDDLEWARE` is a deliberate choice** — the
-  baseline carries `django.contrib.*` and Django's default middleware only. Add a
-  dependency when the feature needs it, not in anticipation.
+  baseline carries `django.contrib.*` plus `apps.core`, and Django's default middleware plus
+  `RequestIDMiddleware`. Nothing third-party is registered. Add a dependency when the feature
+  needs it, not in anticipation.
 - **`AUTH_USER_MODEL` is Django's `auth.User`.** Swapping to a custom model after the
   first migration requires manual FK surgery — decide before the first `migrate`.
 - **Every state-changing endpoint carries an explicit permission check** (OWASP A01);
   user-supplied IDs verified against caller ownership — no IDOR.
+- **Business logic lives in services, never in a view or an endpoint** — the adapter layer
+  stays thin so a second adapter can sit beside the first
+  (`code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`).
 - **Every service method doing ≥ 2 writes uses `transaction.atomic()`.**
 - `DEBUG=False` in every non-local settings module; all secrets via environment only.
 - **Django's admin lives at `/control/`, never `/admin/`** — see `code/docs/URL-STRATEGY.md`.

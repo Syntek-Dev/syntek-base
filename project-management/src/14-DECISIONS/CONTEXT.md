@@ -22,15 +22,6 @@ Deprecated), **Context**, **Options considered**, **Decision**, and **Consequenc
 under a metadata header (Date, Deciders, Supersedes / Superseded by, Related `US###` /
 `ADR-###`). The full scaffold with authoring guidance lives in `ADR-000-TEMPLATE.md`.
 
-## Rules
-
-- **Immutable once Accepted** — never rewrite a decision in place. To change course,
-  raise a new ADR and mark the old one `Superseded`, cross-referencing both records.
-- **Indices are unique and monotonic** — never reuse a retired number; gaps are
-  acceptable, collisions are not.
-- **Documentation only** — an ADR states a security or architecture _decision_; it is
-  _enforced_ in `code/`. No source, secrets, or `.env` content here.
-
 ## Authoring a new ADR
 
 Copy `ADR-000-TEMPLATE.md` → take the next free `ADR-###` index → fill the five sections

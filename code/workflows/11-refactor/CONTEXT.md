@@ -1,11 +1,16 @@
 # Workflow: Refactor
 
+A refactor that also changes behaviour cannot be reviewed, because there is no longer a fixed
+point to compare against. Keeping restructuring in its own workflow is what makes "no behaviour
+change" a checkable claim.
+
 ## Directory Tree
 
 ```text
 code/workflows/11-refactor/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -19,15 +24,10 @@ leaked into resolvers, or functions have grown beyond a single purpose.
 alongside a refactor, fix the bug first (use `code/workflows/10-debug/`), then
 refactor separately.
 
-## Prerequisites
-
-- [ ] All tests are green before starting
-- [ ] No open bugs on the scope being refactored
-- [ ] The scope of the refactor is clearly defined
-
 ## Key concepts
 
-- Tests must stay green throughout — run them after every meaningful change
+- **The test suite is the fixed point.** It is what turns "no behaviour change" from an assertion
+  into a checkable claim — so a suite that goes red mid-refactor means this stopped being one
 - Extract business logic from resolvers into service classes; when the extracted logic is a named
   access rule, shape it as a Policy class — when it is a variant algorithm, shape it as a Strategy
   class (see `code/docs/coding-principles/PRACTICAL-RULES.md — Decision Structuring`)
@@ -37,11 +37,11 @@ refactor separately.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/testing/COVERAGE.md` — coverage must not drop after a refactor; floors block PR
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **refactor playbook**
   (`.claude/skills/refactor-safely.md`): `refactor_tool` suggest/dead_code/rename, then

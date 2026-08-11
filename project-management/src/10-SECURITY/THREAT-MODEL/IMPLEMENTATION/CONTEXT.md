@@ -15,15 +15,6 @@ project-management/src/10-SECURITY/THREAT-MODEL/IMPLEMENTATION/
 └── THREAT-MODEL-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one review per story
 ```
 
-## File naming
-
-```text
-THREAT-MODEL-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `THREAT-MODEL-IMPL-US000-CONTACT-FORM-01-01-2026.md`. Reuse the same
-`<DESCRIPTOR>` as the story's planning model.
-
 ## When to create a file here
 
 Write a review during `project-management/workflows/10-security-checks/` once a story's

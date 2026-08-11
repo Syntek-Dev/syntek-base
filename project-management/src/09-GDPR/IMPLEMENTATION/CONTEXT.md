@@ -14,14 +14,6 @@ project-management/src/09-GDPR/IMPLEMENTATION/
 └── GDPR-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one record per PII-handling story
 ```
 
-## File naming
-
-```text
-GDPR-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `GDPR-IMPL-US000-CONTACT-FORM-01-01-2026.md`.
-
 ## When to create a file here
 
 Write a record during `project-management/workflows/21-implementation-documentation/` for any story

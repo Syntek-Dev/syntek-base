@@ -19,7 +19,7 @@ behind the `code/docs/CODING-PRINCIPLES.md` entry point.
 - **Concrete steps:** edit the relevant sub-doc (`DESIGN-PRINCIPLES.md`,
   `PRACTICAL-RULES.md`, `STYLE-AND-PROCESS.md`) → keep `CODING-PRINCIPLES.md` a thin
   index and update the `CONTEXT.md` file table on any change → verify length with
-  `code/src/scripts/audits/cloc.sh`.
+  `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** rules are actionable and match the shipped code; each file
   ≤ 300 lines; cross-references resolve; British English.
 

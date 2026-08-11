@@ -8,6 +8,8 @@ on the host directly.
 
 ```text
 code/src/scripts/
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file
 ├── _lib/                    ← internal shell library (not invoked directly)
 │   └── worktree-detect.sh
 ├── audits/                  ← codebase health audits (cloc, stub detection)
@@ -48,17 +50,20 @@ code/src/scripts/
 | `syntax/`      | Code quality: ruff, basedpyright, markdownlint, Prettier                                                                                                     |
 | `tests/`       | Test suite: pytest (backend), Bruno (API), playwright-python (browser e2e)                                                                                   |
 
-## Rules
+## Host or container
 
-- Always use these scripts rather than invoking `python`, `pnpm`, or `pytest` directly.
-- If a script does not exist for a task, ask for it to be created before proceeding.
-- Audit scripts (`audits/`) run on the host — no container required.
-- Most scripts that interact with Django run inside Docker. Exceptions: the two
-  repo-spanning formatters/linters — Prettier (`syntax/format.sh`) and markdownlint
-  (`syntax/lint.sh`) — run on the **host** via the workspace `pnpm`, because no dev container
-  mounts the whole tree (see `syntax/CONTEXT.md`).
+Most scripts that touch Django run inside Docker via `docker compose exec`, because that is where
+Django's dependencies are. Three groups run on the **host** instead, each for a reason:
+
+| Group                                 | Why it runs on the host                                                       |
+| ------------------------------------- | ----------------------------------------------------------------------------- |
+| `audits/`                             | They read files, not a running application — a container buys nothing         |
+| `syntax/format.sh` · `syntax/lint.sh` | Prettier and markdownlint span the whole tree, and no dev container mounts it |
+| `mobile/` · `rust/` · `desktop/`      | Their toolchains are pinned on the host, so image and developer share one pin |
 
 ## Cross-references
 
+- `code/src/scripts/CLAUDE.md` — the operating rules: scripts are the only sanctioned
+  interface, and what to do when one does not exist yet
 - `how-to/docs/CONTEXT.md` — daily development commands and workflows
 - `code/docs/TESTING.md` — testing strategy and coverage requirements

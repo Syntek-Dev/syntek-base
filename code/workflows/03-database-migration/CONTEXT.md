@@ -1,11 +1,16 @@
 # Workflow: Django Database Migration
 
+A migration is the one change that is expensive to reverse once it reaches a deployed database.
+The procedure is separate so the lock-safety and constraint questions are asked before the file
+is generated, not after it has run.
+
 ## Directory Tree
 
 ```text
 code/workflows/03-database-migration/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -13,11 +18,6 @@ code/workflows/03-database-migration/
 
 Use this workflow when adding new models, altering fields, or making any schema change
 that requires a Django migration.
-
-## Prerequisites
-
-- [ ] Database containers are running
-- [ ] No uncommitted previous migrations
 
 ## Key concepts
 
@@ -28,12 +28,12 @@ that requires a Django migration.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/data-structures/SCHEMA-DESIGN.md` — naming and index conventions; violations produce broken migrations (PostgreSQL schema design, normalisation, indexes, FK, soft deletes)
 - `code/docs/encryption/FIELD-ENCRYPTION.md` — required when adding any PII column; must be applied before committing
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/rls/TESTING-AND-AUDIT.md` — row-level security policy updates and new module checklist
 - `code/docs/rls/FUNDAMENTALS.md` — RLS policy must be updated alongside schema changes

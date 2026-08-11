@@ -2,12 +2,17 @@
 
 **Last Updated**: <%DATE%>
 
+The API turns approved services into a contract for machine clients. It is a separate phase
+from the backend because a permission check and an ownership check live here, at the boundary,
+not in the logic beneath it.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/19-api-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -16,12 +21,6 @@ project-management/workflows/19-api-code/
 Use this workflow when writing the Django Ninja API layer — routers, endpoints, and
 request/response Schemas that expose backend services to machine clients over
 JSON (`/api/*`). Backend models and services must exist before this workflow begins.
-
-## Prerequisites
-
-- [ ] Backend models and services are implemented and tested
-- [ ] User story is understood — which data must be exposed and to whom
-- [ ] No breaking schema changes are in-flight on the same app
 
 ## Key concepts
 
@@ -32,13 +31,13 @@ JSON (`/api/*`). Backend models and services must exist before this workflow beg
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — router and Schema design, endpoint patterns, pagination conventions
 - `code/docs/security/AUTH-AND-AUTHZ.md` — every mutating endpoint requires an explicit permission check (CLAUDE.md §6); IDOR prevention and OWASP A01
 - `code/docs/testing/COVERAGE.md` — coverage floor thresholds (75% all modules / 90% auth-related) block PR
 
-### Soft references — consult during execution
+### Related reading
 
 #### code/ layer
 
@@ -63,7 +62,7 @@ JSON (`/api/*`). Backend models and services must exist before this workflow beg
 - `code/src/django/config/api.py` — the single `NinjaAPI` (mount new app routers here); `config/urls.py` serves it at `/api/`
 - `code/src/django/apps/<name>/api.py` — the per-app Ninja `router` (endpoints + Schemas) for the feature
 
-#### project-management/ — prerequisites and next step
+#### project-management/ — what precedes this, and what follows
 
 - `project-management/workflows/18-backend-code/` — backend models and services must exist first
 - `project-management/src/13-API-DESIGN/` — the signed-off API design doc being implemented

@@ -11,7 +11,7 @@ the flow as built (`IMPLEMENTATION/`). Rendered diagrams live in `DIAGRAMS/`.
 project-management/src/05-USER-FLOW/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
-├── USER-STORY-IDEAS/        ← stage 1: per-story flow fragments (workflow 04)
+├── USER-STORY-IDEAS/        ← stage 1: per-story flow fragments (workflow 05)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── USER-FLOW-IDEA-US000-TEMPLATE.md
 │   └── USER-FLOW-IDEA-US###-<DESCRIPTOR>.md
@@ -44,23 +44,13 @@ story picks up — are exactly what consolidation exists to find.
 
 | Stage                 | Written by  | Scope     | Naming                                            |
 | --------------------- | ----------- | --------- | ------------------------------------------------- |
-| `USER-STORY-IDEAS/`   | workflow 04 | one story | `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md`            |
+| `USER-STORY-IDEAS/`   | workflow 05 | one story | `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md`            |
 | `CONSOLIDATED-IDEAS/` | workflow 17 | one area  | `USER-FLOW-CONSOLIDATED-<AREA>.md`                |
 | `IMPLEMENTATION/`     | workflow 21 | one story | `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 `<AREA>` and descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY.
 
 **Stage 1 is frozen once stage 2 runs** — never rewritten; it records what each story mapped.
-
-## Rules
-
-- **Flows document behaviour and structure, not visual design** — that is brand, component, and
-  wireframe work.
-- **Every decision node resolves both outcomes.** In stage 1 that means within the story's
-  slice; in stage 2 it means across the whole journey, with no dead ends between fragments.
-- **Data touchpoints are flagged, never enforced here** — they map to lawful basis and retention
-  in `../09-GDPR/`.
-- **Wireframes follow the consolidated flow**, not a stage-1 fragment.
 
 ## Cross-references
 

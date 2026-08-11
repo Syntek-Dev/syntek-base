@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+The sprint record fixes the goal and the candidate scope before design work starts, so that
+design is bounded by a decision rather than the other way round.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/03-sprint-planning/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -20,11 +24,6 @@ candidate stories, and initial scope. Run it after stories exist and before desi
 > The detailed sprint plan (story assignments, phase breakdown, GDPR/security/QA constraints)
 > is written later via `workflows/15-sprint-plans/`, after all pre-sprint checks are complete.
 
-## Prerequisites
-
-- [ ] Backlog of user stories exists in `project-management/src/02-STORIES/`
-- [ ] Previous sprint is closed or in wind-down
-
 ## Key concepts
 
 - Sprint records are saved as `SPRINT-##.md` in `project-management/src/03-SPRINTS/`
@@ -33,11 +32,11 @@ candidate stories, and initial scope. Run it after stories exist and before desi
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/PLANNING-GUIDE.md` — MoSCoW format must be correct before writing any sprint record
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/02-STORIES/` — story backlog
 - `project-management/src/03-SPRINTS/` — sprint records

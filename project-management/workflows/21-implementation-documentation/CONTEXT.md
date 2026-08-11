@@ -2,11 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+Documentation written after the PR is documentation written from memory. This closeout owns the
+records, the findings and the graph refresh, and it sits before the PR so the hard gate is real
+rather than aspirational.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/21-implementation-documentation/
 ├── CHECKLIST.md             ← verification checklist before marking complete
+├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file (purpose, when to run, inputs, outputs)
 └── STEPS.md                 ← ordered steps to execute
 ```
@@ -71,16 +76,6 @@ and carries three responsibilities:
   scope column, and absent database-level constraints get materially costlier with each
   story that ships on top of them, and are escalated separately from cosmetic findings.
 
-## Quality gates
-
-- Documentation hard gate met: every touched `CONTEXT.md`/`CLAUDE.md` complete before any
-  commit, code-review-graph refreshed alongside.
-- Every applicable IMPLEMENTATION record written from its template and linked to `US###`.
-- No spec left with a `PLANNING/` record but no `IMPLEMENTATION/` record.
-- A findings record exists for the story, every finding carries a retrofit cost and a
-  disposition, and nothing was fixed in this pass.
-- Every instructional `.md` touched stays ≤ 300 code lines.
-
 ## Related workflows
 
 - **Upstream:** `18-backend-code`, `19-api-code`, `20-frontend-code` — the code this
@@ -91,12 +86,12 @@ and carries three responsibilities:
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the graph-refresh procedure the docs must stay in
   lockstep with; the documentation hard gate is non-negotiable (`.claude/CLAUDE.md` §6).
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/09-GDPR/IMPLEMENTATION/` — `GDPR-IMPL-US000-TEMPLATE.md`
 - `project-management/src/10-SECURITY/` — post-build audit record under

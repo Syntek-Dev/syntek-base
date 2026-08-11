@@ -21,9 +21,16 @@ share the number of their web counterpart where one exists.
 
 `WF-IDEA-US000-TEMPLATE.html` is a representative screen composed entirely from the shared
 chrome: a skip link and wireframe banner, sticky header/navigation, a hero with a media
-placeholder, a card row, an indicative form, a footer, and an **annotation key**. Numbered
+placeholder, a card block, an indicative form, a footer, and an **annotation key**. Numbered
 `wf-note` markers map to an ordered `wf-annotations` list — how a wireframe carries intent
 without finished copy.
+
+**The card block is asymmetric on purpose.** It is a lead card plus two supporting ones in a
+two-column grid, so the third wraps and the block reads 2 + 1. A row of three equal cards is the
+most recognisable tell of machine-authored UI (`code/docs/VISUAL-DESIGN.md` § 1), and because
+this file is copied to start every screen, whatever shape it ships becomes the project's default.
+The `wf-grid--3` modifier is still there for the case where a uniform row is genuinely right —
+annotation 3 in the template says when that is, and asks for the reason to be stated.
 
 ## Wireframe the story's screens, not the product
 

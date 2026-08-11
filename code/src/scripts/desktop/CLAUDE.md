@@ -30,8 +30,13 @@ Slint attribution the licence requires.
   it cannot open a window.
 - **`_common.sh` is sourced, never executed**, and hard-fails when the desktop crate is absent.
   That failure is intended: these scripts should not exist on a project without the surface.
-- **Do not add a lint/test/audit script here.** The crate is a workspace member and the Rust group
-  already covers it; a duplicate is a second answer that will drift from the first.
+- **Do not add a lint, test or dependency-audit script here.** The crate is a workspace member and
+  the Rust group already covers it; a duplicate is a second answer that will drift from the first.
+  **`style-check.sh` is not that duplicate** — it reads Slint build configuration for a design
+  decision, which no Rust script asks and none should start asking. Do not delete it citing this
+  rule, and do not weaken its `[gate: fail]` tier: an app that ships stock Fluent by accident is
+  the one thing `code/docs/visual-design/DESKTOP.md` bans. A deliberate platform default carries a
+  `style-allow` comment with a reason.
 - **Never hardcode a display.** Warn when `DISPLAY`/`WAYLAND_DISPLAY` are unset and let the app
   report the platform error; guessing one produces a worse message.
 - Shell scripts are exempt from the 750-line source limit but stay focused.

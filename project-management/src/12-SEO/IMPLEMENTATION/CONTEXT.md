@@ -14,15 +14,6 @@ project-management/src/12-SEO/IMPLEMENTATION/
 └── SEO-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one record per story with a public route
 ```
 
-## File naming
-
-```text
-SEO-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `SEO-IMPL-US000-HOME-PAGE-01-01-2026.md`. Prefix `SEO-IMPL-`, three-digit
-zero-padded story number, `SCREAMING-KEBAB-CASE` descriptor, then the date DD-MM-YYYY.
-
 ## When to create a file here
 
 Write a record during `project-management/workflows/21-implementation-documentation/`, after a story's

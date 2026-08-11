@@ -1,14 +1,18 @@
 # code/docs/encryption
 
-**Claude Model:** opus — Field-level encryption and searchable lookup token implementation
-
 Sub-documents for encryption strategies. Covers field-level encryption and lookup token implementation.
 
-## Files
+## Directory Tree
 
-| File                  | Purpose                                              |
-| --------------------- | ---------------------------------------------------- |
-| `FIELD-ENCRYPTION.md` | Field-level encryption techniques and implementation |
-| `LOOKUP-TOKENS.md`    | Creating searchable tokens for encrypted fields      |
+```text
+code/docs/encryption/
+├── CLAUDE.md           ← operating rules
+├── CONTEXT.md          ← this file
+├── FIELD-ENCRYPTION.md ← Field-level encryption techniques and implementation
+├── LOOKUP-TOKENS.md    ← Creating searchable tokens for encrypted fields
+└── RUST-CRYPTO.md      ← **Rust-only.** How native crypto relates to the Fernet pipeline, and where the boundary sits
+```
 
-Parent guide: `code/docs/ENCRYPTION-GUIDE.md`
+## Cross-references
+
+- `code/docs/ENCRYPTION-GUIDE.md` — the index these sub-documents belong to

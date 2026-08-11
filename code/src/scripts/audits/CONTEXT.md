@@ -1,40 +1,156 @@
 # code/src/scripts/audits
 
-Audit scripts for codebase health. `cloc.sh`, `stubs.sh`, and `css-tokens.sh` run directly on the
-host (no Docker required) and cover the full source tree on every invocation. `security.sh` runs
-on the host by default but also accepts `--docker` to audit inside the running dev containers.
+Audit scripts for codebase health. Every script here runs directly on the host (no Docker
+required) and covers its full scope on every invocation. `security.sh` is the only one that can
+also run inside the containers — it defaults to the host and accepts `--docker` to audit inside
+the running dev stack.
 
 ## Directory Tree
 
 ```text
 code/src/scripts/audits/
 ├── cloc.sh                  ← line-count audit (wc -l enforcement + cloc summary)
+├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
 ├── css-tokens.sh            ← phantom-token guard (var(--x) must resolve to a defined token)
 ├── css-gradients.sh         ← inline-gradient guard (brand gradients must be var(--gradient-*) tokens)
 ├── copy-emdash.sh           ← marketing-copy em-dash guard (no em dash in pagedata / templates)
+├── docs-pairing.sh          ← CONTEXT.md/CLAUDE.md split guard (orientation vs operating rules)
+├── docs-length.sh           ← 300-line instructional cap (cloc code lines; cloc.sh cannot see it)
+├── skill-conformance.sh     ← Agent Skills spec + the house two-key narrowing (.claude/skills/)
+│   ── the AI-slop family, split by input language (+ one by rendering) ──
+├── css-slop.sh              ← the CSS half (motion literals, uniformity ratios, the §4.2 legs)
+├── template-slop.sh         ← the markup half (emoji in chrome, pill and button ratios)
+├── copy-slop.sh             ← the prose half (the §4 sentence patterns and vocabulary)
+├── render-slop.sh           ← the rendered half (repetition down a page and across the screen set)
+│   ── (the desktop half is desktop/style-check.sh — Slint, not a web input) ──
 ├── mobile-tokens.sh         ← MOBILE-ONLY guard — no raw design values in StyleSheet code
+├── seam-contract.sh         ← build/operate seam guard (Source provenance in the server contract)
 ├── security.sh              ← dependency CVE audit (pip-audit for runtime deps + pnpm audit for repo tooling)
-├── stubs.sh                 ← stub detection (Python; also TS/JS if any is ever added)
+├── static-analysis.sh       ← Django/Python taint and XSS scan on the Opengrep engine (in-house rules)
+├── stubs.sh                 ← stub detection (Python, Rust; also TS/JS if any is ever added)
 ├── template-orphans.sh      ← artefacts stranded by a template update (content, no CONTEXT.md)
+├── fixtures/                ← test data an audit proves itself against (render-slop only)
+│   └── render-slop/         ← the known-positive / known-negative screen pair
+├── rules/                   ← the in-house Opengrep rule set static-analysis.sh runs
+│   ├── CONTEXT.md
+│   ├── CLAUDE.md
+│   └── *.yml                ← one file per concern
 └── reports/                 ← generated report output (all gitignored)
     ├── CONTEXT.md
     ├── .gitignore
     └── .gitkeep
 ```
 
+## The AI-slop family — why four scripts and not one
+
+`css-slop.sh`, `template-slop.sh`, `copy-slop.sh` and `render-slop.sh` enforce **one** doctrine
+(`code/docs/VISUAL-DESIGN.md` § 4–§ 6 and `how-to/src/BRAND-VOICE.md` § 4) and are split by
+**input language**, not by topic. Of the clauses those guides mark machine-checkable, roughly ten
+read CSS, three read templates, one reads Slint build config and the rest read prose — and a CI
+path filter is a file glob, so one script spanning three languages would fire on every CSS, HTML
+and Rust change alike. The desktop leg lives in `../desktop/style-check.sh` for the same reason.
+
+### The fourth member splits on a second axis, and saying so is the honest version
+
+`render-slop.sh` reads the **same HTML** `template-slop.sh` reads. By input language alone it
+would belong inside that script, so the family's own rule does not place it — and pretending
+otherwise would make the rule quietly false. What separates it is that its clause cannot be
+decided from the input **as text at all**: the same `.wf-grid` markup is a one-, two- or
+three-column device depending on width, `wireframe.css` turns it to three columns at 64rem and
+nowhere below, and **CSS text has no viewport**. At 375 px and 768 px a known three-up reads
+clean. So the axis is: split by input language, **plus one member split by whether the input must
+be rendered before the clause exists**.
+
+That is also why it is a separate script rather than a leg inside the markup half. It needs a
+browser and a downloaded Chromium — a dependency class nothing else in this folder carries — and
+folding it in would put that cost on every template change and take `template-slop.sh` from
+`find` + `awk` with no dependencies to something that can fail on a missing binary. It stays
+**self-guarding** instead: no browser, no consolidated wireframes, exit 0 with a note.
+
+### One scope is design-time, and that is the same rule
+
+`css-slop.sh` and `template-slop.sh` also read
+`project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS`, and `css-slop.sh` additionally reads
+that folder's sibling `SHARED/`. A consolidated wireframe is a styled HTML screen over a shared
+stylesheet, so by input language it belongs to these two legs — placing it anywhere else would be
+the topic-split the family exists to avoid.
+
+**`render-slop.sh` has that folder as its _only_ scope**, because it is the only one where a
+rendered judgement is both possible and cheap: the screens open over `file://` with no Docker, no
+nginx and no Django. The code-time counterpart was considered and declined — a rendered check over
+Django pages needs the whole dev stack, and it would re-decide at code time what the consolidated
+set already settled before any code existed.
+
+**`SHARED/` is named explicitly because it is not a stage.** `wireframe.css` is the single
+stylesheet every screen links, and it lives beside the stage folders rather than inside one. A
+CSS scope covering only `CONSOLIDATED-IDEAS` would gate the markup while leaving the styling it
+depends on unread — the gate would report green having measured nothing, which is the failure
+`docs-length.sh` was written to close in its own domain.
+
+**Stage 1 (`USER-STORY-IDEAS/`) is deliberately out of scope, for all four.** It holds one screen
+per story and is frozen once workflow `17` runs, while the clauses that matter most here — §4.1's
+repetition tell and §4.2's rhythm clause — are properties of a page **set**. The consolidated
+folder is the only place the whole set exists at once, and it exists there before any code, which
+is the one point where a page-set judgement is cheap. That closes the gap `code-reviewer.md` names
+and cannot reach from a diff — the rhythm half statically, in `css-slop.sh`, and the repetition
+half only once rendered, in `render-slop.sh`.
+
+`06-BRAND-GUIDE` and `07-COMPONENTS` get no scope for the same input-language reason: they hold
+`.tex`, `.py` and `.pdf`, which none of these scripts reads.
+
+Every clause carries an inline `[gate: fail]` / `[gate: warn]` / `[judgement]` / `[gate: prose]`
+marker in the guide, and the scripts implement against the markers rather than re-deriving what is
+detectable. `[judgement]` clauses are the reviewer's and no script decides one.
+
+### Silencing one you meant — the `slop-allow` annotation
+
+Every script in the family reads the same annotation, and what scopes it is **whether the finding
+has a line**, not which tier it sits in:
+
+| Finding                                     | Where the annotation goes                    |
+| ------------------------------------------- | -------------------------------------------- |
+| Has a line — either tier                    | that line, or the line above                 |
+| A ratio or a count, decided across a file   | anywhere in that file, **naming the clause** |
+| Geometry, decided across the **screen set** | anywhere in **any one member screen**        |
+
+The third row is `render-slop.sh`'s, and both its clauses take it: a rendered finding has no line
+to annotate, because it is geometry rather than text. `repeated-signature` has no single file
+either — it is a claim about the set — so an annotation in any one member silences it, at the
+honest cost that the silence is invisible to a reader of the other screens.
+
+```css
+/* slop-allow: motion-ease-in — matching the embedded player's own curve */
+/* slop-allow: uniform-radius-shadow — a chip sheet; every chip is the same object */
+```
+
+A bare `slop-allow` silences every line clause on that line and is the blunt form; it still works,
+because it shipped first. Warnings are annotatable **by design** — a warning exists precisely
+because the word or the ratio is sometimes right, and a writer who earned it should say so once in
+the diff rather than re-deciding on every run. The desktop leg uses `style-allow`, its own name,
+because it has exactly one clause. Full rule: `code/docs/VISUAL-DESIGN.md` § 6.
+
 ## Scripts
 
-| Script                | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `stubs.sh`            | Detect stub implementations: `raise NotImplementedError`, `throw new Error(*not implemented*)`, `# STUB`, `// STUB`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `cloc.sh`             | Count lines per file via `wc -l`; warn at 750, fail at 800. Covers `*.py` `*.html` `*.css` `*.js` `*.jsx` `*.ts` `*.tsx` — templates and CSS are source in this stack. Cloc language summary when installed.                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `css-tokens.sh`       | Verify every `var(--x)` reference across the three CSS scopes resolves to a defined token (or an allowlisted `--blk-` runtime prefix). Fails on "phantom" tokens that silently drop under Lightning CSS.                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `css-gradients.sh`    | Ban raw inline gradients in component/page CSS — brand gradients must be `var(--gradient-*)` / `var(--sector-tone-*)` tokens (`code/docs/VISUAL-DESIGN.md` § 4). The token layer is exempt; a functional gradient (shimmer/mask) is allowed with a `gradient-allow` annotation.                                                                                                                                                                                                                                                                                                                                 |
-| `copy-emdash.sh`      | Ban em dashes (—) in public marketing copy — `apps/marketing/pagedata/*.py` + `templates/*.html`. Enforces the "no em dash, no spaced-en-dash substitute" copy rule (`BRAND-VOICE.md`). Numeric en dashes (`Mon–Fri`) are not flagged.                                                                                                                                                                                                                                                                                                                                                                          |
-| `mobile-tokens.sh`    | The mobile half of the token-first law: no raw colour or design-numeric literals in `code/src/mobile/**/*.{ts,tsx}`. **Self-guarding — exits 0 with a note when there is no mobile surface**, so a web-only project reports success rather than failing. Only the no-raw-literals clause is checked: the emitted token module is typed, so an unresolved import fails `typecheck.sh` already. Escape hatch: a `token-allow` comment on the line or the line above, with a reason. Layout properties (`flex`, `opacity`, `zIndex`, `width`, `height`, insets) are deliberately NOT flagged — they have no token. |
-| `security.sh`         | Dependency CVE audit mirroring the CI `[8/8] Security` gate: `pnpm audit` (JS/TS) + `pip-audit` (Python).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `template-orphans.sh` | Detect artefacts stranded by a `copier update`. When a directory is renumbered or moved, Copier relocates the scaffolding it owns and deletes the old path — but developer-authored files were never template files, so they stay behind, with no conflict and no error. Every template-owned directory under `project-management/src/` ships a `CONTEXT.md`, so the signature is exact: **content present, `CONTEXT.md` absent**. Run it after every template update. Prevention is the frozen-numbering rule in `project-management/src/CONTEXT.md`.                                                          |
+| Script                 | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stubs.sh`             | Detect stub implementations: `raise NotImplementedError`, `throw new Error(*not implemented*)`, `# STUB`, `// STUB`. Covers `*.py` `*.ts` `*.tsx` `*.rs` by default (`*.js` `*.jsx` with `--file-type javascript`). The Rust leg greps **comment markers only** — `todo!()`, `unimplemented!()` and `unreachable!()` are denied by clippy per crate instead (`code/docs/rust/PYO3-BOUNDARY.md`), so a clean run here does not by itself mean the Rust surface is stub-free.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `cloc.sh`              | Count lines per file via `wc -l`; warn at 750, fail at 800. Covers `*.py` `*.html` `*.css` `*.js` `*.jsx` `*.ts` `*.tsx` `*.rs` `*.slint` — templates and CSS are source in this stack, and so are a crate module and a Slint window. Cloc language summary when installed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `css-tokens.sh`        | Verify every `var(--x)` reference across the three CSS scopes resolves to a defined token (or an allowlisted `--blk-` runtime prefix). Fails on "phantom" tokens that silently drop under Lightning CSS.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `css-gradients.sh`     | Ban raw inline gradients in component/page CSS — brand gradients must be `var(--gradient-*)` / `var(--sector-tone-*)` tokens (`code/docs/VISUAL-DESIGN.md` § 4.1 — universal, every direction). The token layer is exempt; a functional gradient (shimmer/mask) is allowed with a `gradient-allow` annotation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `copy-emdash.sh`       | Ban em dashes (—) in public marketing copy — `apps/marketing/pagedata/*.py` + `templates/*.html`. Enforces the "no em dash, no spaced-en-dash substitute" copy rule (`BRAND-VOICE.md`). Numeric en dashes (`Mon–Fri`) are not flagged.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `css-slop.sh`          | The CSS half of the AI-slop audit (`code/docs/VISUAL-DESIGN.md`). Three `[gate: fail]` motion clauses (literal duration, `ease-in`, animating anything but transform/opacity) and seven `[gate: warn]` ratios. The token layer is exempt — it is where a duration and a shadow are legitimately defined. The § 4.2 legs read the direction table in § 3 and **skip with a warning while any axis is `TBD`**. Self-guarding: exits 0 with a note when no stylesheet exists. Escape hatch: `slop-allow` on the line or the line above at either tier; its four ratios take a file-scoped annotation instead. **Third scope is design-time**: `project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS`.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `template-slop.sh`     | The markup half of the same audit. One `[gate: fail]` clause (an emoji in a named, closed set of chrome elements) and three `[gate: warn]`: two ratios (a pill above nearly every heading; buttons with no primary/secondary hierarchy) plus **`bold-whole-sentence`** — bold the term, not the thought. That last one is a copy rule (`BRAND-VOICE.md` § 4 Structure) living here rather than in `copy-slop.sh`, because its input is markup: the same input-language split that governs the whole family. Attribute values, comments, `{% verbatim %}` and `pre`/`code`/`script`/`style` are never read. Self-guarding on an empty template surface. **Third scope is design-time**, as for `css-slop.sh`.                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `copy-slop.sh`         | The prose half (`how-to/src/BRAND-VOICE.md` § 4) — the `[gate: prose]` clauses `VISUAL-DESIGN.md` hands over. Five `[gate: fail]`: triple-dot ellipsis, "not just X, but Y", the "in today's … world" opener, "It's not about X. It's about Y.", and the **named** rhetorical openers. Four `[gate: warn]`: exclamation count per surface, the named superlatives, the named corporate verbs, hedging stacks — warnings because "a robust seal" is correct English and an account really can be unlocked. **Reads rendered copy only**: string literals in `*.py`, text nodes plus alt/title/placeholder/aria-label/content in `*.html`. Never scans instructional documentation. Self-guarding; `slop-allow` at either tier, with `exclamation-count` file-scoped.                                                                                                                                                                                                                                                                                                                                                                             |
+| `render-slop.sh`       | The **rendered** half of the same audit, and the only script here that drives a browser. Two `[gate: warn]` clauses, no fail tier: `repeated-device` (a row of ≥ 3 siblings whose widths **and** heights agree within 4%) and `repeated-signature` (one row signature recurring on ≥ 3 screens). Renders at **1280 × 800** — the desktop viewport the e2e suite already declares — because the tell exists at that width and nowhere narrower. **One scope, design-time only**: `08-WIREFRAMES/CONSOLIDATED-IDEAS`, opened over `file://` with no stack. Structural chrome (`header`/`nav`/`footer` and their ARIA landmarks) is excluded before anything is stamped, or a shared nav would fire on screen 2 of every correct set. Both clauses are **file-scoped**, never line-scoped; `repeated-signature` is silenced from any one member. **Self-guarding twice** — no consolidated wireframes, or no Chromium, exits 0 with a note. `--self-test` renders `fixtures/render-slop/` and asserts the detector separates a known positive from a known negative; it exits **2** without a browser rather than passing having rendered nothing. |
+| `docs-pairing.sh`      | The `CONTEXT.md` / `CLAUDE.md` split guard (`code/docs/DOCUMENTATION-PAIRING.md`). Nine `[gate: fail]` clauses: the pairing exists both ways, `CLAUDE.md` opens with `@./CONTEXT.md` and carries exactly the four H2 sections, no tree inside a `CLAUDE.md`, a `## Directory Tree` in every `CONTEXT.md` with every top-level row described, and none of the headings §5 bans. One `[gate: warn]`: no prose between a `CONTEXT.md`'s title and its first section, which usually means the _why_ went unwritten. Honours the two documented pairing exceptions — the root and the `reports/` folders.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `docs-length.sh`       | The 300-line instructional cap (`.claude/CLAUDE.md` § 8), measured in **cloc code lines** so blank lines and comments do not count — a budget on content, not formatting. Scope is every `CONTEXT.md` and `CLAUDE.md` wherever it sits, plus `**/docs/**`, `**/workflows/**` and `.claude/**`; root-level `*.md` and `**/src/*.md` operator guides are exempt, but **the pair inside an exempt tree is not**. Warn tier at 270 (90%), which never changes the exit code. **This is the only script that can check this rule** — `cloc.sh` enforces 750/800 on source files and passes `--exclude-lang=Markdown`, so for the whole life of the rule the check silently passed by not being performed. Requires `cloc`, and exits 2 without it rather than reporting a green run having measured nothing.                                                                                                                                                                                                                                                                                                                                         |
+| `skill-conformance.sh` | Every `.claude/skills/*/SKILL.md` against the published **Agent Skills specification** and this project's narrowing of it (`how-to/docs/SKILL-AUTHORING.md`). Eight `[gate: fail]` clauses, no warn tier: six **spec** — frontmatter opens at byte 0 and is terminated, `name` and `description` both present, `name` matches its parent directory, `name` is 1–64 chars of `a-z0-9-` with no edge or doubled hyphen, `description` ≤ 1024 chars, and no key outside the six the spec defines — plus two **house**: only `name` + `description` on a first-party skill, and a `## Governing procedures` section. **Vendored skills are held to the spec half only**, detected as a symlinked folder rather than by name: editing one is undone by the next `skills-lock.json` refresh. A copy is not vendored and is held to every clause. **Length is deliberately not checked** — `docs-length.sh` owns the 300-line cap over all of `.claude/**`. The four flat `.claude/skills/*.md` graph cards are auto-generated and are not folder-skills, so they are out of scope. Self-guarding on an absent or empty skills tree.                   |
+| `static-analysis.sh`   | Django and Python static analysis on the **Opengrep** engine (LGPL-2.1), covering what ruff's `S` ruleset cannot: template XSS and cross-file taint. The rules in `rules/` are **written in-house** — neither `semgrep-rules` (Semgrep Rules License v1.0, non-sublicensable) nor `opengrep-rules` (LGPL plus a Commons Clause) may be vendored into a template that redistributes. Degrades gracefully: exits 0 with a note when the engine is not installed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `mobile-tokens.sh`     | The mobile half of the token-first law: no raw colour or design-numeric literals in `code/src/mobile/**/*.{ts,tsx}`. **Self-guarding — exits 0 with a note when there is no mobile surface**, so a web-only project reports success rather than failing. Only the no-raw-literals clause is checked: the emitted token module is typed, so an unresolved import fails `typecheck.sh` already. Escape hatch: a `token-allow` comment on the line or the line above, with a reason. Layout properties (`flex`, `opacity`, `zIndex`, `width`, `height`, insets) are deliberately NOT flagged — they have no token.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `seam-contract.sh`     | The build/operate seam guard (`code/docs/architecture/BUILD-OPERATE-SEAM.md`). Checks two mechanical facts in `how-to/src/SERVER-ARCHITECTURE/`: every **documentation** path named in a `**Source:**` field resolves, and every numbered section carries one. Deliberately does **not** check `code/src/**` paths (legitimately absent at baseline), URL paths, deploy-repo paths, or bare filenames — and cannot detect a `**Source:**` pointing at a guide that still exists but no longer says what the contract claims. **Self-guarding** — exits 0 with a note when `SERVER-ARCHITECTURE/` is absent.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `security.sh`          | Dependency CVE audit mirroring the CI `[8/8] Security` gate: `pnpm audit` (JS/TS) + `pip-audit` (Python).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `template-orphans.sh`  | Detect artefacts stranded by a `copier update`. When a directory is renumbered or moved, Copier relocates the scaffolding it owns and deletes the old path — but developer-authored files were never template files, so they stay behind, with no conflict and no error. Every template-owned directory under `project-management/src/` ships a `CONTEXT.md`, so the signature is exact: **content present, `CONTEXT.md` absent**. Run it after every template update. Prevention is the frozen-numbering rule in `project-management/src/CONTEXT.md`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## security.sh
 
@@ -55,14 +171,49 @@ natively, so accepted advisories do not fail the run.
 > `pip-audit` (the scanner the CI gate uses) and `uv audit` (uv's built-in, experimental) are
 > different tools — `security.sh` defaults to `pip-audit` for CI parity.
 
-## Markdown exclusion
+## Markdown: two limits, two scripts, and the gap that existed between them
 
-Both scripts exclude `*.md` files:
+`stubs.sh` and `cloc.sh` both exclude `*.md`:
 
-- **`stubs.sh`** — only scans `*.py`, `*.ts`, `*.tsx`, `*.js`, `*.jsx` via `--include`. Markdown is never checked for stubs.
-- **`cloc.sh`** — per-file enforcement checks `*.py`, `*.html`, `*.css`, `*.js`, `*.jsx`, `*.ts`, `*.tsx`. The cloc language summary uses `--exclude-lang=Markdown` so Markdown lines are not counted.
+- **`stubs.sh`** — only scans `*.py`, `*.ts`, `*.tsx`, `*.rs`, `*.js`, `*.jsx` via `--include`. Markdown is never checked for stubs.
+- **`cloc.sh`** — per-file enforcement checks `*.py`, `*.html`, `*.css`, `*.rs`, `*.slint`, `*.js`, `*.jsx`, `*.ts`, `*.tsx`. The cloc language summary uses `--exclude-lang=Markdown` so Markdown lines are not counted.
 
-Markdown files are still linted by `markdownlint-cli2` (via `lefthook` pre-commit and `syntax/lint.sh`) and formatted by Prettier — they are just not subject to the 750/800-line hard limit.
+Markdown is therefore **not** subject to the 750/800-line source limit. It is subject to a
+different one: **instructional** Markdown caps at **300 cloc code lines**
+(`.claude/CLAUDE.md` § 8), and `docs-length.sh` is what enforces it. The two limits differ in
+metric as well as in number — `cloc.sh` counts total `wc -l` including blanks, `docs-length.sh`
+counts cloc code lines only.
+
+**The gap this closed is worth remembering, because it is the failure mode a gate invites.**
+Ten folder `CLAUDE.md` files, the `scaffold` and `operator-docs` agents, and workflow `09`'s
+steps and checklist all instructed the reader to verify the 300-line limit with `cloc.sh` — a
+script that excludes Markdown by design and had never once measured it. Every run reported
+success. A check that cannot fail is worse than no check, because its green result is believed;
+the absence of a check at least gets noticed. When adding an audit, the question is not only
+"does it pass" but "have I seen it fail on purpose".
+
+Markdown is also linted by `markdownlint-cli2` (via `lefthook` pre-commit and `syntax/lint.sh`)
+and formatted by Prettier.
+
+## The Cargo build tree is excluded everywhere
+
+`code/src/rust/target/` is roughly 3 GB and nine thousand files, all of it generated and all of
+it gitignored. Every tool that walks the filesystem rather than asking git therefore has to be
+told: `cloc.sh` prunes `*/rust/target/*` and drops `target` from its cloc summary, `stubs.sh`
+passes `--exclude-dir=target`, and `.prettierignore` and `.markdownlint-cli2.jsonc` both exclude
+it. `docs-pairing.sh`, `docs-length.sh` and `sync-trees.sh` need no rule — they enumerate through
+`git ls-files`, which already omits it.
+
+The distinction that matters: **the Rust _source_ is in scope for the shared audits, the build
+_output_ never is.** A build tree holds thirty-odd generated `.rs` files carrying upstream
+crates' own markers, and counting or scanning them tells you nothing about anything anyone
+wrote. Rust formatting and linting stay with `cargo fmt` and `clippy` (`scripts/rust/lint.sh`) —
+Prettier must never touch a `.rs` file.
+
+**`copy-slop.sh` does not read them either**, for a different reason: `BRAND-VOICE.md` § 4 governs
+copy a **user reads**, not instructional documentation, code comments, commit messages or ADRs.
+Those are engineering prose and use ordinary technical English, so its scope is the two marketing
+directories and nothing else. The rule that keeps it that way is in `CLAUDE.md`.
 
 ## Common Flags
 
@@ -95,25 +246,57 @@ Lefthook inherits the shell environment, so this works transparently with the pr
 ## Exit Codes
 
 - `0` — clean / all within limits
-- `1` — issues found (hard stubs or files ≥ 800 lines)
-- `2` — script error (bad arguments)
+- `1` — issues found (hard stubs, source files ≥ 800 lines, instructional files > 300)
+- `2` — script error (bad arguments, or a required tool absent — `docs-length.sh` without `cloc`)
+
+**A `[gate: warn]` finding never changes the exit code.** The four slop scripts, `cloc.sh` and
+`docs-length.sh` report two tiers in one run: a threshold or a ratio is advisory and exits 0, an unambiguous match
+exits 1. That is deliberate — a threshold on composition or vocabulary fails correct work, and a
+script does not overrule a designer (`code/docs/VISUAL-DESIGN.md` § 6).
+
+**A self-guarding audit exits 0, not 1, when its surface is absent** — `mobile-tokens.sh`,
+`seam-contract.sh`, `skill-conformance.sh`, the four slop scripts and `static-analysis.sh` all
+report success with a note rather than failing, which is what lets them run unconditionally in CI
+with no step-level guard.
 
 ## Reports
 
 Generated reports are written to `reports/` and gitignored by default.
-Default filenames: `stubs-report.<FORMAT>`, `cloc-report.<FORMAT>`.
+Default filenames: `stubs-report.<FORMAT>`, `cloc-report.<FORMAT>`, `docs-length-report.<FORMAT>`,
+`docs-pairing-report.<FORMAT>`.
 
-## Requirements
+## Dependencies
 
-| Script             | Dependencies                                                                           |
-| ------------------ | -------------------------------------------------------------------------------------- |
-| `stubs.sh`         | `grep` (always available)                                                              |
-| `cloc.sh`          | `wc`, `find` (always available) · `cloc` (optional, for language summary)              |
-| `css-tokens.sh`    | `grep`, `find`, `xargs`, `perl` (always available)                                     |
-| `css-gradients.sh` | `grep`, `find`, `awk` (always available)                                               |
-| `copy-emdash.sh`   | `grep`, `find` (always available)                                                      |
-| `mobile-tokens.sh` | `grep`, `find`, `awk` (always available)                                               |
-| `security.sh`      | `pnpm` (JS audit) · `uv` + `pip-audit` (Python audit) · `docker` (for `--docker` mode) |
+| Script                 | Dependencies                                                                           |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `stubs.sh`             | `grep` (always available)                                                              |
+| `cloc.sh`              | `wc`, `find` (always available) · `cloc` (optional, for language summary)              |
+| `css-tokens.sh`        | `grep`, `find`, `xargs`, `perl` (always available)                                     |
+| `css-gradients.sh`     | `grep`, `find`, `awk` (always available)                                               |
+| `copy-emdash.sh`       | `grep`, `find` (always available)                                                      |
+| `css-slop.sh`          | `find`, `awk` (always available)                                                       |
+| `template-slop.sh`     | `find`, `awk` (always available)                                                       |
+| `copy-slop.sh`         | `find`, `awk` (always available)                                                       |
+| `render-slop.sh`       | `find`, `grep`, `awk` · `uv` + Playwright's **Chromium** (optional; skips without it)  |
+| `static-analysis.sh`   | `find` (always available) · `opengrep` (**optional** — the script skips without it)    |
+| `seam-contract.sh`     | `grep`, `find`, `awk` (always available)                                               |
+| `mobile-tokens.sh`     | `grep`, `find`, `awk` (always available)                                               |
+| `docs-pairing.sh`      | `git`, `grep`, `awk` (always available)                                                |
+| `docs-length.sh`       | `git`, `awk` (always available) · `cloc` (**required** — it is the metric; exits 2)    |
+| `skill-conformance.sh` | `find`, `awk`, `grep` (always available)                                               |
+| `template-orphans.sh`  | `find`, `wc`, `sort` (always available)                                                |
+| `security.sh`          | `pnpm` (JS audit) · `uv` + `pip-audit` (Python audit) · `docker` (for `--docker` mode) |
+
+Install Playwright's Chromium (only `render-slop.sh` needs it; without it that audit reports
+success with a note, and its `--self-test` refuses to run at all):
+
+```bash
+uv run --no-project --with playwright playwright install chromium
+```
+
+`--no-project` is not optional here. The root `pyproject.toml` names the package
+`<%PROJECT_SLUG%>`, which is not a valid package name, so a bare `uv run` fails in the base
+template — and an audit that cannot run where it ships is one nobody ever sees fail.
 
 Install cloc:
 

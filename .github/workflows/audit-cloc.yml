@@ -5,20 +5,28 @@ on:
     branches: [main, staging, dev, testing]
     paths:
       - "**/*.py"
+      - "**/*.html"
+      - "**/*.css"
       - "**/*.ts"
       - "**/*.tsx"
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.rs"
+      - "**/*.slint"
       - "code/src/scripts/audits/cloc.sh"
       - ".github/workflows/audit-cloc.yml"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
       - "**/*.py"
+      - "**/*.html"
+      - "**/*.css"
       - "**/*.ts"
       - "**/*.tsx"
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.rs"
+      - "**/*.slint"
       - "code/src/scripts/audits/cloc.sh"
       - ".github/workflows/audit-cloc.yml"
   workflow_dispatch:

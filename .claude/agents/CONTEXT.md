@@ -10,6 +10,15 @@ project policy (`sonnet` → `opus`, `haiku` → `opus`; never `sonnet` or `haik
 (`story`, `sprint`, `planner`, `user-story`) now route to `fable` — the planning/spec tier
 the implementation agents build on (see `.claude/CLAUDE.md` §4).
 
+## Directory Tree
+
+```text
+.claude/agents/
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file
+└── <agent-name>.md          ← one file per agent — filename = frontmatter `name` = `subagent_type`; the roster is the three tables below, which are the registry of record
+```
+
 ## Two tiers
 
 - **Orchestrators** run a whole workflow end-to-end and delegate scoped work to specialists.
@@ -97,4 +106,9 @@ routes, migrations, or source (that is `feature`/`frontend`/`backend`). They loa
 | `incident-response-plan-writer`      | Incident Response Plan (ISO 27001 / NIST / GDPR)       |
 | `vendor-assessment-writer`           | Third-party vendor security assessment questionnaires  |
 
-**Note:** Agents are hard-blocked from self-editing — changes require explicit user instruction.
+## Cross-references
+
+- `.claude/agents/CLAUDE.md` — the operating rules for editing an agent, including the
+  self-editing block
+- `.claude/skills/CONTEXT.md` — the skills these agents load on demand
+- `REFERENCES.md` → _Cross-layer workflow pairing_ — the procedures they route to

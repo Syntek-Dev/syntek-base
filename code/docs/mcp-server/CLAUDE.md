@@ -18,7 +18,7 @@ threat model, testing and operations — behind the `code/docs/MCP-SERVER.md` en
 - **Model:** Opus for substantive guidance and for typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc → keep `MCP-SERVER.md` a thin index and update
   the `CONTEXT.md` file table on any change → verify length with
-  `code/src/scripts/audits/cloc.sh`.
+  `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** guidance matches the shipped mount (or, while unwired, the design of
   record); each file ≤ 300 lines; cross-references resolve; British English.
 

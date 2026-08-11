@@ -15,7 +15,7 @@ stays cumulative across all stages.
 project-management/src/08-WIREFRAMES/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
-├── USER-STORY-IDEAS/        ← stage 1: per-story screens (workflow 07)
+├── USER-STORY-IDEAS/        ← stage 1: per-story screens (workflow 08)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── WF-IDEA-US000-TEMPLATE.html
 │   ├── WF-IDEA-US###-<Screen-Name>.html
@@ -49,12 +49,23 @@ from are consistent by construction, not by luck.
 
 | Stage                 | Written by  | Scope     | Naming                                                               |
 | --------------------- | ----------- | --------- | -------------------------------------------------------------------- |
-| `USER-STORY-IDEAS/`   | workflow 07 | one story | `WF-IDEA-US###-<Screen-Name>.html`                                   |
+| `USER-STORY-IDEAS/`   | workflow 08 | one story | `WF-IDEA-US###-<Screen-Name>.html`                                   |
 | `CONSOLIDATED-IDEAS/` | workflow 17 | the set   | `WF-###-<Screen-Name>.html` + one `WF-CONSOLIDATED-<AREA>.md` record |
 | `IMPLEMENTATION/`     | workflow 21 | one story | `WF-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                           |
 
 **Mobile screens** carry a `MOBILE` marker in the filename and share the number of their web
 counterpart where one exists. **Stage 1 is frozen once stage 2 runs.**
+
+## Two of these folders are gated
+
+`CONSOLIDATED-IDEAS/` and `SHARED/` are read by `code/src/scripts/audits/css-slop.sh` and
+`template-slop.sh` — the same audits that gate the Django code, because a wireframe is the same
+input language. **Stage 1 is not gated**: the clauses that matter here are properties of a page
+_set_, and a per-story folder holds one screen at a time. `SHARED/` is in scope despite not
+being a stage, because `wireframe.css` is the only stylesheet the screens have.
+
+The rules are not restated anywhere in this tree. `DESIGN.md` → _The design-time gate_ says when
+the gate runs and who owns it; `code/docs/VISUAL-DESIGN.md` § 4–§ 6 is what it enforces.
 
 ## What NOT to infer from a mobile wireframe
 
@@ -67,15 +78,6 @@ equivalent**, so a mobile wireframe must never depend on them:
 - **Browser chrome** — no URL bar, no back button, no tab. Navigation must be drawn.
 
 Compose at a phone viewport; 390 × 844 is the reference.
-
-## Rules
-
-- **Self-contained only** — the sole dependency is `SHARED/wireframe.css`.
-- **Documentation, not shipped code.** These prototypes never import from or deploy with
-  `code/src/`. What ships is a Django template plus django-components, built from the
-  consolidated screen.
-- **Token-first** — screens reference `--wf-*` variables and `wf-*` classes, never raw literals.
-- **Build from the consolidated screens**, never a stage-1 one.
 
 ## Cross-references
 

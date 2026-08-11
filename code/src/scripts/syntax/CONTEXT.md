@@ -60,10 +60,10 @@ acts on CSS.
 Generated reports are written to `reports/` and gitignored by default.
 Default filenames: `lint-report.<FORMAT>`, `check-report.<FORMAT>`, `format-report.<FORMAT>`.
 
-## Requirements
+## Dependencies
 
-The `django` container must be running for the Python steps (each step skips with a warning if the
-container is down). The dev stack:
+The Python steps run inside the `django` container and skip with a warning when it is down, so a
+run with the stack stopped is partial rather than broken. Starting the stack:
 
 ```bash
 bash code/src/scripts/development/server.sh up

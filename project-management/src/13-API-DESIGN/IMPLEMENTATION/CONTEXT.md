@@ -15,15 +15,6 @@ project-management/src/13-API-DESIGN/IMPLEMENTATION/
 └── API-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one record per story shipping Ninja API surface
 ```
 
-## File naming
-
-```text
-API-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `API-IMPL-US000-ADMIN-AUTH-01-01-2026.md`. Prefix `API-IMPL-`, three-digit
-zero-padded story number, `SCREAMING-KEBAB-CASE` descriptor, then the date DD-MM-YYYY.
-
 ## When to create a file here
 
 Write a record during `project-management/workflows/21-implementation-documentation/`, after a story's

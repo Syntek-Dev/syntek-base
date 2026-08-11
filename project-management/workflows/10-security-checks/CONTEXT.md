@@ -2,12 +2,17 @@
 
 **Last Updated**: <%DATE%>
 
+Threat-modelling from flows and wireframes catches design-level exposure that no amount of
+careful implementation can fix afterwards — an endpoint that should never have existed is not
+made safe by guarding it well.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/10-security-checks/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -18,12 +23,6 @@ Use this workflow after wireframes and before sprint planning to:
 - Threat-model the planned features based on user flows and wireframes
 - Identify security requirements and constraints for the development phase
 - Confirm authentication, authorisation, and data protection requirements are designed correctly
-
-## Prerequisites
-
-- [ ] User flows completed in `project-management/src/05-USER-FLOW/`
-- [ ] Wireframes signed off in `project-management/src/08-WIREFRAMES/`
-- [ ] GDPR compliance review complete (`workflows/09-gdpr-compliance`)
 
 ## Key concepts
 
@@ -37,11 +36,11 @@ Use this workflow after wireframes and before sprint planning to:
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP Top 10, and NIST CSF 2.0 frameworks; required before threat-modelling begins
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/10-SECURITY/` — security audit output
 - `project-management/src/05-USER-FLOW/` — user journeys under review

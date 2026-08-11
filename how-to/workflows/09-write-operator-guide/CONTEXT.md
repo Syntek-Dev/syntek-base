@@ -1,12 +1,16 @@
 # Workflow: Write an Operator Guide
 
+A guide a person follows under pressure needs a fixed spine and verified commands, which is a
+different craft from a reference a person reads while deciding. This workflow exists so
+operator documentation is written to be executed.
+
 ## Directory Tree
 
 ```text
 how-to/workflows/09-write-operator-guide/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -29,13 +33,6 @@ uses it to document its own operations, which the template cannot do on its beha
 | Sizing and the server contract                         | `scale-planner` → the two architecture snapshots |
 | A skill under `.claude/skills/`                        | `how-to/docs/SKILL-AUTHORING.md`                 |
 
-## Prerequisites
-
-- [ ] You can actually perform the procedure being documented — a runbook you have not run
-      is a guess
-- [ ] The scripts the guide will cite exist (or you know they do not; see the guardrails)
-- [ ] You know which of the two homes it belongs in (see below)
-
 ## Key concepts
 
 - **Two homes, two standards.** `how-to/docs/*.md` is instructional and capped at **300
@@ -55,12 +52,12 @@ uses it to document its own operations, which the template cannot do on its beha
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `.claude/skills/runbook/SKILL.md` — the operator-doc craft and the runbook spine
 - `how-to/src/CONTEXT.md` and `how-to/docs/CONTEXT.md` — the two homes and their standards
 
-### Soft references — consult during execution
+### Related reading
 
 - `how-to/docs/SKILL-AUTHORING.md` — the sibling standard, for skills rather than guides
 - `.claude/skills/global-workflow/` — British English, Markdown style, commit conventions

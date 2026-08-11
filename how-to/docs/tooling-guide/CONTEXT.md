@@ -1,8 +1,19 @@
 # how-to/docs/tooling-guide
 
-**Claude Model:** opus — internal agents & skills sub-docs: commands, configuration, workflow
+Detailed sub-documents for the internal agents and skills guide, split out because the index
+would otherwise exceed the 300-line instructional limit. Read via
+`how-to/docs/TOOLING-GUIDE.md`, which is that index.
 
-Detailed sub-documents for the internal agents & skills guide. Read via `how-to/docs/TOOLING-GUIDE.md` (index).
+## Directory Tree
+
+```text
+how-to/docs/tooling-guide/
+├── CLAUDE.md          ← operating rules
+├── CONTEXT.md         ← this file
+├── COMMANDS.md        ← reference for the internal development agents
+├── CONFIGURATION.md   ← configuration and tooling setup
+└── WORKFLOW.md        ← how the agents and skills fit a working session together
+```
 
 ## Files
 

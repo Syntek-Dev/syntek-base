@@ -45,6 +45,35 @@ pre-commit:
     code-review-graph:
       run: if command -v code-review-graph >/dev/null 2>&1; then code-review-graph detect-changes --brief || true; fi
 
+    # Reconcile the Directory Tree block in any CONTEXT.md whose directory has a staged
+    # change, and re-stage what it fixed. Scoped to --staged so a one-file commit does
+    # not walk 195 trees. It ADDS a missing row and never deletes one: a row that names
+    # something absent is usually a gated surface or a naming pattern, not drift, and
+    # the 1,132 hand-written annotations are the reason these files exist at all.
+    # Nested trees are reported, not written — box-drawing encodes parentage.
+    # A row it adds carries `← TODO: what this is and why it is here` and FAILS the commit:
+    # the description gets written while the author still knows the answer, which is the
+    # only moment anyone ever does. Re-commit once the TODOs are replaced.
+    sync-trees:
+      run: bash code/src/scripts/development/sync-trees.sh --write --staged
+      stage_fixed: true
+
+    # The CONTEXT.md/CLAUDE.md split guard (code/docs/DOCUMENTATION-PAIRING.md): orientation
+    # in one file, operating rules in the other. Unscoped by design — the pairing checks are
+    # cross-file, so a per-file run cannot see a CLAUDE.md whose CONTEXT.md was just deleted.
+    # ~370 small files, so the whole set is cheap.
+    docs-pairing:
+      glob: "*{CONTEXT,CLAUDE}.md"
+      run: bash code/src/scripts/audits/docs-pairing.sh
+
+    # The 300-line instructional cap (.claude/CLAUDE.md § 8). Unscoped for the same reason
+    # as above rather than a cross-file one: the audit decides its own scope, and a guide
+    # split into a sub-folder must be re-measured as a set, not per staged file. cloc reads
+    # ~700 small files in well under a second.
+    docs-length:
+      glob: "*.md"
+      run: bash code/src/scripts/audits/docs-length.sh
+
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.
     clickup-export:

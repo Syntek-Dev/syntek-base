@@ -16,15 +16,6 @@ project-management/src/18-REVIEWS/
 Real records (`REVIEW-US###-<DESCRIPTOR>.md`) are **not** shipped in the base repo; each is
 created by copying `REVIEW-US000-TEMPLATE.md` when a story's PR is reviewed.
 
-## Naming convention
-
-```text
-REVIEW-US###-<DESCRIPTOR>.md          ← per-story code review (story number zero-padded)
-REVIEW-<DESCRIPTOR>-DD-MM-YYYY.md      ← cross-cutting review not tied to one story
-```
-
-Descriptor in `SCREAMING-KEBAB-CASE`; story numbers zero-padded (`US###`); dates DD/MM/YYYY.
-
 ## Where it sits (record tier)
 
 ```text

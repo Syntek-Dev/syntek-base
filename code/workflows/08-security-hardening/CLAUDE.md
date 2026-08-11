@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/08-security-hardening/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when to use, OWASP/NIST baseline, prerequisites — imported above) → this file.
+(when to use, OWASP/NIST baseline — imported above) → this file.
 
 ## Purpose (one line)
 
@@ -13,8 +13,7 @@ NIST SP 800-63B baselines — for a security pass, a release gate, or a reported
 ## How to work here
 
 - **Routing:** execute via `STEPS.md`, usually with the `security` skill/agent
-  (Opus). Backend fixes through `stack-django`; frontend through `stack-htmx-templates`
-  .
+  (Opus). Backend fixes through `stack-django`; frontend through `stack-htmx-templates`.
 - **Model:** Opus throughout — security judgement is substantive and
   mechanical edits to the workflow files.
 - **Concrete steps:** confirm feature code is implemented and tests green → read the

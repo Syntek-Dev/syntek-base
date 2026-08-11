@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+Components are where the brand becomes reusable. Designing them before screens is what stops
+the same button being invented five times in five slightly different ways.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/07-component-designs/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,12 +19,6 @@ project-management/workflows/07-component-designs/
 
 Use this workflow when designing reusable UI components before frontend implementation.
 Run it after brand guides are agreed and before wireframing feature screens.
-
-## Prerequisites
-
-- [ ] Brand guide is agreed and design tokens are defined
-- [ ] User flows for the in-scope area exist (`project-management/src/05-USER-FLOW/`)
-- [ ] User stories exist for the feature area
 
 ## Key concepts
 
@@ -81,11 +79,11 @@ Desktop threshold: W ≥ 1024 → `Navbar/Desktop`; W < 1024 → `Navbar/Mobile`
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA on all interactive components (CLAUDE.md §8); must inform design decisions from the start
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/responsive/BREAKPOINTS.md` — mobile-first design principles; every component must be designed at 360 px portrait first
 - `code/docs/responsive/CONTAINER-QUERIES.md` — container query implementation; components adapt to their container, not the viewport

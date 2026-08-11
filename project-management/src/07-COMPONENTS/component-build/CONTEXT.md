@@ -11,13 +11,13 @@ project-management/src/07-COMPONENTS/component-build/
 ├── CONTEXT.md            ← this file
 ├── CLAUDE.md             ← operating rules for this folder
 ├── components.py         ← palette + preamble/macros + assembly + CLI (source of truth)
-├── section-buttons.tex   ← component section partials (SOURCE — edit these to change a component)
-├── section-forms.tex
-├── section-badges.tex
-├── section-alerts.tex
-├── section-cards.tex
-├── section-navigation.tex
-├── section-avfeedback.tex
+├── section-buttons.tex   ← SOURCE partial — buttons
+├── section-forms.tex     ← SOURCE partial — form controls
+├── section-badges.tex    ← SOURCE partial — badges and tags
+├── section-alerts.tex    ← SOURCE partial — alerts and banners
+├── section-cards.tex     ← SOURCE partial — cards
+├── section-navigation.tex ← SOURCE partial — navigation
+├── section-avfeedback.tex ← SOURCE partial — avatars and feedback states
 ├── components.tex        ← GENERATED — do not hand-edit
 └── components.pdf        ← GENERATED — the deliverable component sheet
 ```
@@ -44,7 +44,7 @@ python3 components.py --check    # verify the committed .tex is up to date; writ
 The set is **indicative, not a production kit** — enough to give a client a feel for the
 interface. The base template ships a generic placeholder brand.
 
-## Requirements
+## Dependencies
 
 - **xelatex** (`texlive-xetex`) on `PATH`, the **tcolorbox** package, and the **TeX Gyre Heros**
   and **DejaVu Sans Mono** fonts — all ship with a standard texlive install. No Python

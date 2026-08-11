@@ -13,19 +13,6 @@ project-management/src/20-BUGS/
 └── BUG-US000-TEMPLATE.md   ← copy this to file a bug report
 ```
 
-## Naming
-
-```text
-BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md      ← primary: a defect owned by one story
-BUG-<DESCRIPTOR>-DD-MM-YYYY.md            ← fallback: a genuinely cross-cutting defect
-```
-
-The **story-anchored form leads** — most defects surface while closing a single story, so
-the report carries its `US###`. A genuinely cross-cutting defect (an audit finding, a
-shared-infrastructure fault not owned by one story) uses the story-less fallback and leaves
-the story fields as `N/A — cross-cutting`. Descriptor in `SCREAMING-KEBAB-CASE`; date is the
-discovery date, `DD-MM-YYYY`; story numbers zero-padded to three digits (`US###`).
-
 ## Where this sits — the record tier
 
 The `src/` folders run in three tiers: **14-DECISIONS → 15-SPRINT-PLANS → 16-STORY-PLANS →

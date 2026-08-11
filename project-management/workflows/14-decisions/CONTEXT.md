@@ -1,6 +1,19 @@
-# Workflow 13 — Decisions (ADRs)
+# Workflow 14 — Decisions (ADRs)
 
 **Last Updated**: <%DATE%>
+
+An unrecorded decision gets re-litigated every time someone new meets it. An ADR is immutable
+so the reasoning survives the change of mind, and supersession is visible rather than silent.
+
+## Directory Tree
+
+```text
+project-management/workflows/14-decisions/
+├── CHECKLIST.md   ← verification checklist before marking complete
+├── CLAUDE.md      ← operating rules
+├── CONTEXT.md     ← this file (when to use, key concepts, governing documents)
+└── STEPS.md       ← ordered steps to execute
+```
 
 ## Purpose
 
@@ -45,17 +58,6 @@ decision into an execution schedule.
    follow-on enforcement work `code/` must carry out
 7. Supersession — which prior ADR this replaces, if any, cross-linked both ways
 
-## Quality gates
-
-- Every ADR has all five sections complete: Status, Context, Options considered,
-  Decision, Consequences
-- The index is unique and monotonic — no reused or collided numbers
-- An Accepted ADR is never rewritten in place — a change of course is a new ADR that
-  marks the old one `Superseded`, with both records cross-linked
-- The record links the driving `US###` and/or spec document
-- Filename follows `ADR-###-<TITLE>.md` — 3-digit zero-padded index, title in
-  `SCREAMING-SNAKE-CASE`
-
 ## Related workflows
 
 | Workflow             | Relationship                                                   |
@@ -68,14 +70,14 @@ decision into an execution schedule.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/src/14-DECISIONS/CLAUDE.md` — ADR authoring rules: immutability,
   monotonic indices, documentation-only scope
 - `project-management/src/14-DECISIONS/ADR-000-TEMPLATE.md` — the five-section scaffold
   every ADR must fill
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/14-DECISIONS/` — the existing ADR register; scan it for the
   next free index and for any record this decision might supersede

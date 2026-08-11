@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+The frontend is built last because it consumes everything the earlier phases settled. Reaching
+it with an unfinished contract is what produces components that encode a workaround.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/20-frontend-code/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -23,13 +27,6 @@ be available before this workflow begins.
 `CHECKLIST.md` → _Mobile surface_) rather than a separate workflow — one story's frontend is one
 piece of work regardless of how many surfaces it lands on. A web-only project skips that step and
 that section entirely; nothing else in this workflow changes.
-
-## Prerequisites
-
-- [ ] Wireframes are signed off (`project-management/src/08-WIREFRAMES/`)
-- [ ] Component designs are approved in Figma
-- [ ] The Django Ninja API (the single `NinjaAPI`, served under `/api/`) for any admin
-      screen is implemented and tested — pages consume Django view context directly
 
 ## Key concepts
 
@@ -47,12 +44,12 @@ that section entirely; nothing else in this workflow changes.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA is non-negotiable on all interactive components (CLAUDE.md §8)
 - `code/docs/testing/COVERAGE.md` — the single 75% line-and-branch floor blocks PR (frontend tests are pytest tests)
 
-### Soft references — consult during execution
+### Related reading
 
 #### code/ layer
 
@@ -87,7 +84,7 @@ that section entirely; nothing else in this workflow changes.
 - `code/src/django/components/` — django-components server-rendered UI library; check here
   first before creating any new component
 
-#### project-management/ — prerequisites, next step, and guides
+#### project-management/ — what precedes this, what follows, and the guides
 
 - `project-management/workflows/07-component-designs/` — component designs consumed here
 - `project-management/workflows/08-wireframes/` — wireframes consumed here

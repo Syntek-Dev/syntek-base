@@ -24,7 +24,7 @@ If a test does not need one of those, it does not belong here.
 
 ```text
 code/src/django/tests/e2e/
-├── __init__.py
+├── __init__.py                       ← package marker
 ├── a11y_config.py                    ← page list, axe tags, impact thresholds, scan projects
 ├── CLAUDE.md                         ← operating rules
 ├── conftest.py                       ← viewport projects, base URL, overflow helper

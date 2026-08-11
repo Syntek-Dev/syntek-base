@@ -24,8 +24,7 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   attempting one grilling pass over everything. The feature's original map
   (`src/01-FEATURE/MAP-<FEATURE>.md`) is the natural place to resume.
 - **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`) — which
-  folders are genuinely in play, what counts as a collision, and how aggressively to merge
-  — one question at a time, no action until <%DEVELOPER_NAME%> confirms.
+  folders are genuinely in play, what counts as a collision, and how aggressively to merge.
 - **Model:** Fable throughout — resolving two stories' competing models of the same
   concept is design judgement, not a mechanical merge. Opus only for the mechanical
   tail: re-running a generator, a rename, a cross-link, a status flip.

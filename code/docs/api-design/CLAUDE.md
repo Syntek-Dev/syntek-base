@@ -20,7 +20,7 @@ and client patterns — behind the `code/docs/API-DESIGN.md` entry point.
 - **Concrete steps:** edit the relevant sub-doc (`NINJA-CONVENTIONS.md`,
   `AUTH-AND-ERRORS.md`, `AUTH-STRATEGY.md`, `WEBHOOKS.md`, …) → keep
   `API-DESIGN.md` a thin index and update the `CONTEXT.md` file table on any change →
-  verify length with `code/src/scripts/audits/cloc.sh`.
+  verify length with `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** conventions match the shipped API and `SECURITY.md`;
   each file ≤ 300 lines; cross-references resolve; British English.
 

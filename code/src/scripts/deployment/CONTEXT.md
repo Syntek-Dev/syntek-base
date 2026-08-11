@@ -7,6 +7,7 @@ scaffold placeholder awaiting CI/CD pipeline implementation.
 
 ```text
 code/src/scripts/deployment/
+├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
 └── reports/                 ← generated report output (gitignored)
     ├── CONTEXT.md

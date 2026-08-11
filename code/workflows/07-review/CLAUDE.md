@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/07-review/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when to use, review concepts, prerequisites — imported above) → this file.
+(when to use, review concepts — imported above) → this file.
 
 ## Purpose (one line)
 

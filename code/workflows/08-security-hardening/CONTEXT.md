@@ -1,11 +1,16 @@
 # Workflow: Security Hardening
 
+Security findings are cheapest to fix while the feature is still open. A standing pass over
+A01-A10 exists so hardening is a scheduled step rather than something remembered under release
+pressure.
+
 ## Directory Tree
 
 ```text
 code/workflows/08-security-hardening/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -17,23 +22,20 @@ Use this workflow when:
 - Preparing for a release and need a security pass
 - A security issue has been identified in a bug report
 
-## Prerequisites
-
-- [ ] Feature code is implemented and tests are green
-- [ ] `code/docs/SECURITY.md` has been read
-
 ## Key concepts
 
-- OWASP A01–A10 are the security baseline — all must be addressed
-- NIST SP 800-63B governs authentication, password policy, and MFA requirements
-- Every state-changing Django Ninja endpoint must verify permissions explicitly
-- User-supplied IDs must be validated against caller ownership
-- `DEBUG=False` enforced in all non-local environments
-- CORS `ALLOWED_ORIGINS` must be explicit — never `*` in production
+- **OWASP A01–A10** is the baseline this pass walks in order, and **NIST SP 800-63B** governs
+  authentication, password policy and MFA (`code/docs/security/OWASP-AND-CHECKLIST.md`)
+- **A01 is the one that bites most often**: an explicit permission check on every state-changing
+  Django Ninja endpoint, with ownership verified against the caller — a valid ID belonging to
+  someone else is the whole of IDOR
+- **`DEBUG=False` and an explicit CORS allowlist are production-only traps.** Both are
+  indistinguishable from a correct configuration in dev, and differ only where it matters
+  (`.claude/CLAUDE.md` §6 owns both as non-negotiables)
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/security/AUTH-AND-AUTHZ.md` — authentication, authorisation, permission checks, anti-enumeration
 - `code/docs/security/OWASP-AND-CHECKLIST.md` — OWASP Top 10 baseline and the pre-release checklist
@@ -48,7 +50,7 @@ Use this workflow when:
 - `project-management/workflows/21-implementation-documentation/` — writes the post-build audit
   record that closes the `PLANNING/` artefact; do not write it here.
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/security/INPUT-AND-API.md` — input validation, Django Ninja hardening, file upload security
 - `code/docs/security/SUPPLY-CHAIN.md` — dependency and supply chain security

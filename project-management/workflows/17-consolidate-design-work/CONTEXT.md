@@ -1,6 +1,10 @@
-# Workflow 16 — Consolidate Design Work
+# Workflow 17 — Consolidate Design Work
 
 **Last Updated**: <%DATE%>
+
+Per-story design is correct per story and incoherent across the set — five stories produce
+five schemas, five palettes and five flows. Consolidation happens once, before any code,
+because it is the last moment the divergence is free to fix.
 
 ## Directory Tree
 
@@ -8,7 +12,7 @@
 project-management/workflows/17-consolidate-design-work/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -35,14 +39,6 @@ produces the design a developer actually builds against.
 - Mid-cycle, with stories still to plan — consolidating early means doing it twice
 - For a single story's design work — that belongs in its `USER-STORY-IDEAS/` pass
 - To add new scope — this workflow unifies what exists; new capability is a new story
-
-## Prerequisites
-
-- [ ] Every story is through `16-story-plans/` with a completed `STORY-PLAN-US###-*.md`
-- [ ] Each in-scope story has its `USER-STORY-IDEAS/` artefacts in `src/03`–`src/07`,
-      or an explicit `N/A` with a reason
-- [ ] All sprints opened during planning have their `15-sprint-plans/` plan written
-- [ ] Any ADR the accumulated design rests on is `Accepted` in `src/14-DECISIONS/`
 
 ## Key concepts
 
@@ -75,14 +71,14 @@ produces the design a developer actually builds against.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/DATABASE.md` — the data-layer rules a consolidated schema must satisfy:
   database-level constraints, scope columns, lock-safe migration shape
 - `code/docs/DESIGN-TOKENS.md` — token-first: consolidated values are DB-canonical and
   enter via the editor or a migration, never as literals
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/16-STORY-PLANS/` — the plans this workflow may have to correct
 - `project-management/src/14-DECISIONS/` — where a hard-to-reverse resolution lands

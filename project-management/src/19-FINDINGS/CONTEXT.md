@@ -14,19 +14,6 @@ project-management/src/19-FINDINGS/
 └── FINDING-US000-TEMPLATE.md   ← copy this to record a story's findings
 ```
 
-## Naming
-
-```text
-FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md   ← primary: findings from closing one story
-FINDING-<DESCRIPTOR>-DD-MM-YYYY.md         ← fallback: a genuinely cross-cutting sweep
-```
-
-The **story-anchored form leads** — a findings record is written as a story closes, so it
-carries its `US###`. A standalone audit not owned by one story (a periodic schema sweep, a
-dependency review) uses the story-less fallback and leaves the story fields as
-`N/A — cross-cutting`. Descriptor in `SCREAMING-KEBAB-CASE`; date is the completion date,
-`DD-MM-YYYY`; story numbers zero-padded to three digits (`US###`).
-
 ## Where this sits — the record tier
 
 The `src/` folders run in three tiers: **14-DECISIONS → 15-SPRINT-PLANS → 16-STORY-PLANS →

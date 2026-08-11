@@ -19,7 +19,7 @@ modelling, anti-patterns, refactoring, and PostgreSQL schema design — behind t
 - **Concrete steps:** edit the relevant sub-doc (`FUNDAMENTALS.md`,
   `DOMAIN-MODELLING.md`, `ANTI-PATTERNS.md`, `REFACTORING.md`, `SCHEMA-DESIGN.md`) →
   keep `DATA-STRUCTURES.md` a thin index and update the `CONTEXT.md` file table on any
-  change → verify length with `code/src/scripts/audits/cloc.sh`.
+  change → verify length with `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** guidance matches the shipped models and PostgreSQL 18
   schema; each file ≤ 300 lines; cross-references resolve; British English.
 

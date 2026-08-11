@@ -1,6 +1,19 @@
-# Workflow 15 — Story Plans
+# Workflow 16 — Story Plans
 
 **Last Updated**: <%DATE%>
+
+This is the last thinking step before code. If the plan is right, implementation is mechanical;
+if it is thin, every gap it left gets decided at the keyboard by whoever hits it first.
+
+## Directory Tree
+
+```text
+project-management/workflows/16-story-plans/
+├── CHECKLIST.md   ← verification checklist before marking complete
+├── CLAUDE.md      ← operating rules
+├── CONTEXT.md     ← this file (when to use, key concepts, governing documents)
+└── STEPS.md       ← ordered steps to execute
+```
 
 ## Purpose
 
@@ -45,18 +58,6 @@ the technical approach, key decisions, dependencies, and risks before any code i
 6. GDPR, security, and QA constraints carried in from the 02–13 specs, not re-derived
 7. Deferred items and risks, each named against a target future story
 
-## Quality gates
-
-- Every state-changing endpoint the plan introduces carries an explicit permission check
-  and ownership verification (OWASP A01, no IDOR)
-- GDPR, security, and QA constraints from the 02–13 specs are present in the plan, traced
-  back to their source spec
-- A test strategy is defined per layer before the plan is treated as codeable
-- The plan's dependency callout (`Blocked by` / `Blocks` / `Can be done now`) is accurate —
-  the parallel-worktree DAG depends on it
-- Plan reviewed by at least one adversarial pass (missing layers, wrong doc references,
-  dependency-order errors) before it gates `workflows/18-backend-code/`
-
 ## Related workflows
 
 | Workflow                              | Relationship                                                                    |
@@ -72,14 +73,14 @@ the technical approach, key decisions, dependencies, and risks before any code i
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/src/16-STORY-PLANS/CLAUDE.md` — how-to-work-here rules for this
   folder: copy the template, never start from scratch, keep the dependency DAG honest
 - `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the canonical
   superset template every plan is copied from
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/15-SPRINT-PLANS/` — the sprint plan this story plan expands
 - `project-management/src/14-DECISIONS/` — ADRs the plan rests on

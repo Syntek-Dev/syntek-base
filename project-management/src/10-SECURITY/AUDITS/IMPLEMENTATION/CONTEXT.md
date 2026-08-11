@@ -15,15 +15,6 @@ project-management/src/10-SECURITY/AUDITS/IMPLEMENTATION/
 └── AUDIT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md  ← one record per story
 ```
 
-## File naming
-
-```text
-AUDIT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Example: `AUDIT-IMPL-US000-ADMIN-MUTATIONS-01-01-2026.md`. Use the same `<DESCRIPTOR>` as
-the corresponding planning plan; `<DESCRIPTOR>` in `SCREAMING-KEBAB-CASE`.
-
 ## When to create a file here
 
 Write a record during `project-management/workflows/21-implementation-documentation/` (or on completing

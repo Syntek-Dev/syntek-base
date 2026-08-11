@@ -2,12 +2,17 @@
 
 **Last Updated**: <%DATE%>
 
+This workflow owns the process — promotion, approvals, merge gates — and deliberately not
+the content, which `code/workflows/07-review/` already reviewed. Two different failures, two
+different checks.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/22-pr-and-review/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -16,16 +21,9 @@ project-management/workflows/22-pr-and-review/
 Use this workflow when a feature branch is complete and ready to be reviewed
 and merged through the branch promotion chain.
 
-## Prerequisites
-
-- [ ] All tests pass on the feature branch
-- [ ] Linters are clean
-- [ ] A QA pass has been run
-- [ ] Implementation documentation complete (`workflows/21-implementation-documentation`) — design/compliance records and the CONTEXT/CLAUDE + graph closeout
-
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/GIT-GUIDE.md` — branch promotion chain gates are blocking; read before raising any PR
 
@@ -37,7 +35,7 @@ and merged through the branch promotion chain.
   do not duplicate either side's checklist.
 - `code/workflows/08-security-hardening/` — where any security finding raised in review is fixed.
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/docs/VERSIONING-GUIDE.md` — version bump rules if this PR completes a release
 - `project-management/docs/GDPR-GUIDE.md` — for completing GDPR implementation records

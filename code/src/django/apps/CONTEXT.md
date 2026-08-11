@@ -1,7 +1,8 @@
 # code/src/django/apps
 
-Django applications for the project backend. **Currently empty** — the package exists so
-the first domain module has a home, and so `apps.<name>` resolves as an import root.
+Django applications for the project backend. **One app ships with the template** — `core`,
+which owns no domain concepts and holds the primitives every other app imports. There are
+no domain modules yet.
 
 **Last Updated**: <%DATE%>
 
@@ -9,36 +10,46 @@ the first domain module has a home, and so `apps.<name>` resolves as an import r
 
 ```text
 apps/
-├── __init__.py      ← empty package marker
+├── __init__.py      ← package marker
+├── core/            ← the shipped app: schema bases, exception trees, middleware; no models
+│   ├── middleware.py
+│   ├── schemas.py
+│   ├── services/errors.py
+│   ├── CONTEXT.md
+│   └── CLAUDE.md
 ├── CONTEXT.md       ← this file
 └── CLAUDE.md        ← operating rules
 ```
 
 ## App Registry
 
-_No apps registered._ Each app added here gets a row below — Django label, purpose, and
-the models it owns — and a line in `INSTALLED_APPS` as `apps.<name>`.
+Each app gets a row here — Django label, purpose, and the models it owns — and a line in
+`INSTALLED_APPS` as `apps.<name>`.
 
-| App | Django label | Purpose |
-| --- | ------------ | ------- |
-| —   | —            | —       |
+| App    | Django label | Purpose                                                                                                                    | Models |
+| ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------ |
+| `core` | `apps.core`  | Project-wide primitives: the Ninja schema bases, the service-layer exception trees, and the request-correlation middleware | none   |
+
+**`core` is not scaffolded like the others.** It ships with the template, so it does not
+come from `new-django-app.sh` — that script builds a _domain_ app. Read
+`core/CONTEXT.md` before importing from it, and note what it deliberately does not
+contain yet.
 
 ## Creating an app
 
-`bash code/src/scripts/development/new-django-app.sh <app_name>` — the script wires the
-package, its `apps.py`, and its registration. Never `manage.py startapp` or
-`django-admin startapp`.
+`bash code/src/scripts/development/new-django-app.sh <app_name>` is the scaffolder: it wires
+the package, its `apps.py`, and its registration in one step, which is why it exists rather
+than `manage.py startapp` — Django's own command knows nothing about this project's layout.
 
-## Conventions
+An app is a Python package registered in `INSTALLED_APPS` as `"apps.<name>"`. Inside it,
+business logic sits in `services.py` (or a `services/` package) and request/response schema
+models in `schemas.py` (or a `schemas/` package), so the views and endpoints above them stay
+thin enough for a second adapter to sit beside the first.
 
-- Each app is a Python package registered in `INSTALLED_APPS` as `"apps.<name>"`.
-- Business logic lives in a `services.py` or `services/` module — views and endpoints
-  stay thin.
-- Every service method performing ≥ 2 writes uses `transaction.atomic()`.
-- Request/response schema models go in a `schema/` package within the app (or
-  `schema.py` for a simple single-file case).
-- Permissions are checked explicitly in every state-changing endpoint (OWASP A01).
-- Every app package carries its own `CONTEXT.md` + `CLAUDE.md` pair.
+**Schemas subclass the bases in `apps.core.schemas`, never `ninja.Schema`** — request bodies
+`Schema`, responses `OutSchema` or `ninja.ModelSchema`, `Query(...)` containers
+`QuerySchema`. Ruff `TID251` fails the build on a direct `ninja.Schema` import; the reason
+is in `code/docs/api-design/NINJA-CONVENTIONS.md` § _Schema strictness_.
 
 ## Before the first app
 

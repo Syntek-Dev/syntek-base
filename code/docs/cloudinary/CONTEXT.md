@@ -1,7 +1,5 @@
 # code/docs/cloudinary — Cloudinary SDK Reference Docs
 
-**Claude Model:** opus — Cloudinary upload, transformation, and admin API SDK reference
-
 Vendored LLM-context copies of the official Cloudinary SDK documentation,
 installed from the `cloudinary-devs/skills` package and recorded in `skills-lock.json`.
 
@@ -15,12 +13,15 @@ were removed with the React sweep.
 > loads it, but it must be removed through the skills tool rather than by deleting the symlink
 > by hand.
 
-## Files
+## Directory Tree
 
-| File                | SDK                   | Status / when to read                                                   |
-| ------------------- | --------------------- | ----------------------------------------------------------------------- |
-| `PYTHON_SDK.md`     | Cloudinary Python SDK | **In use** — any backend upload, admin API, or erasure work             |
-| `CROSS_SDK_INFO.md` | Cross-SDK reference   | Config params, transformation syntax, browser support, input validation |
+```text
+code/docs/cloudinary/
+├── CLAUDE.md         ← operating rules
+├── CONTEXT.md        ← this file
+├── PYTHON_SDK.md     ← **the SDK in use** — backend upload, admin API, erasure
+└── CROSS_SDK_INFO.md ← config params, transformation syntax, browser support, input validation
+```
 
 ## When to use these docs
 

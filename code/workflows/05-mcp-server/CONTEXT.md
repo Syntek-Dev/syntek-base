@@ -1,12 +1,16 @@
 # Workflow: MCP Tool Surface (FastMCP)
 
+The MCP surface is a second adapter over the same service layer, not a layer above the API. It
+has its own workflow because its threat model differs: the caller is an LLM acting for a user,
+so identity comes from the token and never from a tool argument.
+
 ## Directory Tree
 
 ```text
 code/workflows/05-mcp-server/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -19,14 +23,6 @@ Use it only when **an LLM agent must carry out this project's domain operations 
 behalf**. It is not the route for "exposing the API to AI": a Django Ninja endpoint is already
 callable by anything that speaks HTTP, and a tool surface that mirrors it one-for-one is a
 second contract for no new capability. If the caller is an HTTP client, use `04-api-design`.
-
-## Prerequisites
-
-- [ ] `code/docs/MCP-SERVER.md` and its `mcp-server/` sub-docs have been read
-- [ ] The service layer the tools will call already exists — tools never carry logic
-- [ ] The story's API contract is signed off (`project-management/src/13-API-DESIGN/PLANNING/`)
-- [ ] Entered from `project-management/workflows/19-api-code/`, never directly from a design gate
-- [ ] `fastmcp` added to `pyproject.toml` and the lockfile refreshed (first mount only)
 
 ## Key concepts
 
@@ -46,13 +42,13 @@ second contract for no new capability. If the caller is an HTTP client, use `04-
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/mcp-server/TOOL-DESIGN.md` — tool shape, granularity, docstring contract
 - `code/docs/mcp-server/AUTH-AND-THREATS.md` — `TokenVerifier`, the identity rule, threat model
 - `code/docs/security/AUTH-AND-AUTHZ.md` — the permission and IDOR rules this surface inherits
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/mcp-server/MOUNTING.md` — the ASGI composition and session mode (first mount only)
 - `code/docs/mcp-server/TESTING-AND-OPS.md` — in-memory client tests, the ORM connection rule

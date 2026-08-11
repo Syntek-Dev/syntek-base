@@ -59,18 +59,20 @@ Every route resolves to the django upstream. `/static/` is served from disk by N
 
 ```text
 docker/
+├── CLAUDE.md                 # operating rules
+├── CONTEXT.md                # this file
 ├── django/                  # the application container
 │   ├── Dockerfile.dev        # Uvicorn --reload; source mounted as a volume
 │   ├── Dockerfile.test       # source baked in; run pytest via exec
 │   ├── Dockerfile.staging    # multi-stage; Gunicorn + Uvicorn; non-root
 │   ├── Dockerfile.prod       # multi-stage; Gunicorn + Uvicorn; non-root
 │   └── entrypoint.<env>.sh   # migrate → server (collectstatic in test/staging/prod)
-├── nginx/
+├── nginx/                    # the reverse proxy — the only ingress in dev and test
 │   ├── dev.conf              # proxy → django:8000
 │   └── test.conf             # proxy → django-test:8000
-├── postgres/
+├── postgres/                 # database image config
 │   └── postgresql.dev.conf   # local tuning
-├── docker-compose.<env>.yml
+├── docker-compose.<env>.yml  # one stack per environment: dev, test, staging, prod
 ├── docker-compose.usXXX.dev.yml.example    # worktree isolation template
 ├── docker-compose.usXXX.test.yml.example   # worktree isolation template
 └── .env.<env>.example        # environment templates — copy, never commit the real file

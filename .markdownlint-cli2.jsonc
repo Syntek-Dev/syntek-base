@@ -16,11 +16,19 @@
     "!**/tests/e2e/playwright-report/**",
     "!project-management/export/**",
     "!code/docs/MACHINE-SPEC.md",
+    "!code/src/scripts/**/reports/**",
+    "!code/src/rust/target/**",
   ],
   // Always-applied ignores (honoured even when files are passed as CLI args, e.g. by
-  // lefthook). Generated ClickUp client exports and the host-specific machine spec are
-  // auto-generated and must not be linted.
-  "ignores": ["project-management/export/**", "code/docs/MACHINE-SPEC.md"],
+  // lefthook). Generated ClickUp client exports, the host-specific machine spec, and the
+  // audit/test report output are auto-generated and must not be linted — an audit run with
+  // `--output md` would otherwise fail the lint gate it exists to complement.
+  "ignores": [
+    "project-management/export/**",
+    "code/docs/MACHINE-SPEC.md",
+    "code/src/scripts/**/reports/**",
+    "code/src/rust/target/**",
+  ],
   "config": {
     "default": true,
     // Line-length limit: disabled — tables and code examples routinely exceed 100 chars

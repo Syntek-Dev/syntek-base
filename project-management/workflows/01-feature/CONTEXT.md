@@ -2,13 +2,17 @@
 
 **Last Updated**: <%DATE%>
 
+A feature is too big to settle in one sitting, and the questions have an order. Charting the
+decision frontier first means the stories written afterwards inherit answers instead of
+arguments.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/01-feature/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -36,21 +40,6 @@ questions, story by story, and answering them inconsistently.
 - A bug fix or a refactor — those have their own routes
 - A spike answering one question — use `/prototype`
 - A one-surface design decision with no frontier — use `/grill-with-docs` directly
-
-## Prerequisites
-
-- [ ] The feature idea exists as a paragraph or a conversation — not yet as stories
-- [ ] `.claude/skills/wayfinder/SKILL.md` read (CHART and RESOLVE modes)
-- [ ] The layered context is loadable (see _Reading order_ below)
-- [ ] **`CONTEXT.md` → _What this project is_ is a real brief**, not the raw generation-time
-      answer — a feature is scoped against it, so a placeholder scopes against nothing
-- [ ] **`/scale-planning` has been run at least once** — `how-to/src/SCALE-ARCHITECTURE/` and
-      `SERVER-ARCHITECTURE/` carry real figures rather than `TBD — regenerate` markers
-
-The last two are `how-to/workflows/01-first-time-setup/` Steps 7–8 and run **once per project**,
-before the first feature. They are not a hard gate on the map — a feature can be charted without
-them — but charting without them means every sizing question surfaces as a decision node here
-instead, one feature at a time, which is the expensive way to answer them.
 
 ## Key concepts
 
@@ -100,14 +89,14 @@ a map drawn from the plans alone loses the drift.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART and RESOLVE, the map artefact, node types,
   the graduation table, and the claiming-versus-closing line
 - `project-management/docs/PLANNING-GUIDE.md` — the cadence this map feeds
 - `GAPS.md` · `DEFERRED.md` — the standing register, read at Step 0 and Step 2
 
-### Soft references — consult during execution
+### Related reading
 
 - `.claude/skills/grill-with-docs/SKILL.md` — the per-node engine for grilling-type nodes
 - `.claude/skills/research/SKILL.md` — for research nodes needing primary sources

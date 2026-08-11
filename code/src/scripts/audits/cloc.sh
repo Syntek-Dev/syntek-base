@@ -146,17 +146,26 @@ EXCL_FIND=(
   -path "*/dist/*" -o
   -path "*/.git/*" -o
   -path "*/staticfiles/*" -o
-  -path "*/static/vendor/*"
+  -path "*/static/vendor/*" -o
+  -path "*/rust/target/*"
 )
 
 # The 750/800 limit is on source files, and in this stack the frontend IS .html and
 # .css — Django templates, django-component templates, and token CSS. Leaving them out
 # exempted the files most likely to sprawl. .ts/.tsx stay listed for a project that
 # adds a build step; they match nothing in the baseline.
+#
+# .rs and .slint are source on the opt-in surfaces and sprawl the same way — a crate
+# module and a Slint window have no more right to 900 lines than a Django service does.
+# They match nothing on a project that did not opt in. `*/rust/target/` is pruned above,
+# which matters here more than anywhere else: a Cargo build tree holds thousands of
+# generated .rs files, so counting them would drown the real ones.
 SOURCE_EXTS=(
   -name "*.py" -o
   -name "*.html" -o
   -name "*.css" -o
+  -name "*.rs" -o
+  -name "*.slint" -o
   -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx"
 )
 
@@ -191,7 +200,9 @@ bold "── Language breakdown (cloc) ─────────────�
 
 CLOC_OUTPUT=""
 if $CLOC_AVAILABLE; then
-  CLOC_EXCLUDE_DIRS="node_modules,.venv,__pycache__,migrations,.next,generated,dist,staticfiles,vendor"
+  # `target` is the Cargo build tree — thousands of generated files that would dominate
+  # the language breakdown and tell you nothing about the code anyone wrote.
+  CLOC_EXCLUDE_DIRS="node_modules,.venv,__pycache__,migrations,.next,generated,dist,staticfiles,vendor,target"
 
   CLOC_OUTPUT=$(
     cloc "$SCAN_ROOT" \

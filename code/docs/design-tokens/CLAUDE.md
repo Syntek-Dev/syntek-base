@@ -20,7 +20,7 @@ endpoints, and the `/admin/design-tokens` editor and governance — behind the
 - **Concrete steps:** edit the relevant sub-doc (`MODEL.md`, `CASCADE.md`,
   `EDITOR.md`, `MOBILE.md`) → keep `DESIGN-TOKENS.md` a thin index that still states the
   token-first law → update the `CONTEXT.md` file table on any change → verify length
-  with `code/src/scripts/audits/cloc.sh`.
+  with `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** spec matches the shipped models, cascade, Ninja endpoints, and
   editor; each file ≤ 300 lines; cross-references resolve; British English.
 

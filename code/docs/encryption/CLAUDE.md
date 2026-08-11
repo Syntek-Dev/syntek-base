@@ -19,7 +19,7 @@ encryption and searchable lookup tokens for encrypted fields — behind the
 - **Concrete steps:** edit the relevant sub-doc (`FIELD-ENCRYPTION.md`,
   `LOOKUP-TOKENS.md`) → keep `ENCRYPTION-GUIDE.md` a thin index and update the
   `CONTEXT.md` file table on any change → verify length with
-  `code/src/scripts/audits/cloc.sh`.
+  `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** guidance matches the shipped Fernet pipeline in
   `apps/core`; each file ≤ 300 lines; cross-references resolve; British English.
 

@@ -15,7 +15,7 @@ consolidation — there is no per-story brand guide.
 project-management/src/06-BRAND-GUIDE/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
-├── USER-STORY-IDEAS/        ← stage 1: per-story token needs (workflow 05)
+├── USER-STORY-IDEAS/        ← stage 1: per-story token needs (workflow 06)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── BRAND-IDEA-US000-TEMPLATE.md
 │   └── BRAND-IDEA-US###-<DESCRIPTOR>.md
@@ -50,23 +50,12 @@ signal worth acting on.
 
 | Stage                 | Written by  | Scope     | Naming                                        |
 | --------------------- | ----------- | --------- | --------------------------------------------- |
-| `USER-STORY-IDEAS/`   | workflow 05 | one story | `BRAND-IDEA-US###-<DESCRIPTOR>.md`            |
+| `USER-STORY-IDEAS/`   | workflow 06 | one story | `BRAND-IDEA-US###-<DESCRIPTOR>.md`            |
 | `CONSOLIDATED-IDEAS/` | workflow 17 | a domain  | `BRAND-CONSOLIDATED-<DOMAIN>.md`              |
 | `IMPLEMENTATION/`     | workflow 21 | one story | `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 `<DOMAIN>` ∈ `COLOUR`, `TYPOGRAPHY`, `SPACING`, `LOGO`, `VOICE` — or the whole set in one
 document on a small project. **Stage 1 is frozen once stage 2 runs.**
-
-## Rules
-
-- **Token-first.** Design values are DB-canonical (`apps/design_tokens`). They enter via the
-  `/admin/design-tokens` editor or a migration — never as a literal in component CSS
-  (`code/docs/DESIGN-TOKENS.md`).
-- **The generator is the source of truth for the PDF.** Edit `INPUTS` in `brand_guide.py` and
-  re-run; never hand-edit the `.tex` or `.pdf`.
-- **Breakpoints are build-time only**, not DB-driven.
-- **The consolidated token set is what ships.** A component built against a stage-1 record
-  reintroduces the drift consolidation removed.
 
 ## Cross-references
 

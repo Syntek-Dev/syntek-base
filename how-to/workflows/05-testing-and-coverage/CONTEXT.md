@@ -1,12 +1,16 @@
 # Workflow: Testing & Coverage
 
+Running the suites is a separate skill from writing them, and the reports repay being read
+rather than glanced at — a green run with a collapsed suite looks identical to a green run
+without one.
+
 ## Directory Tree
 
 ```text
 how-to/workflows/05-testing-and-coverage/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -19,12 +23,6 @@ suite is worth trusting.
 **This is not how you write tests.** Authoring them is `code/workflows/02-tdd-cycle/`
 (Red → Green → Refactor). This workflow is the operator's side: which runner, which flags,
 what the numbers mean, and what to do when one goes red.
-
-## Prerequisites
-
-- [ ] The dev stack is running (`code/src/scripts/development/server.sh`)
-- [ ] Migrations are current (`code/src/scripts/database/migrate.sh check`)
-- [ ] For the e2e suite: browsers installed on first run
 
 ## Key concepts
 
@@ -45,12 +43,12 @@ what the numbers mean, and what to do when one goes red.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/testing/COVERAGE.md` — the floors, what they count, and the discipline rules
 - `code/src/scripts/tests/CONTEXT.md` — every runner, its flags, and its exit codes
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/workflows/02-tdd-cycle/` — writing the tests this workflow runs
 - `how-to/workflows/06-quality-gates/` — the full pre-PR gate, of which tests are one

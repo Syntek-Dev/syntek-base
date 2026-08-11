@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/06-gdpr-enforcement/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when to use, PII/consent/deletion concepts, prerequisites — imported above) → this
+(when to use, PII/consent/deletion concepts — imported above) → this
 file.
 
 ## Purpose (one line)

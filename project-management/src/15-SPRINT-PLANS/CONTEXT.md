@@ -18,16 +18,18 @@ project-management/src/15-SPRINT-PLANS/
 This is a base-repo scaffold: the folder ships with the template only. Real sprint plans
 are added by copying it.
 
-## Naming
+## Why a filename carries two numbers
 
-`{exec-order}-SPRINT-PLAN-{sprint-number}.md` — both segments 2-digit zero-padded.
+A plan is named `{exec-order}-SPRINT-PLAN-{sprint-number}.md`, both segments 2-digit
+zero-padded, because it answers two different questions:
 
-- `{exec-order}` — recommended implementation sequence across all sprint plans
+- `{exec-order}` — the recommended implementation sequence across all sprint plans
 - `{sprint-number}` — the sprint it plans, matching `../03-SPRINTS/SPRINT-{##}.md`
 
-The two usually match. They diverge deliberately when a sprint must be built out of sprint-
-number order (e.g. an observability or infrastructure sprint pulled early); the prefix is
-the build order, the suffix is the sprint identity. Do not "correct" a deliberate mismatch.
+The two usually match. They diverge deliberately when a sprint has to be built out of
+sprint-number order — an observability or infrastructure sprint pulled early, for instance.
+The prefix is the build order; the suffix is the sprint's identity. A mismatch is therefore
+information, not a typo.
 
 ## What each plan records
 

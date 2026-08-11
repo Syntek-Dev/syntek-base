@@ -23,6 +23,8 @@ code/src/scripts/development/
 ├── pnpm-update.sh           ← self-update pnpm and pin the version across the project
 ├── server.sh                ← start, stop, restart, build, status
 ├── shell.sh                 ← interactive shell inside a service container
+├── sync-trees.sh            ← reconcile every CONTEXT.md Directory Tree against disk
+├── template-update.sh       ← preview a `copier update` (changes, deletions, orphans) before applying
 └── reports/                 ← reserved for future report output (gitignored)
     ├── CONTEXT.md
     ├── .gitignore
@@ -31,19 +33,21 @@ code/src/scripts/development/
 
 ## Scripts
 
-| Script                  | Purpose                                                                    |
-| ----------------------- | -------------------------------------------------------------------------- |
-| `server.sh`             | Manage the dev stack — `up [--seed]`, `down`, `restart`, `build`, `status` |
-| `logs.sh`               | View and tail container logs with service/follow/tail/since filters        |
-| `shell.sh`              | Open an interactive shell (`bash` / `sh`) inside any service container     |
-| `install.sh`            | Backwards-compatible forwarder to `install-frontend.sh`                    |
-| `install-backend.sh`    | Regenerate `uv.lock`; `--sync` installs into `.venv`, `--check` verifies   |
-| `install-frontend.sh`   | Regenerate `pnpm-lock.yaml` for the repo tooling (no client-side build)    |
-| `pnpm-update.sh`        | `pnpm self-update`, then pin the version in `package.json` + Dockerfiles   |
-| `new-django-app.sh`     | Scaffold a new Django app with standard boilerplate                        |
-| `new-django-view.sh`    | Add a public marketing page to an **existing** `apps.marketing`            |
-| `hosts-story-add.sh`    | Add the `/etc/hosts` entries a `us###` worktree stack needs (sudo)         |
-| `hosts-story-remove.sh` | Remove those entries when the worktree is torn down (sudo)                 |
+| Script                  | Purpose                                                                      |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `server.sh`             | Manage the dev stack — `up [--seed]`, `down`, `restart`, `build`, `status`   |
+| `logs.sh`               | View and tail container logs with service/follow/tail/since filters          |
+| `shell.sh`              | Open an interactive shell (`bash` / `sh`) inside any service container       |
+| `install.sh`            | Backwards-compatible forwarder to `install-frontend.sh`                      |
+| `install-backend.sh`    | Regenerate `uv.lock`; `--sync` installs into `.venv`, `--check` verifies     |
+| `install-frontend.sh`   | Regenerate `pnpm-lock.yaml` for the repo tooling (no client-side build)      |
+| `pnpm-update.sh`        | `pnpm self-update`, then pin the version in `package.json` + Dockerfiles     |
+| `new-django-app.sh`     | Scaffold a new Django app with standard boilerplate                          |
+| `new-django-view.sh`    | Add a public marketing page to an **existing** `apps.marketing`              |
+| `hosts-story-add.sh`    | Add the `/etc/hosts` entries a `us###` worktree stack needs (sudo)           |
+| `hosts-story-remove.sh` | Remove those entries when the worktree is torn down (sudo)                   |
+| `template-update.sh`    | Dry-run a `copier update` on a throwaway copy — preview only until `--apply` |
+| `sync-trees.sh`         | Reconcile the `## Directory Tree` block in every `CONTEXT.md` against disk   |
 
 > `new-django-view.sh` extends a marketing app; it does not create one. At baseline
 > `apps/marketing` does not exist, so the script exits `1` and names what is missing.

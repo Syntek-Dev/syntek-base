@@ -28,7 +28,7 @@ the tables that story needs, written before the story reaches `14-decisions`.
 ## Guardrails
 
 - **Design for the story, not the system.** Do not attempt the whole schema here, and do not
-  retro-fit an earlier story's design to match this one — that is `16`'s job.
+  retro-fit an earlier story's design to match this one — that is `17`'s job.
 - **Note collisions, do not resolve them.** A conflict with an earlier story's design is
   recorded for consolidation. Resolving it unilaterally here silently rewrites a frozen
   decision another story was planned against.

@@ -7,7 +7,7 @@ environment-split settings.
 
 ```text
 config/
-├── __init__.py
+├── __init__.py      ← package marker for the config package
 ├── asgi.py          ← ASGI entry point (Uvicorn workers under Gunicorn)
 ├── CONTEXT.md       ← this file
 ├── CLAUDE.md        ← operating rules

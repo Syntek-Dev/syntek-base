@@ -8,6 +8,7 @@ All commands run inside Docker containers via `docker compose exec`.
 ```text
 code/src/scripts/database/
 ├── backup.sh                ← pg_dump the dev database to a backup file
+├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
 ├── manageusers.sh           ← create, update, or delete Django users
 ├── migrate.sh               ← Django migration management (run/make/show/check/fake)
@@ -87,9 +88,10 @@ These are read from `code/src/docker/.env.dev`; the defaults match
 
 `code/src/docker/docker-compose.dev.yml` — all scripts resolve this automatically.
 
-## Prerequisites
+## Dependencies
 
-The development stack must be running before any database script will work:
+Every script here reaches PostgreSQL through the running dev stack — there is no host-side
+database — so none of them does anything useful until it is up:
 
 ```bash
 bash code/src/scripts/development/server.sh up

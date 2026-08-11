@@ -13,7 +13,13 @@
 
 **Developer:** <%DEVELOPER_NAME%> — Full Stack Software Developer at <%ORG_NAME%>. Senior developer — be concise, focus on architecture and trade-offs.
 
-- **Chat output must be scannable, not an essay.** When reporting information to <%DEVELOPER_NAME%>, be extremely concise — sacrifice grammar for the sake of concision.
+- **Chat output must be scannable, not an essay.** This is a hard standard, not a preference — it applies to every reply, including this file's own author.
+  - **Lists over paragraphs.** Default to a bulleted or numbered list, or a small table. A wall of prose is the failure mode; reach for a paragraph only when the point genuinely does not decompose.
+  - **Short sentences.** One idea each. **Sacrifice grammar for concision** — fragments are fine, and preferred over a correct sentence twice the length.
+  - **Never a long essay.** No preamble, no restating the question, no summary of what you are about to say, no closing recap. Lead with the answer.
+  - **Bold the load-bearing words** so the reply survives skim-reading. Code, paths and commands in backticks.
+  - Applies to **chat replies**, not to the repository's own documentation — `docs/`, `CONTEXT.md`, `CLAUDE.md` and the PM artefacts keep their existing register.
+  - The grilling question format (§10, `.claude/skills/grilling/SKILL.md`) is this rule applied to interviews.
 - **Memory functionality** Auto memory is off, if there is anything for this project regarding memory storage, we store it in ../MEMORY.md
 
 > **Always use the project shell scripts under `code/src/scripts/` for all dev operations.
@@ -46,16 +52,22 @@ A task enters through an **orchestrator agent**, which routes to the matching
 specialists load the **stack skills**. The governing `docs/` guide and the workflow
 `STEPS.md`/`CHECKLIST.md` carry routing frontmatter (§2.5) naming who does the work.
 
-**Two things precede all of it, once per project** (`how-to/workflows/01-first-time-setup/`
-Steps 7–8): the **project brief** in the root `CONTEXT.md` — what this builds, for whom,
-replacing what — and **`/scale-planning`**, which settles the size the system is designed for and
-therefore what it does _not_ need. Both are cheap before the first feature and expensive after
-the tenth. If the brief is still the raw generation-time answer, say so before planning anything.
+**Four things precede all of it, once per project** (`how-to/workflows/01-first-time-setup/`
+Steps 7–10), in order, because each depends on the one before: the **project brief** in the root
+`CONTEXT.md` — what this builds, for whom, replacing what — then **`how-to/src/BRAND-VOICE.md`**,
+which settles how the project speaks to that named reader (six agents and the
+`stack-htmx-templates` skill load it for every user-facing string), then
+**`code/docs/VISUAL-DESIGN.md` § 3**, which names the **visual direction** and pins its six axes —
+the same doctrine in composition rather than copy, and what makes § 4.2's ban list decidable at all
+— then **`/scale-planning`**, which settles the size the system is designed for and therefore what
+it does _not_ need. All four are cheap before the first feature and expensive after the tenth. If
+the brief is still the raw generation-time answer, or `BRAND-VOICE.md` § 3 or `VISUAL-DESIGN.md`
+§ 3 still carry `TBD` placeholders, say so before planning anything.
 
 **PM planning runs a per-story loop, not a phase batch.** A human thinks each story through
 end-to-end so implementation is mechanical: one story runs `02`→`14` before the next starts;
-when the open sprint reaches `<%SPRINT_CAPACITY_SP%>` SP (grace `<%SPRINT_GRACE_SP%>`), `14`
-and `15` run for that sprint; once every story is planned, `17-consolidate-design-work` unifies
+when the open sprint reaches `<%SPRINT_CAPACITY_SP%>` SP (grace `<%SPRINT_GRACE_SP%>`), `15`
+and `16` run for that sprint; once every story is planned, `17-consolidate-design-work` unifies
 the per-story design and schema work before any code. Never batch a gate across the backlog.
 Full cadence: `project-management/workflows/CONTEXT.md` and
 `project-management/docs/PLANNING-GUIDE.md`.
@@ -99,6 +111,11 @@ run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
 | `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement (committed `handoffs/`; §2.6)                         |
 | `prototype`                     | <%DEVELOPER_NAME%> types `/prototype` — throwaway spike answering one design question                                                              |
 | `research`                      | <%DEVELOPER_NAME%> types `/research` — primary-source-cited note feeding an ADR/PLAN                                                               |
+| `to-questionnaire`              | A decision is blocked on someone outside the session — client, controller, vendor, stakeholder                                                     |
+| `wait-what`                     | <%DEVELOPER_NAME%> types `/wait-what` — the last reply did not land; re-pitch it in plain language                                                 |
+| `resolving-merge-conflicts`     | A merge, rebase, or `copier update` has left conflict markers                                                                                      |
+| `wizard`                        | Authoring an interactive bash wizard for steps only a human can perform                                                                            |
+| `incident`                      | Something is broken in staging or production — `/incident` holds the notes and the clock                                                           |
 | `legal-documents`               | Privacy Policy, T&C, GDPR notice, DPA, contract, NDA                                                                                               |
 | `msp-scp-documents`             | Security/compliance policy (InfoSec, incident, retention, …)                                                                                       |
 
@@ -127,6 +144,11 @@ skill** → writes `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md` → **stops** a
 so <%DEVELOPER_NAME%> can `/clear` and resume in a fresh context window. A hook cannot invoke a skill or stop the
 session — that is the model's job (this rule). This is a top-level session / orchestrator duty;
 delegated specialists return to their orchestrator rather than hand off.
+
+**Two thresholds, measured not guessed.** The model cannot read its own context usage, so the
+`UserPromptSubmit` hook `.claude/hooks/context-threshold-handoff.sh` measures it and this rule
+reacts: at **50%** advise — finish the step in flight, start no new scoped work, name the
+stopping point and offer `/handoff`; at **75%** insist — write the handoff and stop the turn.
 See `.claude/skills/handoff/SKILL.md`.
 
 ---
@@ -207,7 +229,7 @@ These apply in every task, regardless of layer:
 
 - Every state-changing Django Ninja endpoint needs an explicit permission check (OWASP A01).
 - User-supplied IDs always verified against caller's ownership — no IDOR.
-- Data invariants are enforced **in the database** — foreign keys with explicit delete behaviour, `NOT NULL`, `UNIQUE`, and `CHECK` on every bounded or enum-like column. Application-level validation is not a substitute (`code/docs/DATABASE.md`).
+- Data invariants are enforced **in the database** — foreign keys with explicit delete behaviour, `NOT NULL`, `UNIQUE`, and `CHECK` on every bounded or enum-like column. Application-level validation is not a substitute (`code/docs/DATABASE.md`). Every invariant is enforced in **exactly one named place**, recorded in `how-to/src/INVARIANTS.md`; a breach is a **programmer error** that surfaces as a 500 and a tracker event, never a friendly 4xx (`code/docs/NEGATIVE-SPACE.md`).
 - A scope column, the row-security policy that reads it, its supporting index, and the middleware that sets its session variable ship **together** — never write a scope session variable that no policy reads.
 - Migrations never hold a long `ACCESS EXCLUSIVE` lock on a large table — add-nullable → backfill → constrain; build indexes concurrently on populated tables; no manual DDL against a deployed database.
 - `DEBUG=False` in all non-local environments.
@@ -220,6 +242,8 @@ These apply in every task, regardless of layer:
 - New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>` — never run `manage.py startapp` or `django-admin startapp` directly.
 - New public marketing page → `bash code/src/scripts/development/new-django-view.sh <route_path>` — creates a Django view + template + URL entry. Never hand-create page routes outside this script.
 - All documentation (`CONTEXT.md`, `docs/*.md`, `agents/*.md`, `REFERENCES.md`) must reference scripts from `code/src/scripts/` for developer operations — never raw `pnpm`, `npm`, `npx`, `pip`, `uv`, `docker`, or `python manage.py` commands.
+- **Doctrine derived from an outside source is credited where it is written**, not retrospectively — the `README.md` § _Influences and attribution_ table gains the row in the **same change** as the rule it credits. Attribution written once decays; written alongside, it stays true.
+- **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` § _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, unlicensed) are derived freely and credited.
 
 ---
 
@@ -241,25 +265,25 @@ Marketing `/` (slugs) · <%PROJECT_NAME%> Admin `/admin/` (UUIDs) · Client Port
 ## 8. Standards
 
 - **Database:** read `code/docs/DATABASE.md` before any model, migration, or query — scope columns, database-level constraints, lock-safe migrations, search, and the deferred-infrastructure register with its trigger conditions
-- **SEO:** all public pages in `apps.marketing` — checklist: `project-management/docs/SEO-CHECKLIST.md`
+- **Discoverability:** all public pages in `apps.marketing`. Two halves, and neither restates the other — **what must be true per page**: `project-management/docs/SEO-CHECKLIST.md` · **how this stack does it**: `code/docs/DISCOVERABILITY.md`
 - **Accessibility:** WCAG 2.2 AA on all interactive components — guide: `code/docs/ACCESSIBILITY.md`
 - **Versioning:** single-track semver — rules: `project-management/docs/VERSIONING-GUIDE.md` · bump via the internal `version` agent (or the `release` orchestrator)
 - **Instructional file length:** `.md` files that instruct Claude Code must not exceed **300 code
-  lines** (`cloc --include-lang=Markdown`). Rule applies to: `**/docs/*.md` ·
-  `**/workflows/**/*.md` · `.claude/**/*.md` · all `CONTEXT.md` files. Rule does **NOT** apply
-  to root-level `*.md` files (README.md, CHANGELOG.md, GAPS.md, RELEASES.md, etc.) or
-  `**/src/*.md` files (operational guides for humans, e.g. NIXOS-SETUP.md). Oversized
-  instructional files must be split; the entry point becomes a thin index that cross-references
-  sub-documents.
-- **Directory CONTEXT.md + CLAUDE.md pairing:** Every directory that contains a `CONTEXT.md`
-  must also have a `CLAUDE.md`. `CONTEXT.md` is **orientation** (holds the directory tree and
-  what-is-here); `CLAUDE.md` is **operating rules**. Each `CLAUDE.md` **opens with `@./CONTEXT.md`**
-  (plus `@./REFERENCES.md` where a `REFERENCES.md` exists in that directory) so the tree still
-  auto-loads on navigation, then a `Read order:` line, then four H2 sections — **Purpose (one
-  line)** · **How to work here** (routing, model allocation, concrete steps, definition of done)
-  · **Guardrails** · **Output & naming** — scaled to the folder (a leaf stays short; a layer/app
-  root is fuller). Keep each well within the instructional-file limit. **Never leave a bare
-  `@./CONTEXT.md` import stub** — that is the old convention, replaced 03/07/2026.
+  lines** (`cloc --include-lang=Markdown`) — **gate: `code/src/scripts/audits/docs-length.sh`**,
+  never `cloc.sh`, which excludes Markdown by design. Applies to `**/docs/**/*.md` ·
+  `**/workflows/**/*.md` · `.claude/**/*.md` · every `CONTEXT.md` and `CLAUDE.md`. Does **NOT**
+  apply to root-level `*.md` (README.md, CHANGELOG.md, GAPS.md, RELEASES.md, etc.) or
+  `**/src/*.md` (operator guides for humans, e.g. NIXOS-SETUP.md) — though a `CONTEXT.md` or
+  `CLAUDE.md` inside an exempt tree is still bound. Oversized files are split; the entry point
+  becomes a thin index that cross-references sub-documents.
+- **Directory `CONTEXT.md` + `CLAUDE.md` pairing:** `CONTEXT.md` is **orientation** — what is
+  here and **why** it is here (the directory tree, what-is-here). `CLAUDE.md` is **operating
+  rules** — how to work here: it opens with `@./CONTEXT.md` (plus `@./REFERENCES.md` where one
+  exists in that directory), then a `Read order:` line, then four H2s — **Purpose (one line)** ·
+  **How to work here** · **Guardrails** · **Output & naming** — scaled to the folder. Every
+  directory with one carries the other, bar the root and the generated-output `reports/` folders.
+  The decision test, the headings banned from a `CONTEXT.md`, and the route-don't-restate rule:
+  `code/docs/DOCUMENTATION-PAIRING.md` — gate: `code/src/scripts/audits/docs-pairing.sh`.
 - **Source code file length:** all source files (`.py`, `.html`, `.css`, `.js`, etc.) must not
   exceed **750 lines** (800 with grace) — split into modules beyond that. Defined in `code/CONTEXT.md`.
 
@@ -317,12 +341,17 @@ substantial task in any layer opens with a grilling pass (below), not a fixed qu
 for **all substantial work — design, code, tests, QA, refactor, review, debug, migration, docs —
 not only planning and design.** Before producing the artefact (a plan, schema, resolver,
 component, test suite, QA plan, refactor, or fix), the responsible agent **opens with a grilling
-pass** (the `grilling` skill): interrogate first, one question at a time, each with a recommended
-answer, looking facts up rather than asking, no action until <%DEVELOPER_NAME%> confirms. Only trivial or
-mechanical work skips it. This **supersedes every static 'Clarify Before Planning' / 'Required
-Information' / 'Clarifying questions' checklist project-wide** — agents open with a grilling pass,
-not a fixed question list. <%DEVELOPER_NAME%> can also invoke it directly with `/grill-me` (stateless) or
-`/grill-with-docs` (records decisions). See `.claude/skills/grilling/SKILL.md`.
+pass** (the `grilling` skill): interrogate first, look facts up rather than asking, and take no
+action until <%DEVELOPER_NAME%> confirms. Only trivial or mechanical work skips it.
+
+**`.claude/skills/grilling/SKILL.md` owns the shape and nothing else restates it** — the round
+structure (ask the whole settled frontier in one numbered round, wait, recompute, ask the next),
+the question format (brief titled options plus an explicit recommendation), and the ban on the
+`AskUserQuestion` tool all live there. An agent, workflow or skill opening a grilling pass names
+**what** must be settled and routes for **how**; a restatement drifts the moment the skill
+changes. This **supersedes every static 'Clarify Before Planning' / 'Required Information' /
+'Clarifying questions' checklist project-wide**. <%DEVELOPER_NAME%> can also invoke it directly
+with `/grill-me` (stateless) or `/grill-with-docs` (records decisions).
 
 ---
 
@@ -343,5 +372,7 @@ The skills the internal agents load on demand (full when-to-load table: `.claude
 - **Design / Grilling Skills:** `grilling` (engine) · `grill-me` (stateless) · `grill-with-docs` (records decisions) — `.claude/skills/{grilling,grill-me,grill-with-docs}/`
 - **Architecture / Design Skills:** `codebase-design` (deep-module vocabulary) · `domain-modelling` (keep the model current) · `improve-codebase-architecture` (`/improve-codebase-architecture` — deepening review → HTML report → grill) · `scale-planning` (`/scale-planning` — size for a target user count + prove scalability; feeds the NixOS deploy repo) — `.claude/skills/{codebase-design,domain-modelling,improve-codebase-architecture,scale-planning}/`
 - **Learning & Session Skills:** `teach` (learn in the `learning/` sandbox) · `wayfinder` (chart an epic) · `handoff` (session handoff / auto-compaction replacement, §2.6) · `prototype` (throwaway spike) · `research` (primary-source note) — `.claude/skills/{teach,wayfinder,handoff,prototype,research}/`
+- **Session & Communication Skills:** `to-questionnaire` (`/to-questionnaire` — ask an outside party what only they know; writes to `questionnaires/`) · `wait-what` (`/wait-what` — re-pitch a reply that did not land) — `.claude/skills/{to-questionnaire,wait-what}/`
+- **Git & Operations Skills:** `resolving-merge-conflicts` (an in-flight merge/rebase, and the file classes that must never be hand-merged) · `wizard` (author an interactive bash wizard over `code/src/scripts/_lib/wizard.sh`, for steps only a human can perform) · `incident` (`/incident` — run a live incident: the notes, the clock, the shift handover, the blameless postmortem; **no paired agent**, because running one is a session mechanic rather than a remit — the doctrine is `how-to/docs/INCIDENT-PRACTICE.md` and the register `project-management/src/22-INCIDENTS/`) — `.claude/skills/{resolving-merge-conflicts,wizard,incident}/`
 - **Legal Documents Skill:** `legal-documents` — `.claude/skills/legal-documents/`
 - **Security/Compliance Skill:** `msp-scp-documents` — `.claude/skills/msp-scp-documents/`

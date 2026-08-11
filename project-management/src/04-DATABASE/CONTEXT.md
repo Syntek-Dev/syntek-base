@@ -11,7 +11,7 @@ was actually built (`IMPLEMENTATION/`). Rendered ERDs live in `ERD-DIAGRAMS/`.
 project-management/src/04-DATABASE/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
-├── USER-STORY-IDEAS/        ← stage 1: per-story schema design (workflow 03)
+├── USER-STORY-IDEAS/        ← stage 1: per-story schema design (workflow 04)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── DB-IDEA-US000-TEMPLATE.md
 │   └── DB-IDEA-US###-<DESCRIPTOR>.md
@@ -45,7 +45,7 @@ duplicated button — which is why `16` resolves this folder first.
 
 | Stage                 | Written by  | Scope     | Naming                                     |
 | --------------------- | ----------- | --------- | ------------------------------------------ |
-| `USER-STORY-IDEAS/`   | workflow 03 | one story | `DB-IDEA-US###-<DESCRIPTOR>.md`            |
+| `USER-STORY-IDEAS/`   | workflow 04 | one story | `DB-IDEA-US###-<DESCRIPTOR>.md`            |
 | `CONSOLIDATED-IDEAS/` | workflow 17 | a domain  | `DB-CONSOLIDATED-<DOMAIN>.md`              |
 | `IMPLEMENTATION/`     | workflow 21 | one story | `DB-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
@@ -53,15 +53,6 @@ Descriptors in `SCREAMING-KEBAB-CASE`; `<DOMAIN>` kebab-case; dates DD/MM/YYYY.
 
 **Stage 1 is frozen once stage 2 runs** — never rewritten. It records what each story asked for
 and why, which is the evidence when a consolidated decision is later questioned.
-
-## Rules
-
-- **Design, not code** — the tables described here are created in `code/src/django/apps/*/`
-  under Django migrations, never in this folder.
-- **PII is flagged at design time** — every personal-data field enters via the PII
-  Classification section before its migration is written.
-- **The consolidated schema is what gets built.** A migration written from a stage-1 design
-  rather than the consolidated one reintroduces exactly the drift `17` removed.
 
 ## Cross-references
 

@@ -34,12 +34,12 @@ string that contradicts `VERSION`.
 
 ## 2. Documentation standards
 
-| Standard      | Value                                                                           |
-| ------------- | ------------------------------------------------------------------------------- |
-| **Format**    | Markdown (`*.md`)                                                               |
-| **Filenames** | `SCREAMING-SNAKE-CASE.md` (e.g. `CONTEXT.md`, `US015.md`)                       |
-| **Location**  | Alongside the layer they document (`code/docs/`, `project-management/docs/`, …) |
-| **Length**    | Instructional `.md` files ≤ **300 code lines** (`cloc --include-lang=Markdown`) |
+| Standard      | Value                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| **Format**    | Markdown (`*.md`)                                                                         |
+| **Filenames** | `SCREAMING-SNAKE-CASE.md` (e.g. `CONTEXT.md`, `US015.md`)                                 |
+| **Location**  | Alongside the layer they document (`code/docs/`, `project-management/docs/`, …)           |
+| **Length**    | Instructional `.md` ≤ **300 code lines** — gate: `audits/docs-length.sh`, never `cloc.sh` |
 
 **Instructional-file limit:** every `.md` that instructs Claude Code —
 `**/docs/*.md`, `**/workflows/**/*.md`, `.claude/**/*.md`, and all `CONTEXT.md`

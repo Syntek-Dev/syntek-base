@@ -1,11 +1,16 @@
 # Workflow: Add a New Full-Stack Feature
 
+A feature crosses the backend and the frontend, so the order the two are built in decides how
+much rework happens. This workflow exists to fix that order — and to reach the shared gates
+(records, docs, graph) through the PM layer rather than at each developer's discretion.
+
 ## Directory Tree
 
 ```text
 code/workflows/01-new-feature/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -13,13 +18,6 @@ code/workflows/01-new-feature/
 
 Use this workflow when adding any new capability to the website that requires both backend
 (Django) and frontend (Django templates + django-components + HTMX + Alpine) work.
-
-## Prerequisites
-
-- [ ] A user story exists in `project-management/src/02-STORIES/` covering this feature
-- [ ] Branch created from `dev`: `us###/feature-name`
-- [ ] No blocking items in `/GAPS.md`
-- [ ] `.env.dev` is populated and containers are running
 
 ## Key concepts
 
@@ -34,14 +32,14 @@ Use this workflow when adding any new capability to the website that requires bo
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/security/AUTH-AND-AUTHZ.md` — every state-changing Django Ninja endpoint must verify permissions (CLAUDE.md §6)
 - `code/docs/testing/COVERAGE.md` — coverage floors (75% line and branch / 90% auth) block PR — one floor, not one per layer
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA is non-negotiable on all interactive components (CLAUDE.md §8)
 - `code/docs/encryption/FIELD-ENCRYPTION.md` — any PII field must be encrypted before committing
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **explore playbook**
   (`.claude/skills/explore-codebase.md`): map the affected area structurally before building

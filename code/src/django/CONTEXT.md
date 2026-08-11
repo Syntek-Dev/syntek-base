@@ -2,7 +2,8 @@
 
 The Django project at its **baseline**: Django's own defaults plus the infrastructure
 wiring this repository provides (PostgreSQL, Valkey, the environment-split settings).
-No application code — `apps/` is an empty package awaiting the first domain module.
+The only application code is `apps/core` — project-wide primitives, no models; `apps/`
+is otherwise awaiting its first domain module.
 
 **Last Updated**: <%DATE%>
 
@@ -22,12 +23,13 @@ Everything else declared in the root `pyproject.toml` — Django Ninja, django-c
 django-htmx, Channels, Celery, Cloudinary, Sentry, and the rest — is
 **available but unwired**. Each is registered when the feature that needs it is built.
 
-## Directory Layout
+## Directory Tree
 
 ```text
 django/
-├── apps/                   # Django applications — currently empty
+├── apps/                   # Django applications
 │   ├── __init__.py
+│   ├── core/               # shipped: schema bases + service exception trees (no models)
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
 ├── config/                 # project configuration package
@@ -41,14 +43,14 @@ django/
 │   ├── CONTEXT.md
 │   ├── CLAUDE.md
 │   └── e2e/                # browser suite — playwright-python + axe (see its CONTEXT.md)
-├── CHANGELOG.md
+├── CHANGELOG.md            # this deployable's own changelog — independent of the root's
 ├── conftest.py             # root pytest configuration
 ├── CONTEXT.md              ← this file
-├── CLAUDE.md
-├── manage.py
-├── pyrightconfig.json
-├── RELEASES.md
-└── VERSION-HISTORY.md
+├── CLAUDE.md               # operating rules
+├── manage.py               # Django CLI entry point — invoked through the scripts, never directly
+├── pyrightconfig.json      # basedpyright roots and strictness for this package
+├── RELEASES.md             # this deployable's release notes
+└── VERSION-HISTORY.md      # this deployable's version history
 ```
 
 > `pyproject.toml` and `uv.lock` live at the **project root**, not inside `django/`.
@@ -68,17 +70,10 @@ No custom user model (`AUTH_USER_MODEL` is Django's `auth.User`), no third-party
 no domain models or migrations. Adding any of these is a deliberate act, recorded where the
 project's conventions require.
 
-## Standards
-
-- All code follows `code/docs/CODING-PRINCIPLES.md`
-- Business logic in services, not views or endpoints
-- Every service method doing ≥ 2 writes uses `transaction.atomic()`
-- Every state-changing endpoint carries an explicit permission check (OWASP A01)
-- Read `code/docs/DATABASE.md` **before** the first model or migration — the baseline is
-  pre-migration, so every invariant it names is still cheap to settle
-
 ## Cross-references
 
+- `code/src/django/CLAUDE.md` — the operating rules for this project: the service-layer
+  boundary, the permission and transaction requirements, and the baseline's guardrails
 - `code/docs/DATABASE.md` — pre-flight data-layer rules; settle these before migrating
 - `code/docs/ARCHITECTURE-PATTERNS.md` — Django app and service-layer patterns
 - `code/docs/URL-STRATEGY.md` — why Django admin is at `/control/`, never `/admin/`

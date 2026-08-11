@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/23-release/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when-to-use, prerequisites, cross-references — imported above) → this file.
+(when-to-use, cross-references — imported above) → this file.
 
 ## Purpose (one line)
 

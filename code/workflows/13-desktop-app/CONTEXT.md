@@ -1,12 +1,16 @@
 # Workflow: Desktop Application (Slint)
 
+The desktop app is a separate delivery target with its own release cycle, and a licence
+obligation that free commercial use depends on. Both are easy to forget from inside the Rust
+workspace, so the workflow states them first.
+
 ## Directory Tree
 
 ```text
 code/workflows/13-desktop-app/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -21,18 +25,6 @@ belongs in `01-new-feature`; a native primitive with no UI belongs in `12-rust-e
 
 **Desktop-only.** This workflow exists only in a project generated with `INCLUDE_DESKTOP`, which is
 itself only offered when `INCLUDE_RUST` is true.
-
-## Prerequisites
-
-- [ ] `code/docs/DESKTOP.md` and both its sub-docs have been read — **`desktop/LICENSING.md`
-      before anything that touches the About dialog or a release**
-- [ ] The API endpoints the app will call already exist — the desktop client holds no business
-      logic
-- [ ] The screen is wireframed (`project-management/src/08-WIREFRAMES/`) — build the design, do
-      not invent one
-- [ ] Entered from `project-management/workflows/20-frontend-code/`, never directly from a design
-      gate
-- [ ] `rustup` installed and a display server available (`DISPLAY` or `WAYLAND_DISPLAY`)
 
 ## Key concepts
 
@@ -53,13 +45,13 @@ itself only offered when `INCLUDE_RUST` is true.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/desktop/LICENSING.md` — the obligation, its two exclusions, and the audit exceptions
 - `code/docs/desktop/UI-AND-STATE.md` — the lint boundary, callbacks, threading, accessibility
 - `code/docs/DESKTOP.md` — the surface boundary and the non-negotiables
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/RUST.md` — the workspace this crate belongs to
 - `code/docs/rust/SUPPLY-CHAIN.md` — why two AccessKit advisories are accepted

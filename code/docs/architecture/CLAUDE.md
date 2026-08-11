@@ -21,7 +21,7 @@ state/routing, and service-layer/middleware design — behind the
 - **Concrete steps:** edit the relevant sub-doc (`AUTH-CONTRACT.md`,
   `CORE-AND-SCALING.md`, `FRONTEND-PATTERNS.md`, `SERVICE-AND-MIDDLEWARE.md`) →
   keep `ARCHITECTURE-PATTERNS.md` a thin index and update the `CONTEXT.md` file
-  table on any change → verify length with `code/src/scripts/audits/cloc.sh`.
+  table on any change → verify length with `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** patterns match the shipped app/service layout; each file
   ≤ 300 lines; cross-references resolve; British English.
 

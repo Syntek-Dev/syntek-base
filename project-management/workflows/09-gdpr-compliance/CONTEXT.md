@@ -2,12 +2,17 @@
 
 **Last Updated**: <%DATE%>
 
+Personal data brings obligations the moment it is collected, and they are far cheaper to design
+in than to retrofit. This review decides the lawful basis, the retention and the rights path
+before code exists to constrain them.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/09-gdpr-compliance/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -19,13 +24,9 @@ Use this workflow when:
 - Preparing for a release that touches user data
 - Responding to a data subject request
 
-## Prerequisites
-
-- [ ] Feature is implemented and the data flows are understood
-
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/gdpr/DATA-RIGHTS.md` — lawful basis check is blocking; right to erasure, SAR, data portability, consent management
 - `project-management/docs/gdpr/COMPLIANCE.md` — retention rules are blocking; retention tasks, encryption at rest, audit logging, breach notification
@@ -39,7 +40,7 @@ Use this workflow when:
 - `project-management/workflows/21-implementation-documentation/` — writes the
   `GDPR-IMPL-US###-*.md` record that closes this workflow's `PLANNING/` artefact.
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/09-GDPR/` — live GDPR documentation
 - `project-management/src/05-USER-FLOW/` — data touchpoints annotated in flows

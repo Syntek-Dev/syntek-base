@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/04-api-design/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when to use, schema layout, prerequisites — imported above) → this file.
+(when to use, schema layout — imported above) → this file.
 
 ## Purpose (one line)
 

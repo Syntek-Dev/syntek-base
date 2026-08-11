@@ -1,5 +1,10 @@
 # how-to — Setup, Daily Development & Debugging
 
+This layer answers "how do I run it", which is a different question from "how should it be
+built" (`code/`) or "what are we building" (`project-management/`). Its reader is usually
+mid-task and under time pressure, so everything here is written to be executed rather than
+studied.
+
 **Last Updated**: <%DATE%>
 
 ## Directory Tree
@@ -23,9 +28,12 @@ how-to/
 │       └── tooling-guide/       ← COMMANDS · CONFIGURATION · WORKFLOW + CONTEXT.md · CLAUDE.md
 ├── src/                         ← human-facing operator guides (300-line limit exempt)
 │   ├── CONTEXT.md · CLAUDE.md
+│   ├── BRAND-VOICE.md           ← how the project writes: tone, registers, banned machine tells
 │   ├── CONTRIBUTING.md          ← contributing, testing, and code-quality standards
+│   ├── INVARIANTS.md            ← invariant register: the one enforcement point for each
+│   ├── PLATFORM-PROVIDERS.md    ← infra register: seam kind, alternates, substrate verdicts
 │   ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (template-only)
-│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 14 guides (template-only)
+│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 guides (template-only)
 │   ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 │   ├── SCALE-ARCHITECTURE/      ← OVERVIEW · LOAD-PROFILES · READINESS · SIZING-ENVELOPE · TOPOLOGY
 │   └── SERVER-ARCHITECTURE/     ← OVERVIEW · COMPUTE-ALLOCATION · EDGE-REQUIREMENTS · NIXOS-HANDOFF
@@ -76,7 +84,7 @@ Every directory with a `CONTEXT.md` also has a `CLAUDE.md`.
 | `docs/DEVELOPMENT.md`      | Environment setup, commands, troubleshooting                                                     |
 | `docs/CLI-TOOLING.md`      | Looking for the command that does a thing                                                        |
 | `docs/GIT-WORKTREES.md`    | Parallel feature development with isolated stacks                                                |
-| `docs/CELERY-FIRST-RUN.md` | The worker or beat is not processing tasks                                                       |
+| `docs/CELERY-FIRST-RUN.md` | Before wiring Celery, or first starting the worker/beat in any environment                       |
 | `docs/FEATURE-DEPLOY.md`   | Deploying a feature branch                                                                       |
 | `docs/TOOLING-GUIDE.md`    | Internal agents and skills reference                                                             |
 | `docs/AI-DICTIONARY.md`    | Looking up an AI-coding term                                                                     |

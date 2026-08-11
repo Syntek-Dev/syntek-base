@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/02-tdd-cycle/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(Red → Green → Refactor, prerequisites, coverage floors — imported above) → this file.
+(Red → Green → Refactor, coverage floors — imported above) → this file.
 
 ## Purpose (one line)
 

@@ -30,9 +30,11 @@ schedule.
   take the next free `ADR-###` index → copy the template → fill Context, Options
   considered, Decision, and Consequences → set Status → cross-link any superseded ADR
   both ways → cross-link the driving `US###`/spec → satisfy `CHECKLIST.md`.
-- **Definition of done:** the ADR is the single source of truth for the decision;
-  `workflows/15-sprint-plans/` and `workflows/16-story-plans/` cite it as a constraint
-  on the plans they produce.
+- **Definition of done:** all five sections complete (Status, Context, Options considered,
+  Decision, Consequences); the index unique and monotonic; the record links its driving
+  `US###` or spec; the filename follows `ADR-###-<TITLE>.md`. The ADR is then the single
+  source of truth for the decision, and `workflows/15-sprint-plans/` and
+  `workflows/16-story-plans/` cite it as a constraint on the plans they produce.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 

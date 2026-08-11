@@ -3,7 +3,7 @@
 # CLAUDE.md — workflows/20-frontend-code/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(when-to-use, prerequisites, hard gates — imported above) → this file → `STEPS.md`
+(when-to-use, governing documents — imported above) → this file → `STEPS.md`
 then `CHECKLIST.md`.
 
 ## Purpose (one line)

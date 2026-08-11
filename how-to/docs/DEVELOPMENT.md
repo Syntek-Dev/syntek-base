@@ -205,32 +205,33 @@ Nginx container IP(s) (default `[]` = no X-Forwarded-For trust — fail-safe).
 
 ## Script Catalogue
 
-| Script                           | Purpose                                                   |
-| -------------------------------- | --------------------------------------------------------- |
-| `development/install.sh`         | Install project dependencies                              |
-| `development/server.sh`          | Start / stop / rebuild the dev stack                      |
-| `development/shell.sh`           | Open a shell inside a container                           |
-| `development/logs.sh`            | Tail container logs                                       |
-| `development/new-django-app.sh`  | Scaffold a new Django app                                 |
-| `development/new-django-view.sh` | Scaffold a new Django-served page (view + template + URL) |
-| `database/migrate.sh`            | Run Django migrations                                     |
-| `database/reset.sh`              | Reset the database; `--seed` also creates dev accounts    |
-| `database/shell.sh`              | Open a psql shell                                         |
-| `database/backup.sh`             | Back up the database                                      |
-| `database/restore.sh`            | Restore a database backup                                 |
-| `database/manageusers.sh`        | Create superusers and manage DB users                     |
-| `database/verify-db-security.sh` | Verify DB security settings (RLS, roles)                  |
-| `tests/backend.sh`               | Run backend tests                                         |
-| `tests/backend-coverage.sh`      | Backend tests with coverage report                        |
-| `tests/api.sh`                   | Run Django Ninja API integration tests                    |
-| `tests/all.sh`                   | Run all tests (backend, `--api` adds Bruno)               |
-| `tests/mutmut.sh`                | Python mutation testing (local only)                      |
-| `tests/open-coverage.sh`         | Open the backend coverage HTML report                     |
-| `syntax/lint.sh`                 | Lint code (Python, Markdown)                              |
-| `syntax/check.sh`                | Type-check Python (basedpyright)                          |
-| `syntax/format.sh`               | Format code (ruff, Prettier)                              |
-| `audits/cloc.sh`                 | Count lines of code                                       |
-| `audits/stubs.sh`                | Audit type stubs                                          |
+| Script                           | Purpose                                                    |
+| -------------------------------- | ---------------------------------------------------------- |
+| `development/install.sh`         | Install project dependencies                               |
+| `development/server.sh`          | Start / stop / rebuild the dev stack                       |
+| `development/shell.sh`           | Open a shell inside a container                            |
+| `development/logs.sh`            | Tail container logs                                        |
+| `development/new-django-app.sh`  | Scaffold a new Django app                                  |
+| `development/new-django-view.sh` | Scaffold a new Django-served page (view + template + URL)  |
+| `database/migrate.sh`            | Run Django migrations                                      |
+| `database/reset.sh`              | Reset the database; `--seed` also creates dev accounts     |
+| `database/shell.sh`              | Open a psql shell                                          |
+| `database/backup.sh`             | Back up the database                                       |
+| `database/restore.sh`            | Restore a database backup                                  |
+| `database/manageusers.sh`        | Create superusers and manage DB users                      |
+| `database/verify-db-security.sh` | Verify DB security settings (RLS, roles)                   |
+| `tests/backend.sh`               | Run backend tests                                          |
+| `tests/backend-coverage.sh`      | Backend tests with coverage report                         |
+| `tests/api.sh`                   | Run Django Ninja API integration tests                     |
+| `tests/all.sh`                   | Run all tests (backend, `--api` adds Bruno)                |
+| `tests/mutmut.sh`                | Python mutation testing (local only)                       |
+| `tests/open-coverage.sh`         | Open the backend coverage HTML report                      |
+| `syntax/lint.sh`                 | Lint code (Python, Markdown)                               |
+| `syntax/check.sh`                | Type-check Python (basedpyright)                           |
+| `syntax/format.sh`               | Format code (ruff, Prettier)                               |
+| `audits/cloc.sh`                 | Source file length — warn at 750, fail at 800              |
+| `audits/docs-length.sh`          | Instructional `.md` length — fail over 300 cloc code lines |
+| `audits/stubs.sh`                | Audit type stubs                                           |
 
 If a required operation has no script, raise a task to create one — do not run the underlying
 tool directly.

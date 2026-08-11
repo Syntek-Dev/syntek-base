@@ -14,15 +14,6 @@ project-management/src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/
 └── VULN-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md ← one closure per resolved vulnerability
 ```
 
-## File naming
-
-```text
-VULN-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-```
-
-Reuse the **exact `<DESCRIPTOR>`** of the originating `../PLANNING/VULN-PLAN-US###-*.md`
-finding. Example: `VULN-IMPL-US000-IDOR-CROSS-CLIENT-01-01-2026.md`.
-
 ## When to create a file here
 
 Write a closure during `project-management/workflows/21-implementation-documentation/` once the

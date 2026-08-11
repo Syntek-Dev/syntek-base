@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+The sprint plan is where capacity meets the specs — the point at which a set of
+well-specified stories becomes an ordered, sized piece of work someone can actually start.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/15-sprint-plans/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -21,13 +25,6 @@ It produces a sprint plan document that:
 - Records acceptance criteria, QA scenarios, and definition of done per story
 - Captures any outstanding design or security constraints developers must respect
 
-## Prerequisites
-
-- [ ] GDPR compliance review complete (`workflows/09-gdpr-compliance`)
-- [ ] Security checks complete (`workflows/10-security-checks`)
-- [ ] QA checks complete (`workflows/11-qa-checks`)
-- [ ] All in-scope user stories have complete acceptance criteria
-
 ## Key concepts
 
 - Sprint plan documents live in `project-management/src/15-SPRINT-PLANS/`
@@ -38,11 +35,11 @@ It produces a sprint plan document that:
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `project-management/docs/PLANNING-GUIDE.md` — MoSCoW format and phase breakdown must be correct before writing any sprint plan
 
-### Soft references — consult during execution
+### Related reading
 
 - `project-management/src/15-SPRINT-PLANS/` — sprint plan documents
 - `project-management/src/02-STORIES/` — story backlog

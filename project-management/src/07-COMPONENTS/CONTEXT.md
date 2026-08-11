@@ -15,7 +15,7 @@ consolidation — there is no per-story component sheet.
 project-management/src/07-COMPONENTS/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
-├── USER-STORY-IDEAS/        ← stage 1: per-story component needs (workflow 06)
+├── USER-STORY-IDEAS/        ← stage 1: per-story component needs (workflow 07)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── COMP-IDEA-US000-TEMPLATE.md
 │   └── COMP-IDEA-US###-<DESCRIPTOR>.md
@@ -50,23 +50,12 @@ the signal.
 
 | Stage                 | Written by  | Scope      | Naming                                       |
 | --------------------- | ----------- | ---------- | -------------------------------------------- |
-| `USER-STORY-IDEAS/`   | workflow 06 | one story  | `COMP-IDEA-US###-<DESCRIPTOR>.md`            |
+| `USER-STORY-IDEAS/`   | workflow 07 | one story  | `COMP-IDEA-US###-<DESCRIPTOR>.md`            |
 | `CONSOLIDATED-IDEAS/` | workflow 17 | one family | `COMP-CONSOLIDATED-<FAMILY>.md`              |
 | `IMPLEMENTATION/`     | workflow 21 | one story  | `COMP-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 `<FAMILY>` ∈ `BUTTONS`, `FORMS`, `BADGES`, `ALERTS`, `CARDS`, `NAVIGATION`, `FEEDBACK` — matching
 the `component-build/section-*.tex` partials. **Stage 1 is frozen once stage 2 runs.**
-
-## Rules
-
-- **Reuse before design.** Check the django-components library (`code/src/django/components/`)
-  and the consolidated set before proposing anything new.
-- **Every component needs all states** — default, hover, focus, disabled, error, success, empty.
-- **WCAG 2.2 AA is non-negotiable** on every interactive component (`code/docs/ACCESSIBILITY.md`).
-- **Token-first, shared palette** — colours mirror `../06-BRAND-GUIDE/`; consolidate the two
-  together or they drift.
-- **Indicative, not production.** The sheet conveys look and feel; the real implementation is
-  the django-components library.
 
 ## Cross-references
 

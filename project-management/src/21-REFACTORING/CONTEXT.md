@@ -17,15 +17,6 @@ The folder ships template-only as a base-repo scaffold. A project copies the tem
 refactor; real `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md` records are added over time and
 are not part of the base repo.
 
-## Naming
-
-- **Primary (story-focused):** `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md` — the refactor
-  maps to one user story.
-- **Cross-cutting fallback:** `REFACTORING-<DESCRIPTOR>-DD-MM-YYYY.md` — a refactor spanning
-  several stories with no single owner (mirrors `BUG-<DESCRIPTOR>-DD-MM-YYYY.md`).
-
-Descriptors in SCREAMING-KEBAB-CASE; dates DD-MM-YYYY in filenames, DD/MM/YYYY in prose.
-
 ## Where it sits (record tier)
 
 ```text

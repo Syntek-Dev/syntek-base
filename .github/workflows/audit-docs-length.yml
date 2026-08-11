@@ -1,0 +1,59 @@
+# Instructional-document length guard — the CI half of .claude/CLAUDE.md § 8.
+#
+# An instructional file is one that tells Claude Code how to work: a guide, a workflow
+# step, an agent, a skill, or a CONTEXT.md/CLAUDE.md pair. Past about three hundred lines
+# such a file stops being read and starts being skimmed, which is the same as not being
+# there. Measured in cloc CODE lines, so blank lines and comments do not count against it.
+#
+# This exists because the check had no enforcement for its whole life. `audits/cloc.sh`
+# enforces the 750/800 limit on SOURCE files via `wc -l` and passes
+# --exclude-lang=Markdown, so it never saw this rule — yet ten folder CLAUDE.md files, two
+# agents and a workflow checklist all named it as the verifier. The check therefore passed
+# on every run by not being performed. A gate that cannot fail is worse than no gate.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# The rule file is a path because the rule and its enforcement are one change: raising the
+# limit in .claude/CLAUDE.md without re-running this is how the two drift apart.
+name: Audit — Docs Length
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "**/*.md"
+      - ".claude/CLAUDE.md"
+      - "code/src/scripts/audits/docs-length.sh"
+      - ".github/workflows/audit-docs-length.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "**/*.md"
+      - ".claude/CLAUDE.md"
+      - "code/src/scripts/audits/docs-length.sh"
+      - ".github/workflows/audit-docs-length.yml"
+  workflow_dispatch:
+
+jobs:
+  docs-length:
+    name: 300-line instructional limit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # cloc is the metric the rule is written in, so the audit exits 2 without it rather
+      # than reporting a green job having measured nothing.
+      - name: Install cloc
+        run: sudo apt-get install -y --no-install-recommends cloc
+
+      - name: Run instructional length audit
+        run: bash code/src/scripts/audits/docs-length.sh --output md
+
+      - name: Upload docs length report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-length-report
+          path: code/src/scripts/audits/reports/docs-length-report.md
+          if-no-files-found: ignore

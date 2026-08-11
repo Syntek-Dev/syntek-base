@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+Brand decides how the product sounds and looks before anything is drawn, because retrofitting a
+palette or a voice across built screens costs an order of magnitude more than settling it once.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/06-brand-guides/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,11 +19,6 @@ project-management/workflows/06-brand-guides/
 
 Use this workflow when establishing or updating the visual brand identity — colour palette,
 typography, spacing, and tone. Brand decisions must be agreed before component design begins.
-
-## Prerequisites
-
-- [ ] Product vision and target audience are understood
-- [ ] No in-progress component design depends on tokens being changed
 
 ## Brand workflow
 
@@ -54,11 +53,11 @@ Brand decisions flow through four stages:
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 None — brand guide work is a design phase; no code safety gates apply.
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/RESPONSIVE-DESIGN.md` — device data, mobile-first design principles,
   and logo variant requirements; read before defining any brand assets

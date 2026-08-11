@@ -62,7 +62,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Before you write
 
 1. **Grill first** (`.claude/CLAUDE.md` §10). Load `.claude/skills/grill-with-docs` and
-   settle, one question at a time: who the reader is and what has just gone wrong for them;
+   settle: who the reader is and what has just gone wrong for them;
    whether an existing guide should be extended instead; which home and therefore which
    length standard; reference or runbook; and what is explicitly out of scope.
 2. **Confirm the scripts exist.** `ls code/src/scripts/*/` and `--help` each one you intend
@@ -84,7 +84,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   never grow it into a runbook.
 - **Failure modes must be real** — what went wrong when you ran it, not a plausible list.
 - **Respect the length standard of the home you chose**: `how-to/docs/` ≤ 300 code lines
-  (verify with `code/src/scripts/audits/cloc.sh`); `how-to/src/` exempt.
+  (verify with `code/src/scripts/audits/docs-length.sh`); `how-to/src/` exempt — though the
+  `CONTEXT.md`/`CLAUDE.md` pair inside it is not, and the audit checks it.
 - **Index what you write** — the folder `CONTEXT.md` tree and `how-to/REFERENCES.md`. A
   guide nothing links to will not be found.
 
@@ -92,6 +93,6 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 The guide has been executed start to finish and corrected from what happened; every command
 cites a script; failure modes and rollback are present for anything destructive; it is
-listed in its `CONTEXT.md` tree and in `how-to/REFERENCES.md`; `cloc`, markdownlint and
+listed in its `CONTEXT.md` tree and in `how-to/REFERENCES.md`; `docs-length.sh`, markdownlint and
 Prettier pass; British English throughout; `**Last Updated**` refreshed on every touched
 `CONTEXT.md`.

@@ -7,8 +7,8 @@ beside the app they cover, in `apps/<app>/tests/`, so a test moves when its app 
 
 ```text
 code/src/django/tests/
-├── __init__.py
-├── CLAUDE.md
+├── __init__.py   ← package marker — makes this a test package, not a rootdir scan
+├── CLAUDE.md     ← operating rules
 ├── CONTEXT.md    ← this file
 └── e2e/          ← browser-level suite (Playwright via pytest); see its CONTEXT.md
 ```

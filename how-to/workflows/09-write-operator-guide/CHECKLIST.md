@@ -47,7 +47,7 @@ model: opus
 
 - [ ] Listed in its folder `CONTEXT.md` tree and in `how-to/REFERENCES.md` · _opus_
 - [ ] Cross-references resolve in both directions · _opus_
-- [ ] `cloc.sh` within limits; oversized `docs/` guide split with a thin index · _opus_
+- [ ] `docs-length.sh` clean; oversized `docs/` guide split with a thin index · _opus_
 - [ ] markdownlint and Prettier clean · _opus_
 
 ---

@@ -61,7 +61,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   must be complete _before_ any commit — enforced in every orchestrator workflow.
 - **300-line instructional limit.** Every `.md` that instructs Claude Code
   (`**/docs/*.md`, `**/workflows/**/*.md`, `.claude/**/*.md`, all `CONTEXT.md`) must
-  stay within 300 code lines (`cloc --include-lang=Markdown`). Oversized files split
+  stay within 300 code lines — gate: `code/src/scripts/audits/docs-length.sh`, never
+  `cloc.sh`, which excludes Markdown. Oversized files split
   into focused sub-documents; the entry point becomes a thin index that cross-references
   them. Root-level `*.md` and `**/src/*.md` are exempt.
 - **Scripts, never raw commands.** All docs reference `code/src/scripts/**/*.sh` for dev
@@ -79,23 +80,30 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## CONTEXT.md + CLAUDE.md pairing
 
-Every directory that carries a `CONTEXT.md` must also carry a `CLAUDE.md` — the core
-convention (`.claude/CLAUDE.md` §8):
+`CONTEXT.md` says **what is here and why it is here**; `CLAUDE.md` says **how to work
+here**. The owning guide is `code/docs/DOCUMENTATION-PAIRING.md` — the test that
+separates the two, the headings banned from an orientation file, and the
+route-don't-restate rule. Read it before writing either file rather than copying the
+shape of a sibling that may predate it.
 
-- `CONTEXT.md` is **orientation**: the directory tree and what-is-here. Keep the tree
-  accurate when files or folders change.
-- `CLAUDE.md` is **operating rules**. It **opens with `@./CONTEXT.md`** (plus
-  `@./REFERENCES.md` where one exists), then a `Read order:` line, then four H2
-  sections — **Purpose (one line)** · **How to work here** · **Guardrails** ·
-  **Output & naming** — scaled to the folder (leaf short, layer/app root fuller).
-- Never leave a bare `@./CONTEXT.md` import stub — that is the retired convention
-  (replaced 03/07/2026).
+- `CONTEXT.md` — an opening statement of what the directory is **and why it exists**, a
+  `## Directory Tree` fence with every top-level row carrying a `←` annotation, a
+  what-is-here table where those annotations are too short to hold the meaning, and
+  `## Cross-references`. Keep the tree accurate when files or folders change.
+- `CLAUDE.md` — **opens with `@./CONTEXT.md`** (plus `@./REFERENCES.md` where one
+  exists), then a `Read order:` line, then four H2 sections — **Purpose (one line)** ·
+  **How to work here** · **Guardrails** · **Output & naming** — scaled to the folder
+  (leaf short, layer/app root fuller). Never a bare `@./CONTEXT.md` import stub (the
+  convention retired 03/07/2026), and never a directory tree.
+- Anything imperative — a gate, a prerequisite, a reading order, a naming rule, a model
+  tier — is an operating rule wherever you found it. Verify a pair with
+  `code/src/scripts/audits/docs-pairing.sh`.
 
 ## How to work
 
 **Grill first.** For any non-trivial document, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: the doc's scope, its
-audience, what to cover, and what to leave out. Look facts up rather than ask; a routine
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%>: the doc's scope, its
+audience, what to cover, and what to leave out. A routine
 `CONTEXT.md` tree refresh or docstring pass is mechanical and skips this. Design-work default
 (`.claude/CLAUDE.md` §10).
 
@@ -111,7 +119,7 @@ audience, what to cover, and what to leave out. Look facts up rather than ask; a
 
 Definition of done: pair present and consistent for every touched directory; trees and
 tables match disk; cross-references resolve; scripts referenced (no raw commands); each
-instructional file within 300 lines; British English throughout.
+`docs-length.sh` clean; British English throughout.
 
 ## Handoff
 

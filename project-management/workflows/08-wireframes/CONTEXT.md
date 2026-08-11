@@ -2,12 +2,16 @@
 
 **Last Updated**: <%DATE%>
 
+A wireframe is the cheapest place to discover that a screen does not work. Every state it omits
+— empty, error, loading — is a state the build will improvise.
+
 ## Directory Tree
 
 ```text
 project-management/workflows/08-wireframes/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -15,12 +19,6 @@ project-management/workflows/08-wireframes/
 
 Use this workflow before building any new page, screen, or significant UI component.
 Wireframes must be agreed before frontend development begins.
-
-## Prerequisites
-
-- [ ] User story exists covering the page or feature being designed
-- [ ] Acceptance criteria are understood (what the user must be able to do)
-- [ ] WCAG 2.2 AA accessibility requirements have been noted
 
 ## Key concepts
 
@@ -35,11 +33,11 @@ Wireframes must be agreed before frontend development begins.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA must be considered at layout stage; interactive element states required from the start
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/responsive/BREAKPOINTS.md` — device data and orientation stats; all wireframes start at 360 px portrait and scale up
 - `code/docs/rendering/TEMPLATES-AND-INTERACTIVITY.md` — wireframe page structure determines the server, HTMX and Alpine split

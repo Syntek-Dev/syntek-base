@@ -67,7 +67,7 @@ model: fable
 
 ## Close-out
 
-- [ ] Instructional `.md` files ≤ 300 code lines
+- [ ] Instructional `.md` files ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY
 
 ---

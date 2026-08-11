@@ -1,12 +1,16 @@
 # Workflow: Rust Extension (PyO3)
 
+Rust earns its place here only where Python cannot give a guarantee — constant time, wiped
+memory — or cannot reach the speed needed. The workflow opens with that gate because a native
+dependency is loaded into the web process and shares its address space.
+
 ## Directory Tree
 
 ```text
 code/workflows/12-rust-extension/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -23,16 +27,6 @@ belongs in the service layer — use `project-management/workflows/18-backend-co
 `backend` agent.
 
 **Rust-only.** This workflow exists only in a project generated with `INCLUDE_RUST`.
-
-## Prerequisites
-
-- [ ] `code/docs/RUST.md` and its `rust/` sub-docs have been read
-- [ ] The gate question is answered — and the answer is not "it would be faster in Rust, probably"
-- [ ] The service layer the extension supports already exists — a crate is a primitive, not a
-      place for business logic
-- [ ] Entered from `project-management/workflows/18-backend-code/`, never directly from a design
-      gate
-- [ ] `rustup` installed; the toolchain pin in `code/src/rust/rust-toolchain.toml` resolves
 
 ## Key concepts
 
@@ -54,13 +48,13 @@ belongs in the service layer — use `project-management/workflows/18-backend-co
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/RUST.md` — the gate question, the workspace, the three rules
 - `code/docs/rust/PYO3-BOUNDARY.md` — never-panic, error mapping, the GIL, `abi3`
 - `code/docs/rust/SUPPLY-CHAIN.md` — the dependency policy `audit.sh` enforces
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/rust/MEMORY-HYGIENE.md` — zeroize-on-drop, constant-time comparison, honest limits
 - `code/docs/encryption/RUST-CRYPTO.md` — the boundary with the Fernet pipeline

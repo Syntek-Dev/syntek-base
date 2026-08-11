@@ -5,6 +5,20 @@ to **inspect** the local environment for context. They are **not** MCP servers a
 for dev operations: anything that builds, tests, migrates, or runs the stack goes through
 `code/src/scripts/**/*.sh`. These scripts only read and detect.
 
+## Directory Tree
+
+```text
+.claude/plugins/
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file
+├── db-tool.py               ← database detection and connection info
+├── env-tool.py              ← environment-file discovery, comparison, validation
+├── git-tool.py              ← repository status, branch, remote, commit history
+├── log-tool.py              ← log-file discovery, logging config, recent-log extraction
+├── pm-tool.py               ← PM-tool config detection (ClickUp, Linear, Jira, …)
+└── project-tool.py          ← project structure and technology-stack detection
+```
+
 ## Files
 
 | File              | Purpose                                                             |

@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.3.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.4.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.4.0] - 11/08/2026
+
+### Added
+
+- **`code/docs/DOCUMENTATION-PAIRING.md` — the owning guide for a rule that had no home.** The split was stated in three places (root `CONTEXT.md`, `.claude/CLAUDE.md`, and by example in every folder) and owned by none, which is the condition under which a rule drifts. The guide states it in one sentence — _`CONTEXT.md` says what is here and why it is here; `CLAUDE.md` says how to work here_ — then gives the decision test for a sentence that could go in either, the headings that never belong in an orientation file, and the route-don't-restate rule that keeps a fact in exactly one place.
+- **`code/src/scripts/audits/docs-pairing.sh` — the mechanical half, enforced.** Checks the pairing both directions, the four required `CLAUDE.md` H2s, the `@./CONTEXT.md` import, the `Read order:` line, and the banned orientation headings. Wired into CI as _Audit — Docs Pairing_ and into `lefthook.yml` at pre-commit. Deliberately **unscoped**: the checks are cross-file, so a per-file run cannot see a `CLAUDE.md` whose `CONTEXT.md` was just deleted.
+- **`code/src/scripts/audits/docs-length.sh` — the 300-line instructional cap gets its own gate.** Measured in `cloc` code lines over `**/docs/**/*.md`, `**/workflows/**/*.md`, `.claude/**/*.md` and every `CONTEXT.md`/`CLAUDE.md`. Root-level `*.md` and `**/src/*.md` are exempt — a README and an operator guide are read by humans start to finish, and capping them optimises for the wrong reader. A `CONTEXT.md` or `CLAUDE.md` inside an exempt tree is still bound. CI job: _Audit — Docs Length_.
+- **`code/src/scripts/development/sync-trees.sh` — Directory Tree blocks reconciled at commit time.** Scoped to `--staged`, so a one-file commit does not walk 195 trees. It **adds** a missing row and never deletes one: a row naming something absent is usually a gated surface or a naming pattern, not drift. An added row carries `← TODO: what this is and why it is here` and **fails the commit** — the description gets written while the author still knows the answer, which is the only moment anyone ever does.
+
+### Changed
+
+- **`cloc.sh` no longer measures Markdown, and the rule now says so.** It excludes Markdown by design, so pointing the instructional cap at it measured nothing. `.claude/CLAUDE.md` §8 now names `docs-length.sh` explicitly and states the exemptions, because the previous wording sent every reader to the one script that could not answer.
+- **Every `CLAUDE.md` in the tree conforms to one shape** — `@./CONTEXT.md` (plus `@./REFERENCES.md` where the directory has one), a `Read order:` line, then exactly four H2s: _Purpose (one line)_ · _How to work here_ · _Guardrails_ · _Output & naming_, scaled to the folder.
+- **Every workflow `CONTEXT.md` conforms too.** _Hard gates — read before executing Step 1_ / _Soft references — consult during execution_ became **Governing documents** / **Related reading**: the old names described when to read a file rather than what it is, which is an operating rule wearing an orientation file's clothes. `Prerequisites`, `Quality gates` and `Naming` headings are gone from orientation files for the same reason — each now lives once, in the paired `CLAUDE.md` or the workflow's `CHECKLIST.md`.
+- **Each orientation file opens by saying why the thing it describes exists**, rather than starting cold with a tree. A directory listing tells you what is there; it does not tell you why you would go.
+- **`.markdownlint-cli2.jsonc` and `.prettierignore` exclude `**/reports/**` and `code/src/rust/target/`.** An audit run with `--output md` was capable of failing the format gate it exists to complement.
+
+### Fixed
+
+- **Workflow headings left stale by the 2.0.0 renumber.** `## Workflow 13 — Decisions (ADRs)` in `workflows/14-decisions/`, and its siblings across the PM layer, named the number the folder had before that release.
 
 ## [2.3.1] - 03/08/2026
 

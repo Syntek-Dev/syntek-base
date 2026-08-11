@@ -36,14 +36,6 @@ matching `../IMPLEMENTATION/AUDIT-IMPL-US###-*.md` record.
 A story that ships no authenticated mutation or user-input surface records that fact and
 completes only the CORS / `DEBUG` / secrets checklist rows.
 
-## Naming
-
-| Pattern                            | Example                               |
-| ---------------------------------- | ------------------------------------- |
-| `AUDIT-PLAN-US###-<DESCRIPTOR>.md` | `AUDIT-PLAN-US000-ADMIN-MUTATIONS.md` |
-
-`<DESCRIPTOR>` in `SCREAMING-KEBAB-CASE`.
-
 ## Cross-references
 
 - `AUDIT-PLAN-US000-TEMPLATE.md` — the per-story audit plan template

@@ -16,10 +16,11 @@ placeholder-brand palette and all chrome classes that every screen links.
   the wireframes need); Opus for mechanical touches — a colour tweak, a new
   utility class, a wording fix.
 - **Concrete steps:** edit `:root { --wf-* }` to rebrand, or add a chrome class →
-  open any `../SCREENS/*.html` over `file://` to check it renders → keep the hex
-  in step with the brand guide.
+  open any screen in `../USER-STORY-IDEAS/` or `../CONSOLIDATED-IDEAS/` over `file://`
+  to check it renders → keep the hex in step with the brand guide.
 - **Definition of done:** screens still render cleanly; the palette matches
-  `../../06-BRAND-GUIDE/`; no external dependency introduced; British English.
+  `../../06-BRAND-GUIDE/`; `bash code/src/scripts/audits/css-slop.sh` exits 0 — this
+  file is in its scope; no external dependency introduced; British English.
 
 ## Guardrails
 

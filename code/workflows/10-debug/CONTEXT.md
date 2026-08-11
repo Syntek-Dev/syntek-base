@@ -1,11 +1,16 @@
 # Workflow: Debug
 
+Finding a fault and fixing it are separate skills, and the regression test between them is what
+stops the same bug returning. This workflow owns the fix; `09-debugging-with-logs/` owns the
+search.
+
 ## Directory Tree
 
 ```text
 code/workflows/10-debug/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -20,11 +25,6 @@ builds, network issues) use `how-to/workflows/08-debugging/`. Both workflows are
 designed to be used together — start with the operational workflow to confirm the
 environment is healthy, then use this workflow to fix the logic.
 
-## Prerequisites
-
-- [ ] Containers are running
-- [ ] The bug is reproducible — you have steps to trigger it consistently
-
 ## Key concepts
 
 - Write a failing test _before_ writing the fix — this pins the bug and becomes the regression test
@@ -34,11 +34,11 @@ environment is healthy, then use this workflow to fix the logic.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 None — debugging is reactive; no mandatory pre-reads before investigating a bug.
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **debug playbook**
   (`.claude/skills/debug-issue.md`): `semantic_search_nodes` → `query_graph` callers/callees →

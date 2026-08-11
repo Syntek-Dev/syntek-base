@@ -1,11 +1,15 @@
 # Workflow: TDD Cycle
 
+Red before green is the whole point: a test written after the code tends to assert what the
+code already does. This workflow keeps the three phases separate so each one can be checked.
+
 ## Directory Tree
 
 ```text
 code/workflows/02-tdd-cycle/
 ├── CHECKLIST.md             ← verification checklist before marking complete
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CLAUDE.md                ← operating rules
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -13,13 +17,6 @@ code/workflows/02-tdd-cycle/
 
 Use this workflow for any implementation work using test-driven development.
 Always follows the Red → Green → Refactor pattern.
-
-## Prerequisites
-
-- [ ] Clear acceptance criteria from the user story
-- [ ] Test framework running (`pytest` — one runner for every layer)
-- [ ] `./code/src/scripts/syntax/check.sh` passes (type-check + lint) before writing any tests
-- [ ] No stubs — green means real implementation passing
 
 ## Key concepts
 
@@ -43,11 +40,11 @@ tests are pytest tests and count towards the same floor.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/docs/testing/COVERAGE.md` — coverage floors (75% line and branch / 90% auth) block PR — one floor, not one per layer; output configuration
 
-### Soft references — consult during execution
+### Related reading
 
 - `code/docs/testing/BACKEND-TESTING.md` — pytest setup, Django test patterns, fixture conventions
 - `code/docs/testing/FRONTEND-TESTING.md` — template, component, and HTMX-partial tests; markup-level accessibility

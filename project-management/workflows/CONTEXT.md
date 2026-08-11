@@ -2,6 +2,10 @@
 
 **Last Updated**: <%DATE%>
 
+Twenty-three numbered procedures, and here the numbers really are the running order: `02`–`14`
+run per story, `15`–`16` per sprint, `17` once the backlog is planned, and `18`–`23` build and
+ship it.
+
 ## Why this layer exists
 
 **A human thinks the work through before any code is written.** That is the whole bet.
@@ -56,7 +60,7 @@ gate.
                                             │            no → └→ next story
                                            yes
                                             ↓
-                                     14 → 15  (for that sprint's stories)
+                                     15 → 16  (for that sprint's stories)
                                             │
                                             └→ next story
 ```
@@ -75,7 +79,7 @@ That is the accepted cost of the loop, not an accident. Once every story is thro
 `17-consolidate-design-work` reconciles the accumulated per-story work into one coherent
 design. Only then does implementation begin.
 
-Design and schema folders (`src/03`–`src/07`) carry that two-stage shape directly:
+Design and schema folders (`src/04`–`src/08`) carry that three-stage shape directly:
 
 ```text
 USER-STORY-IDEAS/   →   CONSOLIDATED-IDEAS/   →   IMPLEMENTATION/
@@ -128,30 +132,31 @@ project-management/workflows/
 
 Every folder carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.
 
-| Workflow                           | Purpose                                                         |
-| ---------------------------------- | --------------------------------------------------------------- |
-| `02-story-creation/`               | Write a well-formed user story with acceptance criteria         |
-| `03-sprint-planning/`              | Open the sprint record and accumulate stories against capacity  |
-| `04-database-schema/`              | Design and sign off this story's schema before coding           |
-| `05-user-flow-design/`             | Map this story's journeys and data touchpoints                  |
-| `06-brand-guides/`                 | The brand tokens this story introduces or consumes              |
-| `07-component-designs/`            | The components this story introduces or reuses                  |
-| `08-wireframes/`                   | This story's screens, on the components it needs                |
-| `09-gdpr-compliance/`              | Review this story for GDPR compliance                           |
-| `10-security-checks/`              | Threat model and security review of the story's design          |
-| `11-qa-checks/`                    | QA planning from wireframes — test scenarios before any code    |
-| `12-seo-checks/`                   | Verify SEO on any public-facing page the story adds             |
-| `13-api-design/`                   | Design the Django Ninja API contract for the story              |
-| `14-decisions/`                    | Author an ADR — the last gate in the per-story loop             |
-| `15-sprint-plans/`                 | On sprint fill: the detailed sprint plan                        |
-| `16-story-plans/`                  | On sprint fill: the per-story implementation plan (code master) |
-| `17-consolidate-design-work/`      | Unify the per-story design and schema work into one system      |
-| `18-backend-code/`                 | Implement Django models, services, and business logic (TDD)     |
-| `19-api-code/`                     | Implement the Django Ninja API layer                            |
-| `20-frontend-code/`                | Implement Django templates + django-components (HTMX/Alpine)    |
-| `21-implementation-documentation/` | Update docs + write IMPLEMENTATION records after code           |
-| `22-pr-and-review/`                | Create, review, and merge a feature PR                          |
-| `23-release/`                      | Cut a release (version bump, changelog, deployment)             |
+| Workflow                           | Purpose                                                          |
+| ---------------------------------- | ---------------------------------------------------------------- |
+| `01-feature/`                      | Chart the feature's decision frontier with wayfinder, resolve it |
+| `02-story-creation/`               | Write a well-formed user story with acceptance criteria          |
+| `03-sprint-planning/`              | Open the sprint record and accumulate stories against capacity   |
+| `04-database-schema/`              | Design and sign off this story's schema before coding            |
+| `05-user-flow-design/`             | Map this story's journeys and data touchpoints                   |
+| `06-brand-guides/`                 | The brand tokens this story introduces or consumes               |
+| `07-component-designs/`            | The components this story introduces or reuses                   |
+| `08-wireframes/`                   | This story's screens, on the components it needs                 |
+| `09-gdpr-compliance/`              | Review this story for GDPR compliance                            |
+| `10-security-checks/`              | Threat model and security review of the story's design           |
+| `11-qa-checks/`                    | QA planning from wireframes — test scenarios before any code     |
+| `12-seo-checks/`                   | Verify SEO on any public-facing page the story adds              |
+| `13-api-design/`                   | Design the Django Ninja API contract for the story               |
+| `14-decisions/`                    | Author an ADR — the last gate in the per-story loop              |
+| `15-sprint-plans/`                 | On sprint fill: the detailed sprint plan                         |
+| `16-story-plans/`                  | On sprint fill: the per-story implementation plan (code master)  |
+| `17-consolidate-design-work/`      | Unify the per-story design and schema work into one system       |
+| `18-backend-code/`                 | Implement Django models, services, and business logic (TDD)      |
+| `19-api-code/`                     | Implement the Django Ninja API layer                             |
+| `20-frontend-code/`                | Implement Django templates + django-components (HTMX/Alpine)     |
+| `21-implementation-documentation/` | Update docs + write IMPLEMENTATION records after code            |
+| `22-pr-and-review/`                | Create, review, and merge a feature PR                           |
+| `23-release/`                      | Cut a release (version bump, changelog, deployment)              |
 
 ## Pairing with the code layer
 

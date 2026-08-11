@@ -56,7 +56,7 @@ Nobody should read all fifteen. Pick the entry point that matches where you are:
 | Ready to generate your first project         | `03-PREREQUISITES.md` → `04-QUICKSTART.md` |
 | Sitting at the prompt, unsure what to answer | `05-ANSWERS.md`                            |
 | Staring at a generated project, lost         | `07-REPO-TOUR.md` → `08-CLAUDE-CODE.md`    |
-| Facing 22 numbered PM folders                | `09-PROJECT-MANAGEMENT.md`                 |
+| Facing 23 numbered PM folders                | `09-PROJECT-MANAGEMENT.md`                 |
 | About to build the first feature             | `10-FIRST-FEATURE.md`                      |
 | Wanting to change what the template gave you | `11-CUSTOMISING.md` → `12-EXTENDING.md`    |
 | Taking it to a server                        | `13-DEPLOYMENT.md`                         |

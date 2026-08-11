@@ -36,9 +36,13 @@ differs, selected at runtime via `DJANGO_SETTINGS_MODULE`.
 - **Secrets come from environment variables only** — `SECRET_KEY`, database credentials,
   and any key added later. Never a literal, never a default that works in production.
 - **Never hardcode a proxy IP.** If proxy trust is reintroduced, drive it from an env var.
+- **A value that differs per environment goes in the environment module; a shared one in
+  `base.py`.** An override that happens to match the base value is a future divergence
+  nobody will notice.
 - Adding to `INSTALLED_APPS` or `MIDDLEWARE` is a deliberate act — the baseline is
-  `django.contrib.*` plus Django's default middleware, and it stays that way until a
-  feature genuinely requires more.
+  `django.contrib.*` plus `apps.core`, and Django's default middleware plus the one local
+  entry the error taxonomy requires (`RequestIDMiddleware`). It stays that way until a
+  feature genuinely requires more; **nothing third-party is registered at all.**
 
 ## Output & naming
 

@@ -19,8 +19,7 @@ delegate scoped work to. Full roster + tiers: this folder's `CONTEXT.md`.
   documentation. A change here reshapes how an agent orchestrates; treat it with the
   weight of a workflow change, not a cosmetic one.
 - **Grill first:** agents open any substantial task with a grilling pass — not a static
-  question list — loading `.claude/skills/grill-with-docs` and interviewing <%DEVELOPER_NAME%> one question
-  at a time before producing the artefact; only trivial/mechanical work skips it
+  question list — loading `.claude/skills/grill-with-docs` and interviewing <%DEVELOPER_NAME%> before producing the artefact; only trivial/mechanical work skips it
   (`.claude/CLAUDE.md` §10).
 - **Model — runtime vs editing (two axes):** an agent's own `model:` frontmatter sets
   which model it _runs_ on, per the §4 tiers — planning agents (`story`, `sprint`,

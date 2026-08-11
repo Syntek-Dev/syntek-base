@@ -1,0 +1,54 @@
+# CONTEXT.md / CLAUDE.md pairing guard — the CI half of code/docs/DOCUMENTATION-PAIRING.md.
+#
+# Checks the mechanical half of the split: the pairing exists both ways, every CLAUDE.md
+# opens with @./CONTEXT.md and carries exactly the four H2 sections, no CLAUDE.md holds a
+# directory tree, every CONTEXT.md holds one with every top-level row described, and no
+# CONTEXT.md carries a heading that is an operating rule in disguise.
+#
+# What it cannot catch is stated in the guide: whether the opening paragraph explains
+# anything. A script proves a paragraph exists; only a reader can tell it says something.
+# That is the one warn-tier row, and warnings never change the exit code.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# The guide is a path because the rule and its enforcement are one change: editing
+# DOCUMENTATION-PAIRING.md without re-running this is how the two drift apart.
+name: Audit — Docs Pairing
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "**/CONTEXT.md"
+      - "**/CLAUDE.md"
+      - "code/docs/DOCUMENTATION-PAIRING.md"
+      - "code/src/scripts/audits/docs-pairing.sh"
+      - ".github/workflows/audit-docs-pairing.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "**/CONTEXT.md"
+      - "**/CLAUDE.md"
+      - "code/docs/DOCUMENTATION-PAIRING.md"
+      - "code/src/scripts/audits/docs-pairing.sh"
+      - ".github/workflows/audit-docs-pairing.yml"
+  workflow_dispatch:
+
+jobs:
+  docs-pairing:
+    name: CONTEXT.md / CLAUDE.md pairing audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run docs pairing audit
+        run: bash code/src/scripts/audits/docs-pairing.sh --output md
+
+      - name: Upload docs pairing report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-pairing-report
+          path: code/src/scripts/audits/reports/docs-pairing-report.md
+          if-no-files-found: ignore

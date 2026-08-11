@@ -1,12 +1,16 @@
 # Workflow: Database Operations
 
+Every operation here is either destructive or the thing that saves you from a destructive one.
+They live together so that taking a backup is never further away than the reset that makes you
+want it.
+
 ## Directory Tree
 
 ```text
 how-to/workflows/04-database-operations/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
-├── CONTEXT.md               ← this file (when to use, prerequisites, key concepts)
+├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
 └── STEPS.md                 ← ordered steps to execute
 ```
 
@@ -27,12 +31,6 @@ never changes what the database _is_, only what state it holds.
 | Get back to a clean dev database     | here                                               |
 | Design the schema in the first place | `project-management/workflows/04-database-schema/` |
 
-## Prerequisites
-
-- [ ] The dev stack is running (`code/src/scripts/development/server.sh`)
-- [ ] `code/src/docker/.env.dev` exists and holds the dev credentials
-- [ ] For a restore: the backup file is present and you know its format
-
 ## Key concepts
 
 - **Every operation runs through a script.** Never `psql`, `pg_dump`, `docker exec`, or
@@ -52,12 +50,12 @@ never changes what the database _is_, only what state it holds.
 
 ## Cross-references
 
-### Hard gates — read before executing Step 1
+### Governing documents
 
 - `code/src/scripts/database/CONTEXT.md` — the scripts, their flags, and their exit codes
 - `code/docs/DATABASE.md` — the data-layer rules any state change must not violate
 
-### Soft references — consult during execution
+### Related reading
 
 - `how-to/docs/CLI-TOOLING.md` — the command reference for every dev operation
 - `how-to/docs/DEVELOPMENT.md` — environment variables and Compose services

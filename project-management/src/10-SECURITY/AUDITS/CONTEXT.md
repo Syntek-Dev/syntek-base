@@ -52,15 +52,6 @@ An audit is tied to a user story at both ends: a **plan** before implementation 
 - `IMPLEMENTATION/AUDIT-IMPL-US###-*.md` — the findings against the shipped code, each
   mapped to OWASP/NIST with a severity, closing every planned constraint with evidence.
 
-## Naming conventions
-
-| Phase          | Pattern                                       | Example                                          |
-| -------------- | --------------------------------------------- | ------------------------------------------------ |
-| Planning       | `AUDIT-PLAN-US###-<DESCRIPTOR>.md`            | `AUDIT-PLAN-US000-ADMIN-MUTATIONS.md`            |
-| Implementation | `AUDIT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` | `AUDIT-IMPL-US000-ADMIN-MUTATIONS-01-01-2026.md` |
-
-`<DESCRIPTOR>` in `SCREAMING-KEBAB-CASE`; stories referenced as `US###`; dates DD/MM/YYYY.
-
 ## Cross-references
 
 - `PLANNING/CONTEXT.md` · `IMPLEMENTATION/CONTEXT.md` — the two per-story sub-folders

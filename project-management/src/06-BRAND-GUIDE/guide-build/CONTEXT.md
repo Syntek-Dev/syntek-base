@@ -27,7 +27,7 @@ python3 brand_guide.py --no-pdf   # regenerate the .tex only (skip xelatex)
 python3 brand_guide.py --check    # verify the committed .tex is up to date; writes nothing
 ```
 
-## Requirements
+## Dependencies
 
 - **xelatex** (`texlive-xetex`) on `PATH`, plus the **TeX Gyre Heros** and **DejaVu Sans Mono**
   fonts (both ship with a standard texlive install). No Python dependencies — standard library only.

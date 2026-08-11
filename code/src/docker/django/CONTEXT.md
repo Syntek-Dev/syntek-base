@@ -3,6 +3,26 @@
 The Dockerfiles and entrypoints for the single application container. Python only — the
 site is server-rendered by Django, so the image carries no Node toolchain.
 
+## Directory Tree
+
+```text
+code/src/docker/django/
+├── CLAUDE.md             ← operating rules
+├── CONTEXT.md            ← this file
+├── Dockerfile.dev        ← deps only; source arrives as a volume mount
+├── Dockerfile.test       ← source baked in, test dependency group installed
+├── Dockerfile.staging    ← multi-stage, non-root
+├── Dockerfile.prod       ← multi-stage, non-root
+├── entrypoint.dev.sh     ← migrate → Uvicorn --reload
+├── entrypoint.test.sh    ← migrate → collectstatic → server
+├── entrypoint.staging.sh ← migrate → collectstatic → Gunicorn + Uvicorn
+└── entrypoint.prod.sh    ← migrate → collectstatic → Gunicorn + Uvicorn
+```
+
+There is one Dockerfile per environment rather than one parameterised file: the dev and
+production images differ in what they contain, not just how they are run, and a single file
+with four build targets hides that from whoever reads it next.
+
 ## Files
 
 | File                    | Environment | Notes                                                      |
