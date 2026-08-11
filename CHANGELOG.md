@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.16.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.17.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.17.0] - 11/08/2026
+
+### Added
+
+- **`code/src/django/templates/500.html` — the one template with a live consumer before any page exists.** Django resolves it by name with no view and no URL entry, so it works on a project that has not written a route yet. It deliberately extends no base, loads no CSS and names no internals, because Django renders it with an empty `Context` and no request — a base template that reads `request` would render blanks on the one page a user only ever reaches after something has already broken. The copy is a placeholder until first-time setup, exactly like the worked row in `how-to/src/INVARIANTS.md`.
+- **`{% request_id %}`, in the new `code/src/django/apps/core/templatetags/core.py`.** The tag reads the correlation identifier from the `ContextVar` in `code/src/django/apps/core/middleware.py` rather than from the template context, which is the only mechanism that reaches the 500 page as well as HTMX error partials and ordinary views. A context processor cannot: those run only for a `RequestContext`, and there is no request. An empty string outside a request — a management command, a task, an exception raised above the middleware — is a correct answer rather than a gap, because a stale identifier resolves to the wrong tracker event.
+- **`code/src/django/static/js/observability.js` — the global HTMX error handler.** One `htmx:beforeSwap` / `htmx:sendError` listener pair on `document.body`, never per element, closing the defect where a 5xx swaps nothing at all: the indicator stops, the page is unchanged, and the user re-clicks. It creates its own `role="alert"` region instead of targeting a possibly-null element, refuses to swap a complete edge-served HTML document into a `div` by testing the doctype, and leaves htmx's own `isError` alone — a handler that quietens the console while claiming to make failure visible is worse than none.
+- **`CONTEXT.md` / `CLAUDE.md` pairs for `code/src/django/static/` and `code/src/django/templates/`**, retiring the two `.gitkeep` placeholders that kept both trees tracked. The static pair records that there is no client-side build, that the `htmx-handler-absent` clause in `code/src/scripts/audits/negative-space.sh` keys on the listener rather than on this file's path, and that no `css/` token layer or vendored HTMX/Alpine exists yet because no page loads them. The template pair records that `500.html` names no internals, that the identifier arrives through the tag rather than a context processor, and that `503.html` is never added there.
+- **`code/src/django/apps/core/templatetags/CONTEXT.md` / `CLAUDE.md`** — the table of rendering paths showing which have a request context and which do not, plus the rules that keep the library honest: a tag here must work without a request context or it belongs in a context processor, `{% request_id %}` must never grow into a general correlation API, and the module name is load-bearing because templates carry `{% load core %}`.
+- **`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` entry 14 — the 503 page.** Django defines a handler and a template name for 400, 403, 404 and 500, and none for 503, so there is nothing to override. More decisively, the 503 that matters is returned precisely when the Django process is not answering, and a template cannot be rendered by a process that is down. The deploy repository owes a static document served from disk for `error_page 502 503 504`, carrying `Retry-After` where the window is known and `X-Request-ID` where the edge minted one, never cached, and with no asset references — the static tree is served by the same upstream that is failing.
+- **`code/docs/FRONTEND-CODING-PRINCIPLES.md` § _What is not built yet_** — the web peer of `code/docs/MOBILE-CODING-PRINCIPLES.md` § 5, naming the base template, the `#error-region` div, the HTMX error partial, the `<script>` tag that would load the handler, and the token stylesheet, each with the reason it waits. It also states the consequence: the `htmx-handler-absent` clause is a no-op until the first template uses `hx-`, so the handler ships proven by ruff, ESLint and Prettier rather than by that gate.
+
+### Changed
+
+- **`code/docs/rendering/PITFALLS-AND-EXAMPLES.md` now documents the shipped handler rather than an illustrative sketch**, and gains § _The identifier a full-page error cannot be given_: Django's own documentation on the empty `Context`, the two consequences that follow from it, and the `{% extends %}` trap on an error page. The section closes by stating there is no `503.html` and routing to the edge contract.
+- **`.claude/skills/stack-htmx-templates/SKILL.md` gains § _When a swap would show nothing_.** The per-view 200-re-render pattern it already carried is the user-error half and is complete; the other two taxonomy classes need the global listener, and the skill documents the shipped handler because that is what a frontend agent is about to edit.
+- **`code/src/CONTEXT.md` and `code/src/django/CONTEXT.md` stop describing `static/` and `templates/` as empty.** Each tree now names the one file it holds, with a paragraph explaining the narrow exception — each carries a correctness rule rather than a design decision, which is why it ships before the design work exists. `code/src/CONTEXT.md` also adds `mobile/lib/` as the mobile surface's home for non-route modules, and the `core` app's one-liner widens to include the middleware and the command base.
+
+### Fixed
+
+- **The handler snippet the rendering guide documented reproduced the defect it was there to close.** It assigned `document.getElementById("error-region")` straight to `event.detail.target`, which is `null` on any page that has not defined the region — and a swap into `null` fails silently, leaving the user with the unchanged page the handler exists to prevent. The shipped handler creates the region.
 
 ## [2.16.0] - 11/08/2026
 

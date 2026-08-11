@@ -29,7 +29,7 @@ django-htmx, Channels, Celery, Cloudinary, Sentry, and the rest — is
 django/
 ├── apps/                   # Django applications
 │   ├── __init__.py
-│   ├── core/               # shipped: schema bases + service exception trees (no models)
+│   ├── core/               # shipped: schema bases, exception trees, middleware, command base (no models)
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
 ├── config/                 # project configuration package
@@ -37,8 +37,10 @@ django/
 │   ├── urls.py             # Django admin at /control/ only
 │   ├── asgi.py
 │   └── wsgi.py
-├── static/                 # static asset source (empty)
-├── templates/              # project template directory (empty)
+├── static/                 # static asset source — the global HTMX error handler only
+│   └── js/observability.js
+├── templates/              # project template directory — the 500 page only
+│   └── 500.html
 ├── tests/                  # project-level suites (per-app tests live in apps/<app>/tests/)
 │   ├── CONTEXT.md
 │   ├── CLAUDE.md
@@ -66,9 +68,16 @@ django/
 ## What the baseline deliberately omits
 
 No custom user model (`AUTH_USER_MODEL` is Django's `auth.User`), no third-party apps in
-`INSTALLED_APPS`, no third-party middleware, no API layer, no templates or components, and
+`INSTALLED_APPS`, no third-party middleware, no API layer, no base template or components, and
 no domain models or migrations. Adding any of these is a deliberate act, recorded where the
 project's conventions require.
+
+`templates/` and `static/` are **not** empty, and the exception is narrow: each holds the one
+file that carries a correctness rule rather than a design decision — the 500 page Django
+resolves without any application asking it to, and the global HTMX error handler that stops a
+5xx replacing nothing. Both are copy-placeholder until first-time setup. What is still absent on
+that surface, and what each item waits on, is `code/docs/FRONTEND-CODING-PRINCIPLES.md`
+§ _What is not built yet_.
 
 ## Cross-references
 

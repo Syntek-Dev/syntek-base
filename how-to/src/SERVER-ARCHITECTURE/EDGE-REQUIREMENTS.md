@@ -286,6 +286,30 @@ frontend upstream to size or route.
 
 ---
 
+## 14. The 503 page — the only error page Django cannot serve
+
+- **Source:** `code/docs/NEGATIVE-SPACE.md` § _The error taxonomy_ — an environment error is a
+  `503` with `Retry-After` where the wait is known. App side: `code/src/django/templates/500.html`
+  covers the programmer class, and **there is deliberately no `503.html` beside it**.
+- **Why this entry exists at all.** Django defines a handler and a template name for 400, 403,
+  404 and 500, and **none for 503** — there is nothing to override. More decisively, the 503 that
+  matters is returned precisely when the application process is **not answering**: a deploy, a
+  crash, a restart, an exhausted worker pool. A Django template cannot be rendered by a Django
+  process that is down, so this page can only be a **static file the edge holds**. It is the one
+  point in the error taxonomy where the build side genuinely cannot own its own expression.
+- **Current status:** unimplemented on both sides, and honestly so. The app raises nothing that
+  would produce a rendered 503 today — `DependencyUnavailable` exists in
+  `apps/core/services/errors.py` and no outbound adapter raises it yet, because there is no
+  outbound adapter. **Trigger:** the first provider integration; that story ships the app-side
+  renderer, and this entry is what the edge owes regardless of it.
+- **Deploy repo must implement:** a static `503` document served by Nginx for `error_page 502
+503 504` and during a maintenance window, from disk rather than by proxying. It must set
+  `Retry-After` where the window is known, carry `X-Request-ID` if one was generated at the edge
+  (entry 13), and **never** be cached by Cloudflare. Keep it plain HTML with no asset references:
+  the static tree is served by the same upstream that is failing.
+
+---
+
 ## Post-deploy verification — the contract's acceptance checks
 
 After any deploy, verify the contract end-to-end **through the tunnel** (the public
@@ -319,3 +343,4 @@ path — service-level `systemctl`/`docker` checks are the deploy repo's own wor
 | 11  | Cache bust + worker/beat        | Cache bust only — Celery unwired  | Restart-after-migrate; worker/beat once wired    |
 | 12  | Outbound mail relay             | SMTP env contract                 | SMTP path + SPF/DKIM/DMARC DNS + creds           |
 | 13  | Request correlation ID          | Reads inbound, mints a fallback   | Set `X-Request-ID`, log it, never strip it       |
+| 14  | The 503 page                    | None — Django cannot serve it     | Static `503` doc, `Retry-After`, never cached    |

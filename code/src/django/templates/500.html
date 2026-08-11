@@ -1,0 +1,44 @@
+{% load core %}{# ============================================================================
+  The 500 page — a programmer error, per code/docs/NEGATIVE-SPACE.md.
+
+  THREE THINGS THIS FILE MUST NOT DO, each for a reason that is not obvious:
+
+  1. It must not {% extends %} a base template. Django renders this page with an EMPTY
+     Context and no request — its own documentation says the default 500 view "passes no
+     variables to the 500.html template and is rendered with an empty Context to lessen the
+     chance of additional errors". A base that reads `request` therefore renders blanks, and
+     a blank where a value should be is the exact silent failure this doctrine exists to
+     close. The same fact rules out a context processor.
+
+  2. It must not carry CSS. Component CSS consumes var(--token) only, and the token layer
+     is a stylesheet this page cannot be sure is being served — a 500 is where static
+     delivery is as likely to be broken as anything else. Plain semantic HTML always renders.
+
+  3. It must not say what went wrong. The body is generic; the internals go to the log and
+     the error tracker (code/docs/NEGATIVE-SPACE.md § The error taxonomy).
+
+  THE COPY BELOW IS A PLACEHOLDER, exactly like the worked row in how-to/src/INVARIANTS.md.
+  Rewrite it at first-time setup against how-to/src/BRAND-VOICE.md § 3 — the template may not
+  invent a voice (§ 2, "Use the voice — do not invent it"). Replace the `lang` attribute at
+  the same time if this project is not en-GB.
+============================================================================ #}<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Something went wrong</title>
+  </head>
+  <body>
+    <main>
+      <h1>Something went wrong</h1>
+      <p>This is a fault at our end, not something you did. It has been recorded.</p>
+      {% request_id as rid %}{% if rid %}
+      <p>
+        If you get in touch, quoting this reference finds exactly what happened:
+        <code>{{ rid }}</code>
+      </p>
+      {% endif %}
+    </main>
+  </body>
+</html>

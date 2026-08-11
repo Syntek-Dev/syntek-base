@@ -1,11 +1,120 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.16.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.17.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.17.0 — 11/08/2026
+
+**Status:** Minor — three new files in the Django project, their governance pairs, and one new
+entry in the edge contract. Every generated project gains them at baseline; nothing existing
+changes behaviour, because nothing loads them until the first page does.
+
+### The error surfaces come first, not last
+
+A project generated from this template has no routes, no base template and no stylesheet. What it
+does have, from the moment the first view raises, is failure — and until now every one of those
+failures rendered Django's own debug-off default, or in the HTMX case rendered nothing whatsoever.
+
+Three surfaces close that, and they ship together because they are one mechanism rather than three
+files that happen to be about errors. The 500 page needs a correlation identifier; the identifier
+cannot arrive by the obvious route; and the HTMX handler that shows a failure at all cannot assume
+the page it is running on has anywhere to put one.
+
+### The page that is rendered with nothing
+
+`code/src/django/templates/500.html` needs no view and no URL entry — Django resolves it by name,
+which is why it works on a project with no routes.
+
+Django's own documentation settles how it is rendered: the default 500 view "passes no variables to
+the `500.html` template and is rendered with an empty `Context` to lessen the chance of additional
+errors". Two things follow, and both are easy to get wrong because the happy path never exercises
+them.
+
+A context processor cannot reach the page, because context processors run only for a
+`RequestContext` and there is no request. And `{% extends %}` is a trap rather than a convenience:
+a base template that reads `request` for navigation, the user or a CSRF token renders **blanks**
+rather than failing — the exact silent failure `code/docs/NEGATIVE-SPACE.md` exists to close, on
+the one page a user only reaches when something has already gone wrong. So the page extends
+nothing, carries no CSS, and says nothing about what broke.
+
+The identifier therefore arrives through a simple tag. `{% request_id %}`, in the new
+`code/src/django/apps/core/templatetags/core.py`, takes its value from the `ContextVar` in
+`code/src/django/apps/core/middleware.py` rather than from the context it is rendered with. One
+reader, every rendering path: the 500 page, an HTMX error partial, and any ordinary view. Outside a
+request it returns an empty string and the template shows nothing, which is the right answer — a
+stale identifier from an unrelated request finds the wrong tracker event, and is worse than none.
+
+### A swap that shows nothing, and the two corrections
+
+HTMX swaps on 2xx only. Without a handler, a 500 replaces nothing at all: the indicator stops, the
+page is unchanged, and the user re-clicks the button that just failed.
+`code/src/django/static/js/observability.js` is the fix — one `htmx:beforeSwap` /
+`htmx:sendError` listener pair on `document.body`, global rather than per element, because the view
+nobody expected to fail is the one that will.
+
+Two departures from the obvious version, both of which the guide previously got wrong in print:
+
+- **The region is created, never assumed.** `document.getElementById("error-region")` is `null` on
+  any page that has not defined one, and a swap into `null` fails silently — reproducing precisely
+  the defect the handler exists to close. It is created with `role="alert"`, because the user has
+  just acted and nothing else on the page has changed.
+- **A 5xx from the edge is not a fragment.** The application returns a rendered partial; Nginx
+  returning 502 or 504 returns a complete HTML document, and swapping one into a `div` nests a page
+  inside a page. Neither the status code nor the content type separates them. The doctype does.
+
+htmx's own `isError` flag is left alone on purpose. Clearing it would suppress the console error,
+and a handler that makes a failure quieter while claiming to make it visible is worse than no
+handler.
+
+### Two directories that were empty on purpose, and are not any more
+
+`static/` and `templates/` each held a `.gitkeep` and nothing else, because everything that
+normally lives there — the base template, the token stylesheet, the components — depends on design
+work a generated project has not done yet.
+
+That reasoning still holds, and these three files are the narrow exception to it: each carries a
+correctness rule rather than a design decision, so none of them is waiting on the visual direction
+or the brand voice. Both trees now have a `CONTEXT.md` / `CLAUDE.md` pair saying so, along with
+what is deliberately absent: no client-side build, no `css/` token layer, no vendored HTMX or
+Alpine, and no `400/403/404.html`, because Django's defaults are adequate until there is a base
+template to inherit from.
+
+### The 503 is the edge's, and that is decided here
+
+`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` gains entry 14 in the same change as the 500
+page, because the boundary is only legible when both sides are written at once.
+
+Django defines a handler and a template name for 400, 403, 404 and 500, and none for 503 — there is
+nothing to override. The decisive argument is not that one, though: a 503 is returned exactly when
+the application process is **not answering**. A deploy, a crash, a restart, an exhausted worker
+pool. A Django template cannot be rendered by a Django process that is down, so this page can only
+ever be a static file the edge holds. It is the one point in the error taxonomy where the build side
+genuinely cannot express its own class, and the entry records what the deploy repository owes:
+served from disk for `error_page 502 503 504`, `Retry-After` where the window is known,
+`X-Request-ID` if the edge minted one, never cached, and no asset references — the static tree is
+served by the upstream that is failing.
+
+### What is not built yet, written down
+
+`code/docs/FRONTEND-CODING-PRINCIPLES.md` gains a _What is not built yet_ section, the web peer of
+the one `code/docs/MOBILE-CODING-PRINCIPLES.md` already carried, and for the same reason: an absence
+nobody wrote down is indistinguishable from an oversight, and gets rebuilt slightly differently by
+whoever notices it next.
+
+The base template, the `#error-region` div, the HTMX error partial, the `<script>` tag that would
+load the handler, and the token stylesheet — each listed with the reason it waits, and
+`code/src/scripts/development/new-django-view.sh` already refuses to run without the first of them,
+which is what makes it the row that unblocks the rest.
+
+One consequence is worth knowing before you read a green run as evidence. The `htmx-handler-absent`
+clause in `code/src/scripts/audits/negative-space.sh` keys on a template using `hx-`, so it is a
+no-op in a repository with no templates using it. The handler is shipped and unproven by that gate;
+ruff, ESLint and Prettier are what hold it today, and the first HTMX page is what switches the
+clause on.
 
 ## v2.16.0 — 11/08/2026
 

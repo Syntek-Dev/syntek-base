@@ -150,25 +150,76 @@ exists to prevent. Split it by error class:
 | **Programmer error**  | 500                           | a real error region, swapped in by the global handler     |
 | **Environment error** | 503                           | the same region, worded as retryable                      |
 
-The user-error leg is per view. The other two are **one global listener, never per element** —
-the view nobody expected to fail is the one that will:
+The user-error leg is per view. The other two are **one global listener, never per element**
+**[gate: fail]** — the view nobody expected to fail is the one that will. The shipped handler is
+`code/src/django/static/js/observability.js`, and it makes two corrections to the obvious
+version that are worth knowing before you edit it:
 
 ```javascript
-// code/src/django/static/js/observability.js
 document.body.addEventListener("htmx:beforeSwap", (event) => {
-  if (event.detail.xhr.status >= 500) {
-    event.detail.shouldSwap = true;
-    event.detail.target = document.getElementById("error-region");
+  if (event.detail.xhr.status < 500) return;
+  const region = errorRegion(); // creates #error-region when the page defines none
+  event.detail.shouldSwap = true;
+  event.detail.target = region;
+  if (!isFragment(event.detail.serverResponse ?? "")) {
+    region.textContent = FALLBACK_MESSAGE;
+    event.detail.shouldSwap = false;
   }
 });
 ```
 
+- **The region is created, never assumed.** `document.getElementById("error-region")` is `null`
+  on any page that has not defined one, and a swap into `null` fails silently — reproducing the
+  exact defect the handler exists to close.
+- **A 5xx from the edge is not a fragment.** The application returns a rendered partial; Nginx
+  returning 502 or 504 returns a **complete HTML document**, and swapping one into a `div` nests
+  a page inside a page. The doctype separates the two; neither the status nor the content type
+  does.
+
 `htmx:sendError` needs the same region: a request that never lands produces no response at all,
 so no swap is attempted and nothing above fires.
+
+`audits/negative-space.sh` carries the clause (`htmx-handler-absent`): any template using `hx-`
+implies a `document.body` `htmx:beforeSwap` listener somewhere under `static/`. It keys on the
+listener, **not** on this file's path, so moving the script is not a failure — and its honest
+limit is that it proves a listener exists, never that it handles 500 and 503 correctly.
 
 The server returns a **rendered partial** with the real 5xx status, never an empty body — the
 listener decides _where_ it lands, not _what_ it says. That partial prints the `X-Request-ID`
 value, so a user reporting "it broke" can quote the one identifier that finds the tracker event.
+
+### The identifier a full-page error cannot be given
+
+The partial above is rendered by a view, so it has a request and a context. **`500.html` has
+neither.** Django's own documentation settles it: the default 500 view "passes no variables to
+the `500.html` template and is rendered with an empty `Context` to lessen the chance of
+additional errors". Two consequences, and both are easy to get wrong precisely because the
+happy path never exercises them:
+
+- **A context processor cannot reach it.** Context processors run only for a `RequestContext`,
+  and there is no request. So the mechanism that would obviously carry the identifier is the one
+  mechanism ruled out.
+- **`{% extends %}` is a trap, not a convenience.** A base template that reads `request` —
+  for navigation, the user, a CSRF token — renders **blanks** rather than failing, which is the
+  silent failure [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) exists to prevent, on the one
+  page a user reaches only when something has already broken.
+
+The identifier therefore arrives through a **simple tag**, which takes its value from the
+`ContextVar` in `apps.core.middleware` rather than from the context it is rendered with:
+
+```django
+{% load core %}
+{% request_id as rid %}{% if rid %}<code>{{ rid }}</code>{% endif %}
+```
+
+One reader, every path — the 500 page, the error partial, and any ordinary view. The `{% if %}`
+is the rule from `MOBILE-CODING-PRINCIPLES.md` § 4 applied here: show nothing rather than an
+identifier that resolves to the wrong event. `apps/core/templatetags/CONTEXT.md` carries the
+table of which paths have a context and which do not.
+
+**There is no `503.html`.** Django defines no 503 handler and no template name for one, and the
+503 that matters is served when Django is not answering at all — which only the edge can do
+(`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 14).
 
 ### A template variable the view never passed
 

@@ -16,11 +16,12 @@ code/src/
 ├── django/                   ← the Django project — at baseline, no application code yet
 │   ├── apps/                 ← Django apps — `core` ships; domain modules are added per project
 │   ├── config/               ← settings/, urls.py, asgi.py, wsgi.py
-│   ├── static/               ← static asset source (empty)
-│   ├── templates/            ← project template directory (empty)
+│   ├── static/               ← static asset source (the global HTMX error handler only)
+│   ├── templates/            ← project template directory (the 500 page only)
 │   └── CONTEXT.md            ← stack, layout, entry points
 ├── mobile/                   ← MOBILE-ONLY — the Expo React Native app (absent unless opted in)
 │   ├── app/                  ← expo-router routes (routes only — tests live in __tests__/)
+│   ├── lib/                  ← non-route modules — the correctness doctrine's mobile half
 │   ├── __tests__/            ← jest-expo + React Native Testing Library
 │   └── CONTEXT.md            ← the mobile surface: layout, scripts, versioning
 ├── rust/                     ← RUST-ONLY — the Cargo workspace (absent unless opted in)

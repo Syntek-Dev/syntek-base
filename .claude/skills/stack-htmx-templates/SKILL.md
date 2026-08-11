@@ -125,6 +125,33 @@ Chrome (nav/footer/CTA) is injected by the `marketing_chrome` context processor 
 
 ---
 
+## When a swap would show nothing
+
+The pattern above is the **user-error** half, and it is complete. The other two classes need a
+different mechanism, because **HTMX swaps on 2xx only** — on a 500 the indicator stops, nothing
+is replaced, and the page a user is looking at silently lies about what happened.
+
+- **One global `htmx:beforeSwap` listener handles 5xx, never a per-element handler** — the view
+  nobody expected to fail is the one that will. `htmx:sendError` shares the region: a request
+  that never lands attempts no swap, so nothing else fires. It ships in
+  `code/src/django/static/js/observability.js`, and
+  `code/src/scripts/audits/negative-space.sh` fails a template using `hx-` with no handler
+  present.
+- **The handler creates its target region rather than assuming one.** A swap into a `null`
+  element fails silently, which reproduces the exact defect the handler exists to close.
+- **A complete HTML document is never swapped into a fragment.** An application 5xx is a
+  rendered partial, but an edge 502 or 504 is a whole page — neither the status nor the content
+  type separates them, so the handler tests the doctype.
+- **`{% request_id %}` puts the correlation identifier where a user can quote it.** Django
+  renders `500.html` with an **empty `Context` and no request**, so a context processor cannot
+  reach that page and `{% extends %}` on a request-reading base renders blanks rather than
+  failing. The tag reads a `ContextVar`, so it works in every rendering path.
+
+Full text: `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` § _An error the user never sees_,
+over the taxonomy in `code/docs/NEGATIVE-SPACE.md`.
+
+---
+
 ## Caching
 
 `cache_marketing(ttl)` (in `urls.py`) read-through-caches anonymous GET 200 responses in Valkey,
