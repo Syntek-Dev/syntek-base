@@ -33,7 +33,7 @@ Read before touching any pipeline or deployment file:
 - `code/src/scripts/deployment/CONTEXT.md` + `CLAUDE.md` — planned-script contract and conventions
 - `code/src/scripts/CONTEXT.md` — script grouping, flag/exit-code/`reports/` conventions
 - `code/docs/SECURITY.md` — CORS, secrets, `DEBUG` gating rules
-- `code/docs/LOGGING.md` — Glitchtip / Loki / Prometheus / Grafana wiring for deploy health
+- `code/docs/LOGGING.md` — error-tracking, log-aggregation and metrics wiring for deploy health; the products behind each are per-project (`how-to/src/PLATFORM-PROVIDERS.md`)
 - `how-to/src/SERVER-ARCHITECTURE/` — the app→server contract (worker counts, Valkey memory, body-size, CF/CF-Tunnel) the Compose/deploy must satisfy; `NIXOS-HANDOFF.md` is the consumer boundary
 - `.claude/skills/grill-with-docs/SKILL.md` — open pipeline / deploy design with a grilling interview
 
@@ -75,9 +75,9 @@ authoring — do not invent behaviour the CONTEXT.md does not promise.
 Route through the deployment scaffold, not ad-hoc host commands.
 
 **Grill first.** Before building or reworking a pipeline, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: the target
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%>: the target
 environments, the deploy targets, the secrets and variables each stage needs, the rollback
-strategy, and the health checks that gate promotion. Look facts up rather than ask; the steps
+strategy, and the health checks that gate promotion. The steps
 below are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
 
 1. **Read the target first** — the workflow YAML or Compose file you are changing, plus its
@@ -117,7 +117,7 @@ Invoke these siblings via the Agent tool with the exact `subagent_type`:
 - `qa-tester` — verify the pipeline handles edge cases and failure modes.
 - `security` — add security scanning / secret detection, or audit a deploy path.
 - `backend` — confirm deploy build steps match migration and API requirements.
-- `logging` — wire deploy health signals into Glitchtip / Loki / Prometheus / Grafana.
+- `logging` — wire deploy health signals into the error tracker, log pipeline and metrics scrape.
 - `scale-planner` — when a Compose/worker/memory change should be reconciled into the sizing envelope (SERVER-ARCHITECTURE).
 - `doc-writer` — document a new deployment procedure once the scripts land.
 - `git` — commit the pipeline change on a `us###/…` branch (docs complete first).

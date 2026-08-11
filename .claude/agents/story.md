@@ -63,7 +63,7 @@ For a large, ambiguous epic — bigger than one session can hold — open with `
 ### Phase 1 — Story Creation
 
 ↳ user-story [opus]
-Story design **opens with a grilling pass** — `user-story` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> one question at a time (each with its recommended answer) before writing the story, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
+Story design **opens with a grilling pass** — `user-story` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> before writing the story, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
 Save output to: `project-management/src/02-STORIES/US###.md`
 Use the next available US### number. Story must include: title, role, goal, acceptance criteria, and definition of done.
 

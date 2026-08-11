@@ -145,7 +145,7 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 
 ## Repository State
 
-Current version: **2.4.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **2.5.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

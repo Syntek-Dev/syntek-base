@@ -61,7 +61,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## How to work here
 
-1. **Grill first.** Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts up, don't ask; no action until <%DEVELOPER_NAME%> confirms), grilling across format, data scope, PII columns, expected volume, and who may export before coding — an export leaking data is worse than a delayed one. This is the design-work default (`.claude/CLAUDE.md` §10).
+1. **Grill first.** Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>, grilling across format, data scope, PII columns, expected volume, and who may export before coding — an export leaking data is worse than a delayed one. This is the design-work default (`.claude/CLAUDE.md` §10).
 2. **Locate the app.** Exports live beside the data: `code/src/django/apps/<app>/services/export/` — an orchestrator (`export_service.py`) plus one formatter per format, and Django templates under `templates/exports/pdf/` for PDF.
 3. **Formatter contract.** Each formatter takes rows + an `ExportOptions` dataclass and returns bytes/stream + content-type + content-disposition. The service routes by requested format and streams CSV above the `PERFORMANCE.md` row threshold.
 4. **Gate and audit.** Permission check first; verify ownership of every ID; resolve PII visibility from the caller's permissions; emit the audit log on completion.

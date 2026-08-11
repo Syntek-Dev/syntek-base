@@ -61,8 +61,7 @@ python3 .claude/plugins/pm-tool.py detect # existing config, env vars, sync work
 ## Grill Before Configuring
 
 After `pm-tool.py detect`, open with a grilling pass — load `.claude/skills/grill-with-docs`
-and interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts up,
-don't ask; no action until <%DEVELOPER_NAME%> confirms). Grill across:
+and interview <%DEVELOPER_NAME%>. Grill across:
 
 | Need              | Why                | Default for this repo        |
 | ----------------- | ------------------ | ---------------------------- |

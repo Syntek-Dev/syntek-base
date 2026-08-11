@@ -57,10 +57,9 @@ report — do not stall. Prioritise the critical user journeys the change affect
 ## Analysis Checklist
 
 **Grill first.** Before the hostile pass, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: the exact
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%>: the exact
 scope, the highest-risk surfaces, which acceptance criteria to attack hardest, the
-security/abuse cases in reach, and the edge/error conditions to target. Look facts up
-rather than ask; the checklist below is the agenda. Design-work default (`.claude/CLAUDE.md` §10).
+security/abuse cases in reach, and the edge/error conditions to target. The checklist below is the agenda. Design-work default (`.claude/CLAUDE.md` §10).
 
 Work these against the diff; skip categories the change cannot reach. Prove each finding.
 

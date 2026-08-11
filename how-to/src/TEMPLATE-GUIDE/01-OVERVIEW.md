@@ -84,9 +84,10 @@ gate before its commit phase.
 
 ### 5. Design gets interrogated before it gets built
 
-Substantial work opens with a **grilling pass**: a one-question-at-a-time interview, each question
-carrying a recommended answer, facts looked up rather than asked, no action until you confirm.
-This applies to design, code, tests, QA, refactors and migrations — not just planning.
+Substantial work opens with a **grilling pass**: an interview in rounds, each question carrying a
+recommended answer, facts looked up rather than asked, no action until you confirm. This applies to
+design, code, tests, QA, refactors and migrations — not just planning. The exact shape lives in
+`.claude/skills/grilling/SKILL.md` and nowhere else.
 
 It is the single most opinionated thing in the template, and the one most likely to feel like
 friction on day one. It exists because the expensive failure mode of agentic coding is not bad

@@ -42,8 +42,8 @@ learning/<topic>/
 ## How to teach
 
 1. **Clarify the mission.** Read `learning/<topic>/MISSION.md` if it exists; if it is missing or
-   thin, ask why <%DEVELOPER_NAME%> wants this skill and what "can do it" looks like — one question at a time,
-   each with a recommended answer (the `grilling` posture). Record the goal and the **family**:
+   thin, ask why <%DEVELOPER_NAME%> wants this skill and what "can do it" looks like
+   (the `grilling` posture — that skill owns the shape). Record the goal and the **family**:
    **process/PM** (agile, stories, sprints, plans, ADRs) or **stack/coding** (HTMX, Alpine, vanilla
    CSS, Django, django-ninja, django-components, architecture, security, testing).
    Done when `MISSION.md` states the goal and the family in <%DEVELOPER_NAME%>'s words.
@@ -127,7 +127,7 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 
 ## Cross-references
 
-- `.claude/skills/grilling/SKILL.md` — the one-question-at-a-time posture step 1 borrows.
+- `.claude/skills/grilling/SKILL.md` — the interview posture step 1 borrows; it owns the shape.
 - `.claude/skills/grill-with-docs/SKILL.md` — the glossary + three-test ADR gate (domain-modelling process).
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the domain-modelling reference.
 - `.claude/skills/stack-htmx-templates/SKILL.md` · `.claude/skills/stack-django/SKILL.md` — stack references for coding lessons.

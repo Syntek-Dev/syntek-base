@@ -90,7 +90,7 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ### Phase 1 — Plan
 
 ↳ planner [opus]
-The planning phase **opens with a grilling pass** — `planner` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> one question at a time (each with its recommended answer, facts looked up not asked) before producing the plan, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
+The planning phase **opens with a grilling pass** — `planner` loads `.claude/skills/grill-with-docs` and interviews <%DEVELOPER_NAME%> before producing the plan, inverting the proceed-by-default posture (`.claude/CLAUDE.md` §10).
 Must complete before any implementation phase starts.
 Save to: `project-management/src/16-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`
 

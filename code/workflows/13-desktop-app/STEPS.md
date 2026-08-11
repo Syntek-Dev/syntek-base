@@ -30,7 +30,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ## Step 1 — Grill the screen
 
-Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time,
+Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>,
 against the wireframe rather than a blank page. Resolve:
 
 - The **window structure** — panels, navigation, what is modal and what is not

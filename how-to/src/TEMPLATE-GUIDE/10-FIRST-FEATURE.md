@@ -110,7 +110,7 @@ Use the story orchestrator to write a user story for <what you want>.
 Produces `project-management/src/02-STORIES/US001.md` via
 `project-management/workflows/02-story-creation/`.
 
-The agent opens with a **grilling pass** — one question at a time, each with a recommended
+The agent opens with a **grilling pass** — in rounds, each with a recommended
 answer. Expect to be asked about the specific role, the measurable benefit, the edge cases, and
 the MoSCoW split. Answer properly; everything downstream inherits these decisions.
 

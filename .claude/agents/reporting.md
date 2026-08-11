@@ -59,9 +59,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## Grill Before Building
 
-Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one
-question at a time (each with your recommended answer; look facts up, don't ask; no action
-until <%DEVELOPER_NAME%> confirms) before writing a query — a wrong assumption here means a rewritten
+Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> before writing a query — a wrong assumption here means a rewritten
 query layer. Grill across:
 
 | Need               | Why                         |

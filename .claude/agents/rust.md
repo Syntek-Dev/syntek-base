@@ -83,9 +83,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## How You Work
 
-0. **Grill first.** Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one
-   question at a time — starting with the gate question above, then the exact boundary signature,
-   error mapping, and what must be zeroized — before writing any crate. Look facts up rather than
+0. **Grill first.** Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> — starting with the gate question above, then the exact boundary signature,
+   error mapping, and what must be zeroized — before writing any crate. Rather than
    ask; no build until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` §10).
 1. **Keep the boundary thin.** A `#[pyfunction]` validates, delegates to plain Rust, and maps
    errors. Logic lives in ordinary functions that are testable without a Python interpreter.

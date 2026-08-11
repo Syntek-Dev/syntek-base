@@ -1,17 +1,18 @@
 ---
 name: grill-with-docs
 description: >-
-  Start a stateful grilling session — a relentless, one-question-at-a-time interview that
-  sharpens a design AND records each decision to the repo (plan Open Questions, ADRs,
-  glossary terms, story acceptance criteria) as it resolves. Invoke by typing
-  /grill-with-docs, or as the opening move of architecture, database, API, or story design.
+  Start a stateful grilling session — a relentless interview in frontier rounds that sharpens
+  a design AND records each decision to the repo (plan Open Questions, ADRs, glossary terms,
+  story acceptance criteria) as it resolves. Invoke by typing /grill-with-docs, or as the
+  opening move of architecture, database, API, or story design.
 ---
 
 # Skill: grill-with-docs (<%PROJECT_NAME%>)
 
 Run a grilling session that leaves a paper trail. Load `.claude/skills/grilling/SKILL.md`
-and follow it, and as each decision resolves, record it in the right **existing** artifact —
-never invent a new format:
+and follow it — **it owns the round shape, the question format and the recommendation rule;
+do not restate them here.** As each decision resolves, record it in the right **existing**
+artefact — never invent a new format:
 
 | When a decision…                                                        | Record it in                                                                                                         |
 | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |

@@ -39,10 +39,9 @@ document-specific question set defined in its own agent file (data scope, contro
 processor details, retention, transfers, and so on). Keep that question content as written —
 this skill sets only the **method**.
 
-Conduct the clarifying questions as a **grilling pass** — ask one question at a time, each
-with your recommended answer, looking up any discoverable facts yourself and putting only
-genuine decisions to the user; do not dump the whole list at once. The user can also invoke
-it directly as `/grill-me`. See `.claude/skills/grilling/SKILL.md`.
+Conduct the clarifying questions as a **grilling pass** — load
+`.claude/skills/grilling/SKILL.md`, which owns the round shape, the question format and the
+recommendation rule. The user can also invoke it directly as `/grill-me`.
 
 Use the **stateless** grilling (the `grilling` engine / `/grill-me`), **not**
 `/grill-with-docs` — legal drafting produces a document for professional review, not a plan,

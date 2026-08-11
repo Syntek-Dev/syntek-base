@@ -79,10 +79,9 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ### Phase 1 — Reproduce & Isolate
 
 **Grill first (before delegating).** This orchestrator opens with a grilling pass — load
-`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (the exact
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> (the exact
 expected-vs-actual behaviour, the precise reproduction steps, and the intended scope of the
-fix), each with a recommended answer, looking facts up rather than asking, no action until
-<%DEVELOPER_NAME%> confirms. An obvious one-line fix skips it. The confirmed answers become the `debugger`
+fix). An obvious one-line fix skips it. The confirmed answers become the `debugger`
 brief below. Design-work default (`.claude/CLAUDE.md` §10).
 
 ↳ debugger [opus]

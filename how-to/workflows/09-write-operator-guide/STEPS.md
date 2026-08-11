@@ -30,8 +30,7 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 
 > **↳ New agent:** `operator-docs` · **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and settle,
-one question at a time —
+**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and settle —
 
 1. **Who is the reader, and what has just gone wrong for them?** An operator guide is read
    under time pressure by someone with a problem, not browsed.
@@ -112,8 +111,10 @@ Fix what you find, in the guide rather than in your shell:
   `how-to/REFERENCES.md`; a guide nothing links to will not be found.
 - Cross-reference the workflows and guides that should route to it, and check the reverse
   direction resolves too.
-- Verify length: `bash code/src/scripts/audits/cloc.sh`. Over 300 lines in `how-to/docs/`
-  means split it and leave a thin index; `how-to/src/` is exempt.
+- Verify length: `bash code/src/scripts/audits/docs-length.sh`. Over 300 code lines in
+  `how-to/docs/` means split it and leave a thin index; `how-to/src/` is exempt, bar its
+  `CONTEXT.md`/`CLAUDE.md` pair. (`audits/cloc.sh` cannot answer this — it enforces the
+  750/800 limit on source files and excludes Markdown.)
 - Run the Markdown gates — `pnpm exec markdownlint-cli2` and Prettier — via
   workflow `06-quality-gates`.
 - Update `**Last Updated**` on every `CONTEXT.md` you touched, and refresh the

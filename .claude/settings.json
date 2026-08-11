@@ -86,6 +86,7 @@
     ],
     "deny": [
       "Edit(project-management/export/clickup/US*-CLIENT.md)",
+      "AskUserQuestion",
       "EnterPlanMode",
       "ExitPlanMode",
       "ReportFindings",

@@ -66,7 +66,7 @@ Always review the generated migration file before applying — confirm it matche
 ### Schema design
 
 - **Grill first.** Schema design opens with a grilling pass — load
-  `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (entities and
+  `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> (entities and
   their real meaning, relationships and cardinality, ownership/tenancy for RLS, constraints
   and invariants, PII fields and lawful basis, retention, expected query shapes) before
   proposing any DDL. Record resolved terminology in the nearest `CONTEXT.md` glossary and

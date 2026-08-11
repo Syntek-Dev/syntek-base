@@ -2,11 +2,12 @@
 name: wayfinder
 description: >-
   Chart a large, ambiguous body of work — bigger than one session can hold — into a shared
-  markdown map of open decisions, then resolve them one at a time across sessions. Invoke by
+  markdown map of open decisions, then resolve them in sensibly grouped batches across sessions.
+  Invoke by
   typing /wayfinder suggest to mine GAPS.md and DEFERRED.md for candidate features,
   /wayfinder chart <epic> to map an epic's decision frontier, /wayfinder resolve <map>
-  to settle its next open decision, or when a body of work is too big to hold in a single
-  grilling pass.
+  to settle its next batch of related decisions, or when a body of work is too big to hold in
+  a single grilling pass.
 ---
 
 # Skill: wayfinder (<%PROJECT_SLUG%>)
@@ -14,11 +15,12 @@ description: >-
 Wayfinder takes on work too big to hold in one head — a whole epic, a cross-cutting migration,
 an ambiguous programme — and turns the fog into a navigable **map** of open decisions resolved
 incrementally across sessions. Instead of charging at an unclear **destination**, it charts the
-route first: surface the decisions, order them, then settle one at a time until the way is clear.
+route first: surface the decisions, order them, then settle them in related batches until the way is
+clear.
 
 **Scope, versus grilling.** Grilling sharpens **one** design surface in a single sitting.
-Wayfinder maps a whole epic's decision **frontier** and dispatches each **decision node** to
-grilling to settle. Wayfinder is the cartographer; grilling is the per-node engine. Reach for
+Wayfinder maps a whole epic's decision **frontier** and dispatches **batches of related decision
+nodes** to grilling to settle. Wayfinder is the cartographer; grilling is the per-node engine. Reach for
 wayfinder when the work spans several stories and cannot be resolved in one grilling pass; reach
 straight for `/grill-with-docs` when it is a single surface.
 
@@ -102,19 +104,38 @@ mode — no map, and no edit to the register.
 1. **Load the map.** Read `MAP-<FEATURE>.md` for the low-resolution view; pull the linked ADRs,
    plans, and closed nodes only as you need them. _Done when the Destination and current Frontier
    are in view._
-2. **Take the next node.** Pick the node <%DEVELOPER_NAME%> names, or the first unblocked Frontier node, and
-   confirm it is genuinely unblocked. **Done when one Frontier node is chosen and confirmed takeable.**
-3. **Settle it by its type.** A **grilling** node opens `/grill-with-docs` (one surface, one
-   sitting); a **research** node is looked up; a **tracer** builds a rough spike to raise fidelity
-   on a foggy area; a **task** does the manual unblocking work. _Done when the node's decision is
-   made and confirmed._
-4. **Graduate the outcome.** Record the settled decision in its real home via the graduation table
-   — an ADR, a story-plus-plan, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term — never
-   leaving the answer only on the map. _Done when the outcome lives in the correct artefact and the
-   map's Resolved-decisions entry links to it._
-5. **Redraw the frontier.** Move the node from Frontier to Resolved decisions; graduate any Fog-of-war
-   items the outcome sharpened into new nodes; re-wire the blocking edges. _Done when the Frontier
-   reflects the new takeable edge and no resolved node remains open on it._
+2. **Take the next batch, not the next node.** Start from <%DEVELOPER_NAME%>'s pick, or the unblocked
+   Frontier, and gather the nodes that genuinely belong together into **one batch** — settled in a
+   single sitting because deciding them apart would mean deciding them twice.
+
+   Group by, in order of strength:
+   - **Shared subject** — the same surface, schema, or document (`N-023`/`N-024`/`N-025` were one
+     question about three guides, and were rightly grilled once).
+   - **Mutual dependence** — B's sensible answer changes with A's, so answering A alone forces a
+     revisit.
+   - **Shared evidence** — the same lookup, measurement, or file read settles all of them.
+
+   **Split** where a node has its own blockers still open, is a different type (below), or would
+   push the batch past what one sitting can hold honestly. **Order** batches by what unblocks the
+   most downstream nodes; within a batch, parents before dependants.
+   _Done when the batch is named, every member confirmed unblocked, and the reason they belong
+   together is stated in one line._
+
+3. **Settle the batch by type.** **Grilling** nodes go to `/grill-with-docs` as **one pass** — the
+   skill's frontier rounds are exactly this shape one level down, so a batch of related nodes
+   becomes the first round rather than N sequential interviews. **Research** nodes are looked up
+   (dispatch them in parallel); a **tracer** builds a rough spike to raise fidelity on a foggy area;
+   a **task** does the manual unblocking work. Mixed-type batches run their research legs first, so
+   the grilling round opens with the facts already in hand.
+   _Done when every node in the batch has a decision, made and confirmed._
+4. **Graduate each outcome.** Record every settled decision in its real home via the graduation
+   table — an ADR, a story-plus-plan, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term —
+   never leaving an answer only on the map. A batch settled together may still graduate to
+   different artefacts. _Done when each outcome lives in the correct artefact and every
+   Resolved-decisions entry links to it._
+5. **Redraw the frontier once.** Move the whole batch from Frontier to Resolved decisions; graduate
+   any Fog-of-war items the outcomes sharpened into new nodes; re-wire the blocking edges. _Done when
+   the Frontier reflects the new takeable edge and no resolved node remains open on it._
 
 ## Reference
 

@@ -33,7 +33,7 @@ function to an existing crate with no new crate in the tree.
 
 ## Step 1 — Grill the design, starting at the gate
 
-Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time.
+Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>.
 The **first** question is the workflow's gate, and a wrong answer here wastes everything after it:
 
 > Does this need to be Rust at all — a guarantee Python cannot make, or a measured hot path?

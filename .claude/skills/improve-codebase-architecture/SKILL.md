@@ -10,6 +10,11 @@ description: >-
 
 # Improve Codebase Architecture
 
+> **Adapted from [`mattpocock/skills`](https://github.com/mattpocock/skills)** (MIT, © 2026 Matt
+> Pocock) — `skills/engineering/improve-codebase-architecture/SKILL.md`. Required notice:
+> `THIRD-PARTY-NOTICES.md`. This is the only skill here adapted rather than independently authored;
+> the same-named siblings (`grilling`, `wayfinder`, `codebase-design`, …) are our own.
+
 Surface architectural friction and propose **deepening opportunities** — refactors that turn shallow
 modules into deep ones. The aim is testability and AI-navigability.
 

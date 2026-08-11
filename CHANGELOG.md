@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.4.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.5.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.5.0] - 11/08/2026
+
+### Changed
+
+- **Grilling asks in frontier rounds, not one question per message.** The **frontier** is every question whose prerequisites are already settled. All of it goes into a single numbered message; the agent then stops and waits. The answers settle decisions, which pushes the frontier outward and unblocks questions that were previously unanswerable, and the next round is recomputed from there. The old mechanic made a ten-decision design cost ten exchanges, each carrying the full re-orientation overhead, and it is now named as an explicit anti-pattern along with its opposite — front-loading questions whose answers would only be guesses.
+- **`.claude/skills/grilling/SKILL.md` owns the interview's shape, and nothing else restates it.** The round mechanics, the exact question format, and the recommendation rule live in that one file. Every agent, workflow and skill that opens a grilling pass now names **what** must be settled and routes to the skill for **how**. This is the fix for a specific failure: the mechanic was restated across dozens of files, so changing the skill alone would have left every one of them contradicting it.
+- **The question format is fixed and stated once.** Numbered, titled, brief options, and an explicit `➡️ Claude recommends N` with its reason in one line. Always recommend, always justify, and never soften the recommendation because the answer leaned the other way — sycophancy is called out in the skill as a failure mode, not a courtesy.
+- **A lookup in flight never blocks a round.** The rule is now explicit: treat it exactly as an unanswerable question — hold it for the next round and ask the rest immediately.
+- **`.claude/CLAUDE.md` §10 no longer describes the interview.** It states that substantial work in every layer opens with a grilling pass, that this supersedes every static _Clarify Before Planning_ / _Required Information_ / _Clarifying questions_ checklist project-wide, and routes to the skill. A restatement drifts the moment the skill changes.
+
+### Added
+
+- **`AskUserQuestion` is denied in `.claude/settings.json`.** Questions are asked in the chat as prose, so an answer can be a number, a counter-proposal, or a redirect in the reader's own words — none of which a multiple-choice widget accepts. The deny entry removes the widget only: the _take no action until confirmed_ gate comes from the grilling rule, not from the tool being absent.
+- **Two project-memory entries recording both decisions** and, more importantly, the standing rule they produced: route for the mechanic, never restate it.
+
+### Fixed
+
+- **Agents and workflows that promised an interview the skill no longer runs.** Fourteen agents, five workflow `STEPS.md` files, seven skills and two template-guide pages each described the one-question-at-a-time mechanic in their own words; all now route to the skill instead.
 
 ## [2.4.0] - 11/08/2026
 

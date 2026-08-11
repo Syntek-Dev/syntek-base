@@ -180,8 +180,7 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ## Workflow
 
 Threat-model / hardening design **opens with a grilling pass** — load
-`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time (each with your
-recommended answer; look facts up, don't ask; no action until <%DEVELOPER_NAME%> confirms) across assets,
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> across assets,
 trust boundaries, roles, the STRIDE surface, and abuse cases before the audit/hardening plan.
 This inverts the proceed-by-default posture (`.claude/CLAUDE.md` §10); record hard-to-reverse
 calls as an ADR.

@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 ## Stack
 
 Backend: Django 6 + Django Ninja + PostgreSQL 18 (+ PgBouncer) | Async: ASGI (gunicorn + uvicorn), chat SSE (Channels-free)
-Runtime: Celery worker + beat · Valkey 8 (broker + cache) · SeaweedFS (S3) | Deploy: Hetzner (NixOS) · Nginx :8081 · Cloudflare + CF Tunnel
+Runtime: Celery worker + beat (declared, not wired) · Valkey 8 (broker + cache) · SeaweedFS (S3, declared, not wired) | Deploy: Hetzner (NixOS) · Nginx :8081 · Cloudflare + CF Tunnel
 Scripts: `code/src/scripts/**/*.sh` | Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>
 
 ## Remit
@@ -40,8 +40,7 @@ Read before planning:
 
 Skills: `.claude/skills/scale-planning/SKILL.md` (the procedure you drive),
 `.claude/skills/wayfinder/SKILL.md` (chart/resolve the epic map),
-`.claude/skills/grill-with-docs/SKILL.md` (open every sizing/readiness node one question at a
-time), `.claude/skills/codebase-design/SKILL.md` (depth/seam vocabulary for the readiness audit),
+`.claude/skills/grill-with-docs/SKILL.md` (open every sizing/readiness node), `.claude/skills/codebase-design/SKILL.md` (depth/seam vocabulary for the readiness audit),
 `.claude/skills/domain-modelling/SKILL.md` (record a new term in the nearest `CONTEXT.md`).
 
 Before Grep/Glob/Read for impact analysis, run the `code-review-graph` **explore playbook**
@@ -56,9 +55,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## Grill Before Planning
 
-Scale planning **opens with a grilling pass** — load `.claude/skills/grill-with-docs` and run it
-one question at a time via `AskUserQuestion`, each with your recommended answer, facts looked up
-not asked, no action until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` §10). Grill across:
+Scale planning **opens with a grilling pass** — load `.claude/skills/grill-with-docs` and run it (`.claude/CLAUDE.md` §10). Grill across:
 
 - **Target trajectory** — the per-surface growth curve (marketing peak req/s · portal peak
   concurrent SSE · admin seats) across launch / 6-month / 2-year. Never one flat number; never a

@@ -72,7 +72,7 @@ hardcoded `"test@test.com"`). Structure with parametrize and markers so the suit
 runnable as it grows.
 
 **Agree the seams first — grill first** (`.claude/CLAUDE.md` §10): load
-`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time about which seams and
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> about which seams and
 behaviours to test — the service boundary, Ninja endpoint, or component contract on the story's critical
 path — before writing any test, then confirm that list with <%DEVELOPER_NAME%>. Test those seams, not every
 reachable edge case. Two rules hold on every assertion: the expected value comes from an **independent source of

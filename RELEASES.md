@@ -1,11 +1,62 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.4.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.5.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.5.0 — 11/08/2026
+
+**Status:** Minor — changes how the agents interview you. Nothing about the stack, the scaffold or
+the generated project moves.
+
+### Ten decisions used to cost ten exchanges
+
+Grilling is this template's clarification mechanism: before an agent writes a plan, a schema, an
+API contract or a story, it interrogates you until the design is sharp enough to implement without
+further questions. That much is unchanged and is still the opening move for all substantial work.
+
+What changed is the pacing. The rule was **one question at a time**, and it was expensive in a way
+that is obvious in hindsight — a ten-decision design took ten round trips, each one paying the full
+cost of re-orientation for a single answer.
+
+### Frontier rounds
+
+The **frontier** is every question whose prerequisites are already settled — the ones that can be
+answered right now without guessing.
+
+The agent asks the whole frontier in one numbered message, then stops and waits. Your answers
+settle those decisions, which unblocks questions that could not sensibly have been asked yet. The
+agent recomputes the frontier and asks the next round. It stops when the frontier is empty.
+
+Both failure modes are now named. **Trickling** is the old behaviour: one question per message when
+five were answerable. **Front-loading** is the overcorrection: asking everything at once, including
+the questions whose answers depend on this round and would therefore be guesses.
+
+### Every question carries a recommendation
+
+The format is fixed: numbered, titled, brief options, and an explicit `➡️ Claude recommends 2` with
+the reason in one line. Always recommend, always justify — and never soften the recommendation
+because you leaned the other way. Sycophancy is listed in the skill as a failure mode rather than a
+courtesy.
+
+Questions are asked as **prose in the chat**, and the `AskUserQuestion` tool is now denied outright.
+A multiple-choice widget accepts a choice; it does not accept "2, but only for the admin surface",
+which is what most real answers look like. The deny entry removes the widget and nothing else — the
+"take no action until confirmed" gate comes from the grilling rule itself.
+
+### The part that mattered more than the rule
+
+Dozens of files described the one-question-at-a-time mechanic in their own words rather than
+routing to the skill that owns it. Changing the skill alone would have left every one of them
+contradicting it.
+
+So the standing rule is now the shape, not the sentence: an agent, workflow or skill opening a
+grilling pass names **what** must be settled and routes to `.claude/skills/grilling/SKILL.md` for
+**how** — never the format, the round shape, or the recommendation rule. That is the only way a
+change to the interview reaches the whole system at once.
 
 ## v2.4.0 — 11/08/2026
 
