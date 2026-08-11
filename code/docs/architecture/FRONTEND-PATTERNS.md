@@ -9,7 +9,8 @@ model: fable
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** opus — Frontend state, routing, project structure, SEO and JSON-LD patterns
+**Claude Model:** opus — Frontend state, routing, and project structure
+(discoverability moved to [`../DISCOVERABILITY.md`](../DISCOVERABILITY.md))
 
 ---
 
@@ -152,119 +153,22 @@ code/src/
 
 ---
 
-## SEO Metadata Pattern (Django)
+## Discoverability — moved
 
-All public-facing pages set metadata through the `build_seo()` helper and render it via the
-`_seo_head.html` partial included in the base template `<head>`. Never hand-write `<meta>` tags
-in a page template.
+The SEO metadata pattern (`build_seo()`, `_seo_head.html`), the JSON-LD builders, and the static
+`.well-known` files were documented here until they outgrew a guide named for state and routing.
+They now live in their own family:
 
-### Rules
+| Was here                        | Now                                                                                                                   |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| SEO Metadata Pattern (Django)   | [`../discoverability/WEB-METADATA.md`](../discoverability/WEB-METADATA.md)                                            |
+| JSON-LD Structured Data Pattern | [`../discoverability/STRUCTURED-DATA.md`](../discoverability/STRUCTURED-DATA.md)                                      |
+| Static `.well-known` Files      | [`../discoverability/ROOT-SURFACE.md`](../discoverability/ROOT-SURFACE.md) § 2                                        |
+| _(was in the `seo` agent only)_ | `robots.txt` / sitemaps / `llms.txt` → [`../discoverability/ROOT-SURFACE.md`](../discoverability/ROOT-SURFACE.md) § 1 |
 
-- **`build_seo(opts)`** is the only authorised way to produce the SEO context. It caps descriptions
-  at 160 chars, forces `twitter:card` to `summary_large_image`, and always sets a valid OG image.
-- **Canonical URL**: derive from the `SITE_URL` setting — never from the request `Host` header.
-- **Article pages**: pass the article fields (published/modified time, tags) so `build_seo()`
-  emits the `og:type=article` block.
-- Include `_seo_head.html` once, in the base template `<head>`; pages only supply the context.
+Index: [`../DISCOVERABILITY.md`](../DISCOVERABILITY.md).
 
-### Usage
-
-```python
-# apps/marketing/views.py
-from django.conf import settings
-from django.shortcuts import render
-from apps.marketing.seo import build_seo
-
-def blog_post(request, slug):
-    post = get_published_post(slug)
-    seo = build_seo(
-        title=f"{post.title} — <%ORG_NAME%>",
-        description=post.excerpt,
-        canonical=f"{settings.SITE_URL}/blog/{post.slug}",
-        image=post.hero_image_url,
-        og_type="article",
-        published_time=post.published_at,
-        modified_time=post.updated_at,
-        tags=post.tags,
-    )
-    return render(request, "marketing/blog_post.html", {"post": post, "seo": seo})
-```
-
-```django
-{# templates/base.html #}
-<head>
-  {% include "marketing/_seo_head.html" with seo=seo %}
-</head>
-```
-
-`SITE_URL` defaults to `https://<%PRIMARY_DOMAIN%>` and is overridden per environment. The
-`build_seo()` helper and `_seo_head.html` partial live in `apps/marketing/`.
-
----
-
-## Static `.well-known` Files
-
-RFC-defined discovery files (e.g. `security.txt` per RFC 9116, `change-password` per RFC 8615) are
-served as static files. No application logic, no database queries, no view.
-
-### Serving
-
-Place the files under a collected static directory and let **Whitenoise** serve them (via
-`collectstatic`), or serve them at the **edge** (reverse proxy / CDN). Either way they need no
-Django view:
-
-```text
-code/src/django/static/.well-known/
-└── security.txt    # RFC 9116 responsible-disclosure contact
-```
-
-`static/.well-known/security.txt` is delivered at `/.well-known/security.txt` with
-`Content-Type: text/plain; charset=utf-8`.
-
-### Legacy redirect
-
-Add HTTP 301 redirects for legacy path variations in the Django URLconf (or at the edge), not in
-application logic:
-
-```python
-# config/urls.py
-from django.views.generic import RedirectView
-
-path(".well-known/", RedirectView.as_view(url="/.well-known/security.txt", permanent=True))
-```
-
----
-
-## JSON-LD Structured Data Pattern (Django)
-
-All public pages eligible for Google Rich Results render a `<script type="application/ld+json">`
-tag built by typed helpers in `apps/marketing/jsonld.py`. Never hand-write JSON-LD strings in a
-template.
-
-### Rules
-
-- **Builder functions** (`build_organization_schema`, `build_article_schema`,
-  `build_service_schema`, `build_howto_schema`) return plain Python dicts — pure functions, no
-  side effects.
-- **The `json_ld` template filter/util is the only authorised serialiser.** It escapes `<` to
-  `<` so `</script>` cannot terminate the surrounding script block.
-- **Render in the template**, so the JSON-LD is present in the static HTML the server returns —
-  crawlable without JavaScript. Never inject it from an Alpine or other client-side runtime.
-- **Optional fields use conditional keys** — omit the whole `<script>` tag rather than emit
-  malformed JSON-LD when a required field is missing.
-- **Do not store JSON-LD blobs in the database.** Generate from typed model fields at render time.
-- **Multiple schemas on one page**: use separate `<script>` tags — one per schema.
-
-```django
-{# render a schema dict passed from the view #}
-{% if org_schema %}
-<script type="application/ld+json">{{ org_schema|json_ld }}</script>
-{% endif %}
-```
-
-### Reference
-
-- `apps/marketing/jsonld.py` — builder functions and the XSS-safe serialiser
-- `apps/marketing/seo.py` — `build_seo()` helper and `_seo_head.html` context
+**The routing rules above still apply to those pages** — a marketing route is declared here, and
+its `<head>` is built there.
 
 _Part of the `code/docs/` documentation family. See [`../ARCHITECTURE-PATTERNS.md`](../ARCHITECTURE-PATTERNS.md) for the full index._

@@ -24,6 +24,24 @@ guide new implementations.
 - Work through each tier in order — Beginner first, then Intermediate, then Advanced
 - Tick items off as they are implemented; implement any section with the `seo` agent
 
+> **What this owns.** This checklist owns **what must be true on a given page** before its story
+> closes; [`code/docs/DISCOVERABILITY.md`](../../code/docs/DISCOVERABILITY.md) owns **how this
+> stack implements it**. When the two disagree, this file is the requirement and that guide is
+> the method. Do not add implementation detail here, and do not relax a requirement there.
+
+**Sections and rows marked _(not a gate item)_ are not checked by `workflows/12-seo-checks/`.**
+They are real work, but they are ongoing programmes or off-site activities — nobody can tick them
+for a single page in a single story. Leaving them unmarked made the gate look like it verified
+things it never could. Anything without the marker **is** a gate item.
+
+**On answer engines (GEO/AEO).** Google states there are no additional requirements or special
+optimisations for AI Overviews and AI Mode beyond ordinary indexation
+([primary source](https://developers.google.com/search/docs/appearance/ai-features)). This
+checklist previously carried three techniques that follow from the opposite belief; they have
+been removed. The reasoning is
+[`code/docs/discoverability/CONTENT-STRUCTURE.md`](../../code/docs/discoverability/CONTENT-STRUCTURE.md)
+§ 1.
+
 ---
 
 ## Beginner — Search Engine SEO
@@ -81,11 +99,16 @@ guide new implementations.
 
 ## Beginner — AI Discoverability
 
-- [ ] `llms.txt` — Markdown file at site root for LLM agents
-- [ ] `llms-full.txt` — full content version for AI agents
+- [ ] `llms.txt` — Markdown index at site root **for agent consumption** (IDE agents, MCP
+      clients, documentation fetchers). **Not a citation or ranking signal** — see
+      [`ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) § 1
+- [ ] `llms-full.txt` — full content version, same audience and same caveat
 - [ ] Allow AI crawlers in `robots.txt` (GPTBot, ClaudeBot, PerplexityBot, Google-Extended)
 - [ ] Clear, direct answers in first paragraph of content (BLUF — Bottom Line Up Front)
-- [ ] Plain language, well-structured prose (easy for AI to parse and chunk)
+- [ ] Plain language, well-structured prose
+
+> Body structure is a method question:
+> [`CONTENT-STRUCTURE.md`](../../code/docs/discoverability/CONTENT-STRUCTURE.md) owns how.
 
 ---
 
@@ -149,7 +172,7 @@ guide new implementations.
 ### Content & Authority
 
 - [ ] Internal linking strategy (topical clusters, pillar pages)
-- [ ] Backlink profile building (earned links, digital PR)
+- [ ] Backlink profile building (earned links, digital PR) — _(not a gate item)_
 - [ ] Content audits (update stale content, consolidate thin pages)
 - [ ] Duplicate content management (canonicals, redirects)
 - [ ] 301 redirect chains (find and fix)
@@ -167,6 +190,9 @@ guide new implementations.
 
 ### Content Structure for AI
 
+_Method:_ [`CONTENT-STRUCTURE.md`](../../code/docs/discoverability/CONTENT-STRUCTURE.md).
+These serve readers and search engines equally — they are not answer-engine-specific.
+
 - [ ] Question-format H2/H3 headings (mirror natural language queries)
 - [ ] Concise, citable statistics and data points in content
 - [ ] FAQ sections with direct answers
@@ -179,7 +205,8 @@ guide new implementations.
 - [ ] Server-side rendering (SSR) — avoid content hidden behind JavaScript
 - [ ] No critical content behind logins, paywalls, or interactive elements
 - [ ] Clean HTML (minimal JavaScript-rendered content for key pages)
-- [ ] RSS / Atom feeds (content discovery for aggregators and AI)
+- [ ] RSS / Atom feed where recurring content exists — a Django view; register row in
+      [`ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) § 3
 
 ### AI Crawler Management
 
@@ -191,66 +218,48 @@ guide new implementations.
 
 ## Intermediate — `.well-known/` Files
 
-### Security & Trust
+**Not enumerated here.** The full root and `/.well-known/` surface — every file, its purpose, its
+owner, and when it applies — is the register at
+[`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md)
+§ 3. Several of those rows are owned by the edge or by another surface entirely, which is exactly
+why one register with an ownership column beats a tick-list here.
 
-- [ ] `/.well-known/security.txt` (RFC 9116) — vulnerability disclosure contact: email, PGP key, scope, policy URL, expiry date; good practice for any site handling user data
-- [ ] `/security.txt` — legacy location for `security.txt`; redirect to `/.well-known/security.txt`
-- [ ] `/.well-known/dnt-policy.txt` — EFF Do Not Track policy file; declares how the site honours DNT signals
+The two checks that are genuinely per-site, and belong on this list:
 
-### Privacy & Legal
-
-- [ ] `/.well-known/gpc` — Global Privacy Control JSON endpoint; declares whether the site honours the GPC signal (legal teeth in California under CCPA; relevant for UK under ICO guidance)
-- [ ] `/.well-known/change-password` — redirect to the password change page; used by password managers (1Password, Apple Passwords, Chrome) to deep-link users to the correct page
-
-### Platform Integrations
-
-- [ ] `/.well-known/apple-app-site-association` (no file extension, JSON content) — enables iOS Universal Links and Handoff; required if an iOS app should open from web links
-- [ ] `/.well-known/assetlinks.json` — Android Digital Asset Links for App Links and Smart Lock; required if an Android app should open from web links
-- [ ] `/.well-known/apple-developer-merchantid-domain-association` — required to enable Apple Pay on the web; Apple verifies domain ownership before allowing payment sheet
-
-### Certificate Validation
-
-- [ ] `/.well-known/acme-challenge/` — Let's Encrypt / ACME CA validation path; handled automatically by certbot, Caddy, Traefik — ensure it is not blocked by `robots.txt` or Nginx config
-- [ ] `/.well-known/pki-validation/` — used by commercial CAs (DigiCert, Sectigo) for domain validation
-
-### Email Branding
-
-- [ ] `/.well-known/brand-indicators-for-message-identification` (BIMI) — declares your verified logo for email clients that support BIMI; pairs with DMARC enforcement and a Verified Mark Certificate (VMC)
+- [ ] `/.well-known/acme-challenge/` is **not** blocked by `robots.txt` or the proxy config —
+      blocking it silently breaks certificate renewal
+- [ ] App-linking files (`assetlinks.json`, `apple-app-site-association`) are present **only if a
+      mobile app exists** — a wrong or stale association file breaks deep linking more visibly
+      than its absence
 
 ---
 
-## Intermediate — Email Infrastructure (DNS + HTTP)
+## Intermediate — Email Infrastructure
 
-These are DNS records and one HTTP file. They do not affect page indexing directly but are required for email deliverability, which affects brand trust and referral traffic from email campaigns.
+**Not owned here.** Outbound-mail DNS (SPF, DKIM, DMARC) is a server contract, not a page
+requirement: `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 12 owns what the deploy
+repository must publish, and `NIXOS-HANDOFF.md` carries the secret list. MTA-STS, TLS-RPT and BIMI
+are edge-provisioned rows in the register at
+[`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) § 3.
 
-### DNS Records
-
-- [ ] **SPF** — `TXT` record at the root domain; lists permitted mail server IPs/hostnames; prevents spoofing
-- [ ] **DKIM** — `TXT` record at `[selector]._domainkey.[domain]`; cryptographic signature on outbound mail; required for DMARC alignment
-- [ ] **DMARC** — `TXT` record at `_dmarc.[domain]`; policy for SPF/DKIM failures (none → quarantine → reject); enables aggregate and forensic reporting
-- [ ] **TLS-RPT** — `TXT` record at `_smtp._tls.[domain]`; requests TLS failure reports from receiving mail servers
-- [ ] **MTA-STS** — `TXT` record at `_mta-sts.[domain]` plus the HTTP file below; enforces TLS for inbound mail
-
-### HTTP File
-
-- [ ] `/.well-known/mta-sts.txt` — MTA-STS policy file; declares `mode: enforce` (or `testing`/`none`), MX hostnames, and `max_age`; required alongside the MTA-STS DNS record
-
-### Reporting
-
-- [ ] DMARC `rua` tag set to an aggregate reporting inbox (e.g. a dedicated mailbox or reporting service like Postmark, Valimail)
-- [ ] DMARC `ruf` tag set for forensic (per-message) failure reports if required
+Mail deliverability affects brand trust and email referral traffic, so it belongs on a launch
+plan — but ticking it here would mean two documents owning one DNS record.
 
 ---
 
 ## Intermediate — Legal & Compliance Routes
 
-- [ ] `/privacy` or `/privacy-policy` — Privacy Notice (UK GDPR Art. 13/14); covers lawful basis, data categories, retention, third parties, data subject rights, DPO contact
-- [ ] `/terms` or `/terms-and-conditions` — Terms of Service governing use of the site
-- [ ] `/cookies` or `/cookie-policy` — Cookie usage notice (required separately under PECR in the UK if non-essential cookies are used); must list cookie names, purposes, and durations
-- [ ] `/accessibility` or `/accessibility-statement` — WCAG conformance declaration; increasingly required for charity, public sector, and government clients
-- [ ] `/dpa` or `/data-processing-agreement` — DPA template for B2B clients processing data via the platform
-- [ ] `/sub-processors` or `/subprocessors` — list of third-party processors; expected by enterprise clients and required for transparent GDPR compliance under Art. 28
-- [ ] `/.well-known/gpc` — Global Privacy Control endpoint (see `.well-known/` Files section above)
+**Which documents are required is not an SEO decision** — `GDPR-GUIDE.md` and the
+`legal-documents` skill own whether this project needs a privacy notice, a cookie notice under
+PECR, a DPA, or a sub-processor list, and what each must say.
+
+What belongs on this checklist is how they behave as pages:
+
+- [ ] Every legal page that exists is **indexable** — no `noindex`, reachable from the footer on
+      every page. These are trust signals to search engines and citation anchors to answer engines
+- [ ] Each has a stable canonical URL that does not change when the document is revised
+- [ ] The accessibility statement, where one exists, states the actual conformance level — a
+      claim of WCAG 2.2 AA that the site does not meet is worse than no statement
 
 ---
 
@@ -312,81 +321,68 @@ These are DNS records and one HTTP file. They do not affect page indexing direct
 
 ## Advanced — AI Discoverability (GEO)
 
-### Generative Engine Optimisation (GEO)
+### Generative Engine Optimisation (GEO) — _(not gate items)_
 
-- [ ] Optimise content for AI citation (be the source AI quotes)
+**Three rows were removed here, not merely unticked**, because they instruct work Google's own
+documentation says is unnecessary: _content chunking for RAG extraction_, _fan-out query
+coverage_, and _platform-specific optimisation per engine_. The last also named five products as
+the requirement, which `code/docs/architecture/PROVIDER-NEUTRALITY.md` forbids independently.
+Everything that survives is ordinary content quality:
+
 - [ ] Original research, proprietary data, unique case studies (citation magnets)
-- [ ] Entity-based content strategy (build brand entity recognition)
-- [ ] Third-party authority signals (earned media, press mentions, Wikipedia presence)
-- [ ] Content chunking strategy (structure content so RAG systems can extract cleanly)
-- [ ] Fan-out query coverage (cover sub-queries that AI decomposes complex questions into)
-- [ ] Platform-specific optimisation (ChatGPT, Perplexity, Google AI Overviews, Gemini, Claude)
+- [ ] Entity clarity — the organisation is named consistently and described the same way
+      everywhere, and `Organization` schema carries its `sameAs` profile links
+- [ ] Third-party authority signals (earned media, press mentions)
 
-### AI Monitoring & Measurement
+### AI Monitoring & Measurement — _(not gate items)_
+
+Ongoing measurement, and none of it is page-scoped. This project ships no analytics stack, so
+each row assumes tooling a deployment must choose first.
 
 - [ ] Track AI referral traffic in analytics (ChatGPT, Perplexity, etc. as referrers)
 - [ ] Monitor brand mentions in AI-generated answers
 - [ ] AI citation frequency tracking
 - [ ] Share of voice in AI search results
-- [ ] Prompt-level monitoring (what prompts surface your brand)
 
 ### Technical AI Readiness
 
 - [ ] Ensure content is not trapped in PDFs, images, or iframes
 - [ ] Multimodal optimisation (alt text, captions, transcripts for video/audio)
-- [ ] API documentation with `llms.txt` for developer-facing products
+- [ ] API documentation indexed by `llms.txt` for developer-facing products — the one use with
+      demonstrated uptake (IDE agents, MCP clients)
 - [ ] Machine-readable data formats alongside human-readable content
 
 ---
 
 ## Advanced — Developer & Operations Routes
 
-- [ ] `/health/` or `/healthz` — health check endpoint for load balancers, Kubernetes liveness probes, and uptime monitors; return HTTP 200 with minimal payload; must NOT be publicly documented or linked
-- [ ] `/readyz` — readiness check (Kubernetes idiom); separate from liveness if startup time differs
-- [ ] `/ping` — simple liveness check; return `pong` or HTTP 200
-- [ ] `/metrics` — Prometheus metrics endpoint; **must be firewalled** and never publicly accessible; blocks by IP or internal network only
-- [ ] `/status` — public status page route (Statuspage, Instatus, Cachet, or self-hosted)
-- [ ] `/version` or `/.well-known/version` — exposes deployed version/commit info; useful for debugging but treat as a minor information-disclosure risk; gate behind internal network or omit from production
-- [ ] `/debug`, `/wp-admin`, `/phpmyadmin` — **must never be accessible**; block explicitly at the reverse proxy; `robots.txt` Disallow is a deterrent only, not security
+**Not owned here.** `/health`, `/readyz`, `/ping`, `/metrics`, `/status` and `/version` are a
+monitoring contract rather than a discovery surface:
+[`code/docs/logging/HEALTH-CONTRACT.md`](../../code/docs/logging/HEALTH-CONTRACT.md) owns the
+endpoints the application exposes, and `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 8
+owns what the server provisions.
+
+The one SEO-adjacent point, kept because it is a real trap: **a `robots.txt` `Disallow` is not
+protection.** Paths that must never be reachable — `/debug`, `/wp-admin`, `/phpmyadmin`,
+`/metrics` — are blocked at the reverse proxy. Listing them in `robots.txt` publishes a map of
+what you consider sensitive.
 
 ---
 
 ## Root Files Quick Reference
 
-| File / Path                                                  | Purpose                                     |
-| ------------------------------------------------------------ | ------------------------------------------- |
-| `/robots.txt`                                                | Crawler access rules                        |
-| `/sitemap.xml`, `/sitemap_index.xml`                         | XML sitemaps (submit to GSC + Bing)         |
-| `/sitemap-static.xml`, `/sitemap-blog.xml`, etc.             | Segmented sitemaps by content type          |
-| `/sitemap.txt`, `/sitemap.xml.gz`                            | Plain-text and compressed sitemap variants  |
-| `/llms.txt`, `/llms-full.txt`                                | AI agent content guide (Markdown)           |
-| `/ai.txt`                                                    | AI training consent / opt-out declaration   |
-| `/favicon.ico`, `/favicon.svg`                               | Site icons (legacy + modern)                |
-| `/favicon-32x32.png`, `/favicon-16x16.png`                   | Raster favicon variants                     |
-| `/apple-touch-icon.png`                                      | iOS home-screen icon (180 × 180 px)         |
-| `/manifest.webmanifest`, `/sw.js`                            | PWA manifest and service worker             |
-| `/browserconfig.xml`                                         | Windows tile configuration                  |
-| `/ads.txt`, `/app-ads.txt`, `/sellers.json`                  | Authorised ad sellers (IAB)                 |
-| `/humans.txt`                                                | Site credits                                |
-| `/[indexnow-key].txt`                                        | IndexNow API key verification               |
-| `/.well-known/security.txt`                                  | Vulnerability disclosure contact (RFC 9116) |
-| `/.well-known/gpc`                                           | Global Privacy Control policy endpoint      |
-| `/.well-known/change-password`                               | Password manager deep-link redirect         |
-| `/.well-known/apple-app-site-association`                    | iOS Universal Links / Handoff               |
-| `/.well-known/assetlinks.json`                               | Android App Links                           |
-| `/.well-known/apple-developer-merchantid-domain-association` | Apple Pay domain verification               |
-| `/.well-known/acme-challenge/`                               | Let's Encrypt / ACME certificate validation |
-| `/.well-known/mta-sts.txt`                                   | MTA-STS mail TLS policy                     |
-| `/.well-known/brand-indicators-for-message-identification`   | BIMI logo declaration for email             |
-| `/cookies`, `/dpa`, `/sub-processors`                        | Legal / compliance pages                    |
-| `/health/`, `/healthz`, `/metrics`, `/status`                | Ops endpoints (firewalled where noted)      |
+**Moved.** The enumeration of every root and `/.well-known/` file — with an owner and an
+applies-when column, which a bare list could not carry — is
+[`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md)
+§ 3. Keeping a second copy here is how the two drifted in the first place.
 
 ---
 
 ## Related Resources
 
-- [`code/docs/architecture/FRONTEND-PATTERNS.md`](../../code/docs/architecture/FRONTEND-PATTERNS.md)
-  — the `build_seo()` helper and the JSON-LD rendering pattern
+- [`code/docs/DISCOVERABILITY.md`](../../code/docs/DISCOVERABILITY.md) — **how this stack
+  implements everything on this checklist**: the `<head>` pipeline, the JSON-LD builders, and the
+  root surface
 - [Google Search Console](https://search.google.com/search-console) — Submit sitemaps and monitor
   indexing
 - [Bing Webmaster Tools](https://www.bing.com/webmasters) — IndexNow and Bing indexing

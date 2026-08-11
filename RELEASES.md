@@ -1,11 +1,69 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.7.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.8.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.8.0 — 11/08/2026
+
+**Status:** Minor — documentation only. Notable less for what it adds than for what it deletes.
+
+### A third of what this template said about answer engines was false
+
+The work started as a straightforward gap-fill: the page **body** was the one output surface with
+no owning guide, so a fourth sub-document was needed. Checking the existing material against
+primary sources turned up something the plan had not anticipated.
+
+Google's own documentation — [AI features and your
+website](https://developers.google.com/search/docs/appearance/ai-features) — states there are **no
+additional requirements and no special optimisations** for AI Overviews and AI Mode, and no new
+machine-readable files to publish.
+
+Three items in `SEO-CHECKLIST.md` said otherwise:
+
+- **Content chunking for RAG**
+- **Fan-out query coverage**
+- **Per-engine optimisation** — which additionally named five specific products as a requirement,
+  against the provider-neutrality rule this template holds everywhere else
+
+They are removed, not unticked. A checklist row that cannot be satisfied because the thing it asks
+for does not exist is worse than no row: it gets ticked anyway.
+
+### `llms.txt` stays, for the honest reason
+
+`ROOT-SURFACE.md` called `llms.txt` "the one leg of answer-engine discoverability". It is not a
+search or citation signal and never was.
+
+It stays in the template, re-justified as **agent-facing**: an index for IDE agents and MCP clients
+that read a project rather than crawl it, which is a real use with a real consumer — and which
+points at `code/docs/MCP-SERVER.md` rather than at a search engine.
+
+### The structure that came out of it
+
+`code/docs/DISCOVERABILITY.md` is now a thin index over four sub-documents, one per output surface:
+
+| Surface         | Owner                 |
+| --------------- | --------------------- |
+| The `<head>`    | `WEB-METADATA.md`     |
+| The JSON-LD     | `STRUCTURED-DATA.md`  |
+| Root files      | `ROOT-SURFACE.md`     |
+| The page body   | `CONTENT-STRUCTURE.md` |
+
+And the split with the PM layer is now stated in both files: `SEO-CHECKLIST.md` is **what must be
+true per page** before a story closes; `DISCOVERABILITY.md` is **how this stack does it**. Neither
+restates the other.
+
+The checklist also gained a `_(not a gate item)_` convention. Around nine rows describe good
+practice that cannot actually block a story, and marking them keeps the gate honest about what it
+stops.
+
+### The lesson, now recorded in project memory
+
+A third-party source's claim is a **lead, not a finding**. Every one of the three myths arrived
+from a plausible secondary source and survived because nobody checked it against the primary one.
 
 ## v2.7.0 — 11/08/2026
 

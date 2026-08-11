@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.7.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.8.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.8.0] - 11/08/2026
+
+### Added
+
+- **`code/docs/DISCOVERABILITY.md` and its four sub-documents.** `WEB-METADATA.md` owns the `build_seo()` head pipeline; `STRUCTURED-DATA.md` owns the JSON-LD block; `ROOT-SURFACE.md` owns the root and `.well-known` register; `CONTENT-STRUCTURE.md` owns the page **body**, the fourth output surface and the one nothing previously governed.
+- **A clean split with `project-management/docs/SEO-CHECKLIST.md`, stated in both files.** The checklist is **what must be true per page** before a story closes. The guide is **how this stack does it**. Neither restates the other, which is the same route-don't-restate rule the pairing standard applies to directories.
+- **A `_(not a gate item)_` convention in the checklist**, marking roughly nine rows that describe good practice but cannot gate a story, so the gate stays honest about what it actually blocks on.
+- **`research/DISCOVERABILITY-SKILL-ECOSYSTEM.md`** — the primary-source survey the corrections below came out of.
+
+### Removed
+
+- **Three answer-engine myths, deleted rather than left unticked.** Google states there are **no additional requirements and no special optimisations** for AI Overviews and AI Mode, and no new machine-readable files. Removed from `SEO-CHECKLIST.md`: **content chunking for RAG**, **fan-out query coverage**, and **per-engine optimisation** — the last of which also named five specific products as a requirement, against the provider-neutrality rule this template holds elsewhere. Cited to Google's _AI features and your website_.
+
+### Changed
+
+- **`llms.txt` is re-justified, not removed.** `ROOT-SURFACE.md` § 1 previously called it "the one leg of answer-engine discoverability", which is false — it is not a search or citation signal. It stays, justified honestly as **agent-facing**: for IDE agents and MCP clients that read rather than crawl, pointing at `code/docs/MCP-SERVER.md`.
+- **`CONTENT-STRUCTURE.md` § 1 states there is no separate answer-engine discipline**, cited to the primary source, so the myth cannot quietly return as a new section.
+- **`.claude/agents/seo.md`** — the `llms.txt`-as-GEO-lever claim is marked in place at both occurrences. The remaining techniques in that agent are ordinary SEO and are untouched.
+- **`how-to/src/BRAND-VOICE.md` § 2 gains the reciprocal pointer** — shape is not voice. Content structure decides how a page is organised; the voice guide decides how it reads.
+
+### Fixed
+
+- **`WEB-METADATA.md` said content structure was "not settled doctrine here yet".** It now routes to the guide that settles it.
 
 ## [2.7.0] - 11/08/2026
 

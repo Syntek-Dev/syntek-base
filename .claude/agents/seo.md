@@ -30,7 +30,7 @@ Read before implementing:
 - `code/src/django/apps/marketing/CONTEXT.md` — how `build_seo`, `_seo_head.html`, and page caching fit
 - `code/docs/RENDERING.md` — the interaction doctrine; critical SEO content is server-rendered, never JS-gated
 - `code/docs/URL-STRATEGY.md` — canonical URL and slug rules (marketing `/`, admin `/admin/`, portal `/portal/`)
-- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — brand voice for the copy you do write (titles, meta descriptions, OG text): cadence, no superlatives, <%LOCALE%>
+- `how-to/src/BRAND-VOICE.md` — brand voice for the copy you do write (titles, meta descriptions, OG text): cadence, no superlatives, <%LOCALE%>
 - `.claude/skills/grill-with-docs/SKILL.md` — open the SEO pass with a grilling interview
 - Stack detail: defer to `.claude/skills/stack-htmx-templates` — do not restate template/HTMX rules here
 
@@ -49,9 +49,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## Grill Before Wiring
 
-Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one
-question at a time (each with your recommended answer; look facts up, don't ask; no action
-until <%DEVELOPER_NAME%> confirms). Grill across:
+Open with a grilling pass — load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>. Grill across:
 
 - **Production domain** — for canonical URLs and `og:url` (check env / existing config first)
 - **Business/schema type** — `Organization` is the default; probe whether a page needs `Article`, `Service`, `FAQPage`, `BreadcrumbList`, or `LocalBusiness`
@@ -73,8 +71,20 @@ design-work default (`.claude/CLAUDE.md` §10).
   Allow AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended). **Disallow
   `/admin/` and `/portal/`** — the <%PROJECT_NAME%> Admin and Client Portal are private and must
   never be indexed.
-- **AI discoverability (GEO)** — `llms.txt` at site root; BLUF structure; question-format
-  headings; FAQ/comparison blocks; "Last updated" timestamps. See the checklist.
+- **AI discoverability (GEO)** — BLUF structure; question-format headings; FAQ/comparison
+  blocks; "Last updated" timestamps. Method: `code/docs/discoverability/CONTENT-STRUCTURE.md`.
+
+  > **Myth, corrected 11/08/2026 — `llms.txt` is not a GEO lever.** It used to be listed on this
+  > line, which implied shipping it wins citations. Google states no new machine-readable or "AI
+  > text" file is needed for AI Overviews or AI Mode, and that **no additional optimisation**
+  > beyond ordinary indexation applies. `llms.txt` is still shipped, for **agent consumption**
+  > (IDE agents, MCP clients) — see `code/docs/discoverability/ROOT-SURFACE.md` § 1. Everything
+  > else on this line is ordinary SEO and survives unchanged.
+  >
+  > **This bullet is not the owner of any of it.** The doctrine lives in the guide; this file
+  > routes. That the myth sat here undetected is precisely why — prompt-only knowledge is
+  > reachable only by routing to this agent, so nobody reviews it
+  > (`MAP-DISCOVERABILITY` N-002, N-003).
 
 ## Non-Negotiables
 
@@ -99,7 +109,7 @@ design-work default (`.claude/CLAUDE.md` §10).
 Metadata:   title · description · canonical · OG · Twitter (via build_seo → _seo_head.html)
 Structured: [Organization | Article | FAQ | Breadcrumb | …]
 Crawler:    apps/core/views/seo.py — robots · sitemap · llms.txt (admin/portal excluded · AI allowed)
-GEO:        llms.txt · BLUF · last-updated
+GEO:        BLUF · question-headings · last-updated   (llms.txt is agent-facing, not GEO)
 Files:      [changed paths]
 Env:        [any new vars — names only]
 ```
