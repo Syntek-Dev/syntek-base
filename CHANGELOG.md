@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.13.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.13.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.13.1] - 11/08/2026
+
+### Added
+
+- **`.github/scripts/shipped-readme.sh`** — verifies that the documentation a generated project receives still describes the template that generated it. Two documents drift silently because nothing consuming them is ever run by this repository's CI: `.copier/README.md`, the README a new project actually gets, and `how-to/src/TEMPLATE-TOKENS.md`, the prose token contract `copier.yml` implements. Neither had a consumer that fails when it goes stale.
+- **The four `REFERENCES.md` files index every guide added across 2.4.0–2.13.0** — `DOCUMENTATION-PAIRING`, `VISUAL-DESIGN`, `NEGATIVE-SPACE`, `DISCOVERABILITY`, `PROVIDER-NEUTRALITY`, `BUILD-OPERATE-SEAM`, `TASK-AUTHORING`, `PROCESS-MODEL`, `OBJECT-STORAGE`, `AUDIT-TRAIL`, and the sub-document folders under each.
+
+### Fixed
+
+- **`.copier/README.md` described a repository three surfaces out of date.** Its `code/src/` tree omitted `improvement-architecture/`, which ships everywhere; its `.github/workflows/` list named 11 of 28, only two of the omissions being surface-gated; and its `code/docs/` tree omitted eight ungated guides. The `src/` tree stopped at `21-REFACTORING` and the workflow count said 21. All corrected, plus the new attribution section and an honest _declared, not wired_ note against Celery.
+- **`check-template-tokens.sh` reported green on files it had never looked at.** It scanned `git ls-files` only, so the file you had just written — the one most needing the check — was invisible. CI never noticed, because everything is tracked by the time CI runs; local runs are exactly where the blindness bit. It now scans tracked **and** untracked-but-not-ignored files.
+- **`.prettierignore` pointed at directories that have not existed since the stack became Django-only** — `code/src/frontend/`, `code/src/backend/`, a Next.js build-output block and GraphQL codegen paths. Repointed at `code/src/django/`.
+- **The root `CONTEXT.md` declared version 2.0.0**, three releases behind, and gave three wrong workflow ranges: code workflows as `02–14` (they are `01–13`), how-to as `01–04` (they are `01–09`), and PM as `01–22` (they are `01–23`).
+- **The `README.md` footer declared v1.0.0**, and the stack table promised Celery and S3 storage as though both were wired.
+- **Cross-references left dangling by the guide splits** — chiefly `CODING-PRINCIPLES.md` anchors that moved into `coding-principles/PRACTICAL-RULES.md`, and `project-management/docs/RESPONSIVE-DESIGN.md` cited as a source when it is a redirect stub.
+
+### Known issues
+
+- **The phantom ADR references are still open.** `ADR-016`, `ADR-019` and `ADR-023` are cited as real in `REFERENCES.md`, `DESIGN.md`, `code/workflows/03-database-migration/CONTEXT.md`, `.prettierignore` and two audit scripts, and no ADR register exists. Logged in `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`; deciding whether to write the ADRs or drop the citations is its own change, not a sweep item.
 
 ## [2.13.0] - 11/08/2026
 
@@ -195,7 +215,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Every `CLAUDE.md` in the tree conforms to one shape** — `@./CONTEXT.md` (plus `@./REFERENCES.md` where the directory has one), a `Read order:` line, then exactly four H2s: _Purpose (one line)_ · _How to work here_ · _Guardrails_ · _Output & naming_, scaled to the folder.
 - **Every workflow `CONTEXT.md` conforms too.** _Hard gates — read before executing Step 1_ / _Soft references — consult during execution_ became **Governing documents** / **Related reading**: the old names described when to read a file rather than what it is, which is an operating rule wearing an orientation file's clothes. `Prerequisites`, `Quality gates` and `Naming` headings are gone from orientation files for the same reason — each now lives once, in the paired `CLAUDE.md` or the workflow's `CHECKLIST.md`.
 - **Each orientation file opens by saying why the thing it describes exists**, rather than starting cold with a tree. A directory listing tells you what is there; it does not tell you why you would go.
-- **`.markdownlint-cli2.jsonc` and `.prettierignore` exclude `**/reports/**` and `code/src/rust/target/`.** An audit run with `--output md` was capable of failing the format gate it exists to complement.
+- **`.markdownlint-cli2.jsonc` and `.prettierignore` exclude `**/reports/**`and`code/src/rust/target/`.** An audit run with `--output md` was capable of failing the format gate it exists to complement.
 
 ### Fixed
 

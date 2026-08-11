@@ -37,7 +37,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
 > **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
-<%DEVELOPER_NAME%> one question at a time. Settle, in this order:
+<%DEVELOPER_NAME%>. Settle, in this order:
 
 1. **Is an agent the right caller at all?** If an HTTP client would do, stop — use
    `04-api-design`. This question is the workflow's own gate; do not skip it.

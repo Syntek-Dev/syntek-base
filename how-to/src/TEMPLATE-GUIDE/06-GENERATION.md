@@ -38,7 +38,7 @@ copier copy --vcs-ref=HEAD    gh:Syntek-Dev/syntek-base my-project   # tip of th
 
 ## 2 — Questions
 
-Thirty, defined in `copier.yml` — twenty-six always asked, four conditional on the optional
+Thirty-six, defined in `copier.yml` — thirty-two always asked, four conditional on the optional
 surfaces. Three behaviours worth knowing:
 
 - **Derived defaults** — `PROJECT_SLUG` from `PROJECT_NAME`, `ENV_PREFIX` from `ORG_SLUG`,

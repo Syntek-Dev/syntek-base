@@ -10,26 +10,27 @@ Internal and external references for PM, stories, sprints, GDPR, security, SEO, 
 
 Every file in `project-management/docs/`, with path and purpose.
 
-| File                                           | Purpose                                                                            |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `project-management/docs/GDPR-GUIDE.md`        | GDPR compliance framework — lawful basis, retention schedule, and DSAR procedures  |
-| `project-management/docs/GIT-GUIDE.md`         | Branch strategy, commit format (Conventional Commits), PR flow, and PR gates       |
-| `project-management/docs/QA-GUIDE.md`          | QA approach — test scenario format, edge case categories, and story feedback rules |
-| `project-management/docs/RESPONSIVE-DESIGN.md` | Breakpoints, container queries, mobile-first design principles, and device data    |
-| `project-management/docs/SECURITY-GUIDE.md`    | STRIDE threat modelling, OWASP mapping, severity levels, and documentation format  |
-| `project-management/docs/SEO-CHECKLIST.md`     | SEO and AI discoverability checklist for all public-facing pages                   |
-| `project-management/docs/PLANNING-GUIDE.md`    | MoSCoW prioritisation rules, sprint record format, and phase breakdown schema      |
-| `project-management/docs/VERSIONING-GUIDE.md`  | Two-tier semver, independent sub-package tracks, and the files each bump touches   |
+| File                                           | Purpose                                                                                                                              |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `project-management/docs/GDPR-GUIDE.md`        | GDPR compliance framework — lawful basis, retention schedule, and DSAR procedures                                                    |
+| `project-management/docs/GIT-GUIDE.md`         | Branch strategy, commit format (Conventional Commits), PR flow, and PR gates                                                         |
+| `project-management/docs/QA-GUIDE.md`          | QA approach — test scenario format, edge case categories, and story feedback rules                                                   |
+| `project-management/docs/RESPONSIVE-DESIGN.md` | **Redirect stub, no content** — the authoritative guide is `code/docs/RESPONSIVE-DESIGN.md`                                          |
+| `project-management/docs/SECURITY-GUIDE.md`    | STRIDE threat modelling, OWASP mapping, severity levels, and documentation format                                                    |
+| `project-management/docs/SEO-CHECKLIST.md`     | **What must be true per page** before a story closes — the method side is `code/docs/DISCOVERABILITY.md`; neither restates the other |
+| `project-management/docs/PLANNING-GUIDE.md`    | MoSCoW prioritisation rules, sprint record format, and phase breakdown schema                                                        |
+| `project-management/docs/VERSIONING-GUIDE.md`  | Two-tier semver, independent sub-package tracks, and the files each bump touches                                                     |
 
 ---
 
 ## Internal — Live Artefacts
 
 Each numbered directory in `project-management/src/`, in its tier, and what it holds.
-Folders **03–07** are three-stage — `USER-STORY-IDEAS/` → `CONSOLIDATED-IDEAS/` →
+Folders **04–08** are three-stage — `USER-STORY-IDEAS/` → `CONSOLIDATED-IDEAS/` →
 `IMPLEMENTATION/` — because per-story design fragments and must be reconciled by workflow `17`.
-Folders **08–12** are two-stage (`PLANNING/` + `IMPLEMENTATION/`): a lawful basis or an API
-contract is genuinely per story and needs no consolidation.
+Folders **09–13** are two-stage (`PLANNING/` + `IMPLEMENTATION/`): a lawful basis or an API
+contract is genuinely per story and needs no consolidation. `10-SECURITY` nests that pair
+under each of its four category folders rather than at its root.
 
 | Path                   | Tier          | Contents                                                                                                                  |
 | ---------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -55,8 +56,10 @@ contract is genuinely per story and needs no consolidation.
 | `src/19-FINDINGS/`     | record        | Per-story findings (`FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — divergences, retrofit cost, what the next story carries |
 | `src/20-BUGS/`         | record        | Bug reports (`BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — story-anchored                                                     |
 | `src/21-REFACTORING/`  | record        | Refactoring records (`REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`)                                                      |
+| `src/22-INCIDENTS/`    | record        | The **PII-free** incident register (`INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` + `INCIDENT-INDEX.md`) — not story-anchored     |
 
-The three tiers: **specify** (02–13) → **decide & plan** (14–16) → **record** (17–21).
+The three tiers: **specify** (02–13) → **decide & plan** (14–16) → **record** (17–21), with
+**22-INCIDENTS** a record that sits outside the per-story chain entirely.
 The story plan (16) is the master a developer codes from; it references its sprint plan
 (15), the decisions (14), and every 02–13 spec.
 
@@ -84,6 +87,7 @@ Each workflow `CONTEXT.md` with path and purpose.
 | `workflows/14-decisions/CONTEXT.md`                    | Author an Architectural Decision Record (ADR)                       |
 | `workflows/15-sprint-plans/CONTEXT.md`                 | Write detailed sprint plans after GDPR, security, and QA checks     |
 | `workflows/16-story-plans/CONTEXT.md`                  | Write the per-story implementation plan — the code master           |
+| `workflows/17-consolidate-design-work/CONTEXT.md`      | Unify the per-story design and schema work into one system          |
 | `workflows/18-backend-code/CONTEXT.md`                 | Implement Django models, services, and business logic (TDD)         |
 | `workflows/19-api-code/CONTEXT.md`                     | Implement the Django Ninja API layer                                |
 | `workflows/20-frontend-code/CONTEXT.md`                | Implement Django templates + django-components (HTMX/Alpine)        |
@@ -129,7 +133,8 @@ Each workflow `CONTEXT.md` with path and purpose.
 - **Schema.org** — https://schema.org/ — vocabulary for JSON-LD structured data (Organization, Article, BreadcrumbList, etc.)
 - **Google Lighthouse** — https://developer.chrome.com/docs/lighthouse/overview/ — authoritative tool for Core Web Vitals; results recorded per story
 - **Core Web Vitals** — https://web.dev/articles/vitals — LCP < 2.5 s, CLS < 0.1, INP < 200 ms targets applied across all public pages
-- **llms.txt specification** — https://llmstxt.org/ — AI agent discoverability standard; see `SEO-CHECKLIST.md` for implementation guidance
+- **llms.txt specification** — https://llmstxt.org/ — an index for agents that read rather than crawl. **Not a search or citation signal**; see `code/docs/discoverability/ROOT-SURFACE.md` § 1
+- **Google — AI features and your website** — https://developers.google.com/search/docs/appearance/ai-features — the primary source stating that AI Overviews and AI Mode need no additional optimisation, no new machine-readable files, and no special schema
 - **Per-page metadata** — rendered server-side via Django templates and the SEO app (`code/src/django/apps/seo`) — sets title, description, Open Graph, and canonical tags on all public pages
 - **Open Graph protocol** — https://ogp.me/ — metadata standard for social sharing previews
 

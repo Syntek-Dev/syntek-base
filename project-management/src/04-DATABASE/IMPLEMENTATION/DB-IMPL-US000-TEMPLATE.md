@@ -12,9 +12,9 @@
 
 ## 1 — Migrations shipped
 
-| Migration                           | App          | What it does |
-| ----------------------------------- | ------------ | ------------ |
-| [EXAMPLE] `0004_add_audit_scope.py` | `apps.audit` | [EXAMPLE]    |
+| Migration                           | App                  | What it does |
+| ----------------------------------- | -------------------- | ------------ |
+| [EXAMPLE] `0004_add_audit_scope.py` | `apps.<%AUDIT_APP%>` | [EXAMPLE]    |
 
 ---
 

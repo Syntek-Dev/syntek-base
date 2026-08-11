@@ -107,10 +107,10 @@ GDPR Article 32 requires "appropriate technical measures" to protect personal da
 - **Key rotation** is zero-downtime using versioned `PROJECTNAME_FIELD_KEY_{FIELD}_V1/V2/…` env vars.
 - **Transport security** uses TLS 1.2+ for all connections.
 
-See [`code/docs/ENCRYPTION-GUIDE.md`](../../code/docs/ENCRYPTION-GUIDE.md) for the full
+See [`code/docs/ENCRYPTION-GUIDE.md`](../../../code/docs/ENCRYPTION-GUIDE.md) for the full
 encryption reference.
 
-See [`code/docs/RLS-GUIDE.md`](../../code/docs/RLS-GUIDE.md) for PostgreSQL Row Level Security.
+See [`code/docs/RLS-GUIDE.md`](../../../code/docs/RLS-GUIDE.md) for PostgreSQL Row Level Security.
 
 ---
 

@@ -35,7 +35,7 @@ user-story [describe the feature and user role]
 > **↳ New agent:** `user-story` · **Model:** fable · **MCP:** none
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time — the specific user role, the measurable benefit,
+interview <%DEVELOPER_NAME%> — the specific user role, the measurable benefit,
 the success signal, constraints and dependencies, priority, and at least one edge/error
 case — before drafting. Always grill when the feature touches personal data, permissions,
 or money. Record the resolved behaviour straight into the story's Gherkin acceptance criteria.

@@ -18,7 +18,7 @@ model: opus
 Use `hypothesis` for any function that must hold across a wide range of inputs — especially
 validators, data transformation functions, and serialisation logic.
 
-`hypothesis` is declared as a test dependency in `code/src/django/pyproject.toml`.
+`hypothesis` is declared as a test dependency in the root `pyproject.toml`.
 
 ```python
 from hypothesis import given, settings
@@ -126,11 +126,10 @@ def test_list_articles_no_n_plus_one(article_factory) -> None:
 
 ### k6 load tests (milestone releases only)
 
-Load-test scripts live in `code/src/scripts/tests/load/`. Run against a staging environment only.
-
-```bash
-bash code/src/scripts/tests/load.sh homepage
-```
+No load-test scripts ship in this repository — `code/src/scripts/tests/` holds no `load/`
+directory and no `load.sh` runner, and k6 is not installed. When load testing is introduced the
+scripts belong under `code/src/scripts/tests/load/` behind a `load.sh` runner, and are run
+against a staging environment only.
 
 ---
 

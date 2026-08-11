@@ -31,7 +31,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time — entities and their real-world meaning,
+interview <%DEVELOPER_NAME%> — entities and their real-world meaning,
 relationships and cardinality, ownership/tenancy (RLS scope), constraints and
 invariants, PII fields and lawful basis, retention, and expected query shapes. Record
 resolved terminology in the nearest `CONTEXT.md` glossary and hard-to-reverse calls as

@@ -148,7 +148,7 @@ the security controls required.
 - When data is shared with third parties, verify that the third party meets the controls required for
   the data's classification tier.
 - Data retention and deletion must follow the classification tier's requirements. See
-  [`../../project-management/docs/GDPR-GUIDE.md`](../../project-management/docs/GDPR-GUIDE.md) for
+  [`project-management/docs/GDPR-GUIDE.md`](../../../project-management/docs/GDPR-GUIDE.md) for
   the full GDPR compliance patterns.
 
 _Part of the `code/docs/` documentation family. See [`../SECURITY.md`](../SECURITY.md) for the full index._

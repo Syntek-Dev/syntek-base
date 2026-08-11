@@ -71,9 +71,8 @@ and the `project-management/src/` destination named in its own remit — do not 
 ## Method
 
 1. **Grill first.** Open with a grilling interview — load `.claude/skills/grill-with-docs` and
-   interrogate <%DEVELOPER_NAME%> one question at a time: the analysis question, the data sources, the segments,
-   the timeframe and grain, the output format and audience, and whether PII is in scope. Look
-   facts up rather than ask; do not guess at missing data — document the gap. No analysis until
+   interrogate <%DEVELOPER_NAME%>: the analysis question, the data sources, the segments,
+   the timeframe and grain, the output format and audience, and whether PII is in scope. Do not guess at missing data — document the gap. No analysis until
    <%DEVELOPER_NAME%> confirms. Design-work default (`.claude/CLAUDE.md` §10).
 2. **Data quality:** nulls, types, outliers, range/constraint validation.
 3. **Exploration:** summary stats, distributions, correlations, temporal patterns.

@@ -42,9 +42,8 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** fable
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time — scope, which layers are in scope (database /
-service / API / frontend / infra / GDPR), phasing, and any open architectural question —
-each with a recommended answer, no action until confirmed.
+interview <%DEVELOPER_NAME%> — scope, which layers are in scope (database /
+service / API / frontend / infra / GDPR), phasing, and any open architectural question.
 
 Gather:
 

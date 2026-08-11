@@ -1,5 +1,9 @@
 # HTML Report Format
 
+> **Adapted from [`mattpocock/skills`](https://github.com/mattpocock/skills)** (MIT, © 2026 Matt
+> Pocock) — `skills/engineering/improve-codebase-architecture/HTML-REPORT.md`. Required notice:
+> `THIRD-PARTY-NOTICES.md`.
+
 The architectural review is rendered as a single self-contained HTML file in the project's gitignored history folder, `code/src/improvement-architecture/` (each run kept as a local record of past states; the `*.html` reports are never committed). Tailwind and Mermaid both come from CDNs. Mermaid handles graph-shaped diagrams reliably; hand-built divs and inline SVG handle the more editorial visuals (mass diagrams, cross-sections). Mix the two — don't lean on Mermaid for everything, it'll start to look generic.
 
 ## Scaffold

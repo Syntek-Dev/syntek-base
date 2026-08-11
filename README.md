@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code agent suite.**
 
-[![Version](https://img.shields.io/badge/version-2.13.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.13.1-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -33,7 +33,7 @@ Generate a project from it and you get, on day one:
 | **A three-layer doc system**  | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
 | **A Claude Code agent suite** | 8 orchestrators that delegate to specialists and document writers, each tool-scoped, each with a defined remit. Roster: `.claude/agents/CONTEXT.md`.                |
 | **Skills, loaded on demand**  | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
-| **A working dev stack**       | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Celery, Nginx, Mailpit — plus scripts to drive them.                                                 |
+| **A working dev stack**       | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
 | **CI that already bites**     | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
 | **Compliance scaffolding**    | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
 
@@ -123,6 +123,79 @@ Copier three-way-merges the change against your edits, using the answers recorde
 
 ---
 
+## Influences and attribution
+
+syntek-base is assembled from ideas other people worked out first. They are named here so you can
+go and check the primary sources yourself rather than taking this template's word for anything —
+and because these influences carry into **every project generated from it**, not just this repo.
+
+**These tables are kept current by a standing rule, not by periodic tidying.** `.claude/CLAUDE.md`
+§ 6 binds every agent: doctrine derived from an outside source is credited in the same change as
+the rule it credits, and the **licence column below is consulted before deriving, not after** —
+because use, adapt and redistribute are three different permissions, and a share-alike source
+would propagate its obligation into every generated project.
+
+### Practitioners
+
+| Who                                                                                                                                                                                                                                      | What it shaped here                                                                                                                                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Matt Pocock** — [AI Hero](https://www.aihero.dev/) · [mattpocock.com](https://www.mattpocock.com/) · [skills](https://github.com/mattpocock/skills) · [dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) | The engineering process for working _with_ coding agents rather than around them: context gathering, planning before code, steering, feedback loops, spec-driven workflows, and human-in-the-loop review. Two of his repositories are adapted directly — see below |
+| **Jake Van Clief** — [Clief Notes](https://www.skool.com/cliefnotes/about) · [LinkedIn](https://www.linkedin.com/in/jake-van-clief/)                                                                                                     | File organisation and folder architecture as the substrate for AI work, reusable prompt frameworks, and building durable structure underneath rather than chasing tool releases. The layered `CONTEXT.md` / `CLAUDE.md` system owes this its shape                 |
+
+### Design and anti-slop craft
+
+The cross-surface visual-design doctrine, the copy rules, and the audit scripts derive from the
+open skill ecosystem below. **Rule text is derived and re-authored, never copied** — sources are
+cited so the reasoning stays checkable, and so no upstream licence obligation propagates into a
+project generated from this template. Per-claim citations:
+[`research/ANTI-SLOP-RULE-SOURCES.md`](research/ANTI-SLOP-RULE-SOURCES.md).
+
+| Source                                                                                                               | Contributed                                                                            | Licence    |
+| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------- |
+| [Impeccable](https://github.com/pbakaus/impeccable) — Paul Bakaus                                                    | The craft floor, the deterministic-detector idea, and the native/mobile audit taxonomy | Apache-2.0 |
+| [Taste Skill](https://github.com/Leonxlnx/taste-skill) — Leon                                                        | Named visual directions as a commitment device instead of a default                    | MIT        |
+| [`skills/frontend-design`](https://github.com/anthropics/skills) — Anthropic                                         | The original banned-defaults framing for machine-authored UI                           | —          |
+| [emilkowalski/skills](https://github.com/emilkowalski/skills) — Emil Kowalski                                        | The numeric motion standard: frequency-first, duration ceilings, easing hierarchy      | MIT        |
+| [stop-slop](https://github.com/hardikpandya/stop-slop) — Hardik Pandya                                               | The structural taxonomy of AI prose tells behind the copy rules                        | MIT        |
+| [hallmark](https://github.com/nutlope/hallmark) — Hassan El Mghari                                                   | Macrostructure-first generation and slop-test gating                                   | MIT        |
+| [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)                                             | Treating design knowledge as a searchable reference, not a prescription                | MIT        |
+| [Web Interface Guidelines](https://github.com/vercel-labs/agent-skills) — Vercel Labs                                | Auditing interface rules with `file:line` output a reviewer can act on                 | —          |
+| [awesome-claude-design](https://github.com/VoltAgent/awesome-claude-design) — VoltAgent                              | The nine-section `DESIGN.md` brief format                                              | MIT        |
+| [claude-code-workflows](https://github.com/OneRedOak/claude-code-workflows) — OneRedOak                              | The design-review subagent pattern over a driven browser                               | MIT        |
+| [Playwright](https://playwright.dev/) · [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | Verifying the rendered result rather than trusting the source                          | Apache-2.0 |
+
+### Adapted directly, and tooling
+
+Where the design sources above are _derived from_, these are **adapted or run as-is** — the
+dependency is direct and the credit is owed accordingly.
+
+| Source                                                                                      | How it is used here                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Licence |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| [mattpocock/skills](https://github.com/mattpocock/skills) — Matt Pocock                     | Skill authoring patterns behind `.claude/skills/` and the standard in `how-to/docs/SKILL-AUTHORING.md`. **Two files are adapted text, not derived** — both of `.claude/skills/improve-codebase-architecture/`; MIT notice in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). Four skills (`resolving-merge-conflicts`, `wizard`, `to-questionnaire`, `wait-what`) and grilling's frontier-round method are **derived** from his set and re-authored. The same-named skills (`grilling`, `wayfinder`, `codebase-design`, `prototype`, `research`, `teach`, `handoff`, …) are independently authored | MIT     |
+| [mattpocock/dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) | [`how-to/docs/AI-DICTIONARY.md`](how-to/docs/AI-DICTIONARY.md) is adapted from it — sixty-nine terms re-authored in British English, credited in the file itself                                                                                                                                                                                                                                                                                                                                                                                                                                       | none    |
+| [tirth8205/code-review-graph](https://github.com/tirth8205/code-review-graph) — Tirth Patel | The MCP server in `.mcp.json` is **run as-is**; the four generated playbook cards under `.claude/skills/` are **committed upstream-authored text** — MIT notice in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). Graph-refresh gate: `code/docs/CODE-REVIEW-GRAPH.md`                                                                                                                                                                                                                                                                                                                            | MIT     |
+| [cloudinary-devs/skills](https://github.com/cloudinary-devs/skills) — Cloudinary            | **Vendored verbatim** — 15 files under `.agents/skills/`, installed via `skills-lock.json` and symlinked into `.claude/skills/`. Not derived, not adapted: copied. MIT notice in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md)                                                                                                                                                                                                                                                                                                                                                                    | MIT     |
+
+### Platform and engineering craft
+
+The backend, background-job, observability and security doctrine draws on these. As above, **rules
+are derived and re-authored, never copied**; per-claim citations live in
+[`research/AGENT-SKILL-ECOSYSTEM.md`](research/AGENT-SKILL-ECOSYSTEM.md).
+
+| Source                                                                                               | Contributed                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Licence      |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| [wshobson/agents](https://github.com/wshobson/agents) — Seth Hobson                                  | Background-job discipline (idempotency under at-least-once delivery, retry policy, DLQ), async/sync patterns, and the incident-practice agenda — postmortem structure, the on-call handover, and runbook templates                                                                                                                                                                                                                                          | MIT          |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani                  | Spec-driven and doubt-driven development, context engineering                                                                                                                                                                                                                                                                                                                                                                                               | MIT          |
+| [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits                          | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution into client projects                                                                                                                                                                                                                     | CC-BY-SA-4.0 |
+| [agentskills/agentskills](https://github.com/agentskills/agentskills)                                | The published [Agent Skills specification](https://agentskills.io/specification) — the six `SKILL.md` frontmatter fields and their constraints. `how-to/docs/SKILL-AUTHORING.md` states the format, then narrows it to the two fields this project authors; `audits/skill-conformance.sh` checks both halves. No specification text is redistributed                                                                                                        | Apache-2.0   |
+| [alibaba/open-code-review](https://github.com/alibaba/open-code-review)                              | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                                                                                                                                                                                                                                                          | Apache-2.0   |
+| [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md) — TigerBeetle | Negative-space programming: state what must **never** be true, enforce each invariant at one named point, and fail loudly rather than degrade. Behind `code/docs/NEGATIVE-SPACE.md` and `how-to/src/INVARIANTS.md`. **Its assertion mechanism is deliberately not adopted** — Python's `assert` is stripped by `-O` and cannot carry the register key, so guards `raise` instead. The name is ThePrimeagen's coinage for the idea Hoare simply called logic | Apache-2.0   |
+
+Everything above is free and open. If a rule in this template looks wrong to you, the original is
+one click away — read it and form your own view.
+
+---
+
 ## Licence
 
 MIT — see [LICENSE](LICENSE).
@@ -142,4 +215,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v1.0.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v2.13.1 · British English (en_GB) throughout_

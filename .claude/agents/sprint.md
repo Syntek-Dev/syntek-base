@@ -48,8 +48,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Grill Before Slicing
 
 Sprint planning **opens with a grilling pass** — load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time (each with your recommended answer; look facts up, don't
-ask; no action until <%DEVELOPER_NAME%> confirms) before slicing the backlog into sprints. This inverts the
+interview <%DEVELOPER_NAME%> before slicing the backlog into sprints. This inverts the
 usual proceed-by-default posture (`.claude/CLAUDE.md` §10). Grill across **scope** (what the
 sprint delivers), **priority** (the MoSCoW mix), **capacity** (the point ceiling and buffer),
 and **dependencies** (blocker order), then apply the resolved decisions in the sprint record.

@@ -15,7 +15,7 @@ Internal and external references for setup, daily development, and debugging.
 | `how-to/CONTEXT.md`                                   | Layer entry point — when to read and what lives here           |
 | `how-to/docs/CONTEXT.md`                              | Operational reference guides index                             |
 | `how-to/src/CONTEXT.md`                               | Operator-guide index — contributing, template, snapshots       |
-| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`                | Using syntek-base as a template — index over 14 guides         |
+| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`                | Using syntek-base as a template — index over 15 guides         |
 | `how-to/src/SCALE-ARCHITECTURE/CONTEXT.md`            | How the app scales — load profiles, readiness, sizing envelope |
 | `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md`           | What the server/edge must provide; feeds the NixOS deploy repo |
 | `how-to/workflows/CONTEXT.md`                         | Workflow index — nine workflows in four families               |
@@ -48,25 +48,29 @@ points for that procedure.
 
 ### Reference guides
 
-| File                              | Purpose                                                               |
-| --------------------------------- | --------------------------------------------------------------------- |
-| `how-to/docs/DEVELOPMENT.md`      | First-time setup, Docker Compose commands, env vars, troubleshooting  |
-| `how-to/docs/AI-DICTIONARY.md`    | Plain-English glossary of AI-coding terms (index over ai-dictionary/) |
-| `how-to/docs/SKILL-AUTHORING.md`  | How to write predictable skills under .claude/skills/                 |
-| `how-to/docs/CLI-TOOLING.md`      | CLI reference for all Docker Compose development commands             |
-| `how-to/docs/GIT-WORKTREES.md`    | Parallel development with git worktrees, Docker isolation, URLs       |
-| `how-to/docs/TOOLING-GUIDE.md`    | Internal agents and skills reference (index)                          |
-| `how-to/docs/CELERY-FIRST-RUN.md` | Getting the Celery worker and beat running the first time             |
-| `how-to/docs/FEATURE-DEPLOY.md`   | Deploying a feature branch                                            |
+| File                               | Purpose                                                                |
+| ---------------------------------- | ---------------------------------------------------------------------- |
+| `how-to/docs/DEVELOPMENT.md`       | First-time setup, Docker Compose commands, env vars, troubleshooting   |
+| `how-to/docs/AI-DICTIONARY.md`     | Plain-English glossary of AI-coding terms (index over ai-dictionary/)  |
+| `how-to/docs/SKILL-AUTHORING.md`   | How to write predictable skills under .claude/skills/                  |
+| `how-to/docs/CLI-TOOLING.md`       | CLI reference for all Docker Compose development commands              |
+| `how-to/docs/GIT-WORKTREES.md`     | Parallel development with git worktrees, Docker isolation, URLs        |
+| `how-to/docs/TOOLING-GUIDE.md`     | Internal agents and skills reference (index)                           |
+| `how-to/docs/CELERY-FIRST-RUN.md`  | Getting the Celery worker and beat running the first time              |
+| `how-to/docs/FEATURE-DEPLOY.md`    | Deploying a feature branch                                             |
+| `how-to/docs/INCIDENT-PRACTICE.md` | Running a live incident: declare, shift handover, stand down, write up |
 
 ### Operator guides (`how-to/src/`)
 
-| File                            | Purpose                                                           |
-| ------------------------------- | ----------------------------------------------------------------- |
-| `how-to/src/CONTRIBUTING.md`    | Contributing, branching, commits, testing, code quality, PR gates |
-| `how-to/src/TEMPLATE-TOKENS.md` | The token contract `copier.yml` implements _(template-only)_      |
-| `how-to/src/TEMPLATE-GUIDE/`    | Fourteen guides on using the template _(template-only)_           |
-| `how-to/src/NIXOS-SETUP.md`     | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/        |
+| File                               | Purpose                                                                       |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| `how-to/src/BRAND-VOICE.md`        | Brand voice — tone, the four registers, the banned machine tells              |
+| `how-to/src/CONTRIBUTING.md`       | Contributing, branching, commits, testing, code quality, PR gates             |
+| `how-to/src/INVARIANTS.md`         | The invariant register — one enforcement point each, and what a breach raises |
+| `how-to/src/PLATFORM-PROVIDERS.md` | The infrastructure register — seam kind, alternates, substrate verdicts       |
+| `how-to/src/TEMPLATE-TOKENS.md`    | The token contract `copier.yml` implements _(template-only)_                  |
+| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen guides on using the template _(template-only)_                        |
+| `how-to/src/NIXOS-SETUP.md`        | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/                    |
 
 ### Cross-layer references
 
@@ -96,13 +100,14 @@ points for that procedure.
 
 ## External — IDE & Editor
 
-| Reference                                                                                          | Description                                                                  |
-| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [VS Code documentation](https://code.visualstudio.com/docs)                                        | Editor docs including Dev Containers and settings                            |
-| [VS Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers)              | Attaching VS Code to a running Docker container                              |
-| [Zed documentation](https://zed.dev/docs/)                                                         | Editor used per-worktree — each window is an independent Claude Code session |
-| [Claude Code CLI documentation](https://docs.anthropic.com/en/docs/claude-code/overview)           | Claude Code agent CLI reference and skill system                             |
-| [Lefthook VS Code integration](https://github.com/evilmartians/lefthook/blob/master/docs/usage.md) | Running Lefthook hooks from within VS Code                                   |
+| Reference                                                                                          | Description                                                                                                                                                                                                          |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [VS Code documentation](https://code.visualstudio.com/docs)                                        | Editor docs including Dev Containers and settings                                                                                                                                                                    |
+| [VS Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers)              | Attaching VS Code to a running Docker container                                                                                                                                                                      |
+| [Zed documentation](https://zed.dev/docs/)                                                         | Editor used per-worktree — each window is an independent Claude Code session                                                                                                                                         |
+| [Claude Code CLI documentation](https://docs.anthropic.com/en/docs/claude-code/overview)           | Claude Code agent CLI reference and skill system                                                                                                                                                                     |
+| [Agent Skills specification](https://agentskills.io/specification)                                 | The published `SKILL.md` format — the six frontmatter fields and their constraints. `how-to/docs/SKILL-AUTHORING.md` conforms to it and narrows it to two authored fields; the gate is `audits/skill-conformance.sh` |
+| [Lefthook VS Code integration](https://github.com/evilmartians/lefthook/blob/master/docs/usage.md) | Running Lefthook hooks from within VS Code                                                                                                                                                                           |
 
 ---
 

@@ -162,6 +162,34 @@ us###/feature  →  testing  →  dev  →  staging  →  main
 
 ---
 
+## Required status checks and path filters
+
+**A workflow may be path-filtered, or it may be a required status check. Never both.**
+
+GitHub treats a required check as satisfied only when it **reports**. A path-filtered workflow
+does not run at all when a pull request touches none of its paths — so it never reports, and the
+check sits _Expected — waiting for status_ forever. The pull request cannot merge, and there is
+nothing to re-run: the job was never queued. A documentation-only PR blocked by a required CSS
+audit is the usual way this is discovered.
+
+So each CI workflow makes one choice, and **says which in a comment at the top of the file**:
+
+| Kind                      | Path filter   | Why                                                                     |
+| ------------------------- | ------------- | ----------------------------------------------------------------------- |
+| **Required status check** | **None**      | It must report on every pull request, including ones it has no work for |
+| **Advisory / audit**      | Path-filtered | It runs only when its own inputs change, and never blocks a merge       |
+
+The audits under `code/src/scripts/audits/` are the second kind: one path-filtered workflow each,
+none of them a required check. That is what lets them be cheap and specific. A workflow with no
+path filter (`syntax-markdown.yml`, `syntax-js-ts.yml`, `audit-template.yml`) is deliberately
+unfiltered because it **is** a required check.
+
+**Promoting an audit to required means deleting its path filter in the same change.** Adding it
+to the branch-protection list while it still carries `paths:` is the failure above, and it will
+not be obvious — the first PR to trip it will look like a GitHub outage.
+
+---
+
 ## Database Migration PR Gates
 
 These checks are **mandatory** for any PR that adds or modifies a Django migration. They run

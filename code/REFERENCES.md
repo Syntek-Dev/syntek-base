@@ -35,15 +35,26 @@ Internal and external references for all coding work in this repository.
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA, semantic HTML, ARIA patterns
 - `code/docs/API-DESIGN.md` — Django Ninja conventions, JSON API patterns
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service layer, Django app structure, page routing
+- `code/docs/BACKEND-CODING-PRINCIPLES.md` — Django/Python/Celery specifics: class vs function, error handling, caching (read with `CODING-PRINCIPLES.md`)
 - `code/docs/CODE-REVIEW-GRAPH.md` — code-review-graph MCP playbooks (explore, debug, review, refactor)
 - `code/docs/CODING-PRINCIPLES.md` — file-length limits, Rob Pike and Linus Torvalds rules
 - `code/docs/DATABASE.md` — pre-flight data-layer rules: scope columns, database-level constraints, lock-safe migrations, search, deferred infrastructure with trigger conditions
 - `code/docs/DATA-STRUCTURES.md` — domain modelling, PostgreSQL schema design, indexing
 - `code/docs/DESIGN-TOKENS.md` — CSS design-token catalogue and `var(--token)`-only usage rules
+- `code/docs/DISCOVERABILITY.md` — how this stack implements being found: the `build_seo()` head pipeline and canonical rules (`discoverability/WEB-METADATA.md`), the typed JSON-LD builders and their XSS-safe serialiser (`STRUCTURED-DATA.md`), every root and `/.well-known/` file with the register naming who owns each (`ROOT-SURFACE.md`), and the shape of the page body (`CONTENT-STRUCTURE.md`, whose § 1 disposes of the chunking, fan-out and per-engine GEO myths against Google's own documentation). The **method** side of the seam whose **requirements** side is `project-management/docs/SEO-CHECKLIST.md`
 - `code/docs/DESKTOP.md` — **desktop-only** — the native Slint application: the Royalty-free licence obligation and its AboutSlint disclosure, the generated-code lint boundary, threading, and AccessKit accessibility
+- `code/docs/DOCUMENTATION-PAIRING.md` — the `CONTEXT.md` / `CLAUDE.md` split: the decision test that separates orientation from operating rules, the headings banned from an orientation file and where each moves, route-don't-restate, and the two pairing exceptions
 - `code/docs/ENCRYPTION-GUIDE.md` — field-level encryption patterns for PII storage
-- `code/docs/LOGGING.md` — logging config, Glitchtip, Loki, Prometheus, Grafana
+- `code/docs/FRONTEND-CODING-PRINCIPLES.md` — Django templates + django-components + HTMX + Alpine + CSS specifics (read with `CODING-PRINCIPLES.md`)
+- `code/docs/LOGGING.md` — logging config, error tracking, log aggregation, metrics and dashboards, distributed tracing
 - `code/docs/MCP-SERVER.md` — the FastMCP tool surface at `/mcp/`: mounting, tool design, auth and threats, testing and ops (available but unwired)
+- `code/docs/TASK-AUTHORING.md` — background-task authoring: the enqueue boundary (never enqueue inside an uncommitted transaction, and the committed-but-unpublished window the on-commit hook leaves open), the delivery guarantee as a configured choice rather than an inherited one, idempotency, retries and backoff, time and rate limits, queue routing, testing without a broker (declared, not wired)
+- `code/docs/PROCESS-MODEL.md` — worker class, event loop, the ORM's sync boundary, and where a task worker sits relative to the web process family
+- `code/docs/OBJECT-STORAGE.md` — private-document storage over the S3 API: the adapter contract, presigned URLs, upload validation (declared, not wired)
+- `code/docs/security/AUDIT-TRAIL.md` — the audit record's owner: schema, write path and its transaction rule, what must be recorded, the PII rule, retention, immutability, tamper-resistance (OWASP A09)
+- `code/docs/architecture/PROVIDER-NEUTRALITY.md` — seam vs substrate: the two evidence bars, the substrate test, and how a guide names an interface rather than a product
+- `code/docs/architecture/BUILD-OPERATE-SEAM.md` — where a fact lives across `code/docs` (the why), `SERVER-ARCHITECTURE` (the contract) and the deploy repo; the ownership sentence, the `**Source:**` field, and the same-change rule
+- `code/docs/NEGATIVE-SPACE.md` — what the code must never allow: what counts as an invariant, the invariant-class catalogue with one named enforcement point each, the soft-delete partial-unique trap, the three-class error taxonomy (`InvariantViolation` outside the `ServiceError` tree), and the guard clause — `raise` never `assert`, gated by ruff `S101`, inline at the one named method, and what a guard must never do. The per-project answer sheet is `how-to/src/INVARIANTS.md`
 - `code/docs/PERFORMANCE.md` — N+1 prevention, caching, template/HTMX optimisation
 - `code/docs/RENDERING.md` — server-rendered templates, HTMX partials, Alpine, and where each interaction runs
 - `code/docs/RESPONSIVE-DESIGN.md` — mobile-first CSS, media queries, breakpoints, CSS custom properties
@@ -52,7 +63,10 @@ Internal and external references for all coding work in this repository.
 - `code/docs/SECURITY.md` — OWASP A01–A10, Django Ninja API security, CORS, IDOR prevention
 - `code/docs/TESTING.md` — TDD phases, coverage floors, pytest setup
 - `code/docs/URL-STRATEGY.md` — route naming, slug patterns, Django URL conventions
-- `code/docs/VISUAL-DESIGN.md` — visual language: anti-generic layout, <%ORG_NAME%> signature, design-artefact routing
+- `code/docs/VISUAL-DESIGN.md` — visual language, the cross-surface core: the per-project **direction** and its six axes (§3, settled at first-time setup), the universal tells (§4.1) and the direction deviations that read off those axes (§4.2), the motion numeric standard and the standards-floor/axes-shape precedence rule (§5), design-artefact routing
+- `code/docs/visual-design/WEB.md` — the web expression of that direction: the signature in CSS and django-components, the component vocabulary, and the web pre-ship checklist
+- `code/docs/visual-design/MOBILE.md` — **mobile-only** — the mobile expression: platform conformance and adaptivity, the two dimensions no other guide owns. Mobile slop is a different taxonomy, not a translation of the web's
+- `code/docs/visual-design/DESKTOP.md` — **desktop-only** — the desktop expression: the stock-Fluent tell (Slint 1.16+ defaults to Fluent on every platform) and the deliberate compile-time style choice
 - `code/docs/cloudinary/CONTEXT.md` — Cloudinary SDK docs index (Python SDK)
 - `code/docs/cloudinary/PYTHON_SDK.md` — Cloudinary Python SDK: upload, admin API, exceptions
 - `code/docs/cloudinary/CROSS_SDK_INFO.md` — Cross-SDK: config params, action syntax, browser support, input validation
@@ -69,8 +83,10 @@ Internal and external references for all coding work in this repository.
 - **FastMCP** — <https://gofastmcp.com/> — the Python MCP server framework behind the `/mcp/` tool surface (not installed at baseline)
 - **Model Context Protocol** — <https://modelcontextprotocol.io/> — the protocol specification FastMCP implements; read for transport and session semantics
 - **Starlette** — <https://www.starlette.io/> — the ASGI toolkit that composes the `/mcp/` and Django mounts in `config/asgi.py` (arrives with FastMCP)
+- **Celery — configuration reference** — <https://docs.celeryq.dev/en/stable/userguide/configuration.html> — the acknowledgement settings that decide the delivery guarantee. `task_acks_late` is **disabled by default**, so a message is acked before the task body runs and a killed worker loses its task rather than repeating it; `task_reject_on_worker_lost` is what re-queues it, at the risk of a loop. Read before wiring the task surface (`code/docs/TASK-AUTHORING.md` → _Idempotency_)
 - **Gunicorn** — <https://docs.gunicorn.org/en/stable/> — WSGI HTTP server
 - **Uvicorn** — <https://www.uvicorn.org/> — ASGI server used alongside Gunicorn
+- **OpenTelemetry Python** — <https://opentelemetry.io/docs/languages/python/> — the API, SDK and OTLP exporter behind the tracing seam. **Not a declared dependency**: the seam is adopted in doctrine and nothing is instrumented at baseline, so read this only when the trigger in `code/docs/logging/OBSERVABILITY.md` § _Distributed tracing_ has fired
 
 ### Native (rust-only)
 
@@ -117,6 +133,7 @@ Internal and external references for all coding work in this repository.
 - **Prettier** — <https://prettier.io/docs/en/> — opinionated code formatter for CSS, Markdown, and JSON
 - **basedpyright** — <https://docs.basedpyright.com/latest/> — strict Python type checker (basedpyright fork of pyright)
 - **markdownlint-cli2** — <https://github.com/DavidAnson/markdownlint-cli2#readme> — Markdown linting (enforces MD040 language fences)
+- **Opengrep** — <https://github.com/opengrep/opengrep> — the LGPL-2.1 static-analysis engine behind `audits/static-analysis.sh`. Optional: the script degrades gracefully when it is absent. Its **rules are written in-house** — neither `opengrep-rules` (LGPL-2.1 **plus a Commons Clause**) nor `semgrep-rules` (Semgrep Rules License v1.0, non-sublicensable, internal use only) may be vendored, because this template redistributes into generated projects
 
 ---
 

@@ -29,6 +29,7 @@ django-components + HTMX + Alpine throughout, vanilla token CSS, deployed via Do
 14. [TDD and BDD](#tdd-and-bdd)
 15. [Backend and API Guide](#backend-and-api-guide)
 16. [Frontend Guide](#frontend-guide)
+17. [Influences and Attribution](#influences-and-attribution)
 
 ---
 
@@ -65,7 +66,7 @@ project-management artefact needed to develop, test, and deploy the product.
 | **API**                    | Django Ninja — JSON at `/api/`, OpenAPI at `/api/docs`                |
 | **Database**               | PostgreSQL 18                                                         |
 | **Cache / broker**         | Valkey (latest stable)                                                |
-| **Background tasks**       | Celery (worker + beat)                                                |
+| **Background tasks**       | Celery (worker + beat) — declared, not wired                          |
 | **Backend server**         | Gunicorn + Uvicorn / Nginx                                            |
 | **Frontend**               | Django templates + django-components + HTMX + Alpine (every surface)  |
 | **Styling**                | Vanilla CSS (design tokens / custom properties)                       |
@@ -87,6 +88,12 @@ repository root carrying the full terms — it is authoritative, and this notice
 Third-party dependencies must carry a licence compatible with that choice. Where <%LICENCE%> is
 commercial or proprietary, MIT / Apache 2.0 / ISC are safe and GPL/AGPL requires written approval
 before use.
+
+**Third-party work redistributed inside this repository** — vendored skills and generated
+playbook cards that arrived with the template — carries its own notices in
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). That file is not optional paperwork: it is the
+condition on which those files may be redistributed at all. Adding an outside file to this project
+adds its row there in the same change.
 
 > Generated from the [syntek-base](https://github.com/Syntek-Dev/syntek-base) template, which is
 > MIT licensed. That imposes no obligation on this codebase — the licence above is this
@@ -239,6 +246,7 @@ Two things to do on a freshly generated project:
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
+│   │   ├── 01-FEATURE/                 ← MAP-<FEATURE>.md decision maps (wayfinder)
 │   │   ├── 02-STORIES/
 │   │   ├── 03-SPRINTS/
 │   │   ├── 04-DATABASE/
@@ -258,8 +266,10 @@ Two things to do on a freshly generated project:
 │   │   ├── 18-REVIEWS/
 │   │   ├── 19-FINDINGS/
 │   │   ├── 20-BUGS/
-│   │   └── 21-REFACTORING/
-│   └── workflows/                       ← 21 step-by-step PM workflows
+│   │   ├── 21-REFACTORING/
+│   │   └── 22-INCIDENTS/               ← the PII-free incident register; no story, no workflow
+│   └── workflows/                       ← 23 step-by-step PM workflows
+│       ├── 01-feature/                 ← chart the feature's decision frontier (wayfinder)
 │       ├── 02-story-creation/
 │       ├── 03-sprint-planning/
 │       ├── 04-database-schema/
@@ -272,12 +282,22 @@ Two things to do on a freshly generated project:
 │       ├── 11-qa-checks/
 │       ├── 12-seo-checks/
 │       ├── 13-api-design/
+│       ├── 14-decisions/               ← ADRs
 │       ├── 15-sprint-plans/
+│       ├── 16-story-plans/             ← the per-story plan a developer codes from
+│       ├── 17-consolidate-design-work/ ← unify per-story design before any code
 │       ├── 18-backend-code/
 │       ├── 19-api-code/
 │       ├── 20-frontend-code/
+│       ├── 21-implementation-documentation/ ← docs closeout + graph refresh
 │       ├── 22-pr-and-review/
 │       └── 23-release/
+├── .agents/                             ← vendored third-party skills (Cloudinary) — see THIRD-PARTY-NOTICES.md
+├── .zed/                                ← Zed editor settings
+├── handoffs/                            ← session handoff documents (the auto-compaction replacement)
+├── questionnaires/                      ← /to-questionnaire — outbound discovery questionnaires
+├── research/                            ← /research — primary-source-cited notes that feed decisions
+├── learning/                            ← /teach sandbox — throwaway learning workspace
 ├── CHANGELOG.md                         ← human-readable changelog
 ├── CONTEXT.md                           ← project overview and layer map
 ├── DEFERRED.md                          ← items explicitly deferred to future stories (checked at sprint planning)
@@ -286,6 +306,7 @@ Two things to do on a freshly generated project:
 ├── README.md                            ← this file
 ├── REFERENCES.md                        ← curated external reference links for development
 ├── RELEASES.md                          ← release notes archive
+├── THIRD-PARTY-NOTICES.md               ← licence notices for third-party work redistributed here
 ├── VERSION                              ← current semver string
 ├── VERSION-HISTORY.md                   ← full version bump history
 ├── eslint.config.mjs
@@ -295,6 +316,8 @@ Two things to do on a freshly generated project:
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
 ├── pyproject.toml                       ← Python tooling (ruff, basedpyright, uv)
+├── skills-lock.json                     ← vendored Claude Code skills — source, version, content hash
+├── .mcp.json                            ← project MCP servers (code-review-graph)
 ├── .copier-answers.yml                  ← your generation answers — keep committed, `copier update` needs it
 └── uv.lock                              ← generated at project creation; commit it (Dockerfiles build --frozen)
 ```
@@ -371,12 +394,16 @@ Never commit `.env.dev` or any file containing real secrets.
 
 This starts:
 
-- **django** — Django ASGI (Gunicorn + Uvicorn) with hot-reload, serving templates, HTMX, and the `/api/` JSON API (port 8000)
-- **worker / beat** — Celery worker and beat scheduler
+Four services, and no more:
+
+- **django** — Django ASGI (Uvicorn `--reload` directly, for reliable hot-reload of `.py` and templates), serving templates, HTMX, and the `/api/` JSON API (port 8000). Staging and prod run Gunicorn + Uvicorn workers instead
 - **db** — PostgreSQL 18 (port 5432)
 - **cache** — Valkey (port 6379)
-- **mailpit** — local mail catcher UI (port 8025)
 - **nginx** — reverse proxy routing all traffic (port 80)
+
+There is no Celery `worker` or `beat` container. `celery[redis]` is a declared dependency in `pyproject.toml`, but no Compose file defines those services and no `CELERY_*` setting exists under `code/src/django/config/settings/` — see `how-to/docs/CELERY-FIRST-RUN.md` before wiring it.
+
+**There is no mail catcher.** Dev uses Django's console email backend (`config/settings/dev.py`), so outbound mail is printed to the `django` container's stdout — read it with `bash code/src/scripts/development/logs.sh --service django --follow`. Test uses the in-memory backend. Adding Mailpit is a deliberate change, like any other service.
 
 ### Apply database migrations
 
@@ -397,7 +424,6 @@ This starts:
 | `http://dev.<%PROJECT_SLUG%>.localhost`          | Public site (Django templates + HTMX) |
 | `http://dev.<%PROJECT_SLUG%>.localhost/api/docs` | OpenAPI docs (Django Ninja; dev)      |
 | `http://dev.<%PROJECT_SLUG%>.localhost/control/` | Django admin (non-obvious path)       |
-| `http://dev.<%PROJECT_SLUG%>.localhost:8027`     | Mailpit — local mail catcher          |
 
 ---
 
@@ -719,7 +745,8 @@ workflow is explicitly triggered.
 ### The eleven coding workflows
 
 Grouped in three families. The numbers are stable identifiers, not a sequence — you never run
-`01` through `11`.
+`01` through `11`. Two more exist behind the optional surfaces and are absent here unless this
+project opted in: **`12-rust-extension/`** (rust-only) and **`13-desktop-app/`** (desktop-only).
 
 | Family                 | #   | Workflow                  | Purpose                                                                  |
 | ---------------------- | --- | ------------------------- | ------------------------------------------------------------------------ |
@@ -809,6 +836,42 @@ Agents are invoked by Claude Code automatically when a task matches the agent's 
 Orchestrator agents run `opus` by default; the `story` orchestrator and the planning
 specialists (`sprint`, `planner`, `user-story`) run `fable`. `sonnet` and `haiku` are never used.
 
+### Skills
+
+Skills are reference bundles under `.claude/skills/` that agents load **on demand** — the
+convention is that a skill is loaded when its trigger matches, not read up front. The register of
+record is `.claude/skills/CONTEXT.md`.
+
+| Skill                                               | Load when                                                                    |
+| --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `stack-django`                                      | Backend — models, migrations, services, Django Ninja endpoints, pytest       |
+| `stack-htmx-templates`                              | Public frontend — templates, django-components, HTMX, Alpine, token CSS      |
+| `stack-fastmcp`                                     | The MCP tool surface at `/mcp/`                                              |
+| `stack-react-native` · `stack-rust` · `stack-slint` | The optional mobile, Rust and desktop surfaces — absent unless opted in      |
+| `global-workflow`                                   | Branches, commits, PRs, version bumps, docs, code comments                   |
+| `grilling` · `grill-me` · `grill-with-docs`         | Any substantial design work — the interview that precedes the artefact       |
+| `codebase-design` · `domain-modelling`              | Architecture vocabulary; recording a new concept or decision                 |
+| `improve-codebase-architecture`                     | `/improve-codebase-architecture` — find shallow modules, report, then grill  |
+| `scale-planning`                                    | `/scale-planning` — size the deployment and prove it scales                  |
+| `wayfinder`                                         | Charting an epic too big for one session into a decision map                 |
+| `handoff`                                           | `/handoff` — the auto-compaction replacement; write the doc, then stop       |
+| `prototype` · `research` · `teach`                  | A throwaway spike · a primary-source note · a learning sandbox               |
+| `incident`                                          | Something is broken in staging or production and the response needs a scribe |
+| `to-questionnaire`                                  | A decision is blocked on someone outside the session — client, DPO, vendor   |
+| `wait-what`                                         | `/wait-what` — the last reply did not land; re-pitch it                      |
+| `resolving-merge-conflicts`                         | A merge, rebase, or `copier update` has left conflict markers                |
+| `wizard`                                            | Authoring an interactive bash wizard for steps only a human can perform      |
+| `runbook`                                           | Writing an operator guide someone will execute under pressure                |
+| `legal-documents` · `msp-scp-documents`             | Drafting a legal document or a security/compliance policy                    |
+| `cloudinary-*`                                      | Cloudinary upload, delivery, and transformation work                         |
+
+**Grilling is the one to understand first.** Substantial work does not begin with the work — it
+begins with an interview, asked in **rounds**: every question whose prerequisites are already
+settled goes out together, numbered, each with brief options and an explicit recommendation. You
+answer the set; the answers unblock the next round. Facts are looked up rather than asked, and
+nothing is built until you confirm. The shape lives in `.claude/skills/grilling/SKILL.md` and is
+deliberately stated **nowhere else** — every agent and workflow routes to it.
+
 ### Agent helper scripts
 
 Scripts in `.claude/plugins/` are Python helpers agents call (`python3 .claude/plugins/x.py`) to
@@ -863,12 +926,11 @@ containers are namespaced as `<%PROJECT_SLUG%>-dev-us###-*` and served at
 | Service     | dev | test | staging | prod | Notes                                  |
 | ----------- | --- | ---- | ------- | ---- | -------------------------------------- |
 | `django`    | ✅  | ✅   | ✅      | ✅   | Django ASGI — Gunicorn + Uvicorn       |
-| `worker`    | ✅  | ✅   | ✅      | ✅   | Celery worker                          |
-| `beat`      | ✅  | ✅   | ✅      | ✅   | Celery beat scheduler                  |
+| `worker`    | ❌  | ❌   | ❌      | ❌   | Celery worker — declared, not wired    |
+| `beat`      | ❌  | ❌   | ❌      | ❌   | Celery beat — declared, not wired      |
 | `db`        | ✅  | ✅   | ❌      | ❌   | PostgreSQL 18 — server-managed in prod |
 | `cache`     | ✅  | ✅   | ❌      | ❌   | Valkey — server-managed in prod        |
-| `seaweedfs` | ✅  | ✅   | ❌      | ❌   | SeaweedFS S3 (private documents)       |
-| `mailpit`   | ✅  | ✅   | ❌      | ❌   | Local mail catcher (port 8025)         |
+| `seaweedfs` | ❌  | ❌   | ❌      | ❌   | S3 storage — `boto3` declared, unwired |
 | `nginx`     | ✅  | ✅   | ❌      | ❌   | Reverse proxy (port 80)                |
 
 ### Common commands
@@ -884,7 +946,7 @@ bash code/src/scripts/development/logs.sh --service django --follow
 
 # Open a shell in a container
 bash code/src/scripts/development/shell.sh                   # django (default)
-bash code/src/scripts/development/shell.sh --service worker
+bash code/src/scripts/development/shell.sh --service db      # any service in the dev compose file
 
 # Run backend tests
 bash code/src/scripts/tests/backend.sh
@@ -936,19 +998,20 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 
 ### Development scripts (`code/src/scripts/development/`)
 
-| Script                  | Purpose                                                             |
-| ----------------------- | ------------------------------------------------------------------- |
-| `server.sh`             | Manage the dev stack: `up`, `down`, `restart`, `build`, `status`    |
-| `logs.sh`               | View and tail container logs; filter by service, time, or count     |
-| `shell.sh`              | Open an interactive shell in any dev container                      |
-| `new-django-app.sh`     | Scaffold a new Django app with per-model-file structure             |
-| `new-django-view.sh`    | Scaffold a new public marketing page (Django view + template + URL) |
-| `install-backend.sh`    | Update `uv.lock` and optionally sync Python backend dependencies    |
-| `install-frontend.sh`   | Update `pnpm-lock.yaml` and optionally sync frontend dependencies   |
-| `install.sh`            | Compatibility shim — forwards to `install-frontend.sh`              |
-| `pnpm-update.sh`        | Self-update pnpm and pin the new version across project files       |
-| `hosts-story-add.sh`    | Add `/etc/hosts` entries for a story worktree (worktree dev setup)  |
-| `hosts-story-remove.sh` | Remove `/etc/hosts` entries for a story worktree                    |
+| Script                  | Purpose                                                               |
+| ----------------------- | --------------------------------------------------------------------- |
+| `server.sh`             | Manage the dev stack: `up`, `down`, `restart`, `build`, `status`      |
+| `logs.sh`               | View and tail container logs; filter by service, time, or count       |
+| `shell.sh`              | Open an interactive shell in any dev container                        |
+| `new-django-app.sh`     | Scaffold a new Django app with per-model-file structure               |
+| `new-django-view.sh`    | Scaffold a new public marketing page (Django view + template + URL)   |
+| `install-backend.sh`    | Update `uv.lock` and optionally sync Python backend dependencies      |
+| `install-frontend.sh`   | Update `pnpm-lock.yaml` and optionally sync frontend dependencies     |
+| `install.sh`            | Compatibility shim — forwards to `install-frontend.sh`                |
+| `pnpm-update.sh`        | Self-update pnpm and pin the new version across project files         |
+| `hosts-story-add.sh`    | Add `/etc/hosts` entries for a story worktree (worktree dev setup)    |
+| `hosts-story-remove.sh` | Remove `/etc/hosts` entries for a story worktree                      |
+| `sync-trees.sh`         | Reconcile every `CONTEXT.md` Directory Tree against disk (pre-commit) |
 
 ```bash
 ./code/src/scripts/development/server.sh up
@@ -1038,21 +1101,42 @@ All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
 
 ### Audit scripts (`code/src/scripts/audits/`)
 
-| Script          | Purpose                                                                                 |
-| --------------- | --------------------------------------------------------------------------------------- |
-| `cloc.sh`       | Count lines per file (warns at 750, fails at 800) and produce language breakdown        |
-| `stubs.sh`      | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK) |
-| `css-tokens.sh` | Verify component CSS only consumes resolvable `var(--token)` design tokens              |
-| `security.sh`   | Static security audit (secrets, dependency, and config checks)                          |
+The register of record is `code/src/scripts/audits/CONTEXT.md` — it is authoritative if this
+table ever falls behind it.
+
+| Script                 | Purpose                                                                                 |
+| ---------------------- | --------------------------------------------------------------------------------------- |
+| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown      |
+| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK) |
+| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens              |
+| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                        |
+| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source         |
+| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds  |
+| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                    |
+| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` § 4)                         |
+| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens |
+| `copy-emdash.sh`       | Em dashes in user-facing copy                                                           |
+| `css-gradients.sh`     | Raw gradient literals outside the token layer                                           |
+| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)           |
+| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                |
+| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                |
+| `skill-conformance.sh` | Every skill matches the Agent Skills spec and this project's two-field narrowing        |
+| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                    |
+| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                          |
 
 ```bash
 ./code/src/scripts/audits/cloc.sh
 ./code/src/scripts/audits/cloc.sh --output md
-./code/src/scripts/audits/stubs.sh
 ./code/src/scripts/audits/stubs.sh --strict
 ./code/src/scripts/audits/css-tokens.sh
 ./code/src/scripts/audits/security.sh
+./code/src/scripts/audits/static-analysis.sh
 ```
+
+Rows flagged **mobile-only** are absent unless the project opted into that surface; the desktop
+surface adds `code/src/scripts/desktop/style-check.sh`, which lives beside the app it checks
+because the slop family splits by **input language** and a Slint build file is neither CSS,
+markup, nor prose.
 
 ### Pre-commit hooks
 
@@ -1193,6 +1277,72 @@ code/src/django/
 - Accessibility guide → `code/docs/ACCESSIBILITY.md`
 - Performance guide → `code/docs/PERFORMANCE.md`
 - Architecture patterns → `code/docs/ARCHITECTURE-PATTERNS.md`
+
+---
+
+## Influences and Attribution
+
+This project was generated from **syntek-base**, and inherits its conventions — the layered
+context system, the design and anti-slop doctrine, the audit scripts, the agent and workflow
+routing. Those conventions are not original to the template. They are named here so anyone
+working in this repository can check the primary sources and form their own view, rather than
+following a rule because a `CLAUDE.md` said so.
+
+### Practitioners
+
+| Who                                                                                                                                                                                                                                      | What it shaped                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Matt Pocock** — [AI Hero](https://www.aihero.dev/) · [mattpocock.com](https://www.mattpocock.com/) · [skills](https://github.com/mattpocock/skills) · [dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) | The engineering process for working _with_ coding agents: context gathering, planning before code, steering, feedback loops, spec-driven workflows, human-in-the-loop review. Two of his repositories are adapted directly — see below            |
+| **Jake Van Clief** — [Clief Notes](https://www.skool.com/cliefnotes/about) · [LinkedIn](https://www.linkedin.com/in/jake-van-clief/)                                                                                                     | File organisation and folder architecture as the substrate for AI work, reusable prompt frameworks, and building durable structure rather than chasing tool releases. The `CONTEXT.md` / `CLAUDE.md` layering you are reading owes this its shape |
+
+### Design and anti-slop craft
+
+The visual-design doctrine (`code/docs/VISUAL-DESIGN.md`), the copy rules, and the audit scripts
+under `code/src/scripts/audits/` derive from the open skill ecosystem below. **Rule text is
+derived and re-authored, never copied** — so no upstream licence obligation attaches to this
+codebase — but the thinking is theirs.
+
+| Source                                                                                                               | Contributed                                                                       | Licence    |
+| -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ---------- |
+| [Impeccable](https://github.com/pbakaus/impeccable) — Paul Bakaus                                                    | The craft floor, deterministic detectors, and the native/mobile audit taxonomy    | Apache-2.0 |
+| [Taste Skill](https://github.com/Leonxlnx/taste-skill) — Leon                                                        | Named visual directions as a commitment device instead of a default               | MIT        |
+| [`skills/frontend-design`](https://github.com/anthropics/skills) — Anthropic                                         | The original banned-defaults framing for machine-authored UI                      | —          |
+| [emilkowalski/skills](https://github.com/emilkowalski/skills) — Emil Kowalski                                        | The numeric motion standard: frequency-first, duration ceilings, easing hierarchy | MIT        |
+| [stop-slop](https://github.com/hardikpandya/stop-slop) — Hardik Pandya                                               | The structural taxonomy of AI prose tells behind the copy rules                   | MIT        |
+| [hallmark](https://github.com/nutlope/hallmark) — Hassan El Mghari                                                   | Macrostructure-first generation and slop-test gating                              | MIT        |
+| [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)                                             | Treating design knowledge as a searchable reference, not a prescription           | MIT        |
+| [Web Interface Guidelines](https://github.com/vercel-labs/agent-skills) — Vercel Labs                                | Auditing interface rules with `file:line` output a reviewer can act on            | —          |
+| [awesome-claude-design](https://github.com/VoltAgent/awesome-claude-design) — VoltAgent                              | The nine-section `DESIGN.md` brief format                                         | MIT        |
+| [claude-code-workflows](https://github.com/OneRedOak/claude-code-workflows) — OneRedOak                              | The design-review subagent pattern over a driven browser                          | MIT        |
+| [Playwright](https://playwright.dev/) · [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | Verifying the rendered result rather than trusting the source                     | Apache-2.0 |
+
+### Adapted directly, and tooling
+
+Where the design sources above are _derived from_, these are **adapted or run as-is** — the
+dependency is direct and the credit is owed accordingly.
+
+| Source                                                                                      | How it is used here                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Licence |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| [mattpocock/skills](https://github.com/mattpocock/skills) — Matt Pocock                     | Skill authoring patterns behind `.claude/skills/` and the standard in `how-to/docs/SKILL-AUTHORING.md`. **Two files are adapted text, not derived** — both of `.claude/skills/improve-codebase-architecture/`; MIT notice in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). Four skills (`resolving-merge-conflicts`, `wizard`, `to-questionnaire`, `wait-what`) and grilling's frontier-round method are **derived** from his set and re-authored. The same-named skills (`grilling`, `wayfinder`, `codebase-design`, `prototype`, `research`, `teach`, `handoff`, …) are independently authored | MIT     |
+| [mattpocock/dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) | `how-to/docs/AI-DICTIONARY.md` is adapted from it — sixty-nine terms re-authored in British English, credited in the file itself                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | none    |
+| [tirth8205/code-review-graph](https://github.com/tirth8205/code-review-graph) — Tirth Patel | The MCP server in `.mcp.json` is **run as-is**; the four generated playbook cards under `.claude/skills/` are **committed upstream-authored text** — MIT notice in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). Graph-refresh gate: `code/docs/CODE-REVIEW-GRAPH.md`                                                                                                                                                                                                                                                                                                                            | MIT     |
+| [cloudinary-devs/skills](https://github.com/cloudinary-devs/skills) — Cloudinary            | **Vendored verbatim** — 15 files under `.agents/skills/`, installed via `skills-lock.json` and symlinked into `.claude/skills/`. Not derived, not adapted: copied. MIT notice in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md)                                                                                                                                                                                                                                                                                                                                                                    | MIT     |
+
+### Platform and engineering craft
+
+The backend, background-job, observability and security doctrine this project inherits draws on
+these. As above, **rules are derived and re-authored, never copied**.
+
+| Source                                                                              | Contributed                                                                                                                                                                                                        | Licence      |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
+| [wshobson/agents](https://github.com/wshobson/agents) — Seth Hobson                 | Background-job discipline (idempotency under at-least-once delivery, retry policy, DLQ) and async/sync patterns                                                                                                    | MIT          |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani | Spec-driven and doubt-driven development, context engineering                                                                                                                                                      | MIT          |
+| [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits         | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution | CC-BY-SA-4.0 |
+| [agentskills/agentskills](https://github.com/agentskills/agentskills)               | The published Agent Skills specification, which `how-to/docs/SKILL-AUTHORING.md` follows                                                                                                                           | Apache-2.0   |
+| [alibaba/open-code-review](https://github.com/alibaba/open-code-review)             | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                 | Apache-2.0   |
+
+Everything above is free and open. If a rule in this repository looks wrong to you, the original
+is one click away — read it and decide for yourself.
 
 ---
 

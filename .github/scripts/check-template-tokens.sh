@@ -44,7 +44,13 @@ REGISTERED_RE="^($(printf '%s' "$REGISTERED" | paste -sd'|' -))$"
 # for these scans — a file without tokens is the normal case, not an error.
 set +o pipefail
 
-scan() { git ls-files -z | grep -zv '\.pdf$' | xargs -0 grep -Hno "$1" 2>/dev/null | grep -vE "$EXEMPT"; }
+# Tracked AND untracked-but-not-ignored. Scanning `git ls-files` alone means the file you
+# just wrote — the one that most needs checking — is invisible, and the run reports a green
+# that means "did not look". CI never noticed because everything is tracked by the time it
+# runs; local runs are exactly where the blindness bites.
+candidates() { { git ls-files -z; git ls-files -z --others --exclude-standard; } | grep -zv '\.pdf$'; }
+
+scan() { candidates | xargs -0 grep -Hno "$1" 2>/dev/null | grep -vE "$EXEMPT"; }
 
 malformed=$(scan '<%[^%]*%>' | grep -vE ':<%[A-Z_]+%>$') || true
 unclosed=$(scan '<%[^%]*$') || true
@@ -63,7 +69,7 @@ while IFS= read -r line; do
   fi
 done < <(scan '<%[A-Z_]\+%>')
 
-count=$(git ls-files | grep -v '\.pdf$' | xargs grep -ho '<%[A-Z_]*%>' 2>/dev/null | wc -l)
+count=$(candidates | xargs -0 grep -ho '<%[A-Z_]*%>' 2>/dev/null | wc -l)
 set -o pipefail
 
 status=0

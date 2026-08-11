@@ -34,7 +34,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 > **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time — each endpoint (operation), request and response
+interview <%DEVELOPER_NAME%> — each endpoint (operation), request and response
 Schema, the named Policy guarding every state-changing endpoint (OWASP A01), ownership
 checks (no IDOR), error shapes, and idempotency. Record hard-to-reverse calls as an ADR in
 `project-management/src/14-DECISIONS/`.
@@ -65,7 +65,7 @@ Every state-changing endpoint must:
 3. Validate any user-supplied IDs
 
 Implement items 1–2 as named Policy classes — see
-[CODING-PRINCIPLES.md — Decision Structuring](../../docs/CODING-PRINCIPLES.md#decision-structuring-boolean-policy-and-strategy).
+[PRACTICAL-RULES.md — Decision Structuring](../../docs/coding-principles/PRACTICAL-RULES.md#decision-structuring-boolean-pattern-matching-policy-and-strategy).
 Item 3 is input validation, not Policy.
 
 **M2M prefetch rule:** For every M2M relationship on an endpoint's queryset, check whether the

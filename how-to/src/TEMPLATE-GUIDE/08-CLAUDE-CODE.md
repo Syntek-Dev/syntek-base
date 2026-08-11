@@ -105,7 +105,7 @@ Plus `cloudinary-*` for media work.
 
 Substantial work does not begin with the work. It begins with an interview:
 
-- one question at a time, never a wall of them
+- asked in rounds — the whole settled frontier at once, never trickled out one at a time
 - each carries a **recommended answer** with its rationale
 - facts are looked up, not asked — "does a `Customer` model exist?" is never a question
 - nothing is built until you confirm

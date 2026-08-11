@@ -32,7 +32,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time — the test scope, the highest-risk areas, and the
+interview <%DEVELOPER_NAME%> — the test scope, the highest-risk areas, and the
 scenarios to cover (happy path, error states, edge cases, accessibility) before writing
 the QA plan.
 

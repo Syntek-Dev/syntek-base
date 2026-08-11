@@ -1,13 +1,7 @@
 # Dependencies
 node_modules/
 
-# Next.js build output
-.next/
-out/
-
 # Auto-generated — never hand-edit
-code/src/frontend/src/graphql/generated/
-code/src/frontend/schema.graphql
 project-management/export/
 
 # Python (Prettier ignores these by default, listed for clarity)
@@ -31,29 +25,32 @@ pnpm-lock.yaml
 # Vendored third-party skill definitions — do not reformat
 .agents/
 
-# Generated test/lint reports
-code/src/scripts/tests/reports/
+# Generated test/lint/audit reports — every reports/ folder under scripts/, not just two.
+# An audit run with `--output md` must not fail the format gate it exists to complement;
+# markdownlint excludes the same glob for the same reason.
+code/src/scripts/**/reports/
 code/src/scripts/reports/
 
-# Auto-generated Playwright artifacts (gitignored; root-owned when produced in Docker)
-code/src/frontend/tests/e2e/results/
-code/src/frontend/tests/e2e/playwright-report/
+# Cargo build output — thousands of generated .json/.rs files, gitignored and machine-
+# specific. Rust source itself is formatted by `cargo fmt` via scripts/rust/lint.sh;
+# Prettier has no business in either.
+code/src/rust/target/
 
 # Django collected static files
-code/src/backend/staticfiles/
+code/src/django/staticfiles/
 
 # Relocated marketing CSS + vendored JS (ADR-019) — mirrored from source / third-party; do not reformat
-code/src/backend/static/css/
-code/src/backend/static/vendor/
+code/src/django/static/css/
+code/src/django/static/vendor/
 
 # Django templates — contain template tags that Prettier's HTML parser cannot handle
-code/src/backend/templates/
-code/src/backend/apps/**/templates/
+code/src/django/templates/
+code/src/django/apps/**/templates/
 # django-components templates (ADR-019) — same reason: Prettier's HTML parser mangles {% %} tags
-code/src/backend/components/
+code/src/django/components/
 
 # Golden-fixture test data — exact-match expected output; must not be reformatted
-code/src/backend/apps/content/tests/fixtures/
+code/src/django/apps/content/tests/fixtures/
 
 # Misc
 .git/

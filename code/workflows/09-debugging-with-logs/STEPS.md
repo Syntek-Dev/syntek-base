@@ -6,7 +6,7 @@ skills: [stack-django]
 model: opus
 ---
 
-# Workflow 10 — Steps: Debugging with Logs and Observability
+# Workflow 09 — Steps: Debugging with Logs and Observability
 
 Work top-to-bottom. Stop as soon as the root cause is found; do not continue further
 down the stack unnecessarily.

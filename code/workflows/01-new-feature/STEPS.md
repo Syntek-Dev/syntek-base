@@ -30,7 +30,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 ## Prerequisites
 
 - [ ] User story confirmed and branch created
-- [ ] Containers running (`docker compose up -d`)
+- [ ] Containers running (`bash code/src/scripts/development/server.sh up`)
 - [ ] No uncommitted changes from a previous workflow
 
 ---
@@ -46,7 +46,7 @@ planner [feature name and scope]
 > **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time about the feature's scope, data model, API surface,
+interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
 permissions, and edge cases before producing the plan.
 
 Save the plan to `project-management/src/16-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`.
@@ -119,7 +119,7 @@ backend [implement Django Ninja endpoints and Schema models]
 > **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
 
 Every state-changing endpoint must verify permissions before executing business logic — implement as a named Policy
-class (see [CODING-PRINCIPLES.md — Decision Structuring](../../docs/CODING-PRINCIPLES.md#decision-structuring-boolean-policy-and-strategy)).
+class (see [PRACTICAL-RULES.md — Decision Structuring](../../docs/coding-principles/PRACTICAL-RULES.md#decision-structuring-boolean-pattern-matching-policy-and-strategy)).
 
 ### Step 6 — Define Ninja Schemas (only if the feature has a machine-facing API)
 

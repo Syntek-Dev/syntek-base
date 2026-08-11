@@ -49,10 +49,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ### Grill first
 
 Substantial setup opens with a grilling pass — load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time (what to configure or initialise — a Django app, a
+interview <%DEVELOPER_NAME%> (what to configure or initialise — a Django app, a
 marketing view, environment templates, a directory CONTEXT/CLAUDE pair, or root config —
-and the exact scope and location), each with a recommended answer, looking facts up rather
-than asking, no action until <%DEVELOPER_NAME%> confirms. A single config edit or a mechanical touch skips
+and the exact scope and location). A single config edit or a mechanical touch skips
 it. Project-wide design-work default (`.claude/CLAUDE.md` §10).
 
 ### Scaffolding — always via scripts, never by hand

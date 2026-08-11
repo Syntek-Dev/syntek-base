@@ -1,5 +1,9 @@
 # <%PROJECT_NAME%> — Project Overview
 
+The entry point every session starts from: what this project is, how it is laid out, and where
+each kind of work belongs. Read it before the layer you are heading into, because the layer
+files assume the map below.
+
 ## What this project is
 
 > <%PROJECT_DESCRIPTION%>
@@ -30,7 +34,7 @@ mobile application — one deployable serves the API and the rendered pages.
 │   ├── plugins/                     ← read-only inspection helpers agents call for context
 │   └── skills/                      ← internalised stack, workflow, and document skills
 ├── .agents/                         ← vendored third-party skills (Cloudinary)
-├── .github/
+├── .github/                         ← CI workflows and the template-integrity scripts
 │   └── workflows/                   ← CI: syntax, tests, audits, Claude gate, ClickUp sync
 ├── code/                            ← source code, coding standards, coding workflows
 │   ├── CONTEXT.md                   ← code layer entry point
@@ -45,7 +49,7 @@ mobile application — one deployable serves the API and the rendered pages.
 │   │   ├── logs/                    ← runtime log files (dev/test; gitignored)
 │   │   ├── scripts/                 ← shell scripts — ALL dev operations run through here
 │   │   └── tests/                   ← API integration tests (Bruno collection)
-│   └── workflows/                   ← step-by-step coding workflows (02–14)
+│   └── workflows/                   ← step-by-step coding workflows (01–13)
 ├── how-to/                          ← setup, daily development, debugging, scaling
 │   ├── CONTEXT.md                   ← how-to layer entry point
 │   ├── CLAUDE.md
@@ -57,47 +61,50 @@ mobile application — one deployable serves the API and the rendered pages.
 │   │   ├── NIXOS-SETUP.md           ← host provisioning guide
 │   │   ├── SCALE-ARCHITECTURE/      ← sizing envelope snapshot (regenerated per project)
 │   │   └── SERVER-ARCHITECTURE/     ← server/edge contract for the deploy repo
-│   └── workflows/                   ← step-by-step operational workflows (01–04)
+│   └── workflows/                   ← step-by-step operational workflows (01–09)
 ├── project-management/              ← stories, sprints, design, GDPR, security, releases
 │   ├── CONTEXT.md                   ← PM layer entry point
 │   ├── CLAUDE.md
 │   ├── REFERENCES.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR, QA)
 │   ├── export/                      ← ClickUp sync artefacts and task map
-│   ├── src/                         ← live PM artefacts (00-ASSETS … 21-REFACTORING)
-│   └── workflows/                   ← step-by-step PM workflows (01–22)
+│   ├── src/                         ← live PM artefacts (00-ASSETS … 22-INCIDENTS)
+│   └── workflows/                   ← step-by-step PM workflows (01–23)
 ├── handoffs/                        ← session handoff documents (auto-compaction replacement)
+├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
 ├── .zed/                            ← Zed editor settings
 ├── CONTEXT.md                       ← this file
 ├── REFERENCES.md                    ← curated index of internal docs and external resources
-├── README.md
+├── README.md                        ← the public front door — what this template is and how to use it
 ├── DESIGN.md                        ← design entry point (standards, constraints, Figma)
 ├── GAPS.md                          ← active gaps, blockers, sprint dependencies
 ├── DEFERRED.md                      ← deferred-work register
-├── CHANGELOG.md
-├── RELEASES.md
-├── VERSION
-├── VERSION-HISTORY.md
+├── CHANGELOG.md                     ← what changed in each release, newest first
+├── THIRD-PARTY-NOTICES.md           ← licence notices for third-party work shipped here
+├── RELEASES.md                      ← the release notes behind each version
+├── VERSION                          ← the single source of truth for the current version
+├── VERSION-HISTORY.md               ← every version and the date it shipped
+├── .copier-answers.yml              ← your generation answers — `copier update` needs it
 ├── copier.yml                       ← template contract — questions, delimiters, post-tasks
 ├── install.sh                       ← install the toolchain and dependencies
 ├── skills-lock.json                 ← installed Claude Code skills (versions and hashes)
 ├── lefthook.yml                     ← pre-commit hook runner config
 ├── package.json                     ← root workspace package (pnpm)
-├── pnpm-lock.yaml
-├── pnpm-workspace.yaml
+├── pnpm-lock.yaml                   ← the resolved JS tooling graph — committed, never hand-edited
+├── pnpm-workspace.yaml              ← the pnpm workspace globs and audit ignore list
 ├── pyproject.toml                   ← Python tooling config and the django package manifest
-├── eslint.config.mjs
-├── .dockerignore
-├── .editorconfig
-├── .gitignore
+├── eslint.config.mjs                ← ESLint config for the repo tooling (no client-side build)
+├── .dockerignore                    ← what never enters a Docker build context
+├── .editorconfig                    ← baseline editor settings shared across contributors
+├── .gitignore                       ← what git never tracks
 ├── .markdownlint-cli2.jsonc         ← Markdown lint config
-├── .mcp.json                        ← MCP server config (code-review-graph, context7, figma)
-├── .npmrc
+├── .mcp.json                        ← project MCP server config (code-review-graph)
+├── .npmrc                           ← pnpm registry and install behaviour
 ├── .nvmrc                           ← Node.js version pin
-├── .prettierignore
-├── .prettierrc
+├── .prettierignore                  ← what Prettier never formats
+├── .prettierrc                      ← Prettier formatting rules
 └── .python-version                  ← Python version pin
 ```
 
@@ -132,20 +139,21 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 - **UI/UX design or component work?** → `DESIGN.md`
 - **Looking for a specific guide?** → `REFERENCES.md`
 
-## Conventions
+## How this repository documents itself
 
-- **`CONTEXT.md` is orientation** — the directory tree and what-is-here. **`CLAUDE.md` is
-  operating rules.** Every directory carrying a `CONTEXT.md` also carries a `CLAUDE.md`.
-- **The root is the one exception to that pairing.** A root `/CLAUDE.md` is gitignored,
-  because `code-review-graph install` generates one there and this project is Claude Code
-  only. `.claude/CLAUDE.md` is the root's operating-rules counterpart to this file.
-- **All developer operations run through the project shell scripts** under
-  `code/src/scripts/` — never raw `python`, `pytest`, `pnpm`, `uv`, or `docker` commands.
-- **Language is British English (en_GB)** across all documentation and copy.
+Every directory that orients Claude carries two files: a `CONTEXT.md` saying **what is here and
+why it is here**, and a `CLAUDE.md` saying **how to work here**. Two directories are exempt from
+the pairing — this root, whose `/CLAUDE.md` is gitignored because `code-review-graph install`
+generates one there (`.claude/CLAUDE.md` is its operating-rules counterpart), and the
+generated-output `reports/` folders under `code/src/scripts/**`.
+
+The split is what keeps a rule in exactly one place, so changing it changes it everywhere. The
+decision test, the headings that never belong in an orientation file, and the enforcement live in
+`code/docs/DOCUMENTATION-PAIRING.md`.
 
 ## Repository State
 
-Current version: **2.13.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **2.13.1** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

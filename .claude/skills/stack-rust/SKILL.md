@@ -82,7 +82,14 @@ unwrap_used = "deny"
 expect_used = "deny"
 panic = "deny"
 indexing_slicing = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
 ```
+
+All seven are **restriction** lints, which `clippy::all` does not include — each is denied by
+name, and `panic = "deny"` covers the `panic!` macro only, not `todo!()`/`unimplemented!()`/
+`unreachable!()`. Rule and the per-site `#[allow]` escape: `code/docs/rust/PYO3-BOUNDARY.md`.
 
 Keep the boundary **thin** — validate, delegate, map:
 

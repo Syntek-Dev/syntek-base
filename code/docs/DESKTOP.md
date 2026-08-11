@@ -102,7 +102,8 @@ scoped `#[allow]`:
 
 ```rust
 #[allow(clippy::all, clippy::pedantic, clippy::unwrap_used,
-        clippy::expect_used, clippy::panic, clippy::indexing_slicing)]
+        clippy::expect_used, clippy::panic, clippy::indexing_slicing,
+        clippy::todo, clippy::unimplemented, clippy::unreachable)]
 mod ui {
     slint::include_modules!();
 }

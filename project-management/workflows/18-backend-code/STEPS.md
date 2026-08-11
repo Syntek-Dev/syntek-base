@@ -34,7 +34,7 @@ This workflow produces code — consult **both** layer reference files:
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time — the implementation approach, the edge cases to
+interview <%DEVELOPER_NAME%> — the implementation approach, the edge cases to
 guard, and the service boundaries (which app owns each model, which service methods are
 required) before writing any code.
 

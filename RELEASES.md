@@ -1,11 +1,65 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.13.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.13.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.13.1 — 11/08/2026
+
+**Status:** Patch — closes out the 2.4.0–2.13.0 cycle. Every guide added across those ten releases
+is now indexed, and the stale references a dedicated sweep found are fixed.
+
+### The releases before this one added guides; this one makes them findable
+
+Ten minor releases landed roughly twenty new guides. Each shipped with its own content correct and
+its index row missing, because the reference tables were reformatted wholesale and could not be
+split cleanly per release. This is that debt paid: the four `REFERENCES.md` files now list
+everything.
+
+### A green that meant "did not look"
+
+`check-template-tokens.sh` is the audit that proves no unrendered token survives generation. It scanned
+`git ls-files` — tracked files only.
+
+So the file you had just written was invisible to it, and the run said green. CI never caught the
+flaw, because by the time CI runs everything is tracked; the blindness was confined to local runs,
+which is precisely where you want the check to work. It now scans tracked and
+untracked-but-not-ignored files together.
+
+### The README a generated project actually receives
+
+`.copier/README.md` is not this repository's README — it is the one a new project gets, renamed
+into place by a post-generation task. Nothing in this repository's CI ever reads it, so it drifted
+without a single failure to mark the occasion.
+
+It was describing a repository three surfaces out of date: a `code/src/` tree missing
+`improvement-architecture/`, a `.github/workflows/` list naming 11 of 28, a `code/docs/` tree
+missing eight ungated guides, a `src/` tree stopping at `21-REFACTORING`, and a workflow count of
+21 when there are 23.
+
+`shipped-readme.sh` now guards it, along with `how-to/src/TEMPLATE-TOKENS.md`. Both are documents
+whose only reader is someone who has already generated a project, and who has no way of knowing
+what they were told is wrong.
+
+### Also fixed
+
+`.prettierignore` still pointed at `code/src/frontend/` and `code/src/backend/`, plus a Next.js
+build-output block and GraphQL codegen paths — none of which have existed since the stack became a
+Django-only monolith. The root `CONTEXT.md` declared version 2.0.0, three releases behind, and gave
+three wrong workflow ranges. The `README.md` footer declared v1.0.0, and the stack table promised
+Celery and S3 storage as though both were wired rather than declared.
+
+### One thing deliberately left open
+
+Three ADRs — `ADR-016`, `ADR-019`, `ADR-023` — are cited as real across six files, and no ADR
+register exists. They are the oldest phantom in the tree and they are still here, logged in
+`TEMPLATE-GAPS.md`.
+
+Deciding between writing those ADRs and dropping the citations is a decision, not a tidy-up, and
+folding it into a sweep would have meant making it quietly.
 
 ## v2.13.0 — 11/08/2026
 
@@ -71,13 +125,13 @@ modules earlier, which is the shape almost every real injection actually takes.
 
 Opengrep, run against five rule files this project authors and owns:
 
-| Rule                          | Closes                                                             |
-| ----------------------------- | ------------------------------------------------------------------ |
-| `django-autoescape-off.yml`   | `{% autoescape off %}` blocks                                      |
-| `django-safe-filter.yml`      | `|safe` on data that is not provably safe                          |
-| `django-template-xss.yml`     | Template variables inside Alpine expressions and inline scripts    |
-| `request-to-sink-taint.yml`   | Request data reaching a raw-SQL, shell or eval sink, across files  |
-| `secrets-in-source.yml`       | Hardcoded credential assignments                                   |
+| Rule                        | Closes                                                            |
+| --------------------------- | ----------------------------------------------------------------- |
+| `django-autoescape-off.yml` | `{% autoescape off %}` blocks                                     |
+| `django-safe-filter.yml`    | The `safe` filter applied to data that is not provably safe       |
+| `django-template-xss.yml`   | Template variables inside Alpine expressions and inline scripts   |
+| `request-to-sink-taint.yml` | Request data reaching a raw-SQL, shell or eval sink, across files |
+| `secrets-in-source.yml`     | Hardcoded credential assignments                                  |
 
 The rules live under `code/src/scripts/audits/rules/` with their own `CONTEXT.md`/`CLAUDE.md` pair,
 because they are hand-authored source and deserve the same orientation as anything else here.
@@ -301,12 +355,12 @@ points at `code/docs/MCP-SERVER.md` rather than at a search engine.
 
 `code/docs/DISCOVERABILITY.md` is now a thin index over four sub-documents, one per output surface:
 
-| Surface         | Owner                 |
-| --------------- | --------------------- |
-| The `<head>`    | `WEB-METADATA.md`     |
-| The JSON-LD     | `STRUCTURED-DATA.md`  |
-| Root files      | `ROOT-SURFACE.md`     |
-| The page body   | `CONTENT-STRUCTURE.md` |
+| Surface       | Owner                  |
+| ------------- | ---------------------- |
+| The `<head>`  | `WEB-METADATA.md`      |
+| The JSON-LD   | `STRUCTURED-DATA.md`   |
+| Root files    | `ROOT-SURFACE.md`      |
+| The page body | `CONTENT-STRUCTURE.md` |
 
 And the split with the PM layer is now stated in both files: `SEO-CHECKLIST.md` is **what must be
 true per page** before a story closes; `DISCOVERABILITY.md` is **how this stack does it**. Neither

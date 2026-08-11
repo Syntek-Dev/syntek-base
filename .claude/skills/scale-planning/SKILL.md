@@ -68,7 +68,8 @@ codebase ──reconcile──▶ how-to/src/SCALE-ARCHITECTURE ──(+buffer)�
   requirements (CSP/security headers, routing, URL paths, body-size, TLS, Cloudflare, CF
   Tunnel, health/metrics) **plus** the SCALE numbers expressed as assigned compute + buffer.
   This is the deploy-facing contract, in the same spirit as `code/docs/logging/HEALTH-CONTRACT.md`
-  and the `code/src/docker/prometheus/prometheus.yml` "contract".
+  — a stated requirement the deploy repo satisfies, not a file this repo ships. (There is no
+  Prometheus config here; scrape configuration belongs to the deploy repo.)
 
 Both live under `how-to/src/**` — the human-operational tier, exempt from the 300-line limit
 (their `CONTEXT.md`/`CLAUDE.md` pairs are **not** exempt — keep those ≤ 300 lines).

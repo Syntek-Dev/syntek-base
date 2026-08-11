@@ -6,7 +6,7 @@ skills: [stack-django]
 model: opus
 ---
 
-# Workflow 10 — Checklist: Debugging with Logs and Observability
+# Workflow 09 — Checklist: Debugging with Logs and Observability
 
 Complete this checklist before closing a debugging session.
 

@@ -43,7 +43,7 @@ model: fable
 > **Model:** fable
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
-<%DEVELOPER_NAME%> one question at a time, each with a recommended answer:
+<%DEVELOPER_NAME%>:
 
 - Does this story ship a public URL? If not, record `SEO: N/A` with a reason and stop.
 - What is the page's primary keyword or search intent?

@@ -32,7 +32,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time about the trust boundaries, authentication points,
+interview <%DEVELOPER_NAME%> about the trust boundaries, authentication points,
 and data touchpoints before reviewing the user flows and wireframes.
 
 Read the completed user flows in `project-management/src/05-USER-FLOW/` and wireframes in

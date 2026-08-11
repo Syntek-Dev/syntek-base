@@ -62,7 +62,7 @@ model: opus
 
 ### Phase 4 — Documentation closeout (verified, not written here)
 
-Workflow 19 writes these; this checklist only confirms they exist before the PR. The record
+Workflow 21 writes these; this checklist only confirms they exist before the PR. The record
 formats, templates, and destinations live in
 `project-management/workflows/21-implementation-documentation/` — never restate them here.
 

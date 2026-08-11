@@ -211,7 +211,7 @@ def set_rls_context(user_id: str, tenant_id: str = "") -> None:
 The third argument to `set_config` is `is_local` — `true` means the setting applies only for the
 current transaction. Never use `false` (session-scoped).
 
-**Import path:** `from apps.audit.middleware import set_rls_context`
+**Import path:** `from apps.<%AUDIT_APP%>.middleware import set_rls_context`
 
 ---
 

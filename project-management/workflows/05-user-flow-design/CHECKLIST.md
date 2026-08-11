@@ -13,7 +13,7 @@ model: fable
 
 ---
 
-> **See** `project-management/REFERENCES.md` → **Internal — Guides** (RESPONSIVE-DESIGN.md) · **Internal — Live Artefacts** (src/05-USER-FLOW/) for supporting references.
+> **See** `code/docs/RESPONSIVE-DESIGN.md` (breakpoints and device data — the PM-layer file of that name is a redirect stub) · `project-management/REFERENCES.md` → **Internal — Live Artefacts** (src/05-USER-FLOW/) for supporting references.
 
 ## Execution Checklist
 
