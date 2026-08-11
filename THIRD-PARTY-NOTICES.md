@@ -185,7 +185,7 @@ SOFTWARE.
 ## Not listed here, and why
 
 Each row below was **measured**, not assumed — five-gram overlap between the upstream text and the
-guide said to derive from it, on 09/08/2026:
+guide said to derive from it, on 09/08/2026, and the two TigerStyle rows on 11/08/2026:
 
 | Source                                    | Derived into                                       | Overlap  |
 | ----------------------------------------- | -------------------------------------------------- | -------- |
@@ -194,6 +194,8 @@ guide said to derive from it, on 09/08/2026:
 | `pbakaus/impeccable` (craft floor)        | `code/docs/visual-design/WEB.md`                   | **0.0%** |
 | `hardikpandya/stop-slop` (prose taxonomy) | `how-to/src/BRAND-VOICE.md` § 4                    | **0.0%** |
 | `wshobson/agents` (background jobs)       | `code/docs/TASK-AUTHORING.md` · `PROCESS-MODEL.md` | **0.0%** |
+| `tigerbeetle` TigerStyle (negative space) | `code/docs/NEGATIVE-SPACE.md`                      | **0.0%** |
+| `tigerbeetle` TigerStyle (negative space) | `how-to/src/INVARIANTS.md`                         | **0.0%** |
 
 Numeric values (durations, easing curves, contrast ratios, character limits) are facts and carry no
 obligation regardless — but the wording around them would have, and none was taken.

@@ -1,11 +1,122 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.14.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.15.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.15.0 — 11/08/2026
+
+**Status:** Minor — a new audit, its CI job, the register column both key on, and the mobile
+modules they measure. No breaking change.
+
+### A register kept true by good intentions
+
+2.7.0 made negative space a named discipline: `code/docs/NEGATIVE-SPACE.md` owns what an invariant
+is and the one-enforcement-point rule, `how-to/src/INVARIANTS.md` is this project's answer sheet.
+The file said what must never be true. Nothing checked that the code agreed.
+
+Half of it had a partial check — a `Meta.constraints` entry with no row, and a row naming a
+constraint that does not exist. The other half rested entirely on the same-change rule: write the
+guard, write the row, in one commit. That is a discipline, and disciplines are exactly what a
+register exists to replace. A guard added without a row is invisible to everyone who reads the
+file next, and a row whose key nothing raises is a claim the repository has quietly stopped
+honouring.
+
+The obstacle was never the checking. It was that a key living in prose beside a worked example is
+not something a gate can read.
+
+### `Key` is a column now
+
+The register gains a sixth column holding the row's identifier and **the exact string the guard
+raises** — `InvariantViolation("order.total_matches_lines", …)` on one side, the same characters
+on the other. A pure `db-constraint` row carries `—`, because a constraint name is already its own
+identifier.
+
+`negative-space.sh` correlates the two by name, in both directions, on both surfaces. Nine
+`[gate: fail]` clauses: a constraint with no row and a row with no constraint; a key raised
+nowhere, a key raised with no row, and a key raised at two sites; the register deleted while there
+is still something to register; a template using `hx-` with no global `htmx:beforeSwap` listener;
+`RequestIDMiddleware` gone from `MIDDLEWARE`; and one of the mobile compiler flags loosened. One
+`[gate: warn]`: the worked example still sitting beside real rows.
+
+Two things it will never decide, and both are marked `[judgement]` in the rule rather than left to
+be discovered. It matches **names**, so a row can point at a function guarding something else
+entirely and stay green. And nothing can grep for a rule nobody wrote down — which is the failure
+mode the whole guide exists for.
+
+Two rules are deliberately **not** re-enforced here. `assert` outside tests belongs to ruff `S101`
+and the `ninja.Schema` import ban to `TID251`; both already have a real analyser, and two enforcers
+of one rule drift.
+
+### The green run that has measured almost nothing
+
+Four of the nine clauses are no-ops in a baseline repository. `apps/` carries no models, the
+templates and static trees are empty — so an ordinary run passes having looked at nothing, and
+keeps passing after the detector breaks.
+
+So `--self-test` runs **first** in CI, and it is the reason the job is worth having. Every clause
+runs over `code/src/scripts/audits/fixtures/negative-space/`: `broken/` must trip every fail
+clause, `clean/` must trip none. The known positives carry one violation each —
+`broken/services.py` raises an unregistered key and raises a registered one twice,
+`broken/settings.py` omits the middleware from `MIDDLEWARE` while naming it in the module
+docstring, `broken/page.html` posts with `hx-post` and handles nothing.
+
+Two fixtures do more than that. `broken/INVARIANTS.md` closes with a worked-row section whose rows
+must never be parsed, so a `constraint-absent` count of exactly one is the proof the register is
+read section-aware rather than line by line. And `clean/guard.test.ts` and
+`clean/tests/test_guard.py` construct unregistered keys **on purpose**, exactly as a real guard
+suite does, so the self-test starts failing the moment test code stops being exempt.
+
+Missing fixtures exit 2. A deleted fixture tree fails loudly rather than quietly disarming the
+gate.
+
+### The mobile surface gets something to check
+
+`ts-flags-loosened` and the `client-guard` clauses measure files that did not exist, so they ship
+here too.
+
+`code/src/mobile/tsconfig.json` turns on the four flags beyond `strict` —
+`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitReturns`,
+`noFallthroughCasesInSwitch`. Neither `strict` nor `expo/tsconfig.base` implies any of them, so
+the baseline was one flag deep and looked like four. Each bans a state rather than a style, which
+is the test for adding a fifth. `noUnusedLocals` and `noUnusedParameters` are declined for the
+usual reason: ESLint owns that rule already.
+
+They are the single-config deletion class — `tsc` exits 0 without them, so a flag weakened to clear
+a build is invisible in every other gate. That is precisely what the audit leg is for.
+
+`lib/invariant.ts` carries `InvariantViolation`, named to match the backend exactly so one
+`On breach` column reads the same on both surfaces, and `unreachable(value, key)`, which fails
+typecheck at every unhandled call site and throws a keyed error when the API sends a union member
+the app has never seen. `lib/error-classes.ts` classifies failures: `408`, `502`, `503` and `504`
+are **environment** errors despite three being 5xx, because each is the edge reporting that the
+process is not answering — a rolling deploy's restart window is not a fleet of defects. Anything
+else in the 5xx range is the server's programmer error, not the app's, and an unrecognised failure
+defaults to programmer error, because defaulting the other way silences the failures nobody has
+thought about yet.
+
+Both live in `lib/` and not `app/`, because expo-router would publish a helper under `app/` as a
+navigable screen. `jest.config.js` adds the tree to `collectCoverageFrom` in the same change —
+without that line the modules are invisible to the coverage floor and the run stays green having
+measured nothing, which is the same defect twice in one release.
+
+### Where the doctrine came from
+
+The idea is TigerBeetle's TigerStyle, by way of ThePrimeagen's name for what Hoare simply called
+logic: state what must never be true, enforce each invariant at one named point, fail loudly rather
+than degrade. The `README.md` influences table gains the row and `THIRD-PARTY-NOTICES.md` records
+the measurement — **0.0% five-gram overlap** against both `code/docs/NEGATIVE-SPACE.md` and
+`how-to/src/INVARIANTS.md`, measured rather than assumed.
+
+Its assertion mechanism is deliberately not adopted, and the reason is worth keeping: Python's
+`assert` is stripped by `-O` and an `AssertionError` cannot carry the register key, so it reaches
+the tracker naming nothing. Guards `raise`.
+
+The rule is that attribution is written alongside the doctrine it credits rather than
+retrospectively. This is that rule being kept.
 
 ## v2.14.0 — 11/08/2026
 

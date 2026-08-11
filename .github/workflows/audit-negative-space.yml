@@ -1,0 +1,70 @@
+# Enforcement-point register guard — the CI half of code/docs/NEGATIVE-SPACE.md.
+#
+# Correlates how-to/src/INVARIANTS.md with the code, by name, in both directions and on
+# both surfaces: a Meta.constraints entry with no row, a row naming a constraint no model
+# declares, a Key raised nowhere, a key raised with no row, and a key raised twice. Plus
+# three presence clauses — the global HTMX handler, RequestIDMiddleware, and the four
+# TypeScript flags.
+#
+# The self-test runs FIRST and is the reason this job is worth having. Four of the nine
+# clauses are no-ops in a baseline repository (apps/ carries no models, templates/ and
+# static/ are empty), so the ordinary scan would be green having measured almost nothing.
+# The fixture pair is what proves the detector still separates a known positive from a
+# known negative — the defect audits/docs-length.sh was written to close, in a new domain.
+#
+# It deliberately exits 2 when the fixtures are missing rather than passing having proved
+# nothing, so a deleted fixture tree fails loudly instead of quietly disarming the gate.
+#
+# Two rules are NOT re-enforced here — `assert` (ruff S101) and the ninja.Schema import ban
+# (ruff TID251) both already have a real analyser, and two enforcers of one rule drift.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# The filter is broad because the register has two sides: it must fire when the register
+# changes AND when the code it names changes. A clause landing in either half alone is the
+# drift this exists to catch.
+name: Audit — Negative Space
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "how-to/src/INVARIANTS.md"
+      - "code/src/django/**"
+      - "code/src/mobile/**"
+      - "code/src/scripts/audits/negative-space.sh"
+      - "code/src/scripts/audits/fixtures/negative-space/**"
+      - ".github/workflows/audit-negative-space.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "how-to/src/INVARIANTS.md"
+      - "code/src/django/**"
+      - "code/src/mobile/**"
+      - "code/src/scripts/audits/negative-space.sh"
+      - "code/src/scripts/audits/fixtures/negative-space/**"
+      - ".github/workflows/audit-negative-space.yml"
+  workflow_dispatch:
+
+jobs:
+  negative-space:
+    name: Enforcement-point register audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # First, and non-negotiable: a gate nobody has watched fail is not a gate.
+      - name: Prove the detector still separates the fixtures
+        run: bash code/src/scripts/audits/negative-space.sh --self-test
+
+      - name: Run negative-space audit
+        run: bash code/src/scripts/audits/negative-space.sh --output md
+
+      - name: Upload negative-space report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: negative-space-report
+          path: code/src/scripts/audits/reports/negative-space-report.md
+          if-no-files-found: ignore

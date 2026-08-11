@@ -10,6 +10,10 @@ module.exports = {
   collectCoverageFrom: [
     "app/**/*.{ts,tsx}",
     "components/**/*.{ts,tsx}",
+    // lib/ is the home for non-route modules — app/ cannot hold them, because expo-router
+    // turns every file there into a route. It is listed here so a module that ships
+    // outside a screen is still held to the floor rather than being invisible to it.
+    "lib/**/*.{ts,tsx}",
     "!**/*.test.{ts,tsx}",
     "!**/node_modules/**",
   ],

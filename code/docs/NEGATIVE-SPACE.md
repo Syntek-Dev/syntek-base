@@ -58,15 +58,20 @@ The register has **two halves**, on the same split as
 | **The invariant classes**  | this guide, below          | the _kinds_ of invariant and how each is enforced      |
 | **This project's answers** | `how-to/src/INVARIANTS.md` | the actual invariants this project holds, one row each |
 
-Both halves use the same five columns:
+Both halves use the same six columns:
 
-| Column              | Holds                                                                           |
-| ------------------- | ------------------------------------------------------------------------------- |
-| `Invariant`         | the statement, one sentence                                                     |
-| `Mechanism`         | `db-constraint` · `service-guard` · `both`                                      |
-| `Enforcement point` | the constraint name, or the exact function — **one**, never "the service layer" |
-| `On breach`         | which error class it raises (see the taxonomy below)                            |
-| `Stated in`         | the guide that already owns the rule                                            |
+| Column              | Holds                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Invariant`         | the statement, one sentence                                                                                                                      |
+| `Key`               | the row's identifier, and the exact string the guard raises — `—` on a pure `db-constraint` row, whose constraint name already is its identifier |
+| `Mechanism`         | `db-constraint` · `service-guard` · `client-guard` _(mobile-only)_ · `both`                                                                      |
+| `Enforcement point` | the constraint name, or the exact function — **one**, never "the service layer"                                                                  |
+| `On breach`         | which error class it raises (see the taxonomy below)                                                                                             |
+| `Stated in`         | the guide that already owns the rule                                                                                                             |
+
+**`Key` is a column and not a convention, because a gate cannot read a convention.** A key living
+only in prose beside a worked example is a key nothing can correlate with the code that raises it,
+which is exactly the drift between register and runtime this column exists to close.
 
 **A `service-guard` row names one function. A second call site is a finding**, recorded in
 `project-management/src/19-FINDINGS/` — not a judgement call.
@@ -124,6 +129,38 @@ explicitly in the `On breach` column (`IntegrityError` → caught at the one enf
 409). **Every other constraint firing is a programmer error**: it means the guard that should have
 stopped it is missing, and it must surface as one.
 
+### What the gate decides
+
+`audits/negative-space.sh` mirrors the decidable half of this register. Every clause carries its
+tier inline and the script implements against the markers, rather than re-deriving what is
+detectable; the marker vocabulary and the exit-code rule are
+`code/src/scripts/audits/CONTEXT.md`'s.
+
+- **Every `Meta.constraints` entry has a register row.** **[gate: fail]** (`constraint-unregistered`)
+- **Every `db-constraint` row names a constraint a model declares.** **[gate: fail]** (`constraint-absent`)
+- **Every `service-guard` / `client-guard` key is raised in exactly one place.** **[gate: fail]**
+  Three ways to break it, reported apart: the row raises nowhere (`key-unraised`), a key is raised
+  with no row (`key-unregistered`), or one key is raised at two sites (`key-duplicated`) — the
+  second call site this section already forbids.
+- **The register exists wherever there is anything to register.** **[gate: fail]**
+  (`register-absent`) Deleting it while models or guards exist turns every clause above into a
+  silent no-op, which is worse than having no gate.
+- **The worked-row example is gone once real rows exist.** **[gate: warn]** (`worked-row-stale`)
+
+Two things it will never decide, marked so the boundary is read rather than assumed:
+
+- **Whether a named enforcement point enforces the _right_ thing.** **[judgement]** The check
+  matches names; a row can point at a function guarding something else and stay green.
+- **Whether an invariant is missing altogether.** **[judgement]** Nothing can grep for a rule
+  nobody wrote down — and that is the failure mode this whole guide exists for.
+
+**Scope, because a gate that measures the wrong thing is worse than none.** Models only, never
+migrations: a migration history holds every constraint ever added, including ones since dropped,
+so scanning it would force this register to carry dead rows to stay green. Test code is exempt on
+both surfaces, exactly as ruff `S101` exempts it, because testing a guard is the coverage this
+doctrine wants. There is **no silencing annotation** — a comment suppressing a finding here is
+itself a finding, on the same reasoning that makes a `# noqa: S101` one.
+
 ---
 
 ## The error taxonomy
@@ -173,6 +210,10 @@ otherwise — reusing the proxy's value is what keeps a single request to a sing
 across the access log and the tracker, instead of two that have to be joined by timestamp. The
 edge's obligation is `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`.
 
+**`RequestIDMiddleware` stays in `MIDDLEWARE`.** **[gate: fail]** (`request-id-middleware-absent`)
+Removing it fails nothing and breaks no test — every response simply stops carrying the header,
+and the taxonomy above quietly loses the one thing that makes a user's report findable.
+
 **Retries, backoff and circuit breakers for environment errors are not owned here** —
 [`TASK-AUTHORING.md`](TASK-AUTHORING.md) and
 [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) already carry
@@ -185,10 +226,13 @@ management commands. **How each surface expresses them is that surface's guide**
 an HTMX error must never be a silent empty swap, and a task's arguments are untrusted input, but
 those clauses live where the surface lives.
 
-| Surface                 | Its clause lives in                                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Rendered pages and HTMX | [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) § _An error the user never sees_ |
-| The JSON API            | [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md) — the Ninja exception handlers                     |
+| Surface                        | Its clause lives in                                                                                                                           |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rendered pages and HTMX        | [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) § _An error the user never sees_                                   |
+| The JSON API                   | [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md) — the Ninja exception handlers                                                       |
+| Background tasks               | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) § _The error taxonomy on this surface_ — and why the user class is **empty** there                   |
+| Management commands            | [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md) § _The error taxonomy on this surface_ — an operator, a traceback, and exit 75             |
+| The mobile app _(mobile-only)_ | [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) § 4 — the root boundary, and why an environment error is the ordinary case there |
 
 ---
 

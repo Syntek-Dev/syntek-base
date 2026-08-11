@@ -2,6 +2,17 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    // The four flags below are the negative-space set: each one makes a state
+    // un-writable rather than merely discouraged. `strict` does not imply any of them,
+    // and expo/tsconfig.base sets none. Reasoning and the deliberate omissions:
+    // code/docs/MOBILE-CODING-PRINCIPLES.md.
+    //
+    // noUnusedLocals and noUnusedParameters are deliberately absent — ESLint's
+    // no-unused-vars already enforces that, and one rule with two enforcers drifts.
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     // expo/tsconfig.base leaves `types` unset, which under this resolution mode does not
     // surface Jest's globals (describe/it/expect). Naming it explicitly fixes the test
     // files. React and React Native types are unaffected — they resolve through imports

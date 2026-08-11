@@ -42,6 +42,16 @@ Ninja API, never a client-side build for the Django-served pages.
 - **Token-first applies here too.** Design values come from the generated token module, never a
   raw literal in a `StyleSheet`. Enforced by `code/src/scripts/audits/mobile-tokens.sh`; the
   "name resolves" half is free, because an unresolved token import does not compile.
+- **A non-route module goes in `lib/`, and joins the coverage glob when it does.** `app/` is
+  routes only — expo-router would publish a helper placed there as a navigable screen. `lib/` is
+  named in `jest.config.js` → `collectCoverageFrom` for the reason a new directory usually is
+  not: a module outside that list is not merely untested, it is **invisible to the floor**, so
+  the run stays green having measured nothing. Add a directory there and add it here in the same
+  change. Reachable as `@/lib/…` — the alias resolves in both `tsc` and Jest.
+- **The compiler flags in `tsconfig.json` are a rule, not a preference.** The four beyond
+  `strict` each ban a state (`code/docs/MOBILE-CODING-PRINCIPLES.md` § 1). Loosening one to make
+  a build pass is a finding for `project-management/src/19-FINDINGS/`; the fix is a guard or a
+  length check, never a `!` non-null assertion.
 - **Stay self-contained.** TypeScript, eslint and their config live here and only here. Adding a
   TypeScript dependency to the repository root would breach the one-conditionalisation-mechanism
   rule that keeps a web-only generation byte-identical.

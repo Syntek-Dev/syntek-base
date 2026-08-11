@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code agent suite.**
 
-[![Version](https://img.shields.io/badge/version-2.13.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.15.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -180,7 +180,10 @@ dependency is direct and the credit is owed accordingly.
 
 The backend, background-job, observability and security doctrine draws on these. As above, **rules
 are derived and re-authored, never copied**; per-claim citations live in
-[`research/AGENT-SKILL-ECOSYSTEM.md`](research/AGENT-SKILL-ECOSYSTEM.md).
+[`research/AGENT-SKILL-ECOSYSTEM.md`](research/AGENT-SKILL-ECOSYSTEM.md) — **except the TigerStyle
+row**, which that note cannot cover because it surveys agent skills and TigerStyle is an
+engineering style guide. Its derivation is measured instead, at 0.0% five-gram overlap, in
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
 
 | Source                                                                                               | Contributed                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Licence      |
 | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
@@ -215,4 +218,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v2.13.1 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v2.15.0 · British English (en_GB) throughout_

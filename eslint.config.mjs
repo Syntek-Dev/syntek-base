@@ -37,7 +37,9 @@ export default [
     // progressive-enhancement JS served via <script> (e.g. an htmx:afterSwap focus
     // handler). window/document/addEventListener are the browser runtime, not
     // undefined references.
-    files: ["code/src/django/static/js/*.js"],
+    // The negative-space self-test fixtures mirror those scripts deliberately — the
+    // known-clean case IS a browser listener — so they need the same runtime globals.
+    files: ["code/src/django/static/js/*.js", "code/src/scripts/audits/fixtures/**/*.js"],
     languageOptions: {
       globals: {
         ...globals.browser,

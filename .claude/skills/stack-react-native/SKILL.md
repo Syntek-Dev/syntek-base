@@ -58,6 +58,44 @@ never bump one in isolation.
 
 ---
 
+## What the types and the app must never allow
+
+**`strict` implies none of the four flags below, and `expo/tsconfig.base` sets none** — the
+baseline is one flag deep and looks like four. Each bans a state rather than a style, so all
+four stay `true` in `code/src/mobile/tsconfig.json`; `code/src/scripts/audits/negative-space.sh`
+fails the build if one is loosened.
+
+| Flag                         | Bans                                             |
+| ---------------------------- | ------------------------------------------------ |
+| `noUncheckedIndexedAccess`   | an index read trusted to have returned something |
+| `exactOptionalPropertyTypes` | `undefined` smuggled in as a present value       |
+| `noImplicitReturns`          | a branch that falls out returning nothing        |
+| `noFallthroughCasesInSwitch` | a case that continues into the next              |
+
+- **Exhaustiveness goes through `unreachable(value, key)`** in `lib/invariant.ts`, not
+  `assertNever` — the name states the situation rather than the banned technique. It throws a
+  keyed `InvariantViolation` whose class name matches the backend's exactly, so a register row's
+  `On breach` column reads the same on both surfaces. Add the `client-guard` row to
+  `how-to/src/INVARIANTS.md` in the same change, and raise each key in exactly one place.
+- **A cast is not a proof.** `as UserId` on an unvalidated response asserts something nothing
+  checked — the TypeScript shape of the `assert` this project bans in Python. Branded IDs
+  arrive with the API client and its parse boundary, not before.
+- **Classify failures with `lib/error-classes.ts`.** `408`, `502`, `503` and `504` are
+  **environment** errors despite three being 5xx: each is the edge reporting that the process is
+  not answering, so a rolling deploy's restart window is not a fleet of new defects. Any other
+  5xx is the **server's** programmer error, not the app's. An unrecognised failure defaults to
+  programmer error deliberately — defaulting to environment would silence exactly the failures
+  nobody has considered yet.
+- **One `ErrorBoundary` at the root `app/_layout.tsx`, never per screen.** On a phone the
+  environment error is the **ordinary case** — a train tunnel is not a defect, and reporting
+  every failed request is how a mobile tracker becomes noise and then gets muted. The tracker
+  itself is declared, not wired: adding it moves the Expo pins, which is a template release.
+
+The surface guide is `code/docs/MOBILE-CODING-PRINCIPLES.md`; the taxonomy it expresses is
+`code/docs/NEGATIVE-SPACE.md`.
+
+---
+
 ## Everything runs through the scripts
 
 Never invoke `pnpm`, `expo`, `tsc` or `jest` directly:

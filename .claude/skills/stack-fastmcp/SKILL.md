@@ -69,6 +69,28 @@ touching anything else.
 
 ---
 
+## What a tool must never allow
+
+The three error classes reach `/mcp/` from the service layer unchanged — a tool is a peer
+adapter over the same services `api.py` calls, so it **inherits the JSON API's row** on the
+per-surface table in `code/docs/NEGATIVE-SPACE.md` rather than holding one of its own. Read
+that guide before writing a guard or a constraint; it owns what an invariant is, the single
+enforcement point, and the taxonomy.
+
+- **A programmer error stays a programmer error at the boundary.** `InvariantViolation` carries
+  its register key and surfaces as a tool error; mapping it to an ordinary result is how a
+  broken invariant becomes a model's next reasoning step.
+- **The guard is in the service, not the tool.** Rule 2 already puts the logic there, and the
+  register names one enforcement point — a second copy in `mcp_tools.py` is the second call
+  site that register forbids.
+- `how-to/src/INVARIANTS.md` — this project's register, where a new guard's row goes.
+
+**This surface has no clause of its own yet.** `MCP-SERVER.md` carries no error-taxonomy
+section, so the API row above is the whole of it — write the tool's expression against that
+guide and the gap register, not against a section that does not exist.
+
+---
+
 ## Idioms
 
 - **Tools are task-shaped, not endpoint-shaped** — `cancel_order_by_reference(...)`, never
@@ -121,10 +143,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/workflows/05-mcp-server/` — adding or changing a tool
 - `code/workflows/02-tdd-cycle/` — Red → Green → Refactor for tools
 - `code/workflows/08-security-hardening/` — the audit `/mcp/` must pass before public exposure
-  <<<<<<< Updated upstream
-- # `how-to/workflows/03-daily-development/` — running the stack while developing tools
 - `how-to/workflows/03-daily-development/` — running the stack while developing tools
-  > > > > > > > Stashed changes
 
 ## Cross-references
 

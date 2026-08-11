@@ -12,13 +12,18 @@ every project generated from this template. **This file is the answer sheet, and
 
 ## How to read a row
 
-| Column                | Meaning                                                                                |
-| --------------------- | -------------------------------------------------------------------------------------- |
-| **Invariant**         | The statement, one sentence. What must never be true                                   |
-| **Mechanism**         | `db-constraint` · `service-guard` · `both`                                             |
-| **Enforcement point** | The constraint name, or the exact function — **one**, never "the service layer"        |
-| **On breach**         | `programmer error` · `user error` · `environment error` — see the taxonomy in the rule |
-| **Stated in**         | The guide that already owns the underlying rule, where one does                        |
+| Column                | Meaning                                                                                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Invariant**         | The statement, one sentence. What must never be true                                                                                                 |
+| **Key**               | This row's identifier, and the exact string the guard raises. `—` on a pure `db-constraint` row, where the constraint name is already the identifier |
+| **Mechanism**         | `db-constraint` · `service-guard` · `client-guard` · `both`                                                                                          |
+| **Enforcement point** | The constraint name, or the exact function — **one**, never "the service layer"                                                                      |
+| **On breach**         | `programmer error` · `user error` · `environment error` — see the taxonomy in the rule                                                               |
+| **Stated in**         | The guide that already owns the underlying rule, where one does                                                                                      |
+
+**The key in this column and the key in the `raise` are one string, checked by name.**
+`audits/negative-space.sh` correlates them in both directions on both surfaces, so a guard added
+without a row — or a row whose key nothing raises — fails rather than being noticed later.
 
 **A `service-guard` row names one function.** A second call site enforcing the same invariant is a
 finding for `project-management/src/19-FINDINGS/`, not a judgement call.
@@ -34,18 +39,33 @@ genuinely race (two signups claiming one email), which say so in the `On breach`
 The constraint is the truth. Any application-level check above it exists to produce a better
 message, never to be the enforcement.
 
-| Invariant                                | Mechanism | Enforcement point | On breach | Stated in |
-| ---------------------------------------- | --------- | ----------------- | --------- | --------- |
-| _None yet — this project has no models._ |           |                   |           |           |
+| Invariant                                | Key | Mechanism | Enforcement point | On breach | Stated in |
+| ---------------------------------------- | --- | --------- | ----------------- | --------- | --------- |
+| _None yet — this project has no models._ |     |           |                   |           |           |
 
 ## Service-enforced invariants
 
 For rules PostgreSQL cannot express: preconditions in another system, workflow ordering, and the
 write-path rules. Each names exactly one function.
 
-| Invariant                                  | Mechanism | Enforcement point | On breach | Stated in |
-| ------------------------------------------ | --------- | ----------------- | --------- | --------- |
-| _None yet — this project has no services._ |           |                   |           |           |
+| Invariant                                  | Key | Mechanism | Enforcement point | On breach | Stated in |
+| ------------------------------------------ | --- | --------- | ----------------- | --------- | --------- |
+| _None yet — this project has no services._ |     |           |                   |           |           |
+
+## Client-enforced invariants — mobile-only
+
+For rules the mobile app holds on its own, where neither the database nor a service is in the
+call path: an exhausted union, a screen precondition, a state machine that must not skip.
+`client-guard` rows raise `InvariantViolation` from `code/src/mobile/lib/invariant.ts`, and the
+key here and the key in the throw are the same string.
+
+**A client guard never re-checks what the server already enforces.** It states what this app
+assumes; duplicating a service guard here is the second call site the register forbids, only
+harder to notice because it sits on the other side of an API.
+
+| Invariant                                 | Key | Mechanism      | Enforcement point | On breach | Stated in |
+| ----------------------------------------- | --- | -------------- | ----------------- | --------- | --------- |
+| _None yet — this project has no screens._ |     | `client-guard` |                   |           |           |
 
 ---
 
@@ -53,31 +73,39 @@ write-path rules. Each names exactly one function.
 
 Delete this section once the tables above have real rows in them.
 
-| Invariant                                                     | Mechanism       | Enforcement point                                         | On breach                                 | Stated in           |
-| ------------------------------------------------------------- | --------------- | --------------------------------------------------------- | ----------------------------------------- | ------------------- |
-| No two **live** widgets share a slug within one account       | `db-constraint` | `widget_unique_live_slug_per_account`                     | `user error` — a user can race this (409) | `NEGATIVE-SPACE.md` |
-| An order's total equals the sum of its lines                  | `both`          | `CheckConstraint` + `OrderService.recalculate_total()`    | `programmer error`                        | —                   |
-| A confirmation email is enqueued only after the order commits | `service-guard` | `OrderService.create_order()` → `transaction.on_commit()` | `programmer error`                        | `TASK-AUTHORING.md` |
+| Invariant                                                     | Key                         | Mechanism       | Enforcement point                                         | On breach                                 | Stated in           |
+| ------------------------------------------------------------- | --------------------------- | --------------- | --------------------------------------------------------- | ----------------------------------------- | ------------------- |
+| No two **live** widgets share a slug within one account       | —                           | `db-constraint` | `widget_unique_live_slug_per_account`                     | `user error` — a user can race this (409) | `NEGATIVE-SPACE.md` |
+| An order's total equals the sum of its lines                  | `order.total_matches_lines` | `both`          | `order_total_matches_lines` + `OrderService.mark_paid()`  | `programmer error`                        | —                   |
+| A confirmation email is enqueued only after the order commits | `order.email_after_commit`  | `service-guard` | `OrderService.create_order()` → `transaction.on_commit()` | `programmer error`                        | `TASK-AUTHORING.md` |
 
-The second row's key is what the code raises:
-`InvariantViolation("order.total_matches_lines", …)`. The identifier in the register and the
-identifier in the `raise` are the same string, deliberately — that is what stops this file and the
-running code becoming two lists that drift.
+**Read the `Key` column against the code.** Row two's key is what the guard raises —
+`InvariantViolation("order.total_matches_lines", …)` — and row one has none, because a constraint
+is identified by its own name. That identity is what stops this file and the running code becoming
+two lists that drift, and it is what `audits/negative-space.sh` checks.
+
+Note row two's `Enforcement point`: a `both` row names the **actual constraint**
+(`order_total_matches_lines`), never the Django class that builds it. `CheckConstraint` identifies
+nothing — a table can carry twenty.
 
 ---
 
 ## What keeps this file true
 
-**The database half is checked.** `bash code/src/scripts/audits/negative-space.sh` fails on a
-`Meta.constraints` entry with no row here, and on a `db-constraint` row naming a constraint that
-does not exist. Two limits worth knowing: the check matches **names**, so it proves a row exists
-and never that it is the right one; and it finds nothing at all until this project has models.
+**Both halves are checked, by name, in both directions.**
+[`code/src/scripts/audits/negative-space.sh`](../../code/src/scripts/audits/negative-space.sh)
+correlates this file with the code: a `Meta.constraints` entry with no row here fails, a
+`db-constraint` row naming a constraint no model declares fails, and a `Key` that is raised
+nowhere — or raised in two places, or raised with no row at all — fails. The mobile
+`client-guard` rows are read the same way, against `code/src/mobile/`.
 
-**The service half is not, and cannot be.** A `service-guard` row is kept true by the same-change
-rule: the guard and its row ship in the same commit, the way a build fact and its
-`SERVER-ARCHITECTURE` row do
+**Know the limit, because it decides how much the green run is worth: matching _names_ proves a
+row exists and never that it is the right one.** An enforcement point can guard something else
+entirely and stay green, and no audit can find an invariant nobody wrote down. Those two are
+marked `[judgement]` in the rule and belong to the reviewer. What the same-change rule still
+carries alone is the _content_ of a row, exactly as it does for a build fact and its
+`SERVER-ARCHITECTURE` entry
 ([`code/docs/architecture/BUILD-OPERATE-SEAM.md`](../../code/docs/architecture/BUILD-OPERATE-SEAM.md)).
-A guard added without a row is invisible to everyone who reads this file next.
 
 ## Cross-references
 

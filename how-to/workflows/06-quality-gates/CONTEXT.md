@@ -34,7 +34,7 @@ predict a clean CI run.
   the promotion.
 - **The audits are separate from the eight gates**, and each has its own path-filtered CI
   workflow: `cloc`, `stubs`, `css-tokens`, `css-gradients`, `copy-emdash`, `mobile-tokens`,
-  `security`, `seam-contract`, `docs-pairing`, `docs-length`, `skill-conformance`, and the AI-slop
+  `security`, `seam-contract`, `negative-space`, `docs-pairing`, `docs-length`, `skill-conformance`, and the AI-slop
   family — `css-slop`, `template-slop`,
   `copy-slop`, `render-slop`, plus `style-check` on a desktop project. They are cheap; run them —
   `render-slop` is the one exception to cheap, because it drives a browser, and it self-guards to

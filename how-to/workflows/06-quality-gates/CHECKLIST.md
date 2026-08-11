@@ -33,6 +33,8 @@ model: opus
 - [ ] `copy-emdash.sh` — marketing copy punctuation · _opus_
 - [ ] `mobile-tokens.sh` — mobile-only; exits 0 with a note on a web-only project · _opus_
 - [ ] `seam-contract.sh` — every `**Source:**` in the server contract resolves · _opus_
+- [ ] `negative-space.sh` — the invariant register and the code agree, both surfaces · _opus_
+- [ ] `negative-space.sh --self-test` — the detector still separates its fixtures · _opus_
 - [ ] `skill-conformance.sh` — every skill's frontmatter and routing section conform · _opus_
 - [ ] `docs-pairing.sh` — no operating rule left in a `CONTEXT.md`, every pair correctly shaped · _opus_
 - [ ] `docs-length.sh` — no instructional `.md` over 300 code lines · _opus_

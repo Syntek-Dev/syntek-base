@@ -27,6 +27,7 @@ in code comments, docstrings, and identifiers where a choice exists.
 | Stack layers and versions     | [Architecture](#architecture)         |
 | Dev operations (scripts only) | [Commands](#commands)                 |
 | Django, service-layer, Ninja  | [Coding standards](#coding-standards) |
+| Guards, errors, off-request   | [Coding standards](#coding-standards) |
 | Strict type-hint policy       | [Type hinting](#type-hinting)         |
 | App and package layout        | [File structure](#file-structure)     |
 | pytest conventions            | [Testing](#testing-pytest)            |
@@ -106,6 +107,24 @@ with the models; Django Ninja emits the OpenAPI schema at `/api/docs` automatica
   check, search for an existing manager method or service function — copy-pasted query
   logic or duplicated validation across endpoints is a red flag. Extract a shared manager,
   service method, or Policy class instead.
+- **Every failure is classified into one of three trees**, all in
+  `apps.core.services.errors`: a `ServiceError` subclass for a user error (4xx),
+  `InvariantViolation` for a broken guarantee (500 and one tracker event), and
+  `DependencyUnavailable` for an unreachable provider (503, raised in the adapter that owns
+  the SDK). The latter two are **siblings of `ServiceError`, never members** — inside the
+  tree, one broad `except ServiceError` turns a broken invariant into a friendly 400.
+- **Guard the invariant at the top of one named method, with a `raise`.** `assert` is banned
+  outside tests and ruff `S101` fails the build on it; an `AssertionError` cannot carry the
+  register key, so it reaches the tracker naming nothing. The guard's only exit is the raise
+  — never an early return, a confirming query, or a log.
+- **`InvariantViolation` takes its register key first** —
+  `InvariantViolation("order.total_matches_lines", …)` — and that key appears in exactly one
+  `raise`. Add the row to `how-to/src/INVARIANTS.md` in the same change;
+  `code/src/scripts/audits/negative-space.sh` fails on a key with no row, a row with no
+  raise, and one key raised twice.
+
+Read `code/docs/NEGATIVE-SPACE.md` before writing a guard or a constraint — it owns what
+counts as an invariant, the single-enforcement-point rule, and the taxonomy above.
 
 ```python
 """Blog publication service — orchestrates draft-to-published transitions."""
@@ -114,6 +133,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from apps.blogs.models import BlogPost
+from apps.core.services.errors import ServiceValidationError
 
 
 def publish(post: BlogPost, *, published_by_id: str) -> BlogPost:
@@ -127,10 +147,10 @@ def publish(post: BlogPost, *, published_by_id: str) -> BlogPost:
         BlogPost: The saved, published post.
 
     Raises:
-        ValueError: If the post is not in a publishable state.
+        ServiceValidationError: If the post is not in a publishable state.
     """
     if post.status != BlogPost.Status.DRAFT:
-        raise ValueError("Only draft posts may be published.")
+        raise ServiceValidationError("Only draft posts may be published.")
 
     with transaction.atomic():
         post.status = BlogPost.Status.PUBLISHED
@@ -147,6 +167,12 @@ def publish(post: BlogPost, *, published_by_id: str) -> BlogPost:
   IDOR. Resolve the object _scoped to the caller_, never fetch-then-trust.
 - Routers and Ninja `Schema` (Pydantic) models live in `apps/<app>/api.py`; split into an
   `api/` package (one router module per concern) once a file approaches the 750-line source limit.
+- **Schemas subclass the bases in `apps.core.schemas`** — request bodies `Schema`, responses
+  `OutSchema` or `ninja.ModelSchema`, `Query(...)` containers `QuerySchema`. Ruff `TID251`
+  fails the build on a direct `ninja.Schema` import, because Ninja's own default **silently
+  discards** unknown fields in a request body. `QuerySchema` deliberately accepts extras:
+  Ninja hands Pydantic the whole query string, so forbidding them would 422 every inbound
+  link carrying `?utm_source=…` (`code/docs/api-design/NINJA-CONVENTIONS.md`).
 - Filter PII fields by permission **in the response Schema**, and guard PII endpoints with a
   permission check plus audit logging. See `code/docs/SECURITY.md` and `ENCRYPTION-GUIDE.md`.
 - Return structured errors via Ninja exception handlers, not bare strings — follow the error
@@ -204,6 +230,27 @@ maintained as a stored generated column so it cannot drift from its source. Supp
 configuration explicitly — the implicit form is not immutable and a generated column will be
 rejected. Add the GIN index concurrently on any populated table. `django.contrib.postgres`
 must be in `INSTALLED_APPS` for any of it. See `code/docs/DATABASE.md` — _Search_.
+
+### Off the request cycle
+
+Work that runs without a request has no user to answer to, so the same three classes land
+differently. Each surface has one owning guide; read it before writing on that surface.
+
+- **Management commands** — `code/docs/MANAGEMENT-COMMANDS.md`. Subclass
+  `apps.core.management.base.ManagementCommand`; ruff `TID251` fails the build on Django's
+  `BaseCommand`, by either import path. Arguments are untrusted input — argparse **parses**,
+  which is not validating, so a command-line identifier is exactly as unverified as one from
+  a URL. Destructive work declares its bounds and takes `--dry-run`; the confirmation prompt
+  is not the safety, because `--noinput`, a pipe and a scheduler all skip it. Exit 75
+  (`EX_TEMPFAIL`) is the one code that carries meaning — a scheduler retries on it.
+- **Background tasks** — `code/docs/TASK-AUTHORING.md`. Enqueue inside
+  `transaction.on_commit()`, pass identifiers rather than instances, and re-read by primary
+  key inside the task. The **user-error class is empty here**: a task has nobody to tell, so
+  an argument it cannot act on was put there by code. A signature change is a two-release
+  change — a rolling deploy has both live, so a queued message carries the previous shape.
+- **Which process it runs in** — `code/docs/PROCESS-MODEL.md`. Worker class, the event loop,
+  and the ORM's sync boundary; read it before choosing sync versus async or adding a process
+  beyond the web one.
 
 ---
 

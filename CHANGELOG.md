@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.14.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.15.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.15.0] - 11/08/2026
+
+### Added
+
+- **`code/src/scripts/audits/negative-space.sh`** — the CI half of `code/docs/NEGATIVE-SPACE.md`. It correlates `how-to/src/INVARIANTS.md` with the code, by name, in both directions and on both surfaces. Nine `[gate: fail]` clauses — `constraint-unregistered`, `constraint-absent`, `key-unraised`, `key-unregistered`, `key-duplicated`, `register-absent`, `htmx-handler-absent`, `request-id-middleware-absent`, `ts-flags-loosened` — and one `[gate: warn]`, `worked-row-stale`. There is **no silencing annotation**, deliberately: a comment suppressing a finding here is itself a finding, on the same reasoning that makes a `# noqa: S101` one.
+- **`--self-test`, and the fixture pair under `code/src/scripts/audits/fixtures/negative-space/`.** `broken/` must trip every fail clause; `clean/` must trip none. Six known-positive files carry one violation each — `models.py` holds `constraint-unregistered` and `constraint-absent` together, `services.py` holds `key-unregistered` and `key-duplicated`, `page.html` an `hx-post` with no `htmx:responseError` handler, `settings.py` a `MIDDLEWARE` list omitting the request-ID middleware while naming it in the docstring, `tsconfig.json` a loosened compiler flag, and `INVARIANTS.md` one breach of each register clause. Missing fixtures exit 2 rather than passing having proved nothing.
+- **`.github/workflows/audit-negative-space.yml`** — the self-test runs **first**, then the scan. Its path filter is deliberately broad across both `how-to/src/INVARIANTS.md` and the code the register names, because a clause landing in one half alone is the drift the audit exists to catch.
+- **`code/docs/MOBILE-CODING-PRINCIPLES.md`** — the mobile peer of the backend and frontend principles guides. It owns how the mobile surface **expresses** the negative-space rules and restates none of them: the four compiler flags and what each makes un-writable, the flags deliberately declined, exhaustiveness across compile time and runtime, and the error taxonomy on a device.
+- **`code/src/mobile/lib/invariant.ts`** — `InvariantViolation`, named to match the backend's exactly so one `On breach` column reads the same on both surfaces, plus `unreachable(value: never, key)`, which fails typecheck at every unhandled call site and throws a keyed error when an unseen union member arrives from the API.
+- **`code/src/mobile/lib/error-classes.ts`** — `classify()` and its reporting table. `408`, `502`, `503` and `504` are carved out as **environment** errors despite three being 5xx, so a rolling deploy's restart window is not filed as a fleet of new defects; environment reports aggregate, because a phone losing connectivity is ordinary; an unrecognised failure defaults to **programmer error**, because defaulting to environment silences exactly the failures nobody has considered yet.
+- **`code/src/mobile/__tests__/invariant.test.ts` and `code/src/mobile/__tests__/error-classes.test.ts`** — the classifier's table pinned status by status, the REPORTING policy and `isRetryable`, and proof that a thrown string, a `null` and a stringified status all land as programmer errors.
+
+### Changed
+
+- **`how-to/src/INVARIANTS.md` gains a `Key` column, and it is a column rather than a convention because a gate cannot read a convention.** The key in the register and the string in the `raise` are one string, checked by name. A pure `db-constraint` row carries `—`, because a constraint name is already its own identifier. The file also gains a **client-enforced** section, mobile-only, and a standing rule that a client guard never re-checks what the server enforces — that is the second call site the register forbids, only harder to notice because it sits on the other side of an API.
+- **`code/docs/NEGATIVE-SPACE.md` gains a _What the gate decides_ section** naming every clause and its tier inline, so the script implements against the markers rather than re-deriving what is detectable. Two things are marked `[judgement]` and belong to the reviewer: whether a named enforcement point guards the **right** thing, and whether an invariant is missing altogether. The `Mechanism` vocabulary adds `client-guard`, `RequestIDMiddleware` staying in `MIDDLEWARE` becomes a gated clause, and the per-surface table extends to background tasks, management commands and the mobile app.
+- **Scope is stated, because a gate that measures the wrong thing is worse than none.** Models only, never migrations — a migration history holds every constraint ever added, including ones since dropped, so scanning it would force the register to carry dead rows to stay green. Test code is exempt on both surfaces, exactly as ruff `S101` exempts it, and `code/src/scripts/audits/fixtures/negative-space/clean/guard.test.ts` and `clean/tests/test_guard.py` construct unregistered keys on purpose so the self-test fails the day that exemption is removed.
+- **`code/src/mobile/tsconfig.json` enables the four flags beyond `strict`** that neither `strict` nor `expo/tsconfig.base` implies — `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitReturns`, `noFallthroughCasesInSwitch`. Each bans a state rather than a style, which is the test for adding a fifth. `noUnusedLocals` and `noUnusedParameters` are declined and the file says why: ESLint already owns that rule, and two enforcers of one rule drift.
+- **`code/src/mobile/jest.config.js` adds `lib/**/\*.{ts,tsx}`to`collectCoverageFrom`.\*\* Without the entry the new non-route modules are invisible to the coverage floor, and the run stays green having measured nothing.
+- **`code/src/mobile/CONTEXT.md` and `code/src/mobile/CLAUDE.md` document the `lib/` tree and two rules.** `lib/` exists because expo-router would publish any helper placed under `app/` as a navigable screen. A new non-route module joins the coverage glob in the same change, and loosening a compiler flag to clear a build is a finding for `project-management/src/19-FINDINGS/`, never a `!` non-null assertion.
+- **The three stack skills teach the taxonomy the register encodes.** `stack-django` — the three error trees, `InvariantViolation` taking its register key first, and the guard whose only exit is the `raise`. `stack-react-native` — the four flags, `unreachable()` over `assertNever`, `classify()`, and one root `ErrorBoundary` because on a phone the environment error is the ordinary case. `stack-fastmcp` — a tool inherits the JSON API's row rather than holding one of its own, and the guard stays in the service.
+- **`code/src/scripts/audits/CONTEXT.md` registers the audit and its fixtures**, widens exit code 2 to cover a self-test whose fixtures are missing, and states the new rule that a warn tier is **earned rather than assumed**.
+- **`how-to/workflows/06-quality-gates/` carries both invocations** — the scan and `--self-test` — in `STEPS.md` and `CHECKLIST.md`, with the audit named in `CONTEXT.md`.
+- **`README.md` and `THIRD-PARTY-NOTICES.md` credit TigerStyle where the doctrine sits.** Two rows measured at **0.0% five-gram overlap** against `code/docs/NEGATIVE-SPACE.md` and `how-to/src/INVARIANTS.md`, with the note that its assertion mechanism is deliberately not adopted: Python's `assert` is stripped by `-O` and cannot carry the register key.
 
 ## [2.14.0] - 11/08/2026
 

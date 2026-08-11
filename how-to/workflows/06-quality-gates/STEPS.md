@@ -70,6 +70,8 @@ bash code/src/scripts/audits/css-gradients.sh # no inline gradients
 bash code/src/scripts/audits/copy-emdash.sh   # marketing copy punctuation
 bash code/src/scripts/audits/mobile-tokens.sh # mobile-only; exits 0 with a note otherwise
 bash code/src/scripts/audits/seam-contract.sh # server-contract Source provenance resolves
+bash code/src/scripts/audits/negative-space.sh # the invariant register agrees with the code
+bash code/src/scripts/audits/negative-space.sh --self-test # ...and the detector still works
 bash code/src/scripts/audits/docs-pairing.sh  # CONTEXT.md orients, CLAUDE.md instructs
 bash code/src/scripts/audits/skill-conformance.sh # skill frontmatter + routing section
 bash code/src/scripts/audits/static-analysis.sh # template XSS + cross-file taint (needs opengrep)
