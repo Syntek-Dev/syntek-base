@@ -186,24 +186,28 @@ project logger so output reaches GlitchTip, and server code through Django loggi
 **Naming.** `snake_case` for Python, template files, and component folders; `kebab-case` for CSS
 classes and file names; in browser JavaScript, `camelCase` (vars/functions) and
 `SCREAMING_SNAKE_CASE` (constants). Global conventions:
-[CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#naming-conventions).
+[CODING-PRINCIPLES.md](coding-principles/PRACTICAL-RULES.md#naming-conventions).
 
 ---
 
 ## Code Review Checklist (Frontend)
 
-In addition to the [global checklist in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#code-review-checklist):
+In addition to the [global checklist in CODING-PRINCIPLES.md](coding-principles/STYLE-AND-PROCESS.md#code-review-checklist):
 
 - [ ] Built from the shipped code — real components/tokens/conventions reused, wireframe/design
       reconciled against what is actually there (not improvised from the plan)
 - [ ] Shared UI is a `{% component %}`, not inline markup; views thin; templates logic-free
 - [ ] Interactions placed by class — server default, HTMX (with a visible indicator) for server ops,
       Alpine for local; `hx-boost` absent; usable with JS disabled
+- [ ] Nothing fails silently — a 5xx swaps a real error region rather than nothing, and an
+      unresolved template variable is visible in dev ([rendering/PITFALLS-AND-EXAMPLES.md](rendering/PITFALLS-AND-EXAMPLES.md))
 - [ ] CSP-clean — no inline `<script>` / `<style>`
 - [ ] No raw visual literal — every value is `var(--token)`; `css-tokens.sh` clean
 - [ ] No inline gradient — brand gradients are `--gradient-*` / `--sector-tone-*` tokens;
       `css-gradients.sh` clean (functional shimmer/mask exempt via `gradient-allow`)
 - [ ] No em dash in user-facing copy — reworded, never a spaced-en-dash substitute; `copy-emdash.sh` clean
+- [ ] No banned sentence pattern or vocabulary in user-facing copy; `copy-slop.sh` clean and its
+      warnings answered (`how-to/src/BRAND-VOICE.md` § 4)
 - [ ] Pills/eyebrows only for real taxonomy (blog topics, case studies, testimonials), not on every heading
 - [ ] Responsive mobile-first across the breakpoint scale (`RESPONSIVE-DESIGN.md`); no horizontal scroll
 - [ ] Footer carries the full legal set (Terms, Privacy, Accessibility, Cookies, DPA) via the shared footer

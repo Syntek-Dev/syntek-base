@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — known negative (lead and two)</title>
+    <!--
+      KNOWN NEGATIVE. The same three cards, into a TWO-column grid: two land on the
+      first row and one on the second, so no row ever reaches three equal members.
+      render-slop.sh --self-test asserts the detector leaves this screen alone.
+
+      This is the composition N-015 shipped in the wireframe template — three cards
+      into `repeat(2, 1fr)`, reading 2 + 1 — reproduced here so the pair differs in
+      the grid and nothing else. Two fixtures that differed in several ways at once
+      would prove nothing about which difference the detector saw.
+
+      A false positive here is the expensive failure: it means the gate fails correct
+      work, and every consolidated set in every generated project inherits that.
+    -->
+    <style>
+      body {
+        margin: 0;
+        padding: 48px;
+        font-family: system-ui, sans-serif;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+      .card {
+        min-height: 220px;
+        padding: 24px;
+        border: 1px solid #333;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Known negative</h1>
+      <div class="row">
+        <article class="card">
+          <h2>Lead</h2>
+          <p>Two cards on the first row.</p>
+        </article>
+        <article class="card">
+          <h2>Support</h2>
+          <p>Then one on the second.</p>
+        </article>
+        <article class="card">
+          <h2>Support</h2>
+          <p>No row reaches three equal members.</p>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>

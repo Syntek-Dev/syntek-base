@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.5.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.6.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.6.0] - 11/08/2026
+
+### Added
+
+- **`how-to/src/BRAND-VOICE.md` — how the project speaks, settled before the first feature.** Tone, the four registers, casing, punctuation, and the machine-authored tells that are banned outright. It ships as a template: § 1 and § 4 are the portable core, adopted unchanged; § 3 and § 5 carry placeholders for this project's own voice. Six agents and the `stack-htmx-templates` skill load it for every user-facing string.
+- **`code/docs/VISUAL-DESIGN.md` — the same doctrine in composition rather than copy**, with per-surface sub-documents under `code/docs/visual-design/` (`WEB.md`, `MOBILE.md`, `DESKTOP.md`). § 3 pins a **named visual direction** on six axes, and it is what makes § 4.2's ban list decidable at all: without a direction there is no such thing as a deviation from it. § 4.1 bans the universal tells on every direction; § 5 is a numeric motion standard — frequency first, duration ceilings, easing as a hierarchy rather than a preference, and reduced-motion as fewer and gentler rather than none.
+- **Four deterministic slop gates, split by input.** `copy-slop.sh` takes prose, `css-slop.sh` takes stylesheets, `template-slop.sh` takes Django markup, and `render-slop.sh` takes a viewport — the last because the repeated-device clauses in § 4.1 cannot be decided by any static scan. Each ships a CI workflow.
+- **Two tiers in one run, following `cloc.sh`'s warn-at-750 / fail-at-800 precedent.** `[gate: fail]` is an unambiguous match and exits 1; `[gate: warn]` is a threshold, a ratio, or a word that is sometimes correct English, and is reported without failing. The tier scheme and its rationale live in `VISUAL-DESIGN.md` § 6, which is also the list of what a script can and cannot decide.
+- **`code/src/scripts/desktop/style-check.sh` and its CI job** — the Slint surface picks a style whether or not you name one, so the build script now names it and the gate holds it. Copier-excluded on a project without the desktop surface, because a workflow shipped without its script is a permanently red job on every web-only project.
+- **`README.md` § _Influences and attribution_ and `THIRD-PARTY-NOTICES.md`.** The design doctrine, the copy rules and the audit scripts derive from an open skill ecosystem; those sources are named with their licences. `THIRD-PARTY-NOTICES.md` is the separate, narrower obligation: the files that contain substantial portions of someone else's licensed work, carrying the notice that licence requires. It ships into every generated project, because the adapted files do and `LICENSE` is copier-excluded.
+- **`research/ANTI-SLOP-RULE-SOURCES.md`** — the per-claim citations behind every derived rule, so the reasoning stays checkable.
+
+### Changed
+
+- **Two new non-negotiables in `.claude/CLAUDE.md` § 6, both about attribution.** Doctrine derived from an outside source is credited in the **same change** as the rule it credits — attribution written once decays, written alongside it stays true. And: use, adapt and redistribute are three different permissions. A share-alike source may be **read** as a checklist of concerns, but its text and rule wording may never be derived into anything this template redistributes, because every generated project would inherit the obligation. The licence column is consulted **before** deriving.
+- **The first-time-setup ordering now has four prerequisite passes, not two** — project brief → brand voice → visual direction → `/scale-planning`, in that order, because each depends on the one before and the later documents are themselves written in the voice the earlier one settles. All four are cheap before the first feature and expensive after the tenth.
+- **`DESIGN.md` and the four design workflows (`06`, `07`, `08`, `17`)** route to the two new guides rather than describing taste in their own words.
+- **The desktop surface composes its own look.** `build.rs` names Fluent explicitly — from Slint 1.16 the fallback is Fluent on every platform, so saying nothing shipped a vendor look on macOS and Linux that nobody chose — and `app.slint` reads colour and rhythm from `Palette` and `StyleMetrics` so the built-in widgets stay structural scaffolding rather than the design itself.
+
+### Fixed
+
+- **`copy-emdash.sh` and `css-gradients.sh` cited a section that has since split.** Both predate the four new gates and pointed at `VISUAL-DESIGN.md` § 4, which now has two halves that mean different things. Each now names § 4.1 — a universal tell, banned on every direction and every surface — rather than the parent section that also contains the per-direction deviations.
 
 ## [2.5.0] - 11/08/2026
 

@@ -1,0 +1,72 @@
+# AI-slop audit — the RENDERED leg. The fourth member of a family otherwise split by
+# input language (code/src/scripts/audits/CONTEXT.md → The AI-slop family). This one
+# reads the same HTML the markup leg reads; what separates it is that the input has to
+# be RENDERED before the clause can be decided at all — the same .wf-grid markup is a
+# one-, two- or three-column device depending on width, and CSS text has no viewport.
+#
+# It is therefore the one job here that needs a browser. That cost is why it is a
+# separate workflow rather than a step inside audit-template-slop.yml: a Chromium
+# download has no business firing on every template change.
+#
+# Path filters are safe because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters on why
+# a path-filtered required check blocks a merge forever.
+#
+# TWO STEPS, and the first is the load-bearing one. `--self-test` renders the fixture
+# pair and asserts the detector still separates a known positive from a known negative;
+# the scan that follows is what a real project's consolidated set gets. In the base
+# template the scan finds nothing to read and says so, so without the self-test this
+# job would be green having measured nothing, for the whole life of the gate.
+name: Audit — Rendered Slop
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/**/*.html"
+      - "code/src/scripts/audits/render-slop.sh"
+      - "code/src/scripts/audits/fixtures/render-slop/**"
+      - "code/docs/VISUAL-DESIGN.md"
+      - ".github/workflows/audit-render-slop.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/**/*.html"
+      - "code/src/scripts/audits/render-slop.sh"
+      - "code/src/scripts/audits/fixtures/render-slop/**"
+      - "code/docs/VISUAL-DESIGN.md"
+      - ".github/workflows/audit-render-slop.yml"
+  workflow_dispatch:
+
+jobs:
+  render-slop:
+    name: Rendered slop audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      # `--no-project` throughout: pyproject.toml names the root package
+      # <%PROJECT_SLUG%>, which is not a valid package name, so a bare `uv run` fails in
+      # the base template. The audit invokes Playwright the same way for the same reason.
+      - name: Install Chromium
+        run: uv run --no-project --with playwright playwright install --with-deps chromium
+
+      # Runs BEFORE the scan, and its failure is the only way this job goes red in a
+      # project that has not wireframed anything yet. Exits 2 rather than 0 if Chromium
+      # is missing, so a broken install step cannot turn the proof into a rubber stamp.
+      - name: Prove the detector (self-test against the fixture pair)
+        run: bash code/src/scripts/audits/render-slop.sh --self-test
+
+      - name: Run rendered slop audit
+        run: bash code/src/scripts/audits/render-slop.sh --output md
+
+      - name: Upload rendered slop report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-slop-report
+          path: code/src/scripts/audits/reports/render-slop-report.md
+          if-no-files-found: ignore

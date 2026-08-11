@@ -52,6 +52,11 @@ Every box must be ticked before `18-backend-code/` may begin.
 - [ ] Components: duplicates merged; every component has all states (default, hover, focus, disabled, error, success, empty)
 - [ ] Components meet WCAG 2.2 AA (`code/docs/ACCESSIBILITY.md`)
 - [ ] Wireframes: rebuilt on the consolidated component set, not the per-story ones
+- [ ] `css-slop.sh`, `template-slop.sh` and `render-slop.sh` all exit 0 over the rebuilt set
+- [ ] `render-slop.sh` actually **rendered** — a "no browser" note is a run that measured nothing, not a pass
+- [ ] Every `[gate: warn]` is either fixed or annotated with `slop-allow` **naming the clause and the reason** — no bare marker, no raised threshold
+- [ ] The § 4.2 leg ran rather than skipping — a skip means an axis in `code/docs/VISUAL-DESIGN.md` § 3 is still `TBD`
+- [ ] The rebuilt set read **as a set** against § 4.1's repetition tell and § 4.2's rhythm clause — the two no diff-scoped review reaches. `render-slop.sh` now measures the geometry half; it counts equal boxes, and only a human can say whether the vocabulary that replaces one is right
 
 ## Generated deliverables
 
@@ -75,5 +80,5 @@ Every box must be ticked before `18-backend-code/` may begin.
 
 - [ ] Every touched `CONTEXT.md`/`CLAUDE.md` updated
 - [ ] Code-review-graph refreshed (`code-review-graph update`)
-- [ ] Instructional `.md` files still ≤ 300 code lines
+- [ ] Instructional `.md` files still ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY

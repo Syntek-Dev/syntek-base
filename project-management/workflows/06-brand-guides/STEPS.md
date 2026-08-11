@@ -30,8 +30,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 > **Model:** fable
 
-Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> **one question at a time**, each
-carrying a recommended answer, looking facts up rather than asking. No action until confirmed
+Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` §10).
 
 Ask about:
@@ -49,11 +48,17 @@ _Done when every question is answered and <%DEVELOPER_NAME%> has confirmed the s
 
 > **Model:** opus
 
-Document the brand personality, tone of voice, and visual direction:
+Document the brand personality, and reconcile it against the two prerequisite documents that
+already settled voice and direction at first-time setup:
 
 - Core values and personality traits
-- Tone of voice (formal/informal, technical/accessible)
-- Visual direction (clean, bold, minimal, etc.)
+- **Tone of voice** — already settled in `how-to/src/BRAND-VOICE.md` § 3. Refine it here if the
+  brand work produces a fuller answer, and write the refinement back; the two must not contradict.
+- **Visual direction** — already settled in `code/docs/VISUAL-DESIGN.md` § 3: a named direction
+  plus a setting on each of the six axes (alignment, rhythm, contrast, ornament, density, motion).
+  **Do not re-open it as free text here.** Read the committed direction, design within it, and if
+  the brand work genuinely disproves an axis setting, change it in § 3 — that is the canonical
+  home — and say so, because § 4.2's ban list and every wireframe already read off it.
 
 ### Step 2 — Define the Colour Palette
 

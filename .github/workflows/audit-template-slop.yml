@@ -1,0 +1,55 @@
+# AI-slop audit — the markup leg. Sibling of audit-css-slop.yml; see that file for why
+# the family is split by input language.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# Carries `bold-whole-sentence`, which is a COPY rule (how-to/src/BRAND-VOICE.md § 4
+# Structure) living in the markup leg because its input is <strong>/<b>. That is the
+# same rule that keeps the em dash in copy-emdash.sh and the Slint style in the desktop
+# leg: a clause is placed by what it reads, never by what it is about.
+#
+# Carries the same design-time wireframe path as audit-css-slop.yml, for the reason
+# stated there.
+name: Audit — Template Slop
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/templates/**/*.html"
+      - "code/src/django/components/**/*.html"
+      - "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/**/*.html"
+      - "code/docs/VISUAL-DESIGN.md"
+      - "how-to/src/BRAND-VOICE.md"
+      - "code/src/scripts/audits/template-slop.sh"
+      - ".github/workflows/audit-template-slop.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/templates/**/*.html"
+      - "code/src/django/components/**/*.html"
+      - "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/**/*.html"
+      - "code/docs/VISUAL-DESIGN.md"
+      - "how-to/src/BRAND-VOICE.md"
+      - "code/src/scripts/audits/template-slop.sh"
+      - ".github/workflows/audit-template-slop.yml"
+  workflow_dispatch:
+
+jobs:
+  template-slop:
+    name: Template slop audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run template slop audit
+        run: bash code/src/scripts/audits/template-slop.sh --output md
+
+      - name: Upload template slop report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-slop-report
+          path: code/src/scripts/audits/reports/template-slop-report.md
+          if-no-files-found: ignore

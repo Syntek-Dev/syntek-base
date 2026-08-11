@@ -22,6 +22,14 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | All steps | **Internal — Live Artefacts** → src/07-COMPONENTS/     |
 | All steps | **Internal — Guides** → code/docs/RESPONSIVE-DESIGN.md |
 
+**The visual direction is already settled — read it before Step 1.** `code/docs/VISUAL-DESIGN.md`
+§ 3 names this project's direction and its setting on each of the six axes (alignment, rhythm,
+contrast, ornament, density, motion). Design within it. **Do not re-open it as free text here**,
+and do not design a component whose composition contradicts an axis — § 4.2's ban list reads off
+that table, so a component designed against it fails review later. If the component work genuinely
+disproves an axis setting, change it in § 3 — that is the canonical home — and say so. If any axis
+still reads `TBD`, stop: `how-to/workflows/01-first-time-setup/` Step 9 has not been run.
+
 ---
 
 ## Steps
@@ -31,7 +39,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time about the required components, their states and
+interview <%DEVELOPER_NAME%> about the required components, their states and
 variants, and reuse of existing shared components before identifying the component set.
 
 If a design question stays open after grilling, spike it with a throwaway prototype

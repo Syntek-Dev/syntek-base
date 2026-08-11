@@ -6,9 +6,11 @@
 #   package.sh          Optimised release binary
 #   package.sh --help
 #
-# Produces a single native executable under code/src/rust/target/release/. Installer and
-# store packaging (AppImage, .deb, .msi, .dmg) are per-platform decisions made in the
-# deploy repository, not here — this script stops at the binary deliberately.
+# Produces a single native executable under code/src/rust/target/release/. Cargo names it
+# `desktop` (a crate name is an identifier and cannot hold a template token); this script
+# copies it to the branded name afterwards. Installer and store packaging (AppImage, .deb,
+# .msi, .dmg) are per-platform decisions made in the deploy repository, not here — this
+# script stops at the binary deliberately.
 #
 # ATTRIBUTION CHECK: fails if the AboutSlint disclosure has been removed from the UI.
 # That disclosure is what the Royalty-free Slint licence requires in exchange for free
@@ -45,7 +47,22 @@ fi
 log "✓ Slint attribution present."
 log ""
 
-cargo build -p desktop --release
+# cargo exits 101 on a compile error, which is outside this script's documented set.
+# Map it so a caller testing for 1 sees the build failure it was told to expect.
+if ! cargo build -p desktop --release; then
+  printf '%s error: %s\n' "$SCRIPT_NAME" "cargo build failed. See the output above." >&2
+  exit 1
+fi
+
+# Cargo builds `desktop`, because a crate name is an identifier and cannot carry a
+# template token (see crates/desktop/Cargo.toml). The branding happens here instead, where
+# the name is only ever a filename: `cp`, not `mv`, so a re-run is idempotent and
+# `cargo run -p desktop` still finds the artefact it expects.
+BUILT="$RUST_DIR/target/release/desktop"
+BRANDED="$RUST_DIR/target/release/<%PROJECT_SLUG%>-desktop"
+
+[[ -f "$BUILT" ]] || die "cargo reported success but $BUILT is missing."
+cp "$BUILT" "$BRANDED"
 
 log ""
-bold "✓ Desktop binary built: code/src/rust/target/release/"
+bold "✓ Desktop binary built: code/src/rust/target/release/<%PROJECT_SLUG%>-desktop"

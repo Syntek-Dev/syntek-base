@@ -61,17 +61,33 @@ reviewable decision.
 > **Model:** opus
 
 ```bash
-bash code/src/scripts/audits/cloc.sh          # file-length limits (≥800 = error)
+bash code/src/scripts/audits/cloc.sh          # source file length (≥800 = error)
+bash code/src/scripts/audits/docs-length.sh   # instructional .md length (>300 = error)
 bash code/src/scripts/audits/stubs.sh         # hard stubs left behind
 bash code/src/scripts/audits/security.sh      # pnpm audit + pip-audit (mirrors CI [8/8])
 bash code/src/scripts/audits/css-tokens.sh    # every var(--token) resolves
 bash code/src/scripts/audits/css-gradients.sh # no inline gradients
 bash code/src/scripts/audits/copy-emdash.sh   # marketing copy punctuation
 bash code/src/scripts/audits/mobile-tokens.sh # mobile-only; exits 0 with a note otherwise
+bash code/src/scripts/audits/seam-contract.sh # server-contract Source provenance resolves
+bash code/src/scripts/audits/docs-pairing.sh  # CONTEXT.md orients, CLAUDE.md instructs
+bash code/src/scripts/audits/skill-conformance.sh # skill frontmatter + routing section
+bash code/src/scripts/audits/static-analysis.sh # template XSS + cross-file taint (needs opengrep)
+bash code/src/scripts/audits/css-slop.sh      # AI-slop, CSS half
+bash code/src/scripts/audits/template-slop.sh # AI-slop, markup half
+bash code/src/scripts/audits/copy-slop.sh     # AI-slop, prose half
+bash code/src/scripts/audits/render-slop.sh   # AI-slop, rendered half (needs Chromium)
+bash code/src/scripts/desktop/style-check.sh  # desktop-only; a Slint style is chosen
 ```
 
 `security.sh` mirrors the CI `[8/8]` gate exactly, so a hit here is what the next PR would
 see. Advisories are published continuously — a clean run last week means nothing today.
+
+**Read the slop family's warnings; do not just count its exit code.** Those four report two tiers
+in one run, and a `[gate: warn]` finding leaves the exit code at 0 by design — a threshold on
+composition or vocabulary fails correct work, so the script reports and a human decides
+(`code/docs/VISUAL-DESIGN.md` § 6). An audit that exits 0 with five warnings has told you
+something; treat each as a question to answer.
 
 ---
 

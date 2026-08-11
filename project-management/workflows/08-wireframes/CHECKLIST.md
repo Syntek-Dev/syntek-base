@@ -13,7 +13,7 @@ model: fable
 
 ---
 
-> **See** `project-management/REFERENCES.md` → **Internal — Guides** (RESPONSIVE-DESIGN.md) · **Internal — Live Artefacts** (src/08-WIREFRAMES/) for supporting references.
+> **See** `code/docs/RESPONSIVE-DESIGN.md` (breakpoints and device data — the PM-layer file of that name is a redirect stub) · `project-management/REFERENCES.md` → **Internal — Live Artefacts** (src/08-WIREFRAMES/) for supporting references.
 
 ## Execution Checklist
 
@@ -23,9 +23,15 @@ model: fable
 - [ ] Navigation and routing annotated — no dead ends
 - [ ] Accessibility notes included (focus order, ARIA roles, colour contrast)
 - [ ] Linked to the corresponding user story (`US###.md`)
-- [ ] Screen saved at `project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/WF-###-<Screen-Name>.html`
+- [ ] Screen saved at `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/WF-IDEA-US###-<Screen-Name>.html` — **stage 1.** `CONSOLIDATED-IDEAS/` is workflow `17`'s, and its screens drop the `IDEA` marker and the story number
 - [ ] Self-contained — opens over `file://` with nothing to fetch; only dependency is `SHARED/wireframe.css`
 - [ ] Composed from `wf-*` classes and `--wf-*` tokens — no raw colour or spacing literals
+- [ ] Laid out **within the committed direction** — every screen checked against the six axes in `code/docs/VISUAL-DESIGN.md` § 3, not against taste
+- [ ] The screen is not the shipped template's three-up in new clothes — if it repeats one card row, that is a decision with a reason, not a default
+
+> **The script gate runs at `17`, not here.** § 4.1's repetition tell and § 4.2's rhythm clause are
+> properties of a page **set**, and this workflow produces one screen at a time. `DESIGN.md` →
+> _The design-time gate_.
 
 ### Mobile screens (mobile-only)
 

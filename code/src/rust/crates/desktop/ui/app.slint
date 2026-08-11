@@ -6,21 +6,29 @@
 // disclosed*. The AboutSlint widget below is that disclosure. Removing it without buying
 // a Commercial licence from Slint is a breach.
 
-import { Button, VerticalBox, HorizontalBox, AboutSlint } from "std-widgets.slint";
+// Palette and StyleMetrics are the documented route to a look this project owns: they
+// resolve against whatever style build.rs selected and against the user's light/dark
+// preference, so reading colour and rhythm from them is what keeps the widgets below
+// structural scaffolding rather than the design itself.
+import { Button, VerticalBox, HorizontalBox, AboutSlint, Palette, StyleMetrics } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
     title: "<%DESKTOP_APP_NAME%>";
     preferred-width: 800px;
     preferred-height: 560px;
+    background: Palette.background;
 
     // Set from Rust so the greeting is not hardcoded in markup.
     in property <string> status: "Ready";
     callback refresh();
 
     VerticalBox {
+        spacing: StyleMetrics.layout-spacing;
+
         Text {
             text: "<%DESKTOP_APP_NAME%>";
             font-size: 22px;
+            color: Palette.foreground;
             horizontal-alignment: center;
         }
 

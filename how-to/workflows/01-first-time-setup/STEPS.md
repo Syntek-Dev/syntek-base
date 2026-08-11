@@ -22,7 +22,8 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 | 2    | **Internal → Reference guides** → how-to/docs/DEVELOPMENT.md (prerequisites and troubleshooting) |
 | 2–4  | **External — Tools & CLI** → Docker Compose v2 reference, uv documentation, pnpm documentation   |
 | 5–6  | **External — IDE & Editor** → Claude Code CLI documentation                                      |
-| 7–8  | `CONTEXT.md` → _What this project is_ · `.claude/skills/scale-planning/SKILL.md`                 |
+| 7–10 | `CONTEXT.md` → _What this project is_ · `how-to/src/BRAND-VOICE.md` ·                            |
+|      | `code/docs/VISUAL-DESIGN.md` § 3 · `.claude/skills/scale-planning/SKILL.md`                      |
 
 ---
 
@@ -112,8 +113,12 @@ Open:
 
 ## Before any feature work
 
-Steps 1–6 give a running stack. **Steps 7 and 8 are what make the work that follows worth
-doing** — and both run once, before the first feature is charted.
+Steps 1–6 give a running stack. **Steps 7 to 10 are what make the work that follows worth
+doing** — and all four run once, before the first feature is charted.
+
+They run in this order because each depends on the one before: the brief names the reader, the
+voice is written for that reader, the visual direction is the same doctrine in composition rather
+than copy, and the sizing is done for that project. None of them is recoverable cheaply later.
 
 ### Step 7 — Sharpen the project description
 
@@ -134,7 +139,58 @@ generation-time placeholder is a silent tax on every gate that follows.
 
 _Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not the raw Copier answer._
 
-### Step 8 — Plan scale and architecture before the first feature
+### Step 8 — Settle the brand voice
+
+> **Model:** fable
+
+Open `how-to/src/BRAND-VOICE.md` and fill § 3 (tone, person, formality, reader, signature, the
+never-this line, and the say-this-not-that vocabulary) plus the placeholders in § 5. The reader
+comes straight from the brief you just wrote — which is why this runs after Step 7 and not before.
+
+**Do this before the other prerequisite documents, not after.** Every user-facing word the project
+ever ships is written in this voice, and so is much of the brand work that follows in
+`project-management/src/06-BRAND-GUIDE/`. A voice settled after ten features is a voice retrofitted
+onto copy nobody will go back and rewrite.
+
+§ 1 and § 4 are the portable core — adopt them unchanged. § 4 is already partly enforced:
+`bash code/src/scripts/audits/copy-emdash.sh` fails on an em dash in marketing copy, and six agents
+plus the `stack-htmx-templates` skill load this file for every user-facing string they write.
+
+_Done when § 3 carries this project's answers rather than `TBD` placeholders. The visual half is
+Step 9 — settle it next, and keep the two consistent._
+
+### Step 9 — Settle the visual direction
+
+> **Model:** fable
+
+Open `code/docs/VISUAL-DESIGN.md` § 3 and fill the **This project's direction** table: name the
+direction, then give every axis a setting — alignment, rhythm, contrast, ornament, density, motion.
+The comparison table beneath it shows two worked directions; the one you fill is the commitment
+every downstream gate reads.
+
+**This is the visual half of the doctrine Step 8 settled in copy**, and it runs here for the same
+reason: every wireframe (`08-WIREFRAMES/`), every component (`07-COMPONENTS/`) and every page is
+composed in the direction. A direction settled after the tenth screen is a direction retrofitted
+onto screens nobody will go back and rebuild.
+
+`editorial` ships as the default and a project that keeps it changes nothing below the direction
+block. A project that chooses otherwise **must** restate § 3's colour, typography and layout clauses
+against its own axes — those clauses are the default direction made concrete, not house law.
+`classical-symmetric` is documented beside it as a worked alternate showing exactly what a different
+setting changes, and what it does not.
+
+**Naming a direction is not decoration — it is what makes the ban list decidable.** § 4.2's clauses
+read their verdict off these axes: a centred hero is a defect under `editorial` and correct under
+`classical-symmetric`. Leave the direction unnamed and § 4.2 has nothing to judge against, which is
+the vacuum the AI-look fills.
+
+What a direction never buys: an exemption from § 4.1's universal tells, from the token-first law,
+from WCAG 2.2 AA, or from the reduced-motion contract.
+
+_Done when § 3 names a direction, every axis carries a setting rather than `TBD`, and § 3 does not
+contradict `how-to/src/BRAND-VOICE.md` § 3._
+
+### Step 10 — Plan scale and architecture before the first feature
 
 > **Model:** fable
 

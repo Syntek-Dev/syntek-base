@@ -35,8 +35,9 @@ Read before reviewing:
 - `code/docs/TESTING.md` — coverage floors and test structure (to flag gaps, not to fill them)
 
 Touching backend? also `code/docs/BACKEND-CODING-PRINCIPLES.md`.
-Touching frontend? also `code/docs/FRONTEND-CODING-PRINCIPLES.md` and
-`code/docs/ACCESSIBILITY.md`. Stack conventions live in the skills
+Touching frontend? also `code/docs/FRONTEND-CODING-PRINCIPLES.md`,
+`code/docs/ACCESSIBILITY.md`, and `code/docs/VISUAL-DESIGN.md` — §3 first, because the direction
+it names decides what §4.2 counts as a defect. Stack conventions live in the skills
 `.claude/skills/stack-django/SKILL.md`, `.claude/skills/stack-htmx-templates/SKILL.md`, and —
 mobile-only — `.claude/skills/stack-react-native/SKILL.md` when the diff touches
 `code/src/mobile/` —
@@ -141,6 +142,24 @@ not restated) for: in-process or session state a second worker would not share; 
 or `OFFSET`-paginated queries; a user-owned table missing `tenant_id`; synchronous I/O on
 the ASGI path.
 
+### Provider neutrality (`code/docs/architecture/PROVIDER-NEUTRALITY.md`)
+
+Infrastructure is reached through an **interface**, with the product as a named default behind it.
+Flag:
+
+- **A product-specific API on a protocol seam** — a call, field, or endpoint that only the default
+  product implements, reached through anything other than the protocol's own client (`boto3`,
+  `sentry-sdk`, a Prometheus client, an OTLP exporter). This is the one failure mode that matters:
+  it arrives as a small convenience and silently voids the seam years before anyone tries to swap.
+- **A product name standing where an interface should** — in a heading, a module name, or a
+  settings key. Naming the product in body prose as the default is correct and expected; do not
+  flag that.
+- **An unclassified infrastructure dependency** — anything new with no row in
+  `how-to/src/PLATFORM-PROVIDERS.md` carrying a seam kind and, for substrate, a stated reason.
+
+Do not flag a substrate coupling as a defect — PostgreSQL, Django, Celery and the Gunicorn worker
+class are fixed by decision, and the register says why.
+
 ### Correctness & quality
 
 Logic errors and edge cases; race conditions in async/Celery code; null/undefined
@@ -155,21 +174,27 @@ Interactive elements must meet WCAG 2.2 AA (`code/docs/ACCESSIBILITY.md`): keybo
 operability, visible focus, semantic roles/labels, contrast. Flag gaps; hand a11y
 depth to the frontend workflow.
 
-### Frontend visual & copy — anti-"AI-look" (`code/docs/VISUAL-DESIGN.md`)
+### Visual & copy doctrine (`code/docs/VISUAL-DESIGN.md`)
 
-Distinctive, on-brand UI is a review gate peer to WCAG. Flag:
+A review gate peer to WCAG, and **direction-parameterised — read §3 first**: it pins six axes, and
+§4.2's clauses are defects only relative to them, so judging §4.2 without §3 is a verdict on the
+wrong brand. Then §4.1 (the universal tells, wrong on every direction), §4.2 (each clause names the
+axis it reads), §5 (the motion numbers and the frequency floor), and the surface sub-document for
+what the diff touches — `code/docs/visual-design/WEB.md` · `MOBILE.md` (mobile-only) ·
+`DESKTOP.md` (desktop-only). Scripted gates, run the ones whose input the diff touches:
+`audits/css-gradients.sh` · `audits/css-slop.sh` (CSS) · `audits/template-slop.sh` (markup) ·
+`audits/copy-emdash.sh` + `audits/copy-slop.sh` (copy) · `desktop/style-check.sh` (Slint), all
+under `code/src/scripts/`. A `[gate: warn]` finding never fails a run and is not a defect on its
+own — it is a threshold or a ratio asking for a verdict, which is your job and not the script's.
 
-- **Inline / generic gradient** — a raw `linear-/radial-/conic-gradient(…)` in component or
-  page CSS, or any blue→purple / non-palette ramp. Brand gradients are `--gradient-*` /
-  `--sector-tone-*` tokens; functional gradients need a `gradient-allow` annotation. Gate:
-  `code/src/scripts/audits/css-gradients.sh`.
-- **Em dash in user-facing copy** — an em dash (—) in `apps/marketing/pagedata` or a template
-  is a machine-authored tell; reworded, never a spaced-en-dash substitute. Gate:
-  `code/src/scripts/audits/copy-emdash.sh`.
-- **Pill/eyebrow overuse** — a pill stamped on every heading. Pills label taxonomy only (blog
-  topics, case studies, testimonials); a pill on a plain section is filler.
-- **The generic AI-look** — centred single-band layout, three-equal-card-only vocabulary,
-  emoji chrome, rounded-everything. Expect the <%ORG_NAME%> signature instead.
+**Never restate the ban list here.** A copy drifts from the guide and then fails correct work.
+
+**Two clauses outrun the diff.** §4.1's repetition tell (one device repeated down the page) and
+§4.2's rhythm clause are properties of a **page set**, not of a change. When a diff adds or
+restyles a section, request its sibling pages before judging either.
+
+Reviewed here, but not owned by the visual guide:
+
 - **Missing legal footer** — the shared `site_footer` must carry the full legal set (Terms,
   Privacy, Accessibility, Cookies, DPA) via `navigation.py::FOOTER_LEGAL_LINKS`.
 - **Non-responsive layout** — not mobile-first across the breakpoint scale, or horizontal

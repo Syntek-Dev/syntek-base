@@ -28,11 +28,18 @@ model: opus
 
 ## Before any feature work
 
-These two run once, before the first feature is charted — they are what the planning gates
-downstream are measured against.
+These four run once, before the first feature is charted — they are what the planning gates
+downstream are measured against, and each depends on the one before it.
 
 - [ ] `CONTEXT.md` → _What this project is_ expanded beyond the raw Copier answer and confirmed:
       what it does, who for, what it replaces, what it deliberately is not · _fable_
+- [ ] `how-to/src/BRAND-VOICE.md` § 3 carries this project's tone, person, formality, reader,
+      signature and vocabulary — not `TBD` placeholders · _fable_
+- [ ] `code/docs/VISUAL-DESIGN.md` § 3 names a visual direction, and every axis — alignment,
+      rhythm, contrast, ornament, density, motion — carries a setting rather than `TBD` · _fable_
+- [ ] If the direction is not `editorial`, § 3's colour, typography and layout clauses have been
+      restated against the chosen axes · _fable_
+- [ ] `BRAND-VOICE.md` § 3 and `code/docs/VISUAL-DESIGN.md` § 3 do not contradict each other · _fable_
 - [ ] `/scale-planning` run against live code · _fable_
 - [ ] `how-to/src/SCALE-ARCHITECTURE/` carries real figures, not `TBD — regenerate` markers · _fable_
 - [ ] `how-to/src/SERVER-ARCHITECTURE/` carries the server/edge contract the deploy repo consumes · _fable_

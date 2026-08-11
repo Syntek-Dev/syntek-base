@@ -47,11 +47,17 @@ Definition of _surface_: `code/src/CONTEXT.md` → _Surfaces_.
 Read before writing any window or component:
 
 - `code/docs/DESKTOP.md` → its `desktop/` sub-docs — licensing, UI, state, threading, a11y
+- `code/docs/VISUAL-DESIGN.md` — the visual doctrine's cross-surface core: §3 the project's
+  **direction** and its six axes, §4.1 the universal tells, §5 the motion numbers (read every time)
+- `code/docs/visual-design/DESKTOP.md` — the desktop expression. **Slint 1.16+ defaults to
+  Microsoft Fluent on every platform**, so an app that sets no style ships stock Fluent — the
+  desktop equivalent of untouched component-library defaults. The style is a **compile-time**
+  decision; set it deliberately and drive the look from `Palette`/`StyleMetrics` (read every time)
 - `code/src/rust/CONTEXT.md` → `CLAUDE.md` — the workspace this crate belongs to
 - `code/src/scripts/desktop/CONTEXT.md` — why these run on the host, and the attribution gate
 - `code/workflows/13-desktop-app/CONTEXT.md` → `STEPS.md` — the governing procedure
 - `project-management/src/08-WIREFRAMES/` — build the designed screens, don't reinvent them
-- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the voice for user-facing copy
+- `how-to/src/BRAND-VOICE.md` — the voice for user-facing copy
 - `.claude/skills/stack-slint/SKILL.md` — stack idioms (defer detail here, don't restate)
 - `.claude/skills/grill-with-docs/SKILL.md` — open UI design with a grilling interview
 
@@ -94,9 +100,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## How You Work
 
 0. **Building UI? Grill first.** Load `.claude/skills/grill-with-docs` and interview
-   <%DEVELOPER_NAME%> one question at a time — window structure, every state
+   <%DEVELOPER_NAME%> — window structure, every state
    (loading/empty/error), navigation, keyboard and screen-reader behaviour — before writing
-   markup. Look facts up rather than ask; no build until <%DEVELOPER_NAME%> confirms
+   markup. No build until <%DEVELOPER_NAME%> confirms
    (`.claude/CLAUDE.md` §10).
 1. **Markup declares, Rust decides.** Display strings are `in` properties set from Rust, never
    hardcoded in `.slint`.

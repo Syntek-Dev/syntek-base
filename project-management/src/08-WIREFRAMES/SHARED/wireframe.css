@@ -2,11 +2,16 @@
    wireframe.css — shared chrome + placeholder-brand tokens for all wireframes
    -----------------------------------------------------------------------------
    Self-contained: no CDN, no build step, no external fonts. Every screen in
-   SCREENS/ links this one file with <link rel="stylesheet" href="../SHARED/
-   wireframe.css">, then composes its layout from the classes below.
+   USER-STORY-IDEAS/ and CONSOLIDATED-IDEAS/ links this one file with
+   <link rel="stylesheet" href="../SHARED/wireframe.css">, then composes its
+   layout from the classes below.
 
-   The palette mirrors the brand guide and component sheet (05-BRAND-GUIDE /
-   06-COMPONENTS) so the whole design family reads as one system. To rebrand a
+   This file is in scope for code/src/scripts/audits/css-slop.sh, alongside
+   CONSOLIDATED-IDEAS/. It is the only stylesheet the screens have, so gating
+   their markup without it would measure nothing (DESIGN.md, the design-time gate).
+
+   The palette mirrors the brand guide and component sheet (06-BRAND-GUIDE /
+   07-COMPONENTS) so the whole design family reads as one system. To rebrand a
    project, edit the --wf-* custom properties in :root — nothing else references
    a raw colour. These are indicative wireframe tokens, NOT the code-side
    DB-canonical design tokens (see code/docs/DESIGN-TOKENS.md).

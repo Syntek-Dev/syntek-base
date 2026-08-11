@@ -1,0 +1,57 @@
+# AI-slop audit — the CSS leg. One of four, split by INPUT LANGUAGE rather than by
+# topic (code/src/scripts/audits/CONTEXT.md → The AI-slop family), which is exactly why
+# each gets its own workflow: a CI path filter is a file glob, so one job spanning CSS,
+# markup, prose and Slint would fire on every change to any of them.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters on why a
+# path-filtered required check blocks a merge forever.
+#
+# The script reports two tiers and only [gate: fail] changes the exit code, so a green
+# job may still carry warnings worth reading. The report artefact is where they are.
+#
+# One path below is design-time, not code-time: consolidated wireframes are styled CSS,
+# so they are read by this leg rather than a fourth script. The path filter must track
+# the script's SCOPES array — a scope with no matching filter is a gate that never fires.
+name: Audit — CSS Slop
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/static/css/**/*.css"
+      - "code/src/django/components/**/*.css"
+      - "project-management/src/08-WIREFRAMES/SHARED/**/*.css"
+      - "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/**/*.css"
+      - "code/docs/VISUAL-DESIGN.md"
+      - "code/src/scripts/audits/css-slop.sh"
+      - ".github/workflows/audit-css-slop.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/static/css/**/*.css"
+      - "code/src/django/components/**/*.css"
+      - "project-management/src/08-WIREFRAMES/SHARED/**/*.css"
+      - "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS/**/*.css"
+      - "code/docs/VISUAL-DESIGN.md"
+      - "code/src/scripts/audits/css-slop.sh"
+      - ".github/workflows/audit-css-slop.yml"
+  workflow_dispatch:
+
+jobs:
+  css-slop:
+    name: CSS slop audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run CSS slop audit
+        run: bash code/src/scripts/audits/css-slop.sh --output md
+
+      - name: Upload CSS slop report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: css-slop-report
+          path: code/src/scripts/audits/reports/css-slop-report.md
+          if-no-files-found: ignore

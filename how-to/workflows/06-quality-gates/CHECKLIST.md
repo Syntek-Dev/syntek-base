@@ -17,7 +17,7 @@ model: opus
 
 ## The eight gates
 
-- [ ] **[1/8]** `audits/cloc.sh` — no file over the limit (≥800 = error) · _opus_
+- [ ] **[1/8]** `audits/cloc.sh` — no source file over the limit (≥800 = error) · _opus_
 - [ ] **[2/8]** Lockfiles consistent — `uv.lock` and `pnpm-lock.yaml` · _opus_
 - [ ] **[3/8]** `syntax/format.sh` — clean · _opus_
 - [ ] **[4/8]** `syntax/lint.sh` — clean; any suppression carries a stated reason · _opus_
@@ -32,6 +32,16 @@ model: opus
 - [ ] `css-gradients.sh` — no inline gradients · _opus_
 - [ ] `copy-emdash.sh` — marketing copy punctuation · _opus_
 - [ ] `mobile-tokens.sh` — mobile-only; exits 0 with a note on a web-only project · _opus_
+- [ ] `seam-contract.sh` — every `**Source:**` in the server contract resolves · _opus_
+- [ ] `skill-conformance.sh` — every skill's frontmatter and routing section conform · _opus_
+- [ ] `docs-pairing.sh` — no operating rule left in a `CONTEXT.md`, every pair correctly shaped · _opus_
+- [ ] `docs-length.sh` — no instructional `.md` over 300 code lines · _opus_
+- [ ] `static-analysis.sh` — no template XSS or cross-file taint (skips without opengrep) · _opus_
+- [ ] `css-slop.sh` · `template-slop.sh` · `copy-slop.sh` · `render-slop.sh` — the AI-slop family:
+      one per input language, plus one that must render its input before the clause exists · _opus_
+- [ ] `desktop/style-check.sh` — desktop-only; a Slint style is chosen, not inherited · _opus_
+- [ ] Every `[gate: warn]` the slop family reported has been **answered**, not merely seen — those
+      exit 0 by design and a green run is not the same as a clean one · _opus_
 
 ## Before pushing
 

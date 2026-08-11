@@ -75,13 +75,14 @@
         <div class="wf-container">
           <div class="wf-section__head">
             <p class="wf-eyebrow">What it offers</p>
-            <h2>Three-up content block <span class="wf-note">3</span></h2>
+            <h2>Content block <span class="wf-note">3</span></h2>
             <p>
-              A repeatable card row — swap the count with the
-              <code>wf-grid--3</code> modifier to control columns at wide sizes.
+              Cards of unequal weight, in a two-column grid — a lead card that carries the
+              argument, then supporting ones. The third wraps beneath, so the block reads as
+              2 + 1 rather than as a row of equals.
             </p>
           </div>
-          <div class="wf-grid wf-grid--3">
+          <div class="wf-grid">
             <article class="wf-card">
               <div class="wf-card__icon" aria-hidden="true">
                 <svg
@@ -99,11 +100,16 @@
                   <path d="m2 12 10 5 10-5" />
                 </svg>
               </div>
-              <h3>Card heading one</h3>
+              <h3>Lead card — the one that carries the argument</h3>
               <p>
-                One or two lines of supporting copy. Cards stack on mobile and sit in a row from the
-                medium breakpoint up.
+                The card doing the most work gets the most room: a longer body, and an action of
+                its own. Cards stack on mobile and enter the grid from the medium breakpoint up.
               </p>
+              <p>
+                Giving one card more weight than its neighbours is what stops a block reading as a
+                stamped row. Decide which card that is before drawing any of them.
+              </p>
+              <a class="wf-btn wf-btn--secondary" href="#">Card action</a>
             </article>
             <article class="wf-card">
               <div class="wf-card__icon" aria-hidden="true">
@@ -121,7 +127,7 @@
                   <path d="m9 12 2 2 4-4" />
                 </svg>
               </div>
-              <h3>Card heading two</h3>
+              <h3>Supporting card</h3>
               <p>
                 Keep card copy short — a wireframe communicates hierarchy and intent, not finished
                 marketing text.
@@ -143,10 +149,11 @@
                   <path d="m19 9-5 5-4-4-3 3" />
                 </svg>
               </div>
-              <h3>Card heading three</h3>
+              <h3>Third card, wrapping beneath</h3>
               <p>
                 Duplicate an <code>article.wf-card</code> to add more; the grid reflows
-                automatically.
+                automatically. Add <code>wf-grid--3</code> only where a uniform row is the honest
+                shape — see annotation 3.
               </p>
             </article>
           </div>
@@ -205,8 +212,13 @@
                 here.
               </li>
               <li>
-                Card row is the primary scannable content; three items at wide sizes, stacked on
-                mobile.
+                Card block is the primary scannable content. It is deliberately <strong>not</strong>
+                a row of three equal cards: that is the single most recognisable tell of
+                machine-authored UI, named in <code>code/docs/VISUAL-DESIGN.md</code> § 1, and this
+                file is the starting point for every screen. Give one card more weight and let the
+                rest wrap. <code>wf-grid--3</code> exists for the case where a uniform row is
+                genuinely the right shape — a comparison table, a taxonomy index, three things that
+                really are peers — and that case is a decision to state here, not a default.
               </li>
               <li>
                 Form fields listed in submission order; consent and validation are specified in the

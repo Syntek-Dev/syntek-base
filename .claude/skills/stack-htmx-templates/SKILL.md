@@ -9,14 +9,17 @@ this for stack idioms; `seo`, `backend`, `security`, and
 `code/docs/RENDERING.md` (the interaction doctrine), and `apps/marketing/CONTEXT.md`.
 
 British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>) — in templates, Python, and copy.
-All user-facing copy follows the brand voice — `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md`
+All user-facing copy follows the brand voice — `how-to/src/BRAND-VOICE.md`
 (direct, considered, plainly British; substantiate or cut). Load it when writing or reviewing page
 copy or microcopy.
 
-The **visual** language is `code/docs/VISUAL-DESIGN.md` — the <%ORG_NAME%> signature (alternating
-page/sunken bands, left-oriented editorial headings, the 3px hero/CTA accent border, per-sector
-gradient tones) and the banned generic "AI-look". Build each screen against its wireframe
-(`08-WIREFRAMES/WF-###`) and component design (`07-COMPONENTS`); never invent a generic layout.
+The **visual** language is `code/docs/VISUAL-DESIGN.md` — §3 names this project's **direction** and
+its six axes, §4.1 the universal tells, §4.2 the deviations that read off those axes, §5 the motion
+numbers. Its web
+expression is `code/docs/visual-design/WEB.md` — the signature (under the default `editorial`
+direction: alternating page/sunken bands, left-oriented headings, the 3px hero/CTA accent border,
+per-sector gradient tones). Build each screen against its wireframe (`08-WIREFRAMES/WF-###`) and
+component design (`07-COMPONENTS`); never invent a generic layout.
 
 ---
 
@@ -92,7 +95,7 @@ class FeatureCard(Component):
 ## Building a marketing page
 
 1. **View** in `apps/marketing/views/<area>.py` — thin: build `seo`, pull published content from a
-   **public** service (`published_blog_posts`, `portfolio_item_by_slug`, …), render a template.
+   **public** service (`published_blog_posts`, `listing_by_slug`, …), render a template.
    - Never call an admin-gated resolver. Replicate the two resolver masks: portfolio `client_name`
      only when `client_name_permitted`; blog author `display_name`/`public_id` only.
    - Clear eager loads you don't render: `.prefetch_related(None)` / `.select_related(None)` — the

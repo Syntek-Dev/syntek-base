@@ -1,11 +1,75 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.5.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.6.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.6.0 — 11/08/2026
+
+**Status:** Minor — adds the two documents that decide how a generated project looks and sounds,
+and five gates that hold the decidable half of them.
+
+### The gap this closes
+
+The template could scaffold a project, gate its security, size its database and route its agents.
+It had nothing at all to say about whether the result looked and read like something a person made.
+
+That absence has a predictable output. Machine-authored interfaces converge: the same three-card
+row, the same violet-to-indigo gradient, the same emoji in the chrome, the same 300ms ease on
+everything that moves. Machine-authored copy converges too, on its own set of tells. Neither is a
+bug anyone reports, and both are the first thing a reader notices.
+
+### Two prerequisite documents, settled before the first feature
+
+**`how-to/src/BRAND-VOICE.md`** — tone, the four registers, casing, punctuation, and the tells that
+are banned outright. Six agents and the templates skill load it for every user-facing string.
+
+**`code/docs/VISUAL-DESIGN.md`** — the same doctrine in composition rather than copy, with
+per-surface sub-documents for web, mobile and desktop.
+
+Both ship as templates: a portable core you adopt unchanged, and per-project sections you fill in.
+Both now sit in the first-time-setup run, which has four prerequisite steps rather than two —
+**brief → voice → visual direction → sizing** — in that order, because each depends on the one
+before and the later documents are themselves written in the voice the earlier one settles.
+
+### A named direction, because "not AI-looking" is not a specification
+
+`VISUAL-DESIGN.md` § 3 makes you pin a **direction** on six axes. This is the load-bearing part:
+without a direction, § 4.2's ban list cannot be decided at all, because a deviation is only a
+deviation from something. § 4.1 is the separate, unconditional list — the universal tells, banned
+on every direction and every surface.
+
+§ 5 is a numeric motion standard rather than a taste statement: frequency first (the rule that
+actually changes decisions), duration ceilings, easing as a hierarchy, and reduced-motion meaning
+fewer and gentler rather than none.
+
+### Five gates, and an honest boundary
+
+`copy-slop.sh` reads prose. `css-slop.sh` reads stylesheets. `template-slop.sh` reads Django
+markup. `render-slop.sh` needs a viewport, because the repeated-device clauses cannot be decided by
+any static scan. `style-check.sh` holds the Slint surface, which picks a style whether or not you
+name one — so `build.rs` now names it.
+
+Each runs two tiers in one pass, following `cloc.sh`'s warn-at-750 / fail-at-800 precedent:
+`[gate: fail]` for an unambiguous match, `[gate: warn]` for a threshold, a ratio, or a word that is
+sometimes just correct English. § 6 of the guide is the explicit list of what a script can decide
+and what it cannot, so the gates are never mistaken for the standard.
+
+### Credit, written alongside rather than afterwards
+
+Almost none of this doctrine is original, and `README.md` now carries an **Influences and
+attribution** section naming every source with its licence. `THIRD-PARTY-NOTICES.md` is the
+narrower, harder obligation: the files that contain substantial portions of someone else's licensed
+work. It ships into every generated project, because the adapted files do.
+
+Two new non-negotiables keep both current. Doctrine derived from an outside source is credited in
+the **same change** as the rule it credits. And: use, adapt and redistribute are three different
+permissions — a share-alike source can be read as a checklist of concerns, but never derived into
+anything this template redistributes, because every generated project would inherit the obligation.
+The licence column gets consulted before deriving, not after.
 
 ## v2.5.0 — 11/08/2026
 

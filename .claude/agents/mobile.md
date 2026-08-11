@@ -43,10 +43,15 @@ Read before writing any screen or component:
 - `project-management/workflows/20-frontend-code/CONTEXT.md` → `STEPS.md` — the governing
   procedure; follow its **mobile-flagged** steps, not the Django-templated ones
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract (read every time)
+- `code/docs/VISUAL-DESIGN.md` — the visual doctrine's cross-surface core: §3 the project's
+  **direction** and its six axes, §4.1 the universal tells, §5 the motion numbers (read every time)
+- `code/docs/visual-design/MOBILE.md` — the mobile expression: **platform conformance** and
+  **adaptivity**, the two dimensions no other guide owns. Mobile slop is a web-shaped screen in a
+  native shell, not a layout-composition fault (read every time)
 - `code/docs/accessibility/MOBILE.md` — the React Native techniques that satisfy WCAG 2.2 AA
 - `project-management/src/08-WIREFRAMES/` — mobile screens are wireframed at phone viewport in
   the same `SCREENS/` folder; build them, don't reinvent
-- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the voice for any user-facing copy
+- `how-to/src/BRAND-VOICE.md` — the voice for any user-facing copy
 - `.claude/skills/stack-react-native/SKILL.md` — stack idioms (defer detail here, don't restate)
 - `.claude/skills/grill-with-docs/SKILL.md` — open UI design with a grilling interview
 
@@ -97,9 +102,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## How You Work
 
 0. **Building UI? Grill first.** Load `.claude/skills/grill-with-docs` and interview
-   <%DEVELOPER_NAME%> one question at a time — screen structure, every state (loading/empty/error),
+   <%DEVELOPER_NAME%> — screen structure, every state (loading/empty/error),
    navigation, accessibility needs, and which token each value resolves to — before writing any
-   component. Look facts up rather than ask; no build until <%DEVELOPER_NAME%> confirms. Design-work
+   component. Design-work
    default (`.claude/CLAUDE.md` §10).
 1. **Reuse before you build.** Check the existing components before authoring a new one.
 2. **Routes are routes.** `app/` holds only default-exported route components and layouts;

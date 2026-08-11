@@ -13,11 +13,13 @@ model: fable
 
 ---
 
-> **See** `project-management/REFERENCES.md` → **Internal — Guides** (RESPONSIVE-DESIGN.md) · **Internal — Live Artefacts** (src/06-BRAND-GUIDE/) for supporting references.
+> **See** `code/docs/RESPONSIVE-DESIGN.md` (breakpoints and device data — the PM-layer file of that name is a redirect stub) · `project-management/REFERENCES.md` → **Internal — Live Artefacts** (src/06-BRAND-GUIDE/) for supporting references.
 
 ## Execution Checklist
 
 - [ ] Brand principles (personality, tone, visual direction) documented
+- [ ] Reconciled against `how-to/src/BRAND-VOICE.md` § 3 and `code/docs/VISUAL-DESIGN.md` § 3 —
+      neither contradicted; any refinement written back to its canonical home
 - [ ] Full colour palette defined with hex values and semantic roles
 - [ ] All colour combinations pass WCAG 2.2 AA contrast ratios
 - [ ] Typography defined: typefaces, scale, weights, line heights

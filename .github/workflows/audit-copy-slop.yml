@@ -1,0 +1,52 @@
+# AI-slop audit — the prose leg. Sibling of audit-css-slop.yml; see that file for why
+# the family is split by input language.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# SCOPE IS THE POINT. copy-slop.sh enforces how-to/src/BRAND-VOICE.md § 4, which governs
+# copy a USER READS. The paths below are the two marketing directories and nothing else:
+# there is deliberately no `**/*.md` entry, because instructional documentation, code
+# comments and ADRs are engineering prose, and running this over them would fail the
+# repository on the guides that define the rule.
+#
+# BRAND-VOICE.md is a path here as a RULE input, not a scan target — a change to the ban
+# list should re-run the audit over the copy, never scan the guide itself.
+name: Audit — Copy Slop
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/apps/marketing/pagedata/**/*.py"
+      - "code/src/django/apps/marketing/templates/**/*.html"
+      - "how-to/src/BRAND-VOICE.md"
+      - "code/src/scripts/audits/copy-slop.sh"
+      - ".github/workflows/audit-copy-slop.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/apps/marketing/pagedata/**/*.py"
+      - "code/src/django/apps/marketing/templates/**/*.html"
+      - "how-to/src/BRAND-VOICE.md"
+      - "code/src/scripts/audits/copy-slop.sh"
+      - ".github/workflows/audit-copy-slop.yml"
+  workflow_dispatch:
+
+jobs:
+  copy-slop:
+    name: Copy slop audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run copy slop audit
+        run: bash code/src/scripts/audits/copy-slop.sh --output md
+
+      - name: Upload copy slop report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: copy-slop-report
+          path: code/src/scripts/audits/reports/copy-slop-report.md
+          if-no-files-found: ignore

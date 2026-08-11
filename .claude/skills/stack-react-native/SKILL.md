@@ -12,6 +12,12 @@ boundary without owning React Native conventions themselves. Aligns with
 **This skill is mobile-only.** A project generated without the mobile surface has neither this
 skill nor the tree it describes. The `frontend` agent is Django-templates-only and never loads it.
 
+The **visual** language is `code/docs/VISUAL-DESIGN.md` — §3 names this project's **direction** and
+its six axes, §4.1 the universal tells, §5 the motion numbers. Its mobile expression is
+`code/docs/visual-design/MOBILE.md`, which owns **platform conformance** and **adaptivity**: mobile
+slop is a web-shaped screen wearing a native shell, and the web's layout-composition rules have no
+analogue here.
+
 British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>).
 
 ---

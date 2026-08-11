@@ -40,14 +40,12 @@ model: fable
 > **Model:** fable
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> one question at a time, each with a recommended answer:
+interview <%DEVELOPER_NAME%>:
 
 - Which of the five folders genuinely accumulated work this cycle?
 - What counts as a collision here — identical concept only, or near-neighbours too?
 - How aggressively to merge: one canonical component with variants, or several siblings?
 - Anything already known to be contentious between two stories?
-
-No action until confirmed.
 
 ### Step 2 — Inventory Stage 1
 
@@ -100,6 +98,31 @@ Write `CONSOLIDATED-IDEAS/` in each in-scope folder. Every consolidated artefact
 - links any ADR raised in Step 4
 
 Leave every `USER-STORY-IDEAS/` file untouched — stage 1 is frozen, not rewritten.
+
+**Then run the design-time slop gate over the rebuilt screen set** — this is the one moment the
+whole set exists at once, which is what makes its page-set clauses decidable at all
+(`DESIGN.md` → _The design-time gate_):
+
+```bash
+bash code/src/scripts/audits/css-slop.sh
+bash code/src/scripts/audits/template-slop.sh
+bash code/src/scripts/audits/render-slop.sh   # opens each screen at 1280 px
+```
+
+Fix findings in the screens, never by loosening a threshold. A `[gate: warn]` is a question:
+answer it, or annotate it with `slop-allow` **naming the clause and the reason**. If the § 4.2 leg
+reports that it skipped, an axis in `code/docs/VISUAL-DESIGN.md` § 3 is still `TBD` — that is
+first-time setup Step 9 outstanding, not a clean run.
+
+**The third script is the only one that opens a browser, and it is the only one that can see the
+repetition tell.** The first two read the screens as text, and text has no viewport: the same grid
+is a one-, two- or three-column device depending on width, so a three-up reads clean at every
+width below 64rem. `render-slop.sh` reports a device stamped **down a screen** and a signature
+recurring **across the set** — the second is the page-set property nothing else in the toolchain
+reaches. Both are warnings, because a directory or taxonomy screen repeats one card legitimately.
+It needs no stack. If it reports that Chromium is absent it has **measured nothing** — that is not
+a clean run either; install it and re-run
+(`uv run --no-project --with playwright playwright install chromium`).
 
 ### Step 6 — Regenerate the Deliverables
 

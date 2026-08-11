@@ -34,7 +34,7 @@ Read before drafting:
 
 - `.claude/CLAUDE.md` — locale, naming, non-negotiables.
 - `code/docs/ACCESSIBILITY.md` — heading hierarchy, alt text, descriptive links.
-- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the <%ORG_NAME%> brand voice; help copy uses
+- `how-to/src/BRAND-VOICE.md` — the <%ORG_NAME%> brand voice; help copy uses
   the functional/microcopy register (plain, calm, action-first, no hype).
 - The feature's own `CONTEXT.md` and any existing help articles in the same area — match
   the established structure and terminology; never invent a second term for one concept.

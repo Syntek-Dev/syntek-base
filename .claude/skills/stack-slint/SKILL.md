@@ -11,6 +11,12 @@ cite it at the desktop boundary without owning Slint conventions themselves. Ali
 **This skill is desktop-only.** A project generated without the desktop surface has neither this
 skill nor the crate it describes.
 
+The **visual** language is `code/docs/VISUAL-DESIGN.md` — §3 names this project's **direction** and
+its six axes, §4.1 the universal tells, §5 the motion numbers. Its desktop expression is
+`code/docs/visual-design/DESKTOP.md`: Slint 1.16+ defaults to **Microsoft Fluent on every
+platform**, so an app that sets no style ships stock Fluent. Style is fixed at **compile time** —
+choose it deliberately and drive the look from `Palette`/`StyleMetrics`, never bare `std-widgets`.
+
 British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>).
 
 ---
@@ -83,7 +89,8 @@ crate whose lint table denies exactly those. Wall it off:
 ```rust
 #[allow(
     clippy::all, clippy::pedantic, clippy::unwrap_used,
-    clippy::expect_used, clippy::panic, clippy::indexing_slicing
+    clippy::expect_used, clippy::panic, clippy::indexing_slicing,
+    clippy::todo, clippy::unimplemented, clippy::unreachable
 )]
 mod ui {
     slint::include_modules!();

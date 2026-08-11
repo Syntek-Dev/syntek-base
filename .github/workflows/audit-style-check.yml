@@ -1,0 +1,58 @@
+# DESKTOP-ONLY. AI-slop audit — the Slint leg, and the fourth member of the family split
+# by input language (code/src/scripts/audits/CONTEXT.md → The AI-slop family). Its input
+# is neither CSS, markup nor prose but BUILD CONFIGURATION, which is why it is the one leg
+# living outside audits/, in code/src/scripts/desktop/.
+#
+# This workflow is copier-excluded when INCLUDE_DESKTOP is false, alongside the script it
+# runs — a workflow that ships without its script is a permanently-red job on every
+# web-only project.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# WHAT IT ASKS: has a Slint style been chosen in a committed build file? From Slint 1.16
+# the default is Microsoft Fluent on every platform, so an app that configures nothing
+# ships a stock vendor look — the desktop expression of generic design
+# (code/docs/visual-design/DESKTOP.md, [gate: fail]). Any style passes, Fluent included:
+# the clause is that a choice was MADE. An ambient SLINT_STYLE from a shell or a CI job is
+# deliberately not accepted, which is also why this workflow never sets one.
+name: Audit — Desktop Slint Style
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/rust/crates/desktop/**"
+      - "code/src/rust/.cargo/config.toml"
+      - "code/docs/visual-design/DESKTOP.md"
+      - "code/src/scripts/desktop/style-check.sh"
+      - ".github/workflows/audit-style-check.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/rust/crates/desktop/**"
+      - "code/src/rust/.cargo/config.toml"
+      - "code/docs/visual-design/DESKTOP.md"
+      - "code/src/scripts/desktop/style-check.sh"
+      - ".github/workflows/audit-style-check.yml"
+  workflow_dispatch:
+
+jobs:
+  style-check:
+    name: Desktop Slint style audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # No Rust toolchain and no display server: the script reads three files and needs
+      # neither. It is a build-CONFIG check, not a build.
+      - name: Run desktop Slint style audit
+        run: bash code/src/scripts/desktop/style-check.sh --output md
+
+      - name: Upload desktop style report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: style-check-report
+          path: code/src/scripts/audits/reports/style-check-report.md
+          if-no-files-found: ignore

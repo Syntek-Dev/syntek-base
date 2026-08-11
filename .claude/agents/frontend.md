@@ -48,10 +48,13 @@ Read before writing any template or component:
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract (read every time)
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA + ARIA patterns
 - `code/docs/RESPONSIVE-DESIGN.md` — breakpoints, mobile-first
-- `project-management/src/06-BRAND-GUIDE/BRAND-VOICE.md` — the brand voice for any user-facing
+- `how-to/src/BRAND-VOICE.md` — the brand voice for any user-facing
   copy you write (headings, body, microcopy): direct, considered, plainly British
-- `code/docs/VISUAL-DESIGN.md` — the <%ORG_NAME%> **visual** language: implement against the design
-  artefacts below; never a generic centred, single-band "AI-look" layout (read every time)
+- `code/docs/VISUAL-DESIGN.md` — the **visual** language, cross-surface core: §3 names this
+  project's **direction** and its six axes, §4.1 the universal tells, §4.2 the deviations that read
+  off those axes. Read every time — §4.2 cannot be judged without §3
+- `code/docs/visual-design/WEB.md` — the web expression of that direction: the signature in CSS and
+  django-components, the component vocabulary, and the pre-ship checklist (read every time)
 - `project-management/src/08-WIREFRAMES/WF-###-*.md` — the screen's wireframe (layout, sections,
   content order) · `project-management/src/07-COMPONENTS/` — component designs (states, variants,
   patterns) · `project-management/src/06-BRAND-GUIDE/` — foundations (`DESIGN/Foundations*.html`
@@ -91,6 +94,10 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   text is a machine-authored tell — reword (comma/colon/full stop/parentheses), never substitute
   a spaced en dash (numeric ranges like `Mon–Fri` keep theirs). Voice: `BRAND-VOICE.md`; verify
   with `bash code/src/scripts/audits/copy-emdash.sh`.
+- **No machine cadence in user-facing copy.** `BRAND-VOICE.md` § 4 is the ban list and each clause
+  there carries its tier — **route to it, never restate it here.** Verify with
+  `bash code/src/scripts/audits/copy-slop.sh`, and treat a `[gate: warn]` as a question to answer
+  rather than noise: a superlative is sometimes the right word, which is why it warns.
 - **Pills/eyebrows label taxonomy, sparingly.** A pill above a heading is for content the reader
   classifies at a glance — a blog topic, case study, portfolio category, testimonial sector,
   pricing tier — not a decoration stamped on every section heading. Default to none.
@@ -103,11 +110,13 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - **Distinctive, on-brand UI — never the generic "AI-look".** Build the design the
   planning/design phases already decided: implement the screen's wireframe
   (`08-WIREFRAMES/WF-###`), the component designs (`07-COMPONENTS`), and the brand foundations
-  (`06-BRAND-GUIDE`). Hit the <%ORG_NAME%> signature — alternating page/sunken bands, left-oriented
-  editorial headings (not centred), the 3px hero/CTA accent border, per-sector gradient tones, a
-  real hero variant. No artefact **and** no established code pattern → flag it, do **not**
-  improvise a generic centred, single-band, three-card layout. Full language + signature:
-  `code/docs/VISUAL-DESIGN.md`. A review gate, peer to the WCAG and HTMX-indicator gates.
+  (`06-BRAND-GUIDE`). Hit the signature `code/docs/visual-design/WEB.md` sets for the direction
+  named in `code/docs/VISUAL-DESIGN.md` §3 — under the default `editorial` direction that is
+  alternating page/sunken bands, left-oriented headings, the 3px hero/CTA accent border, per-sector
+  gradient tones and a real hero variant; on any other direction read §3's axes rather than that
+  list. No artefact **and** no established code pattern → flag it, do **not** improvise. What counts
+  as generic is §4.1 (universal tells) and §4.2 (deviations from §3), never a hard-coded layout.
+  A review gate, peer to the WCAG and HTMX-indicator gates.
 - **The live code is the source of truth — planning drifts.** When writing code, ground in the
   shipped codebase: reuse the real components, tokens, and conventions, and reconcile the
   wireframe/component design against what is actually there. Where the code has moved on from the
@@ -126,11 +135,10 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 ## How You Work
 
-0. **Building UI? Grill first.** Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
-   one question at a time — component structure, every state (loading/empty/error),
+0. **Building UI? Grill first.** Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> — component structure, every state (loading/empty/error),
    interactions and where each runs (server/HTMX/Alpine), WCAG 2.2 AA needs, responsive
    breakpoints, and which design token each value resolves to — before writing any template
-   or CSS. Look facts up rather than ask; no build until <%DEVELOPER_NAME%> confirms. Design-work default
+   or CSS. Design-work default
    (`.claude/CLAUDE.md` §10).
 1. **Reuse before you build — the live code is the truth.** Check the
    `code/src/django/components/` catalogue for an existing button, modal, form, or card before
@@ -160,9 +168,11 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 **Definition of done:** page renders 200 through nginx and is responsive; grounded in the live
 code (real components/tokens reused, drift reconciled) and built to the screen's wireframe/component
-design, hitting the <%ORG_NAME%> visual signature — no generic "AI-look" (`code/docs/VISUAL-DESIGN.md`,
-`code/docs/FRONTEND-CODING-PRINCIPLES.md`); every value resolves to a token and no gradient is inline
-(`css-tokens.sh` + `css-gradients.sh` clean); no em dash in copy (`copy-emdash.sh` clean); pills used
+design, hitting the signature `code/docs/visual-design/WEB.md` sets for the direction committed in
+`code/docs/VISUAL-DESIGN.md` § 3 — no generic "AI-look" (§ 4.1 universal, § 4.2 against that
+direction; `code/docs/FRONTEND-CODING-PRINCIPLES.md`); every value resolves to a token and no gradient is inline
+(`css-tokens.sh` + `css-gradients.sh` clean); copy carries no machine tell (`copy-emdash.sh` +
+`copy-slop.sh` clean); pills used
 only for taxonomy; footer legal set present; WCAG 2.2 AA met; HTMX server ops show a visible
 indicator; content usable without JS; shared components reused where they exist; tests green; British
 English throughout.

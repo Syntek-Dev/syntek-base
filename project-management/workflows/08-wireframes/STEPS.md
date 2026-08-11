@@ -22,6 +22,14 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | All steps | **Internal — Live Artefacts** → src/08-WIREFRAMES/                                        |
 | All steps | **Internal — Guides** → code/docs/RESPONSIVE-DESIGN.md (breakpoints and orientation data) |
 
+**The visual direction is already settled — read it before Step 0.** `code/docs/VISUAL-DESIGN.md`
+§ 3 names this project's direction and its setting on each of the six axes (alignment, rhythm,
+contrast, ornament, density, motion). Lay out within it. **Do not re-open it as free text here** —
+a wireframe is where an axis is most easily contradicted by accident, and § 4.2's ban list reads
+off that table. If the layout work genuinely disproves an axis setting, change it in § 3 — that is
+the canonical home — and say so. If any axis still reads `TBD`, stop:
+`how-to/workflows/01-first-time-setup/` Step 9 has not been run.
+
 ---
 
 ## Steps
@@ -30,8 +38,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 > **Model:** fable
 
-Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> **one question at a time**, each
-carrying a recommended answer, looking facts up rather than asking. No action until confirmed
+Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` §10).
 
 Ask about:
@@ -81,11 +88,14 @@ on them is a web design in a phone-shaped frame.
 
 > **Model:** opus
 
-Save the screen to `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/` as `WF-IDEA-US###-<Screen-Name>.html`.
+Save the screen to `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/` — **stage 1** — as
+`WF-IDEA-US###-<Screen-Name>.html`, or `WF-IDEA-US###-MOBILE-<Screen-Name>.html` for a mobile
+screen, which shares the number of its web counterpart where one exists.
 
-Name the file `WF-###-<Screen-Name>.html`, or `WF-###-MOBILE-<Screen-Name>.html` for a mobile
-screen — which shares the number of its web counterpart where one exists. Full convention:
-`project-management/src/08-WIREFRAMES/CONTEXT.md`.
+**Do not use the bare `WF-###-` form here.** That is stage 2, written by
+`17-consolidate-design-work` into `CONSOLIDATED-IDEAS/`: a consolidated screen drops the `IDEA`
+marker and the story number because it belongs to the product rather than to one story. Full
+convention: `project-management/src/08-WIREFRAMES/CONTEXT.md`.
 
 Include in the document:
 

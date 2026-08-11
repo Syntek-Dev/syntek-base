@@ -72,7 +72,8 @@ after every transition.
 `bash code/src/scripts/development/server.sh up`. Render several genuinely different variants
 on that single route, switched by a URL search param and a floating variant bar, built in the
 real stack — Django templates + django-components + HTMX + Alpine + token CSS (skill
-`stack-htmx-templates`; the <%ORG_NAME%> signature is `code/docs/VISUAL-DESIGN.md`). The token-first
+`stack-htmx-templates`; the signature is `code/docs/visual-design/WEB.md`, under the direction
+`code/docs/VISUAL-DESIGN.md` § 3 commits to). The token-first
 CSS audit, mutation permission checks, coverage floors, and docs gate are all relaxed here —
 this is a spike, nothing ships.
 
@@ -138,8 +139,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/grilling/SKILL.md` · `.claude/skills/grill-with-docs/SKILL.md` — the design
   interview, and the process that records a settled domain decision.
 - `how-to/docs/GIT-WORKTREES.md` · `.claude/worktrees/` — isolating a spike in a worktree.
-- `code/docs/VISUAL-DESIGN.md` · `.claude/skills/stack-htmx-templates/SKILL.md` — the real
-  stack and <%ORG_NAME%> signature a UI spike is built in.
+- `code/docs/VISUAL-DESIGN.md` (§ 3 the direction, § 4 the ban list) ·
+  `code/docs/visual-design/WEB.md` (the signature) · `.claude/skills/stack-htmx-templates/SKILL.md`
+  — the real stack and signature a UI spike is built in.
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the modelling reference for a LOGIC verdict.
 - `code/src/scripts/development/shell.sh` · `new-django-view.sh` · `server.sh` — the run
   commands; `code/src/scripts/audits/css-tokens.sh` — the relaxed token gate.
