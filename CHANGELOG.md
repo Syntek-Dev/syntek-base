@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.15.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.16.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.16.0] - 11/08/2026
+
+### Added
+
+- **`code/docs/discoverability/APP-STORE.md`** — the fifth member of the discoverability family, and the first that governs an artefact of a **different deployable**: the App Store and Google Play listing for `code/src/mobile/`. Store search matches listing metadata inside a length budget, not a crawled page, so none of the head, schema, root-surface or body rules reach it. Carries the field-by-field limits with a `Source:` and a `Verified:` date each, and four rules: `app.json` `expo.name` is the on-device name and **not** the listing name, keywords are never spent on the app or company name, the description is plain text with no HTML, and promotional text is the field that can change without a new version. **Mobile-only** — copier-gated on the same mechanism as `code/docs/visual-design/MOBILE.md`.
+- **Apple's keyword budget is 100 _bytes_, not 100 characters**, quoted from App Store Connect Help. Almost every third-party ASO source states it as characters; the two coincide for an ASCII listing, which is why the error survives. In UTF-8 an accented Latin character costs two bytes and most CJK characters three, so a localised keyword set measured at 100 characters can be rejected at a third of its apparent length. Count with `len(text.encode("utf-8"))`.
+- **`how-to/src/STORE-LISTING.md`** — the per-project register the guide governs: every text field, the value this project uses, and the budget it must fit. Same rule-elsewhere/answer-here split as `how-to/src/PLATFORM-PROVIDERS.md` and `how-to/src/INVARIANTS.md`. A blank cell is an unanswered question, not a default, and only the guide carries the verification dates — if the two disagree, the guide is right.
+- **A conditional store-listing gate in `project-management/workflows/23-release/`.** New Step 2 in `STEPS.md` fires **only if the release moved `code/src/mobile/`** (`app.json` `expo.version`); a root-only bump reaches no store, and a web-only project never meets the condition. It delegates to `mobile`, writes the What's New copy into App Store Connect and the Play Console, and records the same text in the register — **overwriting, never appending**, because the history already lives on the mobile sub-package's own `CHANGELOG.md` and `RELEASES.md`. Matching row in `CHECKLIST.md`, routing in `CONTEXT.md`.
+- **A `How much of this a machine can check` section across the discoverability family.** `code/docs/DISCOVERABILITY.md` states the gradient — from `discoverability/STRUCTURED-DATA.md`, where nearly everything is a test, to `discoverability/CONTENT-STRUCTURE.md` and `discoverability/APP-STORE.md`, where almost nothing is — and the two consequences: no audit in `code/src/scripts/audits/` covers this family and none is planned, and a clean pipeline says nothing about whether any of it was honoured.
+
+### Changed
+
+- **The `mobile` agent owns the store listing, not the `seo` agent.** How a product is found in store search has no web counterpart, and `seo` is scoped to the Django marketing pages. `mobile` owns the **text fields and their limits**; the screenshots and icon stay with `code/docs/visual-design/MOBILE.md`, and the privacy nutrition labels and Data Safety declarations with `project-management/src/09-GDPR/`. Roster row in `.claude/agents/CONTEXT.md` updated to match.
+- **`how-to/src/BRAND-VOICE.md` gains store-listing text as a third thing that is not a fifth register** — a separate bullet from SEO metadata rather than a clause inside it, because the constraints are not the same shape: a byte budget runs out two to three times sooner than a character count predicts.
+- **`project-management/docs/SEO-CHECKLIST.md` says plainly that a green pipeline is not evidence.** `12-seo-checks` runs inside the per-story loop **before any code exists**, so it reviews the plan for a page rather than the page. Every tick is a person's judgement.
+- **`STRUCTURED-DATA.md`'s `Verification` section is now `What is mechanically checkable here`**, and states the half that is not: whether the type chosen suits the page, and whether the values describe the thing honestly. A `Product` block with valid syntax and invented review counts passes every check and is a manipulation.
+- **`WEB-METADATA.md` names its checkable half as the half that fails silently.** One `<title>`, one description, one canonical per route; the canonical absolute and derived from `SITE_URL`. A `Host`-derived canonical renders correctly, looks correct in a browser, and hands a proxied copy of the site the right to call itself the original.
+- **`code/docs/DISCOVERABILITY.md` no longer defers the third destination.** The row that said store-listing doctrine was "not covered here yet" now names its owner, and the sub-document table and `discoverability/CONTEXT.md` read four artefacts as five.
+- **Release Step 5 stops instead of printing a command that does not work.** `code/src/scripts/deployment/` is a scaffold, so the workflow now says it has no deploy entry point to give you and hands the tagged, tested release to whoever owns the target environment — rather than naming `deploy.sh` with a footnote admitting it is unwritten.
+- **`how-to/REFERENCES.md` and `how-to/src/CONTEXT.md`** carry the `STORE-LISTING.md` row, flagged mobile-only.
 
 ## [2.15.0] - 11/08/2026
 

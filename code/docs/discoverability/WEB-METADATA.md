@@ -99,6 +99,25 @@ like the question. That is content structure rather than metadata, and it is own
 
 ---
 
+## What is mechanically checkable here
+
+**More than anywhere else in this family** — every rule in _The pattern_ is a property of the
+emitted HTML or of the view that produced it. Deterministic, and therefore worth a test rather
+than a review: each public route emits exactly one `<title>`, one description and one canonical;
+the canonical is absolute and derived from `SITE_URL`, never from the request host; no page
+template hand-writes a `<meta name="description">` or an `og:` tag; `_seo_head.html` is included
+once, in the base template only; exactly one `build_seo()` call per view.
+
+**Not** deterministic: whether the title says what the page is about, whether the description is
+worth clicking, or whether the OG image suits the page. Those are copy, and they answer to
+`how-to/src/BRAND-VOICE.md` and to a reader.
+
+The split matters because the checkable half is the half that fails **silently**. A
+`Host`-derived canonical renders correctly, looks correct in the browser, and hands a proxied
+copy of the site the right to call itself the original.
+
+---
+
 ## Cross-references
 
 - [`../DISCOVERABILITY.md`](../DISCOVERABILITY.md) — the index and the seam statement

@@ -40,6 +40,7 @@ written in the wrong place once.
 | Is the sitemap correct for this release?                     | `project-management/workflows/12-seo-checks/`                    |
 | What serves `robots.txt`, and what must it say?              | This guide → `discoverability/ROOT-SURFACE.md`                   |
 | Where does the answer go in the body, and how is it headed?  | This guide → `discoverability/CONTENT-STRUCTURE.md`              |
+| How long may an App Store subtitle or keyword set be?        | This guide → `discoverability/APP-STORE.md` (mobile-only)        |
 
 ---
 
@@ -51,9 +52,12 @@ that appearing in AI Overviews and AI Mode needs **no additional optimisation** 
 indexation, so they are one job with one set of rules. `discoverability/CONTENT-STRUCTURE.md` § 1
 carries the citation and the three myths it disposes of.
 
-The third does not, and is **not covered here yet**: a project that opted into the mobile surface
-gets its store-listing doctrine as a copier-gated sub-document, on the same mechanism that gates
-[`visual-design/MOBILE.md`](visual-design/MOBILE.md).
+The third does not. Store search matches **listing metadata inside a length budget**, not a
+crawled page, and none of the head, schema or body rules reach it. It is owned by
+[`discoverability/APP-STORE.md`](discoverability/APP-STORE.md) — **mobile-only**, a copier-gated
+sub-document on the same mechanism that gates
+[`visual-design/MOBILE.md`](visual-design/MOBILE.md), so the row below dangles on a web-only
+project by design.
 
 ---
 
@@ -65,6 +69,7 @@ gets its store-listing doctrine as a copier-gated sub-document, on the same mech
 | [`discoverability/STRUCTURED-DATA.md`](discoverability/STRUCTURED-DATA.md)     | JSON-LD builders, the XSS-safe serialiser, and the render-server-side rule                                                                               |
 | [`discoverability/ROOT-SURFACE.md`](discoverability/ROOT-SURFACE.md)           | Every file served at the site root or under `/.well-known/` — `robots.txt`, sitemaps, `llms.txt`, feeds — and who owns each                              |
 | [`discoverability/CONTENT-STRUCTURE.md`](discoverability/CONTENT-STRUCTURE.md) | The page **body**: answer-first openings, question-shaped headings, self-contained answer blocks — and why there is no separate answer-engine discipline |
+| [`discoverability/APP-STORE.md`](discoverability/APP-STORE.md)                 | **Mobile-only.** The App Store and Play listing: the text fields, their limits, and why Apple's keyword budget is counted in bytes                       |
 
 > **These guides are prescriptive, not descriptive.** `apps/marketing/seo.py`,
 > `apps/marketing/jsonld.py` and `apps/core/views/seo.py` are the shape a project builds, not
@@ -87,6 +92,26 @@ gets its store-listing doctrine as a copier-gated sub-document, on the same mech
   ([`URL-STRATEGY.md`](URL-STRATEGY.md)).
 - **Canonical URLs come from configuration, never from the request.** Deriving a canonical from
   the `Host` header lets an attacker's proxied copy of the site declare itself canonical.
+
+---
+
+## How much of this a machine can check
+
+**Every sub-document ends with a `What is mechanically checkable here` section, and the answer
+differs sharply between them** — which is why it is stated five times rather than once. The
+gradient runs from `STRUCTURED-DATA.md`, where nearly everything is a test, through
+`WEB-METADATA.md` and `ROOT-SURFACE.md`, where the shape of the output is checkable but the words
+are not, to `CONTENT-STRUCTURE.md` and `APP-STORE.md`, where almost nothing is.
+
+Two consequences, and the second is the one that bites:
+
+- **No audit in `code/src/scripts/audits/` covers this family**, and none is planned. The rules
+  above are properties of **rendered pages**, and `code/src/django/apps/` ships empty — a script
+  written today would report success having examined nothing, which is worse than no script,
+  because a green result is believed.
+- **A clean pipeline says nothing about whether this guide was honoured.** The gate that exists,
+  `project-management/workflows/12-seo-checks/`, runs **before any code**, so it reviews a plan
+  rather than a page. Discoverability is a **review concern**, and the review is a person's.
 
 ## What lives elsewhere
 

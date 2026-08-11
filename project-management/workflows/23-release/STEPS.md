@@ -37,13 +37,41 @@ version bump [patch | minor | major]
 This updates: `VERSION`, `VERSION-HISTORY.md`, `RELEASES.md`, `CHANGELOG.md`,
 `pyproject.toml`.
 
-### Step 2 — Run Full Test Suite
+### Step 2 — Store Listing Copy — only if this release bumped the mobile package
+
+**Skip this step unless Step 1 moved `code/src/mobile/`.** The trigger is `app.json`
+`expo.version` — the number shipped to the stores. A root-only bump reaches no store, and a
+project with no mobile surface never reaches this condition at all.
+
+```text
+mobile
+```
+
+> **↳ New agent:** `mobile` · **Model:** opus · **MCP:** none
+
+Write this release's **What's New / release notes** copy, then:
+
+1. Enter it in **App Store Connect** and the **Play Console** — those are authoritative.
+2. Record the same text in `how-to/src/STORE-LISTING.md`, **overwriting the previous release's**.
+   The register holds what the store says now; the history is already on the mobile
+   sub-package's own track (`code/src/mobile/CHANGELOG.md`, `RELEASES.md`).
+3. Fill the **Used** count. Google Play's release-notes limit is deliberately unpinned — read it
+   off the Play Console field, per `code/docs/discoverability/APP-STORE.md` § 1.
+
+The fields and their limits: `code/docs/discoverability/APP-STORE.md`. The register it is
+written in: `how-to/src/BRAND-VOICE.md` § 5. Doing this after the bump and before the commit is
+what lands the listing change in the **same commit** as the version files.
+
+> If any other listing field changed with this release, `STORE-LISTING.md` owns that rule — it
+> moves in the same change, whether or not a release is being cut.
+
+### Step 3 — Run Full Test Suite
 
 ```bash
 bash code/src/scripts/tests/backend.sh
 ```
 
-### Step 3 — Commit Version Files
+### Step 4 — Commit Version Files
 
 ```text
 git
@@ -51,14 +79,11 @@ git
 
 > **↳ New agent:** `git` · **Model:** opus · **MCP:** none
 
-### Step 4 — Deploy to Production
+### Step 5 — Deploy to Production
 
-```bash
-bash code/src/scripts/deployment/deploy.sh
-```
-
-> The `deployment/` scripts (`deploy.sh`, `rollback.sh`, `health-check.sh`) are **planned** —
-> the directory is currently a scaffold; the sanctioned deploy entry point lands there.
+**Stop here.** `code/src/scripts/deployment/` is a scaffold — the sanctioned deploy entry point is
+not written yet, so this workflow has no command to give you. Hand the tagged, tested release to
+whoever owns the target environment, and record the deployment once it is done.
 
 Once live, set each released story's `**Status:**` to `Closed` in `src/02-STORIES/US###.md` and
 commit — the `clickup-sync` workflow moves the ClickUp tasks. Status values:
@@ -66,7 +91,7 @@ commit — the `clickup-sync` workflow moves the ClickUp tasks. Status values:
 
 ---
 
-### Step 5 — Update Context and Documentation
+### Step 6 — Update Context and Documentation
 
 **Hard gate — complete before closing the release.** If this release introduced new files, directories, or established new constraints:
 

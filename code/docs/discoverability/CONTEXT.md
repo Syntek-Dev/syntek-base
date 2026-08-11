@@ -1,7 +1,8 @@
 # code/docs/discoverability
 
 Sub-documents for the discoverability standard — how this stack implements being found by search
-engines and answer engines. The build-side counterpart to the per-page requirements in
+engines, by answer engines, and (on a project with the mobile surface) by app-store search. The
+build-side counterpart to the per-page requirements in
 `project-management/docs/SEO-CHECKLIST.md`.
 
 ## Directory Tree
@@ -13,11 +14,18 @@ code/docs/discoverability/
 ├── WEB-METADATA.md      ← the per-page <head>: build_seo(), canonical, Open Graph, Twitter Cards
 ├── STRUCTURED-DATA.md   ← JSON-LD builders, the XSS-safe serialiser, server-side rendering
 ├── ROOT-SURFACE.md      ← robots.txt, sitemaps, llms.txt, feeds, /.well-known/ — and the ownership register
-└── CONTENT-STRUCTURE.md ← the page body: answer-first, question-shaped headings, self-contained blocks
+├── CONTENT-STRUCTURE.md ← the page body: answer-first, question-shaped headings, self-contained blocks
+└── APP-STORE.md         ← MOBILE-ONLY — the store listing: the text fields, their limits, Apple's byte budget
 ```
 
-**One guide per output surface.** The head, the JSON-LD block, the root files, the body — four
-artefacts, four documents. A rule belongs to whichever artefact it is written into.
+**One guide per output surface.** The head, the JSON-LD block, the root files, the body, the
+store listing — five artefacts, five documents. A rule belongs to whichever artefact it is
+written into.
+
+The first four are artefacts of the **Django deployable**; `APP-STORE.md` is an artefact of the
+**mobile deployable** and is copier-gated to it, so on a web-only project the row above is
+present and the file is not. That dangle is deliberate and repo-wide — see `copier.yml`
+`_exclude`.
 
 ## Why this exists as its own family
 

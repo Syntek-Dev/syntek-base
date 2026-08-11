@@ -1,11 +1,114 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.15.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.16.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.16.0 — 11/08/2026
+
+**Status:** Minor — two new guides, a new conditional release gate, and an honesty pass over the
+discoverability family. Both new files are mobile-only and absent from a web-only project.
+
+### The third destination
+
+`DISCOVERABILITY.md` has always named three places this product is found: search engines, answer
+engines, and app-store search. The first two turned out to be one job — Google states that
+appearing in AI Overviews and AI Mode needs no optimisation beyond ordinary indexation — and the
+third was left with a line admitting it was not covered here yet.
+
+It is a different job because it is a different artefact. Store search matches **listing metadata
+inside a length budget**, not a crawled page, and nothing in the `<head>`, the JSON-LD block, the
+root files or the page body reaches it. It also belongs to a **different deployable**: the four
+existing sub-documents govern outputs of the Django project, and this one governs App Store
+Connect and the Play Console entries for `code/src/mobile/`.
+
+`code/docs/discoverability/APP-STORE.md` now owns it — the fields, what each is for, and the
+vendor page each limit was read from, each with a `Verified:` date. Google Play's release-notes
+limit is deliberately **absent** from that table: the cited pages do not state the figure, and the
+guide carries no number it has not read from a primary source. Read it off the Play Console field
+and record it beside the project's own listing.
+
+### Apple counts bytes; nearly every source that tells you otherwise is confident
+
+Apple, on the keywords field: _you can provide up to **100 bytes** of content_. Google, on all
+three of its fields: character limits apply at any character width.
+
+These are different units, and almost every third-party ASO source states Apple's as "100
+characters". For an ASCII listing the two coincide, which is exactly why the error survives
+unchallenged. They diverge the moment a listing is localised — in UTF-8 an accented Latin
+character costs two bytes and most CJK characters cost three — so a keyword set that measures 100
+characters can be rejected at a third of its apparent length. Count with
+`len(text.encode("utf-8"))`, never `len(text)`.
+
+The guide states this for the same reason `discoverability/CONTENT-STRUCTURE.md` § 1 disposes of
+the answer-engine myths: the wrong figure is not merely missing from this repository, it is
+circulating everywhere a developer would go to check.
+
+### The rule, its register and its gate, in one change
+
+Doctrine on its own is a document nobody opens twice. Three files ship together here.
+
+`APP-STORE.md` holds what is true of every project shipping to these stores, including three rules
+that are routinely got wrong: `app.json` `expo.name` is the name **under the icon**, not the store
+listing name, and a divergence between them is a decision rather than a default; keywords are
+never spent on the app or company name, because both are already indexed and naming a competitor
+is a rejection risk; and the description is plain text, so markup written into it ships as literal
+characters.
+
+`how-to/src/STORE-LISTING.md` is what **this** project actually says — a value and a used-count
+per field, beside the budget it has to fit. A blank cell is an unanswered question, not a default.
+
+`project-management/workflows/23-release/` makes it a release gate, and a conditional one. The new
+Step 2 fires only when the release moved `code/src/mobile/`; a root-only bump reaches no store, and
+a project without the mobile surface never meets the condition. The What's New row is
+**overwritten, not appended** — this register records what the store says now, and the history
+already has a home on the mobile sub-package's own track.
+
+### Who owns the words
+
+The `mobile` agent, not `seo`. Store search has no web counterpart and `seo` is scoped to the
+Django marketing pages, so the listing's text fields sit with the surface that ships them. The
+imagery stays with `code/docs/visual-design/MOBILE.md` and the privacy declarations with
+`project-management/src/09-GDPR/`.
+
+`how-to/src/BRAND-VOICE.md` places store copy as a **third** thing that is not a fifth register,
+listed separately from SEO metadata rather than folded into it. Both are marketing under hard
+constraints, but the constraints are not the same shape: a byte budget runs out two to three times
+sooner than a character count predicts, and a rule that hides inside another rule's bullet is a
+rule someone will apply with the wrong arithmetic.
+
+### How much of this a machine can check
+
+Writing the fifth guide forced the same question at the other four, and the answers turned out to
+differ sharply — so each sub-document now ends with the section rather than the family stating it
+once. `STRUCTURED-DATA.md` is nearly all test coverage. `WEB-METADATA.md` and `ROOT-SURFACE.md`
+can check the shape of the output but not the words. `CONTENT-STRUCTURE.md` and `APP-STORE.md` can
+check almost nothing — one field in `app.json`, and not the important one.
+
+Two facts come out of that, and the second is the one that bites. **No audit in
+`code/src/scripts/audits/` covers this family, and none is planned:** these rules are properties of
+rendered pages, and `code/src/django/apps/` ships empty, so a script written today would report
+success having examined nothing — worse than no script, because a green result is believed. And
+**a clean pipeline says nothing about whether any of this was honoured**: the gate that does exist,
+`12-seo-checks`, runs before any code, so it reviews a plan rather than a page.
+`project-management/docs/SEO-CHECKLIST.md` now says so at the top of the checklist.
+
+The honest half is stated too. A `Product` block with valid syntax and invented review counts
+passes every structured-data test and is a manipulation. A `Host`-derived canonical renders
+correctly, looks correct in a browser, and hands a proxied copy of the site the right to call
+itself the original — which is why the checkable half of `WEB-METADATA.md` is the half worth
+testing: it is the half that fails silently.
+
+### A step that stopped pretending
+
+The same principle, applied where it was overdue. Release Step 5 printed
+`bash code/src/scripts/deployment/deploy.sh` with a footnote conceding the script is planned. The
+directory is a scaffold, so the step now stops and says the workflow has no command to give you —
+hand the tagged, tested release to whoever owns the target environment and record the deployment
+once it is done.
 
 ## v2.15.0 — 11/08/2026
 

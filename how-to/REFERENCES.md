@@ -62,15 +62,16 @@ points for that procedure.
 
 ### Operator guides (`how-to/src/`)
 
-| File                               | Purpose                                                                       |
-| ---------------------------------- | ----------------------------------------------------------------------------- |
-| `how-to/src/BRAND-VOICE.md`        | Brand voice — tone, the four registers, the banned machine tells              |
-| `how-to/src/CONTRIBUTING.md`       | Contributing, branching, commits, testing, code quality, PR gates             |
-| `how-to/src/INVARIANTS.md`         | The invariant register — one enforcement point each, and what a breach raises |
-| `how-to/src/PLATFORM-PROVIDERS.md` | The infrastructure register — seam kind, alternates, substrate verdicts       |
-| `how-to/src/TEMPLATE-TOKENS.md`    | The token contract `copier.yml` implements _(template-only)_                  |
-| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen guides on using the template _(template-only)_                        |
-| `how-to/src/NIXOS-SETUP.md`        | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/                    |
+| File                               | Purpose                                                                                                                                                                                                  |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `how-to/src/BRAND-VOICE.md`        | Brand voice — tone, the four registers, the banned machine tells                                                                                                                                         |
+| `how-to/src/CONTRIBUTING.md`       | Contributing, branching, commits, testing, code quality, PR gates                                                                                                                                        |
+| `how-to/src/INVARIANTS.md`         | The invariant register — one enforcement point each, and what a breach raises                                                                                                                            |
+| `how-to/src/PLATFORM-PROVIDERS.md` | The infrastructure register — seam kind, alternates, substrate verdicts                                                                                                                                  |
+| `how-to/src/STORE-LISTING.md`      | **Mobile-only.** The store-listing register — this project's App Store and Play values against their limits (rule: `code/docs/discoverability/APP-STORE.md`, which alone carries the verification dates) |
+| `how-to/src/TEMPLATE-TOKENS.md`    | The token contract `copier.yml` implements _(template-only)_                                                                                                                                             |
+| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen guides on using the template _(template-only)_                                                                                                                                                   |
+| `how-to/src/NIXOS-SETUP.md`        | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/                                                                                                                                               |
 
 ### Cross-layer references
 

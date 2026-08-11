@@ -29,3 +29,6 @@ Use this workflow when cutting a release — version bump, changelog update, and
 ### Related reading
 
 - `code/docs/security/OWASP-AND-CHECKLIST.md` — pre-release security checklist (DB13, DB16 gates)
+- `how-to/src/STORE-LISTING.md` · `code/docs/discoverability/APP-STORE.md` — **mobile-only** — the
+  store-listing register and the rule behind it. Step 2 reaches them only when the release bumped
+  `code/src/mobile/`; on a web-only project that condition never holds and both files are absent

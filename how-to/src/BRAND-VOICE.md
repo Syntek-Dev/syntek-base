@@ -177,7 +177,7 @@ them, and getting it wrong is the most common copy defect in a shipped feature.
 | **Notification** | Email, SMS, push, in-app alerts                              | The product register, plus a reason it arrived and a way to stop it | `notifications`                   |
 | **Support**      | Help articles, FAQs, troubleshooting, release notes          | Patient, procedural, assumes no context. Second person throughout   | `support-articles`                |
 
-**Two things that are not a fifth register:**
+**Three things that are not a fifth register:**
 
 - **SEO metadata** (`<title>`, meta description, JSON-LD text) is the **marketing register under
   hard constraints** — character limits, front-loaded, superlatives banned outright rather than
@@ -186,6 +186,13 @@ them, and getting it wrong is the most common copy defect in a shipped feature.
   error. Rules that bite hardest here: no superlatives, no apology theatre ("Oops! Something went
   wrong."), and an error names the cause and the next action or it is not finished. Owned by
   `frontend`, `mobile`, `desktop`; `notifications` routes here for notification microcopy.
+- **Store-listing text** (App Store and Google Play: name, subtitle, keywords, descriptions,
+  what's-new) is **marketing under harder constraints still** — and it is a separate bullet from
+  SEO metadata rather than a clause in it, because the constraints are not the same shape: Apple
+  measures its keyword budget in **bytes**, so a localised listing runs out of room two to three
+  times sooner than a character count predicts. **Mobile-only**, owned by `mobile` — not `seo`,
+  which is scoped to the Django marketing pages. The fields and their limits:
+  `code/docs/discoverability/APP-STORE.md`.
 
 ---
 

@@ -65,7 +65,7 @@ surface, read the flagged row as "not present here".
 | `gdpr`             | UK GDPR mechanics: PII encryption, consent, DSAR, erasure         |
 | `git`              | Branch, commit, PR, and versioning git operations                 |
 | `logging`          | Structured logging and observability instrumentation              |
-| `mobile`           | **Mobile-only.** Expo/React Native screens; a11y, token styling   |
+| `mobile`           | **Mobile-only.** Expo/RN screens; a11y, tokens, store listing     |
 | `notifications`    | Multi-channel branded, PII-safe notification delivery             |
 | `operator-docs`    | Operator guides + runbooks in `how-to/docs/` and `how-to/src/`    |
 | `planner`          | Architect a feature into a phased, testable plan                  |

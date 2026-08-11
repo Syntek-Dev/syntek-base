@@ -18,6 +18,7 @@ how-to/src/
 ├── CONTRIBUTING.md          ← contributing, testing, and code-quality standards for this project
 ├── INVARIANTS.md            ← the register: every invariant, its one enforcement point, its breach
 ├── PLATFORM-PROVIDERS.md    ← the register: every infra dependency, its seam kind, its alternates
+├── STORE-LISTING.md         ← MOBILE-ONLY — the register: this project's App Store / Play listing values
 ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (template-only)
 ├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (template-only)
 │   ├── CONTEXT.md · CLAUDE.md

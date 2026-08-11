@@ -68,12 +68,16 @@ recoverable by fixing the markup later.
 
 ---
 
-## Verification
+## What is mechanically checkable here
 
-Structured data is one of the few discoverability outputs with a deterministic check: the emitted
-JSON parses, required fields are present, and the declared type matches the page. That makes it
-test coverage rather than review judgement — cover the builders with unit tests over their dict
-output, and assert the rendered `<script>` block parses in a template test.
+**Nearly all of it — this is the most deterministic output in the family.** The emitted JSON
+parses, required fields are present, and the declared type matches the page. That makes it test
+coverage rather than review judgement: cover the builders with unit tests over their dict output,
+and assert the rendered `<script>` block parses in a template test.
+
+**Not** deterministic: whether the type chosen is the right one for the page, and whether the
+values describe the thing honestly. A `Product` block with valid syntax and invented review counts
+passes every check here and is a manipulation.
 
 ---
 

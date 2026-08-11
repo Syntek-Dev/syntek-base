@@ -34,6 +34,14 @@ They are real work, but they are ongoing programmes or off-site activities — n
 for a single page in a single story. Leaving them unmarked made the gate look like it verified
 things it never could. Anything without the marker **is** a gate item.
 
+> **Every tick here is a person's judgement, not a script's.** `12-seo-checks` runs inside the
+> per-story loop, **before any code exists**, so it reviews the plan for a page rather than the
+> page — and no audit in `code/src/scripts/audits/` covers this ground either. A green pipeline
+> is not evidence that a single row below is satisfied. Which rules a machine _could_ check, if
+> there were a built page to check them against, is recorded per artefact in
+> [`code/docs/DISCOVERABILITY.md`](../../code/docs/DISCOVERABILITY.md) → _How much of this a
+> machine can check_.
+
 **On answer engines (GEO/AEO).** Google states there are no additional requirements or special
 optimisations for AI Overviews and AI Mode beyond ordinary indexation
 ([primary source](https://developers.google.com/search/docs/appearance/ai-features)). This

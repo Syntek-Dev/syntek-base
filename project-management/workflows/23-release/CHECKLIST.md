@@ -21,6 +21,11 @@ model: opus
 - [ ] Version bumped correctly (patch / minor / major)
 - [ ] All version files updated: `VERSION`, `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`
 - [ ] `pyproject.toml` version matches
+- [ ] **If this release bumped `code/src/mobile/`** (`app.json` `expo.version` moved):
+      `how-to/src/STORE-LISTING.md` carries this release's What's New / release-notes text, with
+      its **Used** count filled, and the same text is entered in App Store Connect and the Play
+      Console. Nothing in this repository can verify the store side — it is a review artefact,
+      not an audit artefact (`code/docs/discoverability/APP-STORE.md`)
 - [ ] Full test suite passes
 - [ ] Deployed to production successfully
 
