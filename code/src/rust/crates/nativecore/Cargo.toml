@@ -45,3 +45,15 @@ unwrap_used = "deny"
 expect_used = "deny"
 panic = "deny"
 indexing_slicing = "deny"
+# The three panicking macros `panic = "deny"` does NOT cover — clippy lints the `panic!`
+# macro only, so each of these needs denying by name. All three live in clippy's
+# `restriction` group, which `all` deliberately does not include, which is why every lint
+# in this block is listed individually rather than inherited.
+#
+# `unreachable!()` is denied for the same reason as the rest: it expands to a panic, and
+# the boundary does not care that the author believed the branch was dead. A branch that
+# genuinely is provably dead takes an `#[allow(clippy::unreachable)]` carrying the proof
+# in a comment — the same rule as `unsafe_code` above, and the same reviewability.
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"

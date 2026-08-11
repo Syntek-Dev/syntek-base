@@ -85,7 +85,9 @@ and coerces before the handler runs and returns `422` automatically on invalid i
 only ever sees well-typed data. Constrain fields; do not accept free-form dicts.
 
 ```python
-from ninja import Router, Schema
+from ninja import Router
+
+from apps.core.schemas import Schema
 from pydantic import Field
 
 router = Router()

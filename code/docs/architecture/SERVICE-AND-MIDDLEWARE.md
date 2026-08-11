@@ -78,24 +78,30 @@ def create_order(request, payload: CreateOrderIn):
 All service modules define typed exception classes inheriting from base classes in
 `apps.core.services.errors`. This lets callers catch exceptions from any app uniformly.
 
-| Base class               | Code                | Use for                                              |
-| ------------------------ | ------------------- | ---------------------------------------------------- |
-| `ServiceError`           | `UNKNOWN_ERROR`     | Root base — subclass per app                         |
-| `ServicePermissionError` | `PERMISSION_DENIED` | ABAC / ownership failures                            |
-| `ServiceNotFoundError`   | `NOT_FOUND`         | Missing or soft-deleted resource                     |
-| `ServiceValidationError` | `VALIDATION_ERROR`  | Field-level input validation                         |
-| `SectorTagNotFoundError` | `NOT_FOUND`         | Cross-domain — raised by `core.services.sector_tags` |
+| Base class               | Code                | Use for                          |
+| ------------------------ | ------------------- | -------------------------------- |
+| `ServiceError`           | `UNKNOWN_ERROR`     | Root base — subclass per app     |
+| `ServicePermissionError` | `PERMISSION_DENIED` | ABAC / ownership failures        |
+| `ServiceNotFoundError`   | `NOT_FOUND`         | Missing or soft-deleted resource |
+| `ServiceValidationError` | `VALIDATION_ERROR`  | Field-level input validation     |
+
+**These four ship** — `apps/core/services/errors.py` — alongside two classes that are
+deliberately **outside** this tree: `InvariantViolation` (programmer error, 500) and
+`DependencyUnavailable` (environment error, 503). Never move either inside it, and never
+introduce a shared base over all three: one broad `except ServiceError` would then convert a
+broken invariant into a friendly 400. The taxonomy is owned by
+[`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) § _The error taxonomy_.
 
 Each app defines a thin per-app base and inherits from there:
 
 ```python
-# apps/portfolio/services/errors.py
+# apps/orders/services/errors.py
 from apps.core.services.errors import ServiceError
 
-class PortfolioError(ServiceError):
-    """Base for all portfolio service errors."""
+class OrderError(ServiceError):
+    """Base for all order service errors."""
 
-class PortfolioPermissionError(PortfolioError):
+class OrderPermissionError(OrderError):
     code = "PERMISSION_DENIED"
     ...
 ```
@@ -106,7 +112,7 @@ failure uniformly.
 
 ### Soft-Delete Queryset Convention
 
-`PublishableModel` and `SectorTag` use `SoftDeleteManager`, which returns a `SoftDeleteQuerySet`.
+A soft-deleting model uses `SoftDeleteManager`, which returns a `SoftDeleteQuerySet`.
 
 ```python
 # DO NOT replicate deleted_at__isnull=True by hand:
@@ -120,12 +126,14 @@ qs = Model.objects.deleted()       # ✓ (for admin trash views)
 `published_qs()` is the single authoritative definition of public-content visibility. It retains
 its own filter. All other call sites must use `.not_deleted()`.
 
-Use `LIVE_SECTOR_TAGS` from `apps.core.models` for all M2M sector-tag prefetches:
+**A soft-deleting table's uniqueness constraint must be partial** —
+`UniqueConstraint(condition=Q(deleted_at__isnull=True))` — or the table forbids re-creating a row
+whose predecessor was soft-deleted. Stated in [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md)
+§ _The soft-delete trap_.
 
-```python
-from apps.core.models import LIVE_SECTOR_TAGS
-qs = qs.prefetch_related(LIVE_SECTOR_TAGS)  # ✓  never define _LIVE_SECTOR_TAGS locally
-```
+Where the same prefetch is needed across apps, define it **once** as a module-level constant beside
+the model it traverses and import it — never re-declare the traversal at each call site, where the
+copies drift apart silently.
 
 ### Audit Logging from Services
 
@@ -134,23 +142,24 @@ inside `transaction.atomic()`. The audit write is atomic with the data write —
 both.
 
 ```python
-from apps.audit import constants as audit_constants
-from apps.audit.services import AuditService
+from apps.<%AUDIT_APP%> import constants as audit_constants
+from apps.<%AUDIT_APP%>.services import AuditService
 
 with transaction.atomic():
-    item.save()
+    order.save()
     AuditService.log(
-        audit_constants.PORTFOLIO_ITEM_CREATED,
+        audit_constants.ORDER_CREATED,
         actor_id=actor.pk,
         actor_type="admin",
-        target_type="portfolio_item",
+        target_type="order",
     )
 ```
 
-All action strings must be declared in `apps/audit/constants.py` using `DOMAIN.SUBJECT.VERB`
-format before use. `AuditService` raises `ValueError` for unregistered actions. For best-effort
-writes (where audit failure must not roll back the data change) use `write_endpoint_audit()` from
-`apps.core.api.audit` — but this should be exceptional.
+All action strings must be declared in `apps/<%AUDIT_APP%>/constants.py` using
+`DOMAIN.SUBJECT.VERB` format before use; `AuditService` raises `ValueError` for an unregistered
+action. **The audit record's schema, write path, retention and PII rules are owned by
+[`../security/AUDIT-TRAIL.md`](../security/AUDIT-TRAIL.md)** — this section states only that the
+call sits inside the service method's transaction.
 
 ### Deep modules
 
@@ -214,7 +223,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "apps.audit.middleware.RLSMiddleware",
+    "apps.<%AUDIT_APP%>.middleware.RLSMiddleware",
     "apps.tenants.middleware.TenantMiddleware",
     # custom middleware below framework middleware
 ]

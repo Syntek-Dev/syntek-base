@@ -137,6 +137,60 @@ return render(request, "marketing/results.html", context)
 Assert both branches — the partial test asserts `<nav>` is _absent_
 (`code/docs/testing/FRONTEND-TESTING.md`).
 
+### An error the user never sees
+
+HTMX swaps on **2xx only**. A `500` or `503` therefore replaces _nothing_: the indicator stops,
+the page is unchanged, and the user re-clicks. It is invisible in review because the happy path
+looks perfect — and it is exactly the silent failure [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md)
+exists to prevent. Split it by error class:
+
+| Class                 | Status                        | What the user gets                                        |
+| --------------------- | ----------------------------- | --------------------------------------------------------- |
+| **User error**        | 200 with the re-rendered form | the form back with its messages — the admin example below |
+| **Programmer error**  | 500                           | a real error region, swapped in by the global handler     |
+| **Environment error** | 503                           | the same region, worded as retryable                      |
+
+The user-error leg is per view. The other two are **one global listener, never per element** —
+the view nobody expected to fail is the one that will:
+
+```javascript
+// code/src/django/static/js/observability.js
+document.body.addEventListener("htmx:beforeSwap", (event) => {
+  if (event.detail.xhr.status >= 500) {
+    event.detail.shouldSwap = true;
+    event.detail.target = document.getElementById("error-region");
+  }
+});
+```
+
+`htmx:sendError` needs the same region: a request that never lands produces no response at all,
+so no swap is attempted and nothing above fires.
+
+The server returns a **rendered partial** with the real 5xx status, never an empty body — the
+listener decides _where_ it lands, not _what_ it says. That partial prints the `X-Request-ID`
+value, so a user reporting "it broke" can quote the one identifier that finds the tracker event.
+
+### A template variable the view never passed
+
+Django renders an unresolved variable as an empty string, so `{{ user.emial }}` leaves a blank
+where the address should be and nothing anywhere records it. Make it visible in dev and test:
+
+```python
+# config/settings/dev.py
+TEMPLATES[0]["OPTIONS"]["string_if_invalid"] = "[INVALID TEMPLATE VARIABLE: %s]"
+```
+
+**It stays out of staging and production, and it is only a partial aid even here.** A non-empty
+value stops filters applying to invalid variables — `{{ missing|default:"x" }}` renders the
+marker rather than `"x"` — which is a behaviour change, not a diagnostic. And `{% if %}`,
+`{% for %}` and `{% regroup %}` read an invalid variable as `None` and never consult it, so the
+commonest case still fails silently. There is no loud failure for this on a production page; the
+defence is the test that renders the template.
+
+Component props need none of this. `get_context_data(self, *, icon: str, label: str)` is
+keyword-only with no default, so a missing prop is already a loud `TypeError` at the call site —
+adding an explicit `raise` on top would be a second enforcement point for the same rule.
+
 ---
 
 ## Implementation Examples

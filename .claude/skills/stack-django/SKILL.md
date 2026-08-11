@@ -155,7 +155,9 @@ def publish(post: BlogPost, *, published_by_id: str) -> BlogPost:
 ```python
 """Blog endpoints — publish transition guarded by an explicit Policy check."""
 
-from ninja import Router, Schema
+from ninja import Router
+
+from apps.core.schemas import Schema
 
 from apps.blogs.models import BlogPost
 from apps.blogs.policies import BlogPolicy

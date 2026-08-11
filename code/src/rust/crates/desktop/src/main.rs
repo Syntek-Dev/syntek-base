@@ -23,15 +23,21 @@
 /// not write**: everything in `main` below is still held to the strict table. Putting the
 /// allow at crate root instead would silently disarm the lint for our own code too, which
 /// is the failure this arrangement exists to prevent.
-// The four restriction lints must be named individually: `clippy::all` does NOT include
-// the restriction group, which is where unwrap_used/expect_used/panic/indexing_slicing live.
+// Every restriction lint must be named individually: `clippy::all` does NOT include the
+// restriction group, which is where all of these live. Keep this list in step with the
+// `[lints.clippy]` table in Cargo.toml — a lint denied there and missing here fails the
+// build on code nobody in this repository wrote. `todo` is the live example: `slint-build`
+// emits `todo!("Components written in Rust can not get embedded yet.")` into `out/app.rs`.
 #[allow(
     clippy::all,
     clippy::pedantic,
     clippy::unwrap_used,
     clippy::expect_used,
     clippy::panic,
-    clippy::indexing_slicing
+    clippy::indexing_slicing,
+    clippy::todo,
+    clippy::unimplemented,
+    clippy::unreachable
 )]
 mod ui {
     slint::include_modules!();

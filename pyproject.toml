@@ -81,16 +81,36 @@ select = [
     "DJ",  # flake8-django
     "S",   # flake8-bandit (security)
     "N",   # pep8-naming
+    "TID", # flake8-tidy-imports (banned-api, below)
 ]
 ignore = [
-    "S101",  # assert statements (used in tests)
     "S105",  # hardcoded passwords (false positives in settings)
 ]
 
+# S101 is deliberately NOT ignored globally. `assert` is banned outside tests: it cannot carry the
+# InvariantViolation register key, it is indistinguishable from a failing test in the error tracker,
+# and `python -O` strips it. Guard clauses raise instead — code/docs/NEGATIVE-SPACE.md § The guard
+# clause. Test code is exempted below, per path, and nowhere else; a `# noqa: S101` is a finding.
 [tool.ruff.lint.per-file-ignores]
 "*/migrations/*" = ["E501", "N806"]
 "*/settings/*"   = ["S105", "F405", "F403"]
 "*/tests/*"      = ["S101", "S105", "S106"]
+"conftest.py"    = ["S101", "S105", "S106"]
+# The one module allowed to import ninja.Schema — it is what re-exports the three bases.
+"*/apps/core/schemas.py" = ["TID251"]
+# N818 wants every exception named `*Error`. `InvariantViolation` and `DependencyUnavailable`
+# are named as they are on purpose: neither is a `ServiceError`, and the names carry that
+# (`DependencyUnavailable` also dodges `EnvironmentError`, a built-in alias of `OSError`).
+# The taxonomy is doctrine — code/docs/NEGATIVE-SPACE.md § The error taxonomy — not a
+# naming accident, so the rule yields here rather than the names.
+"*/apps/core/services/errors.py" = ["N818"]
+
+# Django Ninja's default is to SILENTLY IGNORE unknown request-body fields. The fix is
+# `extra="forbid"`, which Pydantic inherits through subclassing — so it propagates from one
+# base class, and the only way to bypass it is to import Schema from ninja directly. That is
+# what this bans. See code/docs/api-design/NINJA-CONVENTIONS.md § Schema strictness.
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"ninja.Schema".msg = "Import Schema (bodies), OutSchema (responses) or QuerySchema (query params) from apps.core.schemas — never ninja.Schema. See code/docs/api-design/NINJA-CONVENTIONS.md"
 
 [tool.ruff.lint.isort]
 sections = { "django" = ["django"] }

@@ -18,7 +18,16 @@ publish = false
 description = "Native desktop application for <%PROJECT_NAME%>"
 
 [[bin]]
-name = "<%PROJECT_SLUG%>-desktop"
+# `desktop` is a HOUSE CONSTANT, not a token — the same reasoning as `nativecore`, plus a
+# hard constraint the other names do not have: rustc validates a crate name as an
+# IDENTIFIER, and `<`, `%` and `>` are not legal in one. A token here does not merely read
+# oddly before generation, it makes the whole workspace uncompilable — `cargo clippy
+# --workspace` and every other workspace command fail in the template itself, so the lint
+# table below can never be proven before a project is generated.
+#
+# The branded executable is still produced: `scripts/desktop/package.sh` renames the
+# artefact after the build, where the name is a filename rather than a grammar.
+name = "desktop"
 path = "src/main.rs"
 
 [dependencies]
@@ -39,3 +48,11 @@ unwrap_used = "deny"
 expect_used = "deny"
 panic = "deny"
 indexing_slicing = "deny"
+# The panicking macros `panic = "deny"` does not cover — clippy lints the `panic!` macro
+# only, and all three sit in the `restriction` group that `all` excludes, so each is
+# denied by name. `unreachable!()` included: a window that vanishes is no better for
+# being unreachable in theory. A provably dead branch takes an
+# `#[allow(clippy::unreachable)]` with the proof in a comment.
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"

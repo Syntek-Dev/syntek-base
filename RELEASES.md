@@ -1,11 +1,85 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.6.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.7.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.7.0 — 11/08/2026
+
+**Status:** Minor — the first release to add running Django code rather than documentation and
+gates. A new `apps/core` ships in every generated project.
+
+### Programming the negative space
+
+Most of what a codebase gets wrong is not a missing feature. It is a state that should have been
+impossible and was merely unlikely. This release makes constraining that space a named discipline
+with an owning guide, a per-project register, the code the doctrine needs, and gates for the half a
+machine can decide.
+
+### One invariant, exactly one enforcement point
+
+`code/docs/NEGATIVE-SPACE.md` carries the rule; `how-to/src/INVARIANTS.md` carries **your**
+answers. Every invariant this project holds is listed with the single named place that enforces it,
+with database-enforced and service-enforced kept apart.
+
+The single-place rule is the whole point. An invariant enforced in two places is enforced in
+neither, because the two copies disagree the first time one of them changes and nothing tells you
+which is now the truth.
+
+### The error taxonomy, and the one decision it turns on
+
+Three classes, and the split that matters: **a breached invariant is a programmer error.** It
+surfaces as a 500 and an event in the tracker. It is never a friendly 4xx.
+
+That is enforced structurally rather than by convention: `InvariantViolation` lives **outside** the
+`ServiceError` tree, so no handler that catches service failures can accidentally swallow one and
+render it as a validation message.
+
+### `raise`, never `assert` — now enforced
+
+Ruff's `S101` was globally ignored. It no longer is: it is exempted for `*/tests/*` and
+`conftest.py` and nowhere else, and a `# noqa: S101` is a finding.
+
+Three reasons, none of them stylistic. An `assert` cannot carry the register key that says which
+invariant broke. In the error tracker it is indistinguishable from a failing test. And `python -O`
+removes it entirely — so the guard you were relying on is the one thing production does not run.
+
+### Unknown fields no longer pass silently
+
+Django Ninja's default is to **ignore** request-body fields it does not recognise. `extra="forbid"`
+fixes that, and because Pydantic inherits it through subclassing, it propagates from a single base
+class. The only way around it is to import `Schema` from `ninja` directly — which ruff `TID251` now
+bans, with `apps/core/schemas.py` as the one module allowed to.
+
+### An honest gap, recorded rather than papered over
+
+`string_if_invalid` catches missing template variables — but it ships in **dev and test only**,
+because Django's own behaviour makes it structurally incapable of policing production: a non-empty
+value stops filters applying to invalid variables, and `{% if %}`, `{% for %}` and `{% regroup %}`
+read an invalid variable as `None` and never consult it.
+
+So the production template surface has no loud failure by construction. That is written down as a
+gap. The alternative was a setting that looked like protection and was not.
+
+### Also in this release
+
+`RequestIDMiddleware` reads the edge's `X-Request-ID` and mints one only when it is absent or
+malformed, treating anything inbound as untrusted — bounded alphabet, 200-character cap. It lives
+in a `ContextVar` rather than on the request, so code below the view can reach it without being
+handed a request object.
+
+HTMX error handling is now split by taxonomy class. HTMX swaps on 2xx only, so a 500 previously
+replaced nothing at all — the user saw the page simply not respond. User errors keep the 200
+re-render; 500 and 503 go to one global `htmx:beforeSwap` listener rather than a handler per
+element.
+
+On the Rust side, `todo`, `unimplemented` and `unreachable` are denied by name in both crates.
+`panic = "deny"` covers the `panic!` macro only, and all three of these live in clippy's
+`restriction` group, which `all` deliberately excludes. `unreachable!()` is included on purpose: a
+window that vanishes is no better for being unreachable in theory.
 
 ## v2.6.0 — 11/08/2026
 

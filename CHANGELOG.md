@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.6.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.7.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.7.0] - 11/08/2026
+
+### Added
+
+- **`code/docs/NEGATIVE-SPACE.md` — the owning guide for what the code must never allow.** The governing principle, what counts as an invariant, the **enforcement-point register** in two halves, the invariant classes, the soft-delete trap, the one case where a constraint firing is not a bug, the three-class error taxonomy, and the guard clause. Every surface clause routes to the guide that already governs that surface rather than being restated here.
+- **`how-to/src/INVARIANTS.md` — the per-project register.** Each invariant gets **exactly one named enforcement point**, database-enforced and service-enforced listed apart, with a worked row for shape and a section on what keeps the file true. The rule is portable; the register is yours.
+- **`code/src/django/apps/core/` — the module the doctrine needs to exist.** `services/errors.py` carries `InvariantViolation` deliberately **outside** the `ServiceError` tree, because a broken invariant is a programmer error and must never be catchable as a user-facing failure. `schemas.py` provides three bases, one per API surface — `Schema` for request bodies, which is the one that carries `extra="forbid"`, plus `OutSchema` for responses and `QuerySchema` for query params, where forbidding extras would be wrong. `middleware.py` adds `RequestIDMiddleware` and `current_request_id()`.
+- **`RequestIDMiddleware`, and the trust boundary it draws.** It reads the edge's `X-Request-ID` and mints a UUID4 only when one is absent or malformed. Inbound values are treated as untrusted — bounded alphabet, 200-character cap. The value lives in a `ContextVar`, not on the request object, so anything below the view can reach it without being handed a request.
+- **A third invariant class enforced by the ORM's own errors.** `string_if_invalid` is set in dev and test only. Django's behaviour settles it: a non-empty value stops filters applying to invalid variables, and `{% if %}`, `{% for %}` and `{% regroup %}` read an invalid variable as `None` and never consult it. The production template surface therefore has **no loud failure by construction**, and that is recorded as an honest gap rather than papered over.
+
+### Changed
+
+- **`assert` is banned outside tests, and ruff now enforces it.** `S101` is no longer globally ignored; it is exempted per path for `*/tests/*` and `conftest.py` and nowhere else, and a `# noqa: S101` is a finding. Three reasons, all in the guide: an `assert` cannot carry the register key, it is indistinguishable from a failing test in the error tracker, and `python -O` strips it. Guard clauses `raise`.
+- **`ninja.Schema` is banned by ruff `TID251`.** Django Ninja silently ignores unknown request-body fields by default; `extra="forbid"` fixes that and propagates by subclassing, so the only way to bypass it is to import `Schema` from `ninja` directly. `apps/core/schemas.py` is the one module allowed to.
+- **`N818` yields to the taxonomy on two names.** `InvariantViolation` and `DependencyUnavailable` are not `*Error` on purpose: neither is a `ServiceError`, and the names carry that. `DependencyUnavailable` also avoids colliding with `EnvironmentError`, a built-in alias of `OSError`.
+- **A breach surfaces as a 500 and a tracker event, never a friendly 4xx.** Added to `.claude/CLAUDE.md` § 6 as a non-negotiable, alongside the existing database-level-invariants rule it completes.
+- **HTMX error handling is split by taxonomy class.** HTMX swaps on 2xx only, so a 500 replaced nothing at all. User errors keep the shipped 200-re-render; 500 and 503 go to **one global `htmx:beforeSwap` listener**, never a per-element handler.
+- **The Rust surface denies the three panicking macros `panic = "deny"` does not cover.** `todo`, `unimplemented` and `unreachable` all live in clippy's `restriction` group, which `all` excludes, so each is denied by name in both crates. `unreachable!()` is included deliberately: a window that vanishes is no better for being unreachable in theory. `slint-build` emits `todo!()` into generated code, so the desktop crate's generated-code allow list is extended to match — the boundary the strict table draws stays exactly where it was.
+
+### Fixed
+
+- **`code/src/rust/Cargo.lock` is now committed.** A workspace with binaries needs its lock file in version control; without it the desktop and native builds resolved differently on every machine.
 
 ## [2.6.0] - 11/08/2026
 

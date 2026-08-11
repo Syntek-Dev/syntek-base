@@ -18,6 +18,14 @@ CSRF_TRUSTED_ORIGINS = [
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# A variable the view never passed renders as an empty string by default, so a typo looks
+# like absent data. This makes it visible instead. Deliberately absent from staging and
+# production: a non-empty value stops filters applying to invalid variables, so
+# `{{ missing|default:"x" }}` would render the marker rather than "x" — a behaviour change,
+# not a diagnostic. It is a partial aid even here, because `{% if %}`, `{% for %}` and
+# `{% regroup %}` read an invalid variable as None and never consult it.
+TEMPLATES[0]["OPTIONS"]["string_if_invalid"] = "[INVALID TEMPLATE VARIABLE: %s]"
+
 # code/src/logs — gitignored runtime logs, shared with the dev tooling.
 _LOGS_DIR = Path(__file__).resolve().parents[4] / "src" / "logs"
 _LOGS_DIR.mkdir(exist_ok=True)

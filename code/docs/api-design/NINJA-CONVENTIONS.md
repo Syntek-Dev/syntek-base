@@ -29,6 +29,48 @@ itself never touches it: pages use server-rendered templates and HTMX against Dj
 - Response schemas are derived from models with `ModelSchema` where the shape matches; hand-write a
   `Schema` when the API contract must diverge from the ORM (the API is a contract, not a mirror).
 
+### Schema strictness — never `from ninja import Schema`
+
+**Django Ninja silently ignores unknown request-body fields.** Not rejects, not warns: every
+endpoint accepts arbitrary extra keys and discards them without a trace. The fix is
+`extra="forbid"`, and because Pydantic inherits `model_config` through subclassing, one base class
+propagates it — so the only way to bypass it is to import `Schema` from `ninja` directly. That
+import is **banned** (ruff `TID251`, enforced in CI).
+
+Import the base that matches the surface, from `apps.core.schemas`:
+
+| Base          | Use for                        | `extra`  | Why                                                                             |
+| ------------- | ------------------------------ | -------- | ------------------------------------------------------------------------------- |
+| `Schema`      | request bodies                 | `forbid` | An unknown field is a client bug — surface it as a 422 rather than dropping it  |
+| `OutSchema`   | responses                      | ignore   | Forbidding changes nothing at runtime and makes adding a field a contract break |
+| `QuerySchema` | `Query(...)` containers        | ignore   | **Must stay permissive** — see below                                            |
+| `ModelSchema` | responses derived from a model | ignore   | Imported from `ninja` as usual; a request body is never a `ModelSchema`         |
+
+```python
+from apps.core.schemas import OutSchema, Schema
+
+
+class CreateOrderIn(Schema):      # unknown keys → 422
+    reference: str
+    quantity: int
+
+
+class OrderOut(OutSchema):        # adding a field later stays backwards-compatible
+    id: UUID
+    reference: str
+```
+
+> **Never give a query-parameter schema `extra="forbid"`.** `ninja.parser.Parser.parse_querydict`
+> iterates `request.GET` and passes Pydantic **every key in the query string**, filtered by
+> nothing — `list_fields` only decides `getlist()` versus `[]`. A forbidding query schema therefore
+> returns 422 for `?utm_source=…`, `?gclid=…`, `?fbclid=…` and every other tracking parameter that
+> arrives on a real inbound link. This is why `QuerySchema` exists as a separate base rather than
+> the strictness being applied uniformly.
+
+`extra="forbid"` also publishes `additionalProperties: false` for that schema in the OpenAPI
+document, which tightens the contract for any generated client. Nothing generates one today
+(`./API-DOCS.md`), so this is a property to know about rather than a migration to plan.
+
 ### Every backend module must have an `api.py`
 
 Every `apps/<name>/` module exports an `api.py` at the package root — the single assembly point for
@@ -116,8 +158,9 @@ def list_orders(request, status: str | None = None):
   the caller's ownership before use (no IDOR).
 
 ```python
-from ninja import Schema
 from ninja.errors import HttpError
+
+from apps.core.schemas import Schema
 
 
 class CreateOrderIn(Schema):

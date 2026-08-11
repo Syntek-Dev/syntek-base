@@ -73,7 +73,7 @@ class RecordService:
 
 ## Decision Structuring: Boolean, Policy, and Strategy
 
-See the [global overview in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#decision-structuring-boolean-policy-and-strategy).
+See the [global overview in CODING-PRINCIPLES.md](coding-principles/PRACTICAL-RULES.md#decision-structuring-boolean-pattern-matching-policy-and-strategy).
 Django-specific implementation below.
 
 ### Policy — Python / Django
@@ -162,8 +162,12 @@ verify to the Strategy.
 
 ## Error Handling
 
-See the [global rules in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#error-handling). The following
+See the [global rules in CODING-PRINCIPLES.md](coding-principles/PRACTICAL-RULES.md#error-handling). The following
 Python-specific rules are critical — regressions here cause data integrity incidents.
+
+> **`assert` is banned outside tests — always `raise`.** The rule, the three reasons, and the shape
+> of the guard clause that replaces it are owned by [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md)
+> § _The guard clause_. Enforced by ruff `S101`; a `# noqa: S101` is a finding, not a workaround.
 
 ### `except` clause syntax
 
@@ -240,7 +244,7 @@ Sentry/GlitchTip before re-raising or returning error responses.
 
 ## Naming Conventions
 
-See the [global conventions in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#naming-conventions).
+See the [global conventions in CODING-PRINCIPLES.md](coding-principles/PRACTICAL-RULES.md#naming-conventions).
 Python/Django specifics:
 
 - `snake_case` for variables, functions, and modules
@@ -251,7 +255,7 @@ Python/Django specifics:
 
 ## Import Rules
 
-See the [global rule in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#import-rules) — all imports must
+See the [global rule in CODING-PRINCIPLES.md](coding-principles/PRACTICAL-RULES.md#import-rules) — all imports must
 appear at the top of the file. Python-specific ordering and exceptions below.
 
 ### Import order — Python
@@ -299,7 +303,7 @@ from django.db import connection as _db_connection
 
 ## Logging
 
-See the [global rules in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#logging).
+See the [global rules in CODING-PRINCIPLES.md](coding-principles/STYLE-AND-PROCESS.md#logging).
 
 **Never use `print()` in committed code.** Always use the project logger so output flows through the
 configured handlers and appears in `code/src/logs/` locally and in Loki in staging/prod. `print()`
@@ -332,7 +336,7 @@ Key rules:
 
 ## Code Review Checklist (Backend)
 
-In addition to the [global checklist in CODING-PRINCIPLES.md](CODING-PRINCIPLES.md#code-review-checklist):
+In addition to the [global checklist in CODING-PRINCIPLES.md](coding-principles/STYLE-AND-PROCESS.md#code-review-checklist):
 
 - [ ] `except` clauses follow `ruff format` — bracket-less multi-type form on Python 3.14 (PEP 758); bind with `as`
 - [ ] `MultipleObjectsReturned` and other data-integrity exceptions are logged at `ERROR`, not silently passed

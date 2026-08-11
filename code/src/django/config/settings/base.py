@@ -2,8 +2,9 @@
 
 This is the project baseline: Django's own defaults plus the infrastructure wiring
 the repository already provides (PostgreSQL via ``dj-database-url``, Valkey via
-``django-valkey``). No application code is registered — ``apps/`` is an empty
-package awaiting the first domain module.
+``django-valkey``). The only registered application is ``apps.core``, which owns no
+models and exists to hold the primitives every domain app imports — ``apps/`` is
+otherwise awaiting its first domain module.
 
 ``DEBUG`` is deliberately absent: each environment module reads it from the
 environment so the value always comes from the matching ``.env.<environment>``
@@ -30,10 +31,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Local. `core` owns no models — it is registered so `apps.core` is a real app
+    # rather than a bare package, and so app-loading order is explicit once it has any.
+    "apps.core",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Third in the pipeline by doctrine, which puts security headers first — so a response
+    # SecurityMiddleware short-circuits itself (the SSL redirect) carries no correlation
+    # identifier. Accepted: that redirect never reaches application code, so there is
+    # nothing to correlate it to.
+    "apps.core.middleware.RequestIDMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",

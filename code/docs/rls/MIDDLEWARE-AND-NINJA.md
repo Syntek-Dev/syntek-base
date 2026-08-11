@@ -135,7 +135,9 @@ these endpoints) reach the ORM through the same restricted application database 
 ```python
 # apps/content/api.py
 from datetime import datetime
-from ninja import Router, Schema
+from ninja import Router
+
+from apps.core.schemas import Schema
 from apps.content.models import Article
 
 router = Router()
@@ -185,7 +187,7 @@ user-scoped tables must set the RLS context explicitly inside a transaction.
 ```python
 from celery import shared_task
 from django.db import transaction
-from apps.audit.middleware import set_rls_context
+from apps.<%AUDIT_APP%>.middleware import set_rls_context
 from apps.content.models import Article
 
 

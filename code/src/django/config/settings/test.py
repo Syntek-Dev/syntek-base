@@ -21,6 +21,11 @@ CACHES = {
 
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
+# Matches dev, so a template assertion fails on a variable the view never passed rather than
+# quietly comparing two empty strings. Kept out of staging and production, where a non-empty
+# value would stop filters applying to invalid variables and change what renders.
+TEMPLATES[0]["OPTIONS"]["string_if_invalid"] = "[INVALID TEMPLATE VARIABLE: %s]"
+
 if os.environ.get("TEST_DATABASE_URL"):
     import dj_database_url
 

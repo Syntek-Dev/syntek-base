@@ -146,7 +146,7 @@ resulting contract as OpenAPI at `/api/docs`.
 
 ```python
 from decimal import Decimal
-from ninja import Schema
+from apps.core.schemas import Schema
 
 
 class OrderLineOut(Schema):
