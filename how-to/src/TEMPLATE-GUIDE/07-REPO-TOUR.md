@@ -61,13 +61,13 @@ code/
 
 **`code/src/scripts/` is the interface to everything.** Five groups:
 
-| Group          | Examples                                                                      |
-| -------------- | ----------------------------------------------------------------------------- |
-| `development/` | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `template-update.sh` |
-| `database/`    | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh`                       |
-| `tests/`       | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh`                       |
-| `syntax/`      | `lint.sh`, `check.sh`, `format.sh`                                            |
-| `audits/`      | `cloc.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`  |
+| Group          | Examples                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| `development/` | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `template-update.sh`                  |
+| `database/`    | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh`                                        |
+| `tests/`       | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh`                                        |
+| `syntax/`      | `lint.sh`, `check.sh`, `format.sh`                                                             |
+| `audits/`      | `cloc.sh`, `docs-length.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh` |
 
 Every script takes `--help`. Never run `python`, `pytest`, `pnpm` or `docker` directly — the
 scripts handle the container, the environment and the compose overrides for your branch.
@@ -94,13 +94,21 @@ project-management/src/
 ├── 07-COMPONENTS/ 08-WIREFRAMES/ 09-GDPR/ 10-SECURITY/ 11-QA/ 12-SEO/ 13-API-DESIGN/
 │   ── decide & plan (14–16) ──
 ├── 14-DECISIONS/ 15-SPRINT-PLANS/ 16-STORY-PLANS/
-│   ── record (17–21) ──
-└── 17-TESTS/ 18-REVIEWS/ 19-FINDINGS/ 20-BUGS/ 21-REFACTORING/
+│   ── record, per story (17–21) ──
+├── 17-TESTS/ 18-REVIEWS/ 19-FINDINGS/ 20-BUGS/ 21-REFACTORING/
+│   ── record, not per story (22) ──
+└── 22-INCIDENTS/
 ```
 
 The numbered `src/` folders mirror the numbered `workflows/`. **`16-STORY-PLANS/` is what a
 developer actually codes from** — it references the sprint plan, the decisions, and every 02–13
 specification.
+
+**`22-INCIDENTS/` is the exception to both patterns**, and knowing why saves you looking for
+things that do not exist: it has no matching workflow, because an incident is unplanned and
+cannot be gated, and it is not anchored to a `US###`, because an incident is not caused by or
+owned by a story. It is a **PII-free** register — the substance of an incident lives in your
+incident tracker, never in git. The practice is `how-to/docs/INCIDENT-PRACTICE.md`.
 
 ## `.claude/`
 

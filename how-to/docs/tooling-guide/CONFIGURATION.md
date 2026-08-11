@@ -58,6 +58,8 @@ table: `.claude/skills/CONTEXT.md`. The stack targets are named in `.claude/CLAU
 | `handoff`              | `/handoff` — compact the conversation for a fresh agent       |
 | `prototype`            | `/prototype` — throwaway spike answering one question         |
 | `research`             | `/research` — primary-source note that feeds a decision       |
+| `incident`             | `/incident` — something is live and broken; Claude scribes    |
+| `runbook`              | Writing an operator guide a human executes under pressure     |
 | `legal-documents`      | Privacy Policy, T&C, GDPR notice, DPA, contract, NDA          |
 | `msp-scp-documents`    | Security/compliance policy (InfoSec, incident, retention, …)  |
 

@@ -26,13 +26,14 @@ against what was really built is mapped against reality.
 
 ## The five tiers
 
-| Tier              | Folders | What happens                                                               |
-| ----------------- | ------- | -------------------------------------------------------------------------- |
-| **Reference**     | `00`    | Logos and export scripts. Not a workflow stage.                            |
-| **Discover**      | `01`    | Chart the feature's decision frontier. Once per feature.                   |
-| **Specify**       | `02–13` | Story, schema, flows, design, GDPR, security, QA, SEO, API. **Per story.** |
-| **Decide & plan** | `14–16` | ADRs, then the sprint plan, then the story plan.                           |
-| **Record**        | `17–21` | Tests, reviews, findings, bugs, refactors. After code ships.               |
+| Tier              | Folders | What happens                                                                |
+| ----------------- | ------- | --------------------------------------------------------------------------- |
+| **Reference**     | `00`    | Logos and export scripts. Not a workflow stage.                             |
+| **Discover**      | `01`    | Chart the feature's decision frontier. Once per feature.                    |
+| **Specify**       | `02–13` | Story, schema, flows, design, GDPR, security, QA, SEO, API. **Per story.**  |
+| **Decide & plan** | `14–16` | ADRs, then the sprint plan, then the story plan.                            |
+| **Record**        | `17–21` | Tests, reviews, findings, bugs, refactors. After code ships. **Per story.** |
+| **Record**        | `22`    | Declared incidents. **Not** per story, and no workflow — see below.         |
 
 ```text
 00-ASSETS      reference
@@ -57,7 +58,16 @@ against what was really built is mapped against reality.
 19-FINDINGS    ├─ records, written after the code ships
 20-BUGS        │
 21-REFACTORING ┘
+22-INCIDENTS   ← the incident register; no story, no workflow, no PII
 ```
+
+**`22-INCIDENTS/` breaks both rules on this page, on purpose.** Every other folder is entered
+from a numbered workflow and anchored to a `US###`; this one is entered from a guide
+(`how-to/docs/INCIDENT-PRACTICE.md`) and the `/incident` skill, because an incident is
+**unplanned** — there is no gate to schedule it through — and it is not caused by, scoped to, or
+owned by a story. It is also **PII-free by rule**: the row says an incident happened and how it
+ended, while log excerpts, identifiers and any postmortem touching personal data go to the
+tracker you named at generation time. Do not go looking for `workflows/22-incidents/`.
 
 **Workflow numbers mirror `src/` numbers through `16`.** `workflows/04-database-schema` writes
 `src/04-DATABASE`. After `16` they diverge: `17-consolidate-design-work` writes into the design

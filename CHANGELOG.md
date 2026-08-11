@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.10.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.11.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.11.0] - 11/08/2026
+
+### Added
+
+- **`/incident`** — runs a live incident alongside you: timestamped notes, the clock, the seven-field handover when you have to stop, and the blameless postmortem at stand-down. It has **no paired agent** deliberately — running an incident is a session mechanic, not a remit. Doctrine: `how-to/docs/INCIDENT-PRACTICE.md`. Register: `project-management/src/22-INCIDENTS/`, which is **PII-free** and, unlike every other record folder, **not story-anchored**.
+- **`/resolving-merge-conflicts`** — recovers the intent behind both sides of a conflict, resolves every hunk, and proves the result with the project gates. Knows the file classes that must **never** be hand-merged: migrations, lockfiles, version state, and frozen PM artefacts.
+- **`/wizard`** and `code/src/scripts/_lib/wizard.sh` — authors a guided bash script for the parts of a procedure a person must do by hand: provisioning a third-party service, minting credentials or CI secrets, a one-off cutover. Explicitly never for work the agent can do itself.
+- **`/to-questionnaire`** and the `questionnaires/` sandbox — turns a decision the session cannot settle into a questionnaire for the person who can: a client, a data controller, a vendor, a stakeholder. It is the honest exit from a grilling pass that has stalled on somebody who is not in the room, and is never invoked by the model on its own.
+- **`/wait-what`** — re-pitches a reply that did not land, in plain language, with the context it wrongly assumed. Also never self-invoked.
+- **`code/src/scripts/audits/skill-conformance.sh` and its CI job.** Eight fail-tier clauses, reported in two groups because a specification breach and a house-rule breach are different problems: six checks against the [Agent Skills specification](https://agentskills.io/specification), and two house rules — no spec-optional key on a first-party skill, and a `## Governing procedures` section present. Length is deliberately **not** checked here; `docs-length.sh` owns the 300-line cap across `.claude/**`, and one rule with two enforcers drifts.
+- **`how-to/docs/SKILL-AUTHORING.md`** — the standard the audit enforces, including why this project authors only `name` and `description` and declines the other four spec fields: capability and model belong to the **agent** that loads a skill, never to the skill.
+- **`research/AGENT-SKILL-ECOSYSTEM.md` and `research/SKILLS-VS-SUBAGENTS.md`** — the primary-source survey behind both the five skills and the authoring standard.
+
+### Changed
+
+- **Vendored skills are held to the specification half only.** The Cloudinary set is a symlinked folder refreshed from upstream via `skills-lock.json`; hand-editing one to satisfy a house rule is undone by the next refresh, so clauses 7 and 8 skip them.
+- **`code/docs/security/MONITORING-AND-INCIDENT.md`** routes its response half to the new incident practice rather than describing a procedure in its own words.
 
 ## [2.10.0] - 11/08/2026
 

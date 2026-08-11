@@ -1,0 +1,58 @@
+# Skill conformance guard — the CI half of how-to/docs/SKILL-AUTHORING.md.
+#
+# Checks every .claude/skills/*/SKILL.md against the published Agent Skills specification
+# (https://agentskills.io/specification) and against this project's narrowing of it: the
+# spec defines six frontmatter fields, and only `name` + `description` are authored here,
+# because capability and model belong to the AGENT that loads a skill, never to the skill.
+#
+# Vendored skills — symlinked folders refreshed from upstream via skills-lock.json — are
+# held to the spec clauses only. Editing one to satisfy a house rule is undone by the next
+# refresh, so the house clauses do not apply to them.
+#
+# File length is deliberately NOT checked here: docs-length.sh owns the 300-line cap across
+# all of .claude/**, and one rule with two enforcers drifts.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# Self-guarding: exits 0 with a note when .claude/skills/ is absent or holds no skills, so
+# it is safe to run unconditionally without a step-level directory guard.
+#
+# SKILL-AUTHORING.md is a path because the rule has two sides: the guide is what the script
+# enforces, and a change to either should be the change that reports a mismatch.
+name: Audit — Skill Conformance
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - ".claude/skills/**"
+      - "how-to/docs/SKILL-AUTHORING.md"
+      - "code/src/scripts/audits/skill-conformance.sh"
+      - ".github/workflows/audit-skill-conformance.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - ".claude/skills/**"
+      - "how-to/docs/SKILL-AUTHORING.md"
+      - "code/src/scripts/audits/skill-conformance.sh"
+      - ".github/workflows/audit-skill-conformance.yml"
+  workflow_dispatch:
+
+jobs:
+  skill-conformance:
+    name: Skill conformance audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run skill conformance audit
+        run: bash code/src/scripts/audits/skill-conformance.sh --output md
+
+      - name: Upload skill conformance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-conformance-report
+          path: code/src/scripts/audits/reports/skill-conformance-report.md
+          if-no-files-found: ignore

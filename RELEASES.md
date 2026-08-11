@@ -1,11 +1,72 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.10.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.11.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.11.0 — 11/08/2026
+
+**Status:** Minor — five new skills, one new PM record folder, one new CI gate. Nothing existing
+changes behaviour.
+
+### Five moments that had no procedure
+
+Each of these is a situation the template already put you in and then left you to improvise.
+
+**`/incident`** — something is broken in staging or production. What you need at that moment is not
+another pair of hands on the keyboard; it is a scribe. The skill keeps timestamped notes, holds the
+clock, produces a seven-field handover the moment you have to stop, and writes the blameless
+postmortem at stand-down. It has **no paired agent**, on purpose: running an incident is a session
+mechanic rather than a remit.
+
+**`/resolving-merge-conflicts`** — a merge, rebase or `copier update` has left markers. The skill
+recovers the intent behind both sides rather than picking one, and it knows the file classes that
+must never be hand-merged at all: migrations, lockfiles, version state, and frozen PM artefacts.
+
+**`/wizard`** — some steps only a human can do. Provisioning a service, minting a credential,
+pasting a CI secret. The skill authors a guided bash script over the new
+`code/src/scripts/_lib/wizard.sh`, and is explicitly not for work the agent could have done itself.
+
+**`/to-questionnaire`** — a grilling pass stalls because the answer lives with someone outside the
+session: a client, a data controller, a vendor. This is the honest exit — it writes a questionnaire
+for that person into `questionnaires/`. Never self-invoked.
+
+**`/wait-what`** — the last reply did not land. Re-pitched in plain language, with the context it
+wrongly assumed you had. Also never self-invoked, because an agent is the last thing qualified to
+judge whether its own explanation worked.
+
+### The incident register
+
+`project-management/src/22-INCIDENTS/` is new, and it breaks two conventions on purpose. It is
+**not story-anchored** — an incident does not belong to a `US###` — and it is **PII-free**, because
+an incident record is the document most likely to be read by someone who should never have seen the
+personal data that caused it.
+
+It also has no paired workflow, which is why the doctrine lives in
+`how-to/docs/INCIDENT-PRACTICE.md`: declare, run, hand over, stand down, write up.
+
+### Skills are now checked against the specification
+
+`skill-conformance.sh` runs eight fail-tier clauses and reports them in **two groups**, because a
+specification breach and a house-rule breach are different problems with different fixes.
+
+Six come from the [Agent Skills specification](https://agentskills.io/specification): frontmatter at
+byte 0, `name` and `description` present, `name` matching its directory, the name character rules,
+the description length cap, and no key outside the six the spec defines.
+
+Two are house rules. This project authors only `name` and `description` and declines the other four
+spec fields, for a reason worth stating: capability and model belong to the **agent** that loads a
+skill, never to the skill itself. And every first-party skill carries a `## Governing procedures`
+section.
+
+Length is deliberately not checked here. `docs-length.sh` already owns the 300-line cap across
+`.claude/**`, and one rule with two enforcers drifts.
+
+Vendored skills — the Cloudinary set, symlinked and refreshed from upstream — are held to the spec
+half only. Hand-editing one to satisfy a house rule is undone by the next refresh.
 
 ## v2.10.0 — 11/08/2026
 
