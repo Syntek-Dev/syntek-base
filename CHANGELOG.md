@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.11.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.12.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.12.0] - 11/08/2026
+
+### Added
+
+- **`code/src/scripts/audits/static-analysis.sh`** — pattern and taint analysis over the Django surface using Opengrep against this project's own rule files. It closes two gaps that nothing else could, because both are structural rather than a matter of configuration.
+- **Django template markup is now scanned at all.** Ruff cannot parse a `.html` file, so `{% autoescape off %}`, the `|safe` filter, and a template variable interpolated into an Alpine expression or an inline script were entirely unchecked. Three rules cover them: `django-autoescape-off.yml`, `django-safe-filter.yml`, `django-template-xss.yml`.
+- **Cross-file taint tracking.** `pyproject.toml` already enables ruff's `S` ruleset, which runs per file — it flags a bare `eval()`, but it cannot see that the argument arrived from a request three modules away. `request-to-sink-taint.yml` follows request data to raw SQL, shell and eval sinks.
+- **`secrets-in-source.yml`** — hardcoded credential assignments, complementing the `.env` read-denials rather than duplicating them.
+- **`code/src/scripts/audits/rules/` with its own `CONTEXT.md`/`CLAUDE.md` pair**, because the rules are hand-authored source and need the same orientation as anything else in the tree.
+
+### Changed
+
+- **`stubs.sh` now covers Rust** — `// STUB`, `// TODO`, `// FIXME`, `// HACK`. It deliberately does **not** grep `todo!()`, `unimplemented!()` or `unreachable!()`: all three are denied at lint level in every crate's `[lints.clippy]`, and clippy parses Rust, so it cannot be fooled by a macro name inside a string or a doc example, and it offers a per-site `#[allow]` carrying a reason. A `// STUB` comment is precisely what clippy cannot see, which is the division of labour.
+- **The Cargo `target/` tree is excluded from the stub scan** — thousands of generated `.rs` files carrying upstream crates' markers, none of them anyone's to fix here.
+- **`code/docs/rust/PYO3-BOUNDARY.md`** documents the lint-level rule and its escape hatch, so the two halves of the stub policy are described in one place.
 
 ## [2.11.0] - 11/08/2026
 

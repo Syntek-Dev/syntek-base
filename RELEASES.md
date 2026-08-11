@@ -1,11 +1,58 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.11.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.12.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.12.0 — 11/08/2026
+
+**Status:** Minor — one new audit script, five rule files, and a stub scanner that now reads Rust.
+
+### Two gaps a per-file Python linter cannot close
+
+Ruff has been carrying the security load here, with `flake8-bandit` enabled through the `S` ruleset.
+It is good at what it does, and there are two things it structurally cannot do.
+
+**It cannot read a template.** Ruff parses Python. A `.html` file is not Python, so
+`{% autoescape off %}`, a `|safe` filter on user-controlled data, and a template variable
+interpolated straight into an Alpine expression or an inline `<script>` were not merely unflagged —
+they were never looked at. On a stack whose entire frontend is Django templates, that is the
+largest single blind spot in the audit set.
+
+**It cannot see across files.** Ruff runs per file. It will flag a bare `eval()`, because that call
+is visible in the file containing it. It cannot see that the argument came off a request three
+modules earlier, which is the shape almost every real injection actually takes.
+
+### `static-analysis.sh`
+
+Opengrep, run against five rule files this project authors and owns:
+
+| Rule                          | Closes                                                             |
+| ----------------------------- | ------------------------------------------------------------------ |
+| `django-autoescape-off.yml`   | `{% autoescape off %}` blocks                                      |
+| `django-safe-filter.yml`      | `|safe` on data that is not provably safe                          |
+| `django-template-xss.yml`     | Template variables inside Alpine expressions and inline scripts    |
+| `request-to-sink-taint.yml`   | Request data reaching a raw-SQL, shell or eval sink, across files  |
+| `secrets-in-source.yml`       | Hardcoded credential assignments                                   |
+
+The rules live under `code/src/scripts/audits/rules/` with their own `CONTEXT.md`/`CLAUDE.md` pair,
+because they are hand-authored source and deserve the same orientation as anything else here.
+
+### `stubs.sh` reads Rust now — but only the half clippy cannot
+
+The stub scanner covers `// STUB`, `// TODO`, `// FIXME` and `// HACK` in Rust.
+
+It deliberately does **not** grep for `todo!()`, `unimplemented!()` or `unreachable!()`. All three
+are denied at lint level in every crate, and clippy parses Rust — so it cannot be fooled by a macro
+name inside a string or a doc example, and it offers a per-site `#[allow]` carrying a reason, which
+a grep cannot. A `// STUB` comment is exactly what clippy cannot see. That is the division of
+labour, and both halves are now written down in `code/docs/rust/PYO3-BOUNDARY.md`.
+
+The Cargo `target/` tree is excluded: thousands of generated files carrying upstream crates'
+markers, none of them anyone's to fix here.
 
 ## v2.11.0 — 11/08/2026
 

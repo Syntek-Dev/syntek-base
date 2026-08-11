@@ -1,0 +1,83 @@
+# django-safe-filter.yml
+#
+# The two explicit ways a developer tells Django "do not escape this": the `|safe`
+# family of template filters, and `mark_safe()` / `SafeString()` in Python.
+#
+# House doctrine, verbatim from code/docs/security/OWASP-AND-CHECKLIST.md: "Django
+# templates auto-escape by default, never pipe user input through `|safe` or
+# `mark_safe`." The pre-PR checklist in that guide restates it as a tick box.
+#
+# A constant string literal is exempt, because it carries no user input. Everything
+# else is flagged, including every interpolation form (f-string, `%`, `.format()`,
+# concatenation), which is never exempt.
+#
+# Authored in-house from this repository's own guides. No upstream rule text was
+# consulted, copied, adapted or paraphrased (see the audits CLAUDE.md licence note).
+
+rules:
+  - id: django-template-safe-filter
+    languages: [generic]
+    severity: ERROR
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: '\{\{[^}]*\|\s*(?:safe|safeseq)\s*(?:\}\}|\|)'
+    message: >-
+      The `|safe` filter switches off Django's output escaping for this value. Project
+      doctrine forbids it on user input outright: auto-escaping is the XSS control
+      (code/docs/security/OWASP-AND-CHECKLIST.md, "XSS prevention", and its pre-PR
+      checklist). If the value is genuinely trusted markup, build it server side with
+      `format_html()` so the interpolated parts are still escaped, and render that.
+      Remember an HTMX partial is an XSS surface exactly like a full page.
+    metadata:
+      doctrine: "Never pipe user input through |safe."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house
+
+  - id: django-mark-safe-non-constant
+    languages: [python]
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: mark_safe(...)
+          - pattern: SafeString(...)
+          - pattern: SafeText(...)
+      - pattern-not: mark_safe("...")
+      - pattern-not: SafeString("...")
+      - pattern-not: SafeText("...")
+    message: >-
+      `mark_safe()` on something other than a constant string literal tells Django to
+      emit this value unescaped. Project doctrine forbids it on user input
+      (code/docs/security/OWASP-AND-CHECKLIST.md, "XSS prevention"), and the same rule
+      applies to an HTMX partial assembled on the way out: never concatenate a fragment
+      and mark it safe. Use `format_html()`, which escapes each interpolated argument,
+      or return the value unmarked and let the template escape it.
+    metadata:
+      doctrine: "Never mark_safe a value that is not a constant."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house
+
+  - id: django-mark-safe-interpolated-string
+    languages: [python]
+    severity: ERROR
+    pattern-either:
+      - pattern: mark_safe(f"...")
+      - pattern: mark_safe("..." % ...)
+      - pattern: mark_safe("...".format(...))
+      - pattern: mark_safe($A + $B)
+      - pattern: SafeString(f"...")
+      - pattern: SafeString("..." % ...)
+      - pattern: SafeString("...".format(...))
+    message: >-
+      An interpolated string is marked safe. This is the highest-risk form of the
+      pattern: the literal parts look harmless while the interpolated parts, which are
+      the ones that carry user input, are emitted raw. `format_html()` takes the same
+      arguments and escapes each of them, so it is a direct substitute. Doctrine:
+      code/docs/security/OWASP-AND-CHECKLIST.md ("XSS prevention").
+    metadata:
+      doctrine: "Never mark_safe an interpolated string; use format_html()."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house

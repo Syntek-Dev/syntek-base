@@ -9,6 +9,7 @@ on:
       - "**/*.tsx"
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.rs"
       - "code/src/scripts/audits/stubs.sh"
       - ".github/workflows/audit-stubs.yml"
   pull_request:
@@ -19,6 +20,7 @@ on:
       - "**/*.tsx"
       - "**/*.js"
       - "**/*.jsx"
+      - "**/*.rs"
       - "code/src/scripts/audits/stubs.sh"
       - ".github/workflows/audit-stubs.yml"
   workflow_dispatch:

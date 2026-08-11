@@ -1,0 +1,185 @@
+# request-to-sink-taint.yml
+#
+# Cross-file taint tracking: a value taken off the HTTP request reaching a sink that
+# interprets it. This is the gap a per-file linter cannot close. Ruff's flake8-bandit
+# ("S") ruleset already runs over every Python file via code/src/scripts/syntax/lint.sh
+# and will flag a bare `eval()` or `shell=True` on its own; what it cannot see is that
+# the argument came from `request.GET` two functions away.
+#
+# House doctrine: code/docs/security/INPUT-AND-API.md, "Input Validation and
+# Sanitisation" ("assume all external input is hostile until proven otherwise",
+# "validate before use", "allowlist, not blocklist"), and the OWASP checklist in
+# code/docs/security/OWASP-AND-CHECKLIST.md.
+#
+# Authored in-house from this repository's own guides. No upstream rule text was
+# consulted, copied, adapted or paraphrased (see the audits CLAUDE.md licence note).
+
+rules:
+  - id: request-data-reaching-raw-sql
+    mode: taint
+    languages: [python]
+    severity: ERROR
+    pattern-sources:
+      - pattern-either:
+          - pattern: request.GET
+          - pattern: request.POST
+          - pattern: request.body
+          - pattern: request.COOKIES
+          - pattern: request.headers
+          - pattern: request.META
+          - pattern: request.FILES
+          - pattern: request.data
+          - pattern: self.request.GET
+          - pattern: self.request.POST
+          - pattern: self.request.data
+    pattern-sanitizers:
+      - pattern: int(...)
+      - pattern: float(...)
+      - pattern: bool(...)
+      - pattern: uuid.UUID(...)
+      - pattern: UUID(...)
+    pattern-sinks:
+      - patterns:
+          - pattern: $CURSOR.execute($SQL, ...)
+          - focus-metavariable: $SQL
+      - patterns:
+          - pattern: $CURSOR.executemany($SQL, ...)
+          - focus-metavariable: $SQL
+      - patterns:
+          - pattern: $QS.raw($SQL, ...)
+          - focus-metavariable: $SQL
+      - pattern: RawSQL(...)
+      - pattern: $QS.extra(...)
+    message: >-
+      Request data is reaching raw SQL. Every value off the request is hostile until
+      validated (code/docs/security/INPUT-AND-API.md, "Input Validation and
+      Sanitisation"), and string-building a query hands the caller the query planner.
+      Use the ORM, or pass parameters as the second argument to `execute()` / `raw()`
+      so the driver binds them. If a fragment really must be dynamic, allowlist it
+      against a fixed tuple of column names rather than escaping it.
+    metadata:
+      doctrine: "Assume all external input is hostile; parameterise, never interpolate."
+      guide: code/docs/security/INPUT-AND-API.md
+      owasp: "A03:2021 Injection (SQL)"
+      why-not-ruff: >-
+        Ruff's S ruleset is per-file, so it cannot see that the SQL string was built
+        from request data in another module.
+      authored: in-house
+
+  - id: request-data-reaching-code-execution
+    mode: taint
+    languages: [python]
+    severity: ERROR
+    pattern-sources:
+      - pattern-either:
+          - pattern: request.GET
+          - pattern: request.POST
+          - pattern: request.body
+          - pattern: request.COOKIES
+          - pattern: request.headers
+          - pattern: request.META
+          - pattern: request.FILES
+          - pattern: request.data
+          - pattern: self.request.GET
+          - pattern: self.request.POST
+          - pattern: self.request.data
+    pattern-sinks:
+      - pattern-either:
+          - pattern: eval(...)
+          - pattern: exec(...)
+          - pattern: compile(...)
+          - pattern: pickle.loads(...)
+          - pattern: yaml.load(...)
+          - pattern: __import__(...)
+    message: >-
+      Request data is reaching an interpreter: `eval`, `exec`, `compile`, an unpickler,
+      or an unsafe YAML load. This is remote code execution, not an injection risk to be
+      mitigated. There is no safe escaping for it. Parse the value with a Django Ninja
+      `Schema` (Pydantic), or `json.loads` for JSON, or `yaml.safe_load` for YAML, and
+      validate the result against an allowlist before use
+      (code/docs/security/INPUT-AND-API.md, "Input Validation and Sanitisation").
+    metadata:
+      doctrine: "Declare a Schema for every request body, query and path parameter."
+      guide: code/docs/security/INPUT-AND-API.md
+      owasp: "A03:2021 Injection · A08:2021 Software and Data Integrity Failures"
+      authored: in-house
+
+  - id: request-data-reaching-shell
+    mode: taint
+    languages: [python]
+    severity: ERROR
+    pattern-sources:
+      - pattern-either:
+          - pattern: request.GET
+          - pattern: request.POST
+          - pattern: request.body
+          - pattern: request.COOKIES
+          - pattern: request.headers
+          - pattern: request.META
+          - pattern: request.FILES
+          - pattern: request.data
+          - pattern: self.request.GET
+          - pattern: self.request.POST
+          - pattern: self.request.data
+    pattern-sanitizers:
+      - pattern: shlex.quote(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: os.system(...)
+          - pattern: os.popen(...)
+          - pattern: subprocess.run(..., shell=True, ...)
+          - pattern: subprocess.call(..., shell=True, ...)
+          - pattern: subprocess.check_call(..., shell=True, ...)
+          - pattern: subprocess.check_output(..., shell=True, ...)
+          - pattern: subprocess.Popen(..., shell=True, ...)
+    message: >-
+      Request data is reaching a shell. `os.system`, `os.popen` and `shell=True` all
+      hand the value to a shell parser, where a semicolon or a backtick is a command
+      boundary. Drop `shell=True` and pass an argument list to `subprocess.run`, so the
+      value is one argument and can never become a command. If a shell is unavoidable,
+      the value must be allowlisted, not escaped
+      (code/docs/security/INPUT-AND-API.md, "Input Validation and Sanitisation").
+    metadata:
+      doctrine: "Allowlist, not blocklist; a shell boundary cannot be escaped safely."
+      guide: code/docs/security/INPUT-AND-API.md
+      owasp: "A03:2021 Injection (OS command)"
+      authored: in-house
+
+  - id: request-data-reaching-redirect
+    mode: taint
+    languages: [python]
+    severity: WARNING
+    pattern-sources:
+      - pattern-either:
+          - pattern: request.GET
+          - pattern: request.POST
+          - pattern: request.body
+          - pattern: request.COOKIES
+          - pattern: request.headers
+          - pattern: request.META
+          - pattern: request.data
+          - pattern: self.request.GET
+          - pattern: self.request.POST
+    pattern-sanitizers:
+      - pattern: url_has_allowed_host_and_scheme(...)
+      - pattern: django.utils.http.url_has_allowed_host_and_scheme(...)
+      - pattern: reverse(...)
+      - pattern: django.urls.reverse(...)
+    pattern-sinks:
+      - pattern-either:
+          - pattern: redirect(...)
+          - pattern: HttpResponseRedirect(...)
+          - pattern: HttpResponsePermanentRedirect(...)
+    message: >-
+      Request data is reaching a redirect target. An attacker-controlled `next=` sends
+      the user to another origin while the link still reads as one of ours, which is the
+      standard phishing pivot off a login page. Validate the target with
+      `url_has_allowed_host_and_scheme(url, allowed_hosts=..., require_https=True)`
+      before redirecting, or resolve it through `reverse()` from a named route so the
+      caller can only choose from routes this project owns
+      (code/docs/security/INPUT-AND-API.md, "Input Validation and Sanitisation").
+    metadata:
+      doctrine: "The caller may choose from an allowlist, never supply the destination."
+      guide: code/docs/security/INPUT-AND-API.md
+      owasp: "A01:2021 Broken Access Control (unvalidated redirect)"
+      authored: in-house

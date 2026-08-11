@@ -1,0 +1,34 @@
+# django-autoescape-off.yml
+#
+# The `{% autoescape off %}` template block. Its own file because it is categorically
+# worse than `|safe`: `|safe` disarms one value, an autoescape block disarms every
+# value inside it, including ones added later by someone who never read the tag.
+#
+# House doctrine: code/docs/security/OWASP-AND-CHECKLIST.md, "XSS prevention" and its
+# pre-PR checklist. The Python-side equivalents (Engine, Context, TEMPLATES OPTIONS)
+# are in django-template-xss.yml.
+#
+# Authored in-house from this repository's own guides. No upstream rule text was
+# consulted, copied, adapted or paraphrased (see the audits CLAUDE.md licence note).
+
+rules:
+  - id: django-autoescape-off-block
+    languages: [generic]
+    severity: ERROR
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: '\{%-?\s*autoescape\s+off\s*-?%\}'
+    message: >-
+      `{% autoescape off %}` disables Django's output escaping for the whole block, not
+      for one value, so every variable inside it (and every variable added to it later)
+      is emitted raw. Project doctrine treats auto-escaping as the XSS control rather
+      than a formatting default, and the pre-PR checklist asks for exactly this
+      (code/docs/security/OWASP-AND-CHECKLIST.md, "XSS prevention"). Delete the block.
+      If one specific fragment must carry markup, build it with `format_html()` in the
+      view or a template tag, where each interpolated argument is still escaped.
+    metadata:
+      doctrine: "Auto-escaping stays on; the block form disarms values not yet written."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house

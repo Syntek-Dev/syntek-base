@@ -30,13 +30,46 @@ unwrap_used = "deny"
 expect_used = "deny"
 panic = "deny"
 indexing_slicing = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
 ```
 
 `indexing_slicing` is in that list because `data[i]` panics on an out-of-range index. Use
 `.get(i)`, iterators, or `zip` — the baseline `constant_time_eq` folds over `zip` for exactly this
 reason.
 
+**`panic = "deny"` covers the `panic!` macro and nothing else.** `todo!()`, `unimplemented!()` and
+`unreachable!()` each expand to a panic and each needs denying by name. All three sit in clippy's
+`restriction` group, which `all` deliberately does not include — which is why every lint in that
+block is listed individually rather than inherited from a group.
+
 **`panic = "abort"` is never set** in a profile the extension module is built under.
+
+### `unreachable!()` is not an exception to this
+
+It is tempting to treat `unreachable!()` as a claim about the code rather than a gap in it — an
+assertion that the type system could not express. The boundary does not care about the
+distinction. If the branch is ever reached, CPython gets an unwind, and the fact that the author
+believed it could not happen is what made it worth asserting in the first place.
+
+Where a branch really is provably dead — closing a `match` the compiler cannot see is exhaustive —
+the escape hatch is per-site and reviewable, on exactly the same rule as `unsafe` below:
+
+```rust
+// The parser guarantees `kind` is one of the three variants above; a fourth would be a
+// bug in `parse_kind`, not in this match.
+#[allow(clippy::unreachable)]
+_ => unreachable!("parse_kind returned an unhandled variant"),
+```
+
+An `#[allow]` with no comment is not a justification, and a reviewer should treat it as one of the
+panicking paths that slipped through.
+
+**`todo!()` in a TDD red phase takes the same treatment.** `STUBS_TDD_RED=1` skips `stubs.sh`; it
+has no effect on `cargo clippy`, and there is deliberately no environment variable that does. A
+red-phase stub carries `#[allow(clippy::todo)]` on the item, which is scoped to the stub, visible
+in the diff, and has to be deleted to reach green.
 
 ## Keep the boundary thin
 

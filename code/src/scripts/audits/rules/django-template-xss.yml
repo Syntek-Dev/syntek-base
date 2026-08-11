@@ -1,0 +1,103 @@
+# django-template-xss.yml
+#
+# Django auto-escapes on output, and that default is the whole of this project's XSS
+# defence (code/docs/security/OWASP-AND-CHECKLIST.md, "XSS prevention"). This file
+# catches the two stack-specific traps that guide names (a template variable reaching a
+# JavaScript expression, and a template variable reaching an inline script body) plus
+# the Python-side ways the auto-escape default is switched off.
+#
+# The `{% autoescape off %}` template block has its own file, django-autoescape-off.yml.
+# The `|safe` filter and `mark_safe()` have theirs, django-safe-filter.yml.
+#
+# Authored in-house from this repository's own guides. No upstream rule text was
+# consulted, copied, adapted or paraphrased (see the audits CLAUDE.md licence note).
+
+rules:
+  - id: django-template-var-in-alpine-expression
+    languages: [generic]
+    severity: ERROR
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: '(?:x-data|x-init|x-html|x-model|x-effect|x-text|x-show|x-if|x-on:[A-Za-z0-9_.:-]+|x-bind:[A-Za-z0-9_.:-]+|@[A-Za-z0-9_.:-]+|:[A-Za-z0-9_.-]+)\s*=\s*"[^"]*\{\{'
+    message: >-
+      A Django template variable is interpolated into an Alpine expression. Alpine
+      evaluates that attribute as JavaScript, so Django's HTML escaping does not protect
+      it: a quote or a bracket in the value breaks out of the expression and executes.
+      This is the first of the two stack traps named in
+      code/docs/security/OWASP-AND-CHECKLIST.md ("XSS prevention"). Pass the data as
+      JSON instead, with `{{ obj|json_script:"some-id" }}`, and read it in Alpine with
+      `JSON.parse(document.getElementById('some-id').textContent)`.
+    metadata:
+      doctrine: "Django auto-escaping is the XSS defence; never route a value round it."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house
+
+  - id: django-template-var-in-inline-script
+    languages: [generic]
+    severity: ERROR
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: '<script(?:(?!\bsrc\s*=)[^>])*>[^<]*\{\{'
+    message: >-
+      A Django template variable is interpolated into an inline script body. This is both
+      an XSS vector and a Content-Security-Policy violation: the edge sets the CSP header
+      and `'unsafe-inline'` must never appear in it, so an inline script with a server
+      value in it cannot ship at all. Data enters JavaScript via `{% json_script %}` and
+      an external static file loaded with `<script defer src="{% static ... %}">`.
+      See code/docs/FRONTEND-CODING-PRINCIPLES.md ("Per-page JavaScript") and
+      code/docs/security/OWASP-AND-CHECKLIST.md ("Content Security Policy").
+    metadata:
+      doctrine: "No inline script, and no server value interpolated into JavaScript."
+      guide: code/docs/FRONTEND-CODING-PRINCIPLES.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      limitation: >-
+        Matches only where the opening `<script>` tag and the `{{` share a line or are
+        separated by plain text on the same run. A variable several lines into a long
+        inline script is not caught, so this rule narrows the surface rather than
+        closing it.
+      authored: in-house
+
+  - id: django-alpine-x-html-raw-sink
+    languages: [generic]
+    severity: WARNING
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: '\bx-html\s*='
+    message: >-
+      `x-html` assigns to `innerHTML`, so it is a raw HTML sink and it bypasses the
+      escaping Django did on the way out. An HTMX partial or an Alpine binding is an XSS
+      surface exactly like a full page (code/docs/security/OWASP-AND-CHECKLIST.md).
+      Use `x-text` for a value, or render the markup server side as a template and swap
+      it with HTMX so Django escapes it.
+    metadata:
+      doctrine: "A partial is an XSS surface exactly like a full page."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house
+
+  - id: django-autoescape-disabled-in-python
+    languages: [python]
+    severity: ERROR
+    pattern-either:
+      - pattern: Context(..., autoescape=False, ...)
+      - pattern: RequestContext(..., autoescape=False, ...)
+      - pattern: Engine(..., autoescape=False, ...)
+      - pattern: Template(..., autoescape=False, ...)
+      - pattern: "{..., 'autoescape': False}"
+      - pattern: '{..., "autoescape": False}'
+    message: >-
+      Auto-escaping is switched off in Python. Django escapes template output by default
+      and this project treats that default as the XSS control, not as a convenience
+      (code/docs/security/OWASP-AND-CHECKLIST.md, "XSS prevention"). Turning it off at
+      the engine, context or TEMPLATES-OPTIONS level disarms every template rendered
+      through it, including HTMX partials. Escape at the point of output instead, or use
+      `format_html()` to build the one fragment that genuinely needs markup.
+    metadata:
+      doctrine: "Auto-escaping is a control, not a default to be tuned."
+      guide: code/docs/security/OWASP-AND-CHECKLIST.md
+      owasp: "A03:2021 Injection (cross-site scripting)"
+      authored: in-house

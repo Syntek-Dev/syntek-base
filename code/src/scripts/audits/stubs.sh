@@ -1,15 +1,26 @@
 #!/usr/bin/env bash
 #
 # stubs.sh — Detect stub implementations across Python/Django,
-#            and JavaScript.
+#            JavaScript, and Rust.
 #
 # Hard stubs (always fail):
 #   Python  — raise NotImplementedError  ·  # STUB
 #   TS/JS   — throw new Error(*not implemented*)  ·  // STUB
+#   Rust    — // STUB
 #
 # Soft markers (listed when --strict; do not cause failure):
 #   Python  — # TODO  ·  # FIXME  ·  # HACK
 #   TS/JS   — // TODO  ·  // FIXME  ·  // HACK
+#   Rust    — // TODO  ·  // FIXME  ·  // HACK
+#
+# Rust's `todo!()`, `unimplemented!()` and `unreachable!()` are NOT grepped here. All
+# three are denied at the lint level in every crate's [lints.clippy] — clippy parses
+# Rust, so it cannot be fooled by a macro name in a string or a doc example, and it
+# offers a per-site `#[allow]` carrying a reason. Rule and escape hatch:
+# code/docs/rust/PYO3-BOUNDARY.md. A `// STUB` comment is what clippy cannot see.
+#
+# The Cargo build tree (`target/`) is excluded: it holds thousands of generated .rs
+# files carrying upstream crates' markers, none of them anyone's to fix here.
 #
 # TDD/BDD red phase: export STUBS_TDD_RED=1 to skip this check and exit 0.
 #   e.g.  STUBS_TDD_RED=1 git commit -m "red: ..."
@@ -44,18 +55,19 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-stubs.sh — Detect stub implementations in Python/Django and JavaScript
+stubs.sh — Detect stub implementations in Python/Django, JavaScript and Rust
 
 Usage:
   stubs.sh                         Scan all file types (hard stubs only)
   stubs.sh --strict                Also report TODO / FIXME / HACK soft markers
   stubs.sh --file-type python      Restrict to Python only
+  stubs.sh --file-type rust        Restrict to the Rust workspace only
 
 Options:
   --strict             Show soft markers (# TODO / # FIXME / # HACK / // TODO etc.)
                        Soft markers are listed but do not cause failure.
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | javascript
+                         python | javascript | rust
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/stubs-report.<FORMAT>)
@@ -70,18 +82,25 @@ TDD/BDD red phase:
 Hard stubs detected (always; cause exit 1):
   Python  │ raise NotImplementedError  ·  # STUB
   TS/JS   │ throw new Error(*not implemented*)  ·  // STUB
+  Rust    │ // STUB
+
+  todo!(), unimplemented!() and unreachable!() are denied by clippy instead, per crate
+  in [lints.clippy] — see code/docs/rust/PYO3-BOUNDARY.md. `cargo clippy` runs via
+  code/src/scripts/rust/lint.sh, so a clean stubs.sh run does not by itself mean the
+  Rust surface is stub-free.
 
 Soft markers detected (--strict only; listed but do not fail):
   Python  │ # TODO  ·  # FIXME  ·  # HACK
   TS/JS   │ // TODO  ·  // FIXME  ·  // HACK
+  Rust    │ // TODO  ·  // FIXME  ·  // HACK
 
 Scanned extensions:
-  *.py  ·  *.ts  ·  *.tsx  (plus *.js  ·  *.jsx  when --file-type javascript)
+  *.py  ·  *.ts  ·  *.tsx  ·  *.rs  (plus *.js  ·  *.jsx  when --file-type javascript)
   *.md and all other file types are excluded — Markdown is linted/formatted separately.
 
 Excluded paths:
   node_modules/  ·  .venv/  ·  __pycache__/  ·  migrations/  ·  .next/
-  generated/  ·  dist/  ·  .git/  ·  audits/
+  generated/  ·  dist/  ·  .git/  ·  audits/  ·  target/ (the Cargo build tree)
 
 Exit codes:  0 = clean (or TDD red phase)   1 = hard stubs found   2 = script error
 EOF
@@ -115,11 +134,13 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|javascript) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python javascript" ;;
+    python|javascript|rust) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python javascript rust" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python javascript)
+# `rust` is in the default set so the CI gate covers it without a flag. On a project
+# without the Rust surface the scan matches nothing and costs one grep.
+[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python javascript rust)
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -174,6 +195,9 @@ EXCL=(
   --exclude-dir=dist
   --exclude-dir=.git
   --exclude-dir=audits
+  # The Cargo build tree — generated .rs files carry the upstream crates' own markers,
+  # none of which anyone here can act on.
+  --exclude-dir=target
 )
 
 # scan LABEL SEVERITY PATTERN EXT...
@@ -260,6 +284,37 @@ if wants_ts_js; then
     scan "// HACK marker" soft \
       '//[[:space:]]*(HACK)($|[[:space:]:])' \
       "${ts_exts[@]}"
+  fi
+  log ""
+fi
+
+# ── Rust ──────────────────────────────────────────────────────────────────────
+# Comment markers only. `todo!()`, `unimplemented!()` and `unreachable!()` are denied at
+# the lint level in every crate's [lints.clippy] instead — clippy parses Rust, so it
+# cannot be fooled by a macro name inside a string, a comment or a doc example, and it
+# offers a per-site `#[allow]` that carries a reason where a grep offers nothing.
+# The rule: code/docs/rust/PYO3-BOUNDARY.md → Never panic across the boundary.
+#
+# A `// STUB` comment is the one marker clippy genuinely cannot see, so it stays here.
+#
+# RUST-ONLY in practice: on a web-only project this grep matches nothing and the section
+# prints a clean header, which is cheaper than a directory guard.
+if wants rust; then
+  bold "── Rust ───────────────────────────────────────────────────────────────────"
+
+  scan "// STUB marker" hard \
+    '//[[:space:]]*(STUB)($|[[:space:]:])' \
+    "*.rs"
+  if $STRICT; then
+    scan "// TODO marker" soft \
+      '//[[:space:]]*(TODO)($|[[:space:]:])' \
+      "*.rs"
+    scan "// FIXME marker" soft \
+      '//[[:space:]]*(FIXME)($|[[:space:]:])' \
+      "*.rs"
+    scan "// HACK marker" soft \
+      '//[[:space:]]*(HACK)($|[[:space:]:])' \
+      "*.rs"
   fi
   log ""
 fi
