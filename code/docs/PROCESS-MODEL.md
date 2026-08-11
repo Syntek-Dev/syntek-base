@@ -117,7 +117,12 @@ Three rules, in the order they bite:
    of its ORM access. The worked decorator is in
    [`mcp-server/TESTING-AND-OPS.md`](mcp-server/TESTING-AND-OPS.md) → _The ORM connection rule_.
    Left undone, this surfaces as an intermittent `InterfaceError` after an idle period, in
-   production only.
+   production only. **One of the three has this solved structurally:**
+   `apps.core.management.base.ManagementCommand` closes on entry and exit, so a command
+   satisfies the rule by subclassing it and a command invoked through `call_command()` — which
+   never reaches the `run_from_argv` cleanup Django does provide — behaves like one invoked from
+   a shell ([`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md)). A task and an MCP tool still
+   carry it themselves.
 
 **Connections are counted per process, not per deployment.** Worst case is roughly
 `(web workers + task workers + schedulers) × database aliases`. Compute it before adding a

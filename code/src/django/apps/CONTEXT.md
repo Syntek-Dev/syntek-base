@@ -11,10 +11,12 @@ no domain modules yet.
 ```text
 apps/
 ├── __init__.py      ← package marker
-├── core/            ← the shipped app: schema bases, exception trees, middleware; no models
+├── core/            ← the shipped app: schema bases, exception trees, middleware, command base, tags; no models
 │   ├── middleware.py
 │   ├── schemas.py
+│   ├── management/base.py
 │   ├── services/errors.py
+│   ├── templatetags/core.py
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
 ├── CONTEXT.md       ← this file
@@ -26,9 +28,9 @@ apps/
 Each app gets a row here — Django label, purpose, and the models it owns — and a line in
 `INSTALLED_APPS` as `apps.<name>`.
 
-| App    | Django label | Purpose                                                                                                                    | Models |
-| ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `core` | `apps.core`  | Project-wide primitives: the Ninja schema bases, the service-layer exception trees, and the request-correlation middleware | none   |
+| App    | Django label | Purpose                                                                                                                                                                           | Models |
+| ------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| `core` | `apps.core`  | Project-wide primitives: the Ninja schema bases, the service-layer exception trees, the request-correlation middleware and the tag that reads it, and the management-command base | none   |
 
 **`core` is not scaffolded like the others.** It ships with the template, so it does not
 come from `new-django-app.sh` — that script builds a _domain_ app. Read
@@ -50,6 +52,12 @@ thin enough for a second adapter to sit beside the first.
 `Schema`, responses `OutSchema` or `ninja.ModelSchema`, `Query(...)` containers
 `QuerySchema`. Ruff `TID251` fails the build on a direct `ninja.Schema` import; the reason
 is in `code/docs/api-design/NINJA-CONVENTIONS.md` § _Schema strictness_.
+
+**Management commands subclass `apps.core.management.base.ManagementCommand`, never Django's
+`BaseCommand`** — the same `TID251` mechanism, for the same reason: the direct base still
+works, and the only difference is that a broken invariant stops being distinguishable from a
+transient outage. Commands live in the app whose data they touch, at
+`<app>/management/commands/`; see `code/docs/MANAGEMENT-COMMANDS.md`.
 
 ## Before the first app
 

@@ -1,11 +1,105 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.17.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.18.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.18.0 — 11/08/2026
+
+**Status:** Minor — one base class, one lint ban, one new guide. The template ships no
+management commands yet, so nothing existing changes behaviour.
+
+### The second surface with nothing to carry the meaning
+
+The three error classes — programmer, user, environment — have been settled since `apps/core`
+landed. On an endpoint, HTTP carries them: a 500 and a tracker event, a 4xx the caller can act
+on, a 503 a client should retry. The distinction costs nothing to make, because the framework
+already has a vocabulary for it.
+
+A management command has none of that. It has an operator reading stderr and, if anything is
+watching, an exit code. Left to each command, that mapping gets made once per command, slightly
+differently each time — and the drift is invisible, because every version of it runs.
+
+### What the base class decides
+
+`ManagementCommand`, in `code/src/django/apps/core/management/base.py`, makes it once:
+
+| Raised inside the command | Operator sees                      | Exit |
+| ------------------------- | ---------------------------------- | ---- |
+| `ServiceError` subclass   | one line on stderr                 | 1    |
+| `DependencyUnavailable`   | one line on stderr                 | 75   |
+| `InvariantViolation`      | the traceback, and a tracker event | 1    |
+
+The classes are distinguished by **type**, not by exit code. Only one code carries meaning:
+**75**, `EX_TEMPFAIL` from BSD `sysexits.h`, because it is the only distinction anything
+downstream acts on — a scheduler retries on it and must not retry on the other two. That is the
+503-versus-500 split, in the vocabulary a shell has. A code per class was rejected: nothing
+would read it, so it would go wrong silently.
+
+`InvariantViolation` is the one the base class does **not** touch, and that is the deliberate
+part. A traceback is the correct output for a programmer error — it is the one signal saying
+"this is a bug in the code, not in what you typed", and it is what carries the register key to
+the tracker. Catching it to print something tidier is the friendly-4xx failure in a different
+medium.
+
+### The ban is what makes it a rule
+
+Subclassing Django's `BaseCommand` directly still works. The command runs, the tests pass, and
+the only difference is that a broken invariant now looks like every other traceback and a
+transient outage exits 1 like a typo. Nothing fails until something needed to tell them apart —
+which is precisely the class of defect review does not catch and a linter does.
+
+Ruff `TID251` now bans both `django.core.management.base.BaseCommand` and the
+`django.core.management.BaseCommand` re-export, since banning one path only would leave a
+one-word bypass. `pyproject.toml` exempts exactly one file: the base class itself. Same
+mechanism, for the same reason, as the existing `ninja.Schema` ban.
+
+### argparse parses; parsing is not validation
+
+`code/docs/MANAGEMENT-COMMANDS.md` owns what a command line has and a queue does not — an
+operator, a shell, and an exit code — and routes everything the two surfaces share back to
+`code/docs/TASK-AUTHORING.md` rather than restating it.
+
+Arguments are untrusted input, not because the operator is hostile but because `type=int`
+proves a string was numeric and says nothing about whether minus one, zero or forty million is
+a number this command may act on. An identifier off the command line is exactly as unverified
+as one off a URL; IDOR does not become acceptable because the caller had a shell. And there is
+no `request.user`, so identity is an argument and it is data: a command that writes an audit row
+takes the actor explicitly and verifies it, rather than inferring it from the Unix user or from
+whoever is deploying.
+
+The failure that actually happens, though, is not a hostile value but a plausible one.
+**Blast radius is the argument nobody passes** — a missing `--since`, a typo'd `--limit`, a
+filter that matched everything. So anything destructive takes `--dry-run` and reports what it
+would do; bounds are declared rather than discovered; and the confirmation prompt is not the
+safety, because `--noinput`, a pipe and a scheduler all skip it.
+
+### One connection rule, now solved for you
+
+Django closes database connections in `run_from_argv`. `call_command()` never reaches that
+cleanup — so a command invoked from a task, a test, or another command inherits whatever
+connection state its caller left, and the symptom is an intermittent `InterfaceError` after an
+idle period, in production only.
+
+`ManagementCommand.execute()` closes on entry and exit, which is what makes the two invocation
+paths equivalent. `code/docs/PROCESS-MODEL.md` now records that one of its three no-request
+surfaces has this handled structurally, and that a task and an MCP tool still carry it
+themselves.
+
+### The sibling surface, and the class it does not have
+
+`code/docs/TASK-AUTHORING.md` gains the same taxonomy expressed the way a queue can express it —
+permanent versus retryable — and its **user-error row is empty on purpose**. A task has nobody
+to tell, so an argument it cannot act on was put there by code: a programmer error, even where
+the identical value arriving on an endpoint would be a 422. The user error, if there was one,
+happened at enqueue time on the surface that had a user, and was either caught there or never
+checked. A task that validates and then returns quietly converts a bug into a silent no-op.
+
+The two guides now name each other, which is the point of shipping them in one change: the same
+three classes, spent on retry classification in one place and exit codes in the other.
 
 ## v2.17.0 — 11/08/2026
 

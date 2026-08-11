@@ -158,9 +158,40 @@ Arguments must still make sense whenever the task runs, which may be well after 
 enqueued. A task that acts on "the current" anything re-reads it; a task handed a derived
 value acts on a value that has moved on.
 
+**They must also still be _accepted_ by the code that runs them.** A rolling deploy has both
+releases live at once, so a message enqueued a minute ago carries the argument shape the
+**previous** one emitted. Renaming a parameter, removing one, or making an optional argument
+required breaks every message already queued — as a `TypeError` raised when the worker calls
+the function, before the body runs and where no idempotency check reaches it. A signature
+change is therefore a two-release change: add the parameter with a default, deploy, drain,
+then remove the old one — the add-nullable-then-constrain rule
+([`DATABASE.md`](DATABASE.md)) applied to a message instead of a column.
+
 **The acceptance test for a task is the task run twice**, against the same input, asserting
 the same end state and exactly one external effect. A task without that test is not known
 to be idempotent, it is only hoped to be.
+
+## The error taxonomy on this surface
+
+The three classes ([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) § _The error taxonomy_) hold here
+too, but a queue has no status code and nobody reading it — so they are carried by **what
+happens next**:
+
+| Class                 | Raise                   | What follows                                 |
+| --------------------- | ----------------------- | -------------------------------------------- |
+| **Programmer error**  | `InvariantViolation`    | permanent — never retried, one tracker event |
+| **Environment error** | `DependencyUnavailable` | retryable — backoff and bounds, aggregated   |
+| **User error**        | —                       | **empty on this surface**                    |
+
+**The empty class is the load-bearing one.** A task has nobody to tell, so an argument it
+cannot act on was put there by code — a programmer error, even where the identical value
+arriving on an endpoint would be a 422. The user error, if there was one, happened at
+**enqueue** time on the surface that had a user, and was either caught there or never checked.
+A task that validates and then returns quietly converts a bug into a silent no-op.
+
+The classification below reads this table — **the class decides retryability**, rather than it
+being judged again per call site. The sibling surface keeps all three and spends exit codes on
+them instead ([`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md)).
 
 ## Retries and backoff
 
@@ -282,6 +313,9 @@ a trigger, not a shrug.
 
 - [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md): the
   service layer a task delegates to, and the job classification table
+- [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md): the sibling surface — the shared
+  no-request rules are stated here and routed to from there; it owns the operator, the shell,
+  and the exit codes
 - [`PROCESS-MODEL.md`](PROCESS-MODEL.md): the process family a worker belongs to, and the
   ORM's synchronous boundary that constrains what a task body may do
 - [`BACKEND-CODING-PRINCIPLES.md`](BACKEND-CODING-PRINCIPLES.md): transactions, error

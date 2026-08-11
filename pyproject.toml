@@ -98,6 +98,8 @@ ignore = [
 "conftest.py"    = ["S101", "S105", "S106"]
 # The one module allowed to import ninja.Schema — it is what re-exports the three bases.
 "*/apps/core/schemas.py" = ["TID251"]
+# The one module allowed to import Django's BaseCommand — it is what ManagementCommand extends.
+"*/apps/core/management/base.py" = ["TID251"]
 # N818 wants every exception named `*Error`. `InvariantViolation` and `DependencyUnavailable`
 # are named as they are on purpose: neither is a `ServiceError`, and the names carry that
 # (`DependencyUnavailable` also dodges `EnvironmentError`, a built-in alias of `OSError`).
@@ -111,6 +113,13 @@ ignore = [
 # what this bans. See code/docs/api-design/NINJA-CONVENTIONS.md § Schema strictness.
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "ninja.Schema".msg = "Import Schema (bodies), OutSchema (responses) or QuerySchema (query params) from apps.core.schemas — never ninja.Schema. See code/docs/api-design/NINJA-CONVENTIONS.md"
+# A command has no HTTP status, so the three error classes have to be mapped onto what an
+# operator reads and what a scheduler acts on. Subclassing Django's BaseCommand directly skips
+# that mapping silently — the command still runs, and a broken invariant just looks like any
+# other traceback. Both paths are banned because Django re-exports the class from the package,
+# so banning only the module would leave a one-word bypass. See code/docs/MANAGEMENT-COMMANDS.md
+"django.core.management.base.BaseCommand".msg = "Subclass ManagementCommand from apps.core.management.base — it maps the error taxonomy onto exit codes. See code/docs/MANAGEMENT-COMMANDS.md"
+"django.core.management.BaseCommand".msg = "Subclass ManagementCommand from apps.core.management.base — it maps the error taxonomy onto exit codes. See code/docs/MANAGEMENT-COMMANDS.md"
 
 [tool.ruff.lint.isort]
 sections = { "django" = ["django"] }

@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.17.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.18.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.18.0] - 11/08/2026
+
+### Added
+
+- **`code/src/django/apps/core/management/base.py` — `ManagementCommand`, the error taxonomy expressed on a command line.** A command has no HTTP status to carry the three classes, so the distinction is made in what the operator reads and what a scheduler can act on: a `ServiceError` becomes a one-line `CommandError` at exit 1, `DependencyUnavailable` exits **75** — `EX_TEMPFAIL`, from BSD `sysexits.h` — because a scheduler retries on it and must not retry on the other two, and `InvariantViolation` is deliberately not caught, so a programmer error reaches the operator as a traceback and the tracker as an event.
+- **`execute()` calls `close_old_connections()` on entry and exit.** Django closes connections in `run_from_argv`, which `call_command()` never reaches, so a command invoked from a task, a test, or another command inherited whatever connection state its caller left.
+- **A ruff `TID251` ban on both `BaseCommand` import paths**, `django.core.management.base.BaseCommand` and the `django.core.management.BaseCommand` re-export, because banning one would leave a one-word bypass. `pyproject.toml` exempts exactly one file — the base class itself. The ban is what makes subclassing compulsory rather than advisory: the direct base still works, and the only difference is that a broken invariant stops being distinguishable from a transient outage.
+- **`code/docs/MANAGEMENT-COMMANDS.md`** — the rule the module implements. When work belongs to a person choosing the moment rather than to a queue; why argparse parses and parsing is not validation; why an identifier off the command line is as unverified as one off a URL and identity is an argument that must be verified rather than inferred; blast radius as the argument nobody passes, with `--dry-run`, declared bounds, and why the confirmation prompt is not the safety; and the four things worth asserting in a test, including the exit-75 one everybody skips.
+- **`code/src/django/apps/core/management/` with its own `CONTEXT.md`/`CLAUDE.md` pair**, and no `commands/` package in it deliberately — Django discovers commands inside the app that owns their data, and `core` owns no domain.
+
+### Changed
+
+- **`code/docs/PROCESS-MODEL.md` records that one of its three no-request surfaces now satisfies the ORM connection rule structurally.** A command satisfies it by subclassing the base; a task and an MCP tool still carry it themselves.
+- **`code/docs/TASK-AUTHORING.md` gains the taxonomy on its own surface, and its user-error class is empty on purpose.** A task has nobody to tell, so an argument it cannot act on was put there by code — a programmer error, even where the identical value arriving on an endpoint would be a 422. The two surfaces now name each other: the queue spends retry classification where the shell spends exit codes.
+- **`code/src/django/apps/CONTEXT.md`, `code/src/django/apps/core/CONTEXT.md` and `code/src/django/apps/core/CLAUDE.md`** list the two sub-packages `core` now ships, `management/` and `templatetags/`, and carry the rule that `management/base.py` is the only module permitted to import Django's `BaseCommand`.
+- **The `Decided by` column in `code/src/django/apps/core/CONTEXT.md` cites shipped guides.** It pointed at node IDs from a planning map that no generated project receives; it now names `code/docs/NEGATIVE-SPACE.md` and `code/docs/MANAGEMENT-COMMANDS.md`, which exist everywhere.
+- **`code/REFERENCES.md`, `code/docs/CONTEXT.md` and `code/CONTEXT.md` index the guide**, together with `code/docs/discoverability/APP-STORE.md` and `code/docs/MOBILE-CODING-PRINCIPLES.md`. `code/REFERENCES.md` also adds the two external sources the base class is built on: Django's custom-management-commands howto — noting that `run_from_argv` catches `CommandError` and closes connections while `call_command()` does neither — and BSD `sysexits.h` for `EX_TEMPFAIL`.
 
 ## [2.17.0] - 11/08/2026
 

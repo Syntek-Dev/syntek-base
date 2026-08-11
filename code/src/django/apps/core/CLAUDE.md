@@ -37,6 +37,10 @@ service-layer exception trees — and nothing that belongs to a domain.
   subclass `Schema`; responses `OutSchema` or `ninja.ModelSchema`; `Query(...)` containers
   `QuerySchema`. **Never give `QuerySchema` `extra="forbid"`** — Ninja passes the whole
   query string to Pydantic, so it would 422 on `?utm_source=…`.
+- **`management/base.py` is the only module permitted to import Django's `BaseCommand`** —
+  ruff `TID251` bans both the module path and the package re-export, and `pyproject.toml`
+  exempts this one file. Every command in the project subclasses `ManagementCommand`, which is
+  where the three error classes become exit codes (`code/docs/MANAGEMENT-COMMANDS.md`).
 - **A module documented in `code/docs/` is not thereby owed now.** Add it when the node or
   story that decides its rule lands; the outstanding list is in `CONTEXT.md`.
 - No models here without a decision recorded first — adding one creates `models/` and

@@ -27,6 +27,7 @@ code/
 │   ├── ENCRYPTION-GUIDE.md          (sub-docs: encryption/)
 │   ├── FRONTEND-CODING-PRINCIPLES.md ← Django templates + HTMX + Alpine + CSS
 │   ├── LOGGING.md                   (sub-docs: logging/)
+│   ├── MANAGEMENT-COMMANDS.md       ← the CLI surface: untrusted arguments, the exit classes
 │   ├── MCP-SERVER.md                (sub-docs: mcp-server/) ← FastMCP tools at /mcp/
 │   ├── NEGATIVE-SPACE.md            ← invariant classes, one enforcement point, the error taxonomy, the guard clause
 │   ├── PERFORMANCE.md               (sub-docs: performance/)
@@ -70,7 +71,7 @@ code/
 │   │   └── tests/                   ← test suite runners (pytest, Bruno)
 │   └── tests/                       ← API integration tests (Bruno collection)
 │       └── CONTEXT.md
-└── workflows/                       ← step-by-step coding workflows (three families)
+└── workflows/                       ← step-by-step coding workflows, by family below
     ├── CONTEXT.md
     │   ── Build (01–06) ──
     ├── 01-new-feature/              ← full-stack feature development
@@ -123,6 +124,7 @@ Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 | `docs/MCP-SERVER.md`            | Before exposing anything to an LLM agent (the FastMCP `/mcp/` surface)                                                         |
 | `docs/NEGATIVE-SPACE.md`        | Before adding a constraint or a guard — where an invariant is enforced, and how it fails. **`assert` is banned outside tests** |
 | `docs/TASK-AUTHORING.md`        | Before moving any work off the request cycle into a background task                                                            |
+| `docs/MANAGEMENT-COMMANDS.md`   | Before writing any `manage.py` command — arguments are untrusted, and the exit code is the taxonomy                            |
 | `docs/PROCESS-MODEL.md`         | Before choosing sync vs async, or adding any process beyond the web one                                                        |
 | `docs/OBJECT-STORAGE.md`        | Before storing a private document or issuing a presigned URL                                                                   |
 | `docs/ACCESSIBILITY.md`         | Before building any frontend component                                                                                         |
