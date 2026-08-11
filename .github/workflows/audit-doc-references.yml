@@ -1,0 +1,45 @@
+# Citation guard — every reference in a shipped file must resolve in every project.
+#
+# A file that ships is read in a project that is not this one, so it may cite only what
+# that project is guaranteed to have: the layering system (CONTEXT.md, CLAUDE.md, docs/,
+# workflows/, scripts, guides). It may never cite a per-project instance — ADR-###,
+# US###, SPRINT-##, MAP-*, PLAN-* — because a generated project has different ones at
+# those numbers, or none at all.
+#
+# This exists because the class kept coming back. Three ADR numbers were cited as real
+# across six files for a week before anyone noticed there was no ADR register, and a
+# manual sweep that found nine phantoms missed thirty more. A rule nothing checks is a
+# rule that decays between releases.
+#
+# What it cannot catch: whether a path that resolves is the RIGHT one, and whether a count
+# stated in words is true. Both stay reviewer judgement, as .github/scripts/shipped-readme.sh
+# already says of its own blind spot.
+#
+# No path filter. Any file can carry a citation, so scoping this to a subset would recreate
+# the blind spot it exists to close — and it is not a required status check.
+name: Audit — Doc References
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+jobs:
+  doc-references:
+    name: Citations resolve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run doc references audit
+        run: bash code/src/scripts/audits/doc-references.sh --output md
+
+      - name: Upload doc references report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-references-report
+          path: code/src/scripts/audits/reports/doc-references.md
+          if-no-files-found: ignore

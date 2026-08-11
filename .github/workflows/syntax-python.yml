@@ -2,14 +2,35 @@ name: Python — Lint, Format & Typecheck
 
 # These three jobs deliberately carry NO lockfile guard, unlike claude.yml / test.yml /
 # audit-deps.yml. They run `uv sync` WITHOUT `--frozen`, so uv resolves from
-# pyproject.toml and needs no committed uv.lock — which means they work in the base
-# template and in a generated project alike. That is also why they are the only Python
-# gate this repository actually enforces on itself.
+# pyproject.toml and needs no committed uv.lock. That is what lets them gate a project
+# from its first commit, before `uv lock` has ever run.
 #
-# All three previously failed at the `astral-sh/setup-uv` step: they were pinned to @v4
-# with `enable-cache: true` and no `version:`, while every other workflow here pins @v5
-# with an explicit UV_VERSION. That was a stale action pin, not a template artefact, so
-# it is fixed rather than skipped — keep these aligned with the other workflows.
+# IN THE BASE TEMPLATE THEY DO NOT RUN AT ALL, and an earlier version of this comment
+# claimed the opposite — that they were "the only Python gate this repository actually
+# enforces on itself". They are not. In syntek-base the root pyproject.toml's `name` is
+# still the unrendered project-slug token, and uv rejects that as an invalid package
+# name while PARSING THE MANIFEST, before dependency resolution begins. `uv sync
+# --only-dev` therefore fails and every step after it is skipped. The lockfile
+# reasoning above is correct; the conclusion drawn from it was not, because the blocker
+# sits one step earlier than the lockfile. Verified 11/08/2026 against uv 0.11.24; CI
+# pins 0.11.7 and was not separately tested, though the validation is long-standing.
+#
+# In a GENERATED project the name is rendered and all three run normally. Nothing here
+# needs changing for that case — this note exists so nobody re-derives the claim.
+#
+# Consequence, for syntek-base only: ruff is enforced here by the directly-installed
+# `ruff` binary, which parses no manifest. Cite that, never CI, as evidence for a
+# Python rule. Accepted rather than fixed; the options weighed are in
+# how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md (11/08/2026).
+#
+# The mobile jobs DO run here, and the difference is the useful part: pnpm skips name
+# validation on a private package, so the identical token is harmless in package.json
+# and fatal in pyproject.toml. One tokenised name is not evidence about another.
+#
+# Historical: all three also once failed at `astral-sh/setup-uv`, pinned to @v4 with no
+# `version:` while every other workflow here pins @v5 with an explicit UV_VERSION. That
+# was a stale action pin and the fix was real — it simply was not the whole story,
+# because they now fail one step later instead. Keep these aligned with the others.
 
 on:
   push:

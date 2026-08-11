@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.18.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.19.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.19.0] - 11/08/2026
+
+### Added
+
+- **`code/src/scripts/audits/doc-references.sh` — the citation guard**, run on every push and pull request by `.github/workflows/audit-doc-references.yml`. Two fail clauses over tracked **and** untracked-but-not-ignored `.md`/`.sh` files: every backticked path the template owns must resolve, and no per-project instance — the `ADR-###`, `US###`, `SPRINT-##`, `MAP-*`, `PLAN-*`, `BUG-*` and `QA-*` families — may be cited as real, because a generated project has different ones at those numbers or none at all. The class kept coming back: three ADR numbers were cited as real across six files for a week before anyone noticed there was no ADR register behind them, and a manual sweep that found nine phantoms missed thirty more.
+- **The exemptions and resolutions that keep it from being permanently red.** History files record what was true then; `how-to/src/TEMPLATE-GUIDE/` is copier-excluded and must be able to name a broken citation in order to log it; `handoffs/` and `.copier/` are staging; vendored docs are not this repository's to fix. `copier.yml` is parsed for the paths Copier seeds at generation, so a new seed needs no edit here. Relative citations resolve against the **citing** file rather than the repo root, and the house shorthand against `code/src/scripts/`. A naming pattern, and a row marked `e.g.` or `[EXAMPLE]`, demonstrates a convention rather than citing a document. `doc-references: ignore` on the line or the one above suppresses the case neither rule reaches — a path quoted in order to ban it, or one belonging to another repository.
+- **It assembles the two Jinja delimiter pairs at runtime.** Copier renders this script into every generated project, so a literal pair anywhere in it would end generation with a `TemplateSyntaxError`. That is also why its patterns are variables rather than inline globs.
+- **Three index rows in the root `REFERENCES.md`** — `code/docs/MANAGEMENT-COMMANDS.md`, `code/docs/MOBILE-CODING-PRINCIPLES.md` and `how-to/src/STORE-LISTING.md`, the guides added earlier in this cycle. All three exist on disk before the row claims them.
+- **A Round 3 section in `research/SKILLS-VS-SUBAGENTS.md`**, plus the licence verdict its epic's gate needs. Inline is the documented default for a skill body; an invoked body stays in the conversation for the **session**, not the turn, and this project disables auto-compaction, so the re-attach budget never fires and bodies accumulate until `/handoff`; Anthropic publishes its own rubric for when `context: fork` is worth it; `agent:` defaults to `general-purpose`; a backgrounded fork runs on a narrower tool set and outside the session's checkpoints. On licences: the Agent Skills specification is Apache-2.0 and derivable with attribution, Claude Code's documentation carries no LICENSE file — its facts are usable, its wording must be re-authored — and nothing share-alike is involved, so nothing propagates into a generated project.
+
+### Changed
+
+- **The root `CONTEXT.md` describes the repository it has become.** "There is no separate frontend or mobile application" was true the day the stack became Django-only and false the day the mobile surface shipped. It now states the Django-monolith rule for the web and names the three optional surfaces — `code/src/mobile/`, `code/src/rust/`, and the Slint desktop app inside it — as separate deployables consuming the same API. The Layer Map gains the mobile row and stops calling the Django project "the single deployable".
+- **The directory tree gains five rows it had drifted past** — `.copier/`, `code/src/improvement-architecture/`, `LICENSE`, `SECURITY.md` and `CONTRIBUTING.md` — and `.mcp.json` is described as the three servers it configures rather than one.
+- **`how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` records seven findings from this cycle and closes two.** The seven: the routing half deferred because the agent tier is being retired; merge-conflict markers that passed every gate for two releases after Prettier reformatted them into valid Markdown; the `/mcp/` surface having no error-taxonomy row; the ruff CI jobs below; the two research notes that cannot be deleted with their epic because `README.md` cites them as licence evidence; retiring the ADR machinery template-wide, measured at 74 actionable files; and the mobile tree's sub-directories carrying no `CONTEXT.md`/`CLAUDE.md` pair, which `docs-pairing.sh` structurally cannot see. The two closed are both citation gaps, closed by the rule the new audit now enforces.
+
+### Fixed
+
+- **`.github/workflows/syntax-python.yml` claimed to be the only Python gate this repository enforces on itself.** The lockfile half of that reasoning is correct — the three jobs run `uv sync` without `--frozen`, so no committed lock file is needed. The conclusion was not: in the base template the root `pyproject.toml` still carries the unrendered project-slug token as its `name`, and uv rejects that while parsing the manifest, before dependency resolution begins. All three jobs fail at the sync step and every step after it is skipped. The header now says so, notes that a generated project is unaffected, and records the contrast that makes the cause legible — pnpm skips name validation on a private package, so the identical token is harmless in `package.json` and fatal in `pyproject.toml`.
+- **A dangling ADR citation in the root `REFERENCES.md`** — the `code/docs/architecture/CORE-AND-SCALING.md` row named two ADR numbers as its source, which is precisely what the new audit's second clause forbids. Dropped; the row keeps its pointer to the sizing snapshot.
 
 ## [2.18.0] - 11/08/2026
 

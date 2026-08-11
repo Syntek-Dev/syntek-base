@@ -28,6 +28,213 @@ generated from it.
 
 ---
 
+## 11/08/2026 — The agent tier is being retired, so half of N-015's routing is deferred
+
+**Type:** Planned feature — the deferred half of a resolved node
+**Summary:** `MAP-NEGATIVE-SPACE.md` N-015 was chartered to add routing clauses to **the agents
+and the stack skills**. Sam settled on 11/08/2026 that **all agents are being removed** and the
+skill set rewritten to absorb them, so only the skill half shipped: `stack-django`,
+`stack-htmx-templates`, `stack-react-native` and `stack-fastmcp`. The agent half was **not
+attempted** rather than attempted and skipped — routing 56 files that are due for deletion is
+work thrown away twice.
+
+**What is unrouted, and why it matters.** No file under `.claude/agents/` cites
+`NEGATIVE-SPACE.md`, `MANAGEMENT-COMMANDS.md`, `MOBILE-CODING-PRINCIPLES.md`,
+`how-to/src/INVARIANTS.md`, or `audits/negative-space.sh`. The verifier tier is the sharper
+loss: `code-reviewer`, `security`, `qa-tester`, `refactor` and `debugger` are where a missing
+guard is **caught** rather than written, and no skill covers that remit today —
+`code-reviewer.md` is also the only file carrying a list of audit scripts. Until the skills that
+replace them exist, a review pass reaches this doctrine only through `code/CONTEXT.md` § _Key
+docs_.
+
+**Also unrouted, and not this epic's:** `DISCOVERABILITY.md` and `OBJECT-STORAGE.md` are cited
+by no agent and no skill. `TASK-AUTHORING.md` and `PROCESS-MODEL.md` were in the same state and
+were adopted by N-015, because `NEGATIVE-SPACE.md`'s per-surface table routes to both — leaving
+them unreachable would have been a half-built door.
+
+**Blocked by / Action:** Revisit once the replacement skills are written. Re-run the survey that
+found this — the set of `code/docs/` guides cited by no skill — and route the verifier remit
+wherever it lands.
+
+---
+
+## 11/08/2026 — Committed merge-conflict markers passed every gate for two releases
+
+**Type:** Active gap
+**Summary:** `.claude/skills/stack-fastmcp/SKILL.md` carried an unresolved stash conflict in its
+`## Governing procedures` section — committed at `3bd49e8`, found at N-015 only because that
+section was being edited. **Prettier had reformatted the markers into valid Markdown**: `<<<<<<<`
+became an indented list continuation, `>>>>>>>` became a `> > > > > > >` blockquote, and the
+duplicated line was prefixed `#`. So it lints clean, formats clean, and a grep for `^<<<<<<<`
+finds nothing. `skill-conformance.sh` checks that the section is **present and correctly
+placed**, not that its contents parse as routing.
+
+Fixed in place at N-015 (both sides were the identical line). A repo-wide sweep for raw and
+mangled markers found **one** other hit, `TEMPLATE-GUIDE/14-UPDATING.md`, which is a deliberate
+worked example of what a conflict looks like.
+
+**Blocked by / Action:** Nothing gates this — no audit, CI workflow or lefthook hook looks for
+conflict markers anywhere in the tree. A cheap clause (raw markers, plus the Prettier-mangled
+forms, excluding the documented example) belongs in an audit; it is not obvious which one, since
+this spans every file type rather than one language.
+
+---
+
+## 11/08/2026 — The `/mcp/` surface has no error-taxonomy clause
+
+**Type:** Active gap
+**Summary:** `NEGATIVE-SPACE.md`'s per-surface table has five rows — rendered pages/HTMX, the
+JSON API, background tasks, management commands, and mobile — and no row for the FastMCP tool
+surface. `MCP-SERVER.md` and all four of its sub-docs contain **nothing** of the taxonomy:
+`InvariantViolation`, `DependencyUnavailable` and "programmer error" return zero occurrences.
+N-015 routed `stack-fastmcp` as **inheriting the JSON API row** — true, because a tool is a peer
+adapter over the same service layer — rather than adding a sixth row pointing at a section
+nobody has written.
+
+**Blocked by / Action:** Not urgent: the surface is declared-but-unwired and `fastmcp` is not a
+declared dependency. The first project to mount `/mcp/` should decide whether the API row
+genuinely covers it — the open question is what a tool _returns_ when a guard fires, since an
+LLM client reads a tool error as a reasoning step rather than a status code.
+
+---
+
+## 11/08/2026 — The ruff CI jobs believed to be this repo's only Python gate do not run either
+
+**Type:** Active gap — **known limitation, accepted 11/08/2026** (was: a claim three shipped
+files make and one command disproves)
+**Summary:** `syntax-python.yml` carries a header stating its three jobs "work in the base
+template and in a generated project alike. That is also why they are the only Python gate this
+repository actually enforces on itself." The lockfile half of that reasoning is correct — they
+run `uv sync` without `--frozen`, so no committed `uv.lock` is needed. **The conclusion is
+wrong**, for a reason the header does not consider: every job runs `uv sync --only-dev` first,
+and `uv` refuses to parse `pyproject.toml` at all, because line 2 is
+`name = "<%PROJECT_SLUG%>"` and that is not a valid package name. Verified 11/08/2026 with
+`uv sync --only-dev --dry-run` (uv 0.11.24), which fails with
+_"Not a valid package or extra name"_ before dependency resolution begins. This is a **different
+root cause** from the two entries already filed (02/08/2026, missing `uv.lock`; 03/08/2026,
+pre-commit hooks) and is not covered by either, so all three ruff/basedpyright jobs fail at the
+sync step rather than being skipped.
+
+**What this does and does not invalidate.** The rules themselves are sound and **do** run in a
+generated project, where the token is rendered to a real name. What is untrue is the claim that
+they are enforced _here_: `MAP-NEGATIVE-SPACE.md` records at N-007 that ruff `S101` is "the only
+Python gate that executes in the template repository", and N-008 and N-010 describe their
+`TID251` bans as proved end to end. Those proofs are real but **local** — they were obtained
+from the directly-installed `ruff` binary on the host, which parses no manifest and works fine.
+CI has been contributing nothing. One variable is unverified: CI pins `UV_VERSION: 0.11.7` and
+the local check ran 0.11.24; package-name validation is long-standing in `uv` and almost
+certainly identical, but that specific version has not been tested.
+
+**The contrast that makes the cause legible, and that was verified rather than assumed.** Two
+manifests here carry the same unrendered token in their `name` — the root `pyproject.toml` and
+the root `package.json` — and **only one ecosystem rejects it.** `pnpm ls -r --depth -1` parses
+both workspace manifests cleanly, because pnpm skips name validation on a package marked
+`private: true`; uv has no such carve-out. That is why the mobile jobs genuinely run in CI here
+and the Python jobs never have. Checked both ways on 11/08/2026, deliberately: **one tokenised
+name is not evidence about another**, and `MAP-NEGATIVE-SPACE.md` N-011's end-to-end claim
+survives only because it was tested on its own.
+
+**Decision (Sam, 11/08/2026): option (c) — accept it and correct the record.** Three options were
+weighed: (a) give the root `pyproject.toml` a literal placeholder name and have Copier rewrite
+it, the same class of decision as the parked `<%CORE_APP%>` token; (b) invoke ruff without `uv`
+in these three jobs — `uvx ruff` or a pinned standalone install — accepting that CI would then
+no longer match what a developer runs; (c) accept it and correct the header comment plus the
+three map verdicts. **(c) was chosen**, on the grounds that the rules are already enforced by a
+real analyser on the host and (a) and (b) both buy CI coverage of this repository by making it
+diverge from the thing it is a template _of_.
+
+**Done, in the same change:** `syntax-python.yml`'s header rewritten to state plainly that the
+jobs do not run in the base template, why the blocker sits one step earlier than the lockfile,
+and that a generated project is unaffected; `MAP-NEGATIVE-SPACE.md` N-007, N-008 and N-010 each
+given an inline correction withdrawing the CI claim and naming the local proof.
+
+**Standing rule this leaves behind — the reason the entry stays open rather than closing:**
+**treat every `.py` change here as verified by the host `ruff` binary and by nothing else**, and
+never cite CI as evidence for a Python rule in syntek-base. That remains true indefinitely under
+option (c), so the entry is an accepted limitation to be read, not a task to be finished. Revisit
+only if the template contract changes for an unrelated reason and (a) becomes free.
+
+---
+
+## 11/08/2026 — Two of the four `research/` notes cannot be deleted with their epic
+
+**Type:** Active gap
+**Summary:** `research/` is **not** copier-excluded, so syntek-base's own research notes ship into
+every generated project — where research about the _template_ is as meaningless as the template's
+gaps were in `GAPS.md`. Sam settled on 11/08/2026 that these notes are epic scaffolding and get
+deleted on completion, which is right for two of them and **breaks the `README.md` for the other
+two**:
+
+| Note                                 | Inbound references                   | Deletable |
+| ------------------------------------ | ------------------------------------ | --------- |
+| `SKILLS-VS-SUBAGENTS.md`             | `CHANGELOG.md` + gitignored maps     | **yes**   |
+| `DISCOVERABILITY-SKILL-ECOSYSTEM.md` | `CHANGELOG.md`                       | **yes**   |
+| `ANTI-SLOP-RULE-SOURCES.md`          | **`README.md:151`** + `CHANGELOG.md` | **no**    |
+| `AGENT-SKILL-ECOSYSTEM.md`           | **`README.md:183`** + `CHANGELOG.md` | **no**    |
+
+The two `README.md` citations are the per-claim evidence behind the _Influences and attribution_
+tables. `.claude/CLAUDE.md` § 6 makes the licence column binding **before** deriving; the notes are
+what make that column checkable rather than an assertion. `CHANGELOG.md` references are historical
+and stay regardless — a changelog naming a file that was later deleted is a correct record.
+
+**A second question sits underneath**, surfaced by `MAP-AGENTS-TO-SKILLS` `N-002`: the shipped
+notes quote **unlicensed** sources verbatim (`anthropics/claude-code`, `anthropics/skills`), while
+`ANTI-SLOP-RULE-SOURCES.md` itself ends "may be read for ideas but **never quoted**". Deleting a
+note retires the problem for that note only; the two survivors keep it.
+**Blocked by / Action:** Decide the lifecycle for the two survivors — either (a) narrow the
+precedent's wording to "never quoted **in redistributed rule text**", so citation in a research
+note stays legitimate, or (b) paraphrase their quotations, keeping every citation URL, or (c) move
+the evidence into `TEMPLATE-GUIDE/` (already excluded) and repoint `README.md` — which makes the
+citation dangle for a generated project reading the shipped README. (a) is cheapest and matches the
+derive-and-re-author line the project already draws everywhere else.
+
+## 11/08/2026 — Retire the ADR machinery, project- and template-wide
+
+**Type:** Planned feature
+**Summary:** Sam settled on 11/08/2026 that this project and every project generated from it does
+**not** use ADRs; decisions are recorded where the work lives (feature map, story plan, `CONTEXT.md`
+glossary, `research/` note). The decision is recorded in `.claude/MEMORY.md` → _This project does
+not use ADRs_, which is read second in the §2.1 order and therefore governs today. The machinery
+itself is still in place and still instructs the opposite, so shipped files currently contradict
+the rule. **Blast radius is much wider than the two obvious folders — measured 11/08/2026: 77 `.md`
+files mention an ADR, of which 74 are actionable** (`CHANGELOG.md`, `RELEASES.md` and
+`VERSION-HISTORY.md` are historical records and must **not** be rewritten):
+
+| Area                            | Files | Notes                                                                         |
+| ------------------------------- | ----- | ----------------------------------------------------------------------------- |
+| `how-to/src/`                   | 16    | TEMPLATE-GUIDE pages, SCALE-/SERVER-ARCHITECTURE, `TEMPLATE-TOKENS.md`        |
+| `project-management/src/`       | 15    | incl. `14-DECISIONS/` itself, and the `15`/`16` plan templates that cite ADRs |
+| `project-management/workflows/` | 13    | `14-decisions/` (4), plus `01`, `16`, `17` and the index                      |
+| `.claude/skills/`               | 9     | `wayfinder` + `grill-with-docs` graduation tables, and 7 others               |
+| `code/`                         | 7     | incl. `architecture/BUILD-OPERATE-SEAM.md`, audit `CLAUDE.md`/`CONTEXT.md`    |
+| `.claude/agents/`               | 3     | **self-resolving** — deleted by `MAP-AGENTS-TO-SKILLS` regardless             |
+| single files                    | 11    | `.claude/CLAUDE.md`, `README.md`, `.copier/`, `research/`, `handoffs/`, …     |
+
+**Blocked by / Action:** Not blocked, but bigger than it looks — the graduation tables and plan
+templates are the load-bearing edits; the rest are index rows. Three questions before it runs:
+(1) the `src/` numbers are **frozen, append-only** (`src/CONTEXT.md`), so `14-DECISIONS/` is
+deleted rather than renumbered and `15`/`16` stay put, leaving a deliberate gap at 14;
+(2) decide whether PM workflow `14-decisions/` is deleted or repurposed, since workflow numbers
+_are_ renumberable but `REFERENCES.md` pairs them to `src/` tiers; (3) name the **replacement
+destination** in each graduation table, or resolved decisions lose their home entirely. Do **not**
+fold this into `MAP-AGENTS-TO-SKILLS` — different destination. Worth its own `01-feature` map.
+
+## 11/08/2026 — The mobile tree's sub-directories carry no `CONTEXT.md`/`CLAUDE.md` pair
+
+**Type:** Active gap
+**Summary:** `code/src/CLAUDE.md` states that **every** new directory under `src/` needs a
+`CONTEXT.md` + `CLAUDE.md` pair, but `code/src/mobile/app/` and `__tests__/` have never had one,
+and `lib/` (added by `MAP-NEGATIVE-SPACE` N-011) follows that precedent rather than the stated
+rule. `docs-pairing.sh` does not catch it: the audit iterates over existing `CONTEXT.md` files
+and checks each has a `CLAUDE.md` beside it, so a directory with **neither** is invisible to it.
+The mobile tree is in practice governed as one unit by the pair at its root, which is defensible
+— but the written rule says otherwise, and the audit enforces neither reading.
+**Blocked by / Action:** Decide which is true and make the other match. Either scope the
+`code/src/` rule to say a **surface** is paired at its root, or add pairs to the three mobile
+sub-directories. Whichever way it goes, the audit only ever checks half of it — extending
+`docs-pairing.sh` to flag a source directory with neither file is a separate, larger question,
+because it would fire on every ordinary Python package.
+
 ## 11/08/2026 — `apps/core/schemas.py` breaches the comment standard it was written under
 
 **Type:** Active gap
@@ -252,9 +459,9 @@ consider teaching `check-template-tokens.sh` the handful of positions that quali
 family — a gate that cannot run in the template and therefore proves nothing before generation.
 This one is narrower and has a concrete fix.
 
-## 09/08/2026 — Epic node numbers are cited in shipped files, where the map they index does not exist
+## 09/08/2026 — ✅ CLOSED 11/08/2026 — Epic node numbers are cited in shipped files, where the map they index does not exist
 
-**Type:** Active gap
+**Type:** Active gap — **closed by the citation rule; every site in the table below stripped**
 **Summary:** Found while landing N-027, which closed **one** instance and, on being challenged,
 turned out to have closed the smaller half of a class. `code/docs/logging/OBSERVABILITY.md` had a
 Deferred row reading _"N-027 adopts **OTLP**…"_ — epic paperwork in a file that ships, meaningless
@@ -274,10 +481,14 @@ than swept during N-027: the node's scope was the tracing doctrine, and quietly 
 a footprint stops being reviewable. **`.claude/MEMORY.md` raises the larger question underneath
 this one** — it ships with syntek-base's own memory entries, which is a bigger inheritance problem
 than the node numbers inside them, and is not this entry's to settle.
-**Blocked by / Action:** Not blocked. Either strip the node numbers and keep the rationale
-(_"this has happened in this repository before"_), or accept dangling citations as the cost of
-provenance and say so once, somewhere binding, so the next agent stops re-finding it. The
-`MEMORY.md`-ships question needs its own decision.
+**Resolution (11/08/2026):** the first option — and it is now a standing rule rather than a
+judgement call made per citation. A shipped file may cite **layering-system artefacts only**
+(`CONTEXT.md`, `CLAUDE.md`, `docs/`, `workflows/`, scripts, guides, all present in every generated
+project) and **never a per-project instance** (`ADR-###`, `US###`, `SPRINT-##`, `MAP-*`, `PLAN-*`),
+because a generated project has different ones at those numbers or none at all. Every site in the
+table lost its node number and kept its rationale, and `audits/doc-references.sh` now fails the
+build on a new one. **The `MEMORY.md`-ships question is untouched** and still needs its own
+decision — it is a bigger inheritance problem than the numbers were.
 
 ## 09/08/2026 — ✅ CLOSED 09/08/2026 — Prettier corrupts a token beside underscored code, unseen
 
@@ -328,9 +539,10 @@ outright and routes rollback to the `<%DEPLOY_REPO%>` runbooks rather than docum
 command as the sanctioned route — the honest third option in `.claude/skills/runbook/SKILL.md`,
 but the weakest of the three.
 **Blocked by / Action:** The scripts cannot be written against nothing — they need the deploy
-repository's contract first (`how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md`). Either write them
-once that contract is settled and replace the Rollback section, or downgrade the five dangling
-citations to "planned" so no guide claims a script that has never existed.
+repository's contract first (`how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md`). **The citation
+half is done (11/08/2026):** no guide claims a script that has never existed — `.claude/agents/release.md`
+Phase 4 and `23-release/STEPS.md` Step 4 now stop and report rather than offering a command that
+cannot run. What remains is the scripts themselves, and the Rollback section that depends on them.
 
 ## 09/08/2026 — Four security-specific incident runbooks are still unwritten
 
@@ -346,9 +558,9 @@ system, and writing them from imagination is precisely what the execute-to-verif
 before it can be documented. They belong in `how-to/docs/` beside `INCIDENT-PRACTICE.md`, which
 now carries the forward reference rather than the old "no operator playbook exists" claim.
 
-## 04/08/2026 — Two ADRs are cited across the template and neither exists
+## 04/08/2026 — ✅ CLOSED 11/08/2026 — Two ADRs are cited across the template and neither exists
 
-**Type:** Active gap
+**Type:** Active gap — **closed by dropping every citation; the ADRs will never be written**
 **Summary:** `ADR-016` and `ADR-019` are referenced as though they are real, accepted decisions, in
 files that **ship**: `code/workflows/03-database-migration/CONTEXT.md` (ADR-016 co-location for the
 `tenant_id` shard key), `code/src/scripts/audits/css-tokens.sh` and

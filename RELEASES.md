@@ -1,11 +1,128 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.18.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.19.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.19.0 — 11/08/2026
+
+**Status:** Minor — one new audit script and its CI job, plus the index and orientation
+corrections it exists to keep true. No application behaviour changes.
+
+### A rule nothing checks decays between releases
+
+Three ADR numbers were cited as real across six files for a week before anyone noticed there was
+no ADR register behind them. A manual sweep found nine phantom citations; thirty more survived it.
+The rule itself was never in doubt — a file that ships is read in a project that is not this one,
+so it may cite only what that project is guaranteed to have — but a rule held by attention alone
+is re-broken by the next release that adds a guide and an index row in the same change.
+
+This is the class made mechanical. A shipped file may cite **layering-system artefacts** —
+`CONTEXT.md`, `CLAUDE.md`, `docs/`, `workflows/`, scripts, guides — and never a **per-project
+instance**, because a generated project has different ones at those numbers or none at all.
+
+### `doc-references.sh`
+
+Two fail clauses, run over tracked **and** untracked-but-not-ignored `.md` and `.sh` files, the
+same scope `check-template-tokens.sh` settled on for the same reason: the file you have just
+written is the one most needing the check, and it is not tracked yet.
+
+- **Dangling path** — a backticked repository path that does not exist.
+- **Instance citation** — an `ADR-###`, `US###`, `SPRINT-##`, `MAP-*`, `PLAN-*`, `BUG-*` or
+  `QA-*` artefact named as though it were a real document.
+
+`.github/workflows/audit-doc-references.yml` runs it on every push and pull request, with the
+report uploaded as an artefact. It carries no path filter: any file can carry a citation, and
+scoping the gate to a subset would recreate the blind spot it exists to close.
+
+### What it deliberately does not look at
+
+A gate that fails on correct work is discarded, so most of the script is scope rather than
+detection. History records what was true then, and is exempt. `how-to/src/TEMPLATE-GUIDE/` is
+copier-excluded and has to be able to name a broken citation in order to log one. `handoffs/` and
+`.copier/` are staging; vendored documentation is not this repository's to fix. `copier.yml` is
+parsed for the paths Copier seeds at generation, so those resolve here even though they are absent
+until a project exists — and a new seed needs no edit to this script.
+
+Two resolutions do the rest of the work. Relative citations resolve against the **citing file's**
+directory, because a `../` reference means something different in every file that writes it and
+resolving them all from the root invents failures. The house shorthand, which names a script by
+its group alone, resolves against `code/src/scripts/`; without that, every shorthand reference is
+invisible and the check passes silently.
+
+Finally, a naming **pattern** is not a citation. A table showing the format in one column and a
+worked example in the next, a line marked `e.g.` or `[EXAMPLE]` — both demonstrate a convention.
+For the one case neither rule reaches, a document quoting a path in order to ban it,
+`doc-references: ignore` on the line or the one above suppresses it.
+
+One implementation detail is load-bearing: the script assembles the two Jinja delimiter pairs at
+runtime. Copier renders it into every generated project, and a literal pair anywhere in the file
+would end generation with a `TemplateSyntaxError`.
+
+What it cannot check is whether a path that resolves is the **right** one, or whether a count
+stated in words is true. Both stay reviewer judgement, exactly as `shipped-readme.sh` already says
+of its own blind spot.
+
+### The indexes it proves
+
+The root `REFERENCES.md` now carries rows for `code/docs/MANAGEMENT-COMMANDS.md`,
+`code/docs/MOBILE-CODING-PRINCIPLES.md` and `how-to/src/STORE-LISTING.md` — this cycle's three new
+guides, all of which exist on disk before the row claims them — and has lost the ADR citation the
+new rule forbids.
+
+The root `CONTEXT.md` had drifted in the way an orientation file drifts: nothing in it was written
+carelessly, and the repository moved underneath it. "There is no separate frontend or mobile
+application" was true when the stack became Django-only and false the day the mobile surface
+shipped. It now states the monolith rule for the web and names the three optional surfaces —
+`code/src/mobile/`, `code/src/rust/`, and the Slint desktop app inside it — as separate
+deployables consuming the same API. The tree gains `.copier/`,
+`code/src/improvement-architecture/`, `LICENSE`, `SECURITY.md` and `CONTRIBUTING.md`, and `.mcp.json`
+is described as the three servers it actually configures.
+
+### A gate that never ran, claiming to be the only one that did
+
+`syntax-python.yml` carried a header stating its three jobs "work in the base template and in a
+generated project alike. That is also why they are the only Python gate this repository actually
+enforces on itself."
+
+The lockfile half is correct: they run `uv sync` without `--frozen`, so no committed lock file is
+needed. The conclusion drawn from it was wrong, because the blocker sits one step earlier. In
+syntek-base the root `pyproject.toml` still names the package with the unrendered project-slug
+token, and uv rejects that as an invalid package name while **parsing the manifest** — before
+dependency resolution begins. Every job fails at the sync step and every step after it is skipped.
+
+The header now says that plainly, and says what follows from it: in this repository ruff is
+enforced by the directly-installed binary, which parses no manifest, and that is what to cite as
+evidence for a Python rule — never CI. A generated project, where the name is rendered, is
+unaffected. The contrast that makes the cause legible is recorded too, because it was verified
+rather than assumed: pnpm skips name validation on a private package, so the identical token is
+harmless in `package.json` and fatal in `pyproject.toml`. One tokenised name is not evidence about
+another.
+
+### What the cycle leaves on the table
+
+`TEMPLATE-GAPS.md` now carries seven findings from this cycle and closes two. The closures are
+both citation gaps, closed by the rule the audit above enforces. The seven that stay open are
+worth knowing about: the routing half deferred because the agent tier is being retired; merge
+markers that passed every gate for two releases because Prettier had reformatted them into valid
+Markdown; the `/mcp/` surface having no error-taxonomy row; the ruff jobs above, accepted as a
+known limitation rather than fixed; the two research notes that cannot be deleted with their epic
+because `README.md` cites them as licence evidence; retiring the ADR machinery template-wide,
+measured at 74 actionable files; and the mobile tree's sub-directories carrying no
+`CONTEXT.md`/`CLAUDE.md` pair, which `docs-pairing.sh` structurally cannot see because it iterates
+over the files that exist.
+
+`research/SKILLS-VS-SUBAGENTS.md` picks up a third round and the licence verdict its epic's gate
+needs. The findings that matter beyond that epic: an invoked skill body stays in the conversation
+for the **session** rather than the turn, and this project disables auto-compaction, so the
+documented re-attach budget never fires and invoked bodies accumulate until `/handoff`. On
+licences — the Agent Skills specification is Apache-2.0 and derivable with attribution, Claude
+Code's documentation carries no LICENSE file, so its facts are freely usable and its wording must
+be re-authored, and nothing share-alike is involved, so no obligation propagates into a generated
+project.
 
 ## v2.18.0 — 11/08/2026
 

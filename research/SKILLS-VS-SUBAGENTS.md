@@ -1,6 +1,7 @@
 # SKILLS-VS-SUBAGENTS
 
-**Written**: 09/08/2026 · **Skill**: `research` · **Feeds**: `MAP-AGENTS-TO-SKILLS.md` node N-001
+**Written**: 09/08/2026 · **Updated**: 11/08/2026 (Round 3) · **Skill**: `research`
+**Feeds**: the agents-to-skills epic — nodes N-001, N-016, N-019
 (and, downstream, N-003, N-004, N-008, N-010, N-011)
 
 ---
@@ -8,7 +9,7 @@
 ## Question
 
 In Claude Code 2.1.226, what is the actual capability surface of **skills** versus **subagents**?
-Four sub-claims, each asserted by the web summary that prompted `MAP-AGENTS-TO-SKILLS`, none
+Four sub-claims, each asserted by the web summary that prompted the agents-to-skills epic, none
 previously verified against a primary source:
 
 1. Does a `context: fork` frontmatter field exist, and is it specification or product extension?
@@ -76,7 +77,7 @@ Each claim ends in the primary source that owns it.
 
 ### 4 — Cloud sessions
 
-- Repo-level `.claude/skills/`, `.claude/agents/` and `.claude/commands/` **carry over** to cloud
+- Repo-level `.claude/skills/`, `.claude/agents/` and `.claude/commands/` **carry over** to cloud <!-- doc-references: ignore — Claude Code's own directory names, not this repository's -->
   environments; the user-level `~/.claude/` equivalents **do not** —
   https://code.claude.com/docs/en/cloud-environments.md § _What carries over_
 
@@ -125,16 +126,105 @@ Three capabilities decide the reach.
 The abstract reading is "skills-only is impossible". Against the actual roster it is close to
 free. Measured 09/08/2026:
 
-| Capability lost       | Abstract cost                          | Actual cost here                                                                                                                                                                                                           |
-| --------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Durable tool scoping  | No enforced read-only or hostile agent | **≈ nil.** Only two tool sets exist across 56 agents — 32 full, 16 lacking only `Bash`. `code-reviewer` is described as "Read-only" and carries `Write, Edit, Bash`. The guarantee is already instruction, not enforcement |
-| Persistent model tier | No sustained Fable planning tier       | **5 agents.** 49 of 56 are `opus` — the session default. Only 5 carry `model: fable`, and §2.5 routing frontmatter already carries `model:` on the governing docs/workflow file                                            |
-| Custom fork targets   | Forked skills lose specialised targets | **Real, and the strongest survivor.** Needed only if a forked skill must run as a _custom_ agent; the built-ins remain available                                                                                           |
+| Capability lost       | Abstract cost                          | Actual cost here                                                                                                                                                                                                                                                        |
+| --------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Durable tool scoping  | No enforced read-only or hostile agent | **≈ nil.** Only two declared tool sets exist — 32 full, 16 lacking only `Bash`; the orchestrators declare none and carry everything. `code-reviewer` is described as "Read-only" and carries `Write, Edit, Bash`. The guarantee is already instruction, not enforcement |
+| Persistent model tier | No sustained Fable planning tier       | **5 agents.** All but five are `opus` — the session default. Only those five carry `model: fable`, and §2.5 routing frontmatter already carries `model:` on the governing docs/workflow file                                                                            |
+| Custom fork targets   | Forked skills lose specialised targets | **Real, and the strongest survivor.** Needed only if a forked skill must run as a _custom_ agent; the built-ins remain available                                                                                                                                        |
 
 **Revised verdict.** Skills-only is achievable for roughly **51 of 56** definitions at no
 capability cost, because the two capabilities that block it in theory are ones this repository
 does not actually use. The residue is the Fable planning tier and any deliberate custom fork
 target — a handful of definitions, to be argued individually rather than inherited wholesale.
+
+---
+
+## Round 3 — is inline the default, and what does forking actually cost?
+
+Fired 11/08/2026 as `N-016`'s opening step: 56 files were about to be authored on an **inference**
+that a skill runs inline unless it declares `context: fork`. The inference was correct. Four
+further facts came back that no earlier round had recorded, and one of them **corrects Round 2**.
+
+### The confirmation
+
+- **Inline is the default, stated directly.** Reference content — "conventions, patterns, style
+  guides, domain knowledge" — "**runs inline so Claude can use it alongside your conversation
+  context**" — https://code.claude.com/docs/en/skills.md § _Types of skill content_
+
+### What was not previously recorded
+
+- **An invoked skill's body persists for the whole session, not the turn.** "the rendered
+  `SKILL.md` content enters the conversation as a single message and **stays there for the rest of
+  the session**… Claude Code does not re-read the skill file on later turns" —
+  https://code.claude.com/docs/en/skills.md § _Skill content lifecycle_
+- **Re-invocation is cheap, compaction is the relief valve, and neither helps here.** Identical
+  re-invocation "adds a short note that the skill is already loaded rather than a second copy"
+  (v2.1.202+); auto-compaction "re-attaches the most recent invocation of each skill after the
+  summary, keeping the first 5,000 tokens of each", within "a combined budget of 25,000 tokens" —
+  same section. **This project disables auto-compaction** (`.claude/CLAUDE.md` §2.6), so the
+  re-attach budget never fires and invoked bodies accumulate until `/handoff` + `/clear`.
+- **Anthropic publishes the fork rubric.** "`context: fork` **only makes sense for skills with
+  explicit instructions**. If your skill contains guidelines like 'use these API conventions'
+  without a task, the subagent receives the guidelines but no actionable prompt, and **returns
+  without meaningful output**" — https://code.claude.com/docs/en/skills.md § _Run skills in a
+  subagent_. It aligns with the docs' own **reference content vs task content** split.
+- **`agent:` defaults to `general-purpose`.** "Options include built-in agents (`Explore`, `Plan`,
+  `general-purpose`) or any custom subagent from `.claude/agents/`. **If omitted, uses
+  `general-purpose`**" — same section.
+- **A backgrounded fork is doubly degraded.** It "runs with the **narrower tool set** that applies
+  to background subagents", and "applies its edits **outside your session's checkpoints**, so
+  `/rewind` doesn't undo them; use git to revert them" — same section.
+- **A forked skill ends slash-command stacking.** "Expansion stops at the first token that isn't an
+  inline user-invocable skill, so a skill that runs as a forked subagent… also ends the run there"
+  — https://code.claude.com/docs/en/skills.md § _Stack skills_
+
+### Correction to Round 2
+
+Round 2 recorded `model:` as **turn-scoped**, full stop. The sentence continues, and the
+continuation reverses the conclusion for forked skills:
+
+> "The override applies for the rest of the current turn and is not saved to settings; the session
+> model resumes on your next prompt… **With `context: fork`, the value sets the forked subagent's
+> model instead**" — https://code.claude.com/docs/en/skills.md § _Frontmatter reference_
+
+So a **forked** skill carries its model tier durably for that run. Round 2's "persistent model
+tier costs 5 agents" holds only for **non-forked** skills; the epic's routing node `N-010` is
+corrected accordingly, and must decide the five Fable planning definitions **per skill**, against
+`N-016`'s fork call, rather than assuming §2.5 frontmatter is the sole carrier for all five.
+
+---
+
+## Licences, verified against the GitHub API on 11/08/2026
+
+The licence-gate node of the epic this note serves. `.claude/CLAUDE.md` § 6 requires the licence
+checked **before** deriving, because a share-alike obligation would propagate into every generated
+project.
+
+**First, what this epic actually derived from.** The map named four sources ("Steering Claude
+Code", "Skills explained", "Subagents in Claude Code", the Skills docs), but the first two were the
+**web summary that prompted the epic** and their URLs were never recorded. Nothing derives from
+them: Round 1 **refuted** the summary's load-bearing claim (roster-size degradation) and confirmed
+the rest only against primary sources. Per `.claude/MEMORY.md` → _A third-party source's claim is a
+lead, not a finding_ — where the primary source confirms it, the substance is the primary source's
+and **no attribution is owed to the lead**. So the check reduces to what is genuinely cited here.
+
+| Source                                  | Stars  | Licence             | Obligation if text is carried                   |
+| --------------------------------------- | ------ | ------------------- | ----------------------------------------------- |
+| `agentskills/agentskills` (the spec)    | 24.1k  | **Apache-2.0**      | Attribution + NOTICE retained on redistribution |
+| `anthropics/claude-code` (the CLI docs) | 141.0k | **no LICENSE file** | Unlicensed — read for facts, do not copy text   |
+| `anthropics/skills`                     | 167.9k | **no LICENSE file** | Unlicensed — do not copy text (already on file) |
+
+**Verdict: nothing here is share-alike, so the epic is clear to proceed.** No CC-BY-SA source is
+involved and no obligation propagates into a generated project. Two operative constraints:
+
+1. **The Agent Skills specification is Apache-2.0** — derivable, and it earns a `README.md`
+   § _Influences_ row with a NOTICE obligation, written in the **same change** as the rule it
+   credits (`N-014`), not retrospectively.
+2. **Claude Code's documentation is unlicensed.** Its **facts** — field names, defaults, documented
+   behaviour — are not copyrightable and are freely usable. Its **wording** is not. Every rule
+   `N-007` and `N-014` write must be **re-authored**, matching the standing README rule: _"Rule text
+   is derived and re-authored, never copied."_ This binds the fork rubric especially, since the
+   reference-vs-task distinction came from that page.
 
 ---
 
@@ -158,7 +248,7 @@ Recorded so no downstream decision treats these as settled.
   degrades selection" is resting on a practitioner claim, not documentation.
 - **Per-skill standing cost in tokens.** The ~100-token figure is specification _guidance_, not a
   measured or enforced value; Claude Code publishes no formula for N skills. Our own measurement
-  (`MAP-AGENTS-TO-SKILLS.md` → _Measured baseline_) is the better local number.
+  (this epic's own _Measured baseline_) is the better local number.
 - **Auto-delegation to project agents in cloud sessions.** Documented to carry over; not
   explicitly documented as available for auto-delegation there.
 - **Whether `/fork` and `context: fork` share a mechanism.** Documented separately, no stated

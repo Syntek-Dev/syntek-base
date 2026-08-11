@@ -17,8 +17,13 @@ task in its own right, not a side-effect of some other change.
 
 This is the source repository for `<%PROJECT_SLUG%>`, built as a **Django-only monolith**:
 Django 6 + Django Ninja + PostgreSQL on the server, Django templates + django-components +
-HTMX + Alpine + token-driven vanilla CSS on the client. There is no separate frontend or
-mobile application — one deployable serves the API and the rendered pages.
+HTMX + Alpine + token-driven vanilla CSS on the client. **There is no separate frontend
+application** — one deployable serves the API and the rendered pages.
+
+Optional surfaces are added at generation and are absent unless the project asked for them: a
+React Native **mobile** app under `code/src/mobile/`, a **Rust** workspace under
+`code/src/rust/`, and a Slint **desktop** app inside it. Each is a separate deployable that
+consumes this API; none of them changes the rule above for the web.
 
 ## Directory Tree
 
@@ -43,9 +48,11 @@ mobile application — one deployable serves the API and the rendered pages.
 │   ├── docs/                        ← coding reference guides (architecture, security, testing)
 │   ├── src/
 │   │   ├── django/                  ← the Django project — backend and server-rendered frontend
+│   │   ├── mobile/                  ← MOBILE-ONLY — the Expo / React Native app
 │   │   ├── rust/                    ← RUST-ONLY — the Cargo workspace (PyO3, binaries, CLI)
 │   │   │                              ← incl. crates/desktop/ — DESKTOP-ONLY Slint app
 │   │   ├── docker/                  ← Dockerfiles and Compose files (dev/test/staging/prod)
+│   │   ├── improvement-architecture/ ← /improve-codebase-architecture reports
 │   │   ├── logs/                    ← runtime log files (dev/test; gitignored)
 │   │   ├── scripts/                 ← shell scripts — ALL dev operations run through here
 │   │   └── tests/                   ← API integration tests (Bruno collection)
@@ -74,6 +81,9 @@ mobile application — one deployable serves the API and the rendered pages.
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
+├── .copier/                         ← seed-once staging: the README, version state and
+│                                      scale-planning map a generated project starts from;
+│                                      moved into place and removed at generation
 ├── .zed/                            ← Zed editor settings
 ├── CONTEXT.md                       ← this file
 ├── REFERENCES.md                    ← curated index of internal docs and external resources
@@ -83,6 +93,9 @@ mobile application — one deployable serves the API and the rendered pages.
 ├── DEFERRED.md                      ← deferred-work register
 ├── CHANGELOG.md                     ← what changed in each release, newest first
 ├── THIRD-PARTY-NOTICES.md           ← licence notices for third-party work shipped here
+├── LICENSE                          ← syntek-base's own licence — not rendered into a project
+├── SECURITY.md                      ← how to report a vulnerability in syntek-base itself
+├── CONTRIBUTING.md                  ← how to contribute to syntek-base itself
 ├── RELEASES.md                      ← the release notes behind each version
 ├── VERSION                          ← the single source of truth for the current version
 ├── VERSION-HISTORY.md               ← every version and the date it shipped
@@ -100,7 +113,7 @@ mobile application — one deployable serves the API and the rendered pages.
 ├── .editorconfig                    ← baseline editor settings shared across contributors
 ├── .gitignore                       ← what git never tracks
 ├── .markdownlint-cli2.jsonc         ← Markdown lint config
-├── .mcp.json                        ← project MCP server config (code-review-graph)
+├── .mcp.json                        ← project MCP servers (code-review-graph, context7, mermaid)
 ├── .npmrc                           ← pnpm registry and install behaviour
 ├── .nvmrc                           ← Node.js version pin
 ├── .prettierignore                  ← what Prettier never formats
@@ -122,8 +135,9 @@ generation time, because a generated project must commit it (every Dockerfile bu
 | `project-management/`           | User stories, sprints, design artefacts, GDPR, security, releases    |
 | `.claude/`                      | Global rules, agent and skill routing, model selection, hooks        |
 | `DESIGN.md`                     | Design entry point — standards, constraints, and UI/UX workflows     |
-| `code/src/django/`              | The single deployable — API and server-rendered pages                |
-| `code/src/rust/`                | **Rust-only.** Native primitives compiled into that deployable       |
+| `code/src/django/`              | The web deployable — API and server-rendered pages                   |
+| `code/src/mobile/`              | **Mobile-only.** The Expo / React Native app, consuming that API     |
+| `code/src/rust/`                | **Rust-only.** Native primitives compiled into the web deployable    |
 | `code/src/rust/crates/desktop/` | **Desktop-only.** The native Slint application                       |
 
 The PM layer **specifies and gates**; the code layer **builds and verifies**. The canonical
@@ -153,7 +167,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **2.13.1** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **2.19.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root
