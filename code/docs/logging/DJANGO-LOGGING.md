@@ -168,7 +168,7 @@ The JSON API is served by Django Ninja. Log one line per API request (name, stat
 one line per unhandled exception, both on the `api` logger — this gives endpoint-level visibility in
 Loki without touching every handler.
 
-### Request timing middleware (`apps/core/middleware/request_log.py`)
+### Request timing middleware (`apps/core/middleware.py`)
 
 ```python
 import logging
@@ -208,6 +208,11 @@ Register it after `AuthenticationMiddleware` in `MIDDLEWARE`.
 Register a catch-all handler on the `NinjaAPI` instance so unhandled exceptions are logged at
 `ERROR` (which forwards to GlitchTip) before a safe JSON error is returned. Validation errors
 (Pydantic `Schema` failures → `422`) are user-facing, not bugs — log them at `INFO`, not `ERROR`.
+
+> **Which class an error belongs to is not decided here.** The programmer / user / environment
+> taxonomy, the exception type each raises, and the status, log level and tracker behaviour each
+> gets are owned by [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) § _The error taxonomy_. This
+> section is one of that taxonomy's consequences — the wiring, not the rule.
 
 ```python
 import logging

@@ -8,12 +8,19 @@ model: opus
 # Health Monitoring Contract
 
 **Last Updated:** <%DATE%> **Maintained By:** <%ORG_NAME%> **Language:** British English (en_GB)
-**Claude Model:** opus — Contract between the app repo (endpoints) and the NixOS deploy repo (Gatus, scrape)
+**Claude Model:** opus — Contract between the app repo (endpoints) and the deploy repo (uptime probe, metrics scrape)
 
 The app exposes health/metrics endpoints; the deployment server (the NixOS deploy repo,
-`<%DEPLOY_REPO%>`) consumes them to drive Gatus (public status page) and Prometheus
-(metrics). This is the same app-exposes / server-provisions split used for `/metrics/`. This doc is
-the single source of truth for **what the app exposes** and **what the server must provision**.
+`<%DEPLOY_REPO%>`) consumes them to drive the **uptime probe** behind the public status page and
+the **metrics scrape**. This is the same app-exposes / server-provisions split used for
+`/metrics/`. This doc is the single source of truth for **what the app exposes** and **what the
+server must provision**.
+
+The provisioning sections below name products deliberately: they are a contract another repository
+implements, and _"provision a metrics scraper"_ cannot be implemented
+([`../architecture/PROVIDER-NEUTRALITY.md`](../architecture/PROVIDER-NEUTRALITY.md), exception 1).
+Both are protocol seams — the app speaks plain HTTP status semantics and the exposition format,
+and touches nothing product-specific.
 
 ---
 
@@ -78,7 +85,7 @@ endpoints:
 > still returns `200`, so the `[BODY].status == operational` condition is what flags degradation on
 > the public status page; `down` additionally fails `[STATUS] == 200` (the app returns `503`).
 
-### 2. Prometheus app scrape jobs
+### 2. Metrics scrape job for the app
 
 `modules/prometheus/default.nix` scrapes `node` + `zfs`; add the app job (closing the
 metrics-deploy gap):
@@ -108,6 +115,13 @@ these up in staging/production, set in `.env.staging` / `.env.production`:
 | `GATUS_STATUS_URL`      | Gatus `/health`                                                       |
 | `GLITCHTIP_BASE_URL`    | GlitchTip instance root (already used by the observability dashboard) |
 
+**These variables name products on purpose, and that is not the defect the neutrality rule
+catches.** Each one identifies **a specific deployed service to probe** — `SENTRY_BASE_URL` would
+name a protocol and point at nothing. Contrast `SENTRY_DSN` in
+[`OBSERVABILITY.md`](OBSERVABILITY.md), which is protocol-named because it configures the SDK
+rather than addressing an instance. Rename a row here only when the project actually runs a
+different tool.
+
 `HEALTH_SITE_BASE_URL` / `HEALTH_PAGE_PATHS` tune the curated page probes (defaults target the
 internal Django app service `web:8000` and `/,/blog,/portal,/admin/login`).
 
@@ -117,5 +131,5 @@ internal Django app service `web:8000` and `/,/blog,/portal,/admin/login`).
 
 - `code/src/django/apps/health/CONTEXT.md` — the health app
 - `code/docs/logging/OBSERVABILITY.md` — the broader observability stack
-- `how-to/src/SERVER-ARCHITECTURE/` — the broader edge/compute contract this health/metrics contract is one part of; the endpoints here are themselves a SERVER-ARCHITECTURE edge requirement
+- `how-to/src/SERVER-ARCHITECTURE/` — the broader edge/compute contract this health/metrics contract is one part of; the endpoints here are themselves a SERVER-ARCHITECTURE edge requirement. **This doc owns the endpoint shapes and what each status means; SERVER-ARCHITECTURE owns what the server must expose and scrape** (`code/docs/architecture/BUILD-OPERATE-SEAM.md`)
 - `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` — the deploy-repo handoff that consumes these endpoints alongside the edge contract

@@ -73,7 +73,8 @@ sudo usermod -aG docker "$USER"   # log out and back in
 ```
 
 **macOS** — Docker Desktop, or Colima if you prefer no GUI. Give it at least 4 CPUs and 8 GB;
-the test stack runs Postgres, Valkey, Celery and the app together.
+the test stack runs Postgres, Valkey, Nginx and the app together (and a Celery worker too, once
+that is wired — it is a declared dependency with no Compose service at baseline).
 
 **Windows** — Docker Desktop with the WSL 2 backend, and do all your work **inside** the WSL 2
 filesystem (`~/projects/…`, not `/mnt/c/…`). Bind-mount performance across the Windows filesystem

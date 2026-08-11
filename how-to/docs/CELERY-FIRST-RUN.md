@@ -18,9 +18,21 @@ model: opus
 > deliberate enablement act. Enable **one environment at a time**, each with the review
 > below — never a silent flip.
 
+> **Baseline state — Celery is declared, not wired.** Three separate things, and only
+> the first is true today: (1) the **dependency** `celery[redis]>=5.3` is declared in
+> the root `pyproject.toml`; (2) **no Compose service** — no Compose file under
+> `code/src/docker/` defines a `worker` or a `beat`, in any environment;
+> (3) **no app configuration** — there is no `config/celery.py`, no `CELERY_*` setting under
+> `code/src/django/config/settings/`, and no `CELERY_*` key in any `.env.*.example`
+> (`code/src/django/config/__init__.py` records this deliberately). Every setting and
+> service this guide names is therefore something the wiring change must **create**.
+> Read it when that change lands — it is the review that gates the first start, not a
+> description of anything currently running.
+
 Cross-references: this project's `CELERY_BEAT_SCHEDULE` (`config/settings` — the task
-list and source of truth), `how-to/docs/FEATURE-DEPLOY.md` (the wider feature-rollout
-deploy review), and `GAPS.md` (any open `<GAP-…>` first-run enablement entries).
+list and source of truth **once Celery is wired**),
+`how-to/docs/FEATURE-DEPLOY.md` (the wider feature-rollout deploy review), and `GAPS.md`
+(any open `<GAP-…>` first-run enablement entries).
 
 ---
 
@@ -32,10 +44,11 @@ retention sweep dormant for months will, on its first run, process every row tha
 past the retention window in that whole period. Two distinct backlogs matter:
 
 - **Row backlog** — periodic sweeps (`beat`) act on every over-age row in a single pass.
-- **Queued-task backlog** — because tasks are **not** eager outside `test`
-  (`CELERY_TASK_ALWAYS_EAGER=True` is `test` only), every `.delay()` since the broker was
-  provisioned has been enqueued to Valkey with **no worker to drain it**. The moment the
-  `worker` first connects it drains **all** of it — including any stale outward-facing
+- **Queued-task backlog** — because tasks must **not** be eager outside `test` (set
+  `CELERY_TASK_ALWAYS_EAGER=True` in `test` only — no module sets it yet), every
+  `.delay()` since the broker was provisioned has been enqueued to Valkey with **no worker
+  to drain it**. The moment the `worker` first connects it drains **all** of it —
+  including any stale outward-facing
   sends (emails, search-engine pings, webhooks). Inspect / purge the queue before first
   start (§4).
 
@@ -47,9 +60,10 @@ The remedy is a deliberate, reviewed, **env-by-env** enablement — never a sile
 
 Enable in this order, repeating the review at each step:
 
-1. **dev** — local, safe: a local mail-capture tool holds outbound email, the outward-send
-   gate is empty/off (no outward submission), no real subjects. Prove `worker`/`beat` run
-   Celery and tasks execute.
+1. **dev** — local, safe: `dev.py` sets the console email backend, so outbound email prints to
+   stdout and never leaves the machine; the outward-send gate is empty/off (no outward
+   submission), no real subjects. Prove the `worker`/`beat` services you added run Celery and
+   tasks execute.
 2. **staging** — confirm the email backend is not pointed at a live customer inbox and the
    outward-send gate is empty/off **before** starting the worker. Then enable.
 3. **prod** — only after staging is clean. Run the destructive-sweep dry-run count (§3.1)
@@ -98,8 +112,8 @@ print("would act on:", candidates.count())
 
 Reach a Django shell:
 
-- **dev** — `bash code/src/scripts/development/shell.sh` (backend service), then
-  `python manage.py shell`.
+- **dev** — `bash code/src/scripts/development/shell.sh` opens bash in the `django` container;
+  start the Django shell from there.
 - **staging / prod** — run the same read-only count in that environment's Django shell via
   the `<%DEPLOY_REPO%>` runbooks.
 

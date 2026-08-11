@@ -1,6 +1,6 @@
 ---
 name: logging
-description: Implement or adjust logging and observability — Django/Pino structured logs, GlitchTip error tracking, Loki/Prometheus wiring. Use when an orchestrator needs log instrumentation added, log channels configured, or sensitive-data leakage in logs closed off.
+description: Implement or adjust logging and observability — Django structured logging, browser error capture via the Sentry SDK, log aggregation and metrics wiring. Use when an orchestrator needs log instrumentation added, log channels configured, or sensitive-data leakage in logs closed off.
 model: opus
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
@@ -25,24 +25,36 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Stack
 
 Backend: Django 6.0.6 + Django Ninja | Frontend: Django templates + HTMX + Alpine.
-Observability is GlitchTip + Loki + Prometheus + Grafana — **not** Sentry/ELK. Per
-environment:
+There is **no Node server**, so there is no Node logger — browser errors are captured by
+the Sentry browser SDK and reach the tracker, never the log pipeline.
 
-| Tool         | Layer    | dev | test | staging | prod |
-| ------------ | -------- | --- | ---- | ------- | ---- |
-| File logging | Backend  | ✅  | ✅   | ❌      | ❌   |
-| Pino         | Frontend | ✅  | ✅   | ✅      | ✅   |
-| GlitchTip    | Both     | ❌  | ❌   | ✅      | ✅   |
-| Alloy → Loki | Infra    | ❌  | ❌   | ✅      | ✅   |
-| Prometheus   | Both     | ❌  | ❌   | ✅      | ✅   |
+Observability is **three interfaces, each with a product behind it**, and the product is a
+per-project answer you must not assume:
+
+| Capability      | Interface the code is written against              | This project            |
+| --------------- | -------------------------------------------------- | ----------------------- |
+| Error tracking  | the **Sentry SDK wire protocol** (`sentry-sdk`)    | <%ERROR_TRACKING%>      |
+| Log aggregation | **structured JSON on stdout** (12-factor)          | <%LOG_AGGREGATOR%>      |
+| Metrics         | the **Prometheus exposition format** / OpenMetrics | <%OBSERVABILITY_STACK%> |
+
+**Never assert a fixed product set.** "Sentry" is a **valid answer** for the first row, not a
+banned one — the register lists it as a proven alternate. The per-environment matrix is
+`code/docs/LOGGING.md` → _Stack by environment_; the verdicts and alternates are
+`how-to/src/PLATFORM-PROVIDERS.md`; the rule is
+`code/docs/architecture/PROVIDER-NEUTRALITY.md`. Read them — do not restate them here, which is
+exactly how this section was wrong before.
+
+**Status: declared, not wired.** `sentry-sdk[django]` and `django-prometheus` are declared
+dependencies with no call site. Check `code/docs/logging/OBSERVABILITY.md` before assuming any
+of it is running.
 
 ## Governing docs — read before touching code
 
 - `code/docs/LOGGING.md` — entry index; then the relevant sub-doc:
   - `code/docs/logging/DJANGO-LOGGING.md` — Django `LOGGING` config, Django Ninja
     request logging, log levels, logger-not-`print` rule
-  - `code/docs/logging/OBSERVABILITY.md` — GlitchTip, Loki (LogQL, retention),
-    Prometheus metrics, Grafana
+  - `code/docs/logging/OBSERVABILITY.md` — the three interfaces above: error tracking,
+    log aggregation (pipeline, queries, retention), metrics and dashboards
   - `code/docs/logging/CLOUDINARY.md` — media storage env vars
   - `code/docs/logging/HEALTH-CONTRACT.md` — the gate-trigger signals `scale-planner`
     keys the scaling phase-gates to (read p95, primary CPU/IO) must be observable
@@ -73,9 +85,9 @@ bash code/src/scripts/development/logs.sh
 ## How to work here
 
 **Grill first.** Before instrumenting, open with a grilling interview — load
-`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%> one question at a time: which events and at
-what levels, the channels (file / Pino / GlitchTip / Loki / Prometheus) per environment, the
-PII-redaction rules, and the retention expected. Look facts up rather than ask; the steps below
+`.claude/skills/grill-with-docs` and interrogate <%DEVELOPER_NAME%>: which events and at
+what levels, the channel per environment (file · error tracker · log pipeline · metrics), the
+PII-redaction rules, and the retention expected. The steps below
 are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
 
 1. **Load context** — `code/docs/LOGGING.md` + the sub-doc for the layer you touch,
@@ -83,8 +95,9 @@ are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
 2. **Backend** — use the module logger (`logging.getLogger(__name__)`), never `print`.
    Emit structured extras, not string-formatted PII. Log level and handler config live
    in Django `LOGGING` per `DJANGO-LOGGING.md` — do not hand-roll a parallel config.
-3. **Error tracking / metrics** — GlitchTip and Prometheus are staging/prod only; gate
-   them by environment. DSNs and endpoints come from env vars — never hardcoded.
+3. **Error tracking / metrics** — both are staging/prod only; gate them by environment.
+   DSNs and endpoints come from env vars — never hardcoded, and named for the **interface**
+   (`SENTRY_DSN`, because the SDK's convention names the protocol), never for the product.
 4. **Localisation** — messages in British English (en_GB); timestamps <%TIMEZONE%>.
 5. **Verify** — run the affected layer's log path via `logs.sh` (dev) and confirm no
    sensitive fields appear. Hand tests to `test-writer`; do not write them yourself.
@@ -106,7 +119,7 @@ are the agenda. Design-work default (`.claude/CLAUDE.md` §10).
 - Writing tests for log behaviour → `test-writer`
 - Ruling on whether a field is sensitive / audit design → `security`
 - Prose docs for logging usage → `doc-writer`
-- Wiring GlitchTip/Loki DSNs into pipelines → `cicd`
+- Wiring DSNs and collector endpoints into pipelines → `cicd`
 - Git branch/commit/PR → `git`
 
 Invoke a sibling via the Agent tool with its `subagent_type`; brief it fully — it has
@@ -117,5 +130,5 @@ no memory of your work.
 After instrumenting, tell the orchestrator to:
 
 - run `qa-tester` to confirm no sensitive data reaches the logs;
-- run `cicd` to set GlitchTip/Loki config in the staging/prod pipelines;
+- run `cicd` to set the error-tracking and log-collector config in the staging/prod pipelines;
 - run `doc-writer` if usage docs need updating.

@@ -65,13 +65,13 @@ STORAGES = {
 
 ## Required environment variables — full summary
 
-| Variable                     | dev | test | staging | prod |
-| ---------------------------- | --- | ---- | ------- | ---- |
-| `CLOUDINARY_CLOUD_NAME`      | ✅  | ✅   | ✅      | ✅   |
-| `CLOUDINARY_API_KEY`         | ✅  | ✅   | ✅      | ✅   |
-| `CLOUDINARY_API_SECRET`      | ✅  | ✅   | ✅      | ✅   |
-| `GLITCHTIP_DSN`              | ❌  | ❌   | ✅      | ✅   |
-| `VITE_GLITCHTIP_BROWSER_DSN` | ❌  | ❌   | ✅      | ✅   |
+| Variable                | dev | test | staging | prod |
+| ----------------------- | --- | ---- | ------- | ---- |
+| `CLOUDINARY_CLOUD_NAME` | ✅  | ✅   | ✅      | ✅   |
+| `CLOUDINARY_API_KEY`    | ✅  | ✅   | ✅      | ✅   |
+| `CLOUDINARY_API_SECRET` | ✅  | ✅   | ✅      | ✅   |
+| `SENTRY_DSN`            | ❌  | ❌   | ✅      | ✅   |
+| `SENTRY_BROWSER_DSN`    | ❌  | ❌   | ✅      | ✅   |
 
 Prometheus, Alloy, Loki, and Grafana are configured on the server — no application env vars
 required for those tools.

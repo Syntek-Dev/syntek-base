@@ -19,18 +19,18 @@ The [OWASP Top 10:2025](https://owasp.org/Top10/2025/) introduces two new catego
 Supply Chain Failures and Mishandling of Exceptional Conditions), consolidates SSRF into Broken
 Access Control, and re-ranks several existing categories.
 
-| #            | Category                                  | Mitigation                                                                                                                                                                                             |
-| ------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **A01:2025** | **Broken Access Control**                 | RBAC/policy enforcement on every endpoint; scope all queries to authenticated user; validate SSRF targets against allowlists; block requests to private IP ranges                                      |
-| **A02:2025** | **Security Misconfiguration**             | Review default framework settings; disable debug mode in production; remove default credentials; harden IaC templates                                                                                  |
-| **A03:2025** | **Software Supply Chain Failures**        | Pin dependency versions with lock files; verify package integrity and provenance; scan for malicious packages; secure CI/CD pipelines (see [`SUPPLY-CHAIN.md`](SUPPLY-CHAIN.md))                       |
-| **A04:2025** | **Cryptographic Failures**                | Use approved algorithms only (see [`CRYPTO-AND-DATA.md`](CRYPTO-AND-DATA.md)); TLS everywhere; encrypt PII at rest; use memory-hard password hashing; never use MD5, SHA-1, DES, or ECB                |
-| **A05:2025** | **Injection**                             | Parameterised queries always; framework validation on all inputs; escape/encode output based on context (HTML, JavaScript, URL, SQL); disable dangerous interpreter features                           |
-| **A06:2025** | **Insecure Design**                       | Threat model new features; apply least privilege; security review before launch; use secure design patterns; separate trust boundaries                                                                 |
-| **A07:2025** | **Authentication Failures**               | Framework auth with memory-hard hashing; regenerate sessions on login; enforce MFA for admin; implement credential stuffing protection; do not require periodic password changes (per NIST SP 800-63B) |
-| **A08:2025** | **Software and Data Integrity Failures**  | Pin dependency versions; verify package integrity; use signed commits; validate CI/CD pipeline integrity; verify webhook signatures                                                                    |
-| **A09:2025** | **Security Logging & Alerting Failures**  | Log all auth events, admin actions, and errors; configure alerting for suspicious patterns; ensure logs are immutable (see [`MONITORING-AND-INCIDENT.md`](MONITORING-AND-INCIDENT.md))                 |
-| **A10:2025** | **Mishandling of Exceptional Conditions** | Handle all error paths explicitly; fail closed (deny by default); do not leak sensitive data in error messages; test error handling paths including unexpected inputs and resource exhaustion          |
+| #            | Category                                  | Mitigation                                                                                                                                                                                                                               |
+| ------------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A01:2025** | **Broken Access Control**                 | RBAC/policy enforcement on every endpoint; scope all queries to authenticated user; validate SSRF targets against allowlists; block requests to private IP ranges                                                                        |
+| **A02:2025** | **Security Misconfiguration**             | Review default framework settings; disable debug mode in production; remove default credentials; harden IaC templates                                                                                                                    |
+| **A03:2025** | **Software Supply Chain Failures**        | Pin dependency versions with lock files; verify package integrity and provenance; scan for malicious packages; secure CI/CD pipelines (see [`SUPPLY-CHAIN.md`](SUPPLY-CHAIN.md))                                                         |
+| **A04:2025** | **Cryptographic Failures**                | Use approved algorithms only (see [`CRYPTO-AND-DATA.md`](CRYPTO-AND-DATA.md)); TLS everywhere; encrypt PII at rest; use memory-hard password hashing; never use MD5, SHA-1, DES, or ECB                                                  |
+| **A05:2025** | **Injection**                             | Parameterised queries always; framework validation on all inputs; escape/encode output based on context (HTML, JavaScript, URL, SQL); disable dangerous interpreter features                                                             |
+| **A06:2025** | **Insecure Design**                       | Threat model new features; apply least privilege; security review before launch; use secure design patterns; separate trust boundaries                                                                                                   |
+| **A07:2025** | **Authentication Failures**               | Framework auth with memory-hard hashing; regenerate sessions on login; enforce MFA for admin; implement credential stuffing protection; do not require periodic password changes (per NIST SP 800-63B)                                   |
+| **A08:2025** | **Software and Data Integrity Failures**  | Pin dependency versions; verify package integrity; use signed commits; validate CI/CD pipeline integrity; verify webhook signatures                                                                                                      |
+| **A09:2025** | **Security Logging & Alerting Failures**  | Record the four evidence classes in the immutable audit table (see [`AUDIT-TRAIL.md`](AUDIT-TRAIL.md)); log auth events and errors as diagnostics, and alert and respond, per [`MONITORING-AND-INCIDENT.md`](MONITORING-AND-INCIDENT.md) |
+| **A10:2025** | **Mishandling of Exceptional Conditions** | Handle all error paths explicitly; fail closed (deny by default); do not leak sensitive data in error messages; test error handling paths including unexpected inputs and resource exhaustion                                            |
 
 ---
 
@@ -83,23 +83,12 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — i
 **`admin_db` BYPASSRLS usage — strictly controlled:**
 
 `using="admin_db"` routes queries through the BYPASSRLS PostgreSQL role, bypassing all RLS policies.
-Authorised call sites are strictly limited (login, password-reset token lookup, and superuser audit
-PII resolution). No other file may use `using="admin_db"`. See
-[`AUTH-AND-AUTHZ.md`](AUTH-AND-AUTHZ.md) for the full table.
+Its authorised call sites, and the pre-commit hook that enforces them, are owned by
+[`AUTH-AND-AUTHZ.md`](AUTH-AND-AUTHZ.md) § _admin_db — strict usage restriction_.
 
-Enforce with a pre-commit hook:
-
-```yaml
-- repo: local
-  hooks:
-    - id: no-admin-db-outside-auth
-      name: Prevent admin_db use outside apps.users
-      language: pygrep
-      entry: 'using\s*=\s*["\']admin_db["\']'
-      files: \.py$
-      exclude: ^code/src/django/apps/users/(backends|services/password_reset)\.py$
-      types: [python]
-```
+**Never restate that list here.** A second copy drifts from the one it mirrors and then rejects
+correct code: this section previously carried its own hook excluding only the two `apps/users`
+files, which would have failed the audit-app call sites the authoritative table authorises.
 
 ### Browser-side security (server-rendered stack)
 
@@ -141,6 +130,8 @@ appear in it. Django templates must therefore avoid inline `<script>`/`<style>` 
 reads HTML attributes, HTMX is configured via `<meta name="htmx-config">`, and per-page JavaScript
 is an external static file. The edge-enforced header set is catalogued in
 [`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`](../../../how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md).
+**This doc owns which control is required and why; SERVER-ARCHITECTURE owns what the edge must
+provide** ([`../architecture/BUILD-OPERATE-SEAM.md`](../architecture/BUILD-OPERATE-SEAM.md)).
 
 ---
 

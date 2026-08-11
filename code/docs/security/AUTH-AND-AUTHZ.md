@@ -158,15 +158,18 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — i
 
 **Authorised call sites (hard limit):**
 
-| Location                                                              | Reason                                                                                                                                                                      |
-| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps.users.backends` — authentication backend                        | Login must succeed without a current RLS session variable                                                                                                                   |
-| `apps.users.services.password_reset` — reset token lookup             | Reset links arrive without a session                                                                                                                                        |
-| `apps.audit.services.AuditDecryptionService.resolve` — PII resolution | Superuser incident investigation must resolve another user's encrypted email/username; default connection's RLS restricts `users_user` SELECT to the calling user's own row |
+| Location                                                                      | Reason                                                                                                                                                                      |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps.users.backends` — authentication backend                                | Login must succeed without a current RLS session variable                                                                                                                   |
+| `apps.users.services.password_reset` — reset token lookup                     | Reset links arrive without a session                                                                                                                                        |
+| `apps.<%AUDIT_APP%>.services.AuditDecryptionService.resolve` — PII resolution | Superuser incident investigation must resolve another user's encrypted email/username; default connection's RLS restricts `users_user` SELECT to the calling user's own row |
+| `apps.<%AUDIT_APP%>.services.gdpr.gdpr_erase` — erasure anonymisation         | Article 17 erasure nulls the identifying columns on every audit row for a subject, across scopes the caller cannot see (`code/docs/security/AUDIT-TRAIL.md`)                |
+| `apps.<%AUDIT_APP%>.tasks` — retention purge                                  | The retention sweep deletes expired rows across every scope, so it cannot run under a caller's row-security session variable (`code/docs/security/AUDIT-TRAIL.md`)          |
 
 Adding a new `admin_db` call site requires a documented security justification and code review
-sign-off from a <%ORG_NAME%> core maintainer. Any grep for `using=admin_db` outside the three
-authorised locations should trigger a review comment.
+sign-off from a <%ORG_NAME%> core maintainer. Any grep for `using=admin_db` outside the table above
+should trigger a review comment. **This table is the only authoritative list**; no other guide
+restates it.
 
 Pre-commit hook pattern to enforce this:
 
@@ -178,7 +181,7 @@ Pre-commit hook pattern to enforce this:
       language: pygrep
       entry: 'using\s*=\s*["\']?admin_db["\']?'
       args: ["--negate"]
-      files: '^code/src/django/(?!apps/users/(backends|services/password_reset)|apps/audit/services).*\.py$'
+      files: '^code/src/django/(?!apps/users/(backends|services/password_reset)|apps/audit/(services|tasks)).*\.py$'
       pass_filenames: true
 ```
 

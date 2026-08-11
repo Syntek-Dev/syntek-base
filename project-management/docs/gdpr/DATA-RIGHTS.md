@@ -101,23 +101,24 @@ def gdpr_export(user_id: str) -> dict:
 @transaction.atomic
 def gdpr_erase(user_id: str) -> None:
     """Anonymise audit log entries for ``user_id`` — do not delete the event rows."""
-    from apps.<%AUDIT_APP%>.models import AuditEntry
+    from apps.<%AUDIT_APP%>.models import AuditLog
 
-    AuditEntry.objects.using("admin_db").filter(actor_id=user_id).update(
-        actor_id="[anonymised]",
-        ip_address=None,
-        user_agent=None,
+    # actor_id is a uuid column, so erasure nulls it rather than writing a sentinel.
+    # actor_type is NOT NULL and survives, so the class of actor outlives the identity.
+    AuditLog.objects.using("admin_db").filter(actor_id=user_id).update(
+        actor_id=None,
+        ip_hash=None,
     )
 
 
 def gdpr_export(user_id: str) -> dict:
     """Return audit entries for ``user_id`` as a serialisable list."""
-    from apps.<%AUDIT_APP%>.models import AuditEntry
+    from apps.<%AUDIT_APP%>.models import AuditLog
 
     entries = list(
-        AuditEntry.objects.using("admin_db")
+        AuditLog.objects.using("admin_db")
         .filter(actor_id=user_id)
-        .values("event", "resource_id", "created_at")
+        .values("action", "target_id", "timestamp")
     )
     return {"audit_entries": entries}
 ```
@@ -153,8 +154,11 @@ A data subject has the right to request deletion of their personal data when:
 | Financial transactions                   | Anonymise PII fields   | Must retain transaction record for 7 years (UK) |
 | Consent records                          | Retain (evidence)      | Cannot be erased — they prove the lawful basis  |
 
-**Never delete audit log entries.** Anonymise the PII fields (`actor_id` → anonymised, IP →
-deleted, user_agent → deleted) while retaining the event record.
+**Never delete audit log entries.** Null the identifying columns (`actor_id` and `ip_hash`) while
+retaining the event record. The schema is owned by
+[`code/docs/security/AUDIT-TRAIL.md`](../../../code/docs/security/AUDIT-TRAIL.md): there is no raw
+`ip_address` or `user_agent` column on the audit table, because that guide's PII rule forbids
+storing a raw address at all.
 
 ### Erasure via `admin_db`
 

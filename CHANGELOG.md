@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.9.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.10.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.10.0] - 11/08/2026
+
+### Added
+
+- **`code/docs/TASK-AUTHORING.md`** — the enqueue boundary, idempotency, retries, limits, queue routing, and broker-free testing. `celery[redis]>=5.3` has been a declared dependency with nothing consuming it: no `config/celery.py`, no task module, no `CELERY_*` setting, and no `worker` or `beat` service in any of the four Compose files. The guide is the design of record for the day a feature needs a task.
+- **`code/docs/PROCESS-MODEL.md`** — worker class, event loop, and the ORM's synchronous boundary treated as **one topic rather than three**, because deciding any of them alone decides the other two badly. Also says where a task worker sits relative to the web process family. The web half is verified against `code/src/docker/`; the task half is not, and says so.
+- **`code/docs/OBJECT-STORAGE.md`** — private-document storage over the S3 API: the adapter contract, presigned URLs, upload validation, and the private/public split against Cloudinary. `boto3` is declared and unconsumed, exactly as Celery is.
+- **`code/docs/security/AUDIT-TRAIL.md`** — the owning guide for the audit record, and the **record** half of OWASP A09:2025. Table schema, the atomic write path, what goes in and what must never, the PII rule, retention, and tamper resistance. `MONITORING-AND-INCIDENT.md` keeps the alerting-and-response half; the A09 row in `OWASP-AND-CHECKLIST.md` now names both.
+
+### Changed
+
+- **Every one of these guides opens with an explicit status line.** _Declared, not wired_ — naming the dependency, where it is declared, and precisely what does not exist yet. A guide that reads as though the subsystem is running is worse than no guide: it sends someone looking for a module that was never written.
+- **`code/docs/logging/OBSERVABILITY.md` is rewritten around four interfaces** — error tracking, log aggregation, metrics, traces — each leading with the interface the code is written against and naming the default as one implementation behind it. `sentry-sdk[django]` and `django-prometheus` are declared and unconfigured, and the guide now says so rather than implying otherwise.
+- **The collector side is named as server infrastructure, not application concern.** Log shipper, metrics store and dashboards do not run in the local Compose stack; they are provisioned by the deploy repository. That boundary was previously implicit and routinely misread.
+- **`how-to/docs/CELERY-FIRST-RUN.md`** is reconciled with the state of the tree — it described a first run of something the template does not stand up.
 
 ## [2.9.0] - 11/08/2026
 

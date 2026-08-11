@@ -152,10 +152,12 @@ must run in each target environment. `beat` schedules; the `worker` executes.
 - The shared `entrypoint.*.sh` scripts honour a passed command — after the migrate/collectstatic
   setup and before the default web-server exec they run
   `if [ "$#" -gt 0 ]; then exec "$@"; fi`. So a `worker`/`beat` container (passing
-  `command: celery -A config worker|beat …`) execs Celery, while the `backend` container (no
+  `command: celery -A config worker|beat …`) execs Celery, while the `django` container (no
   command) still execs the Django ASGI server unchanged.
-- The staging/prod Compose files must define `worker` + `beat` services alongside `backend`
-  (with `CELERY_BROKER_URL`), so the environment can schedule and process.
+- The staging/prod Compose files must define `worker` + `beat` services alongside `django`
+  (with `CELERY_BROKER_URL`), so the environment can schedule and process. **Neither service
+  ships at baseline** — Celery is declared in `pyproject.toml` and wired by the first feature
+  that needs it; adding them is part of that work.
 
 A new schedule entry is **inert** until each environment is **redeployed** with the new image
 and its `worker`/`beat` services started. Enabling is a **deliberate, per-environment** act.

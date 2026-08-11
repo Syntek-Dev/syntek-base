@@ -30,9 +30,13 @@ says otherwise.
            ◀─HTMX──  │   templates + components     │ ──▶ Valkey (cache, broker)
                      │   Django Ninja  →  /api/     │ ──▶ Cloudinary / SeaweedFS
   API client ─JSON─▶ └──────────────────────────────┘
-                              │
-                     Celery worker + beat
+                              ┊
+                     Celery worker + beat  (declared, not wired)
 ```
+
+The dotted leg is the one part of that picture the template does not ship: `celery[redis]` is a
+declared dependency, but no Compose file defines a `worker` or `beat` service and no `CELERY_*`
+setting exists yet. Wiring it is a deliberate change — `how-to/docs/CELERY-FIRST-RUN.md`.
 
 ---
 
@@ -45,7 +49,7 @@ says otherwise.
 | **Django Ninja**       | 1.x     | Typed request/response Schemas over plain Django views, with automatic OpenAPI. Chosen over DRF for Pydantic types and less ceremony; chosen over GraphQL because a single-client app does not need query flexibility and does pay its complexity. |
 | **PostgreSQL**         | 18      | Row-level security, real constraints, `CHECK`, partial and concurrent indexes, full-text search. The template enforces invariants in the database, which needs a database that can hold them.                                                      |
 | **Valkey**             | latest  | BSD-licensed Redis fork. DB 0 is the Celery broker, pub/sub and rate limiting; DB 1 is the cache.                                                                                                                                                  |
-| **Celery**             | 5.3+    | Worker and beat. Background work, scheduled jobs, anything that must not block a request.                                                                                                                                                          |
+| **Celery**             | 5.3+    | Worker and beat for background work, scheduled jobs, anything that must not block a request. **Declared, not wired at baseline** — no `worker`/`beat` service ships in any Compose file.                                                           |
 | **Gunicorn + Uvicorn** | latest  | Gunicorn process management with Uvicorn ASGI workers.                                                                                                                                                                                             |
 | **Nginx**              | latest  | Reverse proxy in dev and test. In staging and production the edge is Cloudflare and the server deploy repo — security headers are set there, never in this repo.                                                                                   |
 
@@ -161,8 +165,8 @@ explicitly not acceptable.
 ## Deployment target
 
 **You can deploy this anywhere.** The application is an ordinary Docker Compose deployable — a
-single Django ASGI container plus a Celery worker and beat, talking to a Postgres and a Valkey it
-does not care about the provenance of. Anything that runs Linux and Docker will host it: a
+single Django ASGI container (plus a Celery worker and beat once that is wired), talking to a
+Postgres and a Valkey it does not care about the provenance of. Anything that runs Linux and Docker will host it: a
 DigitalOcean droplet, an EC2 instance, Fly.io, Railway, a Kubernetes cluster, or a box under your
 desk. Managed Postgres and managed Redis-compatible caches drop straight in — they are reached by
 URL, not by assumption.

@@ -1,11 +1,62 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.9.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.10.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.10.0 — 11/08/2026
+
+**Status:** Minor — documentation only. Four subsystems that were dependencies without designs now
+have designs, and every one of them says out loud that it is not wired up.
+
+### Declared, not wired
+
+The template has carried `celery[redis]`, `boto3`, `sentry-sdk[django]` and `django-prometheus` as
+declared dependencies for some time. None of them is configured. There is no `config/celery.py`, no
+task module, no `CELERY_*` setting, no `worker` or `beat` service in any of the four Compose files,
+no storage adapter, no `sentry_sdk.init(...)`, and `django_prometheus` is not in `INSTALLED_APPS`.
+
+That is a defensible state for a template — you should not inherit a Celery cluster you did not ask
+for. What was not defensible was the silence. A dependency in `pyproject.toml` with no guide is an
+invitation to invent a design at the keyboard, on the day someone finally needs it, under time
+pressure.
+
+So each of these now has a **design of record**, and each opens with an explicit status line naming
+the dependency, where it is declared, and precisely what does not exist. A guide that reads as
+though the subsystem is running is worse than no guide at all: it sends someone looking for a
+module nobody ever wrote.
+
+### The four
+
+**`TASK-AUTHORING.md`** — the enqueue boundary, idempotency, retries, limits, queue routing, and
+how to test tasks without a broker.
+
+**`PROCESS-MODEL.md`** — worker class, event loop and the ORM's synchronous boundary, treated as
+one topic rather than three, because deciding any of them alone decides the other two badly. The
+web process family here is verified against the Compose files; the task family is not, and the
+guide is explicit about which half is which.
+
+**`OBJECT-STORAGE.md`** — private documents over the S3 API: the adapter contract, presigned URLs,
+upload validation, and the split against Cloudinary, which keeps public media.
+
+**`security/AUDIT-TRAIL.md`** — the audit record, and the **record** half of OWASP A09:2025. Table
+schema, atomic write path, what goes in and what must never, the PII rule, retention, and tamper
+resistance. Its neighbour `MONITORING-AND-INCIDENT.md` keeps alerting and response; the A09 row now
+names both, because one control with two owners needs both named or neither gets done.
+
+### Observability, rewritten around interfaces
+
+`logging/OBSERVABILITY.md` now leads each of its four sections — error tracking, log aggregation,
+metrics, traces — with the **interface** the code is written against, and names the product as one
+implementation behind it. This is v2.9.0's provider-neutrality rule applied to the guides that most
+needed it.
+
+It also draws a boundary that was implicit and routinely misread: the **collector side** — log
+shipper, metrics store, dashboards — is server infrastructure. It does not run in your local Docker
+Compose stack, and it is not something the application is expected to bring with it.
 
 ## v2.9.0 — 11/08/2026
 

@@ -13,7 +13,7 @@ uvx copier copy gh:Syntek-Dev/syntek-base my-project
 cd my-project
 ```
 
-Copier asks twenty-six questions, plus four more between the optional surfaces if you opt into
+Copier asks thirty-two questions, plus four more between the optional surfaces if you opt into
 them. Most have
 either a sensible default or a value derived from
 an earlier answer — pressing Enter through the infrastructure and locale sections is a reasonable
@@ -82,8 +82,19 @@ Full variable reference: `how-to/docs/DEVELOPMENT.md`.
 bash code/src/scripts/development/server.sh up
 ```
 
-That brings up Django (Gunicorn + Uvicorn, hot reload), the Celery worker and beat, PostgreSQL,
-Valkey, Mailpit and Nginx.
+That brings up the four services `docker-compose.dev.yml` defines: Django (`django` — Uvicorn
+`--reload` directly, for reliable hot-reload of `.py` and templates; staging and prod run
+Gunicorn + Uvicorn workers instead), PostgreSQL (`db`), Valkey (`cache`) and Nginx (`nginx`).
+
+Celery is **declared, not wired**: `celery[redis]` is a dependency in `pyproject.toml`, but no
+Compose file defines a `worker` or `beat` service and no `CELERY_*` setting exists under
+`code/src/django/config/settings/`. Wiring it is a deliberate change — read
+`how-to/docs/CELERY-FIRST-RUN.md` before the first start in any long-lived environment.
+
+**There is no mail catcher either.** Dev uses Django's console email backend
+(`config/settings/dev.py`), so outbound mail is printed to the `django` container's stdout —
+read it with `bash code/src/scripts/development/logs.sh --service django --follow`. Test uses the
+in-memory backend. Adding Mailpit is a deliberate change, like any other service.
 
 ## 6. Migrate and seed
 
@@ -100,12 +111,11 @@ bash code/src/scripts/database/manageusers.sh create-superuser
 
 ## 7. Open it
 
-| URL                                            | What                                |
-| ---------------------------------------------- | ----------------------------------- |
-| `http://dev.<project-slug>.localhost`          | The public site                     |
-| `http://dev.<project-slug>.localhost/api/docs` | OpenAPI docs (dev only)             |
-| `http://dev.<project-slug>.localhost/control/` | Django admin — note: not `/admin/`  |
-| `http://dev.<project-slug>.localhost:8027`     | Mailpit, catching all outbound mail |
+| URL                                            | What                               |
+| ---------------------------------------------- | ---------------------------------- |
+| `http://dev.<project-slug>.localhost`          | The public site                    |
+| `http://dev.<project-slug>.localhost/api/docs` | OpenAPI docs (dev only)            |
+| `http://dev.<project-slug>.localhost/control/` | Django admin — note: not `/admin/` |
 
 ---
 

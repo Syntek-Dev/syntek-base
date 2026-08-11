@@ -37,7 +37,7 @@ the DOM. CSP forbids inline `<script>`, so it cannot be interpolated into a scri
 
 ```django
 {# base.html #}
-<meta name="glitchtip-dsn" content="{{ GLITCHTIP_BROWSER_DSN|default:'' }}" />
+<meta name="sentry-dsn" content="{{ SENTRY_BROWSER_DSN|default:'' }}" />
 <meta name="app-env" content="{{ ENVIRONMENT }}" />
 <script defer src="{% static 'js/observability.js' %}"></script>
 ```
@@ -54,7 +54,7 @@ initialise it once from `observability.js`:
 
 ```javascript
 // code/src/django/static/js/observability.js
-const dsn = document.querySelector('meta[name="glitchtip-dsn"]')?.content;
+const dsn = document.querySelector('meta[name="sentry-dsn"]')?.content;
 
 if (dsn) {
   Sentry.init({
