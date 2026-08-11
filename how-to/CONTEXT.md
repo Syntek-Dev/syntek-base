@@ -23,7 +23,8 @@ how-to/
 │   ├── DEVELOPMENT.md           ← first-time setup, Compose commands, env vars
 │   ├── FEATURE-DEPLOY.md        ← deploying a feature branch
 │   ├── GIT-WORKTREES.md         ← parallel development with worktrees and Docker isolation
-│   ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/
+│   ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/ (index)
+│   │   └── skill-authoring/     ← 4 sub-documents + CONTEXT.md · CLAUDE.md
 │   └── TOOLING-GUIDE.md         ← internal agents and skills reference (index)
 │       └── tooling-guide/       ← COMMANDS · CONFIGURATION · WORKFLOW + CONTEXT.md · CLAUDE.md
 ├── src/                         ← human-facing operator guides (300-line limit exempt)

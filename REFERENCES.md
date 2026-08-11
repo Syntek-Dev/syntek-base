@@ -85,7 +85,7 @@ consult when working in this repository.
 | [how-to/docs/GIT-WORKTREES.md](how-to/docs/GIT-WORKTREES.md)         | Git worktree creation and management                                                                                                  |
 | [how-to/docs/TOOLING-GUIDE.md](how-to/docs/TOOLING-GUIDE.md)         | Internal agents and skills reference (index)                                                                                          |
 | [how-to/docs/AI-DICTIONARY.md](how-to/docs/AI-DICTIONARY.md)         | Plain-English glossary of AI-coding terms (index)                                                                                     |
-| [how-to/docs/SKILL-AUTHORING.md](how-to/docs/SKILL-AUTHORING.md)     | How to write predictable Claude Code skills                                                                                           |
+| [how-to/docs/SKILL-AUTHORING.md](how-to/docs/SKILL-AUTHORING.md)     | How to write predictable Claude Code skills (index over `how-to/docs/skill-authoring/`)                                               |
 
 ### Project-management guides (`project-management/docs/`)
 

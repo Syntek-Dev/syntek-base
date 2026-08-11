@@ -14,7 +14,8 @@ loaded on demand by the agents in `.claude/agents/`.
 ## How to work here
 
 - **Read first:** `how-to/docs/SKILL-AUTHORING.md` — the standard for a predictable skill
-  (invocation, information hierarchy, steering, pruning). Follow it when adding or editing a skill.
+  (whether it should exist, reference vs task, frontmatter, craft, shipping). Follow it when
+  adding or editing a skill.
 - **Routing:** these are reference bundles, not code. Edit a skill when the convention it
   captures changes — treat it with the weight of a docs change. Stack skills are cited by name
   in `.claude/CLAUDE.md` ("Skill Targets") and by the specialist agents; keep those names stable.
@@ -25,8 +26,9 @@ loaded on demand by the agents in `.claude/agents/`.
   update this folder's `CONTEXT.md` tree if a file is added or removed.
 - **The frontmatter shape, the `## Governing procedures` section and the whole authoring
   standard belong to `how-to/docs/SKILL-AUTHORING.md`** — read it before writing, and do not
-  restate its rules here. It carries the six specification fields, which two this project
-  authors and why, the vendored exception, and the pre-ship checklist.
+  restate its rules here. It indexes the specification fields, the keys this project authors
+  and declines and why, the reference/task split and its fork call, the vendored exception,
+  and the pre-ship checklist.
 - **Definition of done:** `bash code/src/scripts/audits/skill-conformance.sh` and
   `bash code/src/scripts/audits/docs-length.sh --path .claude/skills` both exit 0; no
   reference points outside the project; British English; the skill still matches the agents

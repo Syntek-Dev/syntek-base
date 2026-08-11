@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.19.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.20.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.20.0] - 11/08/2026
+
+### Added
+
+- **`how-to/docs/skill-authoring/` — four sub-documents plus their pairing**, with `how-to/docs/SKILL-AUTHORING.md` reduced to a thin index over them. `FRONTMATTER.md` owns the field set, `FORK-DECISION.md` the reference/task split and the fork rubric, `CRAFT.md` invocation and information hierarchy, `SHIPPING.md` the pre-ship checklist. The precedent was already in the tree twice — `tooling-guide/` with three sub-documents and `ai-dictionary/` with seven — and the incoming doctrine exceeded the 58 lines the index had spare.
+- **Four runtime keys admitted by `code/src/scripts/audits/skill-conformance.sh`** — `context`, `agent`, `background`, `model` — beside the two specification fields this project authors. `disable-model-invocation` is **not** adopted and a skill carrying it fails. The gate had been asserting that anything outside the six specification fields fails validation, which was never true: Claude Code accepts documented extensions of its own, and declining the rest is this project's choice rather than the format's rule.
+- **Two fork assertions in the same gate.** Every skill carrying `context: fork` must carry an explicit `agent:`, and no `agent:` value may name anything outside `Explore`, `Plan` and `general-purpose`. The documented default is `general-purpose`, but `context: fork` changed behaviour at 2.1.218, so an explicit value is version-proof — and the second assertion is what keeps the custom-agent door shut in code while the doctrine records the test for reopening it.
+- **Three authoring rules earned from measurement, not from taste.** One remit, one skill — a declared skill/agent pair is two roster entries for a single job. A description is a claim that it discriminates against its near neighbours, and the claim is checkable. And a `skills:` list is load-bearing rather than documentary: a reference skill shadowed by its task counterpart places second every time, so it is reached only by being named, and a task skill that omits it stops receiving the conventions with nothing failing loudly.
+
+### Changed
+
+- **`README.md` and `THIRD-PARTY-NOTICES.md` credit the two upstream sources in the same change as the rules they inform**, per the standing attribution rule. The Agent Skills specification is Apache-2.0 and derivable with attribution; Claude Code's documentation carries no `LICENSE`, so its facts are usable and its wording is not. Both entries carry a measured five-gram overlap, and the measurement is recorded as a step rather than a claim — the first draft of `FORK-DECISION.md` failed it.
+- **`.github/workflows/audit-skill-conformance.yml` stops advertising the retired narrowing.** Its header still described a two-field gate, and the file is not copier-excluded, so every generated project would have started from a CI comment contradicting the audit beside it.
+- **The registries that describe the gate were brought with it** — `code/src/scripts/audits/CONTEXT.md`, `.copier/README.md`, `.claude/skills/CONTEXT.md` and `CLAUDE.md`, the root and `how-to/` `REFERENCES.md`, and `how-to/docs/CONTEXT.md` and `CLAUDE.md`. A gate whose own inventory describes the previous version is how the next reader learns the wrong rule.
+
+### Fixed
+
+- **A declined frontmatter key could be smuggled past the gate by quoting it.** The key check matched unquoted keys only, so `"allowed-tools":` reported fully clean on a first-party skill. Verified by probe before and after.
+- **A nine-word clause taken verbatim from documentation carrying no licence.** It reached a shipped guide by way of a research note, where it had been correctly marked as a quotation, and lost its quotation marks in transit. Re-authored, and the file now measures zero shared five-grams against both upstream sources.
 
 ## [2.19.0] - 11/08/2026
 

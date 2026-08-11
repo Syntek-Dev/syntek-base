@@ -12,7 +12,7 @@ The operational reference guides — `DEVELOPMENT.md` (setup, env, Compose comma
 `CELERY-FIRST-RUN.md` (Celery worker/beat first-run review), `FEATURE-DEPLOY.md` (feature
 deploy-coordination checklist), `TOOLING-GUIDE.md` (internal agents & skills index over
 `tooling-guide/`), `AI-DICTIONARY.md` (AI-coding glossary over `ai-dictionary/`), and
-`SKILL-AUTHORING.md` (how to write skills).
+`SKILL-AUTHORING.md` (how to write skills, index over `skill-authoring/`).
 
 ## How to work here
 
@@ -40,5 +40,5 @@ deploy-coordination checklist), `TOOLING-GUIDE.md` (internal agents & skills ind
 
 ## Output & naming
 
-- **Hand-written:** all eight guides and the `tooling-guide/` + `ai-dictionary/` sub-documents; nothing generated here.
+- **Hand-written:** all the guides and the `tooling-guide/` + `ai-dictionary/` + `skill-authoring/` sub-documents; nothing generated here.
 - Documentation files `SCREAMING-SNAKE-CASE.md`; the sub-doc folder is `kebab-case/`.

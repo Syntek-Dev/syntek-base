@@ -1,0 +1,92 @@
+---
+type: guide
+agent: doc-writer
+skills: [global-workflow, runbook]
+model: opus
+---
+
+# Skill Frontmatter — the fields this project authors
+
+**Version:** 0.1.0 **Standard:** [Agent Skills specification](https://agentskills.io/specification) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
+**Claude Model:** opus — the six specification fields, the four runtime keys admitted here, and what is declined
+
+---
+
+## Three claims, kept apart
+
+A reader who cannot tell these apart will not know which rule they are allowed to argue with.
+
+1. **The published specification defines six fields.** That is an external contract, and the
+   only thing a conformance claim can be made against.
+2. **Claude Code reads documented keys of its own beyond those six.** A key outside the six is
+   therefore not automatically rejected — several are read, and change how the skill runs.
+3. **This project authors six keys and declines the rest by choice** — the two required spec
+   fields, plus four runtime keys that place the run. Two further spec fields appear only on
+   vendored skills, which nobody here authors. Every decline below is a house decision with a
+   reason attached, not a limit imposed from outside.
+
+The gate reports its findings as `[spec N]` or `[house N]` for exactly this reason: a format
+breach and a house breach have different remedies, and only the second is negotiable.
+
+## The six specification fields
+
+| Field           | Spec     | Constraint                                                      | Here                                     |
+| --------------- | -------- | --------------------------------------------------------------- | ---------------------------------------- |
+| `name`          | required | 1–64 chars · `a-z0-9-` only · no leading/trailing `-` · no `--` | **Authored.** Matches its folder         |
+| `description`   | required | 1–1024 chars · the skill's job **and** its trigger conditions   | **Authored.** The whole invocation lever |
+| `license`       | optional | A licence name, or a bundled licence file                       | Vendored skills only                     |
+| `metadata`      | optional | Arbitrary string→string map                                     | Vendored skills only                     |
+| `compatibility` | optional | ≤ 500 chars — environment or product requirements               | **Declined**                             |
+| `allowed-tools` | optional | Space-separated pre-approved tools (experimental)               | **Declined**                             |
+
+The `name` and `description` constraints are enforced `[gate: fail]`. The four optional fields
+are declined on anything first-party, so their constraints are never reached here — a vendored
+skill's `license` string and a `compatibility` length are read by whoever validates upstream,
+not by this project's gate.
+
+## The four runtime keys admitted here
+
+Each of the four answers **where the skill runs**. None of them answers what it may do, which is
+the line that decides admission: run placement is a property of this skill, capability is a
+property of whatever runs it.
+
+| Key          | Sets                                                                                   | Authored when                                                                  |
+| ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `context`    | `inline` (the default) or `fork` — this conversation, or a fresh subagent              | The rubric in `FORK-DECISION.md` returns _fork_                                |
+| `agent`      | Which target a fork lands in — `Explore`, `Plan`, or `general-purpose`                 | Always, on any forked skill — stated even when it repeats the default          |
+| `background` | Whether that fork runs detached from the session                                       | Always, on any forked skill — it follows the same one-line test as `agent`     |
+| `model`      | The tier for the run: turn-scoped when inline, the forked subagent's tier under `fork` | A forked skill needs a tier its caller cannot set — otherwise § 2.5 carries it |
+
+`disable-model-invocation` is documented by the runtime and is **not** adopted (below).
+
+## What is declined, and why
+
+**`allowed-tools`, and the reason generalises.** What an agent may _do_ is a property of the
+**caller** — the session or agent that loads the skill, and the routing frontmatter on the
+governing `docs/`/`workflows/` file — never of the skill. A skill is reference and process; it
+carries no capability of its own. Put `allowed-tools` on a skill and the same skill grants
+different powers depending on who loaded it, which is precisely the unpredictability the whole
+standard exists to remove. That test is what admits the four keys above and excludes this one:
+they place a run, this one grants a power.
+
+**`compatibility`**, even though it looks made for the surface-gated skills. `stack-react-native`,
+`stack-rust` and `stack-slint` are gated by `copier.yml` `_exclude`, so on a project without that
+surface the file is **absent**, not present-and-incompatible. The field would restate a decision
+the file's own absence already makes.
+
+**`disable-model-invocation`.** Invocation is already decided by the description's wording — a
+rich "Load when…" trigger list for model-auto-loading, a "type `/name`" phrasing for human-reached
+(the trade is set out in `CRAFT.md` § 1). Adding a key that switches the same behaviour puts one
+meaning in two places, and the two drift the first time only one of them is edited.
+
+## The vendored exception, stated rather than implied
+
+The three `cloudinary-*` skills are symlinks into `.agents/skills/`, refreshed from upstream by
+the skills tool and never authored here. They carry `license` and `metadata`, and they carry no
+`## Governing procedures` section. That is correct: the house rules bind what **this project
+writes**, and hand-editing a vendored skill would be undone by the next refresh
+(`skills-lock.json`). The gate holds them to the specification clauses only — and, within those,
+to the **published six alone**: none of the four runtime keys is admitted on a vendored skill,
+because a routing key arriving in someone else's drop is one nobody here decided.
+
+_Part of the `how-to/docs/` documentation family._

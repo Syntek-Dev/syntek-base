@@ -1,11 +1,62 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.19.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.20.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.20.0 — 11/08/2026
+
+**Status:** Minor — one guide split into an index and four sub-documents, and the gate beside
+it widened to match what the tooling actually accepts. No application behaviour changes.
+
+### A gate that stated a house choice as somebody else's rule
+
+`SKILL-AUTHORING.md` said that keys outside the six specification fields fail validation, and
+`skill-conformance.sh` enforced it. The sentence was false. Claude Code accepts documented
+extensions of its own, and three of this repository's shipped skills already used fields
+outside the two the guide claimed were authored here.
+
+The distinction matters more than the correction. Three claims were being carried as one: the
+specification defines six fields; the tooling accepts more than six; and this project declines
+most of the extras **by choice**. Only the third is ours to argue with, and stating it as an
+external rule meant nobody could. The gate now admits the two specification fields plus four
+runtime keys that place a run — `context`, `agent`, `background` and `model` — and declines the
+rest openly, with the reasoning in a file a reader can disagree with.
+
+### The evasion underneath it
+
+The key check matched unquoted keys only. A skill carrying `"allowed-tools":` — one pair of
+quote characters — reported fully clean. Found by writing probe skills to force each clause
+rather than reading the code and believing it, which is also how the rest of this release was
+verified.
+
+### What the split bought
+
+The incoming doctrine — the fork rubric, the fork-target policy, the reopening test, the
+reference/task distinction — did not fit the 58 lines the guide had spare under the 300-line
+cap. It now sits in four sub-documents with the guide as a thin index: the same shape
+`tooling-guide/` and `ai-dictionary/` already use.
+
+Three rules came out of measuring rather than deciding. **One remit, one skill** — a declared
+skill/agent pair is two entries competing for one job. **A description is a claim that it
+discriminates** from its near neighbours, and the claim is checkable. And a **`skills:` list is
+load-bearing**: a reference skill shadowed by its task counterpart placed second in every
+measured case, so it is reached only by being named — and a task skill that omits it stops
+receiving the conventions with nothing failing loudly.
+
+### Attribution, measured rather than asserted
+
+Both upstream sources are credited in the same change as the rules they inform. The Agent
+Skills specification is Apache-2.0 and derivable with attribution; Claude Code's documentation
+carries no `LICENSE` file, so its facts are usable and its wording is not.
+
+The check is a five-gram overlap measurement, and it is recorded as a step rather than a claim
+because the first draft failed it: a nine-word clause had travelled from a research note, where
+it was correctly marked as a quotation, into a shipped guide with the marking gone. Re-authored,
+and now at zero shared five-grams against both sources.
 
 ## v2.19.0 — 11/08/2026
 

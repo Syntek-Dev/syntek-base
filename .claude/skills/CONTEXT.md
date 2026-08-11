@@ -2,9 +2,9 @@
 
 Skills for Claude Code — auto-selected reference bundles the agents load on demand. Each skill
 is a folder with a `SKILL.md` plus optional sub-documents, in the published
-[Agent Skills format](https://agentskills.io/specification); of the six frontmatter fields that
-format defines, this project authors `name` and `description` and declines the rest — the reason,
-and the vendored exception, are in `how-to/docs/SKILL-AUTHORING.md`. Internalised from the
+[Agent Skills format](https://agentskills.io/specification). Which of that format's fields this
+project authors, which runtime keys it admits beyond them, what it declines and why, and the
+vendored exception are all in `how-to/docs/SKILL-AUTHORING.md`. Internalised from the
 `<%ORG_SLUG%>-dev-suite` and `<%ORG_SLUG%>-doc-writer` plugins so the project carries its own
 tooling; plugin references were rewritten to internal paths.
 

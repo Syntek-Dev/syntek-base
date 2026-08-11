@@ -1122,7 +1122,7 @@ table ever falls behind it.
 | `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                |
 | `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                |
 | `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                           |
-| `skill-conformance.sh` | Every skill matches the Agent Skills spec and this project's two-field narrowing        |
+| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors         |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                    |
 | `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                          |
 
@@ -1335,16 +1335,20 @@ dependency is direct and the credit is owed accordingly.
 The backend, background-job, observability and security doctrine this project inherits draws on
 these. As above, **rules are derived and re-authored, never copied**.
 
-| Source                                                                              | Contributed                                                                                                                                                                                                        | Licence      |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
-| [wshobson/agents](https://github.com/wshobson/agents) — Seth Hobson                 | Background-job discipline (idempotency under at-least-once delivery, retry policy, DLQ) and async/sync patterns                                                                                                    | MIT          |
-| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani | Spec-driven and doubt-driven development, context engineering                                                                                                                                                      | MIT          |
-| [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits         | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution | CC-BY-SA-4.0 |
-| [agentskills/agentskills](https://github.com/agentskills/agentskills)               | The published Agent Skills specification, which `how-to/docs/SKILL-AUTHORING.md` follows                                                                                                                           | Apache-2.0   |
-| [alibaba/open-code-review](https://github.com/alibaba/open-code-review)             | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                 | Apache-2.0   |
+| Source                                                                                | Contributed                                                                                                                                                                                                        | Licence      |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
+| [wshobson/agents](https://github.com/wshobson/agents) — Seth Hobson                   | Background-job discipline (idempotency under at-least-once delivery, retry policy, DLQ) and async/sync patterns                                                                                                    | MIT          |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani   | Spec-driven and doubt-driven development, context engineering                                                                                                                                                      | MIT          |
+| [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits           | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution | CC-BY-SA-4.0 |
+| [agentskills/agentskills](https://github.com/agentskills/agentskills)                 | The published Agent Skills specification, which `how-to/docs/SKILL-AUTHORING.md` follows                                                                                                                           | Apache-2.0   |
+| [Claude Code — Agent Skills docs](https://code.claude.com/docs/en/skills) — Anthropic | The runtime behaviour behind the fork rubric and the reference-versus-task split in `how-to/docs/skill-authoring/`. No LICENCE upstream — facts used, every rule re-authored                                       | none         |
+| [alibaba/open-code-review](https://github.com/alibaba/open-code-review)               | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                 | Apache-2.0   |
 
-Everything above is free and open. If a rule in this repository looks wrong to you, the original
-is one click away — read it and decide for yourself.
+Everything above is free to read. **Reuse is narrower than that**, in two directions: an
+unlicensed row grants nothing at all, and a share-alike row cannot travel into anything this
+project redistributes — which is why both are taken as facts and never as wording. If a rule in
+this repository looks wrong to you, the original is one click away — read it and decide for
+yourself.
 
 ---
 

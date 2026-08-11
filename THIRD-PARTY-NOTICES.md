@@ -185,28 +185,38 @@ SOFTWARE.
 ## Not listed here, and why
 
 Each row below was **measured**, not assumed — five-gram overlap between the upstream text and the
-guide said to derive from it, on 09/08/2026, and the two TigerStyle rows on 11/08/2026:
+guide said to derive from it, on 09/08/2026, the two TigerStyle rows on 11/08/2026, and the two
+skill-authoring rows on 11/08/2026:
 
-| Source                                    | Derived into                                       | Overlap  |
-| ----------------------------------------- | -------------------------------------------------- | -------- |
-| `emilkowalski/skills` (motion standard)   | `code/docs/VISUAL-DESIGN.md` § 5                   | **0.0%** |
-| `pbakaus/impeccable` (native audit)       | `code/docs/visual-design/MOBILE.md`                | **0.0%** |
-| `pbakaus/impeccable` (craft floor)        | `code/docs/visual-design/WEB.md`                   | **0.0%** |
-| `hardikpandya/stop-slop` (prose taxonomy) | `how-to/src/BRAND-VOICE.md` § 4                    | **0.0%** |
-| `wshobson/agents` (background jobs)       | `code/docs/TASK-AUTHORING.md` · `PROCESS-MODEL.md` | **0.0%** |
-| `tigerbeetle` TigerStyle (negative space) | `code/docs/NEGATIVE-SPACE.md`                      | **0.0%** |
-| `tigerbeetle` TigerStyle (negative space) | `how-to/src/INVARIANTS.md`                         | **0.0%** |
+| Source                                      | Derived into                                       | Overlap  |
+| ------------------------------------------- | -------------------------------------------------- | -------- |
+| `emilkowalski/skills` (motion standard)     | `code/docs/VISUAL-DESIGN.md` § 5                   | **0.0%** |
+| `pbakaus/impeccable` (native audit)         | `code/docs/visual-design/MOBILE.md`                | **0.0%** |
+| `pbakaus/impeccable` (craft floor)          | `code/docs/visual-design/WEB.md`                   | **0.0%** |
+| `hardikpandya/stop-slop` (prose taxonomy)   | `how-to/src/BRAND-VOICE.md` § 4                    | **0.0%** |
+| `wshobson/agents` (background jobs)         | `code/docs/TASK-AUTHORING.md` · `PROCESS-MODEL.md` | **0.0%** |
+| `tigerbeetle` TigerStyle (negative space)   | `code/docs/NEGATIVE-SPACE.md`                      | **0.0%** |
+| `tigerbeetle` TigerStyle (negative space)   | `how-to/src/INVARIANTS.md`                         | **0.0%** |
+| Agent Skills specification (the six fields) | `how-to/docs/skill-authoring/` (all six files)     | **0.0%** |
+| Claude Code Agent Skills docs (runtime)     | `how-to/docs/skill-authoring/` (all six files)     | **0.0%** |
+
+The last two rows were re-measured after an earlier draft failed them: the fork guide carried six
+shared five-grams with the unlicensed runtime docs, and the frontmatter and craft guides eight with
+the specification. **Both are why the measurement is a step and not a claim** — every one of those
+sentences read as re-authored until it was counted.
 
 Numeric values (durations, easing curves, contrast ratios, character limits) are facts and carry no
 obligation regardless — but the wording around them would have, and none was taken.
 
-| Source                                | Why no notice                                                                                                                      |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| The remaining design/platform sources | Read as a checklist of concerns and re-authored (`README.md` § Influences). Facts and method are not copyrightable                 |
-| `trailofbits/skills`                  | CC-BY-SA-4.0 — **read only, never derived into shipped text**. A notice would not cure share-alike (`.claude/CLAUDE.md` § 6)       |
-| `audits/rules/*.yml`                  | Authored in-house; each file carries an explicit "no upstream rule text consulted" header. Semgrep's rules are not redistributable |
-| `anthropics/skills` · `vercel-labs`   | No LICENCE upstream — read for ideas, never quoted, so nothing of theirs is redistributed                                          |
-| `mattpocock/dictionary-of-ai-coding`  | **Open question — see below.** Not a notice problem, a permission problem                                                          |
+| Source                                | Why no notice                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The remaining design/platform sources | Read as a checklist of concerns and re-authored (`README.md` § Influences). Facts and method are not copyrightable                                                                                                                                                                                                                                                        |
+| `trailofbits/skills`                  | CC-BY-SA-4.0 — **read only, never derived into shipped text**. A notice would not cure share-alike (`.claude/CLAUDE.md` § 6)                                                                                                                                                                                                                                              |
+| `audits/rules/*.yml`                  | Authored in-house; each file carries an explicit "no upstream rule text consulted" header. Semgrep's rules are not redistributable                                                                                                                                                                                                                                        |
+| `anthropics/skills` · `vercel-labs`   | No LICENCE upstream — read for ideas, never quoted, so nothing of theirs is redistributed                                                                                                                                                                                                                                                                                 |
+| `agentskills/agentskills`             | Apache-2.0 covers the **specification text**, and § 4(d) binds only a derivative of a work that ships a `NOTICE` file. The repository ships none — checked 11/08/2026, root holds `LICENSE` and no `NOTICE` — so the obligation never attaches. Separately, what is taken is the field set, their limits and each field's job, measured at 0.0% overlap above             |
+| Claude Code's own Agent Skills docs   | **No LICENCE upstream**, so no grant exists to redistribute under — which is why only facts are taken and every derived rule is re-authored, at 0.0% overlap above. **Quotation is narrower than the guides:** `research/SKILLS-VS-SUBAGENTS.md` quotes it, each quotation marked and carrying a section-anchored URL, and nothing in `how-to/docs/skill-authoring/` does |
+| `mattpocock/dictionary-of-ai-coding`  | **Open question — see below.** Not a notice problem, a permission problem                                                                                                                                                                                                                                                                                                 |
 
 ### Open: `dictionary-of-ai-coding` has no licence
 

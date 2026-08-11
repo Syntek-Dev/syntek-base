@@ -1,9 +1,13 @@
 # Skill conformance guard — the CI half of how-to/docs/SKILL-AUTHORING.md.
 #
 # Checks every .claude/skills/*/SKILL.md against the published Agent Skills specification
-# (https://agentskills.io/specification) and against this project's narrowing of it: the
-# spec defines six frontmatter fields, and only `name` + `description` are authored here,
-# because capability and model belong to the AGENT that loads a skill, never to the skill.
+# (https://agentskills.io/specification) and against this project's narrowing of it. Three
+# claims, kept apart: the spec defines six frontmatter fields; Claude Code documents keys of
+# its own beyond them; this project authors SIX keys — the two required spec fields plus the
+# four runtime keys that place the run — and declines the rest by choice. What an agent may
+# DO stays with the caller that loads the skill, which is why `allowed-tools` is declined.
+# The reasons, and which of the three a reader may argue with:
+# how-to/docs/skill-authoring/FRONTMATTER.md.
 #
 # Vendored skills — symlinked folders refreshed from upstream via skills-lock.json — are
 # held to the spec clauses only. Editing one to satisfy a house rule is undone by the next
@@ -28,6 +32,7 @@ on:
     paths:
       - ".claude/skills/**"
       - "how-to/docs/SKILL-AUTHORING.md"
+      - "how-to/docs/skill-authoring/**"
       - "code/src/scripts/audits/skill-conformance.sh"
       - ".github/workflows/audit-skill-conformance.yml"
   pull_request:
@@ -35,6 +40,7 @@ on:
     paths:
       - ".claude/skills/**"
       - "how-to/docs/SKILL-AUTHORING.md"
+      - "how-to/docs/skill-authoring/**"
       - "code/src/scripts/audits/skill-conformance.sh"
       - ".github/workflows/audit-skill-conformance.yml"
   workflow_dispatch:

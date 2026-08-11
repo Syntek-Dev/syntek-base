@@ -66,8 +66,8 @@ wherever it lands.
 section was being edited. **Prettier had reformatted the markers into valid Markdown**: `<<<<<<<`
 became an indented list continuation, `>>>>>>>` became a `> > > > > > >` blockquote, and the
 duplicated line was prefixed `#`. So it lints clean, formats clean, and a grep for `^<<<<<<<`
-finds nothing. `skill-conformance.sh` checks that the section is **present and correctly
-placed**, not that its contents parse as routing.
+finds nothing. `skill-conformance.sh` checks that the section is **present** — placement is a
+convention, and nothing checks that the contents parse as routing.
 
 Fixed in place at N-015 (both sides were the identical line). A repo-wide sweep for raw and
 mangled markers found **one** other hit, `TEMPLATE-GUIDE/14-UPDATING.md`, which is a deliberate
@@ -162,15 +162,21 @@ only if the template contract changes for an unrelated reason and (a) becomes fr
 **Summary:** `research/` is **not** copier-excluded, so syntek-base's own research notes ship into
 every generated project — where research about the _template_ is as meaningless as the template's
 gaps were in `GAPS.md`. Sam settled on 11/08/2026 that these notes are epic scaffolding and get
-deleted on completion, which is right for two of them and **breaks the `README.md` for the other
-two**:
+deleted on completion, which is right for one of them and **breaks the `README.md` for the other
+three**:
 
-| Note                                 | Inbound references                   | Deletable |
-| ------------------------------------ | ------------------------------------ | --------- |
-| `SKILLS-VS-SUBAGENTS.md`             | `CHANGELOG.md` + gitignored maps     | **yes**   |
-| `DISCOVERABILITY-SKILL-ECOSYSTEM.md` | `CHANGELOG.md`                       | **yes**   |
-| `ANTI-SLOP-RULE-SOURCES.md`          | **`README.md:151`** + `CHANGELOG.md` | **no**    |
-| `AGENT-SKILL-ECOSYSTEM.md`           | **`README.md:183`** + `CHANGELOG.md` | **no**    |
+| Note                                 | Inbound references                                                      | Deletable |
+| ------------------------------------ | ----------------------------------------------------------------------- | --------- |
+| `DISCOVERABILITY-SKILL-ECOSYSTEM.md` | `CHANGELOG.md`                                                          | **yes**   |
+| `SKILLS-VS-SUBAGENTS.md`             | **`README.md:188`** + **`THIRD-PARTY-NOTICES.md:218`** + `CHANGELOG.md` | **no**    |
+| `ANTI-SLOP-RULE-SOURCES.md`          | **`README.md:151`** + `CHANGELOG.md`                                    | **no**    |
+| `AGENT-SKILL-ECOSYSTEM.md`           | **`README.md:183`** + `CHANGELOG.md`                                    | **no**    |
+
+`SKILLS-VS-SUBAGENTS.md` moved from deletable to load-bearing on 11/08/2026, when the
+skill-authoring split cited it twice from shipped files: `README.md` names it as the per-claim
+evidence behind the Claude Code docs row, and `THIRD-PARTY-NOTICES.md` names it as the one place
+that quotes an unlicensed source. **Any plan that deleted it at closeout is superseded** — it now
+dangles two citations and drops straight into the quotation question below.
 
 The two `README.md` citations are the per-claim evidence behind the _Influences and attribution_
 tables. `.claude/CLAUDE.md` § 6 makes the licence column binding **before** deriving; the notes are
@@ -180,8 +186,10 @@ and stay regardless — a changelog naming a file that was later deleted is a co
 **A second question sits underneath**, surfaced by `MAP-AGENTS-TO-SKILLS` `N-002`: the shipped
 notes quote **unlicensed** sources verbatim (`anthropics/claude-code`, `anthropics/skills`), while
 `ANTI-SLOP-RULE-SOURCES.md` itself ends "may be read for ideas but **never quoted**". Deleting a
-note retires the problem for that note only; the two survivors keep it.
-**Blocked by / Action:** Decide the lifecycle for the two survivors — either (a) narrow the
+note retires the problem for that note only; the three survivors keep it, and
+`SKILLS-VS-SUBAGENTS.md` is the sharpest case because `THIRD-PARTY-NOTICES.md` now states in
+writing that it quotes an unlicensed source.
+**Blocked by / Action:** Decide the lifecycle for the three survivors — either (a) narrow the
 precedent's wording to "never quoted **in redistributed rule text**", so citation in a research
 note stays legitimate, or (b) paraphrase their quotations, keeping every citation URL, or (c) move
 the evidence into `TEMPLATE-GUIDE/` (already excluded) and repoint `README.md` — which makes the

@@ -3,26 +3,51 @@
 # skill-conformance.sh — Verify every skill against the Agent Skills specification
 #                        and this project's narrowing of it.
 #
-#                        The spec defines six frontmatter fields; this project authors two
-#                        (`name` + `description`) and declines the rest, because capability
-#                        and model belong to the AGENT that loads a skill, never to the
-#                        skill. Both halves are checked, and reported apart — a spec breach
-#                        and a house-rule breach are different problems.
+#                        Three separate facts, conflated once and kept apart here:
+#                          - the published Agent Skills spec defines SIX fields;
+#                          - Claude Code accepts its own documented extensions beyond them,
+#                            so a key outside the six is not a validation error;
+#                          - this project admits exactly FOUR of those extensions —
+#                            `context`, `agent`, `background`, `model` — and declines every
+#                            remaining extra BY CHOICE, not because it would be rejected.
+#                        Both halves are checked, and reported apart — a spec breach and a
+#                        house-rule breach are different problems.
 #
-#                        Eight [gate: fail] clauses, no warn tier:
+#                        Eleven [gate: fail] clauses, no warn tier. Clause numbers are
+#                        appended, never renumbered — they appear in reports:
 #                          spec   1. frontmatter opens at byte 0 and is terminated
 #                          spec   2. `name` and `description` are both present
 #                          spec   3. `name` matches the parent directory
 #                          spec   4. `name` is 1-64 chars, a-z0-9-, no edge or doubled hyphen
 #                          spec   5. `description` is non-empty and <= 1024 characters
-#                          spec   6. no key outside the six the spec defines
-#                          house  7. no spec-optional key on a first-party skill
-#                          house  8. `## Governing procedures` section present
+#                          spec   6. no key that neither the spec nor Claude Code defines
+#                          house  7. no key this project declines on a first-party skill —
+#                                    the four spec-optional fields, and any documented
+#                                    Claude Code key outside the admitted four
+#                          house  8. `context: fork` carries an explicit `agent:`
+#                          house  9. `agent:` names a built-in fork target only
+#                          house 10. `## Governing procedures` section present
+#                          house 11. `context: fork` carries an explicit `background:`
+#
+#                        The tier is the point, not a label. A key nothing defines is a
+#                        format problem; declining a key the runtime does document is a
+#                        CHOICE, and the reader has to be able to tell which they may argue
+#                        with (how-to/docs/skill-authoring/FRONTMATTER.md § Three claims).
+#
+#                        Clauses 8, 9 and 11 are what hold the fork policy in CODE: a forked
+#                        skill states its target and its detachment rather than inheriting a
+#                        version-dependent default, and that target is one of the three
+#                        built-ins this project admits. The runtime also accepts a custom
+#                        subagent there; it may return only on evidence that a named skill
+#                        needs a durable capability no built-in provides — which is a
+#                        decision, made in the doctrine, not something a convenient new file
+#                        may assume.
 #
 #                        Vendored skills (a symlinked folder — the cloudinary set, refreshed
-#                        from upstream via skills-lock.json) are held to the SPEC half only.
-#                        Hand-editing one to satisfy a house rule is undone by the next
-#                        refresh, so clauses 7 and 8 do not apply to them.
+#                        from upstream via skills-lock.json) are held to the SPEC half only:
+#                        the published six, with no extension admitted. Hand-editing one to
+#                        satisfy a house rule is undone by the next refresh, so clauses 7-11
+#                        do not apply to them.
 #
 #                        Length is NOT checked here — docs-length.sh owns the 300-line cap
 #                        across all of .claude/**, and one rule with two enforcers drifts.
@@ -73,13 +98,23 @@ Spec clauses (https://agentskills.io/specification):
   3. `name` matches the parent directory name
   4. `name` is 1-64 chars, a-z0-9-, no leading/trailing or doubled hyphen
   5. `description` is non-empty and at most 1024 characters
-  6. No key outside: name description license metadata compatibility allowed-tools
+  6. No key that neither the spec nor Claude Code defines. The spec's six are
+     name description license metadata compatibility allowed-tools; on a vendored
+     skill those six are the whole admitted set
 
-House clauses (how-to/docs/SKILL-AUTHORING.md):
-  7. A first-party skill carries `name` + `description` only
-  8. A first-party skill carries a `## Governing procedures` section
+House clauses (how-to/docs/skill-authoring/FRONTMATTER.md):
+  7. A first-party skill carries name + description + the four admitted runtime keys
+     (context agent background model), and no key declined here — the four
+     spec-optional fields, or a documented Claude Code key such as
+     disable-model-invocation
+  8. A skill with `context: fork` also carries an explicit `agent:`
+  9. `agent:` names one of the three built-in fork targets this project admits:
+     Explore | Plan | general-purpose
+ 10. A first-party skill carries a `## Governing procedures` section
+ 11. A skill with `context: fork` also carries an explicit `background:`
 
-Vendored skills (symlinked folders, refreshed from upstream) are held to clauses 1-6 only.
+Vendored skills (symlinked folders, refreshed from upstream) are held to clauses 1-6 only,
+and to the published six alone — no extension is admitted on one.
 File length is docs-length.sh's, not this script's.
 
 Options:
@@ -163,15 +198,21 @@ is_vendored() { [[ -L "${1%/}" ]]; }
 
 # Emit `key<TAB>value` for every TOP-LEVEL frontmatter key, with block scalars (>- | etc.)
 # and continuation lines folded into one value. Indented lines are nested data, not keys.
+#
+# The key may be quoted, and the quotes are stripped before it is emitted: YAML reads
+# `"allowed-tools": Read` and `allowed-tools: Read` as the same key, so a key check that
+# matched only the bare form would be evadable with two characters — the runtime would act
+# on the key and the gate would report the file clean.
 parse_frontmatter() {
-  awk '
+  awk -v Q="\"'" '
     NR == 1 && $0 != "---" { print "!!NOFM"; exit }
     NR == 1 { infm = 1; next }
     infm && $0 == "---" { flush(); infm = 0; exit }
     infm {
-      if ($0 ~ /^[A-Za-z_][A-Za-z0-9_-]*:/) {
+      if ($0 ~ "^[" Q "]?[A-Za-z_][A-Za-z0-9_-]*[" Q "]?[[:space:]]*:") {
         flush()
         key = $0; sub(/:.*/, "", key)
+        sub("^[" Q "]", "", key); sub("[" Q "]$", "", key); sub(/[[:space:]]+$/, "", key)
         val = $0; sub(/^[^:]*:[[:space:]]*/, "", val)
         if (val == ">" || val == ">-" || val == "|" || val == "|-" || val == "") val = ""
         next
@@ -186,8 +227,38 @@ parse_frontmatter() {
   ' "$1"
 }
 
+# Three lists, deliberately not merged. SPEC_KEYS stays a faithful copy of the PUBLISHED six,
+# so the script never asserts something false about the spec and a vendored drop cannot smuggle
+# a routing key past the only key check that applies to it. The admitted set is therefore
+# tier-dependent: SPEC_KEYS on a vendored skill, SPEC_KEYS + EXT_KEYS on a first-party one.
+#
+# EXT_KEYS is Claude Code's own frontmatter, outside the spec and accepted by the runtime.
+# Exactly four are admitted.
 SPEC_KEYS=" name description license metadata compatibility allowed-tools "
-HOUSE_KEYS=" name description "
+EXT_KEYS=" context agent background model "
+
+# Documented by Claude Code and declined here. Kept apart from the unknown-key case because
+# the tiers differ: this is a house choice and negotiable, an undocumented key is not. A
+# runtime key that appears later and is not listed here reports under clause 6 until it is.
+DECLINED_EXT_KEYS=" disable-model-invocation "
+
+# What a first-party skill may actually author: the two required spec fields plus the four
+# admitted runtime keys. Everything else is declined by choice — the reasons are in
+# how-to/docs/skill-authoring/FRONTMATTER.md § What is declined, and why.
+HOUSE_KEYS=" name description context agent background model "
+
+# The only fork targets this project admits. The runtime also accepts a custom subagent from
+# .claude/agents/; that door is closed here by choice, with a reopening test recorded in
+# how-to/docs/skill-authoring/FORK-DECISION.md § The custom-agent door.
+FORK_AGENTS=" Explore Plan general-purpose "
+
+# YAML permits a quoted scalar; compare the value, not its quoting.
+unquote() {
+  local v="$1"
+  v="${v#\"}"; v="${v%\"}"
+  v="${v#\'}"; v="${v%\'}"
+  printf '%s' "$v"
+}
 
 SKILL_COUNT=0
 VENDORED_COUNT=0
@@ -257,18 +328,55 @@ while IFS= read -r -d '' dir; do
   # --- Clauses 6 and 7: the key set ----------------------------------------------
   while IFS=$'\t' read -r key _; do
     [[ -n "$key" ]] || continue
-    if [[ "$SPEC_KEYS" != *" $key "* ]]; then
-      printf '%s: [spec 6] `%s:` is not an Agent Skills field — validation would reject it\n' \
-        "$file" "$key" >> "$TMP_HITS"
-    elif [[ $vendored == false && "$HOUSE_KEYS" != *" $key "* ]]; then
-      printf '%s: [house 7] `%s:` is spec-valid but declined here — capability and model belong to the agent\n' \
+    if [[ "$SPEC_KEYS" == *" $key "* ]]; then
+      # A published spec field. Four of the six are declined here, on a first-party skill.
+      if [[ $vendored == false && "$HOUSE_KEYS" != *" $key "* ]]; then
+        printf '%s: [house 7] `%s:` is spec-valid but declined here — a first-party skill authors `name`, `description` and the four admitted runtime keys, nothing else\n' \
+          "$file" "$key" >> "$TMP_HITS"
+      fi
+    elif [[ "$EXT_KEYS" == *" $key "* || "$DECLINED_EXT_KEYS" == *" $key "* ]]; then
+      # A Claude Code key: authored here where admitted, never hand-added to someone else's
+      # skill. Declining one of them is this project's call, so it reports as house, not spec.
+      if [[ $vendored == true ]]; then
+        printf '%s: [spec 6] `%s:` is a Claude Code extension, not an Agent Skills field — a vendored skill is held to the published six\n' \
+          "$file" "$key" >> "$TMP_HITS"
+      elif [[ "$EXT_KEYS" != *" $key "* ]]; then
+        printf '%s: [house 7] `%s:` is documented by Claude Code and declined here — see how-to/docs/skill-authoring/FRONTMATTER.md § What is declined, and why\n' \
+          "$file" "$key" >> "$TMP_HITS"
+      fi
+    else
+      printf '%s: [spec 6] `%s:` is not one of the six fields the Agent Skills specification defines, and Claude Code documents no such key\n' \
         "$file" "$key" >> "$TMP_HITS"
     fi
   done <<< "$fm"
 
-  # --- Clause 8: the routing section ---------------------------------------------
+  context_val="$(unquote "$(printf '%s\n' "$fm" | awk -F'\t' '$1=="context"{print $2; exit}')")"
+  agent_val="$(unquote "$(printf '%s\n' "$fm" | awk -F'\t' '$1=="agent"{print $2; exit}')")"
+  background_val="$(unquote "$(printf '%s\n' "$fm" | awk -F'\t' '$1=="background"{print $2; exit}')")"
+
+  # --- Clauses 8, 9 and 11: the fork call -----------------------------------------
+  # `agent:` defaults to general-purpose when omitted, but that is version-dependent
+  # behaviour on a young field — so a fork states both keys of the write test explicitly.
+  # Clause 9 is unconditional on `context:`: an `agent:` value on an inline skill is either
+  # a stray key or a fork that forgot to say so, and both are worth the finding.
+  if [[ $vendored == false ]]; then
+    if [[ "$context_val" == "fork" && -z "$agent_val" ]]; then
+      printf '%s: [house 8] `context: fork` with no `agent:` — state the target explicitly rather than inheriting the default\n' \
+        "$file" >> "$TMP_HITS"
+    fi
+    if [[ -n "$agent_val" && "$FORK_AGENTS" != *" $agent_val "* ]]; then
+      printf '%s: [house 9] `agent: %s` is not one of the three built-in targets this project admits — a custom agent returns only on the reopening test in how-to/docs/skill-authoring/FORK-DECISION.md\n' \
+        "$file" "$agent_val" >> "$TMP_HITS"
+    fi
+    if [[ "$context_val" == "fork" && -z "$background_val" ]]; then
+      printf '%s: [house 11] `context: fork` with no `background:` — it answers the same write test as `agent:`, so it is stated alongside it\n' \
+        "$file" >> "$TMP_HITS"
+    fi
+  fi
+
+  # --- Clause 10: the routing section --------------------------------------------
   if [[ $vendored == false ]] && ! grep -q '^## Governing procedures' "$file"; then
-    printf '%s: [house 8] no `## Governing procedures` section — frontmatter carries no routing, so the body must\n' \
+    printf '%s: [house 10] no `## Governing procedures` section — the body carries the procedure this skill routes to\n' \
       "$file" >> "$TMP_HITS"
   fi
 done < <(collect_skills)
@@ -310,7 +418,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '| **Violations** | %s |\n' "$HIT_COUNT"
         printf '| **Status** | %s |\n\n' "$STATUS"
         if [[ "$HIT_COUNT" -gt 0 ]]; then printf '```text\n%s\n```\n' "$BODY"
-        else printf '_Every skill conforms to the Agent Skills specification and the house narrowing._\n'; fi
+        else printf '_Every skill conforms to the Agent Skills specification and this project'"'"'s field set._\n'; fi
         printf '\nRule: `how-to/docs/SKILL-AUTHORING.md` · Spec: <https://agentskills.io/specification>\n'
       } > "$OUTPUT_FILE" ;;
     json)
@@ -326,7 +434,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 
 if [[ "$HIT_COUNT" -eq 0 ]]; then
-  bold "✓ Every skill conforms — spec fields valid, house narrowing held, routing present."
+  bold "✓ Every skill conforms — spec fields valid, field set held, fork targets built-in."
   log ""
   exit 0
 else
