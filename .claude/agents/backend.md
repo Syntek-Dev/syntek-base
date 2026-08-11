@@ -78,7 +78,7 @@ python3 .claude/plugins/env-tool.py find
 ## Before you code
 
 0. **Designing a new API surface or data model? Grill first.** Load
-   `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> one question at a time — each Django Ninja
+   `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> — each Django Ninja
    endpoint (operation), inputs/outputs, the named Policy guarding every state-changing endpoint
    (OWASP A01), ownership checks (no IDOR), error shapes, idempotency — before writing the
    contract. Record hard-to-reverse calls as an ADR. Design-work default (`.claude/CLAUDE.md` §10).
@@ -99,6 +99,10 @@ python3 .claude/plugins/env-tool.py find
   `CORS_ALLOWED_ORIGINS` an explicit allowlist, never `*` in production.
 - Django admin is **never** mounted at `/admin/` — that prefix is the <%PROJECT_NAME%> Admin (Django views + templates + HTMX; Django contrib admin lives at `/control/`).
 - New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>`.
+- **Infrastructure is reached through its interface, never a product-specific API** — the S3 API via
+  `boto3`, the Sentry wire protocol via `sentry-sdk`, the Prometheus exposition format, OTLP. Adding
+  an infrastructure dependency adds its row to `how-to/src/PLATFORM-PROVIDERS.md` with a seam kind
+  and, where it is substrate, a stated reason. Rule: `code/docs/architecture/PROVIDER-NEUTRALITY.md`.
 - Never commit `.env` files — use `.env.*.example` templates only.
 
 ## Row-level security

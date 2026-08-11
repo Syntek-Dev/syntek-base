@@ -51,7 +51,7 @@ one of these six sequences literally, wrap it in `<: raw :>` … `<: endraw :>`.
 
 ## The tokens
 
-Thirty tokens carry every project-specific value. **Twenty-six are always asked**; the remaining
+Thirty-six tokens carry every project-specific value. **Thirty-two are always asked**; the remaining
 four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile surface is
 included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only when the
 desktop surface is. Example values are illustrative — replace them.
@@ -80,6 +80,71 @@ because of those two manifests; the 40-character floor exists because a tagline 
 | `<%DEPLOY_REPO%>`    | The forked NixOS deploy repo for this project       | `acme-nixos-client-deployment`                 | repo name               |
 | `<%SERVER_TIER%>`    | The provisioned host tier (+ its CPU/RAM/disk spec) | `Hetzner AX42-U` (8c/16t Zen 4 · 64 GB · NVMe) | free text               |
 | `<%ENV_PREFIX%>`     | Uppercase env-var / server namespace prefix         | `ACME`                                         | `UPPER_SNAKE`           |
+
+### Platform providers
+
+Each of these records a **choice**, not a dependency. The guides name the _interface_ and treat
+the product as one implementation behind it, so a project that answers differently is still
+on-doctrine. All seven are free text rather than a fixed choice list, because the set of viable
+products is longer than any list shipped here.
+
+| Token                     | Meaning                                        | Example value                          | Shape                 |
+| ------------------------- | ---------------------------------------------- | -------------------------------------- | --------------------- |
+| `<%HOSTING_PROVIDER%>`    | Where the project runs                         | `Self-hosted — NixOS on bare metal`    | phrase · **cell**     |
+| `<%OBJECT_STORE%>`        | S3-compatible object store (private documents) | `SeaweedFS`                            | bare name · **prose** |
+| `<%ERROR_TRACKING%>`      | Error and exception tracking backend           | `GlitchTip`                            | bare name · **prose** |
+| `<%LOG_AGGREGATOR%>`      | Where structured logs are shipped and queried  | `Loki`                                 | bare name · **prose** |
+| `<%OBSERVABILITY_STACK%>` | Metrics and dashboards                         | `Prometheus + Grafana`                 | phrase · **cell**     |
+| `<%TRACING_BACKEND%>`     | Where distributed traces are sent (OTLP)       | `None — deferred; OTLP endpoint unset` | phrase · **cell**     |
+| `<%ANALYTICS_PROVIDER%>`  | Product analytics                              | `Plausible`                            | bare name · **prose** |
+
+**Shape decides where a token may be written.** A **bare name** substitutes into a running
+sentence; a **phrase** reads correctly in a table cell and breaks mid-sentence — _"the
+`Prometheus + Grafana` scrape contract"_. Writing a cell-shaped token into prose is the mistake
+this column exists to prevent, and it has happened once already. The rule is exception 2 in
+[`code/docs/architecture/PROVIDER-NEUTRALITY.md`](../../code/docs/architecture/PROVIDER-NEUTRALITY.md);
+where a product needs qualifying, that detail belongs in the question's `help:` text, never in
+its default.
+
+**The interface each one sits behind** — this is what makes a different answer safe:
+
+| Concern        | The seam the code is written against                          |
+| -------------- | ------------------------------------------------------------- |
+| Object store   | The **S3 API**, consumed via boto3                            |
+| Error tracking | The **Sentry SDK wire protocol**                              |
+| Metrics        | The **Prometheus exposition format** / OpenMetrics            |
+| Logs           | **Structured JSON on stdout**, collected by whatever ships it |
+| Traces         | **OTLP** (OpenTelemetry)                                      |
+| Product events | This project's **own ingestion API and event schema**         |
+
+Swapping any of these changes **this answer and an environment variable** — never the doctrine,
+and for the five wire-protocol rows never a line of application code either. (Product events are
+the exception: no wire standard exists, so that seam is an adapter over this project's own event
+schema.) The one component deliberately **not** on this list is PostgreSQL: it is the fixed
+substrate, not a swappable choice (`code/docs/DATABASE.md`).
+
+**This table is a summary.** The full register — every infrastructure dependency, its seam kind,
+its proven alternates, and a stated reason for each substrate verdict — is
+`how-to/src/PLATFORM-PROVIDERS.md`, which renders per project. The rule that produces those
+verdicts is `code/docs/architecture/PROVIDER-NEUTRALITY.md`.
+
+### Process dependencies
+
+A dependency the **people** operating the project rely on, which no application code touches.
+Listed separately from the six above rather than folded in with them, because under the substrate
+test it is **neither seam kind** — swapping it changes where a human types, not what the code
+does — and filing it as a protocol or adapter seam would cheapen both terms.
+
+| Token                  | Meaning                                    | Example value | Format    |
+| ---------------------- | ------------------------------------------ | ------------- | --------- |
+| `<%INCIDENT_TRACKER%>` | Where the substance of an incident is held | `ClickUp`     | free text |
+
+**The interface is access control**, and that is the whole point. The in-repo register at
+`project-management/src/22-INCIDENTS/` is **PII-free by rule** and ships, so log excerpts,
+identifiers and any postmortem touching personal data need a home with permissions. The default is
+`None — record in 22-INCIDENTS/ only`, and it is a first-class answer: a project without a tracker
+keeps that substance **outside the repository** rather than relaxing the rule to fit a report in.
+The practice is `how-to/docs/INCIDENT-PRACTICE.md`.
 
 ### Locale, licence, and people
 
@@ -241,6 +306,35 @@ them separately.
 
 - Default from-address `noreply@<%PRIMARY_DOMAIN%>` · status page `status.<%PRIMARY_DOMAIN%>` · `www` → apex redirect
 
+### Position matters as much as shape — never tokenise a validated identifier
+
+Composition is only half the question. The other half is **what reads the result, and when**. A
+token is inert in a comment, a description, a licence field or a string literal; it is a defect in
+any position a compiler, parser or schema validates as an **identifier**, because the delimiters
+`<`, `%` and `>` are not legal in one.
+
+The consequence is not cosmetic. Such a file cannot be parsed **in the template repository at
+all**, so every gate that depends on parsing it — a compiler, a linter, a test run — fails here
+while looking perfectly correct in a generated project. The gate then proves nothing until after
+generation, which is the one place nobody looks.
+
+| Position                                             | Validated? | Tokenise?               |
+| ---------------------------------------------------- | ---------- | ----------------------- |
+| Comment, description, author, licence field          | no         | yes                     |
+| String literal (Python, Rust, Slint, JSON, YAML)     | no         | yes                     |
+| Hostname, database name, path segment, env-var value | at runtime | yes                     |
+| **Crate / package / module / class / function name** | at compile | **no — house constant** |
+| **A name a schema constrains** (e.g. a k8s `name:`)  | on apply   | **no — house constant** |
+
+Where the branded name is genuinely wanted, produce it **after** the tool has run, where it is a
+filename rather than a grammar. `code/src/rust/crates/desktop/` is the worked example: the crate
+is the house constant `desktop`, and `code/src/scripts/desktop/package.sh` copies the built
+artefact to `<%PROJECT_SLUG%>-desktop`. Same deliverable, no token in the compiler's path.
+
+This is the same class as `<%LICENCE%>`, which is not a valid SPDX expression either — handled
+there by exempting the crate in `code/src/rust/deny.toml` (`private.ignore`) rather than by
+renaming, because a licence field is read by a checker rather than a compiler.
+
 ---
 
 ## What stays fixed (do NOT tokenise)
@@ -258,7 +352,8 @@ These are house constants — the same for every project — and are intentional
 ### The standard stack (base template)
 
 Django · **Django Ninja** (JSON API — the only API layer; there is **no GraphQL**) · django-components ·
-Django templates · HTMX · Alpine · vanilla token CSS · Celery (worker + beat) · **PostgreSQL** ·
+Django templates · HTMX · Alpine · vanilla token CSS · Celery (worker + beat — declared, not
+wired) · **PostgreSQL** ·
 **Valkey** (DB 0 broker/pub-sub/rate-limit, DB 1 cache) · **Cloudinary** (public media) ·
 **SeaweedFS S3** (private docs) · **Rust** (optional project-defined service/sidecar) ·
 **Hetzner** · **NixOS** · **Cloudflare** with CF Tunnel · **Nginx** · **Docker Compose**.

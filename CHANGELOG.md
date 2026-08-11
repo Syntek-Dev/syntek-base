@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.8.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.9.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.9.0] - 11/08/2026
+
+### Added
+
+- **`code/docs/architecture/PROVIDER-NEUTRALITY.md` — the rule for deciding what a dependency actually is.** Three kinds, and they are not interchangeable: a **protocol seam** (the code is written against a published wire format or API — S3, the Prometheus exposition format), an **adapter seam** (the code is written against an interface this project defines, with an implementation behind it), and **substrate** (the code is written against the product itself, and swapping it is a rewrite). Includes the evidence a neutrality claim owes before it is allowed to stand, and the standing rule that **one adapter is a hypothetical seam; two are real**.
+- **`code/docs/architecture/BUILD-OPERATE-SEAM.md` — where a fact lives when three owners each hold part of it.** The code, the server contract, and the deploy repository routinely share one infrastructure fact between them. This names which part belongs to which, gives the two bridge shapes, and states the same-change rule that keeps the three from drifting.
+- **`how-to/src/PLATFORM-PROVIDERS.md` — the per-project register.** Every infrastructure dependency, the interface it sits behind, its seam kind, and whether it may be swapped. The rule is the same in every generated project; this file is the answer sheet and it is yours.
+- **Eight Copier questions recording platform choices** — `HOSTING_PROVIDER`, `OBJECT_STORE`, `ERROR_TRACKING`, `LOG_AGGREGATOR`, `OBSERVABILITY_STACK`, `TRACING_BACKEND`, `ANALYTICS_PROVIDER`, `INCIDENT_TRACKER`. Each records a **choice, not a dependency**: the guides name the interface and treat the product as one implementation behind it, so a project answering differently is still on-doctrine. All eight carry defaults, so `copier update --defaults` is unaffected.
+- **`code/src/scripts/audits/seam-contract.sh` and its CI job.** `how-to/src/SERVER-ARCHITECTURE/` is the contract the deploy repository implements against, so every section stating a requirement must say where that requirement came from. Two mechanical checks: every repository path named in a `**Source:**` field resolves, and every numbered section carries one.
+
+### Changed
+
+- **`SERVER-ARCHITECTURE/` sections now carry `**Source:**` fields**, which is what makes the audit above possible — a requirement with no source is a requirement nobody can verify or update when the thing it came from changes.
+- **`LOGGING.md`, `PERFORMANCE.md`, `ARCHITECTURE-PATTERNS.md` and `CORE-AND-SCALING.md` name interfaces where they previously named products.** Structured JSON on stdout rather than a named shipper; the Prometheus exposition format rather than Prometheus; the Sentry SDK wire protocol rather than Sentry.
+- **The `backend` and `planner` agents** consult the neutrality rule before writing a dependency into a design, rather than after review finds it.
+- **`how-to/src/TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/05-ANSWERS.md`** document all eight new questions, keeping the token contract complete.
 
 ## [2.8.0] - 11/08/2026
 

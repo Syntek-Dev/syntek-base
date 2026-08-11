@@ -49,14 +49,20 @@ never restate its envelope here beyond the assigned-compute mapping.
 ## The contract precedent
 
 This directory follows an established shape, not a new invention. The app repo
-already ships two app↔deploy contracts:
+already ships one app↔deploy contract of exactly this kind:
 
-- `code/src/docker/prometheus/prometheus.yml` — the canonical **scrape-target
-  contract** that the NixOS `services.prometheus.scrapeConfigs` must implement. No
-  Prometheus runs in this repo; the file specifies, the deploy repo implements.
 - `code/docs/logging/HEALTH-CONTRACT.md` — the health/metrics endpoints live in
   `<%DEPLOY_REPO%>`, not in this repo. The deploy repo's Gatus module header cites it
-  back as its endpoint contract.
+  back as its endpoint contract, and its § 2 carries the **scrape-target contract**
+  that the NixOS `services.prometheus.scrapeConfigs` must implement. No Prometheus
+  runs in this repo; the guide specifies, the deploy repo implements.
+
+> A second precedent used to be named alongside it —
+> `code/src/docker/prometheus/prometheus.yml`. **That file does not exist**: no
+> Prometheus config ships in this repo. The scrape-target contract is prose, in
+> `HEALTH-CONTRACT.md` § 2 and `code/docs/logging/OBSERVABILITY.md`. No file in this
+> directory cites the dead path any more; one stale citation survives outside it, in
+> `.claude/skills/scale-planning/SKILL.md`.
 
 Every document here keeps that discipline: **this repo specifies; the deploy repo
 implements.** Nothing in this directory is executable configuration.

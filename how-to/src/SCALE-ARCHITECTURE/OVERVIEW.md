@@ -94,8 +94,8 @@ decision machinery:
 - **Wayfinder** charts the epic's open decisions onto
   `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`, resolved node-by-node across
   sessions.
-- **`grill-with-docs`** settles each decision — one question at a time, each with a
-  recommended answer — and records the outcome (to the map, an ADR, or these documents).
+- **`grill-with-docs`** settles each decision — in rounds, each with a
+  recommendation — and records the outcome (to the map, an ADR, or these documents).
 - **Living snapshot:** regenerated from live code if missing; reconciled and drift-patched on
   every run. A value stated here without a `file:line` citation to live code is a defect.
 

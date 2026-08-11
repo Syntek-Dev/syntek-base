@@ -41,28 +41,36 @@ Two value planes, and this directory feeds both:
 
 ## Artefact → module map
 
+- **Source:** `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` — every left-column
+  row is one of its requirements. This map routes them to an implementation point; it
+  never restates what the requirement is.
+
 _TBD — the exact left-column rows are project-specific; regenerate them via
 `/scale-planning` by reconciling against this project's `EDGE-REQUIREMENTS.md` and the
 live deploy-repo modules. The row STRUCTURE below (artefact → implementation point) is
 the reusable template; the three-surface default (public/marketing · authenticated app
 · admin/staff) drives which edge rows exist._
 
-| SERVER-ARCHITECTURE artefact               | Deploy repo implementation point                                                                                                                        |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Edge — headers, CSP, media hosts           | `modules/nginx/default.nix` baseline + host `custom.nginx.apps[].cspDirectives`                                                                         |
-| Edge — CSP nonce (dormant)                 | `modules/nginx/` — future `x-csp-nonce` read + `proxy_hide_header`; agenix `CSP_INSTANCE_TOKEN`                                                         |
-| Edge — `client_max_body_size`              | `modules/nginx/` vhost/location extraConfig                                                                                                             |
-| Edge — URL routing                         | Host nginx location overlay — mirror `code/src/docker/nginx/dev.conf` at each release                                                                   |
-| Edge — TLS, trusted proxies                | CF edge TLS + `nginx.ssl`; `TRUSTED_PROXIES` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                                          |
-| Edge — CF Tunnel, edge rate rule           | `custom.cloudflared.tunnels` + Cloudflare zone config (edge rate rule per the project's rate-limit plan)                                                |
-| Edge — health/metrics                      | `modules/gatus/` + `custom.prometheus.extraScrapeConfigs` (jobs from `code/src/docker/prometheus/prometheus.yml`) + loopback-only `/metrics/` locations |
-| Edge — Cloudinary token, object-store host | App `.env` (`CLOUDINARY_AUTH_TOKEN_KEY`) · new tunnel hostname + vhost → SeaweedFS gateway                                                              |
-| Edge — deploy steps                        | `deploy.sh` restart-after-migrate; `worker`/`beat` services in the server compose                                                                       |
-| Edge — mail relay                          | `modules/mail/` (Postfix + DKIM) + SPF/DKIM/DMARC DNS; `EMAIL_*` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                      |
-| `COMPUTE-ALLOCATION.md` assigned compute   | `GUNICORN_*` / `CELERY_*` in `/etc/<%ORG_SLUG%>/.env.<env>`; Postgres/PgBouncer/Valkey sizing in `custom.database` / `custom.valkey`                    |
-| `COMPUTE-ALLOCATION.md` tier changes       | Host hardware decision (<%SERVER_TIER%> → RAM upgrade / bigger tier) + the Postgres horizontal-scaling ADR phase modules — only on a gate-trip          |
+| SERVER-ARCHITECTURE artefact               | Deploy repo implementation point                                                                                                                       |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Edge — headers, CSP, media hosts           | `modules/nginx/default.nix` baseline + host `custom.nginx.apps[].cspDirectives`                                                                        |
+| Edge — CSP nonce (dormant)                 | `modules/nginx/` — future `x-csp-nonce` read + `proxy_hide_header`; agenix `CSP_INSTANCE_TOKEN`                                                        |
+| Edge — `client_max_body_size`              | `modules/nginx/` vhost/location extraConfig                                                                                                            |
+| Edge — URL routing                         | Host nginx location overlay — mirror `code/src/docker/nginx/dev.conf` at each release                                                                  |
+| Edge — TLS, trusted proxies                | CF edge TLS + `nginx.ssl`; `TRUSTED_PROXIES` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                                         |
+| Edge — CF Tunnel, edge rate rule           | `custom.cloudflared.tunnels` + Cloudflare zone config (edge rate rule per the project's rate-limit plan)                                               |
+| Edge — health/metrics                      | `modules/gatus/` + `custom.prometheus.extraScrapeConfigs` (jobs from `code/docs/logging/HEALTH-CONTRACT.md` § 2) + loopback-only `/metrics/` locations |
+| Edge — Cloudinary token, object-store host | App `.env` (`CLOUDINARY_AUTH_TOKEN_KEY`) · new tunnel hostname + vhost → <%OBJECT_STORE%> gateway                                                      |
+| Edge — deploy steps                        | `deploy.sh` restart-after-migrate; `worker`/`beat` services in the server compose once they exist (neither ships)                                      |
+| Edge — mail relay                          | `modules/mail/` (Postfix + DKIM) + SPF/DKIM/DMARC DNS; `EMAIL_*` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                     |
+| `COMPUTE-ALLOCATION.md` assigned compute   | `GUNICORN_*` / `CELERY_*` in `/etc/<%ORG_SLUG%>/.env.<env>`; Postgres/PgBouncer/Valkey sizing in `custom.database` / `custom.valkey`                   |
+| `COMPUTE-ALLOCATION.md` tier changes       | Host hardware decision (<%SERVER_TIER%> → RAM upgrade / bigger tier) + the Postgres horizontal-scaling ADR phase modules — only on a gate-trip         |
 
 ## The agenix plane — secrets the app stack requires (names only, never contents)
+
+- **Source:** this repo's `code/src/docker/.env.prod.example` (the variable each
+  secret feeds) and `.claude/CLAUDE.md` § 6 — secrets travel by environment variable
+  and are never hardcoded, so every row here is a name, never a value.
 
 The application stack requires these agenix secrets on the host. Creation and
 rotation commands live in the deploy repo (`how-to/src/03-MANAGING-SECRETS.md` +
@@ -72,7 +80,7 @@ rotation commands live in the deploy repo (`how-to/src/03-MANAGING-SECRETS.md` +
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `cloudflared-<%PROJECT_SLUG%>-token.age` | the CF Tunnel service                                                                                  |
 | `<%PROJECT_SLUG%>-env.age`               | Valkey per-app ACLs — exports `VALKEY_<%ENV_PREFIX%>_BROKER_PASS` + `VALKEY_<%ENV_PREFIX%>_CACHE_PASS` |
-| `objectstore-s3-credentials.age`         | SeaweedFS S3 access key + secret                                                                       |
+| `objectstore-s3-credentials.age`         | <%OBJECT_STORE%> S3 access key + secret                                                                |
 | `mail-relay-credentials.age`             | Postfix SASL relay auth                                                                                |
 | `mail-dkim-<%PROJECT_SLUG%>.age`         | DKIM signing key — publish the DNS TXT before enabling                                                 |
 | `prometheus-remote-write-token.age`      | metrics shipping to the central monitoring server                                                      |
@@ -84,6 +92,13 @@ regardless of which app stack the box carries; this contract does not enumerate
 them.
 
 ## The app-env plane — `/etc/<%ORG_SLUG%>/.env.<env>`
+
+- **Source:** this repo's `code/src/docker/.env.prod.example`, the canonical variable
+  set the deploy side fills — as far as it goes: it declares the Django keys plus
+  `DATABASE_URL`, `REDIS_URL`, `IMAGE_TAG` and `GUNICORN_*`, and nothing else (see the
+  list below). Which product each connection string points at is a per-project answer
+  recorded in `how-to/src/PLATFORM-PROVIDERS.md`; the interfaces behind them are fixed
+  by `code/docs/architecture/PROVIDER-NEUTRALITY.md`.
 
 The app `.env` is **not** an agenix secret: it is placed at
 `/etc/<%ORG_SLUG%>/.env.<env>` (`chmod 640 root:deploy`) and read by the Compose services
@@ -98,7 +113,20 @@ server-topology-coupled values it must supply:
 - `EMAIL_HOST` / `EMAIL_PORT` / `EMAIL_HOST_USER` / `EMAIL_HOST_PASSWORD` — the
   mail relay
 - `CLOUDINARY_AUTH_TOKEN_KEY` — token-based media auth
-- `GUNICORN_*` / `CELERY_*` — the assigned-compute knobs (`COMPUTE-ALLOCATION.md`)
+- `GUNICORN_*` / `CELERY_*` — the assigned-compute knobs (`COMPUTE-ALLOCATION.md`).
+  Only `GUNICORN_*` is live: `.env.prod.example` declares no `CELERY_*` key and no
+  Compose file defines a `worker` or `beat` service, so supplying one today is inert.
+
+The same holds across the rest of that list: `DATABASE_URL`, `REDIS_URL` and
+`GUNICORN_*` are the only entries **on it** that `.env.prod.example` declares (its other
+keys — `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`,
+`DJANGO_ADMIN_PATH`, `IMAGE_TAG` — are not server-topology-coupled). `CACHE_URL`,
+`OBJECT_STORE_ENDPOINT_URL`, `OBJECT_STORE_PUBLIC_ENDPOINT_URL`, `TRUSTED_PROXIES`,
+`EMAIL_*` and `CLOUDINARY_AUTH_TOKEN_KEY` are named here so the build-side change that
+introduces each one and the deploy side agree on a single spelling — none is declared
+in the example file or read by `code/src/django/config/settings/`, so supplying one
+ahead of that change is inert. Both halves land together
+(`code/docs/architecture/BUILD-OPERATE-SEAM.md`).
 
 ## Provisioning mechanics — deploy repo only
 
@@ -112,8 +140,8 @@ post-deploy service checks — live in the deploy repo:
 
 ## Contract discipline
 
-1. **This repo specifies, the deploy repo implements** — the `prometheus.yml` /
-   `HEALTH-CONTRACT.md` precedent, now generalised. No Nix in this directory; no
+1. **This repo specifies, the deploy repo implements** — the `HEALTH-CONTRACT.md`
+   precedent, now generalised. No Nix in this directory; no
    app-behaviour decisions in the deploy repo.
 2. **Change flow, app-driven:** an app change that touches the edge (a new external
    origin, a new upload path, a new endpoint, a routing slice) updates

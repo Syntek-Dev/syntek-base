@@ -2,9 +2,9 @@
 
 **Last Updated**: 02/08/2026
 
-Copier asks **twenty-six questions** on a web-only project. The optional surfaces add four more
+Copier asks **thirty-two questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
-desktop app name — thirty if you take all three. Most have a good default. A few are
+desktop app name — thirty-six if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is
@@ -104,6 +104,31 @@ feature is charted is exactly the point.
 | `DEPLOY_REPO` | The forked NixOS deploy repository for this project. Default `<slug>-nixos-client-deployment` is usually right.                                                                           |
 | `SERVER_TIER` | Host tier and spec. `TBD — set on provisioning` is a fine answer until you have provisioned. Free text.                                                                                   |
 | `ENV_PREFIX`  | `UPPER_SNAKE`. Prefixes Valkey environment variables and the server namespace. Defaults from `ORG_SLUG` — check it, because "Acme Ltd" produces `ACME_LTD` when you probably want `ACME`. |
+
+## Platform providers
+
+Seven questions recording **what this project runs on**. Every one has a working default, and
+pressing Enter through them is a reasonable first pass — they are recorded so the guides and
+agents know what you chose, not because anything breaks without them.
+
+They are also the least painful group to change later. Each one names a **choice behind an
+interface**, so answering differently does not put you off-doctrine:
+
+| Question              | Guidance                                                                                                                                        |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `HOSTING_PROVIDER`    | Where it runs. The reference deployment is a self-hosted NixOS host driven by `DEPLOY_REPO`; a managed platform is an equally valid answer.     |
+| `OBJECT_STORE`        | S3-compatible store for private documents and attachments. The code talks boto3, so any S3 API works — MinIO, Garage, Ceph RGW, AWS S3, R2, B2. |
+| `ERROR_TRACKING`      | Wired through the Sentry SDK, so any Sentry-wire-compatible backend works — GlitchTip (default), Sentry, Bugsink.                               |
+| `LOG_AGGREGATOR`      | The app writes structured JSON to stdout, so the collector is purely a deployment choice — Loki, Vector, Fluent Bit, Alloy, CloudWatch.         |
+| `OBSERVABILITY_STACK` | The app exposes the Prometheus exposition format; anything that scrapes it works — Prometheus, VictoriaMetrics, Alloy, a vendor agent.          |
+| `TRACING_BACKEND`     | The seam is OTLP, but nothing is instrumented at baseline — **pressing Enter is the expected answer**. Tempo, Jaeger, SigNoz, Honeycomb.        |
+| `ANALYTICS_PROVIDER`  | The one with no wire standard — the seam is the project's own event ingestion API, so this records what sits behind it, or `own store`.         |
+
+**Why free text and not a menu.** The list of viable products is longer than any list shipped
+here, and boxing you into ours would defeat the purpose. Answer with whatever you actually run.
+
+**The one that is not on this list is PostgreSQL** — it is the fixed substrate of this template,
+not a swappable choice (`code/docs/DATABASE.md`). Changing it is a fork, not an answer.
 
 ## Locale and currency
 

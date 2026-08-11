@@ -44,7 +44,9 @@ elsewhere and consults these numbers rather than duplicating them:
 - [`how-to/src/SCALE-ARCHITECTURE/`](../../how-to/src/SCALE-ARCHITECTURE/) — readiness audit and
   sizing envelope (how the app scales).
 - [`how-to/src/SERVER-ARCHITECTURE/`](../../how-to/src/SERVER-ARCHITECTURE/) — the server/edge
-  contract (what the server must provide).
+  contract (what the server must provide). **This doc owns the targets and the techniques that
+  meet them; SERVER-ARCHITECTURE owns the compute the server assigns**
+  ([`architecture/BUILD-OPERATE-SEAM.md`](architecture/BUILD-OPERATE-SEAM.md)).
 - [`architecture/CORE-AND-SCALING.md`](architecture/CORE-AND-SCALING.md) — the keystone scaling
   doc; both snapshots follow the same discipline: reconcile against measured load, don't
   provision ahead of it (anti-forecast).

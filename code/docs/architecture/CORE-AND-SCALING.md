@@ -126,7 +126,9 @@ rebalancing survivable.
 - [`../PERFORMANCE.md`](../PERFORMANCE.md) — the budgets these gates are measured against
 - [`../RLS-GUIDE.md`](../RLS-GUIDE.md) — isolation scope and policy conventions
 - `how-to/src/SCALE-ARCHITECTURE/` · `how-to/src/SERVER-ARCHITECTURE/` — sizing under these
-  gates, and the server/edge contract the deployment implements
+  gates, and the server/edge contract the deployment implements. **This doc owns the gates and
+  what trips them; SERVER-ARCHITECTURE owns what the server provides at each tier**
+  ([`BUILD-OPERATE-SEAM.md`](BUILD-OPERATE-SEAM.md))
 
 The governing discipline throughout: **reconcile against what is measured; never provision
 ahead of a gate.**

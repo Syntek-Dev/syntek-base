@@ -62,6 +62,16 @@ _exclude:
   # string, which Copier ignores.
   - "<: if not INCLUDE_MOBILE :>/code/src/mobile<: endif :>"
   - "<: if not INCLUDE_MOBILE :>/code/src/scripts/mobile<: endif :>"
+  # The mobile-only sub-documents inside the cross-cutting guides go with the tree too, on
+  # the same principle and by the same mechanism the rust surface already uses for
+  # encryption/RUST-CRYPTO.md: a React Native technique set in a project with no React
+  # Native is guidance an agent can still load and misapply. Each parent guide stays
+  # ungated and its CONTEXT.md index still lists the row unconditionally, flagged
+  # mobile-only — the index row is allowed to dangle, exactly as the RUST.md and DESKTOP.md
+  # rows already do, because the alternative is templated file contents.
+  - "<: if not INCLUDE_MOBILE :>/code/docs/accessibility/MOBILE.md<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/code/docs/design-tokens/MOBILE.md<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/code/docs/visual-design/MOBILE.md<: endif :>"
   # The governance pair goes with the tree: a mobile agent with no mobile app to work on
   # is worse than no agent at all. The shipped INDEXES still list both unconditionally,
   # flagged mobile-only — that keeps .claude/CLAUDE.md free of templated contents, which
@@ -95,9 +105,14 @@ _exclude:
   - "<: if not INCLUDE_DESKTOP :>/code/src/scripts/desktop<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/docs/DESKTOP.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/docs/desktop<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/code/docs/visual-design/DESKTOP.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/workflows/13-desktop-app<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/.claude/agents/desktop.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/.claude/skills/stack-slint<: endif :>"
+  # The Slint style gate travels with the script it runs — see the audit-style-check.yml
+  # header. A workflow shipped without its script is a permanently-red job on every
+  # web-only project, which is the one thing a generated baseline must never carry.
+  - "<: if not INCLUDE_DESKTOP :>/.github/workflows/audit-style-check.yml<: endif :>"
   # Binaries cannot be rendered when _templates_suffix is "". Both are generated
   # artefacts — a new project rebuilds them from the sources beside them.
   - "*.pdf"
@@ -188,6 +203,110 @@ ENV_PREFIX:
     <: if ENV_PREFIX != ENV_PREFIX | upper or '-' in ENV_PREFIX :>
     Use UPPER_SNAKE: capitals, digits and underscores only.
     <: endif :>
+
+# ── Platform providers ───────────────────────────────────────────────────────
+#
+# Each of these records a CHOICE, not a dependency. The guides name the interface
+# and treat the product as one implementation behind it, so a project that answers
+# differently is still on-doctrine:
+#
+#   object store   → the S3 API, consumed via boto3
+#   error tracking → the Sentry SDK wire protocol
+#   metrics        → the Prometheus exposition format / OpenMetrics
+#   logs           → structured JSON on stdout, collected by whatever ships it
+#   traces         → OTLP (OpenTelemetry)
+#   product events → this project's own ingestion API and event schema
+#
+# Free text rather than `choices:` on purpose — the list of viable products is longer
+# than any list shipped here, and boxing a project into ours would defeat the point.
+#
+# PROSE-SAFE vs CELL-ONLY. OBJECT_STORE and ERROR_TRACKING are rendered into running
+# sentences, so their defaults are BARE PRODUCT NAMES and the qualifying detail lives in
+# the help text above each one. OBSERVABILITY_STACK, HOSTING_PROVIDER and TRACING_BACKEND
+# resolve to a phrase ("Prometheus + Grafana"), which reads correctly in a table cell and
+# breaks mid-sentence — they are cell-only. The rule is exception 2 in
+# code/docs/architecture/PROVIDER-NEUTRALITY.md; the classification is recorded in
+# how-to/src/TEMPLATE-TOKENS.md. Do not put a parenthetical back into a prose-safe default.
+#
+# These answers render into how-to/src/PLATFORM-PROVIDERS.md — the generated project's
+# register of every infrastructure dependency, its seam kind, and its proven alternates —
+# and the two prose-safe ones also render into the code/docs guides for their capability.
+# The rule behind those verdicts (protocol seam vs adapter seam vs substrate, and the
+# evidence each demands) is code/docs/architecture/PROVIDER-NEUTRALITY.md.
+# PostgreSQL is absent from this list on purpose: it is substrate, not a choice.
+
+HOSTING_PROVIDER:
+  type: str
+  help: >-
+    Where this runs. The reference deployment is a self-hosted NixOS host driven by
+    the deploy repo above; managed platforms are equally valid answers.
+  default: Self-hosted — NixOS on bare metal
+
+OBJECT_STORE:
+  type: str
+  help: >-
+    S3-compatible object store for private documents and attachments. Consumed via
+    boto3, so any S3 API works — MinIO, Garage, Ceph RGW, AWS S3, Cloudflare R2, B2.
+    Answer with a bare product name: this one is rendered into running prose.
+  default: SeaweedFS
+
+ERROR_TRACKING:
+  type: str
+  help: >-
+    Error and exception tracking. Wired through the Sentry SDK, so any
+    Sentry-wire-compatible backend works — GlitchTip, Sentry, Bugsink.
+    Answer with a bare product name: this one is rendered into running prose.
+  default: GlitchTip
+
+LOG_AGGREGATOR:
+  type: str
+  help: >-
+    Where structured logs are shipped and queried. The app writes JSON to stdout, so
+    the collector is a deployment choice — Loki, Vector, Fluent Bit, Alloy, CloudWatch.
+  default: Loki
+
+OBSERVABILITY_STACK:
+  type: str
+  help: >-
+    Metrics and dashboards. The app exposes the Prometheus exposition format, scrapeable
+    by Prometheus, VictoriaMetrics, Alloy or a vendor agent; traces go over OTLP.
+  default: Prometheus + Grafana
+
+TRACING_BACKEND:
+  type: str
+  help: >-
+    Where distributed traces are sent. The seam is OTLP (OpenTelemetry), so any collector
+    that speaks it works — Grafana Tempo, Jaeger, SigNoz, Honeycomb, Uptrace. Nothing is
+    instrumented at baseline, so leaving the default is the expected answer; the seam is
+    settled early only because retrofitting it means touching every instrumented call site.
+  default: None — deferred; OTLP endpoint unset
+
+ANALYTICS_PROVIDER:
+  type: str
+  help: >-
+    Product analytics. Unlike the others this has no wire standard, so the seam is this
+    project's own event ingestion API — the provider is what sits behind it, or 'own store'.
+  default: Plausible
+
+# ── Process dependencies ─────────────────────────────────────────────────────
+#
+# A dependency the PEOPLE operating the project rely on, which no application code
+# touches. Kept separate from the six above deliberately: under the substrate test in
+# code/docs/architecture/PROVIDER-NEUTRALITY.md this is neither a protocol seam nor an
+# adapter seam, because swapping it changes where a human types rather than what the
+# code does. Calling it either would cheapen both terms.
+#
+# It renders into the "Process dependencies" section of how-to/src/PLATFORM-PROVIDERS.md.
+
+INCIDENT_TRACKER:
+  type: str
+  help: >-
+    Where the substance of an incident is held — log excerpts, identifiers, and any
+    postmortem touching personal data. The interface is ACCESS CONTROL: the in-repo
+    register at project-management/src/22-INCIDENTS/ is PII-free by rule and ships, so
+    anything sensitive needs a home with permissions. ClickUp, Linear, Jira, a bespoke
+    admin area — or leave the default, and keep that substance outside the repository.
+  default: None — record in 22-INCIDENTS/ only
 
 # ── Locale, licence and people ───────────────────────────────────────────────
 

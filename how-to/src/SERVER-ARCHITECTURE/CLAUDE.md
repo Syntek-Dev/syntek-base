@@ -37,8 +37,16 @@ maintained by the `scale-planner` agent via the `scale-planning` skill.
 
 - **Specify, never implement.** No Nix, no nginx.conf bodies, no Cloudflare rule
   exports here — state _what must hold_ and cite where the deploy repo implements it
-  (the `prometheus.yml` / `HEALTH-CONTRACT.md` precedent). Working config belongs in
+  (the `HEALTH-CONTRACT.md` precedent). Working config belongs in
   `<%DEPLOY_REPO%>`.
+- **A contract names the product; the heading rule does not bind here.** `code/docs/` leads with
+  the interface, this directory does not — _"provision a metrics scraper"_ cannot be implemented
+  (`code/docs/architecture/PROVIDER-NEUTRALITY.md`, exception 1). Name **the project's** product
+  though, not the template's: use the token where a **prose-safe** one exists (`OBJECT_STORE`,
+  `ERROR_TRACKING`, `LOG_AGGREGATOR`, `ANALYTICS_PROVIDER`). `OBSERVABILITY_STACK`,
+  `HOSTING_PROVIDER` and `TRACING_BACKEND` resolve to a phrase and are **cell-only** — that is why
+  Prometheus stays literal in § 8, and Gatus stays literal because it has no token at all. Neither
+  is an oversight; do not "fix" them.
 - **Anti-forecast is a hard rule.** The Postgres horizontal-scaling ADR: scale on
   observable phase-gates — "do not pre-emptively add infrastructure". Compute here is
   current-tier envelope + buffer only. Never invent target-user figures: no ratified

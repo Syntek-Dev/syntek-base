@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code agent suite.**
 
-[![Version](https://img.shields.io/badge/version-2.8.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.9.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)

@@ -69,8 +69,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Grill Before Planning
 
 Architecture design **opens with a grilling pass** — load `.claude/skills/grill-with-docs`
-and run it (one question at a time via `AskUserQuestion`, each with your recommended answer,
-facts looked up not asked, no action until <%DEVELOPER_NAME%> confirms). This inverts the usual
+and run it. This inverts the usual
 proceed-by-default posture (`.claude/CLAUDE.md` §10) because a plan is expensive to get
 wrong. Grill across these dimensions, then record resolved decisions into the plan's
 `### Requirements` / `### Open Questions` and offer an ADR for any hard-to-reverse call:
@@ -110,6 +109,12 @@ Downstream agents inherit these from your plan — make them explicit where rele
 - Token-first CSS — components consume `var(--token)` only; new values via the
   design-tokens editor or a migration, never raw literals
 - Source files ≤ 750 lines (800 grace) — if a phase would breach this, plan the split
+- **A plan that introduces an infrastructure dependency names its interface and its verdict** —
+  protocol seam, adapter seam, or substrate — and adds the row to
+  `how-to/src/PLATFORM-PROVIDERS.md`. Apply the substrate test (does swapping change application
+  code, or only configuration?) rather than defaulting to "swappable"; an adapter seam with one
+  implementation is declared hypothetical, never claimed as neutral. Rule:
+  `code/docs/architecture/PROVIDER-NEUTRALITY.md`
 
 ## Output Format
 

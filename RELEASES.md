@@ -1,11 +1,67 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.8.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.9.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.9.0 — 11/08/2026
+
+**Status:** Minor — adds eight Copier questions, all with defaults. Updating projects are prompted
+for choices they already made implicitly; nothing breaks if you accept every default.
+
+### "Provider-agnostic" is a claim, and claims need evidence
+
+Plenty of projects describe themselves as provider-agnostic. Most mean one of three quite different
+things, and the difference decides whether swapping the provider is an afternoon or a quarter.
+
+This release names all three:
+
+- **Protocol seam** — the code is written against a published wire format or API. The S3 API. The
+  Prometheus exposition format. Swapping the product behind it is a configuration change.
+- **Adapter seam** — the code is written against an interface this project defines, with an
+  implementation behind it. Swapping means writing a new implementation.
+- **Substrate** — the code is written against the product itself. Postgres is substrate here, and
+  saying so plainly is more useful than pretending otherwise.
+
+With the standing rule that keeps the vocabulary honest: **one adapter is a hypothetical seam; two
+are real.** An interface with a single implementation has never been proven to abstract anything.
+
+### Which of three owners holds a given fact
+
+One infrastructure fact is usually owned in three places at once — the application code, the server
+contract in `how-to/src/SERVER-ARCHITECTURE/`, and the deploy repository that provisions the host.
+
+`BUILD-OPERATE-SEAM.md` says which part belongs where, gives the two shapes a bridge between them
+can take, and states the same-change rule that stops the three drifting apart.
+
+`seam-contract.sh` enforces the mechanical half. Every numbered section of the server contract must
+carry a `**Source:**` field, and every repository path in one must resolve. A requirement with no
+source is a requirement nobody can verify, and nobody can update when the thing it came from
+changes.
+
+### Eight questions, recording choices rather than dependencies
+
+`HOSTING_PROVIDER` · `OBJECT_STORE` · `ERROR_TRACKING` · `LOG_AGGREGATOR` · `OBSERVABILITY_STACK` ·
+`TRACING_BACKEND` · `ANALYTICS_PROVIDER` · `INCIDENT_TRACKER`
+
+The defaults are self-hosted and open source — SeaweedFS, GlitchTip, Loki, Prometheus + Grafana,
+Plausible — but the point is not the defaults. It is that the guides name **the interface** and
+treat the product as one implementation behind it, so a project that answers differently is still
+on-doctrine rather than off-piste.
+
+That is also why several guides changed wording: structured JSON on stdout rather than a named log
+shipper, the Prometheus exposition format rather than Prometheus, the Sentry SDK wire protocol
+rather than Sentry.
+
+### `how-to/src/PLATFORM-PROVIDERS.md` is yours
+
+The rule is identical in every project generated from this template. The register — every
+dependency, what interface it sits behind, its seam kind, and whether you may swap it — is the
+answer sheet for **your** project, and it is the file to reach for when someone asks how hard it
+would be to move.
 
 ## v2.8.0 — 11/08/2026
 

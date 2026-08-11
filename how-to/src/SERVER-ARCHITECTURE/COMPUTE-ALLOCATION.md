@@ -44,6 +44,11 @@ What this means in practice:
 
 ## Phase-gate keying (reference — the Postgres horizontal-scaling ADR)
 
+- **Source:** the project's Postgres horizontal-scaling ADR and
+  `code/docs/architecture/CORE-AND-SCALING.md`, which own the gate mechanics. This
+  table is a reference copy of the triggers, never their definition — a divergence
+  here is a defect in this file.
+
 | Phase | Trigger (observed, sustained)              | Architecture change                                  |
 | ----- | ------------------------------------------ | ---------------------------------------------------- |
 | **0** | Baseline (current)                         | Single Postgres primary + PgBouncer                  |
@@ -58,7 +63,7 @@ observability wiring is therefore a precondition of the whole gating model.
 ## Current tier — the host
 
 The current tier is **<%SERVER_TIER%>** — the bare-metal host. It runs the shared
-bare-metal services (Nginx, PostgreSQL, Valkey, SeaweedFS) alongside the Docker app
+bare-metal services (Nginx, PostgreSQL, Valkey, <%OBJECT_STORE%>) alongside the Docker app
 containers. The concrete host spec (CPU cores/threads, RAM, NVMe layout, network)
 is a placeholder — **TBD — regenerate via `/scale-planning` against this project's
 live code and the deploy repo's host definition**. Size the deployment so a single
@@ -66,6 +71,14 @@ live code and the deploy repo's host definition**. Size the deployment so a sing
 repo's own sizing table records how many medium stacks the tier carries (TBD).
 
 ## The connection plane — how containers reach the bare-metal services
+
+- **Source:** this repo's Compose files and the connection strings they set
+  (`code/src/docker/`); the provider-side interfaces each proxy fronts are recorded in
+  `how-to/src/PLATFORM-PROVIDERS.md`. **Of the app env vars in the table below, only
+  `DATABASE_URL` and `REDIS_URL` are set by the shipped Compose files and
+  `.env.*.example` templates today** — `CACHE_URL`, `CELERY_BROKER_URL` and
+  `OBJECT_STORE_ENDPOINT_URL` are this contract's design intent, named here so that the
+  build-side change introducing them and the deploy side agree on one spelling.
 
 The app containers sit on the `<%PROJECT_SLUG%>-net` Docker bridge and cannot reach
 the host's loopback, so every stateful bare-metal service is consumed through a
@@ -77,23 +90,33 @@ always point at `<bridge-gw>:<proxyPort>` — never at a service port directly:
 | PostgreSQL 18        | `postgres-proxy` **:5501**                            | `postgresql :5432`         | `DATABASE_URL`                    |
 | Valkey broker (DB 0) | `valkey-proxy` **:6501**                              | `valkey :6379`, DB 0       | `REDIS_URL` / `CELERY_BROKER_URL` |
 | Valkey cache (DB 1)  | `valkey-proxy` **:6502**                              | `valkey :6379`, DB 1       | `CACHE_URL`                       |
-| SeaweedFS S3         | `objectstore-proxy` **:9501** (bucket isolation + AV) | S3 gateway `:8333`         | `OBJECT_STORE_ENDPOINT_URL`       |
+| <%OBJECT_STORE%> S3  | `objectstore-proxy` **:9501** (bucket isolation + AV) | S3 gateway `:8333`         | `OBJECT_STORE_ENDPOINT_URL`       |
 
 - `<bridge-gw>` is discovered post-boot via
   `docker network inspect <%PROJECT_SLUG%>-net` (typically `172.16.x.1`) and baked
   into the app-env plane (`NIXOS-HANDOFF.md`).
-- **Engine-neutral object store.** SeaweedFS S3 is consumed via boto3 — the app
-  knows only the `OBJECT_STORE_*` variables (`code/src/docker/.env.prod.example`),
-  never a specific vendor. Swapping the backing S3 engine changes nothing app-side.
+- **Engine-neutral object store.** The S3 gateway is consumed via boto3 — the app knows
+  only the `OBJECT_STORE_*` variables, never a specific vendor, so swapping the backing
+  engine changes nothing app-side. **Not wired at baseline:**
+  `code/src/docker/.env.prod.example` declares no `OBJECT_STORE_*` key (its only
+  infrastructure keys are `DATABASE_URL` and `REDIS_URL`), and no S3 client is
+  configured under `code/src/django/config/settings/`.
 - The Valkey DB split is a locked convention: **DB 0 = Celery broker + pub/sub +
-  rate-limit store; DB 1 = Django cache** (`.env.prod.example`). Per-app ACL
-  passwords come from the `<%PROJECT_SLUG%>-env.age` secret (`NIXOS-HANDOFF.md`).
+  rate-limit store; DB 1 = Django cache**. **Not wired at baseline either:**
+  `.env.prod.example` carries a single `REDIS_URL` on DB 0 and no `CACHE_URL`, and
+  `config/settings/base.py` points `CACHES` at that same `REDIS_URL` — so cache and
+  broker share DB 0 until the second variable is introduced. Per-app ACL passwords
+  come from the `<%PROJECT_SLUG%>-env.age` secret (`NIXOS-HANDOFF.md`).
 - An optional `security-proxy` layer (header stripping, per-app rate limits) can be
   interposed between Nginx and the containers (the deploy repo's `security-proxy`
   module); enabling it moves the Nginx upstream ports but changes nothing in this
   contract.
 
 ## Assigned compute per process (Phase 0 baseline)
+
+- **Source:** this repo's Compose files and container entrypoints
+  (`code/src/docker/`), tuned per environment through the app-env plane. The Gunicorn
+  worker class is not a preference here — `code/docs/mcp-server/MOUNTING.md` fixes it.
 
 The provisioning defaults below are the **current assigned compute** — they live in
 this repo's compose files/entrypoints and are tuned per environment via env vars in
@@ -103,15 +126,22 @@ code** (the compose files and entrypoints below are where the real values live):
 
 | Process                        | Assigned (prod default)                                                                                                                                          | Tunable via                                                       | Source                                                                    |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Gunicorn (ASGI, UvicornWorker) | **TBD** workers, timeout/max-requests TBD                                                                                                                        | `GUNICORN_WORKERS` / `GUNICORN_TIMEOUT` / `GUNICORN_MAX_REQUESTS` | `code/src/docker/backend/entrypoint.prod.sh`; `docker-compose.prod.yml`   |
+| Gunicorn (ASGI, UvicornWorker) | **TBD** workers, timeout/max-requests TBD                                                                                                                        | `GUNICORN_WORKERS` / `GUNICORN_TIMEOUT` / `GUNICORN_MAX_REQUESTS` | `code/src/docker/django/entrypoint.prod.sh`; `docker-compose.prod.yml`    |
 | Gunicorn (staging)             | **TBD** workers (same knobs)                                                                                                                                     | as above                                                          | `entrypoint.staging.sh`                                                   |
-| Celery worker                  | concurrency **TBD**, max-memory-per-child **TBD**                                                                                                                | `CELERY_CONCURRENCY` / `CELERY_MAX_MEMORY`                        | `docker-compose.prod.yml`                                                 |
-| Celery beat                    | 1 process (scheduler only)                                                                                                                                       | —                                                                 | `docker-compose.prod.yml` (beat service)                                  |
+| Celery worker                  | concurrency **TBD**, max-memory-per-child **TBD**                                                                                                                | `CELERY_CONCURRENCY` / `CELERY_MAX_MEMORY`                        | none yet — no `worker` service ships (see the note below)                 |
+| Celery beat                    | 1 process (scheduler only)                                                                                                                                       | —                                                                 | none yet — no `beat` service ships (see the note below)                   |
 | Optional Rust service(s)       | project-defined (e.g. a performance-critical worker/sidecar) — **TBD** if this project defines one                                                               | project-defined env                                               | project compose (only if present)                                         |
 | PostgreSQL 18                  | Bare-metal; the Postgres horizontal-scaling ADR Phase 0 names **PgBouncer** as the pooler — reconcile the actual pooler module against the deploy repo (**TBD**) | deploy repo `custom.database.postgres`                            | deploy repo `database/postgres` module (one DB/role per app, `enableRls`) |
 | Valkey                         | Bare-metal; DB 0 broker / DB 1 cache, per-app ACL                                                                                                                | deploy repo `custom.valkey`                                       | deploy repo `valkey` module; connection plane above                       |
-| SeaweedFS                      | Bare-metal, nftables-gated (the project's object-store ADR)                                                                                                      | deploy repo `custom.objectStore`                                  | deploy repo README + object-store module                                  |
+| <%OBJECT_STORE%>               | Bare-metal, nftables-gated (the project's object-store ADR)                                                                                                      | deploy repo `custom.objectStore`                                  | deploy repo README + object-store module                                  |
 | cloudflared + Nginx            | Bare-metal (~**TBD** MB/tunnel)                                                                                                                                  | deploy repo modules                                               | deploy repo README                                                        |
+
+**Celery is not in the shipped Compose stack.** `docker-compose.prod.yml` declares one
+service — `django` — and there is no `worker` container, no `beat` container, and no
+`CELERY_*` variable in any `.env.*.example`. The two Celery rows above state what this
+contract requires **once background work exists**; they are not descriptions of a
+running service. The same-change rule applies when it lands: the service, its env keys
+and these rows move together (`code/docs/architecture/BUILD-OPERATE-SEAM.md`).
 
 **Long-lived-connection note:** any Server-Sent Events / streaming endpoints this
 project defines (e.g. an authenticated-app live feed or an admin/staff stream) hold

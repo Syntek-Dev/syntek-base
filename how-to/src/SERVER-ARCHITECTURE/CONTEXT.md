@@ -79,8 +79,10 @@ the next tier is provisioned when a gate trips, not in anticipation.
 
 **Deploy contract** — a file in _this_ repo that specifies behaviour a _different_
 repo must implement, kept deliberately implementation-neutral. The established
-precedent is `code/src/docker/prometheus/prometheus.yml` (the scrape-target contract
-the NixOS `scrapeConfigs` implement) and `code/docs/logging/HEALTH-CONTRACT.md`.
+precedent is `code/docs/logging/HEALTH-CONTRACT.md` — its endpoint table plus the § 2
+scrape-target contract the NixOS `scrapeConfigs` implement. (A
+`code/src/docker/prometheus/prometheus.yml` was cited as a second precedent; no such
+file ships. One stale citation survives in `.claude/skills/scale-planning/SKILL.md`.)
 Every file here follows that shape: this repo specifies, the deploy repo implements.
 _Avoid:_ writing Nix here. The moment a doc in this directory contains a working
 module, ownership has leaked — describe _what_ must hold and cite where the deploy

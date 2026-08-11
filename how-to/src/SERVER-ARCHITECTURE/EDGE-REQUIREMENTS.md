@@ -17,10 +17,12 @@ Traffic path (context for every entry): **Cloudflare Edge → CF Tunnel (outboun
 → bare-metal Nginx `:8081` → the Django app container** (ASGI: Gunicorn + Uvicorn
 workers, `:8000`) on the `<%PROJECT_SLUG%>-net` bridge — serving Django-templated pages
 (django-components + HTMX + Alpine + token CSS), the Django Ninja JSON API (`/api/...`),
-serving every surface as HTML. Celery worker + Celery beat (singleton)
-run alongside, plus any optional project-defined Rust service(s); the container↔service
-connection plane is in `COMPUTE-ALLOCATION.md`. There is exactly **one** app process
-family — no second frontend upstream to size or route.
+serving every surface as HTML. A Celery worker + Celery beat (singleton) are **designed
+to run alongside but are not wired** — `celery[redis]` is declared in `pyproject.toml`
+and no Compose file defines a `worker` or `beat` service — as are any optional
+project-defined Rust service(s); the container↔service connection plane is in
+`COMPUTE-ALLOCATION.md`. There is exactly **one** app process family today — no second
+frontend upstream to size or route.
 
 ---
 
@@ -165,10 +167,14 @@ family — no second frontend upstream to size or route.
 - **Source:** `code/docs/logging/HEALTH-CONTRACT.md` — the single source of truth:
   endpoints table (`/health/` liveness · `/health/ready/` dependency-aware readiness,
   `200/503`, overall-status-only · `/metrics/` loopback-only Prometheus exposition);
-  "All of the following live in <%DEPLOY_REPO%>, not in this repo".
-  `code/src/docker/prometheus/prometheus.yml` — the canonical scrape-target contract
-  (job `<%ORG_SLUG%>-backend` → `127.0.0.1:8000` `/metrics/`). Gaps: `GAPS.md` (Gatus deploy,
-  metrics deploy).
+  "All of the following live in <%DEPLOY_REPO%>, not in this repo". The scrape-target
+  contract (job `<%ORG_SLUG%>-backend` → `127.0.0.1:8000` `/metrics/`) is stated here.
+  **No Prometheus config file ships in this repo** — there is no
+  `code/src/docker/prometheus/prometheus.yml`, so the build-side statement of the job is
+  prose, in two places: `HEALTH-CONTRACT.md` § 2 and `code/docs/logging/OBSERVABILITY.md`
+  (its "Prometheus scrape config" block). **Both spell the job `<%ORG_SLUG%>-web`** where
+  this contract says `<%ORG_SLUG%>-backend`; the spellings are unreconciled. `GAPS.md`
+  carries no entry for the Gatus or metrics deploy — the obligation is stated below.
 - **Current status:** _TBD — set per deployment._ App side ships the endpoints; deploy
   side supplies the Gatus module, the Prometheus `extraScrapeConfigs` for the single app
   job, and the **host-level wiring** — the actual scrape entries, the
@@ -188,57 +194,95 @@ family — no second frontend upstream to size or route.
     delivery falls back to signature-only/permanent URLs (no breakage, weaker expiry).
 - **Current status:** _TBD — set per deployment._ Account/env configuration, not code.
   The app routes public media → Cloudinary (authenticated) and private documents →
-  SeaweedFS S3 (the upload-routing invariant).
+  <%OBJECT_STORE%> S3 (the upload-routing invariant).
 - **Deploy repo must implement:** strictly a _deployment-coordination_ item rather than
   a NixOS module: enable the add-on on the Cloudinary account and set
   `CLOUDINARY_AUTH_TOKEN_KEY` in the per-env app `.env` (deployed to
   `/etc/<%ORG_SLUG%>/.env.<env>`, not agenix — see `NIXOS-HANDOFF.md`, the app-env plane).
   Pairs with the CSP allowance in entry 3.
 
-## 10. Object-store public endpoint (SeaweedFS presign host)
+## 10. Object-store public endpoint (<%OBJECT_STORE%> presign host)
 
 - **Source:** the project's object-store-engine ADR (presign reachability —
-  `OBJECT_STORE_PUBLIC_ENDPOINT_URL` distinct from the internal endpoint);
-  `code/src/docker/CONTEXT.md` (staging/prod: object store on the server host; backend
-  signs presigned downloads against the public HTTPS host; dev pattern is a dedicated
-  nginx `server_name` → `seaweedfs:8333`).
+  `OBJECT_STORE_PUBLIC_ENDPOINT_URL` distinct from the internal endpoint). **No
+  build-side counterpart yet:** `code/src/docker/CONTEXT.md` names four services
+  (`django`, `db`, `cache`, `nginx`) and no object store — there is no `seaweedfs`
+  container, no nginx `server_name` fronting one, and nothing under `code/src/django/`
+  that signs a presigned URL. The shape below (staging/prod: object store on the server
+  host, the app signing presigned downloads against the public HTTPS host; dev: a
+  dedicated nginx `server_name` → `seaweedfs:8333`) is this contract's design intent,
+  not a description of the shipped Compose stack.
 - **Current status:** _TBD — set per deployment._ Design intent: the deploy repo runs
-  SeaweedFS bare-metal, nftables-gated to the Docker bridge + WireGuard — the
+  <%OBJECT_STORE%> bare-metal, nftables-gated to the Docker bridge + WireGuard — the
   **internal** leg. The browser-reachable **public** presign hostname (the prod analogue
   of dev `s3.<%PROJECT_SLUG%>.localhost`) is per-deployment edge wiring.
 - **Deploy repo must implement:** a public HTTPS hostname (CF Tunnel ingress + Nginx
-  vhost → the SeaweedFS S3 gateway, via the objectstore-proxy where bucket isolation /
+  vhost → the <%OBJECT_STORE%> S3 gateway, via the objectstore-proxy where bucket isolation /
   AV scanning applies) matching the app's `OBJECT_STORE_PUBLIC_ENDPOINT_URL`; the same
   host enters the CSP allowances (entry 3). Presigned URLs are self-authorising — the
   vhost must not add auth, only TLS and routing.
 
 ## 11. Deploy-step obligations (release checklist items)
 
-- **Token-CSS cache bust** (`GAPS.md`): design-token seed migrations do not touch
+- **Source:** `code/docs/design-tokens/CASCADE.md`, which owns the regeneration and
+  cache-invalidation flow the first obligation exists to complete, and this contract
+  itself for the second. **`GAPS.md` records neither** — it is empty at baseline, so the
+  two bullets below are the standing statement of these obligations, not a pointer to a
+  recorded gap.
+- **Token-CSS cache bust:** design-token seed migrations do not touch
   Valkey, so `/assets/tokens.css` serves stale until busted. Prod: the deploy restart
   handles it — the deploy flow must restart the Django app after migrations (the
   health-gated `deploy.sh` restart satisfies this). Cosmetic risk only.
-- **Celery worker + beat run in every live env** (`GAPS.md`): the deploy repo/server
-  must run the `worker` and `beat` (singleton) containers alongside `backend`, plus any
-  optional project-defined Rust service(s). Beat drives every periodic task; without it,
-  scheduled work (retention purges, reapers, refresh jobs) silently stops.
+- **Celery worker + beat run in every live env:** the deploy repo/server
+  must run the `worker` and `beat` (singleton) containers alongside the app container
+  (`django` — the only service `docker-compose.prod.yml` declares), plus any optional
+  project-defined Rust service(s). Beat drives every periodic task; without it,
+  scheduled work (retention purges, reapers, refresh jobs) silently stops. Neither
+  container is wired yet (the traffic-path note above) — this row is the obligation, not
+  a description of a running service.
 
 ## 12. Outbound mail — the SMTP relay the app sends through
 
-- **Source:** `code/src/docker/.env.prod.example` — all outbound mail goes through the
-  app's SMTP env contract: `EMAIL_BACKEND` (default
-  `django.core.mail.backends.smtp.EmailBackend`), `EMAIL_HOST`, `EMAIL_PORT` (587),
-  `EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`, and `DEFAULT_FROM_EMAIL`
-  (`noreply@<%PRIMARY_DOMAIN%>`). Deploy side: `deploy:code/src/modules/mail/` (Postfix
-  submission relay + per-app DKIM).
+- **Source:** Django's own outbound-mail settings — the names this contract fixes for
+  the SMTP env contract: `EMAIL_BACKEND` (intended
+  `django.core.mail.backends.smtp.EmailBackend`), `EMAIL_HOST`, `EMAIL_PORT` (intended
+  587, submission), `EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`, and
+  `DEFAULT_FROM_EMAIL` (intended `noreply@<%PRIMARY_DOMAIN%>`). Deploy side:
+  `deploy:code/src/modules/mail/` (Postfix submission relay + per-app DKIM).
+- **Not wired at baseline:** `code/src/docker/.env.prod.example` declares no `EMAIL_*`
+  key, and `code/src/django/config/settings/base.py` reads none from the environment —
+  so values supplied server-side are inert until a settings module reads them. Only
+  `dev.py` (console backend) and `test.py` (locmem backend) set anything at all;
+  staging and production inherit Django's defaults. The names above and the env keys
+  must land in the same change (`code/docs/architecture/BUILD-OPERATE-SEAM.md`).
 - **Current status:** _TBD — set per deployment._ App is relay-agnostic — plain Django
-  SMTP; a provider-specific Anymail backend remains an _option_ per the template
-  comment, but nothing in the app requires one.
+  SMTP; a provider-specific Anymail backend remains an _option_, but nothing in the app
+  requires one.
 - **Deploy repo must implement:** an authenticated SMTP submission path reachable from
   the app container, with SPF/DKIM/DMARC DNS published for <%PRIMARY_DOMAIN%> **before**
   DKIM signing is enabled (relay credentials + DKIM key are agenix secrets —
   `mail-dkim-<%PROJECT_SLUG%>.age`, see `NIXOS-HANDOFF.md` secret list); the resulting
   host/port/credentials are supplied to the app via the `EMAIL*\*`variables in`/etc/<%ORG_SLUG%>/.env.<env>`.
+
+---
+
+## 13. Request correlation ID — `X-Request-ID` on every request and response
+
+- **Source:** `code/docs/NEGATIVE-SPACE.md` § _The error taxonomy_ — every response carries
+  `X-Request-ID` and the error-tracker event is tagged with it, so a user reporting "I got an
+  error" resolves to one event. App side: `code/src/django/apps/core/middleware.py`
+  (`RequestIDMiddleware`, registered third in `MIDDLEWARE`, after the security headers).
+  Deploy side: `deploy:` the Nginx module — a per-request identifier passed to the upstream.
+- **Current status:** the app reads an inbound `X-Request-ID`, validates it against a
+  conservative alphabet with a 200-character bound, and mints a UUID4 when it is absent or
+  malformed. The guarantee therefore holds with **no** edge support at all; what edge support
+  buys is a _single_ identifier shared by the proxy access log and the application's tracker
+  events, instead of two that have to be joined on timestamp.
+- **Deploy repo must implement:** pass a per-request identifier to the app in the
+  `X-Request-ID` request header and record the same value in the access-log format, so both
+  sides correlate. Nginx's own `$request_id` is the natural source. **Never strip or rewrite
+  the header on the response** — that value is what a user quotes back. Entry 2 derives its
+  dormant CSP nonce from a request identifier, so the two entries must use the same one.
 
 ---
 
@@ -254,7 +298,7 @@ path — service-level `systemctl`/`docker` checks are the deploy repo's own wor
 | API              | `GET https://<%PRIMARY_DOMAIN%>/api/…` health route | `200` JSON from the Django Ninja API                     |
 | Marketing        | `https://<%PRIMARY_DOMAIN%>/`                       | `200` served by **Django** (entry 5)                     |
 | Metrics lockdown | `/metrics/` from a public client                    | denied (`403`) — loopback-only (entry 8)                 |
-| Workers          | `worker` + `beat` containers up alongside `backend` | entry 11 — scheduled tasks silently stop without beat    |
+| Workers          | `worker` + `beat` alongside `django` — once wired   | entry 11 — neither container ships at baseline           |
 
 ---
 
@@ -272,5 +316,6 @@ path — service-level `systemctl`/`docker` checks are the deploy repo's own wor
 | 8   | Health/metrics (Gatus + scrape) | Endpoints shipped                 | Gatus + single `<%ORG_SLUG%>-backend` scrape job |
 | 9   | Cloudinary token auth           | Ready                             | Account add-on + env var                         |
 | 10  | Object-store public host        | boto3/presign                     | Public vhost matching endpoint URL               |
-| 11  | Cache bust + worker/beat        | Mechanism in place                | Restart-after-migrate + run worker/beat          |
+| 11  | Cache bust + worker/beat        | Cache bust only — Celery unwired  | Restart-after-migrate; worker/beat once wired    |
 | 12  | Outbound mail relay             | SMTP env contract                 | SMTP path + SPF/DKIM/DMARC DNS + creds           |
+| 13  | Request correlation ID          | Reads inbound, mints a fallback   | Set `X-Request-ID`, log it, never strip it       |

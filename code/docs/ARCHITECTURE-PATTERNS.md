@@ -17,11 +17,13 @@ contracts (`API-DESIGN.md`), and performance (`PERFORMANCE.md`).
 
 ## Sub-documents
 
-| Document                                                                           | Covers                                                                                                                                                  |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) | Service layer pattern, middleware order, background job classification, email/notification patterns, file processing pipelines                          |
-| [`architecture/FRONTEND-PATTERNS.md`](architecture/FRONTEND-PATTERNS.md)           | Frontend state (Django/HTMX/Alpine), routing conventions, project structure, SEO / JSON-LD / `.well-known` patterns                                     |
-| [`architecture/CORE-AND-SCALING.md`](architecture/CORE-AND-SCALING.md)             | The decisions to settle before the first migration (auth model, key shape, PII posture, isolation scope, distribution key), and the scaling phase-gates |
-| [`architecture/AUTH-CONTRACT.md`](architecture/AUTH-CONTRACT.md)                   | AdminMember/ModulePermission actor auth contract — mandatory for every state-changing operation on these models                                         |
+| Document                                                                           | Covers                                                                                                                                                     |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) | Service layer pattern, middleware order, background job classification, email/notification patterns, file processing pipelines                             |
+| [`architecture/FRONTEND-PATTERNS.md`](architecture/FRONTEND-PATTERNS.md)           | Frontend state (Django/HTMX/Alpine), routing conventions, project structure, SEO / JSON-LD / `.well-known` patterns                                        |
+| [`architecture/CORE-AND-SCALING.md`](architecture/CORE-AND-SCALING.md)             | The decisions to settle before the first migration (auth model, key shape, PII posture, isolation scope, distribution key), and the scaling phase-gates    |
+| [`architecture/AUTH-CONTRACT.md`](architecture/AUTH-CONTRACT.md)                   | AdminMember/ModulePermission actor auth contract — mandatory for every state-changing operation on these models                                            |
+| [`architecture/PROVIDER-NEUTRALITY.md`](architecture/PROVIDER-NEUTRALITY.md)       | Protocol seam vs adapter seam vs substrate — the evidence a neutrality claim needs, and how a guide expresses it                                           |
+| [`architecture/BUILD-OPERATE-SEAM.md`](architecture/BUILD-OPERATE-SEAM.md)         | Where a fact lives across `code/docs` (the why), `SERVER-ARCHITECTURE` (the contract) and the deploy repo — the two bridge shapes and the same-change rule |
 
 _Part of the `code/docs/` documentation family._

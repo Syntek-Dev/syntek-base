@@ -1,0 +1,55 @@
+# Build/operate seam guard — the CI half of code/docs/architecture/BUILD-OPERATE-SEAM.md.
+#
+# Checks two mechanical facts in how-to/src/SERVER-ARCHITECTURE/: every DOCUMENTATION path
+# named in a `**Source:**` field resolves, and every numbered section carries one. It
+# deliberately does not check code paths, URL paths or deploy-repo paths — provenance is
+# what drifts, and code/src/** is legitimately absent at template baseline.
+#
+# What it cannot catch is stated in the guide: a `**Source:**` pointing at a document that
+# still exists but no longer says what the contract claims. That stays a review job.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+#
+# Self-guarding: exits 0 with a note when SERVER-ARCHITECTURE/ is absent, so it is safe
+# to run unconditionally without a step-level directory guard.
+#
+# code/docs/** is a path because the seam has two sides: a guide moving or being renamed
+# is exactly what breaks a `**Source:**` field, and the change that breaks it should be
+# the change that reports it.
+name: Audit — Seam Contract
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "how-to/src/SERVER-ARCHITECTURE/**"
+      - "code/docs/**"
+      - "code/src/scripts/audits/seam-contract.sh"
+      - ".github/workflows/audit-seam-contract.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "how-to/src/SERVER-ARCHITECTURE/**"
+      - "code/docs/**"
+      - "code/src/scripts/audits/seam-contract.sh"
+      - ".github/workflows/audit-seam-contract.yml"
+  workflow_dispatch:
+
+jobs:
+  seam-contract:
+    name: Build/operate seam audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run seam contract audit
+        run: bash code/src/scripts/audits/seam-contract.sh --output md
+
+      - name: Upload seam contract report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seam-contract-report
+          path: code/src/scripts/audits/reports/seam-contract-report.md
+          if-no-files-found: ignore
