@@ -53,7 +53,7 @@ coverage.
 ### Python — pytest-cov configuration
 
 ```toml
-# code/src/django/pyproject.toml
+# pyproject.toml (repository root)
 [tool.coverage.run]
 source = ["apps"]
 branch = true

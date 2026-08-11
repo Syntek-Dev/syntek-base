@@ -72,7 +72,7 @@ Brief each sub-agent fully in its prompt — it has no memory of previous phases
 ↳ version bump [patch|minor|major] [opus]
 Determine bump type from request: patch (bugfixes), minor (new features), major (breaking changes).
 Updates: `VERSION`, `VERSION-HISTORY.md`, `RELEASES.md`, `CHANGELOG.md`,
-`code/src/django/pyproject.toml`, `package.json`
+`pyproject.toml`, `package.json`
 
 ### Phase 2 — Full Test Suite
 
@@ -92,8 +92,6 @@ Commit message: `chore(release): bump version to X.Y.Z`
 
 ### Phase 4 — Deploy
 
-No sub-agent. Run directly:
-
-```bash
-bash code/src/scripts/deployment/production.sh
-```
+**Stop here and report.** `code/src/scripts/deployment/` is a scaffold — the sanctioned deploy
+entry point is not written yet, so there is no command to run. Hand the tagged, tested release to
+whoever owns the target environment. Never improvise a deploy command.

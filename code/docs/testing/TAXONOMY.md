@@ -39,7 +39,7 @@ model: opus
 | -------------------------- | -------------------------------------------------- | ------------------- | --------------- |
 | **Auth/authorisation**     | Access controls enforced correctly                 | pytest              | Every module    |
 | **Input sanitisation**     | SQL injection, input validation, command injection | pytest + hypothesis | Every API layer |
-| **Vulnerability scanning** | Known CVEs in dependencies                         | `audits/deps.sh`    | Every PR (CI)   |
+| **Vulnerability scanning** | Known CVEs in dependencies                         | `audit-deps.yml`    | Scheduled (CI)  |
 | **Penetration testing**    | Simulated attacks on the system                    | Manual / OWASP ZAP  | Pre-release     |
 
 ### UX & Accessibility

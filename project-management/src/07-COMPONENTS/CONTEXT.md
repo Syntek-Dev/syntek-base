@@ -41,8 +41,8 @@ Two stories, planned weeks apart, both need "a small pill showing state". Neithe
 neither can see the other. Left alone that ships as two components with different padding, two
 sets of states, and two places to fix a bug.
 
-Stage 1 lets each story state its need honestly. Stage 2 is where somebody sees `US004`'s status
-badge and `US011`'s tag chip side by side and decides they are one component with two variants.
+Stage 1 lets each story state its need honestly. Stage 2 is where somebody sees one story's status
+badge and another's tag chip side by side and decides they are one component with two variants.
 **Most stage-1 records should read "reused existing"** — the ones proposing something new are
 the signal.
 

@@ -1,8 +1,8 @@
 # Discoverability — the SEO and ASO skill ecosystem
 
-**Written**: 04/08/2026 · **Licences verified**: 09/08/2026 (N-009)
-**Method**: web search + repository inspection + GitHub REST licence-file reads · **For**: `MAP-DISCOVERABILITY`
-**Feeds**: `MAP-DISCOVERABILITY` N-001 (ecosystem), N-009 (licences), N-010 (attribution)
+**Written**: 04/08/2026 · **Licences verified**: 09/08/2026
+**Method**: web search + repository inspection + GitHub REST licence-file reads
+**Feeds**: the discoverability epic — its ecosystem, licence and attribution decisions
 
 The discipline `AGENT-SKILL-ECOSYSTEM.md` did not sweep. Same method as that note — survey what
 exists, record what each source covers and on what licence terms, then name the holes.
@@ -16,8 +16,8 @@ exists, record what each source covers and on what licence terms, then name the 
 
 `research/AGENT-SKILL-ECOSYSTEM.md` swept seventeen disciplines and concluded the template was
 short in three places. **SEO appears zero times in that note**, and neither does
-"discoverability". It was not scoped out — it was never in the sweep, and the N-020 verdict on
-`MAP-DOCTRINE-UPGRADE.md` reads as exhaustive without saying so.
+"discoverability". It was not scoped out — it was never in the sweep, and the verdict recorded
+against it reads as exhaustive without saying so.
 
 Verified 04/08/2026 by grep across the note and the map.
 
@@ -112,7 +112,7 @@ interfaces. A keyword-research SaaS is a provider behind them.
 
 ### 4. Adoption terms — already settled, and this note does not reopen them
 
-`MAP-DOCTRINE-UPGRADE.md` N-001 and its Out-of-scope table already govern this:
+The doctrine-upgrade epic's opening node and its Out-of-scope table already govern this:
 
 | Action                                                              | Position                                                                        |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------- |

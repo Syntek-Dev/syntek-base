@@ -34,10 +34,26 @@ explicit anti-pattern — it made a ten-decision design take ten exchanges.
 
 **The sweep mattered more than the rule.** 63 files restated the mechanic instead of routing to
 the skill, so changing the skill alone would have left 63 contradictions. This is the same drift
-`MAP-DOCTRINE-UPGRADE` N-009 found in `code-reviewer.md`. The standing fix: an agent, workflow or
+found earlier in `code-reviewer.md`. The standing fix: an agent, workflow or
 skill opening a grilling pass names **what** must be settled and routes to
 `.claude/skills/grilling/SKILL.md` for **how** — never the format, the round shape, or the
 recommendation rule.
+
+### This project does not use ADRs — 11/08/2026
+
+**Project- and template-wide, not one epic's exception.** Decisions are recorded where the work
+already lives — the feature map in `project-management/src/01-FEATURE/`, the story plan, the
+`CONTEXT.md` glossary, or a `research/` note — never as an `ADR-###`. The trigger was an epic that
+charted the tooling surface itself: `14-DECISIONS/` is **not** copier-excluded, so an ADR about the
+template's own tooling would ship into every generated project as a decision that project never
+made. Sam then
+widened it to every project, so the ADR machinery is retired rather than merely unused here.
+
+**The contradiction is live until the removal ships.** `14-DECISIONS/`, `ADR-000-TEMPLATE.md`, PM
+workflow `14-decisions/`, and the ADR rows in the `wayfinder` and `grill-with-docs` graduation
+tables all still instruct otherwise. This file is read second in the §2.1 order, so it wins —
+**do not offer or author an ADR**, whatever those files say. Tracked in
+`how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` (11/08/2026).
 
 ---
 
@@ -52,21 +68,47 @@ meaningless and misleading; it is kept as an empty stub, and `TEMPLATE-GUIDE/` *
 it is durable in git yet never ships. The same test applies to any register or reasoning artefact:
 **check `_exclude` before writing repo-specific state into a tracked file** — which is why
 template-era design rationale sits in `02-STACK.md` and `11-CUSTOMISING.md` rather than in
-`project-management/src/14-DECISIONS/`. (`TEMPLATE-GAPS.md` has cited this entry since it was
-written; the entry itself was missing until N-030.)
+`project-management/src/14-DECISIONS/`. (`TEMPLATE-GAPS.md` cited this entry long before the entry
+itself was written.)
+
+---
+
+### syntek-base ignores its own handoffs and feature maps; a generated project does not — 11/08/2026
+
+**Two nested `.gitignore` files carry this, and both are `_exclude`d in `copier.yml`.**
+`handoffs/.gitignore` ignores `HANDOFF-*.md` and `project-management/src/01-FEATURE/.gitignore`
+ignores `MAP-*.md` bar the template — because in **this** repository both are throwaway working
+state about the template itself, and neither belongs in its history. In a **generated** project
+both are real: handoffs are that project's session continuity and maps are the artefacts of
+`01-feature`, so the shipped doctrine in `handoffs/CONTEXT.md` ("committed, synced") stays true
+there and must not be rewritten to match this repo's behaviour.
+
+**The mechanism is the point.** Git honours a `.gitignore` in any directory, so a repo-local rule
+can live in a file that copier drops at generation — which leaves the root `.gitignore` shipped
+and therefore still updatable by `copier update`. Excluding the root `.gitignore` and seeding it
+from `.copier/` would have made it seed-once, and no future ignore rule could ever reach an
+existing project.
 
 ---
 
 ### A third-party source's claim is a lead, not a finding — 11/08/2026
 
-Generalised from `MAP-DISCOVERABILITY` N-009 (GitHub's SPDX detector returned `NOASSERTION` for
-two plainly MIT repositories) by N-003, which hit the same shape in content rather than metadata:
+Generalised from a licence sweep (GitHub's SPDX detector returned `NOASSERTION` for two plainly
+MIT repositories) and a second case that hit the same shape in content rather than metadata:
 a cleared MIT skill repo asserted that three techniques in our own `SEO-CHECKLIST.md` were myths.
 **It was right, and checking took one fetch of Google's own documentation.** The rule that
 survives both: an outside source — a detector, a skill repo, a blog, another model — earns a
 **look at the primary source**, never a direct edit. Where the primary source confirms it, the
 substance is the primary source's and **no attribution is owed to the lead**; that is why N-003
 adopted a correction and still gave N-010 no row.
+
+**Third instance, N-005 (11/08/2026), and the first where the outside sources were _unanimous_
+and wrong.** Every ASO source — all four cleared MIT repos, plus the search engine's own summary
+of Apple's page — states Apple's keyword limit as "100 characters". Apple's App Store Connect
+Help says **"up to 100 bytes"**. The two coincide in ASCII, which is exactly why the error
+propagates unchallenged, and diverge by 2–3× the moment a listing is localised. **Consensus among
+secondary sources is not corroboration** — they copy each other, so agreement is one source
+counted many times. The fix is cheap and the same every time: fetch the vendor's page.
 
 Corollary worth its own sentence: **prompt-only knowledge goes stale unread.** Both defects N-002
 and N-003 corrected had been sitting in `.claude/agents/seo.md`, unreachable except by routing to
@@ -78,7 +120,7 @@ that agent. A guide nobody can find is a guide nobody can correct.
 
 `build_or_update_graph_tool` runs an incremental update that diffs against a git ref, so a file
 that is new and **uncommitted is invisible to it** — the tool reports success having never parsed
-it. Two files shipped by `MAP-NEGATIVE-SPACE` were absent from the graph while every audit was
+it. Two newly written files were absent from the graph while every audit was
 green. `full_rebuild=True` works but re-parses everything and can exceed the tool timeout; `git
 add` first is the cheap fix, because staging is what makes the file visible to the diff. The § 6
 hard gate says "refresh alongside the docs" — that gate is only satisfied if the new files were

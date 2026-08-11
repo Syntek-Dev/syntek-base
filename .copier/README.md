@@ -1118,8 +1118,10 @@ table ever falls behind it.
 | `copy-emdash.sh`       | Em dashes in user-facing copy                                                           |
 | `css-gradients.sh`     | Raw gradient literals outside the token layer                                           |
 | `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)           |
+| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                   |
 | `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                |
 | `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                |
+| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                           |
 | `skill-conformance.sh` | Every skill matches the Agent Skills spec and this project's two-field narrowing        |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                    |
 | `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                          |

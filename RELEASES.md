@@ -1,11 +1,122 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.13.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.14.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v2.14.0 — 11/08/2026
+
+**Status:** Minor — two MCP servers wired, one map seeded at generation, two nested ignore files.
+Everything else is citation repair across the tree, done by hand.
+
+### A citation is a promise the reader will test
+
+A file that ships is read in a project that is not this one. So it may cite only what that project
+is guaranteed to have: the layering system — `CONTEXT.md`, `CLAUDE.md`, the `docs/` guides, the
+workflows, the scripts. Those exist everywhere, by construction.
+
+A per-project instance does not. A decision record, a story, a sprint, a feature map, a plan — a
+generated project has different ones at those numbers, or nothing at all at that number. Naming the
+**pattern** is fine, and stays fine: "take the next free number" describes a format. Naming a
+specific one as though the reader can go and open it is a broken promise, and the reader who tries
+learns that the documentation is not to be trusted, which is a far more expensive lesson than the
+one they came for.
+
+This release makes that rule true everywhere it applies.
+
+### The phantom decision records, closed by deciding
+
+2.13.1 shipped with these logged and untouched, on purpose: three decision-record numbers cited as
+real across six files with no register behind them, and a note saying that choosing between writing
+the records and dropping the citations was a decision rather than a tidy-up.
+
+The decision went the other way from writing them. **This project does not use ADRs at all**, and
+`.claude/MEMORY.md` now records that as project- and template-wide. Decisions are recorded where the
+work already lives — the feature map, the story plan, the nearest `CONTEXT.md` glossary, a
+`research/` note.
+
+The trigger was narrow and then generalised. `project-management/src/14-DECISIONS/` is not
+copier-excluded, so an ADR written here about the template's own tooling would ship into every
+generated project as a decision that project never made. That alone rules the folder out for
+template work; the wider call retires the machinery rather than leaving it merely unused.
+
+The citations are gone from `DESIGN.md`, `.prettierignore`, `code/workflows/03-database-migration/CONTEXT.md`
+and the two CSS audit scripts. Each described something real, so each now names that thing directly
+— the shard-key co-location, the Django static token cascade, the co-located component CSS. The
+retired machinery is still standing and still instructs otherwise; the memory entry is read second in
+the § 2.1 order and wins until the removal ships.
+
+### Instances used as evidence, and paths that resolved to nothing
+
+The same rule reaches further than decision records.
+
+**Story numbers as worked examples.** The component-consolidation documents explained their own
+value with two specific stories designing the same badge. The point is exactly right and the
+example ships into a repository with no stories in it. It reads as one story's status badge and
+another story's tag chip now, which is true in every project.
+
+**Map names and node numbers as evidence.** Several rules cited the map node that discovered them —
+in `.claude/MEMORY.md`, the grilling and wayfinder skills, the `seo` agent, and three `research/`
+notes. A map is deleted when its epic ships, so the citation dies and the lesson does not. Each
+lesson now carries itself.
+
+**Paths that simply were not there.** The `release` agent bumped a manifest at
+`code/src/django/pyproject.toml` (it is the root `pyproject.toml`) and deployed by running a script
+in a directory that is a scaffold — that phase now stops and reports rather than improvising a
+command. The `completion` agent maintained a story index this template does not ship. The testing
+guides pointed at the same non-existent Django manifest for the pytest and coverage blocks. A
+dependency-audit script was cited three times and has never existed; the work is done by
+`.github/workflows/audit-deps.yml`, on a schedule rather than every PR. The debugging checklist
+named `lint.sh` and `check.sh` one directory too high. Three server-contract documents cited the
+deploy repository's guides bare, so they resolved **here**, to the wrong thing.
+
+### What the documentation promised and nothing supplied
+
+Two of these were not wrong references but missing things.
+
+`.claude/CLAUDE.md` § 3 listed five MCP servers. `.mcp.json` configured one. `context7` and
+`mcp-mermaid` are now genuinely wired, and the table gains a **How you get it** column so the
+remaining gap is stated rather than implied: `claude-in-chrome` needs the extension installed and
+paired, which no file here can do for you, and the `figma` row is gone because nothing here provides
+it.
+
+`MAP-SCALE-PLANNING.md` is the map `/scale-planning` writes, and six shipped files route a reader to
+it. It did not exist until that pass had run, so on day one all six routes went nowhere — for the
+one artefact the operating model says must be settled **before** the first feature. It is now seeded
+into `project-management/src/01-FEATURE/` at generation, as a stub with every row reading `TBD` and
+the frontier named rather than answered. That is the honest state before the pass, and it is
+seed-once on the same `_tasks` mechanism as the root version files, so an update can never hand a
+project its blank stub back over a filled-in map.
+
+### This repository's own throwaway state, kept out of its history
+
+`handoffs/.gitignore` ignores `HANDOFF-*.md`, and `project-management/src/01-FEATURE/.gitignore`
+ignores the feature maps bar the template they are written from. Both are `_exclude`d, so no
+generated project receives either.
+
+The asymmetry is the whole point. In **this** repository a handoff is session state about work on the
+template, and a map charts the template itself and is deleted once its epic ships; neither belongs in
+the template's history. In a **generated** project both are real — handoffs are that project's session
+continuity, maps are the artefacts of `01-feature` — and `handoffs/CONTEXT.md` says so, unchanged.
+
+The mechanism matters as much as the rule. Git honours a `.gitignore` in any directory, so a
+repo-local rule can live in a file copier drops at generation. Excluding the root `.gitignore` and
+seeding it instead would have made it seed-once, and no future ignore rule could ever reach an
+existing project again.
+
+### The gate that keeps this true is not in this release, and that is an ordering constraint
+
+A rule applied by hand stays true until the next hand touches it. The obvious follow-up is a
+mechanical check, and it lands at the end of this cycle rather than here.
+
+The reason is not caution. The refreshed root index cites three guides that do not exist until later
+releases in the cycle — so the index cannot land until they do, and a gate that fails on the index it
+is meant to protect cannot land before it. Shipping the check now would mean either a red gate or an
+exemption written to hide one, and both are worse than the honest sequence: make the tree true first,
+then make it stay true.
 
 ## v2.13.1 — 11/08/2026
 

@@ -48,7 +48,7 @@ produces the design a developer actually builds against.
 - **Stage 1 is frozen, not deleted.** `USER-STORY-IDEAS/` files stay exactly as written
   once consolidation runs. They record what each story asked for and why, which is the
   evidence trail when a consolidated decision is later questioned.
-- **Collisions are the output.** The value here is finding that `US004` and `US011` both
+- **Collisions are the output.** The value here is finding that two stories both
   designed a status badge, or that three stories each added a `created_by` column with a
   different delete behaviour. Finding none is a signal the pass was shallow, not that the
   design was clean.

@@ -26,7 +26,7 @@ interview and record decisions as it goes). The `planner`, `database`, `backend`
 > that opens a grilling pass names its **subject matter** — what must be settled — and leaves
 > the round mechanics, the question format and the recommendation rule to this file. A
 > restatement drifts the moment this file changes; that has already happened once in this
-> repository (`MAP-DOCTRINE-UPGRADE` N-009).
+> repository.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 

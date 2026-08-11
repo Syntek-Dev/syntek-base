@@ -172,7 +172,7 @@ Before deploying or merging any change to staging or production:
       interpolated into an Alpine expression (use `|json_script`)
 - [ ] Debug mode is disabled in staging and production
 - [ ] HTTP security headers are set
-- [ ] Dependencies have been audited (`bash code/src/scripts/audits/deps.sh`)
+- [ ] Dependencies have been audited (`.github/workflows/audit-deps.yml` — `pip-audit` + `pnpm audit`)
 - [ ] Uploaded files are validated, size-limited, and stored outside the webroot
 - [ ] Sensitive data is encrypted at rest where required
 - [ ] Rate limiting is applied to authentication endpoints

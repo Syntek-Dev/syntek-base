@@ -55,7 +55,7 @@ itself only offered when `INCLUDE_RUST` is true.
 
 - `code/docs/RUST.md` — the workspace this crate belongs to
 - `code/docs/rust/SUPPLY-CHAIN.md` — why two AccessKit advisories are accepted
-- `code/src/scripts/desktop/CONTEXT.md` — the two scripts and the attribution gate
+- `code/src/scripts/desktop/CONTEXT.md` — the desktop scripts and the attribution gate
 - `code/workflows/12-rust-extension/` — when the window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here

@@ -155,13 +155,12 @@ See `.claude/skills/handoff/SKILL.md`.
 
 ## 3. Tooling — MCP Servers & Project Plugins
 
-| Server              | When to use                                                                                  |
-| ------------------- | -------------------------------------------------------------------------------------------- |
-| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       |
-| `context7`          | Any library, framework, or SDK docs. `resolve-library-id` → `query-docs`.                    |
-| `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. |
-| `mcp-mermaid`       | Architecture and flow diagrams.                                                              |
-| `figma`             | Figma design reads/writes, Code Connect. Load schema via ToolSearch.                         |
+| Server              | When to use                                                                                  | How you get it                                                              |
+| ------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       | Configured in `.mcp.json`                                                   |
+| `context7`          | Any library, framework, or SDK docs. `resolve-library-id` → `query-docs`.                    | Configured in `.mcp.json`                                                   |
+| `mcp-mermaid`       | Architecture and flow diagrams.                                                              | Configured in `.mcp.json`                                                   |
+| `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. | **Install the Claude Chrome extension and pair it** — no config supplies it |
 
 **Graph ⇄ layer system — work in tandem.** The code-review-graph and the layered
 `CONTEXT.md`/`CLAUDE.md` docs are two synchronised views of the codebase: machine-derived

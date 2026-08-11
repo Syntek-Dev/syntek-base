@@ -1,7 +1,7 @@
 # AGENT-SKILL-ECOSYSTEM
 
 **Written**: 04/08/2026 · **Skill**: `research`
-**Feeds**: a second wayfinder map (proposed — `MAP-DOCTRINE-UPGRADE`), not yet charted
+**Feeds**: a second wayfinder map, proposed and not yet charted
 
 ---
 

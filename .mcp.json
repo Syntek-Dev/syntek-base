@@ -4,6 +4,16 @@
       "command": "uvx",
       "args": ["code-review-graph", "serve"],
       "env": {}
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {}
+    },
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": ["-y", "mcp-mermaid"],
+      "env": {}
     }
   }
 }

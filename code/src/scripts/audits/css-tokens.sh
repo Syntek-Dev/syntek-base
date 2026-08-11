@@ -11,8 +11,8 @@
 #
 # Scopes scanned (*.css only):
 #   code/src/django/static/css    (token source of truth: tokens/*.css, surfaces.css)
-#   code/src/django/static/css   (ADR-019: Django static token cascade + per-page CSS)
-#   code/src/django/components   (ADR-019: co-located django-component BEM CSS)
+#   code/src/django/static/css   (Django static token cascade + per-page CSS)
+#   code/src/django/components   (co-located django-component BEM CSS)
 #
 # "Defined"   — `--name:` appears as a declaration LHS anywhere in those scopes.
 # "Referenced"— `var(--name` appears anywhere in those scopes.

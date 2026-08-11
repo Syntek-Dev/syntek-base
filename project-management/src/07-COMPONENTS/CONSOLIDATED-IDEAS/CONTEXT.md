@@ -27,7 +27,7 @@ served by an existing component, and every genuinely new one, each with the reas
 ## One component, several variants
 
 The commonest outcome is not "these are duplicates, delete one" but "these are one component
-with two variants". `US004`'s status badge and `US011`'s tag chip become `Badge` with `status`
+with two variants". One story's status badge and another's tag chip become `Badge` with `status`
 and `tag` variants — one implementation, one set of states, one place to fix a bug.
 
 Deciding that requires seeing both needs at once, which is why it cannot happen at stage 1.

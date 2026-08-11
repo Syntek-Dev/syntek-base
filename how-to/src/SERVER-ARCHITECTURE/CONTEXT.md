@@ -44,7 +44,7 @@ how-to/src/SERVER-ARCHITECTURE/
 ## Do not use for
 
 - Provisioning walkthrough (disks, agenix, nixos-anywhere) → the deploy repo:
-  `<%DEPLOY_REPO%>/how-to/src/01–11` + `how-to/workflows/01-server-setup/`
+  `<%DEPLOY_REPO%>/how-to/src/01–11` + `<%DEPLOY_REPO%>/how-to/workflows/01-server-setup/`
 - The readiness audit and raw sizing envelope → `how-to/src/SCALE-ARCHITECTURE/`
 - Application-side health endpoint shapes → `code/docs/logging/HEALTH-CONTRACT.md`
 - The scaling decision itself → the project's Postgres horizontal-scaling ADR +

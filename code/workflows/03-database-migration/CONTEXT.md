@@ -43,4 +43,4 @@ that requires a Django migration.
 - `project-management/workflows/18-backend-code/` — **this workflow is entered from there**, not
   directly from `04-database-schema/`: the migration is written during the backend build phase,
   once the story plan (`16-story-plans/`) is signed off
-- `code/docs/architecture/CORE-AND-SCALING.md` — shard key is `tenant_id`; a new user-owned table must carry it (readiness + ADR-016 co-location)
+- `code/docs/architecture/CORE-AND-SCALING.md` — shard key is `tenant_id`; a new user-owned table must carry it (readiness + shard-key co-location)

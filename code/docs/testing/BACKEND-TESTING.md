@@ -56,7 +56,7 @@ in `code/src/django/config/settings/test.py`.
 ### pytest configuration
 
 ```toml
-# code/src/django/pyproject.toml
+# pyproject.toml (repository root)
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["test_*.py", "*_test.py"]

@@ -105,9 +105,9 @@ def test_update_profile_requires_authentication() -> None:
 
 ### Dependency scanning (CI)
 
-```bash
-bash code/src/scripts/audits/deps.sh   # pip-audit (Python) + pnpm audit (JavaScript)
-```
+Runs on a schedule in `.github/workflows/audit-deps.yml` — `pip-audit` for Python and
+`pnpm audit` for JavaScript. There is no local wrapper script; trigger the workflow from the
+Actions tab to sweep on demand.
 
 ---
 
@@ -128,8 +128,8 @@ def test_list_articles_no_n_plus_one(article_factory) -> None:
 
 No load-test scripts ship in this repository — `code/src/scripts/tests/` holds no `load/`
 directory and no `load.sh` runner, and k6 is not installed. When load testing is introduced the
-scripts belong under `code/src/scripts/tests/load/` behind a `load.sh` runner, and are run
-against a staging environment only.
+scripts belong in a `load/` directory beside the other test runners, behind a `load.sh` entry
+point, and are run against a staging environment only.
 
 ---
 

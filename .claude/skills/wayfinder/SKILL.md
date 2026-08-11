@@ -109,8 +109,8 @@ mode — no map, and no edit to the register.
    single sitting because deciding them apart would mean deciding them twice.
 
    Group by, in order of strength:
-   - **Shared subject** — the same surface, schema, or document (`N-023`/`N-024`/`N-025` were one
-     question about three guides, and were rightly grilled once).
+   - **Shared subject** — the same surface, schema, or document. Three nodes that turn out to be
+     one question about three guides are rightly grilled once.
    - **Mutual dependence** — B's sensible answer changes with A's, so answering A alone forces a
      revisit.
    - **Shared evidence** — the same lookup, measurement, or file read settles all of them.

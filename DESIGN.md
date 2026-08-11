@@ -1,7 +1,7 @@
 # DESIGN.md
 
 **Project**: <%PROJECT_NAME%> Website | **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%>
-**Stack** (ADR-019): Django Templates + django-components · HTMX · Alpine.js · Vanilla CSS (design tokens). Server-rendered throughout — no client-side framework, no bundler.
+**Stack**: Django Templates + django-components · HTMX · Alpine.js · Vanilla CSS (design tokens). Server-rendered throughout — no client-side framework, no bundler.
 
 This file is the **design-time** entry point for all design work — the quick context source when producing wireframes and component designs with the Figma MCP or Claude Design. It maps the relevant standards, guides, and workflows, and points those tools at the brand and component sources they should read.
 

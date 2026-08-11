@@ -25,7 +25,6 @@ You own PM status bookkeeping — not the work itself:
 
 - **Story status** — flip a `US###.md` `**Status:**` line through its lifecycle to
   `Completed`, with a dated completion note.
-- **Story index** — keep `STORY-INDEX.md` reconciled when a status changes.
 - **Sprint records** — update the per-story ticks in a `SPRINT-##.md` Story Summary
   and the sprint `**Status:**` line to `Done` once every Must-Have story is complete.
 - **Completion report** — a concise summary back to the orchestrator of what moved.
@@ -51,7 +50,6 @@ Read before making changes (skip what the task plainly does not touch):
 
 - `project-management/CONTEXT.md` — PM layer overview, artefact locations
 - `project-management/src/02-STORIES/CONTEXT.md` + `CLAUDE.md` — story conventions
-- `project-management/src/02-STORIES/STORY-INDEX.md` — authoritative story listing
 - `project-management/src/03-SPRINTS/` — sprint records; read the sprint the story sits in
 - `.claude/skills/global-workflow/SKILL.md` — localisation and cross-cutting workflow rules
 
@@ -95,8 +93,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
    state). Append the merge/PR reference on the same line where the house style shows it
    (e.g. `Completed — merged in PR 124`).
 2. Tick any remaining acceptance-criteria checkboxes that the verified work satisfies.
-3. Reconcile `STORY-INDEX.md` if the change affects anything it records.
-4. If the story sits in an active sprint, update that sprint's Story Summary tick and
+3. If the story sits in an active sprint, update that sprint's Story Summary tick and
    re-evaluate the sprint status (below).
 
 ## Making a sprint complete

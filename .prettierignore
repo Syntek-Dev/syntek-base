@@ -39,14 +39,14 @@ code/src/rust/target/
 # Django collected static files
 code/src/django/staticfiles/
 
-# Relocated marketing CSS + vendored JS (ADR-019) — mirrored from source / third-party; do not reformat
+# Relocated marketing CSS + vendored JS — mirrored from source / third-party; do not reformat
 code/src/django/static/css/
 code/src/django/static/vendor/
 
 # Django templates — contain template tags that Prettier's HTML parser cannot handle
 code/src/django/templates/
 code/src/django/apps/**/templates/
-# django-components templates (ADR-019) — same reason: Prettier's HTML parser mangles {% %} tags
+# django-components templates — same reason: Prettier's HTML parser mangles {% %} tags
 code/src/django/components/
 
 # Golden-fixture test data — exact-match expected output; must not be reformatted

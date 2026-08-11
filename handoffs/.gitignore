@@ -1,0 +1,9 @@
+# syntek-base only — this file is copier-excluded, so a generated project never receives it.
+#
+# Handoffs written while developing the TEMPLATE are session state, not template content:
+# they name in-flight work on syntek-base itself and are pruned once that work resumes.
+# A generated project's handoffs are its own and stay tracked, which is what
+# handoffs/CONTEXT.md describes.
+#
+# The CONTEXT.md / CLAUDE.md pair stays tracked so the folder ships documented.
+HANDOFF-*.md

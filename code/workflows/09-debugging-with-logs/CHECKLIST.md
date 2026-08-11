@@ -25,7 +25,7 @@ Complete this checklist before closing a debugging session.
 
 - [ ] Fix addresses the root cause, not just the symptom · _opus_
 - [ ] No unrelated changes are bundled in the same commit · _opus_
-- [ ] Linting and type-checking pass (`code/src/scripts/lint.sh`, `check.sh`) · _opus_
+- [ ] Linting and type-checking pass (`code/src/scripts/syntax/lint.sh`, `syntax/check.sh`) · _opus_
 
 ## Staging / prod incidents (skip for local-only bugs)
 

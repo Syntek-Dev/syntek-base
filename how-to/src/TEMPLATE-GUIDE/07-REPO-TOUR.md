@@ -55,19 +55,23 @@ code/
 │   ├── docker/      ← Dockerfiles and Compose files per environment
 │   ├── scripts/     ← every dev operation — you run these, not raw commands
 │   └── tests/       ← Bruno API collections
-└── workflows/       ← 11 workflows in three families:
+└── workflows/       ← coding workflows, in four families:
                      build (01–06) · verify (07–08) · diagnose & improve (09–11)
+                     · build, opt-in (12 rust-only · 13 desktop-only)
 ```
 
-**`code/src/scripts/` is the interface to everything.** Five groups:
+**`code/src/scripts/` is the interface to everything.** Grouped by what the scripts do:
 
-| Group          | Examples                                                                                       |
-| -------------- | ---------------------------------------------------------------------------------------------- |
-| `development/` | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `template-update.sh`                  |
-| `database/`    | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh`                                        |
-| `tests/`       | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh`                                        |
-| `syntax/`      | `lint.sh`, `check.sh`, `format.sh`                                                             |
-| `audits/`      | `cloc.sh`, `docs-length.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh` |
+| Group                            | Examples                                                                                       |
+| -------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `template-update.sh`                  |
+| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh`                                        |
+| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh`                                        |
+| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                             |
+| `audits/`                        | `cloc.sh`, `docs-length.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh` |
+| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                              |
+| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                         |
+| `_lib/`                          | shared helpers the other groups source, never run directly                                     |
 
 Every script takes `--help`. Never run `python`, `pytest`, `pnpm` or `docker` directly — the
 scripts handle the container, the environment and the compose overrides for your branch.

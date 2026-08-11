@@ -1,0 +1,10 @@
+# syntek-base only — this file is copier-excluded, so a generated project never receives it.
+#
+# The maps here chart work on the TEMPLATE itself. Each one says so in its own header and
+# is deleted once its epic ships, so none of them belongs in the template's git history.
+# A generated project's feature maps are real artefacts of `01-feature` and are tracked
+# normally — which is why this rule must not travel with the template.
+MAP-*.md
+
+# The map template ships; it is the shape every real map is written from.
+!MAP-000-TEMPLATE.md

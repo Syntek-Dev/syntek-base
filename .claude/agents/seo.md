@@ -83,8 +83,7 @@ design-work default (`.claude/CLAUDE.md` §10).
   >
   > **This bullet is not the owner of any of it.** The doctrine lives in the guide; this file
   > routes. That the myth sat here undetected is precisely why — prompt-only knowledge is
-  > reachable only by routing to this agent, so nobody reviews it
-  > (`MAP-DISCOVERABILITY` N-002, N-003).
+  > reachable only by routing to this agent, so nobody reviews it.
 
 ## Non-Negotiables
 

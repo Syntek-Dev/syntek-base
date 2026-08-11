@@ -133,7 +133,7 @@ in a directory the current template no longer defines.
 | `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                          | `21-REFACTORING/`                                                                                    |
 | `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` · `INCIDENT-INDEX.md`             | `22-INCIDENTS/` (no `US###` form — an incident is not owned by a story)                              |
 
-Descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY; story numbers zero-padded (`US043`).
+Descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY; story numbers zero-padded to three digits.
 
 ---
 

@@ -1,7 +1,6 @@
 # ANTI-SLOP-RULE-SOURCES
 
-**Written**: 04/08/2026 · **Skill**: `research` · **Feeds**: `MAP-DOCTRINE-UPGRADE.md` nodes
-N-003, N-004, N-011, N-015, N-018
+**Written**: 04/08/2026 · **Skill**: `research` · **Feeds**: the template's doctrine-upgrade work
 
 ---
 

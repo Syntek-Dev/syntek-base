@@ -73,8 +73,8 @@ the reusable template; the three-surface default (public/marketing · authentica
   and are never hardcoded, so every row here is a name, never a value.
 
 The application stack requires these agenix secrets on the host. Creation and
-rotation commands live in the deploy repo (`how-to/src/03-MANAGING-SECRETS.md` +
-`how-to/workflows/03-agenix-secrets/`) — never here:
+rotation commands live in the deploy repo (`<%DEPLOY_REPO%>/how-to/src/03-MANAGING-SECRETS.md` +
+`<%DEPLOY_REPO%>/how-to/workflows/03-agenix-secrets/`) — never here:
 
 | Secret (`code/src/secrets/*.age`)        | Feeds                                                                                                  |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -135,8 +135,8 @@ build mechanics — forking/renaming the template, disk layout, `nixos-anywhere`
 agenix commands, the deploy script + CI deploy key, `nixos-rebuild` operations,
 post-deploy service checks — live in the deploy repo:
 
-- `how-to/src/01-FORK-THE-REPO.md` … `11-HETZNER-CLOUDFLARE-SECURITY.md`
-- `how-to/workflows/01-server-setup/` · `02-git-workflow/` · `03-agenix-secrets/`
+- `<%DEPLOY_REPO%>/how-to/src/01-FORK-THE-REPO.md` … `11-HETZNER-CLOUDFLARE-SECURITY.md`
+- `<%DEPLOY_REPO%>/how-to/workflows/01-server-setup/` · `02-git-workflow/` · `03-agenix-secrets/`
 
 ## Contract discipline
 
@@ -165,14 +165,14 @@ post-deploy service checks — live in the deploy repo:
 
 ## The boundary, stated once
 
-| Question                                           | Owner                                                                |
-| -------------------------------------------------- | -------------------------------------------------------------------- |
-| _What_ must the edge/server provide?               | **This directory**                                                   |
-| _How_ is it provided (Nix modules, vhosts, units)? | `<%DEPLOY_REPO%>`                                                    |
-| What does the app need at current peak?            | `how-to/src/SCALE-ARCHITECTURE/`                                     |
-| How much is provisioned (envelope + buffer)?       | `COMPUTE-ALLOCATION.md` here                                         |
-| When does the architecture change?                 | the Postgres horizontal-scaling ADR gates (observed, never forecast) |
-| How is the server first provisioned?               | deploy repo `how-to/src/01–11` + `how-to/workflows/01-server-setup/` |
+| Question                                           | Owner                                                                 |
+| -------------------------------------------------- | --------------------------------------------------------------------- |
+| _What_ must the edge/server provide?               | **This directory**                                                    |
+| _How_ is it provided (Nix modules, vhosts, units)? | `<%DEPLOY_REPO%>`                                                     |
+| What does the app need at current peak?            | `how-to/src/SCALE-ARCHITECTURE/`                                      |
+| How much is provisioned (envelope + buffer)?       | `COMPUTE-ALLOCATION.md` here                                          |
+| When does the architecture change?                 | the Postgres horizontal-scaling ADR gates (observed, never forecast)  |
+| How is the server first provisioned?               | `<%DEPLOY_REPO%>/how-to/src/01–11` + its `workflows/01-server-setup/` |
 
 Server provisioning lives in the deploy repo; `how-to/src/NIXOS-SETUP.md` in this
 repo is only a pointer stub. Where any copy of it disagrees with this contract,

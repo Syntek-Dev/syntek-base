@@ -40,7 +40,7 @@ loaded on demand by the agents in `.claude/agents/`.
   sentence which used to sit here came to call a **project narrowing** ("`name` + `description`
   only") the **specification** — the spec defines six fields, and three shipped skills already
   used two of the other four. Enforced by `audits/skill-conformance.sh`.
-- **No plugin references** — never `$<%ENV_PREFIX%>_DIR`, `./skills/`, `./plugins/`, `/<%ORG_SLUG%>-dev-suite:`,
+- **No plugin references** — never `$<%ENV_PREFIX%>_DIR`, `./skills/`, `./plugins/`, `/<%ORG_SLUG%>-dev-suite:`, <!-- doc-references: ignore — quoted in order to ban them -->
   or `/<%ORG_SLUG%>-doc-writer:`; use project paths (`.claude/plugins/*.py`, `code/docs/*`,
   `code/src/scripts/**/*.sh`) and internal agent names.
 - Skills reference `code/src/scripts/**/*.sh` for dev operations — never raw `pnpm`, `next`,

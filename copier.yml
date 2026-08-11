@@ -55,6 +55,14 @@ _exclude:
   - /CONTRIBUTING.md
   - /how-to/src/TEMPLATE-GUIDE
   - /how-to/src/TEMPLATE-TOKENS.md
+  # Two nested .gitignore files that must NOT travel with the template. Git honours a
+  # .gitignore in any directory, which is how syntek-base can ignore its own throwaway
+  # handoffs and its own template-development feature maps while a generated project
+  # tracks both — its handoffs are its session continuity and its maps are real artefacts
+  # of `01-feature`. Excluding the two files here is what keeps the rule repo-local; the
+  # root .gitignore stays shipped and therefore still updatable by `copier update`.
+  - /handoffs/.gitignore
+  - /project-management/src/01-FEATURE/.gitignore
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
   # SINGLE conditionalisation mechanism — no file ever has templated contents. When the
   # answer is false these paths are never rendered at all, so a Jinja error inside a mobile
@@ -72,6 +80,24 @@ _exclude:
   - "<: if not INCLUDE_MOBILE :>/code/docs/accessibility/MOBILE.md<: endif :>"
   - "<: if not INCLUDE_MOBILE :>/code/docs/design-tokens/MOBILE.md<: endif :>"
   - "<: if not INCLUDE_MOBILE :>/code/docs/visual-design/MOBILE.md<: endif :>"
+  # discoverability/APP-STORE.md is the same class of file and is gated identically, but it is
+  # named for the ARTEFACT rather than for the surface, because that is what its family names by
+  # (WEB-METADATA, STRUCTURED-DATA, ROOT-SURFACE, CONTENT-STRUCTURE). The three rows above sit
+  # under parents whose distinguishing axis genuinely IS the surface; here the axis is "a store
+  # listing", and mobile is incidental — only mobile projects happen to have one today. Naming it
+  # MOBILE.md would also leave a future desktop store listing no home but a rename.
+  - "<: if not INCLUDE_MOBILE :>/code/docs/discoverability/APP-STORE.md<: endif :>"
+  # The same rule reaches a top-level guide, not only a sub-document: MOBILE-CODING-PRINCIPLES.md
+  # is wholly about a surface that is absent here, so it goes with the tree exactly as RUST.md
+  # and DESKTOP.md do. Its index rows are likewise allowed to dangle, flagged mobile-only.
+  - "<: if not INCLUDE_MOBILE :>/code/docs/MOBILE-CODING-PRINCIPLES.md<: endif :>"
+  # First gated path under how-to/ — every entry above this point is code/ or .claude/. The rule
+  # is the same one, not a new one: STORE-LISTING.md is a per-project ANSWER SHEET (the pattern of
+  # INVARIANTS.md and PLATFORM-PROVIDERS.md) for a surface that may not exist, and an answer sheet
+  # to a question the project cannot be asked is worse than absent — a human filling in how-to/
+  # reasonably assumes every file there applies to them. Its two index rows dangle, flagged
+  # mobile-only, exactly as the code/docs rows above do.
+  - "<: if not INCLUDE_MOBILE :>/how-to/src/STORE-LISTING.md<: endif :>"
   # The governance pair goes with the tree: a mobile agent with no mobile app to work on
   # is worse than no agent at all. The shipped INDEXES still list both unconditionally,
   # flagged mobile-only — that keeps .claude/CLAUDE.md free of templated contents, which
@@ -548,12 +574,19 @@ _tasks:
   # repo-root originals belong to syntek-base and are excluded above. Moving them
   # here — on `copy` only — is what makes them seed-once: `copier update` never runs
   # _tasks, so it can never overwrite a project's changelog with the template's.
+  #
+  # MAP-SCALE-PLANNING.md rides the same mechanism for a different reason. Six shipped
+  # guides route to it, and a citation that resolves to nothing is the defect class
+  # `audits/doc-references.sh` exists to prevent — so the project starts with the map
+  # present and every row reading TBD. Seed-once matters here too: once /scale-planning
+  # has filled it in, an update must never hand the project its blank stub back.
   - command: >-
       mv .copier/README.md README.md &&
       mv .copier/VERSION VERSION &&
       mv .copier/VERSION-HISTORY.md VERSION-HISTORY.md &&
       mv .copier/CHANGELOG.md CHANGELOG.md &&
       mv .copier/RELEASES.md RELEASES.md &&
+      mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 

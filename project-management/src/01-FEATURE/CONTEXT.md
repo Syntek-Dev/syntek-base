@@ -42,11 +42,19 @@ story is cut from the settled answers.
 
 ## Map index
 
-| Map                                   | Feature | Status | Frontier open | Charted |
-| ------------------------------------- | ------- | ------ | ------------- | ------- |
-| _(none yet — base template scaffold)_ |         |        |               |         |
+| Map                | Feature | Status | Frontier open | Charted |
+| ------------------ | ------- | ------ | ------------- | ------- |
+| _None charted yet_ | —       | —      | —             | —       |
 
 Add a row on charting; keep the status and open-node count current as nodes resolve.
+
+**One map arrives before any feature does.** `MAP-SCALE-PLANNING.md` is seeded into this folder at
+generation, every row reading `TBD`, because six shipped guides route to it. It is **seeded, not
+charted** — which is why it has no row above. `/scale-planning` charts it, and charting it is the
+gate on the first feature: a feature cannot be judged against a size nobody has written down.
+
+**Node numbers are scoped per map** — each map runs its own `N-001…`. A cross-map dependency is
+written with its map name (`N-019 on MAP-<FEATURE>`), never as a bare node number.
 
 ## The map is not finished when stories start
 

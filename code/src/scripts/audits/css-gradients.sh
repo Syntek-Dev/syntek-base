@@ -16,7 +16,7 @@
 #                    are exempt when the declaration — or the line directly above
 #                    it — carries a `gradient-allow` annotation.
 #
-# Scopes scanned (*.css only) — the live post-ADR-019 surfaces:
+# Scopes scanned (*.css only) — the live CSS surfaces:
 #   code/src/django/static/css   (Django static token cascade + per-page CSS)
 #   code/src/django/components    (co-located django-component BEM CSS)
 #

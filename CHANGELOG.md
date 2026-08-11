@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.13.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.14.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.14.0] - 11/08/2026
+
+### Added
+
+- **`context7` and `mcp-mermaid` are configured in `.mcp.json`.** The `.claude/CLAUDE.md` § 3 table listed five MCP servers as though the project supplied them; `.mcp.json` supplied one. Two more are now genuinely wired, and the table gains a **How you get it** column so the difference is visible rather than assumed: `code-review-graph`, `context7` and `mcp-mermaid` come from `.mcp.json`; `claude-in-chrome` needs the Chrome extension installed and paired, which nothing in this repository can do on your behalf. The `figma` row is gone — nothing here provides it either.
+- **`.copier/MAP-SCALE-PLANNING.md`, seeded into `project-management/src/01-FEATURE/` at generation.** Six shipped files route a reader to that map, and it did not exist until `/scale-planning` wrote it — so on day one, every one of those six routes went nowhere. The seeded file is a stub: every row reads `TBD`, and the frontier is **named rather than answered**, which is the honest state before the pass has run. It rides the same seed-once `_tasks` mechanism as the root version files, on `copy` only, so `copier update` can never hand a project its blank stub back over a filled-in map.
+- **Two nested `.gitignore` files, both `_exclude`d from the template.** `handoffs/.gitignore` ignores `HANDOFF-*.md`; `project-management/src/01-FEATURE/.gitignore` ignores the feature maps, bar the template they are written from. In **this** repository both are throwaway working state about the template itself and belong in no history. In a **generated** project both are real — handoffs are that project's session continuity and maps are the artefacts of `01-feature` — which is why the rule must not travel. Git honours a `.gitignore` in any directory, so a repo-local rule can live in a file copier drops at generation, leaving the root `.gitignore` shipped and therefore still updatable.
+
+### Changed
+
+- **A shipped file may cite only what every project is guaranteed to have.** That is the layering system — `CONTEXT.md`, `CLAUDE.md`, the `docs/` guides, the workflows, the scripts. A per-project instance is not guaranteed: a generated project has different ones at those numbers, or none at all. Naming a **pattern** stays fine — "take the next free number in `14-DECISIONS/`" describes a format, not a document. Citing a specific instance as real does not. Applied by hand across the tree in this release.
+- **This project does not use ADRs, and `.claude/MEMORY.md` now records that as a project- and template-wide decision.** Decisions are recorded where the work already lives — the feature map, the story plan, the nearest `CONTEXT.md` glossary, a `research/` note. The trigger was `project-management/src/14-DECISIONS/` not being copier-excluded: an ADR about the template's own tooling would ship into every generated project as a decision that project never made. The machinery it retires is still standing and still instructs otherwise; the memory entry is read second in the § 2.1 order and wins until the removal ships.
+
+### Fixed
+
+- **The phantom decision-record numbers 2.13.1 logged and deliberately left open.** They are cleared from `DESIGN.md`, `.prettierignore`, `code/workflows/03-database-migration/CONTEXT.md`, `code/src/scripts/audits/css-tokens.sh` and `code/src/scripts/audits/css-gradients.sh`. Each one described something real, so each now names that thing directly — the shard-key co-location, the Django static token cascade, the co-located django-component CSS — instead of pointing at a decision record no project has ever held.
+- **Story numbers used as worked examples in a template that ships no stories** — `project-management/src/07-COMPONENTS/CONTEXT.md`, its `CONSOLIDATED-IDEAS/CONTEXT.md`, `project-management/workflows/17-consolidate-design-work/CONTEXT.md`, and the naming table in `project-management/src/CONTEXT.md`. "One story's status badge and another story's tag chip" makes the identical point and is true in every project.
+- **Map names and node numbers cited as evidence** in `.claude/MEMORY.md`, `.claude/skills/grilling/SKILL.md`, `.claude/skills/wayfinder/SKILL.md`, `.claude/agents/seo.md` and three `research/` notes. A map is deleted once its epic ships, so the citation dies while the lesson it was supporting stays true. Each lesson now stands on its own wording.
+- **`.claude/agents/release.md` named two paths that do not exist.** The version-bump phase listed `code/src/django/pyproject.toml`; the Django package's manifest is the root `pyproject.toml`. Phase 4 ran `code/src/scripts/deployment/production.sh`; `deployment/` is a scaffold with no runner in it. That phase now stops and reports, and says never to improvise a deploy command.
+- **`.claude/agents/completion.md` was instructed to keep a story index reconciled** — a file this template does not ship, in the remit, the read list and the procedure. All three removed.
+- **The pytest and coverage configuration was cited at `code/src/django/pyproject.toml`** in `code/docs/testing/BACKEND-TESTING.md` and `code/docs/testing/COVERAGE.md`. `[tool.pytest.ini_options]` and `[tool.coverage.run]` both live in the repository-root `pyproject.toml`, and the snippet headers now say so.
+- **A dependency-audit script cited three times and never written.** Dependency scanning is `.github/workflows/audit-deps.yml` — `pip-audit` plus `pnpm audit` — and it runs on a schedule, not the "every PR" cadence `code/docs/testing/TAXONOMY.md` claimed. Corrected there, in `code/docs/testing/ADVANCED-TESTING.md` (which also stops pointing future load tests at a directory that does not exist), and in the pre-deploy checklist in `code/docs/security/OWASP-AND-CHECKLIST.md`.
+- **`code/workflows/09-debugging-with-logs/CHECKLIST.md` pointed at `lint.sh` and `check.sh` one directory too high** — both live under `code/src/scripts/syntax/`.
+- **Deploy-repository paths that read as paths in this repository.** `how-to/src/NIXOS-SETUP.md`, `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md` and `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` cited the fork guide and the server-setup workflow bare, so each resolved here — to the wrong thing. Every one is now prefixed `<%DEPLOY_REPO%>`.
+- **Counts stated in prose that had stopped being true.** `how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md` said 11 code workflows in three families (there are four, the fourth being the opt-in surfaces) and five script groups, omitting `deployment/`, the surface-gated groups and `_lib/`. `code/workflows/13-desktop-app/CONTEXT.md` said "the two scripts".
 
 ## [2.13.1] - 11/08/2026
 
