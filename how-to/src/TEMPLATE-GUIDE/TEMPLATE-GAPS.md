@@ -28,6 +28,32 @@ generated from it.
 
 ---
 
+## 12/08/2026 — N-014's two drafting-guide folders may already exist as the skills themselves
+
+**Type:** Active gap — one decision, blocking 13 of N-014's 38 conversions
+**Summary:** The N-014 plan's `D2` folds the 13 document-writer agents into `legal-documents`
+and `msp-scp-documents`, migrating their conventions to two **new** guide folders,
+`project-management/docs/legal-drafting/` and `policy-drafting/`. Measured 12/08/2026, the
+content those folders would hold **already exists in the two skills**:
+`msp-scp-documents/` is already an index over six `Required Sections` sub-documents covering all
+nine policy types — the progressive-disclosure shape `how-to/docs/skill-authoring/FORK-DECISION.md`
+prefers to a split; `legal-documents/SKILL.md` carries `## Required Sections` for all six legal
+types inside the 300-line cap. Spot-checking one writer against its skill section found the two
+required-sections lists to be near-duplicates **already drifting** — the agent splits out
+special-category data and automated decision-making, the skill does not. Creating the folders
+would therefore make a **third** home for one rule, which is the defect the epic exists to
+remove.
+**Blocked by / Action:** Sam's call. **Recommendation: do not create the folders** — fold the 13
+writers into the two existing skills, reconcile each per-type required-sections list into the
+skill's, and add the genuinely additive per-type material the skills lack: the **regulatory
+attention flags** (the Article 9 condition, the transfer mechanism, the Legitimate Interests
+Assessment, PECR consent for non-essential cookies). Nothing else in N-014 is blocked on this.
+Follow-up either way: `legal-documents/SKILL.md` § _Clarifying questions_ still says the
+per-document question set lives "in its own agent file", which is true at commit 1 and false at
+commit 2.
+
+---
+
 ## 11/08/2026 — The agent tier is being retired, so half of N-015's routing is deferred
 
 **Type:** Planned feature — the deferred half of a resolved node

@@ -116,6 +116,23 @@ that agent. A guide nobody can find is a guide nobody can correct.
 
 ---
 
+### Measure the migration target before authoring it — 12/08/2026
+
+A plan that says "move these conventions to a new guide" is a claim about **two** things, and
+only the first is usually checked: that the conventions exist, and that no file already owns
+them. N-014's fold of thirteen document-writer agents specified two new `docs/` folders; the
+content they would have held was **already in the two skills the agents were folding into**, one
+of which was already an index over six sub-documents. Authoring them would have created a third
+home for one rule — the exact defect the epic exists to remove.
+
+**The generalisation:** before writing a migration home, grep for the content, not the filename.
+The same pass answered the opposite question correctly elsewhere in the same epic —
+`weasyprint` and `openpyxl` returned exactly one file, so `code/docs/EXPORTS.md` was genuinely
+needed. Two claims, one method, opposite answers: the method is what mattered, and neither answer
+was guessable from the plan.
+
+---
+
 ### Refresh the code-review-graph _after_ staging, never before — 11/08/2026
 
 `build_or_update_graph_tool` runs an incremental update that diffs against a git ref, so a file
