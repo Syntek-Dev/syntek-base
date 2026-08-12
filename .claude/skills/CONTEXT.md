@@ -40,6 +40,10 @@ tooling; plugin references were rewritten to internal paths.
 ├── version/                ← pick the increment, move the whole version set, stage it
 ├── git/                    ← branches, commits, pull requests, tags — to the guide's conventions
 ├── cicd/                   ← pipeline, Docker/Compose, deploy scripts, and the dependency set
+├── setup/                  ← stand up structure: a Django app, a route, env templates, root config
+├── scaffold/               ← the organisational layer: CONTEXT/CLAUDE pairs, workflow folders, routing
+├── doc-writer/             ← developer documentation: docstrings, the pairs, the code/docs guides
+├── support-articles/       ← end-user help: how-tos, troubleshooting, FAQs, user-facing release notes
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -142,6 +146,10 @@ tooling; plugin references were rewritten to internal paths.
 | `version`                       | A version needs bumping, or the version files have drifted apart — the increment is decided here                                                      |
 | `git`                           | A branch, commit, pull request or tag — the git surface, to `GIT-GUIDE.md`'s conventions                                                              |
 | `cicd`                          | A workflow, container build, deploy script — or adding, upgrading or removing a dependency                                                            |
+| `setup`                         | New structure or configuration has to exist — a Django app, a route, env templates, root config                                                       |
+| `scaffold`                      | A new workflow folder, docs directory or layer sub-tree — the pairs, the routing, the GAPS rows                                                       |
+| `doc-writer`                    | Developer documentation — docstrings, a `CONTEXT.md`/`CLAUDE.md` pair, a `code/docs/` guide                                                           |
+| `support-articles`              | A shipped capability needs public help content a non-technical reader can follow                                                                      |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
