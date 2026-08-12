@@ -130,4 +130,16 @@ actually in the diff. Filed in `TEMPLATE-GAPS.md` (11/08/2026).
 
 ## Project State
 
-_No entries yet._
+### `main`'s branch protection is bypassable by the owner, by design — 12/08/2026
+
+The `syntek-studio` account can push straight to `main` even though protection is configured and
+prints _"Changes must be made through a pull request"_ and _"12 of 12 required status checks are
+expected"_. **This is not a misconfiguration** — Sam confirmed the protection exists to gate pull
+requests from other contributors, and the bypass is deliberate so routine template work is not
+blocked on a self-approved PR.
+
+**The consequence for planning: "we could not push directly" is never a reason to open a PR
+here.** Reach for a PR when the change genuinely wants the 12 CI checks and a readable diff before
+anything irreversible follows — a large mechanical sweep, or a commit that a later commit deletes
+against. Reach for a direct push for ordinary work. Do not record the successful push as evidence
+of a broken gate; that reading cost one session's open question already.

@@ -32,15 +32,129 @@ spurious store releases or gaps in the version sequence.
 
 ---
 
+## The Public API — what a breaking change breaks
+
+Semantic Versioning's first rule is an obligation, not a formality:
+
+> Software using Semantic Versioning MUST declare a public API. This API could be declared in the
+> code itself or exist strictly in documentation. However it is done, it SHOULD be precise and
+> comprehensive.
+
+Until that declaration exists, **MAJOR is undecidable** — "breaking change" has no referent, and
+two reasonable people bump differently on the same diff. Declare it once, in writing, and every
+later increment argument becomes a question of fact rather than of taste.
+
+### <%PROJECT_NAME%>'s declaration
+
+> **TBD — settle this before cutting `1.0.0`.** Replace this block with the real declaration.
+> The table below is the usual answer for a product built on this stack, not an assumption about
+> this one.
+
+| Surface                                                                                | In or out | Why                                                                       |
+| -------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------- |
+| The Django Ninja `/api/` contract — routes, request and response schemas, status codes | **in**    | External callers depend on it and cannot see a change coming              |
+| The database schema _as reached through that API_                                      | **in**    | A dropped or retyped field breaks a consumer as surely as a deleted route |
+| Public page URLs that are linked or indexed                                            | **in**    | A moved URL breaks inbound links and search placement                     |
+| The `/mcp/` tool surface, where wired                                                  | **in**    | An agent calling a renamed tool fails at runtime                          |
+| Templates, components, CSS tokens, internal service signatures                         | **out**   | Internal — changing them cannot break a consumer                          |
+| Management commands and the dev scripts                                                | **out**   | Operator tooling, versioned by the repository rather than depended upon   |
+
+Two rules follow, and both are decidable **only** because that table exists:
+
+- An **in-scope** surface changing incompatibly → **MAJOR**, whatever else the change touches.
+- An **out-of-scope** surface changing → **MINOR or PATCH**, however large the diff.
+
+Sub-packages declare their own. `code/src/mobile/` has no API callers, so its public surface is
+the store release itself — which is part of why its track is independent.
+
+---
+
 ## Version Increment Rules
 
-| Type  | When                                              | Example         |
-| ----- | ------------------------------------------------- | --------------- |
-| MAJOR | Breaking changes to the public API or data schema | `1.0.0 → 2.0.0` |
-| MINOR | New pages, new features, backwards-compatible     | `1.0.0 → 1.1.0` |
-| PATCH | Bug fixes, copy changes, documentation updates    | `1.0.0 → 1.0.1` |
+| Type  | When                                                          | Example         |
+| ----- | ------------------------------------------------------------- | --------------- |
+| MAJOR | An incompatible change to a surface **declared public above** | `1.0.0 → 2.0.0` |
+| MINOR | New pages, new features, backwards-compatible                 | `1.0.0 → 1.1.0` |
+| PATCH | Bug fixes, copy changes, documentation updates                | `1.0.0 → 1.0.1` |
 
-The same rules apply at both the root project level and sub-package level.
+The same rules apply at both the root project level and sub-package level. How a commit _signals_
+a breaking change — the `!` shorthand and the `BREAKING CHANGE:` footer — belongs to the commit
+format: `project-management/docs/GIT-GUIDE.md`.
+
+---
+
+## Initial Development and `1.0.0`
+
+| Rule                                                                                                                | What it means here                                                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`0.y.z` is initial development.** Anything MAY change at any time; the public API SHOULD NOT be considered stable | A generated project starts at `0.1.0`. While the leading zero stands, an incompatible change is a MINOR bump — state that expectation to consumers rather than implying a stability that is not claimed          |
+| **`1.0.0` defines the public API.** Every increment after it is decided against that API                            | Cut `1.0.0` when the first external consumer exists, or when the API is already being treated as stable in practice — whichever comes first. Shipping to production is not the trigger; **being depended on** is |
+
+---
+
+## Pre-release and Build Metadata
+
+Both append to the normal version, and both have a strict grammar. Identifiers comprise only ASCII
+alphanumerics and hyphens (`[0-9A-Za-z-]`), must not be empty, and numeric identifiers must not
+carry leading zeroes.
+
+| Form               | Separator                      | Example                                            | Effect on precedence                         |
+| ------------------ | ------------------------------ | -------------------------------------------------- | -------------------------------------------- |
+| **Pre-release**    | `-` after PATCH                | `1.0.0-alpha.1`                                    | **Lower** than the associated normal version |
+| **Build metadata** | `+` after PATCH or pre-release | `1.0.0+20260812` · `1.0.0-alpha.1+exp.sha.5114f85` | **Ignored entirely**                         |
+
+```text
+1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-rc.1 < 1.0.0
+```
+
+A pre-release says the version is unstable and might not satisfy the compatibility its normal
+version implies. Build metadata says **nothing at all** about compatibility — two versions
+differing only in build metadata are the same version for every ordering decision, so never use it
+to tell two releases apart.
+
+---
+
+## Precedence
+
+How two versions order, which matters the moment anything resolves a range.
+
+1. Compare MAJOR, then MINOR, then PATCH, **numerically**.
+2. When those are equal, a version **with** a pre-release ranks **below** one without.
+3. Compare pre-release identifiers left to right until one differs:
+   - numeric identifiers compare numerically;
+   - non-numeric identifiers compare in ASCII sort order;
+   - **a numeric identifier always ranks below a non-numeric one**;
+   - where all preceding identifiers are equal, the **larger set** of identifiers ranks higher.
+4. **Build metadata is ignored.**
+
+---
+
+## Deprecation
+
+Removal is a breaking change; the **surprise** is the avoidable part.
+
+1. **Deprecate in a MINOR release** — update the documentation, and where the surface is code,
+   warn on use. The behaviour still works.
+2. **Leave it deprecated for at least one full minor release**, so a consumer upgrading one minor
+   at a time reaches a version that both warns and works.
+3. **Remove in the next MAJOR**, recorded in `CHANGELOG.md` under `Removed`.
+
+Deprecating and removing in the same release is not a deprecation — it is a removal with a note.
+
+---
+
+## Recovering from a Wrong Release
+
+A release that turns out to be incompatible is **not** fixed by retagging or rewriting history:
+the old version is already resolved, cached, and depended upon somewhere.
+
+| Situation                                        | Fix                                                                                                                               |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Shipped an incompatible change as MINOR or PATCH | Release a **new MINOR that restores compatibility** as soon as it is found, then ship the incompatible change properly as a MAJOR |
+| Shipped the wrong number, nothing else wrong     | Release the next correct version. Do not reuse or move the wrong one                                                              |
+| Shipped a broken build under a correct number    | Release a PATCH. The broken version stays in the history                                                                          |
+
+**Never delete or move a published tag.** The version that went out is a fact about the world.
 
 ---
 

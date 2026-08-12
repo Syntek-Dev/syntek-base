@@ -1,12 +1,31 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 2.20.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.21.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [2.21.0] - 12/08/2026
+
+### Added
+
+- **The public-API declaration semver rule 1 has always required and this repository had never made.** `VERSIONING-GUIDE.md:39` said "breaking changes to the public API" without ever saying what the public API is, which leaves MAJOR undecidable — two reasonable people bump differently on the same diff, and neither can be shown wrong. The declaration now exists in **two homes, because the two audiences are different**: the shipped guide carries the rule and the surface table a **generated project** declares (the `/api/` contract, the schema as reached through it, indexed public URLs and the `/mcp/` tools are in; templates, tokens, internal signatures and operator tooling are out), while `CONTRIBUTING.md` carries **syntek-base's own** — the template contract, being the `copier.yml` questions and tokens, the generated tree's shape, and the `.claude/` routing contract `copier update` re-applies.
+- **The five semver rules the guide had no answer for**, each applied to this repository's surfaces rather than restated: `0.y.z` and when to cut `1.0.0` (rules 4–5, and the trigger is **being depended on**, not shipping to production); the pre-release and build-metadata grammar with a worked precedence chain (rules 9–10, and build metadata is ignored entirely, so it can never distinguish two releases); precedence including the numeric-ranks-below-non-numeric case (rule 11); the deprecation policy — deprecate in a MINOR, leave it deprecated for at least one full minor, remove in the next MAJOR; and the recovery rule for a release that turns out to be incompatible, which is **a new MINOR restoring compatibility**, never a moved tag.
+- **Breaking-change signalling in `GIT-GUIDE.md`** — the `!` shorthand, the `BREAKING CHANGE:` footer, and the mapping `fix`→PATCH, `feat`→MINOR, **any** commit carrying a breaking change→MAJOR regardless of type. The repository has used Conventional Commits on every release without ever stating how a commit declares that it breaks something; zero occurrences of either form existed in the tree.
+
+### Changed
+
+- **`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` § 1 loses its copy of the increment table** and routes to the guide instead. The two copies had already drifted — the guide said MAJOR was "breaking changes to the public API or data schema", the skill said "breaking changes" — which is the one-rule-two-homes defect in miniature, and correcting the copy would only have reset the clock on it.
+- **`README.md` § _Influences and attribution_ gains both specifications in the same change as the rules they credit**, per the standing §6 rule. Semantic Versioning 2.0.0 and Conventional Commits 1.0.0 are both **CC BY 3.0** — permissive, not share-alike, so the wording may be derived with credit and no obligation propagates into a generated project. The licence was verified against each specification's own page before deriving, not after. The rows-outside-the-survey count moves from two to four.
+
+### Fixed
+
+- **The README version badge had been stuck at 2.19.0 since the 2.20.0 release.** `VERSIONING-GUIDE.md` names the badge and the footer line as two separate updates on every root bump; 2.20.0 moved the footer and missed the badge, so the repository's most visible version statement was a release behind and nothing failed.
 
 ---
 

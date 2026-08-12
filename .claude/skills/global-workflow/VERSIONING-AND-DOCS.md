@@ -10,11 +10,15 @@ owns the full versioning rules; this is the shared baseline.
 
 Single-track semver: `MAJOR.MINOR.PATCH`.
 
-| Increment | When                                | Example       |
-| --------- | ----------------------------------- | ------------- |
-| **MAJOR** | Breaking changes                    | 1.0.0 → 2.0.0 |
-| **MINOR** | New features (backwards compatible) | 1.0.0 → 1.1.0 |
-| **PATCH** | Bug fixes (backwards compatible)    | 1.0.0 → 1.0.1 |
+**The rules live in one place — `project-management/docs/VERSIONING-GUIDE.md`.** It owns the
+declared public API that makes MAJOR decidable at all, the increment table, `0.y.z` and `1.0.0`,
+the pre-release and build-metadata grammar, precedence, the deprecation policy, and how to recover
+from a wrong release. How a commit _signals_ a breaking change — the `!` shorthand and the
+`BREAKING CHANGE:` footer — is in `project-management/docs/GIT-GUIDE.md`.
+
+This section previously carried its own copy of the increment table. It was removed rather than
+corrected: a summary that restates an authoritative table is a drift site, not a convenience, and
+the two copies had already diverged on what MAJOR means.
 
 ### Pre-commit requirements
 
