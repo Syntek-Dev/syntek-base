@@ -848,6 +848,7 @@ record is `.claude/skills/CONTEXT.md`.
 | `review` · `security`                               | Check a change before it ships · audit and harden against OWASP and CE       |
 | `pr` · `release`                                    | Raise the pull request · cut the release                                     |
 | `story` · `sprint` · `planner`                      | Write the story · slice the sprint · architect the implementation plan       |
+| `syntax` · `completion`                             | Clear the lint, format and type gates · record a story or sprint complete    |
 | `stack-django`                                      | Backend — models, migrations, services, Django Ninja endpoints, pytest       |
 | `stack-htmx-templates`                              | Public frontend — templates, django-components, HTMX, Alpine, token CSS      |
 | `stack-fastmcp`                                     | The MCP tool surface at `/mcp/`                                              |

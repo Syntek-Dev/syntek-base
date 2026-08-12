@@ -24,6 +24,8 @@ tooling; plugin references were rewritten to internal paths.
 ├── story/                  ← write or refine one testable US### user story
 ├── sprint/                 ← slice written stories into balanced, dependency-ordered sprints
 ├── planner/                ← architect a feature into a phased, independently-testable plan
+├── syntax/                 ← make it parse, lint, format and type-check — behaviour-preserving only
+├── completion/             ← record a verified story or sprint as complete in the PM artefacts
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -110,6 +112,8 @@ tooling; plugin references were rewritten to internal paths.
 | `story`                         | A requirement has to become one testable `US###` — role, MoSCoW, Gherkin criteria, tasks, estimate                                                    |
 | `sprint`                        | Written stories have to be sliced into the next sprint — capacity, MoSCoW mix, dependency order                                                       |
 | `planner`                       | A design has to be settled before code — scope, system impact, phases, interfaces, risks                                                              |
+| `syntax`                        | The tree is mechanically broken or a syntax gate is red — lint, format, types, strictly behaviour-preserving                                          |
+| `completion`                    | Verified work needs recording — a story or sprint status transition in the PM artefacts                                                               |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
