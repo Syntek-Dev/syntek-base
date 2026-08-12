@@ -844,6 +844,10 @@ record is `.claude/skills/CONTEXT.md`.
 
 | Skill                                               | Load when                                                                    |
 | --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `feature` · `bugfix` · `refactor`                   | Build something new · fix something broken · reshape something that works    |
+| `review` · `security`                               | Check a change before it ships · audit and harden against OWASP and CE       |
+| `pr` · `release`                                    | Raise the pull request · cut the release                                     |
+| `story` · `sprint` · `planner`                      | Write the story · slice the sprint · architect the implementation plan       |
 | `stack-django`                                      | Backend — models, migrations, services, Django Ninja endpoints, pytest       |
 | `stack-htmx-templates`                              | Public frontend — templates, django-components, HTMX, Alpine, token CSS      |
 | `stack-fastmcp`                                     | The MCP tool surface at `/mcp/`                                              |
@@ -862,6 +866,7 @@ record is `.claude/skills/CONTEXT.md`.
 | `resolving-merge-conflicts`                         | A merge, rebase, or `copier update` has left conflict markers                |
 | `wizard`                                            | Authoring an interactive bash wizard for steps only a human can perform      |
 | `runbook`                                           | Writing an operator guide someone will execute under pressure                |
+| `export`                                            | Getting data out as a file — CSV, Excel, PDF or JSON, with PII gated         |
 | `legal-documents` · `msp-scp-documents`             | Drafting a legal document or a security/compliance policy                    |
 | `cloudinary-*`                                      | Cloudinary upload, delivery, and transformation work                         |
 

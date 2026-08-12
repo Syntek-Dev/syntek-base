@@ -49,6 +49,24 @@ order = Order.objects.get(id=order_id, user=request.auth)
 _Portable reference: the same pattern applies in any framework — never fetch by a
 client-supplied id alone; always constrain the query by the owning user or tenant._
 
+### PII access is its own permission class
+
+Reading personal data, exporting it, and erasing it are three different acts with three
+different blast radii, so they are three permissions rather than one `is_staff` check. Every one
+of them is permission-gated **and** audit-logged (`code/docs/security/AUDIT-TRAIL.md`). Adapt
+the names per model; the shape is what matters:
+
+| Permission          | Scope       | Export | Delete | Typical role  |
+| ------------------- | ----------- | ------ | ------ | ------------- |
+| `pii.access`        | own PII     | no     | no     | all users     |
+| `pii.access.others` | others' PII | no     | no     | support       |
+| `pii.export`        | all PII     | yes    | no     | admin, DPO    |
+| `pii.delete`        | all PII     | yes    | yes    | admin, DPO    |
+| `pii.audit`         | access logs | logs   | no     | security, DPO |
+
+The storage design behind these — which column is hashed for lookup and which is encrypted at
+rest — is `code/docs/ENCRYPTION-GUIDE.md`'s; this table is only who may reach it.
+
 ### Admin RBAC role management
 
 The role-management endpoints (create, update, delete, assign) are gated by the canonical

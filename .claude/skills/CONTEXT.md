@@ -14,6 +14,16 @@ tooling; plugin references were rewritten to internal paths.
 .claude/skills/
 ├── CONTEXT.md              ← this file
 ├── CLAUDE.md               ← operating rules
+├── feature/                ← build a new capability end to end: plan → red → build → review → ship
+├── bugfix/                 ← reproduce, root-cause, regression-test, fix minimally (scoped: `## Root cause`)
+├── refactor/               ← restructure working code with behaviour held identical
+├── review/                 ← sequence the content review, the hostile QA pass, the conditional security pass
+├── security/               ← audit and harden: OWASP, NIST, Cyber Essentials, IDOR, PII enforcement
+├── pr/                     ← raise the pull request and take it through the branch chain
+├── release/                ← version bump, full suite, version commit, handover
+├── story/                  ← write or refine one testable US### user story
+├── sprint/                 ← slice written stories into balanced, dependency-ordered sprints
+├── planner/                ← architect a feature into a phased, independently-testable plan
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -90,6 +100,16 @@ tooling; plugin references were rewritten to internal paths.
 
 | Skill                           | Load when                                                                                                                                             |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `feature`                       | A new capability has to be built end to end — plan, red tests, backend, API, frontend, review, QA, docs, commit                                       |
+| `bugfix`                        | Something is broken. Diagnosis alone enters its `## Root cause` phase; the full sequence fixes, QAs, documents and commits                            |
+| `refactor`                      | The code is correct but its shape is wrong — split, extract, deepen, rename, with behaviour held identical                                            |
+| `review`                        | A change needs checking before it is proposed — sequences `code-reviewer`, `qa-tester`, and `security` where it applies                               |
+| `security`                      | A security audit, a threat model, or hardening after a finding — OWASP, NIST, Cyber Essentials, IDOR, PII enforcement                                 |
+| `pr`                            | A finished story branch is ready to propose, or an open PR needs promoting through the chain                                                          |
+| `release`                       | A tested branch is ready to ship — the bump, the suite, the version commit, the handover                                                              |
+| `story`                         | A requirement has to become one testable `US###` — role, MoSCoW, Gherkin criteria, tasks, estimate                                                    |
+| `sprint`                        | Written stories have to be sliced into the next sprint — capacity, MoSCoW mix, dependency order                                                       |
+| `planner`                       | A design has to be settled before code — scope, system impact, phases, interfaces, risks                                                              |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |

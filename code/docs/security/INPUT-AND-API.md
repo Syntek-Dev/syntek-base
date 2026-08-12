@@ -142,6 +142,19 @@ throttling middleware), keyed on the trusted client IP (see `get_client_ip` abov
 endpoints get the strictest limits — this is what closes the credential-stuffing / batched-attempt
 surface (repeated login attempts must trip the per-IP and per-account limits, not merely fail).
 
+**Limits are set per route class, not per endpoint**, so a new endpoint inherits a number rather
+than inventing one. The baseline to tune from:
+
+| Route class    | Baseline |
+| -------------- | -------- |
+| General API    | ~60/min  |
+| Authentication | ~5/min   |
+| Password reset | ~3/hour  |
+| Admin actions  | ~30/min  |
+
+**IP allowlisting for admin surfaces** is available via environment variable where the threat
+model warrants it — a second control on the class above, never a replacement for its limit.
+
 ### OpenAPI docs exposure
 
 Ninja auto-generates an OpenAPI schema and interactive docs at `/api/docs`. Disable or auth-gate
