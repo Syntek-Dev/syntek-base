@@ -1,23 +1,38 @@
 ---
 name: stack-slint
-description: Desktop stack reference for <%PROJECT_NAME%> — the Slint application at code/src/rust/crates/desktop/, the Royalty-free licence obligation and its AboutSlint disclosure, the generated-code lint boundary, properties and callbacks, threading off the UI thread, and AccessKit accessibility. Load when building or reviewing the desktop surface, or when a rust, security, or review agent needs Slint conventions without owning them. DESKTOP-ONLY — present only in a project generated with the desktop surface.
+description: >-
+  Build and review the native desktop surface of <%PROJECT_NAME%> — the Slint application at
+  `code/src/rust/crates/desktop/`, carrying the Royalty-free licence obligation and its
+  AboutSlint disclosure, the generated-code lint boundary, properties and callbacks, threading
+  off the UI thread, and AccessKit accessibility. Load when a story needs its windows built, an
+  existing window needs a UI or accessibility pass, or when a rust, security or review skill
+  needs Slint conventions without owning them. Not the Django-templated web pages (`frontend`),
+  not the PyO3 extensions in the same workspace (`stack-rust`), and not the API it consumes
+  (`backend`). DESKTOP-ONLY — present only in a project generated with the desktop surface.
+context: fork
+agent: general-purpose
+background: false
+model: opus
+metadata:
+  skills: global-workflow grilling
 ---
 
-Reference for the **desktop surface** of <%PROJECT_NAME%> — `code/src/rust/crates/desktop/`. The
-`desktop` agent loads this for stack idioms; `rust`, `security`, `test-writer` and `code-reviewer`
-cite it at the desktop boundary without owning Slint conventions themselves. Aligns with
-`code/workflows/13-desktop-app/` and `code/docs/DESKTOP.md`.
+# Build the Desktop Surface (<%PROJECT_NAME%>)
 
-**This skill is desktop-only.** A project generated without the desktop surface has neither this
-skill nor the crate it describes.
+**Task skill, forked** (axis 3 — an executable build task whose output is a native application).
+You own the desktop layer of a feature and hand back. `stack-rust`, `security`, `test-writer` and
+`code-reviewer` cite this at the desktop boundary without owning Slint conventions themselves.
 
-The **visual** language is `code/docs/VISUAL-DESIGN.md` — §3 names this project's **direction** and
-its six axes, §4.1 the universal tells, §5 the motion numbers. Its desktop expression is
-`code/docs/visual-design/DESKTOP.md`: Slint 1.16+ defaults to **Microsoft Fluent on every
-platform**, so an app that sets no style ships stock Fluent. Style is fixed at **compile time** —
-choose it deliberately and drive the look from `Palette`/`StyleMetrics`, never bare `std-widgets`.
+**Desktop-only.** A project generated without the desktop surface has neither this skill nor the
+crate it describes. If `code/src/rust/crates/desktop/` is absent, **say so and hand back** rather
+than scaffolding it.
 
-British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>).
+The standing conventions are **not** here: they are `code/docs/DESKTOP.md` and its two
+sub-documents — `code/docs/desktop/LICENSING.md` (the three tiers and what triggers the paid
+one) and `code/docs/desktop/UI-AND-STATE.md` (properties, callbacks, threading, state). Read
+the guide first; everything below sequences it.
+
+**Locale:** British English (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>).
 
 ---
 
@@ -31,15 +46,24 @@ The `AboutSlint` widget in `ui/app.slint` is that disclosure, and
 `code/src/scripts/desktop/package.sh` refuses a release build without it. If the check fires,
 restore the widget; **never edit the check to pass.**
 
-Two exclusions:
+Two exclusions: **embedded systems** (appliance screens, POS terminals, car dashboards) need the
+Commercial tier, and **redistributing anything that exposes Slint's APIs** is not covered — which
+is why desktop UI is never moved into a shared package layer. Selling the app is fine; the paid
+tier is triggered by _embedded_, not by charging money. Detail: `code/docs/desktop/LICENSING.md`.
+That is a reading of the licence, not legal advice.
 
-| Not covered                                       | Consequence                                                      |
-| ------------------------------------------------- | ---------------------------------------------------------------- |
-| **Embedded systems**                              | Appliance screens, POS terminals, car dashboards need Commercial |
-| **Redistributing anything exposing Slint's APIs** | Desktop UI is never moved into a shared package layer            |
+## The brief arrives settled
 
-Selling the app is fine — the paid tier is triggered by _embedded_, not by charging money. Detail:
-`code/docs/desktop/LICENSING.md`. That is a reading of the licence, not legal advice.
+A fork has no conversation behind it and **cannot open a grilling pass**, so the UI design must
+already be made. The brief must carry:
+
+- **The window or component**, and its **wireframe** — `project-management/src/08-WIREFRAMES/`.
+  Build the designed screen; do not reinvent it.
+- **Every state** — loading, empty, error, success — and the navigation between windows.
+- **Keyboard and screen-reader behaviour**, which is not inferable from a static wireframe.
+
+**If the wireframe or the state set is missing, return and say so.** Where the caller wants the
+design settled first, the pass is `grilling`, run inline before this skill is dispatched.
 
 ---
 
@@ -51,10 +75,10 @@ Selling the app is fine — the paid tier is triggered by _embedded_, not by cha
 | **Mobile**  | `code/src/mobile/`              | React Native (Expo) on device    |
 | **Desktop** | `code/src/rust/crates/desktop/` | A native binary on the user's OS |
 
-Peers, not layers. The desktop app consumes the Django Ninja API exactly as a third-party client
-would; it never renders a Django page. Every web doctrine statement is scoped to the web surface.
-
----
+Peers, not layers. The desktop app is a native binary — not a webview and not an Electron shell —
+and it consumes the Django Ninja API exactly as a third-party client would. It never renders a
+Django page and Django never serves it. Every web doctrine statement is scoped to the web surface:
+do not cite it here, and never carry desktop patterns back.
 
 ## Where it lives, and why not its own workspace
 
@@ -76,7 +100,8 @@ so the workspace adapts with no edit, and there stays exactly one `rust-toolchai
 
 There is deliberately **no desktop lint/test/audit script**: the crate is a workspace member, so
 the Rust group already covers it, and a duplicate would drift. These run on the **host** — a
-desktop app needs a display server the app container does not have.
+desktop app needs a display server the app container does not have. Never raw `cargo` or
+`slint-viewer`.
 
 ---
 
@@ -130,9 +155,8 @@ window.on_refresh(move || {
 
 **Callbacks hold a weak handle** — a strong clone captured in a closure the window owns is a
 reference cycle and the window never drops. `upgrade()` returning `None` is the normal
-already-closed case: handle it, never unwrap it.
-
-Never hardcode a display string in markup that Rust should own.
+already-closed case: handle it, never unwrap it. Never hardcode a display string in markup that
+Rust should own.
 
 ---
 
@@ -169,24 +193,69 @@ the AT-SPI stack, and dropping accessibility is not the mitigation.
 
 ---
 
+## Steps
+
+1. **Reuse before you build.** Check the existing components before authoring a new one.
+2. **Markup declares, Rust decides.** Display strings are `in` properties set from Rust.
+3. **Set the style deliberately.** Slint 1.16+ defaults to Microsoft Fluent on every platform, so
+   an app that sets nothing ships stock Fluent — the desktop equivalent of untouched
+   component-library defaults. Style is a **compile-time** decision; drive the look from
+   `Palette`/`StyleMetrics`, never bare `std-widgets`
+   (`code/docs/visual-design/DESKTOP.md`).
+4. **Verify before hand-off:**
+
+   ```bash
+   bash code/src/scripts/rust/lint.sh
+   bash code/src/scripts/rust/test.sh
+   bash code/src/scripts/rust/audit.sh
+   bash code/src/scripts/desktop/package.sh
+   ```
+
+**Definition of done:** lint, tests, audit and `package.sh` all exit `0`; the attribution check
+passes and the About dialog is reachable by eye; no panicking path in hand-written code; keyboard
+and screen-reader behaviour checked on device; built to the screen's wireframe; no em dash in
+user-facing copy (`how-to/src/BRAND-VOICE.md`); `CONTEXT.md` updated if structure changed;
+British English.
+
 ## Guardrails recap
 
 - The `AboutSlint` disclosure stays; `package.sh` enforces it.
 - Never panic in hand-written code; keep the generated-code allow scoped to `mod ui`.
-- No business logic in the app — it calls the API, the service layer decides.
-- No credentials in plaintext on disk; the user controls the machine.
+- **No business logic in the app** — it calls the API, the service layer decides. A rule
+  reimplemented here is a second source of truth that will drift.
+- **No credentials in plaintext on disk.** Platform secure store only — the user controls the
+  machine, so treat it as hostile.
+- Never move desktop components into a shared package layer — the licence forbids redistributing
+  anything that exposes Slint's APIs.
 - Never commit `target/` or a built binary — binaries break Copier generation.
 - Source files ≤ 750 lines (800 grace).
+
+## Handoff
+
+Report the **files touched**, whether `package.sh` and its attribution gate passed, what was
+**reused versus newly built**, and how keyboard and screen-reader behaviour was checked and on
+what. Then name what is owed next: `test-writer` for the tests, `qa-tester` for the accessibility
+and edge-case pass, `stack-rust` where the window needs a native primitive behind it, and
+`backend` where the API contract it consumes is missing. **Suggest, do not chain**, unless the
+caller said to.
 
 ## Governing procedures (route here — do not restate at length)
 
 - `code/workflows/13-desktop-app/` — the procedure for this surface
 - `code/workflows/12-rust-extension/` — when a window needs a native primitive behind it
+- `code/workflows/02-tdd-cycle/` — the cycle tests are written through
 - `project-management/workflows/20-frontend-code/` — the build phase this is entered from
+- `project-management/workflows/08-wireframes/` — the screen designs consumed here
+- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/07-dependency-updates/` — the cadence a Slint bump follows
 
 ## Cross-references
 
 - `code/docs/DESKTOP.md` and its `desktop/` sub-docs — the guide behind this skill
+- `code/docs/VISUAL-DESIGN.md` — §3 the direction and its six axes, §4.1 the universal tells,
+  §5 the motion numbers (read every time)
+- `code/docs/visual-design/DESKTOP.md` — the desktop expression and the stock-Fluent tell
 - `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy, including the AccessKit advisories
 - `code/src/rust/CLAUDE.md` — the operating rules for the workspace
+- `code/src/scripts/desktop/CONTEXT.md` — why these run on the host, and the attribution gate
+- `how-to/src/BRAND-VOICE.md` — the voice for user-facing copy

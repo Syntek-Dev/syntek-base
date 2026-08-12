@@ -51,13 +51,13 @@ tooling; plugin references were rewritten to internal paths.
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
 │   └── SKILL.md
-├── stack-react-native/     ← MOBILE-ONLY — Expo + React Native + TypeScript + expo-router
+├── stack-react-native/     ← MOBILE-ONLY — build the Expo/RN screens and own the store listing (task, forked)
 │   └── SKILL.md
 ├── stack-fastmcp/          ← the FastMCP tool surface at /mcp/ (available but unwired)
 │   └── SKILL.md
-├── stack-rust/             ← RUST-ONLY — the Cargo workspace, PyO3 boundary, supply-chain gate
+├── stack-rust/             ← RUST-ONLY — build the crates: the gate question, PyO3 boundary, supply chain (task, forked)
 │   └── SKILL.md
-├── stack-slint/            ← DESKTOP-ONLY — the native Slint app and its licence obligation
+├── stack-slint/            ← DESKTOP-ONLY — build the native Slint app; the licence obligation comes first (task, forked)
 │   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
@@ -158,10 +158,10 @@ tooling; plugin references were rewritten to internal paths.
 | `pm-tool-sync`                  | The external PM-tool integration needs setting up, repairing, or pointing elsewhere                                                                   |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
-| `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
+| `stack-react-native`            | **Mobile-only.** A story needs its mobile screens built or reviewed — Expo, expo-router, tokens, WCAG — or a store listing written or checked         |
 | `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                         |
-| `stack-rust`                    | **Rust-only.** Writing/reviewing `code/src/rust/` — PyO3 boundary, secret zeroizing, cargo-deny. Also: deciding if work belongs in Rust at all        |
-| `stack-slint`                   | **Desktop-only.** Building/reviewing the native Slint app — the AboutSlint licence disclosure, the generated-code lint boundary, threading, a11y      |
+| `stack-rust`                    | **Rust-only.** Native code has to be written or audited under `code/src/rust/` — and, first, whether it belongs in Rust at all                        |
+| `stack-slint`                   | **Desktop-only.** A story needs its desktop windows built or reviewed — the AboutSlint disclosure, the lint boundary, threading, AccessKit            |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                                  |
 | `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; the conventions are `how-to/docs/OPERATOR-DOC-CRAFT.md`                |
 | `grilling`                      | Design work (architecture, DB, API, story) — the frontier-round interview engine                                                                      |
@@ -191,8 +191,8 @@ tooling; plugin references were rewritten to internal paths.
 > with no client build step. Backend is `stack-django`; the web frontend is
 > `stack-htmx-templates`.
 >
-> **Rust-only skills gate authoring, not consuming.** `stack-rust` and the `rust` agent exist
-> only where the repository **compiles** Rust. A project that merely depends on a prebuilt PyO3
+> **Rust-only skills gate authoring, not consuming.** `stack-rust` exists only where the
+> repository **compiles** Rust. A project that merely depends on a prebuilt PyO3
 > wheel installs it like any other dependency and has neither. Listed unconditionally and
 > flagged, on the same principle as the mobile rows.
 >
