@@ -1,9 +1,13 @@
 ---
 name: grill-me
 description: >-
-  Start a stateless grilling session — a relentless interview in frontier rounds to sharpen
-  a plan, design, or idea, saving nothing to the repo. Invoke by typing /grill-me, or when
-  the user asks to be grilled or interviewed about a plan without recording it.
+  Grill an idea and write nothing down — a relentless interview in frontier rounds that
+  sharpens a plan, design or half-formed thought and leaves **no trace in the repository**.
+  Invoke by typing /grill-me, or whenever someone asks to be grilled, interviewed, challenged
+  or stress-tested on something they are still thinking through, or says explicitly not to
+  record it. The whole distinction from `grill-with-docs` is the artefact: that one settles a
+  design and writes each decision into the repo as it resolves; this one is a conversation that
+  ends when it ends.
 ---
 
 # Skill: grill-me (<%PROJECT_SLUG%>)

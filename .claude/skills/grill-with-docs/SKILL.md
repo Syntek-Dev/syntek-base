@@ -1,10 +1,12 @@
 ---
 name: grill-with-docs
 description: >-
-  Start a stateful grilling session — a relentless interview in frontier rounds that sharpens
-  a design AND records each decision to the repo (plan Open Questions, ADRs, glossary terms,
-  story acceptance criteria) as it resolves. Invoke by typing /grill-with-docs, or as the
-  opening move of architecture, database, API, or story design.
+  Grill a design and record what it settles — a relentless interview in frontier rounds that
+  sharpens a design AND writes each decision into the repo as it resolves (plan Open Questions,
+  glossary terms, story acceptance criteria). Invoke by typing /grill-with-docs, or as the
+  opening move of architecture, database, API or story design, where the answers have to
+  outlive the session. Where they do not — a half-formed idea being stress-tested, or an
+  explicit "don't write this down" — that is `grill-me`.
 ---
 
 # Skill: grill-with-docs (<%PROJECT_NAME%>)

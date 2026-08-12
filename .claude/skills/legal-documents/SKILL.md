@@ -1,20 +1,30 @@
 ---
 name: legal-documents
-description: Shared drafting standard for every legal and compliance document produced in this project — required sections, clause formatting, jurisdiction rules, the mandatory professional-review disclaimer, and the pre-delivery quality checklist. Load this when drafting or reviewing a contract, NDA, Terms & Conditions, Privacy Policy, GDPR data subject notice, or Data Processing Agreement, i.e. whenever the privacy-policy-writer, dpa-writer, gdpr-policy-writer, terms-conditions-writer, contract-writer, or nda-writer agent runs.
+description: >-
+  Draft a legal document under English law for <%PROJECT_NAME%> — a service or consultancy
+  contract, an NDA, Terms & Conditions, a Privacy Policy, a UK GDPR Article 13/14 data subject
+  notice, or an Article 28 Data Processing Agreement. Carries the required sections per type,
+  clause formatting, jurisdiction rules, the mandatory professional-review disclaimer, and the
+  pre-delivery checklist. Load when a document governs a relationship with a person outside the
+  business — a customer, a supplier, a data subject, a controller. Not an internal security or
+  compliance policy governing staff and systems, which is `msp-scp-documents`.
+model: opus
+metadata:
+  skills: global-workflow grilling
 ---
 
 ## Overview
 
-This skill is the single source of truth for the house rules that every legal /
-compliance document writer in this project must follow. The internalised document
-agents — `privacy-policy-writer`, `dpa-writer`, `gdpr-policy-writer`,
-`terms-conditions-writer`, `contract-writer`, and `nda-writer` (invoked via the Agent
-tool, no plugin prefix) — load it before drafting so that structure, tone, formatting,
-and the professional-review disclaimer stay consistent across every document.
+**Task skill, inline** (axis 2 — the parties, the jurisdiction and the controller facts come
+from the conversation, and a fork cannot ask for them).
 
-It defines the required sections per document type, clause formatting conventions,
-jurisdiction rules, the mandatory disclaimer wording, and the quality checklist. Route
-substantive UK GDPR procedure to `project-management/docs/GDPR-GUIDE.md` rather than
+This skill is the single source of truth for the house rules every legal and compliance
+document in this project follows: the required sections per document type, clause formatting
+conventions, jurisdiction rules, the mandatory disclaimer wording, and the quality checklist.
+It is loaded before drafting so that structure, tone, formatting and the professional-review
+disclaimer stay consistent across every document.
+
+Route substantive UK GDPR procedure to `project-management/docs/GDPR-GUIDE.md` rather than
 restating it here.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
