@@ -850,6 +850,8 @@ record is `.claude/skills/CONTEXT.md`.
 | `story` · `sprint` · `planner`                      | Write the story · slice the sprint · architect the implementation plan       |
 | `syntax` · `completion`                             | Clear the lint, format and type gates · record a story or sprint complete    |
 | `backend` · `frontend` · `database`                 | Build the server side · build the pages · work the data layer                |
+| `authentication` · `notifications`                  | The credential and session layer · sending email, SMS, push and in-app       |
+| `reporting` · `logging` · `seo`                     | Report data · log instrumentation · the head, JSON-LD and crawler wiring     |
 | `stack-django`                                      | Backend — models, migrations, services, Django Ninja endpoints, pytest       |
 | `stack-htmx-templates`                              | Public frontend — templates, django-components, HTMX, Alpine, token CSS      |
 | `stack-fastmcp`                                     | The MCP tool surface at `/mcp/`                                              |

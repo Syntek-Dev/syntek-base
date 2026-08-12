@@ -29,6 +29,11 @@ tooling; plugin references were rewritten to internal paths.
 ├── backend/                ← build the server side: models, migration, services, /api/ and /mcp/
 ├── frontend/               ← build the web pages: templates, components, HTMX, Alpine, token CSS
 ├── database/               ← the data layer: models, lock-safe migration, RLS policies, PII columns
+├── authentication/         ← the credential and session layer: passwords, MFA, lockout, reset
+├── notifications/          ← the delivery layer: email, SMS, push, in-app, on one branded foundation
+├── reporting/              ← role-scoped report queries and aggregates, PII kept out of the summary
+├── logging/                ← structured logging and observability; nothing sensitive reaches a channel
+├── seo/                    ← the head, JSON-LD, canonical URLs, robots/sitemap/llms.txt views
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -120,6 +125,11 @@ tooling; plugin references were rewritten to internal paths.
 | `backend`                       | The server half of a story — models, migration, service layer, Django Ninja endpoints, MCP tools                                                      |
 | `frontend`                      | The web half of a story — templates, django-components, HTMX, Alpine, token CSS, WCAG                                                                 |
 | `database`                      | The data layer itself — an approved schema as models and a lock-safe migration, RLS policies, PII columns                                             |
+| `authentication`                | Login, registration, MFA, sessions, lockout or password reset — the credential layer itself                                                           |
+| `notifications`                 | Something has to be sent — email, SMS, push or in-app — or the shared branded template layer needs building                                           |
+| `reporting`                     | A report or dashboard needs its data — role-scoped aggregates, a result shape, an index recommendation                                                |
+| `logging`                       | Log instrumentation to add, a channel to configure, or sensitive data to stop reaching one                                                            |
+| `seo`                           | A public page needs its head, structured data and crawler wiring — or the marketing pages need a pass                                                 |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
