@@ -133,6 +133,38 @@ was guessable from the plan.
 
 ---
 
+### A key name is not a surface — scope a frontmatter sweep by path, not by key — 12/08/2026
+
+`git grep -l "^agent:" -- '*.md'` returns **256** files, and only **234** of them are routing
+frontmatter. The other 22 are the converted skills' own `agent: general-purpose` — the same key
+name, on a different surface, meaning something else entirely: a **fork target**, not a routing
+hint. A sweep that folds `agent:` into `skills:` on a match would rewrite every forked skill's
+fork target into a dependency list and pass every audit, because both keys are legal in both
+places.
+
+**The generalisation:** before sweeping a frontmatter key, partition the matches **by path** and
+name each partition's meaning. A key's semantics belong to the file class that carries it, and
+two file classes can legitimately spell the same key. `.claude/skills/**/SKILL.md` is excluded
+from the `agent:` sweep by rule, not by luck — it is a second population, not a stray.
+
+---
+
+### Unreachable prose is unreviewed prose — the evidence is inside the epic — 12/08/2026
+
+**Two agent bodies carried a `## Governing procedures` block reading "this agent produces a
+standalone compliance or legal document", pasted from a policy writer** — `data-scientist.md`
+and `support-articles.md`, neither of which drafts a document, and both wrong in every clause.
+Alongside them: `git.md` hardcoded a model version into the `Co-Authored-By` trailer that §4
+forbids, and pointed bug records at `src/BUGS/` when the folder is `src/20-BUGS/`.
+
+**None of it was ever wrong loudly.** The text was reachable only by routing to that agent, so
+no reviewer, gate or reader passed through it. This is the same shape as `.claude/agents/seo.md`
+carrying two SEO defects for months (see _A third-party source's claim is a lead_ above). The
+epic converting these bodies into description-matched skills is the fix; the finding is the
+justification, and it is worth stating when someone asks what the conversion actually bought.
+
+---
+
 ### Refresh the code-review-graph _after_ staging, never before — 11/08/2026
 
 `build_or_update_graph_tool` runs an incremental update that diffs against a git ref, so a file
