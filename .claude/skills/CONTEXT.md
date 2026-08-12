@@ -44,6 +44,9 @@ tooling; plugin references were rewritten to internal paths.
 ├── scaffold/               ← the organisational layer: CONTEXT/CLAUDE pairs, workflow folders, routing
 ├── doc-writer/             ← developer documentation: docstrings, the pairs, the code/docs guides
 ├── support-articles/       ← end-user help: how-tos, troubleshooting, FAQs, user-facing release notes
+├── gdpr-mechanics/         ← UK GDPR in the stack: PII, consent, DSAR, erasure, retention, audit
+├── data-analysis/          ← answer a question from the data — quality first, numbers, never the decision
+├── pm-tool-sync/           ← the external PM-tool integration: mapping, credentials, CI sync
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -150,6 +153,9 @@ tooling; plugin references were rewritten to internal paths.
 | `scaffold`                      | A new workflow folder, docs directory or layer sub-tree — the pairs, the routing, the GAPS rows                                                       |
 | `doc-writer`                    | Developer documentation — docstrings, a `CONTEXT.md`/`CLAUDE.md` pair, a `code/docs/` guide                                                           |
 | `support-articles`              | A shipped capability needs public help content a non-technical reader can follow                                                                      |
+| `gdpr-mechanics`                | A feature touches personal data — PII, consent, DSAR, erasure, retention, the audit trail                                                             |
+| `data-analysis`                 | Someone needs to know what the data says — quantified findings, and the code behind them                                                              |
+| `pm-tool-sync`                  | The external PM-tool integration needs setting up, repairing, or pointing elsewhere                                                                   |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |

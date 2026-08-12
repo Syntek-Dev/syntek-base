@@ -851,6 +851,7 @@ record is `.claude/skills/CONTEXT.md`.
 | `syntax` · `completion`                             | Clear the lint, format and type gates · record a story or sprint complete    |
 | `backend` · `frontend` · `database`                 | Build the server side · build the pages · work the data layer                |
 | `authentication` · `notifications`                  | The credential and session layer · sending email, SMS, push and in-app       |
+| `gdpr-mechanics` · `data-analysis` · `pm-tool-sync` | UK GDPR in the stack · ask the data · the external PM-tool sync              |
 | `setup` · `scaffold`                                | Stand up code structure · stand up the docs and workflow layer               |
 | `doc-writer` · `support-articles`                   | Developer documentation · end-user help content                              |
 | `version` · `git` · `cicd`                          | Move the version set · the git surface · pipeline, deploys and dependencies  |
