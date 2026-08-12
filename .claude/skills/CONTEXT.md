@@ -26,6 +26,9 @@ tooling; plugin references were rewritten to internal paths.
 ├── planner/                ← architect a feature into a phased, independently-testable plan
 ├── syntax/                 ← make it parse, lint, format and type-check — behaviour-preserving only
 ├── completion/             ← record a verified story or sprint as complete in the PM artefacts
+├── backend/                ← build the server side: models, migration, services, /api/ and /mcp/
+├── frontend/               ← build the web pages: templates, components, HTMX, Alpine, token CSS
+├── database/               ← the data layer: models, lock-safe migration, RLS policies, PII columns
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -114,6 +117,9 @@ tooling; plugin references were rewritten to internal paths.
 | `planner`                       | A design has to be settled before code — scope, system impact, phases, interfaces, risks                                                              |
 | `syntax`                        | The tree is mechanically broken or a syntax gate is red — lint, format, types, strictly behaviour-preserving                                          |
 | `completion`                    | Verified work needs recording — a story or sprint status transition in the PM artefacts                                                               |
+| `backend`                       | The server half of a story — models, migration, service layer, Django Ninja endpoints, MCP tools                                                      |
+| `frontend`                      | The web half of a story — templates, django-components, HTMX, Alpine, token CSS, WCAG                                                                 |
+| `database`                      | The data layer itself — an approved schema as models and a lock-safe migration, RLS policies, PII columns                                             |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |

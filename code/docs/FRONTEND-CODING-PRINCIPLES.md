@@ -56,6 +56,10 @@ Shared UI is a **django-component**, never inline markup. One folder per compone
 - **CSP-clean.** No inline `<script>` or `<style>`. Alpine reads HTML attributes; HTMX is configured
   via `<meta>`; per-page JS is a static file. Content must be usable with JavaScript disabled — every
   link is a real `<a>`, Alpine only enhances.
+- **django-components is the only component system, and `django-cotton` must not be reintroduced.**
+  The two conflict: cotton installs a global template-compilation monkeypatch that django-components
+  also patches, so the second one loaded wins and components silently stop rendering. It was tried
+  and dropped for that reason. A second component library is a stack change, not a template choice.
 
 ---
 
