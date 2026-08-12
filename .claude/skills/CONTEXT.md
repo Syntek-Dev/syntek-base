@@ -34,6 +34,9 @@ tooling; plugin references were rewritten to internal paths.
 ├── reporting/              ← role-scoped report queries and aggregates, PII kept out of the summary
 ├── logging/                ← structured logging and observability; nothing sensitive reaches a channel
 ├── seo/                    ← the head, JSON-LD, canonical URLs, robots/sitemap/llms.txt views
+├── test-writer/            ← the TDD Red phase: failing tests plus the skeleton that runs them
+├── qa-tester/              ← the hostile pass: find it, prove it, rank it — never fix, never approve
+├── code-reviewer/          ← read-only review on two axes, Standards and Spec, never merged
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -130,6 +133,9 @@ tooling; plugin references were rewritten to internal paths.
 | `reporting`                     | A report or dashboard needs its data — role-scoped aggregates, a result shape, an index recommendation                                                |
 | `logging`                       | Log instrumentation to add, a channel to configure, or sensitive data to stop reaching one                                                            |
 | `seo`                           | A public page needs its head, structured data and crawler wiring — or the marketing pages need a pass                                                 |
+| `test-writer`                   | The failing tests must exist before implementation — one story's scope, its seams, red first                                                          |
+| `qa-tester`                     | A change needs an independent breaker pass before it ships — proven findings, ranked                                                                  |
+| `code-reviewer`                 | A diff, file, branch or module needs assessing rather than fixing — Standards and Spec, separately                                                    |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
