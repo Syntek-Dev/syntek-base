@@ -851,6 +851,7 @@ record is `.claude/skills/CONTEXT.md`.
 | `syntax` · `completion`                             | Clear the lint, format and type gates · record a story or sprint complete    |
 | `backend` · `frontend` · `database`                 | Build the server side · build the pages · work the data layer                |
 | `authentication` · `notifications`                  | The credential and session layer · sending email, SMS, push and in-app       |
+| `version` · `git` · `cicd`                          | Move the version set · the git surface · pipeline, deploys and dependencies  |
 | `test-writer` · `qa-tester` · `code-reviewer`       | Write the red tests · break it · review it, Standards and Spec separately    |
 | `reporting` · `logging` · `seo`                     | Report data · log instrumentation · the head, JSON-LD and crawler wiring     |
 | `stack-django`                                      | Backend — models, migrations, services, Django Ninja endpoints, pytest       |

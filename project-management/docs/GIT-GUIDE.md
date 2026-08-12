@@ -112,6 +112,19 @@ Still to do:
 Version: <old> → <new>
 ```
 
+### The co-author trailer
+
+Every commit an agent writes ends with a co-author trailer naming the model that wrote it:
+
+```text
+Co-Authored-By: Claude <model> <noreply@anthropic.com>
+```
+
+`<model>` is the family and its current major — the name in `.claude/CLAUDE.md` § 4, read at
+the time of the commit. **It is never pinned in a rule**, here or in a skill: a hardcoded
+version string goes stale on the next model release and then every commit misattributes itself
+to a model that did not write it. The same applies to a PR body's generation footer.
+
 ### Type values
 
 | Type       | When to use                                         |

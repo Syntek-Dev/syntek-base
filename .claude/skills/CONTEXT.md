@@ -37,6 +37,9 @@ tooling; plugin references were rewritten to internal paths.
 ├── test-writer/            ← the TDD Red phase: failing tests plus the skeleton that runs them
 ├── qa-tester/              ← the hostile pass: find it, prove it, rank it — never fix, never approve
 ├── code-reviewer/          ← read-only review on two axes, Standards and Spec, never merged
+├── version/                ← pick the increment, move the whole version set, stage it
+├── git/                    ← branches, commits, pull requests, tags — to the guide's conventions
+├── cicd/                   ← pipeline, Docker/Compose, deploy scripts, and the dependency set
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
@@ -136,6 +139,9 @@ tooling; plugin references were rewritten to internal paths.
 | `test-writer`                   | The failing tests must exist before implementation — one story's scope, its seams, red first                                                          |
 | `qa-tester`                     | A change needs an independent breaker pass before it ships — proven findings, ranked                                                                  |
 | `code-reviewer`                 | A diff, file, branch or module needs assessing rather than fixing — Standards and Spec, separately                                                    |
+| `version`                       | A version needs bumping, or the version files have drifted apart — the increment is decided here                                                      |
+| `git`                           | A branch, commit, pull request or tag — the git surface, to `GIT-GUIDE.md`'s conventions                                                              |
+| `cicd`                          | A workflow, container build, deploy script — or adding, upgrading or removing a dependency                                                            |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
 | `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
