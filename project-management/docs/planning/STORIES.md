@@ -50,9 +50,22 @@ Testable means an observer could agree it passed without asking the author.
 
 Fibonacci: 1, 2, 3, 5, 8, 13, 21. Relative sizing, not hours.
 
+**Two thresholds, and they measure different things.** Keep both — collapsing them to one loses
+whichever question the survivor does not ask:
+
+| Points  | Verdict                  | The question it answers                                 |
+| ------- | ------------------------ | ------------------------------------------------------- |
+| **>8**  | Advisory — usually split | Is this comfortably deliverable inside one sprint?      |
+| **≥13** | **It is an epic**        | Is this one story at all, or several wearing one title? |
+
 - A story larger than 8 usually wants splitting — but split along a **user-value seam**, not a
   layer boundary. Two halves that each ship something are a good split; "backend half" and
-  "frontend half" are one story wearing two hats.
+  "frontend half" are one story wearing two hats. A 13 that genuinely has no seam stays a 13
+  and gets said so out loud, which is what makes the advisory tier advisory.
+- **13 or more is an epic, and that is not a size judgement — it is a shape one.** INVEST's
+  _Small_ has already failed at that point, and so, almost always, has _Independent_: a story
+  that big is carrying more than one piece of user value. It goes back to the feature map to be
+  cut, rather than being estimated harder.
 - A story you cannot estimate is a story you do not understand yet. That is a signal to go back
   to the map, not to guess.
 

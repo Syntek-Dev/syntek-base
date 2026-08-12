@@ -159,6 +159,12 @@ Before writing new code, decide where it belongs:
 authority for component styling and BEM. Never duplicate or conflict with an established component
 pattern. When in doubt, extend the existing component before adding a new one.
 
+**The legal footer is data, not markup.** The shared `site_footer` renders the full legal set —
+Terms, Privacy, Accessibility, Cookies, DPA — from `navigation.py::FOOTER_LEGAL_LINKS`, never
+hand-dropped per page. The reason is that the set changes: a new jurisdiction, a cookie banner, a
+processor agreement. Hand-written links mean the page that was built last month keeps the old
+set, and nothing reports it, because a missing legal link renders perfectly.
+
 ---
 
 ## Per-page JavaScript

@@ -72,6 +72,12 @@ def create_order(request, payload: CreateOrderIn):
 - Wrap multi-step operations in database transactions. If any step fails, all steps roll back.
 - Side effects (emails, webhooks, event dispatch) happen at the end of the service method, after
   the primary operation succeeds.
+- **A service lives in the app that owns its data**, including the read-only ones. Report and
+  dashboard aggregations are services like any other — they belong under the app whose records
+  they summarise (analytics rollups in the analytics app, audit rollups in the audit app), not in
+  a shared `reports/` module gathering queries from across the project. That module is where a
+  cross-app query with no owner ends up, and it is how a scope filter gets forgotten: the app
+  that owns a table is the one that knows which rows a caller may see.
 
 ### Service Exception Hierarchy
 

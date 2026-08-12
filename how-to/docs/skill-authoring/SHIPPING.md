@@ -34,10 +34,12 @@ three workflow layers — `project-management/workflows/`, `code/workflows/` and
 `how-to/workflows/` — that the skill is loaded in service of, each with a one-line "when", and it
 routes rather than restating them.
 
-The reason is structural rather than stylistic: **no admitted frontmatter key carries routing.**
-The four runtime keys say where a skill runs, not what it is loaded in service of, and
-`allowed-tools` — the one field from which a reader could have inferred a skill's context — is
-declined (`FRONTMATTER.md`). So there is nowhere else for routing to live but the body.
+The reason is structural rather than stylistic: **no admitted frontmatter key names a procedure.**
+The four runtime keys say where a skill runs, not what it is loaded in service of;
+`metadata.skills` registers the reference skills this one depends on, which is a different
+question; and `allowed-tools` — the one field from which a reader could have inferred a skill's
+context — is declined (`FRONTMATTER.md`). So there is nowhere else for routing to live but the
+body.
 
 A skill that is a session or sandbox mechanic — `handoff`, `teach`, `msp-scp-documents` — **says
 it has none** rather than leaving the absence ambiguous, because a missing section and an empty
@@ -48,8 +50,11 @@ one are indistinguishable to the next author. The cross-layer pairing map is
 
 Adding the folder is not shipping it. A skill nobody has listed is a skill nobody finds:
 
-1. `.claude/skills/CONTEXT.md` — the tree **and** the when-to-load table.
-2. `.claude/CLAUDE.md` § 2.4 and _Skill Targets_ — only where something cites the skill by name.
+1. `.claude/skills/CONTEXT.md` — the tree **and** the when-to-load table. This is the roster,
+   and it is the only one: `.claude/CLAUDE.md` routes to it rather than restating it, so a
+   second registration step no longer exists to forget.
+2. `.copier/README.md` — the register row, which `.github/scripts/shipped-readme.sh` enforces
+   in CI.
 
 ## The gate
 
@@ -62,8 +67,9 @@ clauses `[gate: fail]` with no warn tier:
   defines.
 - **House clauses** — no key this project declines on a first-party skill, whether a spec field
   or a documented runtime key; an explicit `agent:` and `background:` on anything forked; any
-  `agent:` value, forked or not, naming one of the three built-in targets; and the
-  `## Governing procedures` section.
+  `agent:` value, forked or not, naming one of the three built-in targets; the
+  `## Governing procedures` section; and a `metadata:` map carrying `skills` and no other child,
+  every name in it resolving to a skill directory.
 
 Findings are reported `[spec N]`/`[house N]`; the reason the two are kept apart is
 `FRONTMATTER.md` § _Three claims, kept apart_. Vendored skills are held to the spec clauses
@@ -83,12 +89,12 @@ and a rule with two enforcers drifts the moment the number moves.
       hyphen.
 - [ ] `description` is non-empty and under 1024 characters, and earns every one of them.
 - [ ] Frontmatter carries `name` + `description`, plus only the runtime keys the skill's own
-      fork call needs; the four optional spec fields and every runtime key outside the admitted
-      four are declined on anything first-party.
+      fork call needs; `compatibility`, `allowed-tools`, `license` and every runtime key outside
+      the admitted four are declined on anything first-party.
 - [ ] The skill states whether it is **reference** or **task**, and the axis that produced its
       fork call.
-- [ ] Anything forked names `agent:` explicitly, and its `background:` matches the write test —
-      `Explore` + `true` for read-only, `general-purpose` + `false` for anything that writes.
+- [ ] Anything forked names `agent: general-purpose` and `background: false` explicitly — any
+      other pair needs the reopening test in `FORK-DECISION.md`, not a judgement call.
 - [ ] Invocation is deliberate: a rich "Load when…" description for model-auto-loading, or an
       "Invoke by typing `/name`" description for user-typed; the trade (context vs cognitive load)
       is the right one.
@@ -96,8 +102,8 @@ and a rule with two enforcers drifts the moment the number moves.
       identity already in the body.
 - [ ] Description **discriminates against its named near-neighbours** — the change says which
       entries those are and how a reader tells them apart.
-- [ ] A **task** skill names every **reference** skill it depends on in the `skills:` list that
-      loads it — nothing fails when it is missing.
+- [ ] A **task** skill names every **reference** skill it depends on in `metadata.skills` — and
+      names no task skill there, which fires on its own description.
 - [ ] Steps sit above reference; every step ends on a checkable (and where it matters, exhaustive)
       completion criterion.
 - [ ] Every file is ≤ 300 code lines; anything longer is a thin index plus disclosed
@@ -110,8 +116,8 @@ and a rule with two enforcers drifts the moment the number moves.
 - [ ] Steering is positive, not prohibition; British English throughout.
 - [ ] `## Governing procedures` is present — naming the procedures, or saying there are none —
       and sits immediately before `## Cross-references` where the skill has one.
-- [ ] Registered: `.claude/skills/CONTEXT.md` (tree + when-to-load), and `.claude/CLAUDE.md`
-      § 2.4 and _Skill Targets_ if anything cites it by name.
+- [ ] Registered: `.claude/skills/CONTEXT.md` (tree + when-to-load) and the `.copier/README.md`
+      register row.
 - [ ] `bash code/src/scripts/audits/skill-conformance.sh` and
       `bash code/src/scripts/audits/docs-length.sh --path .claude/skills` both exit 0.
 

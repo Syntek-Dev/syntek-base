@@ -30,7 +30,7 @@ tooling; plugin references were rewritten to internal paths.
 │   ├── SKILL.md
 │   ├── GIT-AND-PR.md
 │   └── VERSIONING-AND-DOCS.md
-├── runbook/                ← operator-doc craft: the runbook spine, execute-to-verify
+├── runbook/                ← write an operator guide: the brief, execute-to-verify, indexing (task, forked)
 │   └── SKILL.md
 ├── legal-documents/        ← shared drafting standard for legal/GDPR doc agents
 │   └── SKILL.md
@@ -97,7 +97,7 @@ tooling; plugin references were rewritten to internal paths.
 | `stack-rust`                    | **Rust-only.** Writing/reviewing `code/src/rust/` — PyO3 boundary, secret zeroizing, cargo-deny. Also: deciding if work belongs in Rust at all        |
 | `stack-slint`                   | **Desktop-only.** Building/reviewing the native Slint app — the AboutSlint licence disclosure, the generated-code lint boundary, threading, a11y      |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                                  |
-| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; loaded by `operator-docs`                                              |
+| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; the conventions are `how-to/docs/OPERATOR-DOC-CRAFT.md`                |
 | `grilling`                      | Design work (architecture, DB, API, story) — the frontier-round interview engine                                                                      |
 | `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                                |
 | `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or a design agent opens design work — grilling that records decisions                                    |
