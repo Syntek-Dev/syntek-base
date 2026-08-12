@@ -1104,27 +1104,28 @@ All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
 The register of record is `code/src/scripts/audits/CONTEXT.md` — it is authoritative if this
 table ever falls behind it.
 
-| Script                 | Purpose                                                                                 |
-| ---------------------- | --------------------------------------------------------------------------------------- |
-| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown      |
-| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK) |
-| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens              |
-| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                        |
-| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source         |
-| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds  |
-| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                    |
-| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` § 4)                         |
-| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens |
-| `copy-emdash.sh`       | Em dashes in user-facing copy                                                           |
-| `css-gradients.sh`     | Raw gradient literals outside the token layer                                           |
-| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)           |
-| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                   |
-| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                |
-| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                |
-| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                           |
-| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors         |
-| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                    |
-| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                          |
+| Script                 | Purpose                                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown       |
+| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK)  |
+| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens               |
+| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                         |
+| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source          |
+| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds   |
+| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                     |
+| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` § 4)                          |
+| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens  |
+| `copy-emdash.sh`       | Em dashes in user-facing copy                                                            |
+| `css-gradients.sh`     | Raw gradient literals outside the token layer                                            |
+| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)            |
+| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                    |
+| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                 |
+| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                 |
+| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                            |
+| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors          |
+| `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag |
+| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                     |
+| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                           |
 
 ```bash
 ./code/src/scripts/audits/cloc.sh

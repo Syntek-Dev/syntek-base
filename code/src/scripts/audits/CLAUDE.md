@@ -104,7 +104,11 @@ analysis, the seam and orphan guards, and the dependency CVE audit. Full invento
   length, because `docs-length.sh` already owns the 300-line cap across all of `.claude/**`. Two
   enforcers of one rule drift the moment the number changes, and the one that is wrong is
   believed exactly as much as the one that is right. Route a skill finding by what it is about:
-  **shape → `skill-conformance.sh`, size → `docs-length.sh`.**
+  **shape → `skill-conformance.sh`, size → `docs-length.sh`, does the named skill exist →
+  `routing-skills.sh`.** That third one is a genuinely different surface, not a fourth opinion on
+  the same file: `skill-conformance.sh` reads `metadata.skills` **inside** a `SKILL.md`, while
+  `routing-skills.sh` reads the `skills:` key in the routing frontmatter of a `docs/` guide or a
+  workflow `STEPS.md`. Different key, different file, and neither can see the other's.
 - **A vendored skill is exempt from the house rules and bound by the spec.** The `cloudinary-*`
   folders are symlinks refreshed from upstream through `skills-lock.json`, so an edit made to
   satisfy a house clause is reverted by the next refresh — which is why `skill-conformance.sh`
