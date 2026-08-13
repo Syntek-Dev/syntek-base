@@ -287,7 +287,7 @@ done
 # Part 1 is the piece no mutation can reach: the real README contains no prefix
 # collision among required names, so in_tree's boundary rule is proved directly.
 self_test() {
-  local fails=0 probes=0 tmp target path name out
+  local tmp target path name out
 
   bold "▸ shipped-readme.sh --self-test"
   log  ""
@@ -299,21 +299,11 @@ self_test() {
 │   ├── DOCUMENTATION-PAIRING.md         ← the CONTEXT.md / CLAUDE.md split
 ├── eslint.config.mjs
 ├── docker/                              ← Dockerfiles and Compose files'
-  local must_miss=(VERSION audit-template.yml CONTEXT.md CLAUDE.md)
-  local must_hit=(VERSION-HISTORY.md audit-template-slop.yml eslint.config.mjs docker)
-  for name in "${must_miss[@]}"; do
-    probes=$((probes + 1))
-    if in_tree "$BLOB" "$name"; then
-      fails=$((fails + 1))
-      printf '\033[31m  ✗ boundary: "%s" matched a row that only CONTAINS it\033[0m\n' "$name"
-    fi
+  for name in VERSION audit-template.yml CONTEXT.md CLAUDE.md; do
+    assert_out "the boundary rule" "$BLOB" "$name"
   done
-  for name in "${must_hit[@]}"; do
-    probes=$((probes + 1))
-    if ! in_tree "$BLOB" "$name"; then
-      fails=$((fails + 1))
-      printf '\033[31m  ✗ boundary: "%s" is a real row and was not found\033[0m\n' "$name"
-    fi
+  for name in VERSION-HISTORY.md audit-template-slop.yml eslint.config.mjs docker; do
+    assert_in "the boundary rule" "$BLOB" "$name"
   done
 
   # ── Part 2: the known-negative — the real README must trip nothing ──────────
@@ -324,7 +314,39 @@ self_test() {
     exit 2
   fi
 
-  # ── Part 3: one deleted row per tree check must produce exactly one finding ──
+  # ── Part 3: the blocks are scoped, not just non-empty ───────────────────────
+  #
+  # The die guards above catch a block that came back EMPTY. They cannot catch the
+  # opposite, and the opposite is the dangerous one: a tree_section that failed to stop
+  # at its boundary and returned the whole tree would leave every nested check passing
+  # AND still firing on every mutation, because a row deleted from the tree is deleted
+  # from an over-captured block too. Nothing downstream can tell. So each block is
+  # asserted to carry its own first member and to carry NONE of its neighbours' —
+  # every name derived from the same globs the checks iterate.
+  local gh doc src
+  gh=$(first_required "$GH_BLOCK" .github/workflows/*.yml)   || die "no unambiguous .github/ anchor — the proof cannot run"
+  doc=$(first_required "$DOCS_BLOCK" code/docs/*.md)         || die "no unambiguous code/docs/ anchor — the proof cannot run"
+  src=$(first_required "$SRC_BLOCK" code/src/*/)             || die "no unambiguous code/src/ anchor — the proof cannot run"
+  gh="${gh##*	}"; doc="${doc##*	}"; src="${src##*	}"
+
+  assert_in  "GH_BLOCK"   "$GH_BLOCK"   "$gh"
+  assert_in  "DOCS_BLOCK" "$DOCS_BLOCK" "$doc"
+  assert_in  "SRC_BLOCK"  "$SRC_BLOCK"  "$src"
+  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$doc"
+  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$src"
+  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$src"
+  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$gh"
+  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$doc"
+  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$gh"
+  assert_out "CODE_BLOCK" "$CODE_BLOCK" "$gh"
+
+  # count_rows underpins the uniqueness filter every mutation target passes through:
+  # if it under-counted, an ambiguous target would be picked and the deletion would hit
+  # a row nobody meant. One name known unique, one known repeated.
+  assert_count "a unique guide must count once" "$doc" -eq 1
+  assert_count "the paired CONTEXT.md must count many" CONTEXT.md -ge 2
+
+  # ── Part 4: one deleted row per tree check must produce exactly one finding ──
   local REAL_README="$README"
   tmp=$(mktemp) || die "could not create a temporary file"
   # shellcheck disable=SC2064
@@ -344,7 +366,7 @@ self_test() {
 
     # shellcheck disable=SC2086
     target=$(first_required "$blob" $candidates) || {
-      fails=$((fails + 1))
+      ST_FAILS=$((ST_FAILS + 1))
       printf '\033[31m  ✗ check %s: no unambiguous mutation target — the proof cannot run\033[0m\n' "$num"
       continue
     }
@@ -354,21 +376,25 @@ self_test() {
     README="$tmp"
     run_readme_checks
     README="$REAL_README"
-    probes=$((probes + 1))
+    ST_PROBES=$((ST_PROBES + 1))
 
     if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$path"* || "${FINDINGS[0]}" == *"$name"* ]]; then
       log "  ✓ check $num fires on a missing row — $path"
     else
-      fails=$((fails + 1))
+      ST_FAILS=$((ST_FAILS + 1))
       out=$(printf '%s; ' "${FINDINGS[@]:-(none)}")
       printf '\033[31m  ✗ check %s: deleting %s produced %d finding(s): %s\033[0m\n' \
         "$num" "$path" "${#FINDINGS[@]}" "$out"
     fi
   done
 
+  # run_readme_checks was last called against a mutated copy; leave the globals holding
+  # the real tree so nothing downstream inherits a deliberately broken one.
+  run_readme_checks
+
   log ""
-  if [[ "$fails" -eq 0 ]]; then
-    bold "✓ Self-test passed — $probes probes: the boundary rule holds and all six tree checks fire."
+  if [[ "$ST_FAILS" -eq 0 ]]; then
+    bold "✓ Self-test passed — $ST_PROBES probes: the boundary rule, the block scoping, and all six tree checks."
     log ""
     return 0
   fi
@@ -405,6 +431,34 @@ drop_row() { # $1 = a README path, $2 = the entry name
         if (c == "" || c == " " || c == "/") { gone = 1; next }
       } }
     { print }' "$1"
+}
+
+# Self-test assertions. Counters are global because the helpers are called from inside
+# self_test and bash would otherwise need every one of them to thread a return value.
+ST_FAILS=0
+ST_PROBES=0
+
+assert_in() {  # $1 = label, $2 = blob, $3 = a name the blob MUST carry
+  ST_PROBES=$((ST_PROBES + 1))
+  if ! in_tree "$2" "$3"; then
+    ST_FAILS=$((ST_FAILS + 1))
+    printf '\033[31m  ✗ %s is missing "%s" — the block under-captures\033[0m\n' "$1" "$3"
+  fi
+}
+assert_out() { # $1 = label, $2 = blob, $3 = a name from a NEIGHBOURING section
+  ST_PROBES=$((ST_PROBES + 1))
+  if in_tree "$2" "$3"; then
+    ST_FAILS=$((ST_FAILS + 1))
+    printf '\033[31m  ✗ %s carries "%s" from another section — the block over-captures\033[0m\n' "$1" "$3"
+  fi
+}
+assert_count() { # $1 = label, $2 = name, $3 = comparison (-eq/-ge), $4 = expected
+  local got; got=$(count_rows "$TREE" "$2")
+  ST_PROBES=$((ST_PROBES + 1))
+  if ! [ "$got" "$3" "$4" ]; then
+    ST_FAILS=$((ST_FAILS + 1))
+    printf '\033[31m  ✗ count_rows("%s") = %s, expected %s %s — %s\033[0m\n' "$2" "$got" "$3" "$4" "$1"
+  fi
 }
 
 if $SELF_TEST; then
