@@ -32,6 +32,15 @@
 #                       8. Every copier.yml question is documented.
 #                       9. Every token actually used in a shipped file is documented.
 #
+#                     Three against the tree's NESTED entries — the level checks 1–3
+#                     never reach, and where the 09/08/2026 sweep found its drift:
+#                      10. Every shipping .github/workflows/*.yml appears.
+#                      11. Every shipping code/docs/*.md appears.
+#                      12. Every shipping code/src/*/ appears.
+#
+#                     Numbers are stable identifiers — other documents cite them.
+#                     Append, never renumber.
+#
 #                     What it CANNOT check: prose that is present but wrong — a tree entry
 #                     whose description no longer matches, or a count stated in words.
 #                     Only review defends against that.
@@ -116,6 +125,30 @@ AUDIT_REG=$(awk '/^### Audit scripts/{f=1;next} /^### /{f=0} f' "$README")
 [[ -n "$SKILLS_REG" ]] || die "no '### Skills' section in $README"
 [[ -n "$AUDIT_REG"  ]] || die "no '### Audit scripts' section in $README"
 
+# A name must appear as a tree ROW, not merely somewhere in the tree text. Two ways a
+# bare grep passes a check that should fail, both of them real:
+#
+#   incidental prose  DOCUMENTATION-PAIRING.md's description is "the CONTEXT.md /
+#                     CLAUDE.md split" — it answers a search for CONTEXT.md from inside
+#                     the very block that search is meant to police.
+#   one row answering for another
+#                     `── VERSION-HISTORY.md` contains the string `VERSION`, so the
+#                     VERSION row could be deleted and never missed.
+#
+# So: the name must follow the `── ` connector every row carries and no description uses
+# (descriptions use ← and —), and must END at that row — the next character is a space,
+# a `/`, or the line's end. Done in awk to keep filenames literal; a regex would have to
+# escape the dot in every one of them.
+in_tree() { # $1 = a tree blob, $2 = the entry name as the tree writes it
+  awk -v n="$2" '
+    { i = index($0, "── " n)
+      if (i > 0) {
+        c = substr($0, i + length("── " n), 1)
+        if (c == "" || c == " " || c == "/") { hit = 1; exit }
+      } }
+    END { exit !hit }' <<< "$1"
+}
+
 bold "▸ shipped-readme.sh"
 log  "  checking .copier/README.md and TEMPLATE-TOKENS.md against the repository…"
 log  ""
@@ -124,19 +157,19 @@ log  ""
 for entry in $(ls -A | grep -vE '^(\.git|node_modules|\.venv|\.code-review-graph)$'); do
   is_excluded "$entry" && continue
   case "$entry" in .*) [[ "$entry" == ".claude" || "$entry" == ".agents" || "$entry" == ".mcp.json" || "$entry" == ".zed" ]] || continue ;; esac
-  grep -qF "$entry" <<< "$TREE" || finding "Project Tree omits shipping root entry: $entry"
+  in_tree "$TREE" "$entry" || finding "Project Tree omits shipping root entry: $entry"
 done
 
 # ── 2. PM src/ folders ────────────────────────────────────────────────────────
 for d in project-management/src/*/; do
   n=$(basename "$d"); is_excluded "$d" && continue
-  grep -qF "$n" <<< "$TREE" || finding "Project Tree omits PM artefact folder: src/$n"
+  in_tree "$TREE" "$n" || finding "Project Tree omits PM artefact folder: src/$n"
 done
 
 # ── 3. Workflow directories ───────────────────────────────────────────────────
 for d in project-management/workflows/*/ code/workflows/*/ how-to/workflows/*/; do
   n=$(basename "$d"); is_excluded "${d%/}" && continue
-  grep -qF "$n" <<< "$TREE" || finding "Project Tree omits workflow: ${d%/}"
+  in_tree "$TREE" "$n" || finding "Project Tree omits workflow: ${d%/}"
 done
 
 # ── 4. Audit scripts ──────────────────────────────────────────────────────────
@@ -181,6 +214,49 @@ while read -r tok; do
   [[ -z "$tok" ]] && continue
   grep -qF "<%$tok%>" "$TOKENS" || finding "TEMPLATE-TOKENS.md does not document token in use: <%$tok%>"
 done < <(printf '%s\n' "$SHIPPING_FILES" | tr '\n' '\0' | xargs -0 -r grep -ho '<%[A-Z_]*%>' 2>/dev/null | tr -d '<%>' | sort -u)
+
+# ── 10/11/12. Nested tree entries ─────────────────────────────────────────────
+#
+# Checks 1–3 reach the top level and the three folder families that are named as a
+# set. Everything nested below that went unchecked, and that is exactly where the
+# drift lived: a `.github/workflows/` block listing 11 of 28, a `code/docs/` block
+# missing eight guides that ship everywhere, and a `code/src/` block missing a
+# directory no surface gates.
+#
+# Each is scoped to its own sub-block before being searched, on the same principle
+# as the registers above: `CONTEXT.md` appears a dozen times in this tree, so a
+# whole-tree grep proves nothing about the one under `code/docs/`. Scoping alone is
+# not enough either — hence in_tree, whose header explains what a bare grep lets past.
+tree_section() {    # $1 = the tree line the top-level section opens with
+  awk -v s="$1" 'index($0,s)==1 {f=1;next} f && /^[├└]── /{f=0} f' <<< "$TREE"
+}
+tree_subsection() { # $1 = a section blob, $2 = the line the sub-section opens with
+  awk -v s="$2" 'index($0,s)==1 {f=1;next} f && /^│   [├└]── /{f=0} f' <<< "$1"
+}
+
+GH_BLOCK=$(tree_section '├── .github/')
+CODE_BLOCK=$(tree_section '├── code/')
+DOCS_BLOCK=$(tree_subsection "$CODE_BLOCK" '│   ├── docs/')
+SRC_BLOCK=$(tree_subsection "$CODE_BLOCK" '│   ├── src/')
+
+[[ -n "$GH_BLOCK"   ]] || die "no '.github/' block in the Project Tree"
+[[ -n "$DOCS_BLOCK" ]] || die "no 'code/docs/' block in the Project Tree"
+[[ -n "$SRC_BLOCK"  ]] || die "no 'code/src/' block in the Project Tree"
+
+for f in .github/workflows/*.yml; do
+  is_excluded "$f" && continue
+  in_tree "$GH_BLOCK" "$(basename "$f")" || finding "Project Tree omits CI workflow: $f"
+done
+
+for f in code/docs/*.md; do
+  is_excluded "$f" && continue
+  in_tree "$DOCS_BLOCK" "$(basename "$f")" || finding "Project Tree omits code guide: $f"
+done
+
+for d in code/src/*/; do
+  is_excluded "${d%/}" && continue
+  in_tree "$SRC_BLOCK" "$(basename "$d")" || finding "Project Tree omits source directory: ${d%/}"
+done
 
 # ── Report ────────────────────────────────────────────────────────────────────
 if [[ ${#FINDINGS[@]} -eq 0 ]]; then

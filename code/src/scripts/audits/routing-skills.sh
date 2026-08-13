@@ -154,10 +154,15 @@ log "  checked $checked_names skill name(s) across $checked_files file(s) with r
 covariance=0
 
 # One flag can GUARANTEE another, and the guarantee is parsed from copier.yml rather
-# than hardcoded here: INCLUDE_DESKTOP carries `when: "<% INCLUDE_RUST %>"`, so the
-# question is never even asked without Rust and a DESKTOP-gated file cannot exist in a
-# project lacking stack-rust. Deriving it means a change to the gating is picked up
-# instead of silently contradicting a constant in this script.
+# than hardcoded here: INCLUDE_DESKTOP's question carries a `when:` clause conditional
+# on INCLUDE_RUST, so the question is never even asked without Rust and a DESKTOP-gated
+# file cannot exist in a project lacking stack-rust. Deriving it means a change to the
+# gating is picked up instead of silently contradicting a constant in this script.
+#
+# That clause is DESCRIBED here, never quoted. This script ships, and copier renders
+# every shipped file (`_templates_suffix` is empty), so a literal token written in this
+# comment is not an example — it is a substitution, and a generated project would
+# receive the line reading `when: "True"`. check-template-tokens.sh is what catches it.
 when_flag() { # flag → the flag its question is conditional on, or empty
   awk -v q="$1:" '
     $0 ~ "^" q "[[:space:]]*$" { inq = 1; next }
