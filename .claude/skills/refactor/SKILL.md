@@ -15,7 +15,7 @@ metadata:
 # Refactor (<%PROJECT_NAME%>)
 
 **Task skill, inline** (axis 2 — the scope and the behaviour-preserving boundary are settled in
-the conversation, and the specialist edits below are dispatched).
+the conversation, and the scoped edits below are dispatched).
 
 > **The golden rule: observable behaviour must not change.** Same inputs, same outputs, same
 > side effects, an identical public API unless <%DEVELOPER_NAME%> has explicitly authorised a
@@ -85,8 +85,8 @@ Phases 3 and 5 are separate Agent tool calls to `general-purpose`, naming the sk
 **They dispatch separately so that no phase checks its own output.**
 
 1. **Refactor**, in small independently reversible increments — one kind of refactoring at a
-   time. A layer-specialist restructure that needs deep stack knowledge dispatches the edit to
-   the `backend` or `frontend` skill.
+   time. A restructure that needs deep stack knowledge dispatches the edit to the `backend` or
+   `frontend` skill.
 2. **Verify green** — `bash code/src/scripts/tests/backend.sh`. Red after the refactor means
    behaviour changed: fix or revert **before** review.
 3. **Review** — the `code-reviewer` skill, **not a dispatch that edited in phase 1**. It

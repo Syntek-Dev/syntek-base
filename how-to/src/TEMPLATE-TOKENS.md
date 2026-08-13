@@ -67,8 +67,8 @@ desktop surface is. Example values are illustrative — replace them.
 | `<%ORG_SLUG%>`            | Org machine slug — marketplace, plugins, server namespace       | `acme`                                                   | `kebab-case`       |
 
 `<%PROJECT_DESCRIPTION%>` reaches further than the other identity tokens: it opens the root
-`CONTEXT.md`, which `.claude/CLAUDE.md` imports, so it is the **first thing every agent reads
-in every session**. It is also the `description` field of `pyproject.toml` and `package.json`,
+`CONTEXT.md`, which `.claude/CLAUDE.md` imports, so it is the **first thing read in every
+session**. It is also the `description` field of `pyproject.toml` and `package.json`,
 and the blurb under the title in the generated `README.md`. The no-double-quotes rule exists
 because of those two manifests; the 40-character floor exists because a tagline is not a brief.
 
@@ -217,7 +217,7 @@ later creates a new app rather than updating the existing one.
 
 The opt-in Cargo workspace at `code/src/rust/` — PyO3 extension modules, standalone binaries and
 CLI tools. `<%INCLUDE_RUST%>` gates the whole feature: when it is false, the workspace, its
-scripts, its guides, its workflow, its CI job, and its `rust` agent + `stack-rust` skill are all
+scripts, its guides, its workflow, its CI job, and its `stack-rust` skill are all
 excluded by templated `_exclude` entries.
 
 | Token              | Meaning                                     | Example value | Format |
@@ -380,7 +380,7 @@ specify-vs-implement contract discipline, the glossaries, the phase-gate concept
 readiness-dimension framework. Everything project-specific (process counts, load figures, TTLs,
 rate limits, app names, code citations, ADR numbers) is a **placeholder** carrying a
 `TBD — regenerate via /scale-planning` marker. Each such file opens with a **Template skeleton**
-banner. On a new project's first `/scale-planning` run, the `scale-planner` agent regenerates the
+banner. On a new project's first `/scale-planning` run, the `scale-planning` skill regenerates the
 concrete content from that project's live code. Specific ADRs are referenced by **named pattern**
 ("the project's Postgres horizontal-scaling ADR", "the cache-stampede ADR"), not by number.
 

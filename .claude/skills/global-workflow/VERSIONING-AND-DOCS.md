@@ -30,7 +30,7 @@ Before every commit:
 3. Update `CHANGELOG.md` — changelog-first, before staging.
 4. Stage the version and changelog files with the change.
 
-To bump mechanically, delegate to the `release` agent (via the Agent tool) or
+To bump mechanically, delegate to the `release` skill (via the Agent tool) or
 follow `project-management/docs/VERSIONING-GUIDE.md`. Never hardcode a version
 string that contradicts `VERSION`.
 
@@ -83,7 +83,7 @@ BUG-<DESCRIPTOR>-DD-MM-YYYY.md      e.g. BUG-AUTH-18-04-2026.md
 ```
 
 Store it under the PM bugs directory (`project-management/src/**/BUGS/`). The
-`bugfix` agent owns the full format via `code/workflows/10-debug/`. Each record
+`bugfix` skill owns the full format via `code/workflows/10-debug/`. Each record
 must include:
 
 - **Root-cause analysis** — what actually caused the defect.
@@ -95,8 +95,8 @@ must include:
 
 ## 4. Code-comment standards
 
-All agents writing code follow these rules (they match the `backend`, `frontend`
-and `refactor` agent expectations and `code/docs/CODING-PRINCIPLES.md`).
+Every skill writing code follows these rules (they match the `backend`, `frontend`
+and `refactor` skill expectations and `code/docs/CODING-PRINCIPLES.md`).
 
 **Comments and docstrings inside a code file carry the _why_ and nothing else.**
 The code states the what — names, types, and structure already say what happens,

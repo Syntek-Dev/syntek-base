@@ -1,8 +1,7 @@
 ---
 workflow: 08-debugging
 phase: verify
-agent: debugger
-skills: [global-workflow]
+skills: [bugfix, global-workflow]
 model: opus
 ---
 
@@ -75,13 +74,17 @@ bash code/src/scripts/tests/backend.sh tests/<module>/<test_file>.py::test_name 
 
 > **Model:** opus
 
-### Step 5 — Use the Debug Agent
+### Step 5 — Diagnose the Root Cause
 
 ```text
-debugger [describe the problem and what you have tried]
+bugfix — run the ## Root cause phase only: [describe the problem and what you have tried]
 ```
 
-> **↳ New agent:** `debugger` · **Model:** opus · **MCP:** code-review-graph
+Diagnosis, not repair: the phase ends at a documented root cause and a recommended fix. Applying
+that fix, regression-testing it and committing it is the full `bugfix` sequence, entered
+separately.
+
+> **↳ New dispatch:** `general-purpose` · **Skill:** `bugfix`, the `## Root cause` phase only — no fix, no commit · **Model:** opus · **MCP:** code-review-graph
 
 ### Step 6 — Document and Fix
 

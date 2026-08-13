@@ -1,8 +1,7 @@
 ---
 workflow: 06-brand-guides
 phase: design
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: fable
 ---
 

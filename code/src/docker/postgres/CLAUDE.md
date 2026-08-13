@@ -12,7 +12,7 @@ staging and prod run Postgres on the server, not in Docker.
 
 ## How to work here
 
-- **Routing:** database-infra tuning → `database` agent (Opus). This is
+- **Routing:** database-infra tuning → `database` skill (Opus). This is
   dev-only tuning; do not add staging/prod Postgres config here (those live on the server).
 - **Model:** Opus for tuning decisions and a one-line parameter tweak.
 - **Concrete steps:** edit `postgresql.dev.conf` → restart the dev `db` service via the

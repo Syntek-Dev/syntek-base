@@ -13,7 +13,7 @@ static file rather than an inline template block because it exists exactly once 
 
 ## How to work here
 
-- **Routing:** frontend work → `stack-htmx-templates` skill (Opus), via the `frontend` agent.
+- **Routing:** frontend work → `stack-htmx-templates` skill (Opus), via the `frontend` skill.
   Design values → `code/docs/DESIGN-TOKENS.md` and the `/admin/design-tokens` editor.
 - **Model:** Opus.
 - **Concrete steps:** add the file → reference it from a template with `{% static %}` →

@@ -14,7 +14,7 @@ the service-layer wiring.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Crates →
-  `rust` + `stack-rust` (Opus); the service-layer call sites → `backend`; the threat model and
+  `stack-rust` (Opus); the service-layer call sites → `backend`; the threat model and
   crypto audit → `security`; tests → `test-writer`. Read `CONTEXT.md` first. **Entered from
   `project-management/workflows/18-backend-code/`**, never directly from a design gate. Hard
   gates before Step 1: `code/docs/RUST.md`, `code/docs/rust/PYO3-BOUNDARY.md` and
@@ -31,7 +31,7 @@ the service-layer wiring.
   the release build exit `0`; coverage floors met on the Python side; `08-security-hardening` run
   if crypto is involved; touched `CONTEXT.md` files and the code-review-graph refreshed.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

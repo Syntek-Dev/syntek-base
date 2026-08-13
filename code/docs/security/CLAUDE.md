@@ -13,7 +13,7 @@ response, the OWASP checklist, secrets and transport, and supply-chain security.
 
 ## How to work here
 
-- **Routing:** documentation, not code — `security` or `:docs` agent
+- **Routing:** documentation, not code — `security` or `doc-writer`
   (Opus always; security is never a mechanical task). Governs every Django Ninja
   endpoint, service, and auth path under `stack-django`.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/SECURITY.md` a thin

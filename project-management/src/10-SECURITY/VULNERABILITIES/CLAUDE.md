@@ -15,7 +15,7 @@ each tied to a user story.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/` using the
-  `security` agent (Fable). Every finding originates in a sibling category — an audit
+  `security` skill (Fable). Every finding originates in a sibling category — an audit
   under `../AUDITS/` or a threat model under `../THREAT-MODEL/`. Standards:
   `project-management/docs/SECURITY-GUIDE.md`.
 - **Model:** Fable for the finding and the closure write-up (severity, framework

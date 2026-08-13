@@ -44,10 +44,9 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRE
 
 ## Clarifying questions
 
-Every legal document writer runs a **clarifying-questions step** before drafting, using the
-document-specific question set defined in its own agent file (data scope, controller and
-processor details, retention, transfers, and so on). Keep that question content as written —
-this skill sets only the **method**.
+Every draft opens with a **clarifying-questions step**, its question set specific to the
+document type and drawn from that type's required sections (data scope, controller and
+processor details, retention, transfers, and so on). This skill sets only the **method**.
 
 Conduct the clarifying questions as a **grilling pass** — load
 `.claude/skills/grilling/SKILL.md`, which owns the round shape, the question format and the
@@ -217,7 +216,7 @@ Do not paraphrase or abbreviate this notice. Advise users not to remove it until
 
 - `project-management/docs/GDPR-GUIDE.md` — governing UK GDPR compliance procedure (lawful bases, DSAR handling, records of processing, ICO obligations).
 - `code/workflows/06-gdpr-enforcement/CONTEXT.md` and `project-management/workflows/09-gdpr-compliance/CONTEXT.md` — the enforcement and compliance steps these documents must stay consistent with.
-- Once a document is signed off, implementation (publishing behind the `(marketing)/` legal page, token-first) is handed to the `feature` / `frontend` path — the writer agents produce Markdown only and never touch source.
+- Once a document is signed off, implementation (publishing behind the `(marketing)/` legal page, token-first) is handed to the `feature` / `frontend` path — this skill produces Markdown only and never touches source.
 
 ## Governing procedures (route here — do not restate at length)
 

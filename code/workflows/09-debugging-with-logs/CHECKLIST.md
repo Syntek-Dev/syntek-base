@@ -1,8 +1,7 @@
 ---
 workflow: 09-debugging-with-logs
 phase: verify
-agent: debugger
-skills: [stack-django]
+skills: [bugfix, stack-django]
 model: opus
 ---
 

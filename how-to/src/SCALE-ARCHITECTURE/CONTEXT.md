@@ -78,7 +78,7 @@ phase-gate is specifically the scaling trigger.
 ## Living-document contract
 
 This snapshot is **regenerated if missing and reconciled on every `/scale-planning` run**: the
-`scale-planner` agent diffs each document against the live codebase (Compose files, settings,
+`scale-planning` skill diffs each document against the live codebase (Compose files, settings,
 ADRs, app CONTEXT.md files) and patches drift before any new decision is grilled. Nothing here
 is authoritative over the code — the code is the source; these documents are its current,
 verified reading. Decisions (tier targets, headroom values) are settled through

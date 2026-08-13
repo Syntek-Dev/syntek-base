@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-htmx-templates]
+skills: [backend, stack-django, stack-htmx-templates]
 model: opus
 ---
 

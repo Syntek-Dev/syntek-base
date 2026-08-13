@@ -14,7 +14,7 @@ Cloudinary media logging, the observability stack, and the app-to-deploy `HEALTH
 ## How to work here
 
 - **Routing:** documentation, not code — reach for the `doc-writer` or
-  `logging` agent. Opus for substantive guidance and mechanical touches (typo fixes,
+  `logging` skill. Opus for substantive guidance and mechanical touches (typo fixes,
   header/version bumps).
 - **Concrete steps:** edit the specific sub-doc → keep `code/docs/LOGGING.md` a thin
   index that points here → if you split a file, add the new file to the parent index

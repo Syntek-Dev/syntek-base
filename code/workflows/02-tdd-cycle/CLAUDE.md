@@ -15,7 +15,7 @@ implement the minimum to pass, then refactor with the suite green throughout.
 - **Routing:** execute via `STEPS.md`; service and endpoint tests through the
   `stack-django` skill, template/component/HTMX-partial tests through
   `stack-htmx-templates` — both pytest, both Opus. The
-  `test-writer` agent may generate stubs, but green must mean a real implementation.
+  `test-writer` skill may generate stubs, but green must mean a real implementation.
 - **Model:** Opus for authoring tests and implementation and mechanical
   edits to the workflow files.
 - **Concrete steps:** confirm `code/src/scripts/syntax/check.sh` passes → **Red**:
@@ -25,7 +25,7 @@ implement the minimum to pass, then refactor with the suite green throughout.
   contract. Run suites via `code/src/scripts/tests/*.sh`.
 - **Definition of done:** tests green, coverage floors met (75% line and branch / auth 90%),
   no stubs left behind.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

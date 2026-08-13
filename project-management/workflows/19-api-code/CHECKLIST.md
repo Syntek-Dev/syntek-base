@@ -1,8 +1,7 @@
 ---
 workflow: 19-api-code
 phase: build
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 

@@ -139,4 +139,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/domain-modelling/SKILL.md` — record the names and decisions this review produces
 - `.claude/skills/grill-with-docs/SKILL.md` — the grilling engine step 3 drives
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` — the canonical "Deep modules" write-up
-- The refactor / review agents and workflows `11-refactor` / `07-review` route to this review
+- The `refactor` / `review` skills and workflows `11-refactor` / `07-review` route to this review

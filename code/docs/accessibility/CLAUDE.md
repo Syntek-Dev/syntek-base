@@ -15,8 +15,8 @@ ARIA, keyboard/focus interaction, and django-component patterns/testing — behi
 
 - **Routing:** `doc-writer` (Opus) to author; `frontend` is the consumer that reads the
   web sub-docs before building any interactive component (Django template,
-  django-component, or HTMX partial). `MOBILE.md` is read by `mobile` instead —
-  mobile-only, absent on a web-only project.
+  django-component, or HTMX partial). `MOBILE.md` is read by the mobile stack
+  skill instead — mobile-only, absent on a web-only project.
 - **Model:** Opus for substantive guidance and typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc (`HTML-AND-ARIA.md`,
   `INTERACTION.md`, `TESTING-AND-COMPONENTS.md`, `MOBILE.md`) → keep the parent

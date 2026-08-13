@@ -24,7 +24,7 @@ how-to/docs/
 ├── OPERATOR-DOC-CRAFT.md    ← the standing conventions behind every guide a human executes
 ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/ (index)
 │   └── skill-authoring/     ← 4 sub-documents: FORK-DECISION · FRONTMATTER · CRAFT · SHIPPING
-└── TOOLING-GUIDE.md          ← internal agents and skills reference (index)
+└── TOOLING-GUIDE.md          ← Internal skills reference (index)
     └── tooling-guide/        ← workflow/ commands/ configuration/
 ```
 
@@ -38,5 +38,5 @@ how-to/docs/
 | `OPERATOR-DOC-CRAFT.md` | The reader, the two homes and their two length standards, the runbook spine, command discipline, execute-to-verify, the scope boundaries |
 | `AI-DICTIONARY.md`      | Plain-English glossary of AI-coding terms (index over ai-dictionary/)                                                                    |
 | `SKILL-AUTHORING.md`    | How to write predictable skills under .claude/skills/ (index)                                                                            |
-| `TOOLING-GUIDE.md`      | Internal agents and skills reference (index)                                                                                             |
+| `TOOLING-GUIDE.md`      | Internal skills reference (index)                                                                                                        |
 | `CLI-TOOLING.md`        | CLI reference for all Docker Compose development commands                                                                                |

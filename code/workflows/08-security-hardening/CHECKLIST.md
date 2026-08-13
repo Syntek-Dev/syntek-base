@@ -1,8 +1,7 @@
 ---
 workflow: 08-security-hardening
 phase: harden
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -23,7 +22,7 @@ model: opus
 - [ ] CORS `ALLOWED_ORIGINS` is an explicit allowlist · _opus_
 - [ ] All secrets come from environment variables · _opus_
 - [ ] No sensitive data logged or exposed in error responses · _opus_
-- [ ] QA agent confirmed no regressions · _opus_
+- [ ] QA pass confirmed no regressions · _opus_
 
 ---
 

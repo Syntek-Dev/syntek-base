@@ -7,7 +7,7 @@ description: >-
   real", design it twice). Load when reasoning about module depth during architecture, refactor, or
   review — or when the `improve-codebase-architecture` skill needs the vocabulary or its
   design-it-twice parallel sub-agent pattern. Cited by the refactor, review, planner, and
-  code-reviewer agents. The canonical write-up is `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`.
+  code-reviewer skills. The canonical write-up is `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`.
 ---
 
 # Codebase Design

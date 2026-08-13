@@ -94,7 +94,7 @@ line below must hold and carry evidence — an unresolved item blocks the record
   `backend-coverage.sh`) — {before}% → {after}%.
 - **Separate commit** — the refactor ships as its **own commit**, isolated from any feature or
   fix, executed through code workflow [`11-refactor`](../../../code/workflows/11-refactor/)
-  (or the `refactor` agent). Evidence: commit `{sha}`, message `refactor: {summary}`.
+  (or the `refactor` skill). Evidence: commit `{sha}`, message `refactor: {summary}`.
 - **Public surface intact** — signatures, Ninja Schema models, URLs, and rendered output are
   byte-for-byte unchanged (or diff-verified equivalent). Evidence: {OpenAPI snapshot clean /
   schema snapshot / observed output}.

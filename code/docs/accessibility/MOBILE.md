@@ -1,6 +1,5 @@
 ---
 type: guide
-agent: mobile
 skills: [stack-react-native]
 model: opus
 ---
@@ -12,9 +11,9 @@ model: opus
 **Language:** British English (en_GB)
 **Claude Model:** opus — React Native accessibility APIs, screen readers, touch targets
 
-> **Mobile-only.** This guide governs `code/src/mobile/` alone. The `mobile` agent and
-> `stack-react-native` skill it routes to exist only in a project generated with the mobile
-> surface; on a web-only project this guide is inert and nothing routes here.
+> **Mobile-only.** This guide governs `code/src/mobile/` alone. The `stack-react-native` skill it
+> routes to exists only in a project generated with the mobile surface; on a web-only project this
+> guide is inert and nothing routes here.
 
 ---
 

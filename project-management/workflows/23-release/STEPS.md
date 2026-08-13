@@ -1,8 +1,7 @@
 ---
 workflow: 23-release
 phase: ship
-agent: release
-skills: [global-workflow]
+skills: [release, global-workflow]
 model: opus
 ---
 
@@ -32,7 +31,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 version bump [patch | minor | major]
 ```
 
-> **↳ New agent:** `version` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `version` · **Model:** opus · **MCP:** none
 
 This updates: `VERSION`, `VERSION-HISTORY.md`, `RELEASES.md`, `CHANGELOG.md`,
 `pyproject.toml`.
@@ -44,10 +43,10 @@ This updates: `VERSION`, `VERSION-HISTORY.md`, `RELEASES.md`, `CHANGELOG.md`,
 project with no mobile surface never reaches this condition at all.
 
 ```text
-mobile
+stack-react-native
 ```
 
-> **↳ New agent:** `mobile` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
 
 Write this release's **What's New / release notes** copy, then:
 
@@ -77,7 +76,7 @@ bash code/src/scripts/tests/backend.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ### Step 5 — Deploy to Production
 

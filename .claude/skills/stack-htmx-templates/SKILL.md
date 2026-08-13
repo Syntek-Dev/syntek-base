@@ -1,9 +1,9 @@
 ---
 name: stack-htmx-templates
-description: Frontend stack reference for <%PROJECT_NAME%> — Django templates + django-components + HTMX + Alpine + token-driven vanilla CSS, served by the `apps.marketing` app. Load when building or reviewing public frontend pages/components, choosing where an interaction runs (server vs HTMX vs Alpine), wiring per-page SEO/JSON-LD, or the page cache. Cited by the frontend, seo, backend, security, and review agents.
+description: Frontend stack reference for <%PROJECT_NAME%> — Django templates + django-components + HTMX + Alpine + token-driven vanilla CSS, served by the `apps.marketing` app. Load when building or reviewing public frontend pages/components, choosing where an interaction runs (server vs HTMX vs Alpine), wiring per-page SEO/JSON-LD, or the page cache. Cited by the frontend, seo, backend, security, and review skills.
 ---
 
-Reference for the **Django-templated** frontend of <%PROJECT_NAME%>. The `frontend` agent loads
+Reference for the **Django-templated** frontend of <%PROJECT_NAME%>. The `frontend` skill loads
 this for stack idioms; `seo`, `backend`, `security`, and
 `review` cite it at the UI boundary. Aligns with `project-management/workflows/20-frontend-code/`,
 `code/docs/RENDERING.md` (the interaction doctrine), and `apps/marketing/CONTEXT.md`.

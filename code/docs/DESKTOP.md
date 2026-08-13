@@ -1,6 +1,5 @@
 ---
 type: guide
-agent: desktop
 skills: [stack-slint]
 model: opus
 ---

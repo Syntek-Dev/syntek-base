@@ -11,7 +11,7 @@ The four Dockerfiles and four entrypoints for the single Python application cont
 
 ## How to work here
 
-- **Routing:** image work → `cicd` agent (Opus). A change to one environment's Dockerfile
+- **Routing:** image work → `cicd` skill (Opus). A change to one environment's Dockerfile
   usually belongs in the other three — check all four before finishing.
 - **Model:** Opus.
 - **Concrete steps:** edit the Dockerfile or entrypoint → rebuild

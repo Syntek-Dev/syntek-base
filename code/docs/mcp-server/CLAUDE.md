@@ -13,8 +13,8 @@ threat model, testing and operations — behind the `code/docs/MCP-SERVER.md` en
 ## How to work here
 
 - **Routing:** `doc-writer` (Opus) to author. The guides feed the `stack-fastmcp` skill, the
-  `backend` agent (tools), the `security` agent (`AUTH-AND-THREATS.md`), the `test-writer`
-  agent (`TESTING-AND-OPS.md`), and the `05-mcp-server` code workflow.
+  `backend` skill (tools), the `security` skill (`AUTH-AND-THREATS.md`), the `test-writer`
+  skill (`TESTING-AND-OPS.md`), and the `05-mcp-server` code workflow.
 - **Model:** Opus for substantive guidance and for typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc → keep `MCP-SERVER.md` a thin index and update
   the `CONTEXT.md` file table on any change → verify length with

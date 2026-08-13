@@ -1,8 +1,7 @@
 ---
 workflow: 04-database-operations
 phase: operate
-agent: database
-skills: [global-workflow]
+skills: [database, global-workflow]
 model: opus
 ---
 
@@ -67,7 +66,7 @@ failure mode that only reveals itself when you need it.
 
 ## Step 3 — Run the operation
 
-> **↳ New agent:** `database` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `database` · **Model:** opus
 
 **Restore from a backup** — destructive; replaces current content:
 

@@ -1,7 +1,6 @@
 ---
 workflow: 12-rust-extension
 phase: build
-agent: rust
 skills: [stack-rust, stack-django]
 model: opus
 ---

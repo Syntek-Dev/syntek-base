@@ -1,6 +1,6 @@
 # The Claude Code Setup
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 13/08/2026
 
 What ships in `.claude/`, how it routes work, and what to expect from it. This is the part of the
 template with the least equivalent elsewhere, so it is worth understanding before you fight it.
@@ -19,43 +19,44 @@ Every session starts the same way, and every folder's `CLAUDE.md` repeats the ch
 5. routing frontmatter    ← on the specific docs/ or workflows/ file being opened
 ```
 
-The point is that context is **scoped**. An agent doing frontend work never loads the GDPR
+The point is that context is **scoped**. A session doing frontend work never loads the GDPR
 registers. This is why the 300-line instructional cap exists.
 
-## Agents — two tiers
+## Skills — one category, two shapes
 
-**Orchestrators (8)** are the entry points. They carry all tools, pick the matching workflow, and
-delegate:
+Everything in `.claude/skills/` is a **skill**: a folder with a `SKILL.md` and optional
+sub-documents. There is no tier above it and no roster to memorise. Within the one category
+there is a single split, and it is about **where the work runs**:
 
-| Agent      | Triggered by                                 |
-| ---------- | -------------------------------------------- |
-| `feature`  | A new full-stack capability                  |
-| `bugfix`   | A bug, regression, or broken behaviour       |
-| `review`   | A quality pass before a PR                   |
-| `security` | An OWASP audit or hardening pass             |
-| `refactor` | Restructuring without behaviour change       |
-| `story`    | Writing a user story or planning a sprint    |
-| `pr`       | Raising a PR and moving it through promotion |
-| `release`  | Version bump, changelog, deploy              |
+| Kind                | What it is                                                                | Where it runs                                                    |
+| ------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Reference skill** | States conventions — `stack-django`, `codebase-design`, `global-workflow` | Inline, in the current context. Never forks                      |
+| **Task skill**      | An executable procedure — `feature`, `bugfix`, `story`, `release`         | Forks into a fresh context, unless its input is the conversation |
 
-**Specialists and document writers** are delegated to for scoped work — `backend`, `frontend`,
-`database`, `gdpr`, `test-writer`, `qa-tester`, `seo`, `authentication`, `operator-docs`,
-`privacy-policy-writer`, `incident-response-plan-writer`, and so on. Each is tool-scoped with a
-distinct remit. `.claude/agents/CONTEXT.md` is the roster; no total is quoted here, because it
-moves on every roster change and differs between two correct projects.
+Skills fire on **description match**, so most work needs no explicit routing — name one only to
+force a choice. The ones you will hit first are the task skills that sequence others: `feature`
+(a new capability), `bugfix` (something is broken), `review` (a quality pass before a PR),
+`security` (an OWASP audit), `refactor` (restructuring without behaviour change), `story` and
+`sprint` (planning), `pr` (raise and promote), `release` (bump, changelog, deploy). Each pulls in
+the scoped skills it needs — `backend`, `frontend`, `database`, `test-writer`, `qa-tester`,
+`code-reviewer`, `gdpr-mechanics`, and so on.
 
-**If you answered yes to the mobile question**, you also get a `mobile` specialist paired with a
-`stack-react-native` skill — mirroring `backend`/`stack-django` and
-`frontend`/`stack-htmx-templates`. Answer no and neither exists. Either way the registries list
-them, flagged mobile-only: that keeps `.claude/CLAUDE.md` free of conditional contents, which is
-the rule the whole opt-in rests on. `frontend` stays Django-templates-only in both cases.
+**If you answered yes to the mobile question**, you also get `stack-react-native`, mirroring
+`stack-django` for the backend and `stack-htmx-templates` for the web frontend. Answer no and it
+does not exist. Either way the registry lists it, flagged mobile-only: that keeps
+`.claude/CLAUDE.md` free of conditional contents, which is the rule the whole opt-in rests on.
+`frontend` stays Django-templates-only in both cases.
 
 Two rules that shape the output:
 
-- **No agent reviews its own work.** Review and QA are separate spawns.
-- **Every orchestrator has a documentation phase as a hard gate before its commit phase.**
+- **No skill reviews its own work.** Each phase dispatches separately.
+- **Every task skill that ships code has a documentation phase as a hard gate before its commit
+  phase.**
 
-Full roster: `.claude/agents/CONTEXT.md`.
+**How a fork happens.** A skill that needs a clean context dispatches `general-purpose` through
+the Agent tool and **names the skill to load in the prompt**. The built-in targets are `Explore`,
+`Plan` and `general-purpose`; the first two skip `CLAUDE.md`, so they are only valid where the
+work writes nothing.
 
 ## Models
 
@@ -66,18 +67,18 @@ Two tiers only. `sonnet` and `haiku` are never used.
 | `fable` | Planning, specification, design — architecture, schema, user flows, stories, sprints, plans |
 | `opus`  | Everything else — code, tests, migrations, review, PR, release, docs, mechanical touches    |
 
-Sessions run on Opus. Sub-agents and workflows route by tier through their `model:` frontmatter.
+Sessions run on Opus. Skills and workflows route by tier through their `model:` frontmatter.
 
 > **Plan requirement.** The Fable tier means this is designed for **Claude Max 20× or above, or
-> the Anthropic API**. On a smaller plan, retarget the Fable agents (`story`, `sprint`, `planner`,
-> `user-story`) to `opus` in their frontmatter — everything still works, you just lose the tier
-> separation.
+> the Anthropic API**. On a smaller plan, retarget the design skills (`planner`,
+> `scale-planning`, `sprint`, `story`) to `opus` in their frontmatter — everything still works,
+> you just lose the tier separation.
 >
 > **On another provider?** Only the model routing is Claude-specific. Swap the aliases in
-> `.claude/CLAUDE.md` §4, each agent's `model:` frontmatter, and the `model:` lines in `docs/` and
+> `.claude/CLAUDE.md` §4, each skill's `model:` frontmatter, and the `model:` lines in `docs/` and
 > `workflows/` routing frontmatter. The documentation system and gates are provider-agnostic.
 
-## Skills — loaded on demand
+## The skills you will meet first
 
 | Skill                                       | Loaded when                                                  |
 | ------------------------------------------- | ------------------------------------------------------------ |
@@ -99,7 +100,10 @@ Sessions run on Opus. Sub-agents and workflows route by tier through their `mode
 | `legal-documents`                           | Privacy policy, T&C, DPA, GDPR notice                        |
 | `msp-scp-documents`                         | Security and compliance policies                             |
 
-Plus `cloudinary-*` for media work.
+Plus `cloudinary-*` for media work. That is a selection, not the roster —
+`.claude/skills/CONTEXT.md` lists every skill with its trigger, and quotes no total, because it
+moves on every change and differs between two correct projects once the optional surfaces are in
+play.
 
 ## Grilling — the one to understand first
 
@@ -120,7 +124,7 @@ not bad code — it is confidently building the wrong thing.
 
 | Command            | What it is                                                                                      | Records anything?                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `grilling`         | The **engine**. Not invoked directly — design agents load it as their opening move.             | n/a                                                       |
+| `grilling`         | The **engine**. Not invoked directly — design skills load it as their opening move.             | n/a                                                       |
 | `/grill-me`        | **Stateless.** Interview only. The sharpened design lives in the conversation and nowhere else. | No                                                        |
 | `/grill-with-docs` | **Stateful.** Same interview, but each decision is written to its real home as it resolves.     | ADRs, plan Open Questions, glossary terms, story criteria |
 
@@ -166,7 +170,7 @@ Nodes are typed, and the type determines who does the work:
 
 | Node type    | Settled by                                                                  |
 | ------------ | --------------------------------------------------------------------------- |
-| **Research** | The agent alone — facts looked up from code, docs or APIs                   |
+| **Research** | Claude alone — facts looked up from code, docs or APIs                      |
 | **Tracer**   | A rough spike that raises fidelity on a foggy area before it can be decided |
 | **Grilling** | You, through one `/grill-with-docs` pass                                    |
 | **Task**     | Manual unblocking — provision infra, run a migration, seed data             |
@@ -199,7 +203,7 @@ Silent compaction loses decisions; a written handoff does not.
 
 ## Helper plugins
 
-Six read-only Python scripts in `.claude/plugins/` that agents call to gather context —
+Six read-only Python scripts in `.claude/plugins/` that Claude calls to gather context —
 `project`, `env`, `db`, `git`, `log`, `pm`. They inspect; they never run dev operations. Those go
 through `code/src/scripts/`.
 
@@ -224,13 +228,13 @@ docs so they do not drift.
 
 ## Turning parts off
 
-It is all files. `.claude/settings.json` controls permissions, model and hooks; deleting an agent
-or skill directory removes it. If grilling is not for you, the rule lives in `.claude/CLAUDE.md`
+It is all files. `.claude/settings.json` controls permissions, model and hooks; deleting a skill
+directory removes it. If grilling is not for you, the rule lives in `.claude/CLAUDE.md`
 §10 — edit it. Nothing here is load-bearing for the application.
 
 ---
 
 ## Next
 
-- Add your own agent, skill or workflow → `12-EXTENDING.md`
+- Add your own skill or workflow → `12-EXTENDING.md`
 - Put it to work → `10-FIRST-FEATURE.md`

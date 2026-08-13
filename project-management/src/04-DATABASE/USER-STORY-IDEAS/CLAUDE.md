@@ -13,7 +13,7 @@ the tables that story needs, written before the story reaches `14-decisions`.
 ## How to work here
 
 - **Routing:** produced by `workflows/04-database-schema/` (`STEPS.md` + `CHECKLIST.md`) via the
-  `database` agent, during the story's own pass through the specify tier. Read the story in
+  `database` skill, during the story's own pass through the specify tier. Read the story in
   `../../02-STORIES/US###.md` and every earlier design in this folder first.
 - **Model:** Fable — schema design, RLS scoping, and PII classification are substantive
   judgement; Opus only for a rename or a date-header bump.

@@ -104,7 +104,7 @@ scripts-only dev operations. Do not dilute one in a reword.
 Report the tree created and every `GAPS.md` row added. Then name what is owed: `git` to commit
 it, `doc-writer` for a guide's substance rather than its shell, `runbook` where the procedure is
 one a human executes under pressure, `setup` for Django app or configuration scaffolding, and
-the layer specialists for anything that fills the structure.
+`backend`, `frontend` or `database` for anything that fills the structure.
 
 ## Governing procedures (route here — do not restate at length)
 

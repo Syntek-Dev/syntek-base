@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow, runbook]
+skills: [doc-writer, global-workflow, runbook]
 model: opus
 ---
 
@@ -111,7 +110,7 @@ of taste:
   those edits are not in it, so the only route back is the git history.
 
 **`Explore` is retired as a fork target, not retired.** It stays correct and in use as a
-**dispatch** target — an orchestrator naming `subagent_type=Explore` on an Agent tool call is
+**dispatch** target — a caller naming `subagent_type=Explore` on an Agent tool call is
 choosing a target per call, which is a different decision from a skill fixing one in its own
 frontmatter for every caller.
 
@@ -122,11 +121,11 @@ value is version-proof, and it is what lets the gate assert that every fork name
 
 ## The custom-agent door
 
-The runtime would accept one — `agent:` on a forked skill may name any subagent in
-`.claude/agents/` — so this is a choice, and the gate is what holds it. No skill here targets a
-custom agent, and the rule cannot be quietly reversed by adding a convenient one. The **reopening
-test** is recorded here, because closing a question permanently on zero current need is deciding
-it without evidence:
+The runtime would accept one — `agent:` on a forked skill may name any subagent defined under
+`.claude/agents/`, a folder this project no longer carries — so this is a choice, and the gate is
+what holds it. No skill here targets a custom agent, and the rule cannot be quietly reversed by
+adding a convenient one. The **reopening test** is recorded here, because closing a question
+permanently on zero current need is deciding it without evidence:
 
 > A custom agent may be introduced **only** as a fork target, and only on evidence that a named
 > skill needs a durable capability no built-in target provides — a persistent tool scope, a

@@ -1,24 +1,23 @@
 ---
 type: guide
-agent: setup
-skills: [global-workflow]
+skills: [setup, global-workflow]
 model: opus
 ---
 
 # Internal Tooling — Configuration & Environment
 
-**Version:** 0.1.0 **Tooling:** internal (`.claude/agents/` + `.claude/skills/`) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** opus — Version management, skills, environment scripts, and browser/E2E setup
+**Version:** 0.1.0 **Tooling:** internal (`.claude/skills/`) **Maintained by:** <%ORG_NAME%> Developers **Language:** British English (en_GB) **Timezone:** <%TIMEZONE%>
+**Claude Model:** opus — version management, environment scripts, hooks and MCP, browser/E2E setup
 
 ---
 
 ## Version Management
 
-The `version` agent manages semantic versioning, changelogs, and markdown metadata headers
-across the project. Rules: `project-management/docs/VERSIONING-GUIDE.md`. It can also be
-reached through the `release` orchestrator.
+The `version` skill manages semantic versioning, changelogs, and markdown metadata headers
+across the project. Rules: `project-management/docs/VERSIONING-GUIDE.md`. It is also sequenced
+by `release`.
 
-### Files the `version` agent maintains
+### Files the `version` skill maintains
 
 | File                 | Purpose                               | Audience      |
 | -------------------- | ------------------------------------- | ------------- |
@@ -29,7 +28,7 @@ reached through the `release` orchestrator.
 
 ### Markdown metadata headers
 
-Instructional `.md` files carry a metadata header the `version` agent keeps in sync:
+Instructional `.md` files carry a metadata header the `version` skill keeps in sync:
 
 ```markdown
 # Document Title
@@ -42,32 +41,25 @@ British English (en_GB) **Timezone**: <%TIMEZONE%>
 
 ---
 
-## Skills Reference
+## Where the skills live
 
-Skills live in `.claude/skills/` and are loaded on demand by the agents. Full when-to-load
-table: `.claude/skills/CONTEXT.md`. The stack targets are named in `.claude/CLAUDE.md`
-("Skill Targets").
+Skills are folders under `.claude/skills/`, each with a `SKILL.md`. The roster and its
+when-to-load column are `.claude/skills/CONTEXT.md`; the stack targets are named there too.
+Neither list is restated here.
 
-| Skill                  | Load when                                                     |
-| ---------------------- | ------------------------------------------------------------- |
-| `stack-django`         | Backend code — models, services, Django Ninja routers, pytest |
-| `stack-htmx-templates` | Public frontend — Django templates, HTMX, Alpine, token CSS   |
-| `global-workflow`      | Branches, commits, PRs, version bumps, docs, code comments    |
-| `teach`                | `/teach` — learn a skill in the `learning/` sandbox           |
-| `wayfinder`            | `/wayfinder` — chart a big epic into a decision map           |
-| `handoff`              | `/handoff` — compact the conversation for a fresh agent       |
-| `prototype`            | `/prototype` — throwaway spike answering one question         |
-| `research`             | `/research` — primary-source note that feeds a decision       |
-| `incident`             | `/incident` — something is live and broken; Claude scribes    |
-| `runbook`              | Writing an operator guide a human executes under pressure     |
-| `legal-documents`      | Privacy Policy, T&C, GDPR notice, DPA, contract, NDA          |
-| `msp-scp-documents`    | Security/compliance policy (InfoSec, incident, retention, …)  |
-
-The `cloudinary-*` skills cover Cloudinary upload, delivery, and transformations.
-
-`global-workflow` carries the conventions every agent honours: en_GB localisation,
+`global-workflow` carries the conventions every other skill honours: en_GB localisation,
 DD/MM/YYYY dates, the 24-hour clock, <%TIMEZONE%>, <%CURRENCY%>, Git commit standards, and
 Markdown formatting rules.
+
+---
+
+## Hooks and MCP servers
+
+| Surface        | What it does                                                                                                           | Registry                     |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Hooks          | Eight pre-PR quality gates, plus the two session-continuity hooks that intercept compaction and warn as context fills  | `.claude/hooks/CONTEXT.md`   |
+| MCP servers    | `code-review-graph` (structural context), `context7` (library docs), `mcp-mermaid` (diagrams), `claude-in-chrome` (UI) | `.claude/CLAUDE.md` §3       |
+| Helper scripts | Read-only inspection helpers a skill calls to gather context — they never run dev operations                           | `.claude/plugins/CONTEXT.md` |
 
 ---
 
@@ -131,7 +123,7 @@ Chrome session (load its schema via ToolSearch — see `.claude/CLAUDE.md` §3).
 
 ## Getting Help
 
-- **Agents & skills roster:** `.claude/agents/CONTEXT.md` and `.claude/skills/CONTEXT.md`.
+- **Skills roster:** `.claude/skills/CONTEXT.md`.
 - **Operating model & routing:** `.claude/CLAUDE.md` §2–§3.
 - **Command reference:** `how-to/docs/CLI-TOOLING.md`.
 

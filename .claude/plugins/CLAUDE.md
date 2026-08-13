@@ -7,7 +7,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-Six Python helper scripts (`project`, `env`, `db`, `git`, `log`, `pm`) that agents call to
+Six Python helper scripts (`project`, `env`, `db`, `git`, `log`, `pm`) that a skill calls to
 **inspect** the local environment for context — not MCP servers, and not a path for running dev
 operations.
 
@@ -30,7 +30,7 @@ operations.
   Anything that builds, tests, migrates, or starts the stack belongs in `code/src/scripts/**/*.sh`.
 - **Secrets via environment only** — never hardcode a token, DSN, or credential; `env-tool.py`
   and `db-tool.py` read config from the environment.
-- **Validate every agent-supplied argument** before it reaches a shell or a query — no unescaped
+- **Validate every caller-supplied argument** before it reaches a shell or a query — no unescaped
   interpolation into commands, no SQL built from raw input.
 - Source-file length ≤ 750 lines (800 grace).
 

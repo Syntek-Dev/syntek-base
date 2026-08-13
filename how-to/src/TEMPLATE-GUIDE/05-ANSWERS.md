@@ -109,7 +109,7 @@ feature is charted is exactly the point.
 
 Seven questions recording **what this project runs on**. Every one has a working default, and
 pressing Enter through them is a reasonable first pass — they are recorded so the guides and
-agents know what you chose, not because anything breaks without them.
+Claude knows what you chose, not because anything breaks without them.
 
 They are also the least painful group to change later. Each one names a **choice behind an
 interface**, so answering differently does not put you off-doctrine:
@@ -152,10 +152,10 @@ file — the template does not create one for you.
 
 ## People
 
-| Question          | Guidance                                                                                                                   |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `DEVELOPER_NAME`  | The lead developer. Used in the Claude Code identity block — agents address this person by name — and as commit co-author. |
-| `DEVELOPER_EMAIL` | Their email.                                                                                                               |
+| Question          | Guidance                                                                                                                     |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `DEVELOPER_NAME`  | The lead developer. Used in the Claude Code identity block — Claude addresses this person by name — and as commit co-author. |
+| `DEVELOPER_EMAIL` | Their email.                                                                                                                 |
 
 ## Django apps
 

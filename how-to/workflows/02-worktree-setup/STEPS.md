@@ -1,8 +1,7 @@
 ---
 workflow: 02-worktree-setup
 phase: setup
-agent: git
-skills: [global-workflow]
+skills: [git, global-workflow]
 model: opus
 ---
 

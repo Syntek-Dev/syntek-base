@@ -26,7 +26,7 @@ report, plus whatever the verification runs write).
 > result** — say so plainly rather than manufacturing a finding.
 
 **Independence is the point.** This pass must run in a different context from the one that
-wrote the code; that is why the four orchestrators dispatch it as its own step and wait for it.
+wrote the code; that is why it is dispatched as its own step and waited for.
 
 ---
 

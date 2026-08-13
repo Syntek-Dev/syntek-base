@@ -18,7 +18,7 @@ a story's API surface from design into implemented, permission-checked endpoints
   `workflows/13-api-design/` (after `src/04-DATABASE/` schema is agreed, before
   `src/15-SPRINT-PLANS/`); `IMPLEMENTATION/` verifications from `workflows/22-pr-and-review/`.
   The contract is written against `code/docs/API-DESIGN.md` (Django Ninja conventions); use
-  the `planner` agent for the heavier design work.
+  the `planner` skill for the heavier design work.
 - **Model:** Fable for the design documents (they define the shared interface); Opus only
   for mechanical touches — status flips, moving a file, header bumps.
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to

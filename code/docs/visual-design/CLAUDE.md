@@ -14,8 +14,8 @@ the `code/docs/VISUAL-DESIGN.md` entry point, which keeps the cross-surface core
 ## How to work here
 
 - **Routing:** `doc-writer` (Opus) to author; `frontend` is the consumer that reads `WEB.md`
-  before building any page or component. A `MOBILE.md` is read by `mobile` and a `DESKTOP.md` by
-  `desktop` — each absent unless the project opted into that surface.
+  before building any page or component. A `MOBILE.md` is read by the mobile stack skill and a
+  `DESKTOP.md` by the desktop one — each absent unless the project opted into that surface.
 - **Model:** Opus for substantive guidance and for typos or re-indexing.
 - **Concrete steps:** edit the relevant surface sub-doc → keep `VISUAL-DESIGN.md` the index and
   update the `CONTEXT.md` file table if a file is added, renamed, or removed → add the matching

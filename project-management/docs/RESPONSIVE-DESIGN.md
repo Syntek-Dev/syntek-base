@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: fable
 ---
 

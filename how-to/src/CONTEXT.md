@@ -54,9 +54,9 @@ how-to/src/
 
 ## The two snapshots
 
-`SCALE-ARCHITECTURE/` and `SERVER-ARCHITECTURE/` are maintained by the `scale-planner` agent via
+`SCALE-ARCHITECTURE/` and `SERVER-ARCHITECTURE/` are maintained by the `scale-planning` skill via
 `/scale-planning`. They ship as **skeletons**: the methodology is real, but every project-specific
-figure carries a `TBD — regenerate via /scale-planning` marker until the agent regenerates them
+figure carries a `TBD — regenerate via /scale-planning` marker until a run regenerates them
 against live code.
 
 `SCALE-ARCHITECTURE/` decides how the application scales; `SERVER-ARCHITECTURE/` turns that into

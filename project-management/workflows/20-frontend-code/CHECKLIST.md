@@ -1,8 +1,7 @@
 ---
 workflow: 20-frontend-code
 phase: build
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: opus
 ---
 

@@ -1,8 +1,7 @@
 ---
 workflow: 11-refactor
 phase: build
-agent: refactor
-skills: [codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
+skills: [refactor, codebase-design, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -14,6 +13,8 @@ model: opus
 ---
 
 > **See** `code/REFERENCES.md` → **Guides in code/docs/** (CODING-PRINCIPLES.md, ARCHITECTURE-PATTERNS.md) · **External — Code Quality** for supporting references.
+>
+> Picking the target is `/improve-codebase-architecture`'s job, not this checklist's.
 
 ## Pre-Conditions
 

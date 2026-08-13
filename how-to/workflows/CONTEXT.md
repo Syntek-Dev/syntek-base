@@ -80,4 +80,4 @@ Read the workflow's `CONTEXT.md` first. Only enter `STEPS.md` when explicitly tr
 ## Numbers are identifiers, not a sequence
 
 Append a new workflow and group it by editing the family tables above; do not renumber an
-existing one. A stale number in an agent definition is a silent routing failure.
+existing one. A stale number in a skill is a silent routing failure.

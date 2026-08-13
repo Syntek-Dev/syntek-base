@@ -170,12 +170,12 @@ annotation — the clause named, anywhere in the file. Full rule: `code/docs/VIS
 One voice, four registers. The register is set by **where the words appear**, not by who writes
 them, and getting it wrong is the most common copy defect in a shipped feature.
 
-| Register         | Where                                                        | Sounds like                                                         | Owned by                          |
-| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- | --------------------------------- |
-| **Marketing**    | Public pages (`apps.marketing`), OG text                     | Confident, specific, benefit-first. Claims are checkable            | `frontend` · `seo`                |
-| **Product**      | In-app UI: labels, buttons, empty states, validation, errors | Terse, literal, actionable. Says what happened and what to do next  | `frontend` · `mobile` · `desktop` |
-| **Notification** | Email, SMS, push, in-app alerts                              | The product register, plus a reason it arrived and a way to stop it | `notifications`                   |
-| **Support**      | Help articles, FAQs, troubleshooting, release notes          | Patient, procedural, assumes no context. Second person throughout   | `support-articles`                |
+| Register         | Where                                                        | Sounds like                                                         | Owned by                                          |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- | ------------------------------------------------- |
+| **Marketing**    | Public pages (`apps.marketing`), OG text                     | Confident, specific, benefit-first. Claims are checkable            | `frontend` · `seo`                                |
+| **Product**      | In-app UI: labels, buttons, empty states, validation, errors | Terse, literal, actionable. Says what happened and what to do next  | `frontend` · `stack-react-native` · `stack-slint` |
+| **Notification** | Email, SMS, push, in-app alerts                              | The product register, plus a reason it arrived and a way to stop it | `notifications`                                   |
+| **Support**      | Help articles, FAQs, troubleshooting, release notes          | Patient, procedural, assumes no context. Second person throughout   | `support-articles`                                |
 
 **Three things that are not a fifth register:**
 
@@ -185,13 +185,14 @@ them, and getting it wrong is the most common copy defect in a shipped feature.
 - **Microcopy** is the **product register at its shortest** — a button label, a field hint, an
   error. Rules that bite hardest here: no superlatives, no apology theatre ("Oops! Something went
   wrong."), and an error names the cause and the next action or it is not finished. Owned by
-  `frontend`, `mobile`, `desktop`; `notifications` routes here for notification microcopy.
+  `frontend`, `stack-react-native`, `stack-slint`; `notifications` routes here for notification
+  microcopy.
 - **Store-listing text** (App Store and Google Play: name, subtitle, keywords, descriptions,
   what's-new) is **marketing under harder constraints still** — and it is a separate bullet from
   SEO metadata rather than a clause in it, because the constraints are not the same shape: Apple
   measures its keyword budget in **bytes**, so a localised listing runs out of room two to three
-  times sooner than a character count predicts. **Mobile-only**, owned by `mobile` — not `seo`,
-  which is scoped to the Django marketing pages. The fields and their limits:
+  times sooner than a character count predicts. **Mobile-only**, owned by `stack-react-native` —
+  not `seo`, which is scoped to the Django marketing pages. The fields and their limits:
   `code/docs/discoverability/APP-STORE.md`.
 
 ---

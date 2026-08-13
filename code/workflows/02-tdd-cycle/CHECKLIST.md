@@ -1,8 +1,7 @@
 ---
 workflow: 02-tdd-cycle
 phase: build
-agent: test-writer
-skills: [stack-django, stack-htmx-templates]
+skills: [test-writer, stack-django, stack-htmx-templates]
 model: opus
 ---
 

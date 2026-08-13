@@ -13,7 +13,7 @@ tokens a story consumed exist in the token layer and match `../CONSOLIDATED-IDEA
 ## How to work here
 
 - **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
-  agent against the consolidated set and the shipped CSS.
+  skill against the consolidated set and the shipped CSS.
 - **Model:** Opus — verifying tokens landed is mechanical. Escalate to `frontend` (Fable) only
   where a deviation needs judging.
 - **Concrete steps:** copy `BRAND-IMPL-US000-TEMPLATE.md` →

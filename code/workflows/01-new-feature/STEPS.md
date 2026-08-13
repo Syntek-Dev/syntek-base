@@ -1,8 +1,7 @@
 ---
 workflow: 01-new-feature
 phase: build
-agent: feature
-skills: [stack-django, stack-htmx-templates, global-workflow]
+skills: [feature, stack-django, stack-htmx-templates, global-workflow]
 model: opus
 ---
 
@@ -43,7 +42,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 planner [feature name and scope]
 ```
 
-> **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
@@ -57,7 +56,7 @@ Save the plan to `project-management/src/16-STORY-PLANS/STORY-PLAN-US###-<DESCRI
 test-writer [feature name] --mode failing-first
 ```
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
 
 Verify all new tests are **red** before proceeding.
 
@@ -67,7 +66,7 @@ Verify all new tests are **red** before proceeding.
 backend [create models for feature]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** code-review-graph
 
 Then run:
 
@@ -106,7 +105,7 @@ first and read `code/docs/cloudinary/PYTHON_SDK.md` before implementing.
 backend [implement service methods for feature]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 Every service method doing ≥ 2 writes must use `transaction.atomic()`.
 
@@ -116,7 +115,7 @@ Every service method doing ≥ 2 writes must use `transaction.atomic()`.
 backend [implement Django Ninja endpoints and Schema models]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 Every state-changing endpoint must verify permissions before executing business logic — implement as a named Policy
 class (see [PRACTICAL-RULES.md — Decision Structuring](../../docs/coding-principles/PRACTICAL-RULES.md#decision-structuring-boolean-pattern-matching-policy-and-strategy)).
@@ -154,21 +153,21 @@ transformation syntax before writing. Delivery URLs are built server-side with t
 frontend [implement the Django template, components, and HTMX partials]
 ```
 
-> **↳ New agent:** `frontend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `frontend` · **Model:** opus · **MCP:** none
 
 Place each interaction by class — server, HTMX, or Alpine (`code/docs/RENDERING.md`). Every HTMX
 request carries an `hx-indicator`. All interactive elements must meet WCAG 2.2 AA.
 
 ### Step 7M — Frontend: Mobile Screens (mobile-only)
 
-> **Skip entirely if `code/src/mobile/` does not exist** — the project is web-only, and this step,
-> the `mobile` agent, and the `stack-react-native` skill are all absent.
+> **Skip entirely if `code/src/mobile/` does not exist** — the project is web-only, and this step
+> and the `stack-react-native` skill are both absent.
 
 ```text
-mobile [describe the screens to implement]
+stack-react-native [describe the screens to implement]
 ```
 
-> **↳ New agent:** `mobile` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
 
 The mobile app consumes the **same Django Ninja API built in Steps 5–6** — it is a separate
 deployable, not a client for the Django pages, so nothing from Step 7 carries across. Routes are
@@ -199,13 +198,13 @@ bash code/src/scripts/mobile/bundle.sh
 review
 ```
 
-> **↳ New agent:** `review` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:** code-review-graph
 
 ```text
 qa-tester
 ```
 
-> **↳ New agent:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph
 
 ### Step 10 — Implementation Documentation (hand off to PM 19)
 
@@ -217,7 +216,7 @@ formats, destinations, or templates here; a second copy is exactly how they drif
 doc-writer
 ```
 
-> **↳ New agent:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
 
 It covers, in order:
 
@@ -242,13 +241,14 @@ in `code/src/tests/api/<domain>/`. Write them here, not in workflow 20.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 
 ## Error Handling
 
-If tests fail after implementation: run `debugger` to find the root cause.
+If tests fail after implementation: run the `bugfix` skill's `## Root cause` phase to find the
+cause — diagnosis only, not a fix or a commit.
 
 ## Completion
 

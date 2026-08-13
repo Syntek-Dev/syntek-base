@@ -409,7 +409,7 @@ and treat verification + review as first-class, not afterthoughts.
 
 - Spawn 2–3 independent reviewers (or a small `parallel()` workflow) to **adversarially critique this
   plan**: missing layers, unhandled GDPR/security, wrong doc references, dependency-order errors,
-  unscoped deferrals. Resolve findings before coding. Use the `Plan` agent for architectural depth.
+  unscoped deferrals. Resolve findings before coding. Dispatch the built-in `Plan` subagent for architectural depth.
 
 ### Stage 1 — Build (TDD inner loop)
 
@@ -441,7 +441,7 @@ re-run after each `--fix` until clean). Each maps 1:1 to the pre-PR hook (`.clau
 ### Stage 3 — Review (before raising the PR)
 
 - Run `code/workflows/07-review/`: a quality/security/coverage review of the _code content_. Drive it
-  with the `review` and `security` orchestrator agents (delegating to `code-reviewer` / `qa-tester`),
+  with the `review` and `security` skills (which dispatch `code-reviewer` / `qa-tester`),
   and the `review-changes` graph playbook (`.claude/skills/review-changes.md`) for structural context.
 - For findings, **adversarially verify** each before acting: spawn independent skeptics to confirm a
   finding is real (majority vote) — avoids churning on false positives.

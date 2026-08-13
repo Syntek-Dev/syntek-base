@@ -13,7 +13,7 @@ behaviour held identical throughout.
 
 ## How to work here
 
-- **Routing:** execute via `STEPS.md`, typically with the `refactor` skill/agent
+- **Routing:** execute via `STEPS.md`, typically with the `refactor` skill
   (Opus). Requires a green baseline from `code/workflows/02-tdd-cycle/`. Scope the move with
   the code-review-graph **refactor playbook** (`.claude/skills/refactor-safely.md`; guide
   `code/docs/CODE-REVIEW-GRAPH.md`).
@@ -26,7 +26,7 @@ behaviour held identical throughout.
   change → complete `CHECKLIST.md`.
 - **Definition of done:** tests unchanged and green, coverage not dropped, behaviour
   identical, every touched file ≤ 750 lines (800 grace).
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

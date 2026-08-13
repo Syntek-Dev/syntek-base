@@ -13,7 +13,7 @@ criteria for a story's public page(s) before any code is written.
 ## How to work here
 
 - **Routing:** plans are produced by `project-management/workflows/12-seo-checks/` using
-  the `seo` agent, against a story in `../../02-STORIES/` and its wireframe, governed by
+  the `seo` skill, against a story in `../../02-STORIES/` and its wireframe, governed by
   `project-management/docs/SEO-CHECKLIST.md`. Read a story's plan before implementing it.
 - **Model:** Fable — setting per-dimension acceptance criteria (metadata targets, schema
   type, robots/sitemap strategy, Core Web Vitals budgets) is substantive SEO judgement;

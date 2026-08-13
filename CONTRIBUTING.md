@@ -15,7 +15,7 @@ it, rebrand it, build commercial products with it. Contributions are welcome, no
 ## What this repository is
 
 A [Copier](https://copier.readthedocs.io/) template that generates a Django-monolith project
-complete with a three-layer documentation system and a Claude Code agent suite. Almost everything
+complete with a three-layer documentation system and a Claude Code skill suite. Almost everything
 here is documentation and configuration; there is very little application code.
 
 Generate a project with:

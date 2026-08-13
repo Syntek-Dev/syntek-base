@@ -1,8 +1,7 @@
 ---
 workflow: 22-pr-and-review
 phase: ship
-agent: pr
-skills: [global-workflow]
+skills: [pr, global-workflow]
 model: opus
 ---
 
@@ -33,7 +32,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 qa-tester
 ```
 
-> **↳ New agent:** `qa-tester` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** none
 
 ### Step 2 — Code Review
 
@@ -41,7 +40,7 @@ qa-tester
 review
 ```
 
-> **↳ New agent:** `review` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:** none
 
 Address all findings before opening the PR.
 

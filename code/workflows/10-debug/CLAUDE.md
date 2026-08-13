@@ -13,8 +13,9 @@ debugging (`how-to/workflows/08-debugging/`) and log-based debugging (workflow `
 
 ## How to work here
 
-- **Routing:** execute via `STEPS.md`, typically with the `debug` or `bugfix`
-  skill/agent (Opus). Confirm the environment is healthy first via
+- **Routing:** execute via `STEPS.md`, with the `bugfix` skill (Opus) — the whole
+  sequence, not just its `## Root cause` phase, because this workflow owns the fix,
+  the regression test and the commit as well. Confirm the environment is healthy first via
   `how-to/workflows/08-debugging/`, then fix the logic here. Trace the fault with the
   code-review-graph **debug playbook** (`.claude/skills/debug-issue.md`; guide
   `code/docs/CODE-REVIEW-GRAPH.md`).
@@ -26,7 +27,7 @@ debugging (`how-to/workflows/08-debugging/`) and log-based debugging (workflow `
   `CHECKLIST.md`.
 - **Definition of done:** regression test now green, no unrelated code touched,
   behaviour corrected, bug artefact updated under `project-management/src/20-BUGS/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

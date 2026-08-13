@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-fastmcp]
+skills: [backend, stack-django, stack-fastmcp]
 model: opus
 ---
 

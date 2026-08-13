@@ -1,8 +1,7 @@
 ---
 workflow: 02-story-creation
 phase: design
-agent: user-story
-skills: [global-workflow]
+skills: [story, global-workflow]
 model: fable
 ---
 
@@ -29,10 +28,10 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 ### Step 1 — Grill, then Generate the Story
 
 ```text
-user-story [describe the feature and user role]
+story [describe the feature and user role]
 ```
 
-> **↳ New agent:** `user-story` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `story` · **Model:** fable · **MCP:** none
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the specific user role, the measurable benefit,
@@ -67,7 +66,7 @@ Save to `project-management/src/02-STORIES/US###.md`.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

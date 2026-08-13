@@ -17,7 +17,7 @@ that gate a feature through `workflows/10-security-checks/` before code ships.
 - **Routing:** never author here free-hand — run `workflows/10-security-checks/`
   (`STEPS.md` + `CHECKLIST.md`) after wireframes are signed off and the GDPR review is
   complete, before sprint planning. Heavier reviews go through the `security` and
-  `qa-tester` agents (Fable). `docs/SECURITY-GUIDE.md` governs STRIDE, OWASP A01–A10,
+  `qa-tester` skills (Fable). `docs/SECURITY-GUIDE.md` governs STRIDE, OWASP A01–A10,
   and NIST CSF 2.0.
 - **Model:** Fable for every threat model, assessment, audit, and vulnerability
   write-up; Opus for mechanical touches — status flips, moving a file, header bumps.

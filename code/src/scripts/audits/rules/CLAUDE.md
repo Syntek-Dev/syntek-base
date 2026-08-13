@@ -12,7 +12,7 @@ taint, and hardcoded secrets, covering what ruff's `S` ruleset structurally cann
 
 ## How to work here
 
-- **Routing:** rule changes come through the `security` agent; the governing guides are
+- **Routing:** rule changes come through the `security` skill; the governing guides are
   `code/docs/security/OWASP-AND-CHECKLIST.md` and `code/docs/SECURITY.md`. Model: Opus.
 - **Concrete steps:** derive the rule from a statement in this repository's own guides → add it
   to the file for that concern (a new concern earns a new file, not a bucket) → give it a

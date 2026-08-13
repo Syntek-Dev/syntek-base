@@ -1,8 +1,7 @@
 ---
 workflow: 14-decisions
 phase: design
-agent: planner
-skills: [codebase-design]
+skills: [planner, codebase-design]
 model: fable
 ---
 
@@ -79,14 +78,14 @@ option's depth (interface simplicity vs implementation complexity) and locality 
 writing the trade-offs down. Ground a contested choice with
 `.claude/skills/research/SKILL.md` if a primary-source citation would settle it.
 
-### Step 6 — Run the planner agent
+### Step 6 — Load the `planner` skill
 
 ```text
 planner [state the decision under discussion, the driving US### or spec, and the
 options already gathered from Steps 4–5]
 ```
 
-> **↳ New agent:** `planner` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** none
 
 ### Step 7 — Write the Decision section
 
@@ -121,7 +120,7 @@ record becomes immutable.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

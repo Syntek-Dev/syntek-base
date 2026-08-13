@@ -189,5 +189,5 @@ More: `15-TROUBLESHOOTING.md`.
 ## Next
 
 - Find your way around what you just generated → `07-REPO-TOUR.md`
-- Understand the agent setup → `08-CLAUDE-CODE.md`
+- Understand the skill setup → `08-CLAUDE-CODE.md`
 - Build the first feature → `10-FIRST-FEATURE.md`

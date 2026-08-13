@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow, runbook]
+skills: [doc-writer, global-workflow, runbook]
 model: opus
 ---
 

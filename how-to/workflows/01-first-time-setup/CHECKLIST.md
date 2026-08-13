@@ -1,8 +1,7 @@
 ---
 workflow: 01-first-time-setup
 phase: setup
-agent: setup
-skills: [global-workflow]
+skills: [setup, global-workflow]
 model: opus
 ---
 

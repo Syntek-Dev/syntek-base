@@ -15,7 +15,7 @@ in `src/11-QA/` before any code is written.
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive scenario generation with the
-  `qa-tester` agent (Fable). Prerequisites: signed-off wireframes and
+  `qa-tester` skill (Fable). Prerequisites: signed-off wireframes and
   completed security checks (`workflows/10-security-checks`). QA planning is pre-code,
   so **no hard safety gate applies** — `docs/QA-GUIDE.md` governs scenario format.
 - **Model:** Fable for scenario design and edge-case discovery; Opus for
@@ -28,7 +28,7 @@ in `src/11-QA/` before any code is written.
 - **Definition of done:** every in-scope story has a QA plan; edge cases and error
   states fed into acceptance criteria; checklist satisfied; next step is
   `workflows/15-sprint-plans/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

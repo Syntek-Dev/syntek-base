@@ -1,8 +1,7 @@
 ---
 workflow: 13-api-design
 phase: design
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: fable
 ---
 

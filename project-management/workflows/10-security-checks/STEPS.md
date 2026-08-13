@@ -1,8 +1,7 @@
 ---
 workflow: 10-security-checks
 phase: harden
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -74,7 +73,7 @@ Add both columns to the threat table in the threat model document. Full mappings
 security [describe the feature, its user flows, and any identified threats]
 ```
 
-> **↳ New agent:** `security` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** fable · **MCP:** none
 
 ### Step 5 — Document Findings
 
@@ -98,7 +97,7 @@ Update wireframes or user flows if structural changes are required.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

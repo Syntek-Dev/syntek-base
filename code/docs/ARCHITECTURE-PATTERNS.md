@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: planner
-skills: [codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
+skills: [planner, codebase-design, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -14,6 +13,9 @@ British English (en_GB) **Timezone:** <%TIMEZONE%>
 Architecture patterns covering the service layer, middleware, frontend state, project structure,
 and core backend decisions. Fills the gap between domain modelling (`DATA-STRUCTURES.md`), API
 contracts (`API-DESIGN.md`), and performance (`PERFORMANCE.md`).
+
+Finding where the current code departs from these patterns is a separate job —
+`/improve-codebase-architecture` scans for it and ranks what it finds.
 
 ## Sub-documents
 

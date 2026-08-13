@@ -1,7 +1,7 @@
 # syntek-base
 
 **A Django-monolith project template that ships with its own documentation system and a Claude
-Code agent suite.**
+Code skill suite.**
 
 [![Version](https://img.shields.io/badge/version-2.21.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
@@ -22,20 +22,19 @@ opt in. The full list is [`TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md).
 
 Most project templates give you a directory layout and leave you to invent everything else — how
 work is specified, where decisions are recorded, what an AI coding agent is allowed to do.
-`syntek-base` is the opposite bet: the structure, the process, and the agent configuration are
+`syntek-base` is the opposite bet: the structure, the process, and the skill configuration are
 the product, and the application skeleton is almost incidental.
 
 Generate a project from it and you get, on day one:
 
-| You get                       | What it means                                                                                                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **A Django 6 monolith**       | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
-| **A three-layer doc system**  | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
-| **A Claude Code agent suite** | 8 orchestrators that delegate to specialists and document writers, each tool-scoped, each with a defined remit. Roster: `.claude/agents/CONTEXT.md`.                |
-| **Skills, loaded on demand**  | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
-| **A working dev stack**       | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
-| **CI that already bites**     | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
-| **Compliance scaffolding**    | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
+| You get                      | What it means                                                                                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
+| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
+| **Skills, loaded on demand** | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
+| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
+| **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
+| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
 
 It is opinionated on purpose. The stack is fixed, the coverage floors are fixed, the file-length
 limits are fixed. What varies between projects is captured in the template tokens and nothing else.
@@ -63,20 +62,20 @@ Details and per-platform notes:
 
 ### Claude Code plan
 
-The agent suite routes across **two model tiers** — `fable` for planning, specification and design
+The skill suite routes across **two model tiers** — `fable` for planning, specification and design
 work, `opus` for everything else. That is a deliberate split: the reasoning tier sets the
 foundation, the implementation tier builds on it.
 
 Because of the Fable usage, this template is designed for **Claude Max 20× or above, or the
-Anthropic API**. On a smaller plan the Fable-tier agents (`story`, `sprint`, `planner`,
-`user-story`, and the design/compliance workflows) will not run as configured — you can retarget
-them to `opus` by editing the `model:` frontmatter, but you lose the tier separation the process
-is built around.
+Anthropic API**. On a smaller plan the Fable-tier skills (`story`, `sprint`, `planner`,
+`scale-planning`, and the design/compliance workflows) will not run as configured — you can
+retarget them to `opus` by editing the `model:` frontmatter, but you lose the tier separation the
+process is built around.
 
 **Using a different LLM provider?** Everything except the model routing is provider-agnostic — the
 documentation system, workflows, gates and directory conventions work with any coding agent. Expect
 to make one pass over `.claude/` to swap the model names and aliases for your provider's
-equivalents: `.claude/CLAUDE.md` §4, every agent's `model:` frontmatter in `.claude/agents/`, and
+equivalents: `.claude/CLAUDE.md` §4, every skill's `model:` frontmatter in `.claude/skills/`, and
 the `model:` lines in `**/docs/*.md` and `**/workflows/**/*.md` routing frontmatter.
 
 ---
@@ -96,8 +95,8 @@ The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE
 | [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)                   | Finding your way around the three layers                             |
 | [STACK.md](how-to/src/TEMPLATE-GUIDE/02-STACK.md)                           | You want to know why each piece was chosen                           |
 | [CUSTOMISING.md](how-to/src/TEMPLATE-GUIDE/11-CUSTOMISING.md)               | Working out what is yours to change and what is load-bearing         |
-| [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)               | Understanding the agent, skill and hook configuration                |
-| [EXTENDING.md](how-to/src/TEMPLATE-GUIDE/12-EXTENDING.md)                   | Adding your own agent, skill, workflow or guide                      |
+| [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)               | Understanding the skill and hook configuration                       |
+| [EXTENDING.md](how-to/src/TEMPLATE-GUIDE/12-EXTENDING.md)                   | Adding your own skill, workflow or guide                             |
 | [PROJECT-MANAGEMENT.md](how-to/src/TEMPLATE-GUIDE/09-PROJECT-MANAGEMENT.md) | Using `project-management/src/` — tiers, patterns, which folder when |
 | [FIRST-FEATURE.md](how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md)           | Walking a feature from idea to merged PR                             |
 | [DEPLOYMENT.md](how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md)                 | Taking it to a server                                                |
@@ -130,7 +129,7 @@ go and check the primary sources yourself rather than taking this template's wor
 and because these influences carry into **every project generated from it**, not just this repo.
 
 **These tables are kept current by a standing rule, not by periodic tidying.** `.claude/CLAUDE.md`
-§ 6 binds every agent: doctrine derived from an outside source is credited in the same change as
+§ 6 binds every skill: doctrine derived from an outside source is credited in the same change as
 the rule it credits, and the **licence column below is consulted before deriving, not after** —
 because use, adapt and redistribute are three different permissions, and a share-alike source
 would propagate its obligation into every generated project.
@@ -148,8 +147,9 @@ would propagate its obligation into every generated project.
 The cross-surface visual-design doctrine, the copy rules, and the audit scripts derive from the
 open skill ecosystem below. **Rule text is derived and re-authored, never copied** — sources are
 cited so the reasoning stays checkable, and so no upstream licence obligation propagates into a
-project generated from this template. Per-claim citations:
-[`research/ANTI-SLOP-RULE-SOURCES.md`](research/ANTI-SLOP-RULE-SOURCES.md).
+project generated from this template. **Every row is self-citing:** it links the source and names
+what that source contributed, so the primary source _is_ the citation and no survey note sits
+between it and the reader.
 
 | Source                                                                                                               | Contributed                                                                            | Licence    |
 | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------- |
@@ -180,15 +180,13 @@ dependency is direct and the credit is owed accordingly.
 ### Platform and engineering craft
 
 The backend, background-job, observability and security doctrine draws on these. As above, **rules
-are derived and re-authored, never copied**; per-claim citations live in
-[`research/AGENT-SKILL-ECOSYSTEM.md`](research/AGENT-SKILL-ECOSYSTEM.md), which surveys agent
-skills — so **four rows sit outside it**, each with its evidence named here rather than left
-unreachable. **TigerStyle** is an engineering style guide, and its derivation is measured at 0.0%
-five-gram overlap in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). The **Claude Code docs**
-row is runtime behaviour, and its per-claim citations — each fact carrying a section-anchored URL
-— live in [`research/SKILLS-VS-SUBAGENTS.md`](research/SKILLS-VS-SUBAGENTS.md) § _Round 3_. The
-two **specification** rows are self-citing: each links the numbered clause it derives, so the
-primary source _is_ the citation and no survey note sits between them and the reader.
+are derived and re-authored, never copied**, and **every row is self-citing** — it links the
+source and names what that source contributed, so the primary source _is_ the citation. The two
+**specification** rows go further and link the numbered clause they derive. Two rows carry
+evidence a link alone cannot settle, and it lives in
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md): **TigerStyle**, whose derivation is measured
+at 0.0% five-gram overlap, and the **Claude Code docs**, which carry no upstream licence — the
+notice records that nothing this template ships quotes them, so no grant is needed.
 
 | Source                                                                                               | Contributed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Licence      |
 | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |

@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: code-reviewer
-skills: [global-workflow]
+skills: [code-reviewer, global-workflow]
 model: opus
 ---
 
@@ -42,15 +41,15 @@ The `code-review-graph install` step generates four quick-reference cards under 
 They are **auto-generated and regenerate on every `install` run** — treat them like the generated
 audit/coverage reports under `code/src/scripts/**/reports/`: **referenced by path, never
 hand-edited**. This guide
-is the canonical, hand-maintained companion; each agent and workflow below points here and at the
+is the canonical, hand-maintained companion; each skill and workflow below points here and at the
 matching card.
 
-| Task                  | Playbook card                        | Wired into                                  |
-| --------------------- | ------------------------------------ | ------------------------------------------- |
-| Explore / understand  | `.claude/skills/explore-codebase.md` | `planner`, feature recon · workflow `01`    |
-| Debug / trace a fault | `.claude/skills/debug-issue.md`      | `debugger`, `bugfix` · workflows `09`, `10` |
-| Review a change       | `.claude/skills/review-changes.md`   | `code-reviewer`, `review` · workflow `07`   |
-| Refactor safely       | `.claude/skills/refactor-safely.md`  | `refactor` · workflow `11`                  |
+| Task                  | Playbook card                        | Wired into                                |
+| --------------------- | ------------------------------------ | ----------------------------------------- |
+| Explore / understand  | `.claude/skills/explore-codebase.md` | `planner`, feature recon · workflow `01`  |
+| Debug / trace a fault | `.claude/skills/debug-issue.md`      | `bugfix` · workflows `09`, `10`           |
+| Review a change       | `.claude/skills/review-changes.md`   | `code-reviewer`, `review` · workflow `07` |
+| Refactor safely       | `.claude/skills/refactor-safely.md`  | `refactor` · workflow `11`                |
 
 ## Shared discipline (every playbook)
 
@@ -77,8 +76,9 @@ Start broad (stats, architecture), then narrow. `find_large_functions` surfaces 
 
 ## Debug playbook — trace a fault
 
-Card: `.claude/skills/debug-issue.md`. The `debugger` agent's structural pass (workflow `10`
-Step 2); `09-debugging-with-logs` pairs it with observability signals.
+Card: `.claude/skills/debug-issue.md`. The structural pass inside the `bugfix` skill's
+`## Root cause` phase (workflow `10` Step 2); `09-debugging-with-logs` pairs it with
+observability signals.
 
 1. `get_minimal_context(task=…)`.
 2. `semantic_search_nodes` — find code related to the symptom.
@@ -106,7 +106,7 @@ Group findings by risk (high / medium / low) with a merge recommendation; feed t
 
 ## Refactor playbook — restructure safely
 
-Card: `.claude/skills/refactor-safely.md`. The `refactor` agent's impact pass (workflow `11`
+Card: `.claude/skills/refactor-safely.md`. The `refactor` skill's impact pass (workflow `11`
 Step 2), run before moving any code.
 
 1. `refactor_tool` `mode="suggest"` — community-driven refactoring candidates.

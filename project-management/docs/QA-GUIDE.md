@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: qa-tester
-skills: [stack-django, stack-htmx-templates]
+skills: [qa-tester, stack-django, stack-htmx-templates]
 model: fable
 ---
 

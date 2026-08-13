@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: security
-skills: [stack-django, stack-fastmcp]
+skills: [security, stack-django, stack-fastmcp]
 model: opus
 ---
 

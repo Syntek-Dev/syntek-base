@@ -1,8 +1,7 @@
 ---
 workflow: 18-backend-code
 phase: build
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 
@@ -70,7 +69,7 @@ Follow `code/workflows/02-tdd-cycle/` for the red-green-refactor steps.
 test-writer [describe the model, service, or behaviour to test]
 ```
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
 
 Tests are written before implementation — no stubs to make tests pass.
 
@@ -87,7 +86,7 @@ Refer to `code/docs/testing/BACKEND-TESTING.md` for pytest conventions and fixtu
 backend [describe the models to implement]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 Follow the approved schema exactly. Apply PII field encryption per `code/docs/encryption/FIELD-ENCRYPTION.md`
 and row-level security per `code/docs/rls/MIDDLEWARE-AND-NINJA.md` where applicable.
@@ -139,7 +138,7 @@ bash code/src/scripts/syntax/check.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

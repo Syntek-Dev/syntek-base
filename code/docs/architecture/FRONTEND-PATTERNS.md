@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: planner
-skills: [stack-django, stack-htmx-templates]
+skills: [planner, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -164,7 +163,7 @@ They now live in their own family:
 | SEO Metadata Pattern (Django)   | [`../discoverability/WEB-METADATA.md`](../discoverability/WEB-METADATA.md)                                            |
 | JSON-LD Structured Data Pattern | [`../discoverability/STRUCTURED-DATA.md`](../discoverability/STRUCTURED-DATA.md)                                      |
 | Static `.well-known` Files      | [`../discoverability/ROOT-SURFACE.md`](../discoverability/ROOT-SURFACE.md) § 2                                        |
-| _(was in the `seo` agent only)_ | `robots.txt` / sitemaps / `llms.txt` → [`../discoverability/ROOT-SURFACE.md`](../discoverability/ROOT-SURFACE.md) § 1 |
+| _(was in the `seo` skill only)_ | `robots.txt` / sitemaps / `llms.txt` → [`../discoverability/ROOT-SURFACE.md`](../discoverability/ROOT-SURFACE.md) § 1 |
 
 Index: [`../DISCOVERABILITY.md`](../DISCOVERABILITY.md).
 

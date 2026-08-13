@@ -1,8 +1,7 @@
 ---
 workflow: 19-api-code
 phase: build
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 
@@ -75,7 +74,7 @@ Implement the read (GET) endpoints. Verify:
 backend [describe the mutating endpoints to implement]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 Every mutating endpoint must:
 
@@ -93,7 +92,7 @@ Follow `code/workflows/02-tdd-cycle/` for the red-green-refactor steps.
 test-writer [describe the read and write endpoints to test]
 ```
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
 
 Refer to `code/docs/testing/API-TESTING.md` for Django Ninja (TestClient) test conventions and fixture patterns.
 
@@ -134,7 +133,7 @@ bash code/src/scripts/syntax/check.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

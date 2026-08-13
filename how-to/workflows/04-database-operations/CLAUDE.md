@@ -13,7 +13,7 @@ user management, security verification — as distinct from changing its schema.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Delegate
-  execution to the `database` agent (Opus). Read `CONTEXT.md` first; enter `STEPS.md` only
+  execution to the `database` skill (Opus). Read `CONTEXT.md` first; enter `STEPS.md` only
   when triggered. A schema change is **not** this workflow —
   `code/workflows/03-database-migration/` owns that.
 - **Model:** Opus throughout; these are mechanical operations with sharp edges, not design.

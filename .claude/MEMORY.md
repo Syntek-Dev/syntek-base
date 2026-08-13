@@ -73,15 +73,29 @@ itself was written.)
 
 ---
 
-### syntek-base ignores its own handoffs and feature maps; a generated project does not — 11/08/2026
+### syntek-base ignores every artefact it writes while testing itself; a generated project does not — 11/08/2026, widened 13/08/2026
 
-**Two nested `.gitignore` files carry this, and both are `_exclude`d in `copier.yml`.**
-`handoffs/.gitignore` ignores `HANDOFF-*.md` and `project-management/src/01-FEATURE/.gitignore`
-ignores `MAP-*.md` bar the template — because in **this** repository both are throwaway working
-state about the template itself, and neither belongs in its history. In a **generated** project
-both are real: handoffs are that project's session continuity and maps are the artefacts of
-`01-feature`, so the shipped doctrine in `handoffs/CONTEXT.md` ("committed, synced") stays true
-there and must not be rewritten to match this repo's behaviour.
+**Five nested `.gitignore` files carry this, and all five are `_exclude`d in `copier.yml`** —
+`handoffs/`, `project-management/src/`, `research/`, `questionnaires/`, `learning/`. In **this**
+repository every artefact under them is a test of the scaffolding: proof that a template renders,
+a naming pattern holds, a workflow runs. In a **generated** project the same files are the work
+itself, so each folder's `CONTEXT.md` says "committed, synced" — that doctrine is **correct as
+shipped and must not be rewritten** to match this repo's behaviour. The `.gitignore` is the
+syntek-base-only override, which is exactly why it must not travel.
+
+**`project-management/src/.gitignore` is an allowlist, and the asymmetry is the reason.** It
+ignores `*`, re-includes directories with `!*/` (git does not descend into an excluded directory,
+so that line is load-bearing), then re-includes `CONTEXT.md`, `CLAUDE.md`, `*TEMPLATE*` and ten
+named files that ship without `TEMPLATE` in the name. A denylist of artefact patterns fails by
+silently shipping a local test file into every generated project; an allowlist fails by silently
+not shipping a new template file, which the first generation reveals. It also needs no edit when a
+numbered folder is added. It covers `01-FEATURE`, which is why that folder no longer carries a
+`.gitignore` of its own.
+
+**Consequence worth remembering: nothing under `research/` ships any more.** That is what lets
+`THIRD-PARTY-NOTICES.md` state that this template redistributes no quotation of Anthropic's
+unlicensed docs, and it is why `README.md` § _Influences_ rows are **self-citing** rather than
+pointing at a survey note. Do not re-add a per-claim pointer into `research/`.
 
 **The mechanism is the point.** Git honours a `.gitignore` in any directory, so a repo-local rule
 can live in a file that copier drops at generation — which leaves the root `.gitignore` shipped
@@ -111,8 +125,9 @@ secondary sources is not corroboration** — they copy each other, so agreement 
 counted many times. The fix is cheap and the same every time: fetch the vendor's page.
 
 Corollary worth its own sentence: **prompt-only knowledge goes stale unread.** Both defects N-002
-and N-003 corrected had been sitting in `.claude/agents/seo.md`, unreachable except by routing to
-that agent. A guide nobody can find is a guide nobody can correct.
+and N-003 corrected had been sitting in `.claude/agents/seo.md` (N-014 folded it into
+`.claude/skills/seo/SKILL.md`), unreachable except by routing to it. A guide nobody can find is a
+guide nobody can correct.
 
 ---
 

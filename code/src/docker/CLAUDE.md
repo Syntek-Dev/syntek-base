@@ -14,7 +14,7 @@ container, `django`, server-renders everything.
 
 ## How to work here
 
-- **Routing:** infra work → `cicd` agent (Opus). Descend to the right sub-folder and read
+- **Routing:** infra work → `cicd` skill (Opus). Descend to the right sub-folder and read
   its `CONTEXT.md` before editing an image or the proxy. All compose commands run **from
   the project root**: `docker compose -f code/src/docker/docker-compose.<env>.yml <cmd>`.
 - **Model:** Opus for Dockerfile/compose/proxy changes and for image-tag bumps.

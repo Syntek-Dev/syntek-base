@@ -21,7 +21,7 @@ anything in `src/` is designed, written, tested, and reviewed.
   **Never run `pytest`, `python`, or `docker` directly** — only the shell scripts
   under `src/scripts/`.
 - **Grill first:** any substantial task — design, code, tests, review, refactor, debug —
-  opens with a grilling pass (the owning agent loads `.claude/skills/grill-with-docs`, which owns the round shape and question format) before code is written; only trivial/mechanical work skips it
+  opens with a grilling pass (the running skill loads `.claude/skills/grill-with-docs`, which owns the round shape and question format) before code is written; only trivial/mechanical work skips it
   (`.claude/CLAUDE.md` §10).
 - **Model:** Opus for all substantive work (design, code, tests, reviews, security)
   and mechanical touches (renames, version bumps, running scripts).

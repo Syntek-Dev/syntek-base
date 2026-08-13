@@ -17,11 +17,11 @@ the smallest fix is, and which of those findings should shape the next story.
 - **Routing:** findings are written during
   `project-management/workflows/21-implementation-documentation/`, after the code and its
   docs land and before the PR is raised. Data-layer findings are assessed against
-  `code/docs/DATABASE.md` and its owning guides; the `database` agent produces them for
-  schema and query work, the `code-reviewer` / `qa-tester` agents for everything else.
+  `code/docs/DATABASE.md` and its owning guides; the `database` skill produces them for
+  schema and query work, the `code-reviewer` / `qa-tester` skills for everything else.
 - **Model:** Opus — recording an observed divergence and its smallest fix is an
   implementation-phase touch, not planning. A finding that reopens a hard-to-reverse
-  decision escalates to the `planner` agent and graduates to `../14-DECISIONS/`.
+  decision escalates to the `planner` skill and graduates to `../14-DECISIONS/`.
 - **Concrete steps:** copy `FINDING-US000-TEMPLATE.md` →
   `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → record each finding with a stable `F-0NN` ID,
   where it was found, why it matters, the smallest fix, and a **retrofit cost** (Cheap /

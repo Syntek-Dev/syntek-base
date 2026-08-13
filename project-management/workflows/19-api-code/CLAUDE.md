@@ -31,7 +31,7 @@ models and services exist and are tested.
   is `workflows/20-frontend-code/`.
 - **Definition of done:** every mutating endpoint permission-checked; coverage floor
   met (75% / 90% auth); checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

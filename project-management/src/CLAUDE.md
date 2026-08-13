@@ -18,8 +18,8 @@ plus `22-INCIDENTS`, the one record that is not anchored to a story.
 - **Routing:** never write here free-hand — start from the matching
   `project-management/workflows/NN-…/` procedure (`STEPS.md` + `CHECKLIST.md`), which
   names the folder, the naming pattern, and the governing `docs/` guide. Heavier
-  artefacts go through the internal agents (`user-story`, `sprint`, `planner`, `gdpr`,
-  `security`, `qa-tester`, `seo`).
+  artefacts go through the matching skills (`story`, `sprint`, `planner`,
+  `gdpr-mechanics`, `security`, `qa-tester`, `seo`).
 - **Model:** Fable for substantive artefacts (stories, decisions/ADRs, sprint & story
   plans, GDPR / security / QA / SEO / API specs); Opus for mechanical touches — status
   flips, version-header bumps, moving or renaming a file.
@@ -58,7 +58,7 @@ plus `22-INCIDENTS`, the one record that is not anchored to a story.
 - **Every new directory needs a `CONTEXT.md` and a `CLAUDE.md`.**
 - Instructional `.md` under `src/` (the `CONTEXT.md`/`CLAUDE.md` files) stay ≤ 300 code
   lines; the artefacts and templates themselves are exempt.
-- Version bumps only via `docs/VERSIONING-GUIDE.md` / the `version` agent; branches and
+- Version bumps only via `docs/VERSIONING-GUIDE.md` / the `version` skill; branches and
   PRs only via `docs/GIT-GUIDE.md`.
 
 ## Output & naming

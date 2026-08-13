@@ -574,9 +574,10 @@ command as the sanctioned route — the honest third option in `.claude/skills/r
 but the weakest of the three.
 **Blocked by / Action:** The scripts cannot be written against nothing — they need the deploy
 repository's contract first (`how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md`). **The citation
-half is done (11/08/2026):** no guide claims a script that has never existed — `.claude/agents/release.md`
-Phase 4 and `23-release/STEPS.md` Step 4 now stop and report rather than offering a command that
-cannot run. What remains is the scripts themselves, and the Rollback section that depends on them.
+half is done (11/08/2026):** no guide claims a script that has never existed — the `release`
+procedure (now `.claude/skills/release/SKILL.md`) and `23-release/STEPS.md` Step 4 stop and
+report rather than offering a command that cannot run. What remains is the scripts themselves,
+and the Rollback section that depends on them.
 
 ## 09/08/2026 — Four security-specific incident runbooks are still unwritten
 

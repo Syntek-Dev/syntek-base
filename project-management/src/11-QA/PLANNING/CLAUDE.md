@@ -13,7 +13,7 @@ and GDPR/security expectations from the wireframe before any code is written.
 ## How to work here
 
 - **Routing:** plans are produced by `project-management/workflows/11-qa-checks/` (after
-  security checks and wireframe sign-off) using the `qa-tester` agent, against a story in
+  security checks and wireframe sign-off) using the `qa-tester` skill, against a story in
   `../../02-STORIES/` and its wireframe, governed by `project-management/docs/QA-GUIDE.md`.
   Read a story's plan before implementing it.
 - **Model:** Fable — deriving scenarios, edge cases, and acceptance-criteria gaps is

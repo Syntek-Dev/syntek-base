@@ -1,8 +1,7 @@
 ---
 workflow: 04-api-design
 phase: design
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 

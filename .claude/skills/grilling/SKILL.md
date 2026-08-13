@@ -5,24 +5,24 @@ description: >-
   frontier rounds, that sharpens a plan, schema, API contract, or story before any code is
   written. Load when starting architecture, database, API, or user-flow/story design, when
   the user types /grill-me or /grill-with-docs, or when anyone asks to be grilled,
-  interviewed, or stress-tested on a design. Cited by the planner, database, backend, and
-  user-story agents and the design workflows.
+  interviewed, or stress-tested on a design. Cited by the planner, database, backend and
+  story skills and the design workflows.
 ---
 
 # Skill: Grilling (<%PROJECT_NAME%>)
 
 Grilling is how this project interrogates a design **before** building it. It flips the
 default posture in `.claude/CLAUDE.md` §10 — _make reasonable calls and proceed_ — into
-_interrogate first_: the agent interviews <%DEVELOPER_NAME%> until the design is sharp
+_interrogate first_: Claude interviews <%DEVELOPER_NAME%> until the design is sharp
 enough to implement without further clarification. For design work (architecture, database,
 API, user flow, story) this is the opening move, not an optional extra.
 
 This skill is the shared **engine**, and it owns the interview's shape. Two entry points wrap
 it: `/grill-me` (stateless — interview only, save nothing) and `/grill-with-docs` (stateful —
-interview and record decisions as it goes). The `planner`, `database`, `backend`, and
-`user-story` agents load this skill as the first step of design work.
+interview and record decisions as it goes). The `planner`, `database`, `backend` and
+`story` skills load this skill as the first step of design work.
 
-> **Everything else routes here and never restates the shape.** An agent, workflow or skill
+> **Everything else routes here and never restates the shape.** A workflow or skill
 > that opens a grilling pass names its **subject matter** — what must be settled — and leaves
 > the round mechanics, the question format and the recommendation rule to this file. A
 > restatement drifts the moment this file changes; that has already happened once in this
@@ -110,8 +110,8 @@ round immediately.
 
 ## What to grill (by design surface)
 
-Draw questions from the surface the work touches — these mirror the planning agents' own
-remits, so grilling and the agent stay in step:
+Draw questions from the surface the work touches — these mirror the planning skills' own
+remits, so grilling and the skill stay in step:
 
 - **Architecture (`planner`)** — scope (must / nice-to-have / out), roles affected,
   MVP-now vs incremental, dependencies, success criteria, non-functional limits
@@ -122,7 +122,7 @@ remits, so grilling and the agent stay in step:
 - **API (`backend`)** — each Django Ninja endpoint (operation), inputs and outputs, the
   named Policy guarding every state-changing endpoint (OWASP A01), ownership checks (no
   IDOR), error shapes, and idempotency.
-- **Story / user flow (`user-story`)** — the specific role, the measurable benefit, the
+- **Story / user flow (`story`)** — the specific role, the measurable benefit, the
   happy path plus at least one edge/error case, the MoSCoW split, and dependencies.
 
 ## Anti-patterns
@@ -140,7 +140,7 @@ remits, so grilling and the agent stay in step:
 ## Where the answers go
 
 `/grill-me` records nothing — the sharpened design lives in the conversation and flows into
-whatever the agent produces next. `/grill-with-docs` persists each decision the moment it
+whatever the skill produces next. `/grill-with-docs` persists each decision the moment it
 resolves — see that skill for exactly which artefact receives it.
 
 ## Authoritative cross-references
@@ -149,7 +149,7 @@ resolves — see that skill for exactly which artefact receives it.
 - `.claude/CLAUDE.md` §1 — the concision standard the question format obeys.
 - `how-to/docs/AI-DICTIONARY.md` — _grilling_, _sycophancy_, _human-in-the-loop_, _design concept_.
 - `.claude/skills/grill-me/SKILL.md` · `.claude/skills/grill-with-docs/SKILL.md` — the entry points.
-- `.claude/agents/planner.md`, `database.md`, `backend.md`, `user-story.md` — the agents that grill.
+- `.claude/skills/{planner,database,backend,story}/SKILL.md` — the skills that grill.
 - `THIRD-PARTY-NOTICES.md` — the frontier-round method derives from `mattpocock/skills` (MIT);
   the wording here is our own.
 

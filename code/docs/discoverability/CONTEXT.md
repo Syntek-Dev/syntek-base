@@ -35,7 +35,7 @@ crawler surface or for answer engines. Splitting it out gave the subject a name 
 search for, and left room for the answer-engine work that follows.
 
 The crawler-view knowledge in `ROOT-SURFACE.md` § 1 had a sharper problem: it existed only inside
-the `seo` agent's prompt, reachable only when something routed to that agent. Prompt-only
+the `seo` skill's prompt, reachable only when something routed to it. Prompt-only
 knowledge is knowledge that goes stale unread.
 
 `CONTENT-STRUCTURE.md` closed the same hole a second time, and found the knowledge had gone

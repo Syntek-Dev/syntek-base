@@ -14,7 +14,7 @@ sign-off before merge.
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/21-implementation-documentation/`, once the
-  feature is implemented and before the story closes, using the `qa-tester` agent (Fable)
+  feature is implemented and before the story closes, using the `qa-tester` skill (Fable)
   against the story's plan in `../PLANNING/QA-PLAN-US###-*.md`; governed by
   `project-management/docs/QA-GUIDE.md`.
 - **Model:** Fable — verifying scenarios, deviations, and edge cases against a running

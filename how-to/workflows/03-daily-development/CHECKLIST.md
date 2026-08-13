@@ -1,8 +1,7 @@
 ---
 workflow: 03-daily-development
 phase: setup
-agent: git
-skills: [global-workflow]
+skills: [git, global-workflow]
 model: opus
 ---
 

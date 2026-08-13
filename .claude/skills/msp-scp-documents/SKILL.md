@@ -1,27 +1,19 @@
 ---
 name: msp-scp-documents
-description: "Shared drafting standard for Managed Service Provider (MSP) and Security/Compliance Programme (SCP) policy documents — required sections, ISO/IEC alignment, the standard document header, version control, and the quality checklist. Load this whenever an internalised policy-writer agent drafts an information security policy, password/authentication policy, incident response plan, acceptable use policy, business continuity plan, network security policy, data classification policy, data retention policy, sub-processor register, service level agreement, change management policy, or vendor assessment report."
+description: "Shared drafting standard for Managed Service Provider (MSP) and Security/Compliance Programme (SCP) policy documents — required sections, ISO/IEC alignment, the standard document header, version control, and the quality checklist. Load this whenever drafting an information security policy, password/authentication policy, incident response plan, acceptable use policy, business continuity plan, network security policy, data classification policy, data retention policy, sub-processor register, service level agreement, change management policy, or vendor assessment report — internal governance binding staff and systems, never an outward-facing legal document (`legal-documents`)."
 ---
 
 # MSP / SCP Documents — Skill
 
-This skill is the shared drafting standard loaded by the internalised security,
-compliance, and GDPR policy-writer agents under
-`/home/sam-dev/Repos/<%PROJECT_SLUG%>/<%PROJECT_SLUG%>/.claude/agents/` (for example
-`information-security-policy-writer`, `password-auth-policy-writer`,
-`incident-response-plan-writer`, `acceptable-use-policy-writer`,
-`business-continuity-plan-writer`, `network-security-policy-writer`,
-`data-classification-policy-writer`, `data-retention-policy-writer`,
-`sub-processor-register-writer`, `service-level-agreement-writer`,
-`change-management-policy-writer`, and `vendor-assessment-writer`). It defines the
-required sections, ISO/IEC alignment rules, the standard document header, version
-control, and the quality checklist that every MSP/SCP policy document must follow.
+This skill is the shared drafting standard for the twelve internal security, compliance
+and GDPR governance documents listed below. It defines the required sections, ISO/IEC
+alignment rules, the standard document header, version control, and the quality checklist
+that every MSP/SCP policy document must follow.
 
-These agents are **document drafters, not code implementers**. They produce Markdown
-policy text as a **draft for professional review** — they never present a document as
-final or as legal advice, and never build routes, run migrations, or touch source.
-Publishing a signed-off policy behind a marketing legal page is a separate task for the
-`feature` / `frontend` path.
+This is **drafting, not implementation**. The output is Markdown policy text, a **draft
+for professional review** — never presented as final or as legal advice, and it never
+builds routes, runs migrations, or touches source. Publishing a signed-off policy behind a
+marketing legal page is a separate task for the `feature` / `frontend` path.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
 
@@ -61,8 +53,8 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRE
 
 ## When to Use
 
-- A policy-writer agent is drafting **any** of the twelve document types above — load
-  this skill first, then read the matching sub-document for the required section list.
+- Drafting **any** of the twelve document types above — load this skill first, then read
+  the matching sub-document for the required section list.
 - You need the **standard header**, **version-history table**, or **category-specific
   disclaimer** that opens every MSP/SCP document — see [STANDARDS.md](STANDARDS.md).
 - You need to confirm **ISO/IEC alignment** wording, the **P1–P4 severity scale**, the
@@ -75,9 +67,9 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRE
 
 ## Clarifying questions
 
-Every policy-writer runs a **clarifying-questions step** before drafting, using the
-document-specific question set defined in its own agent file. Keep that question content as
-written — this skill sets only the **method**.
+Every draft opens with a **clarifying-questions step**, its question set specific to the
+document type and drawn from that type's required sections. This skill sets only the
+**method**.
 
 Conduct the clarifying questions as a **grilling pass** — load
 `.claude/skills/grilling/SKILL.md`, which owns the round shape, the question format and the

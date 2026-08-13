@@ -13,7 +13,7 @@ components a story used are implemented and match `../CONSOLIDATED-IDEAS/`.
 ## How to work here
 
 - **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
-  agent against the consolidated set and the shipped django-components.
+  skill against the consolidated set and the shipped django-components.
 - **Model:** Opus — verifying components landed is mechanical. Escalate to `frontend` (Fable)
   where a deviation needs judging.
 - **Concrete steps:** copy `COMP-IMPL-US000-TEMPLATE.md` →

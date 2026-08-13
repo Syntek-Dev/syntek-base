@@ -1,8 +1,7 @@
 ---
 workflow: 05-testing-and-coverage
 phase: verify
-agent: qa-tester
-skills: [global-workflow]
+skills: [qa-tester, global-workflow]
 model: opus
 ---
 

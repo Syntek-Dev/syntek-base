@@ -15,7 +15,7 @@ and prod.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it.
-  Debugging → `debugger` / `stack-django` (Opus). Read `CONTEXT.md`
+  Debugging → `bugfix` (`## Root cause` phase only) / `stack-django` (Opus). Read `CONTEXT.md`
   first; enter `STEPS.md` only when triggered. No hard gates — start with whichever
   signal the target environment offers (see the tool matrix). Once a log signal points at a
   suspect area, trace the code path with the code-review-graph **debug playbook**
@@ -31,7 +31,7 @@ and prod.
 - **Definition of done:** root cause identified and documented; a regression test
   added via `code/workflows/10-debug/`; a staging/prod incident filed as a bug report
   in `project-management/src/20-BUGS/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

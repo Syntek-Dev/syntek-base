@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: seo
-skills: [stack-htmx-templates]
+skills: [seo, stack-htmx-templates]
 model: opus
 ---
 

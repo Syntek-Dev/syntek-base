@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: version
-skills: [global-workflow]
+skills: [version, global-workflow]
 model: opus
 ---
 

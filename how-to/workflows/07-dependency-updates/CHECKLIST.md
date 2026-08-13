@@ -1,8 +1,7 @@
 ---
 workflow: 07-dependency-updates
 phase: operate
-agent: cicd
-skills: [global-workflow]
+skills: [cicd, global-workflow]
 model: opus
 ---
 

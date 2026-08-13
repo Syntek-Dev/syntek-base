@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: gdpr
-skills: [stack-django]
+skills: [gdpr-mechanics, stack-django]
 model: opus
 ---
 

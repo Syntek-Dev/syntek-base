@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: planner
-skills: [stack-django, stack-htmx-templates]
+skills: [planner, stack-django, stack-htmx-templates]
 model: fable
 ---
 

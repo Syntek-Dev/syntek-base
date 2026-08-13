@@ -2,7 +2,7 @@
 
 **Last Updated**: 02/08/2026
 
-How to add a Django app, a page, a workflow, an agent, a skill, or a guide — following the
+How to add a Django app, a page, a workflow, a skill, or a guide — following the
 conventions so the rest of the system keeps working.
 
 ---
@@ -42,20 +42,23 @@ project-management/workflows/24-your-workflow/
 └── CHECKLIST.md    ← verification before it can be called done
 ```
 
-`STEPS.md` and `CHECKLIST.md` carry routing frontmatter naming who does the work:
+`STEPS.md` and `CHECKLIST.md` carry routing frontmatter naming the skills that do the work:
 
 ```yaml
 ---
 workflow: 24-your-workflow
 phase: implementation
-agent: backend
-skills: [stack-django, global-workflow]
+skills: [backend, stack-django, global-workflow]
 model: opus
 ---
 ```
 
+`skills:` leads with the skill that owns the remit and lists what it loads after; there is no
+`agent:` key. Every name must resolve to a `.claude/skills/<name>/` directory —
+`code/src/scripts/audits/routing-skills.sh` fails one that does not.
+
 Then: **take the next free number — append.** Around a hundred files cite these paths, including
-agent definitions, so a stale number is a silent routing failure.
+skill definitions, so a stale number is a silent routing failure.
 
 The three trees do not treat numbers the same way, and the difference matters:
 
@@ -92,32 +95,7 @@ Then register the workflow in its `CONTEXT.md` and the root `REFERENCES.md`, and
 with a workflow in another layer — add the row to the cross-layer pairing table in
 `REFERENCES.md`.
 
-Or ask the `scaffold` agent, which exists for exactly this.
-
-## An agent
-
-A single Markdown file in `.claude/agents/` with YAML frontmatter:
-
-```yaml
----
-name: your-agent
-description: >
-  One paragraph: what it does and, crucially, when to route to it. This is what
-  Claude matches against, so be concrete about the trigger.
-tools: Read, Write, Edit, Glob, Grep, Bash
-model: opus
----
-```
-
-Then the body: remit, the workflow it follows, its guardrails, and its definition of done.
-
-Conventions to keep:
-
-- **Tool-scope it.** Only orchestrators carry all tools. A specialist that only writes docs gets
-  `Read, Write, Edit, Glob`.
-- **`fable` for planning and design; `opus` for everything else.** Never `sonnet` or `haiku`.
-- **No agent reviews its own work** — if yours produces something, a different agent checks it.
-- Register it in `.claude/agents/CONTEXT.md`.
+Or load the `scaffold` skill, which exists for exactly this.
 
 ## A skill
 
@@ -126,15 +104,36 @@ A directory under `.claude/skills/` containing `SKILL.md` with frontmatter:
 ```yaml
 ---
 name: your-skill
-description: >
+description: >-
   What it covers and exactly when to load it. Claude reads this to decide, so
   "load when X" phrasing works better than a topic summary.
 ---
 ```
 
+That is a **reference** skill — it states conventions and runs inline. A **task** skill is an
+executable procedure and forks unless its input is the conversation, which adds four keys —
+`context: fork`, `agent: general-purpose`, `background: false`, and a `model:` — plus a
+`metadata.skills` list of what it loads. Which one yours is, and why the fork target is fixed:
+`how-to/docs/skill-authoring/FORK-DECISION.md`.
+
+Conventions to keep:
+
+- **`fable` for planning and design; `opus` for everything else.** Never `sonnet` or `haiku`.
+- **No skill reviews its own work.** Where yours produces something that needs an independent
+  check, it dispatches `general-purpose` through the Agent tool and names the skill to load in
+  the prompt, so each pass runs as its own dispatch. Nothing in the runtime enforces the
+  separation — the skill has to ask for it.
+- Register it in `.claude/skills/CONTEXT.md` — the one roster; nothing summarises it in
+  `.claude/CLAUDE.md`.
+
+> **There is no "add an agent" step.** Every remit is a skill, and `agent:` names a fork target
+> from `Explore` / `Plan` / `general-purpose` — `code/src/scripts/audits/skill-conformance.sh`
+> fails any other value, so the door is shut in code rather than by convention. It reopens only
+> on the named test in `FORK-DECISION.md`: evidence that a named skill needs a durable capability
+> no built-in target provides. "It would be tidier as an agent" is not evidence.
+
 Read `how-to/docs/SKILL-AUTHORING.md` first — it covers writing skills that behave predictably
-rather than vaguely. Register the skill in `.claude/skills/CONTEXT.md` and, if it is broadly
-useful, in the table in `.claude/CLAUDE.md` §2.4.
+rather than vaguely, and the `## Governing procedures` section the gate expects.
 
 Skills can carry supporting files; reference them by path from `SKILL.md`.
 
@@ -146,24 +145,22 @@ Skills can carry supporting files; reference them by path from `SKILL.md`.
 
 **Which kind matters, because it picks the owner and the length rule:**
 
-| Kind                                                 | Owner              | Length               |
+| Kind                                                 | Owning skill       | Length               |
 | ---------------------------------------------------- | ------------------ | -------------------- |
 | Standards for writing code (`code/docs/`)            | `doc-writer`       | ≤ 300 lines          |
-| Operating the system (`how-to/docs/`, `how-to/src/`) | `operator-docs`    | `src/` is **exempt** |
+| Operating the system (`how-to/docs/`, `how-to/src/`) | `runbook`          | `src/` is **exempt** |
 | End-user help for the product                        | `support-articles` | n/a                  |
 
-For an operator guide, follow `how-to/workflows/09-write-operator-guide/` and load the `runbook`
-skill. Its one hard rule is the one people skip: **execute the procedure start to finish before
-publishing it** — a guide you have not run is a guess, and prose review will not find the
-prerequisite you forgot to state.
+For an operator guide, follow `how-to/workflows/09-write-operator-guide/`. Its one hard rule is
+the one people skip: **execute the procedure start to finish before publishing it** — a guide you
+have not run is a guess, and prose review will not find the prerequisite you forgot to state.
 
 Guides live in a layer's `docs/` and carry routing frontmatter:
 
 ```yaml
 ---
 type: guide
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 ```
@@ -197,7 +194,7 @@ disagree. Check the licence is compatible with your project's `LICENCE` answer.
 ## An MCP server you _consume_
 
 Repo-scoped servers go in `.mcp.json` and are available to everyone who clones. Machine-global
-servers are your own business. Document any new one in `.claude/CLAUDE.md` §3 so agents know it
+servers are your own business. Document any new one in `.claude/CLAUDE.md` §3 so Claude knows it
 exists.
 
 ## An MCP server you _serve_

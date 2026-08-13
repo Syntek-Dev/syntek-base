@@ -1,8 +1,7 @@
 ---
 workflow: 05-mcp-server
 phase: build
-agent: backend
-skills: [stack-django, stack-fastmcp]
+skills: [backend, stack-django, stack-fastmcp]
 model: opus
 ---
 
@@ -34,7 +33,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
 
 ### Step 1 — Grill, then Design the Tool Surface
 
-> **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%>. Settle, in this order:
@@ -55,7 +54,7 @@ alongside the story's API design in `project-management/src/13-API-DESIGN/PLANNI
 
 ### Step 2 — Mount the Server (first mount only)
 
-> **↳ New agent:** `backend` · **Model:** opus · **Skills:** stack-fastmcp
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **Also load:** `stack-fastmcp`
 
 Add `fastmcp` to `pyproject.toml` and refresh the lockfile through the normal flow. Create
 `config/mcp.py` with the single `FastMCP` instance, then convert `config/asgi.py` into the
@@ -71,7 +70,7 @@ deploy-time decision, like `API_DOCS_ENABLED`.
 
 ### Step 3 — Wire Authentication (first mount only)
 
-> **↳ New agent:** `security` · **Model:** opus · **Skills:** stack-fastmcp
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **Also load:** `stack-fastmcp`
 
 Implement the `TokenVerifier` over the project's existing API-key scheme, resolving a token to
 a Django user (`code/docs/mcp-server/AUTH-AND-THREATS.md`). `current_user()` **raises** when no
@@ -83,7 +82,7 @@ Add per-key rate limiting here: the API rate-limit middlewares do not cover `/mc
 
 ### Step 4 — Write the Tools
 
-> **↳ New agent:** `backend` · **Model:** opus · **Skills:** stack-django, stack-fastmcp
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **Also load:** `stack-django`, `stack-fastmcp`
 
 Create or extend `apps/<app>/mcp_tools.py`, exporting `register(mcp)`, and register it in
 `config/mcp.py`. Each tool: resolve the user from the token, check the **same named Policy its
@@ -99,7 +98,7 @@ Do **not** reach for `FastMCP.from_openapi()` over this project's own API; the r
 
 ### Step 5 — Test Through an In-Process Client
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **Skills:** stack-fastmcp
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **Also load:** `stack-fastmcp`
 
 `fastmcp.Client(mcp)` connects with no network and no running server. Three seams are
 mandatory per tool, because no Django middleware covers them: **no token → rejected**,
@@ -112,7 +111,7 @@ coverage floor. Run through `code/src/scripts/tests/*.sh`.
 
 ### Step 6 — Instrument, then Harden
 
-> **↳ New agent:** `logging`, then `security` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `logging`, then `security` · **Model:** opus
 
 Sentry's Django integration does not see `/mcp/` — add the ASGI/Starlette integration and
 capture at the tool boundary, or a failing tool is invisible. Log tool name, resolved user,

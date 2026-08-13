@@ -187,8 +187,8 @@ features are chosen from memory.
 Unlike `code/workflows/` and `how-to/workflows/` — which are catalogues entered by task type,
 where numbers are stable identifiers and are never reused — **these numbers are a sequence**.
 `02` runs before `03`; `17` gates `18`. Inserting a workflow mid-sequence therefore means
-renumbering everything after it and sweeping every reference, including the agent definitions
-in `.claude/agents/`, where a stale number is a silent routing failure. Do it deliberately or
+renumbering everything after it and sweeping every reference, including the skill definitions
+in `.claude/skills/`, where a stale number is a silent routing failure. Do it deliberately or
 not at all.
 
 ### …but `src/` numbers are frozen

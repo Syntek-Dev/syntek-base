@@ -1,8 +1,7 @@
 ---
 workflow: 15-sprint-plans
 phase: design
-agent: sprint
-skills: [global-workflow]
+skills: [sprint, global-workflow]
 model: fable
 ---
 
@@ -84,7 +83,7 @@ For each story in the sprint, identify which development phases it touches:
 sprint [list the stories, their priorities, and any constraints from GDPR/security/QA reviews]
 ```
 
-> **↳ New agent:** `sprint` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** fable · **MCP:** none
 
 ### Step 5 — Write the Sprint Plan Document
 
@@ -138,7 +137,7 @@ Workflows: 22-pr-and-review
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

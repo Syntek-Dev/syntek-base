@@ -41,28 +41,28 @@ way to the work.
 3. The **target folder's `CONTEXT.md`** (orientation — tree, what-is-here) then its **`CLAUDE.md`**
    (operating rules).
 4. The **routing frontmatter** on any `**/docs/*.md` or `**/workflows/**/*.md` file you open
-   (§2.5) — it names the agent, skills, and model for that work.
+   (§2.5) — it names the skills and model for that work.
 
 Every folder `CLAUDE.md` repeats this chain in its own `Read order:` line.
 
 ### 2.2 How work flows
 
-A task enters through an **orchestrator agent**, which routes to the matching
-`**/workflows/NN-…/` procedure and **delegates** scoped work to **specialist** agents; the
-specialists load the **stack skills**. The governing `docs/` guide and the workflow
-`STEPS.md`/`CHECKLIST.md` carry routing frontmatter (§2.5) naming who does the work.
+A task enters through the **skill** whose description matches it; that skill routes to the
+matching `**/workflows/NN-…/` procedure and dispatches a subagent for any step needing a fresh
+context (§2.3). The governing `docs/` guide and the workflow `STEPS.md`/`CHECKLIST.md` carry
+routing frontmatter (§2.5) naming the skills and model for that work.
 
 **Four things precede all of it, once per project** (`how-to/workflows/01-first-time-setup/`
 Steps 7–10), in order, because each depends on the one before: the **project brief** in the root
 `CONTEXT.md` — what this builds, for whom, replacing what — then **`how-to/src/BRAND-VOICE.md`**,
-which settles how the project speaks to that named reader (six agents and the
-`stack-htmx-templates` skill load it for every user-facing string), then
-**`code/docs/VISUAL-DESIGN.md` § 3**, which names the **visual direction** and pins its six axes —
-the same doctrine in composition rather than copy, and what makes § 4.2's ban list decidable at all
-— then **`/scale-planning`**, which settles the size the system is designed for and therefore what
-it does _not_ need. All four are cheap before the first feature and expensive after the tenth. If
-the brief is still the raw generation-time answer, or `BRAND-VOICE.md` § 3 or `VISUAL-DESIGN.md`
-§ 3 still carry `TBD` placeholders, say so before planning anything.
+which settles how the project speaks to that named reader (every skill that writes a user-facing
+string loads it), then **`code/docs/VISUAL-DESIGN.md` § 3**, which names the **visual direction**
+and pins its six axes — the same doctrine in composition rather than copy, and what makes § 4.2's
+ban list decidable at all — then **`/scale-planning`**, which settles the size the system is
+designed for and therefore what it does _not_ need. All four are cheap before the first feature
+and expensive after the tenth. If the brief is still the raw generation-time answer, or
+`BRAND-VOICE.md` § 3 or `VISUAL-DESIGN.md` § 3 still carry `TBD` placeholders, say so before
+planning anything.
 
 **PM planning runs a per-story loop, not a phase batch.** A human thinks each story through
 end-to-end so implementation is mechanical: one story runs `02`→`14` before the next starts;
@@ -72,68 +72,41 @@ the per-story design and schema work before any code. Never batch a gate across 
 Full cadence: `project-management/workflows/CONTEXT.md` and
 `project-management/docs/PLANNING-GUIDE.md`.
 
-### 2.3 Agents (two tiers — full roster: `.claude/agents/CONTEXT.md`)
+### 2.3 Skills — one category, two shapes
 
-- **Orchestrators (entry points, carry all tools):** `bugfix`, `feature`, `pr`, `refactor`,
-  `release`, `review`, `security`, `story`. Pick the one matching the task and let it delegate.
-- **Specialists + document writers:** delegated to for scoped work (e.g. `backend`, `frontend`,
-  `database`, `gdpr`, `test-writer`, `qa-tester`, `privacy-policy-writer`). Each is tool-scoped
-  with a distinct remit; invoke one directly only for a narrow job. The roster in
-  `.claude/agents/CONTEXT.md` is the count — no number is repeated here, because it goes stale on
-  every roster change and, with the optional surfaces, differs between two correct
-  projects. Rows flagged **mobile-only** (`mobile`) are absent on a web-only project, and rows
-  flagged **rust-only** (`rust`) or **desktop-only** (`desktop`) are absent unless the project
-  opted into those surfaces.
+There is **one** category, the **skill**, and within it one split:
 
-Internalised from the (now-disabled) `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer` plugins; models are
-`fable`/`opus` by tier (§4) — planning agents (`story`, `sprint`, `planner`, `user-story`)
-run on Fable; never `sonnet` or `haiku`. Agents never self-edit.
+- **Reference skill** — states conventions (`stack-django`, `codebase-design`). Runs inline in
+  the current context and never forks.
+- **Task skill** — an executable procedure (`feature`, `backend`, `release`). Forks unless its
+  input is the conversation itself; its own frontmatter says which.
 
-### 2.4 Skills — load on demand (full table: `.claude/skills/CONTEXT.md`)
+Skills fire on **description match**, so most work needs no explicit routing — name one only to
+force a choice. Where independence is required — **no skill reviews its own work** — the running
+skill dispatches `general-purpose` through the Agent tool, **naming the skill to load in the
+prompt**. Built-in targets are `Explore`, `Plan` and `general-purpose`; the first two skip
+`CLAUDE.md`, so use them only where the work writes nothing. Models are `fable`/`opus` by task
+(§4) — design skills (`story`, `sprint`, `planner`, `scale-planning`) run on Fable. A skill
+never self-edits.
 
-| Skill                           | Load when                                                                                                                                          |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `stack-django`                  | Backend code — models, services, Django Ninja endpoints, pytest                                                                                    |
-| `stack-htmx-templates`          | Public frontend — Django templates, django-components, HTMX, Alpine, token CSS                                                                     |
-| `stack-react-native`            | **Mobile-only.** The mobile surface — Expo, TypeScript, expo-router, StyleSheet over tokens                                                        |
-| `stack-rust`                    | **Rust-only.** The Rust workspace — PyO3 extensions, the never-panic boundary, secret zeroizing, the cargo-deny gate                               |
-| `stack-slint`                   | **Desktop-only.** The native Slint app — the licence disclosure, the generated-code lint boundary, threading, AccessKit                            |
-| `stack-fastmcp`                 | The MCP tool surface at `/mcp/` — FastMCP tools over the service layer, token auth, in-memory client tests                                         |
-| `global-workflow`               | Branches, commits, PRs, version bumps, docs, code comments                                                                                         |
-| `runbook`                       | Authoring operator documentation — `how-to/docs/` and `how-to/src/` guides a human executes                                                        |
-| `grill-me` · `grill-with-docs`  | Design work — type `/grill-me` (stateless) or `/grill-with-docs` (records decisions); both wrap the `grilling` engine                              |
-| `codebase-design`               | Architecture / refactor / review — the deep-module vocabulary (module, interface, seam, depth, leverage, locality; deletion test; design it twice) |
-| `domain-modelling`              | Recording a new concept or decision — add the term to the nearest `CONTEXT.md`, or an ADR, as a design crystallises                                |
-| `improve-codebase-architecture` | <%DEVELOPER_NAME%> types `/improve-codebase-architecture` — scan for deepening opportunities, present a visual HTML report, then grill the pick    |
-| `scale-planning`                | Sizing the deployment for a target user count and proving it scales — readiness + envelope on the scaling phase-gates; feeds the NixOS deploy repo |
-| `teach`                         | <%DEVELOPER_NAME%> types `/teach <topic>` — safe learning sandbox; writes only to `learning/`                                                      |
-| `wayfinder`                     | Charting a large epic into a decision map, resolved across sessions                                                                                |
-| `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement (committed `handoffs/`; §2.6)                         |
-| `prototype`                     | <%DEVELOPER_NAME%> types `/prototype` — throwaway spike answering one design question                                                              |
-| `research`                      | <%DEVELOPER_NAME%> types `/research` — primary-source-cited note feeding an ADR/PLAN                                                               |
-| `to-questionnaire`              | A decision is blocked on someone outside the session — client, controller, vendor, stakeholder                                                     |
-| `wait-what`                     | <%DEVELOPER_NAME%> types `/wait-what` — the last reply did not land; re-pitch it in plain language                                                 |
-| `resolving-merge-conflicts`     | A merge, rebase, or `copier update` has left conflict markers                                                                                      |
-| `wizard`                        | Authoring an interactive bash wizard for steps only a human can perform                                                                            |
-| `incident`                      | Something is broken in staging or production — `/incident` holds the notes and the clock                                                           |
-| `legal-documents`               | Privacy Policy, T&C, GDPR notice, DPA, contract, NDA                                                                                               |
-| `msp-scp-documents`             | Security/compliance policy (InfoSec, incident, retention, …)                                                                                       |
+### 2.4 The roster
 
-`cloudinary-*` skills cover Cloudinary upload, delivery, and transformations.
+**`.claude/skills/CONTEXT.md` is the roster and the only when-to-load table** — every skill, what
+it is for, and the optional-surface flags. Read it there; nothing summarises it here.
 
 **Graph playbooks** — `code-review-graph install` generates four task cards under `.claude/skills/`
 (`explore-codebase`, `debug-issue`, `review-changes`, `refactor-safely`): **auto-generated,
 referenced by path, never hand-edited** (they regenerate on `install`). Canonical guide:
-`code/docs/CODE-REVIEW-GRAPH.md`, wired into the debug/review/refactor/explore agents and
-workflows `07`/`09`/`10`/`11`.
+`code/docs/CODE-REVIEW-GRAPH.md`, cited by the `bugfix`, `review`, `refactor` and
+`code-reviewer` skills and workflows `07`/`09`/`10`/`11`.
 
 ### 2.5 Routing frontmatter
 
-Every `**/docs/*.md` and `**/workflows/**/*.md` file carries YAML frontmatter naming the agent,
-skills, and model for that work — **read it first and obey it**:
+Every `**/docs/*.md` and `**/workflows/**/*.md` file carries YAML frontmatter naming the skills
+and model for that work — **read it first and obey it**:
 
-- **Docs guides:** `type: guide` · `agent:` · `skills: [..]` · `model:`
-- **Workflow `STEPS.md`/`CHECKLIST.md`:** `workflow:` · `phase:` · `agent:` · `skills: [..]` · `model:`
+- **Docs guides:** `type: guide` · `skills: [..]` · `model:`
+- **Workflow `STEPS.md`/`CHECKLIST.md`:** `workflow:` · `phase:` · `skills: [..]` · `model:`
 
 ### 2.6 Session continuity — hand off, never silently compact
 
@@ -142,8 +115,8 @@ When the context window nears full, **do not rely on auto-compaction** — it is
 `.claude/hooks/pre-compact-handoff.sh`). Instead the **driving session invokes the `handoff`
 skill** → writes `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md` → **stops** and prints the path,
 so <%DEVELOPER_NAME%> can `/clear` and resume in a fresh context window. A hook cannot invoke a skill or stop the
-session — that is the model's job (this rule). This is a top-level session / orchestrator duty;
-delegated specialists return to their orchestrator rather than hand off.
+session — that is the model's job (this rule). This is a **top-level session** duty; a dispatched
+subagent returns its result to the session that spawned it rather than handing off.
 
 **Two thresholds, measured not guessed.** The model cannot read its own context usage, so the
 `UserPromptSubmit` hook `.claude/hooks/context-threshold-handoff.sh` measures it and this rule
@@ -170,13 +143,13 @@ together** — whenever you revise the docs, refresh the graph (`code-review-gra
 `build_or_update_graph_tool` MCP tool) so neither drifts. Guide: `code/docs/CODE-REVIEW-GRAPH.md`.
 
 **Project helper scripts** — `.claude/plugins/*.py` (6 read-only inspection helpers: `project`,
-`env`, `db`, `git`, `log`, `pm`) that agents call to gather context. They do **not** run dev
+`env`, `db`, `git`, `log`, `pm`) that skills call to gather context. They do **not** run dev
 operations — those go through `code/src/scripts/**/*.sh`. Registry: `.claude/plugins/CONTEXT.md`.
 
 **Disabled marketplace plugins** — `<%ORG_SLUG%>-dev-suite` and `<%ORG_SLUG%>-doc-writer` are disabled for
-this project (`settings.json` → `enabledPlugins`); their agents and skills are internalised under
-`.claude/`. Never invoke the old `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer` plugin commands — use
-the internal agents instead.
+this project (`settings.json` → `enabledPlugins`); their contents are internalised as the skills
+under `.claude/skills/`. Never invoke the old `<%ORG_SLUG%>-dev-suite` / `<%ORG_SLUG%>-doc-writer`
+plugin commands — use the internal skills instead.
 
 ---
 
@@ -240,7 +213,7 @@ These apply in every task, regardless of layer:
 - **Token-first.** Design values are DB-canonical (`apps/design_tokens`). New values enter via the `/admin/design-tokens` editor or a migration — never as a raw literal in component/page CSS. Component CSS only ever consumes `var(--token)`, and the var name must resolve in the token layer (`code/src/django/static/css/tokens/*.css` + `surfaces.css`) — enforced by `code/src/scripts/audits/css-tokens.sh`. See `code/docs/DESIGN-TOKENS.md`.
 - New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>` — never run `manage.py startapp` or `django-admin startapp` directly.
 - New public marketing page → `bash code/src/scripts/development/new-django-view.sh <route_path>` — creates a Django view + template + URL entry. Never hand-create page routes outside this script.
-- All documentation (`CONTEXT.md`, `docs/*.md`, `agents/*.md`, `REFERENCES.md`) must reference scripts from `code/src/scripts/` for developer operations — never raw `pnpm`, `npm`, `npx`, `pip`, `uv`, `docker`, or `python manage.py` commands.
+- All documentation (`CONTEXT.md`, `docs/*.md`, `.claude/skills/**/*.md`, `REFERENCES.md`) must reference scripts from `code/src/scripts/` for developer operations — never raw `pnpm`, `npm`, `npx`, `pip`, `uv`, `docker`, or `python manage.py` commands.
 - **Doctrine derived from an outside source is credited where it is written**, not retrospectively — the `README.md` § _Influences and attribution_ table gains the row in the **same change** as the rule it credits. Attribution written once decays; written alongside, it stays true.
 - **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` § _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, unlicensed) are derived freely and credited.
 
@@ -266,7 +239,7 @@ Marketing `/` (slugs) · <%PROJECT_NAME%> Admin `/admin/` (UUIDs) · Client Port
 - **Database:** read `code/docs/DATABASE.md` before any model, migration, or query — scope columns, database-level constraints, lock-safe migrations, search, and the deferred-infrastructure register with its trigger conditions
 - **Discoverability:** all public pages in `apps.marketing`. Two halves, and neither restates the other — **what must be true per page**: `project-management/docs/SEO-CHECKLIST.md` · **how this stack does it**: `code/docs/DISCOVERABILITY.md`
 - **Accessibility:** WCAG 2.2 AA on all interactive components — guide: `code/docs/ACCESSIBILITY.md`
-- **Versioning:** single-track semver — rules: `project-management/docs/VERSIONING-GUIDE.md` · bump via the internal `version` agent (or the `release` orchestrator)
+- **Versioning:** single-track semver — rules: `project-management/docs/VERSIONING-GUIDE.md` · bump via the `version` skill (or the `release` skill)
 - **Instructional file length:** `.md` files that instruct Claude Code must not exceed **300 code
   lines** (`cloc --include-lang=Markdown`) — **gate: `code/src/scripts/audits/docs-length.sh`**,
   never `cloc.sh`, which excludes Markdown by design. Applies to `**/docs/**/*.md` ·
@@ -339,14 +312,14 @@ substantial task in any layer opens with a grilling pass (below), not a fixed qu
 **Grilling — the default across every layer:** Grilling is the project's clarification mechanism
 for **all substantial work — design, code, tests, QA, refactor, review, debug, migration, docs —
 not only planning and design.** Before producing the artefact (a plan, schema, resolver,
-component, test suite, QA plan, refactor, or fix), the responsible agent **opens with a grilling
+component, test suite, QA plan, refactor, or fix), the running skill **opens with a grilling
 pass** (the `grilling` skill): interrogate first, look facts up rather than asking, and take no
 action until <%DEVELOPER_NAME%> confirms. Only trivial or mechanical work skips it.
 
 **`.claude/skills/grilling/SKILL.md` owns the shape and nothing else restates it** — the round
 structure (ask the whole settled frontier in one numbered round, wait, recompute, ask the next),
 the question format (brief titled options plus an explicit recommendation), and the ban on the
-`AskUserQuestion` tool all live there. An agent, workflow or skill opening a grilling pass names
+`AskUserQuestion` tool all live there. A skill or workflow opening a grilling pass names
 **what** must be settled and routes for **how**; a restatement drifts the moment the skill
 changes. This **supersedes every static 'Clarify Before Planning' / 'Required Information' /
 'Clarifying questions' checklist project-wide**. <%DEVELOPER_NAME%> can also invoke it directly
@@ -356,22 +329,6 @@ with `/grill-me` (stateless) or `/grill-with-docs` (records decisions).
 
 ## Skill Targets
 
-<!-- DO NOT REMOVE — names the skills the specialist agents load from .claude/skills/ -->
-
-The skills the internal agents load on demand (full when-to-load table: `.claude/skills/CONTEXT.md`):
-
-- **Stack Skill (Backend):** `stack-django` — `.claude/skills/stack-django/`
-- **Stack Skill (Frontend, web):** `stack-htmx-templates` — `.claude/skills/stack-htmx-templates/`
-- **Stack Skill (Mobile) — mobile-only:** `stack-react-native` — `.claude/skills/stack-react-native/` (paired with the `mobile` agent; both absent on a web-only project)
-- **Stack Skill (Native) — rust-only:** `stack-rust` — `.claude/skills/stack-rust/` (paired with the `rust` agent; both absent unless the project opted into the Rust surface. Gates **authoring**: a project that merely consumes a prebuilt PyO3 wheel needs neither)
-- **Stack Skill (Desktop) — desktop-only:** `stack-slint` — `.claude/skills/stack-slint/` (paired with the `desktop` agent; both absent unless the project opted in. Only offered when the Rust surface is on, because Slint is Rust. Carries the **licence obligation**: the `AboutSlint` disclosure is what makes commercial use free)
-- **Stack Skill (Agent-facing):** `stack-fastmcp` — `.claude/skills/stack-fastmcp/` (the `/mcp/` tool surface; loaded by `backend`, `security`, and `test-writer` — no dedicated agent, because MCP tools are backend service-layer work)
-- **Global Skill:** `global-workflow` — `.claude/skills/global-workflow/`
-- **Operator-Docs Skill:** `runbook` — `.claude/skills/runbook/` (paired with the `operator-docs` agent; the craft for guides a human executes)
-- **Design / Grilling Skills:** `grilling` (engine) · `grill-me` (stateless) · `grill-with-docs` (records decisions) — `.claude/skills/{grilling,grill-me,grill-with-docs}/`
-- **Architecture / Design Skills:** `codebase-design` (deep-module vocabulary) · `domain-modelling` (keep the model current) · `improve-codebase-architecture` (`/improve-codebase-architecture` — deepening review → HTML report → grill) · `scale-planning` (`/scale-planning` — size for a target user count + prove scalability; feeds the NixOS deploy repo) — `.claude/skills/{codebase-design,domain-modelling,improve-codebase-architecture,scale-planning}/`
-- **Learning & Session Skills:** `teach` (learn in the `learning/` sandbox) · `wayfinder` (chart an epic) · `handoff` (session handoff / auto-compaction replacement, §2.6) · `prototype` (throwaway spike) · `research` (primary-source note) — `.claude/skills/{teach,wayfinder,handoff,prototype,research}/`
-- **Session & Communication Skills:** `to-questionnaire` (`/to-questionnaire` — ask an outside party what only they know; writes to `questionnaires/`) · `wait-what` (`/wait-what` — re-pitch a reply that did not land) — `.claude/skills/{to-questionnaire,wait-what}/`
-- **Git & Operations Skills:** `resolving-merge-conflicts` (an in-flight merge/rebase, and the file classes that must never be hand-merged) · `wizard` (author an interactive bash wizard over `code/src/scripts/_lib/wizard.sh`, for steps only a human can perform) · `incident` (`/incident` — run a live incident: the notes, the clock, the shift handover, the blameless postmortem; **no paired agent**, because running one is a session mechanic rather than a remit — the doctrine is `how-to/docs/INCIDENT-PRACTICE.md` and the register `project-management/src/22-INCIDENTS/`) — `.claude/skills/{resolving-merge-conflicts,wizard,incident}/`
-- **Legal Documents Skill:** `legal-documents` — `.claude/skills/legal-documents/`
-- **Security/Compliance Skill:** `msp-scp-documents` — `.claude/skills/msp-scp-documents/`
+**Routed, never restated.** `.claude/skills/CONTEXT.md` is the one place a skill's name, remit
+and when-to-load trigger are written down — including the stack skills and the optional-surface
+ones. Read it there (§2.4).

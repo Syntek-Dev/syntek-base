@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: user-story
-skills: [global-workflow]
+skills: [story, global-workflow]
 model: fable
 ---
 

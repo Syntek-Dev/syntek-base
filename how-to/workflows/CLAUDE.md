@@ -25,7 +25,7 @@ The step-by-step operational workflows — first-time setup (`01`), daily develo
   update the parent `CONTEXT.md` table.
 - **Definition of done:** `STEPS.md` executes cleanly end to end; `CHECKLIST.md`
   covers the acceptance points; cross-references resolve; British English.
-- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

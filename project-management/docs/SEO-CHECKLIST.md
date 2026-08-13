@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: seo
-skills: [stack-htmx-templates]
+skills: [seo, stack-htmx-templates]
 model: opus
 ---
 
@@ -22,7 +21,7 @@ guide new implementations.
 **How to use this checklist:**
 
 - Work through each tier in order — Beginner first, then Intermediate, then Advanced
-- Tick items off as they are implemented; implement any section with the `seo` agent
+- Tick items off as they are implemented; implement any section with the `seo` skill
 
 > **What this owns.** This checklist owns **what must be true on a given page** before its story
 > closes; [`code/docs/DISCOVERABILITY.md`](../../code/docs/DISCOVERABILITY.md) owns **how this

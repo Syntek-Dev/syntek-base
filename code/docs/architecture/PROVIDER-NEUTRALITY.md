@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: planner
-skills: [codebase-design, domain-modelling]
+skills: [planner, codebase-design, domain-modelling]
 model: fable
 ---
 

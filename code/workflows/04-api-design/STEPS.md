@@ -1,8 +1,7 @@
 ---
 workflow: 04-api-design
 phase: design
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 
@@ -31,7 +30,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Design the Endpoints and Schema
 
-> **↳ New agent:** `planner` · **Model:** fable · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — each endpoint (operation), request and response
@@ -48,7 +47,7 @@ Save the design to `project-management/src/13-API-DESIGN/PLANNING/`.
 backend [implement Ninja Schema request/response models in apps/<app>/schemas.py]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 ### Step 3 — Implement Endpoints
 
@@ -56,7 +55,7 @@ backend [implement Ninja Schema request/response models in apps/<app>/schemas.py
 backend [implement Router endpoints in apps/<app>/api.py]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 Every state-changing endpoint must:
 
@@ -123,7 +122,7 @@ bash code/src/scripts/tests/backend.sh apps/<app>/tests/ -v
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

@@ -15,7 +15,7 @@ in `src/15-SPRINT-PLANS/`, assigning each to the backend → API → frontend ph
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive with the `sprint`
-  agent (Fable). The hard gate `docs/PLANNING-GUIDE.md` (MoSCoW + phase
+  skill (Fable). The hard gate `docs/PLANNING-GUIDE.md` (MoSCoW + phase
   breakdown) must be read before Step 1. Prerequisites: GDPR
   (`workflows/09-gdpr-compliance`), security (`09`), and QA (`10`) all complete, and
   every in-scope story with full acceptance criteria.
@@ -27,7 +27,7 @@ in `src/15-SPRINT-PLANS/`, assigning each to the backend → API → frontend ph
   → satisfy `CHECKLIST.md`.
 - **Definition of done:** the plan is the single source of truth for what is in scope
   and how it is sequenced; it unlocks story planning and the development phases (`workflows/16`→`22`).
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

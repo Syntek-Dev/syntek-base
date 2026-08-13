@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow, domain-modelling]
+skills: [doc-writer, global-workflow, domain-modelling]
 model: opus
 ---
 
@@ -12,7 +11,7 @@ British English (en_GB) **Timezone:** <%TIMEZONE%>
 
 Every directory in this repository that orients Claude carries two files. This guide owns the
 line between them. `.claude/CLAUDE.md` §8 states the rule in one bullet and routes here for the
-decision procedure; the `scaffold` and `doc-writer` agents generate against it, and
+decision procedure; the `scaffold` and `doc-writer` skills generate against it, and
 `code/src/scripts/audits/docs-pairing.sh` enforces the mechanical half.
 
 ## 1. The split, in one sentence
@@ -176,7 +175,8 @@ name as unwritten.
 ## Cross-references
 
 - `.claude/CLAUDE.md` §8 — the one-bullet statement that routes here
-- `.claude/agents/scaffold.md` · `.claude/agents/doc-writer.md` — the agents that generate pairs
+- `.claude/skills/scaffold/SKILL.md` · `.claude/skills/doc-writer/SKILL.md` — the skills that
+  generate pairs
 - `code/src/scripts/audits/docs-pairing.sh` — the mechanical gate
 - `code/src/scripts/development/sync-trees.sh` — tree membership and annotation reconciliation
 - `.claude/skills/domain-modelling/SKILL.md` — recording a new term in the nearest `CONTEXT.md`

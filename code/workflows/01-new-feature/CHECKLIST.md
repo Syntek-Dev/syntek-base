@@ -1,8 +1,7 @@
 ---
 workflow: 01-new-feature
 phase: build
-agent: feature
-skills: [stack-django, stack-htmx-templates, global-workflow]
+skills: [feature, stack-django, stack-htmx-templates, global-workflow]
 model: opus
 ---
 

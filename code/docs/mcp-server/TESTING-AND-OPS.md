@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: test-writer
-skills: [stack-django, stack-fastmcp]
+skills: [test-writer, stack-django, stack-fastmcp]
 model: opus
 ---
 

@@ -14,8 +14,7 @@ criteria) plus the `US000-TEMPLATE.md` scaffold.
 
 - **Routing:** never write a story free-hand — start from
   `project-management/workflows/02-story-creation/` (`STEPS.md` + `CHECKLIST.md`), or
-  drive it with `user-story`. Batch story generation and epic sizing belong to the
-  `story` / `sprint` agents.
+  drive it with `story`. Slicing the written stories into sprints belongs to `sprint`.
 - **Model:** Fable for authoring or re-scoping a story; Opus for mechanical touches —
   status flips, version-header bumps, a rename.
 - **Concrete steps:** copy `US000-TEMPLATE.md` → next free `US###` number (gaps are

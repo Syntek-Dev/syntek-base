@@ -192,7 +192,7 @@ metric as well as in number — `cloc.sh` counts total `wc -l` including blanks,
 counts cloc code lines only.
 
 **The gap this closed is worth remembering, because it is the failure mode a gate invites.**
-Ten folder `CLAUDE.md` files, the `scaffold` and `operator-docs` agents, and workflow `09`'s
+Ten folder `CLAUDE.md` files, the `scaffold` and `runbook` skills, and workflow `09`'s
 steps and checklist all instructed the reader to verify the 300-line limit with `cloc.sh` — a
 script that excludes Markdown by design and had never once measured it. Every run reported
 success. A check that cannot fail is worse than no check, because its green result is believed;

@@ -6,7 +6,7 @@ description: >-
   sharpening a fuzzy one, and recording a load-bearing decision so future reviews don't re-litigate
   it. Load when naming a new module/concept during architecture, refactor, or review, or when the
   `codebase-design` / `improve-codebase-architecture` skills need a name recorded. Cited by the
-  doc-writer, planner, and database agents. Deeper guidance: `code/docs/data-structures/DOMAIN-MODELLING.md`.
+  doc-writer, planner, and database skills. Deeper guidance: `code/docs/data-structures/DOMAIN-MODELLING.md`.
 ---
 
 # Domain Modelling
@@ -59,7 +59,7 @@ Do these **inline, as the decision lands** — never batch them for later.
   don't drift (`code/docs/CODE-REVIEW-GRAPH.md`).
 - **Instructional-file limit** — every `CONTEXT.md` stays ≤ 300 code lines (`.claude/CLAUDE.md` §8);
   split rather than overflow.
-- **Model:** the `doc-writer` agent (Opus) authors substantive glossary/ADR text; mechanical touches
+- **Model:** the `doc-writer` skill (Opus) authors substantive glossary/ADR text; mechanical touches
   (adding a row, a Last-Updated bump) are Opus too.
 
 ## Governing procedures (route here — do not restate at length)

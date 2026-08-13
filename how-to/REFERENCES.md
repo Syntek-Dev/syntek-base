@@ -55,7 +55,7 @@ points for that procedure.
 | `how-to/docs/SKILL-AUTHORING.md`    | How to write predictable skills under .claude/skills/ (index)                                 |
 | `how-to/docs/CLI-TOOLING.md`        | CLI reference for all Docker Compose development commands                                     |
 | `how-to/docs/GIT-WORKTREES.md`      | Parallel development with git worktrees, Docker isolation, URLs                               |
-| `how-to/docs/TOOLING-GUIDE.md`      | Internal agents and skills reference (index)                                                  |
+| `how-to/docs/TOOLING-GUIDE.md`      | Internal skills reference (index)                                                             |
 | `how-to/docs/CELERY-FIRST-RUN.md`   | Getting the Celery worker and beat running the first time                                     |
 | `how-to/docs/FEATURE-DEPLOY.md`     | Deploying a feature branch                                                                    |
 | `how-to/docs/INCIDENT-PRACTICE.md`  | Running a live incident: declare, shift handover, stand down, write up                        |

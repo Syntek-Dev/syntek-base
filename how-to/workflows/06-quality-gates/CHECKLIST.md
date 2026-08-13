@@ -1,8 +1,7 @@
 ---
 workflow: 06-quality-gates
 phase: verify
-agent: syntax
-skills: [global-workflow]
+skills: [syntax, global-workflow]
 model: opus
 ---
 

@@ -25,13 +25,13 @@ are the same file at two points in time.
 
 ## Boundary with the neighbours
 
-| If you are…                                       | Go to                                        |
-| ------------------------------------------------- | -------------------------------------------- |
-| Asking a **human outside the team** for knowledge | **here** — `/to-questionnaire`               |
-| Asking **<%DEVELOPER_NAME%>** to settle a design  | `/grill-me` · `/grill-with-docs`             |
-| Briefing a **fresh agent** with repo access       | `/handoff` → `handoffs/`                     |
-| Assessing a **vendor's security posture**         | `.claude/agents/vendor-assessment-writer.md` |
-| Recording a **primary-source fact**               | `/research` → `research/`                    |
+| If you are…                                       | Go to                                       |
+| ------------------------------------------------- | ------------------------------------------- |
+| Asking a **human outside the team** for knowledge | **here** — `/to-questionnaire`              |
+| Asking **<%DEVELOPER_NAME%>** to settle a design  | `/grill-me` · `/grill-with-docs`            |
+| Briefing a **fresh agent** with repo access       | `/handoff` → `handoffs/`                    |
+| Assessing a **vendor's security posture**         | `.claude/skills/msp-scp-documents/SKILL.md` |
+| Recording a **primary-source fact**               | `/research` → `research/`                   |
 
 ## Driven by
 

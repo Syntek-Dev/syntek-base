@@ -17,7 +17,7 @@ verified, indexable feature.
 - **Routing:** never write here free-hand — `PLANNING/` plans come from
   `workflows/12-seo-checks/` (after wireframe sign-off); `IMPLEMENTATION/` records come
   from `workflows/22-pr-and-review/`. Both governed by `docs/SEO-CHECKLIST.md`; run the
-  heavier analysis through the `seo` agent.
+  heavier analysis through the `seo` skill.
 - **Model:** Fable for the SEO reasoning (acceptance criteria, gap analysis, verification
   judgement); Opus for mechanical touches — dropping a Lighthouse `.json`, filing,
   renaming, date-stamping.

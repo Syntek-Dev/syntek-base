@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: planner
-skills: [codebase-design, runbook]
+skills: [planner, codebase-design, runbook]
 model: fable
 ---
 

@@ -86,7 +86,7 @@ project-management/src/
 ├── 01-STORIES/          ← your US001.md, US002.md — and nothing else.
 │                          No CONTEXT.md. Nothing references this folder any more.
 └── 02-STORIES/          ← CONTEXT.md, CLAUDE.md, US000-TEMPLATE.md.
-                           Every workflow and agent now looks here. It is empty.
+                           Every workflow and skill now looks here. It is empty.
 ```
 
 The longer the project has run, the more there is to lose, and nothing in the output hints at it.

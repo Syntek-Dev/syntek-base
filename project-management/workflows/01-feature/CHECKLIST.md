@@ -1,8 +1,7 @@
 ---
 workflow: 01-feature
 phase: discovery
-agent: planner
-skills: [wayfinder, grill-with-docs, codebase-design, global-workflow]
+skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
 model: fable
 ---
 

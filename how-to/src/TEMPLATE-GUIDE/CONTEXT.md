@@ -28,11 +28,11 @@ how-to/src/TEMPLATE-GUIDE/
 │
 │   ── Living with it ──
 ├── 07-REPO-TOUR.md          ← the three layers and how to navigate them
-├── 08-CLAUDE-CODE.md        ← agents, skills, hooks, MCP servers, settings
+├── 08-CLAUDE-CODE.md        ← skills, hooks, MCP servers, settings
 ├── 09-PROJECT-MANAGEMENT.md ← how to use project-management/src/ — tiers, patterns, which folder when
 ├── 10-FIRST-FEATURE.md      ← one feature end to end: chart → specify → build → ship
 ├── 11-CUSTOMISING.md        ← what is yours to change, what is load-bearing
-├── 12-EXTENDING.md          ← add an agent, skill, workflow, guide or Django app
+├── 12-EXTENDING.md          ← add a skill, workflow, guide or Django app
 │
 │   ── Beyond the laptop ──
 ├── 13-DEPLOYMENT.md         ← the path to a server and the NixOS deploy repo

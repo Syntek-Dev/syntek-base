@@ -130,17 +130,17 @@ Two things to do on a freshly generated project:
 ```text
 <%PROJECT_SLUG%>/
 ├── .claude/                             ← Claude Code configuration
-│   ├── CLAUDE.md                        ← authoritative operating manual: read-order, agents, skills, plugins, rules
+│   ├── CLAUDE.md                        ← authoritative operating manual: read-order, skills, plugins, rules
 │   ├── MEMORY.md                        ← project memory store (always read second, after CLAUDE.md)
 │   ├── settings.json                    ← Claude Code settings (permissions, model, disabled marketplace plugins)
 │   ├── settings.local.json              ← local overrides (gitignored)
-│   ├── agents/                          ← agent definitions (orchestrators, specialists, doc-writers)
+│   ├── agents/                          ← being folded into skills/ — roster: .claude/skills/CONTEXT.md
 │   ├── skills/                          ← internalised skills (stack, workflow, document standards)
 │   ├── hooks/                           ← pre-PR quality gates (fired via PreToolUse hook on gh pr create)
 │   │   ├── lib/                         ← gate scripts: format, lint, typecheck, tests, security, stubs, cloc, lockfiles
 │   │   ├── pre-pr-check.sh              ← runs all 8 gates; blocks PR creation on failure
 │   │   └── post-pr-comment.sh           ← posts gate results as a GitHub PR comment
-│   └── plugins/                         ← agent helper scripts (project/env/db/git/log/pm inspection)
+│   └── plugins/                         ← helper scripts a skill calls (project/env/db/git/log/pm inspection)
 │       ├── db-tool.py
 │       ├── env-tool.py
 │       ├── git-tool.py
@@ -238,7 +238,7 @@ Two things to do on a freshly generated project:
 │   │   ├── CLI-TOOLING.md               ← Claude Code MCP servers, hooks, and dev-script reference
 │   │   ├── DEVELOPMENT.md               ← environment variables, Docker setup, and dev tooling catalogue
 │   │   ├── GIT-WORKTREES.md             ← worktree-based parallel story development
-│   │   ├── TOOLING-GUIDE.md             ← internal agents and skills reference (index)
+│   │   ├── TOOLING-GUIDE.md             ← internal skills reference (index)
 │   │   └── tooling-guide/               ← detailed tooling guide sub-documents
 │   │       ├── COMMANDS.md
 │   │       ├── CONFIGURATION.md
@@ -906,9 +906,9 @@ answer the set; the answers unblock the next round. Facts are looked up rather t
 nothing is built until you confirm. The shape lives in `.claude/skills/grilling/SKILL.md` and is
 deliberately stated **nowhere else** — every skill and workflow routes to it.
 
-### Agent helper scripts
+### Helper scripts
 
-Scripts in `.claude/plugins/` are Python helpers agents call (`python3 .claude/plugins/x.py`) to
+Scripts in `.claude/plugins/` are Python helpers a skill calls (`python3 .claude/plugins/x.py`) to
 inspect the local environment for context. They do **not** run dev operations — those go through
 `code/src/scripts/**/*.sh`.
 

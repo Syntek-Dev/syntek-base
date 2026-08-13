@@ -24,7 +24,7 @@ Use it only when the work meets one of the two grounds in `code/docs/RUST.md`: *
 Python cannot make** (constant-time comparison, wiping key material), or **work Python is
 genuinely bad at** (a hot path, with a measurement behind the claim). If neither holds, the work
 belongs in the service layer — use `project-management/workflows/18-backend-code/` and the
-`backend` agent.
+`backend` skill.
 
 **Rust-only.** This workflow exists only in a project generated with `INCLUDE_RUST`.
 

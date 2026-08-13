@@ -186,4 +186,4 @@ filenames and `DD/MM/YYYY` in prose.
 - Walk one feature through all of it → `10-FIRST-FEATURE.md`
 - The layer's own entry point → `project-management/CONTEXT.md`
 - Cadence, stories, sprints → `project-management/docs/PLANNING-GUIDE.md`
-- Agents and skills that drive these workflows → `08-CLAUDE-CODE.md`
+- Skills that drive these workflows → `08-CLAUDE-CODE.md`

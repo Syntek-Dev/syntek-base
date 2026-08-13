@@ -34,9 +34,9 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── CONTEXT.md
 │   ├── MEMORY.md                    ← project memory (feedback, patterns, project state)
 │   ├── settings.json                ← project-level permissions, model, hooks
-│   ├── agents/                      ← 8 orchestrators + specialists + doc-writers (roster: agents/CONTEXT.md)
+│   ├── agents/                      ← being folded into skills/ — roster: .claude/skills/CONTEXT.md
 │   ├── hooks/                       ← pre-PR quality gates
-│   ├── plugins/                     ← read-only inspection helpers agents call for context
+│   ├── plugins/                     ← read-only inspection helpers a skill calls for context
 │   └── skills/                      ← internalised stack, workflow, and document skills
 ├── .agents/                         ← vendored third-party skills (Cloudinary)
 ├── .github/                         ← CI workflows and the template-integrity scripts
@@ -133,7 +133,7 @@ generation time, because a generated project must commit it (every Dockerfile bu
 | `code/`                         | Source code, coding standards, and the coding workflows              |
 | `how-to/`                       | Setup, daily development, debugging, scaling, template instantiation |
 | `project-management/`           | User stories, sprints, design artefacts, GDPR, security, releases    |
-| `.claude/`                      | Global rules, agent and skill routing, model selection, hooks        |
+| `.claude/`                      | Global rules, skill routing, model selection, hooks                  |
 | `DESIGN.md`                     | Design entry point — standards, constraints, and UI/UX workflows     |
 | `code/src/django/`              | The web deployable — API and server-rendered pages                   |
 | `code/src/mobile/`              | **Mobile-only.** The Expo / React Native app, consuming that API     |

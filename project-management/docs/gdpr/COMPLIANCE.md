@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: gdpr
-skills: [global-workflow]
+skills: [gdpr-mechanics, global-workflow]
 model: fable
 ---
 

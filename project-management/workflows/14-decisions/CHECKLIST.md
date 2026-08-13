@@ -1,8 +1,7 @@
 ---
 workflow: 14-decisions
 phase: design
-agent: planner
-skills: [codebase-design]
+skills: [planner, codebase-design]
 model: fable
 ---
 

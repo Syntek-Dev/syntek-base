@@ -1,8 +1,7 @@
 ---
 workflow: 11-qa-checks
 phase: verify
-agent: qa-tester
-skills: [stack-django, stack-htmx-templates]
+skills: [qa-tester, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -55,7 +54,7 @@ For each wireframe in `project-management/src/08-WIREFRAMES/`, identify:
 qa-tester [describe the story, its wireframe, and user flow]
 ```
 
-> **↳ New agent:** `qa-tester` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** fable · **MCP:** none
 
 ### Step 4 — Document QA Plans
 
@@ -82,7 +81,7 @@ If QA identifies missing acceptance criteria, update the relevant
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

@@ -1,8 +1,7 @@
 ---
 workflow: 12-seo-checks
 phase: design
-agent: seo
-skills: [stack-htmx-templates, global-workflow]
+skills: [seo, stack-htmx-templates, global-workflow]
 model: fable
 ---
 

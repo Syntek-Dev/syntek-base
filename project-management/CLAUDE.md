@@ -16,11 +16,11 @@ plans that gate a feature into code, and the post-implementation records, plus t
 ## How to work here
 
 - **Routing:** every PM task starts from the matching `workflows/NN-…/` procedure
-  (`STEPS.md` + `CHECKLIST.md`), which points at the governing `docs/` guide. Use the
-  internal agents (`user-story`, `sprint`, `planner`, `gdpr`, `seo`, `qa-tester`,
+  (`STEPS.md` + `CHECKLIST.md`), which points at the governing `docs/` guide. Load the
+  matching skills (`story`, `sprint`, `planner`, `gdpr-mechanics`, `seo`, `qa-tester`,
   `security`, `version`, `git`, `completion`) for the heavier steps.
 - **Grill first:** any substantial PM task — story, schema, API, GDPR/security/QA spec,
-  ADR, or plan — opens with a grilling pass (the owning agent loads
+  ADR, or plan — opens with a grilling pass (the owning skill loads
   `.claude/skills/grill-with-docs`) before the artefact is
   produced; only trivial/mechanical work skips it (`.claude/CLAUDE.md` §10).
 - **Model:** Fable for substantive artefacts (stories, ADRs, sprint & story plans,
@@ -46,7 +46,7 @@ plans that gate a feature into code, and the post-implementation records, plus t
   `CONTEXT.md`/`CLAUDE.md`); split oversized files, entry point becomes a thin index.
   Root-level artefacts under `src/` are exempt from the 300-line rule.
 - **Every new directory in any layer needs a `CONTEXT.md` + `CLAUDE.md`.**
-- Single-track semver: bump only via `docs/VERSIONING-GUIDE.md` / the `version` agent.
+- Single-track semver: bump only via `docs/VERSIONING-GUIDE.md` / the `version` skill.
 
 ## Output & naming
 

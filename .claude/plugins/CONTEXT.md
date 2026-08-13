@@ -1,6 +1,6 @@
 # .claude/plugins
 
-Agent helper scripts — Python scripts each agent can call (`python3 .claude/plugins/<name>.py …`)
+Helper scripts — Python scripts a skill calls (`python3 .claude/plugins/<name>.py …`)
 to **inspect** the local environment for context. They are **not** MCP servers and **not** a route
 for dev operations: anything that builds, tests, migrates, or runs the stack goes through
 `code/src/scripts/**/*.sh`. These scripts only read and detect.

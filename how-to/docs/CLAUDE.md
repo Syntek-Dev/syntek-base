@@ -10,7 +10,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 The operational reference guides — `DEVELOPMENT.md` (setup, env, Compose commands),
 `CLI-TOOLING.md` (command reference), `GIT-WORKTREES.md` (parallel stacks),
 `CELERY-FIRST-RUN.md` (Celery worker/beat first-run review), `FEATURE-DEPLOY.md` (feature
-deploy-coordination checklist), `TOOLING-GUIDE.md` (internal agents & skills index over
+deploy-coordination checklist), `TOOLING-GUIDE.md` (internal skills index over
 `tooling-guide/`), `AI-DICTIONARY.md` (AI-coding glossary over `ai-dictionary/`), and
 `SKILL-AUTHORING.md` (how to write skills, index over `skill-authoring/`).
 
@@ -28,7 +28,7 @@ deploy-coordination checklist), `TOOLING-GUIDE.md` (internal agents & skills ind
   added or removed.
 - **Definition of done:** commands match the scripts they name; cross-references
   resolve; British English; docs hard-gate satisfied.
-- **Routing frontmatter:** every guide here carries `type`/`agent`/`skills`/`model` frontmatter — read it first and route to the named agent, skills, and model (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

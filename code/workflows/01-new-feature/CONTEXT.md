@@ -55,7 +55,7 @@ Use this workflow when adding any new capability to the website that requires bo
 - `code/docs/logging/DJANGO-LOGGING.md` — new features must log security events
 - `code/docs/performance/DATABASE-PERFORMANCE.md` — N+1 prevention in new endpoints and services
 - `code/docs/cloudinary/CONTEXT.md` — if this feature involves media upload, delivery, or transformation; see the individual SDK docs and invoke the Cloudinary skills at the relevant step
-- `code/docs/architecture/CORE-AND-SCALING.md` — readiness invariants (statelessness, keyset, `tenant_id`, async-safe I/O) a new capability must not break; a new route/upload/SSE surface → flag `scale-planner` for the `how-to/src/SERVER-ARCHITECTURE/` edge requirement (soft, non-blocking — anti-forecast)
+- `code/docs/architecture/CORE-AND-SCALING.md` — readiness invariants (statelessness, keyset, `tenant_id`, async-safe I/O) a new capability must not break; a new route/upload/SSE surface → flag `scale-planning` for the `how-to/src/SERVER-ARCHITECTURE/` edge requirement (soft, non-blocking — anti-forecast)
 - `project-management/workflows/21-implementation-documentation/` — **the next workflow after
   this one.** It owns the implementation records, the findings record, the `CONTEXT.md`/`CLAUDE.md`
   closeout, and the code-review-graph refresh — all a hard gate before commit. Never duplicate

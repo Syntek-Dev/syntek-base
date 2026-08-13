@@ -1,8 +1,7 @@
 ---
 workflow: 05-user-flow-design
 phase: design
-agent: planner
-skills: [global-workflow]
+skills: [planner, global-workflow]
 model: fable
 ---
 
@@ -95,7 +94,7 @@ Review the flow for:
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

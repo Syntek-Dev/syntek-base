@@ -15,7 +15,7 @@ has been run.
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive with the `git`
-  agent for the branch/PR mechanics and `review` for the code review
+  skill for the branch/PR mechanics and `review` for the code review
   (both Opus). The hard gate `docs/GIT-GUIDE.md` (branch promotion chain) must be read
   before raising any PR.
 - **Model:** Opus for the security/quality review and mechanical touches
@@ -30,7 +30,7 @@ has been run.
 - **Definition of done:** PR reviewed and merged per the branch chain; the implementation
   records (from `21`) verified complete and the review/test records written; version
   bumped via `docs/VERSIONING-GUIDE.md` if the PR completes a release.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

@@ -29,7 +29,7 @@ applied.
 - **Definition of done:** coverage floor met (75% all / 90% auth); every service
   method doing ≥ 2 writes wrapped in `transaction.atomic()`; PII encrypted before the
   first commit; checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

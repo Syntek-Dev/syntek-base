@@ -9,7 +9,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The project's own skills — stack references (`stack-django`, `stack-htmx-templates`), the cross-cutting `global-workflow`, and the document-drafting
 standards (`legal-documents`, `msp-scp-documents`) — internalised from the plugins and
-loaded on demand by the agents in `.claude/agents/`.
+loaded on demand.
 
 ## How to work here
 
@@ -18,7 +18,7 @@ loaded on demand by the agents in `.claude/agents/`.
   adding or editing a skill.
 - **Routing:** these are reference bundles, not code. Edit a skill when the convention it
   captures changes — treat it with the weight of a docs change. Stack skills are cited by name
-  in `.claude/CLAUDE.md` ("Skill Targets") and by the specialist agents; keep those names stable.
+  in this folder's `CONTEXT.md` and by the skills that load them; keep those names stable.
 - **Model:** Opus for substantive convention changes and a typo or a fixed link.
 - **Concrete steps:** edit the relevant `SKILL.md` (or its sub-doc) → keep the frontmatter
   `description` an accurate "when to load" trigger → if a `SKILL.md` would exceed the 300-line
@@ -31,8 +31,8 @@ loaded on demand by the agents in `.claude/agents/`.
   and the pre-ship checklist.
 - **Definition of done:** `bash code/src/scripts/audits/skill-conformance.sh` and
   `bash code/src/scripts/audits/docs-length.sh --path .claude/skills` both exit 0; no
-  reference points outside the project; British English; the skill still matches the agents
-  that load it; every path in its `## Governing procedures` section resolves.
+  reference points outside the project; British English; the skill still matches the work
+  that loads it; every path in its `## Governing procedures` section resolves.
 
 ## Guardrails
 
@@ -44,7 +44,7 @@ loaded on demand by the agents in `.claude/agents/`.
   used two of the other four. Enforced by `audits/skill-conformance.sh`.
 - **No plugin references** — never `$<%ENV_PREFIX%>_DIR`, `./skills/`, `./plugins/`, `/<%ORG_SLUG%>-dev-suite:`, <!-- doc-references: ignore — quoted in order to ban them -->
   or `/<%ORG_SLUG%>-doc-writer:`; use project paths (`.claude/plugins/*.py`, `code/docs/*`,
-  `code/src/scripts/**/*.sh`) and internal agent names.
+  `code/src/scripts/**/*.sh`) and internal skill names.
 - Skills reference `code/src/scripts/**/*.sh` for dev operations — never raw `pnpm`, `next`,
   `pytest`, `python`, or `docker`.
 - The `cloudinary-*` symlinks are managed by the skills lockfile — do not hand-edit them here.

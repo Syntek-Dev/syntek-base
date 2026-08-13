@@ -1,7 +1,7 @@
 # .claude/skills
 
-Skills for Claude Code — auto-selected reference bundles the agents load on demand. Each skill
-is a folder with a `SKILL.md` plus optional sub-documents, in the published
+Skills for Claude Code — auto-selected bundles loaded on demand, and the project's only unit of
+routing. Each skill is a folder with a `SKILL.md` plus optional sub-documents, in the published
 [Agent Skills format](https://agentskills.io/specification). Which of that format's fields this
 project authors, which runtime keys it admits beyond them, what it declines and why, and the
 vendored exception are all in `how-to/docs/SKILL-AUTHORING.md`. Internalised from the
@@ -32,6 +32,7 @@ tooling; plugin references were rewritten to internal paths.
 ├── authentication/         ← the credential and session layer: passwords, MFA, lockout, reset
 ├── notifications/          ← the delivery layer: email, SMS, push, in-app, on one branded foundation
 ├── reporting/              ← role-scoped report queries and aggregates, PII kept out of the summary
+├── export/                 ← the download: CSV/Excel/PDF/JSON formatters, PII gated, every one audited
 ├── logging/                ← structured logging and observability; nothing sensitive reaches a channel
 ├── seo/                    ← the head, JSON-LD, canonical URLs, robots/sitemap/llms.txt views
 ├── test-writer/            ← the TDD Red phase: failing tests plus the skeleton that runs them
@@ -65,9 +66,9 @@ tooling; plugin references were rewritten to internal paths.
 │   └── VERSIONING-AND-DOCS.md
 ├── runbook/                ← write an operator guide: the brief, execute-to-verify, indexing (task, forked)
 │   └── SKILL.md
-├── legal-documents/        ← shared drafting standard for legal/GDPR doc agents
+├── legal-documents/        ← drafting standard for the outward-facing legal/GDPR documents
 │   └── SKILL.md
-├── msp-scp-documents/      ← shared standard for security/compliance policy agents
+├── msp-scp-documents/      ← drafting standard for the internal security/compliance policies
 │   ├── SKILL.md
 │   ├── SECURITY-POLICIES.md
 │   ├── DATA-GOVERNANCE.md
@@ -141,6 +142,7 @@ tooling; plugin references were rewritten to internal paths.
 | `authentication`                | Login, registration, MFA, sessions, lockout or password reset — the credential layer itself                                                           |
 | `notifications`                 | Something has to be sent — email, SMS, push or in-app — or the shared branded template layer needs building                                           |
 | `reporting`                     | A report or dashboard needs its data — role-scoped aggregates, a result shape, an index recommendation                                                |
+| `export`                        | Data has to leave as a file — CSV, Excel, PDF or JSON — including a UK GDPR Article 15 subject export                                                 |
 | `logging`                       | Log instrumentation to add, a channel to configure, or sensitive data to stop reaching one                                                            |
 | `seo`                           | A public page needs its head, structured data and crawler wiring — or the marketing pages need a pass                                                 |
 | `test-writer`                   | The failing tests must exist before implementation — one story's scope, its seams, red first                                                          |
@@ -166,7 +168,7 @@ tooling; plugin references were rewritten to internal paths.
 | `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; the conventions are `how-to/docs/OPERATOR-DOC-CRAFT.md`                |
 | `grilling`                      | Design work (architecture, DB, API, story) — the frontier-round interview engine                                                                      |
 | `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                                |
-| `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or a design agent opens design work — grilling that records decisions                                    |
+| `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or as design work opens — grilling that records decisions                                                |
 | `teach`                         | <%DEVELOPER_NAME%> types `/teach <topic>` — a safe learning sandbox that writes only to `learning/`                                                   |
 | `wayfinder`                     | Charting a large epic into a decision map resolved across sessions (`/wayfinder`)                                                                     |
 | `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement; write a committed `handoffs/` doc, then stop            |
@@ -202,8 +204,15 @@ tooling; plugin references were rewritten to internal paths.
 > flagged, rather than templated in or out, so this index carries no conditional contents.
 > Load it only when working under `code/src/mobile/`.
 
-## Cross-references
+## Glossary
 
-- `.claude/agents/CONTEXT.md` — the agents that load these skills.
-- `.claude/CLAUDE.md` — Skill Targets (backend `stack-django`, frontend
-  `stack-htmx-templates`, global `global-workflow`).
+- **Skill** — the only category here: one folder, one `SKILL.md`, one remit, reached by matching
+  the work against that `description`.
+- **Reference skill** — states conventions (`stack-django`, `codebase-design`). Runs inline in
+  the caller's context and never forks.
+- **Task skill** — an executable procedure (`feature`, `backend`, `release`). Forks unless its
+  input is the conversation itself; its own frontmatter says which.
+
+_Avoid:_ **orchestrator**, **specialist**, **document writer** — retired category names (N-012),
+and nothing replaces them: there is no tier above or below a skill. Dispatch and the independence
+rule live in `.claude/CLAUDE.md` § 2.3.

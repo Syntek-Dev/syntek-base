@@ -12,7 +12,7 @@ per-story designs into the canonical schema that `18-backend-code` builds from.
 
 ## How to work here
 
-- **Routing:** produced only by `workflows/17-consolidate-design-work/` via the `database` agent,
+- **Routing:** produced only by `workflows/17-consolidate-design-work/` via the `database` skill,
   after every story has cleared `16-story-plans`. The hard gate `code/docs/DATABASE.md` is read
   before Step 1.
 - **Model:** Fable throughout — reconciling two stories' competing models of the same entity is

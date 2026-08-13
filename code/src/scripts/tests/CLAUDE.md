@@ -13,7 +13,7 @@ The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e
 
 ## How to work here
 
-- **Routing:** all test runs route through these scripts (the `test-writer` agent
+- **Routing:** all test runs route through these scripts (the `test-writer` skill
   targets them). **Never run `pytest` or `playwright` directly.** Backend scripts use
   `compose exec` (test stack must be up); `api.sh` uses `run --rm` (one-shot);
   `e2e-py.sh` runs on the host against the **dev** stack.

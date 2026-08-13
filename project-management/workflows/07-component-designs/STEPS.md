@@ -1,8 +1,7 @@
 ---
 workflow: 07-component-designs
 phase: design
-agent: frontend
-skills: [stack-htmx-templates, prototype]
+skills: [frontend, stack-htmx-templates, prototype]
 model: fable
 ---
 
@@ -141,7 +140,7 @@ Record sign-off via PR review or a comment in the Figma file.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

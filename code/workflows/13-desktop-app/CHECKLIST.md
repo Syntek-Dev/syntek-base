@@ -1,7 +1,6 @@
 ---
 workflow: 13-desktop-app
 phase: build
-agent: desktop
 skills: [stack-slint, stack-rust]
 model: opus
 ---

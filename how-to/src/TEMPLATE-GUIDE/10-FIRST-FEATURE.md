@@ -104,7 +104,7 @@ work depends on, that _is_ the signal to chart it.
 Cut from the map — not from a conversation.
 
 ```text
-Use the story orchestrator to write a user story for <what you want>.
+Use the `story` skill to write a user story for <what you want>.
 ```
 
 Produces `project-management/src/02-STORIES/US001.md` via
@@ -201,10 +201,10 @@ acceptable — the stub audit catches them.
 Run a review pass on this branch before I raise a PR.
 ```
 
-`code/workflows/07-review/` — OWASP coverage, coding principles, coverage floors. A different
-agent than the one that wrote the code.
+`code/workflows/07-review/` — OWASP coverage, coding principles, coverage floors. A separate
+dispatch from the one that wrote the code.
 
-For anything touching auth, permissions or personal data, also run the `security` orchestrator.
+For anything touching auth, permissions or personal data, also load the `security` skill.
 
 ## 8. Document — the hard gate
 
@@ -236,7 +236,7 @@ us###/feature  →  testing  →  dev  →  staging  →  main
 
 ## 10. Close the story
 
-The `completion` agent flips the status once the work is verified, and updates the story index and
+The `completion` skill flips the status once the work is verified, and updates the story index and
 sprint record.
 
 ---
