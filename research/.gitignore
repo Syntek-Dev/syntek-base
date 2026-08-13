@@ -1,0 +1,25 @@
+# syntek-base only — this file is copier-excluded, so a generated project never receives it.
+#
+# A research note answers one question against primary sources and feeds one decision. Notes
+# written while developing the TEMPLATE answer questions about syntek-base itself — its skill
+# surface, its rule sources — and a generated project inherits neither the questions nor the
+# decisions they settled. Shipping them puts this template's internal reasoning into every
+# project built from it.
+#
+# A generated project's notes are committed and synced, and its ADRs and plans link back to
+# them, which is what research/CONTEXT.md describes. That is why this rule must not travel.
+#
+# Note the attribution consequence, because it cuts the right way: with nothing under research/
+# shipped, no verbatim quotation of an unlicensed upstream source is redistributed by this
+# template at all. THIRD-PARTY-NOTICES.md states that position; README.md § Influences carries
+# each row's evidence in the row itself rather than pointing at a note that no longer ships.
+#
+# The documentation pair stays tracked so the folder ships documented and ready to use.
+*
+
+# This file must stay tracked or the rule vanishes on a fresh clone, and copier.yml
+# can only exclude a file the template actually carries.
+!.gitignore
+!*/
+!CONTEXT.md
+!CLAUDE.md

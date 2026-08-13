@@ -55,14 +55,22 @@ _exclude:
   - /CONTRIBUTING.md
   - /how-to/src/TEMPLATE-GUIDE
   - /how-to/src/TEMPLATE-TOKENS.md
-  # Two nested .gitignore files that must NOT travel with the template. Git honours a
-  # .gitignore in any directory, which is how syntek-base can ignore its own throwaway
-  # handoffs and its own template-development feature maps while a generated project
-  # tracks both — its handoffs are its session continuity and its maps are real artefacts
-  # of `01-feature`. Excluding the two files here is what keeps the rule repo-local; the
-  # root .gitignore stays shipped and therefore still updatable by `copier update`.
+  # The nested .gitignore files that must NOT travel with the template. Git honours a
+  # .gitignore in any directory, which is how syntek-base can ignore the artefacts it writes
+  # while TESTING its own scaffolding — handoffs, feature maps, stories, sprints, ADRs, plans,
+  # research notes, questionnaires, lessons — while a generated project tracks every one of
+  # them, because there they are the work rather than a test of it. Each folder's CONTEXT.md
+  # describes the generated project's behaviour and is therefore correct as shipped; these
+  # files are the syntek-base-only override, and excluding them here is what keeps the
+  # override repo-local. The root .gitignore stays shipped and updatable by `copier update`.
+  #
+  # project-management/src/.gitignore is an allowlist covering the whole tree, so it also
+  # covers 01-FEATURE — which is why that folder no longer carries a .gitignore of its own.
   - /handoffs/.gitignore
-  - /project-management/src/01-FEATURE/.gitignore
+  - /project-management/src/.gitignore
+  - /research/.gitignore
+  - /questionnaires/.gitignore
+  - /learning/.gitignore
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
   # SINGLE conditionalisation mechanism — no file ever has templated contents. When the
   # answer is false these paths are never rendered at all, so a Jinja error inside a mobile
