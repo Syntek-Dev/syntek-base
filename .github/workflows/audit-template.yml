@@ -27,11 +27,22 @@ jobs:
   # generation, and TEMPLATE-TOKENS.md is prose. Without this job they drift silently —
   # which is exactly what they had done by 09/08/2026 (a tree missing four directories,
   # an audit table listing four scripts of thirteen, and no skills section at all).
+  #
+  # TWO STEPS, and the first is the load-bearing one. Every check here is a presence
+  # test against a tree that is correct today, so the ordinary run is green whether the
+  # matching rule works or not — and it once did not: a bare grep let a description
+  # ("the CONTEXT.md / CLAUDE.md split") answer for the row it was meant to police, and
+  # let `── VERSION-HISTORY.md` answer for VERSION. Both passed silently. The self-test
+  # deletes a required row per check and asserts each one is caught, so a rule that
+  # stops discriminating fails here rather than the next time the trees drift.
   shipped-docs:
     name: "[2/3] Shipped Documentation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Prove the detector (self-test against a mutated README)
+        run: bash .github/scripts/shipped-readme.sh --self-test
 
       - name: The shipped README and token contract must match the repository
         run: bash .github/scripts/shipped-readme.sh
