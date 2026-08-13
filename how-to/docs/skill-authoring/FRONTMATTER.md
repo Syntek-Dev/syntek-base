@@ -87,6 +87,18 @@ property of whatever runs it.
 `disable-model-invocation` and `effort` are documented by the runtime and are **not** adopted
 (below).
 
+### A key name is not a surface
+
+`agent:` above names a **fork target**. The routing frontmatter on `**/docs/*.md` and
+`**/workflows/**/*.md` (`.claude/CLAUDE.md` § 2.5) has historically spelled a key the same way
+and meant something else entirely. Both are legal, so a sweep that rewrites every match by key
+name corrupts one population and still passes every gate.
+
+**Before sweeping a frontmatter key, partition the matches by path and name each partition's
+meaning.** A key's semantics belong to the file class that carries it, and two file classes may
+legitimately spell one key. `.claude/skills/**/SKILL.md` is a second population by rule, not by
+luck — excluding it is a decision the sweep must state, not an accident it gets away with.
+
 ## What is declined, and why
 
 **`allowed-tools`, and the reason generalises.** What an agent may _do_ is a property of the

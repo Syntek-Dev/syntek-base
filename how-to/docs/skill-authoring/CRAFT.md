@@ -185,6 +185,11 @@ The 300-line cap is a standing forcing function against every failure below (`SH
 - **Sprawl** — a skill simply too long, even when every line is live and unique. The cure is the
   ladder: disclose reference into sub-documents and split by branch or sequence so each path
   carries only what it needs.
+- **Measure the migration target before authoring it.** "Move these conventions to a new guide"
+  is a claim about **two** things, and only the first is usually checked: that the conventions
+  exist, and that no file already owns them. Grep for the **content**, not the filename — a
+  destination that turns out to be occupied makes a third home for one rule, which is the defect
+  the move was meant to fix. The same check justifies the move when the grep comes back empty.
 - **The no-op test.** Hunt no-ops sentence by sentence: does this line change behaviour versus the
   model's default? A line the agent already obeys pays load to say nothing. A weak leading word
   (_be thorough_ when the agent is already thorough-ish) is a no-op — the fix is a stronger word

@@ -34,7 +34,6 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── CONTEXT.md
 │   ├── MEMORY.md                    ← project memory (feedback, patterns, project state)
 │   ├── settings.json                ← project-level permissions, model, hooks
-│   ├── agents/                      ← being folded into skills/ — roster: .claude/skills/CONTEXT.md
 │   ├── hooks/                       ← pre-PR quality gates
 │   ├── plugins/                     ← read-only inspection helpers a skill calls for context
 │   └── skills/                      ← internalised stack, workflow, and document skills
@@ -81,9 +80,10 @@ consumes this API; none of them changes the rule above for the web.
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
-├── .copier/                         ← seed-once staging: the README, version state and
-│                                      scale-planning map a generated project starts from;
-│                                      moved into place and removed at generation
+├── .copier/                         ← seed-once staging: the README, version state, blank
+│                                      project memory and scale-planning map a generated
+│                                      project starts from; moved into place and removed
+│                                      at generation
 ├── .zed/                            ← Zed editor settings
 ├── CONTEXT.md                       ← this file
 ├── REFERENCES.md                    ← curated index of internal docs and external resources

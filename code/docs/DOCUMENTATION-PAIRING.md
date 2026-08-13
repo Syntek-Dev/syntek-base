@@ -134,10 +134,6 @@ thirty-nine of them will be missed.
 Restate only where the rule has **no other owner** and this directory is where it is decided.
 That is the test for whether a `CLAUDE.md` bullet is carrying its own weight.
 
-This repository has been bitten by the alternative: sixty-three files restating the grilling
-round mechanic meant that changing the skill alone would have left sixty-three contradictions
-(`.claude/MEMORY.md`, 09/08/2026).
-
 ## 7. The two exceptions to the pairing
 
 - **The repository root.** `/CLAUDE.md` is gitignored — `code-review-graph install` generates one

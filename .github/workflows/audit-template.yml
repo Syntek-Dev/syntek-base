@@ -47,6 +47,12 @@ jobs:
       - name: The shipped README and token contract must match the repository
         run: bash .github/scripts/shipped-readme.sh
 
+      - name: Prove the detector (self-test against a polluted memory seed)
+        run: bash .github/scripts/shipped-memory.sh --self-test
+
+      - name: A generated project must receive an empty project-memory store
+        run: bash .github/scripts/shipped-memory.sh
+
   generate:
     name: "[3/3] Template Generation"
     runs-on: ubuntu-latest
@@ -191,7 +197,7 @@ jobs:
         run: |
           status=0
           for p in code/src/mobile code/src/scripts/mobile \
-                   .claude/agents/mobile.md .claude/skills/stack-react-native; do
+                   .claude/skills/stack-react-native; do
             if [ ! -e "$RUNNER_TEMP/gen-true/$p" ]; then
               echo "::error::INCLUDE_MOBILE=true — $p is missing"; status=1
             fi

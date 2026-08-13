@@ -130,6 +130,12 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
 - **Run `code-review-graph update` alongside every documentation update** (the "update both
   together" half of the tandem discipline). It is the PATH-installed CLI used here and by the
   hook, and is what `uvx code-review-graph update` resolves to.
+- **`git add` before you update — the incremental pass is blind to untracked files.** It diffs
+  against a git ref, so a **new and unstaged** file is never parsed and the update still reports
+  success: the graph silently lacks it while every audit stays green. Staging is what puts the
+  file in the diff. `--full-rebuild` also works but re-parses everything and can exceed the tool
+  timeout. This is what makes the `.claude/CLAUDE.md` § 6 hard gate real — "refresh alongside the
+  docs" is only satisfied if the new files were actually in the diff.
 - **Git pre-commit stays lefthook-managed.** `code-review-graph install` appends its own check to
   `.git/hooks/pre-commit` after lefthook's, which silently makes the hook non-blocking; the graph's
   advisory `detect-changes` lives in `lefthook.yml` instead. After any `code-review-graph install`,

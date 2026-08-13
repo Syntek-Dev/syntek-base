@@ -47,6 +47,18 @@ _exclude:
   - /VERSION-HISTORY.md
   - /CHANGELOG.md
   - /RELEASES.md
+  # Project memory is an ACCUMULATOR, so the same argument reaches it: syntek-base's own
+  # memory — how this repo's .gitignore overrides work, which account may bypass branch
+  # protection, which internal epic found what — is meaningless and actively misleading
+  # in a generated project, where §2.1 has every session read it second and believe it.
+  #
+  # Excluding it rather than shipping a stub is what keeps the file usable HERE. §2.1
+  # hardcodes `.claude/MEMORY.md` as read-second and that line ships, so the file must
+  # exist in both repos and can never be retired — which rules out the GAPS.md pattern
+  # (a shipped stub plus a differently-named store this repo actually writes to).
+  # Seed-once matters more here than anywhere: a project's accumulated memory must never
+  # be handed back the template's blank canvas by `copier update`.
+  - /.claude/MEMORY.md
   # Update migrations are read from the template clone, never rendered into a
   # project — a generated project has no use for the migrations that produced it.
   - /.copier/migrations
@@ -106,11 +118,12 @@ _exclude:
   # reasonably assumes every file there applies to them. Its two index rows dangle, flagged
   # mobile-only, exactly as the code/docs rows above do.
   - "<: if not INCLUDE_MOBILE :>/how-to/src/STORE-LISTING.md<: endif :>"
-  # The governance pair goes with the tree: a mobile agent with no mobile app to work on
-  # is worse than no agent at all. The shipped INDEXES still list both unconditionally,
-  # flagged mobile-only — that keeps .claude/CLAUDE.md free of templated contents, which
-  # is the rule these entries exist to protect.
-  - "<: if not INCLUDE_MOBILE :>/.claude/agents/mobile.md<: endif :>"
+  # Governance goes with the tree: a mobile skill with no mobile app to work on is worse than
+  # no skill at all — and more so than it was for the retired agent tier, because a skill
+  # fires on DESCRIPTION MATCH rather than on being named, so an unusable one competes for
+  # work it cannot do instead of sitting inert until called. The shipped INDEX still lists it
+  # unconditionally, flagged mobile-only — that keeps .claude/skills/CONTEXT.md free of
+  # templated contents, which is the rule this entry exists to protect.
   - "<: if not INCLUDE_MOBILE :>/.claude/skills/stack-react-native<: endif :>"
   # Optional Rust surface, gated by INCLUDE_RUST — the same one-mechanism rule as mobile
   # above. Rust is for PyO3 extensions, standalone binaries, CLI tools and services;
@@ -122,10 +135,9 @@ _exclude:
   - "<: if not INCLUDE_RUST :>/code/docs/encryption/RUST-CRYPTO.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/workflows/12-rust-extension<: endif :>"
   - "<: if not INCLUDE_RUST :>/.github/workflows/syntax-rust.yml<: endif :>"
-  # Governance goes with the tree, exactly as for mobile: a Rust agent with no Rust to
-  # work on is worse than no agent at all. The shipped INDEXES still list both
-  # unconditionally, flagged rust-only.
-  - "<: if not INCLUDE_RUST :>/.claude/agents/rust.md<: endif :>"
+  # Governance goes with the tree, exactly as for mobile and for the same description-match
+  # reason: a Rust skill with no Rust to work on is worse than no skill at all. The shipped
+  # INDEX still lists it unconditionally, flagged rust-only.
   - "<: if not INCLUDE_RUST :>/.claude/skills/stack-rust<: endif :>"
   # Optional native desktop app (Slint), gated by INCLUDE_DESKTOP — which is itself only
   # asked when INCLUDE_RUST is true, because Slint is Rust. The crate is a member of the
@@ -141,7 +153,6 @@ _exclude:
   - "<: if not INCLUDE_DESKTOP :>/code/docs/desktop<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/docs/visual-design/DESKTOP.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/workflows/13-desktop-app<: endif :>"
-  - "<: if not INCLUDE_DESKTOP :>/.claude/agents/desktop.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/.claude/skills/stack-slint<: endif :>"
   # The Slint style gate travels with the script it runs — see the audit-style-check.yml
   # header. A workflow shipped without its script is a permanently-red job on every
@@ -588,6 +599,10 @@ _tasks:
   # `audits/doc-references.sh` exists to prevent — so the project starts with the map
   # present and every row reading TBD. Seed-once matters here too: once /scale-planning
   # has filled it in, an update must never hand the project its blank stub back.
+  #
+  # MEMORY.md is the third case and the strictest, because it is the only one an AGENT
+  # writes to unprompted: it must arrive with its headings and its writing rules and no
+  # entries at all. `.github/scripts/shipped-memory.sh` holds it to that.
   - command: >-
       mv .copier/README.md README.md &&
       mv .copier/VERSION VERSION &&
@@ -595,6 +610,7 @@ _tasks:
       mv .copier/CHANGELOG.md CHANGELOG.md &&
       mv .copier/RELEASES.md RELEASES.md &&
       mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md &&
+      mv .copier/MEMORY.md .claude/MEMORY.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 

@@ -28,6 +28,37 @@ generated from it.
 
 ---
 
+## 13/08/2026 — The template cannot generate at all, and the gate for exactly this defect reports all-clear
+
+**Type:** Active gap — the template is unusable end to end
+**Summary:** `uvx copier copy` fails on **every** generation, from committed `HEAD`, on both
+`INCLUDE_MOBILE` paths:
+
+```text
+code/src/scripts/development/sync-trees.sh, line 190, in template
+jinja2.exceptions.TemplateSyntaxError: tag name expected
+```
+
+Line 190 is `if "<:" in v:` — Python source quoting copier's own `block_start_string`. The file
+is **not** in `_exclude`, so Jinja renders it and parses the bare `<:` as a tag. Found while
+verifying an unrelated change; reproduced against `HEAD` with no working-tree edits, so CI job
+`[3/3] Template Generation` is red on this branch.
+
+**The detector half is the worse finding.** `.github/scripts/check-template-tokens.sh` exists
+for precisely this defect — its check 3 prints _"Literal block/comment delimiters in a rendered
+file — Jinja will parse these"_. It passes, reporting `✓ 1974 well-formed tokens`. Its regex is
+`<[:|][^>]*>`, which **requires a closing `>`**; the offending line has none, so an unmatched
+`<:` is invisible to the one gate written to catch it. A closing delimiter is not needed to break
+Jinja — an opening one is enough.
+
+**Blocked by / Action:** Not blocked, and two separable fixes. (1) The line: `_exclude` the
+script, or rewrite the comparison so the delimiter is never literal (build it from parts, or wrap
+in `<: raw :>`). (2) The gate, which matters more: widen check 3 to flag an **unmatched** opening
+`<:`/`<|` as well as a delimited pair, and give `check-template-tokens.sh` a `--self-test` that
+mutates a rendered file with a bare `<:` and asserts the check fires — the pattern
+`shipped-readme.sh` and `shipped-memory.sh` already follow. Landing (1) without (2) leaves the
+next bare delimiter equally invisible.
+
 ## 12/08/2026 — N-014's two drafting-guide folders may already exist as the skills themselves
 
 **Type:** Active gap — one decision, blocking 13 of N-014's 38 conversions
@@ -222,36 +253,24 @@ the evidence into `TEMPLATE-GUIDE/` (already excluded) and repoint `README.md` �
 citation dangle for a generated project reading the shipped README. (a) is cheapest and matches the
 derive-and-re-author line the project already draws everywhere else.
 
-## 11/08/2026 — Retire the ADR machinery, project- and template-wide
+## 11/08/2026 — ✅ CLOSED 13/08/2026 (reversed, not implemented) — Retire the ADR machinery, project- and template-wide
 
-**Type:** Planned feature
-**Summary:** Sam settled on 11/08/2026 that this project and every project generated from it does
-**not** use ADRs; decisions are recorded where the work lives (feature map, story plan, `CONTEXT.md`
-glossary, `research/` note). The decision is recorded in `.claude/MEMORY.md` → _This project does
-not use ADRs_, which is read second in the §2.1 order and therefore governs today. The machinery
-itself is still in place and still instructs the opposite, so shipped files currently contradict
-the rule. **Blast radius is much wider than the two obvious folders — measured 11/08/2026: 77 `.md`
-files mention an ADR, of which 74 are actionable** (`CHANGELOG.md`, `RELEASES.md` and
-`VERSION-HISTORY.md` are historical records and must **not** be rewritten):
+**Type:** Planned feature — **withdrawn**
+**Summary:** The 11/08/2026 position was that this project and every project generated from it
+does **not** use ADRs, which made the shipped machinery a live contradiction and put a measured
+74-file removal on the table.
 
-| Area                            | Files | Notes                                                                         |
-| ------------------------------- | ----- | ----------------------------------------------------------------------------- |
-| `how-to/src/`                   | 16    | TEMPLATE-GUIDE pages, SCALE-/SERVER-ARCHITECTURE, `TEMPLATE-TOKENS.md`        |
-| `project-management/src/`       | 15    | incl. `14-DECISIONS/` itself, and the `15`/`16` plan templates that cite ADRs |
-| `project-management/workflows/` | 13    | `14-decisions/` (4), plus `01`, `16`, `17` and the index                      |
-| `.claude/skills/`               | 9     | `wayfinder` + `grill-with-docs` graduation tables, and 7 others               |
-| `code/`                         | 7     | incl. `architecture/BUILD-OPERATE-SEAM.md`, audit `CLAUDE.md`/`CONTEXT.md`    |
-| `.claude/agents/`               | 3     | **self-resolving** — deleted by `MAP-AGENTS-TO-SKILLS` regardless             |
-| single files                    | 11    | `.claude/CLAUDE.md`, `README.md`, `.copier/`, `research/`, `handoffs/`, …     |
+**Sam reversed it on 13/08/2026: the machinery stays.** Generated projects keep their own ADRs,
+and syntek-base's own never reach them — `project-management/src/.gitignore` is an allowlist, so
+`ADR-000-TEMPLATE.md` matches `*TEMPLATE*` and ships while a real `ADR-###-*.md` written here is
+ignored and stays local. Verified with `git check-ignore`: the mechanism already worked, and **no
+file needed to change.**
 
-**Blocked by / Action:** Not blocked, but bigger than it looks — the graduation tables and plan
-templates are the load-bearing edits; the rest are index rows. Three questions before it runs:
-(1) the `src/` numbers are **frozen, append-only** (`src/CONTEXT.md`), so `14-DECISIONS/` is
-deleted rather than renumbered and `15`/`16` stay put, leaving a deliberate gap at 14;
-(2) decide whether PM workflow `14-decisions/` is deleted or repurposed, since workflow numbers
-_are_ renumberable but `REFERENCES.md` pairs them to `src/` tiers; (3) name the **replacement
-destination** in each graduation table, or resolved decisions lose their home entirely. Do **not**
-fold this into `MAP-AGENTS-TO-SKILLS` — different destination. Worth its own `01-feature` map.
+**Resolution:** Closed as **reversed, not implemented** — the 74-file sweep is cancelled, and the
+blast-radius table that used to sit here is deliberately removed so it cannot be re-opened from.
+`14-DECISIONS/`, PM workflow `14-decisions/`, and the `wayfinder` / `grill-with-docs` graduation
+tables are correct as they stand. The `.claude/MEMORY.md` entry that carried the old position and
+the override it needed is deleted.
 
 ## 11/08/2026 — The mobile tree's sub-directories carry no `CONTEXT.md`/`CLAUDE.md` pair
 
