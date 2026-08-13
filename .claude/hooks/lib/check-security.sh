@@ -10,45 +10,36 @@ _check_security() {
   local local_exit=0 docker_exit=0
   local local_py="" local_js="" docker_py="" docker_js=""
 
-  # ── Build pnpm --ignore flags from auditConfig (pnpm-workspace.yaml; pkg.json fallback) ──
-  local IGNORE_FLAGS=()
-  local ignore_json
-  ignore_json=$(python3 -c "
-import json
-ids = []
-# pnpm 11: auditConfig lives in pnpm-workspace.yaml
-try:
-    import yaml
-    ws = yaml.safe_load(open('$PROJECT_ROOT/pnpm-workspace.yaml')) or {}
-    ac = ws.get('auditConfig', {}) or {}
-    ids += (ac.get('ignoreGhsas', []) or []) + (ac.get('ignoreCves', []) or [])
-except Exception:
-    pass
-# legacy fallback: package.json pnpm.auditConfig (pre-pnpm-11)
-try:
-    pkg = json.load(open('$PROJECT_ROOT/package.json'))
-    ac = pkg.get('pnpm', {}).get('auditConfig', {})
-    ids += (ac.get('ignoreCves', []) or []) + (ac.get('ignoreGhsas', []) or [])
-except Exception:
-    pass
-seen = set(); out = []
-for i in ids:
-    i = str(i).strip()
-    if i and ' ' not in i and i not in seen:
-        seen.add(i); out.append(i)
-print(' '.join(out))
-" 2>/dev/null || true)
-  for cve in $ignore_json; do
-    IGNORE_FLAGS+=("--ignore" "$cve")
-  done
-
+  # ── Ignored advisories are CONFIG, never flags ─────────────────────────────
+  # This block used to build `--ignore <GHSA>` arguments. `pnpm audit` has no
+  # such flag: given one, pnpm prints "No new vulnerabilities were ignored" and
+  # EXITS 0 without auditing anything. Because pnpm-workspace.yaml has always
+  # carried ignore entries, the flags were always present, so this leg reported
+  # a pass on every run it has ever made — a false green, not a weak check.
+  # Measured 13/08/2026: the flagged invocation exits 0 while the plain one
+  # reports 36 advisories (19 high, 17 moderate).
+  #
+  # pnpm reads the ignore list from pnpm-workspace.yaml itself (`audit.ignore`),
+  # which is why audits/security.sh — which passes no flags — has been reporting
+  # correctly all along. Pass nothing and let the config do its job.
+  # Primary source: https://pnpm.io/cli/audit
   # ── Local Python (ruff flake8-bandit rules) ────────────────────────────────
-  local_py=$(cd "$PROJECT_ROOT" && \
-    uv run ruff check --select S code/src/django/ 2>&1) || local_exit=1
+  # `uv run` resolves the project before running anything, which a TEMPLATE
+  # cannot satisfy: pyproject.toml's `name` is an unrendered token and uv.lock is
+  # absent by design. The rules themselves are perfectly runnable — only the
+  # launcher is not — so template mode calls ruff directly, exactly as
+  # check-format.sh already does. The check still RUNS; it is not skipped.
+  if [[ "${TEMPLATE_MODE:-false}" == "true" ]]; then
+    local_py=$(cd "$PROJECT_ROOT" && \
+      ruff check --select S code/src/django/ 2>&1) || local_exit=1
+  else
+    local_py=$(cd "$PROJECT_ROOT" && \
+      uv run ruff check --select S code/src/django/ 2>&1) || local_exit=1
+  fi
 
   # ── Local JS/TS (pnpm audit) ───────────────────────────────────────────────
   local_js=$(cd "$PROJECT_ROOT" && \
-    pnpm audit --audit-level low "${IGNORE_FLAGS[@]}" 2>&1) || local_exit=1
+    pnpm audit --audit-level low 2>&1) || local_exit=1
   printf '%s' "$local_js" \
     | grep -qE '[0-9]+ (low|moderate|high|critical) severity' && local_exit=1 || true
 

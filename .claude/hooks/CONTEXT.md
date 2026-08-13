@@ -17,6 +17,7 @@ gates before a PR is marked ready; results are posted to the PR by `post-pr-comm
 ├── context-threshold-handoff.sh ← UserPromptSubmit hook — warns at 50% context, insists at 75%
 ├── pre-compact-handoff.sh   ← PreCompact hook — blocks auto-compaction, steers to `handoff`
 └── lib/                     ← one gate per file, sourced by pre-pr-check.sh, never run directly
+    ├── check-audits.sh      ← TEMPLATE-ONLY — every audit + the shipped-file checks
     ├── check-cloc.sh        ← line-count validation
     ├── check-format.sh      ← code formatting
     ├── check-lint.sh        ← linting and style
@@ -39,16 +40,17 @@ gates before a PR is marked ready; results are posted to the PR by `post-pr-comm
 
 ## lib/ Contents
 
-| File                 | Purpose                         |
-| -------------------- | ------------------------------- |
-| `check-cloc.sh`      | Line count validation           |
-| `check-format.sh`    | Code formatting checks          |
-| `check-lint.sh`      | Linting and style checks        |
-| `check-lockfiles.sh` | Dependency lock file validation |
-| `check-security.sh`  | Security scanning               |
-| `check-stubs.sh`     | Test stub validation            |
-| `check-tests.sh`     | Test coverage and execution     |
-| `check-typecheck.sh` | basedpyright type checking      |
+| File                 | Purpose                                               |
+| -------------------- | ----------------------------------------------------- |
+| `check-audits.sh`    | **Template-only** — every audit + shipped-file checks |
+| `check-cloc.sh`      | Line count validation                                 |
+| `check-format.sh`    | Code formatting checks                                |
+| `check-lint.sh`      | Linting and style checks                              |
+| `check-lockfiles.sh` | Dependency lock file validation                       |
+| `check-security.sh`  | Security scanning                                     |
+| `check-stubs.sh`     | Test stub validation                                  |
+| `check-tests.sh`     | Test coverage and execution                           |
+| `check-typecheck.sh` | basedpyright type checking                            |
 
 ## Session-continuity hooks
 
@@ -71,6 +73,36 @@ for a session that reached compaction anyway.
 ~840k) and takes `CLAUDE_CONTEXT_WINDOW`, `CLAUDE_CONTEXT_ADVISE_PCT`, and
 `CLAUDE_CONTEXT_INSIST_PCT` as overrides. A project on a 200k plan **must** set the first, or the
 hook fires from the opening prompt.
+
+## Template mode — six checks, not eight
+
+`pre-pr-check.sh` detects whether it is running inside **syntek-base itself** or inside a
+project generated from it, and the gate is not the same in both.
+
+The signal is `copier.yml` at the repository root. `copier.yml` lists itself in its own
+`_exclude`, so a **generated project never carries it** — its presence is exact, not a
+heuristic.
+
+In the template there is no application: `uv.lock` is absent by design, `pyproject.toml`'s
+`name` is an unrendered token, and `code/src/docker/.env.dev` is gitignored, so the django
+image cannot be built at all. Six of the eight checks read their authoritative half from that
+container. Those halves are **inapplicable — neither passing nor failing** — and reporting them
+as failures is the false signal this repository audits for elsewhere.
+
+|         | Template mode                                              | Generated project          |
+| ------- | ---------------------------------------------------------- | -------------------------- |
+| Runs    | cloc · format · lint · stubs · security · **audits**       | the eight below            |
+| Dropped | lockfiles · typecheck · tests — container-only, no subject | —                          |
+| Docker  | never started                                              | started, and drift-checked |
+
+**`audits` is the substantive gate here**, and has no counterpart in an application: a
+template's product is its structure, routing and documentation, which is exactly what
+`code/src/scripts/audits/*.sh` and `.github/scripts/shipped-*.sh` read. It is scoped by
+directory rather than by a list, because a list drifts silently — a new audit the PR check
+never runs looks identical to one that passes.
+
+This is **not** a softened gate. Nothing runnable is skipped, and a check with a host-side half
+still blocks on it — see the negative test in `check-format.sh`'s history.
 
 ## Dual-Check Design
 

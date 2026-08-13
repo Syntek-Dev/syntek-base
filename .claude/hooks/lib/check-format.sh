@@ -31,9 +31,15 @@ _check_format() {
   if [[ "${CHECK_PASS[format]}" == "true" ]]; then
     CHECK_SUMMARY["format"]="All files correctly formatted (Python local ✓ Docker ✓ · Prettier ✓)"
   elif [[ -z "${CHECK_SUMMARY[format]:-}" ]]; then
+    # `grep -c` prints 0 AND exits 1 when nothing matches, so the old
+    # `|| echo "?"` fallback appended to the count instead of replacing it and
+    # the summary read "0\n? file(s) need formatting". Swallow the exit with
+    # `|| true` and count Prettier's real marker — it reports `[warn] <path>`,
+    # which none of the previous patterns matched, so a Prettier-only failure
+    # always counted zero.
     local count
     count=$(printf '%s\n%s' "$local_py" "$js_out" \
-      | grep -cE '(would reformat|needs formatting|Unformatted)' 2>/dev/null || echo "?")
-    CHECK_SUMMARY["format"]="${count} file(s) need formatting — run format.sh --fix"
+      | grep -cE '(would reformat|needs formatting|Unformatted|^\[warn\] )' 2>/dev/null || true)
+    CHECK_SUMMARY["format"]="${count:-some} file(s) need formatting — run format.sh --fix"
   fi
 }
