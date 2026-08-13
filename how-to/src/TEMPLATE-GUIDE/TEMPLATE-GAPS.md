@@ -28,10 +28,10 @@ generated from it.
 
 ---
 
-## 13/08/2026 — The template cannot generate at all, and the gate for exactly this defect reports all-clear
+## 13/08/2026 — ✅ CLOSED 13/08/2026 — The template cannot generate at all, and the gate for exactly this defect reports all-clear
 
-**Type:** Active gap — the template is unusable end to end
-**Summary:** `uvx copier copy` fails on **every** generation, from committed `HEAD`, on both
+**Type:** Active gap — the template was unusable end to end
+**Summary:** `uvx copier copy` failed on **every** generation, from committed `HEAD`, on both
 `INCLUDE_MOBILE` paths:
 
 ```text
@@ -51,13 +51,25 @@ file — Jinja will parse these"_. It passes, reporting `✓ 1974 well-formed to
 `<:` is invisible to the one gate written to catch it. A closing delimiter is not needed to break
 Jinja — an opening one is enough.
 
-**Blocked by / Action:** Not blocked, and two separable fixes. (1) The line: `_exclude` the
-script, or rewrite the comparison so the delimiter is never literal (build it from parts, or wrap
-in `<: raw :>`). (2) The gate, which matters more: widen check 3 to flag an **unmatched** opening
-`<:`/`<|` as well as a delimited pair, and give `check-template-tokens.sh` a `--self-test` that
-mutates a rendered file with a bare `<:` and asserts the check fires — the pattern
-`shipped-readme.sh` and `shipped-memory.sh` already follow. Landing (1) without (2) leaves the
-next bare delimiter equally invisible.
+**Resolution (13/08/2026):** Both halves landed, gate first so it could name the offenders
+rather than have them guessed at — it found exactly one.
+
+- **The gate.** A third blindness turned up while fixing the two: the class was `<[:|]`, which
+  policed `<|` — not a delimiter in this template and never could be — while `<~`, the comment
+  opener copier really does configure, was never examined at all. Corrected to `[:~]`, and
+  check 4 added for a bare opener with no `>` after it. `check-template-tokens.sh --self-test`
+  now scans a temp directory of fixtures, one per check plus a clean negative, and asserts each
+  fires on its own; it runs **before** the real check in CI, on the same reasoning as the
+  shipped-docs job.
+- **The line.** `sync-trees.sh` builds the delimiter from its two characters instead of
+  spelling it — the script must ship, so excluding it was never an option: `lefthook` runs it
+  on every commit.
+
+**Verified:** both `INCLUDE_MOBILE` paths generate, 0 unrendered tokens each. Worth recording
+for the next person who probes this by hand — a working-tree tarball is **not** what copier
+sees. Copying everything but `.git` sweeps in gitignored build output (`code/src/mobile/coverage/`
+holds a minified `prettify.js` that Jinja also refuses), producing a failure that looks like a
+template defect and is not. Stage the probe from `git ls-files -c -o --exclude-standard`.
 
 ## 12/08/2026 — N-014's two drafting-guide folders may already exist as the skills themselves
 

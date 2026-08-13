@@ -19,6 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The self-test runs FIRST, for the reason the shipped-docs job below spells out and
+      # this job learned the hard way: every check here is a presence test, so the ordinary
+      # run is green whether the matching rules work or not. Check 3 required a closing `>`
+      # and policed a delimiter that does not exist, so a bare `<:` broke every generation
+      # while this job reported 1974 well-formed tokens.
+      - name: Prove the detectors (self-test against known-bad fixtures)
+        run: bash .github/scripts/check-template-tokens.sh --self-test
+
       - name: Check token syntax integrity
         run: bash .github/scripts/check-template-tokens.sh
 
