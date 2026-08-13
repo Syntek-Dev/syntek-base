@@ -24,6 +24,11 @@
 #
 # SKILL-AUTHORING.md is a path because the rule has two sides: the guide is what the script
 # enforces, and a change to either should be the change that reports a mismatch.
+#
+# `.claude/agents/**` is a path for the opposite reason: clause 13 asserts that nothing is
+# there, and a filter listing only paths that exist would never fire on the one change it
+# exists to catch. Re-adding an agent definition touches no skill, no guide and no script,
+# so without this line the folder could return and CI would stay green having never run.
 name: Audit — Skill Conformance
 
 on:
@@ -31,6 +36,7 @@ on:
     branches: [main, staging, dev, testing]
     paths:
       - ".claude/skills/**"
+      - ".claude/agents/**"
       - "how-to/docs/SKILL-AUTHORING.md"
       - "how-to/docs/skill-authoring/**"
       - "code/src/scripts/audits/skill-conformance.sh"
@@ -39,6 +45,7 @@ on:
     branches: [main, staging, dev, testing]
     paths:
       - ".claude/skills/**"
+      - ".claude/agents/**"
       - "how-to/docs/SKILL-AUTHORING.md"
       - "how-to/docs/skill-authoring/**"
       - "code/src/scripts/audits/skill-conformance.sh"

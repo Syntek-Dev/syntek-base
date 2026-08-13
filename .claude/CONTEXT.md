@@ -11,7 +11,6 @@ Claude Code configuration for the <%PROJECT_NAME%> project.
 ├── MEMORY.md          ← project memory store (feedback, patterns, project state)
 ├── settings.json      ← Claude Code permission settings (project-level)
 ├── settings.local.json ← local permission overrides (gitignored)
-├── agents/            ← being folded into skills/ — roster: .claude/skills/CONTEXT.md
 ├── skills/            ← internalised skills (stack, global-workflow, document standards)
 ├── hooks/             ← pre-PR quality gate hooks
 ├── plugins/           ← helper scripts a skill calls (6 read-only inspection scripts)
@@ -24,10 +23,9 @@ Claude Code configuration for the <%PROJECT_NAME%> project.
 
 ## Sub-directories
 
-| Directory    | CONTEXT.md                  | Purpose                                                |
-| ------------ | --------------------------- | ------------------------------------------------------ |
-| `agents/`    | `agents/CONTEXT.md`         | Superseded — every definition now a skill in `skills/` |
-| `skills/`    | `skills/CONTEXT.md`         | Internalised stack, workflow, and document skills      |
-| `hooks/`     | `hooks/CONTEXT.md`          | Pre-PR quality gates (8 automated checks)              |
-| `plugins/`   | `plugins/CONTEXT.md`        | Read-only helper scripts a skill calls for context     |
-| `worktrees/` | _(gitignored — no content)_ | Git worktree checkouts for parallel stories            |
+| Directory    | CONTEXT.md                  | Purpose                                            |
+| ------------ | --------------------------- | -------------------------------------------------- |
+| `skills/`    | `skills/CONTEXT.md`         | Internalised stack, workflow, and document skills  |
+| `hooks/`     | `hooks/CONTEXT.md`          | Pre-PR quality gates (8 automated checks)          |
+| `plugins/`   | `plugins/CONTEXT.md`        | Read-only helper scripts a skill calls for context |
+| `worktrees/` | _(gitignored — no content)_ | Git worktree checkouts for parallel stories        |

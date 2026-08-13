@@ -150,16 +150,17 @@ draft time as `[AWAITING USER INPUT]`.
 5. Processor Obligations (process only on documented instructions)
 6. Confidentiality of Processing
 7. Security of Processing (Article 32)
-8. Sub-Processor Restrictions (Article 28(2))
-9. Data Subject Rights Assistance (Article 28(3)(e))
-10. Assistance with Data Protection Impact Assessments
-11. Return or Deletion of Personal Data (Article 28(3)(g))
-12. Audit Rights (Article 28(3)(h))
-13. Liability
-14. Term and Termination
-15. Governing Law
-16. Schedule A — Details of Processing (subject matter, duration, nature, purpose, data types, data subjects)
-17. Schedule B — Technical and Organisational Security Measures
+8. Sub-Processor Restrictions (Article 28(2)) — state whether authorisation is **specific** (each sub-processor named) or **general** (written authorisation plus a notification-and-objection window)
+9. International Transfers (Chapter V) — required whenever the processor or any sub-processor is established outside the UK/EEA; name the mechanism (UK IDTA, the UK Addendum to the EU SCCs, EU SCCs, or an adequacy decision) rather than asserting the transfer is lawful
+10. Data Subject Rights Assistance (Article 28(3)(e))
+11. Assistance with Data Protection Impact Assessments
+12. Return or Deletion of Personal Data (Article 28(3)(g))
+13. Audit Rights (Article 28(3)(h))
+14. Liability
+15. Term and Termination
+16. Governing Law
+17. Schedule A — Details of Processing (subject matter, duration, nature, purpose, data types, data subjects, and any **special category** data under Article 9 stated as such)
+18. Schedule B — Technical and Organisational Security Measures
 
 ---
 

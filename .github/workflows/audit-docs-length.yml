@@ -1,14 +1,15 @@
 # Instructional-document length guard — the CI half of .claude/CLAUDE.md § 8.
 #
 # An instructional file is one that tells Claude Code how to work: a guide, a workflow
-# step, an agent, a skill, or a CONTEXT.md/CLAUDE.md pair. Past about three hundred lines
+# step, a skill, or a CONTEXT.md/CLAUDE.md pair. Past about three hundred lines
 # such a file stops being read and starts being skimmed, which is the same as not being
 # there. Measured in cloc CODE lines, so blank lines and comments do not count against it.
 #
 # This exists because the check had no enforcement for its whole life. `audits/cloc.sh`
 # enforces the 750/800 limit on SOURCE files via `wc -l` and passes
 # --exclude-lang=Markdown, so it never saw this rule — yet ten folder CLAUDE.md files, two
-# agents and a workflow checklist all named it as the verifier. The check therefore passed
+# definitions in the since-retired agent tier and a workflow checklist all named it as the
+# verifier. The check therefore passed
 # on every run by not being performed. A gate that cannot fail is worse than no gate.
 #
 # Path filters are safe here because this is NOT a required status check — see

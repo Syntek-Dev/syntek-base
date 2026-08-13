@@ -121,11 +121,12 @@ value is version-proof, and it is what lets the gate assert that every fork name
 
 ## The custom-agent door
 
-The runtime would accept one — `agent:` on a forked skill may name any subagent defined under
-`.claude/agents/`, a folder this project no longer carries — so this is a choice, and the gate is
-what holds it. No skill here targets a custom agent, and the rule cannot be quietly reversed by
-adding a convenient one. The **reopening test** is recorded here, because closing a question
-permanently on zero current need is deciding it without evidence:
+The runtime would accept one — `agent:` on a forked skill may name any subagent defined in a
+project-level agents folder, which this project no longer carries — so this is a choice, and the
+gate is what holds it. It holds both sides: clause 9 refuses the **name**, and clause 13 refuses
+the **folder**, so the rule cannot be quietly reversed by adding a convenient one. The **reopening
+test** is recorded here, because closing a question permanently on zero current need is deciding
+it without evidence:
 
 > A custom agent may be introduced **only** as a fork target, and only on evidence that a named
 > skill needs a durable capability no built-in target provides — a persistent tool scope, a
