@@ -120,7 +120,6 @@ incident tracker, never in git. The practice is `how-to/docs/INCIDENT-PRACTICE.m
 .claude/
 ├── CLAUDE.md    ← the authoritative operating manual — read first, always
 ├── MEMORY.md    ← project memory: feedback, patterns, project state
-├── agents/      ← being folded into skills/ — roster: skills/CONTEXT.md
 ├── skills/      ← skills, loaded on demand (skills/CONTEXT.md)
 ├── hooks/       ← pre-PR quality gates and the pre-compact handoff interceptor
 └── plugins/     ← 6 read-only inspection helpers a skill calls for context

@@ -134,7 +134,6 @@ Two things to do on a freshly generated project:
 │   ├── MEMORY.md                        ← project memory store (always read second, after CLAUDE.md)
 │   ├── settings.json                    ← Claude Code settings (permissions, model, disabled marketplace plugins)
 │   ├── settings.local.json              ← local overrides (gitignored)
-│   ├── agents/                          ← being folded into skills/ — roster: .claude/skills/CONTEXT.md
 │   ├── skills/                          ← internalised skills (stack, workflow, document standards)
 │   ├── hooks/                           ← pre-PR quality gates (fired via PreToolUse hook on gh pr create)
 │   │   ├── lib/                         ← gate scripts: format, lint, typecheck, tests, security, stubs, cloc, lockfiles

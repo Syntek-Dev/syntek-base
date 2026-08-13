@@ -28,49 +28,6 @@ generated from it.
 
 ---
 
-## 13/08/2026 — ✅ CLOSED 13/08/2026 — The template cannot generate at all, and the gate for exactly this defect reports all-clear
-
-**Type:** Active gap — the template was unusable end to end
-**Summary:** `uvx copier copy` failed on **every** generation, from committed `HEAD`, on both
-`INCLUDE_MOBILE` paths:
-
-```text
-code/src/scripts/development/sync-trees.sh, line 190, in template
-jinja2.exceptions.TemplateSyntaxError: tag name expected
-```
-
-Line 190 is `if "<:" in v:` — Python source quoting copier's own `block_start_string`. The file
-is **not** in `_exclude`, so Jinja renders it and parses the bare `<:` as a tag. Found while
-verifying an unrelated change; reproduced against `HEAD` with no working-tree edits, so CI job
-`[3/3] Template Generation` is red on this branch.
-
-**The detector half is the worse finding.** `.github/scripts/check-template-tokens.sh` exists
-for precisely this defect — its check 3 prints _"Literal block/comment delimiters in a rendered
-file — Jinja will parse these"_. It passes, reporting `✓ 1974 well-formed tokens`. Its regex is
-`<[:|][^>]*>`, which **requires a closing `>`**; the offending line has none, so an unmatched
-`<:` is invisible to the one gate written to catch it. A closing delimiter is not needed to break
-Jinja — an opening one is enough.
-
-**Resolution (13/08/2026):** Both halves landed, gate first so it could name the offenders
-rather than have them guessed at — it found exactly one.
-
-- **The gate.** A third blindness turned up while fixing the two: the class was `<[:|]`, which
-  policed `<|` — not a delimiter in this template and never could be — while `<~`, the comment
-  opener copier really does configure, was never examined at all. Corrected to `[:~]`, and
-  check 4 added for a bare opener with no `>` after it. `check-template-tokens.sh --self-test`
-  now scans a temp directory of fixtures, one per check plus a clean negative, and asserts each
-  fires on its own; it runs **before** the real check in CI, on the same reasoning as the
-  shipped-docs job.
-- **The line.** `sync-trees.sh` builds the delimiter from its two characters instead of
-  spelling it — the script must ship, so excluding it was never an option: `lefthook` runs it
-  on every commit.
-
-**Verified:** both `INCLUDE_MOBILE` paths generate, 0 unrendered tokens each. Worth recording
-for the next person who probes this by hand — a working-tree tarball is **not** what copier
-sees. Copying everything but `.git` sweeps in gitignored build output (`code/src/mobile/coverage/`
-holds a minified `prettify.js` that Jinja also refuses), producing a failure that looks like a
-template defect and is not. Stage the probe from `git ls-files -c -o --exclude-standard`.
-
 ## 12/08/2026 — N-014's two drafting-guide folders may already exist as the skills themselves
 
 **Type:** Active gap — one decision, blocking 13 of N-014's 38 conversions
@@ -107,23 +64,32 @@ skill set rewritten to absorb them, so only the skill half shipped: `stack-djang
 attempted** rather than attempted and skipped — routing 56 files that are due for deletion is
 work thrown away twice.
 
-**What is unrouted, and why it matters.** No file under `.claude/agents/` cites
-`NEGATIVE-SPACE.md`, `MANAGEMENT-COMMANDS.md`, `MOBILE-CODING-PRINCIPLES.md`,
-`how-to/src/INVARIANTS.md`, or `audits/negative-space.sh`. The verifier tier is the sharper
-loss: `code-reviewer`, `security`, `qa-tester`, `refactor` and `debugger` are where a missing
-guard is **caught** rather than written, and no skill covers that remit today —
-`code-reviewer.md` is also the only file carrying a list of audit scripts. Until the skills that
-replace them exist, a review pass reaches this doctrine only through `code/CONTEXT.md` § _Key
-docs_.
+**What is unrouted, and why it matters.** The deferral's reason is now discharged — the agent
+tier was deleted on 13/08/2026 (`73414cf`) and the replacement skills exist — so the survey was
+re-run against the converted roster. **The substance survives, narrowed and with real owners:**
 
-**Also unrouted, and not this epic's:** `DISCOVERABILITY.md` and `OBJECT-STORAGE.md` are cited
-by no agent and no skill. `TASK-AUTHORING.md` and `PROCESS-MODEL.md` were in the same state and
-were adopted by N-015, because `NEGATIVE-SPACE.md`'s per-surface table routes to both — leaving
-them unreachable would have been a half-built door.
+> **Survey re-run 13/08/2026** (`grep -rl` over `.claude/skills/`), and the picture has split
+> three ways:
+>
+> | Guide                                                    | Cited by                                                                      |
+> | -------------------------------------------------------- | ----------------------------------------------------------------------------- |
+> | `NEGATIVE-SPACE.md`                                      | `stack-django`, `stack-htmx-templates`, `stack-fastmcp`, `stack-react-native` |
+> | `audits/negative-space.sh`                               | `stack-django`, `stack-htmx-templates`, `stack-react-native`                  |
+> | `how-to/src/INVARIANTS.md`                               | `stack-django`, `stack-fastmcp`                                               |
+> | `MANAGEMENT-COMMANDS.md` · `MOBILE-CODING-PRINCIPLES.md` | `stack-django` · `stack-react-native`                                         |
+> | `DISCOVERABILITY.md`                                     | `seo` — **newly routed**, was cited by no agent and no skill                  |
+> | `OBJECT-STORAGE.md`                                      | **nothing. Still unrouted.**                                                  |
 
-**Blocked by / Action:** Revisit once the replacement skills are written. Re-run the survey that
-found this — the set of `code/docs/` guides cited by no skill — and route the verifier remit
-wherever it lands.
+**The verifier remit is still the sharper loss, and it is now precisely locatable.** `code-reviewer`,
+`security`, `qa-tester` and `refactor` all exist as skills (`debugger` folded into `bugfix`), and
+**not one of them cites `NEGATIVE-SPACE.md`, `INVARIANTS.md` or `negative-space.sh`.** The
+doctrine reaches the surface that **writes** a guard, through the four stack skills, and not the
+surface that **catches** a missing one. That is the same gap as before, no longer blocked on
+anything, and now addressable in four named files rather than a tier due for deletion.
+
+**Blocked by / Action:** Nothing blocks it. Two concrete jobs: route the four verifier skills at
+`NEGATIVE-SPACE.md` + `INVARIANTS.md` + `audits/negative-space.sh`, and give `OBJECT-STORAGE.md`
+an owning skill or record that it has none.
 
 ---
 
@@ -265,24 +231,7 @@ the evidence into `TEMPLATE-GUIDE/` (already excluded) and repoint `README.md` �
 citation dangle for a generated project reading the shipped README. (a) is cheapest and matches the
 derive-and-re-author line the project already draws everywhere else.
 
-## 11/08/2026 — ✅ CLOSED 13/08/2026 (reversed, not implemented) — Retire the ADR machinery, project- and template-wide
-
-**Type:** Planned feature — **withdrawn**
-**Summary:** The 11/08/2026 position was that this project and every project generated from it
-does **not** use ADRs, which made the shipped machinery a live contradiction and put a measured
-74-file removal on the table.
-
-**Sam reversed it on 13/08/2026: the machinery stays.** Generated projects keep their own ADRs,
-and syntek-base's own never reach them — `project-management/src/.gitignore` is an allowlist, so
-`ADR-000-TEMPLATE.md` matches `*TEMPLATE*` and ships while a real `ADR-###-*.md` written here is
-ignored and stays local. Verified with `git check-ignore`: the mechanism already worked, and **no
-file needed to change.**
-
-**Resolution:** Closed as **reversed, not implemented** — the 74-file sweep is cancelled, and the
-blast-radius table that used to sit here is deliberately removed so it cannot be re-opened from.
-`14-DECISIONS/`, PM workflow `14-decisions/`, and the `wayfinder` / `grill-with-docs` graduation
-tables are correct as they stand. The `.claude/MEMORY.md` entry that carried the old position and
-the override it needed is deleted.
+---
 
 ## 11/08/2026 — The mobile tree's sub-directories carry no `CONTEXT.md`/`CLAUDE.md` pair
 
@@ -299,6 +248,8 @@ The mobile tree is in practice governed as one unit by the pair at its root, whi
 sub-directories. Whichever way it goes, the audit only ever checks half of it — extending
 `docs-pairing.sh` to flag a source directory with neither file is a separate, larger question,
 because it would fire on every ordinary Python package.
+
+---
 
 ## 11/08/2026 — `apps/core/schemas.py` breaches the comment standard it was written under
 
@@ -433,164 +384,6 @@ the other, and checking whether `api-design/AUTH-AND-ERRORS.md` needs the same e
 
 ---
 
-## 09/08/2026 — ✅ CLOSED 09/08/2026 — The Rust CI gate cannot pass in syntek-base: a token sits in a crate name
-
-**Type:** Infrastructure gap — **fixed by option 1 below, same day**
-
-> **Closed.** `[[bin]] name` is now the house constant `desktop`; `package.sh` copies the built
-> artefact to `<%PROJECT_SLUG%>-desktop` afterwards, so the deliverable is unchanged and no token
-> sits in the compiler's path. `lint.sh`, `test.sh` and `package.sh` all now run green in the
-> template repository for the first time.
->
-> **The fix surfaced a second defect the first one had been masking.** With the crate finally
-> compiling, `clippy::todo` fired on Slint's **own generated code** — `slint-build` emits
-> `todo!("Components written in Rust can not get embedded yet.")` into `out/app.rs`. The
-> generated-code lint boundary in `main.rs` already existed and already explained itself; it
-> simply had not been extended when the three lints were added hours earlier. `clippy::todo`,
-> `clippy::unimplemented` and `clippy::unreachable` were added to the scoped `#[allow]` on
-> `mod ui`, and to the four documents that carry a copy of that list
-> (`code/docs/desktop/UI-AND-STATE.md`, `code/docs/DESKTOP.md`, `.claude/skills/stack-slint`,
-> `.claude/skills/stack-rust`). **The standing rule now stated in `UI-AND-STATE.md`: deny a lint
-> in the crate's `[lints.clippy]` and allow it on the generated module in the same change.**
->
-> **The class is closed too** — `how-to/src/TEMPLATE-TOKENS.md` gained _Position matters as much
-> as shape — never tokenise a validated identifier_, with the position table and this crate as
-> the worked example.
->
-> The original entry follows, unedited.
-
-**Summary:** `code/src/rust/crates/desktop/Cargo.toml:21` declares
-`[[bin]] name = "<%PROJECT_SLUG%>-desktop"`. rustc validates a crate name as an **identifier**,
-and rejects `<`, `%` and `>` in one, so the crate cannot compile until Copier renders the token:
-
-```text
-error: invalid character '<' in crate name: `<%PROJECT_SLUG%>_desktop`
-error: could not compile `desktop` (bin "<%PROJECT_SLUG%>-desktop") due to 3 previous errors
-```
-
-`scripts/rust/lint.sh` runs `cargo clippy --workspace --all-targets`, so **every** workspace-wide
-cargo command fails here — lint, test and `cargo-deny` alike. `.github/workflows/syntax-rust.yml`
-runs all three unguarded on any push touching `code/src/rust/**`, so that job is red on `main`
-today. `nativecore` is unaffected and checks clean on its own.
-
-**Generated projects are fine.** The token renders to a valid slug and the crate compiles, which
-is exactly why this has stayed invisible: the only place it breaks is the one repository whose CI
-nobody generates.
-
-**It is a single instance, not a pattern — and that is the useful part.** Every other token in the
-Rust tree sits in a position the compiler never parses as code:
-
-| Position                            | Example                                               | Validated? |
-| ----------------------------------- | ----------------------------------------------------- | ---------- |
-| Comment                             | `# Cargo workspace for <%PROJECT_NAME%>.`             | no         |
-| `description` / `authors` free text | `description = "Native desktop application for …"`    | no         |
-| `license` string                    | `license = "<%LICENCE%>"`                             | no¹        |
-| Rust doc comment                    | `//! Native desktop client for \`<%PROJECT_NAME%>\`.` | no         |
-| Slint string literal                | `title: "<%DESKTOP_APP_NAME%>";`                      | no         |
-| **`[[bin]] name`**                  | `name = "<%PROJECT_SLUG%>-desktop"`                   | **yes**    |
-
-¹ `<%LICENCE%>` is not a valid SPDX expression either — the workaround is already in place and
-documented, `deny.toml` → `private.ignore`, with the reasoning in `nativecore/Cargo.toml`. That is
-the same class of defect caught once and worked around rather than named, which is why the class
-is worth naming now.
-
-**The token contract has no rule for this.** `how-to/src/TEMPLATE-TOKENS.md` classifies tokens by
-prose shape (`phrase · cell`, `reverse-domain`) and has a _Derived forms_ section for tokens that
-**compose** into larger identifiers — but nothing that asks whether the resulting string has to
-satisfy a **grammar**. A slug composes into `<%PROJECT_SLUG%>_dev` (a database name, unvalidated
-until runtime) and into `<%PROJECT_SLUG%>-desktop` (a crate name, validated at compile time), and
-the contract cannot currently tell those apart.
-
-**Blocked by / Action:** Not blocked. Three options, in order of preference:
-
-1. **Make the bin name a house constant** — `name = "desktop"` — on the precedent the sibling
-   crate already sets and documents: _"`nativecore` is a HOUSE CONSTANT, not a token: like
-   apps.marketing and apps.design_tokens, the name is the same in every generated project so the
-   import path is stable across the estate."_ The branded filename, if wanted, is
-   `scripts/desktop/package.sh`'s job — it currently stops at `target/release/` and renames
-   nothing, so this is a rename plus a copy step, and it leaves **zero** compiler-validated tokens
-   in the Rust tree.
-2. **Keep the token, exclude the crate from the template's own Rust CI.** Cheapest to write and
-   the worst outcome: Slint then never compiles in syntek-base at all, so an upstream Slint break
-   ships to the first project that opts in.
-3. **A Copier post-task that rewrites the name at generation time.** Another moving part, and it
-   still leaves the template repo's own gate red.
-
-Then close the class: add a **position** column or a one-line rule to `TEMPLATE-TOKENS.md` — _a
-token never lands where a compiler, parser or schema validates the result as an identifier_ — and
-consider teaching `check-template-tokens.sh` the handful of positions that qualify.
-
-**Related:** _"The backend test suites never execute in this repository"_ (02/08/2026) is the same
-family — a gate that cannot run in the template and therefore proves nothing before generation.
-This one is narrower and has a concrete fix.
-
-## 09/08/2026 — ✅ CLOSED 11/08/2026 — Epic node numbers are cited in shipped files, where the map they index does not exist
-
-**Type:** Active gap — **closed by the citation rule; every site in the table below stripped**
-**Summary:** Found while landing N-027, which closed **one** instance and, on being challenged,
-turned out to have closed the smaller half of a class. `code/docs/logging/OBSERVABILITY.md` had a
-Deferred row reading _"N-027 adopts **OTLP**…"_ — epic paperwork in a file that ships, meaningless
-in a generated project that has no N-027 and may have pruned the map entirely. That one is fixed.
-**Four more remain, all in files `copier.yml` does not exclude:**
-
-| File                                | Line | Cites                        | Shape                                 |
-| ----------------------------------- | ---- | ---------------------------- | ------------------------------------- |
-| `.claude/skills/grilling/SKILL.md`  | 29   | `MAP-DOCTRINE-UPGRADE` N-009 | Rationale — "this happened once here" |
-| `.claude/skills/wayfinder/SKILL.md` | 112  | `N-023`/`N-024`/`N-025`      | Illustrative example of node grouping |
-| `.claude/MEMORY.md`                 | 37   | `MAP-DOCTRINE-UPGRADE` N-009 | Rationale for the round-shape sweep   |
-| `.claude/MEMORY.md`                 | 56   | N-030                        | Provenance of a memory entry          |
-
-These are **weaker than the one that was fixed** — dangling citations rather than false
-instructions, and each rule stands without its citation. That is why they were recorded rather
-than swept during N-027: the node's scope was the tracing doctrine, and quietly widening it is how
-a footprint stops being reviewable. **`.claude/MEMORY.md` raises the larger question underneath
-this one** — it ships with syntek-base's own memory entries, which is a bigger inheritance problem
-than the node numbers inside them, and is not this entry's to settle.
-**Resolution (11/08/2026):** the first option — and it is now a standing rule rather than a
-judgement call made per citation. A shipped file may cite **layering-system artefacts only**
-(`CONTEXT.md`, `CLAUDE.md`, `docs/`, `workflows/`, scripts, guides, all present in every generated
-project) and **never a per-project instance** (`ADR-###`, `US###`, `SPRINT-##`, `MAP-*`, `PLAN-*`),
-because a generated project has different ones at those numbers or none at all. Every site in the
-table lost its node number and kept its rationale, and `audits/doc-references.sh` now fails the
-build on a new one. **The `MEMORY.md`-ships question is untouched** and still needs its own
-decision — it is a bigger inheritance problem than the numbers were.
-
-## 09/08/2026 — ✅ CLOSED 09/08/2026 — Prettier corrupts a token beside underscored code, unseen
-
-**Type:** Active gap — **closed by the untracked-files fix below; they were one defect**
-**Summary:** Found while landing N-028. An `OBJECT_STORE` token was written into a prose sentence
-that also contained an underscored code span; `format.sh --fix` parsed the underscores as Markdown
-emphasis, reflowed the paragraph, and rewrote the token's own underscore as an asterisk — a name
-Copier does not recognise, so it would render as literal text into every generated project. The
-formatter reported success and the token guard reported `✓ all registered`.
-**The first diagnosis was wrong, and the correction is the useful part.** It read as "the guard
-cannot detect this class" — but `check-template-tokens.sh` has carried a `Malformed tokens`
-detector since it was written, and that detector is correct. It simply never ran on the file:
-`scan()` reads `git ls-files`, and nothing in this repository is committed. **The Prettier
-behaviour is real and will recur; it is now caught rather than silent.**
-**Blocked by / Action:** _Done._ No new detector was needed — the fix was the file-selection
-one-liner below. Prevention still applies when writing: prefer `**bold**` over `_emphasis_` near a
-token, and keep a token out of a sentence carrying an underscored code span.
-
-## 09/08/2026 — ✅ CLOSED 09/08/2026 — `check-template-tokens.sh` is blind to untracked files and reports a false all-clear
-
-**Type:** Active gap — **fixed during N-028**
-**Summary:** The guard scans `git ls-files`, so a file that has not been `git add`-ed is invisible
-to it. Found while landing N-030: six new files and one modified guide carried **twelve
-occurrences of the unregistered token `INCIDENT_TRACKER`**, and the script reported
-`✓ 1831 well-formed tokens, all registered in copier.yml`. The modified guide
-(`how-to/src/PLATFORM-PROVIDERS.md`) was itself untracked — nothing in this repository is
-committed — so even the edit to an existing file went unseen. CI is safe, because everything is
-tracked by the time it runs; **local runs are not**, and local is exactly when the file you just
-wrote is the one that needs checking. Same signature as the delimiter-guard entry below: a guard
-whose green means "did not look".
-**Blocked by / Action:** _Done, 09/08/2026 (N-028)._ `scan()` and the token counter now read
-`git ls-files` **plus** `git ls-files --others --exclude-standard`, via a shared `candidates()`
-helper. Proved by planting a mangled token in an untracked file: green before, caught after — and
-the first real finding was `MAP-DOCTRINE-UPGRADE.md`, which had quoted a corrupted token in prose
-and ships. As predicted, the one line removed the **class** of false all-clear, not the instance:
-it closed the Prettier-corruption entry above at the same time.
-
 ## 09/08/2026 — `scripts/deployment/` ships empty, so an incident has no scripted rollback
 
 **Type:** Infrastructure gap
@@ -610,6 +403,8 @@ procedure (now `.claude/skills/release/SKILL.md`) and `23-release/STEPS.md` Step
 report rather than offering a command that cannot run. What remains is the scripts themselves,
 and the Rollback section that depends on them.
 
+---
+
 ## 09/08/2026 — Four security-specific incident runbooks are still unwritten
 
 **Type:** Active gap
@@ -623,31 +418,6 @@ system, and writing them from imagination is precisely what the execute-to-verif
 **Blocked by / Action:** Each needs to be performed once against a non-production environment
 before it can be documented. They belong in `how-to/docs/` beside `INCIDENT-PRACTICE.md`, which
 now carries the forward reference rather than the old "no operator playbook exists" claim.
-
-## 04/08/2026 — ✅ CLOSED 11/08/2026 — Two ADRs are cited across the template and neither exists
-
-**Type:** Active gap — **closed by dropping every citation; the ADRs will never be written**
-**Summary:** `ADR-016` and `ADR-019` are referenced as though they are real, accepted decisions, in
-files that **ship**: `code/workflows/03-database-migration/CONTEXT.md` (ADR-016 co-location for the
-`tenant_id` shard key), `code/src/scripts/audits/css-tokens.sh` and
-`code/src/scripts/audits/css-gradients.sh` (ADR-019, the Django static token cascade and the
-post-ADR-019 CSS surfaces), and the root `REFERENCES.md` (ADR-016/ADR-023 against
-`architecture/CORE-AND-SCALING.md`). `project-management/src/14-DECISIONS/` contains only
-`ADR-000-TEMPLATE.md`. Every generated project therefore inherits two shipped audit scripts and a
-code workflow citing decision records that have never existed — and a third number, ADR-023, cited
-in `REFERENCES.md` alone.
-
-Same class of defect as the `BRAND-VOICE.md` entry below: the rule is enforced, the document
-behind it is missing. The difference is that here the **numbering** is also at risk — the ADR
-template instructs "take the next free index; never reuse a number", and a project that writes its
-first real ADR as `ADR-001` will eventually collide with the reasoning these citations assume.
-
-**Blocked by / Action:** Decide per citation whether the ADR should be **written** (the reasoning
-is real and worth recording — most likely for the ADR-016 shard-key co-location and the ADR-019
-token cascade, both of which have live enforcement behind them) or the **citation dropped** in
-favour of pointing at the guide that actually carries the rule. Do not renumber existing
-references without settling that first. Unclaimed by any node on
-`project-management/src/01-FEATURE/MAP-DOCTRINE-UPGRADE.md` — found while resolving N-026.
 
 ---
 
@@ -779,6 +549,8 @@ test in `audit-template.yml`, plus running the suites once in a freshly generate
 any change to `code/src/django/`, the Dockerfiles, or the compose files. Treat a green
 `pytest + coverage` in this repository as "not applicable", never as "passing".
 
+---
+
 ## 09/08/2026 — `static-analysis.sh` has never actually executed, and has no CI workflow
 
 **Type:** Infrastructure gap
@@ -798,6 +570,8 @@ Then add `.github/workflows/audit-static-analysis.yml` with a step that **fails 
 absent after install**, so a broken install is loud instead of silently green. Until then, treat a
 clean `static-analysis.sh` as "did not run".
 
+---
+
 ## 02/08/2026 — `pytest + coverage` is not yet a required status check
 
 **Type:** Infrastructure gap
@@ -808,6 +582,8 @@ could never report success here, so requiring it would have blocked every pull r
 **Blocked by / Action:** The lockfile guard above now lets it report success. Add it to the
 required set once it has been green on `main` for a few runs — remembering, per the entry above,
 that green means "skipped, nothing to run" in this repository.
+
+---
 
 ## 02/08/2026 — Expo SDK tracking has no owner and no trigger
 
@@ -821,6 +597,8 @@ is not ESLint 10 compatible. Each was found only by running the toolchain.
 **Blocked by / Action:** Decide a cadence and an owner. An SDK bump is a versioned template
 release that flows downstream through `copier update`, not a routine dependency bump.
 
+---
+
 ## 02/08/2026 — Delimiter-safety guard is one-sixth implemented
 
 **Type:** Active gap
@@ -831,6 +609,8 @@ predates both the mobile epic and the TypeScript in the tree. A literal scan alr
 site, because markdown tables write the pipe as an escaped character.
 **Blocked by / Action:** Extend the script to all six sequences **including markdown-escaped
 forms**, or it will keep reporting a false all-clear.
+
+---
 
 ## 02/08/2026 — `pnpm audit` is red for pre-existing reasons
 

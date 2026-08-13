@@ -39,6 +39,19 @@ it is durable in git yet never ships. The same test applies to any register or r
 other side of that test — excluded as of 13/08/2026, and therefore a safe home for exactly the
 state `GAPS.md` cannot hold.
 
+### A `description` is charged every turn; a body only when it fires — 13/08/2026
+
+**Route-don't-restate applies hardest to the standing surface, and the agents→skills epic proved
+it by getting this backwards.** Measured at closeout: 85 standing entries fell to 65, yet standing
+context **rose 6,900 → 8,304 tokens (+20.4%)**. All 31 entries converted one-to-one grew (mean
++307 chars, none shrank), because one decision mandated merging descriptions to save tokens and a
+later one, settled in a different round, mandated **sharpening** them to fix a selection
+collision — and nothing measured the two against each other. The editorial discipline went to
+5,850 body lines that cost nothing standing while the surface charged on every request grew.
+**Before sharpening a `description`, price it: chars ÷ 4, times every turn of the project's
+life.** And when two decisions touch the same measured quantity in different sessions, one of
+them must re-run the measurement — the second decision silently repriced the first.
+
 ---
 
 ## Project State
