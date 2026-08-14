@@ -1,9 +1,78 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.21.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v3.0.0 — 14/08/2026
+
+**Status:** Major release — breaking. The agent folder is gone. Everything it did is still
+here, under a different name and reached a different way.
+
+### Read this first if you have a project on 2.x
+
+`.claude/agents/` no longer exists. If you never wrote an agent of your own, there is nothing
+for you to do — `copier update` removes the files it put there and the update is clean.
+
+If you **did** write one, the update will tell you. It prints a list of the definitions it
+found, and where each one would go if you want to keep it:
+
+```text
+▸ v3.0.0 migration — agent definitions the template does not own
+
+  1 agent definition(s) remain in .claude/agents.
+  The template no longer reads this directory — nothing routes to these files.
+
+    .claude/agents/invoice-chaser.md    -> .claude/skills/invoice-chaser/SKILL.md
+```
+
+**It only tells you.** Nothing is moved, rewritten or deleted, and it cannot make your update
+fail. That is on purpose: turning an agent into a skill is a rewrite rather than a rename, so
+a tool that moved the file for you would hand you something that does not pass the project's
+own checks and call the job done. The step-by-step is in `14-UPDATING.md`.
+
+### Why the folder went
+
+There were two ways to describe the same job, and they had drifted apart. An agent was
+something you had to name before it would run. A skill starts itself when the work matches
+what it says it does. Keeping both meant writing every remit twice, and the second copy was
+reachable only by asking for it — so nobody read it, and nobody noticed when it went stale.
+Two of them had been telling a Django project to use React hooks.
+
+So the second copy is gone, and the descriptions did the work instead. That is the whole
+change: you stop choosing a specialist and start describing the job.
+
+### Nothing was thrown away without checking
+
+Before the folder was deleted, every path, tool and identifier mentioned anywhere inside it —
+697 of them — was checked to see whether it was written down anywhere else. Five things were
+not, and each was given a proper home first: the per-route rate limits, the rules for who may
+see personal data, the security standards an audit is marked against, and the list of
+libraries the export feature uses, which now has its own guide.
+
+### What else is in this release
+
+- **A `skills:` name that pointed nowhere used to fail in total silence.** The skill simply
+  never arrived and nothing said so. There is now a check for it, and it covers the case where
+  a name is valid here but would be missing in a project built without the mobile, Rust or
+  desktop surface.
+- **The template could not generate at all**, and had not been able to since v2.4.0 — one
+  stray character in a script broke it, and the check meant to catch that class of fault was
+  looking for the wrong shape and reporting everything fine. Fixed, and the check now proves
+  it can spot the fault before it says the tree is clean. Several other checks were given the
+  same treatment.
+- **A security scan that had never actually scanned anything.** It was passing an option that
+  does not exist, and the tool responded by doing nothing and reporting success. With that
+  removed it found 36 real advisories, 32 of which are now fixed.
+- **The test pipeline is green again** after a fortnight of red that had nothing to do with
+  the tests — the database was fine throughout, and only the thing checking on it was broken.
+- **Your project's memory starts empty.** New projects had been inheriting eleven notes from
+  this template's own development, in a file every session reads as authoritative before doing
+  any work. It now arrives blank, and once you have written in it an update can never overwrite
+  what you put there.
 
 ---
 

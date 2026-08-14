@@ -112,6 +112,48 @@ If it does find orphans, nothing is broken yet — the files are still there. Mo
 folder that replaced it, check `project-management/src/CONTEXT.md` for the current numbering, and
 re-run the audit until it is clean.
 
+### The same failure in reverse — v3.0.0 and agents you wrote yourself
+
+**v3.0.0 deletes `.claude/agents/` in full.** Its 54 agent definitions — plus the directory's own
+`CONTEXT.md` and `CLAUDE.md` — were rewritten as skills under `.claude/skills/`, and not one for
+one: several folded together. For a project that never wrote its own agent the update is clean,
+because Copier removes what it generated and there is nothing to decide.
+
+If you **authored your own agent**, the failure above runs backwards. There the scaffolding moved
+and your files stayed; here the scaffolding was deleted and your files stayed. Same silence, same
+success message, same directory nothing routes to any more.
+
+The update tells you, because v3.0.0 ships a migration that reports it:
+
+```text
+▸ v3.0.0 migration — agent definitions the template does not own
+
+  1 agent definition(s) remain in .claude/agents.
+  The template no longer reads this directory — nothing routes to these files.
+
+    .claude/agents/invoice-chaser.md    -> .claude/skills/invoice-chaser/SKILL.md
+```
+
+**It only reports.** Nothing is moved, rewritten or deleted, and it cannot fail your update.
+That is deliberate: agent → skill is a rewrite rather than a rename, so a migration that moved
+the file for you would hand you a skill that fails `skill-conformance.sh` and call it done.
+
+To keep one, relocate it by hand:
+
+1. Create `.claude/skills/<name>/SKILL.md` and move the body across.
+2. Give it `name` and `description` frontmatter. **The description is load-bearing** — it is what
+   fires the skill on a match, so it now carries the routing the old `agent:` field did.
+3. Drop `tools:`. It never restricted anything, and skills have no equivalent.
+4. Prove it:
+
+   ```bash
+   bash code/src/scripts/audits/skill-conformance.sh
+   ```
+
+To drop one instead, delete the file — nothing references it. Either way the choice is yours to
+make, which is why the migration does not make it for you. Writing a skill:
+`how-to/docs/SKILL-AUTHORING.md`. The roster it joins: `.claude/skills/CONTEXT.md`.
+
 ## Resolving conflicts
 
 Conflicts appear as normal git conflict markers in the affected files:

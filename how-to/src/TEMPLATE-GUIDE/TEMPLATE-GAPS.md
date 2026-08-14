@@ -1,6 +1,6 @@
 # Template Gaps — syntek-base's own open items
 
-**Last Updated**: 13/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 14/08/2026 | **Maintained By**: Syntek Studio
 
 Open items belonging to **`syntek-base` itself** — the template repository, not any project
 generated from it.
@@ -69,26 +69,42 @@ project. The realistic verification is the generation smoke test in `audit-templ
 running the suites once in a freshly generated project after any change to `code/src/django/`,
 the Dockerfiles, or the compose files.
 
-This is permanent. `MAP-BASE-HEALTH.md` `N-001` does **not** touch it — that node fixes the
-manifest's package _name_, which is a different root cause from the missing lockfile.
+This is permanent, and **nothing on `MAP-BASE-HEALTH.md` touches it** — `N-001` is about the
+manifest's package _name_, which is a different root cause from the missing lockfile. Fixing one
+does not fix the other.
 
-### SL-2 — Python rules here are proved by the host `ruff` binary and by nothing else
+### SL-2 — Any tool that needs `uv` to open the manifest does not run here
 
-**Temporary — retire this when `MAP-BASE-HEALTH.md` `N-002` lands.**
+**Corrected 14/08/2026.** This entry previously said Python rules were proved by the host `ruff`
+binary and that CI must never be cited as evidence. **Commit `24a5fb7` superseded that for ruff,
+and the correction is the useful part** — the blocker was never the rules, only the launcher.
 
-Every Python CI job runs `uv sync --only-dev` first, and `uv` refuses to parse `pyproject.toml`
-at all, because line 2 is `name = "<%PROJECT_SLUG%>"` and that is not a valid PEP 508 package
-name. All three ruff/basedpyright jobs therefore fail at the sync step. The same root cause takes
-out the three Python lefthook hooks and the `pip-audit` half of `security.sh`.
+`uv` refuses to parse `pyproject.toml` at all, because line 2 is `name = "<%PROJECT_SLUG%>"` and
+that is not a valid PEP 508 package name. It fails while **parsing**, before resolution begins,
+so `uv run` and `uv sync` both die and every step after them is skipped.
 
-**The rule this leaves, until `N-001`/`N-002` land:** treat every `.py` change here as verified
-by the directly-installed host `ruff` binary — which parses no manifest and works fine — and
-**never cite CI as evidence for a Python rule in syntek-base**. Any template-level tooling that
-shells out to `uv run` fails in the base repo and works in a generated project; prefer
-`uv run --no-project --with <dep>` where the work does not need the project's own environment.
+**Ruff escaped it.** Only the launcher needed the manifest; the rules never did. Both CI jobs and
+both lefthook legs now install ruff with `uvx --from`, which builds a throwaway environment and
+opens no `pyproject.toml`. The version constraint is read out of the manifest at run time rather
+than restated, so there is one source of truth. **Ruff lint and format are now enforced against
+this repository, and CI is legitimate evidence for a ruff rule.**
 
-The rules themselves are sound and **do** run in a generated project, where the token renders to
-a real name.
+**What still does not run here**, and the rule that leaves:
+
+| Tool                        | Why it cannot escape                                                               |
+| --------------------------- | ---------------------------------------------------------------------------------- |
+| `basedpyright`              | A type-checker with no dependency set gives a meaningless answer, not a weaker one |
+| `pip-audit` (`security.sh`) | Shells to `uv export` and `uv run`, both of which open the manifest                |
+| Anything calling `uv run`   | Same parse failure, one step earlier than the missing lockfile                     |
+
+Both guarded ones take the step-level lockfile guard: they run in a generated project and report
+a skip with a reason here. **Never cite CI as evidence for a `basedpyright` or `pip-audit`
+finding in syntek-base** — and where new template-level tooling needs a dependency but not the
+project's own environment, prefer `uvx --from` or `uv run --no-project --with <dep>` over
+`uv run`.
+
+Whether to fix the manifest name itself, or keep routing per tool, is `MAP-BASE-HEALTH.md`
+`N-001` — reopened on 14/08/2026 because `24a5fb7` changed what the fix would still buy.
 
 ---
 

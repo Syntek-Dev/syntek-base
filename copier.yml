@@ -575,6 +575,17 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v2.0.0-renumber-src.sh"
     when: "<% _stage == 'after' %>"
 
+  # v3.0.0 deletes `.claude/agents/` in full. Copier removes the definitions it
+  # generated; one a project wrote ITSELF was never a template file, so it is left
+  # behind in a directory nothing routes to — the 14-UPDATING.md silent-orphan failure
+  # running in reverse. This reports those files and says how to relocate each as a
+  # skill. Advisory: it never moves or deletes a definition and always exits 0, because
+  # agent -> skill is a rewrite (frontmatter, and `skill-conformance.sh` to satisfy),
+  # and a machine doing it would emit a skill that fails its own gate.
+  - version: v3.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v3.0.0-self-authored-agents.sh"
+    when: "<% _stage == 'after' %>"
+
   # .copier/ is a staging directory, not project content. _tasks empty it and remove
   # it — but _tasks run on `copy` only, so on an `update` the staged seeds land in the
   # project and simply sit there, looking like version files a developer might edit.
