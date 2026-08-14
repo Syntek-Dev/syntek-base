@@ -31,7 +31,7 @@ and prod.
 - **Definition of done:** root cause identified and documented; a regression test
   added via `code/workflows/10-debug/`; a staging/prod incident filed as a bug report
   in `project-management/src/20-BUGS/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

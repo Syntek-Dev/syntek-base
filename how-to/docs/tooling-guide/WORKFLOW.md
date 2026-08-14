@@ -149,7 +149,7 @@ Name the file rather than pasting it — e.g. fix the service in `apps/users/`, 
 ### 6. Use the right model
 
 Tier is set by the `model:` frontmatter on the guide or workflow you are in. The table, and why
-`sonnet` and `haiku` are never used, is `.claude/CLAUDE.md` §4.
+`sonnet` and `haiku` are never used, is `.claude/CLAUDE.md` Section 4.
 
 ### 7. Chain logically
 

@@ -28,7 +28,7 @@ Slint attribution.
   `package.sh` exit `0`; the About dialog is reachable by eye; screen-reader behaviour checked;
   touched `CONTEXT.md` files and the code-review-graph refreshed.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

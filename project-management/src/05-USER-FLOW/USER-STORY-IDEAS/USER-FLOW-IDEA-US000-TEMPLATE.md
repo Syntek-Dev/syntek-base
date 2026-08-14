@@ -130,7 +130,7 @@ flowchart TD
      [One sentence on the area.] This file is a stub — the canonical flow lives in
      `USER-FLOW-<CANONICAL>.md`.
 
-     > **Canonical source:** `USER-FLOW-<CANONICAL>.md` § [N] — [Section Name]
+     > **Canonical source:** `USER-FLOW-<CANONICAL>.md` Section [N] — [Section Name]
 
      Stories served: US###, US###.
      ============================================================================ -->

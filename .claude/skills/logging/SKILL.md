@@ -48,7 +48,7 @@ The code is written against an **interface**; which product implements it is con
 | Metrics         | the **Prometheus exposition format** / OpenMetrics |
 
 **"Sentry" is a valid answer for the first row, not a banned one** — the register lists it as a
-proven alternate. The per-environment matrix is `code/docs/LOGGING.md` § _Stack by
+proven alternate. The per-environment matrix is `code/docs/LOGGING.md` Section _Stack by
 environment_; the verdicts and alternates are `how-to/src/PLATFORM-PROVIDERS.md`; the rule is
 `code/docs/architecture/PROVIDER-NEUTRALITY.md`. **Read them rather than restating them — a
 restatement here is exactly how this section was wrong before.**

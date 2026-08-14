@@ -16,11 +16,11 @@ model: opus
 - **Folder discovery.** A skill is a `kebab-case/` folder under `.claude/skills/` whose entry
   file is `SKILL.md`, and the folder name **is** the `name` field `[gate: fail]`.
 - **≤ 300 code lines per file, on anything first-party** `[gate: fail — docs-length.sh]`
-  (`cloc --include-lang=Markdown`; `.claude/CLAUDE.md` § 8). Vendored skills are exempt here too
+  (`cloc --include-lang=Markdown`; `.claude/CLAUDE.md` Section 8). Vendored skills are exempt here too
   — `docs-length.sh` skips `.agents/*`, and one of them sits well past 300. The spec recommends
   under 500 raw lines, so this is stricter in practice, though the two metrics are not
   comparable: ours counts code lines, so blank lines and prose wrapping are free. A file that
-  breaches the cap is disclosed — see `CRAFT.md` § 2 for the move.
+  breaches the cap is disclosed — see `CRAFT.md` Section 2 for the move.
 - **British English** (en_GB) throughout, and every developer operation cites a script in
   `code/src/scripts/**/*.sh` — never a raw `pnpm`, `pytest`, `python`, or `docker` command.
 
@@ -71,7 +71,7 @@ clauses `[gate: fail]` with no warn tier:
   every name in it resolving to a skill directory.
 
 Findings are reported `[spec N]`/`[house N]`; the reason the two are kept apart is
-`FRONTMATTER.md` § _Three claims, kept apart_. Vendored skills are held to the spec clauses
+`FRONTMATTER.md` Section _Three claims, kept apart_. Vendored skills are held to the spec clauses
 only, and within those to the published six alone — no runtime key is admitted on one. Run it on
 any skill you touch.
 

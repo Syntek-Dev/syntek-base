@@ -49,7 +49,7 @@ Ninja API, never a client-side build for the Django-served pages.
   the run stays green having measured nothing. Add a directory there and add it here in the same
   change. Reachable as `@/lib/…` — the alias resolves in both `tsc` and Jest.
 - **The compiler flags in `tsconfig.json` are a rule, not a preference.** The four beyond
-  `strict` each ban a state (`code/docs/MOBILE-CODING-PRINCIPLES.md` § 1). Loosening one to make
+  `strict` each ban a state (`code/docs/MOBILE-CODING-PRINCIPLES.md` Section 1). Loosening one to make
   a build pass is a finding for `project-management/src/19-FINDINGS/`; the fix is a guard or a
   length check, never a `!` non-null assertion.
 - **Stay self-contained.** TypeScript, eslint and their config live here and only here. Adding a

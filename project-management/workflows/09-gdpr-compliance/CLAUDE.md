@@ -25,7 +25,7 @@ subject rights — when it collects, processes, or stores personal data, before 
 - **Definition of done:** every personal-data field has a lawful basis and retention
   rule; encryption, access control, and logging checks pass; record filed; checklist
   satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

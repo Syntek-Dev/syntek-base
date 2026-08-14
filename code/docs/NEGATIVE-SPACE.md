@@ -24,9 +24,9 @@ Almost every other guide here states what the code **should** do. This one state
 
 The database half of this is already law and is **not restated here**: constraints live in the
 database, and application validation is not a substitute
-([`DATABASE.md`](DATABASE.md) § _Before the first migration on a new table_,
-[`data-structures/SCHEMA-DESIGN.md`](data-structures/SCHEMA-DESIGN.md) § _Foreign Keys and
-Constraints_, and `.claude/CLAUDE.md` § 6). This guide adds the fact none of them carry: **which
+([`DATABASE.md`](DATABASE.md) Section _Before the first migration on a new table_,
+[`data-structures/SCHEMA-DESIGN.md`](data-structures/SCHEMA-DESIGN.md) Section _Foreign Keys and
+Constraints_, and `.claude/CLAUDE.md` Section 6). This guide adds the fact none of them carry: **which
 single place enforces it, and what happens when it breaks.**
 
 ## What counts as an invariant
@@ -106,7 +106,7 @@ exclusion constraint fail at apply time rather than at review time.
 
 A plain `UNIQUE` on a soft-deleting table **forbids re-creating a row whose predecessor was
 soft-deleted**. The `SoftDeleteManager` / `PublishableModel` convention
-([`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) § _Soft-Delete
+([`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) Section _Soft-Delete
 Queryset Convention_) implies this and no guide states it. On any soft-deleting table, a
 uniqueness invariant is a **partial** unique index:
 
@@ -179,7 +179,7 @@ until the error tracker is noisy enough that someone mutes the rule this guide e
 `except ServiceError` turns a broken invariant into a friendly 400 — the exact failure this guide
 exists to prevent. A flag on a shared base has the same weakness. The `ServiceError` hierarchy
 itself is unchanged; this layers over it
-([`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) § _Service
+([`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) Section _Service
 Exception Hierarchy_).
 
 **`InvariantViolation` requires its register key** — `InvariantViolation("order.total_matches_lines", …)`.
@@ -225,13 +225,13 @@ management commands. **How each surface expresses them is that surface's guide**
 an HTMX error must never be a silent empty swap, and a task's arguments are untrusted input, but
 those clauses live where the surface lives.
 
-| Surface                        | Its clause lives in                                                                                                                           |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Rendered pages and HTMX        | [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) § _An error the user never sees_                                   |
-| The JSON API                   | [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md) — the Ninja exception handlers                                                       |
-| Background tasks               | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) § _The error taxonomy on this surface_ — and why the user class is **empty** there                   |
-| Management commands            | [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md) § _The error taxonomy on this surface_ — an operator, a traceback, and exit 75             |
-| The mobile app _(mobile-only)_ | [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) § 4 — the root boundary, and why an environment error is the ordinary case there |
+| Surface                        | Its clause lives in                                                                                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rendered pages and HTMX        | [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) Section _An error the user never sees_                                   |
+| The JSON API                   | [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md) — the Ninja exception handlers                                                             |
+| Background tasks               | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) Section _The error taxonomy on this surface_ — and why the user class is **empty** there                   |
+| Management commands            | [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md) Section _The error taxonomy on this surface_ — an operator, a traceback, and exit 75             |
+| The mobile app _(mobile-only)_ | [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) Section 4 — the root boundary, and why an environment error is the ordinary case there |
 
 ---
 
@@ -244,7 +244,7 @@ A `service-guard` row in the register points at one function. This is what has t
 **`assert` is banned outside tests.** Three reasons, weakest last:
 
 1. **`AssertionError` cannot carry the register key.** The key is what ties a tracker event back to
-   the row that broke ([§ _The error taxonomy_](#the-error-taxonomy)); an assertion arrives naming
+   the row that broke ([Section _The error taxonomy_](#the-error-taxonomy)); an assertion arrives naming
    nothing.
 2. **It is indistinguishable from a failing test.** The same exception type means the one signal
    that should say "production invariant broke" reads as "somebody's test is red".

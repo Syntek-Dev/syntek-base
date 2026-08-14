@@ -44,7 +44,7 @@ and needs neither.
 **A docstring pass that adds an `Args:` block or a documentation cross-reference is a
 regression**, not an improvement: the typed signature already carries the arguments, and the
 outward reference rots the moment the thing it names moves. Standard:
-`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` § 4.
+`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` Section 4.
 
 The one exception is **published interface text** — a Django Ninja endpoint's docstring and
 `summary` render on the OpenAPI page, and a FastMCP tool's docstring is the prompt the model
@@ -115,6 +115,6 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/docs/DOCUMENTATION-PAIRING.md` — **the owning guide** for the pair
 - `code/docs/CODING-PRINCIPLES.md` — the style and error-handling rules a docstring reflects
-- `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — § 4, the comment and docstring rule
-- `.claude/CLAUDE.md` § 5 · § 8 — the naming conventions and the length limits
+- `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — Section 4, the comment and docstring rule
+- `.claude/CLAUDE.md` Section 5 · Section 8 — the naming conventions and the length limits
 - `code/docs/CODE-REVIEW-GRAPH.md` — the refresh that ships alongside a documentation change

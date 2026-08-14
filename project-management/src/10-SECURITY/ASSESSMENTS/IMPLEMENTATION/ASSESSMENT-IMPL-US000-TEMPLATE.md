@@ -74,7 +74,7 @@ CRITICAL/HIGH to `../../VULNERABILITIES/IMPLEMENTATION/`._
 
 ## 5. Planning-phase findings — status update
 
-Each finding from the plan's §6/§7, re-evaluated against the shipped code. Mark
+Each finding from the plan's Section 6/Section 7, re-evaluated against the shipped code. Mark
 **only with evidence** — never Resolved without pointing at the code that does it.
 
 | Plan finding           | Status                    | Evidence / Notes                    |
@@ -83,10 +83,10 @@ Each finding from the plan's §6/§7, re-evaluated against the shipped code. Mar
 
 ## 6. Plan gaps closed & deferred items
 
-| Item                             | Status   | Evidence / Blocked by           |
-| -------------------------------- | -------- | ------------------------------- |
-| [EXAMPLE] {control from plan §7} | Closed   | `{path/to/file}`                |
-| [EXAMPLE] {control from plan §7} | Deferred | tracked in `GAPS.md` — {reason} |
+| Item                                    | Status   | Evidence / Blocked by           |
+| --------------------------------------- | -------- | ------------------------------- |
+| [EXAMPLE] {control from plan Section 7} | Closed   | `{path/to/file}`                |
+| [EXAMPLE] {control from plan Section 7} | Deferred | tracked in `GAPS.md` — {reason} |
 
 ## 7. Deviations from plan
 

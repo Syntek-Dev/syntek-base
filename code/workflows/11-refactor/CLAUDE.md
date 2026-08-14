@@ -26,7 +26,7 @@ behaviour held identical throughout.
   change → complete `CHECKLIST.md`.
 - **Definition of done:** tests unchanged and green, coverage not dropped, behaviour
   identical, every touched file ≤ 750 lines (800 grace).
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

@@ -54,7 +54,7 @@ variable; changing the seam later is every instrumented call site, in whatever l
 written for. So the answer above may read `None` for a long time without the row being idle: it
 is what stops the first person to reach for tracing picking a vendor SDK. The trigger that
 reopens the backend, and what binds when it does, are in
-[`code/docs/logging/OBSERVABILITY.md`](../../code/docs/logging/OBSERVABILITY.md) § _Distributed
+[`code/docs/logging/OBSERVABILITY.md`](../../code/docs/logging/OBSERVABILITY.md) Section _Distributed
 tracing_.
 
 **Cache and broker transport needs your review.** Valkey is reached through `REDIS_URL` and

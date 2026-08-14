@@ -77,7 +77,7 @@ file that carries a correctness rule rather than a design decision — the 500 p
 resolves without any application asking it to, and the global HTMX error handler that stops a
 5xx replacing nothing. Both are copy-placeholder until first-time setup. What is still absent on
 that surface, and what each item waits on, is `code/docs/FRONTEND-CODING-PRINCIPLES.md`
-§ _What is not built yet_.
+Section _What is not built yet_.
 
 ## Cross-references
 

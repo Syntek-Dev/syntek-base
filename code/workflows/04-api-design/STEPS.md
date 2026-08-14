@@ -32,7 +32,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — each endpoint (operation), request and response
 Schema, the named Policy guarding every state-changing endpoint (OWASP A01), ownership
 checks (no IDOR), error shapes, and idempotency. Record hard-to-reverse calls as an ADR in

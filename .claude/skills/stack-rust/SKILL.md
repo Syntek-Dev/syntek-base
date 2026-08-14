@@ -52,7 +52,7 @@ Everything else stays in Python. A rewrite of working Python is a cost with no n
 every crate widens a supply-chain surface that **shares its address space with Django** — there is
 no sandbox between a malicious dependency and your database credentials. `rustup` also becomes a
 prerequisite for `uv sync`, and every contributor pays that. **If neither ground holds, say so and
-hand back to `backend`.** Full argument: `code/docs/RUST.md` § _The gate_.
+hand back to `backend`.** Full argument: `code/docs/RUST.md` Section _The gate_.
 
 **Authoring is not consuming.** A project that merely depends on a prebuilt PyO3 wheel installs it
 like any other dependency and needs no toolchain. This surface exists because _this repository

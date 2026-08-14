@@ -32,11 +32,11 @@ That is not a compromise — it is the finding.
 
 **Three things you may read elsewhere, and should not do:**
 
-| Claim                                           | Why it is wrong                                                                                                                |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Chunk content so RAG systems extract it cleanly | No answer engine documents a chunking contract. Writing to an imagined one distorts the page for the reader who is real        |
-| Rewrite copy with AI-specific keywords          | The same keyword stuffing that search engines have penalised for two decades, relabelled                                       |
-| Ship `llms.txt` to win citations                | It is not a citation lever. It has a genuine use — see [`ROOT-SURFACE.md`](ROOT-SURFACE.md) § 1 — and that use is not this one |
+| Claim                                           | Why it is wrong                                                                                                                      |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Chunk content so RAG systems extract it cleanly | No answer engine documents a chunking contract. Writing to an imagined one distorts the page for the reader who is real              |
+| Rewrite copy with AI-specific keywords          | The same keyword stuffing that search engines have penalised for two decades, relabelled                                             |
+| Ship `llms.txt` to win citations                | It is not a citation lever. It has a genuine use — see [`ROOT-SURFACE.md`](ROOT-SURFACE.md) Section 1 — and that use is not this one |
 
 **This section exists because the myths are load-bearing elsewhere.** A guide that quietly
 omitted them would leave them standing in the checklists and skills a developer also reads.
@@ -78,7 +78,7 @@ whether the block stands alone, and a person decides that.
 
 Statistics, figures and dates in the text, not in an image. A claim that only exists inside a
 PNG is invisible to a crawler, an answer engine, a screen reader, and anyone on a slow
-connection. This is the same rule `BRAND-VOICE.md` § 4 states as "numbers replace adjectives" —
+connection. This is the same rule `BRAND-VOICE.md` Section 4 states as "numbers replace adjectives" —
 reached from the other side.
 
 ### Freshness and authorship
@@ -127,7 +127,7 @@ content is empty in the served HTML with JavaScript disabled.
 
 The rest belongs to the story's SEO plan in `project-management/src/12-SEO/PLANNING/` and to the
 reviewer. **A clean audit run does not mean this guide was honoured** — the same split
-`BRAND-VOICE.md` § 4 draws between its gated and `[judgement]` clauses.
+`BRAND-VOICE.md` Section 4 draws between its gated and `[judgement]` clauses.
 
 ---
 
@@ -140,6 +140,6 @@ reviewer. **A clean audit run does not mean this guide was honoured** — the sa
 - [`../ACCESSIBILITY.md`](../ACCESSIBILITY.md) — heading hierarchy and alt text as requirements
 - `how-to/src/BRAND-VOICE.md` — the register the answer is written in
 - [Google — AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
-  — the primary source behind § 1
+  — the primary source behind Section 1
 
 _Part of the `code/docs/` documentation family._

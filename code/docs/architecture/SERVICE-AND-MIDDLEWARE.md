@@ -96,7 +96,7 @@ deliberately **outside** this tree: `InvariantViolation` (programmer error, 500)
 `DependencyUnavailable` (environment error, 503). Never move either inside it, and never
 introduce a shared base over all three: one broad `except ServiceError` would then convert a
 broken invariant into a friendly 400. The taxonomy is owned by
-[`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) § _The error taxonomy_.
+[`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) Section _The error taxonomy_.
 
 Each app defines a thin per-app base and inherits from there:
 
@@ -137,7 +137,7 @@ its own filter. All other call sites must use `.not_deleted()`.
 **A soft-deleting table's uniqueness constraint must be partial** —
 `UniqueConstraint(condition=Q(deleted_at__isnull=True))` — or the table forbids re-creating a row
 whose predecessor was soft-deleted. Stated in [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md)
-§ _The soft-delete trap_.
+Section _The soft-delete trap_.
 
 Where the same prefetch is needed across apps, define it **once** as a module-level constant beside
 the model it traverses and import it — never re-declare the traversal at each call site, where the

@@ -35,7 +35,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 > **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about each read and state-changing
 endpoint, its permission rules, and ownership checks before identifying the API surface.
 

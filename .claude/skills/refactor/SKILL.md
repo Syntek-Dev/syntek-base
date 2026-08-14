@@ -28,7 +28,7 @@ the conversation, and the scoped edits below are dispatched).
 
 Settle the **exact scope**, the **behaviour-preserving boundary** (what must not change), the
 **seams** code will move across, and the **coverage** that will prove behaviour held. The
-`grilling` skill owns the round shape (`.claude/CLAUDE.md` §10).
+`grilling` skill owns the round shape (`.claude/CLAUDE.md` Section 10).
 
 `/improve-codebase-architecture` is the optional opener where the target is not yet chosen — it
 ranks deepening candidates as a report before the grilling pass picks one.
@@ -99,7 +99,7 @@ Phases 3 and 5 are separate Agent tool calls to `general-purpose`, naming the sk
 5. **Commit** — the `git` skill, message `refactor(<scope>): <short description>`.
 
 **Docstrings and comments on touched code** follow
-`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4 — the why-only rule, the no-outside-
+`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` Section 4 — the why-only rule, the no-outside-
 references rule, and the ban on `TODO`/`FIXME`. It is the owner; this skill does not restate it.
 
 ## Definition of done

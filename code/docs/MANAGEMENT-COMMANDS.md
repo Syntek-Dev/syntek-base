@@ -43,7 +43,7 @@ is logic no endpoint, task, or test can reach
 Not because the operator is hostile — because **argparse parses, and parsing is not
 validation.** `type=int` proves a string was numeric; it says nothing about whether `-1`,
 `0`, or `40000000` is a number this command may act on. The trust boundary is the same one
-[`security/INPUT-AND-API.md`](security/INPUT-AND-API.md) § _Input Validation and Sanitisation_
+[`security/INPUT-AND-API.md`](security/INPUT-AND-API.md) Section _Input Validation and Sanitisation_
 draws for a request body, and its rules apply unchanged. Three things are specific to this
 surface.
 
@@ -73,7 +73,7 @@ So:
 
 ## No request, no middleware
 
-**Everything [`TASK-AUTHORING.md`](TASK-AUTHORING.md) § _No request, no middleware_ says holds
+**Everything [`TASK-AUTHORING.md`](TASK-AUTHORING.md) Section _No request, no middleware_ says holds
 here unchanged** — no session, no authenticated user, no row-security session variable, no
 automatic correlation. It is not restated; read it there. Two things differ:
 
@@ -90,7 +90,7 @@ automatic correlation. It is not restated; read it there. Two things differ:
 ## The error taxonomy on this surface
 
 A command has no HTTP status, so the three classes
-([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) § _The error taxonomy_) are carried by **what the
+([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) Section _The error taxonomy_) are carried by **what the
 operator reads** and **what a scheduler can act on**:
 
 | Class                 | Raise                     | Operator sees                      | Exit |
@@ -111,7 +111,7 @@ typed", and it is what carries the register key to the tracker.
 
 **All three classes exist here, which is what separates this surface from the task one.** A
 task has no user, so a bad argument at run time is always a programmer error
-([`TASK-AUTHORING.md`](TASK-AUTHORING.md) § _The error taxonomy on this surface_). A command's
+([`TASK-AUTHORING.md`](TASK-AUTHORING.md) Section _The error taxonomy on this surface_). A command's
 operator is a real user, so `--since yesterday` when the flag takes a date is a user error and
 must read like one.
 
@@ -130,7 +130,7 @@ mode: subclassing Django's base directly **still works**. The command runs, the 
 and the only difference is that a broken invariant now looks like every other traceback and a
 transient outage exits 1 like a typo. Nothing fails until something needed to tell them apart.
 This is the same mechanism, for the same reason, as the `ninja.Schema` ban
-([`api-design/NINJA-CONVENTIONS.md`](api-design/NINJA-CONVENTIONS.md) § _Schema strictness_) —
+([`api-design/NINJA-CONVENTIONS.md`](api-design/NINJA-CONVENTIONS.md) Section _Schema strictness_) —
 a linter decides it, so review does not have to.
 
 **What the ban does not cover, stated rather than discovered:** `LabelCommand` and
@@ -167,7 +167,7 @@ floors as everything else ([`testing/COVERAGE.md`](testing/COVERAGE.md)).
 | Connection budgets and the process families   | [`PROCESS-MODEL.md`](PROCESS-MODEL.md) · [`DATABASE.md`](DATABASE.md)              |
 | Batched backfills                             | `data-structures/SCHEMA-MIGRATIONS.md`                                             |
 | What an audit row must contain                | [`security/AUDIT-TRAIL.md`](security/AUDIT-TRAIL.md)                               |
-| `assert` versus `raise`, and the guard clause | [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) § _The guard clause_                      |
+| `assert` versus `raise`, and the guard clause | [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) Section _The guard clause_                |
 
 ## Cross-references
 

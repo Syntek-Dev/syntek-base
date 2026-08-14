@@ -22,7 +22,7 @@ plans that gate a feature into code, and the post-implementation records, plus t
 - **Grill first:** any substantial PM task — story, schema, API, GDPR/security/QA spec,
   ADR, or plan — opens with a grilling pass (the owning skill loads
   `.claude/skills/grill-with-docs`) before the artefact is
-  produced; only trivial/mechanical work skips it (`.claude/CLAUDE.md` §10).
+  produced; only trivial/mechanical work skips it (`.claude/CLAUDE.md` Section 10).
 - **Model:** Fable for substantive artefacts (stories, ADRs, sprint & story plans,
   GDPR/security/QA reports); Opus for mechanical touches — status flips, version-header
   bumps, moving a file, doc-index lookups.

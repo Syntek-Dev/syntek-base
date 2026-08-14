@@ -36,7 +36,7 @@ record the story's findings in `src/19-FINDINGS/`, before the PR is raised in
   English; DD/MM/YYYY.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
-  `.claude/CLAUDE.md` §2.5).
+  `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

@@ -51,7 +51,7 @@ thin enough for a second adapter to sit beside the first.
 **Schemas subclass the bases in `apps.core.schemas`, never `ninja.Schema`** — request bodies
 `Schema`, responses `OutSchema` or `ninja.ModelSchema`, `Query(...)` containers
 `QuerySchema`. Ruff `TID251` fails the build on a direct `ninja.Schema` import; the reason
-is in `code/docs/api-design/NINJA-CONVENTIONS.md` § _Schema strictness_.
+is in `code/docs/api-design/NINJA-CONVENTIONS.md` Section _Schema strictness_.
 
 **Management commands subclass `apps.core.management.base.ManagementCommand`, never Django's
 `BaseCommand`** — the same `TID251` mechanism, for the same reason: the direct base still

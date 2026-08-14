@@ -213,13 +213,13 @@ The identifier therefore arrives through a **simple tag**, which takes its value
 ```
 
 One reader, every path — the 500 page, the error partial, and any ordinary view. The `{% if %}`
-is the rule from `MOBILE-CODING-PRINCIPLES.md` § 4 applied here: show nothing rather than an
+is the rule from `MOBILE-CODING-PRINCIPLES.md` Section 4 applied here: show nothing rather than an
 identifier that resolves to the wrong event. `apps/core/templatetags/CONTEXT.md` carries the
 table of which paths have a context and which do not.
 
 **There is no `503.html`.** Django defines no 503 handler and no template name for one, and the
 503 that matters is served when Django is not answering at all — which only the edge can do
-(`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 14).
+(`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 14).
 
 ### A template variable the view never passed
 

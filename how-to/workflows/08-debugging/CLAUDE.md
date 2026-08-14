@@ -24,7 +24,7 @@ runtime error, or unexpected Django Ninja/frontend result starting from containe
   `STEPS.md` + `CHECKLIST.md` together.
 - **Definition of done:** root cause isolated to environment vs code; `CHECKLIST.md`
   passes; British English.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

@@ -34,7 +34,7 @@ JSON (`/api/*`). Backend models and services must exist before this workflow beg
 ### Governing documents
 
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — router and Schema design, endpoint patterns, pagination conventions
-- `code/docs/security/AUTH-AND-AUTHZ.md` — every mutating endpoint requires an explicit permission check (CLAUDE.md §6); IDOR prevention and OWASP A01
+- `code/docs/security/AUTH-AND-AUTHZ.md` — every mutating endpoint requires an explicit permission check (CLAUDE.md Section 6); IDOR prevention and OWASP A01
 - `code/docs/testing/COVERAGE.md` — coverage floor thresholds (75% all modules / 90% auth-related) block PR
 
 ### Related reading

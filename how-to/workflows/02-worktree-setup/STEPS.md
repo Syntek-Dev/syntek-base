@@ -73,7 +73,7 @@ git worktree list
 
 Run the host-setup script once per story number (requires sudo). It idempotently
 appends the worktree hostnames — `dev-us<NNN>` and `test-us<NNN>`. Full list and teardown:
-`how-to/docs/GIT-WORKTREES.md §One-Time Host Setup`.
+`how-to/docs/GIT-WORKTREES.md → One-Time Host Setup`.
 
 ```bash
 bash code/src/scripts/development/hosts-story-add.sh 003

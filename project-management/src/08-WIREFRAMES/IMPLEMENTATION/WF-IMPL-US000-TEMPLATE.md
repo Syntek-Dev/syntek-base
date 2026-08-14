@@ -6,7 +6,7 @@
 **Outcome**: Honours the wireframes / Honours with deviations / Blocked
 
 > Copy to `WF-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. Check the **contract** — layout,
-> hierarchy, states, interaction — not resemblance to the wireframe markup. §2 and §3 must be
+> hierarchy, states, interaction — not resemblance to the wireframe markup. Section 2 and Section 3 must be
 > filled from the running page.
 
 ---

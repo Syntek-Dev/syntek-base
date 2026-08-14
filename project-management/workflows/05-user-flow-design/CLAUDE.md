@@ -26,7 +26,7 @@ after story creation and before brand guides or wireframes.
 - **Definition of done:** every decision node resolves both outcomes; the flow is the
   agreed source of truth for wireframe scope and GDPR data-touch mapping; checklist
   satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

@@ -16,7 +16,7 @@ The previous reply failed. Not the work behind it — the **explanation**. Re-pi
 - **Missing context.** It began three steps in, from a premise never stated.
 - **Unshared vocabulary.** It used a term this project has not defined, or used a defined term
   loosely (`how-to/docs/AI-DICTIONARY.md`, and the glossary in the nearest `CONTEXT.md`).
-- **Too dense.** Correct, and unreadable — the failure `.claude/CLAUDE.md` §1 exists to prevent.
+- **Too dense.** Correct, and unreadable — the failure `.claude/CLAUDE.md` Section 1 exists to prevent.
 - **Buried answer.** The reasoning arrived before the conclusion.
 
 ## How to re-pitch
@@ -27,7 +27,7 @@ The previous reply failed. Not the work behind it — the **explanation**. Re-pi
    ones. Where a long word is load-bearing, keep it and define it inline, once.
 4. **Use this project's own words** — the ubiquitous language in the layered `CONTEXT.md` glossaries
    and the AI-coding dictionary. A synonym invented on the spot is what caused this.
-5. **Stay scannable** — `.claude/CLAUDE.md` §1 still applies. Re-pitching is not licence to write
+5. **Stay scannable** — `.claude/CLAUDE.md` Section 1 still applies. Re-pitching is not licence to write
    an essay; it is licence to spend the words differently.
 
 ## Rules
@@ -83,7 +83,7 @@ grilling skill's rule that a vague answer is restated precisely and confirmed: h
 
 ## Cross-references
 
-- `.claude/CLAUDE.md` §1 — the concision standard a re-pitch still obeys.
+- `.claude/CLAUDE.md` Section 1 — the concision standard a re-pitch still obeys.
 - `how-to/docs/AI-DICTIONARY.md` — the shared vocabulary to reach for.
 - `how-to/src/BRAND-VOICE.md` — the registers, for anything that becomes user-facing copy.
 - `.claude/skills/grilling/SKILL.md` — the same problem in the other direction.

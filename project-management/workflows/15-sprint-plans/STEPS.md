@@ -31,7 +31,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 > **Model:** fable
 
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
-(`.claude/CLAUDE.md` §10).
+(`.claude/CLAUDE.md` Section 10).
 
 Ask about:
 

@@ -2,7 +2,7 @@
 #
 # TEMPLATE MODE ONLY. In a generated project the eight application checks are the
 # gate and this one does not run; in syntek-base itself the application checks
-# have no subject (see pre-pr-check.sh § 2b) and THIS is the substantive gate —
+# have no subject (see pre-pr-check.sh Section 2b) and THIS is the substantive gate —
 # the template's product is its structure, its routing and its documentation, and
 # that is exactly what these scripts read.
 #

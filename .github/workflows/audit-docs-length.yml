@@ -1,4 +1,4 @@
-# Instructional-document length guard — the CI half of .claude/CLAUDE.md § 8.
+# Instructional-document length guard — the CI half of .claude/CLAUDE.md Section 8.
 #
 # An instructional file is one that tells Claude Code how to work: a guide, a workflow
 # step, a skill, or a CONTEXT.md/CLAUDE.md pair. Past about three hundred lines
@@ -13,7 +13,7 @@
 # on every run by not being performed. A gate that cannot fail is worse than no gate.
 #
 # Path filters are safe here because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters.
 #
 # The rule file is a path because the rule and its enforcement are one change: raising the
 # limit in .claude/CLAUDE.md without re-running this is how the two drift apart.

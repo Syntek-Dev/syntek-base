@@ -102,7 +102,7 @@ over the host it will be presented to, so signing against the internal endpoint 
 that fails signature validation the moment a browser follows it. The deploy-side requirement
 for that public hostname is
 [`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`](../../how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md)
-§ 10.
+Section 10.
 
 **Do not mount this as Django's `STORAGES["default"]`.** Default storage is the path
 `FileField` takes without thinking, and thinking is the point: a private document needs an
@@ -127,7 +127,7 @@ revoked before it expires. Every rule below follows from that one sentence.
 - **Authorise before signing, never after.** The permission check and ownership verification
   run in the service layer; signing is the last step, reached only once the caller has been
   proven entitled. A signing endpoint without an explicit permission check is the
-  `.claude/CLAUDE.md` § 6 non-negotiable violated through a side door.
+  `.claude/CLAUDE.md` Section 6 non-negotiable violated through a side door.
 - **Expiries are short, and the ceiling is not negotiable upward per feature.**
 
 | Operation                       | Expiry     | Why                                                                   |
@@ -237,7 +237,7 @@ trigger, not a shrug.
   recording which engine this project resolves to
 
 > The public presign hostname, its TLS termination and its CSP allowance are catalogued as the
-> deploy contract in `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 10; this guide
+> deploy contract in `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 10; this guide
 > keeps owning the "why", SERVER-ARCHITECTURE owns "what the server provides".
 
 _Part of the `code/docs/` documentation family._

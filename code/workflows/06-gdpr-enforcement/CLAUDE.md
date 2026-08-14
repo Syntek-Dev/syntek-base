@@ -28,7 +28,7 @@ personal data.
 - **Definition of done:** every PII field encrypted with a lookup token where the
   field is unique; consent verified before PII access; no PII in logs or errors; DSAR
   deletion testable end-to-end.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

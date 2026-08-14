@@ -119,15 +119,15 @@ is the point of this table.
 
 | Path                                             | Purpose                          | Owner                                   | Applies when                |
 | ------------------------------------------------ | -------------------------------- | --------------------------------------- | --------------------------- |
-| `/robots.txt`                                    | Crawler access rules             | **This guide** § 1                      | Always                      |
-| `/sitemap.xml` (+ segments)                      | Indexable URL set                | **This guide** § 1                      | Always                      |
-| `/llms.txt` · `/llms-full.txt`                   | Agent-readable site map          | **This guide** § 1                      | Always                      |
-| `/feed.xml` · `/rss.xml` · `/atom.xml`           | Syndication feed                 | **This guide** § 1                      | Only with recurring content |
+| `/robots.txt`                                    | Crawler access rules             | **This guide** Section 1                | Always                      |
+| `/sitemap.xml` (+ segments)                      | Indexable URL set                | **This guide** Section 1                | Always                      |
+| `/llms.txt` · `/llms-full.txt`                   | Agent-readable site map          | **This guide** Section 1                | Always                      |
+| `/feed.xml` · `/rss.xml` · `/atom.xml`           | Syndication feed                 | **This guide** Section 1                | Only with recurring content |
 | `/.well-known/security.txt`                      | Disclosure contact (RFC 9116)    | [`../SECURITY.md`](../SECURITY.md)      | Always                      |
 | `/favicon.ico` · `.svg` · `apple-touch-icon.png` | Site icons                       | Frontend / brand assets                 | Always                      |
 | `/manifest.webmanifest` · `/sw.js`               | PWA install + offline            | Frontend                                | Only if a PWA is shipped    |
 | `/browserconfig.xml`                             | Windows tile                     | Frontend                                | Rarely — legacy Edge        |
-| `/ai.txt`                                        | AI **training** consent          | **This guide** § 1                      | If training use is refused  |
+| `/ai.txt`                                        | AI **training** consent          | **This guide** Section 1                | If training use is refused  |
 | `/.well-known/gpc`                               | Global Privacy Control signal    | `project-management/docs/GDPR-GUIDE.md` | If tracking exists          |
 | `/.well-known/change-password`                   | Password-manager deep link       | Auth surface                            | If accounts exist           |
 | `/.well-known/acme-challenge/`                   | TLS certificate validation       | **edge**                                | Always (automatic)          |

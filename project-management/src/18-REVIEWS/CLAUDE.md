@@ -39,7 +39,7 @@ dimension checks, required actions, and the merge verdict.
   obligations — a review that clears a mutation confirms its permission-check-before-logic
   and caller-ownership (no IDOR).
 - **A `Changes-requested` verdict blocks the merge** — an open blocker is not a footnote;
-  every §4 action must be `Done` and the PR re-reviewed before it merges.
+  every Section 4 action must be `Done` and the PR re-reviewed before it merges.
 - Every referenced developer command is a project script (`code/src/scripts/**/*.sh`) —
   never raw `pytest` / `pnpm` / `docker` / `python`.
 - These artefacts are exempt from the 300-line instructional limit; keep them complete

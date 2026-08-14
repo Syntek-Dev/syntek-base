@@ -38,7 +38,7 @@ model: fable
 
 > **Model:** fable
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%>:
 
 - Which of the five folders genuinely accumulated work this cycle?
@@ -109,8 +109,8 @@ bash code/src/scripts/audits/render-slop.sh   # opens each screen at 1280 px
 ```
 
 Fix findings in the screens, never by loosening a threshold. A `[gate: warn]` is a question:
-answer it, or annotate it with `slop-allow` **naming the clause and the reason**. If the § 4.2 leg
-reports that it skipped, an axis in `code/docs/VISUAL-DESIGN.md` § 3 is still `TBD` — that is
+answer it, or annotate it with `slop-allow` **naming the clause and the reason**. If the Section 4.2 leg
+reports that it skipped, an axis in `code/docs/VISUAL-DESIGN.md` Section 3 is still `TBD` — that is
 first-time setup Step 9 outstanding, not a clean run.
 
 **The third script is the only one that opens a browser, and it is the only one that can see the

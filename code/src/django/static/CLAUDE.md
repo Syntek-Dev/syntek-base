@@ -37,7 +37,7 @@ static file rather than an inline template block because it exists exactly once 
 - **Token-first applies to every stylesheet here.** Component CSS consumes `var(--token)`
   only, and the var name must resolve in the token layer.
 - **User-facing strings are placeholders until first-time setup** — `how-to/src/BRAND-VOICE.md`
-  § 2, use the voice, do not invent it.
+  Section 2, use the voice, do not invent it.
 
 ## Output & naming
 

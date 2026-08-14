@@ -41,7 +41,7 @@ built product.
 `wireframe.css` is in scope for `code/src/scripts/audits/css-slop.sh`, alongside
 `../CONSOLIDATED-IDEAS/`. It is the only stylesheet the screens have, so gating their
 markup without it would leave the audit reporting green having measured nothing. What
-it enforces: `code/docs/VISUAL-DESIGN.md` § 4–§ 6, routed from `DESIGN.md` →
+it enforces: `code/docs/VISUAL-DESIGN.md` Section 4–Section 6, routed from `DESIGN.md` →
 _The design-time gate_ — never restated here.
 
 ## Cross-references

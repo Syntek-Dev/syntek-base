@@ -31,12 +31,12 @@ models and services exist and are tested.
   is `workflows/20-frontend-code/`.
 - **Definition of done:** every mutating endpoint permission-checked; coverage floor
   met (75% / 90% auth); checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 
 - **Every mutating endpoint carries an explicit permission check** (OWASP A01,
-  CLAUDE.md §6); user-supplied IDs verified against caller ownership — no IDOR.
+  CLAUDE.md Section 6); user-supplied IDs verified against caller ownership — no IDOR.
 - **Endpoints contain no business logic** — that stays in the service layer.
 - Consumers read the Ninja JSON directly — the API is Python-typed end to end, so
   there is no codegen step and no generated types to hand-edit.

@@ -77,12 +77,12 @@ Each of the four answers **where the skill runs**. None of them answers what it 
 the line that decides admission: run placement is a property of this skill, capability is a
 property of whatever runs it.
 
-| Key          | Sets                                                                                   | Authored when                                                                  |
-| ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `context`    | `inline` (the default) or `fork` — this conversation, or a fresh subagent              | The rubric in `FORK-DECISION.md` returns _fork_                                |
-| `agent`      | Which target a fork lands in — `Explore`, `Plan`, or `general-purpose`                 | Always, on any forked skill — stated even when it repeats the default          |
-| `background` | Whether that fork runs detached from the session                                       | Always, on any forked skill — it follows the same one-line test as `agent`     |
-| `model`      | The tier for the run: turn-scoped when inline, the forked subagent's tier under `fork` | A forked skill needs a tier its caller cannot set — otherwise § 2.5 carries it |
+| Key          | Sets                                                                                   | Authored when                                                                        |
+| ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `context`    | `inline` (the default) or `fork` — this conversation, or a fresh subagent              | The rubric in `FORK-DECISION.md` returns _fork_                                      |
+| `agent`      | Which target a fork lands in — `Explore`, `Plan`, or `general-purpose`                 | Always, on any forked skill — stated even when it repeats the default                |
+| `background` | Whether that fork runs detached from the session                                       | Always, on any forked skill — it follows the same one-line test as `agent`           |
+| `model`      | The tier for the run: turn-scoped when inline, the forked subagent's tier under `fork` | A forked skill needs a tier its caller cannot set — otherwise Section 2.5 carries it |
 
 `disable-model-invocation` and `effort` are documented by the runtime and are **not** adopted
 (below).
@@ -90,7 +90,7 @@ property of whatever runs it.
 ### A key name is not a surface
 
 `agent:` above names a **fork target**. The routing frontmatter on `**/docs/*.md` and
-`**/workflows/**/*.md` (`.claude/CLAUDE.md` § 2.5) has historically spelled a key the same way
+`**/workflows/**/*.md` (`.claude/CLAUDE.md` Section 2.5) has historically spelled a key the same way
 and meant something else entirely. Both are legal, so a sweep that rewrites every match by key
 name corrupts one population and still passes every gate.
 
@@ -116,13 +116,13 @@ the file's own absence already makes.
 
 **`disable-model-invocation`.** Invocation is already decided by the description's wording — a
 rich "Load when…" trigger list for model-auto-loading, a "type `/name`" phrasing for human-reached
-(the trade is set out in `CRAFT.md` § 1). Adding a key that switches the same behaviour puts one
+(the trade is set out in `CRAFT.md` Section 1). Adding a key that switches the same behaviour puts one
 meaning in two places, and the two drift the first time only one of them is edited.
 
 **`effort`**, on the same admission test that admits the four above. They answer **where the run
 happens**, which is a property of the skill; `effort` answers **how hard the model thinks**, which
 is a property of the caller's session — and `.claude/settings.json` already sets `effortLevel`
-project-wide, so a per-skill key either restates that or lowers it against `.claude/CLAUDE.md` §4.
+project-wide, so a per-skill key either restates that or lowers it against `.claude/CLAUDE.md` Section 4.
 It is **declined rather than unknown**: the gate lists it, so authoring one reports `[house 7]`, a
 choice worth arguing with, instead of `[spec 6]`'s claim that the runtime documents no such key —
 which would have been false in the gate's own output. Reopening test: evidence that a named skill

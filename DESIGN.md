@@ -16,15 +16,15 @@ This file is the **design-time** entry point for all design work — the quick c
 
 ### Code Layer — Standards & Guides
 
-| Guide                                                                      | Purpose                                                                                                                                                                                                  |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md)                 | **Read § 3 first** — it names this project's committed direction and its setting on each of the six axes. Every design gate below works within that table; § 4.2's ban list is only decidable against it |
-| [`code/docs/ACCESSIBILITY.md`](code/docs/ACCESSIBILITY.md)                 | WCAG 2.2 AA requirements for all interactive frontend components                                                                                                                                         |
-| [`code/docs/RESPONSIVE-DESIGN.md`](code/docs/RESPONSIVE-DESIGN.md)         | Breakpoints, fluid layouts, mobile-first patterns                                                                                                                                                        |
-| [`code/docs/ARCHITECTURE-PATTERNS.md`](code/docs/ARCHITECTURE-PATTERNS.md) | Component architecture, composition patterns, shared UI conventions                                                                                                                                      |
-| [`code/docs/CODING-PRINCIPLES.md`](code/docs/CODING-PRINCIPLES.md)         | Code quality standards that apply to UI components                                                                                                                                                       |
-| [`code/docs/PERFORMANCE.md`](code/docs/PERFORMANCE.md)                     | Rendering performance, animation budgets, image optimisation                                                                                                                                             |
-| [`code/docs/TESTING.md`](code/docs/TESTING.md)                             | Component testing standards — pytest through the Django test client                                                                                                                                      |
+| Guide                                                                      | Purpose                                                                                                                                                                                                              |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md)                 | **Read Section 3 first** — it names this project's committed direction and its setting on each of the six axes. Every design gate below works within that table; Section 4.2's ban list is only decidable against it |
+| [`code/docs/ACCESSIBILITY.md`](code/docs/ACCESSIBILITY.md)                 | WCAG 2.2 AA requirements for all interactive frontend components                                                                                                                                                     |
+| [`code/docs/RESPONSIVE-DESIGN.md`](code/docs/RESPONSIVE-DESIGN.md)         | Breakpoints, fluid layouts, mobile-first patterns                                                                                                                                                                    |
+| [`code/docs/ARCHITECTURE-PATTERNS.md`](code/docs/ARCHITECTURE-PATTERNS.md) | Component architecture, composition patterns, shared UI conventions                                                                                                                                                  |
+| [`code/docs/CODING-PRINCIPLES.md`](code/docs/CODING-PRINCIPLES.md)         | Code quality standards that apply to UI components                                                                                                                                                                   |
+| [`code/docs/PERFORMANCE.md`](code/docs/PERFORMANCE.md)                     | Rendering performance, animation budgets, image optimisation                                                                                                                                                         |
+| [`code/docs/TESTING.md`](code/docs/TESTING.md)                             | Component testing standards — pytest through the Django test client                                                                                                                                                  |
 
 ### Project Management Layer — Standards & Guides
 
@@ -45,7 +45,7 @@ The slop doctrine is enforced twice, on the same rules, at two different moments
 the consolidated wireframes — because a wireframe is where composition is actually decided, and
 because it is the only point at which the whole screen set exists at once.
 
-That second property is the point. § 4.1's repetition tell and § 4.2's rhythm clause are
+That second property is the point. Section 4.1's repetition tell and Section 4.2's rhythm clause are
 properties of a **page set**, not of a file, so no diff-scoped code review reaches them
 (`.claude/skills/code-reviewer/SKILL.md` says so in its own scope note). The consolidated wireframe
 folder is where they are cheap to see.
@@ -57,7 +57,7 @@ folder is where they are cheap to see.
 | `audits/css-slop.sh`          | `08-WIREFRAMES/SHARED` + `CONSOLIDATED-IDEAS` + the Django CSS | `17-consolidate-design-work`             |
 | `audits/template-slop.sh`     | `08-WIREFRAMES/CONSOLIDATED-IDEAS` + the Django templates      | `17-consolidate-design-work`             |
 | `audits/render-slop.sh`       | `08-WIREFRAMES/CONSOLIDATED-IDEAS`, **rendered at 1280 px**    | `17-consolidate-design-work`             |
-| Direction conformance, by eye | every screen, against the § 3 axis table                       | `08-wireframes` · `07-component-designs` |
+| Direction conformance, by eye | every screen, against the Section 3 axis table                 | `08-wireframes` · `07-component-designs` |
 
 `SHARED/` is in the CSS scope and is not a stage: `wireframe.css` is the one stylesheet every
 screen links, so gating the markup without it would measure nothing and report green.
@@ -83,17 +83,17 @@ reports success with a note, so it never blocks anyone who has not installed it.
 runs; a page-set clause has nothing to say about a single screen, and a gate there would invite
 edits to an audit trail the PM layer says is never rewritten.
 
-**The rules themselves live in exactly one place and are not restated here** — § 4.1 (universal
-tells), § 4.2 (direction deviations, read off the § 3 axis table), § 5 (motion), § 6 (which tier
+**The rules themselves live in exactly one place and are not restated here** — Section 4.1 (universal
+tells), Section 4.2 (direction deviations, read off the Section 3 axis table), Section 5 (motion), Section 6 (which tier
 each clause sits in and what a `slop-allow` annotation may silence). Read the marker on the clause,
 not a second copy of the list.
 
-**If any § 3 axis still reads `TBD`, the § 4.2 leg skips with a warning** and says so — it does not
+**If any Section 3 axis still reads `TBD`, the Section 4.2 leg skips with a warning** and says so — it does not
 guess a direction. That is not a gate failure; it is first-time setup Step 9 not having been run.
 
 **`06-BRAND-GUIDE` and `07-COMPONENTS` have no script gate**, and the reason is input language, not
 importance: their artefacts are LaTeX, Python and PDF, plus Figma files that are not in the
-repository at all. Both are gated by eye against § 3.
+repository at all. Both are gated by eye against Section 3.
 
 ---
 
@@ -191,7 +191,7 @@ homePage.appendChild(frame); // persists correctly
 - **GDPR**: Consent UI and data forms must follow [`project-management/docs/GDPR-GUIDE.md`](project-management/docs/GDPR-GUIDE.md)
 - **Styling**: Vanilla CSS with design tokens (`var(--token)` only) — no inline styles, no utility frameworks, no Tailwind
 - **Shared UI**: Prefer an existing `code/src/django/components/` component before creating a new one
-- **Visual direction**: Every design decision is made **within the direction** named in [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md) § 3 — a name plus a setting on each of six axes, settled at first-time setup. Read it before designing anything; do not re-open it as free text in brand or wireframe work
+- **Visual direction**: Every design decision is made **within the direction** named in [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md) Section 3 — a name plus a setting on each of six axes, settled at first-time setup. Read it before designing anything; do not re-open it as free text in brand or wireframe work
 - **Implementation fidelity**: Ground in the live code — it drifts from planning; reconcile the wireframe/design against the shipped components and tokens — see [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md) and [`code/docs/FRONTEND-CODING-PRINCIPLES.md`](code/docs/FRONTEND-CODING-PRINCIPLES.md)
 - **Tooling**: Run the project scripts before commit — `code/src/scripts/syntax/lint.sh`, `format.sh`, `check.sh`, plus `code/src/scripts/audits/css-tokens.sh` and `css-gradients.sh`
 - **Language**: British English (en_GB) in all copy and labels

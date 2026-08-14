@@ -40,7 +40,7 @@ inside this skill. Five answers must already be in the brief:
 
 **If one is missing, return and say which.** Do not invent a reader: a guide written for a
 reader nobody named is a guide written for its author, and it reads as one. The caller settles
-them with a grilling pass (`.claude/CLAUDE.md` §10) before dispatching this skill.
+them with a grilling pass (`.claude/CLAUDE.md` Section 10) before dispatching this skill.
 
 ## Steps
 

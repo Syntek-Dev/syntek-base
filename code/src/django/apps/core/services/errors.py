@@ -2,12 +2,12 @@
 
 ``ServiceError`` and its subclasses are **user errors**: expected, actionable, mapped to a
 4xx by the API layer. Each app defines a thin base inheriting from these
-(``code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`` § Service Exception Hierarchy).
+(``code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`` Section Service Exception Hierarchy).
 
 ``InvariantViolation`` and ``DependencyUnavailable`` are **siblings of that tree, not
 members of it, and must never be moved into it.** A single broad ``except ServiceError``
 would otherwise turn a broken invariant into a friendly 400 — the precise failure
-``code/docs/NEGATIVE-SPACE.md`` § The error taxonomy exists to prevent. A flag on a shared
+``code/docs/NEGATIVE-SPACE.md`` Section The error taxonomy exists to prevent. A flag on a shared
 base has the same weakness.
 """
 

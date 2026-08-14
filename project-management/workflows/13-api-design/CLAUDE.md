@@ -35,7 +35,7 @@ signed off and before sprint planning, producing `API-US###-<descriptor>.md` in
   is left with an open `*` permission; the design has had a second pair of eyes before
   sprint planning. The signed-off doc is then the single source of truth for
   `workflows/19-api-code/`, and feeds estimates into `workflows/15-sprint-plans/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

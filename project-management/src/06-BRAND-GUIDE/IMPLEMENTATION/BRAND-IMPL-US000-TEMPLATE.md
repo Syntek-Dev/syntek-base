@@ -5,7 +5,7 @@
 **Stage-1 ask**: `../USER-STORY-IDEAS/BRAND-IDEA-US###-<DESCRIPTOR>.md`
 **Outcome**: Matches consolidated / Matches with deviations / Blocked
 
-> Copy to `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. §2 is the section that matters — record
+> Copy to `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. Section 2 is the section that matters — record
 > the audit output, do not assert the rule was followed.
 
 ---

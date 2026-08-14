@@ -28,7 +28,7 @@ threat model, testing and operations — behind the `code/docs/MCP-SERVER.md` en
 - **Identity comes from the verified token, never from a tool argument.** This folder is where
   that rule is stated; never soften it, and never document a tool signature that breaks it.
 - **Every state-changing tool carries the same named permission check as its Ninja twin** —
-  the `.claude/CLAUDE.md` §6 non-negotiable is about the operation, not the transport.
+  the `.claude/CLAUDE.md` Section 6 non-negotiable is about the operation, not the transport.
 - **Never imply the `/mcp/` mount inherits Django's middleware.** It does not — no session, no
   `login_required`, no CSRF, no API rate-limit middleware. Any guidance that assumes otherwise
   is wrong.

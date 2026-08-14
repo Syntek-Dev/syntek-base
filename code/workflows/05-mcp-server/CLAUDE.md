@@ -32,14 +32,14 @@ mounting, auth, tools, tests, and hardening.
   (75%, **90%** on the verifier and `current_user()`); `08-security-hardening` run before
   public exposure; touched `CONTEXT.md` files and the code-review-graph refreshed.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 
 - **Identity comes from the verified token, never from a tool argument.** No `user_id`, no
   `on_behalf_of`. The caller is a language model; such a parameter _is_ the IDOR.
 - **Every state-changing tool carries the same named Policy as its Ninja twin**, imported
-  rather than re-implemented — the `.claude/CLAUDE.md` §6 non-negotiable is about the
+  rather than re-implemented — the `.claude/CLAUDE.md` Section 6 non-negotiable is about the
   operation, not the transport.
 - **Never assume Django's middleware runs.** The `/mcp/` mount sits beside Django, not inside
   it: no session, no `login_required`, no CSRF, no API rate limiting, no Sentry Django

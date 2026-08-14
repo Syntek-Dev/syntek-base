@@ -48,7 +48,7 @@ were run.
 | ------ | ---- | ---- | ------- | ---------- | --- | ----- |
 |        |      |      |         |            |     |       |
 
-- **Supersedes:** `DB-IDEA-US###-*.md` § [table], `DB-IDEA-US###-*.md` § [table]
+- **Supersedes:** `DB-IDEA-US###-*.md` Section [table], `DB-IDEA-US###-*.md` Section [table]
 - **Primary key:** [PLACEHOLDER]
 - **Unique constraints:** [PLACEHOLDER]
 - **Check constraints:** [PLACEHOLDER — every bounded or enum-like column]
@@ -131,7 +131,7 @@ Re-export to `../ERD-DIAGRAMS/erd-<domain>.png` on sign-off.
 
 ## Sign-off
 
-- [ ] Every stage-1 design listed in §1 and either carried forward or recorded as superseded
+- [ ] Every stage-1 design listed in Section 1 and either carried forward or recorded as superseded
 - [ ] Resolution log complete; no unresolved duplicate remains
 - [ ] Every hard-to-reverse resolution cites an ADR
 - [ ] Every capability gap raised as a new `US###`

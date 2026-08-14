@@ -18,7 +18,7 @@ response, the OWASP checklist, secrets and transport, and supply-chain security.
   endpoint, service, and auth path under `stack-django`.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/SECURITY.md` a thin
   index → any rule here must be enforceable and mirror the repo non-negotiables in
-  `.claude/CLAUDE.md` §6. Audit and scan commands invoke `code/src/scripts/audits/*.sh`,
+  `.claude/CLAUDE.md` Section 6. Audit and scan commands invoke `code/src/scripts/audits/*.sh`,
   never raw tools.
 - **Definition of done:** guidance is consistent with the shipped controls and OWASP
   2021/2025 baseline; each file ≤ 300 code lines; British English.

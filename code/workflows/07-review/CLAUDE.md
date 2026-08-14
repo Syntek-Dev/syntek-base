@@ -27,7 +27,7 @@ merge process in `project-management/workflows/22-pr-and-review/`.
 - **Definition of done:** every state-changing Django Ninja endpoint authenticated and
   permission-checked via a named Policy class; no IDOR; coverage floors met; no duplicated
   the django-components library components; `CHECKLIST.md` signed off.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

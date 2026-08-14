@@ -9,7 +9,7 @@ instead. Deferred work goes in `DEFERRED.md`.
 
 Resolved entries are marked `✅ CLOSED <date>` and removed on the next tidy pass. Permanent
 architectural decisions are promoted to the doc that owns them — the promotion table is in
-`.claude/CLAUDE.md` §10, which owns this workflow; it is not restated here.
+`.claude/CLAUDE.md` Section 10, which owns this workflow; it is not restated here.
 
 **Read at the discovery gate.** `project-management/workflows/01-feature/` reads this file and
 `DEFERRED.md` before charting a feature — to **suggest** candidate features from what has

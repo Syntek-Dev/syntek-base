@@ -58,16 +58,16 @@ enrolment, verification with a tolerance window either side of the current step,
 **single-use backup codes stored hashed, never encrypted** — they are credentials, not data.
 
 **Sessions and tokens** — `HttpOnly`, `Secure` and `SameSite` cookies with the settings in
-`AUTH-AND-AUTHZ.md` § _Django Security Settings_; per-device and all-device invalidation; and
+`AUTH-AND-AUTHZ.md` Section _Django Security Settings_; per-device and all-device invalidation; and
 **session regeneration on every privilege change** — login, role change, password reset.
 
 **Brute-force protection** — count failed attempts, lock out at the agreed threshold, clear the
 counter on success, and answer with `429` plus a `Retry-After` header. The per-route baselines
-are `code/docs/security/INPUT-AND-API.md` § _Throttling_.
+are `code/docs/security/INPUT-AND-API.md` Section _Throttling_.
 
 **Password reset** — cryptographically random single-use tokens, hashed at rest, short TTL,
 **every session invalidated on completion**, and a uniform response whether or not the address
-exists. That last one is anti-enumeration, and `AUTH-AND-AUTHZ.md` § _Anti-Enumeration_ is its
+exists. That last one is anti-enumeration, and `AUTH-AND-AUTHZ.md` Section _Anti-Enumeration_ is its
 owner: identical shapes across every authentication outcome, no exception class names, no
 internal identifiers.
 

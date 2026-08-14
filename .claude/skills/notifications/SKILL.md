@@ -65,7 +65,7 @@ first.
 - **PII is stricter here than anywhere in a session**, because the message lands in a system
   this project does not control and sits there for years. Subject lines carry an internal
   reference and never an identity; bodies mask; SMS and OTP carry the minimum; logs record the
-  internal user ID only. The full table is `code/docs/NOTIFICATIONS.md` § _PII, per channel_ —
+  internal user ID only. The full table is `code/docs/NOTIFICATIONS.md` Section _PII, per channel_ —
   **route to it, do not restate it.**
 - **Every endpoint that triggers or configures a notification** carries its named Policy check,
   and any recipient ID it accepts is verified against the caller. A resend endpoint that trusts

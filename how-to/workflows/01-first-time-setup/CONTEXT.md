@@ -50,7 +50,7 @@ None — setup is sequential; follow STEPS.md in order.
 - `project-management/docs/GIT-GUIDE.md` — git config and SSH key setup
 - `CONTEXT.md` → _What this project is_ — the brief Step 7 sharpens
 - `how-to/src/BRAND-VOICE.md` — the voice Step 8 settles
-- `code/docs/VISUAL-DESIGN.md` § 3 — the visual direction Step 9 settles; the visual half of Step 8's doctrine
+- `code/docs/VISUAL-DESIGN.md` Section 3 — the visual direction Step 9 settles; the visual half of Step 8's doctrine
 - `.claude/skills/scale-planning/SKILL.md` — the Step 10 procedure
 - `how-to/src/SCALE-ARCHITECTURE/` · `how-to/src/SERVER-ARCHITECTURE/` — the two snapshots Step 10 fills
 - `project-management/workflows/01-feature/` — what runs next, once 7 to 10 are done

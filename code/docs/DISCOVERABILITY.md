@@ -48,7 +48,7 @@ written in the wrong place once.
 **Search engines** crawl and rank pages. **Answer engines** read and cite them. **App stores**
 index listing metadata. The first two do not merely share mechanics on this stack — Google states
 that appearing in AI Overviews and AI Mode needs **no additional optimisation** beyond ordinary
-indexation, so they are one job with one set of rules. `discoverability/CONTENT-STRUCTURE.md` § 1
+indexation, so they are one job with one set of rules. `discoverability/CONTENT-STRUCTURE.md` Section 1
 carries the citation and the three myths it disposes of.
 
 The third does not. Store search matches **listing metadata inside a length budget**, not a
@@ -123,7 +123,7 @@ Named here so nobody documents them twice:
 | Slug and route naming                                | [`URL-STRATEGY.md`](URL-STRATEGY.md)                                                                                 |
 | Image alt text as an accessibility requirement       | [`ACCESSIBILITY.md`](ACCESSIBILITY.md)                                                                               |
 | Health, metrics and status endpoints                 | [`logging/HEALTH-CONTRACT.md`](logging/HEALTH-CONTRACT.md)                                                           |
-| Outbound-mail DNS (SPF, DKIM, DMARC)                 | `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 12                                                           |
+| Outbound-mail DNS (SPF, DKIM, DMARC)                 | `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 12                                                     |
 | The words on the page — tone, register, banned tells | `how-to/src/BRAND-VOICE.md` (the **shape** of the body is this guide's — see `discoverability/CONTENT-STRUCTURE.md`) |
 | Backlinks, PR, citation monitoring, keyword research | **Nothing here.** Growth activities; no guide in this repository consumes them                                       |
 

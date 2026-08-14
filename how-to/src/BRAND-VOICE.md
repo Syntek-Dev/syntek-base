@@ -10,8 +10,8 @@ project brief and the two architecture snapshots — and it comes **early** in t
 other prerequisite documents are themselves written in this voice. A voice decided after ten
 features is a voice retrofitted onto copy nobody will go back and rewrite.
 
-> **This guide ships as a template.** § 1 and § 4 are the **portable core** — adopt them
-> unchanged. § 3 and § 5 carry placeholders to fill with this project's own voice. The _shape_
+> **This guide ships as a template.** Section 1 and Section 4 are the **portable core** — adopt them
+> unchanged. Section 3 and Section 5 carry placeholders to fill with this project's own voice. The _shape_
 > is portable; the _content_ is per-project. Same split as `code/docs/VISUAL-DESIGN.md`, which is
 > this guide's visual half.
 
@@ -31,7 +31,7 @@ Two failure modes, equally bad:
 - **Marketing voice on a product surface** — an error message that sells.
 - **System voice on a marketing surface** — a hero paragraph that reads like a changelog.
 
-Which one applies is decided by the **register** (§ 5), never by preference.
+Which one applies is decided by the **register** (Section 5), never by preference.
 
 ---
 
@@ -83,15 +83,15 @@ word per concept; the rejected synonyms belong in the nearest `CONTEXT.md` gloss
 ## 4. The machine-authored tells — banned (portable)
 
 These are banned in **user-facing copy** on every surface. They are the prose equivalent of the
-AI-look in `code/docs/VISUAL-DESIGN.md` § 4.
+AI-look in `code/docs/VISUAL-DESIGN.md` Section 4.
 
 **Scope, stated precisely:** this section governs copy a **user reads** — marketing pages,
 product UI, notifications, support articles, SEO metadata. It does **not** govern instructional
 documentation, code comments, commit messages, or ADRs, which are written for engineers and use
-ordinary technical prose. Applying § 4 to this repository's own guides would be a category error.
+ordinary technical prose. Applying Section 4 to this repository's own guides would be a category error.
 
 **Each clause carries its enforcement tier inline**, on the scheme `code/docs/VISUAL-DESIGN.md`
-§ 6 defines — `[gate: fail]` blocks, `[gate: warn]` reports, `[judgement]` belongs to a reader and
+Section 6 defines — `[gate: fail]` blocks, `[gate: warn]` reports, `[judgement]` belongs to a reader and
 no script decides it. The markers live here rather than in a second list, because a copy of a ban
 list drifts from the doctrine it partitions and then fails correct work. Two scripts read them:
 `copy-emdash.sh` owns the em dash, `copy-slop.sh` owns the rest of what a script can decide.
@@ -155,13 +155,13 @@ and the reviewer, and a clean audit run does not mean they were honoured.
 **Silencing one you meant.** Both tiers are annotatable, on the offending line or the line above:
 
 ```text
-slop-allow: ellipsis-triple-dot — a loading state, the one § 4 exception
+slop-allow: ellipsis-triple-dot — a loading state, the one Section 4 exception
 slop-allow: superlative, corporate-verb — quoting the client's own product name
 ```
 
 Name the clause. A bare `slop-allow` silences everything on that line, including a tell nobody
 looked at. `exclamation-count` is decided across a whole file and so takes a file-scoped
-annotation — the clause named, anywhere in the file. Full rule: `code/docs/VISUAL-DESIGN.md` § 6.
+annotation — the clause named, anywhere in the file. Full rule: `code/docs/VISUAL-DESIGN.md` Section 6.
 
 ---
 
@@ -216,9 +216,9 @@ them, and getting it wrong is the most common copy defect in a shipped feature.
 
 ## 7. Pre-ship checklist
 
-- [ ] Every user-facing string is in the register its surface demands (§ 5)
+- [ ] Every user-facing string is in the register its surface demands (Section 5)
 - [ ] No em dash in user-facing copy; no spaced en dash substituted
-- [ ] No banned sentence pattern or superlative from § 4
+- [ ] No banned sentence pattern or superlative from Section 4
 - [ ] Headings and buttons in sentence case
 - [ ] Every error names a cause and a next action
 - [ ] Claims are checkable; numbers replace adjectives where a number exists
@@ -233,19 +233,19 @@ them, and getting it wrong is the most common copy defect in a shipped feature.
 
 ## Adopting this guide
 
-§ 1 (the mandate) and § 4 (the banned tells) are the **portable core** — adopt them unchanged.
-Fill § 3 (tone, person, formality, reader, signature, vocabulary) and the placeholders in § 5
-with this project's own voice during first-time setup. Revisit § 3 when the brand work in
+Section 1 (the mandate) and Section 4 (the banned tells) are the **portable core** — adopt them unchanged.
+Fill Section 3 (tone, person, formality, reader, signature, vocabulary) and the placeholders in Section 5
+with this project's own voice during first-time setup. Revisit Section 3 when the brand work in
 `project-management/src/06-BRAND-GUIDE/` produces a fuller answer; the two must not contradict.
 
 ## Cross-references
 
-- `code/docs/VISUAL-DESIGN.md` — the visual half of this doctrine; § 4.1 there defers voice here, and
-  its § 3 direction is settled at first-time setup Step 9, immediately after this file's § 3 (Step 8)
+- `code/docs/VISUAL-DESIGN.md` — the visual half of this doctrine; Section 4.1 there defers voice here, and
+  its Section 3 direction is settled at first-time setup Step 9, immediately after this file's Section 3 (Step 8)
 - `code/src/scripts/audits/copy-emdash.sh` — the em dash clause, enforced on its own
-- `code/src/scripts/audits/copy-slop.sh` — every other § 4 clause a script can decide, at the
+- `code/src/scripts/audits/copy-slop.sh` — every other Section 4 clause a script can decide, at the
   tier each carries inline; the register entry is `code/src/scripts/audits/CONTEXT.md`
-- `project-management/src/06-BRAND-GUIDE/` — the per-story brand work that refines § 3
+- `project-management/src/06-BRAND-GUIDE/` — the per-story brand work that refines Section 3
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — where a canonical term is recorded
 - `how-to/workflows/01-first-time-setup/` — the workflow that settles this before the first feature
 - `DESIGN.md` — the design entry point that indexes this guide

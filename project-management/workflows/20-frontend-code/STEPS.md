@@ -50,7 +50,7 @@ applying Django-template assumptions to React Native.
 
 > **Model:** opus · **MCP:** figma, code-review-graph (reference only)
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the component structure (reuse from the
 django-components library vs new), the states to implement (default, hover, focus,
 disabled, error, empty), the interactions, whether each one runs on the server, through

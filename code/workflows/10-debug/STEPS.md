@@ -57,7 +57,7 @@ Narrow the failing case to the smallest unit. Use the Django shell for backend
 data inspection, or the browser DevTools network panel for an HTMX swap that returned the wrong fragment.
 
 Before probing, generate **3–5 ranked, falsifiable hypotheses and show them** (the
-interrogate-before-acting posture of `.claude/CLAUDE.md` §10); then test them **one
+interrogate-before-acting posture of `.claude/CLAUDE.md` Section 10); then test them **one
 variable at a time**. Tag every probe or debug log with a unique prefix such as
 `[DEBUG-a4f2]` so cleanup is a single grep.
 

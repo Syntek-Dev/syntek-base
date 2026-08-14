@@ -49,7 +49,7 @@ past the retention window in that whole period. Two distinct backlogs matter:
   to drain it**. The moment the `worker` first connects it drains **all** of it —
   including any stale outward-facing
   sends (emails, search-engine pings, webhooks). Inspect / purge the queue before first
-  start (§4).
+  start (Section 4).
 
 The remedy is a deliberate, reviewed, **env-by-env** enablement — never a silent flip.
 
@@ -65,7 +65,7 @@ Enable in this order, repeating the review at each step:
    tasks execute.
 2. **staging** — confirm the email backend is not pointed at a live customer inbox and the
    outward-send gate is empty/off **before** starting the worker. Then enable.
-3. **prod** — only after staging is clean. Run the destructive-sweep dry-run count (§3.1)
+3. **prod** — only after staging is clean. Run the destructive-sweep dry-run count (Section 3.1)
    **first**.
 
 Nothing happens until the environment is redeployed with the worker/beat services running
@@ -79,13 +79,13 @@ Source of truth: this project's `CELERY_BEAT_SCHEDULE` (`config/settings`). Reco
 entry against the classes below and review each on its **first** run in an environment that
 has never run it. The **class** sets the risk:
 
-| Task class                                                                               | Typical schedule    | First-run effect on a never-run environment                                        | Risk / gate                                         |
-| ---------------------------------------------------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------- |
-| **Destructive retention / PII sweep** — erase or null PII on over-age rows               | daily               | Acts on the **whole** historical backlog of over-age rows in one irreversible pass | **HIGHEST — run the dry-run count first (§3.1)**    |
-| **Outward-facing send** — email, search-engine ping, webhook                             | event-triggered     | Drains and sends the **whole** queued/over-age backlog outward on first connect    | **High — gate the channel before first drain (§4)** |
-| **Expiring-file cleanup** — delete blobs past their TTL from the object store            | hourly / daily      | Deletes every expired file accumulated across the dormant period                   | Medium — deletes real files; only expired rows      |
-| **Cache / index regen** — rebuild a cache file or search index                           | daily               | One local rebuild (atomic temp-swap); no outward call                              | Low — local write only                              |
-| **Benign maintenance** — keyspace sweeps, id-only fan-out, fault-swallowing housekeeping | frequent (~seconds) | Negligible; swallows faults                                                        | Benign                                              |
+| Task class                                                                               | Typical schedule    | First-run effect on a never-run environment                                        | Risk / gate                                                |
+| ---------------------------------------------------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Destructive retention / PII sweep** — erase or null PII on over-age rows               | daily               | Acts on the **whole** historical backlog of over-age rows in one irreversible pass | **HIGHEST — run the dry-run count first (Section 3.1)**    |
+| **Outward-facing send** — email, search-engine ping, webhook                             | event-triggered     | Drains and sends the **whole** queued/over-age backlog outward on first connect    | **High — gate the channel before first drain (Section 4)** |
+| **Expiring-file cleanup** — delete blobs past their TTL from the object store            | hourly / daily      | Deletes every expired file accumulated across the dormant period                   | Medium — deletes real files; only expired rows             |
+| **Cache / index regen** — rebuild a cache file or search index                           | daily               | One local rebuild (atomic temp-swap); no outward call                              | Low — local write only                                     |
+| **Benign maintenance** — keyspace sweeps, id-only fan-out, fault-swallowing housekeeping | frequent (~seconds) | Negligible; swallows faults                                                        | Benign                                                     |
 
 Any single project task can span classes (e.g. a sweep that both nulls PII **and** deletes
 files) — take the **highest** risk that applies.
@@ -163,10 +163,10 @@ channels:
 Run top-to-bottom for each environment in turn (dev → staging → prod):
 
 1. **Verify beat task names** — every `CELERY_BEAT_SCHEDULE` entry resolves to a registered
-   task; any mismatch fixed and merged (§3.2).
-2. **Confirm gating** — email backend and every outward-send gate correct for the env (§4).
-3. **Dry-run count** — every destructive sweep's count reviewed and expected (§3.1).
-4. **Queue hygiene** — inspect / purge the Celery queue if a stale backlog may exist (§4).
+   task; any mismatch fixed and merged (Section 3.2).
+2. **Confirm gating** — email backend and every outward-send gate correct for the env (Section 4).
+3. **Dry-run count** — every destructive sweep's count reviewed and expected (Section 3.1).
+4. **Queue hygiene** — inspect / purge the Celery queue if a stale backlog may exist (Section 4).
 5. **Redeploy** — pull the fixed image; the entrypoint now honours the `worker`/`beat`
    `command:`. On staging this also brings up any newly-added `worker`/`beat` services.
 6. **Start & verify** — start `worker` + `beat`; confirm PID 1 in each container is Celery,
@@ -184,5 +184,5 @@ Run top-to-bottom for each environment in turn (dev → staging → prod):
 
 - Track the deliberate per-environment enablement as a `<GAP-…>` entry in `GAPS.md` until
   every environment is live — <%DEVELOPER_NAME%>'s rollout call. Owner: `cicd`.
-- Any beat task-name fix (§3.2) is a separate `<GAP-…>` in `config/settings`. Owner:
+- Any beat task-name fix (Section 3.2) is a separate `<GAP-…>` in `config/settings`. Owner:
   `backend`.

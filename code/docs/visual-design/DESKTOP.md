@@ -16,8 +16,8 @@ model: opus
 The **desktop** expression of the doctrine in [`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) — the
 Slint application at `code/src/rust/crates/desktop/`.
 
-**Read the index first.** The mandate (§1), the direction and its six axes (§3), the ban list
-(§4.1 universal, §4.2 direction deviations) and the motion standard (§5) all live there.
+**Read the index first.** The mandate (Section 1), the direction and its six axes (Section 3), the ban list
+(Section 4.1 universal, Section 4.2 direction deviations) and the motion standard (Section 5) all live there.
 
 ---
 
@@ -40,7 +40,7 @@ style that is going away.
 **A desktop app states its style deliberately, and composes its own look from the design system
 rather than inheriting a vendor's.** **[gate: fail]** — a build-config check (is a style set; are
 bare `std-widgets` used), the cheapest deterministic clause on any surface. Tier scheme:
-[`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) §6.
+[`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) Section 6.
 
 - The style is fixed at **compile time** — via the `SLINT_STYLE` environment variable or
   `slint_build::compile_with_config()`. It is a build decision, not a runtime one, so it cannot be
@@ -63,7 +63,7 @@ rather than a different one.
 
 ## The direction, expressed here
 
-The direction is committed once, in index §3, and never per-surface. How each axis lands in Slint:
+The direction is committed once, in index Section 3, and never per-surface. How each axis lands in Slint:
 
 | Axis      | Desktop expression                                                        |
 | --------- | ------------------------------------------------------------------------- |
@@ -72,7 +72,7 @@ The direction is committed once, in index §3, and never per-surface. How each a
 | Contrast  | Type scale and weight through `StyleMetrics`                              |
 | Ornament  | Border, separator and panel-chrome density                                |
 | Density   | Layout `spacing` and `padding`, and control sizing                        |
-| Motion    | Level only; the numbers are index §5                                      |
+| Motion    | Level only; the numbers are index Section 5                               |
 
 **Density carries more weight on this surface than on the other two.** A desktop window is resized
 continuously and is often the app the user keeps open all day, so a `dense` direction is a more
@@ -80,11 +80,11 @@ defensible choice here than on a phone — and a `sparse` one costs more.
 
 ## Motion — the desktop expression
 
-**The numbers are `../VISUAL-DESIGN.md` §5.** This section states only the expression.
+**The numbers are `../VISUAL-DESIGN.md` Section 5.** This section states only the expression.
 
 - Slint `animate` blocks on properties, animating transform-equivalent and opacity properties only.
 - Durations and easing come from the project's tokens, not from literals in `.slint` markup.
-- **The frequency floor is at its strictest here.** A desktop app is keyboard-driven, and §5 names
+- **The frequency floor is at its strictest here.** A desktop app is keyboard-driven, and Section 5 names
   keyboard-initiated actions explicitly as the high-frequency case: those get no animation at all.
 - Reduced motion still means fewer and gentler, not none — keep opacity and colour, drop movement.
 

@@ -24,7 +24,7 @@ fields are lawful to keep and for how long.
 ## Open with a grilling pass
 
 Name what must be settled and wait — the round shape and the question format belong to the
-`grilling` skill (`.claude/CLAUDE.md` § 10). **This inverts the proceed-by-default posture**:
+`grilling` skill (`.claude/CLAUDE.md` Section 10). **This inverts the proceed-by-default posture**:
 data protection is the one area where a reasonable guess is still an unlawful one.
 
 **Read first, ask second.** The schema, the models and the existing registers under

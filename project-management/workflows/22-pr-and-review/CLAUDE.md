@@ -30,7 +30,7 @@ has been run.
 - **Definition of done:** PR reviewed and merged per the branch chain; the implementation
   records (from `21`) verified complete and the review/test records written; version
   bumped via `docs/VERSIONING-GUIDE.md` if the PR completes a release.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

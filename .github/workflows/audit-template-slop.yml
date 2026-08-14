@@ -2,9 +2,9 @@
 # the family is split by input language.
 #
 # Path filters are safe here because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters.
 #
-# Carries `bold-whole-sentence`, which is a COPY rule (how-to/src/BRAND-VOICE.md § 4
+# Carries `bold-whole-sentence`, which is a COPY rule (how-to/src/BRAND-VOICE.md Section 4
 # Structure) living in the markup leg because its input is <strong>/<b>. That is the
 # same rule that keeps the em dash in copy-emdash.sh and the Slint style in the desktop
 # leg: a clause is placed by what it reads, never by what it is about.

@@ -25,10 +25,10 @@ model: fable
 - [ ] Screen saved at `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/WF-IDEA-US###-<Screen-Name>.html` — **stage 1.** `CONSOLIDATED-IDEAS/` is workflow `17`'s, and its screens drop the `IDEA` marker and the story number
 - [ ] Self-contained — opens over `file://` with nothing to fetch; only dependency is `SHARED/wireframe.css`
 - [ ] Composed from `wf-*` classes and `--wf-*` tokens — no raw colour or spacing literals
-- [ ] Laid out **within the committed direction** — every screen checked against the six axes in `code/docs/VISUAL-DESIGN.md` § 3, not against taste
+- [ ] Laid out **within the committed direction** — every screen checked against the six axes in `code/docs/VISUAL-DESIGN.md` Section 3, not against taste
 - [ ] The screen is not the shipped template's three-up in new clothes — if it repeats one card row, that is a decision with a reason, not a default
 
-> **The script gate runs at `17`, not here.** § 4.1's repetition tell and § 4.2's rhythm clause are
+> **The script gate runs at `17`, not here.** Section 4.1's repetition tell and Section 4.2's rhythm clause are
 > properties of a page **set**, and this workflow produces one screen at a time. `DESIGN.md` →
 > _The design-time gate_.
 

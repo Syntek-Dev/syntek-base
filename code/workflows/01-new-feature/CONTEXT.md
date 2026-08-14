@@ -34,9 +34,9 @@ Use this workflow when adding any new capability to the website that requires bo
 
 ### Governing documents
 
-- `code/docs/security/AUTH-AND-AUTHZ.md` — every state-changing Django Ninja endpoint must verify permissions (CLAUDE.md §6)
+- `code/docs/security/AUTH-AND-AUTHZ.md` — every state-changing Django Ninja endpoint must verify permissions (CLAUDE.md Section 6)
 - `code/docs/testing/COVERAGE.md` — coverage floors (75% line and branch / 90% auth) block PR — one floor, not one per layer
-- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA is non-negotiable on all interactive components (CLAUDE.md §8)
+- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA is non-negotiable on all interactive components (CLAUDE.md Section 8)
 - `code/docs/encryption/FIELD-ENCRYPTION.md` — any PII field must be encrypted before committing
 
 ### Related reading

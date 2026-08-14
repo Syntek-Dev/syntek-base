@@ -28,7 +28,7 @@ in `src/11-QA/` before any code is written.
 - **Definition of done:** every in-scope story has a QA plan; edge cases and error
   states fed into acceptance criteria; checklist satisfied; next step is
   `workflows/15-sprint-plans/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

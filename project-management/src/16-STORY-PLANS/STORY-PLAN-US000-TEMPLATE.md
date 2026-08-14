@@ -34,7 +34,7 @@
   • Every command in this plan MUST be a project script from
     code/src/scripts/**/*.sh. Raw python / pytest / manage.py / pnpm / docker / uv
     are forbidden EXCEPT the two narrow exceptions documented in
-    §"Quality Gates, Scripts & Local↔Docker Alignment".
+    Section "Quality Gates, Scripts & Local↔Docker Alignment".
   • Legend used in tables below:
       ★ always include   ◇ include if the concern applies   ⬡ retrospective only
       ✓ applies   ✓ always   — not applicable
@@ -45,7 +45,7 @@
 <!-- Implements **ADR-###** (&lt;decision title&gt;). -->
 <!-- > Authored retrospectively (DD/MM/YYYY) to fill a plan gap for an already-shipped story. -->
 <!-- > Source authority: where this plan conflicts with `project-management/src/02-STORIES/US###.md`
-       or `…/15-SPRINT-PLANS/##-SPRINT-PLAN-##.md`, the §"…" of that doc wins. GDPR authority:
+       or `…/15-SPRINT-PLANS/##-SPRINT-PLAN-##.md`, the Section "…" of that doc wins. GDPR authority:
        `…/09-GDPR/…`. This plan records the engineering route, not the requirement. -->
 
 ---
@@ -90,7 +90,7 @@
 **Current state / gap.** [What exists today and precisely what is missing or broken.]
 
 **What this story delivers.** [The concrete outcome — one paragraph or a short bullet list. State
-what is explicitly OUT of scope and which future US### owns it; mirror into §"Deferred Items".]
+what is explicitly OUT of scope and which future US### owns it; mirror into Section "Deferred Items".]
 
 **Layer scope (drives which sections survive).**
 
@@ -101,7 +101,7 @@ what is explicitly OUT of scope and which future US### owns it; mirror into §"D
 | Django Ninja API              | ✓ / —     | [endpoints, request/response schemas, permission checks] |
 | Frontend (templates)          | ✓ / —     | [templates, django-components, HTMX partials]            |
 | Infrastructure / DevOps       | ✓ / —     | [Docker, Nginx, CI, Nix, email, storage]                 |
-| GDPR / PII                    | ✓ / —     | [personal data touched? → §GDPR mandatory]               |
+| GDPR / PII                    | ✓ / —     | [personal data touched? → Section GDPR mandatory]        |
 
 ---
 
@@ -294,7 +294,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 | Dependencies                     | New/upgraded deps triaged per `security/SUPPLY-CHAIN.md`                            |
 
 > STRIDE threat model + OWASP Top 10 (2025) mapping per `project-management/docs/SECURITY-GUIDE.md`.
-> Findings/assessments are written to `project-management/src/10-SECURITY/**` (see §Documentation
+> Findings/assessments are written to `project-management/src/10-SECURITY/**` (see Section Documentation
 > Write-Ups). Critical/High must be fixed before PR; document accepted lower-severity risks.
 
 ---
@@ -416,7 +416,7 @@ and treat verification + review as first-class, not afterthoughts.
 - Follow `code/workflows/01-new-feature/` with `02-tdd-cycle/` as the inner loop: **Red → Green →
   Refactor**, one unit of behaviour at a time. Baseline before writing: `syntax/check.sh`.
 - Use subagents per layer (backend / API / frontend) where they can proceed independently; serialise
-  where one truly blocks another (mirror §Dependencies).
+  where one truly blocks another (mirror _Dependencies_).
 
 ### Stage 2 — Continuous verification gates (run after every meaningful change)
 
@@ -457,7 +457,7 @@ re-run after each `--fix` until clean). Each maps 1:1 to the pre-PR hook (`.clau
 ### Stage 5 — PR & release
 
 - `code/workflows/07-review/` clean → PM `22-pr-and-review/` (branch promotion + write back the
-  implementation records in §Documentation Write-Ups) → PM `23-release/` when cutting a version
+  implementation records in _Documentation Write-Ups_) → PM `23-release/` when cutting a version
   (`version` per `project-management/docs/VERSIONING-GUIDE.md`).
 
 ---
@@ -625,7 +625,7 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 
 <!-- ★ Always. Status appears in several artefacts and is mirrored onto the ClickUp board. Whenever
      this story's status changes (e.g. Open → In Progress → In Review → Completed), set the SAME
-     canonical ClickUp value (§header vocabulary) in EVERY artefact below, then regenerate the
+     canonical ClickUp value (Section header vocabulary) in EVERY artefact below, then regenerate the
      ClickUp export. The story file is the single source of truth the export reads. -->
 
 On every status transition, update the same ClickUp status value everywhere it appears, in this order:
@@ -745,9 +745,9 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
 - [ ] Accessibility verified for any UI — pytest markup assertions + the manual checklist
 - [ ] Every state-changing endpoint permission-checked; no IDOR
 - [ ] No PII in logs/errors; secrets via env only; `DEBUG=False` off-local
-- [ ] All implementation records written to correct folders (§Documentation Write-Ups)
+- [ ] All implementation records written to correct folders (Section Documentation Write-Ups)
 - [ ] `CONTEXT.md` / index / `GAPS.md` / `DEFERRED.md` updated
-- [ ] Status propagated to story + plan + index + sprint/sprint-plan; ClickUp export regenerated (§Status Propagation & ClickUp Sync)
+- [ ] Status propagated to story + plan + index + sprint/sprint-plan; ClickUp export regenerated (see _Status Propagation & ClickUp Sync_)
 
 ---
 

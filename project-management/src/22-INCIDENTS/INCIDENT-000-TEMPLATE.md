@@ -4,7 +4,7 @@ _Template — copy to `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` (the **declaration**
 
 > **PII-free, without exception.** No personal data, no credentials, no log excerpts, no stack
 > traces, no user identifiers, no record counts that identify anyone. This file is in git and it
-> ships. The substance goes to `<%INCIDENT_TRACKER%>` — § 7 records where. A project with no
+> ships. The substance goes to `<%INCIDENT_TRACKER%>` — Section 7 records where. A project with no
 > tracker keeps the substance **outside the repository**; the rule is never relaxed to fit a
 > report in. Full rules: [`CLAUDE.md`](CLAUDE.md).
 
@@ -19,7 +19,7 @@ _Template — copy to `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` (the **declaration**
 | **Stood down**             | {DD/MM/YYYY HH:MM} — or `—` while open                                     |
 | **Environment**            | staging / production                                                       |
 | **Outcome**                | Fixed / Rolled back / Workaround / No fault found / Provider resolved      |
-| **Personal data involved** | Yes / No / Under assessment — **if Yes, see § 2**                          |
+| **Personal data involved** | Yes / No / Under assessment — **if Yes, see Section 2**                    |
 | **Tracker ref**            | {reference in `<%INCIDENT_TRACKER%>`} — or `—` where this project has none |
 | **Last Updated**           | {DD/MM/YYYY}                                                               |
 
@@ -118,7 +118,7 @@ repository at {where, described without a path that leaks anything}`.
 - [ ] **Re-read for PII, credentials and log excerpts** — none present
 - [ ] Blameless: no individual named or implied
 - [ ] Severity matches the project's incident-response policy
-- [ ] Root cause answers **both** questions in § 4
+- [ ] Root cause answers **both** questions in Section 4
 - [ ] At least one follow-up action, each with an owner and a home outside this folder
 - [ ] Row added to [`INCIDENT-INDEX.md`](INCIDENT-INDEX.md) with a matching status
 - [ ] `⚫ Closed` set only once **every** follow-up has landed

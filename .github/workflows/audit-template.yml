@@ -177,7 +177,7 @@ jobs:
 
       # Seed content for a generated project's sub-packages. Bumping these in
       # syntek-base would hand every new project a sub-package history describing the
-      # template's development rather than its own. See CONTRIBUTING.md § 1b.
+      # template's development rather than its own. See CONTRIBUTING.md Section 1b.
       - name: Sub-package version files are pinned at 0.1.0
         run: |
           status=0

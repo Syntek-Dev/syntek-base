@@ -12,7 +12,7 @@ description: >-
 # Skill: Grilling (<%PROJECT_NAME%>)
 
 Grilling is how this project interrogates a design **before** building it. It flips the
-default posture in `.claude/CLAUDE.md` §10 — _make reasonable calls and proceed_ — into
+default posture in `.claude/CLAUDE.md` Section 10 — _make reasonable calls and proceed_ — into
 _interrogate first_: Claude interviews <%DEVELOPER_NAME%> until the design is sharp
 enough to implement without further clarification. For design work (architecture, database,
 API, user flow, story) this is the opening move, not an optional extra.
@@ -135,7 +135,7 @@ remits, so grilling and the skill stay in step:
   `how-to/docs/AI-DICTIONARY.md`).
 - Grilling trivia. Escalate only decisions with real scope or architectural consequence;
   make reasonable calls on minor details and note them as you go.
-- Essay-length options. The format is a scan, not a briefing (`.claude/CLAUDE.md` §1).
+- Essay-length options. The format is a scan, not a briefing (`.claude/CLAUDE.md` Section 1).
 
 ## Where the answers go
 
@@ -145,8 +145,8 @@ resolves — see that skill for exactly which artefact receives it.
 
 ## Authoritative cross-references
 
-- `.claude/CLAUDE.md` §10 — the question-asking policy grilling overrides for design work.
-- `.claude/CLAUDE.md` §1 — the concision standard the question format obeys.
+- `.claude/CLAUDE.md` Section 10 — the question-asking policy grilling overrides for design work.
+- `.claude/CLAUDE.md` Section 1 — the concision standard the question format obeys.
 - `how-to/docs/AI-DICTIONARY.md` — _grilling_, _sycophancy_, _human-in-the-loop_, _design concept_.
 - `.claude/skills/grill-me/SKILL.md` · `.claude/skills/grill-with-docs/SKILL.md` — the entry points.
 - `.claude/skills/{planner,database,backend,story}/SKILL.md` — the skills that grill.

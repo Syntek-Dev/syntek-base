@@ -30,11 +30,11 @@ component designs are signed off.
 - **Definition of done:** WCAG 2.2 AA met on all interactive components; the 75%
   coverage floor met; SEO requirements (`docs/SEO-CHECKLIST.md`) satisfied for
   public pages; checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 
-- **WCAG 2.2 AA is non-negotiable** on every interactive component (CLAUDE.md §8) — on
+- **WCAG 2.2 AA is non-negotiable** on every interactive component (CLAUDE.md Section 8) — on
   **both** surfaces. One standard, two technique sets
   (`code/docs/accessibility/MOBILE.md`).
 - **Token-first CSS:** components consume `var(--token)` only — never a raw colour,

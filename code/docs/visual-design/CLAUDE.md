@@ -21,17 +21,17 @@ the `code/docs/VISUAL-DESIGN.md` entry point, which keeps the cross-surface core
   update the `CONTEXT.md` file table if a file is added, renamed, or removed → add the matching
   `_exclude` entry to `copier.yml` for any new surface file → check length with
   `code/src/scripts/audits/docs-length.sh`.
-- **Definition of done:** every clause is traceable to a §3 axis or is explicitly
+- **Definition of done:** every clause is traceable to a Section 3 axis or is explicitly
   direction-independent; each file ≤ 300 lines; cross-references resolve; British English.
 
 ## Guardrails
 
-- **The direction is committed once, in the parent guide's §3 — never here.** A project is not
+- **The direction is committed once, in the parent guide's Section 3 — never here.** A project is not
   `editorial` on the web and something else on mobile. These files hold the _expression_ of one
   direction, never a second commitment.
-- **Never restate the ban list here.** §4.1 and §4.2 live in the parent. A surface sub-doc may add
+- **Never restate the ban list here.** Section 4.1 and Section 4.2 live in the parent. A surface sub-doc may add
   a surface-specific clause, but it names the axis it reads, and a universal tell always goes to
-  §4.1 so it is stated once.
+  Section 4.1 so it is stated once.
 - Every clause written in the default `editorial` direction carries a note naming its axis, so a
   project on different settings knows what to restate rather than having to infer it.
 - **300-line instructional limit** per file — split further rather than overflow.

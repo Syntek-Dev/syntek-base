@@ -42,7 +42,7 @@ predict a clean CI run.
 - **An audit is never a required status check, and that is why it may be path-filtered.**
   A required check must report on every pull request; a path-filtered one does not run when a PR
   touches none of its paths, so it never reports and the merge waits forever
-  (`project-management/docs/GIT-GUIDE.md` § Required status checks and path filters).
+  (`project-management/docs/GIT-GUIDE.md` → Required status checks and path filters).
 - **`static-analysis` is the one audit with no CI workflow yet.** It needs the Opengrep engine
   installed in the runner, and until that is wired it would report a green job having scanned
   nothing — which is worse than no job. Locally it behaves the same way: **without `opengrep` on
@@ -50,7 +50,7 @@ predict a clean CI run.
 - **Two tiers, one exit code.** The slop family, `cloc` and `docs-length` report `[gate: fail]` and
   `[gate: warn]` in a single run, and only a fail changes the exit code. That is deliberate: a
   threshold on composition or vocabulary fails correct work, so the script reports and a person
-  decides (`code/docs/VISUAL-DESIGN.md` § 6). **Exit 0 with warnings is not a clean run** — it is
+  decides (`code/docs/VISUAL-DESIGN.md` Section 6). **Exit 0 with warnings is not a clean run** — it is
   a run with unanswered questions in it.
 - **In this template, some gates report success with nothing to run.** `uv.lock` is absent
   by design, so the Python half of several CI jobs is guarded and skips. In a generated

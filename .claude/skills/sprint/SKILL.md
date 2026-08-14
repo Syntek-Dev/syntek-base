@@ -28,7 +28,7 @@ on `project-management/workflows/03-sprint-planning/` and `15-sprint-plans/`.
 ## Open with a grilling pass
 
 Name what must be settled and wait — the round shape and question format belong to the
-`grilling` skill (`.claude/CLAUDE.md` §10).
+`grilling` skill (`.claude/CLAUDE.md` Section 10).
 
 **Read first, ask second.** Points, MoSCoW, dependencies and existing sprints are all in
 `project-management/src/02-STORIES/` and `03-SPRINTS/`; capacity and velocity are in

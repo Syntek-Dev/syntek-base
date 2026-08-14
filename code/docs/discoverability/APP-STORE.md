@@ -28,15 +28,15 @@ looking for this product searches somewhere; this guide covers the somewhere tha
 The limits are the **interface**. They are set by Apple and Google, they change without notice,
 and they are the reason a listing is written to a shape rather than to taste.
 
-| Field                 | Apple App Store         | Google Play          |
-| --------------------- | ----------------------- | -------------------- |
-| App name              | 2–30 characters         | 30 characters        |
-| Subtitle              | 30 characters           | —                    |
-| Short description     | —                       | 80 characters        |
-| Keywords              | **100 bytes** (see § 2) | _no keyword field_   |
-| Description           | 4000 characters         | 4000 characters      |
-| Promotional text      | 170 characters          | —                    |
-| What's New in version | 4000 characters         | _see the note below_ |
+| Field                 | Apple App Store               | Google Play          |
+| --------------------- | ----------------------------- | -------------------- |
+| App name              | 2–30 characters               | 30 characters        |
+| Subtitle              | 30 characters                 | —                    |
+| Short description     | —                             | 80 characters        |
+| Keywords              | **100 bytes** (see Section 2) | _no keyword field_   |
+| Description           | 4000 characters               | 4000 characters      |
+| Promotional text      | 170 characters                | —                    |
+| What's New in version | 4000 characters               | _see the note below_ |
 
 - **Source (Apple):** App Store Connect Help —
   [App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/)
@@ -76,7 +76,7 @@ a third of its apparent length.
 
 **Count bytes for Apple.** `len(text.encode("utf-8"))`, never `len(text)`.
 
-This section exists for the same reason [`CONTENT-STRUCTURE.md`](CONTENT-STRUCTURE.md) § 1 exists:
+This section exists for the same reason [`CONTENT-STRUCTURE.md`](CONTENT-STRUCTURE.md) Section 1 exists:
 the incorrect figure is not merely absent from this repository, it is **actively circulating
 everywhere a developer would go to check**.
 
@@ -135,7 +135,7 @@ project's keyword set has stopped being a guide.
 
 **The register repeats the limits; this guide still owns them.** That is deliberate — a value
 column with no target beside it cannot be reviewed. What is **not** repeated is the provenance:
-the `Source:` and `Verified:` fields in § 1 exist in this file only, because a date duplicated is
+the `Source:` and `Verified:` fields in Section 1 exist in this file only, because a date duplicated is
 a date that goes stale in one copy while still looking authoritative in the other. If the two
 disagree, **this guide is right and the register is stale.**
 
@@ -163,8 +163,8 @@ backlinks and PR on the web side, applied to the store. It is not a gap.
 **One thing, and it is not the important thing.** `code/src/mobile/app.json` is in the repository,
 so `expo.name` can be length-checked against the 30-character limit both stores share.
 
-Every other field in § 1 lives in App Store Connect or the Play Console. Nothing in this
-repository can see them, so nothing here can gate them — including the byte count in § 2, which is
+Every other field in Section 1 lives in App Store Connect or the Play Console. Nothing in this
+repository can see them, so nothing here can gate them — including the byte count in Section 2, which is
 the rule most likely to be got wrong.
 
 That makes the listing a **review artefact, not an audit artefact**. Treat a green pipeline as
@@ -175,12 +175,12 @@ saying nothing at all about it.
 ## Cross-references
 
 - [`../DISCOVERABILITY.md`](../DISCOVERABILITY.md) — the index and the seam statement
-- [`CONTENT-STRUCTURE.md`](CONTENT-STRUCTURE.md) — the body of a web page; § 1 is the precedent
-  for § 2 here
+- [`CONTENT-STRUCTURE.md`](CONTENT-STRUCTURE.md) — the body of a web page; Section 1 is the precedent
+  for Section 2 here
 - [`../visual-design/MOBILE.md`](../visual-design/MOBILE.md) — the mobile visual surface, which
   owns the listing's imagery
 - [`../architecture/PROVIDER-NEUTRALITY.md`](../architecture/PROVIDER-NEUTRALITY.md) — the
-  rule-versus-instance split § 4 applies
+  rule-versus-instance split Section 4 applies
 - `how-to/src/BRAND-VOICE.md` — the register the listing copy is written in
 - [Apple — App information](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information/)
   · [Apple — Platform version information](https://developer.apple.com/help/app-store-connect/reference/platform-version-information/)

@@ -28,7 +28,7 @@ deployment, run only once staging is green and every story in the release is com
 - **Definition of done:** version bumped consistently everywhere, changelog complete,
   the branch promotion chain and staging gates satisfied, release deployed, checklist
   fully ticked.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

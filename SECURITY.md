@@ -71,7 +71,7 @@ We do not operate a paid bug bounty.
 
 ## Security posture of generated projects
 
-The template's non-negotiable security rules live in `.claude/CLAUDE.md` §6 and are enforced in
+The template's non-negotiable security rules live in `.claude/CLAUDE.md` Section 6 and are enforced in
 `code/docs/SECURITY.md`. In summary, a project generated from this template is expected to:
 
 - put an explicit permission check on every state-changing Django Ninja endpoint (OWASP A01)

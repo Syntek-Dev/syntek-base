@@ -22,7 +22,7 @@ model: opus
 **WCAG 2.2 Level AA is unchanged by the platform.** It is not a web-only standard: W3C/WAI's own
 guidance is explicit that WCAG applies to mobile applications, and EN 301 549 — the European
 accessibility requirement for public procurement — applies WCAG's success criteria to non-web
-software. The global rule in `.claude/CLAUDE.md` §8 therefore needs no mobile exception.
+software. The global rule in `.claude/CLAUDE.md` Section 8 therefore needs no mobile exception.
 
 What changes is **how** a criterion is satisfied. There is no DOM, no ARIA and no semantic HTML
 here. `code/docs/ACCESSIBILITY.md` and its sub-documents describe the web techniques; this

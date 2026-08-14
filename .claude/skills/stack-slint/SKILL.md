@@ -252,8 +252,8 @@ caller said to.
 ## Cross-references
 
 - `code/docs/DESKTOP.md` and its `desktop/` sub-docs — the guide behind this skill
-- `code/docs/VISUAL-DESIGN.md` — §3 the direction and its six axes, §4.1 the universal tells,
-  §5 the motion numbers (read every time)
+- `code/docs/VISUAL-DESIGN.md` — Section 3 the direction and its six axes, Section 4.1 the universal tells,
+  Section 5 the motion numbers (read every time)
 - `code/docs/visual-design/DESKTOP.md` — the desktop expression and the stock-Fluent tell
 - `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy, including the AccessKit advisories
 - `code/src/rust/CLAUDE.md` — the operating rules for the workspace

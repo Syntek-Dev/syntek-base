@@ -160,7 +160,7 @@ turn a generation answer into a code symbol, which is a different mistake from t
 prevents.
 
 **A heading that compares two implementations is not a heading naming one.**
-[`../api-design/EVENT-TRACKING.md`](../api-design/EVENT-TRACKING.md) § _Plausible vs an own store_
+[`../api-design/EVENT-TRACKING.md`](../api-design/EVENT-TRACKING.md) Section _Plausible vs an own store_
 stands, and is recorded here so nobody repairs it: the defect this rule catches is a product
 standing **where an interface should be**, and a product standing beside another product is a
 comparison.

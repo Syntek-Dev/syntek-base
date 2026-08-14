@@ -22,7 +22,7 @@ anything in `src/` is designed, written, tested, and reviewed.
   under `src/scripts/`.
 - **Grill first:** any substantial task — design, code, tests, review, refactor, debug —
   opens with a grilling pass (the running skill loads `.claude/skills/grill-with-docs`, which owns the round shape and question format) before code is written; only trivial/mechanical work skips it
-  (`.claude/CLAUDE.md` §10).
+  (`.claude/CLAUDE.md` Section 10).
 - **Model:** Opus for all substantive work (design, code, tests, reviews, security)
   and mechanical touches (renames, version bumps, running scripts).
 - **Concrete steps:** read the relevant `docs/` guide → implement under
@@ -37,7 +37,7 @@ anything in `src/` is designed, written, tested, and reviewed.
 
 ## Guardrails
 
-- **Non-negotiables (`.claude/CLAUDE.md` §6):** explicit permission check on every
+- **Non-negotiables (`.claude/CLAUDE.md` Section 6):** explicit permission check on every
   state-changing Django Ninja endpoint; user IDs verified against caller ownership;
   `DEBUG=False` outside local;
   no `CORS *` in production; secrets via env only; Django admin never at `/admin/`;

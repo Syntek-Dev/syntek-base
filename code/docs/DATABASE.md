@@ -33,7 +33,7 @@ account, organisation, tenant — is a domain decision, so the running skill **o
 pass** (`.claude/skills/grill-with-docs`) covering ownership, cardinality, isolation scope,
 invariants, personal-data fields, retention, and expected query shapes. A tenancy question
 spanning many tables is charted with `.claude/skills/wayfinder` and resolved node by node.
-Never a fixed questionnaire — see `.claude/CLAUDE.md` §10.
+Never a fixed questionnaire — see `.claude/CLAUDE.md` Section 10.
 
 Purely global reference data carries no scope column; say so explicitly in
 `db_table_comment` rather than leaving it ambiguous.

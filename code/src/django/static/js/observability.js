@@ -4,20 +4,20 @@
  * HTMX swaps on 2xx only, so without this a 500 or 503 replaces *nothing*: the indicator
  * stops, the page is unchanged, and the user re-clicks. The view nobody expected to fail is
  * the one that will, which is why this is global rather than attached where a failure was
- * anticipated. Rule: code/docs/rendering/PITFALLS-AND-EXAMPLES.md § An error the user never
+ * anticipated. Rule: code/docs/rendering/PITFALLS-AND-EXAMPLES.md Section An error the user never
  * sees. Taxonomy: code/docs/NEGATIVE-SPACE.md.
  *
  * User errors are NOT handled here. They are a 200 with the re-rendered form, per view.
  *
  * Nothing loads this script at baseline — there is no base template yet. What is still
  * unbuilt, and what depends on it, is listed in code/docs/FRONTEND-CODING-PRINCIPLES.md
- * § What is not built yet.
+ * Section What is not built yet.
  */
 
 const ERROR_REGION_ID = "error-region";
 
-/* Placeholder copy. Rewrite at first-time setup against how-to/src/BRAND-VOICE.md § 3 —
-   the template may not invent a voice (§ 2). Both strings are last resorts: the server's
+/* Placeholder copy. Rewrite at first-time setup against how-to/src/BRAND-VOICE.md Section 3 —
+   the template may not invent a voice (Section 2). Both strings are last resorts: the server's
    own rendered partial is preferred wherever there is one. */
 const FALLBACK_MESSAGE = "Something went wrong at our end. Please try again.";
 const OFFLINE_MESSAGE = "That request did not reach us. Check your connection and try again.";

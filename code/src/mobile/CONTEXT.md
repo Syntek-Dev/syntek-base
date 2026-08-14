@@ -51,7 +51,7 @@ parts of it `tsc` and Jest can prove at baseline. The line between what ships he
 not is **what a failure is** versus **what the user sees**: the first can be decided before the
 project has a look or a voice, the second cannot. What they belong to, and what deliberately is
 **not** built yet (the root error boundary, the error screen, the request-ID holder), is
-`code/docs/MOBILE-CODING-PRINCIPLES.md` § 5.
+`code/docs/MOBILE-CODING-PRINCIPLES.md` Section 5.
 
 **`lib/` exists because `app/` cannot hold a non-route module** — expo-router turns every file
 under `app/` into a route, so a shared helper placed there would ship as a navigable screen.

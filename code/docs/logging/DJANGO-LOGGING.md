@@ -211,7 +211,7 @@ Register a catch-all handler on the `NinjaAPI` instance so unhandled exceptions 
 
 > **Which class an error belongs to is not decided here.** The programmer / user / environment
 > taxonomy, the exception type each raises, and the status, log level and tracker behaviour each
-> gets are owned by [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) § _The error taxonomy_. This
+> gets are owned by [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) Section _The error taxonomy_. This
 > section is one of that taxonomy's consequences — the wiring, not the rule.
 
 ```python

@@ -27,7 +27,7 @@ debugging (`how-to/workflows/08-debugging/`) and log-based debugging (workflow `
   `CHECKLIST.md`.
 - **Definition of done:** regression test now green, no unrelated code touched,
   behaviour corrected, bug artefact updated under `project-management/src/20-BUGS/`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

@@ -50,9 +50,9 @@ _exclude:
   # Project memory is an ACCUMULATOR, so the same argument reaches it: syntek-base's own
   # memory — how this repo's .gitignore overrides work, which account may bypass branch
   # protection, which internal epic found what — is meaningless and actively misleading
-  # in a generated project, where §2.1 has every session read it second and believe it.
+  # in a generated project, where Section 2.1 has every session read it second and believe it.
   #
-  # Excluding it rather than shipping a stub is what keeps the file usable HERE. §2.1
+  # Excluding it rather than shipping a stub is what keeps the file usable HERE. Section 2.1
   # hardcodes `.claude/MEMORY.md` as read-second and that line ships, so the file must
   # exist in both repos and can never be retired — which rules out the GAPS.md pattern
   # (a shipped stub plus a differently-named store this repo actually writes to).

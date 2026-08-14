@@ -16,7 +16,7 @@ different work taking over. It captures the live thread of _this_ session only: 
 work sits, what is half-done, and the next move. Durable project knowledge has other homes
 (below); a handoff is a transient bridge, not a memory store.
 
-The default posture in `.claude/CLAUDE.md` §2 is that context flows through the skills and the
+The default posture in `.claude/CLAUDE.md` Section 2 is that context flows through the skills and the
 layered docs. A handoff is the exception: when a conversation must end before the work does, this
 skill serialises just enough continuity for the next agent to start without re-deriving it.
 
@@ -24,7 +24,7 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 
 ## The auto-compaction replacement
 
-This skill is the project's designated alternative to auto-compaction (`.claude/CLAUDE.md` §2.6).
+This skill is the project's designated alternative to auto-compaction (`.claude/CLAUDE.md` Section 2.6).
 Auto-compaction is disabled (`settings.json` → `autoCompactEnabled: false`) and intercepted (the
 `PreCompact` hook). So when the context window nears full, **do not let the session compact** —
 run this skill, write the handoff, **stop**, and let <%DEVELOPER_NAME%> `/clear` and resume from the file. A hook
@@ -107,7 +107,7 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
   session-boundary complement.
 - `.claude/skills/wait-what/SKILL.md` · `.claude/skills/teach/SKILL.md` — the teaching detour:
   a `HANDOFF-TEACH-<TOPIC>-…` handoff whose next session runs `/teach` before resuming the work.
-- `.claude/CLAUDE.md` §2.3, §2.6 — how work is routed, and the session-continuity rule this implements.
+- `.claude/CLAUDE.md` Section 2.3, Section 2.6 — how work is routed, and the session-continuity rule this implements.
 - `.claude/skills/CONTEXT.md` — the roster the suggested skills are drawn from.
 - `.claude/plugins/` · `code/docs/CODE-REVIEW-GRAPH.md` — read-only lookup for session facts before Grep/Glob.
 - `.claude/MEMORY.md` · `GAPS.md` · `DEFERRED.md` — the homes for durable knowledge kept out of the handoff.

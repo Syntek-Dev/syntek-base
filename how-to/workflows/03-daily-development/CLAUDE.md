@@ -25,7 +25,7 @@ bring the containers up, and set the working context for the day's user story.
   with `project-management/docs/GIT-GUIDE.md`.
 - **Definition of done:** following `STEPS.md` yields a correctly named branch on a
   running stack; `CHECKLIST.md` passes; British English.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

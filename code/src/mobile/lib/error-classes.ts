@@ -7,7 +7,7 @@
  * request is how a mobile error tracker becomes noise, and a noisy tracker is a muted one.
  *
  * This module is the classifier only. The screen that renders the result is deliberately not
- * built (code/docs/MOBILE-CODING-PRINCIPLES.md § 5): it needs the token module and the
+ * built (code/docs/MOBILE-CODING-PRINCIPLES.md Section 5): it needs the token module and the
  * project's brand voice, neither of which exists at baseline. The classification does not,
  * which is why the half that can be proved here ships and the half that cannot does not.
  */

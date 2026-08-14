@@ -60,7 +60,7 @@ are documented against the `.env.*.example` templates — never real secret valu
 ## Open with a grilling pass
 
 Name what must be settled and wait — the round shape and the question format belong to the
-`grilling` skill (`.claude/CLAUDE.md` § 10). Four dimensions, and none of them is in the
+`grilling` skill (`.claude/CLAUDE.md` Section 10). Four dimensions, and none of them is in the
 repository:
 
 - **Target trajectory** — the per-surface growth curve (marketing peak req/s · portal peak
@@ -120,7 +120,7 @@ The snapshot is **living**. On every run:
   Read/Grep/Glob — and write the snapshot before any planning.
 - **Present** → **reconcile it against the live code** and patch or flag drift before you plan.
   Never plan against a stale snapshot. This is the "ground in the live code, reconcile drift"
-  doctrine (`code/docs/FRONTEND-CODING-PRINCIPLES.md` § Ground in the Live Code).
+  doctrine (`code/docs/FRONTEND-CODING-PRINCIPLES.md` → Ground in the Live Code).
 
 Do the same for `how-to/src/SERVER-ARCHITECTURE/` — its edge-requirement catalogue drifts as
 features add new server needs (a new route needs a CSP source; a new upload needs a body-size).

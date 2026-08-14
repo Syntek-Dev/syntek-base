@@ -82,7 +82,7 @@ pre-commit:
       glob: "*{CONTEXT,CLAUDE}.md"
       run: bash code/src/scripts/audits/docs-pairing.sh
 
-    # The 300-line instructional cap (.claude/CLAUDE.md § 8). Unscoped for the same reason
+    # The 300-line instructional cap (.claude/CLAUDE.md Section 8). Unscoped for the same reason
     # as above rather than a cross-file one: the audit decides its own scope, and a guide
     # split into a sub-folder must be re-measured as a set, not per staged file. cloc reads
     # ~700 small files in well under a second.

@@ -28,7 +28,7 @@ never a fix or a commit.
 
 Settle the exact expected-versus-actual behaviour, the precise reproduction steps, and the
 intended **scope of the fix** before dispatching anything. An obvious one-line fix skips it.
-The `grilling` skill owns the round shape (`.claude/CLAUDE.md` §10); the confirmed answers
+The `grilling` skill owns the round shape (`.claude/CLAUDE.md` Section 10); the confirmed answers
 become the brief for the root-cause phase.
 
 ## Root cause

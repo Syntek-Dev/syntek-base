@@ -725,7 +725,7 @@ character costs two bytes and most CJK characters cost three — so a keyword se
 characters can be rejected at a third of its apparent length. Count with
 `len(text.encode("utf-8"))`, never `len(text)`.
 
-The guide states this for the same reason `discoverability/CONTENT-STRUCTURE.md` § 1 disposes of
+The guide states this for the same reason `discoverability/CONTENT-STRUCTURE.md` Section 1 disposes of
 the answer-engine myths: the wrong figure is not merely missing from this repository, it is
 circulating everywhere a developer would go to check.
 
@@ -943,7 +943,7 @@ The citations are gone from `DESIGN.md`, `.prettierignore`, `code/workflows/03-d
 and the two CSS audit scripts. Each described something real, so each now names that thing directly
 — the shard-key co-location, the Django static token cascade, the co-located component CSS. The
 retired machinery is still standing and still instructs otherwise; the memory entry is read second in
-the § 2.1 order and wins until the removal ships.
+the Section 2.1 order and wins until the removal ships.
 
 ### Instances used as evidence, and paths that resolved to nothing
 
@@ -973,7 +973,7 @@ deploy repository's guides bare, so they resolved **here**, to the wrong thing.
 
 Two of these were not wrong references but missing things.
 
-`.claude/CLAUDE.md` § 3 listed five MCP servers. `.mcp.json` configured one. `context7` and
+`.claude/CLAUDE.md` Section 3 listed five MCP servers. `.mcp.json` configured one. `context7` and
 `mcp-mermaid` are now genuinely wired, and the table gains a **How you get it** column so the
 remaining gap is stated rather than implied: `claude-in-chrome` needs the extension installed and
 paired, which no file here can do for you, and the `figma` row is gone because nothing here provides
@@ -1092,7 +1092,7 @@ own. A `UserPromptSubmit` hook now measures it:
 - **75% — insist**, on every prompt. Write the handoff and stop the turn.
 
 The split is the same one `pre-compact-handoff.sh` already used: a hook cannot invoke a skill or
-stop a turn, so the script measures and reminds, and `.claude/CLAUDE.md` § 2.6 carries the
+stop a turn, so the script measures and reminds, and `.claude/CLAUDE.md` Section 2.6 carries the
 behaviour. Both halves are needed; neither works alone.
 
 Two details worth knowing. The window size is a constant — nothing in the transcript reports it —
@@ -1486,12 +1486,12 @@ before and the later documents are themselves written in the voice the earlier o
 
 ### A named direction, because "not AI-looking" is not a specification
 
-`VISUAL-DESIGN.md` § 3 makes you pin a **direction** on six axes. This is the load-bearing part:
-without a direction, § 4.2's ban list cannot be decided at all, because a deviation is only a
-deviation from something. § 4.1 is the separate, unconditional list — the universal tells, banned
+`VISUAL-DESIGN.md` Section 3 makes you pin a **direction** on six axes. This is the load-bearing part:
+without a direction, Section 4.2's ban list cannot be decided at all, because a deviation is only a
+deviation from something. Section 4.1 is the separate, unconditional list — the universal tells, banned
 on every direction and every surface.
 
-§ 5 is a numeric motion standard rather than a taste statement: frequency first (the rule that
+Section 5 is a numeric motion standard rather than a taste statement: frequency first (the rule that
 actually changes decisions), duration ceilings, easing as a hierarchy, and reduced-motion meaning
 fewer and gentler rather than none.
 
@@ -1504,7 +1504,7 @@ name one — so `build.rs` now names it.
 
 Each runs two tiers in one pass, following `cloc.sh`'s warn-at-750 / fail-at-800 precedent:
 `[gate: fail]` for an unambiguous match, `[gate: warn]` for a threshold, a ratio, or a word that is
-sometimes just correct English. § 6 of the guide is the explicit list of what a script can decide
+sometimes just correct English. Section 6 of the guide is the explicit list of what a script can decide
 and what it cannot, so the gates are never mistaken for the standard.
 
 ### Credit, written alongside rather than afterwards
@@ -1594,7 +1594,7 @@ whoever opens that one instead.
 
 `code/docs/DOCUMENTATION-PAIRING.md` owns that sentence, the decision test for anything that could
 plausibly go in either, the headings that never belong in an orientation file, and the
-route-don't-restate rule. `.claude/CLAUDE.md` § 8 states the rule in one bullet and routes here for
+route-don't-restate rule. `.claude/CLAUDE.md` Section 8 states the rule in one bullet and routes here for
 the procedure, rather than carrying a second copy of it — which is the standard applied to itself.
 
 ### Three gates, because a rule nothing checks is a rule that rots
@@ -1720,7 +1720,7 @@ about a template.
 
 ### The rule behind it
 
-`CONTRIBUTING.md` § 1b, which never ships downstream: in syntek-base a version bump edits exactly
+`CONTRIBUTING.md` Section 1b, which never ships downstream: in syntek-base a version bump edits exactly
 six root files and **never a versioning document anywhere else in the tree**. The documents under
 `code/src/django/` and `code/src/mobile/` are seed content for generated projects and stay pinned
 at `0.1.0` — bumping them here would hand every new project a sub-package history describing the
@@ -2004,7 +2004,7 @@ for, and the evidence when a consolidated decision is later questioned.
 - Twenty `IMPLEMENTATION/` folders credited the PR workflow for writing their records, which
   workflow `21` had already absorbed.
 - Three workflows — brand guides, wireframes, sprint plans — had no grilling pass at all, despite
-  `.claude/CLAUDE.md` §10 making it the default for substantial work.
+  `.claude/CLAUDE.md` Section 10 making it the default for substantial work.
 - The wayfinder skill referenced its map through a token substitution that had lost its separator.
 
 ### Upgrade notes

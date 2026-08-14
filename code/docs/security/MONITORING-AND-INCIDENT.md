@@ -107,7 +107,7 @@ the faster the response, the smaller the impact.
 ### 5. Document
 
 - Write an incident report covering: timeline, root cause, impact, fix applied, and follow-up
-  actions to prevent recurrence. The format is `how-to/docs/INCIDENT-PRACTICE.md` § 5.
+  actions to prevent recurrence. The format is `how-to/docs/INCIDENT-PRACTICE.md` Section 5.
 - **The report splits in two, and the split is a security control, not a filing preference.** A
   PII-free register entry — that it happened, severity, dates, outcome, status — goes to
   `project-management/src/22-INCIDENTS/`, which is in git and ships. Everything else — log

@@ -27,7 +27,7 @@ artefacts under `src/`.
   add or remove a guide. Version bumps go through `VERSIONING-GUIDE.md`.
 - **Definition of done:** guide accurate and cross-linked to its workflow; ≤ 300 code
   lines; British English; `CONTEXT.md` guide table current.
-- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

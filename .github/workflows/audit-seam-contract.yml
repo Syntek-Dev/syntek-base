@@ -9,7 +9,7 @@
 # still exists but no longer says what the contract claims. That stays a review job.
 #
 # Path filters are safe here because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters.
 #
 # Self-guarding: exits 0 with a note when SERVER-ARCHITECTURE/ is absent, so it is safe
 # to run unconditionally without a step-level directory guard.

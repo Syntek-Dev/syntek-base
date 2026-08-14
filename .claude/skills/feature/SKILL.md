@@ -27,7 +27,7 @@ one before anything else starts.
 ## Before phase 1
 
 - **Grill the scope.** Name what must be settled and wait for <%DEVELOPER_NAME%> — the
-  `grilling` skill owns the round shape (`.claude/CLAUDE.md` §10). A feature bigger than one
+  `grilling` skill owns the round shape (`.claude/CLAUDE.md` Section 10). A feature bigger than one
   session is charted with `wayfinder` first; a session that must end before the work does exits
   through `handoff`.
 - **Check the ground.** `git status` (the branch is `us###/short-description`) and

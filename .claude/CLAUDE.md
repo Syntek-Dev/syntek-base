@@ -19,7 +19,7 @@
   - **Never a long essay.** No preamble, no restating the question, no summary of what you are about to say, no closing recap. Lead with the answer.
   - **Bold the load-bearing words** so the reply survives skim-reading. Code, paths and commands in backticks.
   - Applies to **chat replies**, not to the repository's own documentation — `docs/`, `CONTEXT.md`, `CLAUDE.md` and the PM artefacts keep their existing register.
-  - The grilling question format (§10, `.claude/skills/grilling/SKILL.md`) is this rule applied to interviews.
+  - The grilling question format (Section 10, `.claude/skills/grilling/SKILL.md`) is this rule applied to interviews.
 - **Memory functionality** Auto memory is off, if there is anything for this project regarding memory storage, we store it in ../MEMORY.md
 
 > **Always use the project shell scripts under `code/src/scripts/` for all dev operations.
@@ -41,7 +41,7 @@ way to the work.
 3. The **target folder's `CONTEXT.md`** (orientation — tree, what-is-here) then its **`CLAUDE.md`**
    (operating rules).
 4. The **routing frontmatter** on any `**/docs/*.md` or `**/workflows/**/*.md` file you open
-   (§2.5) — it names the skills and model for that work.
+   (Section 2.5) — it names the skills and model for that work.
 
 Every folder `CLAUDE.md` repeats this chain in its own `Read order:` line.
 
@@ -49,19 +49,19 @@ Every folder `CLAUDE.md` repeats this chain in its own `Read order:` line.
 
 A task enters through the **skill** whose description matches it; that skill routes to the
 matching `**/workflows/NN-…/` procedure and dispatches a subagent for any step needing a fresh
-context (§2.3). The governing `docs/` guide and the workflow `STEPS.md`/`CHECKLIST.md` carry
-routing frontmatter (§2.5) naming the skills and model for that work.
+context (Section 2.3). The governing `docs/` guide and the workflow `STEPS.md`/`CHECKLIST.md` carry
+routing frontmatter (Section 2.5) naming the skills and model for that work.
 
 **Four things precede all of it, once per project** (`how-to/workflows/01-first-time-setup/`
 Steps 7–10), in order, because each depends on the one before: the **project brief** in the root
 `CONTEXT.md` — what this builds, for whom, replacing what — then **`how-to/src/BRAND-VOICE.md`**,
 which settles how the project speaks to that named reader (every skill that writes a user-facing
-string loads it), then **`code/docs/VISUAL-DESIGN.md` § 3**, which names the **visual direction**
-and pins its six axes — the same doctrine in composition rather than copy, and what makes § 4.2's
+string loads it), then **`code/docs/VISUAL-DESIGN.md` Section 3**, which names the **visual direction**
+and pins its six axes — the same doctrine in composition rather than copy, and what makes Section 4.2's
 ban list decidable at all — then **`/scale-planning`**, which settles the size the system is
 designed for and therefore what it does _not_ need. All four are cheap before the first feature
 and expensive after the tenth. If the brief is still the raw generation-time answer, or
-`BRAND-VOICE.md` § 3 or `VISUAL-DESIGN.md` § 3 still carry `TBD` placeholders, say so before
+`BRAND-VOICE.md` Section 3 or `VISUAL-DESIGN.md` Section 3 still carry `TBD` placeholders, say so before
 planning anything.
 
 **PM planning runs a per-story loop, not a phase batch.** A human thinks each story through
@@ -86,7 +86,7 @@ force a choice. Where independence is required — **no skill reviews its own wo
 skill dispatches `general-purpose` through the Agent tool, **naming the skill to load in the
 prompt**. Built-in targets are `Explore`, `Plan` and `general-purpose`; the first two skip
 `CLAUDE.md`, so use them only where the work writes nothing. Models are `fable`/`opus` by task
-(§4) — design skills (`story`, `sprint`, `planner`, `scale-planning`) run on Fable. A skill
+(Section 4) — design skills (`story`, `sprint`, `planner`, `scale-planning`) run on Fable. A skill
 never self-edits.
 
 ### 2.4 The roster
@@ -157,7 +157,7 @@ plugin commands — use the internal skills instead.
 
 Every session runs on **Opus** with **ultracode** on (`effortLevel: xhigh`, dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: xhigh`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
 
-Sub-agents, workflows, and docs-guides route by **tier** through their `model:` frontmatter (§2.5): **Fable** sets the foundation, **Opus** builds on it and handles every mechanical touch. **Never use `sonnet` or `haiku`.**
+Sub-agents, workflows, and docs-guides route by **tier** through their `model:` frontmatter (Section 2.5): **Fable** sets the foundation, **Opus** builds on it and handles every mechanical touch. **Never use `sonnet` or `haiku`.**
 
 | Alias        | Use for                                                                                                                                                                                     |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -169,6 +169,22 @@ Sub-agents, workflows, and docs-guides route by **tier** through their `model:` 
 ---
 
 ## 5. Naming Conventions
+
+### Writing conventions
+
+- **Never use the section sign (U+00A7).** Write `Section 3.2`, or just `3.2` where the context
+  already says it is a section. Its doubled form, for a range, is banned too — write
+  `Sections 4 to 7`.
+- It is the scholarly and legal shorthand for "section", absorbed from RFCs, specs, statutes and
+  standards documents. The usage is correct and denser than this project wants: these files are
+  read under time pressure by people who are not lawyers.
+- **The rule is deliberately written without the character**, so that zero occurrences is an
+  invariant anything can check — `grep -rIP '\xc2\xa7' .` returning nothing is the pass condition.
+- **Prefer plain ASCII punctuation** in anything an agent writes. The em dash is the deliberate
+  exception — it is house style throughout the prose here, and `audits/copy-emdash.sh` bans it
+  only in **public marketing copy**, never in documentation.
+- If that codepoint ever shows up as mojibake, mid-word, or somewhere "section" makes no sense,
+  that is a UTF-8/Latin-1 encoding fault rather than a writing-style one — fix it as corruption.
 
 ### Files
 
@@ -214,8 +230,8 @@ These apply in every task, regardless of layer:
 - New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>` — never run `manage.py startapp` or `django-admin startapp` directly.
 - New public marketing page → `bash code/src/scripts/development/new-django-view.sh <route_path>` — creates a Django view + template + URL entry. Never hand-create page routes outside this script.
 - All documentation (`CONTEXT.md`, `docs/*.md`, `.claude/skills/**/*.md`, `REFERENCES.md`) must reference scripts from `code/src/scripts/` for developer operations — never raw `pnpm`, `npm`, `npx`, `pip`, `uv`, `docker`, or `python manage.py` commands.
-- **Doctrine derived from an outside source is credited where it is written**, not retrospectively — the `README.md` § _Influences and attribution_ table gains the row in the **same change** as the rule it credits. Attribution written once decays; written alongside, it stays true.
-- **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` § _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, unlicensed) are derived freely and credited.
+- **Doctrine derived from an outside source is credited where it is written**, not retrospectively — the `README.md` Section _Influences and attribution_ table gains the row in the **same change** as the rule it credits. Attribution written once decays; written alongside, it stays true.
+- **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` Section _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, unlicensed) are derived freely and credited.
 
 ---
 
@@ -331,4 +347,4 @@ with `/grill-me` (stateless) or `/grill-with-docs` (records decisions).
 
 **Routed, never restated.** `.claude/skills/CONTEXT.md` is the one place a skill's name, remit
 and when-to-load trigger are written down — including the stack skills and the optional-surface
-ones. Read it there (§2.4).
+ones. Read it there (Section 2.4).

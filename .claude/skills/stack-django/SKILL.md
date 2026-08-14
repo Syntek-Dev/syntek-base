@@ -282,7 +282,7 @@ exists. No pronouns. **Never reference a story (`US###`), sprint, ADR, ticket, P
 `TODO`/`FIXME` — deferred work belongs in `DEFERRED.md`/`GAPS.md`. The one exception is
 published interface text: a Ninja endpoint docstring and `summary` render on the OpenAPI
 page, and a FastMCP tool docstring is the prompt the model reads, so both state the full
-what. Full standard: `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` §4.
+what. Full standard: `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` Section 4.
 
 ---
 

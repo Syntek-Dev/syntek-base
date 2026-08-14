@@ -12,7 +12,7 @@ remove stale entries rather than appending contradictions.
 **Do not write here:** active gaps, blockers, sprint dependencies → those go in `GAPS.md`.
 
 > **This file is syntek-base's own, and copier excludes it.** A generated project is seeded a
-> blank canvas from `.copier/MEMORY.md` instead, because §2.1 has every session read this file
+> blank canvas from `.copier/MEMORY.md` instead, because Section 2.1 has every session read this file
 > second and believe it — so the template's memory arriving as a project's own is read as
 > authoritative. Write repo-specific state here freely; it never ships. Doctrine that every
 > project needs is not memory and belongs in the `docs/` guide that owns it.

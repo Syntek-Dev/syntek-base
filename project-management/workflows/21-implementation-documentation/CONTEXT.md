@@ -89,7 +89,7 @@ and carries three responsibilities:
 ### Governing documents
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the graph-refresh procedure the docs must stay in
-  lockstep with; the documentation hard gate is non-negotiable (`.claude/CLAUDE.md` §6).
+  lockstep with; the documentation hard gate is non-negotiable (`.claude/CLAUDE.md` Section 6).
 
 ### Related reading
 

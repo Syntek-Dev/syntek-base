@@ -87,7 +87,7 @@ see. Advisories are published continuously — a clean run last week means nothi
 **Read the slop family's warnings; do not just count its exit code.** Those four report two tiers
 in one run, and a `[gate: warn]` finding leaves the exit code at 0 by design — a threshold on
 composition or vocabulary fails correct work, so the script reports and a human decides
-(`code/docs/VISUAL-DESIGN.md` § 6). An audit that exits 0 with five warnings has told you
+(`code/docs/VISUAL-DESIGN.md` Section 6). An audit that exits 0 with five warnings has told you
 something; treat each as a question to answer.
 
 ---

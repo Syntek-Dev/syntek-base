@@ -62,7 +62,7 @@ Confirm the current branch matches the work in hand. Feature and bugfix work bel
    three logs and the header stamps. **Never edit a version file here.**
 3. **Write the message in the guide's format** — Conventional Commits, imperative mood,
    British English, with the co-author trailer the guide specifies. **Read the model name from
-   `.claude/CLAUDE.md` § 4 at the time of writing; never carry a pinned version string.**
+   `.claude/CLAUDE.md` Section 4 at the time of writing; never carry a pinned version string.**
 4. **A bugfix commit references its root-cause record**, which must already exist at
    `project-management/src/20-BUGS/BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. If there is none,
    hand back to `bugfix` before committing.

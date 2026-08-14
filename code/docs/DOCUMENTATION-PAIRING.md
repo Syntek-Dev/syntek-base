@@ -10,7 +10,7 @@ model: opus
 British English (en_GB) **Timezone:** <%TIMEZONE%>
 
 Every directory in this repository that orients Claude carries two files. This guide owns the
-line between them. `.claude/CLAUDE.md` §8 states the rule in one bullet and routes here for the
+line between them. `.claude/CLAUDE.md` Section 8 states the rule in one bullet and routes here for the
 decision procedure; the `scaffold` and `doc-writer` skills generate against it, and
 `code/src/scripts/audits/docs-pairing.sh` enforces the mechanical half.
 
@@ -97,7 +97,7 @@ it goes instead.
 | `## Rules` · `## Guardrails` · `## Constraints`               | `CLAUDE.md` → **Guardrails**                                                 |
 | `## Requirements` · `## Prerequisites` · `## Quality gates`   | `CLAUDE.md` → **How to work here** (as the entry condition of the procedure) |
 | `### Hard gates — read before executing Step 1`               | `CLAUDE.md` → **How to work here** (reading order is an instruction)         |
-| `## Standards` · `## Global constraints`                      | `CLAUDE.md` → **Guardrails**, or the owning `docs/` guide (§6)               |
+| `## Standards` · `## Global constraints`                      | `CLAUDE.md` → **Guardrails**, or the owning `docs/` guide (Section 6)        |
 | `## Conventions` · `## Naming conventions` · `## File naming` | `CLAUDE.md` → **Output & naming**                                            |
 | `## How to work here` · `## Definition of done`               | `CLAUDE.md` → the section of that name                                       |
 | `**Claude Model:** <tier>` metadata line                      | `CLAUDE.md` → **How to work here**, the `**Model:**` bullet                  |
@@ -109,7 +109,7 @@ banned, rather than `## Requirements`, which invites the entry-gate content the 
 Three headings that look like rules and are not, so they stay:
 
 - **`## When to use this` / `## When to read this`** — a statement of what the directory is for,
-  which is the "why" in §3.1 written as a trigger. Keep it descriptive: _"use this workflow when
+  which is the "why" in Section 3.1 written as a trigger. Keep it descriptive: _"use this workflow when
   reviewing code before a PR"_, not _"you must run this before every PR"_.
 - **`## Do not use for`** — the boundary of the directory. It describes what is **not** here and
   routes elsewhere, which is orientation. It is not a prohibition on conduct.
@@ -123,7 +123,7 @@ drift this standard exists to prevent.
 ## 6. Route, do not restate
 
 Where a rule already has an owner — a `docs/` guide, a workflow's `STEPS.md`, `.claude/CLAUDE.md`
-§6 — the `CLAUDE.md` **cites the owner and does not repeat the substance**. A coverage floor
+Section 6 — the `CLAUDE.md` **cites the owner and does not repeat the substance**. A coverage floor
 written into forty `CLAUDE.md` files is forty things to change when the floor moves, and
 thirty-nine of them will be missed.
 
@@ -153,7 +153,7 @@ Every other directory carrying a `CONTEXT.md` carries a `CLAUDE.md`, and every `
 | `CLAUDE.md` opens with `@./CONTEXT.md`, has `Read order:` + four H2s | `audits/docs-pairing.sh`                        | fail |
 | No directory tree inside a `CLAUDE.md`                               | `audits/docs-pairing.sh`                        | fail |
 | `CONTEXT.md` has a `## Directory Tree` fence                         | `audits/docs-pairing.sh`                        | fail |
-| No banned heading from §5 in a `CONTEXT.md`                          | `audits/docs-pairing.sh`                        | fail |
+| No banned heading from Section 5 in a `CONTEXT.md`                   | `audits/docs-pairing.sh`                        | fail |
 | Tree membership matches disk                                         | `development/sync-trees.sh`                     | fail |
 | Every top-level tree row annotated, no `TODO` left behind            | `development/sync-trees.sh` · `docs-pairing.sh` | fail |
 | The opening _why_ paragraph is present and says something            | reviewer judgement                              | —    |
@@ -170,7 +170,7 @@ name as unwritten.
 
 ## Cross-references
 
-- `.claude/CLAUDE.md` §8 — the one-bullet statement that routes here
+- `.claude/CLAUDE.md` Section 8 — the one-bullet statement that routes here
 - `.claude/skills/scaffold/SKILL.md` · `.claude/skills/doc-writer/SKILL.md` — the skills that
   generate pairs
 - `code/src/scripts/audits/docs-pairing.sh` — the mechanical gate

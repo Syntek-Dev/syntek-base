@@ -28,7 +28,7 @@ deploy-coordination checklist), `TOOLING-GUIDE.md` (internal skills index over
   added or removed.
 - **Definition of done:** commands match the scripts they name; cross-references
   resolve; British English; docs hard-gate satisfied.
-- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

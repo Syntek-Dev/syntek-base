@@ -2,7 +2,7 @@
 #
 # routing-skills.sh — Every skill named in routing frontmatter must exist.
 #
-#                     Routing frontmatter (.claude/CLAUDE.md § 2.5) tells an agent which
+#                     Routing frontmatter (.claude/CLAUDE.md Section 2.5) tells an agent which
 #                     skills to load for a piece of work. Nothing validated the names.
 #                     A `skills: [bugfix]` naming a directory that does not exist was
 #                     green in every audit, in lefthook, and in CI — the skill simply

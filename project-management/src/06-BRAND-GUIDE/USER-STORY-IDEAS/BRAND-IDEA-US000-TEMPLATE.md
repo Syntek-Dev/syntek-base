@@ -4,7 +4,7 @@
 **Outcome**: Reused existing only / Proposes new tokens / N/A — no UI
 
 > Copy to `BRAND-IDEA-US###-<DESCRIPTOR>.md`. Keep it short. Most stories reuse existing tokens
-> and stop at §1. **Do not run `../guide-build/brand_guide.py`** — the generator is re-run once,
+> and stop at Section 1. **Do not run `../guide-build/brand_guide.py`** — the generator is re-run once,
 > at consolidation.
 
 ---
@@ -57,7 +57,7 @@ Where an earlier story's record already asked for something similar, note it —
 
 ## Sign-off
 
-- [ ] Every token the story's UI depends on is listed in §1 or §2
+- [ ] Every token the story's UI depends on is listed in Section 1 or Section 2
 - [ ] Every proposed token names its nearest existing neighbour and why it falls short
 - [ ] Contrast pairings stated for proposed colours
 - [ ] `../guide-build/` untouched

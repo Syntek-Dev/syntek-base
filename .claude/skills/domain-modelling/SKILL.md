@@ -29,7 +29,7 @@ Do these **inline, as the decision lands** — never batch them for later.
    When a deepened module (`codebase-design`) is named after a concept not yet in the docs, add it to
    the `CONTEXT.md` of the directory that owns it. If that directory has no `CONTEXT.md`, create the
    pair lazily — **`CONTEXT.md` (orientation) + `CLAUDE.md` (operating rules)** — per the project's
-   pairing rule (`.claude/CLAUDE.md` §8). Use the term consistently everywhere thereafter.
+   pairing rule (`.claude/CLAUDE.md` Section 8). Use the term consistently everywhere thereafter.
 
 2. **Sharpen a fuzzy term → edit the `CONTEXT.md` where it's defined.**
    If a conversation reveals a term is used two ways, tighten the definition at its source and make
@@ -37,7 +37,7 @@ Do these **inline, as the decision lands** — never batch them for later.
 
 3. **Settle a load-bearing decision → offer an ADR.**
    When a design choice would otherwise be re-suggested or re-litigated by a future review, record it
-   as an ADR in `project-management/src/14-DECISIONS/` (naming per `.claude/CLAUDE.md` §5),
+   as an ADR in `project-management/src/14-DECISIONS/` (naming per `.claude/CLAUDE.md` Section 5),
    framed as: _"recording this so future architecture reviews don't re-propose it."_ Only for reasons
    a future explorer would actually need — skip the ephemeral ("not worth it right now") and the
    self-evident. A rejected refactor with a real reason is an ADR; a rejected refactor with no
@@ -45,8 +45,8 @@ Do these **inline, as the decision lands** — never batch them for later.
 
 ## What is _not_ domain modelling
 
-- Ephemeral task state, blockers, sprint dependencies → **`GAPS.md`** (`.claude/CLAUDE.md` §10).
-- Feedback, patterns, project-state facts → **`.claude/MEMORY.md`** (§9).
+- Ephemeral task state, blockers, sprint dependencies → **`GAPS.md`** (`.claude/CLAUDE.md` Section 10).
+- Feedback, patterns, project-state facts → **`.claude/MEMORY.md`** (Section 9).
 - The domain model is only the **names and their definitions** and the **decisions** behind them.
 
 ## Discipline
@@ -57,7 +57,7 @@ Do these **inline, as the decision lands** — never batch them for later.
   change: complete it before the commit and refresh the code-review-graph alongside
   (`code-review-graph update`, or `build_or_update_graph_tool`) so the layered docs and the graph
   don't drift (`code/docs/CODE-REVIEW-GRAPH.md`).
-- **Instructional-file limit** — every `CONTEXT.md` stays ≤ 300 code lines (`.claude/CLAUDE.md` §8);
+- **Instructional-file limit** — every `CONTEXT.md` stays ≤ 300 code lines (`.claude/CLAUDE.md` Section 8);
   split rather than overflow.
 - **Model:** the `doc-writer` skill (Opus) authors substantive glossary/ADR text; mechanical touches
   (adding a row, a Last-Updated bump) are Opus too.
@@ -76,4 +76,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/DATA-STRUCTURES.md` — the governing data-structures guide (entry point)
 - `.claude/skills/codebase-design/SKILL.md` — the design work that produces the names this records
 - `.claude/skills/improve-codebase-architecture/SKILL.md` — the review whose decisions land here
-- `.claude/CLAUDE.md` §5 (naming) · §8 (CONTEXT.md/CLAUDE.md pairing) · §9 (MEMORY) · §10 (GAPS)
+- `.claude/CLAUDE.md` Section 5 (naming) · Section 8 (CONTEXT.md/CLAUDE.md pairing) · Section 9 (MEMORY) · Section 10 (GAPS)

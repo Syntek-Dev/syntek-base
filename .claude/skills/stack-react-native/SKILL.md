@@ -213,7 +213,7 @@ the run, so the 90% entry is added with the first auth screen, not before.
 2. **Routes are routes.** `app/` holds only default-exported route components and layouts;
    everything else lives beside it.
 3. **Mount the real router in tests** (`renderRouter`) rather than a screen in isolation.
-4. **For a listing**, read `code/docs/discoverability/APP-STORE.md` § 2 before counting anything
+4. **For a listing**, read `code/docs/discoverability/APP-STORE.md` Section 2 before counting anything
    — Apple's keyword budget is **100 bytes**, not characters — then record the values in
    `how-to/src/STORE-LISTING.md`. Fill the **Used** column by hand; nothing in the repository can
    check it.
@@ -270,8 +270,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/docs/MOBILE-CODING-PRINCIPLES.md` — the TypeScript flags, exhaustiveness, error taxonomy
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract, read every time
-- `code/docs/VISUAL-DESIGN.md` — §3 the project's **direction** and its six axes, §4.1 the
-  universal tells, §5 the motion numbers (read every time)
+- `code/docs/VISUAL-DESIGN.md` — Section 3 the project's **direction** and its six axes, Section 4.1 the
+  universal tells, Section 5 the motion numbers (read every time)
 - `code/docs/visual-design/MOBILE.md` — the mobile expression: **platform conformance** and
   **adaptivity**, the two dimensions no other guide owns. Mobile slop is a web-shaped screen in a
   native shell, not a layout-composition fault

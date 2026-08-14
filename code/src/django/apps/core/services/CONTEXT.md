@@ -30,7 +30,7 @@ They are separate deliberately, and the separation is the whole point.
 
 ## Cross-references
 
-- `code/docs/NEGATIVE-SPACE.md` § The error taxonomy — the rule this module implements
-- `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` § Service Exception Hierarchy — the
+- `code/docs/NEGATIVE-SPACE.md` → The error taxonomy — the rule this module implements
+- `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` → Service Exception Hierarchy — the
   per-app thin base every app defines over `ServiceError`
 - `how-to/src/INVARIANTS.md` — the register whose keys `InvariantViolation` quotes

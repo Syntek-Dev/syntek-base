@@ -17,7 +17,7 @@ evidence, the plan in `../PLANNING/AUDIT-PLAN-US000-TEMPLATE.md`._
 
 ## 1. Scope audited
 
-The files actually walked in this run. Confirm against the plan's §1 audit scope; flag
+The files actually walked in this run. Confirm against the plan's Section 1 audit scope; flag
 any file added or dropped.
 
 | File                       | Verdict                | Notes      |
@@ -39,7 +39,7 @@ _Escalate any new Critical/High to `../../VULNERABILITIES/IMPLEMENTATION/` and r
 
 ## 3. Checklist results
 
-The plan's §3 control checklist, each returned with a result and code evidence. Keep
+The plan's Section 3 control checklist, each returned with a result and code evidence. Keep
 every row — this is the durable scaffold.
 
 | #   | Control                                                                        | Result            | Evidence (file · symbol)    |
@@ -67,7 +67,7 @@ _Record one line per category actually in scope for this story; the rest are N/A
 
 ## 5. Plan constraints closed
 
-Each blocking criterion / developer constraint from the plan's §5, closed **only with
+Each blocking criterion / developer constraint from the plan's Section 5, closed **only with
 evidence** (never mark done without pointing at the shipped code that does it).
 
 | Plan constraint                          | Status   | Evidence                        |

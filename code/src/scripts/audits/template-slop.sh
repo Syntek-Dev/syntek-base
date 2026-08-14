@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
 # template-slop.sh: the MARKUP half of the AI-slop audit. Checks the three
-#                   VISUAL-DESIGN.md § 4.1 clauses whose input is Django template
-#                   markup, at the two tiers § 6 defines:
+#                   VISUAL-DESIGN.md Section 4.1 clauses whose input is Django template
+#                   markup, at the two tiers Section 6 defines:
 #                     [gate: fail]  an unambiguous match. Exit 1, blocks
 #                     [gate: warn]  a threshold or a ratio. Reported, exit stays 0
-#                   Tier scheme and its rationale: VISUAL-DESIGN.md § 6.
+#                   Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
 #
 # Clauses, and the tier each is checked at:
 #
@@ -16,7 +16,7 @@
 #                 exists at baseline), so an emoji glyph standing in for an icon is an
 #                 unambiguous match. Chrome is a NAMED,
 #                 CLOSED element set (below) rather than "the whole template": an
-#                 emoji in body prose is not what § 4.1 bans, and flagging it would be
+#                 emoji in body prose is not what Section 4.1 bans, and flagging it would be
 #                 a false positive.
 #
 #   [gate: warn]  pill-above-heading
@@ -29,7 +29,7 @@
 #                 ratio, and warned for the same reason.
 #
 #   [gate: warn]  bold-whole-sentence
-#                 BRAND-VOICE.md § 4 Structure: bold the term, not the thought. Bolding
+#                 BRAND-VOICE.md Section 4 Structure: bold the term, not the thought. Bolding
 #                 whole sentences is one of the most recognisable machine-authored
 #                 signatures. It lives HERE and not in copy-slop.sh because its input is
 #                 markup — <strong>/<b> — which is the same input-language split that put
@@ -130,7 +130,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-template-slop.sh: the markup half of the AI-slop audit (VISUAL-DESIGN.md § 4.1)
+template-slop.sh: the markup half of the AI-slop audit (VISUAL-DESIGN.md Section 4.1)
 
 Usage:
   template-slop.sh                 Scan the template and component surfaces
@@ -639,7 +639,7 @@ if [[ "$FAIL_COUNT" -gt 0 ]]; then
 elif [[ "$WARN_COUNT" -gt 0 ]]; then
   bold "⚠ No failures, but $WARN_COUNT composition warning(s) to review."
   log "  Ratios never fail a run: a taxonomy page legitimately pills every section,"
-  log "  and only a reviewer can say whether this page is one. See VISUAL-DESIGN.md § 6."
+  log "  and only a reviewer can say whether this page is one. See VISUAL-DESIGN.md Section 6."
   log ""
   exit 0
 else

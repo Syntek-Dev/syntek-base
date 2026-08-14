@@ -22,9 +22,9 @@ below.
 | [`visual-design/MOBILE.md`](visual-design/MOBILE.md)   | **Mobile-only.** React Native — platform conformance and adaptivity  |
 | [`visual-design/DESKTOP.md`](visual-design/DESKTOP.md) | **Desktop-only.** Slint — the stock-Fluent tell and the style choice |
 
-> **Scope note (template).** §1 (the mandate) and **§4.1 (the universal tells)** are the generic,
-> portable core — they travel to any project unchanged. **§4.2 reads against the direction §3
-> pins**, so it is portable in _shape_ but not in _verdict_. §2 (artefact locations), §3's direction
+> **Scope note (template).** Section 1 (the mandate) and **Section 4.1 (the universal tells)** are the generic,
+> portable core — they travel to any project unchanged. **Section 4.2 reads against the direction Section 3
+> pins**, so it is portable in _shape_ but not in _verdict_. Section 2 (artefact locations), Section 3's direction
 > block, and every surface sub-document carry `<%ORG_NAME%>`-level placeholders and generic token
 > roles: fill them with the project's real brand system, component vocabulary, and design-artefact
 > locations. See [Adopting this guide](#adopting-this-guide).
@@ -78,18 +78,18 @@ own artefact locations.
 ## 3. The direction — per-project, settled once
 
 **A project commits to a named visual direction before its first wireframe.** Every surface
-sub-document expresses that direction, and §4.2 reads its bans off the axes below. A direction left
-unnamed is not neutrality — it is the vacuum the AI-look fills, which is the failure mode §1 exists
+sub-document expresses that direction, and Section 4.2 reads its bans off the axes below. A direction left
+unnamed is not neutrality — it is the vacuum the AI-look fills, which is the failure mode Section 1 exists
 to close.
 
 The **name** is free text: the set of viable directions is longer than any list this template could
 ship. The **axes** are the closed part — a direction is only committed once every axis carries a
-setting, because the axes are what §4.2 and the design-time gates bind to.
+setting, because the axes are what Section 4.2 and the design-time gates bind to.
 
 ### This project's direction
 
-**Fill this table at first-time setup (Step 9).** It is the canonical commitment: §4.2's verdicts,
-every wireframe, `06-brand-guides`, and the slop audit's §4.2 leg all read it. A `TBD` left here
+**Fill this table at first-time setup (Step 9).** It is the canonical commitment: Section 4.2's verdicts,
+every wireframe, `06-brand-guides`, and the slop audit's Section 4.2 leg all read it. A `TBD` left here
 is not a neutral default — it is the vacuum described above, and the audit will say so rather than
 assume one.
 
@@ -125,14 +125,14 @@ between surfaces is the _expression_, which is why the axes live in this index a
 moves live in the sub-documents.
 
 **Motion is a level here only.** The numeric standard — durations, the easing hierarchy, the
-frequency rule and the reduced-motion contract — is **§5**, and is not a per-direction choice. The
+frequency rule and the reduced-motion contract — is **Section 5**, and is not a per-direction choice. The
 axis shapes what sits above those floors; it never lifts one.
 
 **`classical-symmetric` — the proven alternate.** It exists to prove the slot is real, and it is
-deliberately the inversion of the clause §4 used to get wrong: centred, symmetric, quiet, ornamented
+deliberately the inversion of the clause Section 4 used to get wrong: centred, symmetric, quiet, ornamented
 — formal rather than journalistic. Under it a centred hero, one continuous background, and a
-regular card lattice are all **correct**, and §4.2 must not object to any of them. What does _not_
-change: every §4.1 tell, the token-first law, WCAG 2.2 AA, the focus ring, and the reduced-motion
+regular card lattice are all **correct**, and Section 4.2 must not object to any of them. What does _not_
+change: every Section 4.1 tell, the token-first law, WCAG 2.2 AA, the focus ring, and the reduced-motion
 contract. A direction changes composition; it never buys an exemption from the universal tells or
 from accessibility.
 
@@ -147,7 +147,7 @@ typography, layout, eyebrows and pills, elevation, icons and logo. Web:
 guide that names it — a skill, a workflow step, a checklist — states the direction it is
 conditional on, the way `.claude/skills/stack-htmx-templates/SKILL.md` does. A file that asserts
 `editorial` composition as universal is a defect: it fails correct work the moment a project picks a
-different direction, which is the error §4 itself carried until the §4.1/§4.2 split.
+different direction, which is the error Section 4 itself carried until the Section 4.1/Section 4.2 split.
 
 ---
 
@@ -155,11 +155,11 @@ different direction, which is the error §4 itself carried until the §4.1/§4.2
 
 If a page does any of these, it is off-brand — fix it before hand-off.
 
-**The list is in two halves, and the difference matters.** §4.1 holds the machine-authored tells:
+**The list is in two halves, and the difference matters.** Section 4.1 holds the machine-authored tells:
 they are wrong on _every_ direction and _every_ surface, and they travel to any project unchanged.
-§4.2 holds the deviations, which are only defects **relative to the direction §3 pins** — a centred
+Section 4.2 holds the deviations, which are only defects **relative to the direction Section 3 pins** — a centred
 hero is a defect under `editorial` and correct under `classical-symmetric`. Judging a page against
-§4.2 without first reading §3 produces a verdict on the wrong brand.
+Section 4.2 without first reading Section 3 produces a verdict on the wrong brand.
 
 ### 4.1 Universal tells — banned on every direction (portable)
 
@@ -182,14 +182,14 @@ hero is a defect under `editorial` and correct under `classical-symmetric`. Judg
 - **Filler copy** **[gate: prose]** ("Lorem ipsum", "Empower your business", "Seamless solutions"). Copy is real and
   follows the brand-voice guide — substantiate or cut. The prose leg is
   `code/src/scripts/audits/copy-slop.sh`, which reads the tier markers in
-  `how-to/src/BRAND-VOICE.md` §4; the em dash above stays `copy-emdash.sh`'s.
+  `how-to/src/BRAND-VOICE.md` Section 4; the em dash above stays `copy-emdash.sh`'s.
 - **One device repeated — down a page, or across the screen set** — **[gate: warn]** most often the
   three-equal-card grid. Monotony is the tell on any direction; **which** vocabulary replaces it is
-  supplied by §3 and the surface sub-document, not by this list. **Deciding it needs a viewport**,
+  supplied by Section 3 and the surface sub-document, not by this list. **Deciding it needs a viewport**,
   because the same markup is a one-, two- or three-column device depending on width — so the gate is
   `audits/render-slop.sh` at 1280 px, **web only**: mobile and desktop have no browser to drive.
 
-### 4.2 Direction deviations — banned against the direction §3 pins
+### 4.2 Direction deviations — banned against the direction Section 3 pins
 
 Each clause below names the axis it reads. Under a direction whose axis sits at the other end, the
 clause **does not apply** — and saying so is not a loophole, it is the whole point of naming a
@@ -223,7 +223,7 @@ tokens; never hard-code a duration in a component. **[gate: fail]**
 
 **A standard sets a floor; a direction's axes shape what sits above it.** An `animated` direction
 buys more motion in the space the standards leave — it never lifts a floor. This generalises what
-§3 states case by case: WCAG 2.2 AA, the token-first law, the focus ring, the reduced-motion
+Section 3 states case by case: WCAG 2.2 AA, the token-first law, the focus ring, the reduced-motion
 contract and the frequency rule below all sit **outside** the axes, and no direction may weaken
 them. When an axis and a standard disagree, the standard wins and the axis applies to the
 remainder.
@@ -288,25 +288,25 @@ This is the whole contract, on every surface, non-negotiable and outside the axe
 ## 6. What a script can decide (portable)
 
 Part of this doctrine is machine-checkable and part is not. Pretending otherwise produces either an
-audit that fails correct work or a gate nobody trusts, so **every clause in §4 and §5 — and every
+audit that fails correct work or a gate nobody trusts, so **every clause in Section 4 and Section 5 — and every
 surface-specific clause in the sub-documents — carries an inline marker naming its tier**. This
 section is the rule. It is deliberately **not** a second copy of the clause list: a copy drifts from
 the doctrine it partitions.
 
-| Marker              | Behaviour                                                                    |
-| ------------------- | ---------------------------------------------------------------------------- |
-| **`[gate: fail]`**  | An unambiguous match. The audit exits 1 and blocks.                          |
-| **`[gate: warn]`**  | Needs a threshold or a ratio. Reported; the audit exits 0.                   |
-| **`[judgement]`**   | No script decides it. It belongs to the reviewer, and the audit says so.     |
-| **`[gate: prose]`** | A copy tell, owned by `how-to/src/BRAND-VOICE.md` §4 — not this audit's leg. |
+| Marker              | Behaviour                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------- |
+| **`[gate: fail]`**  | An unambiguous match. The audit exits 1 and blocks.                                 |
+| **`[gate: warn]`**  | Needs a threshold or a ratio. Reported; the audit exits 0.                          |
+| **`[judgement]`**   | No script decides it. It belongs to the reviewer, and the audit says so.            |
+| **`[gate: prose]`** | A copy tell, owned by `how-to/src/BRAND-VOICE.md` Section 4 — not this audit's leg. |
 
 **Why two gate tiers.** A threshold on composition fails correct work: a taxonomy page legitimately
 carries a pill on every section, and a directory page legitimately repeats one card. Warnings keep
 that signal visible without a script overruling a designer. Precedent:
 `code/src/scripts/audits/cloc.sh` warns at 750 and fails at 800 in one run.
 
-**§4.2 reads §3, and skips when it cannot.** The direction deviations have no fixed verdict — they
-read the axis table in §3. If any axis is still `TBD`, the §4.2 leg **skips with a warning naming
+**Section 4.2 reads Section 3, and skips when it cannot.** The direction deviations have no fixed verdict — they
+read the axis table in Section 3. If any axis is still `TBD`, the Section 4.2 leg **skips with a warning naming
 first-time-setup Step 9**, rather than guessing. An audit that assumed `editorial` would fail every
 correct page on a project that chose otherwise.
 
@@ -345,11 +345,11 @@ The scripts themselves are not specified here — that is the audit register
 
 ## Adopting this guide
 
-This guide ships as a template. §1 (the mandate) and §4.1 (the universal tells) are the portable
-core — adopt them unchanged. §4.2 is portable in shape but reads its verdict off §3, so it is
+This guide ships as a template. Section 1 (the mandate) and Section 4.1 (the universal tells) are the portable
+core — adopt them unchanged. Section 4.2 is portable in shape but reads its verdict off Section 3, so it is
 adopted _with_ the direction, never independently of it.
 
-**Settle the direction first** (§3 — first-time setup), then fill the placeholders in §2 (the
+**Settle the direction first** (Section 3 — first-time setup), then fill the placeholders in Section 2 (the
 artefact locations) and in each surface sub-document (the signature and the component catalogue)
 with the host project's own brand system, component vocabulary, and design-artefact paths. A project
 that keeps `editorial` changes nothing below the direction block; a project that does not **must**
@@ -365,6 +365,6 @@ The _shape_ of the guide is the portable part; the _content_ is per-project.
 - [`visual-design/CONTEXT.md`](visual-design/CONTEXT.md) — the surface sub-document index
 - `DESIGN-TOKENS.md` — the token catalogue and the `var(--token)`-only law
 - `ACCESSIBILITY.md` — WCAG 2.2 AA, non-negotiable on every direction and every surface
-- `how-to/src/BRAND-VOICE.md` — the copy half of this doctrine; §4.1 defers voice there
-- `how-to/workflows/01-first-time-setup/` — Step 9 settles §3
+- `how-to/src/BRAND-VOICE.md` — the copy half of this doctrine; Section 4.1 defers voice there
+- `how-to/workflows/01-first-time-setup/` — Step 9 settles Section 3
 - `DESIGN.md` (repo root) — the design-time entry point this guide is the code-time counterpart to

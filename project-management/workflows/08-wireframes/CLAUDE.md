@@ -26,7 +26,7 @@ before any new page, screen, or significant component is built.
   `.claude/skills/prototype/SKILL.md` for a throwaway spike.
 - **Definition of done:** wireframes implement the agreed flow, every interactive
   element has defined states, accessibility considered, checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

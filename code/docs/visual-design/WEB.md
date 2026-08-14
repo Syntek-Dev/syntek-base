@@ -14,21 +14,21 @@ model: opus
 The **web** expression of the doctrine in [`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) — Django
 templates + django-components + HTMX + Alpine + token CSS, served by `apps.marketing`.
 
-**Read the index first.** The mandate (§1), the project's **direction and its six axes** (§3), and
-the ban list (§4.1 universal, §4.2 direction deviations) all live there and govern this file. This
+**Read the index first.** The mandate (Section 1), the project's **direction and its six axes** (Section 3), and
+the ban list (Section 4.1 universal, Section 4.2 direction deviations) all live there and govern this file. This
 guide holds only what is specific to the web surface: the signature made concrete in CSS and
 components, the component vocabulary, and the pre-ship checklist.
 
 > **Written in the default `editorial` direction.** Every clause below is the default direction
-> expressed in this stack, **not house law**. A project whose §3 axes differ must restate the
+> expressed in this stack, **not house law**. A project whose Section 3 axes differ must restate the
 > colour, typography and layout clauses against its own settings — see the index, _Adopting this
 > guide_.
 
 **Tiers.** Every clause specific to this surface carries an inline marker naming what a script can
 decide about it. A clause that only restates a rule owned elsewhere carries none — the
-inline-gradient tell and the pill taxonomy rule are the index's (§4.1), the `var(--token)`-only law
+inline-gradient tell and the pill taxonomy rule are the index's (Section 4.1), the `var(--token)`-only law
 is `../DESIGN-TOKENS.md`'s — because a second copy of a tier drifts from the doctrine it partitions.
-Tier scheme: [`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) §6.
+Tier scheme: [`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) Section 6.
 
 ---
 
@@ -103,8 +103,8 @@ quickly and neatly.
 - The hero eyebrow (the editorial hero's label) is a deliberate, single, per-page accent — not the
   same thing as scattering topic pills down a page that has no taxonomy to show.
 
-This is the **taxonomy rule**, and it is direction-independent — it lives in the index at §4.1, not
-in §4.2. A direction may change how a pill _looks_; it never licenses a pill that labels nothing.
+This is the **taxonomy rule**, and it is direction-independent — it lives in the index at Section 4.1, not
+in Section 4.2. A direction may change how a pill _looks_; it never licenses a pill that labels nothing.
 
 ### Elevation
 
@@ -114,14 +114,14 @@ in §4.2. A direction may change how a pill _looks_; it never licenses a pill th
 
 ### Motion — the web expression
 
-**The numbers are `../VISUAL-DESIGN.md` §5** — durations, the easing hierarchy, the frequency rule,
+**The numbers are `../VISUAL-DESIGN.md` Section 5** — durations, the easing hierarchy, the frequency rule,
 entry scales, stagger, and the reduced-motion contract. This section states only how they are
 expressed in CSS.
 
 - **Compose from the `--motion-*` tokens**, never a literal duration or timing function: **[gate: fail]**
-  `--motion-hover/-press/-enter/-exit/-modal`. Their values come from §5 through the `motion` token
+  `--motion-hover/-press/-enter/-exit/-modal`. Their values come from Section 5 through the `motion` token
   category; a raw `transition: 200ms ease` in component CSS is a token-first violation. The literal
-  timing function is the web-specific half — §5 states the duration rule for every surface.
+  timing function is the web-specific half — Section 5 states the duration rule for every surface.
 - **CSS transitions and `@keyframes` only** — **[gate: fail]** animate `transform` and `opacity`, nothing else.
 - Button hover is a small `translateY(-3px)` plus the shadow step; active is `scale(0.97)`. **[gate: warn]**
 - **`prefers-reduced-motion: reduce` selects the token's `reduce` axis**, **[gate: fail]** which is a second set of
@@ -153,10 +153,10 @@ added to the catalogue first, then used.
 
 Rows restate clauses owned above, in the index, or in a neighbouring guide (`../ACCESSIBILITY.md`,
 `../RESPONSIVE-DESIGN.md`, `../FRONTEND-CODING-PRINCIPLES.md`); they carry no tier markers, because
-the tier belongs to the clause and a second copy of it drifts (index §6).
+the tier belongs to the clause and a second copy of it drifts (index Section 6).
 
 - [ ] Built against the screen's wireframe + component design artefacts — not improvised.
-- [ ] Index §3 names a direction and every axis carries a setting — not `TBD`.
+- [ ] Index Section 3 names a direction and every axis carries a setting — not `TBD`.
 - [ ] Composition matches the direction's axes; `section`/`container` nesting intact. _(Under the
       default `editorial`: alternating section bands, left-oriented headings.)_
 - [ ] Real hero variant chosen; 3px accent border on hero/CTA where the pattern applies.
@@ -166,16 +166,16 @@ the tier belongs to the clause and a second copy of it drifts (index §6).
       (`bash code/src/scripts/audits/css-gradients.sh` clean).
 - [ ] No em dash in copy (`bash code/src/scripts/audits/copy-emdash.sh` clean); no spaced-en-dash substitute.
 - [ ] No machine cadence in copy (`bash code/src/scripts/audits/copy-slop.sh` clean); its warnings
-      answered, and the `[judgement]` clauses read by a human (`how-to/src/BRAND-VOICE.md` § 4).
+      answered, and the `[judgement]` clauses read by a human (`how-to/src/BRAND-VOICE.md` Section 4).
 - [ ] Pills/eyebrows used only for real taxonomy, not stamped on every heading.
 - [ ] Responsive across the breakpoint scale, mobile-first (`../RESPONSIVE-DESIGN.md`); verified at
       the test viewports, no horizontal scroll.
 - [ ] Footer carries the full legal set (Terms, Privacy, Accessibility, Cookies, DPA) via the shared footer.
 - [ ] Elevation scaled + focus ring present; motion composed from `--motion-*` tokens, no literal
       duration or timing function.
-- [ ] Any action a user performs 100+ times a day has **no** animation (index §5, frequency first).
+- [ ] Any action a user performs 100+ times a day has **no** animation (index Section 5, frequency first).
 - [ ] `reduce` axis keeps opacity and colour and drops transform — not a blanket `animation: none`.
-- [ ] None of the index §4.1 or §4.2 banned patterns present.
+- [ ] None of the index Section 4.1 or Section 4.2 banned patterns present.
 - [ ] Copy is real and on-voice; WCAG 2.2 AA met; British English throughout.
 
 ---

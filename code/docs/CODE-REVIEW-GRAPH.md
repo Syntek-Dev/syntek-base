@@ -14,7 +14,7 @@ British English (en_GB) **Timezone**: <%TIMEZONE%>
 Tree-sitter into a structural graph (nodes, edges, execution flows, communities) and exposes ~30
 MCP tools that answer **callers-of / dependents-of / tests-for / blast-radius** questions directly.
 
-**Graph-first is a project rule** (`.claude/CLAUDE.md` §3): reach for the graph tools **before**
+**Graph-first is a project rule** (`.claude/CLAUDE.md` Section 3): reach for the graph tools **before**
 Grep/Glob/Read for any structural question — it is faster, token-cheaper, and returns relationship
 context that file scanning cannot. Fall back to Grep/Glob/Read only when the graph does not cover
 what you need.
@@ -134,7 +134,7 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
   against a git ref, so a **new and unstaged** file is never parsed and the update still reports
   success: the graph silently lacks it while every audit stays green. Staging is what puts the
   file in the diff. `--full-rebuild` also works but re-parses everything and can exceed the tool
-  timeout. This is what makes the `.claude/CLAUDE.md` § 6 hard gate real — "refresh alongside the
+  timeout. This is what makes the `.claude/CLAUDE.md` Section 6 hard gate real — "refresh alongside the
   docs" is only satisfied if the new files were actually in the diff.
 - **Git pre-commit stays lefthook-managed.** `code-review-graph install` appends its own check to
   `.git/hooks/pre-commit` after lefthook's, which silently makes the hook non-blocking; the graph's

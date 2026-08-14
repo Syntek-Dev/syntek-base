@@ -31,7 +31,7 @@ is the contract every later phase reads, and it lands before any implementation 
 
 A plan is expensive to get wrong, so this inverts the proceed-by-default posture: interrogate
 first, look facts up rather than asking, and take no action until <%DEVELOPER_NAME%> confirms.
-The `grilling` skill owns the round shape and the question format (`.claude/CLAUDE.md` §10).
+The `grilling` skill owns the round shape and the question format (`.claude/CLAUDE.md` Section 10).
 
 What must be settled: **scope** (core, nice-to-have, explicitly out), **roles affected** (for
 access control), **phasing** (MVP now or incremental), **dependencies**, **success criteria**,

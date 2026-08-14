@@ -80,15 +80,15 @@ Place every interaction by class, not by habit (full doctrine: `code/docs/RENDER
   Verify: `audits/css-gradients.sh`.
 - **No em dashes in user-facing copy** — reword rather than substituting a spaced en dash;
   numeric ranges (`Mon–Fri`) keep theirs. Verify: `audits/copy-emdash.sh`.
-- **No machine cadence in user-facing copy.** `how-to/src/BRAND-VOICE.md` § 4 is the ban list
+- **No machine cadence in user-facing copy.** `how-to/src/BRAND-VOICE.md` Section 4 is the ban list
   and carries each clause's tier — **route to it, never restate it**. Verify:
   `audits/copy-slop.sh`, and treat a `[gate: warn]` as a question to answer, not noise.
 - **Pills and eyebrows label taxonomy, sparingly** — a blog topic, a case-study category, a
   pricing tier. Not a decoration on every heading. Default to none.
 - **Distinctive, on-brand UI — never the generic AI-look.** Hit the signature
   `code/docs/visual-design/WEB.md` sets for the direction named in `code/docs/VISUAL-DESIGN.md`
-  § 3; § 4.1 is the universal tells and § 4.2 the deviations that read off that direction's
-  axes. **§ 4.2 cannot be judged without § 3** — read both, every time.
+  Section 3; Section 4.1 is the universal tells and Section 4.2 the deviations that read off that direction's
+  axes. **Section 4.2 cannot be judged without Section 3** — read both, every time.
 - **WCAG 2.2 AA** on every interactive element: semantic HTML, associated labels, keyboard
   operability, visible focus, focus trapping on modals, 4.5:1 text contrast.
 - **New public marketing page** → `bash code/src/scripts/development/new-django-view.sh

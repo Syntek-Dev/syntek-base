@@ -92,7 +92,7 @@ _(repeat per component)_
 
 ## Sign-off
 
-- [ ] Every stage-1 record listed in §1 and every need given a verdict
+- [ ] Every stage-1 record listed in Section 1 and every need given a verdict
 - [ ] Variants preferred over near-duplicate components
 - [ ] Every component has a complete state matrix — no "TBD" cells
 - [ ] Keyboard, focus, role, contrast, and target size decided per component

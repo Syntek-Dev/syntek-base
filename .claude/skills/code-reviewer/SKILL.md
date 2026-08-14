@@ -121,9 +121,9 @@ locale value that should be configurable.
 
 ### Visual and copy doctrine
 
-A gate peer to WCAG, and **direction-parameterised: read `code/docs/VISUAL-DESIGN.md` § 3
-first** — it pins six axes, and § 4.2's clauses are defects only relative to them, so judging
-§ 4.2 without § 3 is a verdict on the wrong brand. Then § 4.1 (the universal tells), § 4.2, § 5
+A gate peer to WCAG, and **direction-parameterised: read `code/docs/VISUAL-DESIGN.md` Section 3
+first** — it pins six axes, and Section 4.2's clauses are defects only relative to them, so judging
+Section 4.2 without Section 3 is a verdict on the wrong brand. Then Section 4.1 (the universal tells), Section 4.2, Section 5
 (the motion numbers), and the surface sub-document for what the diff touches. Run the scripted
 gates whose input the diff touches — `css-gradients.sh`, `css-slop.sh`, `template-slop.sh`,
 `copy-emdash.sh`, `copy-slop.sh` under `code/src/scripts/audits/`. **A `[gate: warn]` is not a
@@ -132,7 +132,7 @@ the script's.
 
 **Never restate the ban list here.** A copy drifts from the guide and then fails correct work.
 
-**Two clauses outrun the diff.** § 4.1's repetition tell and § 4.2's rhythm clause are
+**Two clauses outrun the diff.** Section 4.1's repetition tell and Section 4.2's rhythm clause are
 properties of a **page set**, not of a change — request the sibling pages before judging either.
 
 Reviewed here but owned elsewhere: a **missing legal footer** (the shared `site_footer` carries
@@ -185,5 +185,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/ARCHITECTURE-PATTERNS.md` — the service-layer and module boundaries
 - `code/docs/PERFORMANCE.md` · `code/docs/architecture/CORE-AND-SCALING.md` — the two axes above
 - `code/docs/TESTING.md` — the coverage floors, to flag a gap rather than fill it
-- `code/docs/VISUAL-DESIGN.md` — § 3 before § 4.2, every time
+- `code/docs/VISUAL-DESIGN.md` — Section 3 before Section 4.2, every time
 - `code/docs/CODE-REVIEW-GRAPH.md` — the review playbook run before broad search

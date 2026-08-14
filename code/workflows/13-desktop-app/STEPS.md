@@ -39,7 +39,7 @@ against the wireframe rather than a blank page. Resolve:
 - **Keyboard and screen-reader behaviour** — tab order, shortcuts, what each control announces
 - What the app caches locally, and whether any of it is sensitive
 
-No markup until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` §10).
+No markup until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` Section 10).
 
 ## Step 2 — Write the markup
 

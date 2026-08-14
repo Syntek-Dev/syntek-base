@@ -19,7 +19,7 @@
 # (ruff TID251) both already have a real analyser, and two enforcers of one rule drift.
 #
 # Path filters are safe here because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md § Required status checks and path filters.
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters.
 #
 # The filter is broad because the register has two sides: it must fire when the register
 # changes AND when the code it names changes. A clause landing in either half alone is the

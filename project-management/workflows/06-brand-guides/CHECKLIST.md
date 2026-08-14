@@ -17,7 +17,7 @@ model: fable
 ## Execution Checklist
 
 - [ ] Brand principles (personality, tone, visual direction) documented
-- [ ] Reconciled against `how-to/src/BRAND-VOICE.md` § 3 and `code/docs/VISUAL-DESIGN.md` § 3 —
+- [ ] Reconciled against `how-to/src/BRAND-VOICE.md` Section 3 and `code/docs/VISUAL-DESIGN.md` Section 3 —
       neither contradicted; any refinement written back to its canonical home
 - [ ] Full colour palette defined with hex values and semantic roles
 - [ ] All colour combinations pass WCAG 2.2 AA contrast ratios

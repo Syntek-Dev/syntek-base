@@ -96,7 +96,7 @@ guarantee. Call it late, use it immediately.
 - **Keys still come from the environment**, never hardcoded, and the versioned-key scheme in
   `FIELD-ENCRYPTION.md` applies unchanged to anything the native path holds.
 - **Every state-changing endpoint keeps its named permission check.** Native crypto changes how a
-  value is handled, never whether the caller was authorised (`.claude/CLAUDE.md` §6).
+  value is handled, never whether the caller was authorised (`.claude/CLAUDE.md` Section 6).
 
 ## Migrating an existing field — don't, unless
 

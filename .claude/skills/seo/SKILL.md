@@ -61,7 +61,7 @@ above are open, that is a `grilling` pass run inline first.
 > **`llms.txt` is not a discoverability lever, and this skill does not own that fact.** Google
 > states that AI Overviews and AI Mode need no additional machine-readable file and **no
 > optimisation beyond ordinary indexation**. `llms.txt` is still shipped — for **agent
-> consumption** (IDE agents, MCP clients), per `code/docs/discoverability/ROOT-SURFACE.md` § 1.
+> consumption** (IDE agents, MCP clients), per `code/docs/discoverability/ROOT-SURFACE.md` Section 1.
 > Everything else above is ordinary SEO and survives unchanged. The doctrine lives in the
 > guide; this routes to it. **That the opposite claim sat undetected in a prompt for months is
 > the argument for routing** — prompt-only knowledge is reachable only by whoever routes there,
@@ -114,7 +114,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/docs/SEO-CHECKLIST.md` — **what must be true per page**; the audit baseline
 - `code/docs/DISCOVERABILITY.md` — **how this stack does it**; the method side of that seam
-- `code/docs/discoverability/CONTENT-STRUCTURE.md` — the body's shape, and § 1's myth disposals
+- `code/docs/discoverability/CONTENT-STRUCTURE.md` — the body's shape, and Section 1's myth disposals
 - `code/docs/discoverability/ROOT-SURFACE.md` — every root and `.well-known` file, and who owns it
 - `code/docs/RENDERING.md` — why critical content is never JS-gated
 - `code/docs/URL-STRATEGY.md` — canonical URL and slug rules across the three prefixes

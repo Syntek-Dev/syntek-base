@@ -47,7 +47,7 @@ optimisations for AI Overviews and AI Mode beyond ordinary indexation
 checklist previously carried three techniques that follow from the opposite belief; they have
 been removed. The reasoning is
 [`code/docs/discoverability/CONTENT-STRUCTURE.md`](../../code/docs/discoverability/CONTENT-STRUCTURE.md)
-§ 1.
+Section 1.
 
 ---
 
@@ -108,7 +108,7 @@ been removed. The reasoning is
 
 - [ ] `llms.txt` — Markdown index at site root **for agent consumption** (IDE agents, MCP
       clients, documentation fetchers). **Not a citation or ranking signal** — see
-      [`ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) § 1
+      [`ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) Section 1
 - [ ] `llms-full.txt` — full content version, same audience and same caveat
 - [ ] Allow AI crawlers in `robots.txt` (GPTBot, ClaudeBot, PerplexityBot, Google-Extended)
 - [ ] Clear, direct answers in first paragraph of content (BLUF — Bottom Line Up Front)
@@ -213,7 +213,7 @@ These serve readers and search engines equally — they are not answer-engine-sp
 - [ ] No critical content behind logins, paywalls, or interactive elements
 - [ ] Clean HTML (minimal JavaScript-rendered content for key pages)
 - [ ] RSS / Atom feed where recurring content exists — a Django view; register row in
-      [`ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) § 3
+      [`ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) Section 3
 
 ### AI Crawler Management
 
@@ -228,7 +228,7 @@ These serve readers and search engines equally — they are not answer-engine-sp
 **Not enumerated here.** The full root and `/.well-known/` surface — every file, its purpose, its
 owner, and when it applies — is the register at
 [`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md)
-§ 3. Several of those rows are owned by the edge or by another surface entirely, which is exactly
+Section 3. Several of those rows are owned by the edge or by another surface entirely, which is exactly
 why one register with an ownership column beats a tick-list here.
 
 The two checks that are genuinely per-site, and belong on this list:
@@ -244,10 +244,10 @@ The two checks that are genuinely per-site, and belong on this list:
 ## Intermediate — Email Infrastructure
 
 **Not owned here.** Outbound-mail DNS (SPF, DKIM, DMARC) is a server contract, not a page
-requirement: `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 12 owns what the deploy
+requirement: `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 12 owns what the deploy
 repository must publish, and `NIXOS-HANDOFF.md` carries the secret list. MTA-STS, TLS-RPT and BIMI
 are edge-provisioned rows in the register at
-[`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) § 3.
+[`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md) Section 3.
 
 Mail deliverability affects brand trust and email referral traffic, so it belongs on a launch
 plan — but ticking it here would mean two documents owning one DNS record.
@@ -366,7 +366,7 @@ each row assumes tooling a deployment must choose first.
 **Not owned here.** `/health`, `/readyz`, `/ping`, `/metrics`, `/status` and `/version` are a
 monitoring contract rather than a discovery surface:
 [`code/docs/logging/HEALTH-CONTRACT.md`](../../code/docs/logging/HEALTH-CONTRACT.md) owns the
-endpoints the application exposes, and `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` § 8
+endpoints the application exposes, and `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 8
 owns what the server provisions.
 
 The one SEO-adjacent point, kept because it is a real trap: **a `robots.txt` `Disallow` is not
@@ -381,7 +381,7 @@ what you consider sensitive.
 **Moved.** The enumeration of every root and `/.well-known/` file — with an owner and an
 applies-when column, which a bare list could not carry — is
 [`code/docs/discoverability/ROOT-SURFACE.md`](../../code/docs/discoverability/ROOT-SURFACE.md)
-§ 3. Keeping a second copy here is how the two drifted in the first place.
+Section 3. Keeping a second copy here is how the two drifted in the first place.
 
 ---
 

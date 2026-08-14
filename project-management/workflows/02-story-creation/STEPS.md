@@ -33,7 +33,7 @@ story [describe the feature and user role]
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `story` · **Model:** fable · **MCP:** none
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the specific user role, the measurable benefit,
 the success signal, constraints and dependencies, priority, and at least one edge/error
 case — before drafting. Always grill when the feature touches personal data, permissions,

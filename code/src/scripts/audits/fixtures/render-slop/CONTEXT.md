@@ -47,6 +47,6 @@ through `--self-test`.
 ## Cross-references
 
 - `../../render-slop.sh` — the audit these prove
-- `code/docs/VISUAL-DESIGN.md` § 4.1 — the repetition clause, and § 6 for its tier
+- `code/docs/VISUAL-DESIGN.md` Section 4.1 — the repetition clause, and Section 6 for its tier
 - `project-management/src/08-WIREFRAMES/SHARED/wireframe.css` — the real stylesheet, which these
   fixtures deliberately do **not** depend on

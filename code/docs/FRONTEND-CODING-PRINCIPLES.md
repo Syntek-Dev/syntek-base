@@ -202,7 +202,7 @@ classes and file names; in browser JavaScript, `camelCase` (vars/functions) and
 
 ## What is not built yet
 
-The web peer of [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) § 5, and it exists
+The web peer of [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) Section 5, and it exists
 for the same reason: an absence nobody wrote down is indistinguishable from an oversight, and
 gets rebuilt slightly differently by whoever notices it next.
 
@@ -210,13 +210,13 @@ Shipped at baseline: `templates/500.html`, `apps/core/templatetags/core.py`
 (`{% request_id %}`), and `static/js/observability.js`. Each is proved by a gate that runs —
 ruff, ESLint, Prettier — rather than by review.
 
-| Not built                                     | Why it waits                                                                                              |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `templates/marketing/base.html`               | Needs the visual direction (`VISUAL-DESIGN.md` § 3) and the brand voice, both settled at first-time setup |
-| The `#error-region` div                       | Lives in that base template; until then `observability.js` creates it at runtime                          |
-| The HTMX error partial                        | Needs the base template to inherit from, and the voice to be written in                                   |
-| The `<script>` tag loading `observability.js` | Same — there is no base template to put it in, so nothing loads the handler                               |
-| The `css/tokens/` layer                       | Design values are DB-canonical; the stylesheet arrives with `apps.design_tokens`                          |
+| Not built                                     | Why it waits                                                                                                    |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `templates/marketing/base.html`               | Needs the visual direction (`VISUAL-DESIGN.md` Section 3) and the brand voice, both settled at first-time setup |
+| The `#error-region` div                       | Lives in that base template; until then `observability.js` creates it at runtime                                |
+| The HTMX error partial                        | Needs the base template to inherit from, and the voice to be written in                                         |
+| The `<script>` tag loading `observability.js` | Same — there is no base template to put it in, so nothing loads the handler                                     |
+| The `css/tokens/` layer                       | Design values are DB-canonical; the stylesheet arrives with `apps.design_tokens`                                |
 
 **The consequence to hold in mind:** `audits/negative-space.sh` (`htmx-handler-absent`) is a
 **no-op until the first template uses `hx-`**, because it keys on that. So the handler is
@@ -247,7 +247,7 @@ In addition to the [global checklist in CODING-PRINCIPLES.md](coding-principles/
       `css-gradients.sh` clean (functional shimmer/mask exempt via `gradient-allow`)
 - [ ] No em dash in user-facing copy — reworded, never a spaced-en-dash substitute; `copy-emdash.sh` clean
 - [ ] No banned sentence pattern or vocabulary in user-facing copy; `copy-slop.sh` clean and its
-      warnings answered (`how-to/src/BRAND-VOICE.md` § 4)
+      warnings answered (`how-to/src/BRAND-VOICE.md` Section 4)
 - [ ] Pills/eyebrows only for real taxonomy (blog topics, case studies, testimonials), not on every heading
 - [ ] Responsive mobile-first across the breakpoint scale (`RESPONSIVE-DESIGN.md`); no horizontal scroll
 - [ ] Footer carries the full legal set (Terms, Privacy, Accessibility, Cookies, DPA) via the shared footer

@@ -43,7 +43,7 @@ Neither published rule set may be redistributed by this template:
 | `opengrep-rules` | LGPL-2.1 **plus a Commons Clause**, inherited pre-fork       | Same                                         |
 | Opengrep engine  | LGPL-2.1, plain                                              | Fine — the engine is invoked, never shipped  |
 
-So the **engine** is used and the **rules** are ours. That is `.claude/CLAUDE.md` § 6 applied:
+So the **engine** is used and the **rules** are ours. That is `.claude/CLAUDE.md` Section 6 applied:
 use, adapt and redistribute are three different permissions, and the licence column is checked
 before deriving, not after.
 
@@ -57,4 +57,4 @@ with a note when the `opengrep` engine is not installed, so it is safe to run un
 
 - `../CONTEXT.md` — the audit register, including `static-analysis.sh`'s row
 - `code/docs/security/OWASP-AND-CHECKLIST.md` — the guide most rules are derived from
-- `code/REFERENCES.md` § External — Code Quality — the Opengrep entry and both rejected lineages
+- `code/REFERENCES.md` → External — Code Quality — the Opengrep entry and both rejected lineages

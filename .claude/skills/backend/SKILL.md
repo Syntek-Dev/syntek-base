@@ -100,7 +100,7 @@ and no `TODO`/`FIXME` (deferred work goes to `DEFERRED.md` / `GAPS.md`).
 `summary` render on the OpenAPI page, and a FastMCP tool docstring **is the prompt the model
 reads** — both state the full what (`code/docs/api-design/API-DOCS.md`,
 `code/docs/mcp-server/TOOL-DESIGN.md`). Full standard:
-`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` § 4.
+`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` Section 4.
 
 ## Scripts — never a raw command
 

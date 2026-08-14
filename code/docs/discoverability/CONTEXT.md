@@ -34,7 +34,7 @@ frontend state and routing. It was correct but unfindable, and the file had no r
 crawler surface or for answer engines. Splitting it out gave the subject a name a reader would
 search for, and left room for the answer-engine work that follows.
 
-The crawler-view knowledge in `ROOT-SURFACE.md` § 1 had a sharper problem: it existed only inside
+The crawler-view knowledge in `ROOT-SURFACE.md` Section 1 had a sharper problem: it existed only inside
 the `seo` skill's prompt, reachable only when something routed to it. Prompt-only
 knowledge is knowledge that goes stale unread.
 

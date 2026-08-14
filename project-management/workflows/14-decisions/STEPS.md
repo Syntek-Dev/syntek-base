@@ -40,7 +40,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then confirm the decision is ADR-worthy
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — what is the forces at play, what options are
 realistically on the table, what happens if we do nothing, and who owns the call —
 before writing anything. Not every choice needs an ADR: reserve it for a decision that

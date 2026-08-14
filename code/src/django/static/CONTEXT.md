@@ -28,7 +28,7 @@ tree is not a failure.
 
 **Nothing loads it yet.** There is no base template to put the `<script>` tag in, so the
 first page to ship is what wires it. That is recorded in
-`code/docs/FRONTEND-CODING-PRINCIPLES.md` § _What is not built yet_, not left to be
+`code/docs/FRONTEND-CODING-PRINCIPLES.md` Section _What is not built yet_, not left to be
 rediscovered.
 
 ## What is not here yet
@@ -40,7 +40,7 @@ those are versioned files a page has to load, and no page exists.
 
 ## Cross-references
 
-- `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` § An error the user never sees — the rule
+- `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` → An error the user never sees — the rule
   `observability.js` implements, and the two corrections building it produced
 - `code/docs/DESIGN-TOKENS.md` — where the CSS tree will go, and the `var(--token)`-only rule
 - `code/src/scripts/audits/negative-space.sh` — the `htmx-handler-absent` clause

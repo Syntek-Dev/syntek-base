@@ -17,7 +17,7 @@ and `how-to/src/` that tell a human how to operate this system.
   to `doc-writer`; end-user help to `support-articles`; skills to
   `how-to/docs/SKILL-AUTHORING.md`.
 - **Grill first:** Step 1 is a grilling pass — reader, trigger, home, shape, scope — before
-  a word is drafted (`.claude/CLAUDE.md` §10).
+  a word is drafted (`.claude/CLAUDE.md` Section 10).
 - **Model:** Opus throughout.
 - **Concrete steps:** grill and place → draft against the runbook spine → resolve every
   command to a script → **execute it on a clean environment** → wire it into the indexes.

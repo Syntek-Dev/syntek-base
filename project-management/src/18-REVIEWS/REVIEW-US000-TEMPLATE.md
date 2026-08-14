@@ -57,7 +57,7 @@ Severity scale: **Critical** (merge blocker — exploit, data loss, broken auth)
 ## 3. Dimension checklists
 
 Tick each item, or mark `N/A` with a one-line reason. A failed item becomes a finding in
-§2 and, if it blocks merge, a required action in §4. Run the checks through the project
+Section 2 and, if it blocks merge, a required action in Section 4. Run the checks through the project
 scripts — never raw `pytest` / `pnpm` / `docker` / `python`.
 
 ### 3.1 Security (OWASP)
@@ -131,7 +131,7 @@ verdict) before the PR merges. "None — approved as-is." is a valid entry.
   `Changes-requested → In Review` on re-review). Use the canonical status vocabulary from
   `project-management/docs/PLANNING-GUIDE.md`.
 
-A `Changes-requested` verdict **blocks the merge** until every §4 action is `Done` and the
+A `Changes-requested` verdict **blocks the merge** until every Section 4 action is `Done` and the
 PR is re-reviewed.
 
 ---
@@ -152,7 +152,7 @@ rationale, or a forward-compatibility pattern accepted. Keep it factual.
 - `../17-TESTS/US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md` — the test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` — the paired QA review from the same PR
 - `../20-BUGS/` — file a `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` for any defect this review surfaces
-- `code/docs/SECURITY.md` — the OWASP / IDOR obligations §3.1 checks against
+- `code/docs/SECURITY.md` — the OWASP / IDOR obligations Section 3.1 checks against
 - `project-management/workflows/22-pr-and-review/` — the PM workflow where this review is written
 - `code/workflows/07-review/` — the code-review workflow the reviewer runs
 

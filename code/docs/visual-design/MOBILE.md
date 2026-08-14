@@ -16,8 +16,8 @@ model: opus
 The **mobile** expression of the doctrine in [`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) — React
 Native (Expo), TypeScript, expo-router, StyleSheet over the generated token module.
 
-**Read the index first.** The mandate (§1), the direction and its six axes (§3), the ban list
-(§4.1 universal, §4.2 direction deviations) and the motion standard (§5) all live there.
+**Read the index first.** The mandate (Section 1), the direction and its six axes (Section 3), the ban list
+(Section 4.1 universal, Section 4.2 direction deviations) and the motion standard (Section 5) all live there.
 
 ---
 
@@ -62,7 +62,7 @@ A screen is off-brand here when it announces that it was designed for a browser.
 - **Mixed icon sets.** One family per platform — SF Symbols on iOS, Material Symbols on Android.
   Importing a web icon font is the same defect as importing a web layout.
 
-**None of these read off a direction axis.** They are the mobile half of §4.1 — universal tells for
+**None of these read off a direction axis.** They are the mobile half of Section 4.1 — universal tells for
 this surface, wrong under `editorial` and `classical-symmetric` alike. A direction changes how a
 native control _looks_; it never licenses a web-shaped one.
 
@@ -85,7 +85,7 @@ exemption from the rule.
 
 ## The direction, expressed here
 
-The direction is committed once, in index §3, and never per-surface — a project is not `editorial`
+The direction is committed once, in index Section 3, and never per-surface — a project is not `editorial`
 on the web and something else on mobile. What changes is how each axis lands in StyleSheet:
 
 | Axis      | Mobile expression                                                                   |
@@ -95,7 +95,7 @@ on the web and something else on mobile. What changes is how each axis lands in 
 | Contrast  | Heading weight and size relative to the Dynamic Type scale, never fixed point sizes |
 | Ornament  | Border, divider and card-chrome density                                             |
 | Density   | Spacing scale and list row height                                                   |
-| Motion    | Level only; the numbers are index §5                                                |
+| Motion    | Level only; the numbers are index Section 5                                         |
 
 **Rhythm is the axis that translates least directly.** Alternating full-bleed bands are a web device
 that reads as heavy on a phone; the same `banded` intent is expressed through grouped sections with
@@ -103,7 +103,7 @@ background steps, in the platform's own idiom.
 
 ## Motion — the mobile expression
 
-**The numbers are `../VISUAL-DESIGN.md` §5.** This section states only the expression.
+**The numbers are `../VISUAL-DESIGN.md` Section 5.** This section states only the expression.
 
 - **Reanimated on the UI thread**, animating transform and opacity only — the same two properties,
   for the same reason.
@@ -118,7 +118,7 @@ background steps, in the platform's own idiom.
 ## Verification is judgement, not a script
 
 **[judgement]** — every clause in this file, both dimensions. Tier scheme:
-[`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) §6.
+[`../VISUAL-DESIGN.md`](../VISUAL-DESIGN.md) Section 6.
 
 There is no browser to drive and no rendered scan for this surface. Platform conformance is
 assessed by a person on a device, in both orientations, with the keyboard up — the same position

@@ -51,25 +51,25 @@ live deploy-repo modules. The row STRUCTURE below (artefact → implementation p
 the reusable template; the three-surface default (public/marketing · authenticated app
 · admin/staff) drives which edge rows exist._
 
-| SERVER-ARCHITECTURE artefact               | Deploy repo implementation point                                                                                                                       |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Edge — headers, CSP, media hosts           | `modules/nginx/default.nix` baseline + host `custom.nginx.apps[].cspDirectives`                                                                        |
-| Edge — CSP nonce (dormant)                 | `modules/nginx/` — future `x-csp-nonce` read + `proxy_hide_header`; agenix `CSP_INSTANCE_TOKEN`                                                        |
-| Edge — `client_max_body_size`              | `modules/nginx/` vhost/location extraConfig                                                                                                            |
-| Edge — URL routing                         | Host nginx location overlay — mirror `code/src/docker/nginx/dev.conf` at each release                                                                  |
-| Edge — TLS, trusted proxies                | CF edge TLS + `nginx.ssl`; `TRUSTED_PROXIES` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                                         |
-| Edge — CF Tunnel, edge rate rule           | `custom.cloudflared.tunnels` + Cloudflare zone config (edge rate rule per the project's rate-limit plan)                                               |
-| Edge — health/metrics                      | `modules/gatus/` + `custom.prometheus.extraScrapeConfigs` (jobs from `code/docs/logging/HEALTH-CONTRACT.md` § 2) + loopback-only `/metrics/` locations |
-| Edge — Cloudinary token, object-store host | App `.env` (`CLOUDINARY_AUTH_TOKEN_KEY`) · new tunnel hostname + vhost → <%OBJECT_STORE%> gateway                                                      |
-| Edge — deploy steps                        | `deploy.sh` restart-after-migrate; `worker`/`beat` services in the server compose once they exist (neither ships)                                      |
-| Edge — mail relay                          | `modules/mail/` (Postfix + DKIM) + SPF/DKIM/DMARC DNS; `EMAIL_*` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                     |
-| `COMPUTE-ALLOCATION.md` assigned compute   | `GUNICORN_*` / `CELERY_*` in `/etc/<%ORG_SLUG%>/.env.<env>`; Postgres/PgBouncer/Valkey sizing in `custom.database` / `custom.valkey`                   |
-| `COMPUTE-ALLOCATION.md` tier changes       | Host hardware decision (<%SERVER_TIER%> → RAM upgrade / bigger tier) + the Postgres horizontal-scaling ADR phase modules — only on a gate-trip         |
+| SERVER-ARCHITECTURE artefact               | Deploy repo implementation point                                                                                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Edge — headers, CSP, media hosts           | `modules/nginx/default.nix` baseline + host `custom.nginx.apps[].cspDirectives`                                                                              |
+| Edge — CSP nonce (dormant)                 | `modules/nginx/` — future `x-csp-nonce` read + `proxy_hide_header`; agenix `CSP_INSTANCE_TOKEN`                                                              |
+| Edge — `client_max_body_size`              | `modules/nginx/` vhost/location extraConfig                                                                                                                  |
+| Edge — URL routing                         | Host nginx location overlay — mirror `code/src/docker/nginx/dev.conf` at each release                                                                        |
+| Edge — TLS, trusted proxies                | CF edge TLS + `nginx.ssl`; `TRUSTED_PROXIES` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                                               |
+| Edge — CF Tunnel, edge rate rule           | `custom.cloudflared.tunnels` + Cloudflare zone config (edge rate rule per the project's rate-limit plan)                                                     |
+| Edge — health/metrics                      | `modules/gatus/` + `custom.prometheus.extraScrapeConfigs` (jobs from `code/docs/logging/HEALTH-CONTRACT.md` Section 2) + loopback-only `/metrics/` locations |
+| Edge — Cloudinary token, object-store host | App `.env` (`CLOUDINARY_AUTH_TOKEN_KEY`) · new tunnel hostname + vhost → <%OBJECT_STORE%> gateway                                                            |
+| Edge — deploy steps                        | `deploy.sh` restart-after-migrate; `worker`/`beat` services in the server compose once they exist (neither ships)                                            |
+| Edge — mail relay                          | `modules/mail/` (Postfix + DKIM) + SPF/DKIM/DMARC DNS; `EMAIL_*` in `/etc/<%ORG_SLUG%>/.env.<env>`                                                           |
+| `COMPUTE-ALLOCATION.md` assigned compute   | `GUNICORN_*` / `CELERY_*` in `/etc/<%ORG_SLUG%>/.env.<env>`; Postgres/PgBouncer/Valkey sizing in `custom.database` / `custom.valkey`                         |
+| `COMPUTE-ALLOCATION.md` tier changes       | Host hardware decision (<%SERVER_TIER%> → RAM upgrade / bigger tier) + the Postgres horizontal-scaling ADR phase modules — only on a gate-trip               |
 
 ## The agenix plane — secrets the app stack requires (names only, never contents)
 
 - **Source:** this repo's `code/src/docker/.env.prod.example` (the variable each
-  secret feeds) and `.claude/CLAUDE.md` § 6 — secrets travel by environment variable
+  secret feeds) and `.claude/CLAUDE.md` Section 6 — secrets travel by environment variable
   and are never hardcoded, so every row here is a name, never a value.
 
 The application stack requires these agenix secrets on the host. Creation and

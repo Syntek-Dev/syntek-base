@@ -23,7 +23,7 @@ and before wireframing feature screens.
   CONTEXT.md table → map to code via Figma Code Connect.
 - **Definition of done:** all states designed; tokens (no raw hex) used throughout;
   Code Connect mapping in place; checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

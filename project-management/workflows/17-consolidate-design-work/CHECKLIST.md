@@ -54,8 +54,8 @@ Every box must be ticked before `18-backend-code/` may begin.
 - [ ] `css-slop.sh`, `template-slop.sh` and `render-slop.sh` all exit 0 over the rebuilt set
 - [ ] `render-slop.sh` actually **rendered** — a "no browser" note is a run that measured nothing, not a pass
 - [ ] Every `[gate: warn]` is either fixed or annotated with `slop-allow` **naming the clause and the reason** — no bare marker, no raised threshold
-- [ ] The § 4.2 leg ran rather than skipping — a skip means an axis in `code/docs/VISUAL-DESIGN.md` § 3 is still `TBD`
-- [ ] The rebuilt set read **as a set** against § 4.1's repetition tell and § 4.2's rhythm clause — the two no diff-scoped review reaches. `render-slop.sh` now measures the geometry half; it counts equal boxes, and only a human can say whether the vocabulary that replaces one is right
+- [ ] The Section 4.2 leg ran rather than skipping — a skip means an axis in `code/docs/VISUAL-DESIGN.md` Section 3 is still `TBD`
+- [ ] The rebuilt set read **as a set** against Section 4.1's repetition tell and Section 4.2's rhythm clause — the two no diff-scoped review reaches. `render-slop.sh` now measures the geometry half; it counts equal boxes, and only a human can say whether the vocabulary that replaces one is right
 
 ## Generated deliverables
 

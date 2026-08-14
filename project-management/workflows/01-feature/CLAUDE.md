@@ -30,7 +30,7 @@ re-asking the same questions.
   unresolved; every resolved node links to the artefact it became.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
-  `.claude/CLAUDE.md` §2.5).
+  `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

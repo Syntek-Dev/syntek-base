@@ -24,7 +24,7 @@ NIST SP 800-63B baselines — for a security pass, a release gate, or a reported
 - **Definition of done:** every state-changing Django Ninja endpoint permission-checked, no IDOR, `DEBUG=False`
   and explicit CORS allowlist confirmed for non-local, secrets env-only,
   `CHECKLIST.md` signed off.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

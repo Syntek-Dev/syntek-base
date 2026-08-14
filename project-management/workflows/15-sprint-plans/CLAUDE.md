@@ -27,7 +27,7 @@ in `src/15-SPRINT-PLANS/`, assigning each to the backend → API → frontend ph
   → satisfy `CHECKLIST.md`.
 - **Definition of done:** the plan is the single source of truth for what is in scope
   and how it is sequenced; it unlocks story planning and the development phases (`workflows/16`→`22`).
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

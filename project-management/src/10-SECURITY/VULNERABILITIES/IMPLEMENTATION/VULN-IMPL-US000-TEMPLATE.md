@@ -36,12 +36,12 @@ the entry point, and the impact — so this record stands alone.
 ## 3. Resolution
 
 What shipped, and where. The fix lives in `code/`; cite it. Close **every** control from
-the plan's §5 recommendation — each with a code reference, never a bare tick.
+the plan's Section 5 recommendation — each with a code reference, never a bare tick.
 
-| Control (plan §5)   | Resolution                        | Evidence (file · symbol)      | Status   |
-| ------------------- | --------------------------------- | ----------------------------- | -------- |
-| [EXAMPLE] {control} | {what was implemented}            | `{path/to/file}` · `{symbol}` | Resolved |
-| [EXAMPLE] {control} | {tracked, not shipped this story} | `GAPS.md` / US### — {reason}  | Deferred |
+| Control (plan Section 5) | Resolution                        | Evidence (file · symbol)      | Status   |
+| ------------------------ | --------------------------------- | ----------------------------- | -------- |
+| [EXAMPLE] {control}      | {what was implemented}            | `{path/to/file}` · `{symbol}` | Resolved |
+| [EXAMPLE] {control}      | {tracked, not shipped this story} | `GAPS.md` / US### — {reason}  | Deferred |
 
 _A control is Resolved only when a code reference proves it; anything not shipped is
 Deferred with a `GAPS.md` or story owner, never silently dropped._

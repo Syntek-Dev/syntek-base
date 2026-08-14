@@ -56,14 +56,14 @@ Fail-tier checks:
        Purpose (one line) · How to work here · Guardrails · Output & naming
   5. CLAUDE.md contains no directory tree — it is imported from the file that owns it
   6. CONTEXT.md carries a `## Directory Tree` fence
-  7. CONTEXT.md carries no banned rule heading (DOCUMENTATION-PAIRING.md §5)
+  7. CONTEXT.md carries no banned rule heading (DOCUMENTATION-PAIRING.md Section 5)
   8. CONTEXT.md carries no `**Claude Model:**` routing metadata
   9. Every top-level tree row is annotated, and no TODO placeholder is left behind
 
 Warn-tier checks (reported, never fail the run):
   A. CONTEXT.md has no prose before its first heading — the "why" is probably missing
 
-Two exceptions are honoured, not flagged (DOCUMENTATION-PAIRING.md §7):
+Two exceptions are honoured, not flagged (DOCUMENTATION-PAIRING.md Section 7):
   * the repository root — /CLAUDE.md is gitignored and generated
   * generated-output directories — reports/ folders under code/src/scripts/**
 
@@ -190,7 +190,7 @@ done
 
 # ── Checks 6–9 and the warn tier: the CONTEXT.md shape ────────────────────────
 # Headings that are an instruction wearing an orientation heading. Mapping to the
-# section each one moves to: code/docs/DOCUMENTATION-PAIRING.md §5.
+# section each one moves to: code/docs/DOCUMENTATION-PAIRING.md Section 5.
 BANNED='^#{2,3} +(Rules|Guardrails|Constraints|Global constraints|Requirements|Prerequisites|Quality gates|Hard gates|Standards|Conventions|Naming|Naming convention|Naming conventions|File naming|How to work here|Definition of done)\b'
 
 for ctx in "${CONTEXTS[@]}"; do
@@ -200,7 +200,7 @@ for ctx in "${CONTEXTS[@]}"; do
     fail "$ctx: no \`## Directory Tree\` fence — orientation without a tree"
 
   while IFS= read -r h; do
-    fail "$ctx: banned heading \`${h#\#\# }\` — an operating rule (DOCUMENTATION-PAIRING.md §5)"
+    fail "$ctx: banned heading \`${h#\#\# }\` — an operating rule (DOCUMENTATION-PAIRING.md Section 5)"
   done < <(grep -iE "$BANNED" "$ctx" || true)
 
   grep -q '^\*\*Claude Model:\*\*' "$ctx" && \

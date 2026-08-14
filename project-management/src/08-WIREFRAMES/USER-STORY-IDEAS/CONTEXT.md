@@ -27,7 +27,7 @@ without finished copy.
 
 **The card block is asymmetric on purpose.** It is a lead card plus two supporting ones in a
 two-column grid, so the third wraps and the block reads 2 + 1. A row of three equal cards is the
-most recognisable tell of machine-authored UI (`code/docs/VISUAL-DESIGN.md` § 1), and because
+most recognisable tell of machine-authored UI (`code/docs/VISUAL-DESIGN.md` Section 1), and because
 this file is copied to start every screen, whatever shape it ships becomes the project's default.
 The `wf-grid--3` modifier is still there for the case where a uniform row is genuinely right —
 annotation 3 in the template says when that is, and asks for the reason to be stated.

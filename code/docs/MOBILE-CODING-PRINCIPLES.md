@@ -106,7 +106,7 @@ arriving from the API at runtime, where the compiler never saw it.
 which invariant failed rather than only where. Register: `how-to/src/INVARIANTS.md`.
 
 **It is not called `assertNever`.** `assert` is the banned mechanism
-([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) § _The guard clause_), and this raises a keyed error
+([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) Section _The guard clause_), and this raises a keyed error
 rather than asserting a condition. The name states the situation, not the technique.
 
 ---
@@ -182,7 +182,7 @@ crash on a device is invisible in a way a server error never is — there are no
 
 ### `X-Request-ID`
 
-The API sets one on every response ([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) § _The error
+The API sets one on every response ([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) Section _The error
 taxonomy_). This surface **holds the most recent one**, shows it on the error screen, and attaches
 it to the report — a user saying "it broke" is then one identifier away from the event.
 

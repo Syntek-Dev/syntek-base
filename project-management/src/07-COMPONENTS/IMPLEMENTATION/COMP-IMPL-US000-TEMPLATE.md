@@ -5,7 +5,7 @@
 **Stage-1 need**: `../USER-STORY-IDEAS/COMP-IDEA-US###-<DESCRIPTOR>.md`
 **Outcome**: Matches consolidated / Matches with deviations / Blocked
 
-> Copy to `COMP-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. §2 must be filled from the **running
+> Copy to `COMP-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. Section 2 must be filled from the **running
 > build**, not the template source.
 
 ---

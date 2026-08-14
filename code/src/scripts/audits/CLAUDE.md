@@ -47,20 +47,20 @@ analysis, the seam and orphan guards, and the dependency CVE audit. Full invento
   lets it run unconditionally in CI without a step-level guard. The same holds for
   `seam-contract.sh`, the slop family and `static-analysis.sh`.
 - **Never point a copy audit at instructional Markdown.** `copy-emdash.sh` and `copy-slop.sh`
-  enforce `how-to/src/BRAND-VOICE.md` § 4, which governs copy a **user reads** — never `docs/`,
+  enforce `how-to/src/BRAND-VOICE.md` Section 4, which governs copy a **user reads** — never `docs/`,
   `CONTEXT.md`/`CLAUDE.md`, code comments, commit messages or ADRs. Widening their scope to
   `**/*.md` would fail this repository on the guides that define the rule. Add a scope only when
   a new **user-facing** surface gets a home in the tree.
 - **`docs-pairing.sh` checks shape, never quality — and a finding is moved, not deleted.**
   It can prove a `CONTEXT.md` has an opening paragraph; it cannot tell whether that paragraph
   explains why the directory exists, which is why the _why_ is its one warn-tier row and a
-  reviewer's judgement (`code/docs/DOCUMENTATION-PAIRING.md` §8). The tempting way to clear a
+  reviewer's judgement (`code/docs/DOCUMENTATION-PAIRING.md` Section 8). The tempting way to clear a
   banned-heading finding is to delete the section — a `## Rules` block in a `CONTEXT.md` moves
   to the paired `CLAUDE.md`'s **Guardrails**, or to the `docs/` guide that owns the rule. It
   does not evaporate.
 - **A `[gate: warn]` is a question, not noise — and exit 0 is not the same as clean.** The slop
   family reports two tiers in one run and only a fail changes the exit code, because a threshold
-  on composition or vocabulary fails correct work (`code/docs/VISUAL-DESIGN.md` § 6). Answer each
+  on composition or vocabulary fails correct work (`code/docs/VISUAL-DESIGN.md` Section 6). Answer each
   warning; never promote one to a fail to force the issue, and never raise a threshold to silence
   one.
 - **Answer a warning with an annotation, and name the clause.**
@@ -117,7 +117,7 @@ analysis, the seam and orphan guards, and the dependency CVE audit. Full invento
   cover it.
 - **Markdown is exempt from the _source_ limits, not from every limit.** Do not extend
   `stubs.sh` or `cloc.sh` to `*.md` — but instructional Markdown has its own cap, **300 cloc
-  code lines** (`.claude/CLAUDE.md` § 8), and `docs-length.sh` owns it. Two limits, two
+  code lines** (`.claude/CLAUDE.md` Section 8), and `docs-length.sh` owns it. Two limits, two
   metrics, two scripts: `cloc.sh` counts total `wc -l` against 750/800 on source,
   `docs-length.sh` counts cloc code lines against 300 on instruction. Route a length question
   by which of those it is, and never answer it with the wrong script — that is the exact defect

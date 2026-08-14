@@ -25,7 +25,7 @@ that already owns it. Where one exists, the work is an **edit to that entry**, n
 conventions and the procedure live together rather than in two entries competing for the same
 request. The shape this bans is the deliberate pair: one entry stating a craft, a second
 executing it, both answering to the same subject. The 11/08/2026 selection sweep
-(`CRAFT.md` § 1 carries the figures and the method) caught precisely that, twice —
+(`CRAFT.md` Section 1 carries the figures and the method) caught precisely that, twice —
 `runbook`/`operator-docs` and `scale-planning`/`scale-planner` — and in each the selection went
 to one half while the request had been written for the other. Both are named so a later reader
 can re-run the pick rather than take the count on trust.
@@ -36,7 +36,7 @@ process; `grill-me` and `grill-with-docs` load it and differ only in what they l
 remit, one place it is written, plus two doors — where a banned pair would state the craft twice.
 The condition is what makes it decidable: the moment an entry point starts explaining _how_ to do
 the thing, it has become the second half of a pair and folds back into the engine. Entry points
-still have to discriminate **from each other** (`CRAFT.md` § 1), and this pair currently does not.
+still have to discriminate **from each other** (`CRAFT.md` Section 1), and this pair currently does not.
 
 **A `code/docs/` guide is not a second entry.** It carries no description and never competes for
 selection, which is why the hybrid rule below can move standing conventions into a guide without
@@ -75,12 +75,12 @@ nothing useful and does so silently; a wrong no-fork only spends session context
 
 **Size never forces a fork.** A conventions skill cannot fork usefully at any length, so length
 cannot be the trigger. Where a body is genuinely too large to sit in a session, the remedy is
-pruning and progressive disclosure (`CRAFT.md` § 2 and § 4), not a fork the rubric refuses.
+pruning and progressive disclosure (`CRAFT.md` Section 2 and Section 4), not a fork the rubric refuses.
 
 **What an inline body actually costs.** Invoking a skill posts its rendered body into the session
 as one message, and that message is still sitting there many turns later — the bill is the whole
 session, not the turn that loaded it. This project disables auto-compaction
-(`.claude/CLAUDE.md` § 2.6), so the runtime's own relief valve never opens and invoked bodies
+(`.claude/CLAUDE.md` Section 2.6), so the runtime's own relief valve never opens and invoked bodies
 accumulate until `/handoff` and `/clear`. That is an argument for a short reference skill, and
 for forking a genuinely large **task**; it is never an argument for forking axis 1.
 
@@ -90,7 +90,7 @@ for forking a genuinely large **task**; it is never an argument for forking axis
 
 One line, and it is a finding rather than a preference. A read-only target was offered as the
 other half of a write test, on the reasoning that a skill which writes nothing cannot breach
-`.claude/CLAUDE.md` § 6. Measured across the whole roster, **that row had no occupant** — every
+`.claude/CLAUDE.md` Section 6. Measured across the whole roster, **that row had no occupant** — every
 forked entry writes something, down to a report file. A rubric row with nothing in it invites
 re-litigation, so it is stated as a reopening test instead of kept as a table:
 
@@ -103,8 +103,8 @@ Three properties of the runtime the rule rests on, each worth stating because no
 of taste:
 
 - **`Explore` and `Plan` do not load CLAUDE.md.** Any other target does. A skill that writes
-  therefore has exactly one safe target — and a skill that also deletes its § 6 checklist as
-  "auto-loaded" would receive § 6 by neither route.
+  therefore has exactly one safe target — and a skill that also deletes its Section 6 checklist as
+  "auto-loaded" would receive Section 6 by neither route.
 - **A backgrounded fork is handed fewer tools** than the same fork run in the foreground.
 - **Nothing a backgrounded fork writes is checkpointed.** `/rewind` reaches session state, and
   those edits are not in it, so the only route back is the git history.

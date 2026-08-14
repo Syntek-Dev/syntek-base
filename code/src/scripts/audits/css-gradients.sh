@@ -4,7 +4,7 @@
 #
 #                    A raw linear-/radial-/conic-gradient(...) composed inline in
 #                    component or page CSS is the generic "AI-look" tell
-#                    (code/docs/VISUAL-DESIGN.md § 4.1 — a universal tell, banned on
+#                    (code/docs/VISUAL-DESIGN.md Section 4.1 — a universal tell, banned on
 #                    every direction and every surface). Brand gradients are
 #                    DB-canonical --gradient-* tokens (static/css/tokens/
 #                    gradients.css) and must be consumed via var(--gradient-*).

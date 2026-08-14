@@ -235,7 +235,7 @@ scrape_configs:
 
 The job name is a contract, not a preference — it is spelled the same way in
 [`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`](../../../how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md)
-§ 8, and both must move together.
+Section 8, and both must move together.
 
 ### Dashboards
 

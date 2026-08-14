@@ -30,7 +30,7 @@ entered.
 A story written from an unexamined request is a story the implementer has to re-derive. Open by
 naming what must be settled, and take no action until <%DEVELOPER_NAME%> confirms — the round
 shape, the question format and the recommendation rule are the `grilling` skill's
-(`.claude/CLAUDE.md` §10).
+(`.claude/CLAUDE.md` Section 10).
 
 What must be settled here: the specific **user role**, the measurable **goal and value**, the
 **success signal**, **constraints and dependencies**, **priority**, and at least one **edge or

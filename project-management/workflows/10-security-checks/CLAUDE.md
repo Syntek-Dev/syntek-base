@@ -27,7 +27,7 @@ wireframes with STRIDE, OWASP Top 10, and NIST CSF 2.0, and record findings in
 - **Definition of done:** every finding framework-mapped and severity-rated; any
   blocking finding resolved before sprint planning; checklist satisfied; the
   technical requirements it implies are consistent with `code/docs/SECURITY.md`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

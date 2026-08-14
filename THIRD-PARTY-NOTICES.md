@@ -9,7 +9,7 @@ are _adapted_, and the obligation travels with the copy.
 copier-excluded and cannot carry the obligation on their behalf.
 
 > **Standing rule.** Adapting an outside file adds its row here **in the same change** — the same
-> discipline `.claude/CLAUDE.md` § 6 applies to attribution. A notice added retrospectively has
+> discipline `.claude/CLAUDE.md` Section 6 applies to attribution. A notice added retrospectively has
 > already shipped non-compliant at least once.
 
 ---
@@ -37,7 +37,7 @@ one-question-per-message rule that was our own). The method is derived; **every 
 `.claude/skills/grilling/SKILL.md` is ours**, and the question format, the recommendation rule and
 the `AskUserQuestion` ban have no counterpart upstream. Measured at **2.6% five-gram overlap** with
 his text, and what remains is the method's own vocabulary ("recompute the frontier", "ask the whole
-frontier in one round") rather than borrowed expression. Credited under `.claude/CLAUDE.md` § 6
+frontier in one round") rather than borrowed expression. Credited under `.claude/CLAUDE.md` Section 6
 (attribution at the point the rule is written), listed here for traceability rather than because
 MIT demands a notice for it.
 
@@ -54,7 +54,7 @@ classes:
 
 `tdd`, `to-spec`, `code-review`, `implement`, `triage` and the rest of his set were **assessed and
 declined** — each already covered by a workflow, an agent, or a gate here. No text was copied in
-any case, so none of these carry a notice obligation; they are recorded because § 6 requires the
+any case, so none of these carry a notice obligation; they are recorded because Section 6 requires the
 credit to be written in the same change as the rule, not retrospectively.
 
 ```text
@@ -190,10 +190,10 @@ skill-authoring rows on 11/08/2026:
 
 | Source                                      | Derived into                                       | Overlap  |
 | ------------------------------------------- | -------------------------------------------------- | -------- |
-| `emilkowalski/skills` (motion standard)     | `code/docs/VISUAL-DESIGN.md` § 5                   | **0.0%** |
+| `emilkowalski/skills` (motion standard)     | `code/docs/VISUAL-DESIGN.md` Section 5             | **0.0%** |
 | `pbakaus/impeccable` (native audit)         | `code/docs/visual-design/MOBILE.md`                | **0.0%** |
 | `pbakaus/impeccable` (craft floor)          | `code/docs/visual-design/WEB.md`                   | **0.0%** |
-| `hardikpandya/stop-slop` (prose taxonomy)   | `how-to/src/BRAND-VOICE.md` § 4                    | **0.0%** |
+| `hardikpandya/stop-slop` (prose taxonomy)   | `how-to/src/BRAND-VOICE.md` Section 4              | **0.0%** |
 | `wshobson/agents` (background jobs)         | `code/docs/TASK-AUTHORING.md` · `PROCESS-MODEL.md` | **0.0%** |
 | `tigerbeetle` TigerStyle (negative space)   | `code/docs/NEGATIVE-SPACE.md`                      | **0.0%** |
 | `tigerbeetle` TigerStyle (negative space)   | `how-to/src/INVARIANTS.md`                         | **0.0%** |
@@ -210,11 +210,11 @@ obligation regardless — but the wording around them would have, and none was t
 
 | Source                                | Why no notice                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The remaining design/platform sources | Read as a checklist of concerns and re-authored (`README.md` § Influences). Facts and method are not copyrightable                                                                                                                                                                                                                                                                                                                                              |
-| `trailofbits/skills`                  | CC-BY-SA-4.0 — **read only, never derived into shipped text**. A notice would not cure share-alike (`.claude/CLAUDE.md` § 6)                                                                                                                                                                                                                                                                                                                                    |
+| The remaining design/platform sources | Read as a checklist of concerns and re-authored (`README.md` → Influences). Facts and method are not copyrightable                                                                                                                                                                                                                                                                                                                                              |
+| `trailofbits/skills`                  | CC-BY-SA-4.0 — **read only, never derived into shipped text**. A notice would not cure share-alike (`.claude/CLAUDE.md` Section 6)                                                                                                                                                                                                                                                                                                                              |
 | `audits/rules/*.yml`                  | Authored in-house; each file carries an explicit "no upstream rule text consulted" header. Semgrep's rules are not redistributable                                                                                                                                                                                                                                                                                                                              |
 | `anthropics/skills` · `vercel-labs`   | No LICENCE upstream — read for ideas, never quoted, so nothing of theirs is redistributed                                                                                                                                                                                                                                                                                                                                                                       |
-| `agentskills/agentskills`             | Apache-2.0 covers the **specification text**, and § 4(d) binds only a derivative of a work that ships a `NOTICE` file. The repository ships none — checked 11/08/2026, root holds `LICENSE` and no `NOTICE` — so the obligation never attaches. Separately, what is taken is the field set, their limits and each field's job, measured at 0.0% overlap above                                                                                                   |
+| `agentskills/agentskills`             | Apache-2.0 covers the **specification text**, and Section 4(d) binds only a derivative of a work that ships a `NOTICE` file. The repository ships none — checked 11/08/2026, root holds `LICENSE` and no `NOTICE` — so the obligation never attaches. Separately, what is taken is the field set, their limits and each field's job, measured at 0.0% overlap above                                                                                             |
 | Claude Code's own Agent Skills docs   | **No LICENCE upstream**, so no grant exists to redistribute under — which is why only facts are taken and every derived rule is re-authored, at 0.0% overlap above. **Nothing this template ships quotes them at all:** the working notes that carried marked quotations are syntek-base's own and are not tracked (`research/.gitignore`), and nothing in `how-to/docs/skill-authoring/` quotes. With no quotation redistributed, the absent grant never bites |
 | `mattpocock/dictionary-of-ai-coding`  | **Open question — see below.** Not a notice problem, a permission problem                                                                                                                                                                                                                                                                                                                                                                                       |
 

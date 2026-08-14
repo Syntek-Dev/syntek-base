@@ -215,4 +215,4 @@ tooling; plugin references were rewritten to internal paths.
 
 _Avoid:_ **orchestrator**, **specialist**, **document writer** — retired category names (N-012),
 and nothing replaces them: there is no tier above or below a skill. Dispatch and the independence
-rule live in `.claude/CLAUDE.md` § 2.3.
+rule live in `.claude/CLAUDE.md` Section 2.3.

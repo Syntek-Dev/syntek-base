@@ -41,7 +41,7 @@ model: fable
 
 > **Model:** fable
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%>:
 
 - Does this story ship a public URL? If not, record `SEO: N/A` with a reason and stop.

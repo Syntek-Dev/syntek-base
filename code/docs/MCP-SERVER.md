@@ -74,7 +74,7 @@ logic out of `services.py`, the seam was in the wrong place — fix that first.
    pass whatever value serves its current goal. See
    [`mcp-server/AUTH-AND-THREATS.md`](mcp-server/AUTH-AND-THREATS.md).
 3. **Every state-changing tool carries the same named permission check as its Ninja twin.**
-   The non-negotiable in `.claude/CLAUDE.md` §6 is about the _operation_, not the transport.
+   The non-negotiable in `.claude/CLAUDE.md` Section 6 is about the _operation_, not the transport.
 4. **The mounted app is outside Django's middleware.** No session, no `login_required`, no
    CSRF, no rate-limit middleware. Anything you assumed Django gives you for free must be
    arranged inside FastMCP.

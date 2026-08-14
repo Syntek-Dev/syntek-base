@@ -130,7 +130,7 @@ Stand down when all three hold, not before:
 
 - The user-facing symptom is gone, and you have verified it from **outside** the system — load
   the affected page, hit the affected endpoint. Not "the error stopped appearing".
-- Whatever you changed by hand is either reverted or recorded (§ Rollback).
+- Whatever you changed by hand is either reverted or recorded (see _Rollback_).
 - The status page says it is resolved, if it ever said it was not.
 
 State the stand-down time in the running notes. That timestamp is the end of the timeline.
@@ -190,10 +190,10 @@ folder's `CLAUDE.md` carries the rules; this guide carries the reason.
 | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | You cannot tell whether it is really broken or just slow    | Declare P3 and start notes. Downgrade later — a downgraded incident costs a row                                  |
 | Two people are both "fixing it" and changing the same thing | Stop. Name a commander. Concurrent uncoordinated fixes are how a P2 becomes a P1                                 |
-| The fix worked but you cannot explain why                   | Do not stand down on it. An unexplained fix is a workaround; treat it as one (§ 4)                               |
+| The fix worked but you cannot explain why                   | Do not stand down on it. An unexplained fix is a workaround; treat it as one (Section 4)                         |
 | Notes have a 90-minute hole in them                         | Write "no notes 14:20–15:50, reconstructing" and reconstruct. Never back-fill silently                           |
 | You realise mid-incident that personal data is involved     | Escalate severity immediately and go to `MONITORING-AND-INCIDENT.md`. The clock has been running since discovery |
-| You are too tired to be making these decisions              | That is itself the finding. Hand over (§ 3), even to nobody — write it and stop                                  |
+| You are too tired to be making these decisions              | That is itself the finding. Hand over (Section 3), even to nobody — write it and stop                            |
 
 ## Rollback
 

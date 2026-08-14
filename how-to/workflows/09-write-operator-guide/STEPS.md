@@ -29,7 +29,7 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `runbook` · **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and settle —
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and settle —
 
 1. **Who is the reader, and what has just gone wrong for them?** An operator guide is read
    under time pressure by someone with a problem, not browsed.

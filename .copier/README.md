@@ -985,7 +985,7 @@ bash code/src/scripts/development/shell.sh --service db      # any service in th
 bash code/src/scripts/tests/backend.sh
 ```
 
-For the full script catalogue see [§ Project Scripts](#project-scripts).
+For the full script catalogue see [Project Scripts](#project-scripts).
 
 ### Staging and production images
 
@@ -1168,7 +1168,7 @@ table ever falls behind it.
 | `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source          |
 | `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds   |
 | `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                     |
-| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` § 4)                          |
+| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` Section 4)                    |
 | `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens  |
 | `copy-emdash.sh`       | Em dashes in user-facing copy                                                            |
 | `css-gradients.sh`     | Raw gradient literals outside the token layer                                            |
@@ -1176,7 +1176,7 @@ table ever falls behind it.
 | `dependency-drift.sh`  | What a template update would change about your dependencies, before it changes them      |
 | `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                    |
 | `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                 |
-| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                 |
+| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` Section 8)           |
 | `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                            |
 | `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors          |
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag |

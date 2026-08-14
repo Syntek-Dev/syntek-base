@@ -24,7 +24,7 @@ criteria before any design or code begins; every feature starts here.
   `docs/` guides → save as `US###.md` in `project-management/src/02-STORIES/`.
 - **Definition of done:** story named `US###.md`, acceptance criteria testable and
   complete enough to seed `code/workflows/02-tdd-cycle/`, checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

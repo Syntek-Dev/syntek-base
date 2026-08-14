@@ -38,7 +38,7 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   duplicate; every affected story plan is corrected; `18-backend-code/` is unblocked.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
-  `.claude/CLAUDE.md` §2.5).
+  `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

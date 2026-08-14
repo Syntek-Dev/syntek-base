@@ -38,7 +38,7 @@ reference a developer codes from.
   `workflows/18-backend-code/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
-  `.claude/CLAUDE.md` §2.5).
+  `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

@@ -45,7 +45,7 @@ running build, with evidence (test name, file, or observed behaviour). Keep the 
 | --------------- | -------------------- | ------ | --------------------------------- |
 | [EXAMPLE] HP-01 | {expected outcome}   | Pass   | `test_{name}` / observed in build |
 
-_One row per HP-nn in the plan; anything not Pass needs a reason in §4 or §6._
+_One row per HP-nn in the plan; anything not Pass needs a reason in Section 4 or Section 6._
 
 ### Error States
 
@@ -118,7 +118,7 @@ Where the story touches personal data, evidence that the shipped code protects i
 
 ## Sign-off checklist
 
-- [ ] Every plan scenario (HP/ES/EC/PA) addressed — Pass, or a reason recorded in §4/§6
+- [ ] Every plan scenario (HP/ES/EC/PA) addressed — Pass, or a reason recorded in Section 4/Section 6
 - [ ] Acceptance-criteria gaps closed or carried forward with evidence
 - [ ] Deviations from the plan justified
 - [ ] New edge cases recorded (and folded back into the plan/AC where needed)

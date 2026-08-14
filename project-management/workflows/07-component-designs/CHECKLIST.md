@@ -18,8 +18,8 @@ model: fable
 
 - [ ] All required components identified from user flows and stories
 - [ ] Existing components checked — no unnecessary new components created
-- [ ] Every component designed **within the committed direction** — checked against the six axes in `code/docs/VISUAL-DESIGN.md` § 3, never against taste
-- [ ] Checked by eye against § 4.1 and § 4.2 — **no script gate here**: these artefacts are Figma and LaTeX, which none of the slop audits reads (`DESIGN.md` → _The design-time gate_)
+- [ ] Every component designed **within the committed direction** — checked against the six axes in `code/docs/VISUAL-DESIGN.md` Section 3, never against taste
+- [ ] Checked by eye against Section 4.1 and Section 4.2 — **no script gate here**: these artefacts are Figma and LaTeX, which none of the slop audits reads (`DESIGN.md` → _The design-time gate_)
 - [ ] Every new component designed in Figma using brand tokens (no raw hex values) · _opus · MCP: figma_
 - [ ] All states designed: default, hover, focus, disabled, error, success, empty/loading
 - [ ] Props / variants annotated in Figma

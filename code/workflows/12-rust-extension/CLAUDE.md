@@ -31,7 +31,7 @@ the service-layer wiring.
   the release build exit `0`; coverage floors met on the Python side; `08-security-hardening` run
   if crypto is involved; touched `CONTEXT.md` files and the code-review-graph refreshed.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

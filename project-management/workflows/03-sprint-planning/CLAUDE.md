@@ -25,7 +25,7 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 - **Definition of done:** `SPRINT-##.md` records intent (goal + candidates); the
   definitive plan is deferred to `workflows/15-sprint-plans/` after the pre-sprint
   checks — do not write story assignments or phase breakdowns here.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

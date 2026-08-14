@@ -57,7 +57,7 @@ deliberate, recorded exception).
 
 ## 3. Expensive to retrofit
 
-Repeat only the `Expensive` rows from §2, so they cannot be lost in a long table. These are
+Repeat only the `Expensive` rows from Section 2, so they cannot be lost in a long table. These are
 the findings that get materially more costly with every story that ships on top of them —
 schema shape, a missing scope column, absent database-level constraints, a chosen primary
 key. Escalate each explicitly; do not leave one sitting as a table row.
@@ -106,7 +106,7 @@ factual.
 - `../20-BUGS/` — file a report for any finding that is a defect
 - `../21-REFACTORING/` — action any finding that is structural debt
 - `../14-DECISIONS/` — graduate any finding that reopens a hard-to-reverse trade-off
-- `code/docs/DATABASE.md` — the data-layer rules §2 is assessed against
+- `code/docs/DATABASE.md` — the data-layer rules Section 2 is assessed against
 - `GAPS.md` · `DEFERRED.md` — active blockers, and deferrals with a named target story
 - `project-management/workflows/21-implementation-documentation/` — where this is written
 

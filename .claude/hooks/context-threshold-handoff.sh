@@ -4,7 +4,7 @@
 # Registered as a UserPromptSubmit hook in .claude/settings.json.
 #
 # Same split as pre-compact-handoff.sh, moved earlier: a hook cannot invoke a skill or stop
-# a turn, so this script measures and reminds while .claude/CLAUDE.md §2.6 carries the
+# a turn, so this script measures and reminds while .claude/CLAUDE.md Section 2.6 carries the
 # behaviour. PreCompact alone is too late — by the time compaction fires the window is
 # already spent, and a handoff written under that pressure is the worst one of the session.
 #
@@ -51,7 +51,7 @@ if [ "$pct" -ge "$INSIST_PCT" ]; then
   cat <<MSG
 ⛔ Context at ~${pct}% (${used} / ${WINDOW} tokens) — past the insist threshold.
 
-House rule (.claude/CLAUDE.md §2.6): hand off NOW, before the window forces it.
+House rule (.claude/CLAUDE.md Section 2.6): hand off NOW, before the window forces it.
   1. Invoke the \`handoff\` skill → handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md
   2. Stop the turn and print the path.
   3. <%DEVELOPER_NAME%> runs /clear and resumes in a fresh context window.
@@ -73,7 +73,7 @@ state="${TMPDIR:-/tmp}/claude-context-advise-${session}"
 cat <<MSG
 ⚠️  Context at ~${pct}% (${used} / ${WINDOW} tokens) — half the window is gone.
 
-House rule (.claude/CLAUDE.md §2.6): steer toward a handoff.
+House rule (.claude/CLAUDE.md Section 2.6): steer toward a handoff.
   • Finish the step in flight; open no new scoped work that will not fit.
   • Name the natural stopping point to <%DEVELOPER_NAME%> and offer \`/handoff\`.
   • At 75% this becomes an instruction, not a suggestion.

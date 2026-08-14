@@ -11,7 +11,7 @@
 #
 # Note the attribution consequence, because it cuts the right way: with nothing under research/
 # shipped, no verbatim quotation of an unlicensed upstream source is redistributed by this
-# template at all. THIRD-PARTY-NOTICES.md states that position; README.md § Influences carries
+# template at all. THIRD-PARTY-NOTICES.md states that position; README.md Section Influences carries
 # each row's evidence in the row itself rather than pointing at a note that no longer ships.
 #
 # The documentation pair stays tracked so the folder ships documented and ready to use.

@@ -20,9 +20,9 @@ project's single `NinjaAPI` — defined once in `config/api.py` and served under
 
 ## 1. API surface shipped
 
-Every endpoint the design contract named (design §1), marked against what the API actually
+Every endpoint the design contract named (design Section 1), marked against what the API actually
 exposes. `Present` = shipped as designed; `Changed` = shipped with a different shape
-(justify in §6); `Missing` = not shipped (deferral or blocker in §6).
+(justify in Section 6); `Missing` = not shipped (deferral or blocker in Section 6).
 
 | Endpoint                      | Type  | Result  | Evidence (route · handler)                    |
 | ----------------------------- | ----- | ------- | --------------------------------------------- |
@@ -34,16 +34,16 @@ appear here as Present, Changed, or Missing — no silent drops._
 
 ## 2. Contract conformance
 
-Each Ninja Schema and endpoint from the design (design §§2–4), marked
+Each Ninja Schema and endpoint from the design (design Sections 2–4), marked
 `Present / Missing / Changed` against the shipped code, with a Python symbol and handler
 file as evidence. One illustrative spec-vs-shipped block follows the tables.
 
 ### Schemas (response · request · enums · paged wrapper)
 
-| Schema                          | Result  | Evidence (Python symbol · file) |
-| ------------------------------- | ------- | ------------------------------- |
-| [EXAMPLE] `WidgetOut`           | Present | `code/…/schemas.py:WidgetOut`   |
-| [EXAMPLE] `WidgetStatus` (enum) | Changed | one value renamed — see §6      |
+| Schema                          | Result  | Evidence (Python symbol · file)   |
+| ------------------------------- | ------- | --------------------------------- |
+| [EXAMPLE] `WidgetOut`           | Present | `code/…/schemas.py:WidgetOut`     |
+| [EXAMPLE] `WidgetStatus` (enum) | Changed | one value renamed — see Section 6 |
 
 _One row per Schema in the contract. Confirm field names, optionality, and enum values
 match; note any field absent from — or added to — the shipped Schema._
@@ -55,7 +55,7 @@ match; note any field absent from — or added to — the shipped Schema._
 | [EXAMPLE] `GET /…/widgets` | `limit`, `offset` — Yes   | Present | `code/…/routers/widgets.py:list_widgets` |
 
 _Confirm query params, defaults/limits, ordering, and the null-vs-empty contract from
-design §3._
+design Section 3._
 
 ### Write endpoints (POST/PATCH/DELETE)
 
@@ -63,8 +63,8 @@ design §3._
 | --------------------------- | -------------------------------- | ------- | ----------------------------------------- |
 | [EXAMPLE] `POST /…/widgets` | `WidgetCreate` → `201 WidgetOut` | Present | `code/…/routers/widgets.py:create_widget` |
 
-_Confirm request Schema and response Schema/status from design §4; permission is verified
-in §3._
+_Confirm request Schema and response Schema/status from design Section 4; permission is verified
+in Section 3._
 
 ### Illustrative comparison — spec vs shipped
 
@@ -72,7 +72,7 @@ Keep **one** small block showing the design contract beside the shipped Schema/h
 the conformance evidence pattern. Delete the rest; do not paste the whole API.
 
 ```python
-# Design contract (../PLANNING/API-PLAN-US###-*.md §2)
+# Design contract (../PLANNING/API-PLAN-US###-*.md Section 2)
 class WidgetOut(Schema):
     id: UUID
     name: str
@@ -87,11 +87,11 @@ class WidgetOut(Schema):
     status: WidgetStatus
 ```
 
-_Assessment: {matches / diverges on `{field}` — justify in §6}._
+_Assessment: {matches / diverges on `{field}` — justify in Section 6}._
 
 ## 3. Permission enforcement (OWASP A01)
 
-Every endpoint from the design's permission matrix (design §6), confirmed against the
+Every endpoint from the design's permission matrix (design Section 6), confirmed against the
 shipped handler. **Each write endpoint must carry an explicit named permission rule and an
 ownership/IDOR check** on any user-supplied ID; each read endpoint gate confirmed likewise.
 
@@ -102,12 +102,12 @@ ownership/IDOR check** on any user-supplied ID; each read endpoint gate confirme
 
 _Every endpoint in the contract appears here. A write endpoint with no explicit permission
 rule, or a user-supplied ID resolved without an ownership check, is a **blocker** — record
-it in §6 and set Outcome = Blocked. Keep consistent with `code/docs/SECURITY.md`._
+it in Section 6 and set Outcome = Blocked. Keep consistent with `code/docs/SECURITY.md`._
 
 ## 4. Error types & pagination verified
 
-Each error type from the design's error strategy (design §7) and the pagination contract
-(design §§2–3), confirmed against the shipped behaviour. Errors route through the exception
+Each error type from the design's error strategy (design Section 7) and the pagination contract
+(design Sections 2–3), confirmed against the shipped behaviour. Errors route through the exception
 handlers registered on the `NinjaAPI` instance.
 
 | Error / behaviour    | Contract (design)                 | Shipped | Evidence                                    |
@@ -121,7 +121,7 @@ against the running build, not the worktree._
 
 ## 5. Breaking changes
 
-Assess the shipped API against existing consumers (design §8). "None — all endpoints new,
+Assess the shipped API against existing consumers (design Section 8). "None — all endpoints new,
 no consumers." is a valid entry.
 
 - {Deprecation / additive-only note, or "None." — and any consumer impact. There is
@@ -131,7 +131,7 @@ no consumers." is a valid entry.
 ## 6. Deviations from the design & follow-ups
 
 Any departure from `../PLANNING/API-PLAN-US###-*.md`, with justification. "None." is a
-valid entry. A `Changed` or `Missing` in §§1–4 must be explained here.
+valid entry. A `Changed` or `Missing` in Sections 1–4 must be explained here.
 
 | ID              | Contract (design)        | Shipped          | Justification                     |
 | --------------- | ------------------------ | ---------------- | --------------------------------- |
@@ -148,11 +148,11 @@ _Every `[OPEN]` item resolves to Closed, a justified deviation, or a Deferred en
 
 ## Sign-off checklist
 
-- [ ] Every contract endpoint and Schema marked Present / Changed / Missing (§§1–2)
-- [ ] Every write endpoint carries an explicit permission rule **and** an ownership/IDOR check (§3, OWASP A01)
-- [ ] Error types and pagination verified against the contract (§4)
-- [ ] Breaking-change assessment complete (§5)
-- [ ] Deviations justified; follow-ups tracked with a target story (§6)
+- [ ] Every contract endpoint and Schema marked Present / Changed / Missing (Sections 1–2)
+- [ ] Every write endpoint carries an explicit permission rule **and** an ownership/IDOR check (Section 3, OWASP A01)
+- [ ] Error types and pagination verified against the contract (Section 4)
+- [ ] Breaking-change assessment complete (Section 5)
+- [ ] Deviations justified; follow-ups tracked with a target story (Section 6)
 - [ ] `US###`, design-doc link, sprint, and date present; British English; DD/MM/YYYY
 - [ ] Reviewer approval — **blocks merge until complete**
 

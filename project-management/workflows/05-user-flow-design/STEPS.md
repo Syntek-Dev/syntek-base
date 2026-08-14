@@ -29,7 +29,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 > **Model:** fable
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the product area's boundaries, the roles and their
 entry points, the decision nodes and their success/failure outcomes, and every
 personal-data touchpoint — before mapping. Record hard-to-reverse calls as an ADR.

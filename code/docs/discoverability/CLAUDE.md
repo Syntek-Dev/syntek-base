@@ -38,7 +38,7 @@ data, and the root/`.well-known` surface — behind the `code/docs/DISCOVERABILI
   anything that must not be reached is blocked at the edge.
 - **`/admin/` and `/portal/` stay out of every sitemap and indexable surface** — a
   non-negotiable, not a preference.
-- The register in `ROOT-SURFACE.md` § 3 is the enumeration of the root surface. Adding a root
+- The register in `ROOT-SURFACE.md` Section 3 is the enumeration of the root surface. Adding a root
   file without adding its row leaves a file nobody owns.
 
 ## Output & naming

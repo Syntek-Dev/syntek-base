@@ -38,7 +38,7 @@ workflow; the compliance review happens first in
 
 ### Governing documents
 
-- `code/docs/encryption/FIELD-ENCRYPTION.md` — PII fields must be encrypted at rest; AES-256-GCM (CLAUDE.md §6)
+- `code/docs/encryption/FIELD-ENCRYPTION.md` — PII fields must be encrypted at rest; AES-256-GCM (CLAUDE.md Section 6)
 - `code/docs/encryption/LOOKUP-TOKENS.md` — unique-field lookup tokens required alongside encryption (email, phone)
 - `project-management/workflows/09-gdpr-compliance/` — compliance review must be complete before entering this workflow
 
@@ -47,4 +47,4 @@ workflow; the compliance review happens first in
 - `code/docs/security/AUTH-AND-AUTHZ.md` — permission and IDOR requirements
 - `project-management/src/09-GDPR/` — live GDPR documentation
 - `code/docs/rls/MIDDLEWARE-AND-NINJA.md` — RLS is GDPR-relevant for multi-tenant data
-- `code/docs/logging/DJANGO-LOGGING.md` — no PII in log output or error responses (CLAUDE.md §6)
+- `code/docs/logging/DJANGO-LOGGING.md` — no PII in log output or error responses (CLAUDE.md Section 6)

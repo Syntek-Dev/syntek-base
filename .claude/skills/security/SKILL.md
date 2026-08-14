@@ -30,7 +30,7 @@ decided in an audit.
 
 Settle the **assets** worth protecting, the **trust boundaries** between them, the **roles**,
 the **STRIDE surface**, and the **abuse cases** before any audit or hardening plan. The
-`grilling` skill owns the round shape (`.claude/CLAUDE.md` §10).
+`grilling` skill owns the round shape (`.claude/CLAUDE.md` Section 10).
 
 ## The baselines an audit is held to
 

@@ -31,7 +31,7 @@ Use this workflow when:
   someone else is the whole of IDOR
 - **`DEBUG=False` and an explicit CORS allowlist are production-only traps.** Both are
   indistinguishable from a correct configuration in dev, and differ only where it matters
-  (`.claude/CLAUDE.md` §6 owns both as non-negotiables)
+  (`.claude/CLAUDE.md` Section 6 owns both as non-negotiables)
 
 ## Cross-references
 

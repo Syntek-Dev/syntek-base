@@ -33,7 +33,7 @@ rendered tag or measured value as evidence. Targets come from `../PLANNING/` and
 | Meta description        | ≤ 160 chars; describes page purpose                      | {result} | {rendered `<meta name="description">` · char count} |
 | Open Graph              | `og:title`, `og:description`, `og:image`, `og:type/url`  | {result} | {which OG tags render, and their values}            |
 | Twitter Card            | `twitter:card` + title/description/image                 | {result} | {card type + tags, or "inherits OG"}                |
-| JSON-LD structured data | Valid schema.org `@type` for the page (see §2)           | {result} | {`@type` shipped, or "N/A — no mapping"}            |
+| JSON-LD structured data | Valid schema.org `@type` for the page (see Section 2)    | {result} | {`@type` shipped, or "N/A — no mapping"}            |
 | Canonical URL           | Absolute, self-referential, trailing slash               | {result} | {rendered `<link rel="canonical">`}                 |
 | Robots directives       | `index, follow` (or `noindex`/`nofollow` where intended) | {result} | {rendered `<meta name="robots">` + why}             |
 | Sitemap inclusion       | Route present in `sitemap.xml` (or excluded by design)   | {result} | {sitemap entry, or deferral target}                 |
@@ -43,7 +43,7 @@ rendered tag or measured value as evidence. Targets come from `../PLANNING/` and
 | AI discoverability      | Listed in `llms.txt` where relevant                      | {result} | {`llms.txt` entry, or "N/A"}                        |
 
 _Keep every dimension row; mark it Pass, Fail, or Deviation. A Deviation must be
-justified in §5. Delete a row only if the dimension is genuinely inapplicable, and say so._
+justified in Section 5. Delete a row only if the dimension is genuinely inapplicable, and say so._
 
 ## 2. Structured data (JSON-LD) shipped
 
@@ -74,11 +74,11 @@ where the export lives (`LIGHTHOUSE-<US###>-<ROUTE>-DD-MM-YYYY.json` may accompa
 | Lighthouse SEO score            | ≥ {target} | {score}    | {result} |
 
 _If not measurable in the worktree, record "not measured — needs rendered stack" and
-raise a follow-up in §5 rather than leaving it blank._
+raise a follow-up in Section 5 rather than leaving it blank._
 
 ## 4. Plan criteria & gaps closed
 
-Each SEO acceptance criterion and each `SEO-GAP-n` from the plan's §Gaps, closed **only
+Each SEO acceptance criterion and each `SEO-GAP-n` from the plan's _Gaps_ section, closed **only
 with evidence** — never mark done without pointing at the shipped tag, block, or metric.
 
 | Plan criterion / gap                 | Status   | Evidence                        |

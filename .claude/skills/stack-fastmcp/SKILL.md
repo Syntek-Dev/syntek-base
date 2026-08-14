@@ -58,7 +58,7 @@ touching anything else.
 2. **Tools hold no logic.** Authorise, delegate to `services.py`, map the result. Identical to
    the contract `api.py` already has.
 3. **Every state-changing tool calls the same named policy as its Ninja twin** — imported, not
-   re-implemented. The `.claude/CLAUDE.md` §6 non-negotiable is about the operation, not the
+   re-implemented. The `.claude/CLAUDE.md` Section 6 non-negotiable is about the operation, not the
    transport.
 4. **The docstring is the contract.** It is the prompt the model reads when choosing to call
    the tool: state what it does, when to use it, what is irreversible, and the exact allowed

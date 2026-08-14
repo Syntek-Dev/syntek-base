@@ -3,7 +3,7 @@
 # shipped-memory.sh — Verify a generated project receives an EMPTY project-memory store.
 #
 #                     `.claude/MEMORY.md` is the one shipped file an agent writes to
-#                     unprompted, and `.claude/CLAUDE.md` §2.1 has every session read it
+#                     unprompted, and `.claude/CLAUDE.md` Section 2.1 has every session read it
 #                     second — before the work, ahead of any docs. That combination makes
 #                     it the worst possible carrier for syntek-base's own memory: entries
 #                     about this repo's .gitignore overrides, which account may bypass
@@ -24,7 +24,7 @@
 #
 #                     1 and 2 are a pair and neither is sufficient. Exclusion alone
 #                     leaves a generated project with NO memory file at all, breaking the
-#                     §2.1 read order — a quieter failure than the one being fixed. A
+#                     Section 2.1 read order — a quieter failure than the one being fixed. A
 #                     seed alone is ignored the moment the exclusion is dropped, which is
 #                     the exact regression that produced this script.
 #
@@ -124,7 +124,7 @@ run_checks() {
 
   # ── 2. _tasks seeds it ──────────────────────────────────────────────────────
   #
-  # Without this an excluded MEMORY.md simply never arrives, and §2.1's read-second
+  # Without this an excluded MEMORY.md simply never arrives, and Section 2.1's read-second
   # instruction points at nothing.
   local tasks
   tasks=$(awk '/^_tasks:/{f=1;next} /^[a-zA-Z_]+:/{f=0} f' "$COPIER" || true)

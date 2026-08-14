@@ -55,10 +55,10 @@ Write this release's **What's New / release notes** copy, then:
    The register holds what the store says now; the history is already on the mobile
    sub-package's own track (`code/src/mobile/CHANGELOG.md`, `RELEASES.md`).
 3. Fill the **Used** count. Google Play's release-notes limit is deliberately unpinned — read it
-   off the Play Console field, per `code/docs/discoverability/APP-STORE.md` § 1.
+   off the Play Console field, per `code/docs/discoverability/APP-STORE.md` Section 1.
 
 The fields and their limits: `code/docs/discoverability/APP-STORE.md`. The register it is
-written in: `how-to/src/BRAND-VOICE.md` § 5. Doing this after the bump and before the commit is
+written in: `how-to/src/BRAND-VOICE.md` Section 5. Doing this after the bump and before the commit is
 what lands the listing change in the **same commit** as the version files.
 
 > If any other listing field changed with this release, `STORE-LISTING.md` owns that rule — it

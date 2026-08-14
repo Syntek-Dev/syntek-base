@@ -48,7 +48,7 @@ Then resolve, one at a time:
 - Whether the operation is long enough to need `py.allow_threads`
 - Whether it is a batch call or a per-item call (per-item in a Python loop is often a net loss)
 
-No code until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` §10).
+No code until <%DEVELOPER_NAME%> confirms (`.claude/CLAUDE.md` Section 10).
 
 ## Step 2 — Justify and add any dependency
 

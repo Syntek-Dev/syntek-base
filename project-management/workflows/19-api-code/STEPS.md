@@ -31,7 +31,7 @@ This workflow produces code — consult **both** layer reference files:
 
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the endpoint and contract details (read and
 write endpoints), the permission check guarding every mutating endpoint (OWASP A01)
 and ownership checks (no IDOR), and the error shapes returned before writing any code.

@@ -36,7 +36,7 @@ is better than showing a stale value that resolves to the wrong tracker event.
 
 ## Cross-references
 
-- `code/docs/NEGATIVE-SPACE.md` § The error taxonomy — why an identifier must reach the user
-- `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` § An error the user never sees — the empty
+- `code/docs/NEGATIVE-SPACE.md` → The error taxonomy — why an identifier must reach the user
+- `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` → An error the user never sees — the empty
   `Context` finding, and the corrected HTMX handler beside it
 - `code/src/django/apps/core/middleware.py` — where the identifier is minted and stored

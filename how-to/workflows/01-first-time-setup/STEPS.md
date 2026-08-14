@@ -22,7 +22,7 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 | 2–4  | **External — Tools & CLI** → Docker Compose v2 reference, uv documentation, pnpm documentation   |
 | 5–6  | **External — IDE & Editor** → Claude Code CLI documentation                                      |
 | 7–10 | `CONTEXT.md` → _What this project is_ · `how-to/src/BRAND-VOICE.md` ·                            |
-|      | `code/docs/VISUAL-DESIGN.md` § 3 · `.claude/skills/scale-planning/SKILL.md`                      |
+|      | `code/docs/VISUAL-DESIGN.md` Section 3 · `.claude/skills/scale-planning/SKILL.md`                |
 
 ---
 
@@ -142,8 +142,8 @@ _Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not
 
 > **Model:** fable
 
-Open `how-to/src/BRAND-VOICE.md` and fill § 3 (tone, person, formality, reader, signature, the
-never-this line, and the say-this-not-that vocabulary) plus the placeholders in § 5. The reader
+Open `how-to/src/BRAND-VOICE.md` and fill Section 3 (tone, person, formality, reader, signature, the
+never-this line, and the say-this-not-that vocabulary) plus the placeholders in Section 5. The reader
 comes straight from the brief you just wrote — which is why this runs after Step 7 and not before.
 
 **Do this before the other prerequisite documents, not after.** Every user-facing word the project
@@ -151,18 +151,18 @@ ever ships is written in this voice, and so is much of the brand work that follo
 `project-management/src/06-BRAND-GUIDE/`. A voice settled after ten features is a voice retrofitted
 onto copy nobody will go back and rewrite.
 
-§ 1 and § 4 are the portable core — adopt them unchanged. § 4 is already partly enforced:
+Section 1 and Section 4 are the portable core — adopt them unchanged. Section 4 is already partly enforced:
 `bash code/src/scripts/audits/copy-emdash.sh` fails on an em dash in marketing copy, and every
 skill that writes a user-facing string loads this file first.
 
-_Done when § 3 carries this project's answers rather than `TBD` placeholders. The visual half is
+_Done when Section 3 carries this project's answers rather than `TBD` placeholders. The visual half is
 Step 9 — settle it next, and keep the two consistent._
 
 ### Step 9 — Settle the visual direction
 
 > **Model:** fable
 
-Open `code/docs/VISUAL-DESIGN.md` § 3 and fill the **This project's direction** table: name the
+Open `code/docs/VISUAL-DESIGN.md` Section 3 and fill the **This project's direction** table: name the
 direction, then give every axis a setting — alignment, rhythm, contrast, ornament, density, motion.
 The comparison table beneath it shows two worked directions; the one you fill is the commitment
 every downstream gate reads.
@@ -173,21 +173,21 @@ composed in the direction. A direction settled after the tenth screen is a direc
 onto screens nobody will go back and rebuild.
 
 `editorial` ships as the default and a project that keeps it changes nothing below the direction
-block. A project that chooses otherwise **must** restate § 3's colour, typography and layout clauses
+block. A project that chooses otherwise **must** restate Section 3's colour, typography and layout clauses
 against its own axes — those clauses are the default direction made concrete, not house law.
 `classical-symmetric` is documented beside it as a worked alternate showing exactly what a different
 setting changes, and what it does not.
 
-**Naming a direction is not decoration — it is what makes the ban list decidable.** § 4.2's clauses
+**Naming a direction is not decoration — it is what makes the ban list decidable.** Section 4.2's clauses
 read their verdict off these axes: a centred hero is a defect under `editorial` and correct under
-`classical-symmetric`. Leave the direction unnamed and § 4.2 has nothing to judge against, which is
+`classical-symmetric`. Leave the direction unnamed and Section 4.2 has nothing to judge against, which is
 the vacuum the AI-look fills.
 
-What a direction never buys: an exemption from § 4.1's universal tells, from the token-first law,
+What a direction never buys: an exemption from Section 4.1's universal tells, from the token-first law,
 from WCAG 2.2 AA, or from the reduced-motion contract.
 
-_Done when § 3 names a direction, every axis carries a setting rather than `TBD`, and § 3 does not
-contradict `how-to/src/BRAND-VOICE.md` § 3._
+_Done when Section 3 names a direction, every axis carries a setting rather than `TBD`, and Section 3 does not
+contradict `how-to/src/BRAND-VOICE.md` Section 3._
 
 ### Step 10 — Plan scale and architecture before the first feature
 

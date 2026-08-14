@@ -18,7 +18,7 @@ maintained by the `scale-planning` skill via `/scale-planning`.
   this directory is one of its two living snapshots (the other is the sibling
   `how-to/src/SCALE-ARCHITECTURE/`). Edge-security rows → `security` skill input;
   observability rows → `logging`; compute rows → `cicd`.
-  Every substantial change opens with a grilling pass (`.claude/CLAUDE.md` §10).
+  Every substantial change opens with a grilling pass (`.claude/CLAUDE.md` Section 10).
 - **Model:** Fable for reshaping the contract or the buffer policy (it is a sizing /
   architecture judgement); Opus for mechanical touches — status flips on a
   requirement row, citation fixes, re-verifying a `file:line` reference.
@@ -45,7 +45,7 @@ maintained by the `scale-planning` skill via `/scale-planning`.
   though, not the template's: use the token where a **prose-safe** one exists (`OBJECT_STORE`,
   `ERROR_TRACKING`, `LOG_AGGREGATOR`, `ANALYTICS_PROVIDER`). `OBSERVABILITY_STACK`,
   `HOSTING_PROVIDER` and `TRACING_BACKEND` resolve to a phrase and are **cell-only** — that is why
-  Prometheus stays literal in § 8, and Gatus stays literal because it has no token at all. Neither
+  Prometheus stays literal in Section 8, and Gatus stays literal because it has no token at all. Neither
   is an oversight; do not "fix" them.
 - **Anti-forecast is a hard rule.** The Postgres horizontal-scaling ADR: scale on
   observable phase-gates — "do not pre-emptively add infrastructure". Compute here is

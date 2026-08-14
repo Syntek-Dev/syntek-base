@@ -23,7 +23,7 @@ worktree, namespaced Docker stack, and local URL, so stacks never share data.
   container and volume namespacing. Amend by editing `STEPS.md` + `CHECKLIST.md`.
 - **Definition of done:** each worktree runs an isolated stack on its own URL;
   `CHECKLIST.md` passes; British English.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

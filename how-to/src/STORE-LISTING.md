@@ -20,7 +20,7 @@ that rots in one of them.
 
 ## How to fill this in
 
-1. Read [`APP-STORE.md`](../../code/docs/discoverability/APP-STORE.md) first — particularly **§ 2**,
+1. Read [`APP-STORE.md`](../../code/docs/discoverability/APP-STORE.md) first — particularly **Section 2**,
    because Apple's keyword budget is counted in **bytes**, not characters.
 2. Write each value into the **This project** column.
 3. Fill the **Used** column with the real count — `len(text)` for every field except Apple
@@ -53,12 +53,12 @@ that rots in one of them.
 
 ## Google Play
 
-| Field             | Limit                                | This project | Used | Notes                                           |
-| ----------------- | ------------------------------------ | ------------ | ---- | ----------------------------------------------- |
-| App name          | 30 chars                             |              |      | Characters, not bytes, at any character width   |
-| Short description | 80 chars                             |              |      | The one line shown before a reader taps More    |
-| Full description  | 4000 chars                           |              |      | Play indexes this; Apple does not index its own |
-| Release notes     | _read it off the Play Console field_ |              |      | Deliberately unpinned — see `APP-STORE.md` § 1  |
+| Field             | Limit                                | This project | Used | Notes                                                |
+| ----------------- | ------------------------------------ | ------------ | ---- | ---------------------------------------------------- |
+| App name          | 30 chars                             |              |      | Characters, not bytes, at any character width        |
+| Short description | 80 chars                             |              |      | The one line shown before a reader taps More         |
+| Full description  | 4000 chars                           |              |      | Play indexes this; Apple does not index its own      |
+| Release notes     | _read it off the Play Console field_ |              |      | Deliberately unpinned — see `APP-STORE.md` Section 1 |
 
 ---
 
@@ -70,7 +70,7 @@ that rots in one of them.
 | Store listing name | App Store Connect / Play Console         | _(fill in above)_     |
 
 They are different fields and can hold different strings. If they differ, record **why** here —
-`APP-STORE.md` § 3 treats a divergence as a decision, never as a default.
+`APP-STORE.md` Section 3 treats a divergence as a decision, never as a default.
 
 ---
 
@@ -80,7 +80,7 @@ They are different fields and can hold different strings. If they differ, record
 | -------------------------------------------------- | -------------------------------------------------------- |
 | Screenshots, preview video, the app icon           | `code/docs/visual-design/MOBILE.md`                      |
 | Privacy nutrition labels, Data Safety declarations | `project-management/src/09-GDPR/`                        |
-| The register the copy is written in                | `how-to/src/BRAND-VOICE.md` § 5                          |
+| The register the copy is written in                | `how-to/src/BRAND-VOICE.md` Section 5                    |
 | Why each field exists and what its limit is        | `code/docs/discoverability/APP-STORE.md`                 |
 | Keyword research, competitor analysis, reviews     | **Nothing here.** Growth activities, ruled out repo-wide |
 
@@ -90,7 +90,7 @@ They are different fields and can hold different strings. If they differ, record
 
 - [`code/docs/discoverability/APP-STORE.md`](../../code/docs/discoverability/APP-STORE.md) — the
   rule this register answers, and the only place the limits carry a verification date
-- [`BRAND-VOICE.md`](BRAND-VOICE.md) § 5 — store-listing copy is the marketing register under hard
+- [`BRAND-VOICE.md`](BRAND-VOICE.md) Section 5 — store-listing copy is the marketing register under hard
   constraints, owned by `stack-react-native`
 - `project-management/workflows/23-release/` — the release procedure that prompts for the What's
   New row. It fires on a **mobile package bump**, not on every release: a root-only bump reaches

@@ -14,7 +14,7 @@ never the investigation.
 
 ## How to work here
 
-- **Routing:** entries come from `how-to/docs/INCIDENT-PRACTICE.md` § 6, usually via the
+- **Routing:** entries come from `how-to/docs/INCIDENT-PRACTICE.md` Section 6, usually via the
   `/incident` skill (`.claude/skills/incident/SKILL.md`) at stand-down. There is no workflow —
   an incident is unplanned, so its procedure is a guide, not a gate.
 - **Model:** Opus — writing up a settled incident is an implementation-phase touch, not planning.

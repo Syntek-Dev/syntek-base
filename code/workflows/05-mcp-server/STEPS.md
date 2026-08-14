@@ -35,7 +35,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%>. Settle, in this order:
 
 1. **Is an agent the right caller at all?** If an HTTP client would do, stop — use

@@ -19,7 +19,7 @@
 #                  to it, which meant the check silently passed on every run. A gate that
 #                  cannot fail is worse than no gate, because it is believed.
 #
-#                  Rule: .claude/CLAUDE.md § 8 — Instructional file length
+#                  Rule: .claude/CLAUDE.md Section 8 — Instructional file length
 #
 # Scope scanned:  tracked (and untracked-but-not-ignored) Markdown that instructs:
 #                   * every CONTEXT.md and CLAUDE.md, wherever it sits
@@ -46,7 +46,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
-# The limit from .claude/CLAUDE.md § 8. The warn tier is 90% of it — far enough from the
+# The limit from .claude/CLAUDE.md Section 8. The warn tier is 90% of it — far enough from the
 # wall to split deliberately rather than under duress.
 LIMIT=300
 WARN_RATIO=90
@@ -79,7 +79,7 @@ In scope:
   * **/workflows/**/*.md   (STEPS.md, CHECKLIST.md, CONTEXT.md)
   * .claude/**/*.md    (agents, skills, hooks, plugins)
 
-Exempt, per .claude/CLAUDE.md § 8:
+Exempt, per .claude/CLAUDE.md Section 8:
   * root-level *.md          README, CHANGELOG, GAPS, DEFERRED, RELEASES, REFERENCES, …
   * **/src/*.md              operator guides and PM artefacts — written for humans, in full
   * vendored                 .agents/, code/docs/cloudinary/ SDK docs
@@ -101,7 +101,7 @@ Options:
   --limit N            Override the line limit (default 300)
   --help               Show this help
 
-Rule: .claude/CLAUDE.md § 8 · pairing standard: code/docs/DOCUMENTATION-PAIRING.md
+Rule: .claude/CLAUDE.md Section 8 · pairing standard: code/docs/DOCUMENTATION-PAIRING.md
 
 Exit codes:  0 = within limits   1 = over the limit   2 = script error / cloc missing
 EOF
@@ -230,7 +230,7 @@ COMMA_PATHS="$(grep ',' "$TMP_LIST" || true)"
 if [[ -n "$COMMA_PATHS" ]]; then
   printf '%s\n' "$COMMA_PATHS" | sed 's/^/    /' >&2
   die "the above path(s) contain a comma, which cloc mis-parses or silently drops.
-  Rename them — documentation files are SCREAMING-SNAKE-CASE.md (.claude/CLAUDE.md § 5)."
+  Rename them — documentation files are SCREAMING-SNAKE-CASE.md (.claude/CLAUDE.md Section 5)."
 fi
 
 if [[ "$TOTAL" -gt 0 ]]; then
@@ -327,7 +327,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
           printf '_Every instructional file is within the limit._\n\n'
         fi
         if [[ "$WARN_COUNT" -gt 0 ]]; then printf '## Approaching the limit\n\n```text\n%s\n```\n\n' "$WARN_BODY"; fi
-        printf 'Rule: `.claude/CLAUDE.md` § 8 — Instructional file length.\n'
+        printf 'Rule: `.claude/CLAUDE.md` Section 8 — Instructional file length.\n'
       } > "$OUTPUT_FILE" ;;
     json)
       { printf '{\n  "script": "docs-length",\n  "timestamp": "%s",\n' "$TIMESTAMP"
@@ -347,7 +347,7 @@ if [[ "$FAIL_COUNT" -eq 0 ]]; then
   log ""
   exit 0
 else
-  bold "✗ $FAIL_COUNT file(s) over $LIMIT lines — split them (.claude/CLAUDE.md § 8)."
+  bold "✗ $FAIL_COUNT file(s) over $LIMIT lines — split them (.claude/CLAUDE.md Section 8)."
   log ""
   exit 1
 fi

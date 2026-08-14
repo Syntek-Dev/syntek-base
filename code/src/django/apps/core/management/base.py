@@ -1,7 +1,7 @@
 """The base every management command subclasses — the error taxonomy's expression on the CLI.
 
 A command has no HTTP status to carry the three classes
-(``code/docs/NEGATIVE-SPACE.md`` § The error taxonomy), so the distinction has to be made in
+(``code/docs/NEGATIVE-SPACE.md`` Section The error taxonomy), so the distinction has to be made in
 what the operator reads and what a scheduler can act on. Making it here rather than in each
 command is what stops thirty commands inventing thirty conventions; ruff ``TID251`` bans the
 direct ``BaseCommand`` import so that this really is the only place it is decided.

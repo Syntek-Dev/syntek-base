@@ -162,7 +162,7 @@ if [[ "$TEMPLATE_MODE" == "true" ]]; then
   printf '  application generated from it. There is no application to check:\n'
   printf '  the django image cannot be built here, so the container half of\n'
   printf '  each check has no subject. Those halves are INAPPLICABLE — neither\n'
-  printf '  passing nor failing. See § 2b.\n\n'
+  printf '  passing nor failing. See Section 2b.\n\n'
   printf '  Running:  every check that has a host-side half, plus the audit\n'
   printf '            suite, which is what actually governs a template.\n'
   printf '  Not run:  lockfiles, typecheck, tests — container-only, no subject.\n'
@@ -172,7 +172,7 @@ printf '\n'
 # ── 4  Ensure Docker daemon and containers are running ────────────────────────
 
 if [[ "$TEMPLATE_MODE" == "true" ]]; then
-  : # nothing to start — no application, no containers (§ 2b)
+  : # nothing to start — no application, no containers (Section 2b)
 elif ! docker info > /dev/null 2>&1; then
   printf '  Docker daemon not running — attempting start...\n'
   sudo systemctl start docker 2>/dev/null || true
@@ -262,7 +262,7 @@ _dual_result() {
   # Template mode: there is no container, so there is no Docker reading — and
   # drift between a host and a container that cannot exist is not a defect the
   # gate can report. Judge the host half on its own merits and say so, rather
-  # than manufacturing a MISMATCH out of a missing subject (§ 2b).
+  # than manufacturing a MISMATCH out of a missing subject (Section 2b).
   if [[ "${TEMPLATE_MODE:-false}" == "true" ]]; then
     CHECK_OUTPUT["$name"]=$(printf \
       '── Local (host) ─────────────────────────────────────────────────────\n%s\n\n── Docker ───────────────────────────────────────────────────────────\nnot applicable — template repository, no application container\n' \
@@ -317,7 +317,7 @@ source "$HOOK_DIR/lib/check-audits.sh"
 if [[ "$TEMPLATE_MODE" == "true" ]]; then
   # Six checks, not eight. lockfiles/typecheck/tests are dropped rather than
   # reported as failures: each reads ONLY from the container, so in a template
-  # there is nothing for them to be right or wrong about (§ 2b). `audits` takes
+  # there is nothing for them to be right or wrong about (Section 2b). `audits` takes
   # their place and is the substantive one here.
   ALL_CHECKS=(cloc format lint stubs security audits)
 

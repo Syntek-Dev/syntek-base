@@ -25,7 +25,7 @@ implement the minimum to pass, then refactor with the suite green throughout.
   contract. Run suites via `code/src/scripts/tests/*.sh`.
 - **Definition of done:** tests green, coverage floors met (75% line and branch / auth 90%),
   no stubs left behind.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

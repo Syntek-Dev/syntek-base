@@ -65,7 +65,7 @@ _set_, and a per-story folder holds one screen at a time. `SHARED/` is in scope 
 being a stage, because `wireframe.css` is the only stylesheet the screens have.
 
 The rules are not restated anywhere in this tree. `DESIGN.md` → _The design-time gate_ says when
-the gate runs and who owns it; `code/docs/VISUAL-DESIGN.md` § 4–§ 6 is what it enforces.
+the gate runs and who owns it; `code/docs/VISUAL-DESIGN.md` Section 4–Section 6 is what it enforces.
 
 ## What NOT to infer from a mobile wireframe
 

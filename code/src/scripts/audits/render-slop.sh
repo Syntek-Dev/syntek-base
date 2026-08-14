@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 #
 # render-slop.sh: the RENDERED half of the AI-slop audit. Enforces the one clause of
-#                 code/docs/VISUAL-DESIGN.md § 4.1 that no static scan can decide,
+#                 code/docs/VISUAL-DESIGN.md Section 4.1 that no static scan can decide,
 #                 because deciding it needs a viewport.
 #
 #                 Clauses owned here (both warn):
-#                   repeated-device     § 4.1, one device repeated DOWN a page —
+#                   repeated-device     Section 4.1, one device repeated DOWN a page —
 #                                       a row of >= 3 siblings whose widths and
 #                                       heights agree within 4%
-#                   repeated-signature  § 4.1, the same device repeated ACROSS the
+#                   repeated-signature  Section 4.1, the same device repeated ACROSS the
 #                                       screen set — one row signature recurring on
 #                                       >= 3 screens
 #
-#                 Neither can fail a run. § 6 says why: a taxonomy index legitimately
+#                 Neither can fail a run. Section 6 says why: a taxonomy index legitimately
 #                 stamps a row on every section, so a threshold on composition would
 #                 fail correct work. That is not a guess — a synthetic taxonomy page
 #                 false-positived on exactly this detector during the N-016 spike.
@@ -50,7 +50,7 @@
 #   <!-- slop-allow: repeated-device — a directory page; every card is the same object -->
 #
 # repeated-signature is decided across the SET, so an annotation in ANY ONE member
-# screen silences it. That is § 6's "anywhere in the file" extended one step to
+# screen silences it. That is Section 6's "anywhere in the file" extended one step to
 # "anywhere in the set" — the smallest true generalisation, and the honest cost is
 # that the silence is invisible to someone reading the other screens.
 #
@@ -416,7 +416,7 @@ fi
 printf '%s\n' "$DETECTOR_OUT" > "$TMP_HITS"
 
 # ── The escape hatch, file-scoped for both clauses ─────────────────────────────
-# A rendered finding has no line, so neither clause takes a line annotation. § 6's
+# A rendered finding has no line, so neither clause takes a line annotation. Section 6's
 # ratio rule already says "anywhere in the file, naming the clause"; repeated-signature
 # extends that one step to "anywhere in the set", because the finding has no single
 # file to annotate in the first place.
@@ -495,7 +495,7 @@ else
   log "  A repeated device is monotony on any direction, and sometimes it is correct:"
   log "  a directory or taxonomy page repeats one card because every entry IS one object."
   log "  Answer each warning, or annotate it naming the clause and the reason."
-  log "  The vocabulary that replaces it comes from $DOCTRINE § 3 and the surface"
+  log "  The vocabulary that replaces it comes from $DOCTRINE Section 3 and the surface"
   log "  sub-document, never from this script."
 fi
 log ""

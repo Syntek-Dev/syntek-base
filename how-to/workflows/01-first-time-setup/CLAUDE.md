@@ -22,7 +22,7 @@ frontend (3000).
   concept notes accurate against the current Compose stack.
 - **Definition of done:** a newcomer following `STEPS.md` reaches a running dev stack;
   `CHECKLIST.md` passes; British English.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

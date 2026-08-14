@@ -172,7 +172,7 @@ to be idempotent, it is only hoped to be.
 
 ## The error taxonomy on this surface
 
-The three classes ([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) § _The error taxonomy_) hold here
+The three classes ([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) Section _The error taxonomy_) hold here
 too, but a queue has no status code and nobody reading it — so they are carried by **what
 happens next**:
 

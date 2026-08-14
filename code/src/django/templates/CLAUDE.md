@@ -31,8 +31,8 @@ template Django resolves without an application asking it to.
   comment; read it before editing.
 - **The identifier reaches the page through `{% request_id %}`, never a context processor.**
   A context processor cannot run without a `RequestContext`, and the 500 page has none.
-- **Copy here is a placeholder until first-time setup.** `how-to/src/BRAND-VOICE.md` § 2 —
-  use the voice, do not invent it. Rewriting the placeholder against § 3 is a setup step, not
+- **Copy here is a placeholder until first-time setup.** `how-to/src/BRAND-VOICE.md` Section 2 —
+  use the voice, do not invent it. Rewriting the placeholder against Section 3 is a setup step, not
   a licence to improvise a tone mid-story.
 - **Never add `503.html` here.** Django defines no handler for it; the page that matters is
   served by the edge when this process is not answering

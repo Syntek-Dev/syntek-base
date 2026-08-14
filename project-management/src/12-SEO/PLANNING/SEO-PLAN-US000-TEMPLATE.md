@@ -47,7 +47,7 @@ it against the running build. Replace the `[EXAMPLE]` planned value on every row
 _Keep every dimension row — set a concrete planned value for each. Any dimension that
 genuinely does not apply to this page is marked `N/A — {reason}`, not deleted. Where the
 story declares SEO intent but leaves the target unspecified, raise it as an `[OPEN]` gap in
-§3 rather than guessing._
+Section 3 rather than guessing._
 
 ## 2. Robots & sitemap handling
 

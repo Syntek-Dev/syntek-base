@@ -30,7 +30,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 > **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the trust boundaries, authentication points,
 and data touchpoints before reviewing the user flows and wireframes.
 

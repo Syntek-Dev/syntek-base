@@ -33,7 +33,7 @@ python3 .claude/plugins/pm-tool.py detect    # the existing config, env vars and
 disk, and asking for a value that is already configured wastes the round.
 
 Then open a grilling pass — the round shape and the question format belong to the `grilling`
-skill (`.claude/CLAUDE.md` § 10). What must be settled:
+skill (`.claude/CLAUDE.md` Section 10). What must be settled:
 
 | Needed                | Because it decides     | Default here                  |
 | --------------------- | ---------------------- | ----------------------------- |

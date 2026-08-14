@@ -58,7 +58,7 @@ against: backend/database · review/code-reviewer/qa-tester · planner/domain-mo
 syntax/review/pr. Sharpen against the neighbour, never against the blank page. `grill-me` /
 `grill-with-docs` was on that list and came off it on 13/08/2026 — the two now discriminate on
 the **artefact**, which is the axis that decides them. Their _shape_ was never the defect
-(`FORK-DECISION.md` § _Before the split_ settles that); the wording was.
+(`FORK-DECISION.md` Section _Before the split_ settles that); the wording was.
 
 **Sharpening is not free, and this project has priced it and chosen to pay.** Measured
 13/08/2026 across the agents→skills conversion: **every one of the 31 entries rewritten grew —
@@ -95,7 +95,7 @@ exactly as designed — the two own different remits, and only one of them is be
 it carries a consequence no wording fix reaches: **a reference skill is not reached by
 description match at all.** It arrives only because something named it in a `skills:`
 list — the routing frontmatter on the governing `docs/` or `workflows/` file
-(`.claude/CLAUDE.md` § 2.5), or the task entry that loads it.
+(`.claude/CLAUDE.md` Section 2.5), or the task entry that loads it.
 
 **So `skills:` is wiring, not documentation — and an omission fails silently.** Leave the
 reference skill out of the list on the task side and the run still completes: no gate fires, no

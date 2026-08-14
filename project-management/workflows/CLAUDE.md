@@ -25,7 +25,7 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
   and schema work. Do not batch a gate across the whole backlog.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
   opens with a grilling pass; the owning skill loads `.claude/skills/grill-with-docs` and
-  interviews <%DEVELOPER_NAME%> before producing the artefact (`.claude/CLAUDE.md` §10).
+  interviews <%DEVELOPER_NAME%> before producing the artefact (`.claude/CLAUDE.md` Section 10).
   Only trivial/mechanical steps skip it.
 - **Model:** Fable to author a design/spec procedure (01–10, 12–16); Opus for SEO (11),
   the code procedures (18–20), documentation (21), and PR/release (22–23); Opus to fix a
@@ -36,7 +36,7 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
 - **Definition of done:** the workflow's checklist is fully ticked, the artefact
   landed in the correct numbered `src/` folder, and the next workflow's prerequisites
   are met.
-- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

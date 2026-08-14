@@ -75,7 +75,7 @@ process is built around.
 **Using a different LLM provider?** Everything except the model routing is provider-agnostic — the
 documentation system, workflows, gates and directory conventions work with any coding agent. Expect
 to make one pass over `.claude/` to swap the model names and aliases for your provider's
-equivalents: `.claude/CLAUDE.md` §4, every skill's `model:` frontmatter in `.claude/skills/`, and
+equivalents: `.claude/CLAUDE.md` Section 4, every skill's `model:` frontmatter in `.claude/skills/`, and
 the `model:` lines in `**/docs/*.md` and `**/workflows/**/*.md` routing frontmatter.
 
 ---
@@ -129,7 +129,7 @@ go and check the primary sources yourself rather than taking this template's wor
 and because these influences carry into **every project generated from it**, not just this repo.
 
 **These tables are kept current by a standing rule, not by periodic tidying.** `.claude/CLAUDE.md`
-§ 6 binds every skill: doctrine derived from an outside source is credited in the same change as
+Section 6 binds every skill: doctrine derived from an outside source is credited in the same change as
 the rule it credits, and the **licence column below is consulted before deriving, not after** —
 because use, adapt and redistribute are three different permissions, and a share-alike source
 would propagate its obligation into every generated project.

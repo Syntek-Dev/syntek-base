@@ -1,7 +1,7 @@
 # code/docs/visual-design
 
 Sub-documents for the visual-design guide. The **cross-surface core** — the mandate, the project's
-named direction and its six axes, and the ban list (§4.1 universal, §4.2 direction deviations) —
+named direction and its six axes, and the ban list (Section 4.1 universal, Section 4.2 direction deviations) —
 stays in the parent guide. These files hold only each surface's own expression of it: the signature
 made concrete, the component vocabulary, and — where the surface has one — the pre-ship checklist
 (`WEB.md`).

@@ -60,7 +60,7 @@ you found. Recommend a severity against the project's incident-response policy a
 
 Open the running notes immediately, in the conversation, as a timestamped list. Do not create a
 file yet: an entry started mid-outage is invariably abandoned half-finished, and the register is
-written at stand-down (`INCIDENT-PRACTICE.md` § 6).
+written at stand-down (`INCIDENT-PRACTICE.md` Section 6).
 
 **Done when:** a severity is set by <%DEVELOPER_NAME%>, and the notes have a first line carrying a
 real timestamp and a one-line statement of the symptom.
@@ -95,7 +95,7 @@ has been made by Claude.
 ### 4. Produce the handover the moment it is asked for
 
 <%DEVELOPER_NAME%> is stopping and it is not fixed. Assemble the seven fields from
-`INCIDENT-PRACTICE.md` § 3 — state now, severity and declaration time, what is confirmed, **what
+`INCIDENT-PRACTICE.md` Section 3 — state now, severity and declaration time, what is confirmed, **what
 is ruled out and how**, what is still running, what is being said publicly, and the next thing you
 would try. Attach the running notes whole; never summarise them.
 
@@ -106,7 +106,7 @@ notes are attached in full.
 
 ### 5. Check the stand-down conditions
 
-When <%DEVELOPER_NAME%> proposes standing down, check all three from `INCIDENT-PRACTICE.md` § 4 and
+When <%DEVELOPER_NAME%> proposes standing down, check all three from `INCIDENT-PRACTICE.md` Section 4 and
 say plainly which hold: symptom verified gone **from outside**, manual changes reverted or
 recorded, status page current. Say so when one does not — a premature stand-down is a second
 incident with a worse start.
@@ -121,7 +121,7 @@ If the resolution is a workaround, state that the outcome is `Workaround`, the s
 
 Now, while the notes are fresh — not tomorrow.
 
-1. **Draft the postmortem** to the six sections in `INCIDENT-PRACTICE.md` § 5. The root cause
+1. **Draft the postmortem** to the six sections in `INCIDENT-PRACTICE.md` Section 5. The root cause
    answers **two** questions: what broke, and why it reached a live environment uncaught.
 2. **Create the register entry** — copy
    `project-management/src/22-INCIDENTS/INCIDENT-000-TEMPLATE.md` to

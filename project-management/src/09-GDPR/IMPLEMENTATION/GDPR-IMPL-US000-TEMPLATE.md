@@ -46,7 +46,7 @@ Confirm each applicable right works against the shipped data. Point at the code.
 
 ## 5. Plan gaps closed
 
-Each open item from the plan's §7, closed **only with evidence** (never mark done
+Each open item from the plan's Section 7, closed **only with evidence** (never mark done
 without pointing at the shipped code that does it).
 
 | Plan gap                         | Status   | Evidence                        |

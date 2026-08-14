@@ -6,22 +6,22 @@
 #              Two tiers in one run, the way cloc.sh warns at 750 and fails at 800:
 #                [gate: fail]  an unambiguous match. Exit 1, blocks
 #                [gate: warn]  a threshold or a ratio. Reported, exit stays 0
-#              Tier scheme and its rationale: VISUAL-DESIGN.md § 6.
+#              Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
 #
 #              Clauses owned here (fail):
-#                motion-literal-duration  § 5, a literal duration in transition/
+#                motion-literal-duration  Section 5, a literal duration in transition/
 #                                         animation; durations are motion tokens
-#                motion-ease-in           § 5, `ease-in` is prohibited on UI
-#                motion-property          § 5, only transform and opacity animate
+#                motion-ease-in           Section 5, `ease-in` is prohibited on UI
+#                motion-property          Section 5, only transform and opacity animate
 #              Clauses owned here (warn):
-#                uniform-radius-shadow    § 4.1, rounded-everything plus a soft
+#                uniform-radius-shadow    Section 4.1, rounded-everything plus a soft
 #                                         drop shadow applied as a blanket
-#                undifferentiated-buttons § 4.1, no primary/secondary hierarchy
-#                entry-scale              § 5, entry scales start at 0.9–0.97
-#                press-scale              § 5, press feedback is scale(0.97)
-#                stagger                  § 5, sibling stagger is 30–80ms
-#                centred-everything       § 4.2, reads the ALIGNMENT axis
-#                flat-background          § 4.2, reads the RHYTHM axis
+#                undifferentiated-buttons Section 4.1, no primary/secondary hierarchy
+#                entry-scale              Section 5, entry scales start at 0.9–0.97
+#                press-scale              Section 5, press feedback is scale(0.97)
+#                stagger                  Section 5, sibling stagger is 30–80ms
+#                centred-everything       Section 4.2, reads the ALIGNMENT axis
+#                flat-background          Section 4.2, reads the RHYTHM axis
 #
 #              NOT owned here, deliberately: the inline-gradient tell is
 #              css-gradients.sh's; em dashes are copy-emdash.sh's; the markup
@@ -41,8 +41,8 @@
 # the report: a clean, zero-finding one naming the absent surface as the reason, so a
 # job collecting the artefact always finds the file it was told to collect.
 #
-# THE § 4.2 LEG READS § 3. The direction deviations have no fixed verdict; they read
-# the commitment table in VISUAL-DESIGN.md § 3. While any axis is still TBD the leg
+# THE Section 4.2 LEG READS Section 3. The direction deviations have no fixed verdict; they read
+# the commitment table in VISUAL-DESIGN.md Section 3. While any axis is still TBD the leg
 # SKIPS with a warning naming first-time-setup Step 9, because an audit that assumed
 # `editorial` would fail every correct page on a project that chose otherwise.
 #
@@ -76,7 +76,7 @@ REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 # The last two scopes are design-time, not code-time. Wireframes are styled HTML+CSS,
 # so they read as the same input language and belong to this leg rather than a fourth
 # script. Stage 1 (USER-STORY-IDEAS/) is deliberately absent: it is one screen per story
-# and frozen once workflow 17 runs, while §4.1's repetition tell and §4.2's rhythm clause
+# and frozen once workflow 17 runs, while Section 4.1's repetition tell and Section 4.2's rhythm clause
 # are properties of a page SET. The consolidated folder is the one place the whole set
 # exists at once, before any code.
 #
@@ -145,7 +145,7 @@ Two tiers in one run:
   [gate: warn]  uniform-radius-shadow · undifferentiated-buttons · entry-scale
                 press-scale · stagger · centred-everything · flat-background
 
-The two § 4.2 clauses read the direction table in VISUAL-DESIGN.md § 3 and skip
+The two Section 4.2 clauses read the direction table in VISUAL-DESIGN.md Section 3 and skip
 while any axis is still TBD. Settle it at first-time setup, Step 9.
 
 Annotate a genuine exception on the line or the line above, with a reason:
@@ -405,13 +405,13 @@ while IFS= read -r -d '' f; do
           }
         }
 
-        # ── [gate: fail] motion-literal-duration (§ 5) ────────────────────────
+        # ── [gate: fail] motion-literal-duration (Section 5) ────────────────────────
         if (isdecl && (prop == "transition" || prop == "transition-duration" \
                        || prop == "animation" || prop == "animation-duration")) {
           if (val ~ TIME) emit("fail", "motion-literal-duration", i, txt)
         }
 
-        # ── [gate: fail] motion-ease-in (§ 5) ─────────────────────────────────
+        # ── [gate: fail] motion-ease-in (Section 5) ─────────────────────────────────
         # ease-in-out is excluded by the trailing class, which forbids "-".
         if (isdecl && (prop == "transition" || prop == "transition-timing-function" \
                        || prop == "animation" || prop == "animation-timing-function")) {
@@ -419,7 +419,7 @@ while IFS= read -r -d '' f; do
             emit("fail", "motion-ease-in", i, txt)
         }
 
-        # ── [gate: fail] motion-property (§ 5) ────────────────────────────────
+        # ── [gate: fail] motion-property (Section 5) ────────────────────────────────
         if (isdecl && prop == "transition-property") {
           n = split(val, segs, ",")
           for (k = 1; k <= n; k++) {
@@ -447,7 +447,7 @@ while IFS= read -r -d '' f; do
           }
         }
 
-        # ── [gate: warn] entry-scale / press-scale (§ 5) ──────────────────────
+        # ── [gate: warn] entry-scale / press-scale (Section 5) ──────────────────────
         v3 = m
         while (match(v3, /scale[ \t]*\([ \t]*[0-9]+(\.[0-9]+)?/)) {
           num = substr(v3, RSTART, RLENGTH)
@@ -460,7 +460,7 @@ while IFS= read -r -d '' f; do
           }
         }
 
-        # ── [gate: warn] stagger (§ 5) ────────────────────────────────────────
+        # ── [gate: warn] stagger (Section 5) ────────────────────────────────────────
         # Only a per-sibling delay counts: a calc() over an index custom property,
         # or an nth-child selector. A one-off decorative delay is not stagger.
         if (isdecl && (prop == "transition-delay" || prop == "animation-delay")) {
@@ -491,7 +491,7 @@ done < "$TMP_FILES"
 
 # ── Pass 2: structural metrics ────────────────────────────────────────────────
 # Per-file rule-block accounting for the uniformity ratio, plus the scope-wide
-# tallies the § 4.1 button clause and the two § 4.2 clauses read.
+# tallies the Section 4.1 button clause and the two Section 4.2 clauses read.
 : > "$TMP_METRICS"
 while IFS= read -r -d '' f; do
   awk -v FILE="$f" '
@@ -583,14 +583,14 @@ if [[ "$BTN_TOTAL" -ge "$MIN_BUTTON_RULES" && "$BTN_VARIANTS" -eq 0 ]]; then
     "(scope)" "$BTN_TOTAL" >> "$TMP_HITS"
 fi
 
-# ── The § 4.2 leg reads the direction table in VISUAL-DESIGN.md § 3 ───────────
+# ── The Section 4.2 leg reads the direction table in VISUAL-DESIGN.md Section 3 ───────────
 DIRECTION_NOTE=""
 ALIGNMENT=""
 RHYTHM=""
 AXES_READY=false
 
 if [[ ! -f "$DOCTRINE" ]]; then
-  DIRECTION_NOTE="§ 4.2 skipped: $DOCTRINE not found, so no direction can be read."
+  DIRECTION_NOTE="Section 4.2 skipped: $DOCTRINE not found, so no direction can be read."
 else
   AXIS_ROWS=$(awk '
     /^### This project.s direction/ { inblk = 1; next }
@@ -606,9 +606,9 @@ else
     }' "$DOCTRINE")
 
   if [[ -z "$AXIS_ROWS" ]]; then
-    DIRECTION_NOTE="§ 4.2 skipped: no direction table found under '### This project's direction'."
+    DIRECTION_NOTE="Section 4.2 skipped: no direction table found under '### This project's direction'."
   elif printf '%s' "$AXIS_ROWS" | grep -q 'TBD'; then
-    DIRECTION_NOTE="§ 4.2 skipped: the direction is still TBD. Settle it at first-time setup, Step 9 (how-to/workflows/01-first-time-setup/), then re-run."
+    DIRECTION_NOTE="Section 4.2 skipped: the direction is still TBD. Settle it at first-time setup, Step 9 (how-to/workflows/01-first-time-setup/), then re-run."
   else
     normalise() {
       printf '%s' "$1" | tr -d '`_*' | tr '[:upper:]' '[:lower:]' | awk '{ print $1 }'
@@ -616,7 +616,7 @@ else
     ALIGNMENT=$(normalise "$(printf '%s\n' "$AXIS_ROWS" | awk -F'\t' '$1 == "alignment" { print $2 }')")
     RHYTHM=$(normalise "$(printf '%s\n' "$AXIS_ROWS" | awk -F'\t' '$1 == "rhythm" { print $2 }')")
     AXES_READY=true
-    DIRECTION_NOTE="§ 4.2 live: alignment '$ALIGNMENT', rhythm '$RHYTHM'."
+    DIRECTION_NOTE="Section 4.2 live: alignment '$ALIGNMENT', rhythm '$RHYTHM'."
   fi
 fi
 
@@ -714,7 +714,7 @@ if [[ "$FAIL_COUNT" -eq 0 ]]; then
   log ""
   exit 0
 else
-  bold "✗ $FAIL_COUNT blocking clause match(es). See code/docs/VISUAL-DESIGN.md § 5."
+  bold "✗ $FAIL_COUNT blocking clause match(es). See code/docs/VISUAL-DESIGN.md Section 5."
   log "  Durations and timing functions come from the --motion-* tokens; ease-in is"
   log "  prohibited on UI; only transform and opacity animate."
   log "  A genuine exception may carry a 'slop-allow' comment with a reason."

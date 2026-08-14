@@ -55,11 +55,11 @@ Markdown formatting rules.
 
 ## Hooks and MCP servers
 
-| Surface        | What it does                                                                                                           | Registry                     |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| Hooks          | Eight pre-PR quality gates, plus the two session-continuity hooks that intercept compaction and warn as context fills  | `.claude/hooks/CONTEXT.md`   |
-| MCP servers    | `code-review-graph` (structural context), `context7` (library docs), `mcp-mermaid` (diagrams), `claude-in-chrome` (UI) | `.claude/CLAUDE.md` §3       |
-| Helper scripts | Read-only inspection helpers a skill calls to gather context — they never run dev operations                           | `.claude/plugins/CONTEXT.md` |
+| Surface        | What it does                                                                                                           | Registry                      |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Hooks          | Eight pre-PR quality gates, plus the two session-continuity hooks that intercept compaction and warn as context fills  | `.claude/hooks/CONTEXT.md`    |
+| MCP servers    | `code-review-graph` (structural context), `context7` (library docs), `mcp-mermaid` (diagrams), `claude-in-chrome` (UI) | `.claude/CLAUDE.md` Section 3 |
+| Helper scripts | Read-only inspection helpers a skill calls to gather context — they never run dev operations                           | `.claude/plugins/CONTEXT.md`  |
 
 ---
 
@@ -117,14 +117,14 @@ test client (`code/docs/testing/FRONTEND-TESTING.md`); reach for the browser onl
 needs layout, CSS resolution, or JavaScript.
 
 For interactive UI inspection from Claude Code, the `claude-in-chrome` MCP server drives a real
-Chrome session (load its schema via ToolSearch — see `.claude/CLAUDE.md` §3).
+Chrome session (load its schema via ToolSearch — see `.claude/CLAUDE.md` Section 3).
 
 ---
 
 ## Getting Help
 
 - **Skills roster:** `.claude/skills/CONTEXT.md`.
-- **Operating model & routing:** `.claude/CLAUDE.md` §2–§3.
+- **Operating model & routing:** `.claude/CLAUDE.md` Section 2–Section 3.
 - **Command reference:** `how-to/docs/CLI-TOOLING.md`.
 
 _Part of the `how-to/docs/` documentation family. See [`../TOOLING-GUIDE.md`](../TOOLING-GUIDE.md) for the full index._

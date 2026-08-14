@@ -81,7 +81,7 @@ Desktop threshold: W ≥ 1024 → `Navbar/Desktop`; W < 1024 → `Navbar/Mobile`
 
 ### Governing documents
 
-- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA on all interactive components (CLAUDE.md §8); must inform design decisions from the start
+- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA on all interactive components (CLAUDE.md Section 8); must inform design decisions from the start
 
 ### Related reading
 

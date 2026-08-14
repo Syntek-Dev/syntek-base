@@ -69,7 +69,7 @@ STATIC_DIR="code/src/django/static"
 SETTINGS_FILE="code/src/django/config/settings/base.py"
 TSCONFIG_FILE="code/src/mobile/tsconfig.json"
 
-# The four flags from code/docs/MOBILE-CODING-PRINCIPLES.md § 1. Each bans a state;
+# The four flags from code/docs/MOBILE-CODING-PRINCIPLES.md Section 1. Each bans a state;
 # `strict` implies none of them and expo/tsconfig.base sets none, so removing one is
 # silent — tsc still exits 0.
 TS_FLAGS=(noUncheckedIndexedAccess exactOptionalPropertyTypes noImplicitReturns noFallthroughCasesInSwitch)

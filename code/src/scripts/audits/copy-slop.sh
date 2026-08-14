@@ -1,31 +1,31 @@
 #!/usr/bin/env bash
 #
 # copy-slop.sh: the PROSE half of the AI-slop audit. Checks the machine-checkable
-#               clauses of how-to/src/BRAND-VOICE.md § 4 — the copy tells that
-#               VISUAL-DESIGN.md § 6 marks `[gate: prose]` and hands to this leg —
-#               at the two tiers § 6 defines:
+#               clauses of how-to/src/BRAND-VOICE.md Section 4 — the copy tells that
+#               VISUAL-DESIGN.md Section 6 marks `[gate: prose]` and hands to this leg —
+#               at the two tiers Section 6 defines:
 #                 [gate: fail]  an unambiguous match. Exit 1, blocks
 #                 [gate: warn]  a threshold, a ratio, or a word that is sometimes
 #                               correct English. Reported, exit stays 0
-#               Tier scheme and its rationale: VISUAL-DESIGN.md § 6.
+#               Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
 #
 # Clauses, and the tier each is checked at:
 #
-#   [gate: fail]  ellipsis-triple-dot     § 4 Punctuation. A dot-dot-dot for drama.
+#   [gate: fail]  ellipsis-triple-dot     Section 4 Punctuation. A dot-dot-dot for drama.
 #                                         Only the ASCII form is flagged: U+2026 (…)
 #                                         is correct typography, and a loading state
 #                                         is the one sanctioned use, so it carries a
 #                                         `slop-allow` note.
-#                 not-just-but            § 4 Sentence patterns. "not just X, but Y" —
+#                 not-just-but            Section 4 Sentence patterns. "not just X, but Y" —
 #                                         the single most recognisable machine cadence
 #                                         in English. Both halves are required, inside
 #                                         one sentence.
-#                 scene-setting-opener    § 4 Sentence patterns. "in today's fast-paced
+#                 scene-setting-opener    Section 4 Sentence patterns. "in today's fast-paced
 #                                         world" and its near neighbours. Start at the
 #                                         point.
-#                 not-about-its-about     § 4 Sentence patterns. "It's not about X.
+#                 not-about-its-about     Section 4 Sentence patterns. "It's not about X.
 #                                         It's about Y." Both halves are required.
-#                 rhetorical-opener       § 4 Sentence patterns. A NAMED phrase list, in
+#                 rhetorical-opener       Section 4 Sentence patterns. A NAMED phrase list, in
 #                                         opener position only. The category "any
 #                                         rhetorical question" stays [judgement], exactly
 #                                         as "any scene-setting opener" does — a question
@@ -33,18 +33,18 @@
 #                                         ("How do I reset my password?"). "Ready to …?"
 #                                         is deliberately absent: it is a legitimate CTA.
 #
-#   [gate: warn]  exclamation-count       § 4 Punctuation. At most one per surface, and
+#   [gate: warn]  exclamation-count       Section 4 Punctuation. At most one per surface, and
 #                                         a file is this script's proxy for a surface.
 #                                         A COUNT, so it warns: the second one may be
 #                                         the genuine celebration.
-#                 superlative             § 4 Vocabulary. The named unearned superlatives.
+#                 superlative             Section 4 Vocabulary. The named unearned superlatives.
 #                                         WARNS, never fails: "a robust seal" is correct
 #                                         English, and only a reader knows whether the
 #                                         claim was earned or merely asserted.
-#                 corporate-verb          § 4 Vocabulary. The named corporate verbs. Warns
+#                 corporate-verb          Section 4 Vocabulary. The named corporate verbs. Warns
 #                                         for the same reason — an account really can be
 #                                         unlocked.
-#                 hedging-stack           § 4 Vocabulary. Two or more hedges inside a
+#                 hedging-stack           Section 4 Vocabulary. Two or more hedges inside a
 #                                         four-word window ("may potentially be able to").
 #                                         The weakest tell of the set — stacked modals are
 #                                         a bad-writing signature more than a machine one,
@@ -55,21 +55,21 @@
 #   - The em dash is copy-emdash.sh's, and stays there. This script never looks at one.
 #   - Bold applied to a whole sentence, though it is a real tell: its input is MARKUP,
 #     so it is template-slop.sh's `bold-whole-sentence` by the input-language split.
-#   - Every [judgement] clause in § 4, because each needs the MEANING of the surrounding
+#   - Every [judgement] clause in Section 4, because each needs the MEANING of the surrounding
 #     copy and no grep has that: the tricolon whose third item is filler, the rhetorical
 #     question as a CATEGORY (only the named phrases above are gated), a heading that
 #     restates the sentence beneath it, and a summary paragraph that repeats what the
 #     reader just read. A clean run here does not mean those were honoured — it means no
 #     script was ever going to be the thing that checked them.
 #
-# SCOPE, AND THE ONE THING THIS MUST NEVER SCAN. BRAND-VOICE.md § 4 governs copy a USER
+# SCOPE, AND THE ONE THING THIS MUST NEVER SCAN. BRAND-VOICE.md Section 4 governs copy a USER
 # READS. It does NOT govern instructional documentation, code comments, commit messages or
 # ADRs, which are engineering prose. Pointing this script at `**/*.md` would fight this
 # repository's own guides and fail on them — so the scan is the same two directories
 # copy-emdash.sh reads, and nothing else:
 #   code/src/django/apps/marketing/pagedata   (*.py  — page copy modules)
 #   code/src/django/apps/marketing/templates  (*.html — marketing templates)
-# The other registers § 4 names (product UI, notifications, support articles) have no home
+# The other registers Section 4 names (product UI, notifications, support articles) have no home
 # in the tree at baseline. When one gets a home, it is added to SCOPES here, not assumed.
 #
 # ONLY RENDERED COPY IS READ, never the code around it. In a `.py` module the scan sees
@@ -77,7 +77,7 @@
 # comment is not copy. In a template it sees text nodes plus a closed set of user-visible
 # attributes (alt, title, placeholder, aria-label, content), never class names, URLs,
 # `{% tags %}`, `{{ variables }}`, `{# comments #}`, or the contents of pre/code/script/
-# style/verbatim. That narrowing is § 6's "scope the scan narrowly" rule: seam-contract.sh
+# style/verbatim. That narrowing is Section 6's "scope the scan narrowly" rule: seam-contract.sh
 # flagged 34 issues on its first draft, 33 of them false.
 #
 # NO-OP WHEN ABSENT. `apps/marketing/` does not exist at template baseline, so the script
@@ -88,7 +88,7 @@
 # ESCAPE HATCH, and what actually scopes it. Put `slop-allow` in a comment on the offending
 # line or the line above, with a reason:
 #
-#   slop-allow: ellipsis-triple-dot — a loading state, the one § 4 exception
+#   slop-allow: ellipsis-triple-dot — a loading state, the one Section 4 exception
 #   slop-allow: superlative, corporate-verb — quoting the client's own product name
 #   slop-allow                                — every clause on this line (blunt; prefer the above)
 #
@@ -101,7 +101,7 @@
 # line to annotate. A warning a writer deliberately earned ("a robust seal") is exactly the
 # case an annotation exists for. What cannot be annotated is `exclamation-count`, which is a
 # per-file count and names no line; that, not the tier, is the real boundary
-# (VISUAL-DESIGN.md § 6).
+# (VISUAL-DESIGN.md Section 6).
 #
 # Usage: copy-slop.sh [--output FORMAT] [--output-file PATH] [--quiet] [--path PATH]
 #                     [--help]
@@ -122,7 +122,7 @@ SCOPES=(
   "code/src/django/apps/marketing/templates:*.html"
 )
 
-# At most one exclamation mark per surface (BRAND-VOICE.md § 4). One file is the proxy.
+# At most one exclamation mark per surface (BRAND-VOICE.md Section 4). One file is the proxy.
 MAX_EXCLAMATIONS=1
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -148,7 +148,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-copy-slop.sh: the prose half of the AI-slop audit (how-to/src/BRAND-VOICE.md § 4)
+copy-slop.sh: the prose half of the AI-slop audit (how-to/src/BRAND-VOICE.md Section 4)
 
 Usage:
   copy-slop.sh                     Scan marketing pagedata (*.py) + templates (*.html)
@@ -170,7 +170,7 @@ Two tiers in one run:
 
 Only rendered copy is read: string literals in *.py, text nodes plus alt/title/
 placeholder/aria-label/content in *.html. Instructional documentation is never
-scanned — BRAND-VOICE.md § 4 governs copy a user reads, not engineering prose.
+scanned — BRAND-VOICE.md Section 4 governs copy a user reads, not engineering prose.
 
 The em dash belongs to copy-emdash.sh; whole-sentence bold to template-slop.sh (its
 input is markup). The [judgement] clauses — filler tricolon, rhetorical questions as a
@@ -632,7 +632,7 @@ while IFS= read -r -d '' f; do
       }
       if (excl > MAXEXCL)
         emit("warn", "exclamation-count", 0,
-             excl " exclamation mark(s) in this surface; at most " MAXEXCL " (BRAND-VOICE.md § 4)")
+             excl " exclamation mark(s) in this surface; at most " MAXEXCL " (BRAND-VOICE.md Section 4)")
     }
   ' "$f" >> "$TMP_HITS" || die "awk failed scanning $f"
 done < "$TMP_FILES"
@@ -678,12 +678,12 @@ if [[ "$FAIL_COUNT" -eq 0 ]]; then
   else
     bold "✓ No blocking clause. $WARN_COUNT warning(s) for a reviewer to judge."
     log "  A superlative or a corporate verb is sometimes the right word; a count is not"
-    log "  a verdict. Read them against BRAND-VOICE.md § 4 and decide."
+    log "  a verdict. Read them against BRAND-VOICE.md Section 4 and decide."
   fi
   log ""
   exit 0
 else
-  bold "✗ $FAIL_COUNT blocking clause match(es). See how-to/src/BRAND-VOICE.md § 4."
+  bold "✗ $FAIL_COUNT blocking clause match(es). See how-to/src/BRAND-VOICE.md Section 4."
   log "  Reword rather than soften: start at the point, drop the cadence, state the fact."
   log "  A genuine exception (a loading state, say) may carry a 'slop-allow' comment"
   log "  with a reason."

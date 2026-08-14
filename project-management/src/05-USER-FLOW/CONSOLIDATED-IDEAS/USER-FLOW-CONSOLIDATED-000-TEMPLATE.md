@@ -95,7 +95,7 @@ Re-export to `../DIAGRAMS/flow-<area>-<screen>.png` on sign-off.
 
 ## Sign-off
 
-- [ ] Every fragment listed in §1 and carried forward or recorded as superseded
+- [ ] Every fragment listed in Section 1 and carried forward or recorded as superseded
 - [ ] Every decision node resolves both outcomes across the whole journey
 - [ ] Seam log complete; every gap resolved or raised as a `US###`
 - [ ] Data touchpoints cross-checked against `../../09-GDPR/`

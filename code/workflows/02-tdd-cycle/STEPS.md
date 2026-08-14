@@ -70,7 +70,7 @@ or implementation details. Use realistic data from the start (factories with `Fa
 hardcoded `"test@test.com"`). Structure with parametrize and markers so the suite is selectively
 runnable as it grows.
 
-**Agree the seams first — grill first** (`.claude/CLAUDE.md` §10): load
+**Agree the seams first — grill first** (`.claude/CLAUDE.md` Section 10): load
 `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> about which seams and
 behaviours to test — the service boundary, Ninja endpoint, or component contract on the story's critical
 path — before writing any test, then confirm that list with <%DEVELOPER_NAME%>. Test those seams, not every
@@ -194,7 +194,7 @@ the story's findings record in `project-management/src/19-FINDINGS/`, the `/GAPS
 the code-review-graph refresh.
 
 **Hard gate:** implementation docs, the touched `CONTEXT.md`/`CLAUDE.md`, and the graph refresh
-must all be complete **before any commit** (`.claude/CLAUDE.md` §6).
+must all be complete **before any commit** (`.claude/CLAUDE.md` Section 6).
 
 ---
 

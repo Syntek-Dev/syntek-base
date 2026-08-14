@@ -107,7 +107,7 @@ frontend upstream to size or route.
 - **Source:** the project's URL-architecture ADR (prefix ownership table),
   `code/docs/URL-STRATEGY.md`; the live routing state is `code/src/docker/nginx/dev.conf`
   locations. Non-negotiable: Django admin is **never** at `/admin/` — it is mounted at
-  the non-obvious `/control/` (`.claude/CLAUDE.md` §6; the URL-architecture ADR).
+  the non-obvious `/control/` (`.claude/CLAUDE.md` Section 6; the URL-architecture ADR).
 - **Current status:** _TBD — reconcile against this project's `dev.conf`._ One Django
   ASGI app process serves every route: Django-templated pages (marketing, `/auth/`,
   `/account/`, `/verify-email/`, the authenticated app, staff), the Django Ninja JSON
@@ -171,7 +171,7 @@ frontend upstream to size or route.
   contract (job `<%ORG_SLUG%>-backend` → `127.0.0.1:8000` `/metrics/`) is stated here.
   **No Prometheus config file ships in this repo** — there is no
   `code/src/docker/prometheus/prometheus.yml`, so the build-side statement of the job is
-  prose, in two places: `HEALTH-CONTRACT.md` § 2 and `code/docs/logging/OBSERVABILITY.md`
+  prose, in two places: `HEALTH-CONTRACT.md` Section 2 and `code/docs/logging/OBSERVABILITY.md`
   (its "Prometheus scrape config" block). **Both spell the job `<%ORG_SLUG%>-web`** where
   this contract says `<%ORG_SLUG%>-backend`; the spellings are unreconciled. `GAPS.md`
   carries no entry for the Gatus or metrics deploy — the obligation is stated below.
@@ -268,7 +268,7 @@ frontend upstream to size or route.
 
 ## 13. Request correlation ID — `X-Request-ID` on every request and response
 
-- **Source:** `code/docs/NEGATIVE-SPACE.md` § _The error taxonomy_ — every response carries
+- **Source:** `code/docs/NEGATIVE-SPACE.md` Section _The error taxonomy_ — every response carries
   `X-Request-ID` and the error-tracker event is tagged with it, so a user reporting "I got an
   error" resolves to one event. App side: `code/src/django/apps/core/middleware.py`
   (`RequestIDMiddleware`, registered third in `MIDDLEWARE`, after the security headers).
@@ -288,7 +288,7 @@ frontend upstream to size or route.
 
 ## 14. The 503 page — the only error page Django cannot serve
 
-- **Source:** `code/docs/NEGATIVE-SPACE.md` § _The error taxonomy_ — an environment error is a
+- **Source:** `code/docs/NEGATIVE-SPACE.md` Section _The error taxonomy_ — an environment error is a
   `503` with `Retry-After` where the wait is known. App side: `code/src/django/templates/500.html`
   covers the programmer class, and **there is deliberately no `503.html` beside it**.
 - **Why this entry exists at all.** Django defines a handler and a template name for 400, 403,

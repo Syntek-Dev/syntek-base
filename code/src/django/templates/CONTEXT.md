@@ -39,11 +39,11 @@ raising it yet and arrives with the first outbound adapter.
 No `base.html`, no `marketing/` directory, and therefore no `#error-region` for the HTMX
 handler to swap into. `code/src/scripts/development/new-django-view.sh` already requires
 `templates/marketing/base.html` and refuses to run without it. The full list, and what each
-item waits on, is `code/docs/FRONTEND-CODING-PRINCIPLES.md` § _What is not built yet_.
+item waits on, is `code/docs/FRONTEND-CODING-PRINCIPLES.md` Section _What is not built yet_.
 
 ## Cross-references
 
 - `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` — why the 500 page has no base and no CSS
-- `code/docs/NEGATIVE-SPACE.md` § The error taxonomy — the three classes and their statuses
+- `code/docs/NEGATIVE-SPACE.md` → The error taxonomy — the three classes and their statuses
 - `code/src/django/apps/core/templatetags/CONTEXT.md` — `{% request_id %}`, the one tag it loads
 - `code/src/django/static/CONTEXT.md` — the static tree, including the HTMX error handler

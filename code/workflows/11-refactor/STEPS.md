@@ -38,7 +38,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Confirm Tests Green
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and interview
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%> about the refactor scope and the behaviour-preserving boundary before
 touching any code.
 

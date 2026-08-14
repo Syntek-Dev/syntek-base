@@ -35,7 +35,7 @@
 #                        The tier is the point, not a label. A key nothing defines is a
 #                        format problem; declining a key the runtime does document is a
 #                        CHOICE, and the reader has to be able to tell which they may argue
-#                        with (how-to/docs/skill-authoring/FRONTMATTER.md § Three claims).
+#                        with (how-to/docs/skill-authoring/FRONTMATTER.md → Three claims).
 #
 #                        Clause 12 is the reason `metadata` is admitted at all. It is the
 #                        spec's own extension point for "additional properties not defined by
@@ -208,7 +208,7 @@ AGENTS_DIR=".claude/agents"
 if [[ -z "$TARGET_PATH" && -d "$AGENTS_DIR" ]]; then
   while IFS= read -r agent_file; do
     [[ -n "$agent_file" ]] || continue
-    printf '%s: [house 13] an agent definition — the tier is retired; author it as a skill at %s/<name>/SKILL.md, reached by description match (how-to/docs/skill-authoring/FORK-DECISION.md § The custom-agent door)\n' \
+    printf '%s: [house 13] an agent definition — the tier is retired; author it as a skill at %s/<name>/SKILL.md, reached by description match (how-to/docs/skill-authoring/FORK-DECISION.md → The custom-agent door)\n' \
       "$agent_file" "$SCOPE_DIR" >> "$TMP_HITS"
   done < <(find "$AGENTS_DIR" -type f -name '*.md' 2>/dev/null | sort)
 fi
@@ -319,7 +319,7 @@ EXT_KEYS=" context agent background model "
 # reported `[spec 6] … and Claude Code documents no such key` — and the second half of that
 # sentence was false in the gate's own output, which is the tier confusion this script's
 # header exists to prevent. Declined on the merits: settings.json already sets effortLevel
-# project-wide, so a per-skill key either restates it or contradicts .claude/CLAUDE.md §4;
+# project-wide, so a per-skill key either restates it or contradicts .claude/CLAUDE.md Section 4;
 # and it answers HOW HARD THE MODEL THINKS, a property of the caller's session, where the
 # four admitted keys answer WHERE THE RUN HAPPENS, a property of the skill.
 DECLINED_EXT_KEYS=" disable-model-invocation effort "
@@ -327,12 +327,12 @@ DECLINED_EXT_KEYS=" disable-model-invocation effort "
 # What a first-party skill may actually author: the two required spec fields, `metadata` for
 # the dependency register clause 12 governs, and the four admitted runtime keys. Everything
 # else is declined by choice — the reasons are in
-# how-to/docs/skill-authoring/FRONTMATTER.md § What is declined, and why.
+# how-to/docs/skill-authoring/FRONTMATTER.md → What is declined, and why.
 HOUSE_KEYS=" name description metadata context agent background model "
 
 # The only fork targets this project admits. The runtime also accepts a custom subagent from
 # .claude/agents/; that door is closed here by choice, with a reopening test recorded in
-# how-to/docs/skill-authoring/FORK-DECISION.md § The custom-agent door. Clause 13 closes the
+# how-to/docs/skill-authoring/FORK-DECISION.md → The custom-agent door. Clause 13 closes the
 # other side of it — this clause refuses the NAME, that one refuses the folder it would live in.
 FORK_AGENTS=" Explore Plan general-purpose "
 
@@ -425,7 +425,7 @@ while IFS= read -r -d '' dir; do
         printf '%s: [spec 6] `%s:` is a Claude Code extension, not an Agent Skills field — a vendored skill is held to the published six\n' \
           "$file" "$key" >> "$TMP_HITS"
       elif [[ "$EXT_KEYS" != *" $key "* ]]; then
-        printf '%s: [house 7] `%s:` is documented by Claude Code and declined here — see how-to/docs/skill-authoring/FRONTMATTER.md § What is declined, and why\n' \
+        printf '%s: [house 7] `%s:` is documented by Claude Code and declined here — see how-to/docs/skill-authoring/FRONTMATTER.md → What is declined, and why\n' \
           "$file" "$key" >> "$TMP_HITS"
       fi
     else

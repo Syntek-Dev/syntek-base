@@ -133,4 +133,4 @@ variables.
 - `code/src/django/apps/design_tokens/CONTEXT.md` — the live app, models, Ninja endpoints, and tasks
 - `code/src/django/components/CONTEXT.md` — the django-components library and its BEM conventions
 - `code/src/scripts/audits/css-tokens.sh` — phantom-token enforcement (the token-first gate)
-- `.claude/CLAUDE.md` §6 — the token-first non-negotiable
+- `.claude/CLAUDE.md` Section 6 — the token-first non-negotiable

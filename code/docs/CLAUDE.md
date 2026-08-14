@@ -30,7 +30,7 @@ Cloudinary SDK docs. Read the relevant guide _before_ touching the code it gover
 - **Definition of done:** every instructional `.md` ≤ 300 code lines; entry-point
   guide is an index, not a monolith; cross-references resolve; British English; the
   `CONTEXT.md` index and any parent `REFERENCES.md` list the same set of files.
-- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 

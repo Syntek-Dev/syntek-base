@@ -24,7 +24,7 @@ conversation, and an analysis run against a guessed question is worse than none)
 ## Open with a grilling pass
 
 Name what must be settled and wait — the round shape and the question format belong to the
-`grilling` skill (`.claude/CLAUDE.md` § 10). What has to be settled here:
+`grilling` skill (`.claude/CLAUDE.md` Section 10). What has to be settled here:
 
 - **The question** — stated precisely enough that a number can answer it.
 - **The data sources**, the **segments**, and the **timeframe and grain**.

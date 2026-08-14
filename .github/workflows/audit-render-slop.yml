@@ -9,7 +9,7 @@
 # download has no business firing on every template change.
 #
 # Path filters are safe because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md § Required status checks and path filters on why
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters on why
 # a path-filtered required check blocks a merge forever.
 #
 # TWO STEPS, and the first is the load-bearing one. `--self-test` renders the fixture

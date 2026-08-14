@@ -13,8 +13,8 @@ All user-facing copy follows the brand voice — `how-to/src/BRAND-VOICE.md`
 (direct, considered, plainly British; substantiate or cut). Load it when writing or reviewing page
 copy or microcopy.
 
-The **visual** language is `code/docs/VISUAL-DESIGN.md` — §3 names this project's **direction** and
-its six axes, §4.1 the universal tells, §4.2 the deviations that read off those axes, §5 the motion
+The **visual** language is `code/docs/VISUAL-DESIGN.md` — Section 3 names this project's **direction** and
+its six axes, Section 4.1 the universal tells, Section 4.2 the deviations that read off those axes, Section 5 the motion
 numbers. Its web
 expression is `code/docs/visual-design/WEB.md` — the signature (under the default `editorial`
 direction: alternating page/sunken bands, left-oriented headings, the 3px hero/CTA accent border,
@@ -147,7 +147,7 @@ is replaced, and the page a user is looking at silently lies about what happened
   reach that page and `{% extends %}` on a request-reading base renders blanks rather than
   failing. The tag reads a `ContextVar`, so it works in every rendering path.
 
-Full text: `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` § _An error the user never sees_,
+Full text: `code/docs/rendering/PITFALLS-AND-EXAMPLES.md` Section _An error the user never sees_,
 over the taxonomy in `code/docs/NEGATIVE-SPACE.md`.
 
 ---

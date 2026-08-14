@@ -19,7 +19,7 @@ them:
 one exemption. A response schema derived from a model still uses ``ninja.ModelSchema`` —
 a request body never does, because the API is a contract, not a mirror of the ORM.
 
-See ``code/docs/api-design/NINJA-CONVENTIONS.md`` § Schema strictness and
+See ``code/docs/api-design/NINJA-CONVENTIONS.md`` Section Schema strictness and
 ``code/docs/NEGATIVE-SPACE.md``.
 """
 

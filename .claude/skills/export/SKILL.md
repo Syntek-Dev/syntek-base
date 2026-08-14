@@ -32,7 +32,7 @@ A fork has no conversation behind it, so five answers must already be in it: the
 the **data scope** (which model, which rows), the **PII columns** and who may see them, the
 **expected volume**, and **who may export at all**. If one is missing, return and say which — an
 export that leaks is worse than an export that is late, and guessing the PII answer is how it
-leaks. The caller settles them with a grilling pass (`.claude/CLAUDE.md` §10).
+leaks. The caller settles them with a grilling pass (`.claude/CLAUDE.md` Section 10).
 
 ## Steps
 

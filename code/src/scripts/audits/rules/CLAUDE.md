@@ -28,13 +28,13 @@ taint, and hardcoded secrets, covering what ruff's `S` ruleset structurally cann
   non-sublicensable and internal-use only; `opengrep-rules` carries a Commons Clause over LGPL.
   Both obligations would propagate into every generated project. Read a published rule as a
   **checklist of concerns** if you must, then author independently from our own guides
-  (`.claude/CLAUDE.md` § 6).
+  (`.claude/CLAUDE.md` Section 6).
 - **Never `--config p/…`.** A registry ruleset fetches exactly the licences above.
 - **Do not duplicate ruff.** If ruff's `S` ruleset already catches it per file, it does not
   belong here — two tools reporting one finding is two places to keep in step.
 - **A rule that produces false positives is a bug in the rule**, not an argument for lowering
   the gate. Narrow what it looks at; never soften what it concludes
-  (`code/docs/VISUAL-DESIGN.md` § 6, and `seam-contract.sh`'s 33-of-34 first draft).
+  (`code/docs/VISUAL-DESIGN.md` Section 6, and `seam-contract.sh`'s 33-of-34 first draft).
 - Every rule file opens with a comment naming the guide it derives from.
 
 ## Output & naming

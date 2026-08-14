@@ -4,7 +4,7 @@
 # markup, prose and Slint would fire on every change to any of them.
 #
 # Path filters are safe here because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md § Required status checks and path filters on why a
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters on why a
 # path-filtered required check blocks a merge forever.
 #
 # The script reports two tiers and only [gate: fail] changes the exit code, so a green

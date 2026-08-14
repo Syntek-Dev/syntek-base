@@ -43,7 +43,7 @@ def get_orders(status: str | None = None) -> list[dict]:
 The same applies to any argument that _is_ an identity in disguise: `account_slug`,
 `organisation_id`, `on_behalf_of`, `tenant`. A user-supplied reference to a **record**
 (`reference="ORD-1234"`) is fine — provided ownership is verified against the token's user
-before use, which is the standing no-IDOR rule (`.claude/CLAUDE.md` §6).
+before use, which is the standing no-IDOR rule (`.claude/CLAUDE.md` Section 6).
 
 ## The verifier
 

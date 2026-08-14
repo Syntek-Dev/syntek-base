@@ -44,7 +44,7 @@ planner [feature name and scope]
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
 
-**Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and
+**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
 permissions, and edge cases before producing the plan.
 
@@ -229,7 +229,7 @@ It covers, in order:
    code-review-graph refresh alongside it
 
 **Hard gate:** implementation docs, the touched `CONTEXT.md`/`CLAUDE.md`, and the graph refresh
-must all be complete **before any commit** (`.claude/CLAUDE.md` §6).
+must all be complete **before any commit** (`.claude/CLAUDE.md` Section 6).
 
 **Stays in this layer:** if the story added or changed the Django Ninja API surface, the Bruno
 tests are a code artefact, not a PM record — one `.bru` file per endpoint plus error scenarios,

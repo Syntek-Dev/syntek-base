@@ -177,7 +177,7 @@ Python-specific rules are critical — regressions here cause data integrity inc
 
 > **`assert` is banned outside tests — always `raise`.** The rule, the three reasons, and the shape
 > of the guard clause that replaces it are owned by [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md)
-> § _The guard clause_. Enforced by ruff `S101`; a `# noqa: S101` is a finding, not a workaround.
+> Section _The guard clause_. Enforced by ruff `S101`; a `# noqa: S101` is a finding, not a workaround.
 
 ### `except` clause syntax
 

@@ -46,7 +46,7 @@ that section entirely; nothing else in this workflow changes.
 
 ### Governing documents
 
-- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA is non-negotiable on all interactive components (CLAUDE.md §8)
+- `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA is non-negotiable on all interactive components (CLAUDE.md Section 8)
 - `code/docs/testing/COVERAGE.md` — the single 75% line-and-branch floor blocks PR (frontend tests are pytest tests)
 
 ### Related reading

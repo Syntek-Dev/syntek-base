@@ -22,10 +22,10 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | All steps | **Internal — Guides** → code/docs/RESPONSIVE-DESIGN.md (breakpoints and orientation data) |
 
 **The visual direction is already settled — read it before Step 0.** `code/docs/VISUAL-DESIGN.md`
-§ 3 names this project's direction and its setting on each of the six axes (alignment, rhythm,
+Section 3 names this project's direction and its setting on each of the six axes (alignment, rhythm,
 contrast, ornament, density, motion). Lay out within it. **Do not re-open it as free text here** —
-a wireframe is where an axis is most easily contradicted by accident, and § 4.2's ban list reads
-off that table. If the layout work genuinely disproves an axis setting, change it in § 3 — that is
+a wireframe is where an axis is most easily contradicted by accident, and Section 4.2's ban list reads
+off that table. If the layout work genuinely disproves an axis setting, change it in Section 3 — that is
 the canonical home — and say so. If any axis still reads `TBD`, stop:
 `how-to/workflows/01-first-time-setup/` Step 9 has not been run.
 
@@ -38,7 +38,7 @@ the canonical home — and say so. If any axis still reads `TBD`, stop:
 > **Model:** fable
 
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
-(`.claude/CLAUDE.md` §10).
+(`.claude/CLAUDE.md` Section 10).
 
 Ask about:
 

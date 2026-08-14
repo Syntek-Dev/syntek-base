@@ -79,7 +79,7 @@ A pairing that fails AA is **changed here**, not annotated.
 
 ## Sign-off
 
-- [ ] Every stage-1 record listed in §1 and every ask given a verdict
+- [ ] Every stage-1 record listed in Section 1 and every ask given a verdict
 - [ ] Rejections carry reasons
 - [ ] Contrast verified; no failing pairing remains
 - [ ] Generator re-run and `--check` passing

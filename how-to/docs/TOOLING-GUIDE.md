@@ -12,7 +12,7 @@ model: opus
 The project carries its own skills under `.claude/skills/`. The `<%ORG_SLUG%>-dev-suite`
 marketplace plugin is **disabled** (`.claude/settings.json` → `enabledPlugins`) and its contents
 were internalised, so every contributor gets the tooling without installing a plugin. The
-authoritative operating model is `.claude/CLAUDE.md` §2–§3.
+authoritative operating model is `.claude/CLAUDE.md` Section 2–Section 3.
 
 There is **one** category — a **skill** — and one split underneath it, which decides where the
 work runs:

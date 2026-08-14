@@ -84,7 +84,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — i
 
 `using="admin_db"` routes queries through the BYPASSRLS PostgreSQL role, bypassing all RLS policies.
 Its authorised call sites, and the pre-commit hook that enforces them, are owned by
-[`AUTH-AND-AUTHZ.md`](AUTH-AND-AUTHZ.md) § _admin_db — strict usage restriction_.
+[`AUTH-AND-AUTHZ.md`](AUTH-AND-AUTHZ.md) Section _admin_db — strict usage restriction_.
 
 **Never restate that list here.** A second copy drifts from the one it mirrors and then rejects
 correct code: this section previously carried its own hook excluding only the two `apps/users`
