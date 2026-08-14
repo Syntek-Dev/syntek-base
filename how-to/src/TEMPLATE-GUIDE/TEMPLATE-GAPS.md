@@ -53,8 +53,15 @@ closed as _accepted_ rather than _fixed_.
 `uv.lock` is absent **by design**: it would pin the root project under the literal project-slug
 token, so Copier generates it at generation time. Every Dockerfile builds with
 `COPY pyproject.toml uv.lock ./`, so the Django image cannot build here at all. `test.yml`,
-`test-api.yml` and `test-e2e.yml` guard at **step** level and report success with an explanatory
-log line.
+`test-api.yml`, `test-e2e.yml` and `claude.yml`'s `[7/8] Tests` guard at **step** level and
+report success with an explanatory log line.
+
+`[7/8] Tests` was the exception until 14/08/2026, and the reason is worth keeping: it also
+declared GitHub **service containers**, which initialise _before_ the first step. A step-level
+guard cannot gate one, so the job died at `Initialize containers` on every run from 03/08/2026
+while its guard sat unreachable below. It now drives `docker-compose.test.yml` like its
+siblings. **The rule that leaves: a job carrying a `services:` block is not covered by the
+lockfile guard, whatever its steps say.**
 
 **The rule this leaves:** treat a green `pytest + coverage` in this repository as **"not
 applicable"**, never as "passing". The suites are exercised for the first time in a generated
