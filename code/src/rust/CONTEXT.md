@@ -2,7 +2,7 @@
 
 The **Rust workspace** for <%PROJECT_NAME%>. Present only when the project was generated with
 the Rust surface (`INCLUDE_RUST`); a project without it has no such directory, and a handful of
-`_exclude` entries remove the tree, its scripts, its guides, its workflow, and its agent+skill
+`_exclude` entries remove the tree, its scripts, its guides, its workflow, and its skill
 pair together.
 
 **This tree is for authoring, not consuming.** A project that merely depends on a prebuilt PyO3

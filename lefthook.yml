@@ -20,17 +20,33 @@ pre-commit:
         - "project-management/export/**"
       run: pnpm exec prettier --check {staged_files}
 
+    # `uvx --from` rather than `uv run`, for the same reason as .github/workflows/
+    # syntax-python.yml: `uv run` resolves the project first, and in syntek-base
+    # pyproject.toml's `name` is still an unrendered token that uv rejects while
+    # PARSING. These two legs were therefore dead in this repository — silently, because
+    # they only fire when a .py file is staged, which is rare here. `uvx` installs into a
+    # throwaway environment and reads no manifest, so ruff runs on the template and on a
+    # generated project alike. The constraint is the one pyproject.toml declares.
     ruff-lint:
       glob: "*.py"
-      run: uv run ruff check --force-exclude {staged_files}
+      run: uvx --from "$(grep -oE '\"ruff[^\"]*\"' pyproject.toml | head -1 | tr -d '\"')" ruff check --force-exclude {staged_files}
 
     ruff-format:
       glob: "*.py"
-      run: uv run ruff format --force-exclude --check {staged_files}
+      run: uvx --from "$(grep -oE '\"ruff[^\"]*\"' pyproject.toml | head -1 | tr -d '\"')" ruff format --force-exclude --check {staged_files}
 
+    # basedpyright keeps `uv run`: unlike ruff it needs the resolved dependency set, and
+    # with no uv.lock every import would be unresolved — a meaningless pass, not a weaker
+    # one. Guarded on the lockfile so it stays a real gate in a generated project and a
+    # stated skip here, matching the workflow of the same name.
     basedpyright:
       glob: "*.py"
-      run: uv run basedpyright
+      run: |
+        if [ -f uv.lock ]; then
+          uv run basedpyright
+        else
+          echo "No uv.lock — base template, not a generated project. Skipping basedpyright."
+        fi
 
     markdownlint:
       glob: "*.md"

@@ -13,7 +13,7 @@ CSF 2.0 targets over a STRIDE base before any code is written.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/` via the
-  `security` agent (Fable), synthesising the story's STRIDE model in
+  `security` skill (Fable), synthesising the story's STRIDE model in
   `../../THREAT-MODEL/PLANNING/`. Read a story's baseline before implementing it.
 - **Model:** Fable — the posture mapping and severity judgement are substantive; Opus
   only for a date-header bump or a rename.

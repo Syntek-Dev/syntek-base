@@ -1,7 +1,6 @@
 ---
 workflow: 09-write-operator-guide
 phase: document
-agent: operator-docs
 skills: [runbook, global-workflow]
 model: opus
 ---

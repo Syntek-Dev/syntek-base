@@ -1,8 +1,7 @@
 ---
 workflow: 02-story-creation
 phase: design
-agent: user-story
-skills: [global-workflow]
+skills: [story, global-workflow]
 model: fable
 ---
 

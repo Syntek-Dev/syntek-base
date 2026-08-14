@@ -120,10 +120,9 @@ incident tracker, never in git. The practice is `how-to/docs/INCIDENT-PRACTICE.m
 .claude/
 ├── CLAUDE.md    ← the authoritative operating manual — read first, always
 ├── MEMORY.md    ← project memory: feedback, patterns, project state
-├── agents/      ← agent definitions (roster: agents/CONTEXT.md)
 ├── skills/      ← skills, loaded on demand (skills/CONTEXT.md)
 ├── hooks/       ← pre-PR quality gates and the pre-compact handoff interceptor
-└── plugins/     ← 6 read-only inspection helpers agents call for context
+└── plugins/     ← 6 read-only inspection helpers a skill calls for context
 ```
 
 Covered properly in `08-CLAUDE-CODE.md`.
@@ -160,5 +159,5 @@ Or ask Claude — the structure exists so it can answer accurately.
 
 ## Next
 
-- The agent and skill setup → `08-CLAUDE-CODE.md`
+- The skill setup → `08-CLAUDE-CODE.md`
 - Build something → `10-FIRST-FEATURE.md`

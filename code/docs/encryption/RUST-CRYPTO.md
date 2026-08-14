@@ -1,6 +1,5 @@
 ---
 type: guide
-agent: rust
 skills: [stack-rust, stack-django]
 model: opus
 ---

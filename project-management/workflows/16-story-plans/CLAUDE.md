@@ -14,7 +14,7 @@ reference a developer codes from.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` agent (Fable). The hard
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable). The hard
   gates — `src/16-STORY-PLANS/CLAUDE.md` and the canonical
   `STORY-PLAN-US000-TEMPLATE.md` — must be read before Step 1. Inputs: the story's sprint
   plan (`src/15-SPRINT-PLANS/`), any ADRs it rests on (`src/14-DECISIONS/`), and every
@@ -37,7 +37,7 @@ reference a developer codes from.
   dependency-order errors. The plan is then what a developer codes from, and it unlocks
   `workflows/18-backend-code/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (see
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
   `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails

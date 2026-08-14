@@ -26,7 +26,7 @@ migration strategy — **before** any Django model or migration is written.
   `code/workflows/03-database-migration/` — never write the migration here.
 - **Definition of done:** design aligns with `SCHEMA-DESIGN.md`, PII fields are flagged
   and classified, a migration strategy exists for affected data, checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

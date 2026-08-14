@@ -19,6 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The self-test runs FIRST, for the reason the shipped-docs job below spells out and
+      # this job learned the hard way: every check here is a presence test, so the ordinary
+      # run is green whether the matching rules work or not. Check 3 required a closing `>`
+      # and policed a delimiter that does not exist, so a bare `<:` broke every generation
+      # while this job reported 1974 well-formed tokens.
+      - name: Prove the detectors (self-test against known-bad fixtures)
+        run: bash .github/scripts/check-template-tokens.sh --self-test
+
       - name: Check token syntax integrity
         run: bash .github/scripts/check-template-tokens.sh
 
@@ -27,14 +35,31 @@ jobs:
   # generation, and TEMPLATE-TOKENS.md is prose. Without this job they drift silently —
   # which is exactly what they had done by 09/08/2026 (a tree missing four directories,
   # an audit table listing four scripts of thirteen, and no skills section at all).
+  #
+  # TWO STEPS, and the first is the load-bearing one. Every check here is a presence
+  # test against a tree that is correct today, so the ordinary run is green whether the
+  # matching rule works or not — and it once did not: a bare grep let a description
+  # ("the CONTEXT.md / CLAUDE.md split") answer for the row it was meant to police, and
+  # let `── VERSION-HISTORY.md` answer for VERSION. Both passed silently. The self-test
+  # deletes a required row per check and asserts each one is caught, so a rule that
+  # stops discriminating fails here rather than the next time the trees drift.
   shipped-docs:
     name: "[2/3] Shipped Documentation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prove the detector (self-test against a mutated README)
+        run: bash .github/scripts/shipped-readme.sh --self-test
+
       - name: The shipped README and token contract must match the repository
         run: bash .github/scripts/shipped-readme.sh
+
+      - name: Prove the detector (self-test against a polluted memory seed)
+        run: bash .github/scripts/shipped-memory.sh --self-test
+
+      - name: A generated project must receive an empty project-memory store
+        run: bash .github/scripts/shipped-memory.sh
 
   generate:
     name: "[3/3] Template Generation"
@@ -180,7 +205,7 @@ jobs:
         run: |
           status=0
           for p in code/src/mobile code/src/scripts/mobile \
-                   .claude/agents/mobile.md .claude/skills/stack-react-native; do
+                   .claude/skills/stack-react-native; do
             if [ ! -e "$RUNNER_TEMP/gen-true/$p" ]; then
               echo "::error::INCLUDE_MOBILE=true — $p is missing"; status=1
             fi

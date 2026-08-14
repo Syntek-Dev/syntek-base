@@ -23,7 +23,7 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
   through `stack-htmx-templates`, MCP tools through `stack-fastmcp`, native code through
   `stack-rust`, the desktop app through `stack-slint` — all Opus.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
-  opens with a grilling pass; the owning agent loads `.claude/skills/grill-with-docs` and
+  opens with a grilling pass; the running skill loads `.claude/skills/grill-with-docs` and
   interviews <%DEVELOPER_NAME%> before producing the artefact (`.claude/CLAUDE.md` §10).
   Only trivial/mechanical steps skip it.
 - **Model:** Opus for authoring or revising a workflow and mechanical
@@ -34,7 +34,7 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
   the governing `code/docs/` guide as a hard gate or soft reference.
 - **Definition of done:** the workflow reads coherently end-to-end, its hard gates
   point at live docs, and this folder's `CONTEXT.md` still lists it correctly.
-- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

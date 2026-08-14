@@ -12,7 +12,7 @@ NIST SP 800-63B baselines — for a security pass, a release gate, or a reported
 
 ## How to work here
 
-- **Routing:** execute via `STEPS.md`, usually with the `security` skill/agent
+- **Routing:** execute via `STEPS.md`, usually with the `security` skill
   (Opus). Backend fixes through `stack-django`; frontend through `stack-htmx-templates`.
 - **Model:** Opus throughout — security judgement is substantive and
   mechanical edits to the workflow files.
@@ -24,7 +24,7 @@ NIST SP 800-63B baselines — for a security pass, a release gate, or a reported
 - **Definition of done:** every state-changing Django Ninja endpoint permission-checked, no IDOR, `DEBUG=False`
   and explicit CORS allowlist confirmed for non-local, secrets env-only,
   `CHECKLIST.md` signed off.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

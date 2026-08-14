@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -88,6 +87,7 @@ holds a transaction for its duration; a job does not.
 
 ```python
 BATCH = 5_000
+
 
 def backfill(last_pk: int = 0) -> int:
     """Fill one batch. Returns the last pk processed, or 0 when complete."""

@@ -31,6 +31,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Slint links against system libraries, and the runner ships none of them. Without
+      # this the workspace does not COMPILE — the failure surfaces inside the lint step
+      # and reads like a clippy error, but it is a build error from a -sys crate:
+      #
+      #   yeslogic-fontconfig-sys build.rs panicked: "Package fontconfig was not found
+      #   in the pkg-config search path"
+      #
+      # That kept this workflow red on main from 03/08/2026. `crates/desktop` is a
+      # `members = ["crates/*"]` member, so it builds on every run — the DESKTOP opt-in
+      # gates what ships to a project, not what CI compiles here.
+      #
+      # fontconfig is the one the build named; the rest is Slint's own documented
+      # Debian list, installed together so this does not become one missing library per
+      # CI run. Source: https://docs.slint.dev/latest/docs/slint/guide/tooling/manual-setup
+      - name: Install Slint's Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config libfontconfig-dev \
+            libx11-xcb1 libx11-dev libxcb1-dev libxkbcommon0 libxkbcommon-dev \
+            libinput10 libinput-dev libgbm1 libgbm-dev
+
       # rustup reads code/src/rust/rust-toolchain.toml, so the channel and components
       # come from the pin rather than being restated here. Restating them would let CI
       # and a developer laptop drift.

@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -92,9 +91,11 @@ from pydantic import Field
 
 router = Router()
 
+
 class CreateRoleIn(Schema):
     name: str = Field(min_length=1, max_length=100)
     description: str = Field(default="", max_length=500)
+
 
 class RoleOut(Schema):
     id: int
@@ -121,6 +122,7 @@ an explicit permission check.**
 def create_role(request, payload: CreateRoleIn):
     return role_service.create_role(payload)
 
+
 # CORRECT — authentication (auth=) plus an explicit permission check
 @router.post("/roles", response=RoleOut, auth=django_auth)
 def create_role(request, payload: CreateRoleIn):
@@ -141,6 +143,19 @@ Rate-limit every endpoint via Ninja's throttling (`AuthRateThrottle` / `AnonRate
 throttling middleware), keyed on the trusted client IP (see `get_client_ip` above). Authentication
 endpoints get the strictest limits — this is what closes the credential-stuffing / batched-attempt
 surface (repeated login attempts must trip the per-IP and per-account limits, not merely fail).
+
+**Limits are set per route class, not per endpoint**, so a new endpoint inherits a number rather
+than inventing one. The baseline to tune from:
+
+| Route class    | Baseline |
+| -------------- | -------- |
+| General API    | ~60/min  |
+| Authentication | ~5/min   |
+| Password reset | ~3/hour  |
+| Admin actions  | ~30/min  |
+
+**IP allowlisting for admin surfaces** is available via environment variable where the threat
+model warrants it — a second control on the class above, never a replacement for its limit.
 
 ### OpenAPI docs exposure
 

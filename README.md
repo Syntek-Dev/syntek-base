@@ -1,9 +1,9 @@
 # syntek-base
 
 **A Django-monolith project template that ships with its own documentation system and a Claude
-Code agent suite.**
+Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-2.19.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.21.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -22,20 +22,19 @@ opt in. The full list is [`TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md).
 
 Most project templates give you a directory layout and leave you to invent everything else — how
 work is specified, where decisions are recorded, what an AI coding agent is allowed to do.
-`syntek-base` is the opposite bet: the structure, the process, and the agent configuration are
+`syntek-base` is the opposite bet: the structure, the process, and the skill configuration are
 the product, and the application skeleton is almost incidental.
 
 Generate a project from it and you get, on day one:
 
-| You get                       | What it means                                                                                                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **A Django 6 monolith**       | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
-| **A three-layer doc system**  | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
-| **A Claude Code agent suite** | 8 orchestrators that delegate to specialists and document writers, each tool-scoped, each with a defined remit. Roster: `.claude/agents/CONTEXT.md`.                |
-| **Skills, loaded on demand**  | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
-| **A working dev stack**       | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
-| **CI that already bites**     | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
-| **Compliance scaffolding**    | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
+| You get                      | What it means                                                                                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
+| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
+| **Skills, loaded on demand** | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
+| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
+| **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
+| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
 
 It is opinionated on purpose. The stack is fixed, the coverage floors are fixed, the file-length
 limits are fixed. What varies between projects is captured in the template tokens and nothing else.
@@ -63,20 +62,20 @@ Details and per-platform notes:
 
 ### Claude Code plan
 
-The agent suite routes across **two model tiers** — `fable` for planning, specification and design
+The skill suite routes across **two model tiers** — `fable` for planning, specification and design
 work, `opus` for everything else. That is a deliberate split: the reasoning tier sets the
 foundation, the implementation tier builds on it.
 
 Because of the Fable usage, this template is designed for **Claude Max 20× or above, or the
-Anthropic API**. On a smaller plan the Fable-tier agents (`story`, `sprint`, `planner`,
-`user-story`, and the design/compliance workflows) will not run as configured — you can retarget
-them to `opus` by editing the `model:` frontmatter, but you lose the tier separation the process
-is built around.
+Anthropic API**. On a smaller plan the Fable-tier skills (`story`, `sprint`, `planner`,
+`scale-planning`, and the design/compliance workflows) will not run as configured — you can
+retarget them to `opus` by editing the `model:` frontmatter, but you lose the tier separation the
+process is built around.
 
 **Using a different LLM provider?** Everything except the model routing is provider-agnostic — the
 documentation system, workflows, gates and directory conventions work with any coding agent. Expect
 to make one pass over `.claude/` to swap the model names and aliases for your provider's
-equivalents: `.claude/CLAUDE.md` §4, every agent's `model:` frontmatter in `.claude/agents/`, and
+equivalents: `.claude/CLAUDE.md` §4, every skill's `model:` frontmatter in `.claude/skills/`, and
 the `model:` lines in `**/docs/*.md` and `**/workflows/**/*.md` routing frontmatter.
 
 ---
@@ -96,8 +95,8 @@ The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE
 | [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)                   | Finding your way around the three layers                             |
 | [STACK.md](how-to/src/TEMPLATE-GUIDE/02-STACK.md)                           | You want to know why each piece was chosen                           |
 | [CUSTOMISING.md](how-to/src/TEMPLATE-GUIDE/11-CUSTOMISING.md)               | Working out what is yours to change and what is load-bearing         |
-| [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)               | Understanding the agent, skill and hook configuration                |
-| [EXTENDING.md](how-to/src/TEMPLATE-GUIDE/12-EXTENDING.md)                   | Adding your own agent, skill, workflow or guide                      |
+| [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)               | Understanding the skill and hook configuration                       |
+| [EXTENDING.md](how-to/src/TEMPLATE-GUIDE/12-EXTENDING.md)                   | Adding your own skill, workflow or guide                             |
 | [PROJECT-MANAGEMENT.md](how-to/src/TEMPLATE-GUIDE/09-PROJECT-MANAGEMENT.md) | Using `project-management/src/` — tiers, patterns, which folder when |
 | [FIRST-FEATURE.md](how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md)           | Walking a feature from idea to merged PR                             |
 | [DEPLOYMENT.md](how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md)                 | Taking it to a server                                                |
@@ -130,7 +129,7 @@ go and check the primary sources yourself rather than taking this template's wor
 and because these influences carry into **every project generated from it**, not just this repo.
 
 **These tables are kept current by a standing rule, not by periodic tidying.** `.claude/CLAUDE.md`
-§ 6 binds every agent: doctrine derived from an outside source is credited in the same change as
+§ 6 binds every skill: doctrine derived from an outside source is credited in the same change as
 the rule it credits, and the **licence column below is consulted before deriving, not after** —
 because use, adapt and redistribute are three different permissions, and a share-alike source
 would propagate its obligation into every generated project.
@@ -141,14 +140,16 @@ would propagate its obligation into every generated project.
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Matt Pocock** — [AI Hero](https://www.aihero.dev/) · [mattpocock.com](https://www.mattpocock.com/) · [skills](https://github.com/mattpocock/skills) · [dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) | The engineering process for working _with_ coding agents rather than around them: context gathering, planning before code, steering, feedback loops, spec-driven workflows, and human-in-the-loop review. Two of his repositories are adapted directly — see below |
 | **Jake Van Clief** — [Clief Notes](https://www.skool.com/cliefnotes/about) · [LinkedIn](https://www.linkedin.com/in/jake-van-clief/)                                                                                                     | File organisation and folder architecture as the substrate for AI work, reusable prompt frameworks, and building durable structure underneath rather than chasing tool releases. The layered `CONTEXT.md` / `CLAUDE.md` system owes this its shape                 |
+| **Martin Fowler** — [_Refactoring_](https://martinfowler.com/books/refactoring.html), ch. 3                                                                                                                                              | The twelve code smells named as the Standards-axis baseline in `code/workflows/07-review/`. The taxonomy is referenced, not reproduced, and the repo's own documented standards override it — a smell is a prompt to look closer, never a violation on its own     |
 
 ### Design and anti-slop craft
 
 The cross-surface visual-design doctrine, the copy rules, and the audit scripts derive from the
 open skill ecosystem below. **Rule text is derived and re-authored, never copied** — sources are
 cited so the reasoning stays checkable, and so no upstream licence obligation propagates into a
-project generated from this template. Per-claim citations:
-[`research/ANTI-SLOP-RULE-SOURCES.md`](research/ANTI-SLOP-RULE-SOURCES.md).
+project generated from this template. **Every row is self-citing:** it links the source and names
+what that source contributed, so the primary source _is_ the citation and no survey note sits
+between it and the reader.
 
 | Source                                                                                                               | Contributed                                                                            | Licence    |
 | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ---------- |
@@ -179,13 +180,13 @@ dependency is direct and the credit is owed accordingly.
 ### Platform and engineering craft
 
 The backend, background-job, observability and security doctrine draws on these. As above, **rules
-are derived and re-authored, never copied**; per-claim citations live in
-[`research/AGENT-SKILL-ECOSYSTEM.md`](research/AGENT-SKILL-ECOSYSTEM.md), which surveys agent
-skills — so **two rows sit outside it**, each with its evidence named here rather than left
-unreachable. **TigerStyle** is an engineering style guide, and its derivation is measured at 0.0%
-five-gram overlap in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). The **Claude Code docs**
-row is runtime behaviour, and its per-claim citations — each fact carrying a section-anchored URL
-— live in [`research/SKILLS-VS-SUBAGENTS.md`](research/SKILLS-VS-SUBAGENTS.md) § _Round 3_.
+are derived and re-authored, never copied**, and **every row is self-citing** — it links the
+source and names what that source contributed, so the primary source _is_ the citation. The two
+**specification** rows go further and link the numbered clause they derive. Two rows carry
+evidence a link alone cannot settle, and it lives in
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md): **TigerStyle**, whose derivation is measured
+at 0.0% five-gram overlap, and the **Claude Code docs**, which carry no upstream licence — the
+notice records that nothing this template ships quotes them, so no grant is needed.
 
 | Source                                                                                               | Contributed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Licence      |
 | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
@@ -194,6 +195,8 @@ row is runtime behaviour, and its per-claim citations — each fact carrying a s
 | [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits                          | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution into client projects                                                                                                                                                                                                                                                                                                                                                                    | CC-BY-SA-4.0 |
 | [agentskills/agentskills](https://github.com/agentskills/agentskills)                                | The published [Agent Skills specification](https://agentskills.io/specification) — the six `SKILL.md` frontmatter fields and their constraints. `how-to/docs/skill-authoring/FRONTMATTER.md` states the format, then records which fields this project authors and which it declines; `audits/skill-conformance.sh` checks both halves. What is taken is the field set, their limits, and a one-line statement of each field's job — facts, not prose — measured at zero shared five-grams with the specification text                                                                                     | Apache-2.0   |
 | [Claude Code — Agent Skills docs](https://code.claude.com/docs/en/skills) — Anthropic                | The runtime behaviour the fork rubric rests on, and the reference-versus-task framing it starts from: which keys Claude Code reads beyond the specification's six, that a forked skill begins without the conversation, that `Explore` and `Plan` skip CLAUDE.md where other targets keep it, and what a backgrounded fork gives up. Behind `how-to/docs/skill-authoring/FORK-DECISION.md` and `FRONTMATTER.md`. **No LICENCE upstream** — the facts are used and every rule re-authored, measured at zero shared five-grams; the research note quotes it, marked and cited, and the shipped guides do not | none         |
+| [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) — Tom Preston-Werner                | The versioning doctrine in `project-management/docs/VERSIONING-GUIDE.md`: rule 1's **declare a public API** obligation — which is what makes MAJOR decidable and had never been met here — plus `0.y.z` and `1.0.0` (rules 4–5), the pre-release and build-metadata grammar (rules 9–10), precedence (rule 11), and the FAQ's deprecation and wrong-release recovery policies. Rules are re-authored and each is applied to this repository's own surfaces; the spec's numbered clauses are the citation                                                                                                   | CC BY 3.0    |
+| [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)                         | Breaking-change signalling in `project-management/docs/GIT-GUIDE.md` — the `!` shorthand, the `BREAKING CHANGE:` footer, and the `fix`→PATCH / `feat`→MINOR / any-breaking-change→MAJOR mapping. The commit format itself was already in use here; what is derived is how a commit **declares** that it breaks something                                                                                                                                                                                                                                                                                   | CC BY 3.0    |
 | [alibaba/open-code-review](https://github.com/alibaba/open-code-review)                              | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Apache-2.0   |
 | [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md) — TigerBeetle | Negative-space programming: state what must **never** be true, enforce each invariant at one named point, and fail loudly rather than degrade. Behind `code/docs/NEGATIVE-SPACE.md` and `how-to/src/INVARIANTS.md`. **Its assertion mechanism is deliberately not adopted** — Python's `assert` is stripped by `-O` and cannot carry the register key, so guards `raise` instead. The name is ThePrimeagen's coinage for the idea Hoare simply called logic                                                                                                                                                | Apache-2.0   |
 
@@ -223,4 +226,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v2.20.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v2.21.0 · British English (en_GB) throughout_

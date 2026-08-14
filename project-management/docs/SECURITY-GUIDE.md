@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -44,6 +43,20 @@ Three complementary frameworks are applied at each review:
 
 All three are applied to the user flows and wireframes produced in `src/05-USER-FLOW/` and
 `src/08-WIREFRAMES/`.
+
+### Two further baselines an audit is held to
+
+CSF 2.0 positions a finding; it does not supply the depth or the pass mark. Two standards do,
+and a finding that fails either is **release-blocking until triaged**:
+
+- **NIST, beyond the framework** — **SP 800-53** control families where a finding needs depth
+  rather than a category, and **SP 800-63B** for anything touching authentication or MFA
+  factors. Cite the control, not just the function.
+- **UK Cyber Essentials and Cyber Essentials Plus** — the five technical controls the system
+  must demonstrably meet: firewalls, secure configuration, security update management, user
+  access control, and malware protection. **CE Plus adds hands-on assessment** — an
+  authenticated vulnerability scan plus an internal test — so anything that would fail CE+ is
+  treated as release-blocking rather than as an observation.
 
 ---
 

@@ -14,8 +14,8 @@ The three planning sub-documents — `CADENCE.md` (the loop and the point ceilin
 ## How to work here
 
 - **Routing:** reference guides, not artefacts. Read the one matching the artefact being written;
-  edit it when the convention changes. Enter via `../PLANNING-GUIDE.md`. Substantive edits use
-  the `sprint` or `user-story` agent.
+  edit it when the convention changes. Enter via `../PLANNING-GUIDE.md`. Substantive edits load
+  the `sprint` or `story` skill.
 - **Model:** Fable — planning conventions are design decisions about how work is shaped; Opus for
   mechanical touches (a link fix, a version-header bump, a renamed path).
 - **Concrete steps:** edit the owning sub-document → check the other two do not now contradict it

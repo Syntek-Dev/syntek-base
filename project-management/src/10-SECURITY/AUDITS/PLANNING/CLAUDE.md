@@ -14,7 +14,7 @@ control checklist to run, and the testable developer constraints before any code
 ## How to work here
 
 - **Routing:** plans are produced by `project-management/workflows/10-security-checks/`
-  using the `security` agent (Fable), scoping a story in `../../../02-STORIES/` against
+  using the `security` skill (Fable), scoping a story in `../../../02-STORIES/` against
   `project-management/docs/SECURITY-GUIDE.md` and `code/docs/SECURITY.md`. Read a story's
   plan before implementing it.
 - **Model:** Fable — scoping the attack surface and running STRIDE / OWASP / NIST CSF over

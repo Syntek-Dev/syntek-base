@@ -1,8 +1,7 @@
 ---
 workflow: 23-release
 phase: ship
-agent: release
-skills: [global-workflow]
+skills: [release, global-workflow]
 model: opus
 ---
 

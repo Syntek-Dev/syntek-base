@@ -7,15 +7,33 @@ description: >-
   (how-to/src/SCALE-ARCHITECTURE and how-to/src/SERVER-ARCHITECTURE) that feed the NixOS
   deploy repo with headroom. Invoke by typing /scale-planning, or when sizing the stack
   for growth, reconciling the architecture against what the server must provide, or
-  preparing the server/edge contract the <%DEPLOY_REPO%> repo consumes.
+  preparing the server/edge contract the <%DEPLOY_REPO%> repo consumes. Not writing feature
+  code, migrations or endpoints (`backend`), not the pipelines, Compose or deploy scripts
+  (`cicd`), and not the NixOS config itself — that lives in the deploy repo this only
+  specifies the contract for.
+model: fable
+metadata:
+  skills: codebase-design domain-modelling global-workflow grilling
 ---
 
 # Skill: scale-planning (<%PROJECT_SLUG%>)
 
+**Task skill, inline** (axis 2 — the target trajectory, the buffer and the deadline come from
+the conversation, and a fork that cannot ask would fabricate the numbers this skill exists to
+refuse to fabricate).
+
+**Model.** `model: fable` above applies to the turn that loads this skill and is not a
+guarantee. The durable carriers for the planning tier are the two snapshot directories'
+operating rules — `how-to/src/SCALE-ARCHITECTURE/CLAUDE.md` and
+`how-to/src/SERVER-ARCHITECTURE/CLAUDE.md`, which both name Fable for envelope, readiness and
+contract reasoning — and `project-management/workflows/14-decisions/`, whose routing
+frontmatter is `model: fable`.
+
 Scale planning answers two questions the project has never pinned down: **is the deployment
 sized correctly for a target number of users, and is it built so that reaching the next tier
 is a config change, not a rewrite?** It owns the app↔server/deploy contract — the spec the
-separate NixOS deploy repo (`<%DEPLOY_REPO%>`) provisions against.
+separate NixOS deploy repo (`<%DEPLOY_REPO%>`) provisions against. You **plan** how the
+application scales and **specify** what the server must provide; you build neither.
 
 It runs as a **wayfinder-charted epic** — the frontier is too big for one sitting and it
 spans another repo — with **grilling** settling each decision node. The governing decision is
@@ -36,7 +54,24 @@ project is designing under is what licenses leaving things out — and the anti-
 below is what keeps that honest in the other direction. State both: what the architecture must
 stay _able_ to do, and what it is therefore not building now.
 
-Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
+Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>; dates DD/MM/YYYY. New environment variables
+are documented against the `.env.*.example` templates — never real secret values.
+
+## Open with a grilling pass
+
+Name what must be settled and wait — the round shape and the question format belong to the
+`grilling` skill (`.claude/CLAUDE.md` § 10). Four dimensions, and none of them is in the
+repository:
+
+- **Target trajectory** — the per-surface growth curve (marketing peak req/s · portal peak
+  concurrent SSE · admin seats) across launch / 6-month / 2-year. Never one flat number.
+- **Buffer** — the headroom that keeps normal peak under the phase-gate triggers (CPU/IO 70 %).
+- **Readiness** — per tier, config-flip or rewrite, and which seams must stay flips.
+- **Edge and server needs** — what the current codebase already demands of the server and edge.
+
+**Never fabricate a figure — leave an honest TBD.** An invented user count is indistinguishable
+from a measured one by the time it reaches a sizing table, and every downstream number inherits
+it.
 
 ## The one rule: reconcile, never forecast
 
@@ -168,6 +203,21 @@ lockstep (`code/docs/CODE-REVIEW-GRAPH.md`).
   duplicate them.
 - **Grilling the whole epic in one sitting** — that is what the wayfinder frontier is for.
 
+## Handoff
+
+Report which snapshot files moved, what drift was reconciled against live code, which frontier
+nodes are now settled and which are still blocked, and every figure still standing as a TBD.
+Then name what is owed next:
+
+- `database` — implement a phase-gate move (replica router, sharding) once a gate actually trips
+- `backend` — close a readiness gap the audit surfaced (statelessness, an unbounded query)
+- `cicd` — wire a Compose or worker-count change the envelope calls for
+- `logging` — make the gate-trigger signals (p95, CPU/IO) observable, or they cannot trip
+- `story` · `sprint` — turn a buildable slice into a `US###` and get it planned
+
+**Suggest, do not chain**, unless <%DEVELOPER_NAME%> said to. Server and edge configuration is
+never written here — that is the `<%DEPLOY_REPO%>` repository, which implements this contract.
+
 ## Governing procedures (route here — do not restate at length)
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
@@ -179,7 +229,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/wayfinder/SKILL.md` — the cartographer this runs as; the map artefact.
 - `.claude/skills/grill-with-docs/SKILL.md` — the per-node engine that records decisions.
 - `.claude/skills/codebase-design/SKILL.md` — depth / seam vocabulary for the readiness audit.
-- `.claude/agents/scale-planner.md` — the Fable specialist that drives this skill.
+- `.claude/skills/domain-modelling/SKILL.md` — recording a new term in the nearest `CONTEXT.md`.
 - the project's own decision register — where the governing decision is recorded.
 - `code/docs/architecture/CORE-AND-SCALING.md` — the phase-gates keyed to.
 - `code/docs/PERFORMANCE.md` · `code/docs/architecture/CORE-AND-SCALING.md` — the budgets and scaling rules (do not duplicate).

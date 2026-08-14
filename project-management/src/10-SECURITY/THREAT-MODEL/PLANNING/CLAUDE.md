@@ -14,7 +14,7 @@ code is written.
 ## How to work here
 
 - **Routing:** models are produced by `project-management/workflows/10-security-checks/`
-  using the `security` agent (Fable), analysing a story in `../../../02-STORIES/` and its
+  using the `security` skill (Fable), analysing a story in `../../../02-STORIES/` and its
   `../../../05-USER-FLOW/` and `../../../08-WIREFRAMES/` artefacts against
   `project-management/docs/SECURITY-GUIDE.md`. Read a story's model before implementing it.
 - **Model:** Fable — STRIDE analysis (trust boundaries, threat identification, severity

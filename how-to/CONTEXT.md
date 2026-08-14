@@ -25,7 +25,7 @@ how-to/
 │   ├── GIT-WORKTREES.md         ← parallel development with worktrees and Docker isolation
 │   ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/ (index)
 │   │   └── skill-authoring/     ← 4 sub-documents + CONTEXT.md · CLAUDE.md
-│   └── TOOLING-GUIDE.md         ← internal agents and skills reference (index)
+│   └── TOOLING-GUIDE.md         ← Internal skills reference (index)
 │       └── tooling-guide/       ← COMMANDS · CONFIGURATION · WORKFLOW + CONTEXT.md · CLAUDE.md
 ├── src/                         ← human-facing operator guides (300-line limit exempt)
 │   ├── CONTEXT.md · CLAUDE.md
@@ -69,7 +69,7 @@ Every directory with a `CONTEXT.md` also has a `CLAUDE.md`.
 
 ## Contents
 
-- `docs/` — operational reference guides and the internal agents/skills reference
+- `docs/` — operational reference guides and the internal skills reference
 - `src/` — contributing standards, the template guide set, and the architecture snapshots
 - `workflows/` — step-by-step practical procedures
 
@@ -87,7 +87,7 @@ Every directory with a `CONTEXT.md` also has a `CLAUDE.md`.
 | `docs/GIT-WORKTREES.md`    | Parallel feature development with isolated stacks                                                |
 | `docs/CELERY-FIRST-RUN.md` | Before wiring Celery, or first starting the worker/beat in any environment                       |
 | `docs/FEATURE-DEPLOY.md`   | Deploying a feature branch                                                                       |
-| `docs/TOOLING-GUIDE.md`    | Internal agents and skills reference                                                             |
+| `docs/TOOLING-GUIDE.md`    | Internal skills reference                                                                        |
 | `docs/AI-DICTIONARY.md`    | Looking up an AI-coding term                                                                     |
 | `docs/SKILL-AUTHORING.md`  | Before writing or editing a skill in `.claude/skills/`                                           |
 | `src/CONTRIBUTING.md`      | Branching, commits, testing, code quality, the pre-PR gates                                      |

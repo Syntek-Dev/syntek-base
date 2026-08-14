@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: test-writer
-skills: [stack-django, stack-fastmcp]
+skills: [test-writer, stack-django, stack-fastmcp]
 model: opus
 ---
 
@@ -86,7 +85,7 @@ def with_db(fn):
             await sync_to_async(close_old_connections)()
 
     wrapper.__name__ = fn.__name__
-    wrapper.__doc__ = fn.__doc__          # the docstring IS the contract — preserve it
+    wrapper.__doc__ = fn.__doc__  # the docstring IS the contract — preserve it
     return wrapper
 ```
 

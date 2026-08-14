@@ -16,7 +16,7 @@ what shipped (`IMPLEMENTATION/`), plus the rendered ERDs in `ERD-DIAGRAMS/`.
 
 - **Routing:** never author here free-hand. Stage 1 comes from
   `workflows/04-database-schema/`, stage 2 from `workflows/17-consolidate-design-work/`,
-  stage 3 from `workflows/21-implementation-documentation/`. Use the `database` agent for
+  stage 3 from `workflows/21-implementation-documentation/`. Use the `database` skill for
   the heavier modelling.
 - **Model:** Fable for schema design, consolidation, RLS decisions, and PII classification —
   all substantive judgement; Opus for mechanical touches (a status flip, a rename, re-exporting

@@ -10,11 +10,15 @@ owns the full versioning rules; this is the shared baseline.
 
 Single-track semver: `MAJOR.MINOR.PATCH`.
 
-| Increment | When                                | Example       |
-| --------- | ----------------------------------- | ------------- |
-| **MAJOR** | Breaking changes                    | 1.0.0 → 2.0.0 |
-| **MINOR** | New features (backwards compatible) | 1.0.0 → 1.1.0 |
-| **PATCH** | Bug fixes (backwards compatible)    | 1.0.0 → 1.0.1 |
+**The rules live in one place — `project-management/docs/VERSIONING-GUIDE.md`.** It owns the
+declared public API that makes MAJOR decidable at all, the increment table, `0.y.z` and `1.0.0`,
+the pre-release and build-metadata grammar, precedence, the deprecation policy, and how to recover
+from a wrong release. How a commit _signals_ a breaking change — the `!` shorthand and the
+`BREAKING CHANGE:` footer — is in `project-management/docs/GIT-GUIDE.md`.
+
+This section previously carried its own copy of the increment table. It was removed rather than
+corrected: a summary that restates an authoritative table is a drift site, not a convenience, and
+the two copies had already diverged on what MAJOR means.
 
 ### Pre-commit requirements
 
@@ -26,7 +30,7 @@ Before every commit:
 3. Update `CHANGELOG.md` — changelog-first, before staging.
 4. Stage the version and changelog files with the change.
 
-To bump mechanically, delegate to the `release` agent (via the Agent tool) or
+To bump mechanically, delegate to the `release` skill (via the Agent tool) or
 follow `project-management/docs/VERSIONING-GUIDE.md`. Never hardcode a version
 string that contradicts `VERSION`.
 
@@ -79,7 +83,7 @@ BUG-<DESCRIPTOR>-DD-MM-YYYY.md      e.g. BUG-AUTH-18-04-2026.md
 ```
 
 Store it under the PM bugs directory (`project-management/src/**/BUGS/`). The
-`bugfix` agent owns the full format via `code/workflows/10-debug/`. Each record
+`bugfix` skill owns the full format via `code/workflows/10-debug/`. Each record
 must include:
 
 - **Root-cause analysis** — what actually caused the defect.
@@ -91,8 +95,8 @@ must include:
 
 ## 4. Code-comment standards
 
-All agents writing code follow these rules (they match the `backend`, `frontend`
-and `refactor` agent expectations and `code/docs/CODING-PRINCIPLES.md`).
+Every skill writing code follows these rules (they match the `backend`, `frontend`
+and `refactor` skill expectations and `code/docs/CODING-PRINCIPLES.md`).
 
 **Comments and docstrings inside a code file carry the _why_ and nothing else.**
 The code states the what — names, types, and structure already say what happens,

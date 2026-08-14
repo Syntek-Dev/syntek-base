@@ -14,8 +14,8 @@ client-side runner.
 
 ## How to work here
 
-- **Routing:** documentation, not code — `doc-writer` or `:test-writer`
-  agent (Opus for substantive guidance; Opus for typo/header touches).
+- **Routing:** documentation, not code — `doc-writer` or `test-writer`
+  (Opus for substantive guidance; Opus for typo/header touches).
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/TESTING.md` a thin
   index → every run instruction must invoke a `code/src/scripts/tests/*.sh` runner,
   never raw `pytest`. Keep the coverage floors in `COVERAGE.md`

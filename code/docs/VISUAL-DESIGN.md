@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: opus
 ---
 
@@ -47,7 +46,7 @@ are building one.
 
 ## 2. Implement the design — do not invent it
 
-A page's design is decided **upstream**, at _design-time_ — the PM/design agents run the grilling
+A page's design is decided **upstream**, at _design-time_ — the PM/design skills run the grilling
 interview and produce the artefacts (via Figma MCP / Claude Design; that flow is rooted in the
 repo's `DESIGN.md`). Your job is _code-time_: build that intent against the live codebase. Before
 writing any template, component, or stylesheet, load the design artefacts for the screen:
@@ -145,7 +144,7 @@ typography, layout, eyebrows and pills, elevation, icons and logo. Web:
 [`visual-design/WEB.md`](visual-design/WEB.md).
 
 **The signature is an expression of the direction above, never a constant.** Any file outside this
-guide that names it — an agent, a skill, a workflow step, a checklist — states the direction it is
+guide that names it — a skill, a workflow step, a checklist — states the direction it is
 conditional on, the way `.claude/skills/stack-htmx-templates/SKILL.md` does. A file that asserts
 `editorial` composition as universal is a defect: it fails correct work the moment a project picks a
 different direction, which is the error §4 itself carried until the §4.1/§4.2 split.

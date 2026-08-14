@@ -34,7 +34,7 @@ user story through to a review-ready branch.
   `22-pr-and-review/`.
 - **Definition of done:** every item in `CHECKLIST.md` ticked; coverage floors met;
   docs hard-gate satisfied before commit.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

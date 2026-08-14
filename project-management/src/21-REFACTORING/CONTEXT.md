@@ -44,7 +44,7 @@ A behaviour-preserving structural change to a story's code — never a feature:
 ## When to write it
 
 When a refactor is identified — a code review note, a sprint retro, or a `cloc` limit breach —
-and executed under `code/workflows/11-refactor/` (or the `refactor` agent) with no change in
+and executed under `code/workflows/11-refactor/` (or the `refactor` skill) with no change in
 observable behaviour. New behaviour belongs to a story, not here.
 
 ## Cross-references

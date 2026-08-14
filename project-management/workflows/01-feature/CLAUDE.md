@@ -14,7 +14,7 @@ re-asking the same questions.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` agent (Fable), loading
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable), loading
   `.claude/skills/wayfinder/SKILL.md`. Grilling nodes open `grill-with-docs`; research nodes use
   `research`; tracer nodes use `prototype`. The hard gate — the wayfinder skill itself — must be
   read before Step 1.
@@ -29,7 +29,7 @@ re-asking the same questions.
   every knowable decision is a node or honestly parked in fog of war; no blocking node remains
   unresolved; every resolved node links to the artefact it became.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (see
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
   `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails

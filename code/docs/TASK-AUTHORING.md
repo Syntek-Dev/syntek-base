@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 
@@ -325,6 +324,6 @@ a trigger, not a shrug.
 - [`LOGGING.md`](LOGGING.md): where a failed task becomes visible
 - [`SECURITY.md`](SECURITY.md): the permission rules a task re-applies without a request
 - `how-to/docs/CELERY-FIRST-RUN.md`: the operator review that gates the first start
-- `.claude/skills/stack-django/SKILL.md`: the backend idioms an agent loads on demand
+- `.claude/skills/stack-django/SKILL.md`: the backend idioms loaded on demand
 
 _Part of the `code/docs/` documentation family._

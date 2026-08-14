@@ -14,7 +14,7 @@ and troubleshooting.
 
 ## How to work here
 
-- **Routing:** documentation edits → `global-workflow` skill, `doc-writer` agent. A change
+- **Routing:** documentation edits → `global-workflow` skill, `doc-writer` skill. A change
   to what the template _does_ (a new token, a changed `_task`, a moved file) must land in
   `copier.yml` first and be reflected here second — never the reverse.
 - **Model:** Opus for authoring and restructuring these guides and for mechanical touches

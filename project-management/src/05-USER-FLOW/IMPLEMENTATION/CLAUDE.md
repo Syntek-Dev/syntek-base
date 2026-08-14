@@ -13,7 +13,7 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 ## How to work here
 
 - **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
-  agent against the consolidated journey and the shipped views, templates, and routes.
+  skill against the consolidated journey and the shipped views, templates, and routes.
 - **Model:** Opus — recording what was built against an approved journey is a documentation
   closeout. Escalate to `planner` (Fable) only when a deviation needs judging.
 - **Concrete steps:** copy `USER-FLOW-IMPL-US000-TEMPLATE.md` →

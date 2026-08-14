@@ -14,7 +14,7 @@ personal data.
 
 ## How to work here
 
-- **Routing:** execute via `STEPS.md`, typically with the `gdpr` skill/agent (Opus)
+- **Routing:** execute via `STEPS.md`, typically with the `gdpr-mechanics` skill (Opus)
   and `stack-django`. The PM-layer compliance review in
   `project-management/workflows/09-gdpr-compliance/` must finish first.
 - **Model:** Opus throughout — data-protection decisions are substantive
@@ -28,7 +28,7 @@ personal data.
 - **Definition of done:** every PII field encrypted with a lookup token where the
   field is unique; consent verified before PII access; no PII in logs or errors; DSAR
   deletion testable end-to-end.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

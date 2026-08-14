@@ -1,13 +1,13 @@
 ---
 name: global-workflow
-description: "Cross-cutting engineering standards for <%PROJECT_NAME%> — localisation (en_GB), Git branch strategy, commit and pull-request conventions, semantic versioning, Markdown documentation style, and code-comment rules. Load when creating a branch, writing a commit message or PR, bumping the version, or authoring documentation or code comments — i.e. the conventions every agent shares regardless of layer."
+description: "Cross-cutting engineering standards for <%PROJECT_NAME%> — localisation (en_GB), Git branch strategy, commit and pull-request conventions, semantic versioning, Markdown documentation style, and code-comment rules. Load when creating a branch, writing a commit message or PR, bumping the version, or authoring documentation or code comments — i.e. the conventions every skill shares regardless of layer."
 ---
 
 # Global Workflow & Standards
 
 Project-wide conventions that sit beneath every layer of <%PROJECT_NAME%>. The
 per-layer guides (`code/docs/*`, `project-management/docs/*`) own the deep detail;
-this skill is the shared baseline that the orchestrating agents (`feature`,
+this skill is the shared baseline that the task skills (`feature`,
 `bugfix`, `refactor`, `review`, `security`, `pr`, `release`, `story`) all carry.
 
 **Stack:** Django 6 + Django Ninja + PostgreSQL backend · Django templates +

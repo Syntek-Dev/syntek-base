@@ -5,18 +5,18 @@ description: >-
   cleanly after a session boundary. Invoke by typing /handoff, or when a session must end before
   the work does. Most importantly, this is the project's replacement for auto-compaction: when the
   context window nears full, run this instead of compacting, then stop so <%DEVELOPER_NAME%> can /clear and resume
-  from the file. Also for a day ending or a different specialist taking over.
+  from the file. Also for a day ending, or different work taking over.
 ---
 
 # Skill: Handoff (<%PROJECT_SLUG%>)
 
 Handoff **compacts the current conversation** into a single document so a **fresh agent** can
-resume the work cleanly across a session boundary — a context window filling up, a day ending, a
-different specialist taking over. It captures the live thread of _this_ session only: where the
+resume the work cleanly across a session boundary — a context window filling up, a day ending,
+different work taking over. It captures the live thread of _this_ session only: where the
 work sits, what is half-done, and the next move. Durable project knowledge has other homes
 (below); a handoff is a transient bridge, not a memory store.
 
-The default posture in `.claude/CLAUDE.md` §2 is that context flows through the agents and the
+The default posture in `.claude/CLAUDE.md` §2 is that context flows through the skills and the
 layered docs. A handoff is the exception: when a conversation must end before the work does, this
 skill serialises just enough continuity for the next agent to start without re-deriving it.
 
@@ -54,10 +54,10 @@ bridge, not a memory store — prune a handoff once its work has resumed.
 4. **Name the immediate NEXT action.** State the single next step, concrete enough to start
    without re-deriving it. _Complete when:_ the next action is one imperative sentence.
 
-5. **Suggest the next agent and its skills.** Name the specialist or orchestrator best suited to
-   continue and the skills it should load — e.g. `backend` + `stack-django`, `frontend` +
-   `stack-htmx-templates`, `database` + `grilling` (roster: `.claude/agents/CONTEXT.md`; skills:
-   `.claude/skills/CONTEXT.md`). _Complete when:_ the doc names one next agent and its skills.
+5. **Name the skills to load next.** Name the skills best suited to continue the work — e.g.
+   `backend` + `stack-django`, `frontend` + `stack-htmx-templates`, `database` + `grilling`
+   (roster: `.claude/skills/CONTEXT.md`). _Complete when:_ the doc names the skills the next
+   session loads.
 
 6. **Reference artefacts by path, never paste them.** Point at plans (`STORY-PLAN-US###`), ADRs
    (`ADR-###`), stories (`US###.md`), commits, and diffs by their repo path — the fresh agent
@@ -77,7 +77,7 @@ A complete handoff names all six, top to bottom — treat this as the final chec
 - **Done** — landed work, each by path.
 - **In-flight** — open threads with `path:line` anchors and status.
 - **Next** — the single immediate action.
-- **Next agent + skills** — who continues and what they load.
+- **Next skills** — what the next session loads to continue.
 - **Artefacts** — specs, plans, ADRs, stories, commits, diffs, all by path.
 
 Add an **Open Questions** line only when the session left a decision genuinely unresolved — name
@@ -105,8 +105,8 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `.claude/skills/grilling/SKILL.md` · `.claude/skills/grill-me/SKILL.md` ·
   `.claude/skills/grill-with-docs/SKILL.md` — the design-time interview family; handoff is the
   session-boundary complement.
-- `.claude/CLAUDE.md` §2.3, §2.6 · `.claude/agents/CONTEXT.md` — the agent roster the next agent is drawn from.
-- `.claude/skills/CONTEXT.md` — the skills table the suggested skills are drawn from.
+- `.claude/CLAUDE.md` §2.3, §2.6 — how work is routed, and the session-continuity rule this implements.
+- `.claude/skills/CONTEXT.md` — the roster the suggested skills are drawn from.
 - `.claude/plugins/` · `code/docs/CODE-REVIEW-GRAPH.md` — read-only lookup for session facts before Grep/Glob.
 - `.claude/MEMORY.md` · `GAPS.md` · `DEFERRED.md` — the homes for durable knowledge kept out of the handoff.
 - `project-management/src/16-STORY-PLANS/` · `project-management/src/14-DECISIONS/`

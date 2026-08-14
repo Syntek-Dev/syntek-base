@@ -1,6 +1,5 @@
 ---
 type: guide
-agent: operator-docs
 skills: [runbook, global-workflow]
 model: opus
 ---
@@ -21,13 +20,13 @@ Type `/incident` to have Claude run this with you — `.claude/skills/incident/S
 
 ## What this does not cover
 
-| Not here                                             | Owner                                                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| The incident-response **policy** — P1–P4, ICO duties | `incident-response-plan-writer` · `.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md` |
-| **Detecting** that something is wrong                | `code/docs/logging/HEALTH-CONTRACT.md` — Gatus, the public status page, Prometheus          |
-| **Diagnosing** the cause                             | `code/workflows/09-debugging-with-logs/`, then `code/workflows/10-debug/`                   |
-| The **defect** record and its regression test        | `project-management/src/20-BUGS/`                                                           |
-| Security controls, and the breach-notification duty  | `code/docs/security/MONITORING-AND-INCIDENT.md`                                             |
+| Not here                                             | Owner                                                                              |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| The incident-response **policy** — P1–P4, ICO duties | `.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md`                          |
+| **Detecting** that something is wrong                | `code/docs/logging/HEALTH-CONTRACT.md` — Gatus, the public status page, Prometheus |
+| **Diagnosing** the cause                             | `code/workflows/09-debugging-with-logs/`, then `code/workflows/10-debug/`          |
+| The **defect** record and its regression test        | `project-management/src/20-BUGS/`                                                  |
+| Security controls, and the breach-notification duty  | `code/docs/security/MONITORING-AND-INCIDENT.md`                                    |
 
 This guide owns one thing the others do not: **the human process around the outage** — who
 declares it, what gets said, what is written down when you stop, and what survives afterwards.

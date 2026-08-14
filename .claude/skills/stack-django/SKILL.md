@@ -5,13 +5,13 @@ description: >-
   service-layer boundaries, model conventions, Django Ninja endpoints and Schema models with
   named Policy permission checks, strict type hints, and pytest via the project scripts. Load
   this when writing or reviewing server-side code (models, migrations, services, Django Ninja
-  endpoints), or when a backend/security/refactor agent needs the canonical stack idioms.
+  endpoints), or when a backend/security/refactor skill needs the canonical stack idioms.
 ---
 
 # Stack: Django & Django Ninja (<%PROJECT_NAME%>)
 
 Reference material for the backend layer. The `backend`, `security`, and `refactor`
-agents cite this file for stack idioms so they need not restate them. It is the
+skills cite this file for stack idioms so they need not restate them. It is the
 authoritative statement of **how backend code is shaped here** — the governing
 procedures (`code/workflows/*`) and reference guides (`code/docs/*`) own the _why_.
 
@@ -162,7 +162,7 @@ def publish(post: BlogPost, *, published_by_id: str) -> BlogPost:
 ### Django Ninja
 
 - **Every state-changing endpoint has an explicit, named Policy permission check** (OWASP
-  A01). No mutating endpoint resolves without one — this is a hard gate the `security` agent enforces.
+  A01). No mutating endpoint resolves without one — this is a hard gate the `security` skill enforces.
 - **Verify user-supplied IDs against the caller's ownership** before acting on them — no
   IDOR. Resolve the object _scoped to the caller_, never fetch-then-trust.
 - Routers and Ninja `Schema` (Pydantic) models live in `apps/<app>/api.py`; split into an

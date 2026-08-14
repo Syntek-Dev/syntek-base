@@ -14,7 +14,7 @@ breakpoints, container queries, media queries, and user-preference handling
 ## How to work here
 
 - **Routing:** documentation, not code — `doc-writer` or
-  `frontend` agent; governs `stack-htmx-templates` layout work. Opus for
+  `frontend` skill; governs `stack-htmx-templates` layout work. Opus for
   substantive edits; Opus for mechanical touches.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/RESPONSIVE-DESIGN.md`
   a thin index → breakpoint and query values must match the shipped token layer, not

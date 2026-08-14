@@ -1,8 +1,7 @@
 ---
 workflow: 11-refactor
 phase: build
-agent: refactor
-skills: [codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
+skills: [refactor, codebase-design, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -10,6 +9,9 @@ model: opus
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
+
+> **Choosing what to refactor is a separate job** — `/improve-codebase-architecture` scans for
+> deepening opportunities and ranks them. These steps start once the target is picked.
 
 ---
 
@@ -48,13 +50,13 @@ bash code/src/scripts/tests/backend.sh
 
 ### Step 2 — Identify the Refactoring Scope
 
-Run the refactor agent to identify issues and plan the changes.
+Load the `refactor` skill to identify issues and plan the changes.
 
 ```text
 refactor [describe the scope and the problem to address]
 ```
 
-> **↳ New agent:** `refactor` · **Model:** opus · **MCP:** code-review-graph (refactor playbook — `.claude/skills/refactor-safely.md`)
+> **↳ New dispatch:** `general-purpose` · **Skill:** `refactor` · **Model:** opus · **MCP:** code-review-graph (refactor playbook — `.claude/skills/refactor-safely.md`)
 
 ### Step 3 — Apply the Refactoring
 
@@ -94,7 +96,7 @@ bash code/src/scripts/syntax/check.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

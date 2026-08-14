@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow]
+skills: [doc-writer, global-workflow]
 model: opus
 ---
 
@@ -34,7 +33,7 @@ and **design concept**.
 
 - **New to the tooling?** Read `THE-MODEL.md` and `FAILURE-MODES.md` first — they answer
   the "what does this cost?" and "why did it drift?" questions.
-- **Authoring skills or agents?** Pair `MEMORY-AND-STEERING.md` with
+- **Authoring skills?** Pair `MEMORY-AND-STEERING.md` with
   [`SKILL-AUTHORING.md`](SKILL-AUTHORING.md) — the concepts, then the house rules.
 - **Designing a feature?** `PATTERNS-OF-WORK.md` covers grilling and human-in-the-loop —
   the postures the design workflows and the `grilling` skill build on.

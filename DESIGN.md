@@ -8,7 +8,7 @@ This file is the **design-time** entry point for all design work — the quick c
 **Design-time → code-time.** DESIGN.md governs the _design_ phase (produce the artefacts); its code-time counterpart is [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md), which governs _implementing_ those artefacts against the live codebase. The two are one pipeline:
 
 - **Design-time (here):** Figma MCP / Claude Design read [`project-management/src/06-BRAND-GUIDE/`](project-management/src/06-BRAND-GUIDE) (foundations — colour, type, motion, spacing, icons, logo) and [`project-management/src/07-COMPONENTS/`](project-management/src/07-COMPONENTS) (component designs, states, variants) to produce the wireframes in [`project-management/src/08-WIREFRAMES/`](project-management/src/08-WIREFRAMES).
-- **Code-time ([VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)):** the `frontend` agent implements those artefacts — grounded in the live code, which drifts from planning — in the <%PROJECT_NAME%> visual signature.
+- **Code-time ([VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)):** the `frontend` skill implements those artefacts — grounded in the live code, which drifts from planning — in the <%PROJECT_NAME%> visual signature.
 
 ---
 
@@ -47,7 +47,7 @@ because it is the only point at which the whole screen set exists at once.
 
 That second property is the point. § 4.1's repetition tell and § 4.2's rhythm clause are
 properties of a **page set**, not of a file, so no diff-scoped code review reaches them
-(`.claude/agents/code-reviewer.md` says so in its own scope note). The consolidated wireframe
+(`.claude/skills/code-reviewer/SKILL.md` says so in its own scope note). The consolidated wireframe
 folder is where they are cheap to see.
 
 **What runs, and where:**

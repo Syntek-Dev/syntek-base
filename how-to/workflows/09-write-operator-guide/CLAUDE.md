@@ -13,7 +13,7 @@ and `how-to/src/` that tell a human how to operate this system.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Authoring
-  → the `operator-docs` agent (Opus) loading `.claude/skills/runbook/`. Code standards go
+  → the `runbook` skill (Opus), `.claude/skills/runbook/SKILL.md`. Code standards go
   to `doc-writer`; end-user help to `support-articles`; skills to
   `how-to/docs/SKILL-AUTHORING.md`.
 - **Grill first:** Step 1 is a grilling pass — reader, trigger, home, shape, scope — before

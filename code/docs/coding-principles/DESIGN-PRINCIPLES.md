@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: code-reviewer
-skills: [global-workflow]
+skills: [code-reviewer, global-workflow]
 model: opus
 ---
 
@@ -202,6 +201,7 @@ Prefer **data coupling** — pass the specific values the callee actually uses:
 # Stamp coupling — takes the whole user to read one field
 def format_greeting(user: User) -> str:
     return f"Hello, {user.first_name}"
+
 
 # Data coupling — depends only on what it uses
 def format_greeting(first_name: str) -> str:

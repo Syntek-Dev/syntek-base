@@ -1,6 +1,5 @@
 ---
 type: guide
-agent: mobile
 skills: [stack-react-native]
 model: opus
 ---

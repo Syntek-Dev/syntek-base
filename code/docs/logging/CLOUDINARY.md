@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: logging
-skills: [stack-django]
+skills: [logging, stack-django]
 model: opus
 ---
 

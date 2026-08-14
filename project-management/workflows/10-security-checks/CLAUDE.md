@@ -15,7 +15,7 @@ wireframes with STRIDE, OWASP Top 10, and NIST CSF 2.0, and record findings in
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive the heavier analysis with the
-  `security` agent (Fable). The hard gate
+  `security` skill (Fable). The hard gate
   `docs/SECURITY-GUIDE.md` must be read before Step 1. Prerequisites: user flows,
   signed-off wireframes, and the GDPR review (`workflows/09-gdpr-compliance`).
 - **Model:** Fable for all threat modelling and findings; Opus for mechanical
@@ -27,7 +27,7 @@ wireframes with STRIDE, OWASP Top 10, and NIST CSF 2.0, and record findings in
 - **Definition of done:** every finding framework-mapped and severity-rated; any
   blocking finding resolved before sprint planning; checklist satisfied; the
   technical requirements it implies are consistent with `code/docs/SECURITY.md`.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

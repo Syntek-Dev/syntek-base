@@ -7,7 +7,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-The internal agents & skills sub-documents — `COMMANDS.md`, `CONFIGURATION.md`, and
+The internal skills sub-documents — `COMMANDS.md`, `CONFIGURATION.md`, and
 `WORKFLOW.md` — split out of the `how-to/docs/TOOLING-GUIDE.md` index to keep each
 under the instructional line limit.
 
@@ -19,11 +19,15 @@ under the instructional line limit.
 - **Concrete steps:** edit the relevant sub-doc → keep every command a
   `code/src/scripts/**/*.sh` reference → keep the parent index and sub-doc
   cross-links in sync → keep each file ≤ 300 code lines.
-- **Definition of done:** the three sub-docs stay coherent with the index; agent and
-  skill names match the internal `.claude/agents/` and `.claude/skills/`; British English.
+- **Definition of done:** the three sub-docs stay coherent with the index; every skill
+  name resolves to a folder under `.claude/skills/`; British English.
 
 ## Guardrails
 
+- **Never restate the roster.** Which skill owns what belongs once, in
+  `.claude/skills/CONTEXT.md`. These files route to it and cover only the surface
+  around it — the cycle, the invocation and dispatch surface, the configuration. A
+  second copy of the roster is stale within a week and believed as readily as the first.
 - **≤ 300 code lines** per file — this folder exists precisely to honour that limit;
   do not let a sub-doc grow back past it.
 - **Script-first:** no raw `pnpm`/`uv`/`docker`/`python` commands.

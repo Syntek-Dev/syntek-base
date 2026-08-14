@@ -35,8 +35,8 @@ never the investigation.
   and it ships. Substance goes to `<%INCIDENT_TRACKER%>`, or outside the repository where a
   project has no tracker. **Never relax this to make a report fit.**
 - **Never restate the severity scale here.** P1–P4 are defined by the project's
-  incident-response policy (`incident-response-plan-writer`,
-  `.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md`). Two scales drift; route to the one.
+  incident-response policy, drafted by the `msp-scp-documents` skill
+  (`.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md`). Two scales drift; route to the one.
 - **Blameless.** Entries address process, systems and controls — never an individual, by name or
   by implication. This mirrors `code/docs/security/MONITORING-AND-INCIDENT.md` and is not
   negotiable in a register that ships.

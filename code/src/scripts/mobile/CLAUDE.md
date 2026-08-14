@@ -14,8 +14,8 @@ test, bundle — each running on the host rather than in Docker.
 ## How to work here
 
 - **Routing:** these scripts are the routing target for anything touching
-  `code/src/mobile/`. **Never invoke `pnpm`, `expo`, `tsc` or `jest` directly.** The `mobile`
-  agent and the `stack-react-native` skill target them.
+  `code/src/mobile/`. **Never invoke `pnpm`, `expo`, `tsc` or `jest` directly.** The
+  `stack-react-native` skill targets them.
 - **Model:** Opus to author or change a script and to run one.
 - **Concrete steps:** `install.sh` once → `server.sh` to develop against Expo Go → `lint.sh`,
   `typecheck.sh`, `test.sh --coverage` before a PR → `bundle.sh` last, because it is the CI gate.

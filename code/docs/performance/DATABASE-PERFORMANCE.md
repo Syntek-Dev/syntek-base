@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-htmx-templates]
+skills: [backend, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -63,7 +62,9 @@ def load_admin_member(user, *, request=None):
 
     # request carries the cache; fall back to the user so no-request callers
     # (Celery, management commands) still get a correct, uncached result.
-    return get_or_cache(request if request is not None else user, f"admin_member:{user.pk}", _loader)
+    return get_or_cache(
+        request if request is not None else user, f"admin_member:{user.pk}", _loader
+    )
 ```
 
 **When to reach for which tool:**
@@ -171,6 +172,7 @@ Apply caching at the layer closest to the consumer, falling back to deeper layer
 
 ```python
 from django.core.cache import cache
+
 
 def get_dashboard_stats(tenant_id: int) -> dict:
     cache_key = f"dashboard_stats:{tenant_id}"

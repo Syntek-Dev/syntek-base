@@ -1,0 +1,48 @@
+# Routing-skill guard — every skill named in routing frontmatter must exist.
+#
+# Routing frontmatter (.claude/CLAUDE.md § 2.5) names the skills an agent loads for a
+# piece of work. Nothing validated the names. A `skills: [bugfix]` pointing at a
+# directory that does not exist was green in every audit, in lefthook, and in CI: the
+# skill simply never arrived and the work went ahead without the conventions it was
+# supposed to carry. Silence is the entire failure mode, which is why a gate is the only
+# thing that finds it.
+#
+# The second clause is about generated projects rather than this one. The three
+# copier-gated stack skills (stack-react-native, stack-rust, stack-slint) are excluded on
+# a flag, and every file naming one must be excluded on a flag that guarantees it — the
+# implication is read from copier.yml's own `when:` clauses, so INCLUDE_DESKTOP counts as
+# INCLUDE_RUST without anyone hardcoding that here. Get it wrong and the base template
+# stays green while a web-only generated project ships an unresolvable routing name, and
+# it fails on a developer's machine downstream, where it is nobody's build to fix.
+#
+# What it cannot catch: whether a skill that resolves is the RIGHT one for that work, or
+# whether a needed skill was left out. Both stay reviewer judgement.
+#
+# No path filter. Any Markdown file can carry routing frontmatter, so scoping this to a
+# subset would recreate the blind spot it exists to close.
+name: Audit — Routing Skills
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+jobs:
+  routing-skills:
+    name: Routing skills resolve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run routing skills audit
+        run: bash code/src/scripts/audits/routing-skills.sh --output md
+
+      - name: Upload routing skills report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: routing-skills-report
+          path: code/src/scripts/audits/reports/routing-skills.md
+          if-no-files-found: ignore

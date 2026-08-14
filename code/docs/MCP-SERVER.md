@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-fastmcp]
+skills: [backend, stack-django, stack-fastmcp]
 model: opus
 ---
 
@@ -90,6 +89,6 @@ logic out of `services.py`, the seam was in the wrong place — fix that first.
 - [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) — the
   service layer both adapters depend on
 - `code/workflows/05-mcp-server/` — the procedure for adding a tool
-- `.claude/skills/stack-fastmcp/SKILL.md` — the idioms an agent loads on demand
+- `.claude/skills/stack-fastmcp/SKILL.md` — the idioms loaded on demand
 
 _Part of the `code/docs/` documentation family._

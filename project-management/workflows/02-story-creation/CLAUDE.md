@@ -12,7 +12,7 @@ criteria before any design or code begins; every feature starts here.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` against `CHECKLIST.md`; use `user-story`
+- **Routing:** run `STEPS.md` against `CHECKLIST.md`; load `story`
   for the drafting. Story creation is pre-code — no hard safety gates apply.
 - **Charting a big epic first:** when the input is a large, ambiguous epic rather than
   one story, chart its decision frontier with `.claude/skills/wayfinder/SKILL.md` (a
@@ -24,7 +24,7 @@ criteria before any design or code begins; every feature starts here.
   `docs/` guides → save as `US###.md` in `project-management/src/02-STORIES/`.
 - **Definition of done:** story named `US###.md`, acceptance criteria testable and
   complete enough to seed `code/workflows/02-tdd-cycle/`, checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

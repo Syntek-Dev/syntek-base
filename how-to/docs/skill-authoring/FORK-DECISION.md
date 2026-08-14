@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow, runbook]
+skills: [doc-writer, global-workflow, runbook]
 model: opus
 ---
 
@@ -85,37 +84,47 @@ session, not the turn that loaded it. This project disables auto-compaction
 accumulate until `/handoff` and `/clear`. That is an argument for a short reference skill, and
 for forking a genuinely large **task**; it is never an argument for forking axis 1.
 
-## Where a fork lands — one test decides two keys
+## Where a fork lands
 
-**Does the skill write?** A forked skill that only reads cannot breach `.claude/CLAUDE.md` § 6,
-because every rule in § 6 governs a write or a commit. That is what makes the read-only exemption
-safe rather than merely convenient.
+> **Every forked skill carries `agent: general-purpose` and `background: false`.**
 
-| The skill…                           | `agent:`          | `background:` | Why                                                   |
-| ------------------------------------ | ----------------- | ------------- | ----------------------------------------------------- |
-| **writes nothing** — sweeps, reads   | `Explore`         | `true`        | Cannot breach § 6, and the small context is the point |
-| **writes anything** — edits, commits | `general-purpose` | `false`       | Keeps CLAUDE.md, every tool, and session checkpoints  |
+One line, and it is a finding rather than a preference. A read-only target was offered as the
+other half of a write test, on the reasoning that a skill which writes nothing cannot breach
+`.claude/CLAUDE.md` § 6. Measured across the whole roster, **that row had no occupant** — every
+forked entry writes something, down to a report file. A rubric row with nothing in it invites
+re-litigation, so it is stated as a reopening test instead of kept as a table:
 
-Three things that test rests on, each worth stating because each is a property of the runtime
-rather than a preference:
+> A different target may be adopted **only** on evidence that a named skill writes nothing at
+> all — no file, no report, no gitignored artefact — **and** that no caller sequences on its
+> return. "It only reads, mostly" is not evidence: the one candidate ever proposed was a QA pass
+> that writes to `code/src/scripts/tests/reports/backend/`.
 
-- **`Explore` and `Plan` do not load CLAUDE.md.** Any other target does. So a skill that writes
-  has exactly one safe target, and it is not a matter of taste.
+Three properties of the runtime the rule rests on, each worth stating because none is a matter
+of taste:
+
+- **`Explore` and `Plan` do not load CLAUDE.md.** Any other target does. A skill that writes
+  therefore has exactly one safe target — and a skill that also deletes its § 6 checklist as
+  "auto-loaded" would receive § 6 by neither route.
 - **A backgrounded fork is handed fewer tools** than the same fork run in the foreground.
 - **Nothing a backgrounded fork writes is checkpointed.** `/rewind` reaches session state, and
-  those edits are not in it, so the only route back is the git history — which makes a clean
-  working tree a precondition for backgrounding, not a courtesy.
+  those edits are not in it, so the only route back is the git history.
 
-**Both keys are stated explicitly** `[gate: fail]`, even where the value repeats the documented
+**`Explore` is retired as a fork target, not retired.** It stays correct and in use as a
+**dispatch** target — a caller naming `subagent_type=Explore` on an Agent tool call is
+choosing a target per call, which is a different decision from a skill fixing one in its own
+frontmatter for every caller.
+
+**Both keys are stated explicitly** `[gate: fail]`, even though both now repeat the documented
 default. The default is version-dependent behaviour and `context: fork` is young; an explicit
 value is version-proof, and it is what lets the gate assert that every fork names a target inside
 `Explore` / `Plan` / `general-purpose` and says whether it detaches.
 
 ## The custom-agent door
 
-The runtime would accept one — `agent:` on a forked skill may name any subagent in
-`.claude/agents/` — so this is a choice, and the gate is what holds it. No skill here targets a
-custom agent, and the rule cannot be quietly reversed by adding a convenient one. The **reopening
+The runtime would accept one — `agent:` on a forked skill may name any subagent defined in a
+project-level agents folder, which this project no longer carries — so this is a choice, and the
+gate is what holds it. It holds both sides: clause 9 refuses the **name**, and clause 13 refuses
+the **folder**, so the rule cannot be quietly reversed by adding a convenient one. The **reopening
 test** is recorded here, because closing a question permanently on zero current need is deciding
 it without evidence:
 

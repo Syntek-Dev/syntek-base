@@ -14,7 +14,7 @@ encryption and searchable lookup tokens for encrypted fields — behind the
 ## How to work here
 
 - **Routing:** `doc-writer` (Opus) to author; consumed before adding any
-  PII field, and by `gdpr` and the `06-gdpr-enforcement` workflow.
+  PII field, and by `gdpr-mechanics` and the `06-gdpr-enforcement` workflow.
 - **Model:** Opus for substantive guidance and typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc (`FIELD-ENCRYPTION.md`,
   `LOOKUP-TOKENS.md`) → keep `ENCRYPTION-GUIDE.md` a thin index and update the

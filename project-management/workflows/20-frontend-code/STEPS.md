@@ -1,8 +1,7 @@
 ---
 workflow: 20-frontend-code
 phase: build
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: opus
 ---
 
@@ -35,11 +34,10 @@ This workflow covers the frontend of **whichever surfaces the story touches**. S
 **web surface** (Django templates + django-components + HTMX + Alpine). **Step 4M is mobile-only**
 and applies solely to a project generated with the mobile surface.
 
-**Why the frontmatter still says `agent: frontend`.** The `mobile` agent and the
-`stack-react-native` skill do not exist in a web-only project, so routing frontmatter naming them
-would point at nothing on half of all generated projects. The mobile route is therefore named at
-its point of use, in Step 4M, where its absence is self-explanatory. This is deliberate, not an
-omission.
+**Why the frontmatter still names `frontend`.** The `stack-react-native` skill does not exist in a
+web-only project, so routing frontmatter naming it would point at nothing on half of all generated
+projects. The mobile route is therefore named at its point of use, in Step 4M, where its absence is
+self-explanatory. This is deliberate, not an omission.
 
 `frontend` keeps its remit unchanged and is **web-only** — it hands mobile work over rather than
 applying Django-template assumptions to React Native.
@@ -94,7 +92,7 @@ Follow `code/workflows/01-new-feature/` for the full-stack feature checklist.
 frontend [describe the pages and routes to implement]
 ```
 
-> **↳ New agent:** `frontend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `frontend` · **Model:** opus · **MCP:** none
 
 - Public pages are Django views + templates under `code/src/django/` (`apps.marketing`)
 - Fetch page data from the Django view context — the public site is server-rendered (no client-side data fetching)
@@ -133,13 +131,13 @@ Build each component against its Figma design:
 ### Step 4M — Implement Mobile Screens (mobile-only)
 
 > **Skip entirely if `code/src/mobile/` does not exist** — the project has no mobile surface and
-> this step, the `mobile` agent, and the `stack-react-native` skill are all absent.
+> both this step and the `stack-react-native` skill are absent.
 
 ```text
-mobile [describe the screens to implement]
+stack-react-native [describe the screens to implement]
 ```
 
-> **↳ New agent:** `mobile` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `stack-react-native` · **Model:** opus · **MCP:** none
 
 The mobile app is a **separate deployable that consumes the same Django Ninja API** — it renders
 no Django page and Django never bundles it. Do not carry template, HTMX, or CSS assumptions
@@ -185,7 +183,7 @@ Follow `code/workflows/02-tdd-cycle/` for the red-green-refactor steps.
 test-writer [describe the components and pages to test]
 ```
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
 
 Refer to `code/docs/testing/FRONTEND-TESTING.md`. Frontend tests are **pytest** tests through the
 Django test client — there is no client-side runner, and they count towards the single backend
@@ -259,7 +257,7 @@ bash code/src/scripts/syntax/check.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

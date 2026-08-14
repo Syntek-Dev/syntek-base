@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -30,7 +29,7 @@ These are settled **before** any DDL runs, because each is expensive to change a
 
 **Scope.** Every table holding user-owned or otherwise partitionable rows carries an
 explicit scope column, and names it in `db_table_comment`. Which column that is — owner,
-account, organisation, tenant — is a domain decision, so the owning agent **opens a grilling
+account, organisation, tenant — is a domain decision, so the running skill **opens a grilling
 pass** (`.claude/skills/grill-with-docs`) covering ownership, cardinality, isolation scope,
 invariants, personal-data fields, retention, and expected query shapes. A tenancy question
 spanning many tables is charted with `.claude/skills/wayfinder` and resolved node by node.

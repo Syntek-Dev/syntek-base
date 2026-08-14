@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: code-reviewer
-skills: [global-workflow]
+skills: [code-reviewer, global-workflow]
 model: opus
 ---
 

@@ -48,17 +48,18 @@ points for that procedure.
 
 ### Reference guides
 
-| File                               | Purpose                                                                |
-| ---------------------------------- | ---------------------------------------------------------------------- |
-| `how-to/docs/DEVELOPMENT.md`       | First-time setup, Docker Compose commands, env vars, troubleshooting   |
-| `how-to/docs/AI-DICTIONARY.md`     | Plain-English glossary of AI-coding terms (index over ai-dictionary/)  |
-| `how-to/docs/SKILL-AUTHORING.md`   | How to write predictable skills under .claude/skills/ (index)          |
-| `how-to/docs/CLI-TOOLING.md`       | CLI reference for all Docker Compose development commands              |
-| `how-to/docs/GIT-WORKTREES.md`     | Parallel development with git worktrees, Docker isolation, URLs        |
-| `how-to/docs/TOOLING-GUIDE.md`     | Internal agents and skills reference (index)                           |
-| `how-to/docs/CELERY-FIRST-RUN.md`  | Getting the Celery worker and beat running the first time              |
-| `how-to/docs/FEATURE-DEPLOY.md`    | Deploying a feature branch                                             |
-| `how-to/docs/INCIDENT-PRACTICE.md` | Running a live incident: declare, shift handover, stand down, write up |
+| File                                | Purpose                                                                                       |
+| ----------------------------------- | --------------------------------------------------------------------------------------------- |
+| `how-to/docs/DEVELOPMENT.md`        | First-time setup, Docker Compose commands, env vars, troubleshooting                          |
+| `how-to/docs/AI-DICTIONARY.md`      | Plain-English glossary of AI-coding terms (index over ai-dictionary/)                         |
+| `how-to/docs/SKILL-AUTHORING.md`    | How to write predictable skills under .claude/skills/ (index)                                 |
+| `how-to/docs/CLI-TOOLING.md`        | CLI reference for all Docker Compose development commands                                     |
+| `how-to/docs/GIT-WORKTREES.md`      | Parallel development with git worktrees, Docker isolation, URLs                               |
+| `how-to/docs/TOOLING-GUIDE.md`      | Internal skills reference (index)                                                             |
+| `how-to/docs/CELERY-FIRST-RUN.md`   | Getting the Celery worker and beat running the first time                                     |
+| `how-to/docs/FEATURE-DEPLOY.md`     | Deploying a feature branch                                                                    |
+| `how-to/docs/INCIDENT-PRACTICE.md`  | Running a live incident: declare, shift handover, stand down, write up                        |
+| `how-to/docs/OPERATOR-DOC-CRAFT.md` | The conventions behind an executable guide: reader, homes, spine, commands, execute-to-verify |
 
 ### Operator guides (`how-to/src/`)
 

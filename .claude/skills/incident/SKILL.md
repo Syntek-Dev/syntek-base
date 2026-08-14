@@ -153,9 +153,8 @@ and every follow-up names an owner and a home outside `22-INCIDENTS/`.
 - **Nothing is live yet** — a failing test or broken build is `how-to/workflows/08-debugging/`.
 - **The cause is known and it is a defect** — go straight to `code/workflows/10-debug/` and file
   in `project-management/src/20-BUGS/`.
-- **Writing the incident-response _policy_** — that is the `incident-response-plan-writer` agent
-  with `.claude/skills/msp-scp-documents/`. This skill runs an incident; that one documents what
-  the organisation promises about them.
+- **Writing the incident-response _policy_** — that is the `msp-scp-documents` skill. This skill
+  runs an incident; that one documents what the organisation promises about them.
 - **The context window fills mid-incident** — use `/handoff` as well, for the Claude half.
 
 ## Governing procedures (route here — do not restate at length)
@@ -181,8 +180,8 @@ Two procedures are reached _from_ an incident and keep their own gates:
 - `code/docs/logging/HEALTH-CONTRACT.md` — what reports the system unhealthy, and the status page
 - `.claude/skills/handoff/SKILL.md` — the other handover: Claude session continuity
 - `.claude/skills/runbook/SKILL.md` — the craft `INCIDENT-PRACTICE.md` is written to
-- `.claude/agents/incident-response-plan-writer.md` · `.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md`
-  — the policy side, which owns the P1–P4 scale this skill routes to
+- `.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md` — the policy side, which owns the
+  P1–P4 scale this skill routes to
 - `code/src/scripts/development/logs.sh` · `code/src/scripts/database/backup.sh` ·
   `code/src/scripts/database/restore.sh` · `code/src/scripts/database/verify-db-security.sh` —
   the scripts an incident actually reaches for

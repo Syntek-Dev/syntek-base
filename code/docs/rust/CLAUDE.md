@@ -13,13 +13,13 @@ material, and the crate supply-chain gate.
 
 ## How to work here
 
-- **Routing:** reference guides, not code. The `rust` agent reads them; `security` cites
+- **Routing:** reference guides, not code. The `stack-rust` skill reads them; `security` cites
   `SUPPLY-CHAIN.md` and `MEMORY-HYGIENE.md` at audit time; `doc-writer` maintains the prose.
 - **Model:** Opus for substantive changes and mechanical touches alike.
 - **Concrete steps:** change the sub-document → check `RUST.md`'s sub-document table still
   describes it accurately → check the `stack-rust` skill has not drifted from it → update this
   `CONTEXT.md` if a file is added or removed.
-- **Definition of done:** every file carries the `type`/`agent`/`skills`/`model` routing
+- **Definition of done:** every file carries the `type`/`skills`/`model` routing
   frontmatter; each stays ≤ 300 code lines; cross-references resolve; British English.
 
 ## Guardrails

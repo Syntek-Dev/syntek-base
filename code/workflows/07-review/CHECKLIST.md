@@ -1,8 +1,7 @@
 ---
 workflow: 07-review
 phase: verify
-agent: review
-skills: [codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
+skills: [review, codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -31,8 +30,8 @@ model: opus
 - [ ] No hardcoded secrets or credentials · _opus_
 - [ ] No bare `except:` — exceptions caught as `except (A, B):` · _opus_
 - [ ] No inline imports without documented reason · _opus_
-- [ ] Security agent findings addressed · _opus_
-- [ ] QA agent confirmed no regressions · _opus_
+- [ ] Security findings addressed · _opus_
+- [ ] QA pass confirmed no regressions · _opus_
 
 ---
 

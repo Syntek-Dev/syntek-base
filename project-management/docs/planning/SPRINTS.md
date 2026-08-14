@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: sprint
-skills: [global-workflow]
+skills: [sprint, global-workflow]
 model: fable
 ---
 

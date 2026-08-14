@@ -14,7 +14,7 @@ policy templates, and RLS testing and audit.
 ## How to work here
 
 - **Routing:** documentation, not code — `doc-writer`, `database`, or
-  `:security` agent (Opus). Governs user-scoped, row-isolated work under `stack-django`.
+  `security` (Opus). Governs user-scoped, row-isolated work under `stack-django`.
   Opus for mechanical touches.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/RLS-GUIDE.md` a thin
   index → policy templates must be correct SQL that applies cleanly via a Django

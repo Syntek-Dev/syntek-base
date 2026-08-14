@@ -14,7 +14,7 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` agent (Fable), which
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable), which
   delegates: `database` for `src/04-DATABASE`, `frontend` for `src/07-COMPONENTS` and
   `src/08-WIREFRAMES`, and takes `src/05-USER-FLOW` and `src/06-BRAND-GUIDE` itself. The
   hard gates — `code/docs/DATABASE.md` and `code/docs/DESIGN-TOKENS.md` — must be read
@@ -37,7 +37,7 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   artefact or explicitly recorded as superseded; the consolidated set has no unresolved
   duplicate; every affected story plan is corrected; `18-backend-code/` is unblocked.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (see
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
   `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails

@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow, runbook]
+skills: [doc-writer, global-workflow, runbook]
 model: opus
 ---
 
@@ -32,7 +31,7 @@ is why they lead the reading order below.
 | Document                                                               | Covers                                                                                                                                                            |
 | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`skill-authoring/FORK-DECISION.md`](skill-authoring/FORK-DECISION.md) | Whether the remit is already owned, reference skill vs task skill, the three-axis fork rubric, which target a fork lands in, and the custom-agent reopening test  |
-| [`skill-authoring/FRONTMATTER.md`](skill-authoring/FRONTMATTER.md)     | The six specification fields and their constraints, the four runtime keys admitted here, what is declined and why, and the vendored exception                     |
+| [`skill-authoring/FRONTMATTER.md`](skill-authoring/FRONTMATTER.md)     | The six specification fields and their constraints, the four runtime keys admitted here, `metadata.skills` as a checkable register, what is declined and why      |
 | [`skill-authoring/CRAFT.md`](skill-authoring/CRAFT.md)                 | The four axes: invocation, information hierarchy, steering, pruning — including what a description must discriminate against and how a reference skill is reached |
 | [`skill-authoring/SHIPPING.md`](skill-authoring/SHIPPING.md)           | Folder structure, the length cap, the `## Governing procedures` routing section, registration, the conformance gate, and the pre-ship checklist                   |
 

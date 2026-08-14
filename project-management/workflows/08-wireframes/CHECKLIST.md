@@ -1,8 +1,7 @@
 ---
 workflow: 08-wireframes
 phase: design
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: fable
 ---
 

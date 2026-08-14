@@ -64,6 +64,19 @@ Cite the source that owns the fact:
 Secondary sources — blogs, Q&A threads, tutorials — are scouts only: they lead you to the
 primary, and the citation you keep is always the primary.
 
+## A lead is not a finding
+
+An outside source — a blog, a detector, another repository, another model — earns a **look at
+the primary source**, never a direct edit. Where the primary confirms it, the substance is the
+primary's and the lead is owed no citation.
+
+**Consensus among secondary sources is not corroboration.** They copy one another, so agreement
+is one source counted many times and a shared error propagates unchallenged. Apple's App Store
+Connect Help gives the keyword-field limit as **100 bytes**; secondary write-ups near-universally
+state "100 characters". The two coincide in ASCII and diverge by 2–3× the moment a listing is
+localised. Fetching the vendor's own page is the only thing that separates them, and it costs one
+request.
+
 ## The note
 
 Give each note these parts, so a reader reaches the verdict fast and can audit every claim:

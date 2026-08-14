@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: opus
 ---
 

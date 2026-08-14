@@ -104,8 +104,9 @@ What did we fail to ask that you would expect us to need?
 
 ## Boundaries
 
-- **Vendor security assessments are not this.** `.claude/agents/vendor-assessment-writer.md` owns
-  that questionnaire, with its own compliance structure. Route there instead.
+- **Vendor security assessments are not this.**
+  `.claude/skills/msp-scp-documents/VENDOR-AND-SLA.md` owns that questionnaire, with its own
+  compliance structure. Route there instead.
 - **A GDPR register is not this.** The six registers in `project-management/src/09-GDPR/` are
   artefacts of record; a questionnaire may gather what fills one, and never replaces it.
 - **This is not a handoff.** `/handoff` addresses a fresh agent with full repo access.

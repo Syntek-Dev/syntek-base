@@ -1,8 +1,7 @@
 ---
 workflow: 16-story-plans
 phase: design
-agent: planner
-skills: [global-workflow]
+skills: [planner, global-workflow]
 model: fable
 ---
 

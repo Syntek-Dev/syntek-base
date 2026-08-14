@@ -15,7 +15,7 @@ STRIDE, OWASP Top 10, and NIST CSF 2.0 before it merges.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/`
-  (`STEPS.md` + `CHECKLIST.md`) via the `security` agent (Fable). Write a story's
+  (`STEPS.md` + `CHECKLIST.md`) via the `security` skill (Fable). Write a story's
   `PLANNING/` plan before implementing it; write the `IMPLEMENTATION/` record after the
   PR. `docs/SECURITY-GUIDE.md` holds the framework tables; `code/docs/SECURITY.md` is
   the code-side control set being verified.

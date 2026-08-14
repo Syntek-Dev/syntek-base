@@ -106,6 +106,16 @@ ignore = [
 # The taxonomy is doctrine — code/docs/NEGATIVE-SPACE.md § The error taxonomy — not a
 # naming accident, so the rule yields here rather than the names.
 "*/apps/core/services/errors.py" = ["N818"]
+# The two PM asset builders shell out to xelatex to render the brand guide and the
+# component sheet to PDF. S603 asks whether the input is untrusted; here it demonstrably
+# is not, on all three counts that matter: the binary is resolved with `shutil.which`
+# rather than taken from a caller, the argument vector is a literal list built in the
+# function, and there is no `shell=True` for anything to be interpreted by. Neither
+# script is application code — they are developer tooling that runs by hand and produces
+# a PDF. Ignored per file rather than per line so the exemption is visible in one place
+# and cannot spread by copy-paste into `code/src/django/`.
+"*/06-BRAND-GUIDE/guide-build/*" = ["S603"]
+"*/07-COMPONENTS/component-build/*" = ["S603"]
 
 # Django Ninja's default is to SILENTLY IGNORE unknown request-body fields. The fix is
 # `extra="forbid"`, which Pydantic inherits through subclassing — so it propagates from one
@@ -137,7 +147,12 @@ reportMissingTypeStubs = false
 
 [dependency-groups]
 dev = [
-  "ruff>=0.11.0",
+  # Floor raised 0.11.0 -> 0.16.3 (14/08/2026). Not housekeeping: from 0.16 ruff
+  # formats Python inside Markdown fenced blocks, so the floor decides whether the
+  # docs are in scope. It was found by CI resolving the floor to latest while the
+  # host ran 0.14.11 — a `>=` constraint is not a pin, and the two disagreed about
+  # what "formatted" meant. Raise this deliberately, and reformat in the same change.
+  "ruff>=0.16.3",
   "basedpyright>=1.28.0",
   "pip-audit",
 ]

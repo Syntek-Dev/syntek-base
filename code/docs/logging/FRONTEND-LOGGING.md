@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: logging
-skills: [stack-htmx-templates]
+skills: [logging, stack-htmx-templates]
 model: opus
 ---
 

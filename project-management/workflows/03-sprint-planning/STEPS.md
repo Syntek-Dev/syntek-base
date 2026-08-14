@@ -1,8 +1,7 @@
 ---
 workflow: 03-sprint-planning
 phase: design
-agent: sprint
-skills: [global-workflow]
+skills: [sprint, global-workflow]
 model: fable
 ---
 
@@ -43,7 +42,7 @@ Read open stories in `project-management/src/02-STORIES/` and identify candidate
 sprint [describe sprint goal and available stories]
 ```
 
-> **↳ New agent:** `sprint` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** fable · **MCP:** none
 
 ### Step 3 — Review and Balance
 
@@ -63,7 +62,7 @@ Save to `project-management/src/03-SPRINTS/SPRINT-##.md`.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

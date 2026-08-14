@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -253,6 +252,7 @@ from django.db import migrations
 _TABLE = "myapp_mymodel"
 _U = "current_setting('app.current_user_id', true)::bigint"
 
+
 def _rls_on(_, se):
     if se.connection.vendor != "postgresql":
         return
@@ -260,8 +260,11 @@ def _rls_on(_, se):
     se.execute(f"ALTER TABLE {_TABLE} FORCE ROW LEVEL SECURITY;")
     se.execute(f"CREATE POLICY mymodel_owner_select ON {_TABLE} FOR SELECT USING (user_id = {_U});")
     se.execute(f"CREATE POLICY mymodel_open_insert ON {_TABLE} FOR INSERT WITH CHECK (true);")
-    se.execute(f"CREATE POLICY mymodel_owner_update ON {_TABLE} FOR UPDATE USING (user_id = {_U}) WITH CHECK (user_id = {_U});")
+    se.execute(
+        f"CREATE POLICY mymodel_owner_update ON {_TABLE} FOR UPDATE USING (user_id = {_U}) WITH CHECK (user_id = {_U});"
+    )
     se.execute(f"CREATE POLICY mymodel_owner_delete ON {_TABLE} FOR DELETE USING (user_id = {_U});")
+
 
 def _rls_off(_, se):
     if se.connection.vendor != "postgresql":
@@ -271,6 +274,7 @@ def _rls_off(_, se):
     se.execute(f"DROP POLICY IF EXISTS mymodel_owner_update ON {_TABLE};")
     se.execute(f"DROP POLICY IF EXISTS mymodel_owner_delete ON {_TABLE};")
     se.execute(f"ALTER TABLE {_TABLE} DISABLE ROW LEVEL SECURITY;")
+
 
 class Migration(migrations.Migration):
     dependencies = []

@@ -15,7 +15,7 @@ it, rebrand it, build commercial products with it. Contributions are welcome, no
 ## What this repository is
 
 A [Copier](https://copier.readthedocs.io/) template that generates a Django-monolith project
-complete with a three-layer documentation system and a Claude Code agent suite. Almost everything
+complete with a three-layer documentation system and a Claude Code skill suite. Almost everything
 here is documentation and configuration; there is very little application code.
 
 Generate a project with:
@@ -171,6 +171,32 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 Do not bump the version in your PR — versioning is single-track and handled on merge
 (`project-management/docs/VERSIONING-GUIDE.md`).
+
+### syntek-base's public API
+
+Semantic Versioning requires a declared public API, or MAJOR has no referent. `VERSIONING-GUIDE.md`
+carries the rule and the declaration a **generated project** makes; this repository's own is
+different, and is stated here rather than there because that guide ships into every generated
+project, where a statement about `copier.yml` would be meaningless.
+
+> **syntek-base's public API is the template contract**: the `copier.yml` questions and tokens, the
+> shape of the generated tree, and the `.claude/` routing contract a generated project inherits and
+> `copier update` re-applies.
+
+It is **not** the Django Ninja `/api/` surface — that belongs to the generated project and moves on
+the `code/src/django/` sub-package track.
+
+What this makes decidable, with no argument left over:
+
+| Change to the template                                                        | Increment |
+| ----------------------------------------------------------------------------- | --------- |
+| Removing or renaming a Copier question or token; removing a routing contract  | **MAJOR** |
+| Moving or deleting a directory a generated project inherits                   | **MAJOR** |
+| Adding a question with a default, a new guide, a new skill, a new workflow    | MINOR     |
+| Correcting prose, a link, a script, or a gate that changes no inherited shape | PATCH     |
+
+A MAJOR bump to the template also requires a `_migrations:` entry in `copier.yml`, because an
+existing project has to be carried across the break rather than left on the old contract.
 
 ---
 

@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: git
-skills: [global-workflow]
+skills: [git, global-workflow]
 model: opus
 ---
 
@@ -112,6 +111,19 @@ Still to do:
 Version: <old> → <new>
 ```
 
+### The co-author trailer
+
+Every commit an agent writes ends with a co-author trailer naming the model that wrote it:
+
+```text
+Co-Authored-By: Claude <model> <noreply@anthropic.com>
+```
+
+`<model>` is the family and its current major — the name in `.claude/CLAUDE.md` § 4, read at
+the time of the commit. **It is never pinned in a rule**, here or in a skill: a hardcoded
+version string goes stale on the next model release and then every commit misattributes itself
+to a model that did not write it. The same applies to a PR body's generation footer.
+
 ### Type values
 
 | Type       | When to use                                         |
@@ -137,6 +149,32 @@ Version: <old> → <new>
 | `ci`       | CI workflow files                                 |
 | `docs`     | Documentation files                               |
 | `infra`    | Docker Compose or environment config              |
+
+### Signalling a breaking change
+
+A breaking change is signalled **in the commit**, not left to be inferred from the diff at release
+time. Two forms, and either is sufficient:
+
+| Form                          | Where                                        | Example                                                                        |
+| ----------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------ |
+| **`!` shorthand**             | Immediately before the `:` in the type/scope | `feat(api)!: drop the v1 booking payload`                                      |
+| **`BREAKING CHANGE:` footer** | A footer at the end of the commit body       | `BREAKING CHANGE: the v1 booking payload no longer accepts a bare customer_id` |
+
+Use the footer whenever the consequence needs a sentence — the `!` alone tells a reader that
+something broke but not what. Using both is fine and often clearest.
+
+**How type maps to the increment:**
+
+| Commit carries                     | Increment                      |
+| ---------------------------------- | ------------------------------ |
+| `fix`                              | PATCH                          |
+| `feat`                             | MINOR                          |
+| `!` or a `BREAKING CHANGE:` footer | **MAJOR — regardless of type** |
+
+A `docs!:` or `chore!:` commit is a MAJOR just as surely as a `feat!:` one. **What counts as
+breaking is decided against the declared public API**, not against the size of the diff —
+`project-management/docs/VERSIONING-GUIDE.md` owns that declaration and the increment rules; this
+guide owns only how a commit says so.
 
 ---
 

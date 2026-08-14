@@ -10,18 +10,17 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → `how-to/CONTEXT.md` 
 
 The human-facing operator guides that do not fit the instructional-doc limits — the contributing
 and code-quality standard (`CONTRIBUTING.md`), the base-template contract and its guide set
-(`TEMPLATE-TOKENS.md`, `TEMPLATE-GUIDE/`), the two scale-planner snapshots, and the
+(`TEMPLATE-TOKENS.md`, `TEMPLATE-GUIDE/`), the two `/scale-planning` snapshots, and the
 `NIXOS-SETUP.md` pointer stub.
 
 ## How to work here
 
 - **Routing:** contributing-standard edits and every other operator guide here → the
-  `operator-docs` agent, loading `.claude/skills/runbook/`; procedure of record is
-  `how-to/workflows/09-write-operator-guide/`. (This previously named `doc-writer`, whose
-  own remit is `code/docs/*` — operator guides are a different audience and a different
-  length standard.) The
+  `runbook` skill (`.claude/skills/runbook/`); procedure of record is
+  `how-to/workflows/09-write-operator-guide/`. (Not `doc-writer`, whose own remit is
+  `code/docs/*` — operator guides are a different audience and a different length standard.) The
   template contract and guides → see `TEMPLATE-GUIDE/CLAUDE.md`. The two architecture snapshots →
-  the `scale-planner` agent via `/scale-planning` (each has its own `CLAUDE.md`). Server
+  the `scale-planning` skill via `/scale-planning` (each has its own `CLAUDE.md`). Server
   provisioning → the `<%DEPLOY_REPO%>` repository.
 - **Model:** Opus for substantive guide edits and for mechanical touches (renames, command and
   link fixes); Fable where the snapshot directories say so.

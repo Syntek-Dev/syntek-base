@@ -1,8 +1,7 @@
 ---
 workflow: 10-debug
 phase: verify
-agent: debugger
-skills: [stack-django, stack-htmx-templates]
+skills: [bugfix, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -73,11 +72,15 @@ bash code/src/scripts/development/shell.sh
 Apply the minimal fix. Do not refactor surrounding code in the same commit —
 if a design problem is evident, note it and open a separate refactoring task.
 
+Dispatch the scoped phase below to confirm the cause and the recommended fix; it hands
+back a finding, and the fix is applied here. Verification is Step 4 and the commit Step 6
+— never the dispatch.
+
 ```text
-debugger [describe the bug and the isolated scope]
+bugfix [describe the bug and the isolated scope]
 ```
 
-> **↳ New agent:** `debugger` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `bugfix` (`## Root cause` phase only) · **Model:** opus · **MCP:** none
 
 ### Step 4 — Verify No Regressions
 
@@ -105,7 +108,7 @@ bash code/src/scripts/tests/backend.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

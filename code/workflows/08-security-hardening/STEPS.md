@@ -1,8 +1,7 @@
 ---
 workflow: 08-security-hardening
 phase: harden
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -33,11 +32,11 @@ Consult `code/REFERENCES.md` as you work through these steps:
 security [scope to review]
 ```
 
-> **↳ New agent:** `security` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** code-review-graph
 
 ### Step 2 — Address Findings
 
-Address all findings from the security agent in severity order (critical first).
+Address all `security` findings in severity order (critical first).
 Commit after each group of fixes.
 
 ### Step 3 — QA Verification
@@ -46,7 +45,7 @@ Commit after each group of fixes.
 qa-tester [verify security fixes]
 ```
 
-> **↳ New agent:** `qa-tester` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** none
 
 ### Step 4 — Log Audit
 
@@ -69,7 +68,7 @@ Save a security audit summary to `project-management/src/10-SECURITY/AUDITS/`.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

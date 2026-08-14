@@ -16,8 +16,8 @@ artefacts under `src/`.
 - **Routing:** these are _reference_ guides, not artefacts. Read the relevant guide
   before its workflow — `SECURITY-GUIDE.md` before `workflows/10-security-checks`,
   `QA-GUIDE.md` before `workflows/11-qa-checks`, `PLANNING-GUIDE.md` (and its
-  `planning/` sub-documents) before any planning workflow. Substantive guide edits use the matching internal
-  agent (`security`, `qa-tester`, `seo`, `gdpr`, `git`, `version`).
+  `planning/` sub-documents) before any planning workflow. Substantive guide edits load the matching
+  skill (`security`, `qa-tester`, `seo`, `gdpr-mechanics`, `git`, `version`).
 - **Model:** Fable to rewrite a planning/spec guide (GDPR, security, QA, planning,
   responsive-design); Opus for the process guides (git, versioning, SEO); Opus for
   mechanical touches — version-header bumps, a redirect stub, a doc-index lookup.
@@ -27,7 +27,7 @@ artefacts under `src/`.
   add or remove a guide. Version bumps go through `VERSIONING-GUIDE.md`.
 - **Definition of done:** guide accurate and cross-linked to its workflow; ≤ 300 code
   lines; British English; `CONTEXT.md` guide table current.
-- **Routing frontmatter:** every guide here carries `type`/`agent`/`skills`/`model` frontmatter — read it first and route to the named agent, skills, and model (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every guide here carries `type`/`skills`/`model` frontmatter — read it first and route to the named skills and model (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

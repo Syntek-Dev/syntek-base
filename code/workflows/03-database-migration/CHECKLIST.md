@@ -1,8 +1,7 @@
 ---
 workflow: 03-database-migration
 phase: build
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 

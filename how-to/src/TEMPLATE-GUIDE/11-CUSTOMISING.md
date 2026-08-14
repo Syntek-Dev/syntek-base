@@ -51,7 +51,7 @@ public pages go through `code/src/scripts/development/new-django-view.sh`.
 
 ### The scripts
 
-Every guide, agent and workflow references `code/src/scripts/**`. Renaming one means sweeping the
+Every guide, skill and workflow references `code/src/scripts/**`. Renaming one means sweeping the
 documentation. Adding scripts is cheap; renaming is not.
 
 ### CI workflows
@@ -112,15 +112,15 @@ workspace silently. Nothing warns you.
 
 ## House rules — change knowingly
 
-| Rule                             | Where                           | If you change it                                             |
-| -------------------------------- | ------------------------------- | ------------------------------------------------------------ |
-| Coverage floors 75 % / 90 % auth | `code/docs/testing/COVERAGE.md` | Update the CI gate too, or it disagrees with the doc         |
-| 750-line source limit            | `code/CONTEXT.md`               | `audit-cloc.yml` and `cloc.sh` both hardcode the threshold   |
-| 300-line instructional-doc limit | `.claude/CLAUDE.md` §8          | The context-budget rationale goes with it                    |
-| British English prose            | `.claude/CLAUDE.md`             | Sweep existing docs or you get a mix                         |
-| Grilling before substantial work | `.claude/CLAUDE.md` §10         | Agents stop interviewing and start building on first reading |
-| Token-first CSS                  | `code/docs/DESIGN-TOKENS.md`    | `audits/css-tokens.sh` will fail until you change it too     |
-| Docker-only operations           | `.claude/CLAUDE.md` §1          | Every script assumes containers                              |
+| Rule                             | Where                           | If you change it                                               |
+| -------------------------------- | ------------------------------- | -------------------------------------------------------------- |
+| Coverage floors 75 % / 90 % auth | `code/docs/testing/COVERAGE.md` | Update the CI gate too, or it disagrees with the doc           |
+| 750-line source limit            | `code/CONTEXT.md`               | `audit-cloc.yml` and `cloc.sh` both hardcode the threshold     |
+| 300-line instructional-doc limit | `.claude/CLAUDE.md` §8          | The context-budget rationale goes with it                      |
+| British English prose            | `.claude/CLAUDE.md`             | Sweep existing docs or you get a mix                           |
+| Grilling before substantial work | `.claude/CLAUDE.md` §10         | Claude stops interviewing and starts building on first reading |
+| Token-first CSS                  | `code/docs/DESIGN-TOKENS.md`    | `audits/css-tokens.sh` will fail until you change it too       |
+| Docker-only operations           | `.claude/CLAUDE.md` §1          | Every script assumes containers                                |
 
 ## The non-negotiables
 
@@ -145,7 +145,7 @@ still want to:
 1. Write an ADR in `project-management/src/14-DECISIONS/` — the reasoning outlives the decision.
 2. Update `how-to/src/TEMPLATE-TOKENS.md` under _What stays fixed_.
 3. Sweep the documentation that asserts the old choice. There is more of it than you expect —
-   `code/docs/RENDERING.md`, `ARCHITECTURE-PATTERNS.md`, the stack skills, and the agent
+   `code/docs/RENDERING.md`, `ARCHITECTURE-PATTERNS.md`, the stack skills, and the skill
    definitions all describe the stack.
 4. Accept that `copier update` will conflict in those files from then on.
 
@@ -182,5 +182,5 @@ delete `.copier-answers.yml` and treat it as an ordinary repository.
 
 ## Next
 
-- Add an agent, skill, workflow or app → `12-EXTENDING.md`
+- Add a skill, workflow or app → `12-EXTENDING.md`
 - Merge upstream changes → `14-UPDATING.md`

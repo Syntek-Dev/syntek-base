@@ -1,8 +1,7 @@
 ---
 workflow: 10-debug
 phase: verify
-agent: debugger
-skills: [stack-django, stack-htmx-templates]
+skills: [bugfix, stack-django, stack-htmx-templates]
 model: opus
 ---
 

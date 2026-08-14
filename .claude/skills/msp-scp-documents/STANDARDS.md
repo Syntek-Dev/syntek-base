@@ -66,6 +66,21 @@ certification — write "aligned with" or "informed by", never "certified to".
 When citing ISO controls, use the clause format: "ISO/IEC 27001:2022, Annex A, Control
 8.8 — Management of technical vulnerabilities."
 
+### Three inputs that scope every policy, and are not derivable from its sections
+
+The per-document required-sections lists tell the grilling pass most of what it must ask, because
+a section that has to be written names the input it needs. These three do not appear in any
+section and change what the whole document says, so they are asked whichever policy is being
+drafted:
+
+| Input                        | What it decides                                                                                                                               |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Frameworks to align with** | Which rows of the table above are in scope. "Aligned with" is a claim, and an unasked-for one is a false claim                                |
+| **Organisation size**        | Whether a named role is a person or a hat somebody already wears — a five-person business has no separate Communications Lead                 |
+| **Industry sector**          | Which regulator, notification duty and retention floor apply on top of UK GDPR — healthcare, finance and critical infrastructure each add one |
+
+Never invent a name, a headcount or a contact detail to fill one: mark it `[AWAITING USER INPUT]`.
+
 ---
 
 ## Formatting Conventions

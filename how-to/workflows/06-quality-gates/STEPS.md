@@ -1,8 +1,7 @@
 ---
 workflow: 06-quality-gates
 phase: verify
-agent: syntax
-skills: [global-workflow]
+skills: [syntax, global-workflow]
 model: opus
 ---
 
@@ -28,7 +27,7 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 
 ## Step 1 — Format and lint first
 
-> **↳ New agent:** `syntax` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `syntax` · **Model:** opus
 
 Cheapest gates first — a formatting failure is worth catching before a ten-minute suite.
 

@@ -13,7 +13,7 @@ template Django resolves without an application asking it to.
 
 ## How to work here
 
-- **Routing:** template work → `stack-htmx-templates` skill (Opus), via the `frontend` agent.
+- **Routing:** template work → `stack-htmx-templates` skill (Opus), via the `frontend` skill.
   A new page route is scaffolded by `code/src/scripts/development/new-django-view.sh` —
   never hand-created.
 - **Model:** Opus.

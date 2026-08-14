@@ -1,8 +1,7 @@
 ---
 workflow: 07-review
 phase: verify
-agent: review
-skills: [codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
+skills: [review, codebase-design, improve-codebase-architecture, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -36,13 +35,13 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Code Review
 
-Run the code review agent across the scope being reviewed.
+Dispatch `code-reviewer` across the scope being reviewed.
 
 ```text
 review [scope — file, app, or feature]
 ```
 
-> **↳ New agent:** `review` · **Model:** opus · **MCP:** code-review-graph (review playbook — `.claude/skills/review-changes.md`)
+> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:** code-review-graph (review playbook — `.claude/skills/review-changes.md`)
 
 The review runs on **two independent axes — reported separately, never merged or ranked, with
 no single cross-axis winner**:
@@ -60,13 +59,13 @@ Address all findings on **both axes** before proceeding.
 
 ### Step 2 — Security Check
 
-Run the security agent to verify OWASP compliance on the same scope.
+Dispatch `security` to verify OWASP compliance on the same scope.
 
 ```text
 security [scope]
 ```
 
-> **↳ New agent:** `security` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** code-review-graph
 
 Address all critical and high findings. Document any accepted lower-severity risks.
 
@@ -76,7 +75,7 @@ Address all critical and high findings. Document any accepted lower-severity ris
 qa-tester [scope]
 ```
 
-> **↳ New agent:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph
 
 Confirm no regressions and that acceptance criteria are met.
 
@@ -98,7 +97,7 @@ Confirm no regressions and that acceptance criteria are met.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

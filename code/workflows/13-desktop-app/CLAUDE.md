@@ -14,7 +14,7 @@ Slint attribution.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Windows and
-  markup → `desktop` + `stack-slint` (Opus); native primitives behind them → `rust`; the API the
+  markup → `stack-slint` (Opus); native primitives behind them → `stack-rust`; the API the
   app calls → `backend`; tests → `test-writer`. Read `CONTEXT.md` first. **Entered from
   `project-management/workflows/20-frontend-code/`**, never directly from a design gate. Hard
   gates before Step 1: `code/docs/desktop/LICENSING.md` and `code/docs/desktop/UI-AND-STATE.md`.
@@ -28,7 +28,7 @@ Slint attribution.
   `package.sh` exit `0`; the About dialog is reachable by eye; screen-reader behaviour checked;
   touched `CONTEXT.md` files and the code-review-graph refreshed.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

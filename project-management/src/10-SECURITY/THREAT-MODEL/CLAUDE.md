@@ -16,7 +16,7 @@ CSF 2.0, consumed by the posture assessments under `../ASSESSMENTS/`.
 
 - **Routing:** threat models run through `project-management/workflows/10-security-checks/`
   (`STEPS.md` + `CHECKLIST.md`) against `project-management/docs/SECURITY-GUIDE.md`, using
-  the `security` agent (Fable) — after wireframes are signed off and the GDPR review is
+  the `security` skill (Fable) — after wireframes are signed off and the GDPR review is
   complete, before sprint planning. Write a story's `PLANNING/` model before implementing
   it; the code-side enforcement lives in `code/docs/SECURITY.md`.
 - **Model:** Fable for every threat model and review — STRIDE analysis and re-assessment

@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: test-writer
-skills: [stack-django, stack-htmx-templates]
+skills: [test-writer, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -26,10 +25,13 @@ from hypothesis import strategies as st
 from apps.core.validators import validate_slug
 
 
-@given(slug=st.text(
-    alphabet=st.characters(whitelist_categories=("Ll", "Nd"), whitelist_characters="-"),
-    min_size=1, max_size=60
-))
+@given(
+    slug=st.text(
+        alphabet=st.characters(whitelist_categories=("Ll", "Nd"), whitelist_characters="-"),
+        min_size=1,
+        max_size=60,
+    )
+)
 @settings(max_examples=500)
 def test_valid_slugs_are_accepted(slug: str) -> None:
     """validate_slug must not raise for any input that matches the allowed character set."""
@@ -41,6 +43,7 @@ def test_valid_slugs_are_accepted(slug: str) -> None:
 def test_email_validator_never_raises_unexpectedly(value: str) -> None:
     from django.core.exceptions import ValidationError
     from django.core.validators import validate_email
+
     try:
         validate_email(value)
     except ValidationError:
@@ -72,15 +75,19 @@ Every Django app that accepts user input must have negative tests for:
 - Command/path injection in user-supplied identifiers
 
 ```python
-@pytest.mark.parametrize("slug", [
-    "'; DROP TABLE users --",
-    "<script>alert(1)</script>",
-    "../../../etc/passwd",
-    "a" * 300,  # exceeds max field length
-])
+@pytest.mark.parametrize(
+    "slug",
+    [
+        "'; DROP TABLE users --",
+        "<script>alert(1)</script>",
+        "../../../etc/passwd",
+        "a" * 300,  # exceeds max field length
+    ],
+)
 def test_invalid_slug_is_rejected(slug: str) -> None:
     from django.core.exceptions import ValidationError
     from apps.core.models import Page
+
     with pytest.raises((ValidationError, ValueError)):
         Page(slug=slug).full_clean()
 ```
@@ -98,6 +105,7 @@ Every state-changing endpoint must have:
 def test_update_profile_requires_authentication() -> None:
     from ninja.testing import TestClient
     from apps.users.api import router
+
     client = TestClient(router)
     response = client.post("/profile", json={"display_name": "Eve"})
     assert response.status_code == 401

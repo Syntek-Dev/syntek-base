@@ -1,8 +1,7 @@
 ---
 workflow: 03-database-migration
 phase: build
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -33,7 +32,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 backend [describe model change]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** code-review-graph
 
 ### Step 1a — Register or Update the Model in Django Admin (`/control/`)
 
@@ -90,7 +89,7 @@ bash code/src/scripts/tests/backend.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

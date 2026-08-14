@@ -20,7 +20,7 @@ debug failures; the `docs/` guides plus the step-by-step `workflows/` that drive
   governing `docs/` guide (`DEVELOPMENT.md`, `GIT-WORKTREES.md`, `TOOLING-GUIDE.md`,
   `CLI-TOOLING.md`). This layer documents operations — it holds no deployable code.
 - **Grill first:** any substantial operational task — restructuring a guide or workflow —
-  opens with a grilling pass (the owning agent loads `.claude/skills/grill-with-docs`, which owns the round shape and question format) before the artefact is produced; only trivial/mechanical touches skip
+  opens with a grilling pass (the running skill loads `.claude/skills/grill-with-docs`, which owns the round shape and question format) before the artefact is produced; only trivial/mechanical touches skip
   it (`.claude/CLAUDE.md` §10).
 - **Model:** Opus when authoring or restructuring a guide/workflow and
   mechanical touches (renames, link fixes, version-header bumps).

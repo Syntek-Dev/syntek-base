@@ -15,8 +15,8 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
 ## How to work here
 
 - **Routing:** never freehand a PM task — open the matching `NN-…/` folder and run its
-  `STEPS.md` against its `CHECKLIST.md`. The numbering is the running order. Reach for
-  the internal agents (`user-story`, `sprint`, `planner`, `gdpr`, `security`,
+  `STEPS.md` against its `CHECKLIST.md`. The numbering is the running order. Load the
+  matching skills (`story`, `sprint`, `planner`, `gdpr-mechanics`, `security`,
   `qa-tester`, `seo`, `git`, `version`, `completion`) for the heavy steps.
 - **The cadence is per story, not per phase** (`CONTEXT.md` → _The planning cadence_):
   one story runs `02`→`14` before the next begins; when the open sprint reaches
@@ -24,7 +24,7 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
   sprint's stories; once every story is planned, `17` consolidates the per-story design
   and schema work. Do not batch a gate across the whole backlog.
 - **Grill first:** every substantial workflow — design, code, test, QA, review, refactor —
-  opens with a grilling pass; the owning agent loads `.claude/skills/grill-with-docs` and
+  opens with a grilling pass; the owning skill loads `.claude/skills/grill-with-docs` and
   interviews <%DEVELOPER_NAME%> before producing the artefact (`.claude/CLAUDE.md` §10).
   Only trivial/mechanical steps skip it.
 - **Model:** Fable to author a design/spec procedure (01–10, 12–16); Opus for SEO (11),
@@ -36,7 +36,7 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
 - **Definition of done:** the workflow's checklist is fully ticked, the artefact
   landed in the correct numbered `src/` folder, and the next workflow's prerequisites
   are met.
-- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** every `STEPS.md`/`CHECKLIST.md` here carries `workflow`/`phase`/`skills`/`model` frontmatter — read it first and route accordingly (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 
@@ -56,7 +56,7 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
   `STEPS.md` + `CHECKLIST.md`).
 - **These numbers are a sequence, not a catalogue.** Unlike `code/workflows/` and
   `how-to/workflows/`, inserting one mid-sequence means renumbering everything after it
-  and sweeping every reference — including `.claude/agents/`, where a stale number is a
+  and sweeping every reference — including `.claude/skills/`, where a stale number is a
   silent routing failure.
 - **Never renumber a `project-management/src/NN-…/` folder to match.** Workflow folders are
   documentation the template owns; `src/` folders hold artefacts a developer wrote. Copier

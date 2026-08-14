@@ -36,7 +36,7 @@ schedule.
   source of truth for the decision, and `workflows/15-sprint-plans/` and
   `workflows/16-story-plans/` cite it as a constraint on the plans they produce.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+  `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

@@ -17,7 +17,7 @@ Rules and the files each bump touches: `project-management/docs/VERSIONING-GUIDE
 ### Added
 
 - Generated from the base template: the Django monolith, the three documentation layers
-  (`code/`, `how-to/`, `project-management/`), the Claude Code agent and skill surface, the
+  (`code/`, `how-to/`, `project-management/`), the Claude Code skill surface, the
   Docker Compose stack, and the CI workflows.
 
 <!--

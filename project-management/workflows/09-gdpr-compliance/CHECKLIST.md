@@ -1,8 +1,7 @@
 ---
 workflow: 09-gdpr-compliance
 phase: compliance
-agent: gdpr
-skills: [global-workflow]
+skills: [gdpr-mechanics, global-workflow]
 model: fable
 ---
 

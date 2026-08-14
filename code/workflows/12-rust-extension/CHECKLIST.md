@@ -1,7 +1,6 @@
 ---
 workflow: 12-rust-extension
 phase: build
-agent: rust
 skills: [stack-rust, stack-django]
 model: opus
 ---
@@ -18,7 +17,7 @@ model: opus
 ## Gate
 
 - [ ] The work meets one of the two grounds — a guarantee Python cannot make, or a **measured**
-      hot path (else use `18-backend-code` and the `backend` agent) · _opus_
+      hot path (else use `18-backend-code` and the `backend` skill) · _opus_
 - [ ] The design was grilled and confirmed before any code was written · _opus_
 - [ ] Entered from `project-management/workflows/18-backend-code/`, not from a design gate
 

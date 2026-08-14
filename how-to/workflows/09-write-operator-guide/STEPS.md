@@ -1,7 +1,6 @@
 ---
 workflow: 09-write-operator-guide
 phase: document
-agent: operator-docs
 skills: [runbook, global-workflow]
 model: opus
 ---
@@ -28,7 +27,7 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 
 ## Step 1 — Grill, then place it
 
-> **↳ New agent:** `operator-docs` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `runbook` · **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` §10): load `.claude/skills/grill-with-docs` and settle —
 
@@ -50,7 +49,7 @@ the contract rather than implementing it.
 
 ## Step 2 — Draft against the spine
 
-> **Model:** opus · **Skills:** runbook
+> **Model:** opus · **Skill:** `runbook`
 
 Load `.claude/skills/runbook/SKILL.md` and follow the shape it defines: purpose →
 prerequisites → steps with expected output → failure modes → rollback → verification.

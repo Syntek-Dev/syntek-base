@@ -10,14 +10,14 @@ this folder's `CONTEXT.md` (tree + glossary, imported above) → this file →
 
 The deploy-facing server/edge contract — the consolidated edge-requirement catalogue
 and the assigned-compute-plus-buffer allocation that `<%DEPLOY_REPO%>` implements,
-maintained by the `scale-planner` agent via the `scale-planning` skill.
+maintained by the `scale-planning` skill via `/scale-planning`.
 
 ## How to work here
 
-- **Routing:** substantive updates → the `scale-planning` skill (`/scale-planning`)
-  and its `scale-planner` agent — this directory is one of its two living snapshots
-  (the other is the sibling `how-to/src/SCALE-ARCHITECTURE/`). Edge-security rows →
-  `security` agent input; observability rows → `logging`; compute rows → `cicd`.
+- **Routing:** substantive updates → the `scale-planning` skill (`/scale-planning`) —
+  this directory is one of its two living snapshots (the other is the sibling
+  `how-to/src/SCALE-ARCHITECTURE/`). Edge-security rows → `security` skill input;
+  observability rows → `logging`; compute rows → `cicd`.
   Every substantial change opens with a grilling pass (`.claude/CLAUDE.md` §10).
 - **Model:** Fable for reshaping the contract or the buffer policy (it is a sizing /
   architecture judgement); Opus for mechanical touches — status flips on a

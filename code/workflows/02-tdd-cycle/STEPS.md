@@ -1,8 +1,7 @@
 ---
 workflow: 02-tdd-cycle
 phase: build
-agent: test-writer
-skills: [stack-django, stack-htmx-templates]
+skills: [test-writer, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -63,7 +62,7 @@ production bundle).
 test-writer [scope of work] --mode failing-first
 ```
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
 
 Write tests that describe the desired behaviour before writing any implementation. Tests must
 assert on **outcomes** — return values, database state, API responses — not on internal methods
@@ -110,13 +109,13 @@ implementation exists is either testing the wrong thing or testing nothing.
 backend [scope]   # for backend
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 ```text
 frontend [scope]  # for frontend
 ```
 
-> **↳ New agent:** `frontend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `frontend` · **Model:** opus · **MCP:** none
 
 Write the **minimum** code to make all tests pass. No gold-plating, no speculative abstractions.
 
@@ -157,7 +156,7 @@ Do not proceed to Phase 3 if any test is red or if the type-check fails.
 refactor [scope]
 ```
 
-> **↳ New agent:** `refactor` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `refactor` · **Model:** opus · **MCP:** code-review-graph
 
 Improve readability and structure. No new behaviour. All tests — including Bruno API tests — must
 remain green after every refactor step.
@@ -187,7 +186,7 @@ formats, destinations, or templates here; a second copy is exactly how they drif
 doc-writer
 ```
 
-> **↳ New agent:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
 
 It covers the IMPLEMENTATION record for every applicable spec (GDPR, security, QA, SEO, API),
 the story's findings record in `project-management/src/19-FINDINGS/`, the `/GAPS.md` and
@@ -205,7 +204,7 @@ must all be complete **before any commit** (`.claude/CLAUDE.md` §6).
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

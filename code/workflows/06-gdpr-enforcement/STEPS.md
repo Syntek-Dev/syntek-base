@@ -1,8 +1,7 @@
 ---
 workflow: 06-gdpr-enforcement
 phase: compliance
-agent: gdpr
-skills: [stack-django]
+skills: [gdpr-mechanics, stack-django]
 model: opus
 ---
 
@@ -52,7 +51,7 @@ basis before proceeding.
 backend [add consent and permission checks to resolvers handling PII]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 ### Step 3 — Apply Field-Level Encryption to PII Fields
 
@@ -63,7 +62,7 @@ Encrypt all fields classified as personal data at rest, following the patterns i
 backend [encrypt PII model fields per encryption/FIELD-ENCRYPTION.md]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 ### Step 4 — Implement Deletion and Anonymisation Functions
 
@@ -74,7 +73,7 @@ rows where audit trails must be preserved.
 backend [implement deletion and anonymisation functions for DSAR compliance]
 ```
 
-> **↳ New agent:** `backend` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
 ### Step 5 — Verify No PII Leaks
 
@@ -107,7 +106,7 @@ bash code/src/scripts/tests/backend.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

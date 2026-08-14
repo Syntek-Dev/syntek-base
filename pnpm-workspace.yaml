@@ -24,11 +24,33 @@ allowBuilds:
   # every other entry here — it ships prebuilt binaries, and mobile lint passes without
   # running its install script.
   unrs-resolver: false
+# Ignored advisories, and they are read from THIS FILE — `pnpm audit` has no
+# CLI flag for them, and passing `--ignore <GHSA>` makes pnpm print "No new
+# vulnerabilities were ignored" and exit 0 without auditing anything at all
+# (that false green is fixed in .claude/hooks/lib/check-security.sh).
+#
+# The key stays `auditConfig.ignoreGhsas` deliberately. pnpm's docs give
+# `audit.ignore` as the modern spelling and call this one deprecated, but the
+# rename landed AFTER the 11.15.1 this repository pins: switching to `audit.ignore`
+# was tried on 13/08/2026 and the ignores stopped applying silently — the
+# `(N ignored)` line simply vanished from the report, with no warning and no
+# error. Rename it when the pnpm pin moves, and verify by that line reappearing,
+# not by the exit code. Source: https://pnpm.io/cli/audit
 auditConfig:
   ignoreGhsas:
     - GHSA-jxxr-4gwj-5jf2
     - GHSA-5375-pq7m-f5r2
     - GHSA-99f4-grh7-6pcq
+    # image-size — NO PATCHED RELEASE EXISTS. Both advisories name ">=2.0.3" as
+    # the fix; the newest published version is 2.0.2, so there is nothing to
+    # upgrade to and an override floor of >=2.0.3 fails the install outright
+    # (ERR_PNPM_NO_MATCHING_VERSION, hit 13/08/2026). Reached only through
+    # expo → @expo/metro → metro, i.e. the MOBILE surface's bundler: dev-time
+    # tooling, absent from every deployed artefact and from a web-only project
+    # entirely. Ignored on availability, not on judgement — re-check when 2.0.3
+    # ships and delete both lines.
+    - GHSA-w3rx-r6r6-pgpr
+    - GHSA-5p2g-fcmc-qvqq
 minimumReleaseAgeExclude:
   - js-yaml@4.1.2
   - markdown-it@14.1.2
@@ -44,16 +66,31 @@ minimumReleaseAgeExclude:
   - protobufjs@7.6.3
   - protobufjs@8.5.1
 overrides:
-  axios@>=1.0.0 <1.15.0: ^1.15.0
-  axios@>=1.0.0 <1.15.1: ^1.15.1
-  axios@>=1.0.0 <1.15.2: ^1.15.2
-  fast-uri@<=3.1.1: ^3.1.2
-  js-yaml@>=4.0.0 <4.1.2: ^4.1.2
+  # Advisory floors, each BOUNDED BY ITS MAJOR — `>=<patched> <<next major>`.
+  #
+  # Re-floored 13/08/2026 against `audits/security.sh --js-only`: every one was
+  # below its patched version, which is why 36 advisories (19 high, 17 moderate)
+  # stood open. The gate had never reported them — see the false green fixed in
+  # .claude/hooks/lib/check-security.sh.
+  #
+  # The upper bound is not decoration. An override is a FORCED resolution, so a
+  # bare `>=` floor resolves to whatever is newest and drags every consumer
+  # across any major boundary in between — silently, because the advisory is
+  # cleared either way. Measured the same day: a bare floor would have taken
+  # nanoid 3 → 6 (ESM-only, breaks every CJS require), js-yaml 4 → 5,
+  # undici 7 → 8, linkify-it 5 → 6 and fast-uri 3 → 4. Fixing a moderate
+  # advisory by breaking the build is not a fix. Bound every one.
+  axios: ">=1.18.0 <2"
+  fast-uri: ">=3.1.5 <4"
+  js-yaml: ">=4.3.1 <5"
+  undici: ">=7.29.0 <8"
+  ip-address: ">=10.3.1 <11"
+  linkify-it: ">=5.0.2 <6"
+  nanoid: ">=3.3.18 <4"
   markdown-it@>=13.0.0 <14.1.2: ^14.1.2
   postcss@<8.5.10: ^8.5.10
   esbuild@<0.28.1: ^0.28.1
   form-data@>=4.0.0 <4.0.6: ^4.0.6
-  undici@>=7.0.0 <7.28.0: ^7.28.0
   "@babel/core@<=7.29.0": ^7.29.1
   lodash: ">=4.18.0"
   uuid: ">=11.0.0"
@@ -76,12 +113,16 @@ overrides:
   # package; the floor is untouched and nothing in the delivery path is affected.
   "@jest/reporters>glob": "^9.3.5"
   ws: ">=8.21.0"
-  brace-expansion: ">=5.0.6"
+  brace-expansion: ">=5.0.9 <6"
   qs: ">=6.15.2"
   shell-quote: ">=1.8.4"
-  "@grpc/proto-loader>protobufjs": ">=8.5.1"
-  "grpc-js-reflection-client>protobufjs": ">=8.5.1"
-  protobufjs@>=8.0.0 <8.5.1: ">=8.5.1"
+  # protobufjs keeps its two-major split rather than taking a single floor: the
+  # 7.x and 8.x lines have separate advisories and separate consumers, and a
+  # blanket ">=8.6.6" would drag a 7.x consumer across a major boundary to fix a
+  # vulnerability that its own line already patches.
+  "@grpc/proto-loader>protobufjs": ">=8.6.6"
+  "grpc-js-reflection-client>protobufjs": ">=8.6.6"
+  protobufjs@>=8.0.0 <8.6.6: ">=8.6.6"
   protobufjs@>=7.0.0 <7.6.3: ^7.6.3
 allowedDeprecatedVersions:
   whatwg-encoding: "*"

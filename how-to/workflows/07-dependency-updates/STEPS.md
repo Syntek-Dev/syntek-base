@@ -1,8 +1,7 @@
 ---
 workflow: 07-dependency-updates
 phase: operate
-agent: cicd
-skills: [global-workflow]
+skills: [cicd, global-workflow]
 model: opus
 ---
 
@@ -48,7 +47,7 @@ For anything load-bearing, record the decision as an ADR
 
 ## Step 2 — Change the manifest, then refresh the lockfile
 
-> **↳ New agent:** `cicd` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `cicd` · **Model:** opus
 
 **Python** — edit `pyproject.toml`, then lock. Prefer the narrowest upgrade that solves
 the problem:

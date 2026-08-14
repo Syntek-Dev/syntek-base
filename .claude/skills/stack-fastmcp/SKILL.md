@@ -6,13 +6,13 @@ description: >-
   over the service layer, `TokenVerifier` auth with identity taken from the token and never
   from a tool argument, and in-memory `Client` tests. Load this when writing or reviewing
   anything under `apps/**/mcp_tools.py` or `config/mcp.py`, when exposing domain operations to
-  an LLM agent, or when a backend/security/test agent needs the canonical MCP idioms.
+  an LLM agent, or when a backend/security/test skill needs the canonical MCP idioms.
 ---
 
 # Stack: FastMCP (<%PROJECT_NAME%>)
 
 Reference material for the **MCP tool surface** — the second adapter over the service layer.
-The `backend`, `security`, and `test-writer` agents cite this file so they need not restate
+The `backend`, `security`, and `test-writer` skills cite this file so they need not restate
 it. It states **how MCP code is shaped here**; `code/docs/MCP-SERVER.md` and its sub-docs own
 the _why_, and `code/workflows/05-mcp-server/` is the procedure.
 

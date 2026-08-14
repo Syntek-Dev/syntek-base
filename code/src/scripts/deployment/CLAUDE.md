@@ -13,7 +13,7 @@ matures.
 
 ## How to work here
 
-- **Routing:** deployment automation → `cicd` agent (Opus); the live
+- **Routing:** deployment automation → `cicd` skill (Opus); the live
   pipeline lives in `.github/workflows/`, environment images in `code/src/docker/`.
 - **Model:** Opus to author the first deployment scripts (release orchestration and
   rollback are load-bearing); Opus once one exists and is merely run.

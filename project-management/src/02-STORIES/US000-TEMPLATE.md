@@ -388,7 +388,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] Run Lighthouse (or equivalent) to verify Core Web Vitals targets are met
 - [ ] Add descriptive `alt` text to all images on `[page / route]`
 - [ ] Verify heading hierarchy: one `<h1>` per page; `<h2>` / `<h3>` in logical order
-- [ ] Run the `seo` agent to confirm all SEO checks pass
+- [ ] Run the `seo` skill to confirm all SEO checks pass
 
 ### Testing Tasks
 

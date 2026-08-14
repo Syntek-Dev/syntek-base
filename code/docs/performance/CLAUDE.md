@@ -13,7 +13,7 @@ tuning.
 
 ## How to work here
 
-- **Routing:** documentation, not code — reach for the `doc-writer` agent
+- **Routing:** documentation, not code — reach for the `doc-writer` skill
   (Opus for substantive guidance; Opus for typo/header/version touches).
   Back-end tuning advice ties to `stack-django`, front-end to `stack-htmx-templates`.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/PERFORMANCE.md` a

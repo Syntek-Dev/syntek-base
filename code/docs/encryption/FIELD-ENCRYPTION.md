@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: gdpr
-skills: [stack-django]
+skills: [gdpr-mechanics, stack-django]
 model: opus
 ---
 
@@ -52,9 +51,10 @@ Every PII column on a Django model must use `EncryptedField` instead of `CharFie
 ```python
 from apps.core.encryption import EncryptedField
 
+
 class MyModel(models.Model):
     full_name = EncryptedField(blank=False, null=False)
-    phone     = EncryptedField(blank=True, null=True)
+    phone = EncryptedField(blank=True, null=True)
 ```
 
 `EncryptedField` extends `models.TextField`. The service layer handles encryption and decryption
@@ -287,7 +287,9 @@ encryptions; all loaded versions remain available for decrypting existing cipher
 ```
 
 ```python
-def load_versioned_keys(field: str, *, env_prefix: str = "<%ENV_PREFIX%>_FIELD_KEY") -> dict[int, bytes]:
+def load_versioned_keys(
+    field: str, *, env_prefix: str = "<%ENV_PREFIX%>_FIELD_KEY"
+) -> dict[int, bytes]:
     """Return a ``{version: key_bytes}`` mapping for *field*.
 
     Scans ``{env_prefix}_{FIELD}_V1``, ``_V2``, … stopping at the first gap.

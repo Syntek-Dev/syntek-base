@@ -16,12 +16,12 @@ record the story's findings in `src/19-FINDINGS/`, before the PR is raised in
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `doc-writer` agent (Opus). It runs
+- **Routing:** run `STEPS.md` in order; drive with the `doc-writer` skill (Opus). It runs
   after the code workflows (`18-backend-code`, `19-api-code`, `20-frontend-code`) and
   before `22-pr-and-review`. Read `code/docs/CODE-REVIEW-GRAPH.md` before touching docs.
   Each record is copied from its `.../IMPLEMENTATION/US000-TEMPLATE.md`; where deeper
-  verification is needed, the discipline agent (`gdpr`, `security`, `qa-tester`, `seo`,
-  `planner`) may be consulted against the story's already-approved `PLANNING/` artefact.
+  verification is needed, the discipline skill (`gdpr-mechanics`, `security`, `qa-tester`,
+  `seo`, `planner`) may be loaded against the story's already-approved `PLANNING/` artefact.
 - **Model:** Opus throughout — this is a documentation/mechanical closeout that records
   what shipped against approved plans, not a design grill. No Fable pass here.
 - **Concrete steps:** identify which specs applied to the story → copy each applicable
@@ -35,7 +35,7 @@ record the story's findings in `src/19-FINDINGS/`, before the PR is raised in
   retrofit cost and a disposition; touched docs complete and the graph refreshed; British
   English; DD/MM/YYYY.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
-  `workflow`/`phase`/`agent`/`skills`/`model` frontmatter — read it first (see
+  `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
   `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails

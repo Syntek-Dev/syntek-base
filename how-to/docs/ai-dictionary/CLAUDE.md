@@ -13,7 +13,7 @@ set of plain-English AI-coding term definitions.
 ## How to work here
 
 - **Routing:** reference material, not a procedure — glossary edits go through the
-  `doc-writer` agent on Opus, loading the `global-workflow` skill. The entry-point index
+  `doc-writer` skill on Opus, loading the `global-workflow` skill. The entry-point index
   (`../AI-DICTIONARY.md`) carries the `type: guide` routing frontmatter; these sub-docs do not.
 - **Model:** Opus for adding, rewording, or resplitting a term.
 - **Concrete steps:** edit the relevant theme file → keep each term a tight definition plus

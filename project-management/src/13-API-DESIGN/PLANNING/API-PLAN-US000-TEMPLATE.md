@@ -136,8 +136,7 @@ Each GET endpoint with its query parameters, defaults/limits, and a handler cont
 def list_example_items(
     request,
     status: ExampleStatus | None = None,
-) -> QuerySet[ExampleItem]:
-    ...
+) -> QuerySet[ExampleItem]: ...
 ```
 
 - `limit`: page size, default 10, max 50 (enforced by the paginator, not trusted from input)
@@ -166,8 +165,7 @@ permission rule**. Every endpoint that accepts a user-supplied ID carries an own
 
 ```python
 @router.post("/example-items", response={201: ExampleItemOut})
-def create_example_item(request, payload: ExampleItemCreate) -> tuple[int, ExampleItem]:
-    ...
+def create_example_item(request, payload: ExampleItemCreate) -> tuple[int, ExampleItem]: ...
 ```
 
 - **Permission:** {required named rule — role / module + level, e.g. `example` module

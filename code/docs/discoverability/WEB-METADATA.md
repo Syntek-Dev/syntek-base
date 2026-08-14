@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: seo
-skills: [stack-htmx-templates]
+skills: [seo, stack-htmx-templates]
 model: opus
 ---
 
@@ -41,6 +40,7 @@ in a page template.**
 from django.conf import settings
 from django.shortcuts import render
 from apps.marketing.seo import build_seo
+
 
 def blog_post(request, slug):
     post = get_published_post(slug)

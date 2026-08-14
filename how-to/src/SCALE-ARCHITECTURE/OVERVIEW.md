@@ -88,8 +88,7 @@ and an honest statement of which knobs the next tier turns.
 
 ## How the snapshot stays current
 
-The `scale-planning` skill drives a `scale-planner` agent under the project's standard
-decision machinery:
+The `scale-planning` skill runs under the project's standard decision machinery:
 
 - **Wayfinder** charts the epic's open decisions onto
   `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`, resolved node-by-node across

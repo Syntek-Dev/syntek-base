@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -101,7 +100,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("content", "0001_initial")]
 
     operations = [
@@ -116,7 +114,6 @@ class Migration(migrations.Migration):
             """,
             reverse_sql="ALTER TABLE content_article DISABLE ROW LEVEL SECURITY;",
         ),
-
         # 2. SELECT policy
         migrations.RunSQL(
             sql="""
@@ -127,7 +124,6 @@ class Migration(migrations.Migration):
             """,
             reverse_sql="DROP POLICY IF EXISTS article_select_own ON content_article;",
         ),
-
         # 3. INSERT policy
         migrations.RunSQL(
             sql="""
@@ -138,7 +134,6 @@ class Migration(migrations.Migration):
             """,
             reverse_sql="DROP POLICY IF EXISTS article_insert_own ON content_article;",
         ),
-
         # 4. UPDATE policy
         migrations.RunSQL(
             sql="""
@@ -150,7 +145,6 @@ class Migration(migrations.Migration):
             """,
             reverse_sql="DROP POLICY IF EXISTS article_update_own ON content_article;",
         ),
-
         # 5. DELETE policy
         migrations.RunSQL(
             sql="""

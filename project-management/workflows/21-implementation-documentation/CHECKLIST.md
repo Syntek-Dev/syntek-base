@@ -1,8 +1,7 @@
 ---
 workflow: 21-implementation-documentation
 phase: build
-agent: doc-writer
-skills: [global-workflow]
+skills: [doc-writer, global-workflow]
 model: opus
 ---
 

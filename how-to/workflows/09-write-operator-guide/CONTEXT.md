@@ -24,14 +24,14 @@ from an incident.
 This is the meta-workflow: the procedure for writing the procedures. A generated project
 uses it to document its own operations, which the template cannot do on its behalf.
 
-| Documentation kind                                     | Owner                                            |
-| ------------------------------------------------------ | ------------------------------------------------ |
-| Operating the system (setup, Docker, scripts, servers) | **here** — `operator-docs` agent                 |
-| Standards for writing code                             | `doc-writer` → `code/docs/`                      |
-| `CONTEXT.md` / `CLAUDE.md` pairs                       | `doc-writer`                                     |
-| End-user help for the product                          | `support-articles`                               |
-| Sizing and the server contract                         | `scale-planner` → the two architecture snapshots |
-| A skill under `.claude/skills/`                        | `how-to/docs/SKILL-AUTHORING.md`                 |
+| Documentation kind                                     | Owner                                             |
+| ------------------------------------------------------ | ------------------------------------------------- |
+| Operating the system (setup, Docker, scripts, servers) | **here** — the `runbook` skill                    |
+| Standards for writing code                             | `doc-writer` → `code/docs/`                       |
+| `CONTEXT.md` / `CLAUDE.md` pairs                       | `doc-writer`                                      |
+| End-user help for the product                          | `support-articles`                                |
+| Sizing and the server contract                         | `scale-planning` → the two architecture snapshots |
+| A skill under `.claude/skills/`                        | `how-to/docs/SKILL-AUTHORING.md`                  |
 
 ## Key concepts
 

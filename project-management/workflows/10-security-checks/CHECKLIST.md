@@ -1,8 +1,7 @@
 ---
 workflow: 10-security-checks
 phase: harden
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -22,7 +21,7 @@ model: fable
 - [ ] STRIDE analysis completed for each identified threat surface
 - [ ] OWASP A01–A10 category mapped to each finding
 - [ ] NIST CSF 2.0 function mapped to each finding (GV / ID / PR / DE / RS / RC)
-- [ ] Security agent (`security`) run against the feature design
+- [ ] `security` skill run against the feature design
 - [ ] All `HIGH` and `CRITICAL` findings resolved before proceeding
 - [ ] Threat model document saved in `project-management/src/10-SECURITY/THREAT-MODEL/`
 - [ ] Assessment document saved in `project-management/src/10-SECURITY/ASSESSMENTS/`

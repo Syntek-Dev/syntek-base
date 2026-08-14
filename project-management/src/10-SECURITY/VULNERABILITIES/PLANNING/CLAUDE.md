@@ -13,7 +13,7 @@ sprint blocker classifying the threat and listing the controls the remediation m
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/` using the
-  `security` agent (Fable). Each finding originates in a planning-phase audit
+  `security` skill (Fable). Each finding originates in a planning-phase audit
   (`../../AUDITS/PLANNING/`) or threat model (`../../THREAT-MODEL/PLANNING/`) and is
   referenced from the assessment in `../../ASSESSMENTS/PLANNING/`. Standards:
   `project-management/docs/SECURITY-GUIDE.md`.

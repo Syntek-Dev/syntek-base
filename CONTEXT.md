@@ -34,9 +34,8 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── CONTEXT.md
 │   ├── MEMORY.md                    ← project memory (feedback, patterns, project state)
 │   ├── settings.json                ← project-level permissions, model, hooks
-│   ├── agents/                      ← 8 orchestrators + specialists + doc-writers (roster: agents/CONTEXT.md)
 │   ├── hooks/                       ← pre-PR quality gates
-│   ├── plugins/                     ← read-only inspection helpers agents call for context
+│   ├── plugins/                     ← read-only inspection helpers a skill calls for context
 │   └── skills/                      ← internalised stack, workflow, and document skills
 ├── .agents/                         ← vendored third-party skills (Cloudinary)
 ├── .github/                         ← CI workflows and the template-integrity scripts
@@ -81,9 +80,10 @@ consumes this API; none of them changes the rule above for the web.
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
-├── .copier/                         ← seed-once staging: the README, version state and
-│                                      scale-planning map a generated project starts from;
-│                                      moved into place and removed at generation
+├── .copier/                         ← seed-once staging: the README, version state, blank
+│                                      project memory and scale-planning map a generated
+│                                      project starts from; moved into place and removed
+│                                      at generation
 ├── .zed/                            ← Zed editor settings
 ├── CONTEXT.md                       ← this file
 ├── REFERENCES.md                    ← curated index of internal docs and external resources
@@ -133,7 +133,7 @@ generation time, because a generated project must commit it (every Dockerfile bu
 | `code/`                         | Source code, coding standards, and the coding workflows              |
 | `how-to/`                       | Setup, daily development, debugging, scaling, template instantiation |
 | `project-management/`           | User stories, sprints, design artefacts, GDPR, security, releases    |
-| `.claude/`                      | Global rules, agent and skill routing, model selection, hooks        |
+| `.claude/`                      | Global rules, skill routing, model selection, hooks                  |
 | `DESIGN.md`                     | Design entry point — standards, constraints, and UI/UX workflows     |
 | `code/src/django/`              | The web deployable — API and server-rendered pages                   |
 | `code/src/mobile/`              | **Mobile-only.** The Expo / React Native app, consuming that API     |
@@ -167,7 +167,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **2.20.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **2.21.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

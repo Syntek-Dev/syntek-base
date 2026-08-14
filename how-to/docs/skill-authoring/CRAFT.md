@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: doc-writer
-skills: [global-workflow, runbook]
+skills: [doc-writer, global-workflow, runbook]
 model: opus
 ---
 
@@ -56,11 +55,29 @@ the roster you have; the numbers above are this project's at that date, not a co
 So a new or edited description **names the near-neighbours it must be distinguishable from, and
 says how a reader tells them apart**, in the change that lands it. Live clusters to sharpen
 against: backend/database · review/code-reviewer/qa-tester · planner/domain-modelling/doc-writer ·
-syntax/review/pr · grill-me/grill-with-docs — the last is a **wording** defect that exists
-**today**, with `grill-me` losing to `grill-with-docs` at every roster size measured. Their
-_shape_ is not the defect (`FORK-DECISION.md` § _Before the split_ settles that); their two
-descriptions simply do not say which one a reader wants. Sharpen against the neighbour, never
-against the blank page.
+syntax/review/pr. Sharpen against the neighbour, never against the blank page. `grill-me` /
+`grill-with-docs` was on that list and came off it on 13/08/2026 — the two now discriminate on
+the **artefact**, which is the axis that decides them. Their _shape_ was never the defect
+(`FORK-DECISION.md` § _Before the split_ settles that); the wording was.
+
+**Sharpening is not free, and this project has priced it and chosen to pay.** Measured
+13/08/2026 across the agents→skills conversion: **every one of the 31 entries rewritten grew —
+mean +307 characters, none shrank** — and the standing surface rose from **27,598 to 33,216
+characters (≈ 6,900 → 8,304 tokens, +20.4%)** even though the roster fell from 85 entries to 65.
+Merging descriptions to save tokens and sharpening them to fix selection are **opposing forces**,
+and the sharpening won by roughly 1.3:1.
+
+That rise is **deliberate and settled — do not "optimise" it away.** It bought the
+discrimination that closed the strict/loose gap above, and a blunt description costs a wrong pick
+on every turn it misfires, which is dearer than the tokens. The clause a future author will be
+tempted to cut — the closing _"Not X (`skill`), not Y (`skill`)"_ tail — **is the discriminator**,
+not padding. Two rules follow, and only the second is a licence to trim:
+
+- **Price a description before you lengthen it:** characters ÷ 4, charged on every turn for the
+  life of the project. A body is charged only when the skill fires; a description always is.
+- **Trim only a tail that is redundant with its neighbour's tail.** Where two entries disclaim
+  each other in both directions, one direction usually suffices. Never cut the only sentence
+  separating a pair.
 
 **When to add a router.** When user-typed skills multiply past what one person can hold in their
 head, add a router: one user-typed skill that names the others and when to reach for each. The
@@ -186,6 +203,11 @@ The 300-line cap is a standing forcing function against every failure below (`SH
 - **Sprawl** — a skill simply too long, even when every line is live and unique. The cure is the
   ladder: disclose reference into sub-documents and split by branch or sequence so each path
   carries only what it needs.
+- **Measure the migration target before authoring it.** "Move these conventions to a new guide"
+  is a claim about **two** things, and only the first is usually checked: that the conventions
+  exist, and that no file already owns them. Grep for the **content**, not the filename — a
+  destination that turns out to be occupied makes a third home for one rule, which is the defect
+  the move was meant to fix. The same check justifies the move when the grep comes back empty.
 - **The no-op test.** Hunt no-ops sentence by sentence: does this line change behaviour versus the
   model's default? A line the agent already obeys pays load to say nothing. A weak leading word
   (_be thorough_ when the agent is already thorough-ish) is a no-op — the fix is a stronger word

@@ -13,7 +13,7 @@
 #                        Both halves are checked, and reported apart — a spec breach and a
 #                        house-rule breach are different problems.
 #
-#                        Eleven [gate: fail] clauses, no warn tier. Clause numbers are
+#                        Thirteen [gate: fail] clauses, no warn tier. Clause numbers are
 #                        appended, never renumbered — they appear in reports:
 #                          spec   1. frontmatter opens at byte 0 and is terminated
 #                          spec   2. `name` and `description` are both present
@@ -22,17 +22,32 @@
 #                          spec   5. `description` is non-empty and <= 1024 characters
 #                          spec   6. no key that neither the spec nor Claude Code defines
 #                          house  7. no key this project declines on a first-party skill —
-#                                    the four spec-optional fields, and any documented
-#                                    Claude Code key outside the admitted four
+#                                    three of the four spec-optional fields, and any
+#                                    documented Claude Code key outside the admitted four
 #                          house  8. `context: fork` carries an explicit `agent:`
 #                          house  9. `agent:` names a built-in fork target only
 #                          house 10. `## Governing procedures` section present
 #                          house 11. `context: fork` carries an explicit `background:`
+#                          house 12. `metadata:` carries `skills` and nothing else, and
+#                                    every name in it resolves to a skill directory
+#                          house 13. no agent definition exists — .claude/agents/ is retired
 #
 #                        The tier is the point, not a label. A key nothing defines is a
 #                        format problem; declining a key the runtime does document is a
 #                        CHOICE, and the reader has to be able to tell which they may argue
 #                        with (how-to/docs/skill-authoring/FRONTMATTER.md § Three claims).
+#
+#                        Clause 12 is the reason `metadata` is admitted at all. It is the
+#                        spec's own extension point for "additional properties not defined by
+#                        the Agent Skills spec", and Claude Code states plainly that it does
+#                        not act on the contents — so the runtime constrains nothing under it,
+#                        and every routing value clauses 7-11 read at the top level can be
+#                        restated one indentation level down where none of them looks.
+#                        `metadata: {agent: my-custom-agent, model: haiku}` passes all five.
+#                        One child key is admitted, `skills`, and it is a machine-checkable
+#                        REGISTER rather than a loader: the actual load is instructed in the
+#                        body's `## Governing procedures`. The key makes the declaration
+#                        auditable and truthful; it does not make it operative.
 #
 #                        Clauses 8, 9 and 11 are what hold the fork policy in CODE: a forked
 #                        skill states its target and its detachment rather than inheriting a
@@ -58,6 +73,8 @@
 # Scope scanned:  .claude/skills/*/SKILL.md
 #                 The four code-review-graph cards (.claude/skills/*.md) are flat files, not
 #                 folder-skills, and are auto-generated — they are not skills under the spec.
+#                 Clause 13 additionally asserts a NEGATIVE over .claude/agents/**/*.md, which
+#                 is the one path here expected to hold nothing at all.
 #
 # Usage: skill-conformance.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                             [--path PATH] [--help]
@@ -103,15 +120,19 @@ Spec clauses (https://agentskills.io/specification):
      skill those six are the whole admitted set
 
 House clauses (how-to/docs/skill-authoring/FRONTMATTER.md):
-  7. A first-party skill carries name + description + the four admitted runtime keys
-     (context agent background model), and no key declined here — the four
-     spec-optional fields, or a documented Claude Code key such as
-     disable-model-invocation
+  7. A first-party skill carries name + description + metadata + the four admitted
+     runtime keys (context agent background model), and no key declined here — three
+     of the four spec-optional fields, or a documented Claude Code key such as
+     disable-model-invocation or effort
   8. A skill with `context: fork` also carries an explicit `agent:`
   9. `agent:` names one of the three built-in fork targets this project admits:
      Explore | Plan | general-purpose
  10. A first-party skill carries a `## Governing procedures` section
  11. A skill with `context: fork` also carries an explicit `background:`
+ 12. `metadata:` is a block map whose only child key is `skills`, and every
+     space-separated name in it resolves to .claude/skills/<name>/
+ 13. No agent definition exists under .claude/agents/ — the tier is retired, and
+     every definition it held is a skill reached by description match
 
 Vendored skills (symlinked folders, refreshed from upstream) are held to clauses 1-6 only,
 and to the published six alone — no extension is admitted on one.
@@ -165,9 +186,37 @@ TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 log ""
 bold "▸ skill-conformance.sh — $TIMESTAMP"
 
+# Clause 13 — the one clause here that is about the REPOSITORY rather than about a file.
+#
+# The agent tier is retired. Every definition it held is a skill under .claude/skills/,
+# reached by description match rather than by a `subagent_type` string a caller had to know
+# already. Clause 9 refuses a custom fork target in frontmatter; this refuses the folder that
+# would hold one, so the door is shut from both sides rather than only the side a skill can
+# see. A generated project that authored its own agent is routed to the reopening test, not
+# told it made a typo.
+#
+# Two things about it are deliberately unlike every other clause in this script:
+#   - The POLARITY is inverted. Elsewhere an absent surface is a self-guarded pass; here the
+#     absence IS the pass and the presence is the finding, so it needs no self-guard.
+#   - It is checked BEFORE the skills self-guard below, because a project with no skills tree
+#     of its own can still carry a re-introduced agents folder, and the early clean exit
+#     would report success having never looked.
+#
+# Skipped under --path, which scopes the run to one skill folder and cannot speak for a
+# repository-level fact.
+AGENTS_DIR=".claude/agents"
+if [[ -z "$TARGET_PATH" && -d "$AGENTS_DIR" ]]; then
+  while IFS= read -r agent_file; do
+    [[ -n "$agent_file" ]] || continue
+    printf '%s: [house 13] an agent definition — the tier is retired; author it as a skill at %s/<name>/SKILL.md, reached by description match (how-to/docs/skill-authoring/FORK-DECISION.md § The custom-agent door)\n' \
+      "$agent_file" "$SCOPE_DIR" >> "$TMP_HITS"
+  done < <(find "$AGENTS_DIR" -type f -name '*.md' 2>/dev/null | sort)
+fi
+
 # Self-guarding: a project may legitimately carry no skills of its own. An absent surface
 # reports success with a note, so this runs unconditionally in CI with no step-level guard.
-if [[ -z "$TARGET_PATH" && ! -d "$SCOPE_DIR" ]]; then
+# A clause-13 hit is not swallowed by it — that check has already run and is repo-level.
+if [[ -z "$TARGET_PATH" && ! -d "$SCOPE_DIR" && ! -s "$TMP_HITS" ]]; then
   bold "✓ No $SCOPE_DIR/ — nothing to check."
   log ""
   exit 0
@@ -183,7 +232,7 @@ collect_skills() {
     elif [[ -f "$t/SKILL.md" ]]; then printf '%s\0' "$t"
     else find "$t" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 2>/dev/null | sort -z; fi
   else
-    find "$SCOPE_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 | sort -z
+    find "$SCOPE_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 2>/dev/null | sort -z
   fi
 }
 
@@ -227,6 +276,31 @@ parse_frontmatter() {
   ' "$1"
 }
 
+# Emit `childkey<TAB>value` for every immediate child of a block-form `metadata:` map.
+#
+# This exists because parse_frontmatter cannot answer the question clause 12 asks. That parser
+# is `^`-anchored by design — an indented line is nested data, so it folds into its parent's
+# value — which means `metadata:` arrives as the single string `skills: a b c` with nothing
+# marking where one child ends and the next begins. Clause 12 has to NAME a child key to
+# reject it, so it reads the block itself.
+metadata_children() {
+  awk '
+    NR == 1 && $0 != "---" { exit }
+    NR == 1 { infm = 1; next }
+    infm && $0 == "---" { exit }
+    infm {
+      if ($0 ~ /^["'"'"']?metadata["'"'"']?[[:space:]]*:/) { inmeta = 1; next }
+      if ($0 ~ /^[^[:space:]]/) { inmeta = 0; next }
+      if (inmeta && $0 ~ /^[[:space:]]+["'"'"']?[A-Za-z_][A-Za-z0-9_-]*["'"'"']?[[:space:]]*:/) {
+        key = $0; sub(/:.*/, "", key)
+        gsub(/[[:space:]"'"'"']/, "", key)
+        val = $0; sub(/^[^:]*:[[:space:]]*/, "", val); sub(/[[:space:]]+$/, "", val)
+        printf "%s\t%s\n", key, val
+      }
+    }
+  ' "$1"
+}
+
 # Three lists, deliberately not merged. SPEC_KEYS stays a faithful copy of the PUBLISHED six,
 # so the script never asserts something false about the spec and a vendored drop cannot smuggle
 # a routing key past the only key check that applies to it. The admitted set is therefore
@@ -240,16 +314,26 @@ EXT_KEYS=" context agent background model "
 # Documented by Claude Code and declined here. Kept apart from the unknown-key case because
 # the tiers differ: this is a house choice and negotiable, an undocumented key is not. A
 # runtime key that appears later and is not listed here reports under clause 6 until it is.
-DECLINED_EXT_KEYS=" disable-model-invocation "
+#
+# `effort` is here rather than absent for exactly that reason. Unlisted, a skill authoring it
+# reported `[spec 6] … and Claude Code documents no such key` — and the second half of that
+# sentence was false in the gate's own output, which is the tier confusion this script's
+# header exists to prevent. Declined on the merits: settings.json already sets effortLevel
+# project-wide, so a per-skill key either restates it or contradicts .claude/CLAUDE.md §4;
+# and it answers HOW HARD THE MODEL THINKS, a property of the caller's session, where the
+# four admitted keys answer WHERE THE RUN HAPPENS, a property of the skill.
+DECLINED_EXT_KEYS=" disable-model-invocation effort "
 
-# What a first-party skill may actually author: the two required spec fields plus the four
-# admitted runtime keys. Everything else is declined by choice — the reasons are in
+# What a first-party skill may actually author: the two required spec fields, `metadata` for
+# the dependency register clause 12 governs, and the four admitted runtime keys. Everything
+# else is declined by choice — the reasons are in
 # how-to/docs/skill-authoring/FRONTMATTER.md § What is declined, and why.
-HOUSE_KEYS=" name description context agent background model "
+HOUSE_KEYS=" name description metadata context agent background model "
 
 # The only fork targets this project admits. The runtime also accepts a custom subagent from
 # .claude/agents/; that door is closed here by choice, with a reopening test recorded in
-# how-to/docs/skill-authoring/FORK-DECISION.md § The custom-agent door.
+# how-to/docs/skill-authoring/FORK-DECISION.md § The custom-agent door. Clause 13 closes the
+# other side of it — this clause refuses the NAME, that one refuses the folder it would live in.
 FORK_AGENTS=" Explore Plan general-purpose "
 
 # YAML permits a quoted scalar; compare the value, not its quoting.
@@ -331,7 +415,7 @@ while IFS= read -r -d '' dir; do
     if [[ "$SPEC_KEYS" == *" $key "* ]]; then
       # A published spec field. Four of the six are declined here, on a first-party skill.
       if [[ $vendored == false && "$HOUSE_KEYS" != *" $key "* ]]; then
-        printf '%s: [house 7] `%s:` is spec-valid but declined here — a first-party skill authors `name`, `description` and the four admitted runtime keys, nothing else\n' \
+        printf '%s: [house 7] `%s:` is spec-valid but declined here — a first-party skill authors `name`, `description`, `metadata` and the four admitted runtime keys, nothing else\n' \
           "$file" "$key" >> "$TMP_HITS"
       fi
     elif [[ "$EXT_KEYS" == *" $key "* || "$DECLINED_EXT_KEYS" == *" $key "* ]]; then
@@ -379,9 +463,47 @@ while IFS= read -r -d '' dir; do
     printf '%s: [house 10] no `## Governing procedures` section — the body carries the procedure this skill routes to\n' \
       "$file" >> "$TMP_HITS"
   fi
+
+  # --- Clause 12: the metadata namespace -----------------------------------------
+  # `metadata` is admitted for one purpose and closed for every other. It is the spec's own
+  # extension point, and Claude Code states it does not act on the contents — so nothing in
+  # the runtime constrains what sits under it, and every routing value clauses 7-11 read at
+  # the TOP level can be restated one indentation level down where none of them looks.
+  # `metadata: {agent: my-custom-agent, model: haiku}` passes all five.
+  #
+  # `skills` is a machine-checkable REGISTER of the reference skills this one depends on, not
+  # a loader — the load is instructed in the body. Resolving every name is what makes the
+  # declaration truthful; without it a skill may name a directory that does not exist and the
+  # conventions silently never arrive, which is the one failure mode this key exists to close.
+  if [[ $vendored == false ]] && printf '%s\n' "$fm" | grep -q '^metadata	'; then
+    meta_children="$(metadata_children "$file")"
+    if [[ -z "$meta_children" ]]; then
+      printf '%s: [house 12] `metadata:` carries no child key — author it as a block map with `skills:` beneath it, or omit it\n' \
+        "$file" >> "$TMP_HITS"
+    fi
+    while IFS=$'\t' read -r mkey mval; do
+      [[ -n "$mkey" ]] || continue
+      if [[ "$mkey" != "skills" ]]; then
+        printf '%s: [house 12] `metadata.%s:` — `skills` is the only child key admitted here; a routing value under `metadata` is invisible to clauses 7-11, which read the top level\n' \
+          "$file" "$mkey" >> "$TMP_HITS"
+        continue
+      fi
+      mval="$(unquote "$mval")"
+      if [[ -z "$mval" ]]; then
+        printf '%s: [house 12] `metadata.skills:` is empty — omit the key rather than declaring no dependency\n' \
+          "$file" >> "$TMP_HITS"
+        continue
+      fi
+      for declared in $mval; do
+        [[ -d "$SCOPE_DIR/$declared" ]] || \
+          printf '%s: [house 12] `metadata.skills:` names `%s`, which does not resolve to %s/%s/ — a declared dependency that cannot arrive\n' \
+            "$file" "$declared" "$SCOPE_DIR" "$declared" >> "$TMP_HITS"
+      done
+    done <<< "$meta_children"
+  fi
 done < <(collect_skills)
 
-if [[ "$SKILL_COUNT" -eq 0 ]]; then
+if [[ "$SKILL_COUNT" -eq 0 && ! -s "$TMP_HITS" ]]; then
   bold "✓ No skills found under $SCOPE_DIR/ — nothing to check."
   log ""
   [[ -n "$OUTPUT_FORMAT" ]] || exit 0
@@ -434,7 +556,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 
 if [[ "$HIT_COUNT" -eq 0 ]]; then
-  bold "✓ Every skill conforms — spec fields valid, field set held, fork targets built-in."
+  bold "✓ Every skill conforms — spec fields valid, field set held, fork targets built-in, no agent tier."
   log ""
   exit 0
 else

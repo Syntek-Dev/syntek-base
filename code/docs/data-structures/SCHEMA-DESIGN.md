@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -68,16 +67,16 @@ requires joining multiple tables.
 ```python
 class Order(models.Model):
     cached_total = models.DecimalField(
-        max_digits=10, decimal_places=2, default=Decimal("0.00"),
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0.00"),
         help_text="Denormalised. Updated by recalculate_total().",
     )
 
     def recalculate_total(self) -> None:
-        self.cached_total = (
-            self.lines.aggregate(
-                total=models.Sum(models.F("unit_price") * models.F("quantity"))
-            )["total"] or Decimal("0.00")
-        )
+        self.cached_total = self.lines.aggregate(
+            total=models.Sum(models.F("unit_price") * models.F("quantity"))
+        )["total"] or Decimal("0.00")
         self.save(update_fields=["cached_total"])
 ```
 
@@ -101,7 +100,8 @@ class Meta:
     indexes = [
         models.Index(fields=["customer", "-created_at"], name="idx_order_customer_date"),
         models.Index(
-            fields=["status"], name="idx_order_active",
+            fields=["status"],
+            name="idx_order_active",
             condition=models.Q(status__in=["pending", "confirmed", "shipped"]),
         ),
     ]
@@ -183,6 +183,7 @@ inside a transaction, so the migration opts out of the atomic wrapper:
 ```python
 from django.contrib.postgres.operations import AddIndexConcurrently
 
+
 class Migration(migrations.Migration):
     atomic = False  # required — CREATE INDEX CONCURRENTLY cannot run in a transaction
 
@@ -211,7 +212,9 @@ a maintenance window is the right call: [`SCHEMA-MIGRATIONS.md`](SCHEMA-MIGRATIO
 ```python
 class SoftDeleteModel(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, db_index=True)
-    class Meta: abstract = True
+
+    class Meta:
+        abstract = True
 
     def soft_delete(self):
         self.deleted_at = timezone.now()
@@ -234,9 +237,7 @@ related queryset:
 ```python
 from django.db.models import Prefetch
 
-qs = qs.prefetch_related(
-    Prefetch("tags", queryset=Tag.objects.filter(deleted_at__isnull=True))
-)
+qs = qs.prefetch_related(Prefetch("tags", queryset=Tag.objects.filter(deleted_at__isnull=True)))
 ```
 
 Similarly, any constraint guard before soft-deleting a shared record (e.g., a tag used across
@@ -289,7 +290,9 @@ a column, not in a `jsonb` field. Validate JSON structure at the application lev
 ```python
 class TenantModel(models.Model):
     tenant = models.ForeignKey("Tenant", on_delete=models.CASCADE, db_index=True)
-    class Meta: abstract = True
+
+    class Meta:
+        abstract = True
 
 
 class Booking(TenantModel):

@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: frontend
-skills: [stack-htmx-templates]
+skills: [frontend, stack-htmx-templates]
 model: opus
 ---
 
@@ -56,6 +55,10 @@ Shared UI is a **django-component**, never inline markup. One folder per compone
 - **CSP-clean.** No inline `<script>` or `<style>`. Alpine reads HTML attributes; HTMX is configured
   via `<meta>`; per-page JS is a static file. Content must be usable with JavaScript disabled — every
   link is a real `<a>`, Alpine only enhances.
+- **django-components is the only component system, and `django-cotton` must not be reintroduced.**
+  The two conflict: cotton installs a global template-compilation monkeypatch that django-components
+  also patches, so the second one loaded wins and components silently stop rendering. It was tried
+  and dropped for that reason. A second component library is a stack change, not a template choice.
 
 ---
 
@@ -158,6 +161,12 @@ Before writing new code, decide where it belongs:
 `apps/design_tokens` is the single source of token values; `code/src/django/components/` is the
 authority for component styling and BEM. Never duplicate or conflict with an established component
 pattern. When in doubt, extend the existing component before adding a new one.
+
+**The legal footer is data, not markup.** The shared `site_footer` renders the full legal set —
+Terms, Privacy, Accessibility, Cookies, DPA — from `navigation.py::FOOTER_LEGAL_LINKS`, never
+hand-dropped per page. The reason is that the set changes: a new jurisdiction, a cookie banner, a
+processor agreement. Hand-written links mean the page that was built last month keeps the old
+set, and nothing reports it, because a missing legal link renders perfectly.
 
 ---
 

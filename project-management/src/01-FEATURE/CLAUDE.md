@@ -13,7 +13,7 @@ and recording each node as it is settled; the foundation every later planning ga
 ## How to work here
 
 - **Routing:** never author here free-hand — maps come from `workflows/01-feature/` via the
-  `planner` agent loading `.claude/skills/wayfinder/SKILL.md`. CHART writes the map; RESOLVE
+  `planner` skill loading `.claude/skills/wayfinder/SKILL.md`. CHART writes the map; RESOLVE
   updates it one node per session.
 - **Model:** Fable — charting a frontier and settling trade-offs is the reasoning tier
   everything downstream builds on. Opus only for moving a resolved row, fixing a link, or

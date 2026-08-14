@@ -15,7 +15,7 @@ grouped into a functional subdirectory of `*.sh` scripts.
 ## How to work here
 
 - **Routing:** these scripts _are_ the routing target for the whole repo — every
-  guide and agent points here. **Never invoke `python`, `pnpm`, `pytest`, or
+  guide and skill points here. **Never invoke `python`, `pnpm`, `pytest`, or
   `docker` directly; always call the matching `*.sh`.** Most Django scripts
   run inside Docker via `docker compose exec`; `audits/` and the two repo-spanning
   formatters (`syntax/format.sh`, `syntax/lint.sh`) run on the host.

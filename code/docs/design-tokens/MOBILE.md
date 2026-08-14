@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-react-native]
+skills: [backend, stack-django, stack-react-native]
 model: opus
 ---
 
@@ -14,8 +13,8 @@ model: opus
 
 How the database-canonical design tokens reach the **mobile surface** (`code/src/mobile/`), which
 cannot consume CSS. The emitter specified here is Django-side work (`backend` + `stack-django`);
-the consuming side is `mobile` + `stack-react-native`, both of which are **mobile-only** and
-absent from a web-only project. This guide is present either way — it specifies a capability, and
+the consuming side is `stack-react-native`, which is **mobile-only** and absent from a web-only
+project. This guide is present either way — it specifies a capability, and
 a project without the mobile surface simply never builds it.
 
 ---

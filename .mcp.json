@@ -13,7 +13,9 @@
     "mcp-mermaid": {
       "command": "npx",
       "args": ["-y", "mcp-mermaid"],
-      "env": {}
+      "env": {
+        "npm_config_ignore_scripts": "true"
+      }
     }
   }
 }

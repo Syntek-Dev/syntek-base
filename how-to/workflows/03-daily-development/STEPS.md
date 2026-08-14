@@ -1,8 +1,7 @@
 ---
 workflow: 03-daily-development
 phase: setup
-agent: git
-skills: [global-workflow]
+skills: [git, global-workflow]
 model: opus
 ---
 
@@ -62,7 +61,7 @@ Applying migrations picks up any schema changes pulled from `testing`.
 
 Follow the relevant `code/` workflow for the task type.
 
-> **↳ New agent:** `backend` (or `frontend` depending on task) · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` (or `frontend` depending on task) · **Model:** opus · **MCP:** code-review-graph
 
 ### Step 5 — Lint Before Committing
 
@@ -90,7 +89,7 @@ bash code/src/scripts/tests/backend.sh
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus
 
 ---
 

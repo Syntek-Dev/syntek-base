@@ -32,15 +32,33 @@
 #                       8. Every copier.yml question is documented.
 #                       9. Every token actually used in a shipped file is documented.
 #
+#                     Three against the tree's NESTED entries — the level checks 1–3
+#                     never reach, and where the 09/08/2026 sweep found its drift:
+#                      10. Every shipping .github/workflows/*.yml appears.
+#                      11. Every shipping code/docs/*.md appears.
+#                      12. Every shipping code/src/*/ appears.
+#
+#                     Numbers are stable identifiers — other documents cite them.
+#                     Append, never renumber.
+#
 #                     What it CANNOT check: prose that is present but wrong — a tree entry
 #                     whose description no longer matches, or a count stated in words.
 #                     Only review defends against that.
 #
+# SELF-TEST. --self-test deletes one required row per tree check from a copy of the
+#            README and asserts each check catches its own, then proves in_tree's
+#            boundary rule directly. Unlike the fixture pairs under audits/, the
+#            known-positives are DERIVED from the real README: a checked-in README
+#            fixture would carry 28 CI workflows and 32 guides and go stale within
+#            the week — the exact drift these checks exist to catch.
+#
 # Requirements: git, grep, awk. No network.
 #
-# Usage: shipped-readme.sh [--quiet] [--help]
+# Usage: shipped-readme.sh [--quiet] [--self-test] [--help]
 #
-# Exit codes:  0 = shipped docs match the repository   1 = drift found   2 = script error
+# Exit codes:  0 = shipped docs match the repository
+#              1 = drift found, or the self-test no longer separates
+#              2 = script error (bad arguments, or a self-test that could not run)
 #
 set -euo pipefail
 
@@ -52,6 +70,7 @@ TOKENS="$PROJECT_ROOT/how-to/src/TEMPLATE-TOKENS.md"
 COPIER="$PROJECT_ROOT/copier.yml"
 
 QUIET=false
+SELF_TEST=false
 
 log()  { $QUIET || printf '%s\n' "$*"; }
 die()  { printf 'shipped-readme.sh error: %s\n' "$*" >&2; exit 2; }
@@ -61,20 +80,23 @@ usage() {
   cat <<'EOF'
 shipped-readme.sh — Verify the shipped README and token contract match the repository
 
-Usage: shipped-readme.sh [--quiet] [--help]
+Usage: shipped-readme.sh [--quiet] [--self-test] [--help]
 
-  --quiet   Suppress progress output; print findings only
-  --help    Show this message
+  --quiet      Suppress progress output; print findings only
+  --self-test  Prove the tree checks still fire: delete one required row per check
+               from a copy of the README and assert each one is caught
+  --help       Show this message
 
-Exit codes: 0 = match  1 = drift found  2 = script error
+Exit codes: 0 = match  1 = drift found, or the self-test no longer separates  2 = script error
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --quiet|-q) QUIET=true; shift ;;
-    --help|-h)  usage; exit 0 ;;
-    *)          die "unknown argument: $1" ;;
+    --quiet|-q)  QUIET=true; shift ;;
+    --self-test) SELF_TEST=true; shift ;;
+    --help|-h)   usage; exit 0 ;;
+    *)           die "unknown argument: $1" ;;
   esac
 done
 
@@ -104,39 +126,88 @@ is_excluded() {
   return 1
 }
 
-# Each register is isolated to its own section before being searched. Scoping is the
-# whole game here: the attribution tables name every skill in backticks, and the prose
-# says "an interactive bash wizard" — either satisfies a naive whole-file grep while the
-# register row it is meant to prove is missing.
-TREE=$(awk '/^## Project Tree/{f=1} f; /^## Prerequisites/{f=0}' "$README")
-SKILLS_REG=$(awk '/^### Skills/{f=1;next} /^### /{f=0} f' "$README")
-AUDIT_REG=$(awk '/^### Audit scripts/{f=1;next} /^### /{f=0} f' "$README")
+# A name must appear as a tree ROW, not merely somewhere in the tree text. Two ways a
+# bare grep passes a check that should fail, both of them real:
+#
+#   incidental prose  DOCUMENTATION-PAIRING.md's description is "the CONTEXT.md /
+#                     CLAUDE.md split" — it answers a search for CONTEXT.md from inside
+#                     the very block that search is meant to police.
+#   one row answering for another
+#                     `── VERSION-HISTORY.md` contains the string `VERSION`, so the
+#                     VERSION row could be deleted and never missed.
+#
+# So: the name must follow the `── ` connector every row carries and no description uses
+# (descriptions use ← and —), and must END at that row — the next character is a space,
+# a `/`, or the line's end. Done in awk to keep filenames literal; a regex would have to
+# escape the dot in every one of them.
+in_tree() { # $1 = a tree blob, $2 = the entry name as the tree writes it
+  awk -v n="$2" '
+    { i = index($0, "── " n)
+      if (i > 0) {
+        c = substr($0, i + length("── " n), 1)
+        if (c == "" || c == " " || c == "/") { hit = 1; exit }
+      } }
+    END { exit !hit }' <<< "$1"
+}
 
-[[ -n "$TREE"       ]] || die "no '## Project Tree' section in $README"
-[[ -n "$SKILLS_REG" ]] || die "no '### Skills' section in $README"
-[[ -n "$AUDIT_REG"  ]] || die "no '### Audit scripts' section in $README"
+# How many rows carry this name, anywhere in the tree. Only the self-test needs it:
+# it picks an unambiguous mutation target, so that deleting "the CONTEXT.md row"
+# cannot silently delete a different one of the dozen that exist.
+count_rows() { # $1 = a tree blob, $2 = the entry name
+  awk -v n="$2" '
+    { i = index($0, "── " n)
+      if (i > 0) {
+        c = substr($0, i + length("── " n), 1)
+        if (c == "" || c == " " || c == "/") k++
+      } }
+    END { print k+0 }' <<< "$1"
+}
 
-bold "▸ shipped-readme.sh"
-log  "  checking .copier/README.md and TEMPLATE-TOKENS.md against the repository…"
-log  ""
+tree_section() {    # $1 = the tree line the top-level section opens with
+  awk -v s="$1" 'index($0,s)==1 {f=1;next} f && /^[├└]── /{f=0} f' <<< "$TREE"
+}
+tree_subsection() { # $1 = a section blob, $2 = the line the sub-section opens with
+  awk -v s="$2" 'index($0,s)==1 {f=1;next} f && /^│   [├└]── /{f=0} f' <<< "$1"
+}
+
+# ── The README checks, as one re-pointable unit ───────────────────────────────
+#
+# Every scope below derives from $README, so --self-test can repoint that at a mutated
+# copy and re-run the whole set. Checks 8 and 9 are deliberately NOT in here: they read
+# the token contract and the shipping file list rather than the README, so no mutation
+# of it can change their answer, and check 9's tree-wide grep is the slow one.
+run_readme_checks() {
+  FINDINGS=()
+
+  # Each register is isolated to its own section before being searched. Scoping is the
+  # whole game here: the attribution tables name every skill in backticks, and the prose
+  # says "an interactive bash wizard" — either satisfies a naive whole-file grep while the
+  # register row it is meant to prove is missing.
+  TREE=$(awk '/^## Project Tree/{f=1} f; /^## Prerequisites/{f=0}' "$README")
+  SKILLS_REG=$(awk '/^### Skills/{f=1;next} /^### /{f=0} f' "$README")
+  AUDIT_REG=$(awk '/^### Audit scripts/{f=1;next} /^### /{f=0} f' "$README")
+
+  [[ -n "$TREE"       ]] || die "no '## Project Tree' section in $README"
+  [[ -n "$SKILLS_REG" ]] || die "no '### Skills' section in $README"
+  [[ -n "$AUDIT_REG"  ]] || die "no '### Audit scripts' section in $README"
 
 # ── 1. Root entries ───────────────────────────────────────────────────────────
 for entry in $(ls -A | grep -vE '^(\.git|node_modules|\.venv|\.code-review-graph)$'); do
   is_excluded "$entry" && continue
   case "$entry" in .*) [[ "$entry" == ".claude" || "$entry" == ".agents" || "$entry" == ".mcp.json" || "$entry" == ".zed" ]] || continue ;; esac
-  grep -qF "$entry" <<< "$TREE" || finding "Project Tree omits shipping root entry: $entry"
+  in_tree "$TREE" "$entry" || finding "Project Tree omits shipping root entry: $entry"
 done
 
 # ── 2. PM src/ folders ────────────────────────────────────────────────────────
 for d in project-management/src/*/; do
   n=$(basename "$d"); is_excluded "$d" && continue
-  grep -qF "$n" <<< "$TREE" || finding "Project Tree omits PM artefact folder: src/$n"
+  in_tree "$TREE" "$n" || finding "Project Tree omits PM artefact folder: src/$n"
 done
 
 # ── 3. Workflow directories ───────────────────────────────────────────────────
 for d in project-management/workflows/*/ code/workflows/*/ how-to/workflows/*/; do
   n=$(basename "$d"); is_excluded "${d%/}" && continue
-  grep -qF "$n" <<< "$TREE" || finding "Project Tree omits workflow: ${d%/}"
+  in_tree "$TREE" "$n" || finding "Project Tree omits workflow: ${d%/}"
 done
 
 # ── 4. Audit scripts ──────────────────────────────────────────────────────────
@@ -164,6 +235,242 @@ while read -r target; do
     finding "Link target does not exist: $target"
   fi
 done < <(grep -oE '\]\([A-Za-z0-9_./-]+\)' "$README" | sed 's/](//;s/)//' | grep -v '^http' | sort -u)
+
+# ── 10/11/12. Nested tree entries ─────────────────────────────────────────────
+#
+# Checks 1–3 reach the top level and the three folder families that are named as a
+# set. Everything nested below that went unchecked, and that is exactly where the
+# drift lived: a `.github/workflows/` block listing 11 of 28, a `code/docs/` block
+# missing eight guides that ship everywhere, and a `code/src/` block missing a
+# directory no surface gates.
+#
+# Each is scoped to its own sub-block before being searched, on the same principle
+# as the registers above: `CONTEXT.md` appears a dozen times in this tree, so a
+# whole-tree grep proves nothing about the one under `code/docs/`. Scoping alone is
+# not enough either — hence in_tree, whose header explains what a bare grep lets past.
+GH_BLOCK=$(tree_section '├── .github/')
+CODE_BLOCK=$(tree_section '├── code/')
+DOCS_BLOCK=$(tree_subsection "$CODE_BLOCK" '│   ├── docs/')
+SRC_BLOCK=$(tree_subsection "$CODE_BLOCK" '│   ├── src/')
+
+[[ -n "$GH_BLOCK"   ]] || die "no '.github/' block in the Project Tree"
+[[ -n "$DOCS_BLOCK" ]] || die "no 'code/docs/' block in the Project Tree"
+[[ -n "$SRC_BLOCK"  ]] || die "no 'code/src/' block in the Project Tree"
+
+for f in .github/workflows/*.yml; do
+  is_excluded "$f" && continue
+  in_tree "$GH_BLOCK" "$(basename "$f")" || finding "Project Tree omits CI workflow: $f"
+done
+
+for f in code/docs/*.md; do
+  is_excluded "$f" && continue
+  in_tree "$DOCS_BLOCK" "$(basename "$f")" || finding "Project Tree omits code guide: $f"
+done
+
+for d in code/src/*/; do
+  is_excluded "${d%/}" && continue
+  in_tree "$SRC_BLOCK" "$(basename "$d")" || finding "Project Tree omits source directory: ${d%/}"
+done
+}
+
+# ── Self-test ─────────────────────────────────────────────────────────────────
+#
+# The known-negative is the real README; the known-positives are generated FROM it,
+# one row deleted per tree check. That is the one difference from the fixture pairs
+# under audits/: a checked-in README fixture would have to carry 28 CI workflows and
+# 32 guides and would rot the week after it was written — the exact staleness these
+# checks exist to catch. Deriving the positives keeps the proof honest for free.
+#
+# Targets are chosen from the same globs the checks iterate, never hardcoded, and only
+# names appearing on exactly ONE row are eligible, so a deletion is unambiguous.
+#
+# Part 1 is the piece no mutation can reach: the real README contains no prefix
+# collision among required names, so in_tree's boundary rule is proved directly.
+self_test() {
+  local tmp target path name out
+
+  bold "▸ shipped-readme.sh --self-test"
+  log  ""
+  command -v mktemp >/dev/null 2>&1 || die "mktemp unavailable — refusing to report a proof that never ran"
+
+  # ── Part 1: the matching rule, in isolation ─────────────────────────────────
+  local BLOB='├── VERSION-HISTORY.md                   ← full version bump history
+├── audit-template-slop.yml              ← the AI-slop family, markup half
+│   ├── DOCUMENTATION-PAIRING.md         ← the CONTEXT.md / CLAUDE.md split
+├── eslint.config.mjs
+├── docker/                              ← Dockerfiles and Compose files'
+  for name in VERSION audit-template.yml CONTEXT.md CLAUDE.md; do
+    assert_out "the boundary rule" "$BLOB" "$name"
+  done
+  for name in VERSION-HISTORY.md audit-template-slop.yml eslint.config.mjs docker; do
+    assert_in "the boundary rule" "$BLOB" "$name"
+  done
+
+  # ── Part 2: the known-negative — the real README must trip nothing ──────────
+  run_readme_checks
+  if [[ ${#FINDINGS[@]} -ne 0 ]]; then
+    printf '\033[31m  ✗ the real README already fails — a mutation proof on a broken baseline means nothing\033[0m\n' >&2
+    printf '    %s\n' "${FINDINGS[@]}" >&2
+    exit 2
+  fi
+
+  # ── Part 3: the blocks are scoped, not just non-empty ───────────────────────
+  #
+  # The die guards above catch a block that came back EMPTY. They cannot catch the
+  # opposite, and the opposite is the dangerous one: a tree_section that failed to stop
+  # at its boundary and returned the whole tree would leave every nested check passing
+  # AND still firing on every mutation, because a row deleted from the tree is deleted
+  # from an over-captured block too. Nothing downstream can tell. So each block is
+  # asserted to carry its own first member and to carry NONE of its neighbours' —
+  # every name derived from the same globs the checks iterate.
+  local gh doc src
+  gh=$(first_required "$GH_BLOCK" .github/workflows/*.yml)   || die "no unambiguous .github/ anchor — the proof cannot run"
+  doc=$(first_required "$DOCS_BLOCK" code/docs/*.md)         || die "no unambiguous code/docs/ anchor — the proof cannot run"
+  src=$(first_required "$SRC_BLOCK" code/src/*/)             || die "no unambiguous code/src/ anchor — the proof cannot run"
+  gh="${gh##*	}"; doc="${doc##*	}"; src="${src##*	}"
+
+  assert_in  "GH_BLOCK"   "$GH_BLOCK"   "$gh"
+  assert_in  "DOCS_BLOCK" "$DOCS_BLOCK" "$doc"
+  assert_in  "SRC_BLOCK"  "$SRC_BLOCK"  "$src"
+  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$doc"
+  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$src"
+  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$src"
+  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$gh"
+  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$doc"
+  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$gh"
+  assert_out "CODE_BLOCK" "$CODE_BLOCK" "$gh"
+
+  # count_rows underpins the uniqueness filter every mutation target passes through:
+  # if it under-counted, an ambiguous target would be picked and the deletion would hit
+  # a row nobody meant. One name known unique, one known repeated.
+  assert_count "a unique guide must count once" "$doc" -eq 1
+  assert_count "the paired CONTEXT.md must count many" CONTEXT.md -ge 2
+
+  # ── Part 4: one deleted row per tree check must produce exactly one finding ──
+  local REAL_README="$README"
+  tmp=$(mktemp) || die "could not create a temporary file"
+  # shellcheck disable=SC2064
+  trap "rm -f '$tmp'; README='$REAL_README'" RETURN
+
+  local probe
+  for probe in \
+    "1|$TREE|$(printf '%s ' *.md *.yml *.json)" \
+    "2|$TREE|$(printf '%s ' project-management/src/*/)" \
+    "3|$TREE|$(printf '%s ' code/workflows/*/)" \
+    "10|$GH_BLOCK|$(printf '%s ' .github/workflows/*.yml)" \
+    "11|$DOCS_BLOCK|$(printf '%s ' code/docs/*.md)" \
+    "12|$SRC_BLOCK|$(printf '%s ' code/src/*/)"
+  do
+    local num="${probe%%|*}" rest="${probe#*|}"
+    local blob="${rest%%|*}" candidates="${rest#*|}"
+
+    # shellcheck disable=SC2086
+    target=$(first_required "$blob" $candidates) || {
+      ST_FAILS=$((ST_FAILS + 1))
+      printf '\033[31m  ✗ check %s: no unambiguous mutation target — the proof cannot run\033[0m\n' "$num"
+      continue
+    }
+    path="${target%%	*}"; name="${target##*	}"
+
+    drop_row "$REAL_README" "$name" > "$tmp"
+    README="$tmp"
+    run_readme_checks
+    README="$REAL_README"
+    ST_PROBES=$((ST_PROBES + 1))
+
+    if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$path"* || "${FINDINGS[0]}" == *"$name"* ]]; then
+      log "  ✓ check $num fires on a missing row — $path"
+    else
+      ST_FAILS=$((ST_FAILS + 1))
+      out=$(printf '%s; ' "${FINDINGS[@]:-(none)}")
+      printf '\033[31m  ✗ check %s: deleting %s produced %d finding(s): %s\033[0m\n' \
+        "$num" "$path" "${#FINDINGS[@]}" "$out"
+    fi
+  done
+
+  # run_readme_checks was last called against a mutated copy; leave the globals holding
+  # the real tree so nothing downstream inherits a deliberately broken one.
+  run_readme_checks
+
+  log ""
+  if [[ "$ST_FAILS" -eq 0 ]]; then
+    bold "✓ Self-test passed — $ST_PROBES probes: the boundary rule, the block scoping, and all six tree checks."
+    log ""
+    return 0
+  fi
+  log "  the detector no longer separates a complete tree from a mutated one —"
+  log "  fix the check, never the expectation."
+  log ""
+  return 1
+}
+
+# Pick a row the README is REQUIRED to carry AND that appears exactly once, so deleting
+# it is both a genuine omission and an unambiguous edit. Derived from the check's own
+# glob rather than a hardcoded name, so a rename cannot quietly rot the proof.
+first_required() { # $1 = the blob the check searches, $2… = candidate paths
+  local blob="$1"; shift
+  local p q n
+  for p in "$@"; do
+    q="${p%/}"; [[ -e "$q" ]] || continue
+    n=$(basename "$q")
+    is_excluded "$q" && continue
+    in_tree "$blob" "$n" || continue
+    [[ "$(count_rows "$TREE" "$n")" == "1" ]] || continue
+    printf '%s\t%s' "$q" "$n"
+    return 0
+  done
+  return 1
+}
+
+# Delete the FIRST row carrying this name, by the same boundary rule the checks use.
+drop_row() { # $1 = a README path, $2 = the entry name
+  awk -v n="$2" '
+    !gone { i = index($0, "── " n)
+      if (i > 0) {
+        c = substr($0, i + length("── " n), 1)
+        if (c == "" || c == " " || c == "/") { gone = 1; next }
+      } }
+    { print }' "$1"
+}
+
+# Self-test assertions. Counters are global because the helpers are called from inside
+# self_test and bash would otherwise need every one of them to thread a return value.
+ST_FAILS=0
+ST_PROBES=0
+
+assert_in() {  # $1 = label, $2 = blob, $3 = a name the blob MUST carry
+  ST_PROBES=$((ST_PROBES + 1))
+  if ! in_tree "$2" "$3"; then
+    ST_FAILS=$((ST_FAILS + 1))
+    printf '\033[31m  ✗ %s is missing "%s" — the block under-captures\033[0m\n' "$1" "$3"
+  fi
+}
+assert_out() { # $1 = label, $2 = blob, $3 = a name from a NEIGHBOURING section
+  ST_PROBES=$((ST_PROBES + 1))
+  if in_tree "$2" "$3"; then
+    ST_FAILS=$((ST_FAILS + 1))
+    printf '\033[31m  ✗ %s carries "%s" from another section — the block over-captures\033[0m\n' "$1" "$3"
+  fi
+}
+assert_count() { # $1 = label, $2 = name, $3 = comparison (-eq/-ge), $4 = expected
+  local got; got=$(count_rows "$TREE" "$2")
+  ST_PROBES=$((ST_PROBES + 1))
+  if ! [ "$got" "$3" "$4" ]; then
+    ST_FAILS=$((ST_FAILS + 1))
+    printf '\033[31m  ✗ count_rows("%s") = %s, expected %s %s — %s\033[0m\n' "$2" "$got" "$3" "$4" "$1"
+  fi
+}
+
+if $SELF_TEST; then
+  self_test
+  exit $?
+fi
+
+bold "▸ shipped-readme.sh"
+log  "  checking .copier/README.md and TEMPLATE-TOKENS.md against the repository…"
+log  ""
+
+run_readme_checks
 
 # ── 8. Every copier question is documented ────────────────────────────────────
 while read -r q; do

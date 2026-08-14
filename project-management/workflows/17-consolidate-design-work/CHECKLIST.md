@@ -1,8 +1,7 @@
 ---
 workflow: 17-consolidate-design-work
 phase: design
-agent: planner
-skills: [global-workflow, codebase-design, domain-modelling]
+skills: [planner, global-workflow, codebase-design, domain-modelling]
 model: fable
 ---
 

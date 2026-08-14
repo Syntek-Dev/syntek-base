@@ -1,8 +1,7 @@
 ---
 workflow: 05-testing-and-coverage
 phase: verify
-agent: qa-tester
-skills: [global-workflow]
+skills: [qa-tester, global-workflow]
 model: opus
 ---
 
@@ -77,7 +76,7 @@ green while asserting nothing, which is the failure coverage cannot see.
 
 ## Step 4 — Read the coverage honestly
 
-> **↳ New agent:** `qa-tester` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus
 
 ```bash
 bash code/src/scripts/tests/backend-coverage.sh

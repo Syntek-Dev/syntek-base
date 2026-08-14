@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 
@@ -177,6 +176,6 @@ floors as everything else ([`testing/COVERAGE.md`](testing/COVERAGE.md)).
 - [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md): the taxonomy, the register, and the guard clause
 - [`PROCESS-MODEL.md`](PROCESS-MODEL.md): where a command sits among the process families
 - `code/src/django/apps/core/management/CONTEXT.md`: the shipped base class
-- `.claude/skills/stack-django/SKILL.md`: the backend idioms an agent loads on demand
+- `.claude/skills/stack-django/SKILL.md`: the backend idioms loaded on demand
 
 _Part of the `code/docs/` documentation family._

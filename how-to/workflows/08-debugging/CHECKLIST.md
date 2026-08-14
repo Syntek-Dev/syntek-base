@@ -1,8 +1,7 @@
 ---
 workflow: 08-debugging
 phase: verify
-agent: debugger
-skills: [global-workflow]
+skills: [bugfix, global-workflow]
 model: opus
 ---
 

@@ -1,8 +1,7 @@
 ---
 workflow: 11-qa-checks
 phase: verify
-agent: qa-tester
-skills: [stack-django, stack-htmx-templates]
+skills: [qa-tester, stack-django, stack-htmx-templates]
 model: fable
 ---
 
@@ -20,7 +19,7 @@ model: fable
 - [ ] All in-scope user stories identified
 - [ ] Every wireframe reviewed for happy path, error states, and edge cases
 - [ ] Accessibility and responsive behaviour noted for each screen
-- [ ] QA agent (`qa-tester`) run for each story
+- [ ] `qa-tester` skill run for each story
 - [ ] `QA-US###-<DESCRIPTION>.md` created for every story in `project-management/src/11-QA/PLANNING/`
 - [ ] Missing acceptance criteria fed back into the relevant `US###.md` files
 - [ ] No stories with unresolved acceptance criteria gaps remain

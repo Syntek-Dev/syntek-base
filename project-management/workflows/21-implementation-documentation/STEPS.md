@@ -1,8 +1,7 @@
 ---
 workflow: 21-implementation-documentation
 phase: build
-agent: doc-writer
-skills: [global-workflow]
+skills: [doc-writer, global-workflow]
 model: opus
 ---
 
@@ -79,12 +78,12 @@ that ships no Django Ninja API surface records that fact in the API record heade
 
 #### SEO — audit the built page before writing its record
 
-> **↳ Agent:** `seo` · **Model:** opus
+> **↳ New dispatch:** `general-purpose` · **Skill:** `seo` · **Model:** opus
 
 The SEO record is the **only** one whose evidence must be gathered from a running page, because
 `12-seo-checks` set targets before the page existed. Do this before writing the record:
 
-1. Run the `seo` agent against the story's route(s) — metadata, Open Graph, canonical, JSON-LD,
+1. Run the `seo` skill against the story's route(s) — metadata, Open Graph, canonical, JSON-LD,
    sitemap, robots.
 2. Open the page and confirm each planned tag actually renders — `12-seo-checks` planned the
    values; this is where they are checked against the DOM.
@@ -164,7 +163,7 @@ No spec is left with a `PLANNING/` record but no `IMPLEMENTATION/` record.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

@@ -13,7 +13,7 @@ acceptance criteria against the shipped build and closing its `../PLANNING/` pla
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/21-implementation-documentation/` (or
-  `workflows/12-seo-checks/` when auditing a shipped route), using the `seo` agent against
+  `workflows/12-seo-checks/` when auditing a shipped route), using the `seo` skill against
   the story's plan in `../PLANNING/SEO-PLAN-US###-*.md` and `docs/SEO-CHECKLIST.md`.
 - **Model:** Fable for the SEO verification judgement (metadata, structured data,
   crawlability, Core Web Vitals against targets); Opus for the mechanical touches —

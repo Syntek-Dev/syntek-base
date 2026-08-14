@@ -38,6 +38,10 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           version: ${{ env.UV_VERSION }}
+          # Nothing to cache in the template — the uv sync below is guarded on
+          # the lockfile and skipped. Full reasoning at the same input in
+          # claude.yml.
+          ignore-nothing-to-cache: true
 
       - uses: pnpm/action-setup@v4
 

@@ -180,6 +180,11 @@ def copier_excluded():
     except OSError:
         return out
     body = txt.split("_exclude:", 1)[-1]
+    # Copier's block-opening delimiter, assembled from its two characters rather than
+    # written out. THIS FILE IS RENDERED: spelling the pair literally makes Jinja parse
+    # it as a tag while generating every project, and the whole generation dies with
+    # TemplateSyntaxError. It did, from v2.4.0 until 13/08/2026.
+    block_open = "<" + ":"
     for line in body.split("\n"):
         if re.match(r'^[a-zA-Z_]+:', line):
             break
@@ -187,7 +192,7 @@ def copier_excluded():
         if not m:
             continue
         v = m.group(1)
-        if "<:" in v:
+        if block_open in v:
             g = re.search(r'>(/[^<]+)<', v)
             v = g.group(1) if g else ""
         out.add(v.lstrip("/").rstrip("/"))

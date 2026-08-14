@@ -155,7 +155,7 @@
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] The `seo` agent run against all public pages introduced in this sprint; output reviewed and all issues resolved
+- [ ] The `seo` skill run against all public pages introduced in this sprint; output reviewed and all issues resolved
 - [ ] `<title>` set via the Django template `<head>` (SEO app `build_seo` helper) — max 60 chars — contains primary keyword
 - [ ] `<meta name="description">` set — max 160 chars — unique to this page
 - [ ] `<link rel="canonical">` present and correct
@@ -285,7 +285,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Add JSON-LD structured data (`[schema type]`) to `[page / route]`                | [ ]  |
 | US### | Add `[page / route]` to `sitemap.xml`; trigger Celery regeneration if applicable | [ ]  |
 | US### | Run Lighthouse to verify Core Web Vitals targets; record results                 | [ ]  |
-| US### | Run the `seo` agent to confirm all SEO checks pass                               | [ ]  |
+| US### | Run the `seo` skill to confirm all SEO checks pass                               | [ ]  |
 
 ### Testing Tasks
 

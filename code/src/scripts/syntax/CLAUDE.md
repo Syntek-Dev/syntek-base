@@ -15,7 +15,7 @@ repo-spanning Markdown/CSS.
 ## How to work here
 
 - **Routing:** any syntax or type fix routes through these three scripts (the
-  `syntax` agent targets them); **never invoke `ruff`, `prettier`, `basedpyright`,
+  `syntax` skill targets them); **never invoke `ruff`, `prettier`, `basedpyright`,
   or `pnpm` directly.** The Python tools run in the `django` container; the two
   repo-spanning tools (Prettier via `format.sh`, markdownlint via `lint.sh`) run on
   the **host** via workspace `pnpm`.

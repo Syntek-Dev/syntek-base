@@ -407,7 +407,8 @@ def render_type() -> str:
     for name, size, lead, weight, use in TYPE_SCALE:
         bold = r"\bfseries " if weight in {"Bold", "Semibold", "Black"} else ""
         sample = tex(sample_for(size))
-        meta = f"{name}  \\textbullet\\  {size}/{lead} pt  \\textbullet\\  {weight}  \\textbullet\\  {use}"
+        sep = r"  \textbullet\  "
+        meta = f"{name}{sep}{size}/{lead} pt{sep}{weight}{sep}{use}"
         body.append(
             r"\noindent{\fontsize{"
             + str(size)

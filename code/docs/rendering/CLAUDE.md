@@ -12,7 +12,7 @@ HTMX / Alpine decision and the common HTMX/Alpine pitfalls with worked examples.
 
 ## How to work here
 
-- **Routing:** documentation, not code — `doc-writer` agent, and this guidance governs
+- **Routing:** documentation, not code — `doc-writer` skill, and this guidance governs
   `stack-htmx-templates` work.
   Opus for substantive edits; Opus for mechanical touches.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/RENDERING.md` a thin index and

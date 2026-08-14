@@ -13,7 +13,7 @@ writing `SEO-PLAN-US###-<DESCRIPTOR>.md` into `src/12-SEO/PLANNING/`.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order with the `seo` agent. The hard gate
+- **Routing:** run `STEPS.md` in order with the `seo` skill. The hard gate
   `docs/SEO-CHECKLIST.md` must be read before Step 1. Inputs: the story
   (`src/02-STORIES/`) and its wireframes (`src/08-WIREFRAMES/USER-STORY-IDEAS/`).
 - **Grill first:** open with a grilling pass — the primary keyword, the schema type, whether the

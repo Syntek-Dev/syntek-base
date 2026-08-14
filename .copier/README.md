@@ -130,17 +130,16 @@ Two things to do on a freshly generated project:
 ```text
 <%PROJECT_SLUG%>/
 ├── .claude/                             ← Claude Code configuration
-│   ├── CLAUDE.md                        ← authoritative operating manual: read-order, agents, skills, plugins, rules
+│   ├── CLAUDE.md                        ← authoritative operating manual: read-order, skills, plugins, rules
 │   ├── MEMORY.md                        ← project memory store (always read second, after CLAUDE.md)
 │   ├── settings.json                    ← Claude Code settings (permissions, model, disabled marketplace plugins)
 │   ├── settings.local.json              ← local overrides (gitignored)
-│   ├── agents/                          ← agent definitions (orchestrators, specialists, doc-writers)
 │   ├── skills/                          ← internalised skills (stack, workflow, document standards)
 │   ├── hooks/                           ← pre-PR quality gates (fired via PreToolUse hook on gh pr create)
 │   │   ├── lib/                         ← gate scripts: format, lint, typecheck, tests, security, stubs, cloc, lockfiles
 │   │   ├── pre-pr-check.sh              ← runs all 8 gates; blocks PR creation on failure
 │   │   └── post-pr-comment.sh           ← posts gate results as a GitHub PR comment
-│   └── plugins/                         ← agent helper scripts (project/env/db/git/log/pm inspection)
+│   └── plugins/                         ← helper scripts a skill calls (project/env/db/git/log/pm inspection)
 │       ├── db-tool.py
 │       ├── env-tool.py
 │       ├── git-tool.py
@@ -150,43 +149,75 @@ Two things to do on a freshly generated project:
 ├── .github/
 │   └── workflows/                       ← CI: syntax, test, and audit checks
 │       ├── audit-cloc.yml               ← fails if any source file exceeds 800 lines
+│       ├── audit-copy-emdash.yml        ← bans em dashes in public marketing copy
+│       ├── audit-copy-slop.yml          ← the AI-slop family, prose half
+│       ├── audit-css-gradients.yml      ← bans raw inline gradients in component and page CSS
+│       ├── audit-css-slop.yml           ← the AI-slop family, CSS half
+│       ├── audit-css-tokens.yml         ← every var(--x) must resolve in the token layer
+│       ├── audit-deps.yml               ← scheduled CVE sweep (pnpm audit + pip-audit) and lockfile drift
+│       ├── audit-doc-references.yml     ← every citation in a shipped file must resolve
+│       ├── audit-docs-length.yml        ← the 300-line instructional-document limit
+│       ├── audit-docs-pairing.yml       ← the CONTEXT.md / CLAUDE.md split
+│       ├── audit-mobile-tokens.yml      ← token-first on the mobile surface; self-skips without one
+│       ├── audit-negative-space.yml     ← the invariant register against the code, both directions
+│       ├── audit-render-slop.yml        ← the AI-slop family, rendered half
+│       ├── audit-routing-skills.yml     ← every skill named in routing frontmatter must exist
+│       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
+│       ├── audit-skill-conformance.yml  ← every skill against the Agent Skills specification
 │       ├── audit-stubs.yml              ← detects hard stubs and TODO/FIXME/HACK markers
+│       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
+│       ├── audit-template-slop.yml      ← the AI-slop family, markup half
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← pushes ClickUp story exports to ClickUp (push/PR)
 │       ├── syntax-js-ts.yml
 │       ├── syntax-markdown.yml
 │       ├── syntax-python.yml
 │       ├── test-api.yml
-│       ├── test.yml                    ← pytest + coverage, and the mobile suite and bundle
-│       └── test-e2e.yml               ← playwright-python browser suite
+│       ├── test-e2e.yml                 ← playwright-python browser suite
+│       └── test.yml                     ← pytest + coverage, and the mobile suite and bundle
 ├── code/                                ← source code, coding standards, tests
 │   ├── CONTEXT.md                       ← coding layer index
 │   ├── docs/                            ← coding reference guides; each oversized guide has a matching sub-directory
 │   │   ├── ACCESSIBILITY.md             (+ accessibility/ — HTML-AND-ARIA, INTERACTION, TESTING-AND-COMPONENTS)
-│   │   ├── API-DESIGN.md               (+ api-design/ — NINJA-CONVENTIONS, REST-CONVENTIONS, AUTH-AND-ERRORS, …)
-│   │   ├── ARCHITECTURE-PATTERNS.md    (+ architecture/ — CORE-AND-SCALING, AUTH-CONTRACT, SERVICE-AND-MIDDLEWARE, …)
+│   │   ├── API-DESIGN.md                (+ api-design/ — NINJA-CONVENTIONS, REST-CONVENTIONS, AUTH-AND-ERRORS, …)
+│   │   ├── ARCHITECTURE-PATTERNS.md     (+ architecture/ — CORE-AND-SCALING, AUTH-CONTRACT, SERVICE-AND-MIDDLEWARE, …)
 │   │   ├── BACKEND-CODING-PRINCIPLES.md
-│   │   ├── CODING-PRINCIPLES.md        (+ coding-principles/ — DESIGN-PRINCIPLES, PRACTICAL-RULES, STYLE-AND-PROCESS)
+│   │   ├── CLAUDE.md
+│   │   ├── CODE-REVIEW-GRAPH.md         ← the graph MCP playbooks: explore, debug, review, refactor
+│   │   ├── CODING-PRINCIPLES.md         (+ coding-principles/ — DESIGN-PRINCIPLES, PRACTICAL-RULES, STYLE-AND-PROCESS)
 │   │   ├── CONTEXT.md
-│   │   ├── DATA-STRUCTURES.md          (+ data-structures/ — FUNDAMENTALS, SCHEMA-DESIGN, DOMAIN-MODELLING, …)
-│   │   ├── DESIGN-TOKENS.md
-│   │   ├── ENCRYPTION-GUIDE.md         (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
+│   │   ├── DATABASE.md                  ← scope columns, database-level constraints, lock-safe migrations, search
+│   │   ├── DATA-STRUCTURES.md           (+ data-structures/ — FUNDAMENTALS, SCHEMA-DESIGN, DOMAIN-MODELLING, …)
+│   │   ├── DESIGN-TOKENS.md             (+ design-tokens/ — MODEL, CASCADE, EDITOR)
+│   │   ├── DISCOVERABILITY.md           (+ discoverability/ — WEB-METADATA, STRUCTURED-DATA, ROOT-SURFACE, …)
+│   │   ├── DOCUMENTATION-PAIRING.md     ← the CONTEXT.md / CLAUDE.md split and its decision test
+│   │   ├── ENCRYPTION-GUIDE.md          (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
+│   │   ├── EXPORTS.md                   ← downloadable file exports (declared, not wired)
 │   │   ├── FRONTEND-CODING-PRINCIPLES.md
-│   │   ├── LOGGING.md                  (+ logging/ — DJANGO-LOGGING, FRONTEND-LOGGING, OBSERVABILITY, CLOUDINARY)
-│   │   ├── MCP-SERVER.md               (+ mcp-server/ — MOUNTING, TOOL-DESIGN, AUTH-AND-THREATS, TESTING-AND-OPS)
-│   │   ├── PERFORMANCE.md              (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
-│   │   ├── RENDERING.md                (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
-│   │   ├── RESPONSIVE-DESIGN.md        (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
-│   │   ├── RLS-GUIDE.md               (+ rls/ — FUNDAMENTALS, POLICY-TEMPLATES, MIDDLEWARE-AND-NINJA, …)
-│   │   ├── SECURITY.md                 (+ security/ — AUTH-AND-AUTHZ, OWASP-AND-CHECKLIST, CRYPTO-AND-DATA, …)
-│   │   ├── TESTING.md                  (+ testing/ — BACKEND-TESTING, FRONTEND-TESTING, API-TESTING, …)
-│   │   └── URL-STRATEGY.md
+│   │   ├── LOGGING.md                   (+ logging/ — DJANGO-LOGGING, FRONTEND-LOGGING, OBSERVABILITY, CLOUDINARY)
+│   │   ├── MANAGEMENT-COMMANDS.md       ← the CLI surface: untrusted arguments, blast radius, exit codes
+│   │   ├── MCP-SERVER.md                (+ mcp-server/ — MOUNTING, TOOL-DESIGN, AUTH-AND-THREATS, TESTING-AND-OPS)
+│   │   ├── NEGATIVE-SPACE.md            ← what the code must never allow: invariants and the error taxonomy
+│   │   ├── NOTIFICATIONS.md             ← the send boundary and PII per channel (declared, not wired)
+│   │   ├── OBJECT-STORAGE.md            ← private documents over the S3 API (declared, not wired)
+│   │   ├── PERFORMANCE.md               (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
+│   │   ├── PROCESS-MODEL.md             ← worker class, event loop, and the ORM's sync boundary
+│   │   ├── RENDERING.md                 (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
+│   │   ├── RESPONSIVE-DESIGN.md         (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
+│   │   ├── RLS-GUIDE.md                 (+ rls/ — FUNDAMENTALS, POLICY-TEMPLATES, MIDDLEWARE-AND-NINJA, …)
+│   │   ├── SECURITY.md                  (+ security/ — AUTH-AND-AUTHZ, OWASP-AND-CHECKLIST, AUDIT-TRAIL, …)
+│   │   ├── TASK-AUTHORING.md            ← background tasks: enqueue boundary, idempotency, retries (declared, not wired)
+│   │   ├── TESTING.md                   (+ testing/ — BACKEND-TESTING, FRONTEND-TESTING, API-TESTING, COVERAGE, …)
+│   │   ├── URL-STRATEGY.md
+│   │   ├── VISUAL-DESIGN.md             (+ visual-design/ — WEB)
+│   │   └── cloudinary/                  ← vendored Cloudinary SDK reference (PYTHON_SDK, CROSS_SDK_INFO)
 │   ├── src/
 │   │   ├── django/                      ← Django 6 + Django Ninja (apps, config, templates, components, static)
 │   │   ├── docker/                      ← Dockerfiles and Compose files
+│   │   ├── improvement-architecture/    ← /improve-codebase-architecture reports
 │   │   ├── logs/                        ← runtime log files (dev/test; gitignored)
-│   │   ├── scripts/                     ← dev, database, test, syntax, and audit scripts
+│   │   ├── scripts/                     ← audits, database, deployment, development, syntax, tests (+ shared _lib/)
 │   │   └── tests/                       ← Bruno API test collections (one collection per domain)
 │   └── workflows/                       ← 11 coding workflows in three families
 │       ├── 01-new-feature/              ← build
@@ -206,7 +237,7 @@ Two things to do on a freshly generated project:
 │   │   ├── CLI-TOOLING.md               ← Claude Code MCP servers, hooks, and dev-script reference
 │   │   ├── DEVELOPMENT.md               ← environment variables, Docker setup, and dev tooling catalogue
 │   │   ├── GIT-WORKTREES.md             ← worktree-based parallel story development
-│   │   ├── TOOLING-GUIDE.md             ← internal agents and skills reference (index)
+│   │   ├── TOOLING-GUIDE.md             ← internal skills reference (index)
 │   │   └── tooling-guide/               ← detailed tooling guide sub-documents
 │   │       ├── COMMANDS.md
 │   │       ├── CONFIGURATION.md
@@ -216,7 +247,7 @@ Two things to do on a freshly generated project:
 │   │   ├── CONTEXT.md
 │   │   ├── CONTRIBUTING.md              ← contributing, testing, and code-quality standards
 │   │   ├── NIXOS-SETUP.md               ← pointer stub → NixOS deploy repo + SERVER-ARCHITECTURE/
-│   │   ├── SCALE-ARCHITECTURE/          ← how the app scales (scale-planner snapshot)
+│   │   ├── SCALE-ARCHITECTURE/          ← how the app scales (scale-planning snapshot)
 │   │   └── SERVER-ARCHITECTURE/         ← app→server contract (feeds the NixOS deploy repo)
 │   └── workflows/                       ← 9 operational workflows in four families
 │       ├── 01-first-time-setup/         ← set up
@@ -317,10 +348,16 @@ Two things to do on a freshly generated project:
 ├── pnpm-workspace.yaml
 ├── pyproject.toml                       ← Python tooling (ruff, basedpyright, uv)
 ├── skills-lock.json                     ← vendored Claude Code skills — source, version, content hash
-├── .mcp.json                            ← project MCP servers (code-review-graph)
+├── .mcp.json                            ← project MCP servers (code-review-graph, context7, mcp-mermaid)
 ├── .copier-answers.yml                  ← your generation answers — keep committed, `copier update` needs it
 └── uv.lock                              ← generated at project creation; commit it (Dockerfiles build --frozen)
 ```
+
+**The tree above is the web baseline every project gets.** Each optional surface adds its own
+directories on top, and they are absent unless this project opted in: **mobile** adds
+`code/src/mobile/` and `code/src/scripts/mobile/`, **rust** adds `code/src/rust/` and
+`code/src/scripts/rust/`, and **desktop** adds `code/src/rust/crates/desktop/` and
+`code/src/scripts/desktop/`. Each also brings the guides, skill and workflow named for it.
 
 ---
 
@@ -441,7 +478,7 @@ task, keeping responses fast and token-efficient.
 | **How-To**             | `how-to/`             | Setup guides, daily development commands, debugging     |
 | **Project management** | `project-management/` | User stories, sprints, plans, GDPR, security audits     |
 | **Design**             | `DESIGN.md`           | Design standards, constraints, Figma and UI workflows   |
-| **Claude config**      | `.claude/`            | Operating manual, agents, skills, and helper scripts    |
+| **Claude config**      | `.claude/`            | Operating manual, skills, hooks, and helper scripts     |
 
 ### Routing — read only the layer you need
 
@@ -458,11 +495,11 @@ Always-applicable guides: `project-management/docs/GIT-GUIDE.md` ·
 ### How Claude Code uses this structure
 
 When you open a session, Claude Code reads `.claude/CLAUDE.md` then `.claude/MEMORY.md` first —
-always, before any work. `CLAUDE.md` is the operating manual: the read-order, the two-tier agent
-model (orchestrators delegate to specialists and document-writers), when to load each skill, the
-`.claude/plugins/` helper scripts, and the routing frontmatter that every `docs/`/`workflows/`
-file carries. It deliberately holds no layer-specific detail — that lives in each layer's own
-`CONTEXT.md`, which Claude reads only when the task is within that layer's domain.
+always, before any work. `CLAUDE.md` is the operating manual: the read-order, when to load each
+skill, the `.claude/plugins/` helper scripts, and the routing frontmatter that every
+`docs/`/`workflows/` file carries. It deliberately holds no layer-specific detail — that lives in
+each layer's own `CONTEXT.md`, which Claude reads only when the task is within that layer's
+domain.
 
 Each `CONTEXT.md` links to the `docs/` guides and `workflows/` step-by-step processes relevant to
 that layer. This keeps the active context window small and ensures Claude always reads the right
@@ -476,7 +513,7 @@ reference material rather than everything at once.
 | Writing or reviewing code                  | `code/CONTEXT.md`               |
 | Planning, writing stories, or PM work      | `project-management/CONTEXT.md` |
 | Doing design work (Figma, wireframes, UI)  | `DESIGN.md`                     |
-| Configuring Claude Code, agents, or skills | `.claude/CLAUDE.md`             |
+| Configuring Claude Code, skills, and hooks | `.claude/CLAUDE.md`             |
 
 ---
 
@@ -812,38 +849,33 @@ fix reveals a design problem, open a separate refactoring task using `11-refacto
 
 ## Claude Code Tooling
 
-### Agents
-
-The project carries **internal agent definitions** in `.claude/agents/` (registry:
-`.claude/agents/CONTEXT.md`), internalised from the now-disabled `<%ORG_SLUG%>-dev-suite` /
-`<%ORG_SLUG%>-doc-writer` plugins. They run in two tiers: **8 orchestrators** (the entry points below)
-delegate to **specialists + document-writers**. Each orchestrator runs a multi-phase
-workflow, spawning specialist sub-agents and enforcing separation (no agent reviews its own
-work), with an explicit **Documentation phase** as a hard gate before its commit phase.
-
-| Agent         | Model    | Trigger                                           |
-| ------------- | -------- | ------------------------------------------------- |
-| `feature.md`  | opus     | New full-stack feature, end-to-end capability     |
-| `bugfix.md`   | opus     | Bug, regression, or broken behaviour              |
-| `review.md`   | opus     | Code quality pass, QA before PR                   |
-| `security.md` | **opus** | OWASP audit, hardening, auth or permissions scope |
-| `refactor.md` | opus     | Restructure without behaviour change              |
-| `story.md`    | fable    | User story creation, sprint planning              |
-| `pr.md`       | opus     | Raise PR, merge feature branch → `testing`        |
-| `release.md`  | opus     | Version bump, changelog, deploy to production     |
-
-Agents are invoked by Claude Code automatically when a task matches the agent's description.
-Orchestrator agents run `opus` by default; the `story` orchestrator and the planning
-specialists (`sprint`, `planner`, `user-story`) run `fable`. `sonnet` and `haiku` are never used.
-
 ### Skills
 
-Skills are reference bundles under `.claude/skills/` that agents load **on demand** — the
-convention is that a skill is loaded when its trigger matches, not read up front. The register of
-record is `.claude/skills/CONTEXT.md`.
+Everything Claude Code does here runs from a skill under `.claude/skills/` (register of record:
+`.claude/skills/CONTEXT.md`), internalised from the now-disabled `<%ORG_SLUG%>-dev-suite` /
+`<%ORG_SLUG%>-doc-writer` plugins. A skill is loaded when its trigger matches, not read up front:
+a **reference skill** states conventions and runs inline; a **task skill** is a procedure, and
+dispatches `general-purpose` through the Agent tool — naming the skill to load — when a step
+needs a fresh context. Each phase dispatches separately, so no skill reviews its own work, and
+the multi-phase ones carry a **Documentation phase** as a hard gate before their commit phase.
+Skills run `opus` by default; the planning set (`story`, `sprint`, `planner`, `scale-planning`)
+runs `fable`. `sonnet` and `haiku` are never used.
 
 | Skill                                               | Load when                                                                    |
 | --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `feature` · `bugfix` · `refactor`                   | Build something new · fix something broken · reshape something that works    |
+| `review` · `security`                               | Check a change before it ships · audit and harden against OWASP and CE       |
+| `pr` · `release`                                    | Raise the pull request · cut the release                                     |
+| `story` · `sprint` · `planner`                      | Write the story · slice the sprint · architect the implementation plan       |
+| `syntax` · `completion`                             | Clear the lint, format and type gates · record a story or sprint complete    |
+| `backend` · `frontend` · `database`                 | Build the server side · build the pages · work the data layer                |
+| `authentication` · `notifications`                  | The credential and session layer · sending email, SMS, push and in-app       |
+| `gdpr-mechanics` · `data-analysis` · `pm-tool-sync` | UK GDPR in the stack · ask the data · the external PM-tool sync              |
+| `setup` · `scaffold`                                | Stand up code structure · stand up the docs and workflow layer               |
+| `doc-writer` · `support-articles`                   | Developer documentation · end-user help content                              |
+| `version` · `git` · `cicd`                          | Move the version set · the git surface · pipeline, deploys and dependencies  |
+| `test-writer` · `qa-tester` · `code-reviewer`       | Write the red tests · break it · review it, Standards and Spec separately    |
+| `reporting` · `logging` · `seo`                     | Report data · log instrumentation · the head, JSON-LD and crawler wiring     |
 | `stack-django`                                      | Backend — models, migrations, services, Django Ninja endpoints, pytest       |
 | `stack-htmx-templates`                              | Public frontend — templates, django-components, HTMX, Alpine, token CSS      |
 | `stack-fastmcp`                                     | The MCP tool surface at `/mcp/`                                              |
@@ -862,6 +894,7 @@ record is `.claude/skills/CONTEXT.md`.
 | `resolving-merge-conflicts`                         | A merge, rebase, or `copier update` has left conflict markers                |
 | `wizard`                                            | Authoring an interactive bash wizard for steps only a human can perform      |
 | `runbook`                                           | Writing an operator guide someone will execute under pressure                |
+| `export`                                            | Getting data out as a file — CSV, Excel, PDF or JSON, with PII gated         |
 | `legal-documents` · `msp-scp-documents`             | Drafting a legal document or a security/compliance policy                    |
 | `cloudinary-*`                                      | Cloudinary upload, delivery, and transformation work                         |
 
@@ -870,11 +903,11 @@ begins with an interview, asked in **rounds**: every question whose prerequisite
 settled goes out together, numbered, each with brief options and an explicit recommendation. You
 answer the set; the answers unblock the next round. Facts are looked up rather than asked, and
 nothing is built until you confirm. The shape lives in `.claude/skills/grilling/SKILL.md` and is
-deliberately stated **nowhere else** — every agent and workflow routes to it.
+deliberately stated **nowhere else** — every skill and workflow routes to it.
 
-### Agent helper scripts
+### Helper scripts
 
-Scripts in `.claude/plugins/` are Python helpers agents call (`python3 .claude/plugins/x.py`) to
+Scripts in `.claude/plugins/` are Python helpers a skill calls (`python3 .claude/plugins/x.py`) to
 inspect the local environment for context. They do **not** run dev operations — those go through
 `code/src/scripts/**/*.sh`.
 
@@ -882,7 +915,7 @@ inspect the local environment for context. They do **not** run dev operations �
 | ----------------- | ----------------------------------------------------------------------- |
 | `project-tool.py` | Project structure detection and technology stack identification         |
 | `env-tool.py`     | Read, compare, and validate environment files across environments       |
-| `db-tool.py`      | Database detection and connection info for backend and setup agents     |
+| `db-tool.py`      | Database detection and connection info for backend and setup skills     |
 | `git-tool.py`     | Repository status, branch info, remote detection, and commit history    |
 | `log-tool.py`     | Log file discovery, logging config detection, and recent log extraction |
 | `pm-tool.py`      | Detect project management tool configs (Linear, ClickUp, Jira, etc.)    |
@@ -1104,27 +1137,28 @@ All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
 The register of record is `code/src/scripts/audits/CONTEXT.md` — it is authoritative if this
 table ever falls behind it.
 
-| Script                 | Purpose                                                                                 |
-| ---------------------- | --------------------------------------------------------------------------------------- |
-| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown      |
-| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK) |
-| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens              |
-| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                        |
-| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source         |
-| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds  |
-| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                    |
-| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` § 4)                         |
-| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens |
-| `copy-emdash.sh`       | Em dashes in user-facing copy                                                           |
-| `css-gradients.sh`     | Raw gradient literals outside the token layer                                           |
-| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)           |
-| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                   |
-| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                |
-| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                |
-| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                           |
-| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors         |
-| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                    |
-| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                          |
+| Script                 | Purpose                                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown       |
+| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK)  |
+| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens               |
+| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                         |
+| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source          |
+| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds   |
+| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                     |
+| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` § 4)                          |
+| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens  |
+| `copy-emdash.sh`       | Em dashes in user-facing copy                                                            |
+| `css-gradients.sh`     | Raw gradient literals outside the token layer                                            |
+| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)            |
+| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                    |
+| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                 |
+| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                 |
+| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                            |
+| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors          |
+| `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag |
+| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                     |
+| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                           |
 
 ```bash
 ./code/src/scripts/audits/cloc.sh

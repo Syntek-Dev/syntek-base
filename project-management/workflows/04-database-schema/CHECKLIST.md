@@ -1,8 +1,7 @@
 ---
 workflow: 04-database-schema
 phase: design
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: fable
 ---
 

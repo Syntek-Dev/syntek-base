@@ -1,8 +1,7 @@
 ---
 workflow: 22-pr-and-review
 phase: ship
-agent: pr
-skills: [global-workflow]
+skills: [pr, global-workflow]
 model: opus
 ---
 
@@ -19,8 +18,8 @@ model: opus
 
 - [ ] All tests pass locally before opening PR
 - [ ] Linters clean (backend + frontend)
-- [ ] QA agent pass completed
-- [ ] Code review agent pass completed
+- [ ] `qa-tester` pass completed
+- [ ] `code-reviewer` pass completed
 - [ ] PR targets `testing` branch (not `dev`, `staging`, or `main`)
 - [ ] PR description includes story reference, summary, and test plan
 - [ ] CI passes on `testing`

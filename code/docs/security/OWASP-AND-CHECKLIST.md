@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: security
-skills: [stack-django, stack-htmx-templates]
+skills: [security, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -77,6 +76,7 @@ authorisation rule. _(Portable reference: DRF sets a project-wide `DEFAULT_PERMI
 
 ```python
 import os
+
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — intentional
 ```
 

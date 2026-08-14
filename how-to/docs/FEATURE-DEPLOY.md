@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: cicd
-skills: [global-workflow]
+skills: [cicd, global-workflow]
 model: opus
 ---
 
@@ -232,3 +231,18 @@ Track each unresolved item in `GAPS.md` against the owner below, and keep the ma
 
 Provider-account actions (Class 3) and cache-bust steps (Class 5) carry no code change — track
 them on the feature's release checklist.
+
+## Two standing conditions on the pipeline itself
+
+Neither is per-feature, and neither is visible from a diff — they are properties of how the
+pipeline is configured, so they are recorded here rather than rediscovered at the first
+production deploy:
+
+- **A production deploy requires manual approval**, through a GitHub Environment protection
+  rule rather than a convention anyone remembers. Staging deploys on merge; production waits for
+  a person. The rule lives on the environment, so a workflow edit cannot remove the gate by
+  accident.
+- **The container runs as a non-root user and sensitive ports are never published** to the host
+  or the internet — the database, the broker and the metrics endpoint reach the application over
+  the Compose network only. The `USER` directive that enforces the first is a Dockerfile
+  requirement in `code/docs/security/SECRETS-AND-TRANSPORT.md`.

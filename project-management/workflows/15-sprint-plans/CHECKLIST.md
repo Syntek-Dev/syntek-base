@@ -1,8 +1,7 @@
 ---
 workflow: 15-sprint-plans
 phase: design
-agent: sprint
-skills: [global-workflow]
+skills: [sprint, global-workflow]
 model: fable
 ---
 

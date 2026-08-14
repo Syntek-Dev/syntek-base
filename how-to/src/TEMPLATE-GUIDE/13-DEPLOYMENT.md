@@ -44,7 +44,7 @@ Before provisioning anything:
 /scale-planning
 ```
 
-The `scale-planner` agent audits readiness and produces a sizing envelope keyed to the scaling
+The `scale-planning` skill audits readiness and produces a sizing envelope keyed to the scaling
 phase-gates, writing two living snapshots:
 
 | Snapshot                          | Answers                                                 |
@@ -108,11 +108,11 @@ Only `.env.*.example` templates are tracked.
 Cut a release.
 ```
 
-`project-management/workflows/23-release/` via the `release` orchestrator: version bump,
+`project-management/workflows/23-release/` via the `release` skill: version bump,
 `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`, tag, deploy. Versioning is single-track
 semver — rules in `project-management/docs/VERSIONING-GUIDE.md`.
 
-Do not bump versions by hand mid-feature; the `version` agent owns it.
+Do not bump versions by hand mid-feature; the `version` skill owns it.
 
 ## Observability
 

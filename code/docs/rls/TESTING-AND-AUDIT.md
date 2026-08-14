@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: database
-skills: [stack-django]
+skills: [database, stack-django]
 model: opus
 ---
 
@@ -44,6 +43,7 @@ class TestArticleRLS:
                     [str(user_a.pk)],
                 )
             from apps.content.models import Article
+
             visible = list(Article.objects.all())
 
         assert len(visible) == 1
@@ -55,6 +55,7 @@ class TestArticleRLS:
         with transaction.atomic():
             # Do not set app.current_user_id — simulates missing context
             from apps.content.models import Article
+
             visible = list(Article.objects.all())
 
         assert visible == []
@@ -69,6 +70,7 @@ class TestArticleRLS:
                     [str(user_a.pk)],
                 )
             from apps.content.models import Article
+
             result = Article.objects.filter(pk=target.pk).first()
 
         assert result is None
@@ -82,6 +84,7 @@ class TestArticleRLS:
                 )
             from apps.content.models import Article
             import pytest as _pytest
+
             with _pytest.raises(Exception):
                 # Attempting to insert a row for user_b while context is user_a
                 Article.objects.create(user_id=user_b.pk, title="spoofed")

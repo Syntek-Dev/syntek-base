@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django]
+skills: [backend, stack-django]
 model: opus
 ---
 
@@ -58,6 +57,7 @@ injected dependencies (repositories, policy classes, external clients) construct
 def format_currency(amount: Decimal, currency: str = "GBP") -> str:
     return f"£{amount:,.2f}"
 
+
 # Holds injected dependencies, implements a Protocol — class
 class RecordService:
     def __init__(self, deletion_policy: DeletionPolicy) -> None:
@@ -87,12 +87,15 @@ inline the permission check in the endpoint.
 from typing import Protocol
 from django.core.exceptions import PermissionDenied
 
+
 class DeletionPolicy(Protocol):
     def permits(self, user: "User", obj: object) -> bool: ...
+
 
 class MFARequiredDeletionPolicy:
     def permits(self, user: "User", obj: object) -> bool:
         return user.mfa_verified_this_session
+
 
 class RecordService:
     def __init__(self, deletion_policy: DeletionPolicy) -> None:
@@ -113,24 +116,30 @@ pattern — different backends, same `authenticate()` interface.
 from typing import Protocol
 from django.db import transaction
 
+
 class MFAStrategy(Protocol):
     def verify(self, user: "User", token: str) -> bool: ...
+
 
 class TOTPStrategy:
     def verify(self, user: "User", token: str) -> bool:
         return pyotp.TOTP(user.totp_secret).verify(token)
 
+
 class BackupCodeStrategy:
     def verify(self, user: "User", token: str) -> bool:
         with transaction.atomic():
-            code = BackupCode.objects.select_for_update().filter(
-                user=user, code=token, used=False
-            ).first()
+            code = (
+                BackupCode.objects.select_for_update()
+                .filter(user=user, code=token, used=False)
+                .first()
+            )
             if code is None:
                 return False
             code.used = True
             code.save()
             return True
+
 
 def get_mfa_strategy(user: "User") -> MFAStrategy:
     return TOTPStrategy() if user.totp_enabled else BackupCodeStrategy()
@@ -147,6 +156,7 @@ class MFARequiredDeletionPolicy:
 
     def permits(self, user: "User", token: str) -> bool:
         return self._strategy.verify(user, token)
+
 
 # Wired together in the service layer:
 strategy = get_mfa_strategy(user)
@@ -271,10 +281,10 @@ Enforced by `ruff` (isort-compatible):
 ```python
 from __future__ import annotations  # always first if present
 
-import logging                       # stdlib
+import logging  # stdlib
 import re
 
-from ninja import Router             # third-party
+from ninja import Router  # third-party
 from django.conf import settings
 
 from apps.core.conf import get_setting  # local

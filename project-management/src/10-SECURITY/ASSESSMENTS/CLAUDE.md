@@ -15,7 +15,7 @@ verification.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/`
-  (`STEPS.md` + `CHECKLIST.md`) via the `security` agent (Fable), against
+  (`STEPS.md` + `CHECKLIST.md`) via the `security` skill (Fable), against
   `project-management/docs/SECURITY-GUIDE.md`. Write a story's `PLANNING/` baseline
   before implementing it; the `IMPLEMENTATION/` review follows once the code ships.
 - **Model:** Fable — mapping posture across OWASP/NIST and judging finding severity is

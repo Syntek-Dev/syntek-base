@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: test-writer
-skills: [stack-django, stack-htmx-templates]
+skills: [test-writer, stack-django, stack-htmx-templates]
 model: opus
 ---
 

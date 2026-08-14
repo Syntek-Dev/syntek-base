@@ -1,8 +1,7 @@
 ---
 workflow: 16-story-plans
 phase: design
-agent: planner
-skills: [global-workflow]
+skills: [planner, global-workflow]
 model: fable
 ---
 
@@ -116,7 +115,7 @@ coverage; it exercises a running stack over HTTP and instruments nothing.
 planner [story, sprint plan, ADRs, and every 02–13 spec gathered in Step 1]
 ```
 
-> **↳ New agent:** `planner` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** none
 
 ### Step 9 — Adversarial Plan Review
 
@@ -139,7 +138,7 @@ unscoped deferrals. Resolve every finding.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

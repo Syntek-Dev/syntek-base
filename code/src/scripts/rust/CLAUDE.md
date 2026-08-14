@@ -14,8 +14,8 @@ the host against the toolchain pinned in `code/src/rust/rust-toolchain.toml`.
 ## How to work here
 
 - **Routing:** these scripts are the routing target for anything touching `code/src/rust/`.
-  **Never invoke `cargo`, `rustc`, `maturin`, `clippy` or `cargo-deny` directly.** The `rust`
-  agent and the `stack-rust` skill target them.
+  **Never invoke `cargo`, `rustc`, `maturin`, `clippy` or `cargo-deny` directly.** The
+  `stack-rust` skill targets them.
 - **Model:** Opus to author or change a script and to run one.
 - **Concrete steps:** `lint.sh` → `test.sh` → `audit.sh` → `build.sh --release` before a PR.
   `build.sh --check` is the fast inner loop while writing.

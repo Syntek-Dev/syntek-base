@@ -13,7 +13,7 @@ merge process in `project-management/workflows/22-pr-and-review/`.
 
 ## How to work here
 
-- **Routing:** execute via `STEPS.md`, typically with the `review` skill/agent
+- **Routing:** execute via `STEPS.md`, typically with the `review` skill
   (Opus). Use `/code-review` on the working diff for a fast pass before the full
   workflow. Open the structural pass with the code-review-graph **review playbook**
   (`.claude/skills/review-changes.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`).
@@ -27,7 +27,7 @@ merge process in `project-management/workflows/22-pr-and-review/`.
 - **Definition of done:** every state-changing Django Ninja endpoint authenticated and
   permission-checked via a named Policy class; no IDOR; coverage floors met; no duplicated
   the django-components library components; `CHECKLIST.md` signed off.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

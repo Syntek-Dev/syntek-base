@@ -1,8 +1,7 @@
 ---
 workflow: 09-debugging-with-logs
 phase: verify
-agent: debugger
-skills: [stack-django]
+skills: [bugfix, stack-django]
 model: opus
 ---
 
@@ -94,7 +93,7 @@ If the exception is new, tag the Glitchtip issue as `investigating` before conti
 
 ## Step 4 — Query Loki in Grafana (staging / prod only)
 
-> **↳ New agent:** `debugger` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `bugfix` (`## Root cause` phase only) · **Model:** opus · **MCP:** none
 
 Open Grafana → Explore → select the Loki datasource.
 
@@ -180,7 +179,7 @@ Correlate the metric anomaly timestamp with the Loki log lines from Step 4.
 
 ## Step 6 — Write a regression test
 
-> **↳ New agent:** `test-writer` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
 
 Once the root cause is identified:
 

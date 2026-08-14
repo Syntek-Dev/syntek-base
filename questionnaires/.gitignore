@@ -1,0 +1,20 @@
+# syntek-base only — this file is copier-excluded, so a generated project never receives it.
+#
+# A questionnaire is addressed to a named outsider — a client, a data controller, a vendor — and
+# records an answer only they hold. One written while developing the TEMPLATE has no such
+# recipient: it is a test that `/to-questionnaire` renders, and shipping it would put a
+# half-finished document about nobody into every generated project.
+#
+# A generated project's questionnaires are the evidence behind decisions taken on someone else's
+# word, and are committed for exactly that reason — see questionnaires/CONTEXT.md. That is why
+# this rule must not travel.
+#
+# The documentation pair stays tracked so the folder ships documented and ready to use.
+*
+
+# This file must stay tracked or the rule vanishes on a fresh clone, and copier.yml
+# can only exclude a file the template actually carries.
+!.gitignore
+!*/
+!CONTEXT.md
+!CLAUDE.md

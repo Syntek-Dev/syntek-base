@@ -1,8 +1,7 @@
 ---
 workflow: 09-gdpr-compliance
 phase: compliance
-agent: gdpr
-skills: [global-workflow]
+skills: [gdpr-mechanics, global-workflow]
 model: fable
 ---
 
@@ -38,13 +37,13 @@ retention, and data subject rights before documenting the data flows.
 
 Document what personal data is collected, why, and how it is stored.
 
-### Step 2 — GDPR Agent Review
+### Step 2 — GDPR Review
 
 ```text
-gdpr [describe the feature and its data flows]
+gdpr-mechanics [describe the feature and its data flows]
 ```
 
-> **↳ New agent:** `gdpr` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `gdpr-mechanics` · **Model:** fable · **MCP:** none
 
 ### Step 3 — Address Findings
 
@@ -64,7 +63,7 @@ Update or create files in `project-management/src/09-GDPR/`.
 git
 ```
 
-> **↳ New agent:** `git` · **Model:** opus · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `git` · **Model:** opus · **MCP:** none
 
 ---
 

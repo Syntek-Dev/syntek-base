@@ -1,9 +1,72 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 2.20.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 2.21.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v2.21.0 — 12/08/2026
+
+**Status:** Minor — versioning doctrine gains the declaration everything else rested on. No
+application behaviour changes.
+
+### The rule that made every other versioning rule undecidable
+
+Semantic Versioning's first rule is not about numbers at all:
+
+> Software using Semantic Versioning MUST declare a public API.
+
+This repository had never declared one. `VERSIONING-GUIDE.md` said MAJOR was for "breaking
+changes to the public API" — a sentence with no referent, which is worse than saying nothing,
+because it reads as settled. Two people could bump the same diff differently and neither could
+be shown wrong.
+
+The gap was not theoretical. A decision was already pending on it: the epic that deletes
+`.claude/agents/` is ruled a major bump, and nothing in the tree could say why that qualified
+when a hundred other changes had not.
+
+### Two declarations, because there are two products
+
+The correction is not one paragraph in one file, because this repository is a template and the
+thing it generates is not the same thing.
+
+- **A generated project** declares its `/api/` contract, the schema as reached through it,
+  indexed public URLs, and the `/mcp/` tools. Templates, design tokens, internal service
+  signatures and operator tooling sit outside — changing them cannot break a consumer. That
+  table ships in `VERSIONING-GUIDE.md`, with a `TBD` marker so it is settled per project rather
+  than inherited unread.
+- **syntek-base itself** declares the template contract: the Copier questions and tokens, the
+  generated tree's shape, and the `.claude/` routing contract `copier update` re-applies. That
+  lives in `CONTRIBUTING.md`, which Copier excludes — a statement about `copier.yml` shipped
+  into every generated project would be meaningless there.
+
+Putting both in the shipped guide would have been the obvious move and the wrong one.
+
+### What else was missing
+
+Five rules the guide had no answer for, each applied to real surfaces rather than restated:
+`0.y.z` and when `1.0.0` is earned (the trigger is being **depended on**, not shipping to
+production); the pre-release and build-metadata grammar, including the trap that build metadata
+is ignored entirely and therefore cannot distinguish two releases; precedence; deprecation —
+deprecate in a MINOR, leave it at least one full minor, remove in the next MAJOR, because the
+removal is the breaking change but the **surprise** is the avoidable part; and recovery from a
+release that turns out to be incompatible, which is a new compatible MINOR and never a moved tag.
+
+`GIT-GUIDE.md` gains the other half: how a commit _says_ it breaks something. The repository has
+used Conventional Commits on every release without either the `!` shorthand or the
+`BREAKING CHANGE:` footer appearing anywhere in the tree.
+
+### Two smaller corrections
+
+The increment table existed twice and had already drifted — the guide qualified MAJOR with "or
+data schema", the `global-workflow` skill did not. The copy is deleted rather than corrected; a
+summary restating an authoritative table is a drift site, not a convenience.
+
+And the README version badge had been showing 2.19.0 since the 2.20.0 release. The guide names
+the badge and the footer as two separate updates; one moved and the other did not, and nothing
+failed. It is fixed here, which is the sort of thing a declared contract makes noticeable.
 
 ---
 

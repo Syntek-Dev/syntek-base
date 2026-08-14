@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-fastmcp]
+skills: [backend, stack-django, stack-fastmcp]
 model: opus
 ---
 
@@ -76,7 +75,7 @@ def register(mcp: FastMCP) -> None:
         reference with `find_orders` first. `reason` is recorded and shown to staff.
         """
         user = current_user()
-        order = CanCancelOrder(user).get_or_raise(reference)   # ownership + permission
+        order = CanCancelOrder(user).get_or_raise(reference)  # ownership + permission
         return _to_dict(cancel_order(order, reason=reason))
 ```
 

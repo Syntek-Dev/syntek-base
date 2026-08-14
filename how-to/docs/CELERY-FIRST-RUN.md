@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: cicd
-skills: [global-workflow]
+skills: [cicd, global-workflow]
 model: opus
 ---
 

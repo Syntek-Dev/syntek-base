@@ -1,8 +1,7 @@
 ---
 workflow: 04-database-operations
 phase: operate
-agent: database
-skills: [global-workflow]
+skills: [database, global-workflow]
 model: opus
 ---
 

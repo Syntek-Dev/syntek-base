@@ -1,7 +1,6 @@
 ---
 type: guide
-agent: backend
-skills: [stack-django, stack-htmx-templates]
+skills: [backend, stack-django, stack-htmx-templates]
 model: opus
 ---
 
@@ -53,6 +52,7 @@ Move slow or unreliable work out of the request/response cycle:
 
 ```python
 from celery import shared_task
+
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def send_order_confirmation(self, order_id: int) -> None:

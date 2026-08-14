@@ -13,7 +13,7 @@ compiles native code that Python either cannot express safely or is too slow to 
 
 ## How to work here
 
-- **Routing:** the `rust` agent owns this tree and loads the `stack-rust` skill. Enter through
+- **Routing:** the `stack-rust` skill owns this tree. Enter through
   `code/workflows/12-rust-extension/`, which is itself entered from
   `project-management/workflows/18-backend-code/` — never directly from a design gate.
 - **Grill first:** the workflow's Step 1 is a grilling pass, and its opening question is the

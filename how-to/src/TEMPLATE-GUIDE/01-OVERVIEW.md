@@ -1,6 +1,6 @@
 # Overview — What syntek-base Is
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 13/08/2026
 
 Read this before generating anything. It explains the bets the template makes, so you can decide
 whether they are bets you want to take.
@@ -18,9 +18,9 @@ actually carries is:
 
 1. **A documentation system** that an agent can navigate deterministically.
 2. **A process** — numbered workflows for specifying, building, reviewing and releasing.
-3. **An agent configuration** — the Claude Code agents and skills, tool-scoped and routed. No
-   total is quoted: the roster differs between two correct projects once the mobile surface is
-   optional. `.claude/agents/CONTEXT.md` and `.claude/skills/CONTEXT.md` are the registries.
+3. **A skill set** — the Claude Code skills, scoped and routed by description. No total is
+   quoted: the roster differs between two correct projects once the optional surfaces are in
+   play. `.claude/skills/CONTEXT.md` is the registry.
 4. **Gates** — CI, pre-commit hooks and hard documentation requirements that stop drift.
 
 The stack is real and production-shaped, but you could swap Django out and most of the value
@@ -72,15 +72,17 @@ A code workflow is never entered directly from a design gate. If that sounds hea
 throwaway prototype, it is — use the `/prototype` skill instead, which exists precisely so the
 process is not the only option.
 
-### 4. Agents delegate; they do not freelance
+### 4. Work routes to a skill; skills dispatch rather than freelance
 
-Eight orchestrators (`feature`, `bugfix`, `review`, `security`, `refactor`, `story`, `pr`,
-`release`) are the entry points. They route to the matching workflow and delegate scoped work to
-specialists — `backend`, `frontend`, `database`, `gdpr`, `test-writer`, `qa-tester` and the rest —
-each of which is tool-scoped and loads only the skills its remit needs.
+Everything Claude does here is a **skill**, selected by matching your request against its
+description. A task skill — `feature`, `bugfix`, `review`, `security`, `refactor`, `story`, `pr`,
+`release` — routes to the matching workflow and pulls in the scoped skills each phase needs:
+`backend`, `frontend`, `database`, `test-writer`, `qa-tester` and the rest, each loading only
+what its remit requires.
 
-No agent reviews its own work. Every orchestrator has an explicit documentation phase as a hard
-gate before its commit phase.
+No skill reviews its own work — review and QA are dispatched separately, into a fresh context.
+Every task skill that ships code has an explicit documentation phase as a hard gate before its
+commit phase.
 
 ### 5. Design gets interrogated before it gets built
 
@@ -104,7 +106,7 @@ Honest list of the costs:
 - **British English throughout.** All prose, all documentation, regardless of the application's
   configured locale.
 - **Ceremony on small changes.** A one-line copy fix still passes through the documentation gate.
-- **It assumes Claude Code.** The agents, skills, hooks and settings are Claude Code specific. The
+- **It assumes Claude Code.** The skills, hooks and settings are Claude Code specific. The
   documentation system is useful without it; the automation is not.
 - **Docker for everything.** No running `python` or `pytest` on the host — every operation goes
   through a script in `code/src/scripts/`.

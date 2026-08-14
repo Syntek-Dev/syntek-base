@@ -30,7 +30,7 @@ over services.
 - **Definition of done:** conventions pass and the auto OpenAPI at `/api/docs` reflects
   the endpoints, every state-changing endpoint permission-checked with no IDOR, response
   Schema models expose every writable input field.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 

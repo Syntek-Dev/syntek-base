@@ -1,7 +1,7 @@
 # .claude/skills
 
-Skills for Claude Code — auto-selected reference bundles the agents load on demand. Each skill
-is a folder with a `SKILL.md` plus optional sub-documents, in the published
+Skills for Claude Code — auto-selected bundles loaded on demand, and the project's only unit of
+routing. Each skill is a folder with a `SKILL.md` plus optional sub-documents, in the published
 [Agent Skills format](https://agentskills.io/specification). Which of that format's fields this
 project authors, which runtime keys it admits beyond them, what it declines and why, and the
 vendored exception are all in `how-to/docs/SKILL-AUTHORING.md`. Internalised from the
@@ -14,27 +14,61 @@ tooling; plugin references were rewritten to internal paths.
 .claude/skills/
 ├── CONTEXT.md              ← this file
 ├── CLAUDE.md               ← operating rules
+├── feature/                ← build a new capability end to end: plan → red → build → review → ship
+├── bugfix/                 ← reproduce, root-cause, regression-test, fix minimally (scoped: `## Root cause`)
+├── refactor/               ← restructure working code with behaviour held identical
+├── review/                 ← sequence the content review, the hostile QA pass, the conditional security pass
+├── security/               ← audit and harden: OWASP, NIST, Cyber Essentials, IDOR, PII enforcement
+├── pr/                     ← raise the pull request and take it through the branch chain
+├── release/                ← version bump, full suite, version commit, handover
+├── story/                  ← write or refine one testable US### user story
+├── sprint/                 ← slice written stories into balanced, dependency-ordered sprints
+├── planner/                ← architect a feature into a phased, independently-testable plan
+├── syntax/                 ← make it parse, lint, format and type-check — behaviour-preserving only
+├── completion/             ← record a verified story or sprint as complete in the PM artefacts
+├── backend/                ← build the server side: models, migration, services, /api/ and /mcp/
+├── frontend/               ← build the web pages: templates, components, HTMX, Alpine, token CSS
+├── database/               ← the data layer: models, lock-safe migration, RLS policies, PII columns
+├── authentication/         ← the credential and session layer: passwords, MFA, lockout, reset
+├── notifications/          ← the delivery layer: email, SMS, push, in-app, on one branded foundation
+├── reporting/              ← role-scoped report queries and aggregates, PII kept out of the summary
+├── export/                 ← the download: CSV/Excel/PDF/JSON formatters, PII gated, every one audited
+├── logging/                ← structured logging and observability; nothing sensitive reaches a channel
+├── seo/                    ← the head, JSON-LD, canonical URLs, robots/sitemap/llms.txt views
+├── test-writer/            ← the TDD Red phase: failing tests plus the skeleton that runs them
+├── qa-tester/              ← the hostile pass: find it, prove it, rank it — never fix, never approve
+├── code-reviewer/          ← read-only review on two axes, Standards and Spec, never merged
+├── version/                ← pick the increment, move the whole version set, stage it
+├── git/                    ← branches, commits, pull requests, tags — to the guide's conventions
+├── cicd/                   ← pipeline, Docker/Compose, deploy scripts, and the dependency set
+├── setup/                  ← stand up structure: a Django app, a route, env templates, root config
+├── scaffold/               ← the organisational layer: CONTEXT/CLAUDE pairs, workflow folders, routing
+├── doc-writer/             ← developer documentation: docstrings, the pairs, the code/docs guides
+├── support-articles/       ← end-user help: how-tos, troubleshooting, FAQs, user-facing release notes
+├── gdpr-mechanics/         ← UK GDPR in the stack: PII, consent, DSAR, erasure, retention, audit
+├── data-analysis/          ← answer a question from the data — quality first, numbers, never the decision
+├── pm-tool-sync/           ← the external PM-tool integration: mapping, credentials, CI sync
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
 │   └── SKILL.md
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
 │   └── SKILL.md
-├── stack-react-native/     ← MOBILE-ONLY — Expo + React Native + TypeScript + expo-router
+├── stack-react-native/     ← MOBILE-ONLY — build the Expo/RN screens and own the store listing (task, forked)
 │   └── SKILL.md
 ├── stack-fastmcp/          ← the FastMCP tool surface at /mcp/ (available but unwired)
 │   └── SKILL.md
-├── stack-rust/             ← RUST-ONLY — the Cargo workspace, PyO3 boundary, supply-chain gate
+├── stack-rust/             ← RUST-ONLY — build the crates: the gate question, PyO3 boundary, supply chain (task, forked)
 │   └── SKILL.md
-├── stack-slint/            ← DESKTOP-ONLY — the native Slint app and its licence obligation
+├── stack-slint/            ← DESKTOP-ONLY — build the native Slint app; the licence obligation comes first (task, forked)
 │   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
 │   ├── GIT-AND-PR.md
 │   └── VERSIONING-AND-DOCS.md
-├── runbook/                ← operator-doc craft: the runbook spine, execute-to-verify
+├── runbook/                ← write an operator guide: the brief, execute-to-verify, indexing (task, forked)
 │   └── SKILL.md
-├── legal-documents/        ← shared drafting standard for legal/GDPR doc agents
+├── legal-documents/        ← drafting standard for the outward-facing legal/GDPR documents
 │   └── SKILL.md
-├── msp-scp-documents/      ← shared standard for security/compliance policy agents
+├── msp-scp-documents/      ← drafting standard for the internal security/compliance policies
 │   ├── SKILL.md
 │   ├── SECURITY-POLICIES.md
 │   ├── DATA-GOVERNANCE.md
@@ -90,17 +124,51 @@ tooling; plugin references were rewritten to internal paths.
 
 | Skill                           | Load when                                                                                                                                             |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `feature`                       | A new capability has to be built end to end — plan, red tests, backend, API, frontend, review, QA, docs, commit                                       |
+| `bugfix`                        | Something is broken. Diagnosis alone enters its `## Root cause` phase; the full sequence fixes, QAs, documents and commits                            |
+| `refactor`                      | The code is correct but its shape is wrong — split, extract, deepen, rename, with behaviour held identical                                            |
+| `review`                        | A change needs checking before it is proposed — sequences `code-reviewer`, `qa-tester`, and `security` where it applies                               |
+| `security`                      | A security audit, a threat model, or hardening after a finding — OWASP, NIST, Cyber Essentials, IDOR, PII enforcement                                 |
+| `pr`                            | A finished story branch is ready to propose, or an open PR needs promoting through the chain                                                          |
+| `release`                       | A tested branch is ready to ship — the bump, the suite, the version commit, the handover                                                              |
+| `story`                         | A requirement has to become one testable `US###` — role, MoSCoW, Gherkin criteria, tasks, estimate                                                    |
+| `sprint`                        | Written stories have to be sliced into the next sprint — capacity, MoSCoW mix, dependency order                                                       |
+| `planner`                       | A design has to be settled before code — scope, system impact, phases, interfaces, risks                                                              |
+| `syntax`                        | The tree is mechanically broken or a syntax gate is red — lint, format, types, strictly behaviour-preserving                                          |
+| `completion`                    | Verified work needs recording — a story or sprint status transition in the PM artefacts                                                               |
+| `backend`                       | The server half of a story — models, migration, service layer, Django Ninja endpoints, MCP tools                                                      |
+| `frontend`                      | The web half of a story — templates, django-components, HTMX, Alpine, token CSS, WCAG                                                                 |
+| `database`                      | The data layer itself — an approved schema as models and a lock-safe migration, RLS policies, PII columns                                             |
+| `authentication`                | Login, registration, MFA, sessions, lockout or password reset — the credential layer itself                                                           |
+| `notifications`                 | Something has to be sent — email, SMS, push or in-app — or the shared branded template layer needs building                                           |
+| `reporting`                     | A report or dashboard needs its data — role-scoped aggregates, a result shape, an index recommendation                                                |
+| `export`                        | Data has to leave as a file — CSV, Excel, PDF or JSON — including a UK GDPR Article 15 subject export                                                 |
+| `logging`                       | Log instrumentation to add, a channel to configure, or sensitive data to stop reaching one                                                            |
+| `seo`                           | A public page needs its head, structured data and crawler wiring — or the marketing pages need a pass                                                 |
+| `test-writer`                   | The failing tests must exist before implementation — one story's scope, its seams, red first                                                          |
+| `qa-tester`                     | A change needs an independent breaker pass before it ships — proven findings, ranked                                                                  |
+| `code-reviewer`                 | A diff, file, branch or module needs assessing rather than fixing — Standards and Spec, separately                                                    |
+| `version`                       | A version needs bumping, or the version files have drifted apart — the increment is decided here                                                      |
+| `git`                           | A branch, commit, pull request or tag — the git surface, to `GIT-GUIDE.md`'s conventions                                                              |
+| `cicd`                          | A workflow, container build, deploy script — or adding, upgrading or removing a dependency                                                            |
+| `setup`                         | New structure or configuration has to exist — a Django app, a route, env templates, root config                                                       |
+| `scaffold`                      | A new workflow folder, docs directory or layer sub-tree — the pairs, the routing, the GAPS rows                                                       |
+| `doc-writer`                    | Developer documentation — docstrings, a `CONTEXT.md`/`CLAUDE.md` pair, a `code/docs/` guide                                                           |
+| `support-articles`              | A shipped capability needs public help content a non-technical reader can follow                                                                      |
+| `gdpr-mechanics`                | A feature touches personal data — PII, consent, DSAR, erasure, retention, the audit trail                                                             |
+| `data-analysis`                 | Someone needs to know what the data says — quantified findings, and the code behind them                                                              |
+| `pm-tool-sync`                  | The external PM-tool integration needs setting up, repairing, or pointing elsewhere                                                                   |
 | `stack-django`                  | Writing/reviewing backend code (models, services, Django Ninja endpoints, tests) — and server-rendered templates                                      |
 | `stack-htmx-templates`          | Building/reviewing public frontend — Django templates, django-components, HTMX, Alpine, token CSS, page cache                                         |
-| `stack-react-native`            | **Mobile-only.** Building/reviewing the mobile surface — Expo, TypeScript, expo-router, StyleSheet over generated tokens                              |
+| `stack-react-native`            | **Mobile-only.** A story needs its mobile screens built or reviewed — Expo, expo-router, tokens, WCAG — or a store listing written or checked         |
 | `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                         |
-| `stack-rust`                    | **Rust-only.** Writing/reviewing `code/src/rust/` — PyO3 boundary, secret zeroizing, cargo-deny. Also: deciding if work belongs in Rust at all        |
-| `stack-slint`                   | **Desktop-only.** Building/reviewing the native Slint app — the AboutSlint licence disclosure, the generated-code lint boundary, threading, a11y      |
+| `stack-rust`                    | **Rust-only.** Native code has to be written or audited under `code/src/rust/` — and, first, whether it belongs in Rust at all                        |
+| `stack-slint`                   | **Desktop-only.** A story needs its desktop windows built or reviewed — the AboutSlint disclosure, the lint boundary, threading, AccessKit            |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                                  |
-| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; loaded by `operator-docs`                                              |
+| `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; the conventions are `how-to/docs/OPERATOR-DOC-CRAFT.md`                |
 | `grilling`                      | Design work (architecture, DB, API, story) — the frontier-round interview engine                                                                      |
 | `grill-me`                      | <%DEVELOPER_NAME%> types `/grill-me` — a stateless grilling session that saves nothing                                                                |
-| `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or a design agent opens design work — grilling that records decisions                                    |
+| `grill-with-docs`               | <%DEVELOPER_NAME%> types `/grill-with-docs`, or as design work opens — grilling that records decisions                                                |
 | `teach`                         | <%DEVELOPER_NAME%> types `/teach <topic>` — a safe learning sandbox that writes only to `learning/`                                                   |
 | `wayfinder`                     | Charting a large epic into a decision map resolved across sessions (`/wayfinder`)                                                                     |
 | `handoff`                       | <%DEVELOPER_NAME%> types `/handoff`, or context nears full — the auto-compaction replacement; write a committed `handoffs/` doc, then stop            |
@@ -125,8 +193,8 @@ tooling; plugin references were rewritten to internal paths.
 > with no client build step. Backend is `stack-django`; the web frontend is
 > `stack-htmx-templates`.
 >
-> **Rust-only skills gate authoring, not consuming.** `stack-rust` and the `rust` agent exist
-> only where the repository **compiles** Rust. A project that merely depends on a prebuilt PyO3
+> **Rust-only skills gate authoring, not consuming.** `stack-rust` exists only where the
+> repository **compiles** Rust. A project that merely depends on a prebuilt PyO3
 > wheel installs it like any other dependency and has neither. Listed unconditionally and
 > flagged, on the same principle as the mobile rows.
 >
@@ -136,8 +204,15 @@ tooling; plugin references were rewritten to internal paths.
 > flagged, rather than templated in or out, so this index carries no conditional contents.
 > Load it only when working under `code/src/mobile/`.
 
-## Cross-references
+## Glossary
 
-- `.claude/agents/CONTEXT.md` — the agents that load these skills.
-- `.claude/CLAUDE.md` — Skill Targets (backend `stack-django`, frontend
-  `stack-htmx-templates`, global `global-workflow`).
+- **Skill** — the only category here: one folder, one `SKILL.md`, one remit, reached by matching
+  the work against that `description`.
+- **Reference skill** — states conventions (`stack-django`, `codebase-design`). Runs inline in
+  the caller's context and never forks.
+- **Task skill** — an executable procedure (`feature`, `backend`, `release`). Forks unless its
+  input is the conversation itself; its own frontmatter says which.
+
+_Avoid:_ **orchestrator**, **specialist**, **document writer** — retired category names (N-012),
+and nothing replaces them: there is no tier above or below a skill. Dispatch and the independence
+rule live in `.claude/CLAUDE.md` § 2.3.

@@ -119,12 +119,12 @@ hostnames.
 
 ## Optional
 
-| Tool                               | For                                                                                                                                                                                                 |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Code**                    | The agents, skills and hooks. The template is far less useful without it. The suite uses the Fable tier, so it assumes **Claude Max 20× or above, or the Anthropic API** — see `08-CLAUDE-CODE.md`. |
-| **Bruno**                          | Running the committed API collections through a GUI.                                                                                                                                                |
-| **`gh` CLI**                       | PR creation from the terminal; the `pr` agent uses it.                                                                                                                                              |
-| **context7 / mermaid MCP servers** | Library docs and diagram rendering inside Claude Code.                                                                                                                                              |
+| Tool                               | For                                                                                                                                                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**                    | The skills, hooks and MCP wiring. The template is far less useful without it. The suite uses the Fable tier, so it assumes **Claude Max 20× or above, or the Anthropic API** — see `08-CLAUDE-CODE.md`. |
+| **Bruno**                          | Running the committed API collections through a GUI.                                                                                                                                                    |
+| **`gh` CLI**                       | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                  |
+| **context7 / mermaid MCP servers** | Library docs and diagram rendering inside Claude Code.                                                                                                                                                  |
 
 ---
 

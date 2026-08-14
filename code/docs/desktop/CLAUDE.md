@@ -13,7 +13,7 @@ state, threading and accessibility conventions of the desktop crate.
 
 ## How to work here
 
-- **Routing:** reference guides, not code. The `desktop` agent reads them; `security` cites
+- **Routing:** reference guides, not code. The `stack-slint` skill reads them; `security` cites
   `LICENSING.md` at release time; `doc-writer` maintains the prose.
 - **Model:** Opus for substantive changes and mechanical touches alike.
 - **Concrete steps:** change the sub-document → check `DESKTOP.md`'s sub-document table still

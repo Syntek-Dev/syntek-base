@@ -13,7 +13,7 @@ read via the parent index `project-management/docs/GDPR-GUIDE.md`.
 
 ## How to work here
 
-- **Routing:** substantive GDPR content → `gdpr` (Fable), driven by
+- **Routing:** substantive GDPR content → `gdpr-mechanics` (Fable), driven by
   `workflows/09-gdpr-compliance/`. Enter through the `GDPR-GUIDE.md` index, not these
   files directly.
 - **Model:** Fable for lawful-basis, retention, and DSAR content; Opus for a

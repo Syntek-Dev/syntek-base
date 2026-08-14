@@ -30,7 +30,7 @@ component designs are signed off.
 - **Definition of done:** WCAG 2.2 AA met on all interactive components; the 75%
   coverage floor met; SEO requirements (`docs/SEO-CHECKLIST.md`) satisfied for
   public pages; checklist satisfied.
-- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `agent`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
+- **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` §2.5).
 
 ## Guardrails
 
@@ -40,11 +40,10 @@ component designs are signed off.
 - **Token-first CSS:** components consume `var(--token)` only — never a raw colour,
   spacing, or size literal. The same law binds the mobile surface with a different
   enforcement clause (`mobile-tokens.sh`).
-- **`frontend` is web-only and its remit is unchanged.** Mobile work is handed to the
-  `mobile` agent at Step 4M — never approached by applying Django-template assumptions to
-  React Native. Both that agent and the `stack-react-native` skill are absent from a
-  web-only project, which is why the frontmatter routes to `frontend` and names the
-  mobile route at its point of use instead.
+- **`frontend` is web-only and its remit is unchanged.** Mobile work is handed to
+  `stack-react-native` at Step 4M — never approached by applying Django-template assumptions
+  to React Native. That skill is absent from a web-only project, which is why the
+  frontmatter routes to `frontend` and names the mobile route at its point of use instead.
 - **Reuse before build:** always check the django-components library first; public pages
   are server-rendered Django templates (SEO-critical content must not depend on
   client-side JS).

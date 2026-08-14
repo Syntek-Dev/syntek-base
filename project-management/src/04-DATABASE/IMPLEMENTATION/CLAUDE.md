@@ -13,7 +13,7 @@ migration evidence, that a story's shipped schema matches `../CONSOLIDATED-IDEAS
 ## How to work here
 
 - **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
-  agent, consulting `database` where a deviation needs judging, against the consolidated
+  skill, consulting `database` where a deviation needs judging, against the consolidated
   schema and the story's shipped migrations.
 - **Model:** Opus — this records what was built against an already-approved schema; it is a
   documentation closeout, not a design pass. Escalate to `database` (Fable) only when a

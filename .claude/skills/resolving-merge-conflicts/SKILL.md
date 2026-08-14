@@ -50,7 +50,7 @@ getting one wrong is silent damage rather than a failed build:
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Migrations** (`apps/*/migrations/`)                             | Never merge two migration files. Both survive; the later one is renumbered and its `dependencies` repointed so the graph stays linear. A merged migration file is a corrupted history.     |
 | **`uv.lock` · `pnpm-lock.yaml`**                                  | Never hand-merge. Take either side whole, then regenerate through the project scripts and commit the regenerated file.                                                                     |
-| **`VERSION` · `CHANGELOG.md` · `VERSION-HISTORY.md`**             | Resolution is a version decision, not a text one — `project-management/docs/VERSIONING-GUIDE.md` and the `version` agent own it. Never split the difference.                               |
+| **`VERSION` · `CHANGELOG.md` · `VERSION-HISTORY.md`**             | Resolution is a version decision, not a text one — `project-management/docs/VERSIONING-GUIDE.md` and the `version` skill own it. Never split the difference.                               |
 | **`project-management/src/NN-…/`**                                | Numbering is frozen and `USER-STORY-IDEAS/` is frozen once workflow `17` has run. A conflict there is an audit trail, not a draft — keep both records; reconcile in `CONSOLIDATED-IDEAS/`. |
 | **Design-token CSS** (`static/css/tokens/`)                       | Values are DB-canonical (`apps/design_tokens`). Resolve to what the token layer says, never to a literal from either branch (`code/docs/DESIGN-TOKENS.md`).                                |
 | **`.env*`**                                                       | Never resolve secrets from a diff. Reconcile the `.env.*.example` template and let <%DEVELOPER_NAME%> re-enter real values.                                                                |
@@ -110,4 +110,4 @@ are the procedure of record — do not restate them at length here.
 - `project-management/docs/VERSIONING-GUIDE.md` — owns any version-state conflict.
 - `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md` — owns `copier update` conflicts.
 - `code/docs/CODE-REVIEW-GRAPH.md` — structural impact before reading files.
-- `.claude/agents/git.md` — the agent that runs this.
+- `.claude/skills/git/SKILL.md` — the skill this runs alongside.

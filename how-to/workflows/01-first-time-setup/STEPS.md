@@ -1,8 +1,7 @@
 ---
 workflow: 01-first-time-setup
 phase: setup
-agent: setup
-skills: [global-workflow]
+skills: [setup, global-workflow]
 model: opus
 ---
 
@@ -133,8 +132,8 @@ describe the project, then expand them into a real brief:
 - **What it replaces** — the process, tool, or spreadsheet it is displacing.
 - **What it is deliberately not** — the nearest thing it will be mistaken for.
 
-Write the result back into `CONTEXT.md`. That paragraph is the first thing every agent reads in
-every session, and every scope decision downstream is measured against it — an unedited
+Write the result back into `CONTEXT.md`. That paragraph is the first thing read in every
+session, and every scope decision downstream is measured against it — an unedited
 generation-time placeholder is a silent tax on every gate that follows.
 
 _Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not the raw Copier answer._
@@ -153,8 +152,8 @@ ever ships is written in this voice, and so is much of the brand work that follo
 onto copy nobody will go back and rewrite.
 
 § 1 and § 4 are the portable core — adopt them unchanged. § 4 is already partly enforced:
-`bash code/src/scripts/audits/copy-emdash.sh` fails on an em dash in marketing copy, and six agents
-plus the `stack-htmx-templates` skill load this file for every user-facing string they write.
+`bash code/src/scripts/audits/copy-emdash.sh` fails on an em dash in marketing copy, and every
+skill that writes a user-facing string loads this file first.
 
 _Done when § 3 carries this project's answers rather than `TBD` placeholders. The visual half is
 Step 9 — settle it next, and keep the two consistent._
@@ -198,7 +197,7 @@ contradict `how-to/src/BRAND-VOICE.md` § 3._
 /scale-planning
 ```
 
-Runs the `scale-planner` agent against the live code and regenerates
+Runs the `scale-planning` skill against the live code and regenerates
 `how-to/src/SCALE-ARCHITECTURE/` and `how-to/src/SERVER-ARCHITECTURE/`, which ship as skeletons
 full of `TBD — regenerate via /scale-planning` markers.
 

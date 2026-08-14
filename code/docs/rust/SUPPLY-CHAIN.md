@@ -1,6 +1,5 @@
 ---
 type: guide
-agent: rust
 skills: [stack-rust]
 model: opus
 ---
@@ -74,7 +73,7 @@ organisation or a crate with a published third-party audit.
 
 "Rust is memory-safe" says nothing about whether your construction is sound. Memory safety does
 not give you a correct nonce discipline, constant-time arithmetic, or a sound KDF parameter
-choice. Route the design through the `security` agent and
+choice. Route the design through the `security` skill and
 `code/workflows/08-security-hardening/`.
 
 ## Toolchain pinning

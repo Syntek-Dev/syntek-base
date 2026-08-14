@@ -1,20 +1,30 @@
 ---
 name: legal-documents
-description: Shared drafting standard for every legal and compliance document produced in this project — required sections, clause formatting, jurisdiction rules, the mandatory professional-review disclaimer, and the pre-delivery quality checklist. Load this when drafting or reviewing a contract, NDA, Terms & Conditions, Privacy Policy, GDPR data subject notice, or Data Processing Agreement, i.e. whenever the privacy-policy-writer, dpa-writer, gdpr-policy-writer, terms-conditions-writer, contract-writer, or nda-writer agent runs.
+description: >-
+  Draft a legal document under English law for <%PROJECT_NAME%> — a service or consultancy
+  contract, an NDA, Terms & Conditions, a Privacy Policy, a UK GDPR Article 13/14 data subject
+  notice, or an Article 28 Data Processing Agreement. Carries the required sections per type,
+  clause formatting, jurisdiction rules, the mandatory professional-review disclaimer, and the
+  pre-delivery checklist. Load when a document governs a relationship with a person outside the
+  business — a customer, a supplier, a data subject, a controller. Not an internal security or
+  compliance policy governing staff and systems, which is `msp-scp-documents`.
+model: opus
+metadata:
+  skills: global-workflow grilling
 ---
 
 ## Overview
 
-This skill is the single source of truth for the house rules that every legal /
-compliance document writer in this project must follow. The internalised document
-agents — `privacy-policy-writer`, `dpa-writer`, `gdpr-policy-writer`,
-`terms-conditions-writer`, `contract-writer`, and `nda-writer` (invoked via the Agent
-tool, no plugin prefix) — load it before drafting so that structure, tone, formatting,
-and the professional-review disclaimer stay consistent across every document.
+**Task skill, inline** (axis 2 — the parties, the jurisdiction and the controller facts come
+from the conversation, and a fork cannot ask for them).
 
-It defines the required sections per document type, clause formatting conventions,
-jurisdiction rules, the mandatory disclaimer wording, and the quality checklist. Route
-substantive UK GDPR procedure to `project-management/docs/GDPR-GUIDE.md` rather than
+This skill is the single source of truth for the house rules every legal and compliance
+document in this project follows: the required sections per document type, clause formatting
+conventions, jurisdiction rules, the mandatory disclaimer wording, and the quality checklist.
+It is loaded before drafting so that structure, tone, formatting and the professional-review
+disclaimer stay consistent across every document.
+
+Route substantive UK GDPR procedure to `project-management/docs/GDPR-GUIDE.md` rather than
 restating it here.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
@@ -34,10 +44,9 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRE
 
 ## Clarifying questions
 
-Every legal document writer runs a **clarifying-questions step** before drafting, using the
-document-specific question set defined in its own agent file (data scope, controller and
-processor details, retention, transfers, and so on). Keep that question content as written —
-this skill sets only the **method**.
+Every draft opens with a **clarifying-questions step**, its question set specific to the
+document type and drawn from that type's required sections (data scope, controller and
+processor details, retention, transfers, and so on). This skill sets only the **method**.
 
 Conduct the clarifying questions as a **grilling pass** — load
 `.claude/skills/grilling/SKILL.md`, which owns the round shape, the question format and the
@@ -141,16 +150,17 @@ draft time as `[AWAITING USER INPUT]`.
 5. Processor Obligations (process only on documented instructions)
 6. Confidentiality of Processing
 7. Security of Processing (Article 32)
-8. Sub-Processor Restrictions (Article 28(2))
-9. Data Subject Rights Assistance (Article 28(3)(e))
-10. Assistance with Data Protection Impact Assessments
-11. Return or Deletion of Personal Data (Article 28(3)(g))
-12. Audit Rights (Article 28(3)(h))
-13. Liability
-14. Term and Termination
-15. Governing Law
-16. Schedule A — Details of Processing (subject matter, duration, nature, purpose, data types, data subjects)
-17. Schedule B — Technical and Organisational Security Measures
+8. Sub-Processor Restrictions (Article 28(2)) — state whether authorisation is **specific** (each sub-processor named) or **general** (written authorisation plus a notification-and-objection window)
+9. International Transfers (Chapter V) — required whenever the processor or any sub-processor is established outside the UK/EEA; name the mechanism (UK IDTA, the UK Addendum to the EU SCCs, EU SCCs, or an adequacy decision) rather than asserting the transfer is lawful
+10. Data Subject Rights Assistance (Article 28(3)(e))
+11. Assistance with Data Protection Impact Assessments
+12. Return or Deletion of Personal Data (Article 28(3)(g))
+13. Audit Rights (Article 28(3)(h))
+14. Liability
+15. Term and Termination
+16. Governing Law
+17. Schedule A — Details of Processing (subject matter, duration, nature, purpose, data types, data subjects, and any **special category** data under Article 9 stated as such)
+18. Schedule B — Technical and Organisational Security Measures
 
 ---
 
@@ -207,7 +217,7 @@ Do not paraphrase or abbreviate this notice. Advise users not to remove it until
 
 - `project-management/docs/GDPR-GUIDE.md` — governing UK GDPR compliance procedure (lawful bases, DSAR handling, records of processing, ICO obligations).
 - `code/workflows/06-gdpr-enforcement/CONTEXT.md` and `project-management/workflows/09-gdpr-compliance/CONTEXT.md` — the enforcement and compliance steps these documents must stay consistent with.
-- Once a document is signed off, implementation (publishing behind the `(marketing)/` legal page, token-first) is handed to the `feature` / `frontend` path — the writer agents produce Markdown only and never touch source.
+- Once a document is signed off, implementation (publishing behind the `(marketing)/` legal page, token-first) is handed to the `feature` / `frontend` path — this skill produces Markdown only and never touches source.
 
 ## Governing procedures (route here — do not restate at length)
 

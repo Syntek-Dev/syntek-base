@@ -12,7 +12,7 @@ single `django` upstream.
 
 ## How to work here
 
-- **Routing:** proxy work → `cicd` agent (Opus). Edit `dev.conf` and `test.conf` together;
+- **Routing:** proxy work → `cicd` skill (Opus). Edit `dev.conf` and `test.conf` together;
   they differ only in the upstream service name.
 - **Model:** Opus.
 - **Concrete steps:** add the `location` → bring the stack up → verify with
