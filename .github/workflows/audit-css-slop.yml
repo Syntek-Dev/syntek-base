@@ -43,14 +43,14 @@ jobs:
     name: CSS slop audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run CSS slop audit
         run: bash code/src/scripts/audits/css-slop.sh --output md
 
       - name: Upload CSS slop report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: css-slop-report
           path: code/src/scripts/audits/reports/css-slop-report.md

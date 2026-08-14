@@ -20,14 +20,14 @@ jobs:
     name: Inline-gradient audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run inline-gradient audit
         run: bash code/src/scripts/audits/css-gradients.sh --output md
 
       - name: Upload inline-gradient report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: css-gradients-report
           path: code/src/scripts/audits/reports/css-gradients-report.md

@@ -20,14 +20,14 @@ jobs:
     name: CSS token audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run CSS token audit
         run: bash code/src/scripts/audits/css-tokens.sh --output md
 
       - name: Upload CSS token report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: css-tokens-report
           path: code/src/scripts/audits/reports/css-tokens-report.md

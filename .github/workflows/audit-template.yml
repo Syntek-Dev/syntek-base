@@ -17,7 +17,7 @@ jobs:
     name: "[1/3] Template Tokens"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The self-test runs FIRST, for the reason the shipped-docs job below spells out and
       # this job learned the hard way: every check here is a presence test, so the ordinary
@@ -47,7 +47,7 @@ jobs:
     name: "[2/3] Shipped Documentation"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Prove the detector (self-test against a mutated README)
         run: bash .github/scripts/shipped-readme.sh --self-test
@@ -65,12 +65,12 @@ jobs:
     name: "[3/3] Template Generation"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Copier reads the template over git
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v10.0.1
 
       # BOTH render paths, every time. The negative case is the one that rots silently:
       # a mobile-only mistake that leaks into a web-only generation is invisible unless

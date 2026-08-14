@@ -44,7 +44,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/staging' }}
 
 env:
-  UV_VERSION: "0.11.7"
+  UV_VERSION: "0.12.4"
   NODE_VERSION: "24"
   PYTHON_VERSION: "3.14"
 
@@ -68,10 +68,10 @@ jobs:
       packages: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
-      - uses: anthropics/claude-code-action@beta
+      - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
@@ -82,7 +82,7 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install cloc
         run: sudo apt-get install -y --no-install-recommends cloc
       - name: Check file line counts
@@ -96,8 +96,8 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
@@ -117,13 +117,13 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -154,8 +154,8 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
@@ -175,13 +175,13 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -214,8 +214,8 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
@@ -235,13 +235,13 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -274,7 +274,7 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check for hard stubs
         run: bash code/src/scripts/audits/stubs.sh
 
@@ -285,8 +285,8 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
@@ -306,13 +306,13 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -372,7 +372,7 @@ jobs:
     env:
       COMPOSE_FILE: code/src/docker/docker-compose.test.yml
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # See the LOCKFILE GUARD note at the top of this file. This gate is Python-only, so
       # everything below is conditional and the job reports success with nothing to run.
       # test.yml's `pytest + coverage` job carries the identical guard.
@@ -457,7 +457,7 @@ jobs:
 
       - name: Upload coverage reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-reports-${{ github.run_id }}
           path: |
@@ -470,7 +470,7 @@ jobs:
           steps.detect.outputs.present == 'true' &&
           github.event_name == 'pull_request' &&
           (github.base_ref == 'staging' || github.base_ref == 'main')
-        uses: MishaKav/pytest-coverage-comment@main
+        uses: MishaKav/pytest-coverage-comment@v1.11.0
         with:
           pytest-xml-coverage-path: reports/coverage.xml
           title: Backend Coverage
@@ -489,8 +489,8 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
@@ -510,13 +510,13 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}

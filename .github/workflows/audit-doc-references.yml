@@ -31,14 +31,14 @@ jobs:
     name: Citations resolve
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run doc references audit
         run: bash code/src/scripts/audits/doc-references.sh --output md
 
       - name: Upload doc references report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: doc-references-report
           path: code/src/scripts/audits/reports/doc-references.md

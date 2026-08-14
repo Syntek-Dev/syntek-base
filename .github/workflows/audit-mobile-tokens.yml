@@ -28,14 +28,14 @@ jobs:
     name: Mobile token audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run mobile token audit
         run: bash code/src/scripts/audits/mobile-tokens.sh --output md
 
       - name: Upload mobile token report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mobile-tokens-report
           path: code/src/scripts/audits/reports/mobile-tokens-report.md

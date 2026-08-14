@@ -34,14 +34,14 @@ jobs:
     name: Routing skills resolve
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run routing skills audit
         run: bash code/src/scripts/audits/routing-skills.sh --output md
 
       - name: Upload routing skills report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: routing-skills-report
           path: code/src/scripts/audits/reports/routing-skills.md

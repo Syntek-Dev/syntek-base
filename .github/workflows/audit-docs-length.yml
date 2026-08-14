@@ -41,7 +41,7 @@ jobs:
     name: 300-line instructional limit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # cloc is the metric the rule is written in, so the audit exits 2 without it rather
       # than reporting a green job having measured nothing.
@@ -53,7 +53,7 @@ jobs:
 
       - name: Upload docs length report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs-length-report
           path: code/src/scripts/audits/reports/docs-length-report.md

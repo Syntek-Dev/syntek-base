@@ -42,7 +42,7 @@ jobs:
     name: Desktop Slint style audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # No Rust toolchain and no display server: the script reads three files and needs
       # neither. It is a build-CONFIG check, not a build.
@@ -51,7 +51,7 @@ jobs:
 
       - name: Upload desktop style report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: style-check-report
           path: code/src/scripts/audits/reports/style-check-report.md

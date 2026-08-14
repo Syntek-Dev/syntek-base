@@ -40,14 +40,14 @@ jobs:
     name: CONTEXT.md / CLAUDE.md pairing audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run docs pairing audit
         run: bash code/src/scripts/audits/docs-pairing.sh --output md
 
       - name: Upload docs pairing report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs-pairing-report
           path: code/src/scripts/audits/reports/docs-pairing-report.md

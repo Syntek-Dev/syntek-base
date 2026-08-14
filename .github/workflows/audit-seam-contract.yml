@@ -41,14 +41,14 @@ jobs:
     name: Build/operate seam audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run seam contract audit
         run: bash code/src/scripts/audits/seam-contract.sh --output md
 
       - name: Upload seam contract report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: seam-contract-report
           path: code/src/scripts/audits/reports/seam-contract-report.md

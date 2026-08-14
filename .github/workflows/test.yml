@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Guarded at STEP level on the lockfile, for the same reason the mobile jobs guard on
       # the mobile directory: the job reports SUCCESS where there is nothing to run, rather
@@ -116,7 +116,7 @@ jobs:
 
       - name: Upload coverage report
         if: always() && steps.detect.outputs.present == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: backend-coverage
           path: reports/coverage.xml
@@ -124,7 +124,7 @@ jobs:
 
       - name: Post coverage comment
         if: always() && steps.detect.outputs.present == 'true' && github.event_name == 'pull_request'
-        uses: MishaKav/pytest-coverage-comment@main
+        uses: MishaKav/pytest-coverage-comment@v1.11.0
         with:
           pytest-xml-coverage-path: reports/coverage.xml
           title: Backend Coverage
@@ -143,7 +143,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Detect the mobile surface
         id: detect
@@ -156,10 +156,10 @@ jobs:
             echo "No code/src/mobile/ — this project is web-only. Nothing to test."
           fi
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         if: steps.detect.outputs.present == 'true'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.detect.outputs.present == 'true'
         with:
           node-version: "24"
@@ -168,7 +168,7 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         if: steps.detect.outputs.present == 'true'
         with:
           path: ${{ env.STORE_PATH }}
@@ -188,7 +188,7 @@ jobs:
 
       - name: Upload coverage report
         if: always() && steps.detect.outputs.present == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mobile-coverage
           path: code/src/mobile/coverage/
@@ -205,7 +205,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Detect the mobile surface
         id: detect
@@ -217,10 +217,10 @@ jobs:
             echo "No code/src/mobile/ — this project is web-only. Nothing to bundle."
           fi
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         if: steps.detect.outputs.present == 'true'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.detect.outputs.present == 'true'
         with:
           node-version: "24"
@@ -229,7 +229,7 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         if: steps.detect.outputs.present == 'true'
         with:
           path: ${{ env.STORE_PATH }}

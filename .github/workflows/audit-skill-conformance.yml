@@ -57,14 +57,14 @@ jobs:
     name: Skill conformance audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Run skill conformance audit
         run: bash code/src/scripts/audits/skill-conformance.sh --output md
 
       - name: Upload skill conformance report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: skill-conformance-report
           path: code/src/scripts/audits/reports/skill-conformance-report.md

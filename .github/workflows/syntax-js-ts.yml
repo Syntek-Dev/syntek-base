@@ -26,18 +26,18 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
 
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -53,18 +53,18 @@ jobs:
     name: Prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
 
       - name: Get pnpm store directory
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -80,7 +80,7 @@ jobs:
     name: ESLint (mobile surface)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Detect the mobile surface
         id: detect
@@ -92,10 +92,10 @@ jobs:
             echo "No code/src/mobile/ — this project is web-only. Nothing to lint."
           fi
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         if: steps.detect.outputs.present == 'true'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.detect.outputs.present == 'true'
         with:
           node-version: "24"
@@ -104,7 +104,7 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         if: steps.detect.outputs.present == 'true'
         with:
           path: ${{ env.STORE_PATH }}
@@ -123,7 +123,7 @@ jobs:
     name: TypeScript (mobile surface)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Detect the mobile surface
         id: detect
@@ -135,10 +135,10 @@ jobs:
             echo "No code/src/mobile/ — this project is web-only. No TypeScript to check."
           fi
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         if: steps.detect.outputs.present == 'true'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.detect.outputs.present == 'true'
         with:
           node-version: "24"
@@ -147,7 +147,7 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         if: steps.detect.outputs.present == 'true'
         with:
           path: ${{ env.STORE_PATH }}
