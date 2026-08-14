@@ -1132,6 +1132,28 @@ Full testing guide: `code/docs/TESTING.md` · TDD workflow: `code/workflows/02-t
 
 All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
 
+### Dependency scripts (`code/src/scripts/dependencies/`)
+
+| Script      | Purpose                                                                                   |
+| ----------- | ----------------------------------------------------------------------------------------- |
+| `update.sh` | Report or apply dependency updates across Python (uv), JavaScript (pnpm) and Rust (cargo) |
+
+```bash
+./code/src/scripts/dependencies/update.sh                            # what is out of date
+./code/src/scripts/dependencies/update.sh --apply --package django   # narrowest upgrade
+./code/src/scripts/dependencies/update.sh --apply --ecosystem rust   # one ecosystem
+./code/src/scripts/dependencies/update.sh --apply                    # everything
+```
+
+**A floor is not a pin.** Raising `redis>=5.0.0` to `redis>=6.0` forbids redis 5; it does not
+install redis 6. What you get is decided by the lockfile, so raise a floor deliberately and
+re-resolve in the same change — then run the suites before committing. Manifest and lockfile
+are one change, never two.
+
+Latest is also bounded by the rest of your graph rather than by the registry: `celery[redis]`
+excludes `redis>=6.5`, so a floor above that does not fail loudly — it quietly drags celery
+backwards to satisfy itself.
+
 ### Audit scripts (`code/src/scripts/audits/`)
 
 The register of record is `code/src/scripts/audits/CONTEXT.md` — it is authoritative if this
@@ -1151,6 +1173,7 @@ table ever falls behind it.
 | `copy-emdash.sh`       | Em dashes in user-facing copy                                                            |
 | `css-gradients.sh`     | Raw gradient literals outside the token layer                                            |
 | `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)            |
+| `dependency-drift.sh`  | What a template update would change about your dependencies, before it changes them      |
 | `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                    |
 | `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                 |
 | `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` § 8)                 |
