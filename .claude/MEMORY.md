@@ -63,9 +63,9 @@ found **not one carrying both**. `v3.0.0` is the first generatable tag in this r
 history.
 
 **The fix was to reconstruct the base, not to weaken the proof.** A throwaway branch off
-`f2b04cf` with `.claude/agents/` restored from `v2.21.0` — the real pre-deletion state on top of
-the generation fix — generated cleanly, and the update across `v3.0.0` deleted all 55
-template-owned files while leaving a self-authored agent byte-identical. **When a proof's
+`f2b04cf` with the deleted agents directory restored from `v2.21.0` — the real pre-deletion
+state on top of the generation fix — generated cleanly, and the update across `v3.0.0` deleted
+all 55 template-owned files while leaving a self-authored agent byte-identical. **When a proof's
 starting point is unreachable, build the state deliberately and say so, rather than downgrading
 to a weaker claim and calling it evidence.**
 
