@@ -99,13 +99,20 @@ pre-commit:
     # The .copier-answers.yml exemption is what keeps `copier update` usable: an update
     # legitimately rewrites these guides and always restages the answers file alongside
     # them, so that combination is allowed through. A hand edit never looks like that.
+    # Deliberately UNGLOBBED, and self-gating instead. A brace-expansion glob
+    # (`how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}`) silently matched nothing here —
+    # lefthook does not expand braces — so the job never ran and the guard was decorative.
+    # A guard that fails open is worse than none, because it is believed. Selecting the
+    # paths inside the run block removes the glob dialect from the trust chain entirely.
     template-docs-readonly:
-      glob: "how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}"
       run: |
         if [ -f copier.yml ]; then exit 0; fi
         if git diff --cached --name-only | grep -q '^\.copier-answers\.yml$'; then exit 0; fi
+        hits=$(git diff --cached --name-only \
+          | grep -E '^how-to/src/(TEMPLATE-GUIDE/|TEMPLATE-TOKENS\.md$)' || true)
+        [ -z "$hits" ] && exit 0
         echo "BLOCKED — template documentation is read-only in a generated project:"
-        printf '  %s\n' {staged_files}
+        printf '  %s\n' $hits
         echo
         echo "These ship from syntek-base and describe the TEMPLATE, not this project."
         echo "Editing them changes no behaviour and guarantees a copier update conflict."

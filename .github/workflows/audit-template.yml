@@ -128,7 +128,7 @@ jobs:
                      .github/CODEOWNERS .github/ISSUE_TEMPLATE \
                      .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
                      .github/workflows/audit-template.yml \
-                     how-to/src/TEMPLATE-GUIDE how-to/src/TEMPLATE-TOKENS.md .copier; do
+                     how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md .copier; do
               if [ -e "$f" ]; then
                 echo "::error::INCLUDE_MOBILE=$mobile — $f leaked into the generated project"
                 status=1
@@ -144,7 +144,10 @@ jobs:
             cd "$RUNNER_TEMP/gen-$mobile"
             for f in README.md uv.lock .copier-answers.yml pyproject.toml \
                      VERSION VERSION-HISTORY.md CHANGELOG.md RELEASES.md \
-                     how-to/src/CONTRIBUTING.md .github/workflows/claude.yml; do
+                     how-to/src/CONTRIBUTING.md .github/workflows/claude.yml \
+                     how-to/src/TEMPLATE-TOKENS.md \
+                     how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md \
+                     how-to/src/TEMPLATE-GUIDE/14-UPDATING.md; do
               if [ ! -e "$f" ]; then
                 echo "::error::INCLUDE_MOBILE=$mobile — $f missing from the generated project"
                 status=1
