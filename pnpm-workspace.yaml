@@ -29,15 +29,30 @@ allowBuilds:
 # vulnerabilities were ignored" and exit 0 without auditing anything at all
 # (that false green is fixed in .claude/hooks/lib/check-security.sh).
 #
-# The key stays `auditConfig.ignoreGhsas` deliberately. pnpm's docs give
-# `audit.ignore` as the modern spelling and call this one deprecated, but the
-# rename landed AFTER the 11.15.1 this repository pins: switching to `audit.ignore`
-# was tried on 13/08/2026 and the ignores stopped applying silently — the
-# `(N ignored)` line simply vanished from the report, with no warning and no
-# error. Rename it when the pnpm pin moves, and verify by that line reappearing,
-# not by the exit code. Source: https://pnpm.io/cli/audit
-auditConfig:
-  ignoreGhsas:
+# The key is `audit.ignore`, renamed from `auditConfig.ignoreGhsas` on
+# 14/08/2026 once the pin reached 11.21.0. The attempt on 13/08/2026 failed
+# because the `audit:` section landed across the 11.15–11.19 releases and the
+# pin was 11.15.1, at the very bottom of that window: the ignores stopped
+# applying silently, the `(N ignored)` line vanishing with no warning and no
+# error. Both spellings still work and the new section WINS when both are
+# present, so never carry both — a leftover `auditConfig:` block would sit
+# there looking authoritative while deciding nothing.
+#
+# Verified the way the old comment demanded, by the report line rather than the
+# exit code — `bash code/src/scripts/audits/security.sh --js-only`, three ways:
+#   auditConfig.ignoreGhsas  →  4 high (4 ignored)   clean
+#   audit.ignore             →  4 high (4 ignored)   clean
+#   neither key              →  4 high              VULNERABLE
+# The third run is the one that makes the other two mean anything: it is what
+# proves the entries below are load-bearing rather than decorative.
+#
+# Four of the five entries resolve in this tree — GHSA-jxxr-4gwj-5jf2 now
+# matches nothing, so 4 is the expected count and not a shortfall. Left in
+# place rather than deleted: an ignore that matches nothing costs nothing, and
+# the advisory can return through a different consumer.
+# Source: https://pnpm.io/cli/audit
+audit:
+  ignore:
     - GHSA-jxxr-4gwj-5jf2
     - GHSA-5375-pq7m-f5r2
     - GHSA-99f4-grh7-6pcq

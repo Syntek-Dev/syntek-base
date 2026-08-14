@@ -4,7 +4,7 @@
 #
 #   Mirrors the CI "[8/8] Security" gate (.github/workflows/claude.yml) so a clean local
 #   run predicts a clean CI run. The gate runs, per ecosystem:
-#     JS/TS:  pnpm audit --audit-level low      (honours auditConfig.ignoreGhsas in
+#     JS/TS:  pnpm audit --audit-level low      (honours audit.ignore in
 #                                                 pnpm-workspace.yaml — read natively by pnpm 11)
 #     Python: uv run pip-audit                  (CVE scan of the locked backend deps)
 #
@@ -72,7 +72,7 @@ Options:
   --help                 Show this help
 
 Notes:
-  • pnpm audit reads auditConfig.ignoreGhsas from pnpm-workspace.yaml natively, so
+  • pnpm audit reads audit.ignore from pnpm-workspace.yaml natively, so
     accepted/suppressed advisories do not fail the run (matches the CI gate).
   • --docker requires the dev stack to be running:
         bash code/src/scripts/development/server.sh up

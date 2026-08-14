@@ -1,8 +1,7 @@
 # check-security.sh — security audit: local + Docker.
 # Python: ruff --select S (flake8-bandit rules)   JS/TS: pnpm audit --audit-level low
-# Reads auditConfig.ignoreGhsas/ignoreCves from pnpm-workspace.yaml (pnpm 11's home for
-# these settings; falls back to package.json pnpm.auditConfig for older configs) to build
-# pnpm audit --ignore flags. Malformed (whitespace) entries are skipped.
+# Passes NO ignore flags: pnpm reads `audit.ignore` from pnpm-workspace.yaml itself, and
+# there is no CLI flag to pass (see the block below for the false green that cost).
 # Source: .claude/hooks/pre-pr-check.sh
 # Uses: PROJECT_ROOT, DEV_COMPOSE, _dual_result, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 

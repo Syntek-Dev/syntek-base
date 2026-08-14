@@ -164,7 +164,7 @@ because it has exactly one clause. Full rule: `code/docs/VISUAL-DESIGN.md` § 6.
 ## security.sh
 
 Mirrors the CI `[8/8] Security` gate (`.github/workflows/claude.yml`) so a clean local run
-predicts a clean CI run. `pnpm audit` reads `auditConfig.ignoreGhsas` from `pnpm-workspace.yaml`
+predicts a clean CI run. `pnpm audit` reads `audit.ignore` from `pnpm-workspace.yaml`
 natively, so accepted advisories do not fail the run.
 
 | Flag                | Description                                                               |
