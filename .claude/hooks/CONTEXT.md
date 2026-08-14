@@ -1,10 +1,12 @@
 # .claude/hooks
 
-Pre-PR quality gate hooks plus two session-continuity hooks. `pre-pr-check.sh` runs 8 quality
-gates before a PR is marked ready; results are posted to the PR by `post-pr-comment.sh`.
-`context-threshold-handoff.sh` (UserPromptSubmit) warns as the context window fills, and
-`pre-compact-handoff.sh` (PreCompact) intercepts compaction — both steer the session to the
-`handoff` skill (see `.claude/CLAUDE.md` §2.6).
+Pre-PR quality gate hooks, two session-continuity hooks, and one write guard. `pre-pr-check.sh`
+runs 8 quality gates before a PR is marked ready; results are posted to the PR by
+`post-pr-comment.sh`. `context-threshold-handoff.sh` (UserPromptSubmit) warns as the context
+window fills, and `pre-compact-handoff.sh` (PreCompact) intercepts compaction — both steer the
+session to the `handoff` skill (see `.claude/CLAUDE.md` Section 2.6).
+`template-docs-readonly.sh` (PreToolUse) blocks writes to the template documentation a generated
+project receives and does not own.
 
 ## Directory Tree
 
@@ -16,6 +18,7 @@ gates before a PR is marked ready; results are posted to the PR by `post-pr-comm
 ├── post-pr-comment.sh       ← posts a pre-pr-check run to the PR as a comment
 ├── context-threshold-handoff.sh ← UserPromptSubmit hook — warns at 50% context, insists at 75%
 ├── pre-compact-handoff.sh   ← PreCompact hook — blocks auto-compaction, steers to `handoff`
+├── template-docs-readonly.sh ← PreToolUse hook — template docs are read-only in a generated project
 └── lib/                     ← one gate per file, sourced by pre-pr-check.sh, never run directly
     ├── check-audits.sh      ← TEMPLATE-ONLY — every audit + the shipped-file checks
     ├── check-cloc.sh        ← line-count validation
@@ -36,6 +39,7 @@ gates before a PR is marked ready; results are posted to the PR by `post-pr-comm
 | `post-pr-comment.sh`           | Posts check results as PR comments                                         |
 | `context-threshold-handoff.sh` | UserPromptSubmit hook — measures context use, warns at 50%, insists at 75% |
 | `pre-compact-handoff.sh`       | PreCompact hook — intercepts compaction, steers to the `handoff` skill     |
+| `template-docs-readonly.sh`    | PreToolUse hook — blocks writes to the shipped template documentation      |
 | `lib/`                         | Individual check scripts sourced by pre-pr-check.sh — not called directly  |
 
 ## lib/ Contents
@@ -54,7 +58,7 @@ gates before a PR is marked ready; results are posted to the PR by `post-pr-comm
 
 ## Session-continuity hooks
 
-Two hooks guard the same rule (`.claude/CLAUDE.md` §2.6) at two moments. Neither can invoke a
+Two hooks guard the same rule (`.claude/CLAUDE.md` Section 2.6) at two moments. Neither can invoke a
 skill or stop a turn — only the model can — so both measure and remind, and the rule carries the
 behaviour.
 
@@ -73,6 +77,19 @@ for a session that reached compaction anyway.
 ~840k) and takes `CLAUDE_CONTEXT_WINDOW`, `CLAUDE_CONTEXT_ADVISE_PCT`, and
 `CLAUDE_CONTEXT_INSIST_PCT` as overrides. A project on a 200k plan **must** set the first, or the
 hook fires from the opening prompt.
+
+## The template-documentation guard
+
+`template-docs-readonly.sh` is registered under `hooks.PreToolUse` on `Edit|Write|NotebookEdit`.
+It blocks writes to `how-to/src/TEMPLATE-GUIDE/**` and `how-to/src/TEMPLATE-TOKENS.md` — the two
+things a generated project **receives** from syntek-base rather than owns. Editing one changes no
+behaviour and guarantees a conflict the next `copier update`, because upstream owns those lines.
+
+It is the Claude half of a pair; the human half is the `template-docs-readonly` pre-commit job in
+`lefthook.yml`. Both stand down in syntek-base itself, where those files are the product being
+maintained — the discriminator is `copier.yml`, which is `_exclude`d and so exists only here. The
+hook's own header carries the rest of the reasoning, including why a `permissions.deny` entry or
+`chmod 444` could not express the same split.
 
 ## Template mode — six checks, not eight
 

@@ -1,13 +1,21 @@
 # TEMPLATE-GUIDE — Using syntek-base as a Template
 
-**Last Updated**: 02/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 14/08/2026 | **Maintained By**: Syntek Studio
 
 Everything a developer needs to generate a project from `syntek-base`, understand what they
 received, change it safely, and pull later template improvements back in.
 
-> **These files are template-only.** `copier.yml` excludes this directory, so none of it lands
-> in a generated project — which is why it is written in literal prose with no `<%TOKEN%>`
-> substitution, and can quote token syntax freely.
+> **These files ship.** Your generated project receives this whole directory, because the
+> questions it answers — what am I looking at, which folder do I write in, how do I pull
+> upstream fixes — are asked long after generation, not before it. The one exception is
+> `TEMPLATE-GAPS.md`, which `copier.yml` excludes: it is syntek-base's own open-items
+> register, and means nothing in your project.
+>
+> **Consequence for anyone editing here.** These files are rendered by Copier like every
+> other file in the tree, so a literal token or block delimiter in the prose is **live
+> template code**. Where a guide quotes the syntax — `04-QUICKSTART`, `06-GENERATION`,
+> `11-CUSTOMISING`, `15-TROUBLESHOOTING` — the region is wrapped in a Jinja `raw` block.
+> Add an unwrapped one and generation blanks it or dies.
 
 ## Directory Tree
 
@@ -39,16 +47,21 @@ how-to/src/TEMPLATE-GUIDE/
 ├── 14-UPDATING.md           ← copier update, conflicts, and re-sync policy
 ├── 15-TROUBLESHOOTING.md    ← what breaks, and what to do about it
 │
-│   ── Maintaining the template itself ──
+│   ── Reference, no reading order ──
+├── GUIDE-TO-SKILLS.md       ← every skill, what it is for, and how to reach it
+│
+│   ── Maintaining the template itself (NOT shipped) ──
 └── TEMPLATE-GAPS.md         ← syntek-base's OWN open items (the root GAPS.md ships, so it stays empty)
 ```
 
-`TEMPLATE-GAPS.md` is unnumbered deliberately: the numbered files are a reading order for
-someone **using** the template, while it is a working register for someone **maintaining** it.
+**Two files are unnumbered, for opposite reasons.** `GUIDE-TO-SKILLS.md` is a lookup table you
+dip into at any point, so it sits outside a reading order rather than at a position in one.
+`TEMPLATE-GAPS.md` is a working register for someone **maintaining** the template, not using it —
+and it is the one file here that does not ship.
 
 ## Reading order
 
-Nobody should read all fifteen. Pick the entry point that matches where you are:
+Nobody should read all sixteen. Pick the entry point that matches where you are:
 
 | You are…                                     | Read                                       |
 | -------------------------------------------- | ------------------------------------------ |
@@ -58,6 +71,7 @@ Nobody should read all fifteen. Pick the entry point that matches where you are:
 | Staring at a generated project, lost         | `07-REPO-TOUR.md` → `08-CLAUDE-CODE.md`    |
 | Facing 23 numbered PM folders                | `09-PROJECT-MANAGEMENT.md`                 |
 | About to build the first feature             | `10-FIRST-FEATURE.md`                      |
+| Wondering which skill does a job             | `GUIDE-TO-SKILLS.md`                       |
 | Wanting to change what the template gave you | `11-CUSTOMISING.md` → `12-EXTENDING.md`    |
 | Taking it to a server                        | `13-DEPLOYMENT.md`                         |
 | Months in, wanting upstream fixes            | `14-UPDATING.md`                           |
@@ -65,14 +79,16 @@ Nobody should read all fifteen. Pick the entry point that matches where you are:
 
 ## Related reference
 
-| Document                            | Purpose                                                    |
-| ----------------------------------- | ---------------------------------------------------------- |
-| `../TEMPLATE-TOKENS.md`             | The token contract — every token, format, and derived form |
-| `../../../copier.yml`               | The executable form of that contract                       |
-| `../CONTRIBUTING.md`                | Code-quality standards _inside_ a generated project        |
-| `../../../CONTRIBUTING.md`          | How to contribute changes to the template itself           |
-| `../SCALE-ARCHITECTURE/CONTEXT.md`  | How the app scales — regenerated per project               |
-| `../SERVER-ARCHITECTURE/CONTEXT.md` | What the server must provide — feeds the NixOS deploy repo |
+| Document                            | Purpose                                                           |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| `../TEMPLATE-TOKENS.md`             | The token contract — every token, format, and derived form        |
+| `../../../copier.yml`               | The executable form of that contract                              |
+| `../CONTRIBUTING.md`                | Code-quality standards _inside_ a generated project               |
+| `../../../CONTRIBUTING.md`          | How to contribute changes to the template itself                  |
+| `../BRAND-VOICE.md`                 | The voice a generated project settles at first-time setup, Step 8 |
+| `../PLATFORM-PROVIDERS.md`          | The infra register the platform-provider answers render into      |
+| `../SCALE-ARCHITECTURE/CONTEXT.md`  | How the app scales — regenerated per project                      |
+| `../SERVER-ARCHITECTURE/CONTEXT.md` | What the server must provide — feeds the NixOS deploy repo        |
 
 ## Do not use for
 

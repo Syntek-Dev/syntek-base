@@ -1,6 +1,6 @@
 # Your First Feature — Idea to Merged PR
 
-**Last Updated**: 03/08/2026
+**Last Updated**: 14/08/2026
 
 A walk through the whole process once, so the numbered workflows stop being abstract. Assumes a
 generated project with the stack running (`04-QUICKSTART.md`), and that you have read
@@ -34,11 +34,13 @@ answered in an hour — use `/prototype` instead. It exists so the process is no
 
 ---
 
-## Before any of it — describe, then size
+## Before any of it — four passes, once per project
 
-Two passes run **once per project**, upstream of the numbering above. They are
-`how-to/workflows/01-first-time-setup/` Steps 7 and 8, and they are the two easiest things to
-skip and the two most expensive to retrofit.
+Four passes run **once per project**, upstream of the numbering above. They are
+`how-to/workflows/01-first-time-setup/` Steps 7 to 10, and they run in that order because each
+depends on the one before: the brief names the reader, the voice is written for that reader, the
+visual direction is the same doctrine in composition rather than copy, and the sizing is done for
+that project. They are the easiest things to skip and the most expensive to retrofit.
 
 ### Describe what this actually is
 
@@ -54,6 +56,23 @@ That paragraph is the first thing every agent reads in every session, because
 `.claude/CLAUDE.md` imports `CONTEXT.md`. Every scope argument you will have — is this in the
 feature or not, is this story a Must or a Could — resolves against it. Leave it as a
 generation-time one-liner and those arguments resolve against nothing.
+
+### Settle how it speaks, and how it looks
+
+`how-to/src/BRAND-VOICE.md` Section 3 settles the voice — tone, person, formality, the reader, the
+never-this line, the say-this-not-that vocabulary. `code/docs/VISUAL-DESIGN.md` Section 3 settles the
+visual direction and pins its six axes: alignment, rhythm, contrast, ornament, density, motion.
+
+They are one decision expressed twice, in copy and in composition, and both are read by gates
+downstream. Every skill that writes a user-facing string loads the first; every wireframe
+(`08-WIREFRAMES/`), every component (`07-COMPONENTS/`) and every page is composed in the second.
+
+**The visual one is the less obvious and the more load-bearing.** Naming a direction is what
+makes `VISUAL-DESIGN.md` Section 4.2's ban list decidable — a centred hero is a defect under
+`editorial` and correct under `classical-symmetric`. Leave it unnamed and there is nothing to
+judge a screen against, which is the vacuum the generic AI look fills.
+
+Settled after ten screens, both are retrofits onto work nobody will go back and redo.
 
 ### Size it before you build it
 
@@ -110,7 +129,7 @@ Use the `story` skill to write a user story for <what you want>.
 Produces `project-management/src/02-STORIES/US001.md` via
 `project-management/workflows/02-story-creation/`.
 
-The agent opens with a **grilling pass** — in rounds, each with a recommended
+The `story` skill opens with a **grilling pass** — in rounds, each carrying a recommended
 answer. Expect to be asked about the specific role, the measurable benefit, the edge cases, and
 the MoSCoW split. Answer properly; everything downstream inherits these decisions.
 
@@ -132,16 +151,18 @@ and come back to `15`/`16` later.
 
 Only the ones your story actually touches:
 
-| Gate            | Workflow               | Needed when                                           |
-| --------------- | ---------------------- | ----------------------------------------------------- |
-| Database schema | `04-database-schema/`  | New models or a schema change                         |
-| User flow       | `05-user-flow-design/` | A multi-step journey                                  |
-| Wireframes      | `08-wireframes/`       | New UI — **no frontend work starts without sign-off** |
-| GDPR            | `09-gdpr-compliance/`  | Any personal data                                     |
-| Security        | `10-security-checks/`  | Auth, permissions, or sensitive data                  |
-| QA              | `11-qa-checks/`        | Always — test scenarios written before code           |
-| SEO             | `12-seo-checks/`       | New public pages                                      |
-| API design      | `13-api-design/`       | New or changed Ninja endpoints                        |
+| Gate            | Workflow                | Needed when                                           |
+| --------------- | ----------------------- | ----------------------------------------------------- |
+| Database schema | `04-database-schema/`   | New models or a schema change                         |
+| User flow       | `05-user-flow-design/`  | A multi-step journey                                  |
+| Brand tokens    | `06-brand-guides/`      | A token is needed — usually "reused existing"         |
+| Components      | `07-component-designs/` | A component is needed — usually "reused existing"     |
+| Wireframes      | `08-wireframes/`        | New UI — **no frontend work starts without sign-off** |
+| GDPR            | `09-gdpr-compliance/`   | Any personal data                                     |
+| Security        | `10-security-checks/`   | Auth, permissions, or sensitive data                  |
+| QA              | `11-qa-checks/`         | Always — test scenarios written before code           |
+| SEO             | `12-seo-checks/`        | New public pages                                      |
+| API design      | `13-api-design/`        | New or changed Ninja endpoints                        |
 
 Each writes its artefact under the matching numbered `src/` folder, tied to `US001`.
 
@@ -173,9 +194,12 @@ Three PM phases drive the code workflows:
 
 | Phase               | Drives                                                                                                                   |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `18-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`                                                                 |
+| `18-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project                     |
 | `19-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
-| `20-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`                                                                                       |
+| `20-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                           |
+
+The canonical map of which PM workflow pairs with which code workflow is the cross-layer table
+in the root `REFERENCES.md` — neither layer restates it.
 
 Test-first throughout — Red, Green, Refactor:
 

@@ -65,8 +65,18 @@ _exclude:
   - /LICENSE
   - /SECURITY.md
   - /CONTRIBUTING.md
-  - /how-to/src/TEMPLATE-GUIDE
-  - /how-to/src/TEMPLATE-TOKENS.md
+  # how-to/src/TEMPLATE-GUIDE/ SHIPS, deliberately. Most of what it answers is asked long
+  # after generation — what am I looking at (07), which skill does this (GUIDE-TO-SKILLS),
+  # which PM folder (09), how do I pull upstream fixes (14), why did that break (15). The
+  # pre-generation half stays because 14-UPDATING needs 06-GENERATION's vocabulary to be
+  # readable at all. Consequence: those files are rendered like any other, so the guides
+  # that quote token or delimiter syntax wrap it in `raw` blocks. See that folder's
+  # CLAUDE.md before editing one.
+  #
+  # TEMPLATE-GAPS.md is the exception — syntek-base's own open items, meaningless in a
+  # generated project. Same test as the root GAPS.md, which ships and therefore stays an
+  # empty stub.
+  - /how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
   # The nested .gitignore files that must NOT travel with the template. Git honours a
   # .gitignore in any directory, which is how syntek-base can ignore the artefacts it writes
   # while TESTING its own scaffolding — handoffs, feature maps, stories, sprints, ADRs, plans,

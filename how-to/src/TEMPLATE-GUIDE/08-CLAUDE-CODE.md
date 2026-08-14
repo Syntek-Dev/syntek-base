@@ -1,6 +1,6 @@
 # The Claude Code Setup
 
-**Last Updated**: 13/08/2026
+**Last Updated**: 14/08/2026
 
 What ships in `.claude/`, how it routes work, and what to expect from it. This is the part of the
 template with the least equivalent elsewhere, so it is worth understanding before you fight it.
@@ -41,11 +41,16 @@ force a choice. The ones you will hit first are the task skills that sequence ot
 the scoped skills it needs — `backend`, `frontend`, `database`, `test-writer`, `qa-tester`,
 `code-reviewer`, `gdpr-mechanics`, and so on.
 
-**If you answered yes to the mobile question**, you also get `stack-react-native`, mirroring
-`stack-django` for the backend and `stack-htmx-templates` for the web frontend. Answer no and it
-does not exist. Either way the registry lists it, flagged mobile-only: that keeps
-`.claude/CLAUDE.md` free of conditional contents, which is the rule the whole opt-in rests on.
-`frontend` stays Django-templates-only in both cases.
+**Three skills ship only with their surface.** `stack-react-native` (mobile), `stack-rust` (Rust)
+and `stack-slint` (desktop) mirror what `stack-django` does for the backend and
+`stack-htmx-templates` does for the web frontend — and are absent entirely when you answered no.
+Either way the registry lists all three, flagged: that keeps `.claude/skills/CONTEXT.md` free of
+conditional contents, which is the rule the whole opt-in rests on. `frontend` stays
+Django-templates-only in every case.
+
+The gating is not tidiness. **A skill fires on description match rather than on being named**, so
+a mobile skill in a project with no mobile app does not sit inert — it competes for work it
+cannot do.
 
 Two rules that shape the output:
 
@@ -75,30 +80,36 @@ Sessions run on Opus. Skills and workflows route by tier through their `model:` 
 > you just lose the tier separation.
 >
 > **On another provider?** Only the model routing is Claude-specific. Swap the aliases in
-> `.claude/CLAUDE.md` §4, each skill's `model:` frontmatter, and the `model:` lines in `docs/` and
+> `.claude/CLAUDE.md` Section 4, each skill's `model:` frontmatter, and the `model:` lines in `docs/` and
 > `workflows/` routing frontmatter. The documentation system and gates are provider-agnostic.
 
 ## The skills you will meet first
 
-| Skill                                       | Loaded when                                                  |
-| ------------------------------------------- | ------------------------------------------------------------ |
-| `stack-django`                              | Backend code — models, services, Ninja endpoints, pytest     |
-| `stack-htmx-templates`                      | Frontend — templates, components, HTMX, Alpine, token CSS    |
-| `stack-fastmcp`                             | The MCP tool surface at `/mcp/` — tools, token auth, tests   |
-| `runbook`                                   | Writing operator guides a human executes under pressure      |
-| `global-workflow`                           | Branches, commits, PRs, version bumps, docs, comments        |
-| `grilling` · `grill-me` · `grill-with-docs` | Design interrogation (see below)                             |
-| `codebase-design`                           | Architecture and refactor — the deep-module vocabulary       |
-| `domain-modelling`                          | Recording a new concept or decision                          |
-| `improve-codebase-architecture`             | `/improve-codebase-architecture` — deepening review          |
-| `scale-planning`                            | `/scale-planning` — size the deployment, prove it scales     |
-| `teach`                                     | `/teach <topic>` — a sandbox that writes only to `learning/` |
-| `wayfinder`                                 | Charting an epic too big for one session                     |
-| `handoff`                                   | `/handoff` — the auto-compaction replacement                 |
-| `prototype`                                 | `/prototype` — a throwaway spike answering one question      |
-| `research`                                  | `/research` — a primary-source-cited note                    |
-| `legal-documents`                           | Privacy policy, T&C, DPA, GDPR notice                        |
-| `msp-scp-documents`                         | Security and compliance policies                             |
+| Skill                                       | Loaded when                                                         |
+| ------------------------------------------- | ------------------------------------------------------------------- |
+| `stack-django`                              | Backend code — models, services, Ninja endpoints, pytest            |
+| `stack-htmx-templates`                      | Frontend — templates, components, HTMX, Alpine, token CSS           |
+| `stack-fastmcp`                             | The MCP tool surface at `/mcp/` — tools, token auth, tests          |
+| `runbook`                                   | Writing operator guides a human executes under pressure             |
+| `global-workflow`                           | Branches, commits, PRs, version bumps, docs, comments               |
+| `grilling` · `grill-me` · `grill-with-docs` | Design interrogation (see below)                                    |
+| `codebase-design`                           | Architecture and refactor — the deep-module vocabulary              |
+| `domain-modelling`                          | Recording a new concept or decision                                 |
+| `improve-codebase-architecture`             | `/improve-codebase-architecture` — deepening review                 |
+| `scale-planning`                            | `/scale-planning` — size the deployment, prove it scales            |
+| `teach`                                     | `/teach <topic>` — a sandbox that writes only to `learning/`        |
+| `wayfinder`                                 | Charting an epic too big for one session                            |
+| `handoff`                                   | `/handoff` — the auto-compaction replacement                        |
+| `prototype`                                 | `/prototype` — a throwaway spike answering one question             |
+| `research`                                  | `/research` — a primary-source-cited note                           |
+| `incident`                                  | `/incident` — Claude scribes a live incident, you drive it          |
+| `wait-what`                                 | `/wait-what` — that reply did not land; re-pitch it                 |
+| `to-questionnaire`                          | A decision is blocked on someone outside the session                |
+| `resolving-merge-conflicts`                 | A merge, rebase or `copier update` left conflict markers            |
+| `syntax`                                    | The tree is mechanically broken — lint, format, types, nothing else |
+| `wizard`                                    | Authoring an interactive bash wizard for human-only steps           |
+| `legal-documents`                           | Privacy policy, T&C, DPA, GDPR notice                               |
+| `msp-scp-documents`                         | Security and compliance policies                                    |
 
 Plus `cloudinary-*` for media work. That is a selection, not the roster —
 `.claude/skills/CONTEXT.md` lists every skill with its trigger, and quotes no total, because it
@@ -195,11 +206,19 @@ Silent compaction loses decisions; a written handoff does not.
 
 ## Hooks
 
-| Hook                     | Fires                                                                                                                        |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| `pre-pr-check.sh`        | Before `gh pr create` — 8 gates: format, lint, typecheck, tests, security, stubs, cloc, lockfiles. Blocks the PR on failure. |
-| `post-pr-comment.sh`     | Posts gate results as a PR comment                                                                                           |
-| `pre-compact-handoff.sh` | Intercepts compaction                                                                                                        |
+| Hook                           | Fires                                                                                                                        |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `pre-pr-check.sh`              | Before `gh pr create` — 8 gates: cloc, lockfiles, format, lint, stubs, typecheck, tests, security. Blocks the PR on failure. |
+| `post-pr-comment.sh`           | Posts gate results as a PR comment                                                                                           |
+| `context-threshold-handoff.sh` | Every prompt — measures context use and advises at 50%, insists at 75%                                                       |
+| `pre-compact-handoff.sh`       | Intercepts compaction                                                                                                        |
+
+`context-threshold-handoff.sh` assumes a **1M-token window**. On a smaller plan, set
+`CLAUDE_CONTEXT_WINDOW` in your environment or it fires from the opening prompt.
+
+Two more hooks are registered directly in `settings.json` rather than as scripts:
+`code-review-graph update --skip-flows` after every `Edit`/`Write`/`Bash`, and
+`code-review-graph status` at session start.
 
 ## Helper plugins
 
@@ -209,16 +228,17 @@ through `code/src/scripts/`.
 
 ## MCP servers
 
-| Server              | Use                                                        |
-| ------------------- | ---------------------------------------------------------- |
-| `code-review-graph` | Structural context and impact analysis — cheaper than Grep |
-| `context7`          | Current library and framework documentation                |
-| `mcp-mermaid`       | Architecture and flow diagrams                             |
-| `figma`             | Design reads and writes, Code Connect                      |
-| `claude-in-chrome`  | Rendered UI inspection and browser automation              |
+| Server              | Use                                                        | How you get it       |
+| ------------------- | ---------------------------------------------------------- | -------------------- |
+| `code-review-graph` | Structural context and impact analysis — cheaper than Grep | `.mcp.json`          |
+| `context7`          | Current library and framework documentation                | `.mcp.json`          |
+| `mcp-mermaid`       | Architecture and flow diagrams                             | `.mcp.json`          |
+| `figma`             | Design reads and writes, Code Connect                      | machine-global       |
+| `claude-in-chrome`  | Rendered UI inspection and browser automation              | the Chrome extension |
 
-Only `code-review-graph` is repo-scoped (`.mcp.json`); the rest are machine-global and available
-only if you have installed them.
+The first three are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
+gets them, launched on demand through `uvx` and `npx`. The last two are yours to install; nothing
+in the repository supplies them.
 
 **The graph and the layered docs are two views of the same codebase** — machine-derived structure
 and human-curated orientation. Explore with both, and refresh the graph whenever you revise the
@@ -230,7 +250,7 @@ docs so they do not drift.
 
 It is all files. `.claude/settings.json` controls permissions, model and hooks; deleting a skill
 directory removes it. If grilling is not for you, the rule lives in `.claude/CLAUDE.md`
-§10 — edit it. Nothing here is load-bearing for the application.
+Section 10 — edit it. Nothing here is load-bearing for the application.
 
 ---
 

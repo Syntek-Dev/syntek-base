@@ -1,6 +1,6 @@
 # Deployment — From Laptop to Server
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 How a generated project reaches a server, and the boundary between this repository and the one
 that provisions the host.
@@ -112,21 +112,35 @@ Cut a release.
 `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`, tag, deploy. Versioning is single-track
 semver — rules in `project-management/docs/VERSIONING-GUIDE.md`.
 
-Do not bump versions by hand mid-feature; the `version` skill owns it.
+Your project starts at **`0.1.0` with an empty history**: the template's `VERSION` and three
+version logs are excluded from generation and re-seeded blank, so you never inherit `syntek-base`'s
+release notes as your own. Do not bump versions by hand mid-feature; the `version` skill owns the
+whole set and moves it as one change.
+
+**Versioning is two-tier.** The root tracks the monorepo; each deployable sub-package carries its
+own independent semver — `code/src/django/` always, and `code/src/mobile/` on a project that took
+the mobile surface. A sub-package version never moves as a side-effect of a root bump.
 
 ## Observability
 
-Configured for staging and production:
+Configured for staging and production. **The products below are the defaults you answered at
+generation, not fixtures** — each names a choice behind a wire protocol, so a different answer is
+still on-doctrine:
 
-| Tool       | Role                                    |
-| ---------- | --------------------------------------- |
-| Glitchtip  | Exception tracking (Sentry-compatible)  |
-| Alloy      | Ships host logs to Loki                 |
-| Loki       | Log aggregation                         |
-| Prometheus | Scrapes Django metrics from `/metrics/` |
-| Grafana    | Dashboards over Loki and Prometheus     |
+| Default    | Role                                    | The seam that outlives it        | Token                 |
+| ---------- | --------------------------------------- | -------------------------------- | --------------------- |
+| GlitchTip  | Exception tracking                      | The Sentry SDK wire protocol     | `ERROR_TRACKING`      |
+| Loki       | Log aggregation                         | Structured JSON on stdout        | `LOG_AGGREGATOR`      |
+| Prometheus | Scrapes Django metrics from `/metrics/` | The Prometheus exposition format | `OBSERVABILITY_STACK` |
+| Grafana    | Dashboards over logs and metrics        | —                                | `OBSERVABILITY_STACK` |
+| _(none)_   | Distributed traces                      | OTLP — nothing instrumented yet  | `TRACING_BACKEND`     |
 
-Guide: `code/docs/LOGGING.md`.
+Alloy ships host logs to whatever the first row points at; that leg belongs to the deploy
+repository, not to this one.
+
+Guides: `code/docs/LOGGING.md` for the instrumentation,
+`code/docs/architecture/PROVIDER-NEUTRALITY.md` for what a neutrality claim has to prove, and
+`how-to/src/PLATFORM-PROVIDERS.md` for this project's own register.
 
 ## First deployment checklist
 

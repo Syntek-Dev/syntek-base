@@ -1,6 +1,6 @@
 # The Stack — What Ships and Why
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 Every component the template ships, and the reasoning behind it. Written so you can disagree with
 a specific choice rather than the whole thing.
@@ -44,14 +44,25 @@ setting exists yet. Wiring it is a deliberate change — `how-to/docs/CELERY-FIR
 
 | Component              | Version | Why this                                                                                                                                                                                                                                           |
 | ---------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Python**             | 3.14    | Current stable; the template pins it in `.python-version` and every Dockerfile.                                                                                                                                                                    |
-| **Django**             | 6.x     | The batteries — ORM, migrations, auth, admin, forms — are the reason this is a monolith at all. Rewriting them is where template time goes to die.                                                                                                 |
-| **Django Ninja**       | 1.x     | Typed request/response Schemas over plain Django views, with automatic OpenAPI. Chosen over DRF for Pydantic types and less ceremony; chosen over GraphQL because a single-client app does not need query flexibility and does pay its complexity. |
+| **Python**             | ≥ 3.14  | Current stable; the template pins it in `.python-version` and every Dockerfile.                                                                                                                                                                    |
+| **Django**             | ≥ 6.1   | The batteries — ORM, migrations, auth, admin, forms — are the reason this is a monolith at all. Rewriting them is where template time goes to die.                                                                                                 |
+| **Django Ninja**       | ≥ 1.3   | Typed request/response Schemas over plain Django views, with automatic OpenAPI. Chosen over DRF for Pydantic types and less ceremony; chosen over GraphQL because a single-client app does not need query flexibility and does pay its complexity. |
 | **PostgreSQL**         | 18      | Row-level security, real constraints, `CHECK`, partial and concurrent indexes, full-text search. The template enforces invariants in the database, which needs a database that can hold them.                                                      |
-| **Valkey**             | latest  | BSD-licensed Redis fork. DB 0 is the Celery broker, pub/sub and rate limiting; DB 1 is the cache.                                                                                                                                                  |
-| **Celery**             | 5.3+    | Worker and beat for background work, scheduled jobs, anything that must not block a request. **Declared, not wired at baseline** — no `worker`/`beat` service ships in any Compose file.                                                           |
+| **Valkey**             | latest  | BSD-licensed Redis fork, reached through `django-valkey`. DB 0 is the Celery broker, pub/sub and rate limiting; DB 1 is the cache.                                                                                                                 |
+| **Celery**             | ≥ 5.6   | Worker and beat for background work, scheduled jobs, anything that must not block a request. **Declared, not wired at baseline** — no `worker`/`beat` service ships in any Compose file.                                                           |
 | **Gunicorn + Uvicorn** | latest  | Gunicorn process management with Uvicorn ASGI workers.                                                                                                                                                                                             |
+| **WhiteNoise**         | ≥ 6.12  | Hashed, pre-compressed static files served from the app process itself, so the backend container is hermetic — no static volume and no separate static server.                                                                                     |
 | **Nginx**              | latest  | Reverse proxy in dev and test. In staging and production the edge is Cloudflare and the server deploy repo — security headers are set there, never in this repo.                                                                                   |
+
+A dependency floor is not a pin — it forbids older versions and leaves the resolver to pick. Some
+floors are also capped by something else in the graph: `celery[redis]` excludes `redis>=6.5`, so
+`redis>=6.0` resolves to 6.4.x however new the registry gets. Raise one deliberately and
+re-resolve in the same change (`code/src/scripts/dependencies/update.sh`).
+
+Declared alongside them and wired incrementally: `django-htmx`, `django-components`,
+`django-ratelimit`, `django-cors-headers`, `django-prometheus` (the `/metrics/` endpoint),
+`sentry-sdk[django]`, `argon2-cffi`, `cryptography`, `boto3` (the S3 API), and the Cloudinary
+storage pair.
 
 ## Client
 
@@ -130,12 +141,24 @@ and add React Native yourself; nothing else in the repository assumes mobile exi
 
 ## Data, media and identity
 
-| Component      | Role                                                                                        |
-| -------------- | ------------------------------------------------------------------------------------------- |
-| **Cloudinary** | Public media — upload, transformation, delivery. Vendored SDK docs and skills ship with it. |
-| **SeaweedFS**  | S3-compatible private document storage, self-hosted.                                        |
-| **Fernet**     | Field-level PII encryption with lookup tokens (`code/docs/ENCRYPTION-GUIDE.md`).            |
-| **Argon2**     | Password hashing.                                                                           |
+| Component      | Role                                                                                           |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| **Cloudinary** | Public media — upload, transformation, delivery. Vendored SDK docs and skills ship with it.    |
+| **SeaweedFS**  | Private document storage. The **default answer to `OBJECT_STORE`**, not a fixture — see below. |
+| **Fernet**     | Field-level PII encryption with lookup tokens (`code/docs/ENCRYPTION-GUIDE.md`).               |
+| **Argon2**     | Password hashing.                                                                              |
+
+**Six of the products named on this page are answers, not fixtures.** `OBJECT_STORE`,
+`ERROR_TRACKING`, `LOG_AGGREGATOR`, `OBSERVABILITY_STACK`, `TRACING_BACKEND` and
+`ANALYTICS_PROVIDER` each record a **choice behind an interface** — the S3 API consumed via
+boto3, the Sentry SDK wire protocol, structured JSON on stdout, the Prometheus exposition format,
+OTLP, and this project's own event ingestion API respectively. Answer any of them differently and
+you are still on-doctrine. The verdicts and the evidence each demands:
+`code/docs/architecture/PROVIDER-NEUTRALITY.md`; the per-project register is
+`how-to/src/PLATFORM-PROVIDERS.md`.
+
+**PostgreSQL is deliberately absent from that list.** It is substrate, not a choice — swapping it
+is a fork.
 
 ## Testing
 
@@ -222,12 +245,24 @@ costs.
 | **A CSS framework**       | Design values are DB-canonical tokens; component CSS consumes `var(--token)` only, audited by `code/src/scripts/audits/css-tokens.sh`.                                                                          |
 | **Channels / WebSockets** | Real-time changes the process model. It is an ADR conversation, not a dependency addition.                                                                                                                      |
 
-Dependencies deliberately not declared at baseline — `pyotp`, `qrcode`, `webauthn`, `bleach`,
-`python-magic`, `cairosvg`, `fastmcp` — are listed in `pyproject.toml` with the feature that
-should introduce each one. `fastmcp` is the largest of them: it would add a FastMCP tool surface
-at `/mcp/` for LLM agent clients, mounted beside Django in `config/asgi.py` and therefore outside
-Django's middleware entirely. Fully specified in `code/docs/MCP-SERVER.md`, built only when an
-agent genuinely needs to carry out this project's domain operations.
+Dependencies deliberately not declared at baseline are listed in `pyproject.toml` with the
+feature that should introduce each one:
+
+| Not declared                    | Introduced by                                                      |
+| ------------------------------- | ------------------------------------------------------------------ |
+| `pyotp` · `qrcode` · `webauthn` | TOTP and passkey ceremonies — the `authentication` skill           |
+| `bleach`                        | Sanitising user-authored HTML                                      |
+| `python-magic` · `pyclamd`      | Upload MIME sniffing and ClamAV scanning                           |
+| `channels` · `channels-redis`   | ASGI WebSockets — a stack change argued in an ADR, not an install  |
+| `cairosvg`                      | SVG rasterisation for an asset pipeline                            |
+| `maturin`                       | **Rust-only.** Declared in the PyO3 crate's own manifest, not here |
+| `fastmcp`                       | The FastMCP tool surface at `/mcp/`                                |
+
+`fastmcp` is the largest of them: it would add a tool surface at `/mcp/` for LLM agent clients,
+mounted beside Django in `config/asgi.py` and therefore outside Django's middleware entirely.
+Fully specified in `code/docs/MCP-SERVER.md`, built only when an agent genuinely needs to carry
+out this project's domain operations — a Ninja endpoint is already callable by anything that
+speaks HTTP.
 
 ---
 

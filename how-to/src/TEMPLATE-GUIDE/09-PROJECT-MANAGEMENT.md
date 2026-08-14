@@ -1,8 +1,8 @@
 # The PM Layer — Using `project-management/src/`
 
-**Last Updated**: 03/08/2026
+**Last Updated**: 14/08/2026
 
-Twenty-two numbered folders is a lot to meet at once. This explains what each is for, which ones
+Twenty-three numbered folders is a lot to meet at once. This explains what each is for, which ones
 you will actually touch, and the two patterns that govern them — so the layer reads as a system
 rather than a filing cabinet.
 

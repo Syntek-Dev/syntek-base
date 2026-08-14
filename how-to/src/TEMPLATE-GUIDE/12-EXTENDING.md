@@ -1,6 +1,6 @@
 # Extending — Adding Your Own Pieces
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 How to add a Django app, a page, a workflow, a skill, or a guide — following the
 conventions so the rest of the system keeps working.
@@ -110,10 +110,19 @@ description: >-
 ---
 ```
 
-That is a **reference** skill — it states conventions and runs inline. A **task** skill is an
-executable procedure and forks unless its input is the conversation, which adds four keys —
-`context: fork`, `agent: general-purpose`, `background: false`, and a `model:` — plus a
-`metadata.skills` list of what it loads. Which one yours is, and why the fork target is fixed:
+That is a **reference** skill — it states conventions and runs inline, and needs nothing beyond
+`name` and `description`. A **task** skill is an executable procedure, and adds a `model:` plus a
+`metadata.skills` list of what it loads. A task skill that **forks** adds three keys on top:
+
+```yaml
+context: fork
+agent: general-purpose
+background: false
+```
+
+It forks unless its input is the conversation itself — `feature` and `bugfix` run inline and
+dispatch each phase, because the request, its scope and its trade-offs only exist in the thread.
+Which one yours is, and why the fork target is fixed:
 `how-to/docs/skill-authoring/FORK-DECISION.md`.
 
 Conventions to keep:
@@ -175,26 +184,36 @@ Rules:
 
 ## A dependency
 
-**Python:**
+`code/src/scripts/dependencies/update.sh` is the **single sanctioned entry point**, and it puts
+one command and one exit-code contract over all three ecosystems — Python (uv), JavaScript (pnpm)
+and Rust (cargo):
 
 ```bash
-# edit pyproject.toml, then
+bash code/src/scripts/dependencies/update.sh                             # what is out of date
+bash code/src/scripts/dependencies/update.sh --apply --package <name>    # one package
+bash code/src/scripts/dependencies/update.sh --apply --ecosystem python  # one ecosystem
+bash code/src/scripts/dependencies/update.sh --apply                     # everything
+```
+
+To add rather than upgrade one, edit `pyproject.toml` or the relevant `package.json` and sync:
+
+```bash
 bash code/src/scripts/development/install-backend.sh --sync
+bash code/src/scripts/development/install-frontend.sh --local   # repo tooling; no client bundle
 ```
 
-**JavaScript** (repo tooling only — there is no client bundle):
+**A floor is not a pin.** Raising `redis>=5.0.0` to `redis>=6.0` does not install redis 6, it
+forbids redis 5 — what you actually get is decided by the lockfile, and by what the rest of your
+graph tolerates. Raise a floor deliberately and re-resolve in the same change.
 
-```bash
-bash code/src/scripts/development/install-frontend.sh --local
-```
-
-Commit the updated lockfile. `[2/8] Lockfile Alignment` in CI fails if the lock and manifest
-disagree. Check the licence is compatible with your project's `LICENCE` answer.
+Commit the updated lockfile: `[2/8] Lockfile alignment` in the pre-PR gate fails when the lock
+and the manifest disagree. Check the licence is compatible with your project's `LICENCE` answer.
+Full procedure: `how-to/workflows/07-dependency-updates/`.
 
 ## An MCP server you _consume_
 
 Repo-scoped servers go in `.mcp.json` and are available to everyone who clones. Machine-global
-servers are your own business. Document any new one in `.claude/CLAUDE.md` §3 so Claude knows it
+servers are your own business. Document any new one in `.claude/CLAUDE.md` Section 3 so Claude knows it
 exists.
 
 ## An MCP server you _serve_
@@ -219,12 +238,20 @@ If a piece should ship only when the user opts in, gate it the way the mobile su
 3. Give dependent questions a `when:` so they are asked only if the boolean is true.
 4. Touch shared files with **inert no-ops only** — never templated contents. An ignore entry, a
    glob, an added file extension. Each must cost a project that opted out exactly nothing.
-5. Guard CI at **step** level on the directory existing, so the job reports success on both
-   paths rather than skipping. Add the negative case to the generate matrix.
-6. Document the tokens in `../TEMPLATE-TOKENS.md` and the choice in `05-ANSWERS.md`.
+5. **Gate the governance with the tree.** Any skill scoped to the surface goes in the same
+   `_exclude` block — a skill fires on description match, so one with nothing to work on competes
+   for work it cannot do. Its row in `.claude/skills/CONTEXT.md` stays, flagged; the index row is
+   allowed to dangle, because the alternative is templated file contents.
+6. **A CI job travels with the script it runs.** Guard at **step** level where the job is shared,
+   and exclude the workflow outright where it is not — a workflow shipped without its script is a
+   permanently-red job on every project that opted out, which a generated baseline must never
+   carry. Add the negative case to `audit-template.yml`'s generate loop.
+7. Document the tokens in `../TEMPLATE-TOKENS.md` and the choice in `05-ANSWERS.md`.
 
 Verify by generating into `/tmp` **both ways** and diffing the trees. Everything except
-`.copier-answers.yml` should be identical on the opted-out path.
+`.copier-answers.yml` should be identical on the opted-out path. `audit-template.yml` does this
+on every pull request — a shell loop over both values rather than a job matrix, because a matrix
+needs GitHub expression syntax and that file must not contain any.
 
 ## A development build (graduating from Expo Go)
 

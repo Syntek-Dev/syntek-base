@@ -12,7 +12,8 @@ lint, lockfiles, security, stubs, tests, typecheck) sourced from `lib/`, and
 `post-pr-comment.sh` posts the results as a GitHub PR comment. Plus two session-continuity
 hooks — `context-threshold-handoff.sh` (warns at 50% context, insists at 75%) and
 `pre-compact-handoff.sh` (intercepts compaction) — both steering to the `handoff` skill
-(`.claude/CLAUDE.md` §2.6).
+(`.claude/CLAUDE.md` Section 2.6), and one write guard, `template-docs-readonly.sh`, which keeps
+the shipped template documentation read-only in a generated project.
 
 ## How to work here
 
@@ -49,11 +50,15 @@ hooks — `context-threshold-handoff.sh` (warns at 50% context, insists at 75%) 
 - **Verify a threshold change by replaying a real transcript** with `CLAUDE_CONTEXT_WINDOW`
   set to force each tier — the tiers are unreachable in a fresh session, so an unverified
   edit ships untested.
+- **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is
+  what keeps these guides editable here, where they are the product. Never drop it, and keep
+  the hook paired with the `template-docs-readonly` job in `lefthook.yml`; a guard on one write
+  path only is no guard at all.
 
 ## Output & naming
 
 - **Hand-written:** `pre-pr-check.sh`, `post-pr-comment.sh`, `pre-compact-handoff.sh`,
-  `context-threshold-handoff.sh`, and every `lib/check-*.sh`. The PR comment is generated
-  output, not a file.
+  `context-threshold-handoff.sh`, `template-docs-readonly.sh`, and every `lib/check-*.sh`. The
+  PR comment is generated output, not a file.
 - **Naming:** `kebab-case.sh`; each `lib/` gate is `check-<gate>.sh`. Add a new gate as
   `lib/check-<name>.sh`, wire it into `pre-pr-check.sh`, and register it in `CONTEXT.md`.

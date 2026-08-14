@@ -139,6 +139,16 @@
             "timeout": 900000
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/template-docs-readonly.sh ] && exec bash $ROOT/.claude/hooks/template-docs-readonly.sh'",
+            "timeout": 5000
+          }
+        ]
       }
     ],
     "PostToolUse": [

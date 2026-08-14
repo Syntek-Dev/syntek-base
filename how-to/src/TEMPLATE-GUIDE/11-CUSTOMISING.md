@@ -1,6 +1,6 @@
 # Customising — What Is Yours to Change
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 It is your project. You can change anything. This is about which changes are cheap, which are
 load-bearing, and which will hurt on the next `copier update`.
@@ -24,8 +24,14 @@ load-bearing, and which will hurt on the next `copier update`.
 - **Design tokens.** Values are DB-canonical in `apps/design_tokens`; edit through the
   `/admin/design-tokens` editor or a migration.
 - **Brand assets** in `project-management/src/00-ASSETS/` and the generated brand-guide PDF.
-- **`.claude/MEMORY.md`** — project memory is meant to accumulate.
+- **`.claude/MEMORY.md`** — project memory is meant to accumulate. It arrives with its headings
+  and its writing rules and **no entries**: the template's own memory is excluded from generation
+  rather than shipped, because a project reading someone else's notes second in every session is
+  worse than reading none.
 - **`GAPS.md`, `DEFERRED.md`** — working documents.
+- **`handoffs/`, `research/`, `questionnaires/`, `learning/`** — the four scratch directories.
+- **`VERSION` and the three version logs** — yours from `0.1.0`; the template's history never
+  ships. Move them with the `version` skill rather than by hand.
 - **Dependencies**, within the licence constraints in `how-to/src/CONTEXT.md`.
 
 ## Load-bearing — change with their dependants
@@ -56,19 +62,34 @@ documentation. Adding scripts is cheap; renaming is not.
 
 ### CI workflows
 
-Nine of the fifteen are path-filtered. If you move source out of the paths they watch, they
-silently stop running. Check `.github/workflows/*.yml` `paths:` after any structural move.
+A web-only project ships 28 workflows, 20 of them path-filtered. If you move source out of the
+paths they watch, they silently stop running — and a job that never runs is indistinguishable
+from one that passes. Check `.github/workflows/*.yml` `paths:` after any structural move.
+
+Three of the template's 31 do not reach your project: `audit-template.yml` is template-integrity
+only, and `syntax-rust.yml` and `audit-style-check.yml` travel with the surfaces they test. A
+workflow shipped without the script it runs is a permanently-red job, which a generated baseline
+must never carry.
 
 ### The opt-in mechanism
 
-Optional content — today, the mobile surface — is gated by **one mechanism and one only**: a
-templated `_exclude` entry in `copier.yml`.
+Optional content — the mobile, Rust and desktop surfaces — is gated by **one mechanism and one
+only**: a templated `_exclude` entry in `copier.yml`.
+
+<: raw :>
 
 ```yaml
 _exclude:
   - "<: if not INCLUDE_MOBILE :>/code/src/mobile<: endif :>"
   - "<: if not INCLUDE_MOBILE :>/code/src/scripts/mobile<: endif :>"
 ```
+
+<: endraw :>
+
+Each surface's entries cover everything it owns and nothing else: the tree, its scripts, its
+`code/docs/` guides, its `code/workflows/NN-…` folder, its CI job, and its stack skill. The stack
+skill matters most — **a skill fires on description match rather than on being named**, so an
+unusable one competes for work it cannot do rather than sitting inert.
 
 Three properties make this worth protecting, and all three are lost the moment a second
 mechanism appears:
@@ -116,15 +137,15 @@ workspace silently. Nothing warns you.
 | -------------------------------- | ------------------------------- | -------------------------------------------------------------- |
 | Coverage floors 75 % / 90 % auth | `code/docs/testing/COVERAGE.md` | Update the CI gate too, or it disagrees with the doc           |
 | 750-line source limit            | `code/CONTEXT.md`               | `audit-cloc.yml` and `cloc.sh` both hardcode the threshold     |
-| 300-line instructional-doc limit | `.claude/CLAUDE.md` §8          | The context-budget rationale goes with it                      |
+| 300-line instructional-doc limit | `.claude/CLAUDE.md` Section 8   | The context-budget rationale goes with it                      |
 | British English prose            | `.claude/CLAUDE.md`             | Sweep existing docs or you get a mix                           |
-| Grilling before substantial work | `.claude/CLAUDE.md` §10         | Claude stops interviewing and starts building on first reading |
+| Grilling before substantial work | `.claude/CLAUDE.md` Section 10  | Claude stops interviewing and starts building on first reading |
 | Token-first CSS                  | `code/docs/DESIGN-TOKENS.md`    | `audits/css-tokens.sh` will fail until you change it too       |
-| Docker-only operations           | `.claude/CLAUDE.md` §1          | Every script assumes containers                                |
+| Docker-only operations           | `.claude/CLAUDE.md` Section 1   | Every script assumes containers                                |
 
 ## The non-negotiables
 
-These are security rules, not preferences (`.claude/CLAUDE.md` §6). Changing them is changing your
+These are security rules, not preferences (`.claude/CLAUDE.md` Section 6). Changing them is changing your
 security posture:
 
 - an explicit permission check on every state-changing Ninja endpoint

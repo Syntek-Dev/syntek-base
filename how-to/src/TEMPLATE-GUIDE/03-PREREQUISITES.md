@@ -1,6 +1,6 @@
 # Prerequisites
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 What must be on your machine before generating a project, and how to verify it.
 
@@ -10,8 +10,8 @@ What must be on your machine before generating a project, and how to verify it.
 
 ```bash
 docker --version && docker compose version   # 27+ / v2+
-node --version && pnpm --version             # 24 / 11+
-python3 --version && uv --version            # 3.14 / 0.11+
+node --version && pnpm --version             # 24+ / 11.1.2+
+python3 --version && uv --version            # 3.14+ / 0.11+
 git --version && openssl version
 ```
 
@@ -27,10 +27,18 @@ Copier itself needs no installation — `uvx` fetches and runs it on demand.
 | **Docker Engine**  | 27+         | Every application service. Nothing runs on the host directly.            |
 | **Docker Compose** | v2 (plugin) | Orchestrating the dev, test, staging and prod stacks.                    |
 | **uv**             | 0.11+       | Python dependencies and the lockfile; also provides `uvx` to run Copier. |
-| **Python**         | 3.14        | Root tooling (ruff, basedpyright) and uv's interpreter resolution.       |
-| **Node.js**        | 24          | Repo tooling and git hooks. Not an application dependency.               |
-| **pnpm**           | 11+         | Root workspace packages — Prettier, ESLint, markdownlint, Lefthook.      |
+| **Python**         | 3.14+       | Root tooling (ruff, basedpyright) and uv's interpreter resolution.       |
+| **Node.js**        | 24+         | Repo tooling and git hooks. Not an application dependency.               |
+| **pnpm**           | 11.1.2+     | Root workspace packages — Prettier, ESLint, markdownlint, Lefthook.      |
 | **openssl**        | any recent  | `install.sh` uses it to generate development secrets.                    |
+
+`.python-version` pins `3.14`, `.nvmrc` pins `24`, and `package.json` pins pnpm exactly through
+`packageManager` — so a version manager plus `corepack` will land you on the right ones without
+being asked.
+
+Two more become prerequisites only if you opt into a surface: **rustup** for `INCLUDE_RUST`
+(because the PyO3 crate is a uv workspace member built by maturin, so `uv sync` needs a Rust
+toolchain), and the **Expo Go** app on a phone for `INCLUDE_MOBILE`.
 
 The application itself never runs on the host — no `python`, `pytest` or `pnpm` against your
 machine's interpreter. Those versions matter for root tooling and for uv's resolution, not for
@@ -119,12 +127,17 @@ hostnames.
 
 ## Optional
 
-| Tool                               | For                                                                                                                                                                                                     |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Code**                    | The skills, hooks and MCP wiring. The template is far less useful without it. The suite uses the Fable tier, so it assumes **Claude Max 20× or above, or the Anthropic API** — see `08-CLAUDE-CODE.md`. |
-| **Bruno**                          | Running the committed API collections through a GUI.                                                                                                                                                    |
-| **`gh` CLI**                       | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                  |
-| **context7 / mermaid MCP servers** | Library docs and diagram rendering inside Claude Code.                                                                                                                                                  |
+| Tool                        | For                                                                                                                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**             | The skills, hooks and MCP wiring. The template is far less useful without it. The suite uses the Fable tier, so it assumes **Claude Max 20× or above, or the Anthropic API** — see `08-CLAUDE-CODE.md`. |
+| **Bruno**                   | Running the committed API collections through a GUI.                                                                                                                                                    |
+| **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                  |
+| **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                   |
+| **Figma MCP server**        | Design reads and writes, and Code Connect. Machine-global, and your own to install.                                                                                                                     |
+
+The three MCP servers the project actually depends on — `code-review-graph`, `context7` and
+`mcp-mermaid` — need **no installation**. They are declared in the shipped `.mcp.json` and
+launched on demand through `uvx` and `npx`.
 
 ---
 

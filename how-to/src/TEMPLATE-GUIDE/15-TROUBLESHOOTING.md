@@ -1,12 +1,14 @@
 # Troubleshooting
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 What breaks, why, and what to do. Grouped by when it happens.
 
 ---
 
 ## Generation
+
+<: raw :>
 
 ### `<%SOMETHING%>` survived in the generated project
 
@@ -36,21 +38,28 @@ bash .github/scripts/check-template-tokens.sh
 
 It reports mangled tokens, tokens that are not registered questions in `copier.yml` (they render
 to nothing), and unclosed `<%` delimiters (they kill generation outright). CI runs it on every
-pull request as **[1/2] Template Tokens**.
+pull request as **[1/3] Template Tokens**, alongside **[2/3] Shipped Documentation** — which
+proves the README and the project-memory store a project receives are its own and not the
+template's — and **[3/3] Template Generation**, which generates both render paths and asserts on
+each.
 
 To avoid the problem in the first place, prefer `**bold**` over `_emphasis_` in any paragraph that
 also contains a token.
 
+<: endraw :>
+
 ### `TemplateSyntaxError` during generation
 
-A file contains something Jinja tried to parse with the custom delimiters — a literal `<%`, `<:`
-or `<~`. The fix in the template is to wrap it:
+A file contains something Jinja tried to parse with the custom delimiters — a literal variable,
+block or comment opener. `06-GENERATION.md` → _The delimiters_ lists all three pairs.
 
-```text
-<: raw :>
-content with <% literal delimiters %>
-<: endraw :>
-```
+The fix in the template is to wrap the offending region in a Jinja **`raw` block**: the block
+delimiters around the word `raw` on their own line before the content, and the same around
+`endraw` after it. Everything between is emitted verbatim, delimiters and all. This guide's own
+Generation section is wrapped that way, which is why it can quote the syntax at all.
+
+One limit worth knowing if you are fixing this yourself: **`raw` blocks cannot nest.** A region
+that needs to show `raw` itself has to describe it in words instead — as this entry does.
 
 Report it; the sequences were verified absent when the delimiters were chosen, so this means new
 content introduced one.
@@ -61,11 +70,20 @@ A binary file is being rendered. `_templates_suffix: ""` makes Copier attempt ev
 binaries must be in `_exclude`. Currently only `*.pdf` needs it. A new binary asset type needs
 adding to the exclude list.
 
-### The `mv .copier/README.md` task failed
+### The `.copier/` staging task failed
 
-`.copier/README.md` was not copied — usually because an `_exclude` pattern matched it. Remember
-`_exclude` uses **gitignore semantics**: an unanchored `README.md` matches at every depth. Root-only
-patterns need a leading slash.
+One of the seven seed files was not copied — usually because an `_exclude` pattern matched it.
+Remember `_exclude` uses **gitignore semantics**: an unanchored `README.md` matches at every
+depth. Root-only patterns need a leading slash.
+
+The symptom to check for is the reverse, too: a `.copier/` directory still present after
+generation, or a `VERSION` that reads the template's number rather than `0.1.0`.
+
+### `.copier/` survived a `copier update`
+
+Expected on an old template version, harmless, and self-correcting. `_tasks` run on `copy` only,
+so an update that stages a seed file has nothing to clear it — which is why `copier.yml` carries
+an unversioned `rm -rf .copier` migration. Delete the directory; it is staging, not content.
 
 ### Copier generated an old version
 
@@ -163,7 +181,8 @@ Common causes, in order of likelihood:
 1. The test stack was not running locally in the same configuration.
 2. A test depends on seeded data CI does not have.
 3. Ordering dependence — CI runs a different order.
-4. A stale lockfile: `[2/8] Lockfile Alignment` fails when the lock and manifest disagree.
+4. A stale lockfile: the pre-PR gate's `[2/8] Lockfile alignment` fails when the lock and the
+   manifest disagree.
 
 ```bash
 bash code/src/scripts/tests/server.sh up
@@ -202,13 +221,25 @@ If it persists, the target directory is probably missing its `CONTEXT.md`/`CLAUD
 
 ### Claude asks endless questions
 
-That is grilling, and it is deliberate (`.claude/CLAUDE.md` §10). For genuinely trivial work, say
-so — "this is a mechanical rename, skip the grilling pass". To remove it entirely, edit §10.
+That is grilling, and it is deliberate (`.claude/CLAUDE.md` Section 10). For genuinely trivial work, say
+so — "this is a mechanical rename, skip the grilling pass". To remove it entirely, edit Section 10.
 
 ### Context fills up
 
 Do not compact — auto-compaction is disabled and intercepted. Run `/handoff`, which writes
 `handoffs/HANDOFF-<DESCRIPTOR>-DD-MM-YYYY.md`, then `/clear` and resume from that file.
+
+### Claude warns about context from the very first prompt
+
+`context-threshold-handoff.sh` cannot read the window size — nothing in the transcript reports it
+— so it assumes **1M tokens**. On a 200k plan every prompt looks like 50% used. Set the real
+figure in your environment:
+
+```bash
+export CLAUDE_CONTEXT_WINDOW=200000
+```
+
+`CLAUDE_CONTEXT_ADVISE_PCT` and `CLAUDE_CONTEXT_INSIST_PCT` move the two tiers off 50 and 75.
 
 ### The code-review-graph is stale
 
@@ -285,8 +316,10 @@ against a throwaway copy and refuses to apply when it finds anything.
 
 1. `TEMPLATE-GUIDE/` — the guide for the area you are in
 2. `how-to/docs/DEVELOPMENT.md` and `CLI-TOOLING.md` — environment and commands
-3. `GAPS.md` — it may be a known gap
-4. [Open an issue](https://github.com/Syntek-Dev/syntek-base/issues) with the bug template
+3. `GAPS.md` in your own project — it may be a known gap you recorded
+4. `TEMPLATE-GAPS.md` in the template repository — it may be a known gap in `syntek-base`
+   itself. It does not ship, deliberately, because the root `GAPS.md` does.
+5. [Open an issue](https://github.com/Syntek-Dev/syntek-base/issues) with the bug template
 
 Security problems go through [private disclosure](https://github.com/Syntek-Dev/syntek-base/security),
 never a public issue.

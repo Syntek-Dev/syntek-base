@@ -1,6 +1,6 @@
 # Overview — What syntek-base Is
 
-**Last Updated**: 13/08/2026
+**Last Updated**: 14/08/2026
 
 Read this before generating anything. It explains the bets the template makes, so you can decide
 whether they are bets you want to take.
@@ -17,7 +17,7 @@ allowed to be called done — are left to you, and get reinvented badly on every
 actually carries is:
 
 1. **A documentation system** that an agent can navigate deterministically.
-2. **A process** — numbered workflows for specifying, building, reviewing and releasing.
+2. **A process** — numbered workflows for charting, specifying, building, reviewing and releasing.
 3. **A skill set** — the Claude Code skills, scoped and routed by description. No total is
    quoted: the roster differs between two correct projects once the optional surfaces are in
    play. `.claude/skills/CONTEXT.md` is the registry.
@@ -54,19 +54,37 @@ skimmed guide is a guide that does not change behaviour. Operator guides for hum
 
 ### 3. The PM layer specifies; the code layer builds
 
-Work does not start in an editor. It starts as a user story, moves through design and compliance
-gates (schema, user flow, GDPR, security, QA, SEO, API contract), becomes a decision record and a
-plan, and only then reaches implementation.
+Work does not start in an editor — and it does not start with a story either. It starts with a
+**feature map**: `project-management/workflows/01-feature/` charts the feature's open decisions
+into `project-management/src/01-FEATURE/MAP-<FEATURE>.md` before a single story exists. Stories
+are then _cut from_ the resolved map, move through the design and compliance gates (schema, user
+flow, GDPR, security, QA, SEO, API contract), become a decision record and a plan, and only then
+reach implementation.
 
 ```text
-specify (02–13)  →  decide & plan (14–16)  →  consolidate (16)  →  implement (18–20)  →  record (21–23)
+chart (01)  →  specify (02–13)  →  decide & plan (14–16)  →  consolidate (17)  →  implement (18–20)  →  record & ship (21–23)
 ```
 
-Specify through plan runs **one story at a time** — a story goes all the way to `14-decisions`
-before the next one starts, so each story is planned against everything the previous ones
-established. When the open sprint fills, `14` and `15` run for that sprint before planning
-resumes. Once every story is planned, `16` unifies the per-story design and schema work into one
-coherent whole, and only then does implementation begin.
+**Charting is what the `wayfinder` skill is for.** `/wayfinder chart <feature>` draws the
+frontier and deliberately settles nothing; `/wayfinder resolve <map>` then settles it a batch at
+a time across later sessions, each resolved node **graduating** to the ADR, plan, story or
+register entry it became. The map keeps only a link — it is an index, never a vault.
+`/wayfinder suggest` mines `GAPS.md` and `DEFERRED.md` for what is worth charting next. Node
+types and the grilling-versus-wayfinder split: `08-CLAUDE-CODE.md`.
+
+The map comes first because everything from `02` to `14` is a **per-story loop**. Without one,
+each story rediscovers the same cross-cutting questions — the auth model, the tenancy boundary,
+where state lives — and answers them slightly differently, because each story sees only its own
+slice. Charting asks them once. Stories may begin as soon as every **blocking** node is resolved;
+fog of war may stay open, because a feature that must be fully known before any story is written
+is a feature that never starts.
+
+Specify through plan then runs **one story at a time** — a story goes all the way to
+`14-decisions` before the next one starts, so each story is planned against everything the
+previous ones established. When the open sprint fills, `15-sprint-plans` and `16-story-plans` run
+for that sprint before planning resumes. Once every story is planned,
+`17-consolidate-design-work` unifies the per-story design and schema work into one coherent
+whole, and only then does implementation begin.
 
 A code workflow is never entered directly from a design gate. If that sounds heavy for a
 throwaway prototype, it is — use the `/prototype` skill instead, which exists precisely so the
@@ -90,6 +108,9 @@ Substantial work opens with a **grilling pass**: an interview in rounds, each qu
 recommended answer, facts looked up rather than asked, no action until you confirm. This applies to
 design, code, tests, QA, refactors and migrations — not just planning. The exact shape lives in
 `.claude/skills/grilling/SKILL.md` and nowhere else.
+
+Grilling sharpens **one** surface in one sitting. When the work spans several stories, wayfinder
+(bet 3) charts the frontier and dispatches grilling per node — cartographer and engine.
 
 It is the single most opinionated thing in the template, and the one most likely to feel like
 friction on day one. It exists because the expensive failure mode of agentic coding is not bad

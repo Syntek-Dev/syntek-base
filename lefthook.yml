@@ -90,6 +90,29 @@ pre-commit:
       glob: "*.md"
       run: bash code/src/scripts/audits/docs-length.sh
 
+    # The human half of the template-docs read-only rule; the Claude half is the
+    # PreToolUse hook .claude/hooks/template-docs-readonly.sh. Both stand down in
+    # syntek-base itself, where these files ARE the product — the discriminator is
+    # copier.yml, which is _exclude'd and so exists only here (same trick as the
+    # `[ -f uv.lock ]` leg above).
+    #
+    # The .copier-answers.yml exemption is what keeps `copier update` usable: an update
+    # legitimately rewrites these guides and always restages the answers file alongside
+    # them, so that combination is allowed through. A hand edit never looks like that.
+    template-docs-readonly:
+      glob: "how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}"
+      run: |
+        if [ -f copier.yml ]; then exit 0; fi
+        if git diff --cached --name-only | grep -q '^\.copier-answers\.yml$'; then exit 0; fi
+        echo "BLOCKED — template documentation is read-only in a generated project:"
+        printf '  %s\n' {staged_files}
+        echo
+        echo "These ship from syntek-base and describe the TEMPLATE, not this project."
+        echo "Editing them changes no behaviour and guarantees a copier update conflict."
+        echo "Project-specific notes belong in .claude/MEMORY.md, code/docs/, or GAPS.md."
+        echo "To restore them:  git restore --staged --worktree <path>"
+        exit 1
+
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.
     clickup-export:

@@ -21,19 +21,28 @@ and troubleshooting.
   (link fixes, command corrections, tree updates).
 - **Concrete steps:** edit the guide → verify every command by running it → update this
   folder's `CONTEXT.md` tree and reading-order table if you add or remove a file → update
-  the pointer table in the root `README.md`, which indexes the fourteen numbered guides.
-  `TEMPLATE-GAPS.md` is deliberately **not** in that index: it is a maintainer's register,
-  not a guide for someone using the template.
+  the pointer table in the root `README.md`, which indexes all fifteen numbered guides plus
+  `GUIDE-TO-SKILLS.md`. `TEMPLATE-GAPS.md` is deliberately **not** in that index: it is a
+  maintainer's register, not a guide for someone using the template, and the only file here
+  that `copier.yml` excludes.
+- **Counts are claims, and they rot.** Any number written here — questions, workflows, CI
+  jobs, folders, scripts — must be re-counted on disk in the same pass that touches the
+  sentence around it. A stale count is the failure mode this directory is most prone to,
+  because nothing lints prose.
 - **Definition of done:** every command in the guide has been executed and its output
   matches what is documented; cross-references resolve; British English; the root README
   index and this `CONTEXT.md` both list the file.
 
 ## Guardrails
 
-- **These files are excluded from generation** (`copier.yml` → `_exclude`). They are
-  written in literal prose and never contain live `<%TOKEN%>` substitutions. Quoting token
-  syntax as an example is exactly what they are for — but if you ever move one of these
-  files out of this directory, its examples become live template code.
+- **These files ship, and are therefore rendered.** Everything here except
+  `TEMPLATE-GAPS.md` lands in a generated project, so Copier runs it through Jinja like any
+  other file. **A literal token or delimiter in the prose is live template code** — it
+  renders to nothing, or kills generation. Where a guide must quote the syntax, wrap the
+  region in a `raw` block, and remember `raw` **cannot nest**: a passage that shows `raw`
+  itself has to describe it in words (`15-TROUBLESHOOTING.md` does exactly that).
+  Four guides are wrapped today — `04-QUICKSTART`, `06-GENERATION`, `11-CUSTOMISING`,
+  `15-TROUBLESHOOTING`. **Generate into `/tmp` after touching any of them.**
 - **Never document a flow you have not run.** These guides are the first thing a new user
   trusts; a wrong command here costs more than a wrong command anywhere else in the repo.
   Generate into `/tmp` and check.

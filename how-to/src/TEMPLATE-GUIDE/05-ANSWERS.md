@@ -1,10 +1,10 @@
 # Answering the Questions
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
-Copier asks **thirty-two questions** on a web-only project. The optional surfaces add four more
+Copier asks **thirty-four questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
-desktop app name — thirty-six if you take all three. Most have a good default. A few are
+desktop app name — thirty-eight if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is
@@ -50,7 +50,8 @@ later (58 occurrences, all in documentation and config).
 
 ### `DATE`
 
-`DD/MM/YYYY`. Stamped into ~280 `**Last Updated**` headers as the project's baseline.
+`DD/MM/YYYY`. Stamped into the `**Last Updated**` header of roughly 380 files as the project's
+baseline.
 
 It is **answered, not computed**, deliberately: it is stored in `.copier-answers.yml` and reused
 on every `copier update`, so updates do not churn every header in the repository to today's date.
@@ -130,6 +131,23 @@ here, and boxing you into ours would defeat the purpose. Answer with whatever yo
 **The one that is not on this list is PostgreSQL** — it is the fixed substrate of this template,
 not a swappable choice (`code/docs/DATABASE.md`). Changing it is a fork, not an answer.
 
+## Process dependencies
+
+One question, deliberately kept out of the seven above.
+
+| Question           | Guidance                                                                                                                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INCIDENT_TRACKER` | Where the **substance** of an incident lives — log excerpts, identifiers, any postmortem touching personal data. ClickUp, Linear, Jira, a bespoke admin area, or the default. |
+
+It is separate because the interface is **access control**, not a wire protocol: swapping it
+changes where a human types rather than what the code does, so it is neither a protocol seam nor
+an adapter seam (`code/docs/architecture/PROVIDER-NEUTRALITY.md`).
+
+The in-repo register at `project-management/src/22-INCIDENTS/` is **PII-free by rule** and it
+ships, so anything sensitive needs a home with permissions. Leaving the default
+(`None — record in 22-INCIDENTS/ only`) is a legitimate answer — it means you undertake to keep
+that substance out of the repository entirely.
+
 ## Locale and currency
 
 | Question   | Guidance                                                                  |
@@ -175,6 +193,11 @@ Only the **names** are configurable — the layout `code/src/django/apps/<app>/`
 project has no user-authored content, keep the `content` default and delete the documentation rows
 that mention it afterwards.
 
+**None of these directories exists at baseline.** `apps/` ships with `core` alone; the six answers
+name apps the documentation refers to, and each one is created when a story first needs it — with
+`bash code/src/scripts/development/new-django-app.sh <app_name>`, never `manage.py startapp`,
+which skips the per-model-file structure and the `CONTEXT.md`/`CLAUDE.md` pair.
+
 `apps.marketing`, `apps.seo` and `apps.design_tokens` are house constants. They are the same in
 every project and are never asked about.
 
@@ -186,11 +209,11 @@ team has a measured velocity.
 
 | Question             | Default | Means                                                    |
 | -------------------- | ------- | -------------------------------------------------------- |
-| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `14`+`15` pass |
+| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `15`+`16` pass |
 | `SPRINT_GRACE_SP`    | `13`    | Hard ceiling, for when the next story would split badly  |
 
 These drive the cadence in `project-management/docs/PLANNING-GUIDE.md`: you plan one story
-at a time through workflows `01`–`13`, and when the open sprint reaches the capacity figure you
+at a time through workflows `02`–`14`, and when the open sprint reaches the capacity figure you
 run `15-sprint-plans` and `16-story-plans` for that sprint before starting the next story.
 
 Revisit them after two sprints, once you know what you actually deliver. Changing them later is a
@@ -198,8 +221,10 @@ one-line edit in `project-management/docs/PLANNING-GUIDE.md` — no regeneration
 
 ## Optional surfaces
 
-Two questions add a whole toolchain. Both default to `false`, and both are cheap to turn on later
-with `copier update` — so answer `false` when unsure.
+Three booleans, each adding a whole toolchain. All default to `false`, and all are cheap to turn
+on later with `copier update` — so answer `false` when unsure. `INCLUDE_DESKTOP` is only asked at
+all when `INCLUDE_RUST` is true, because Slint is Rust; each `true` also unlocks a name question
+(`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID`, `DESKTOP_APP_NAME`).
 
 | Question          | Turn it on when                                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------- |
@@ -228,14 +253,16 @@ APIs. If either applies to you, budget for a paid Commercial licence before you 
 
 Everything is recoverable; the cost varies.
 
-| Answer                           | Fixing it later                                                                                                       |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `DATE`, `SERVER_TIER`, licence   | Trivial — edit in place, or edit `.copier-answers.yml` and re-run `copier update`.                                    |
-| `INCLUDE_MOBILE`, `INCLUDE_RUST` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand. |
-| `DEVELOPER_*`, app names         | Easy — a scoped find-and-replace.                                                                                     |
-| `PRIMARY_DOMAIN`, `ENV_PREFIX`   | Moderate — dozens of occurrences, all in docs and config.                                                             |
-| `ORG_SLUG`                       | Moderate — also touches the server namespace and cache prefix.                                                        |
-| `PROJECT_SLUG`                   | Painful — databases, volumes, hostnames, secret filenames.                                                            |
+| Answer                                | Fixing it later                                                                                                       |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `DATE`, `SERVER_TIER`, licence        | Trivial — edit in place, or edit `.copier-answers.yml` and re-run `copier update`.                                    |
+| The seven platform providers          | Trivial — each records a choice behind an interface; edit the answer and the register row.                            |
+| `INCLUDE_MOBILE` · `RUST` · `DESKTOP` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand. |
+| `DEVELOPER_*`, app names              | Easy — a scoped find-and-replace.                                                                                     |
+| `PRIMARY_DOMAIN`, `ENV_PREFIX`        | Moderate — dozens of occurrences, all in docs and config.                                                             |
+| `ORG_SLUG`                            | Moderate — also touches the server namespace and cache prefix.                                                        |
+| `MOBILE_BUNDLE_ID`                    | Painful once published — the bundle ID is permanent on both stores.                                                   |
+| `PROJECT_SLUG`                        | Painful — databases, volumes, hostnames, secret filenames.                                                            |
 
 If you realise within minutes, the cheapest fix is to delete the directory and generate again.
 

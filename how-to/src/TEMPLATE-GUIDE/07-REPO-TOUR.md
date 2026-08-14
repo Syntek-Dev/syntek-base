@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -16,7 +16,7 @@ Four layers, each self-describing:
 | `code/`               | Source, coding standards, coding workflows         | `code/CONTEXT.md`               |
 | `how-to/`             | Setup, daily development, debugging, scaling       | `how-to/CONTEXT.md`             |
 | `project-management/` | Stories, sprints, design, GDPR, security, releases | `project-management/CONTEXT.md` |
-| `.claude/`            | Agent routing, skills, hooks, global rules         | `.claude/CLAUDE.md`             |
+| `.claude/`            | Skills, routing, hooks, global rules               | `.claude/CLAUDE.md`             |
 
 Each layer has the same internal shape:
 
@@ -32,6 +32,9 @@ Each layer has the same internal shape:
 
 **`docs/` tells you the rule. `workflows/` walks you through applying it. `src/` is where the
 output lands.**
+
+`.claude/` is the exception — it is configuration rather than a layer of work, so it carries
+`skills/`, `hooks/` and `plugins/` instead.
 
 ## The two-file convention
 
@@ -49,7 +52,8 @@ you add a directory, you add both — CI and the documentation gate both check.
 
 ```text
 code/
-├── docs/            ← 20+ guides: architecture, security, testing, rendering, RLS, tokens
+├── docs/            ← 33 guides plus 20 sub-directories: architecture, security,
+│                      testing, rendering, RLS, tokens, discoverability, visual design
 ├── src/
 │   ├── django/      ← the application
 │   ├── docker/      ← Dockerfiles and Compose files per environment
@@ -60,18 +64,24 @@ code/
                      · build, opt-in (12 rust-only · 13 desktop-only)
 ```
 
-**`code/src/scripts/` is the interface to everything.** Grouped by what the scripts do:
+An oversized guide splits into a sub-directory beside it and the entry point becomes a thin index
+— that is what the twenty sub-directories are, not a second category of document.
 
-| Group                            | Examples                                                                                       |
-| -------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `template-update.sh`                  |
-| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `manageusers.sh`                                        |
-| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `backend-coverage.sh`                                        |
-| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                             |
-| `audits/`                        | `cloc.sh`, `docs-length.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh` |
-| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                              |
-| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                         |
-| `_lib/`                          | shared helpers the other groups source, never run directly                                     |
+**`code/src/scripts/` is the interface to everything** — around seventy shell scripts, grouped by
+what they do:
+
+| Group                            | Examples                                                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `new-django-view.sh`, `template-update.sh`                                                    |
+| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                         |
+| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`                                                                      |
+| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                     |
+| `audits/`                        | 21 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
+| `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                       |
+| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                      |
+| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                 |
+| `_lib/`                          | shared helpers the other groups source, never run directly                                                                                             |
+| `reports/`                       | generated output, gitignored — the one place a `CONTEXT.md` pair is not required                                                                       |
 
 Every script takes `--help`. Never run `python`, `pytest`, `pnpm` or `docker` directly — the
 scripts handle the container, the environment and the compose overrides for your branch.
@@ -92,7 +102,9 @@ The heaviest layer, and the one that makes the process real.
 
 ```text
 project-management/src/
-├── 00-ASSETS/                    ← logos, export scripts
+├── 00-ASSETS/                    ← logos, export scripts — reference, not a stage
+│   ── discover, once per feature (01) ──
+├── 01-FEATURE/                   ← the wayfinder decision maps
 │   ── specify (02–13) ──
 ├── 02-STORIES/ 03-SPRINTS/ 04-DATABASE/ 05-USER-FLOW/ 06-BRAND-GUIDE/
 ├── 07-COMPONENTS/ 08-WIREFRAMES/ 09-GDPR/ 10-SECURITY/ 11-QA/ 12-SEO/ 13-API-DESIGN/
@@ -104,9 +116,13 @@ project-management/src/
 └── 22-INCIDENTS/
 ```
 
-The numbered `src/` folders mirror the numbered `workflows/`. **`16-STORY-PLANS/` is what a
-developer actually codes from** — it references the sprint plan, the decisions, and every 02–13
-specification.
+The numbered `src/` folders mirror the numbered `workflows/` up to `16`. **`16-STORY-PLANS/` is
+what a developer actually codes from** — it references the sprint plan, the decisions, and every
+02–13 specification.
+
+**These numbers are frozen — append only, never renumber.** They hold artefacts you wrote, and
+Copier tracks only what it generated, so renumbering one strands your work silently on the next
+update (`14-UPDATING.md`).
 
 **`22-INCIDENTS/` is the exception to both patterns**, and knowing why saves you looking for
 things that do not exist: it has no matching workflow, because an incident is unplanned and
@@ -118,26 +134,45 @@ incident tracker, never in git. The practice is `how-to/docs/INCIDENT-PRACTICE.m
 
 ```text
 .claude/
-├── CLAUDE.md    ← the authoritative operating manual — read first, always
-├── MEMORY.md    ← project memory: feedback, patterns, project state
-├── skills/      ← skills, loaded on demand (skills/CONTEXT.md)
-├── hooks/       ← pre-PR quality gates and the pre-compact handoff interceptor
-└── plugins/     ← 6 read-only inspection helpers a skill calls for context
+├── CLAUDE.md      ← the authoritative operating manual — read first, always
+├── MEMORY.md      ← project memory: feedback, patterns, project state (starts empty)
+├── settings.json  ← permissions, model, effort level, hooks, disabled plugins
+├── skills/        ← skills, loaded on demand (skills/CONTEXT.md)
+├── hooks/         ← the pre-PR quality gates and the two session-continuity hooks
+└── plugins/       ← 6 read-only inspection helpers a skill calls for context
 ```
 
 Covered properly in `08-CLAUDE-CODE.md`.
 
+## The four scratch directories
+
+Not a layer — four working areas at the root, each written by one skill and read by nobody else:
+
+| Directory         | Written by          | Holds                                                 |
+| ----------------- | ------------------- | ----------------------------------------------------- |
+| `handoffs/`       | `handoff`           | Session handoff documents, the compaction replacement |
+| `research/`       | `/research`         | Primary-source-cited notes that feed a decision       |
+| `questionnaires/` | `/to-questionnaire` | Outbound discovery questionnaires                     |
+| `learning/`       | `/teach`            | A throwaway sandbox — the one place `/teach` writes   |
+
+In a **generated project** all four are tracked, because there they are the work. In `syntek-base`
+itself each carries a `.gitignore` that is excluded from generation, so the template can exercise
+its own scaffolding without shipping the test artefacts.
+
 ## Root files
 
-| File                  | What                                                                |
-| --------------------- | ------------------------------------------------------------------- |
-| `CONTEXT.md`          | Project overview, full directory tree, layer map                    |
-| `REFERENCES.md`       | Curated index of every internal guide and external resource         |
-| `DESIGN.md`           | Design entry point — standards, constraints, Figma                  |
-| `GAPS.md`             | Active gaps, blockers, sprint dependencies                          |
-| `DEFERRED.md`         | Work explicitly deferred to a named future story                    |
-| `install.sh`          | Toolchain bootstrap                                                 |
-| `.copier-answers.yml` | Your generation answers — **commit this**, `copier update` needs it |
+| File                                                  | What                                                                |
+| ----------------------------------------------------- | ------------------------------------------------------------------- |
+| `CONTEXT.md`                                          | Project overview, full directory tree, layer map                    |
+| `REFERENCES.md`                                       | Curated index of every internal guide and external resource         |
+| `DESIGN.md`                                           | Design entry point — standards, constraints, Figma                  |
+| `GAPS.md`                                             | Active gaps, blockers, sprint dependencies                          |
+| `DEFERRED.md`                                         | Work explicitly deferred to a named future story                    |
+| `VERSION`                                             | The single source of truth — a new project starts at `0.1.0`        |
+| `CHANGELOG.md` · `RELEASES.md` · `VERSION-HISTORY.md` | The three version logs, all seeded empty                            |
+| `install.sh`                                          | Toolchain bootstrap                                                 |
+| `.mcp.json`                                           | The three repo-scoped MCP servers                                   |
+| `.copier-answers.yml`                                 | Your generation answers — **commit this**, `copier update` needs it |
 
 ---
 

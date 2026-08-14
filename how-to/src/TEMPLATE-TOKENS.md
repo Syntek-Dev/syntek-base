@@ -2,6 +2,8 @@
 
 **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%>
 
+<: raw :>
+
 This repository is a **reusable base template** — the starting point for every new project,
 whether built for an external client or internally. Project-, organisation-, and
 deployment-specific values are written as `<%…%>` tokens and rendered by
@@ -45,16 +47,23 @@ The delimiters below were chosen by scanning every tracked file and verifying ze
 | Comment  | `<~`  | `~>`   |
 
 They are set in `copier.yml` under `_envops`. If you ever add content to the template containing
-one of these six sequences literally, wrap it in `<: raw :>` … `<: endraw :>`.
+one of these six sequences literally, wrap it in a Jinja **`raw` block** — the block delimiters
+around the word `raw` before it, and the same around `endraw` after it. Everything between is
+emitted verbatim.
+
+**This file is one of them.** It ships to generated projects, so everything below the header is
+inside a `raw` block — which is the only reason the token table survives rendering instead of
+becoming 40 rows of blanks. `raw` blocks **cannot nest**, which is why the paragraph above
+describes the markers rather than showing them.
 
 ---
 
 ## The tokens
 
-Thirty-six tokens carry every project-specific value. **Thirty-two are always asked**; the remaining
-four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile surface is
-included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only when the
-desktop surface is. Example values are illustrative — replace them.
+Thirty-eight tokens carry every project-specific value. **Thirty-four are always asked**; the
+remaining four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile
+surface is included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only
+when the desktop surface is. Example values are illustrative — replace them.
 
 ### Identity
 
@@ -405,3 +414,5 @@ code.
 > previous project's name. Every Dockerfile does `COPY pyproject.toml uv.lock ./`, so **the Docker
 > build fails until the project has been generated (or `uv lock` run by hand).** Commit the
 > generated lock — `pnpm-lock.yaml`, which records no root package name, ships as normal.
+
+<: endraw :>

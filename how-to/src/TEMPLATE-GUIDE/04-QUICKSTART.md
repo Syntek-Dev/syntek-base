@@ -1,6 +1,6 @@
 # Quickstart — Generate to Running Stack
 
-**Last Updated**: 02/08/2026
+**Last Updated**: 14/08/2026
 
 The short path from nothing to a project serving pages. Assumes `03-PREREQUISITES.md` is satisfied.
 
@@ -13,15 +13,15 @@ uvx copier copy gh:Syntek-Dev/syntek-base my-project
 cd my-project
 ```
 
-Copier asks thirty-two questions, plus four more between the optional surfaces if you opt into
-them. Most have
-either a sensible default or a value derived from
-an earlier answer — pressing Enter through the infrastructure and locale sections is a reasonable
-first pass. If you want to think about them properly, read `05-ANSWERS.md` first.
+Copier asks thirty-four questions, plus four more between the optional surfaces if you opt into
+them. Most have either a sensible default or a value derived from an earlier answer — pressing
+Enter through the infrastructure and locale sections is a reasonable first pass. If you want to
+think about them properly, read `05-ANSWERS.md` first.
 
 You will be asked to trust the template, because generation runs post-tasks. Those tasks are the
-four at the bottom of `copier.yml` and nothing else: move the README into place, un-ignore
-`uv.lock`, generate the lock, and `git init`. Read them if you like — that is why they are short.
+four at the bottom of `copier.yml` and nothing else: move the seeded files (README, version state,
+blank project memory, the scale-planning map) into place, un-ignore `uv.lock`, generate the lock,
+and `git init`. Read them if you like — that is why they are short.
 
 To skip the interview entirely and take every default:
 
@@ -37,9 +37,13 @@ uvx copier copy --trust --defaults \
 
 ## 2. Check it rendered
 
+<: raw :>
+
 ```bash
 grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l    # must print 0
 ```
+
+<: endraw :>
 
 Anything other than `0` is a template bug — please
 [report it](https://github.com/Syntek-Dev/syntek-base/issues).
@@ -138,13 +142,13 @@ routes itself.
 Read .claude/CLAUDE.md and .claude/MEMORY.md, then give me a tour of this repository.
 ```
 
-## 10. Describe it, then size it — before any feature
+## 10. Four passes before any feature
 
-These two are `how-to/workflows/01-first-time-setup/` Steps 7–8. Run them **once, now**, in this
-order. They are the cheapest work you will ever do on this project and the most expensive to
+These are `how-to/workflows/01-first-time-setup/` Steps 7–10. Run them **once, now, in this
+order** — each depends on the one before, and every one of them is cheap today and expensive to
 retrofit.
 
-**First, sharpen the brief.**
+**1. Sharpen the brief.**
 
 ```text
 Open CONTEXT.md — What this project is. Expand it into a real brief with me: what it
@@ -155,7 +159,30 @@ does, who for, what it replaces, and what it deliberately is not.
 `.claude/CLAUDE.md` imports — so it is the first thing every agent reads in every session, and
 what every scope decision is measured against. A one-liner typed at a prompt is not that yet.
 
-**Then size it.**
+**2. Settle the voice.**
+
+```text
+Fill in how-to/src/BRAND-VOICE.md Section 3 and Section 5 with me.
+```
+
+Tone, person, formality, the reader, the signature, the never-this line, and the
+say-this-not-that vocabulary. The reader comes straight from the brief, which is why it runs
+second. Every skill that writes a user-facing string loads this file first, and
+`code/src/scripts/audits/copy-emdash.sh` already enforces part of Section 4.
+
+**3. Settle the visual direction.**
+
+```text
+Fill in code/docs/VISUAL-DESIGN.md Section 3 with me.
+```
+
+The same doctrine in composition rather than copy: name the direction, then give every one of
+the six axes a setting — alignment, rhythm, contrast, ornament, density, motion. `editorial`
+ships as the default. **Naming it is what makes Section 4.2's ban list decidable at all** — a centred
+hero is a defect under `editorial` and correct under `classical-symmetric`, and with no direction
+named there is nothing to judge against.
+
+**4. Size it.**
 
 ```text
 /scale-planning
@@ -169,6 +196,9 @@ Run it now rather than later, because its value is the questions it forces while
 still cheap to change — target users, read/write mix, which scaling phase-gate the design must
 not foreclose — and because it is where **what you do not need** gets written down. That list is
 what stops the first feature carrying machinery it will never use.
+
+If any of the four is still carrying its `TBD` placeholders when you start planning, Claude is
+required to say so before it plans anything.
 
 ---
 
