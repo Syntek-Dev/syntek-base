@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 3.2.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.2.2 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [3.2.2] - 14/08/2026
+
+### Added
+
+- **`code/docs/rls/MIDDLEWARE-AND-NINJA.md` gains a _Row locking_ section: under row-level security a `select_for_update()` only ever covers rows the `SELECT` policy already makes visible.** PostgreSQL applies the policy's `USING` clause when it chooses the rows and `FOR UPDATE` locks what is left, so a lock taken before the scope variable is set is taken on **zero rows** and the query returns `None` — no error and no warning. The one loud failure, `TransactionManagementError`, fires only when there is no transaction at all, which is the case where the ordering was never the fault. `SET LOCAL` and `FOR UPDATE` each live for exactly one transaction, so both end up inside the same `atomic()` block doing two jobs, and only one of them is visible in the code. The section carries the order, both spellings, and the guard.
+- **The guard is the point, not the ordering.** "No row" has two causes that look identical — the row is genuinely absent, or the scope was never set — and only one of them is a user's problem. Treating the result as a benign not-found is how a missing scope variable ships silently, so a row that must exist raises `InvariantViolation` rather than returning; which invariant class that is and how it must surface stays `code/docs/NEGATIVE-SPACE.md`'s to say.
+- **`code/docs/data-structures/ANTI-PATTERNS.md` gains _The ID-or-Instance Parameter_** — the signature that accepts `Order | UUID` and opens with an `isinstance` branch. The union costs more than the convenience returns: the two paths have **different query counts** and **different failure modes**, so no caller can reason about either without reading the body, and every test doubles. Passing an identifier **instead of** an instance is the separate and often-right thing — across a process boundary the instance is stale by construction, which is why a task takes the primary key and re-reads it (`code/docs/TASK-AUTHORING.md`). That is one choice made deliberately, not a signature that accepts both.
+- **`how-to/src/INVARIANTS.md` names its second limit, and it is the one that looks like proof.** A fully green register says nothing about whether any row is _exercised_: `audits/negative-space.sh` correlates names and coverage counts executed lines, and neither would fail if a constraint were dropped from the model or a guard's `raise` deleted, provided the row and the name still line up. The proof is mutation testing — `bash code/src/scripts/tests/mutmut.sh run` — which removes the enforcement and asks whether a test notices. It stays local-only and outside CI deliberately, because it is slow: an act someone chooses for a row worth being right about, rather than a gate that arrives.
+
+### Changed
+
+- **`code/docs/BACKEND-CODING-PRINCIPLES.md`'s `transaction.atomic()` rule now points at the locking order**, because that is where someone is standing when they write the block. The rule already said to wrap a multi-step write; it did not say that inside the wrapper the order of two lines decides whether the lock exists at all.
 
 ## [3.2.1] - 14/08/2026
 
