@@ -105,6 +105,8 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `.claude/skills/grilling/SKILL.md` · `.claude/skills/grill-me/SKILL.md` ·
   `.claude/skills/grill-with-docs/SKILL.md` — the design-time interview family; handoff is the
   session-boundary complement.
+- `.claude/skills/wait-what/SKILL.md` · `.claude/skills/teach/SKILL.md` — the teaching detour:
+  a `HANDOFF-TEACH-<TOPIC>-…` handoff whose next session runs `/teach` before resuming the work.
 - `.claude/CLAUDE.md` §2.3, §2.6 — how work is routed, and the session-continuity rule this implements.
 - `.claude/skills/CONTEXT.md` — the roster the suggested skills are drawn from.
 - `.claude/plugins/` · `code/docs/CODE-REVIEW-GRAPH.md` — read-only lookup for session facts before Grep/Glob.

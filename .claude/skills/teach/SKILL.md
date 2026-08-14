@@ -129,6 +129,8 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 
 - `.claude/skills/grilling/SKILL.md` — the interview posture step 1 borrows; it owns the shape.
 - `.claude/skills/grill-with-docs/SKILL.md` — the glossary + three-test ADR gate (domain-modelling process).
+- `.claude/skills/wait-what/SKILL.md` — one origin of a topic: a re-pitch that exposed a knowledge
+  gap, arriving with its opening lesson already named.
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the domain-modelling reference.
 - `.claude/skills/stack-htmx-templates/SKILL.md` · `.claude/skills/stack-django/SKILL.md` — stack references for coding lessons.
 - `project-management/workflows/02-story-creation/` · `03-sprint-planning/` · `15-sprint-plans/` — house process procedures.
