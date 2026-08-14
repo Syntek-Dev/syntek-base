@@ -205,7 +205,10 @@ your first build.
 <: raw :>
 
 ```bash
-grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l    # 0
+# The two doc paths quote token syntax on purpose — see 04-QUICKSTART.md
+grep -rIo '<%[A-Z_]*%>' . \
+  --exclude-dir=.git --exclude-dir=TEMPLATE-GUIDE --exclude=TEMPLATE-TOKENS.md \
+  | wc -l                                                # 0
 test -f README.md && test -f uv.lock && test -f .copier-answers.yml && echo ok
 grep -c '^uv\.lock$' .gitignore                          # 0 — rule removed
 test ! -d .copier && echo 'staging cleared'              # _tasks emptied and removed it

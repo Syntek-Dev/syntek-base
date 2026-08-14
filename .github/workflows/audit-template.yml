@@ -92,14 +92,27 @@ jobs:
           done
 
       - name: No token may survive rendering
+        # The two documentation paths are carved out because they SHIP and are prose ABOUT
+        # the template: their token text sits inside Jinja `raw` blocks and is meant to
+        # survive verbatim — the delimiter table, the "a token survived" troubleshooting
+        # entry, the whole token contract. A leaked token and a quoted one are byte-identical,
+        # so no content test can separate them; the path is the only honest discriminator.
+        # Everything else in the tree stays under the strict check, which is where an actual
+        # rendering failure would show up.
         run: |
           status=0
           for mobile in false true; do
             cd "$RUNNER_TEMP/gen-$mobile"
-            left=$(grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l)
+            left=$(grep -rIo '<%[A-Z_]*%>' . \
+              --exclude-dir=.git \
+              --exclude-dir=TEMPLATE-GUIDE \
+              --exclude=TEMPLATE-TOKENS.md | wc -l)
             if [ "$left" -ne 0 ]; then
               echo "::error::INCLUDE_MOBILE=$mobile — $left unrendered token(s) survived"
-              grep -rIn '<%[A-Z_]*%>' . --exclude-dir=.git | head -20
+              grep -rIn '<%[A-Z_]*%>' . \
+                --exclude-dir=.git \
+                --exclude-dir=TEMPLATE-GUIDE \
+                --exclude=TEMPLATE-TOKENS.md | head -20
               status=1
             fi
             echo "INCLUDE_MOBILE=$mobile — 0 unrendered tokens"

@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 3.1.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [3.2.0] - 14/08/2026
+
+### Added
+
+- **`how-to/src/TEMPLATE-GUIDE/` and `how-to/src/TEMPLATE-TOKENS.md` now ship into every generated project.** They leave `copier.yml`'s `_exclude` because most of what they answer is asked long **after** generation, not before it: what am I looking at (`07-REPO-TOUR`), which skill does this (`GUIDE-TO-SKILLS`), which project-management folder (`09-PROJECT-MANAGEMENT`), how do I pull upstream fixes (`14-UPDATING`), why did that break (`15-TROUBLESHOOTING`). Excluding them meant the answers existed and were unreachable from the only place the question actually gets asked. The pre-generation half travels with them rather than being split off, because `14-UPDATING` is unreadable without `06-GENERATION`'s vocabulary.
+- **`how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md` — the human index the roster never was.** It answers **what do I type**; `.claude/skills/CONTEXT.md` answers **when does Claude load this**. The page says so and defers to it rather than forking a second roster. Sixty-four skills is too many to meet at once, so it opens by saying you do not have to: description match is the normal path and naming a skill is an override.
+- **`.claude/hooks/template-docs-readonly.sh` and the `template-docs-readonly` lefthook job — read-only, in two halves.** A file a project receives and does not own is one whose edits change no behaviour and guarantee a conflict at the next `copier update`, because upstream owns those lines. The hook is the Claude half (`PreToolUse` on `Edit|Write|NotebookEdit`, exit 2); the pre-commit job is the human half. One without the other is no guard at all.
+- **Neither of the two obvious alternatives can express this.** A `permissions.deny` entry would apply in syntek-base too, where these files **are** the maintained product and must stay writable — `settings.json` ships, and a deny rule cannot tell the two repositories apart. `chmod 444` would block `copier update` itself from refreshing them, which is the whole mechanism keeping them current. Read-only to a human, writable to the updater, is what a hook expresses and a file mode cannot.
+- **Both halves stand down on the presence of `copier.yml`**, which lists itself in its own `_exclude` and therefore exists in syntek-base and in no generated project — exact, not a heuristic, and the same trick as lefthook's `[ -f uv.lock ]` leg. The pre-commit half also exempts a commit that restages `.copier-answers.yml`: an update legitimately rewrites these guides and always touches that file alongside them, and a hand edit never looks like that.
+- **A `Writing conventions` block in `.claude/CLAUDE.md` Section 5**, whose first rule bans U+00A7. Write `Section 3.2`, or just `3.2` where the context already says it is a section; the doubled form for a range goes with it, so `Sections 4 to 7`. Two clauses sit alongside: prefer plain ASCII punctuation generally, with the em dash as the deliberate exception (house style throughout the prose here, banned by `copy-emdash.sh` only in public marketing copy); and a disambiguation, that the same codepoint appearing as mojibake or mid-word is an encoding fault rather than a style one, fixed as corruption.
+
+### Changed
+
+- **The shipped guides are rendered like any other template file now**, so every guide that quotes token or delimiter syntax wraps it in `raw` blocks. This is the cost of shipping them, and it is paid once per guide.
+- **`how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` is excluded by name** — syntek-base's own open items, meaningless in a generated project. It is the same test the root `GAPS.md` passes by shipping as an empty stub.
+- **The section sign leaves the vocabulary and the 289 files it was in.** It is not wrong — it is the scholarly and legal shorthand for "section", absorbed from the RFCs, specs, statutes and standards this repository cites all day, and every use of it here was correct. It is denser than this project wants, which is the actual complaint: these files are read under time pressure by people who are not lawyers, and a glyph that has to be decoded is a tax on every reading, paid so the writer can save six characters once.
+- **The rule is written without the character it bans, deliberately.** That is what makes zero occurrences an invariant anything can check: `grep -rIP '\xc2\xa7' .` returning nothing is the pass condition, and it stays the pass condition only if no file — including the rule's own — is allowed to be an exception. A rule that has to spell its banned character cannot be enforced by counting.
+- **The sweep itself is mechanical.** Most occurrences took `Section N`; the ones pointing at a named heading rather than a number took `→` instead, because "Section Required status checks" reads worse than the glyph did. Five of those land in shell scripts — two in audit failure messages, which now print `FRONTMATTER.md → Three claims` — and every remaining shell edit is inside a comment. One wireframe template needed rewrapping, the substitution being four characters longer than what it replaced.
+- **`.claude/hooks/CONTEXT.md` and `CLAUDE.md` gain the new hook** — the tree, the file table, the hand-written list, a guardrail against dropping the `copier.yml` check, and a short section on why the pairing exists.
+
+### Fixed
+
+- **The guides' own facts, re-checked against `copier.yml`.** Shipping them made their staleness everyone's problem rather than ours, so the question counts, the derived defaults and validators, and a `--vcs-ref` example still pinned to `v0.12.0` were all corrected before they travelled.
+- **The two template-integrity guards that shipping the guides broke.** Both assumed the documentation was excluded, and both are now scoped by path. `audit-template.yml`'s _No token may survive rendering_ demanded zero tokens in a generated project; three now survive on purpose, inside the `raw` blocks that make the delimiter table and the "a token survived" entry readable at all. A leaked token and a quoted one are byte-identical, so no content test separates them and the path is the only honest discriminator — every other file in the tree stays under the strict check, which is where a real rendering failure would show. `shipped-readme.sh` required every token in a shipping file to appear in the contract, which turned the troubleshooting heading's stand-in placeholder into an undocumented token; its scope now skips the two documentation paths outright, exclusion alone having stopped being the thing that separates "a token this project uses" from "prose quoting token syntax".
+- **The same bug in the guides' own verification commands.** `04-QUICKSTART` and `06-GENERATION` both told you to grep a fresh project for surviving tokens and expect `0`. After the move they would have reported `3` on a perfectly healthy generation and sent you to file a template bug — they now carry the same two exclusions, and `04-QUICKSTART` says why.
+
+### Known limitations
+
+- **The section-sign invariant is not yet gated.** It is stated and cheaply checkable, but nothing runs it — worth wiring into an audit before it drifts back in one file at a time.
 
 ## [3.1.1] - 14/08/2026
 

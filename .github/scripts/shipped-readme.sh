@@ -483,7 +483,23 @@ done < <(grep -E '^[A-Z_]+:' "$COPIER" | sed 's/:$//' | sort -u)
 # Scoped to files that actually reach a generated project. A token appearing only in
 # an excluded file is prose about the template — TEMPLATE-GUIDE's troubleshooting entry
 # for a placeholder that survived generation — not a token the contract owes an entry for.
-SHIPPING_FILES=$(git ls-files | grep -v '\.pdf$' | while read -r f; do is_excluded "$f" || printf '%s\n' "$f"; done)
+#
+# That test used to be `is_excluded` alone, because TEMPLATE-GUIDE and TEMPLATE-TOKENS.md
+# were both excluded. They now SHIP, so exclusion no longer separates "a token this project
+# uses" from "prose quoting token syntax" — and the two documentation paths have to be named
+# outright. Without this, the stand-in placeholder in TEMPLATE-GUIDE's "a token survived"
+# troubleshooting heading reads as an undocumented token, and the contract is asked to grow
+# an entry for a thing that is not a token. (Deliberately not quoted here: this file is
+# itself scanned, and writing the placeholder would re-create the finding it describes.)
+is_template_prose() {
+  case "$1" in
+  how-to/src/TEMPLATE-GUIDE/* | how-to/src/TEMPLATE-TOKENS.md) return 0 ;;
+  *) return 1 ;;
+  esac
+}
+SHIPPING_FILES=$(git ls-files | grep -v '\.pdf$' | while read -r f; do
+  is_excluded "$f" || is_template_prose "$f" || printf '%s\n' "$f"
+done)
 while read -r tok; do
   [[ -z "$tok" ]] && continue
   grep -qF "<%$tok%>" "$TOKENS" || finding "TEMPLATE-TOKENS.md does not document token in use: <%$tok%>"

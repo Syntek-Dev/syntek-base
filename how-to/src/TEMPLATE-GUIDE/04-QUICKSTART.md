@@ -40,13 +40,21 @@ uvx copier copy --trust --defaults \
 <: raw :>
 
 ```bash
-grep -rIo '<%[A-Z_]*%>' . --exclude-dir=.git | wc -l    # must print 0
+grep -rIo '<%[A-Z_]*%>' . \
+  --exclude-dir=.git --exclude-dir=TEMPLATE-GUIDE --exclude=TEMPLATE-TOKENS.md \
+  | wc -l    # must print 0
 ```
 
 <: endraw :>
 
 Anything other than `0` is a template bug — please
 [report it](https://github.com/Syntek-Dev/syntek-base/issues).
+
+**Why the two exclusions.** `how-to/src/TEMPLATE-GUIDE/` and `how-to/src/TEMPLATE-TOKENS.md`
+are documentation _about_ the template, and they quote token syntax on purpose — the delimiter
+table, the token contract, the entry you would read if a token really did survive. That text is
+inside `raw` blocks and is supposed to come through untouched. Everywhere else, a surviving
+token means something went wrong.
 
 ## 3. Install the toolchain
 

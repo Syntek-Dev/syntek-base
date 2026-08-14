@@ -1,9 +1,78 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.1.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v3.2.0 — 14/08/2026
+
+**Status:** Minor — the handbook that explains this template now arrives inside your project
+instead of staying behind in ours, and it comes with a new page telling you which command to
+type. Nothing you have already written changes.
+
+### The handbook now comes with the project
+
+There has always been a set of guides explaining how this template works: what the folders are
+for, how the generator fills them in, how to pull later improvements down into a project that is
+already running, and what to do when something goes wrong.
+
+Until now those guides stayed behind in the template. Your project never received them.
+
+That was the wrong way round. Only a few of the questions they answer come up before you
+generate a project. Most of them come up months later, in the project itself — what is this
+folder, which command do I type, how do I get the latest fixes, why did that break. The answers
+were written and sitting somewhere you could not reach from where you were asking.
+
+They now ship. You will find them in `how-to/src/TEMPLATE-GUIDE/`, and the token reference at
+`how-to/src/TEMPLATE-TOKENS.md` alongside them.
+
+The one page left behind is the template's own to-do list. It is about our work, not yours.
+
+### A new page: which command do I type
+
+`how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md` is new, and it is the plain-language index there
+has never been.
+
+There are sixty-four things Claude can be asked to do here — write a story, plan a sprint, build
+a feature, review a change, cut a release. The page opens by saying you do not have to learn all
+sixty-four. Most of the time you describe what you want and the right one is chosen for you;
+naming one is how you overrule that when you need to.
+
+It is the human half of a pair. There is already a file telling Claude when to pick each one;
+this one tells you what to type. It says which is which and points at the other rather than
+repeating it.
+
+### Those guides are read-only in your project
+
+You receive them; you do not own them. Editing one changes nothing about how your project
+behaves, and it guarantees an awkward clash the next time you pull template updates down,
+because our copy and yours will both have moved.
+
+So two things now stop that happening: Claude refuses to edit them, and a check refuses to
+commit a change to them. Either alone would leave the other route open.
+
+Both stand down when template updates legitimately rewrite the guides, which is the whole point
+of receiving them. And if you have a note of your own to keep, the places for it are unchanged:
+`.claude/MEMORY.md`, `code/docs/`, or `GAPS.md`.
+
+Because they now travel with your project, we also went back through them and corrected what had
+gone out of date while nobody was reading them.
+
+### One small writing change
+
+The symbol used as shorthand for the word "section" is gone from the documentation, replaced by
+the word itself. It was never wrong — it is standard in legal and technical writing — but it is
+a character you have to decode, and these files are read in a hurry. Two hundred and eighty-nine
+files were tidied. Nothing about how anything works changed.
+
+### If you have a project on 3.1.1
+
+`copier update` brings all of it. There is nothing to decide, nothing to migrate and no command
+to run afterwards. Your own code is untouched. The visible difference is a set of guides
+appearing under `how-to/src/`, which you can read and should not edit.
 
 ---
 
