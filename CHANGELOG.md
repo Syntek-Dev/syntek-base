@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`code/docs/BACKEND-CODING-PRINCIPLES.md`'s `transaction.atomic()` rule now points at the locking order**, because that is where someone is standing when they write the block. The rule already said to wrap a multi-step write; it did not say that inside the wrapper the order of two lines decides whether the lock exists at all.
 
+### Fixed
+
+- **`.copier/README.md` had not learned about `doctrine-drift.sh`.** 3.2.1's successor commit added the audit and its workflow but not the two rows describing them to the README a generated project actually receives — the audit-script register and the Project Tree's CI list. `shipped-readme.sh` is the gate that catches exactly this, and it did; the fix is the two rows, in the shipped README rather than the root one, which `copier.yml` excludes.
+- **The pre-PR audit gate ran `dependency-drift.sh` bare, where it can only ever fail.** `check-audits.sh` is deliberately directory-scoped rather than list-scoped — a list drifts the moment an audit is added, and silently. But every other script in `code/src/scripts/audits/` answers "is this tree correct" from the tree alone, while `dependency-drift.sh` answers "what would an update change", which needs an incoming tree: `--incoming DIR` is required and it dies without one. There is no bare invocation that can pass, so running it there tested nothing and failed always. It is now excluded by name, alongside `cloc.sh` and `security.sh` but **for a different reason** — those two are owned by a dedicated gate, this one is a `copier update` helper shelved among the scans — and both reasons are written down, because a shared exclusion list with one unstated rationale is how the next person removes the wrong entry.
+
 ## [3.2.1] - 14/08/2026
 
 ### Fixed

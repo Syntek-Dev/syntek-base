@@ -8,12 +8,26 @@
 #
 # Scope, and why it is defined by a directory rather than a list: a list drifts
 # the moment an audit is added, and the failure is silent — a new gate that the
-# PR check never runs looks identical to a gate that passes. Two are excluded
-# because a dedicated check already owns them, and running them twice would
+# PR check never runs looks identical to a gate that passes. Three are excluded,
+# for two different reasons, and the reasons are not interchangeable.
+#
+# Two because a dedicated check already owns them, and running them twice would
 # report one defect as two:
 #
 #   cloc.sh      → gate [1/8] cloc
 #   security.sh  → gate [8/8] security
+#
+# One because it is not a repo-state audit at all:
+#
+#   dependency-drift.sh  → a `copier update` helper, not a scan
+#
+# Every other script here answers "is this tree correct" from the tree alone.
+# dependency-drift.sh answers "what would an update change", which needs an
+# incoming tree to compare against: `--incoming DIR` is required and it dies
+# without one. There is no bare invocation that can pass, so running it here
+# tests nothing and fails always. That is a mis-shelved script rather than a
+# defect the gate should report, and it is excluded by name so the loop stays
+# directory-scoped for everything that is a scan.
 #
 # Every audit is expected to self-skip when its surface is absent (mobile, rust,
 # desktop, CSS). One that fails for want of a surface is a bug in that audit, and
@@ -30,7 +44,7 @@ _check_audits() {
     [[ -f "$script" ]] || continue
     name=$(basename "$script")
     case "$name" in
-      cloc.sh | security.sh) continue ;;
+      cloc.sh | security.sh | dependency-drift.sh) continue ;;
     esac
     local script_out
     script_out=$(bash "$script" 2>&1)
