@@ -1,0 +1,78 @@
+# One rule, one home — the CI half of the route-don't-restate rule
+# (code/docs/DOCUMENTATION-PAIRING.md).
+#
+# A rule restated in two guides is a fork: both copies are believed, one is maintained,
+# and the day they diverge nothing fails. That is what happened to the JSON error
+# envelope — four guides mandated one shape and a fifth mandated another, for months,
+# with every gate green. No existing audit could see it: each file was internally
+# consistent and every citation resolved.
+#
+# The self-test runs FIRST, and here it matters more than usual. The claims table is
+# small, so a clean tree makes the ordinary scan green in well under a second — and a
+# green result that proves nothing is exactly the failure this script was written for.
+# The fixture pair is what shows the clauses still separate a known positive from a
+# known negative, including the discrimination that is easy to break: prose may narrate
+# a retired rule freely, and only fenced code counts as stating one.
+#
+# It exits 2 when the fixtures are missing rather than passing having proved nothing, so
+# a deleted fixture tree fails loudly instead of quietly disarming the gate.
+#
+# Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md → Required status checks and path filters.
+#
+# The filters are whole trees, deliberately: the defect is a SECOND home appearing, and a
+# second home can appear anywhere a rule can be written down. Filtering to the owners would
+# miss precisely the change this exists to catch.
+#
+# .claude/skills is in scope for a reason worth stating. A skill body is loaded into
+# context and believed exactly as readily as a guide, and neither skill audit reads its
+# prose: skill-conformance.sh checks frontmatter and routing-skills.sh checks that a named
+# skill resolves. A rule restated in a SKILL.md was invisible to every gate.
+name: Audit — Doctrine Drift
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/docs/**"
+      - ".claude/skills/**"
+      - "code/workflows/**"
+      - "project-management/workflows/**"
+      - "how-to/workflows/**"
+      - "code/src/scripts/audits/doctrine-drift.sh"
+      - "code/src/scripts/audits/fixtures/doctrine-drift/**"
+      - ".github/workflows/audit-doctrine-drift.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/docs/**"
+      - ".claude/skills/**"
+      - "code/workflows/**"
+      - "project-management/workflows/**"
+      - "how-to/workflows/**"
+      - "code/src/scripts/audits/doctrine-drift.sh"
+      - "code/src/scripts/audits/fixtures/doctrine-drift/**"
+      - ".github/workflows/audit-doctrine-drift.yml"
+  workflow_dispatch:
+
+jobs:
+  doctrine-drift:
+    name: One rule, one home
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # First, and non-negotiable: a gate nobody has watched fail is not a gate.
+      - name: Prove the detector still separates the fixtures
+        run: bash code/src/scripts/audits/doctrine-drift.sh --self-test
+
+      - name: Run doctrine-drift audit
+        run: bash code/src/scripts/audits/doctrine-drift.sh --output md
+
+      - name: Upload doctrine-drift report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: doctrine-drift-report
+          path: code/src/scripts/audits/reports/doctrine-drift.md
+          if-no-files-found: ignore

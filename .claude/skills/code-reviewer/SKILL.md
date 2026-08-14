@@ -111,6 +111,29 @@ with no row in `how-to/src/PLATFORM-PROVIDERS.md`. **Do not flag a substrate cou
 PostgreSQL, Django, Celery and the worker class are fixed by decision, and the register says
 why (`code/docs/architecture/PROVIDER-NEUTRALITY.md`).
 
+### Invariants and the error taxonomy
+
+`code/docs/NEGATIVE-SPACE.md` is the rule, `how-to/src/INVARIANTS.md` is this project's register,
+and `audits/negative-space.sh` decides the correlations between them. **What that gate cannot
+decide is this skill's** — it matches names, and two clauses are marked `[judgement]` precisely
+because nothing can grep for them:
+
+- **Whether the named enforcement point guards the _right_ thing.** A row can point at a function
+  guarding something else and stay green.
+- **Whether an invariant is missing altogether.** Nothing greps for a rule nobody wrote down, and
+  that is the failure the doctrine exists for.
+
+Then the findings a diff makes visible. A **second call site for a `service-guard` key** — the
+register names one function, so a second is a finding rather than a judgement call. A broken
+invariant reaching the user as a **friendly 4xx**, which is what a broad `except ServiceError`
+around an `InvariantViolation` produces. A `ServiceError` subclass raised where the register says
+`InvariantViolation`, or the reverse on a constraint a user can legitimately **race**. A guard
+that returns early, logs, catches, or queries to confirm a rule the database already owns. And a
+plain `UNIQUE` on a **soft-deleting** table, which forbids re-creating a soft-deleted row.
+
+**The `assert` ban belongs to ruff `S101`, not to this skill** — do not re-enforce it. The
+finding is a `# noqa: S101`, which is never a workaround.
+
 ### Correctness, accessibility, localisation
 
 Logic errors and edge cases; races in async or task code; null handling; error-handling
@@ -184,6 +207,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/SECURITY.md` · `code/docs/ENCRYPTION-GUIDE.md` — the OWASP and PII rules above
 - `code/docs/ARCHITECTURE-PATTERNS.md` — the service-layer and module boundaries
 - `code/docs/PERFORMANCE.md` · `code/docs/architecture/CORE-AND-SCALING.md` — the two axes above
+- `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the rule and this project's
+  register; the two `[judgement]` clauses above are this skill's and no gate's
 - `code/docs/TESTING.md` — the coverage floors, to flag a gap rather than fill it
 - `code/docs/VISUAL-DESIGN.md` — Section 3 before Section 4.2, every time
 - `code/docs/CODE-REVIEW-GRAPH.md` — the review playbook run before broad search

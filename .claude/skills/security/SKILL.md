@@ -71,6 +71,21 @@ the five CE technical controls with CE Plus's hands-on assessment.
   serialised output, and every access permission-gated and audit-logged against the permission
   classes in `code/docs/security/AUTH-AND-AUTHZ.md`.
 
+- **What a failure is allowed to say (A05, A09).** `code/docs/NEGATIVE-SPACE.md` sets the
+  taxonomy; the security half of it is that a **programmer error's body is generic and never
+  internals**. An `InvariantViolation`'s detail string is written for the error tracker, so it
+  goes to the tracker and not into the response — and it is bound by the PII rule above like any
+  other payload. The **inbound `X-Request-ID` is untrusted input**: it is echoed into a response
+  header and rendered on an error page, which is why `apps.core.middleware` bounds its alphabet
+  and length rather than trusting whatever the edge forwarded.
+- **The CLI is an unaudited surface until someone audits it.** `code/docs/MANAGEMENT-COMMANDS.md`
+  owns it. **argparse parses; parsing is not validation** — `type=int` proves a string was
+  numeric and says nothing about whether the caller may act on that row. A command-line
+  identifier is therefore **exactly as unverified as one from a URL**: IDOR does not become
+  acceptable because the caller had a shell. Destructive work declares its blast radius and takes
+  `--dry-run`; the confirmation prompt is **not** the safety, because `--noinput`, a pipe and a
+  scheduler all skip it.
+
 **Fast verification greps** — a first pass, never the whole audit:
 
 ```bash
@@ -125,4 +140,6 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/security/INPUT-AND-API.md` — headers, throttling baselines, upload validation
 - `code/docs/security/AUTH-AND-AUTHZ.md` — the authorisation and PII permission classes
 - `code/docs/ENCRYPTION-GUIDE.md` · `code/docs/RLS-GUIDE.md` · `code/docs/URL-STRATEGY.md`
+- `code/docs/NEGATIVE-SPACE.md` — the error taxonomy, and what a failure may disclose
+- `code/docs/MANAGEMENT-COMMANDS.md` — the CLI surface: untrusted arguments and blast radius
 - `project-management/docs/SECURITY-GUIDE.md` — the frameworks, severities, and sign-off criteria

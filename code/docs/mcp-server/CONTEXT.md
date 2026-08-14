@@ -15,7 +15,7 @@ code/docs/mcp-server/
 ├── CLAUDE.md           ← operating rules
 ├── CONTEXT.md          ← this file
 ├── MOUNTING.md         ← `config/asgi.py` Starlette composition, `/mcp/` prefix, lifespan, session mode
-├── TOOL-DESIGN.md      ← Tools over the service layer — naming, docstring contract, granularity, generation
+├── TOOL-DESIGN.md      ← Tools over the service layer — naming, the error taxonomy here, docstring contract, granularity
 ├── AUTH-AND-THREATS.md ← `TokenVerifier`, the identity-never-an-argument rule, MCP threat model
 └── TESTING-AND-OPS.md  ← In-memory `Client` tests, the ORM connection rule, observability, rollout
 ```

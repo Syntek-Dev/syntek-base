@@ -60,7 +60,7 @@ logic out of `services.py`, the seam was in the wrong place — fix that first.
 | Document                                                           | Covers                                                                                                                           |
 | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | [`mcp-server/MOUNTING.md`](mcp-server/MOUNTING.md)                 | The `config/asgi.py` Starlette router, `/mcp/` prefix, the lifespan rule, stateless mode, and what mounting outside Django costs |
-| [`mcp-server/TOOL-DESIGN.md`](mcp-server/TOOL-DESIGN.md)           | Writing tools over the service layer — naming, docstrings as contract, return shapes, granularity, why not `from_openapi()`      |
+| [`mcp-server/TOOL-DESIGN.md`](mcp-server/TOOL-DESIGN.md)           | Writing tools over the service layer — naming, the error taxonomy on this surface, docstrings as contract, granularity           |
 | [`mcp-server/AUTH-AND-THREATS.md`](mcp-server/AUTH-AND-THREATS.md) | `TokenVerifier` over the project API key, the identity-never-an-argument rule, prompt injection, and the MCP threat model        |
 | [`mcp-server/TESTING-AND-OPS.md`](mcp-server/TESTING-AND-OPS.md)   | In-memory `Client` tests, coverage floors, logging, the ORM connection rule, deployment and rollout                              |
 

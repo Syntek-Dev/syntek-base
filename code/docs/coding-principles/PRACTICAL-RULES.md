@@ -147,7 +147,9 @@ Prefer explicit error handling over silent failures. Never swallow an error with
 
 - Use custom exception types over generic ones.
 - Every error message should answer: **what** went wrong, **why** it happened, and **what to do**.
-- All HTTP API errors must return structured JSON: `{ "error": { "code": "...", "message": "..." } }`.
+- All HTTP API errors return one structured JSON envelope, owned by
+  [`../api-design/AUTH-AND-ERRORS.md`](../api-design/AUTH-AND-ERRORS.md) — _The error envelope_.
+  It is stated there and nowhere else; this guide is framework-neutral and the envelope is not.
 
 For language-specific error handling rules, see
 [`../BACKEND-CODING-PRINCIPLES.md`](../BACKEND-CODING-PRINCIPLES.md) and

@@ -53,6 +53,17 @@ probe tagging — and it is not restated here.
   `http://dev.<%PROJECT_SLUG%>.localhost`.
 - **The root cause must explain every symptom.** If one is left over, the hypothesis is wrong —
   form another rather than stopping at the first plausible issue.
+- **An `InvariantViolation` in a trace is the guard working, not the fault.** It carries its
+  register key, so `how-to/src/INVARIANTS.md` names which rule broke and the one function that
+  enforces it — and the cause is always **upstream of the raise**. "Fixing" the guard buries a
+  real defect and removes the only thing that reported it.
+- **The error class narrows the search before any hypothesis does**
+  (`code/docs/NEGATIVE-SPACE.md`). `DependencyUnavailable` points at the outbound adapter and the
+  provider rather than at our logic; a `ServiceError` subclass is a user-facing path behaving as
+  written. A 500 that turns out to be an ordinary user mistake, or a friendly 4xx that turns out
+  to be a broken invariant, is a **mis-classification** — correcting the class is part of the
+  fix, not a tidy-up afterwards. Where the report came from a user, `X-Request-ID` is the join
+  between what they quote and the tracker event.
 - **Watch the locale-shaped faults:** <%LOCALE%> dates (DD/MM/YYYY) and <%TIMEZONE%> handling,
   alongside the usual null access, async timing, shared-reference mutation, off-by-one,
   encoding, stale cache and dev-versus-prod drift.
@@ -107,6 +118,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/LOGGING.md` — where logs land, and what is in them
+- `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the three error classes, and the
+  register a raised key resolves against
 - `code/docs/TESTING.md` — the harness a reproduction is built on
 - `code/docs/CODE-REVIEW-GRAPH.md` — the debug playbook and its tool sequence
 - `code/docs/BACKEND-CODING-PRINCIPLES.md` · `code/docs/FRONTEND-CODING-PRINCIPLES.md`
