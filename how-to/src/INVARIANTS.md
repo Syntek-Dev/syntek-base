@@ -107,6 +107,15 @@ carries alone is the _content_ of a row, exactly as it does for a build fact and
 `SERVER-ARCHITECTURE` entry
 ([`code/docs/architecture/BUILD-OPERATE-SEAM.md`](../../code/docs/architecture/BUILD-OPERATE-SEAM.md)).
 
+**The second limit is the one that looks like proof and is not: a fully green register says
+nothing about whether any row is _exercised_.** The audit correlates names and coverage counts
+executed lines; neither would fail if a constraint were dropped from the model or a guard's
+`raise` were deleted, provided the row and the name still line up. The proof is mutation
+testing — `bash code/src/scripts/tests/mutmut.sh run` — which removes the enforcement and asks
+whether a test notices. It is local-only and deliberately outside CI because it is slow, so it
+is an act someone chooses rather than a gate that arrives. Choose it when a row's enforcement
+point is load-bearing enough that being wrong about it would be expensive.
+
 ## Cross-references
 
 - [`code/docs/NEGATIVE-SPACE.md`](../../code/docs/NEGATIVE-SPACE.md) — the rule this file answers
