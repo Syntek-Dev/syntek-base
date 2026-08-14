@@ -66,6 +66,11 @@ jobs:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
+          # This is the "one step later" the header comment above predicted:
+          # caching is opted into, but the template installs nothing to cache, so
+          # the POST step fails saving a directory that was never created. Full
+          # reasoning at the same input in claude.yml.
+          ignore-nothing-to-cache: true
 
       - name: Install dev dependencies
         run: uv sync --only-dev
@@ -87,6 +92,11 @@ jobs:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
+          # This is the "one step later" the header comment above predicted:
+          # caching is opted into, but the template installs nothing to cache, so
+          # the POST step fails saving a directory that was never created. Full
+          # reasoning at the same input in claude.yml.
+          ignore-nothing-to-cache: true
 
       - name: Install dev dependencies
         run: uv sync --only-dev
@@ -108,6 +118,11 @@ jobs:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
+          # This is the "one step later" the header comment above predicted:
+          # caching is opted into, but the template installs nothing to cache, so
+          # the POST step fails saving a directory that was never created. Full
+          # reasoning at the same input in claude.yml.
+          ignore-nothing-to-cache: true
 
       - name: Install dependencies
         run: uv sync

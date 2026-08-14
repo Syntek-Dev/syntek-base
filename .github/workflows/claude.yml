@@ -101,6 +101,22 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          # THE reason this workflow was red on main from 03/08/2026: in
+          # syntek-base there is never anything to cache. uv.lock is absent by
+          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
+          # the cache directory is never created — then the action's POST step
+          # fails saving it ("Cache path … does not exist on disk") and the job
+          # reports failure with every real step green.
+          #
+          # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
+          # this workflow SHIPS: a generated project HAS a uv.lock, does populate
+          # the cache, and should keep it. One value is correct on both sides of
+          # the template boundary, which beats conditionalising the workflow.
+          #
+          # Not fixed by upgrading the action — the behaviour is identical up to
+          # v10 and this input is still how you opt out of it.
+          # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
+          ignore-nothing-to-cache: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -143,6 +159,22 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          # THE reason this workflow was red on main from 03/08/2026: in
+          # syntek-base there is never anything to cache. uv.lock is absent by
+          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
+          # the cache directory is never created — then the action's POST step
+          # fails saving it ("Cache path … does not exist on disk") and the job
+          # reports failure with every real step green.
+          #
+          # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
+          # this workflow SHIPS: a generated project HAS a uv.lock, does populate
+          # the cache, and should keep it. One value is correct on both sides of
+          # the template boundary, which beats conditionalising the workflow.
+          #
+          # Not fixed by upgrading the action — the behaviour is identical up to
+          # v10 and this input is still how you opt out of it.
+          # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
+          ignore-nothing-to-cache: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -187,6 +219,22 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          # THE reason this workflow was red on main from 03/08/2026: in
+          # syntek-base there is never anything to cache. uv.lock is absent by
+          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
+          # the cache directory is never created — then the action's POST step
+          # fails saving it ("Cache path … does not exist on disk") and the job
+          # reports failure with every real step green.
+          #
+          # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
+          # this workflow SHIPS: a generated project HAS a uv.lock, does populate
+          # the cache, and should keep it. One value is correct on both sides of
+          # the template boundary, which beats conditionalising the workflow.
+          #
+          # Not fixed by upgrading the action — the behaviour is identical up to
+          # v10 and this input is still how you opt out of it.
+          # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
+          ignore-nothing-to-cache: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -242,6 +290,22 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          # THE reason this workflow was red on main from 03/08/2026: in
+          # syntek-base there is never anything to cache. uv.lock is absent by
+          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
+          # the cache directory is never created — then the action's POST step
+          # fails saving it ("Cache path … does not exist on disk") and the job
+          # reports failure with every real step green.
+          #
+          # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
+          # this workflow SHIPS: a generated project HAS a uv.lock, does populate
+          # the cache, and should keep it. One value is correct on both sides of
+          # the template boundary, which beats conditionalising the workflow.
+          #
+          # Not fixed by upgrading the action — the behaviour is identical up to
+          # v10 and this input is still how you opt out of it.
+          # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
+          ignore-nothing-to-cache: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -324,6 +388,22 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          # THE reason this workflow was red on main from 03/08/2026: in
+          # syntek-base there is never anything to cache. uv.lock is absent by
+          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
+          # the cache directory is never created — then the action's POST step
+          # fails saving it ("Cache path … does not exist on disk") and the job
+          # reports failure with every real step green.
+          #
+          # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
+          # this workflow SHIPS: a generated project HAS a uv.lock, does populate
+          # the cache, and should keep it. One value is correct on both sides of
+          # the template boundary, which beats conditionalising the workflow.
+          #
+          # Not fixed by upgrading the action — the behaviour is identical up to
+          # v10 and this input is still how you opt out of it.
+          # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
+          ignore-nothing-to-cache: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -432,6 +512,22 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          # THE reason this workflow was red on main from 03/08/2026: in
+          # syntek-base there is never anything to cache. uv.lock is absent by
+          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
+          # the cache directory is never created — then the action's POST step
+          # fails saving it ("Cache path … does not exist on disk") and the job
+          # reports failure with every real step green.
+          #
+          # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
+          # this workflow SHIPS: a generated project HAS a uv.lock, does populate
+          # the cache, and should keep it. One value is correct on both sides of
+          # the template boundary, which beats conditionalising the workflow.
+          #
+          # Not fixed by upgrading the action — the behaviour is identical up to
+          # v10 and this input is still how you opt out of it.
+          # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
+          ignore-nothing-to-cache: true
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
