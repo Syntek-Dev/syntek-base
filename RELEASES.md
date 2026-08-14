@@ -1,9 +1,67 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.2.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v3.2.1 — 14/08/2026
+
+**Status:** Patch — one of the two safeguards that shipped with the last release was never
+actually switched on. It is now. Nothing you have written changes, and there is nothing to do
+afterwards.
+
+### What was wrong
+
+The last release added a set of guides to your project and, with them, a promise: those guides
+are ours to maintain, so your project would stop you editing them by mistake. Editing one
+changes nothing about how your project behaves, and it causes an awkward clash the next time you
+pull template updates down.
+
+That promise was kept in two places, because there are two ways a file gets changed here — Claude
+edits it, or you do. Claude's half worked from the start. Your half never ran once.
+
+The check was written to watch a list of files, and the way that list was written turned out not
+to be a way the tool understands. It matched nothing, so the check quietly sat out every commit.
+Nothing failed and nothing was reported. It simply was not there.
+
+The half that worked is what kept it hidden. Anyone who tried the obvious thing — asking Claude
+to edit a guide — was stopped, and reasonably concluded the whole safeguard was on.
+
+### Why that matters more than it sounds
+
+A safeguard that is missing is a small problem: you know it is missing, so you take care.
+
+A safeguard that is present, announced, and does nothing is a larger one, because you stop taking
+care on the strength of it. That is the thing being fixed here, and it is why a check that was
+only ever a convenience is worth a release of its own.
+
+### What changed
+
+The check no longer describes which files it covers in a separate list. It looks at what you are
+about to commit and picks the relevant files out itself, which removes the step that failed. It
+was then tried in a real generated project, both ways round: it blocks an edit made by hand, and
+it stands aside when a template update legitimately rewrites the same guides.
+
+A second, smaller correction went with it, to one of our own release checks. It still expected
+the guides to stay behind in the template, so it now checks they arrive in your project instead of
+checking they do not. That one lives in our repository and never reaches yours.
+
+### About version 3.2.0
+
+Version 3.2.0 was published with a failing build. We have left it exactly where it is rather than
+quietly re-issuing it under the same number — a version that has gone out is a matter of record,
+and moving it would only mean two people with "3.2.0" have different things. 3.2.1 is the
+corrected release.
+
+### If you have a project on 3.2.0
+
+`copier update` brings the fix. There is nothing to decide, nothing to migrate and no command to
+run afterwards. Your own code is untouched. The only difference you may notice is that editing a
+file under `how-to/src/TEMPLATE-GUIDE/` now stops you at commit time, which is what it was
+supposed to do all along.
 
 ---
 

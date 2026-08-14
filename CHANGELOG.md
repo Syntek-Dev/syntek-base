@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 3.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.2.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [3.2.1] - 14/08/2026
+
+### Fixed
+
+- **The `template-docs-readonly` lefthook job never ran, so the human half of 3.2.0's read-only guard was decorative in every generated project.** Its `glob:` used brace expansion — `how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}` — and lefthook does not expand braces, so the pattern matched nothing and the job was skipped on every commit. The Claude half, the `PreToolUse` hook, worked throughout. That asymmetry is exactly what hid it: one write path was guarded and the other silently was not, and a guard that fails open is worse than no guard at all, because it is believed.
+- **The fix takes the glob dialect out of the trust chain rather than correcting the pattern.** A working brace glob would still have left the job's scope expressed in a dialect nobody verifies until it fails silently again. The job is now unglobbed and selects its own paths inside the `run` block — `git diff --cached --name-only` filtered by `^how-to/src/(TEMPLATE-GUIDE/|TEMPLATE-TOKENS\.md$)`, with an early `exit 0` when nothing matches, so an unrelated commit costs one `grep`. Both stand-down conditions are untouched: `[ -f copier.yml ]`, which keeps the guides editable in syntek-base where they are the product, and a staged `.copier-answers.yml`, which is what keeps `copier update` usable.
+- **`audit-template.yml`'s two path lists still asserted the guides were template-only.** `how-to/src/TEMPLATE-GUIDE` and `how-to/src/TEMPLATE-TOKENS.md` move from the leak list, which demanded their **absence** from a generated project, to the completeness list, which now demands `TEMPLATE-TOKENS.md`, `GUIDE-TO-SKILLS.md` and `14-UPDATING.md` are **present**. Only `TEMPLATE-GAPS.md` stays named as template-only, which is what 3.2.0 actually excluded. This file is itself template-only and reaches no generated project.
+- **Both were caught by CI rather than locally, and for one reason.** The failing step was reproduced on its own instead of the whole job, so the next assertion in the same job was never exercised and failed on the next run instead. Verification this time replayed all eight steps of Template Generation locally across both render paths, and exercised the lefthook guard inside a generated project: it blocks a hand edit and lets through a commit that restages `.copier-answers.yml`.
+- **`v3.2.0` stays tagged at `e93b00c`, red CI and all.** `VERSIONING-GUIDE.md`'s recovery table is explicit — a broken build under a correct number is recovered by releasing a patch, and a published tag is never moved or deleted. The version that went out is a fact about the world; `3.2.1` is the first green commit on the 3.2 line.
 
 ## [3.2.0] - 14/08/2026
 
