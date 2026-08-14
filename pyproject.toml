@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "<%PROJECT_DESCRIPTION%>"
 requires-python = ">=3.14"
 dependencies = [
-  "django>=6.0.4",
+  "django>=6.1",
   "django-prometheus>=2.3.1",
   "gunicorn",
   "uvicorn[standard]",
@@ -33,9 +33,15 @@ dependencies = [
   "sentry-sdk[django]",
   "argon2-cffi",
   "cryptography",
-  "redis>=5.0.0",
+  # redis-py's floor is capped by Celery, NOT by what PyPI calls latest. `celery[redis]`
+  # excludes `redis>=6.5`, so 6.4.x is the newest redis this project can resolve while
+  # Celery is current — raising this floor to redis 8 does not fail loudly, it silently
+  # drags celery back to 5.3.1 to satisfy it. Verified by resolution, not by reading:
+  # `celery[redis]>=5.6` + `redis>=8.1.0` is unsatisfiable outright. Move this floor only
+  # after checking Celery has lifted the cap.
+  "redis>=6.0",
   "django-valkey>=0.4.1",
-  "celery[redis]>=5.3",
+  "celery[redis]>=5.6",
   # Private-document storage (S3 API). Public media goes to Cloudinary above.
   "boto3>=1.34",
 ]
@@ -157,10 +163,10 @@ dev = [
   "pip-audit",
 ]
 test = [
-  "pytest>=8.0",
+  "pytest>=9.1.1",
   "pytest-django>=4.9",
-  "pytest-asyncio>=0.25",
-  "pytest-cov>=6.0",
+  "pytest-asyncio>=1.4.0",
+  "pytest-cov>=7.1.0",
   "factory-boy>=3.3",
   "hypothesis>=6.0",
   "mutmut>=3.0",

@@ -49,19 +49,24 @@ For anything load-bearing, record the decision as an ADR
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `cicd` · **Model:** opus
 
-**Python** — edit `pyproject.toml`, then lock. Prefer the narrowest upgrade that solves
-the problem:
+Edit the manifest, then re-resolve through the script. **Prefer the narrowest upgrade that
+solves the problem** — `--package` exists for exactly that:
 
 ```bash
-uv lock --upgrade-package <name>    # one package
-uv lock                             # re-resolve after a manifest edit
+bash code/src/scripts/dependencies/update.sh                                  # what is out of date
+bash code/src/scripts/dependencies/update.sh --apply --package <name>         # one package
+bash code/src/scripts/dependencies/update.sh --apply --ecosystem python       # one ecosystem
+bash code/src/scripts/dependencies/update.sh --apply                          # everything
 ```
 
-**JavaScript** — edit `package.json`, then:
+One script covers Python (`uv`), JavaScript (`pnpm`) and Rust (`cargo`), because the three
+disagree about what "update" means and the differences are not worth carrying in your head.
 
-```bash
-pnpm install --lockfile-only
-```
+**A floor is not a pin.** Raising `redis>=5.0.0` to `redis>=6.0` forbids redis 5; it does not
+install redis 6. And latest is bounded by the rest of the graph, never by the registry —
+`celery[redis]` excludes `redis>=6.5`, so a floor of `redis>=8` does not fail loudly, it drags
+celery back three minors to satisfy itself. Raise a floor deliberately, say why beside it, and
+re-resolve in the same change.
 
 For an advisory fix, pin the patched version in `pnpm-workspace.yaml` `overrides` (with
 `minimumReleaseAgeExclude` where the sweep's guidance calls for it) rather than loosening a

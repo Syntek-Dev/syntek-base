@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -54,7 +54,7 @@ Full rationale: [`how-to/src/TEMPLATE-GUIDE/02-STACK.md`](how-to/src/TEMPLATE-GU
 
 ## Requirements
 
-Docker Engine 27+ with Compose v2, Node 24, pnpm 11+, Python 3.14, uv 0.11+, and git. Copier
+Docker Engine 27+ with Compose v2, Node 24, pnpm 11+, Python 3.14, uv 0.12+, and git. Copier
 itself needs no install — `uvx` fetches it.
 
 Details and per-platform notes:
@@ -226,4 +226,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v3.0.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v3.1.0 · British English (en_GB) throughout_

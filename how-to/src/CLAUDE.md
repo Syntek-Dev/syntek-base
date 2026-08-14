@@ -34,7 +34,7 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
 ## Guardrails
 
 - **These are `**/src/\*.md`operator guides — the sanctioned exception to the 300-line
-instructional limit.** Write them for humans, in full. The`CONTEXT.md`/`CLAUDE.md` pairs here
+  instructional limit.** Write them for humans, in full. The`CONTEXT.md`/`CLAUDE.md` pairs here
   and in each sub-directory still keep within it.
 - **`TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/` are excluded from generation.** They describe the
   template rather than the project, may quote token syntax freely, and must never be relied on by

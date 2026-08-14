@@ -1,9 +1,138 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v3.1.0 — 14/08/2026
+
+**Status:** Minor — the tooling and the library versions underneath it are brought up to date,
+all of it at once, and a new safety net catches a kind of change that used to arrive
+unannounced. Nothing you write changes.
+
+### What this is
+
+The tools that run your checks — the ones that fetch your code, cache your packages, install
+Python and Node, and scan for leaked passwords — had fallen behind. Some by a version or two,
+one by six. This release moves every one of them to its current release in a single sweep, and
+does the same for the package managers and the small set of tools that format and lint the
+files.
+
+Eleven tools in the pipeline, across thirty-one pipeline files. Plus pnpm, uv, and six
+formatting and linting tools.
+
+It also moves the libraries the project itself is built on — the web framework, the cache, the
+background-job runner and the test tools — and the compiler used for the optional Rust parts.
+And it adds a safety net for the next time any of that moves.
+
+### Why all at once, rather than one at a time
+
+A pipeline with a mixed toolchain is the awkward kind of broken. Half the jobs run on a current
+foundation and half do not, everything looks green, and the first thing to fail does so in
+whichever half nobody had looked at recently. Upgrading them together means the pipeline is
+either right or wrong as a whole, and you find out immediately.
+
+### Two of them had no version at all
+
+Two steps were pointing at a moving target — one at whatever the author had most recently
+published, one at a channel called "beta". Both are other people's code, running with the
+permissions of your pipeline, and both could change without a single line changing here. Two
+identical pushes a week apart could behave differently, and if something went wrong there was
+no version number to report.
+
+Both now name an exact release. If they change in future, it will be because someone here
+chose to change them.
+
+### What was checked before it shipped
+
+The three checks that can run on this repository were run on the new tools rather than assumed:
+formatting is clean across the whole tree, the documentation linter reports no issues in 735
+files, and the code linter passes. The new formatter reflowed exactly one line in one file,
+which is included here so it does not turn up unexplained in someone's next piece of work.
+
+One thing is honestly untested: the API test runner crossed a major version, and its test suite
+needs a full local stack that this template deliberately cannot build. Its settings were checked
+against the tool's current documentation, which is not the same as running it. If you use the
+API tests in a generated project, run them once after updating.
+
+### The libraries underneath moved too
+
+Six of the versions this project asks for were raised: the web framework, the cache client, the
+background-job runner, and the three testing tools. These are minimums rather than choices —
+raising one says "nothing older than this", it does not install anything by itself. What you
+actually end up with is worked out when the project resolves its dependencies, so that was run
+in full rather than assumed: 119 packages, all agreeing with one another.
+
+### One version stops short of the newest, on purpose
+
+The cache client is held at 6, not the 8 that is published. That is not an oversight. The
+background-job runner refuses anything from 6.5 upwards, so 6.4 is genuinely the newest this
+project can use — and asking for 8 produces no error at all. It quietly pulls the job runner
+back to a much older release to make the two numbers fit, and everything carries on looking
+fine. The reason is now written beside the version, so nobody has to rediscover it by breaking
+something.
+
+### The Rust compiler moved, and the minimum deliberately did not
+
+For projects using the optional Rust parts, the compiler everyone builds with goes from 1.92 to
+1.97. The oldest compiler the code will accept stays at 1.85 — and that gap is the point. They
+answer different questions, and this project had been treating them as one. Raising the minimum
+every time the compiler moves shuts out anyone on an older setup and gains nothing, because the
+compiler is pinned anyway. Checked with the linter, the tests and the licence scan, all clean.
+
+### A safety net for the next update
+
+There is a way a template update can go wrong that produces no error whatsoever. It changes the
+versions your project asks for, the update reports success, and the next time anything is
+installed you get a different set of libraries than the one your tests last passed against. If
+that breaks something, it breaks later, somewhere else, and it looks like your own bug.
+
+The update preview now tells you first. It compares what the incoming template asks for against
+what your project actually has, and separates two cases:
+
+- **Blocking** — what you have cannot satisfy the new minimum, or a version moves far enough to
+  break a build on its own. The update refuses to apply until you say so explicitly.
+- **For information** — the numbers moved, but what you already have is fine. Nothing to do.
+
+That separation is the whole reason it is worth having. Minimums move in almost every release,
+so a warning that fired on all of them would be ignored inside a month. This one fires only
+when the update can genuinely change what you build.
+
+One thing to know: a guard only protects the updates that come after it. This one arrives in
+3.1.0, so an update from 3.0.0 or earlier is the last one you take without it.
+
+### One command for dependencies, instead of three
+
+Python, JavaScript and Rust each have their own tool for moving a dependency, and each means
+something slightly different by it. There is now one script covering all three. On its own it
+reports what is out of date and changes nothing; asked to, it updates everything, one language,
+or a single package:
+
+```bash
+bash code/src/scripts/dependencies/update.sh                            # what is out of date
+bash code/src/scripts/dependencies/update.sh --apply --package django   # just the one
+bash code/src/scripts/dependencies/update.sh --apply                    # everything
+```
+
+The dependency-update guide now points here rather than at the three separate tools.
+
+### If you have a project on 3.0.0
+
+`copier update` brings the new pipeline files, the new tool versions and the new minimums. There
+is no migration and no decision to make, and your own code is untouched.
+
+There is one extra step this time, because the versions moved. After updating, re-resolve and
+run the tests before you commit:
+
+```bash
+bash code/src/scripts/dependencies/update.sh --apply
+bash code/src/scripts/tests/all.sh
+```
+
+A version that moved on its own is a claim nothing has checked yet.
 
 ---
 

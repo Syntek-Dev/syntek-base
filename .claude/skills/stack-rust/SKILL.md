@@ -194,7 +194,8 @@ panicking path reachable from Python; `CONTEXT.md` updated if structure changed;
 - Secrets zeroize on drop and never render.
 - Never commit `target/` or a built `.so`/`.pyd`/`.dylib` — binaries break Copier generation for
   every downstream project.
-- The toolchain pin and `rust-version` are a matched set; a bump is a template release.
+- The toolchain `channel` and `rust-version` are **not** a matched set — the first is the compiler
+  everyone builds with, the second the MSRV our source needs (`code/docs/rust/SUPPLY-CHAIN.md`).
 - Source files ≤ 750 lines (800 grace).
 
 ## Handoff

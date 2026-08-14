@@ -21,7 +21,7 @@
 # Exit codes:  0 = all checks passed   2 = one or more checks failed / mismatched
 #
 # Pinned versions (update when CLAUDE.md stack table changes):
-#   uv 0.11.7   pnpm 10.33.2
+#   uv 0.12.4   pnpm 11.21.0
 #
 set -uo pipefail
 

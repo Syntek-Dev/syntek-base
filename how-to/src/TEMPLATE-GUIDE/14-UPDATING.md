@@ -154,6 +154,50 @@ To drop one instead, delete the file — nothing references it. Either way the c
 make, which is why the migration does not make it for you. Writing a skill:
 `how-to/docs/SKILL-AUTHORING.md`. The roster it joins: `.claude/skills/CONTEXT.md`.
 
+### The other silent one — dependencies
+
+Orphaned files are the silent failure everyone eventually hears about. There is a second, and it
+fails the same way: **the template moves a dependency floor, a toolchain pin or an action version
+under you.**
+
+`copier update` applies those to your manifests like any other file change. No conflict, no
+error, update reports success — and the next `uv sync` resolves a graph your suites have never
+run against. When something breaks it breaks later, somewhere else, looking like your bug.
+
+`template-update.sh` predicts this too, and splits what it finds:
+
+```text
+── Would your dependencies change? ──
+
+  [python] django  6.0.4 -> >=6.1   you have 6.0.8 locked
+  [ci] actions/checkout  v4 -> v7   major move
+  [ci] MishaKav/pytest-coverage-comment  main -> v1.11.0   was a branch ref
+```
+
+- **BLOCKING** — your lockfile cannot satisfy the new floor, or a pin moves by enough to break a
+  build on its own. `--apply` refuses until you pass `--force-deps`.
+- **informational** — the declaration moved but your resolved versions already satisfy it.
+  Nothing has to change.
+
+**The split is deliberate, and it is the difference between a warning and noise.** Dependency
+floors move in nearly every release. Blocking on all of them would make `--force-deps` muscle
+memory inside a month, and an override nobody reads protects nothing. It fires only when the
+update can actually change what you build.
+
+Having read the list and accepted it:
+
+```bash
+bash code/src/scripts/development/template-update.sh --apply --force-deps
+bash code/src/scripts/dependencies/update.sh --apply   # re-resolve
+bash code/src/scripts/tests/all.sh                     # then prove it
+```
+
+**Do not commit the update until those suites pass.** The manifest and its lockfile are one
+change; a manifest that moved alone is a claim nothing has verified.
+
+One limit worth knowing: a guard can only protect the updates that come after it. It ships in
+**3.1.0**, so an update _from_ 3.0.0 or earlier is the last one you take unguarded.
+
 ## Resolving conflicts
 
 Conflicts appear as normal git conflict markers in the affected files:

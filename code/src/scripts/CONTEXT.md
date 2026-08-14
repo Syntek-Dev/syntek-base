@@ -16,6 +16,7 @@ code/src/scripts/
 │   └── reports/             ← generated report output (gitignored)
 ├── database/                ← database management (migrate, backup, restore, shell)
 │   └── reports/             ← backup files and generated reports (gitignored)
+├── dependencies/            ← move a dependency forward (uv, pnpm, cargo — one command)
 ├── deployment/              ← deployment scripts (planned — scripts TBD)
 │   └── reports/             ← generated report output (gitignored)
 ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
@@ -36,19 +37,20 @@ code/src/scripts/
 
 ## Subdirectories
 
-| Directory      | Purpose                                                                                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `_lib/`        | Internal shell helpers sourced by other scripts — not invoked directly                                                                                       |
-| `audits/`      | Codebase health: line-count enforcement, stub detection                                                                                                      |
-| `database/`    | Django migration management, PostgreSQL backup / restore / reset                                                                                             |
-| `deployment/`  | Deployment automation scripts (planned)                                                                                                                      |
-| `development/` | Dev stack lifecycle: server up/down, container shell, log tailing, scaffolding                                                                               |
-| `mobile/`      | **Mobile-only.** Every mobile-surface operation — and the one group that runs on the **host** rather than in Docker, because Expo Go needs Metro on the LAN  |
-| `rust/`        | **Rust-only.** Every Rust operation — the second group running on the **host** rather than in Docker, so the pinned toolchain governs it and the image alike |
-| `desktop/`     | **Desktop-only.** Run and package the Slint app. No lint/test/audit here — the crate is a workspace member, so `rust/` already covers it                     |
-| `reports/`     | Top-level generated reports (gitignored)                                                                                                                     |
-| `syntax/`      | Code quality: ruff, basedpyright, markdownlint, Prettier                                                                                                     |
-| `tests/`       | Test suite: pytest (backend), Bruno (API), playwright-python (browser e2e)                                                                                   |
+| Directory       | Purpose                                                                                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `_lib/`         | Internal shell helpers sourced by other scripts — not invoked directly                                                                                       |
+| `audits/`       | Codebase health: line-count enforcement, stub detection                                                                                                      |
+| `database/`     | Django migration management, PostgreSQL backup / restore / reset                                                                                             |
+| `dependencies/` | Move a dependency forward across all three ecosystems — the one place a floor changes                                                                        |
+| `deployment/`   | Deployment automation scripts (planned)                                                                                                                      |
+| `development/`  | Dev stack lifecycle: server up/down, container shell, log tailing, scaffolding                                                                               |
+| `mobile/`       | **Mobile-only.** Every mobile-surface operation — and the one group that runs on the **host** rather than in Docker, because Expo Go needs Metro on the LAN  |
+| `rust/`         | **Rust-only.** Every Rust operation — the second group running on the **host** rather than in Docker, so the pinned toolchain governs it and the image alike |
+| `desktop/`      | **Desktop-only.** Run and package the Slint app. No lint/test/audit here — the crate is a workspace member, so `rust/` already covers it                     |
+| `reports/`      | Top-level generated reports (gitignored)                                                                                                                     |
+| `syntax/`       | Code quality: ruff, basedpyright, markdownlint, Prettier                                                                                                     |
+| `tests/`        | Test suite: pytest (backend), Bruno (API), playwright-python (browser e2e)                                                                                   |
 
 ## Host or container
 

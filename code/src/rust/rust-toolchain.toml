@@ -2,10 +2,17 @@
 #
 # rustup reads this file automatically, so `cargo` invoked anywhere under code/src/rust/
 # uses this exact toolchain — CI, the Docker build stage, and a developer's laptop all
-# compile with the same compiler. Bumping it is a template release, not a routine change:
-# the channel here and `rust-version` in Cargo.toml move together.
+# compile with the same compiler. Bumping it is a template release, not a routine change.
+#
+# The channel and `rust-version` in Cargo.toml are NOT a matched set, and treating them as
+# one was a mistake corrected at 3.1.0. They answer different questions: the channel is the
+# compiler everyone actually builds with, while `rust-version` is the MSRV floor OUR source
+# requires — 1.85, the edition-2024 floor. Dragging the MSRV up with every channel bump
+# narrows what can compile this crate and buys nothing, because the toolchain is pinned
+# anyway. Move `rust-version` only when the code here starts needing a newer language or
+# standard-library feature.
 
 [toolchain]
-channel = "1.92.0"
+channel = "1.97.1"
 components = ["rustfmt", "clippy"]
 profile = "minimal"

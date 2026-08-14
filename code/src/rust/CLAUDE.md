@@ -45,8 +45,11 @@ compiles native code that Python either cannot express safely or is too slow to 
 - **Every dependency is a supply-chain decision.** crates.io has no review process and this code
   shares an address space with Django. Add a crate only through the workflow, and `audit.sh` must
   pass. Copyleft licences are denied by `deny.toml` — a licence change here is an ADR.
-- **The toolchain pin is a matched set.** `rust-toolchain.toml`'s channel and `Cargo.toml`'s
-  `rust-version` move together, and a bump is a template release, not a routine dependency bump.
+- **The channel and the MSRV are not a matched set** — they answer different questions.
+  `rust-toolchain.toml`'s channel is the compiler everyone builds with, and bumping it is a
+  template release rather than a routine dependency bump. `Cargo.toml`'s `rust-version` is the
+  floor **our source** needs (1.85, the edition-2024 floor); it moves only when the code starts
+  requiring a newer language or standard-library feature, never as a side-effect of a channel bump.
 - **Never commit `target/`** or a built `.so`/`.pyd`/`.dylib` — they are binaries, and this
   repository is a Copier template that cannot render binaries.
 - Source files ≤ 750 lines (800 grace), as everywhere in `code/src/`.

@@ -81,9 +81,19 @@ choice. Route the design through the `security` skill and
 `code/src/rust/rust-toolchain.toml` pins the compiler; rustup reads it automatically, so a
 developer laptop, CI and the image's build stage all compile with the same version.
 
-The pin and `Cargo.toml`'s `rust-version` are a **matched set** and move together. A toolchain
-bump is a template release propagated by `copier update`, not a routine dependency change: it can
-alter lint behaviour and MSRV compatibility across every crate at once.
+The pin and `Cargo.toml`'s `rust-version` are **not** a matched set, and treating them as one was
+a mistake corrected at 3.1.0. They answer different questions:
+
+| File                  | Field          | Answers                                                          |
+| --------------------- | -------------- | ---------------------------------------------------------------- |
+| `rust-toolchain.toml` | `channel`      | Which compiler everyone actually builds with                     |
+| `Cargo.toml`          | `rust-version` | The MSRV floor **our source** needs — 1.85, the edition-2024 one |
+
+A channel bump is still a template release rather than a routine dependency change: it can alter
+lint behaviour across every crate at once, because new clippy lints arrive denied. But dragging
+the MSRV up with it narrows what can compile these crates and buys nothing, since the toolchain
+is pinned anyway. **Move `rust-version` only when the code here starts needing a newer language
+or standard-library feature.**
 
 ## Suppressing an advisory
 

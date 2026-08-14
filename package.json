@@ -2,7 +2,7 @@
   "name": "<%PROJECT_SLUG%>",
   "description": "<%PROJECT_DESCRIPTION%>",
   "private": true,
-  "packageManager": "pnpm@11.15.1",
+  "packageManager": "pnpm@11.21.0",
   "engines": {
     "node": ">=24",
     "pnpm": ">=11.1.2"
@@ -16,11 +16,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@usebruno/cli": "^3.4.2",
-    "eslint": "^10.5.0",
-    "globals": "^17.6.0",
-    "lefthook": "^2.1.9",
-    "markdownlint-cli2": "^0.22.1",
-    "prettier": "^3.8.4"
+    "@usebruno/cli": "^4.0.0",
+    "eslint": "^10.8.1",
+    "globals": "^17.11.0",
+    "lefthook": "^2.1.10",
+    "markdownlint-cli2": "^0.23.2",
+    "prettier": "^3.9.6"
   }
 }

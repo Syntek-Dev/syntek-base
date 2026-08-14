@@ -21,18 +21,21 @@
 # Usage: template-update.sh [--apply] [--ref REF] [--keep-scratch] [--help]
 #                          [-- <extra copier args>]
 #
-# Exit codes:  0 = preview clean / applied   1 = orphans predicted   2 = script error
+# Exit codes:  0 = preview clean / applied   2 = script error
+#              1 = orphans and/or dependency drift predicted
 #
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ORPHAN_AUDIT="$PROJECT_ROOT/code/src/scripts/audits/template-orphans.sh"
+DEPS_AUDIT="$PROJECT_ROOT/code/src/scripts/audits/dependency-drift.sh"
 
 APPLY=false
 TARGET_REF=""
 KEEP_SCRATCH=false
 FORCE_ORPHANS=false
+FORCE_DEPS=false
 declare -a COPIER_ARGS=()
 
 log()  { printf '%s\n' "$*"; }
@@ -53,6 +56,8 @@ Options:
   --apply           Apply the update to this project after previewing
   --force-orphans   Apply even though orphans are predicted — only with --apply,
                     and only when you have already planned where each file moves
+  --force-deps      Apply even though dependency drift is predicted — only with
+                    --apply, and only when you will re-resolve and run the suites
   --ref REF         Template ref to update to (default: copier's own default)
   --keep-scratch    Leave the scratch copy on disk for inspection
   --help            Show this help
@@ -60,12 +65,13 @@ Options:
 
 Why preview:
   A new question with no default will halt an unattended update — pass it through
-  with `-- --data KEY=value`. And a renumbered directory strands your artefacts
-  silently; this predicts that before it happens, which `copier update` will not.
+  with `-- --data KEY=value`. Two other things fail silently and this predicts both:
+  a renumbered directory strands your artefacts, and a moved dependency floor changes
+  what you build against. `copier update` reports success for either.
 
 Exit codes:
   0  preview clean, or applied successfully
-  1  orphans predicted — do not apply until they are accounted for
+  1  orphans and/or dependency drift predicted — do not apply until accounted for
   2  script error
 EOF
 }
@@ -74,6 +80,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --apply)         APPLY=true; shift ;;
     --force-orphans) FORCE_ORPHANS=true; shift ;;
+    --force-deps)    FORCE_DEPS=true; shift ;;
     --ref)           [[ $# -ge 2 ]] || die "--ref needs a value"; TARGET_REF="$2"; shift 2 ;;
     --keep-scratch)  KEEP_SCRATCH=true; shift ;;
     --help|-h)      usage; exit 0 ;;
@@ -172,7 +179,12 @@ if [[ "$CONFLICTS" -gt 0 ]]; then
   log ""
 fi
 
-# ── The quiet failure ─────────────────────────────────────────────────────────
+# ── The quiet failures ────────────────────────────────────────────────────────
+# There are two, and they fail identically: no conflict, no error, `copier update`
+# reports success. One loses the files you wrote; the other changes what you build
+# against. BOTH are reported before EITHER can stop the run — discovering the second
+# only after resolving the first costs a whole cycle for no reason.
+
 bold "── Would anything be orphaned? ──"
 log ""
 
@@ -193,20 +205,62 @@ if [[ $ORPHAN_RC -ne 0 ]]; then
   log "  Before applying: note where each belongs under the new numbering, apply,"
   log "  then move them and re-run the orphan audit until it is clean."
   log ""
-  if $APPLY && ! $FORCE_ORPHANS; then
+else
+  bold "✓ No orphans predicted."
+  log ""
+fi
+
+bold "── Would your dependencies change? ──"
+log ""
+
+DEPS_RC=0
+if [[ -x "$DEPS_AUDIT" ]]; then
+  bash "$DEPS_AUDIT" --incoming "$SCRATCH" --project "$PROJECT_ROOT" || DEPS_RC=$?
+else
+  log "  (dependency drift audit not found at $DEPS_AUDIT — skipped)"
+fi
+
+if [[ $DEPS_RC -gt 1 ]]; then
+  die "the dependency drift audit failed — see the output above."
+fi
+
+log ""
+if [[ $DEPS_RC -eq 1 ]]; then
+  bold "✗ This update would change what your project builds against."
+  log ""
+  log "  Nothing above is a conflict and nothing will fail while the update runs."
+  log "  Your manifests simply change, and the next resolve picks versions your"
+  log "  suites have never run against."
+  log ""
+  log "  Before applying: read the list, satisfy yourself each one is acceptable,"
+  log "  and plan to re-resolve and run the suites immediately afterwards."
+  log ""
+else
+  bold "✓ No dependency change that would move you off what you have."
+  log ""
+fi
+
+# ── The decision ──────────────────────────────────────────────────────────────
+if $APPLY; then
+  if [[ $ORPHAN_RC -ne 0 ]] && ! $FORCE_ORPHANS; then
     die "Refusing to --apply while orphans are predicted. Plan the moves, then re-run with --apply --force-orphans."
   fi
-  if $APPLY && $FORCE_ORPHANS; then
+  if [[ $DEPS_RC -ne 0 ]] && ! $FORCE_DEPS; then
+    die "Refusing to --apply while dependency drift is predicted. Read the list above, then re-run with --apply --force-deps."
+  fi
+  if [[ $ORPHAN_RC -ne 0 ]]; then
     log "  --force-orphans given: applying anyway. Move the files listed above straight"
     log "  afterwards, and do not commit until the orphan audit is clean."
     log ""
-  else
-    exit 1
   fi
+  if [[ $DEPS_RC -ne 0 ]]; then
+    log "  --force-deps given: applying anyway. Re-resolve and run the suites before"
+    log "  you commit:  bash code/src/scripts/dependencies/update.sh --apply"
+    log ""
+  fi
+elif [[ $ORPHAN_RC -ne 0 || $DEPS_RC -ne 0 ]]; then
+  exit 1
 fi
-
-bold "✓ No orphans predicted."
-log ""
 
 # ── Apply ─────────────────────────────────────────────────────────────────────
 if ! $APPLY; then
