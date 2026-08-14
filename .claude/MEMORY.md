@@ -52,6 +52,31 @@ collision — and nothing measured the two against each other. The editorial dis
 life.** And when two decisions touch the same measured quantity in different sessions, one of
 them must re-run the measurement — the second decision silently repriced the first.
 
+### No tag before `v3.0.0` can be generated from — prove an update path, never assume it — 14/08/2026
+
+**`N-013` required a real `copier update` proof and the charted path did not exist.** Generate
+at an old tag → update across the boundary assumes the old tag generates. `v2.21.0` carries all
+56 agent files but predates the generation fix `e16b499`; tested rather than assumed, it dies
+with `TemplateSyntaxError: tag name expected` at `sync-trees.sh:190`. `e16b499` lands **after**
+the deletion, so it has the fix and zero agents — and a sweep of every commit in `e16b499..main`
+found **not one carrying both**. `v3.0.0` is the first generatable tag in this repository's
+history.
+
+**The fix was to reconstruct the base, not to weaken the proof.** A throwaway branch off
+`f2b04cf` with `.claude/agents/` restored from `v2.21.0` — the real pre-deletion state on top of
+the generation fix — generated cleanly, and the update across `v3.0.0` deleted all 55
+template-owned files while leaving a self-authored agent byte-identical. **When a proof's
+starting point is unreachable, build the state deliberately and say so, rather than downgrading
+to a weaker claim and calling it evidence.**
+
+### A copier migration must not do work whose output has to pass a gate — 14/08/2026
+
+`N-013`'s migration was ruled **advisory: report, never move**. Agent → skill is a rewrite, not
+a rename — a skill needs `name`/`description` frontmatter and must satisfy
+`skill-conformance.sh`. A migration that relocated the file would hand back a skill that fails
+its own gate and report success, which is worse than leaving the file alone. **Migrations always
+exit 0 where the work is advisory**, because a non-zero exit fails the whole `copier update`.
+
 ---
 
 ## Project State
