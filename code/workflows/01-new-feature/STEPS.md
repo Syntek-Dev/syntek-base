@@ -82,11 +82,11 @@ For every new model, open the app's `admin.py` and add a registration class. Min
 ```python
 @admin.register(MyModel)
 class MyModelAdmin(admin.ModelAdmin):
-    list_display = (...)      # columns shown in the changelist
-    list_filter = (...)       # right-hand filter sidebar (boolean, date, FK fields)
-    search_fields = (...)     # fields searched by the search bar (use __ for relations)
-    readonly_fields = (...)   # audit fields: auto_now, auto_now_add, encrypted fields
-    ordering = (...)          # default sort order
+    list_display = ...  # columns shown in the changelist
+    list_filter = ...  # right-hand filter sidebar (boolean, date, FK fields)
+    search_fields = ...  # fields searched by the search bar (use __ for relations)
+    readonly_fields = ...  # audit fields: auto_now, auto_now_add, encrypted fields
+    ordering = ...  # default sort order
 ```
 
 Rules:

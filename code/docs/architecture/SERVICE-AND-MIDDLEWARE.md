@@ -51,6 +51,7 @@ from ninja import Router
 
 router = Router()
 
+
 @router.post("/orders", response={201: OrderOut}, auth=session_auth)
 def create_order(request, payload: CreateOrderIn):
     _require_user(request)  # explicit permission check on every state-changing endpoint
@@ -103,8 +104,10 @@ Each app defines a thin per-app base and inherits from there:
 # apps/orders/services/errors.py
 from apps.core.services.errors import ServiceError
 
+
 class OrderError(ServiceError):
     """Base for all order service errors."""
+
 
 class OrderPermissionError(OrderError):
     code = "PERMISSION_DENIED"
@@ -124,8 +127,8 @@ A soft-deleting model uses `SoftDeleteManager`, which returns a `SoftDeleteQuery
 qs = Model.objects.filter(deleted_at__isnull=True)  # ✗
 
 # Use the named method:
-qs = Model.objects.not_deleted()   # ✓
-qs = Model.objects.deleted()       # ✓ (for admin trash views)
+qs = Model.objects.not_deleted()  # ✓
+qs = Model.objects.deleted()  # ✓ (for admin trash views)
 ```
 
 `published_qs()` is the single authoritative definition of public-content visibility. It retains

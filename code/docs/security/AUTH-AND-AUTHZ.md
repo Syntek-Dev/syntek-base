@@ -147,6 +147,7 @@ from ninja.security import django_auth  # session-cookie auth for the /admin/ ar
 
 router = Router(auth=django_auth)  # default: every operation requires an authenticated session
 
+
 @router.get("/health", auth=None)  # opt a single endpoint out explicitly — never implicitly
 def health(request): ...
 ```
@@ -164,6 +165,7 @@ _Portable reference: on Django REST Framework the equivalent is a project-wide
 
 ```python
 import os
+
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — intentional
 ```
 

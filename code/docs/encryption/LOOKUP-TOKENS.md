@@ -53,12 +53,12 @@ key. Otherwise add one token column per unique field:
 ```python
 # Individual unique fields within a batch
 class PatientRecord(models.Model):
-    nhs_number       = EncryptedField()          # unique
+    nhs_number = EncryptedField()  # unique
     nhs_number_token = models.CharField(max_length=64, unique=True, db_index=True)
 
-    full_name        = EncryptedField()          # not unique — no token needed
-    date_of_birth    = EncryptedField()          # not unique — no token needed
-    postcode         = EncryptedField()          # not unique — no token needed
+    full_name = EncryptedField()  # not unique — no token needed
+    date_of_birth = EncryptedField()  # not unique — no token needed
+    postcode = EncryptedField()  # not unique — no token needed
 ```
 
 ### Model definition
@@ -116,9 +116,7 @@ def _email_hmac_key() -> bytes:
 
 def make_email_token(email: str) -> str:
     """Keyed HMAC-SHA3-256 of the strip+lower-normalised email — a blind index."""
-    return hmac.new(
-        _email_hmac_key(), email.strip().lower().encode(), hashlib.sha3_256
-    ).hexdigest()
+    return hmac.new(_email_hmac_key(), email.strip().lower().encode(), hashlib.sha3_256).hexdigest()
 ```
 
 For a **new** non-email unique field (e.g. phone), add a sibling helper alongside the email one in
@@ -135,6 +133,7 @@ User.objects.filter(email=identifier)
 
 # CORRECT — token lookup via the shared helper
 from apps.core.crypto import make_email_token
+
 User.objects.filter(email_token=make_email_token(identifier))
 ```
 

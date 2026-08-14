@@ -91,9 +91,11 @@ from pydantic import Field
 
 router = Router()
 
+
 class CreateRoleIn(Schema):
     name: str = Field(min_length=1, max_length=100)
     description: str = Field(default="", max_length=500)
+
 
 class RoleOut(Schema):
     id: int
@@ -119,6 +121,7 @@ an explicit permission check.**
 @router.post("/roles", response=RoleOut, auth=django_auth)
 def create_role(request, payload: CreateRoleIn):
     return role_service.create_role(payload)
+
 
 # CORRECT — authentication (auth=) plus an explicit permission check
 @router.post("/roles", response=RoleOut, auth=django_auth)

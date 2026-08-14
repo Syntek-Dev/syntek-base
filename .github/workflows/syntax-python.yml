@@ -1,36 +1,39 @@
 name: Python — Lint, Format & Typecheck
 
-# These three jobs deliberately carry NO lockfile guard, unlike claude.yml / test.yml /
-# audit-deps.yml. They run `uv sync` WITHOUT `--frozen`, so uv resolves from
-# pyproject.toml and needs no committed uv.lock. That is what lets them gate a project
-# from its first commit, before `uv lock` has ever run.
+# One blocker, two different answers, because the two tools need different things.
 #
-# IN THE BASE TEMPLATE THEY DO NOT RUN AT ALL, and an earlier version of this comment
-# claimed the opposite — that they were "the only Python gate this repository actually
-# enforces on itself". They are not. In syntek-base the root pyproject.toml's `name` is
-# still the unrendered project-slug token, and uv rejects that as an invalid package
-# name while PARSING THE MANIFEST, before dependency resolution begins. `uv sync
-# --only-dev` therefore fails and every step after it is skipped. The lockfile
-# reasoning above is correct; the conclusion drawn from it was not, because the blocker
-# sits one step earlier than the lockfile. Verified 11/08/2026 against uv 0.11.24; CI
-# pins 0.11.7 and was not separately tested, though the validation is long-standing.
+# THE BLOCKER. In syntek-base the root pyproject.toml's `name` is still the unrendered
+# project-slug token, and uv rejects that as an invalid package name while PARSING THE
+# MANIFEST, before dependency resolution begins. Anything that opens the manifest —
+# `uv sync`, `uv run` — therefore dies on a template regardless of lockfiles. In a
+# GENERATED project the name is rendered and the question does not arise.
 #
-# In a GENERATED project the name is rendered and all three run normally. Nothing here
-# needs changing for that case — this note exists so nobody re-derives the claim.
+# RUFF: RUN IT ANYWAY (fixed 14/08/2026). Only the LAUNCHER needed the manifest; the
+# rules never did. These jobs now install ruff with `uvx --from`, which parses no
+# pyproject.toml, so lint and format are enforced by CI on the template itself — which
+# they never were before. The constraint is read out of pyproject.toml at run time
+# rather than restated here, so there is one source of truth and a missing constraint
+# fails the job loudly instead of silently resolving to whatever is newest.
 #
-# Consequence, for syntek-base only: ruff is enforced here by the directly-installed
-# `ruff` binary, which parses no manifest. Cite that, never CI, as evidence for a
-# Python rule. Accepted rather than fixed; the options weighed are in
-# how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md (11/08/2026).
+# This supersedes the note that used to sit here telling the reader to cite the local
+# ruff binary and "never CI" as evidence for a Python rule. CI is now the evidence.
+#
+# BASEDPYRIGHT: GUARD IT (14/08/2026). A type-checker with no dependency set does not
+# produce a weaker result, it produces a meaningless one — every import unresolved. It
+# therefore takes the step-level lockfile guard that claude.yml, test.yml and
+# audit-deps.yml already use: it runs in a generated project and reports a skip, with a
+# reason, in the template. Not the same treatment as ruff, because it is not the same
+# situation: ruff's rules are self-contained and basedpyright's are not.
 #
 # The mobile jobs DO run here, and the difference is the useful part: pnpm skips name
 # validation on a private package, so the identical token is harmless in package.json
 # and fatal in pyproject.toml. One tokenised name is not evidence about another.
 #
-# Historical: all three also once failed at `astral-sh/setup-uv`, pinned to @v4 with no
-# `version:` while every other workflow here pins @v5 with an explicit UV_VERSION. That
-# was a stale action pin and the fix was real — it simply was not the whole story,
-# because they now fail one step later instead. Keep these aligned with the others.
+# Historical, and it took three goes: these jobs first failed at `astral-sh/setup-uv`
+# pinned to @v4 with no `version:`; then at its POST step, which errors when caching is
+# enabled and the template installs nothing to cache (`ignore-nothing-to-cache` below);
+# then at `uv sync`, which is what the two paragraphs above finally answer. Each fix was
+# real and each merely uncovered the next one.
 
 on:
   push:
@@ -72,11 +75,25 @@ jobs:
           # reasoning at the same input in claude.yml.
           ignore-nothing-to-cache: true
 
-      - name: Install dev dependencies
-        run: uv sync --only-dev
+      # Read the constraint the project already declares rather than restating it. A
+      # second copy in this file is a drift site; an unpinned `uvx ruff` is worse still,
+      # because CI would silently track latest while the project tracked its floor.
+      - name: Resolve the ruff constraint from pyproject.toml
+        id: ruff
+        run: |
+          spec=$(grep -oE '"ruff[^"]*"' pyproject.toml | head -1 | tr -d '"')
+          if [ -z "$spec" ]; then
+            echo "::error::No ruff constraint found in pyproject.toml — refusing to guess a version."
+            exit 1
+          fi
+          echo "spec=$spec" >> "$GITHUB_OUTPUT"
+          echo "Using $spec"
 
+      # `uvx --from` installs into a throwaway environment and never opens the project
+      # manifest, which is the whole point: it runs on the template and on a generated
+      # project identically.
       - name: Run Ruff lint
-        run: uv run ruff check .
+        run: uvx --from "${{ steps.ruff.outputs.spec }}" ruff check .
 
   ruff-format:
     name: Ruff — Format
@@ -98,11 +115,20 @@ jobs:
           # reasoning at the same input in claude.yml.
           ignore-nothing-to-cache: true
 
-      - name: Install dev dependencies
-        run: uv sync --only-dev
+      # Same constraint, same reason — see the ruff-lint job above.
+      - name: Resolve the ruff constraint from pyproject.toml
+        id: ruff
+        run: |
+          spec=$(grep -oE '"ruff[^"]*"' pyproject.toml | head -1 | tr -d '"')
+          if [ -z "$spec" ]; then
+            echo "::error::No ruff constraint found in pyproject.toml — refusing to guess a version."
+            exit 1
+          fi
+          echo "spec=$spec" >> "$GITHUB_OUTPUT"
+          echo "Using $spec"
 
       - name: Check formatting
-        run: uv run ruff format --check .
+        run: uvx --from "${{ steps.ruff.outputs.spec }}" ruff format --check .
 
   basedpyright:
     name: basedpyright — Typecheck
@@ -124,8 +150,29 @@ jobs:
           # reasoning at the same input in claude.yml.
           ignore-nothing-to-cache: true
 
+      # Same shape as claude.yml / test.yml / audit-deps.yml: guard at STEP level on the
+      # lockfile so the job reports success with an explanatory line rather than a
+      # failure nobody can act on. Unlike ruff, basedpyright cannot be usefully run
+      # without the dependency set — every import would be unresolved and the result
+      # would be noise wearing a gate's name.
+      - name: Detect the backend lockfile
+        id: detect
+        run: |
+          if [ -f uv.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — type-checking against the resolved dependency set."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — this is the base template, not a generated project."
+            echo "uv cannot parse a manifest whose name is still a token, and a type-check"
+            echo "with no dependencies resolves nothing. Skipping rather than reporting a"
+            echo "failure with no subject. See how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md SL-1."
+          fi
+
       - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
         run: uv sync
 
       - name: Run basedpyright
+        if: steps.detect.outputs.present == 'true'
         run: uv run basedpyright

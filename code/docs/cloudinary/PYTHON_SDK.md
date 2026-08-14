@@ -106,11 +106,7 @@ Alternatively, you can use the `config` method to set your `cloud_name`, `api_ke
 ```python
 import cloudinary
 
-cloudinary.config(
-  cloud_name = "my_cloud_name",
-  api_key = "my_key",
-  api_secret = "my_secret"
-)
+cloudinary.config(cloud_name="my_cloud_name", api_key="my_key", api_secret="my_secret")
 ```
 
 > **INFO**:
@@ -132,11 +128,11 @@ Or you can use the `config` method in your code, for example:
 
 ```python
 cloudinary.config(
-  cloud_name = "my_cloud_name",
-  api_key = "my_key",
-  api_secret = "my_secret",
-  secure_distribution = "mydomain.com",
-  upload_prefix = "myprefix"
+    cloud_name="my_cloud_name",
+    api_key="my_key",
+    api_secret="my_secret",
+    secure_distribution="mydomain.com",
+    upload_prefix="myprefix",
 )
 ```
 
@@ -148,10 +144,10 @@ cloudinary.config(
 import cloudinary
 
 cloudinary.config(
-cloud_name = "xxxx",
-api_key = "xxxxxxxxxxxx",
-api_secret = "xxxxxxxxxxx",
-api_proxy = "http://proxy.server:9999"
+    cloud_name="xxxx",
+    api_key="xxxxxxxxxxxx",
+    api_secret="xxxxxxxxxxx",
+    api_proxy="http://proxy.server:9999",
 )
 
 import cloudinary.uploader
@@ -196,12 +192,14 @@ When using the Python SDK, keep these guidelines in mind:
 The following Python code uploads the `dog.mp4` video to the asset folder `pets` using the public_id, `my_dog`. The video will overwrite the existing video if a video with that public_id already exists. When the video upload is complete, the specified notification URL will receive details about the uploaded media asset.
 
 ```python
-cloudinary.uploader.upload("dog.mp4",
-  asset_folder = "pets",
-  public_id = "my_dog",
-  overwrite = True,
-  notification_url = "https://mysite.example.com/notify_endpoint",
-  resource_type = "video")
+cloudinary.uploader.upload(
+    "dog.mp4",
+    asset_folder="pets",
+    public_id="my_dog",
+    overwrite=True,
+    notification_url="https://mysite.example.com/notify_endpoint",
+    resource_type="video",
+)
 ```
 
 > **Learn more about upload**:
@@ -219,17 +217,19 @@ Take a look at the following transformation code and the image it delivers:
 ![sample transformation](https://res.cloudinary.com/demo/image/upload/c_thumb,g_face,h_150,w_150/r_20/e_sepia/l_cloudinary_icon/e_brightness:90/o_60/c_scale,w_50/fl_layer_apply,g_south_east,x_5,y_5/a_10/front_face.png "secure: true, disable_all_tab: true, with_url: false, frameworks:python")
 
 ```python
-CloudinaryImage("front_face.png").image(transformation=[
-  {'gravity': "face", 'height': 150, 'width': 150, 'crop': "thumb"},
-  {'radius': 20},
-  {'effect': "sepia"},
-  {'overlay': "cloudinary_icon"},
-  {'effect': "brightness:90"},
-  {'opacity': 60},
-  {'width': 50, 'crop': "scale"},
-  {'flags': "layer_apply", 'gravity': "south_east", 'x': 5, 'y': 5},
-  {'angle': 10}
-  ])
+CloudinaryImage("front_face.png").image(
+    transformation=[
+        {"gravity": "face", "height": 150, "width": 150, "crop": "thumb"},
+        {"radius": 20},
+        {"effect": "sepia"},
+        {"overlay": "cloudinary_icon"},
+        {"effect": "brightness:90"},
+        {"opacity": 60},
+        {"width": 50, "crop": "scale"},
+        {"flags": "layer_apply", "gravity": "south_east", "x": 5, "y": 5},
+        {"angle": 10},
+    ]
+)
 ```
 
 This relatively simple code performs all of the following on the original front_face.jpg image before delivering it:
@@ -260,7 +260,7 @@ In a similar way, you can [transform a video](django_video_manipulation#video_tr
 The following Python example uses the Admin API [resource](admin_api#get_details_of_a_single_resource_by_public_id) method to return details of the image with public ID `cld-sample`:
 
 ```python
-result = cloudinary.api.resource('cld-sample')
+result = cloudinary.api.resource("cld-sample")
 print(result)
 ```
 

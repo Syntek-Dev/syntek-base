@@ -49,12 +49,12 @@ Import the base that matches the surface, from `apps.core.schemas`:
 from apps.core.schemas import OutSchema, Schema
 
 
-class CreateOrderIn(Schema):      # unknown keys → 422
+class CreateOrderIn(Schema):  # unknown keys → 422
     reference: str
     quantity: int
 
 
-class OrderOut(OutSchema):        # adding a field later stays backwards-compatible
+class OrderOut(OutSchema):  # adding a field later stays backwards-compatible
     id: UUID
     reference: str
 ```
@@ -200,9 +200,7 @@ qs = qs.prefetch_related("tags")
 from django.db.models import Prefetch
 from apps.core.models import Tag
 
-qs = qs.prefetch_related(
-    Prefetch("tags", queryset=Tag.objects.filter(deleted_at__isnull=True))
-)
+qs = qs.prefetch_related(Prefetch("tags", queryset=Tag.objects.filter(deleted_at__isnull=True)))
 ```
 
 This applies to every service queryset that backs an endpoint. The mapper (`_to_*`) calls `.all()`
@@ -235,9 +233,10 @@ class NotFoundOut(Schema):
     message: str
 
 
-@router.post("/orders/{order_id}/cancel", response={200: OrderOut, 404: NotFoundOut, 409: NotFoundOut})
-def cancel_order(request, order_id: int):
-    ...
+@router.post(
+    "/orders/{order_id}/cancel", response={200: OrderOut, 404: NotFoundOut, 409: NotFoundOut}
+)
+def cancel_order(request, order_id: int): ...
 ```
 
 Register **exception handlers** on the `NinjaAPI` instance so every error returns the standard

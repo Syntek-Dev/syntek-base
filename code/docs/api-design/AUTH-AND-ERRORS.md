@@ -82,10 +82,11 @@ backed by the Valkey cache. Blanket per-IP / per-user limits also run as HTTP mi
 ```python
 from ninja.throttling import AuthRateThrottle, AnonRateThrottle
 
+
 # Per-endpoint: a stricter cap on an expensive search endpoint
 @router.get("/orders/search", throttle=[AuthRateThrottle("20/min"), AnonRateThrottle("5/min")])
-def search_orders(request, q: str):
-    ...
+def search_orders(request, q: str): ...
+
 
 # Or a NinjaAPI-wide default
 api = NinjaAPI(throttle=[AuthRateThrottle("60/min"), AnonRateThrottle("30/min")])

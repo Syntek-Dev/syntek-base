@@ -202,6 +202,7 @@ Prefer **data coupling** — pass the specific values the callee actually uses:
 def format_greeting(user: User) -> str:
     return f"Hello, {user.first_name}"
 
+
 # Data coupling — depends only on what it uses
 def format_greeting(first_name: str) -> str:
     return f"Hello, {first_name}"

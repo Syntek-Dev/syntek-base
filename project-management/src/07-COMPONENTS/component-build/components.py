@@ -25,6 +25,7 @@ Usage:
 
 Standard library only (no dependencies). British English throughout.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -84,9 +85,16 @@ BRAND = {
 # =========================================================================== #
 
 _TEX_SPECIALS = {
-    "\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$",
-    "#": r"\#", "_": r"\_", "{": r"\{", "}": r"\}",
-    "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    "_": r"\_",
+    "{": r"\{",
+    "}": r"\}",
+    "~": r"\textasciitilde{}",
+    "^": r"\textasciicircum{}",
 }
 
 
@@ -97,8 +105,7 @@ def tex(s: str) -> str:
 
 def _palette_defs() -> str:
     return "\n".join(
-        r"\definecolor{" + name + r"}{HTML}{" + hx + r"}"
-        for name, hx in PALETTE.items()
+        r"\definecolor{" + name + r"}{HTML}{" + hx + r"}" for name, hx in PALETTE.items()
     )
 
 
@@ -224,34 +231,57 @@ def render_cover() -> str:
     version = tex(BRAND["version"])
     date = tex(BRAND["date"])
     return (
-        r"\thispagestyle{empty}" "\n"
-        r"\vspace*{28mm}" "\n"
-        r"{\color{accent}\rule{40mm}{4pt}}\par\vspace{10mm}" "\n"
-        r"{\fontsize{52}{58}\selectfont\bfseries\color{ink}" + name + r"}\par\vspace{4mm}" "\n"
-        r"{\fontsize{22}{28}\selectfont\color{muted}Component Library}\par\vspace{8mm}" "\n"
-        r"{\large\color{ink}An indicative UI kit — a feel for the interface.}\par\vspace{18mm}" "\n"
+        r"\thispagestyle{empty}"
+        "\n"
+        r"\vspace*{28mm}"
+        "\n"
+        r"{\color{accent}\rule{40mm}{4pt}}\par\vspace{10mm}"
+        "\n"
+        r"{\fontsize{52}{58}\selectfont\bfseries\color{ink}" + name + r"}\par\vspace{4mm}"
+        "\n"
+        r"{\fontsize{22}{28}\selectfont\color{muted}Component Library}\par\vspace{8mm}"
+        "\n"
+        r"{\large\color{ink}An indicative UI kit — a feel for the interface.}\par\vspace{18mm}"
+        "\n"
         r"\uibtn[primary]{Primary}\quad\uibtnoutline[primary]{Secondary}\quad"
-        r"\uibadge[success]{Active}\quad\uichip{Tag}\par" "\n"
-        r"\vfill" "\n"
-        r"{\footnotesize\color{muted}Version " + version + r" \quad\textbullet\quad " + date +
-        r" \quad\textbullet\quad Generated from component-build/components.py}\par" "\n"
-        r"\clearpage" "\n"
+        r"\uibadge[success]{Active}\quad\uichip{Tag}\par"
+        "\n"
+        r"\vfill"
+        "\n"
+        r"{\footnotesize\color{muted}Version "
+        + version
+        + r" \quad\textbullet\quad "
+        + date
+        + r" \quad\textbullet\quad Generated from component-build/components.py}\par"
+        "\n"
+        r"\clearpage"
+        "\n"
     )
 
 
 def render_intro() -> str:
     return (
-        r"\brandsection{Overview}" "\n" +
-        r"{\large " + tex(BRAND["intro"]) + r"}\par\vspace{4mm}" "\n"
-        r"\begin{itemize}" "\n"
-        r"\item \textbf{Buttons} — variants, sizes, and states." "\n"
-        r"\item \textbf{Form controls} — inputs, selection, and toggles." "\n"
-        r"\item \textbf{Badges \& alerts} — status indicators and messages." "\n"
-        r"\item \textbf{Cards} — contained content surfaces." "\n"
-        r"\item \textbf{Navigation} — navbar, tabs, breadcrumb, pagination." "\n"
-        r"\item \textbf{Avatars \& feedback} — identity and progress elements." "\n"
-        r"\end{itemize}" "\n"
-        r"\clearpage" "\n"
+        r"\brandsection{Overview}"
+        "\n" + r"{\large " + tex(BRAND["intro"]) + r"}\par\vspace{4mm}"
+        "\n"
+        r"\begin{itemize}"
+        "\n"
+        r"\item \textbf{Buttons} — variants, sizes, and states."
+        "\n"
+        r"\item \textbf{Form controls} — inputs, selection, and toggles."
+        "\n"
+        r"\item \textbf{Badges \& alerts} — status indicators and messages."
+        "\n"
+        r"\item \textbf{Cards} — contained content surfaces."
+        "\n"
+        r"\item \textbf{Navigation} — navbar, tabs, breadcrumb, pagination."
+        "\n"
+        r"\item \textbf{Avatars \& feedback} — identity and progress elements."
+        "\n"
+        r"\end{itemize}"
+        "\n"
+        r"\clearpage"
+        "\n"
     )
 
 
@@ -264,7 +294,13 @@ def render_intro() -> str:
 # from the INPUTS above. Re-run the generator to reassemble.
 
 SECTION_ORDER = [
-    "buttons", "forms", "badges", "alerts", "cards", "navigation", "avfeedback",
+    "buttons",
+    "forms",
+    "badges",
+    "alerts",
+    "cards",
+    "navigation",
+    "avfeedback",
 ]
 
 
@@ -279,11 +315,12 @@ def _section(name: str) -> str:
 # ASSEMBLY
 # =========================================================================== #
 
+
 def render_tex() -> str:
     parts = [
-        PREAMBLE
-        .replace("<<COLOURS>>", _palette_defs())
-        .replace("<<FOOTER>>", tex(BRAND["name"]) + " — Component Library"),
+        PREAMBLE.replace("<<COLOURS>>", _palette_defs()).replace(
+            "<<FOOTER>>", tex(BRAND["name"]) + " — Component Library"
+        ),
         render_cover(),
         render_intro(),
     ]
@@ -296,19 +333,24 @@ def render_tex() -> str:
 # OUTPUT + CLI
 # =========================================================================== #
 
+
 def compile_pdf(tex_path: Path, pdf_path: Path) -> None:
     """Compile a .tex to PDF with xelatex (run twice for stable layout)."""
     xelatex = shutil.which("xelatex")
     if not xelatex:
-        raise RuntimeError(
-            "xelatex not found. Install it with: sudo apt install texlive-xetex")
+        raise RuntimeError("xelatex not found. Install it with: sudo apt install texlive-xetex")
     with tempfile.TemporaryDirectory(prefix="components_") as tmp:
-        cmd = [xelatex, "-interaction=nonstopmode", "-halt-on-error",
-               "-output-directory", tmp, str(tex_path)]
+        cmd = [
+            xelatex,
+            "-interaction=nonstopmode",
+            "-halt-on-error",
+            "-output-directory",
+            tmp,
+            str(tex_path),
+        ]
         result = None
         for _ in range(2):
-            result = subprocess.run(cmd, capture_output=True, text=True,
-                                    cwd=str(tex_path.parent))
+            result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(tex_path.parent))
             if result.returncode != 0:
                 break
         if result is None or result.returncode != 0:
@@ -316,9 +358,11 @@ def compile_pdf(tex_path: Path, pdf_path: Path) -> None:
             errs = ""
             if log.exists():
                 errs = "\n".join(
-                    ln for ln in log.read_text(errors="replace").splitlines()
-                    if ln.startswith("!"))[:1200]
-            raise RuntimeError(f"xelatex failed:\n{errs or (result.stderr[:1000] if result else '')}")
+                    ln for ln in log.read_text(errors="replace").splitlines() if ln.startswith("!")
+                )[:1200]
+            raise RuntimeError(
+                f"xelatex failed:\n{errs or (result.stderr[:1000] if result else '')}"
+            )
         produced = Path(tmp) / (tex_path.stem + ".pdf")
         if not produced.exists():
             raise RuntimeError("xelatex reported success but produced no PDF.")
@@ -348,10 +392,10 @@ def cmd_check() -> int:
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description="Generate the Component Library PDF.")
-    p.add_argument("--no-pdf", action="store_true",
-                   help="regenerate the .tex only; skip xelatex")
-    p.add_argument("--check", action="store_true",
-                   help="verify the committed .tex matches; write nothing")
+    p.add_argument("--no-pdf", action="store_true", help="regenerate the .tex only; skip xelatex")
+    p.add_argument(
+        "--check", action="store_true", help="verify the committed .tex matches; write nothing"
+    )
     args = p.parse_args(argv)
     if args.check:
         return cmd_check()

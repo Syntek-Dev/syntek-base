@@ -258,7 +258,13 @@ def on_validation_error(request, exc):
     details = [{"field": e["loc"][-1], "message": e["msg"]} for e in exc.errors]
     return api.create_response(
         request,
-        {"error": {"code": "validation_failed", "message": "The request contained invalid fields.", "details": details}},
+        {
+            "error": {
+                "code": "validation_failed",
+                "message": "The request contained invalid fields.",
+                "details": details,
+            }
+        },
         status=422,
     )
 ```

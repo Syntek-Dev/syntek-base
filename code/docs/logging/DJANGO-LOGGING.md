@@ -40,7 +40,8 @@ should not have logged in the first place.
 ```python
 import logging
 
-logger = logging.getLogger(__name__)   # one per module, at module level
+logger = logging.getLogger(__name__)  # one per module, at module level
+
 
 def create_user(email: str) -> User:
     logger.debug("creating user", extra={"email": email})
@@ -140,7 +141,7 @@ LOGGING = {
     "formatters": {
         "json": {
             "format": '{"time": "%(asctime)s", "level": "%(levelname)s", '
-                      '"logger": "%(name)s", "message": "%(message)s"}',
+            '"logger": "%(name)s", "message": "%(message)s"}',
             "datefmt": "%Y-%m-%dT%H:%M:%S",
         },
     },

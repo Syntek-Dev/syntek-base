@@ -41,6 +41,7 @@ from django.conf import settings
 from django.shortcuts import render
 from apps.marketing.seo import build_seo
 
+
 def blog_post(request, slug):
     post = get_published_post(slug)
     seo = build_seo(

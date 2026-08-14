@@ -57,14 +57,14 @@ Reusing that scheme is deliberate: one credential model, one revocation path, on
 from fastmcp.server.auth import AccessToken, TokenVerifier
 from fastmcp.server.dependencies import get_access_token
 
-from apps.core.services import resolve_api_key   # hashed lookup, constant-time compare
+from apps.core.services import resolve_api_key  # hashed lookup, constant-time compare
 
 
 class ProjectKeyVerifier(TokenVerifier):
     async def verify_token(self, token: str) -> AccessToken | None:
-        record = await resolve_api_key(token)      # None on unknown/revoked/expired
+        record = await resolve_api_key(token)  # None on unknown/revoked/expired
         if record is None:
-            return None                            # → 401, no detail leaked
+            return None  # → 401, no detail leaked
         return AccessToken(
             token=token,
             client_id=str(record.user_id),

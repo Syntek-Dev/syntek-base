@@ -56,7 +56,7 @@ if SENTRY_DSN:
             DjangoIntegration(),
             LoggingIntegration(level=logging.ERROR, event_level=logging.ERROR),
         ],
-        send_default_pii=False,      # GDPR: never send PII automatically
+        send_default_pii=False,  # GDPR: never send PII automatically
     )
 ```
 

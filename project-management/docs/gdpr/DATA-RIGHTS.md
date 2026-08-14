@@ -166,8 +166,10 @@ user's session may be compromised — RLS protecting their own rows is the wrong
 
 ```python
 User.objects.using("admin_db").filter(pk=user_id).update(
-    email=None, email_token=None,
-    phone=None, phone_token=None,
+    email=None,
+    email_token=None,
+    phone=None,
+    phone_token=None,
     is_active=False,
 )
 ```

@@ -86,9 +86,11 @@ modified after creation.
 ```python
 from typing import NamedTuple
 
+
 class PageRange(NamedTuple):
     start: int
     end: int
+
 
 visible = PageRange(start=1, end=25)
 ```
@@ -106,13 +108,14 @@ parsing.
 
 ```python
 from collections import deque
+
 task_queue: deque[Task] = deque()
-task_queue.append(new_task)       # enqueue
+task_queue.append(new_task)  # enqueue
 next_task = task_queue.popleft()  # dequeue — O(1)
 
 undo_stack: list[Action] = []
-undo_stack.append(action)         # push
-last_action = undo_stack.pop()    # pop — O(1)
+undo_stack.append(action)  # push
+last_action = undo_stack.pop()  # pop — O(1)
 ```
 
 **Important:** never use `list.pop(0)` for a queue in Python — it is O(n). Use `collections.deque`.
@@ -130,8 +133,11 @@ nested navigation, comment threads, and organisational structures.
 class Category(models.Model):
     name = models.CharField(max_length=200)
     parent = models.ForeignKey(
-        "self", null=True, blank=True,
-        on_delete=models.CASCADE, related_name="children",
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="children",
     )
 ```
 

@@ -25,6 +25,7 @@ def process_order(context: dict) -> dict:
     context["processed"] = True
     return context
 
+
 # Fix — replace with a typed structure
 @dataclass
 class OrderContext:
@@ -63,6 +64,7 @@ Representing domain concepts as raw primitives instead of value objects.
 def apply_discount(price: float, discount: float) -> float:
     return price - discount
 
+
 # Good — the type communicates the domain
 def apply_discount(price: Money, discount: Money) -> Money:
     if price.currency != discount.currency:
@@ -80,6 +82,7 @@ Two or more lists that must be kept in sync by index.
 # Bad — names[i] corresponds to emails[i]. What if they get out of sync?
 names = ["Alice", "Bob"]
 emails = ["alice@example.com", "bob@example.com"]
+
 
 # Good — one collection of structured objects
 @dataclass(frozen=True)
@@ -107,11 +110,13 @@ Deeply nested dictionaries used in place of defined types.
 # Bad
 user = {"name": "Alex", "profile": {"preferences": {"notifications": {"email": True}}}}
 
+
 # Good — defined types
 @dataclass
 class NotificationPreferences:
     email: bool = True
     push: bool = False
+
 
 @dataclass
 class User:
@@ -136,14 +141,17 @@ class User(models.Model):
     theme = models.CharField(max_length=20)
     # ... 20 more fields
 
+
 # Fix — split into focused models with one-to-one relationships
 class User(models.Model):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=200)
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     bio = models.TextField(blank=True)
+
 
 class Subscription(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="subscription")
@@ -164,8 +172,7 @@ def fetch_user(user_id: str):
 
 
 # Good — the return type is explicit and checkable
-def fetch_user(user_id: str) -> User:
-    ...
+def fetch_user(user_id: str) -> User: ...
 ```
 
 A `dict[str, Any]` crossing a service boundary is the Python form of this anti-pattern. Return a
@@ -181,6 +188,7 @@ Storing multiple values in a single text column separated by commas.
 # Bad — violates 1NF, cannot join, cannot index, cannot enforce integrity
 class Article(models.Model):
     tags = models.CharField(max_length=500)  # "python,django,web"
+
 
 # Good — proper relationship
 class Article(models.Model):
@@ -203,10 +211,12 @@ process_order(order, True, False)
 # Good — use enums or keyword arguments
 process_order(order, priority=Priority.HIGH, send_notification=False)
 
+
 # Bad — a boolean that will inevitably need a third state
 class Order(models.Model):
     is_paid = models.BooleanField(default=False)
     # What about "partially paid"? "refunded"? "payment failed"?
+
 
 # Good — explicit status
 class PaymentStatus(models.TextChoices):
@@ -228,6 +238,7 @@ A single status field that encodes multiple independent dimensions.
 class Order(models.Model):
     status = models.CharField(max_length=20)
     # "paid_shipped", "paid_unshipped", "unpaid_unshipped", ...
+
 
 # Good — separate concerns into separate fields
 class Order(models.Model):

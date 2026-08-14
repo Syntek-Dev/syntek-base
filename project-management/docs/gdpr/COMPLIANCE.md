@@ -57,7 +57,7 @@ from celery.schedules import crontab
 CELERY_BEAT_SCHEDULE = {
     "apps.<%IDENTITY_APP%>.purge_expired_tokens": {
         "task": "apps.<%IDENTITY_APP%>.tasks.purge_expired_tokens",
-        "schedule": crontab(hour=1, minute=0),   # daily 01:00 UTC
+        "schedule": crontab(hour=1, minute=0),  # daily 01:00 UTC
     },
     "apps.<%AUDIT_APP%>.purge_expired_entries": {
         "task": "apps.<%AUDIT_APP%>.tasks.purge_expired_entries",
@@ -65,7 +65,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     "apps.<%AUDIT_APP%>.run_audit_integrity_check": {
         "task": "apps.<%AUDIT_APP%>.tasks.run_audit_integrity_check",
-        "schedule": crontab(hour=3, minute=0),   # daily 03:00 UTC
+        "schedule": crontab(hour=3, minute=0),  # daily 03:00 UTC
     },
 }
 ```

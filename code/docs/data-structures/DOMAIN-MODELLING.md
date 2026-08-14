@@ -49,6 +49,7 @@ Use them for concepts like money, addresses, date ranges, and coordinates.
 from dataclasses import dataclass
 from decimal import Decimal
 
+
 @dataclass(frozen=True)
 class Money:
     amount: Decimal
@@ -80,9 +81,12 @@ class BookingStatus(models.TextChoices):
     CHECKED_IN = "checked_in", "Checked In"
     CANCELLED = "cancelled", "Cancelled"
 
+
 class Booking(models.Model):
     status = models.CharField(
-        max_length=20, choices=BookingStatus.choices, default=BookingStatus.PENDING,
+        max_length=20,
+        choices=BookingStatus.choices,
+        default=BookingStatus.PENDING,
     )
 
     def confirm(self):
@@ -105,6 +109,7 @@ code interacts with the aggregate root, never directly with its internals.
 ```python
 class Order(models.Model):
     """Aggregate root. All modifications to order lines go through Order methods."""
+
     customer = models.ForeignKey("Customer", on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=OrderStatus.choices)
 
@@ -112,7 +117,10 @@ class Order(models.Model):
         if self.status != OrderStatus.DRAFT:
             raise ValueError("Cannot modify a non-draft order")
         return OrderLine.objects.create(
-            order=self, product=product, quantity=quantity, unit_price=product.price,
+            order=self,
+            product=product,
+            quantity=quantity,
+            unit_price=product.price,
         )
 
     @property
@@ -125,6 +133,7 @@ class Order(models.Model):
 
 class OrderLine(models.Model):
     """Part of the Order aggregate. Never modify directly — use Order methods."""
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines")
     product = models.ForeignKey("Product", on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField()
@@ -149,9 +158,9 @@ from apps.core.schemas import Schema
 
 
 class OrderLineOut(Schema):
-    product_name: str       # domain field, not product_id
+    product_name: str  # domain field, not product_id
     quantity: int
-    line_total: Decimal     # computed, not unit_price
+    line_total: Decimal  # computed, not unit_price
 
 
 class OrderOut(Schema):

@@ -113,6 +113,7 @@ owns the record — a `page_id` from the client is untrusted (IDOR).
 def save_blocks(request, page_id: str, payload: SaveBlocksIn):
     save_page_blocks(Page.objects.get(pk=page_id), payload.blocks)
 
+
 # CORRECT — scope to the caller; get_owned_page raises 404 on a foreign id
 @router.put("/admin/pages/{page_id}/blocks", auth=staff_session_auth)
 def save_blocks(request, page_id: str, payload: SaveBlocksIn):
@@ -317,13 +318,13 @@ def comment(request, slug: str):
 
 ```python
 def item_edit(request, pk):
-    item = get_owned_item(request.user, pk)   # ownership check — no IDOR
+    item = get_owned_item(request.user, pk)  # ownership check — no IDOR
     form = ItemForm(request.POST or None, instance=item)
 
     if request.method == "POST" and form.is_valid():
         form.save()
         response = render(request, "admin/_edit_form.html", {"form": form, "item": item})
-        response["HX-Trigger"] = "itemSaved"   # drives the toast; no markup needed for it
+        response["HX-Trigger"] = "itemSaved"  # drives the toast; no markup needed for it
         return response
 
     # Invalid: 200 with the re-rendered form, so the swap has something to put back
