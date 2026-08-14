@@ -1,9 +1,59 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.1.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v3.1.1 — 14/08/2026
+
+**Status:** Patch — when an explanation misses because you did not have the background, the
+answer now offers to teach you the background. One skill changed. Nothing you write changes.
+
+### What this is
+
+`/wait-what` is what you type when an answer did not land. It re-pitches the explanation in
+plain language rather than repeating it louder.
+
+Sometimes that is the whole fix. The answer was right but crammed, or it put the reasoning
+before the conclusion. Re-pitching it is enough and the matter is closed.
+
+Sometimes it is not. The answer missed because it assumed something you had never been told, or
+leaned on a word this project has never defined for you. A re-pitch gets you through that one
+reply. The next reply on the same subject will miss in the same place.
+
+So on those two, and only those two, the re-pitch now ends with an offer: would you like to go
+and learn this properly?
+
+### What the offer looks like
+
+Three things, in two lines at the end of the re-pitch:
+
+- The topic, named as the folder it would live in under `learning/`.
+- Whether you have started on it before — so it offers to pick it up rather than begin again.
+- The first lesson, which is the exact idea that just failed to land.
+
+That last one is the point. Working out which idea you were missing is most of the work, and the
+re-pitch has already done it. Handing it straight over saves the teaching session doing it again
+from scratch.
+
+You are asked once per topic in a session. Say no and it drops the subject.
+
+### It does not lose your place
+
+Learning is a detour, so it is treated as one. Accept, and the session first writes its handover
+note — where the real work had got to, what was half-finished, what came next — and marks it as
+a teaching detour. You then open a fresh session, load that note, and learn.
+
+Your work is still in that note afterwards. The lesson comes first; the work carries on from the
+same file when you come back to it.
+
+### If you have a project on 3.1.0
+
+`copier update` brings the change. There is no migration, nothing to decide, and no command to
+run. Your own code is untouched.
 
 ---
 

@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 3.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.1.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [3.1.1] - 14/08/2026
+
+### Changed
+
+- **`wait-what` now routes a knowledge gap somewhere, instead of leaving it where it found it.** The skill already sorts the failed reply into one of four causes, and two of them are not delivery problems: _missing context_ and _unshared vocabulary_ are gaps in what the reader knows, which a re-pitch closes for one reply and leaves open for the next. On those two — and only those two, because _too dense_ and _buried answer_ are fixed by the re-pitch itself — the skill now offers the durable fix: a handoff into `/teach`. An offer attached to all four would arrive on replies whose only fault was density, and an offer that arrives every time is one nobody reads.
+- **The lesson is carried across rather than re-derived.** Naming the one concept at the edge of the current level is `teach` step 2's job, and `wait-what` has just done it by identifying what failed to land. The offer therefore names three things — the kebab-case `learning/<topic>/` slug, whether that folder already exists (so it reads _resume_, not _start_), and the opening lesson — and it is made **after** the re-pitch, never before it, where it would read as a deflection. Asked once per topic per session; declined means dropped.
+- **The detour crosses a session boundary on a marked handoff.** Written in full as `.claude/skills/handoff/SKILL.md` defines it — that skill owns the shape and `wait-what` does not restate it — plus three markers: the `HANDOFF-TEACH-<TOPIC>-DD-MM-YYYY.md` descriptor, a `Teaching detour` line naming the topic and the concept that missed, and `teach` named first under **Next skills**. The work's own state is still recorded in full, so the same file resumes the work after the lesson rather than being spent on it.
+- **`teach` and `handoff` each gain one reciprocal cross-reference**, so the route is findable from both ends rather than only from the skill that starts it.
+
+### Fixed
+
+- **`wait-what`'s `## Governing procedures` note no longer claims the skill produces no artefact.** It can now lead to one — written by `handoff`, not here. The rest of the claim stands: still a conversational mechanic, still gating nothing.
 
 ## [3.1.0] - 14/08/2026
 

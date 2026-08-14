@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -226,4 +226,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v3.1.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v3.1.1 · British English (en_GB) throughout_
