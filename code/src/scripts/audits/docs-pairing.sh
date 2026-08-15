@@ -130,6 +130,27 @@ is_exempt_dir() {
   esac
 }
 
+# Check 6 below enumerates DIRECTORIES rather than files, because a directory carrying neither
+# file is invisible to a check driven by the files that exist. Two further classes are exempt
+# from that check only — both are already oriented, so neither is a hole:
+#
+#   synthetic fixtures  the audits run against these trees, so a pair added inside one becomes
+#                       live input to the audit reading it
+#   single-purpose leaf one tracked file, no tracked sub-directory. The parent's pair annotates
+#                       the row and there is no internal organisation left to describe. At two
+#                       files there is a relationship between them, and the exemption lapses.
+is_exempt_from_enumeration() {
+  local dir="$1"
+  is_exempt_dir "$dir" && return 0
+  case "$dir" in
+    code/src/scripts/audits/fixtures|code/src/scripts/audits/fixtures/*) return 0 ;;
+  esac
+  # Single-purpose leaf: exactly one tracked file at any depth beneath it means no sub-directory
+  # holds tracked content either, so the one file is the whole directory.
+  [[ "$(git ls-files "$dir" | wc -l)" -eq 1 ]] && return 0
+  return 1
+}
+
 in_scope() {
   [[ -z "$TARGET_PATH" ]] && return 0
   local p="${1#./}" t="${TARGET_PATH#./}"
@@ -238,6 +259,19 @@ for ctx in "${CONTEXTS[@]}"; do
     END { exit (found ? 0 : 1) }
   ' "$ctx" || warn "$ctx: no prose between the title and the first section — is the \"why\" recorded?"
 done
+
+# ── Check 10: a bound directory carrying NEITHER file ─────────────────────────
+# The two loops above are driven by the CONTEXT.md and CLAUDE.md files that exist, so a
+# directory holding neither is invisible to them — not overlooked, unreachable. This walks
+# directories instead. Scoped to code/src, where "a directory someone works in" is decidable;
+# outside it the exempt classes outnumber the bound ones and the check would be noise.
+while read -r d; do
+  [[ -z "$d" ]] && continue
+  in_scope "$d" || continue
+  is_exempt_from_enumeration "$d" && continue
+  [[ -f "$d/CONTEXT.md" || -f "$d/CLAUDE.md" ]] && continue
+  fail "$d: carries neither CONTEXT.md nor CLAUDE.md — a worked-in directory is oriented"
+done < <(git ls-files 'code/src' | xargs -r -n1 dirname | sort -u)
 
 # ── Report ────────────────────────────────────────────────────────────────────
 FAIL_COUNT=$(grep -c . "$TMP_FAIL" || true); FAIL_COUNT=${FAIL_COUNT:-0}
