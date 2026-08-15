@@ -126,7 +126,13 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
 - Prefer **`code-review-graph update`** (incremental) for routine syncs. Reserve
   **`code-review-graph build`** (full rebuild) for a from-scratch index — and **stop other
   `code-review-graph serve` processes first**: a concurrent writer holds the SQLite lock and a
-  full build fails with `database is locked`.
+  full build fails with `database is locked`. **A failed full build does not roll back** — it
+  leaves the graph partially rebuilt (measured 15/08/2026: 177 files down to 171) while `status`
+  still reports success, so re-run it to completion before trusting the graph again.
+- **A full rebuild is not a mid-session operation.** Measured 15/08/2026 on 177 files: over
+  11 minutes with nothing else touching the store, against ~8 seconds for the incremental pass.
+  It outlives the 120s MCP tool timeout, and the CLI route needs the MCP server stopped first.
+  Run it between sessions; inside one, stage and go incremental.
 - **Run `code-review-graph update` alongside every documentation update** (the "update both
   together" half of the tandem discipline). It is the PATH-installed CLI used here and by the
   hook, and is what `uvx code-review-graph update` resolves to.

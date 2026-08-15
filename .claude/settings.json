@@ -136,7 +136,7 @@
           {
             "type": "command",
             "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/pre-pr-check.sh ] && exec bash $ROOT/.claude/hooks/pre-pr-check.sh'",
-            "timeout": 900000
+            "timeout": 900
           }
         ]
       },
@@ -146,7 +146,7 @@
           {
             "type": "command",
             "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/template-docs-readonly.sh ] && exec bash $ROOT/.claude/hooks/template-docs-readonly.sh'",
-            "timeout": 5000
+            "timeout": 5
           }
         ]
       }
@@ -158,7 +158,7 @@
           {
             "type": "command",
             "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/post-pr-comment.sh ] && exec bash $ROOT/.claude/hooks/post-pr-comment.sh'",
-            "timeout": 30000
+            "timeout": 30
           }
         ]
       },
@@ -167,7 +167,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "code-review-graph update --skip-flows",
+            "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/graph-update.sh ] && exec bash $ROOT/.claude/hooks/graph-update.sh'",
             "timeout": 30
           }
         ]
@@ -192,7 +192,7 @@
           {
             "type": "command",
             "command": "bash -c 'ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && [ -f $ROOT/.claude/hooks/context-threshold-handoff.sh ] && exec bash $ROOT/.claude/hooks/context-threshold-handoff.sh'",
-            "timeout": 5000
+            "timeout": 5
           }
         ]
       }

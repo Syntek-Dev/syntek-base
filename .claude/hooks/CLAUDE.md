@@ -50,6 +50,10 @@ the shipped template documentation read-only in a generated project.
 - **Verify a threshold change by replaying a real transcript** with `CLAUDE_CONTEXT_WINDOW`
   set to force each tier — the tiers are unreachable in a fresh session, so an unverified
   edit ships untested.
+- **`graph-update.sh` always exits 0, and never stages.** It runs on every Edit, Write and Bash,
+  so a failure must not interrupt the session. It reports untracked files rather than adding
+  them: a hook that ran `git add` would silently stage work nobody chose to commit. Keep its
+  extension list in step with `code-review-graph status` → Languages, or the count under-reports.
 - **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is
   what keeps these guides editable here, where they are the product. Never drop it, and keep
   the hook paired with the `template-docs-readonly` job in `lefthook.yml`; a guard on one write

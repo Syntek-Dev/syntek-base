@@ -244,6 +244,15 @@ DOCKER_PNPM="n/a"  # no Node toolchain in the django image — pnpm is host-only
 [[ "$LOCAL_PNPM" == "not-found" ]] && \
   VERSION_WARNINGS+=("pnpm not installed locally")
 
+# The code-review-graph refresh is incremental: it diffs against a git ref, so an untracked
+# source file is never parsed and the refresh still reports success. Warn rather than gate —
+# staging is a judgement about what belongs in the commit, not a quality failure. The rule this
+# serves is `.claude/CLAUDE.md` Section 6; the mechanism is `code/docs/CODE-REVIEW-GRAPH.md`.
+UNGRAPHED=$(git -C "$PROJECT_ROOT" ls-files --others --exclude-standard 2>/dev/null \
+  | grep -cE '\.(sh|bash|py|ts|tsx|js|mjs|cjs|rs)$' || true)
+[[ "${UNGRAPHED:-0}" -gt 0 ]] && \
+  VERSION_WARNINGS+=("${UNGRAPHED} untracked source file(s) outside the code-review-graph — stage before the pre-commit refresh")
+
 # ── 6  Check infrastructure ───────────────────────────────────────────────────
 
 declare -A CHECK_PASS=()

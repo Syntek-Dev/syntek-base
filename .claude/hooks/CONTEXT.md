@@ -6,7 +6,8 @@ runs 8 quality gates before a PR is marked ready; results are posted to the PR b
 window fills, and `pre-compact-handoff.sh` (PreCompact) intercepts compaction — both steer the
 session to the `handoff` skill (see `.claude/CLAUDE.md` Section 2.6).
 `template-docs-readonly.sh` (PreToolUse) blocks writes to the template documentation a generated
-project receives and does not own.
+project receives and does not own. `graph-update.sh` (PostToolUse) refreshes the
+code-review-graph and reports what the refresh could not reach.
 
 ## Directory Tree
 
@@ -19,6 +20,7 @@ project receives and does not own.
 ├── context-threshold-handoff.sh ← UserPromptSubmit hook — warns at 50% context, insists at 75%
 ├── pre-compact-handoff.sh   ← PreCompact hook — blocks auto-compaction, steers to `handoff`
 ├── template-docs-readonly.sh ← PreToolUse hook — template docs are read-only in a generated project
+├── graph-update.sh          ← PostToolUse hook — refresh the graph, name what it could not see
 └── lib/                     ← one gate per file, sourced by pre-pr-check.sh, never run directly
     ├── check-audits.sh      ← TEMPLATE-ONLY — every audit + the shipped-file checks
     ├── check-cloc.sh        ← line-count validation
@@ -33,14 +35,15 @@ project receives and does not own.
 
 ## Files
 
-| File                           | Purpose                                                                    |
-| ------------------------------ | -------------------------------------------------------------------------- |
-| `pre-pr-check.sh`              | Main quality gate script — runs all checks before PR                       |
-| `post-pr-comment.sh`           | Posts check results as PR comments                                         |
-| `context-threshold-handoff.sh` | UserPromptSubmit hook — measures context use, warns at 50%, insists at 75% |
-| `pre-compact-handoff.sh`       | PreCompact hook — intercepts compaction, steers to the `handoff` skill     |
-| `template-docs-readonly.sh`    | PreToolUse hook — blocks writes to the shipped template documentation      |
-| `lib/`                         | Individual check scripts sourced by pre-pr-check.sh — not called directly  |
+| File                           | Purpose                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| `pre-pr-check.sh`              | Main quality gate script — runs all checks before PR                        |
+| `post-pr-comment.sh`           | Posts check results as PR comments                                          |
+| `context-threshold-handoff.sh` | UserPromptSubmit hook — measures context use, warns at 50%, insists at 75%  |
+| `pre-compact-handoff.sh`       | PreCompact hook — intercepts compaction, steers to the `handoff` skill      |
+| `template-docs-readonly.sh`    | PreToolUse hook — blocks writes to the shipped template documentation       |
+| `graph-update.sh`              | PostToolUse hook — refreshes the graph, names the untracked files it missed |
+| `lib/`                         | Individual check scripts sourced by pre-pr-check.sh — not called directly   |
 
 ## lib/ Contents
 
@@ -90,6 +93,24 @@ It is the Claude half of a pair; the human half is the `template-docs-readonly` 
 maintained — the discriminator is `copier.yml`, which is `_exclude`d and so exists only here. The
 hook's own header carries the rest of the reasoning, including why a `permissions.deny` entry or
 `chmod 444` could not express the same split.
+
+## The graph refresh, and what it cannot see
+
+`graph-update.sh` is registered under `hooks.PostToolUse` on `Edit|Write|Bash`. It runs the
+incremental `code-review-graph update --skip-flows`, then reports how many **untracked** files in
+a parsed language sit outside the graph.
+
+The report exists because the refresh is honest about the wrong thing: it diffs against a git
+ref, so a new and unstaged file is never parsed and the update still reports success. The graph
+looks continuously fresh while systematically missing exactly the files a session has just
+created — and `.claude/CLAUDE.md` Section 6 makes that graph a **commit gate**. Measured
+15/08/2026: an untracked `.py` file was absent after an incremental pass and present after
+`git add` plus the same pass.
+
+It reports **only when the set changes**, on the same reasoning as the 50% context tier above — a
+notice repeated on every tool call is a notice nobody reads. `PostToolUse` stdout is discarded
+rather than shown, so the notice is emitted as JSON `systemMessage`. The same count appears as a
+non-blocking warning in `pre-pr-check.sh`, which is where missing it costs the most.
 
 ## Template mode — six checks, not eight
 
