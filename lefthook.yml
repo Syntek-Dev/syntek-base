@@ -35,18 +35,17 @@ pre-commit:
       glob: "*.py"
       run: uvx --from "$(grep -oE '\"ruff[^\"]*\"' pyproject.toml | head -1 | tr -d '\"')" ruff format --force-exclude --check {staged_files}
 
-    # basedpyright keeps `uv run`: unlike ruff it needs the resolved dependency set, and
-    # with no uv.lock every import would be unresolved — a meaningless pass, not a weaker
-    # one. Guarded on the lockfile so it stays a real gate in a generated project and a
-    # stated skip here, matching the workflow of the same name.
+    # basedpyright keeps `uv run`: unlike ruff it needs the resolved dependency set, so it
+    # reads the manifest rather than routing around it. That used to make it unrunnable
+    # here — pyproject.toml's `name` was a token uv rejected while parsing — and the leg
+    # was guarded on uv.lock into a stated skip.
+    #
+    # UNGUARDED 15/08/2026. The name is now the house constant `syntek-base`, branded at
+    # generation, so `uv sync` resolves in the template too and this is a real gate on
+    # both sides. Verified green the day it was unguarded: 0 errors, 0 warnings, 0 notes.
     basedpyright:
       glob: "*.py"
-      run: |
-        if [ -f uv.lock ]; then
-          uv run basedpyright
-        else
-          echo "No uv.lock — base template, not a generated project. Skipping basedpyright."
-        fi
+      run: uv run basedpyright
 
     markdownlint:
       glob: "*.md"

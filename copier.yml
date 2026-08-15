@@ -443,10 +443,13 @@ LEGAL_APP:
   help: App owning cookie consent and legal pages
   default: legal
 
-CORE_APP:
-  type: str
-  help: App owning shared primitives such as encryption
-  default: core
+# CORE_APP was retired on 15/08/2026. Unlike its five siblings above, which name apps a
+# story has yet to create, `apps/core/` ALREADY SHIPS — as a literal directory, with
+# `name = "apps.core"` in its apps.py, `apps.core` in INSTALLED_APPS, literal imports
+# throughout, and a dozen guides naming it. The question could therefore never be
+# honoured: answering anything but `core` produced a project whose docs disagreed with
+# its own code. A token whose referent is hardcoded everywhere else is not a choice, it
+# is a claim that a choice exists. See how-to/src/TEMPLATE-TOKENS.md.
 
 # ── Planning cadence ─────────────────────────────────────────────────────────
 # The sprint point ceiling that triggers the sprint-planning pass. Stories are
@@ -642,6 +645,22 @@ _tasks:
       perl -0777 -i -pe
       's/^# Python lockfile — BASE TEMPLATE ONLY\.\n(?:#.*\n)*uv\.lock\n\n//m'
       .gitignore
+    when: "<% _copier_operation == 'copy' %>"
+
+  # Brand the manifest. `pyproject.toml` carries the house constant `syntek-base` rather
+  # than a token, because uv validates [project] name as a package name and rejects the
+  # delimiters outright — a token there made the whole repository unlockable, and took
+  # basedpyright, pip-audit and every test suite down with it. The name is therefore
+  # restored HERE, and this task MUST stay ahead of `uv lock` below so the lock is written
+  # under the project's own slug rather than the template's.
+  #
+  # Anchored to the exact literal rather than `^name = `: [project] is not the only table
+  # in this file that could ever carry a name key, and a loose pattern would rewrite the
+  # first one it met.
+  - command: >-
+      perl -0777 -i -pe
+      's/^name = "syntek-base"$/name = "<%PROJECT_SLUG%>"/m'
+      pyproject.toml
     when: "<% _copier_operation == 'copy' %>"
 
   # Generate the lock the Dockerfiles need. Non-fatal: the guide tells you to run

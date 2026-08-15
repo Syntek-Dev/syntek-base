@@ -186,24 +186,23 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This leg said "Running
+      # Prettier only" on every template run, so the Python half of [3/8] had never
+      # executed here. Root working directory: `ruff format` is configured from the root
+      # manifest and covers the whole tree, which is what syntax-python.yml already does.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. Running Prettier only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. Both halves still run."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+      - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff format --check
-        if: steps.detect.outputs.present == 'true'
         run: uv run ruff format --check .
-        working-directory: code/src/django
       - name: Prettier — --check
         run: pnpm exec prettier --check .
 
@@ -246,24 +245,24 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This leg said "Running
+      # ESLint only" on every template run, so [4/8]'s Python half had never executed
+      # here even while syntax-python.yml ran the same check through uvx. Root working
+      # directory, matching that workflow: `ruff check .` from code/src/django would
+      # narrow the gate to one subtree.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. Running ESLint only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. Both halves still run."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+      - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff check
-        if: steps.detect.outputs.present == 'true'
         run: uv run ruff check .
-        working-directory: code/src/django
       - name: JS — eslint
         run: pnpm exec eslint .
 
@@ -317,24 +316,26 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file. This gate is Python-only, so
-      # everything below is conditional and the job reports success with nothing to run.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026, with syntax-python.yml and lefthook.yml. The LOCKFILE GUARD
+      # note at the top of this file no longer applies to THIS gate: pyproject.toml's
+      # `name` is now the house constant `syntek-base`, branded at generation, so uv
+      # parses the manifest here and the type-check is a real gate on both sides.
+      #
+      # The lock decides the sync mode, not whether the gate runs. Root working directory
+      # rather than code/src/django: the manifest is at the repo root, which is where the
+      # unguarded run was actually verified.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. There is no Python environment to type-check."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. The gate still runs."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
-      - if: steps.detect.outputs.present == 'true'
-        run: pnpm install --frozen-lockfile
+      - run: uv sync ${{ steps.sync.outputs.flag }}
+      - run: pnpm install --frozen-lockfile
       - name: Python — basedpyright
-        if: steps.detect.outputs.present == 'true'
         run: uv run basedpyright
 
   # ── [7/8] Tests ──────────────────────────────────────────────────────────────
@@ -521,28 +522,25 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file. `pnpm audit` is unguarded and
-      # keeps scanning the template's own JS dependency tree.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This is N-004's CI half:
+      # the local `audits/security.sh` runs both legs and this gate ran the JS one only,
+      # so the PR gate was quieter than the script a developer runs beside it. Both legs
+      # now execute on both sides. Verified green the day it was unguarded — ruff --select
+      # S clean, pip-audit "No known vulnerabilities found".
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. Auditing the JS dependency tree only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. Both trees still audited."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+      - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff security (flake8-bandit rules)
-        if: steps.detect.outputs.present == 'true'
         run: uv run ruff check --select S .
-        working-directory: code/src/django
       - name: JS — pnpm audit
         run: pnpm audit --audit-level low
       - name: Python — pip-audit (CVE scan)
-        if: steps.detect.outputs.present == 'true'
         run: uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes)
-        working-directory: code/src/django

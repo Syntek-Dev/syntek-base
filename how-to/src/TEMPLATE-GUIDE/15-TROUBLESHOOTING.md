@@ -38,10 +38,22 @@ bash .github/scripts/check-template-tokens.sh
 
 It reports mangled tokens, tokens that are not registered questions in `copier.yml` (they render
 to nothing), and unclosed `<%` delimiters (they kill generation outright). CI runs it on every
-pull request as **[1/3] Template Tokens**, alongside **[2/3] Shipped Documentation** — which
+pull request as **[1/4] Template Tokens**, alongside **[2/4] Shipped Documentation** — which
 proves the README and the project-memory store a project receives are its own and not the
-template's — and **[3/3] Template Generation**, which generates both render paths and asserts on
-each.
+template's — **[3/4] Template Generation**, which generates both render paths and asserts on
+each, and **[4/4] Parser Probes**.
+
+That last job checks the half a text scan cannot reach. If a manifest suddenly fails to load —
+`uv` refusing the project, `cargo` refusing the workspace, `docker compose config` erroring — run:
+
+```bash
+bash .github/scripts/check-template-parsers.sh
+```
+
+A token has almost certainly landed in a position its parser validates as a **name**, where `<`,
+`%` and `>` are not legal characters. The fix is never to escape it: move the name out of the
+parser's path, keeping a house constant in the file and branding it with a `copier.yml` `_task`
+at generation. `pyproject.toml`'s `[project] name` is the worked example.
 
 To avoid the problem in the first place, prefer `**bold**` over `_emphasis_` in any paragraph that
 also contains a token.

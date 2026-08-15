@@ -9,7 +9,7 @@ model: opus
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB)
 
-**Applies to:** `code/src/rust/crates/nativecore/` and the call sites in `apps/<%CORE_APP%>/`
+**Applies to:** `code/src/rust/crates/nativecore/` and the call sites in `apps/core/`
 Index: [`../ENCRYPTION-GUIDE.md`](../ENCRYPTION-GUIDE.md).
 
 How the first-party native crypto relates to the Fernet field-encryption pipeline — which is

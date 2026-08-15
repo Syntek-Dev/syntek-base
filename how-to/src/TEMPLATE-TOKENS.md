@@ -60,10 +60,12 @@ describes the markers rather than showing them.
 
 ## The tokens
 
-Thirty-eight tokens carry every project-specific value. **Thirty-four are always asked**; the
+Thirty-seven tokens carry every project-specific value. **Thirty-three are always asked**; the
 remaining four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile
 surface is included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only
 when the desktop surface is. Example values are illustrative — replace them.
+
+Thirty-eight until 15/08/2026, when `CORE_APP` was retired — see the note under _Django apps_.
 
 ### Identity
 
@@ -184,10 +186,18 @@ content) keeps its default, and the doc rows that mention it can be deleted afte
 | `<%CONTENT_APP%>`       | App owning user-authored content                 | `content`       | `snake_case` |
 | `<%NOTIFICATIONS_APP%>` | App owning notifications and their delivery      | `notifications` | `snake_case` |
 | `<%LEGAL_APP%>`         | App owning cookie consent and legal pages        | `legal`         | `snake_case` |
-| `<%CORE_APP%>`          | App owning shared primitives (e.g. encryption)   | `core`          | `snake_case` |
 
-`apps.marketing`, `apps.seo`, and `apps.design_tokens` are **house constants**, not tokens — they
-are the same in every project and stay literal.
+`apps.marketing`, `apps.seo`, `apps.design_tokens` and **`apps.core`** are **house constants**, not
+tokens — they are the same in every project and stay literal.
+
+**`<%CORE_APP%>` was retired on 15/08/2026, and the reason is the general rule.** The five tokens
+above name apps **a story has yet to create**: nothing in the template claims to be `apps/users/`,
+so the token is the only thing that ever names it and the answer is honoured everywhere. `apps/core/`
+is the opposite case — it **already ships**, as a literal directory, with `name = "apps.core"` in
+its `apps.py`, `apps.core` in `INSTALLED_APPS`, literal imports throughout, and a dozen guides
+naming it. Answering `CORE_APP=shared` produced a project whose documentation disagreed with its own
+code. **A token whose referent is hardcoded everywhere else is not a choice; it is a claim that a
+choice exists.**
 
 ### Planning cadence
 
@@ -327,18 +337,39 @@ all**, so every gate that depends on parsing it — a compiler, a linter, a test
 while looking perfectly correct in a generated project. The gate then proves nothing until after
 generation, which is the one place nobody looks.
 
-| Position                                             | Validated? | Tokenise?               |
-| ---------------------------------------------------- | ---------- | ----------------------- |
-| Comment, description, author, licence field          | no         | yes                     |
-| String literal (Python, Rust, Slint, JSON, YAML)     | no         | yes                     |
-| Hostname, database name, path segment, env-var value | at runtime | yes                     |
-| **Crate / package / module / class / function name** | at compile | **no — house constant** |
-| **A name a schema constrains** (e.g. a k8s `name:`)  | on apply   | **no — house constant** |
+| Position                                                 | Validated? | Tokenise?               |
+| -------------------------------------------------------- | ---------- | ----------------------- |
+| Comment, description, author, licence field              | no         | yes                     |
+| String literal (Python, Rust, Slint, JSON, YAML)         | no         | yes                     |
+| Hostname, database name, path segment, env-var value     | at runtime | yes                     |
+| **Crate / package / module / class / function name**     | at compile | **no — house constant** |
+| **A name a schema constrains** (e.g. a k8s `name:`)      | on apply   | **no — house constant** |
+| **A shell word** (a Compose `--health-cmd`, any `sh -c`) | at run     | **no — house constant** |
 
-Where the branded name is genuinely wanted, produce it **after** the tool has run, where it is a
-filename rather than a grammar. `code/src/rust/crates/desktop/` is the worked example: the crate
-is the house constant `desktop`, and `code/src/scripts/desktop/package.sh` copies the built
-artefact to `<%PROJECT_SLUG%>-desktop`. Same deliverable, no token in the compiler's path.
+**The last row is a different failure, and it is worth separating.** Everywhere above, the
+delimiters are _illegal_ — a parser rejects them. In a shell word they are **legal and active**:
+`<` and `>` are redirects, so the command does not fail to parse, it runs and does something else
+entirely. That was `70fc963`, where a Compose health probe silently became a redirection. A rule
+written only about identifiers would never have caught it.
+
+**Two remedies, and which one applies depends on whether the name is wanted at all.**
+
+- **Never branded — house constant, permanently.** `code/src/rust/crates/desktop/` is the worked
+  example: the crate is the constant `desktop`, and `code/src/scripts/desktop/package.sh` copies
+  the built artefact to `<%PROJECT_SLUG%>-desktop` afterwards, where the name is a filename rather
+  than a grammar. Same deliverable, no token in the compiler's path.
+- **Branded late — house constant here, rewritten at generation.** `pyproject.toml`'s
+  `[project] name` is the worked example: it carries `syntek-base` so `uv` can parse the manifest
+  in this repository, and a `copier.yml` `_task` rewrites it to `<%PROJECT_SLUG%>` **before**
+  `uv lock` runs. Use this shape where the generated project genuinely needs its own name; note
+  the cost, which is that `copier update` never runs `_tasks`.
+
+**The rule has a gate, and did not until 15/08/2026.** `.github/scripts/check-template-parsers.sh`
+runs each toolchain's own parser — `uv lock --dry-run`, `cargo metadata`, `pnpm ls`,
+`docker compose config` — and requires every manifest to load in the template. It does **not**
+check positions, and that is deliberate: `pnpm` accepts `<%PROJECT_SLUG%>` in `package.json`'s
+`name` while `uv` rejects the identical token in `pyproject.toml`'s, so the same syntactic position
+is fine for one tool and fatal for another. Asking the parser is the only answer that stays true.
 
 This is the same class as `<%LICENCE%>`, which is not a valid SPDX expression either — handled
 there by exempting the crate in `code/src/rust/deny.toml` (`private.ignore`) rather than by

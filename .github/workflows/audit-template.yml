@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   tokens:
-    name: "[1/3] Template Tokens"
+    name: "[1/4] Template Tokens"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -44,7 +44,7 @@ jobs:
   # deletes a required row per check and asserts each one is caught, so a rule that
   # stops discriminating fails here rather than the next time the trees drift.
   shipped-docs:
-    name: "[2/3] Shipped Documentation"
+    name: "[2/4] Shipped Documentation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -61,8 +61,41 @@ jobs:
       - name: A generated project must receive an empty project-memory store
         run: bash .github/scripts/shipped-memory.sh
 
+  # POSITION, where [1/4] checks SHAPE. A token is inert in a comment and fatal in any
+  # position a real parser validates, and the two cannot be told apart by reading text:
+  # pnpm accepts <%PROJECT_SLUG%> in package.json's `name` while uv rejects the identical
+  # token in pyproject.toml's. So this job asks each toolchain rather than guessing —
+  # every manifest must parse HERE, before generation, or its gates prove nothing until
+  # after it. Full reasoning in the script header. MAP-BASE-HEALTH N-024.
+  parsers:
+    name: "[4/4] Parser Probes"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          # The template commits no uv.lock, so there is nothing to restore or save.
+          ignore-nothing-to-cache: true
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      # cargo and docker are preinstalled on ubuntu-latest. If either ever stops being so,
+      # the script FAILS rather than skipping — a manifest present with no toolchain to
+      # read it is a gate that cannot run, and this repository requires those to say so.
+
+      - name: Prove the probe (self-test against a tokenised manifest)
+        run: bash .github/scripts/check-template-parsers.sh --self-test
+
+      - name: Every toolchain must parse its own manifest in the template
+        run: bash .github/scripts/check-template-parsers.sh
+
   generate:
-    name: "[3/3] Template Generation"
+    name: "[3/4] Template Generation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -153,6 +186,39 @@ jobs:
                 status=1
               fi
             done
+          done
+          exit $status
+
+      # THE MANIFEST MUST BE BRANDED, and this is the only place that can prove it.
+      # pyproject.toml carries the house constant `syntek-base` in the template, because uv
+      # validates [project] name as a package name and rejects the token delimiters — that
+      # one line cost the repository its type-check, its dependency audit and every test
+      # suite until 15/08/2026. A copier _task rewrites it at generation, ahead of
+      # `uv lock`, so the name is NOT a token and nothing else checks it: [1/4] scans token
+      # syntax and finds none here, and [4/4] proves the template parses, which it would
+      # with the constant left in. If that task is ever reordered after `uv lock`, or its
+      # anchor drifts, every generated project silently ships named after the template.
+      - name: The generated manifest must carry the project's own name
+        run: |
+          status=0
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+            name=$(grep -m1 '^name = ' pyproject.toml | sed 's/^name = "\(.*\)"$/\1/')
+            if [ "$name" = "syntek-base" ]; then
+              echo "::error::INCLUDE_MOBILE=$mobile — pyproject.toml is still named 'syntek-base'."
+              echo "::error::The copier _task that brands it did not run, or its anchor no longer matches."
+              status=1
+            elif [ "$name" != "ci-probe" ]; then
+              echo "::error::INCLUDE_MOBILE=$mobile — pyproject.toml name is '$name', expected 'ci-probe'."
+              status=1
+            else
+              echo "INCLUDE_MOBILE=$mobile — manifest branded as '$name'"
+            fi
+            # And the lock must agree, which is what proves the task ran BEFORE uv lock.
+            if [ -f uv.lock ] && grep -q '"syntek-base"' uv.lock; then
+              echo "::error::INCLUDE_MOBILE=$mobile — uv.lock pins the template's name; the brand task ran too late."
+              status=1
+            fi
           done
           exit $status
 

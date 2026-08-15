@@ -81,7 +81,7 @@ def gdpr_export(user_id: str) -> dict:
     Decrypts fields before returning — the export is for the data subject (plaintext).
     Never includes data belonging to other users.
     """
-    from apps.<%CORE_APP%>.encryption import decrypt_field, get_field_key
+    from apps.core.encryption import decrypt_field, get_field_key
     from apps.<%IDENTITY_APP%>.models import User
 
     user = User.objects.using("admin_db").get(pk=user_id)

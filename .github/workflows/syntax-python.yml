@@ -150,29 +150,29 @@ jobs:
           # reasoning at the same input in claude.yml.
           ignore-nothing-to-cache: true
 
-      # Same shape as claude.yml / test.yml / audit-deps.yml: guard at STEP level on the
-      # lockfile so the job reports success with an explanatory line rather than a
-      # failure nobody can act on. Unlike ruff, basedpyright cannot be usefully run
-      # without the dependency set — every import would be unresolved and the result
-      # would be noise wearing a gate's name.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED SINCE 15/08/2026. This step used to skip the whole gate when uv.lock
+      # was absent, because pyproject.toml's `name` was an unrendered token and uv would
+      # not parse the manifest at all. That name is now the house constant `syntek-base`,
+      # branded at generation by a copier _task, so the template resolves its own
+      # dependency set and this gate RUNS HERE rather than reporting a skip.
+      #
+      # The lockfile still decides the sync MODE — never whether the gate happens.
+      # `--frozen` asserts a committed lock is current, which is the right assertion in a
+      # generated project and an impossible one in the template, which commits no lock.
+      # That is the whole remaining difference, and it is one flag rather than one gate.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-            echo "uv.lock present — type-checking against the resolved dependency set."
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — installing from the committed lock."
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — this is the base template, not a generated project."
-            echo "uv cannot parse a manifest whose name is still a token, and a type-check"
-            echo "with no dependencies resolves nothing. Skipping rather than reporting a"
-            echo "failure with no subject. See how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md SL-1."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. The gate still runs."
           fi
 
       - name: Install dependencies
-        if: steps.detect.outputs.present == 'true'
-        run: uv sync
+        run: uv sync ${{ steps.sync.outputs.flag }}
 
       - name: Run basedpyright
-        if: steps.detect.outputs.present == 'true'
         run: uv run basedpyright

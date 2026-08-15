@@ -187,11 +187,14 @@ your project genuinely calls the thing something else.
 | `CONTENT_APP`       | `content`       | User-authored content                 |
 | `NOTIFICATIONS_APP` | `notifications` | Notifications and their delivery      |
 | `LEGAL_APP`         | `legal`         | Cookie consent and legal pages        |
-| `CORE_APP`          | `core`          | Shared primitives such as encryption  |
 
 Only the **names** are configurable — the layout `code/src/django/apps/<app>/` is fixed. If your
 project has no user-authored content, keep the `content` default and delete the documentation rows
 that mention it afterwards.
+
+Every app above is one **a story has yet to create**, which is what makes the name yours to choose.
+`apps/core/` is not on the list because it already ships literal — it is a house constant, and was
+never really configurable even while a `CORE_APP` question existed to suggest otherwise.
 
 **None of these directories exists at baseline.** `apps/` ships with `core` alone; the six answers
 name apps the documentation refers to, and each one is created when a story first needs it — with

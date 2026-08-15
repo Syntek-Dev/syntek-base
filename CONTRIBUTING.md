@@ -133,7 +133,8 @@ This repository holds documentation to the same standard as code:
 pnpm lint:md                                        # markdownlint across every .md
 bash code/src/scripts/syntax/lint.sh                # ruff + markdownlint
 bash code/src/scripts/syntax/format.sh              # prettier + ruff format (dry run; --fix to apply)
-bash .github/scripts/check-template-tokens.sh       # token integrity — run after any Markdown format
+bash .github/scripts/check-template-tokens.sh       # token SHAPE — run after any Markdown format
+bash .github/scripts/check-template-parsers.sh      # token POSITION — every manifest must still parse
 ```
 
 > **Why that last check matters.** Token names contain underscores, and Prettier's Markdown
@@ -145,6 +146,15 @@ bash .github/scripts/check-template-tokens.sh       # token integrity — run af
 > The script also catches tokens that are not registered questions in `copier.yml` (they render
 > to nothing) and unclosed `<%` delimiters (they kill generation outright). CI runs it on every
 > pull request.
+>
+> **The second script is the other half, and it is not a text check.** A token is inert in a
+> comment and fatal in any position a parser validates as a name — the delimiters `<`, `%` and
+> `>` are not legal in one. Those two cases look identical to a grep, and are not even
+> consistent between tools: pnpm accepts `<%PROJECT_SLUG%>` in `package.json`'s `name` while uv
+> rejects it in `pyproject.toml`'s. So rather than guess, `check-template-parsers.sh` runs each
+> toolchain's own parser — `uv`, `cargo`, `pnpm`, `docker compose` — and requires every manifest
+> to load **in the template**. A file that only parses after generation takes its gates down
+> with it, and nobody looks there. Rule: `how-to/src/TEMPLATE-TOKENS.md`.
 
 All developer operations go through the scripts in `code/src/scripts/` — never raw `python`,
 `pytest`, `pnpm`, `uv` or `docker`.
