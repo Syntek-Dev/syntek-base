@@ -26,25 +26,25 @@ __all__ = [
 class ServiceError(Exception):
     """Root of the user-error tree. Subclass it per app rather than raising it directly."""
 
-    code: str = "UNKNOWN_ERROR"
+    code: str = "unknown_error"
 
 
 class ServicePermissionError(ServiceError):
     """Authorisation or ownership check failed."""
 
-    code: str = "PERMISSION_DENIED"
+    code: str = "permission_denied"
 
 
 class ServiceNotFoundError(ServiceError):
     """The resource does not exist, or is soft-deleted."""
 
-    code: str = "NOT_FOUND"
+    code: str = "not_found"
 
 
 class ServiceValidationError(ServiceError):
     """Field-level input validation failed."""
 
-    code: str = "VALIDATION_ERROR"
+    code: str = "validation_error"
 
 
 class InvariantViolation(Exception):

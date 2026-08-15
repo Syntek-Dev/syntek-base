@@ -246,6 +246,11 @@ This applies to: registration flows, provisioning, permission assignments, role 
 other mutation that touches more than one model or row. Missing `transaction.atomic()` on multi-step
 writes will be caught at QA. Add it when writing the service, not after.
 
+Where that transaction also carries an RLS scope variable, ordering becomes load-bearing: a
+`select_for_update()` only locks rows the policy already makes visible, so a lock taken before the
+scope is set covers nothing and returns `None` rather than failing
+([`rls/MIDDLEWARE-AND-NINJA.md`](rls/MIDDLEWARE-AND-NINJA.md) → _Row locking_).
+
 Use Django's exception hierarchy and Django Ninja's exception handlers (register them with
 `@api.exception_handler(SomeError)` on the `NinjaAPI` instance). Log unexpected exceptions to
 Sentry/GlitchTip before re-raising or returning error responses.

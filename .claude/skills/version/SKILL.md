@@ -108,7 +108,11 @@ Immediately after the H1. Dates DD/MM/YYYY; `RELEASES.md` titles read `vX.Y.Z �
   someone who does not have the diff.
 - Root and every affected sub-package must agree with their logs. **Leave nothing half-bumped.**
 - Never a raw `git commit` or `git tag`, and never a package manager's own version command.
-  Stage with `.claude/plugins/git-tool.py add`, then hand off.
+  Stage with `git add`, then hand off to the `git` skill — **staging only, nothing committed.**
+  The plugins cannot do this for you: every `.claude/plugins/*-tool.py` is **read-only
+  inspection** (`git-tool.py` offers `status`, `branches`, `remotes`, `commits`, `tags`,
+  `stash`, `host`, `installed` and nothing that writes). Reach for one to _read_ state before
+  the bump — the current version, the branch, the last tag — never to change it.
 
 ## Definition of done
 

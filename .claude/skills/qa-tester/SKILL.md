@@ -60,6 +60,21 @@ boundaries (max int, oversized collection, off-by-one, first and last page); rac
 writes, a multi-write path outside `transaction.atomic()`); failure handling when an external
 service is down or slow; timezone, locale and currency handling.
 
+**Invariants and the error taxonomy** (`code/docs/NEGATIVE-SPACE.md`) — **`how-to/src/INVARIANTS.md`
+is an attack list**: every row is an invariant someone has stated, so try to violate each one the
+diff can reach. Then check what comes back out, because both directions are findings:
+
+- A **programmer error surfacing as a friendly 4xx** is the silence this doctrine exists to close
+  — expect 500, `ERROR` with `exc_info`, one tracker event, and a generic body carrying no
+  internals.
+- A **user error surfacing as a 500** is the noise that gets the rule muted. If ordinary input
+  reaches an `InvariantViolation`, the classification is wrong and that is the finding.
+- **`X-Request-ID` on every response.** A failure a user cannot quote back is a failure nobody can
+  correlate — capture it in the reproduction.
+- **HTMX swaps on 2xx only**, so an unhandled 500 replaces nothing and reads as a dead button.
+- **Mobile-only:** 408, 502, 503 and 504 are **environment** errors despite three being 5xx.
+  Reporting them as defects is how a mobile tracker becomes noise.
+
 **Performance** (`code/docs/PERFORMANCE.md`) — N+1s, unbounded queries with no pagination,
 large payloads, and resources never released.
 
@@ -119,6 +134,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/docs/QA-GUIDE.md` — the governing manual and automated checklists
 - `code/docs/SECURITY.md` — the OWASP controls each security row above is testing for
+- `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the taxonomy each response above is
+  checked against, and the register that lists what to attack
 - `code/docs/TESTING.md` · `code/docs/testing/COVERAGE.md` — the floors a gap is judged against
 - `code/docs/PERFORMANCE.md` — the query and response-time targets
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA, where the change touches UI. **Mobile-only:**

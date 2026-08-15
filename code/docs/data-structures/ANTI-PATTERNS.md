@@ -249,4 +249,36 @@ class Order(models.Model):
 Two fields with 5 states each give you 25 combinations with 10 values. One combined field needs
 25 separate values. Separate fields are easier to query, index, and reason about.
 
+---
+
+## The ID-or-Instance Parameter
+
+A function that accepts either a primary key or the object it identifies.
+
+```python
+# Bad — every call site is ambiguous, and the body opens with a branch
+def archive_order(order: Order | UUID) -> None:
+    if isinstance(order, UUID):
+        order = Order.objects.get(pk=order)
+    order.archived_at = timezone.now()
+    order.save()
+
+
+# Good — pick one, and let the caller resolve
+def archive_order(order: Order) -> None:
+    order.archived_at = timezone.now()
+    order.save()
+```
+
+The union costs more than the convenience returns. The two paths have **different query counts**
+(one hits the database, one does not) and **different failure modes** (`DoesNotExist` raised
+inside the function, or a stale instance passed in and written back over a newer row) — so the
+caller cannot reason about either without reading the body. Every test doubles. The `isinstance`
+branch is not domain logic and never becomes any.
+
+Passing an identifier **instead of** an instance is a different thing and often right: across a
+process boundary the instance is stale by construction, so a task takes the primary key and
+re-reads it ([`../TASK-AUTHORING.md`](../TASK-AUTHORING.md)). That is one choice made
+deliberately, not a signature that accepts both.
+
 _Part of the `code/docs/` documentation family. See [`../DATA-STRUCTURES.md`](../DATA-STRUCTURES.md) for the full index._

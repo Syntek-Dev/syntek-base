@@ -213,6 +213,13 @@ Register a catch-all handler on the `NinjaAPI` instance so unhandled exceptions 
 > taxonomy, the exception type each raises, and the status, log level and tracker behaviour each
 > gets are owned by [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md) Section _The error taxonomy_. This
 > section is one of that taxonomy's consequences — the wiring, not the rule.
+>
+> **Nor is the response body.** The error envelope, the `error.code` vocabulary and the full set of
+> six handlers belong to
+> [`../api-design/AUTH-AND-ERRORS.md`](../api-design/AUTH-AND-ERRORS.md) Section _The error
+> envelope_. The examples below show **where the logging call goes** and elide the body for that
+> reason — they returned a competing `{"detail": ...}` shape until 14/08/2026, and nobody looked for
+> an API contract in a logging guide.
 
 ```python
 import logging
@@ -228,13 +235,13 @@ api = NinjaAPI(title="<%PROJECT_NAME%> API", docs_url="/api/docs")
 @api.exception_handler(ValidationError)
 def on_validation_error(request, exc):
     logger.info("api validation error", extra={"path": request.path})
-    return api.create_response(request, {"detail": exc.errors}, status=422)
+    return api.create_response(request, VALIDATION_ENVELOPE, status=422)  # AUTH-AND-ERRORS.md
 
 
 @api.exception_handler(Exception)
 def on_unhandled(request, exc):
     logger.error("api request failed", exc_info=True, extra={"path": request.path})
-    return api.create_response(request, {"detail": "Internal server error."}, status=500)
+    return api.create_response(request, INTERNAL_ENVELOPE, status=500)  # AUTH-AND-ERRORS.md
 ```
 
 > Ninja auto-generates the OpenAPI schema and Swagger UI at `/api/docs`. Every state-changing

@@ -158,6 +158,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-doc-references.yml     ← every citation in a shipped file must resolve
 │       ├── audit-docs-length.yml        ← the 300-line instructional-document limit
 │       ├── audit-docs-pairing.yml       ← the CONTEXT.md / CLAUDE.md split
+│       ├── audit-doctrine-drift.yml     ← one rule, one home — restated, dropped, or revived
 │       ├── audit-mobile-tokens.yml      ← token-first on the mobile surface; self-skips without one
 │       ├── audit-negative-space.yml     ← the invariant register against the code, both directions
 │       ├── audit-render-slop.yml        ← the AI-slop family, rendered half
@@ -1177,6 +1178,7 @@ table ever falls behind it.
 | `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                    |
 | `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                 |
 | `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` Section 8)           |
+| `doctrine-drift.sh`    | Each rule in the claims table has exactly one home — not restated, dropped, or revived   |
 | `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                            |
 | `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors          |
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag |

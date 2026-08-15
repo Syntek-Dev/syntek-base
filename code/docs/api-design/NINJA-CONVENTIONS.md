@@ -240,22 +240,11 @@ def cancel_order(request, order_id: int): ...
 ```
 
 Register **exception handlers** on the `NinjaAPI` instance so every error returns the standard
-envelope (see [`./REST-CONVENTIONS.md`](./REST-CONVENTIONS.md) — REST Error Response Format) and no
-traceback leaks:
+envelope and no traceback leaks. Ninja ships six default handlers and **all six are overridden** —
+overriding fewer leaves some statuses answering in a different shape from the same API.
 
-```python
-from ninja.errors import ValidationError
-
-
-@api.exception_handler(ValidationError)
-def on_validation_error(request, exc):
-    details = [{"field": e["loc"][-1], "message": e["msg"]} for e in exc.errors]
-    return api.create_response(
-        request,
-        {"error": {"code": "validation_failed", "message": "Invalid request.", "details": details}},
-        status=422,
-    )
-```
+**The envelope, the handler set and the worked example are owned by
+[`./AUTH-AND-ERRORS.md`](./AUTH-AND-ERRORS.md) — _The error envelope_.** Do not restate them here.
 
 ---
 

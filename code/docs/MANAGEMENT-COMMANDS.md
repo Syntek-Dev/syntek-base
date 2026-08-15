@@ -1,6 +1,6 @@
 ---
 type: guide
-skills: [backend, stack-django]
+skills: [backend, stack-django, security]
 model: opus
 ---
 

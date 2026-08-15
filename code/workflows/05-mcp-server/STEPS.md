@@ -57,13 +57,15 @@ alongside the story's API design in `project-management/src/13-API-DESIGN/PLANNI
 > **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **Also load:** `stack-fastmcp`
 
 Add `fastmcp` to `pyproject.toml` and refresh the lockfile through the normal flow. Create
-`config/mcp.py` with the single `FastMCP` instance, then convert `config/asgi.py` into the
-Starlette router per `code/docs/mcp-server/MOUNTING.md`.
+`config/mcp.py` with the single `FastMCP` instance — built with `mask_error_details=True` and
+carrying the `on_call_tool` error middleware — then convert `config/asgi.py` into the Starlette
+router per `code/docs/mcp-server/MOUNTING.md`.
 
-Four things that are silent when wrong: the FastMCP **lifespan must be hoisted** to the outer
+Five things that are silent when wrong: the FastMCP **lifespan must be hoisted** to the outer
 app; `get_asgi_application()` must run **before** any import that touches a model; the Django
-mount is a **catch-all and must be last**; and `/mcp` needs a redirect to `/mcp/`. Set
-`stateless_http=True` unless you record a reason not to.
+mount is a **catch-all and must be last**; `/mcp` needs a redirect to `/mcp/`; and the router
+carries `RequestIDASGIMiddleware`, or a tool call and a page are two records joined by a
+timestamp. Set `stateless_http=True` unless you record a reason not to.
 
 Gate the mount on an explicit setting, defaulting off outside local — mounting is a
 deploy-time decision, like `API_DOCS_ENABLED`.
@@ -90,8 +92,15 @@ Ninja twin checks** (imported, not re-implemented), resolve any user-supplied re
 the caller's own queryset, delegate to `services.py`, and return a plain JSON-serialisable
 shape.
 
-Write the docstring as the contract it is — purpose, when to use it, what is irreversible, and
-the exact allowed values for every constrained parameter. Cap every collection return.
+Write the docstring as the contract it is — purpose, when to use it, what is irreversible, the
+exact allowed values for every constrained parameter, and the failures the model can recover
+from. Cap every collection return.
+
+**No `try/except` in a tool.** The three error classes are classified once, in the `on_call_tool`
+middleware; a tool that catches its own service's errors re-decides the taxonomy per tool, which
+is the second call site the register forbids. There are no status codes here — FastMCP returns
+an error as a result the model reads and acts on
+(`code/docs/mcp-server/TOOL-DESIGN.md` → _The error taxonomy on this surface_).
 
 Do **not** reach for `FastMCP.from_openapi()` over this project's own API; the reasoning is in
 `code/docs/mcp-server/TOOL-DESIGN.md`.
@@ -114,9 +123,13 @@ coverage floor. Run through `code/src/scripts/tests/*.sh`.
 > **↳ New dispatch:** `general-purpose` · **Skill:** `logging`, then `security` · **Model:** opus
 
 Sentry's Django integration does not see `/mcp/` — add the ASGI/Starlette integration and
-capture at the tool boundary, or a failing tool is invisible. Log tool name, resolved user,
-outcome and duration; never the token, the raw arguments, or the full result. Tool calls are
-unattended, so the log is the audit trail.
+capture in the `on_call_tool` middleware, which is the one place that already knows the error's
+class, or a failing tool is invisible. Log tool name, resolved user, outcome and duration; never
+the token, the raw arguments, or the full result. Tool calls are unattended, so the log is the
+audit trail.
+
+Verify the three configuration clauses with `bash code/src/scripts/audits/negative-space.sh` —
+they turn on the moment the first `mcp_tools.py` exists.
 
 Then run `code/workflows/08-security-hardening/` against the surface using the checklist in
 `code/docs/mcp-server/AUTH-AND-THREATS.md`. Add `/mcp/` to the server/edge contract in

@@ -69,7 +69,8 @@ def test_login_rejects_malformed_body() -> None:
     client = TestClient(router)
     response = client.post("/login", json={"email": "not-an-email"})  # password missing
     assert response.status_code == 422
-    assert response.json()["detail"][0]["loc"][-1] == "password"
+    assert response.json()["error"]["code"] == "validation_failed"
+    assert response.json()["error"]["details"][0]["field"] == "password"
 ```
 
 ---

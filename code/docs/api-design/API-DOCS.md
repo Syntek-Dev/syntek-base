@@ -53,8 +53,9 @@ Publish versioned API documentation separately from the live docs page for exter
 Before releasing any API endpoint:
 
 - [ ] URL follows REST conventions (plural nouns, no verbs, correct HTTP methods)
-- [ ] Response uses the standard envelope (`{ "data": ... }` or `{ "data": [...], "meta": ... }`)
-- [ ] Error responses use the standard format (`{ "error": { "code": ..., "message": ... } }`)
+- [ ] Success response is the declared `OutSchema`, unwrapped; collections use Ninja's paginator
+- [ ] Errors use the envelope in [`./AUTH-AND-ERRORS.md`](./AUTH-AND-ERRORS.md), and **all six**
+      Ninja exception handlers are registered
 - [ ] Correct HTTP status codes are used for success and error cases
 - [ ] Authentication is required (or the endpoint is explicitly documented as public)
 - [ ] Authorisation checks scope data to the authenticated user/tenant

@@ -106,42 +106,35 @@ GET    /api/v1/getOrderById
 
 ## Request and Response Shapes
 
-**Responses** use a consistent envelope:
+**A success response is not wrapped.** It is the declared `OutSchema`, and a collection is
+Ninja's own pagination shape:
 
 ```json
 // Single resource
 {
-  "data": {
-    "id": "ord_abc123",
-    "status": "confirmed",
-    "total": "49.99",
-    "currency": "GBP",
-    "created_at": "2026-03-15T10:30:00Z"
-  }
+  "id": "ord_abc123",
+  "status": "confirmed",
+  "total": "49.99",
+  "currency": "GBP",
+  "created_at": "2026-03-15T10:30:00Z"
 }
 
-// Collection
+// Collection, via Ninja pagination
 {
-  "data": [ ... ],
-  "meta": {
-    "current_page": 1,
-    "per_page": 25,
-    "total": 148,
-    "total_pages": 6
-  },
-  "links": {
-    "first": "/api/v1/orders?page=1",
-    "last": "/api/v1/orders?page=6",
-    "prev": null,
-    "next": "/api/v1/orders?page=2"
-  }
+  "items": [ ... ],
+  "count": 148
 }
 ```
 
+There was a `{ "data": ... }` envelope here until 14/08/2026. It was removed rather than
+implemented: Ninja builds the OpenAPI schema from the declared `response=`, so wrapping the body
+after the fact makes `/api/docs` advertise a payload the API never sends. **Errors are wrapped and
+successes are not**, and that asymmetry is the rule rather than an oversight — see
+[`./AUTH-AND-ERRORS.md`](./AUTH-AND-ERRORS.md) — _The error envelope_ for the principle.
+
 **Rules:**
 
-- Wrap single resources in `{ "data": { ... } }`.
-- Wrap collections in `{ "data": [ ... ], "meta": { ... } }`.
+- Return the `OutSchema` directly; paginate collections with Ninja's paginator.
 - Use ISO 8601 format for all dates and times, always in UTC (`2026-03-15T10:30:00Z`).
 - Use strings for monetary values to avoid floating-point precision issues.
 - Use snake_case for JSON keys.
@@ -228,45 +221,10 @@ APIs must be versioned from the first release. Breaking changes require a new ve
 
 ## REST Error Response Format
 
-```json
-{
-  "error": {
-    "code": "validation_failed",
-    "message": "The request contained invalid fields.",
-    "details": [
-      { "field": "email", "message": "This field is required." },
-      { "field": "quantity", "message": "Must be a positive integer." }
-    ]
-  }
-}
-```
+**Owned by [`./AUTH-AND-ERRORS.md`](./AUTH-AND-ERRORS.md) — _The error envelope_.** The shape, the
+`error.code` casing, the dotted `details[].field` path, and the six Ninja handlers that must all be
+registered are stated there once.
 
-**Rules:**
-
-- `error.code` is a machine-readable string (snake_case).
-- `error.message` is a human-readable summary.
-- `error.details` is an optional array of field-level errors for validation failures.
-- Never include stack traces, file paths, SQL queries, or internal exception messages.
-
-```python
-# Django Ninja exception handler — registered once on the NinjaAPI instance
-from ninja.errors import ValidationError
-
-
-@api.exception_handler(ValidationError)
-def on_validation_error(request, exc):
-    details = [{"field": e["loc"][-1], "message": e["msg"]} for e in exc.errors]
-    return api.create_response(
-        request,
-        {
-            "error": {
-                "code": "validation_failed",
-                "message": "The request contained invalid fields.",
-                "details": details,
-            }
-        },
-        status=422,
-    )
-```
+Restated here until 14/08/2026, alongside three other copies. They had drifted.
 
 _Part of the `code/docs/` documentation family. See [`../API-DESIGN.md`](../API-DESIGN.md) for the full index._

@@ -86,10 +86,16 @@ All service modules define typed exception classes inheriting from base classes 
 
 | Base class               | Code                | Use for                          |
 | ------------------------ | ------------------- | -------------------------------- |
-| `ServiceError`           | `UNKNOWN_ERROR`     | Root base — subclass per app     |
-| `ServicePermissionError` | `PERMISSION_DENIED` | ABAC / ownership failures        |
-| `ServiceNotFoundError`   | `NOT_FOUND`         | Missing or soft-deleted resource |
-| `ServiceValidationError` | `VALIDATION_ERROR`  | Field-level input validation     |
+| `ServiceError`           | `unknown_error`     | Root base — subclass per app     |
+| `ServicePermissionError` | `permission_denied` | ABAC / ownership failures        |
+| `ServiceNotFoundError`   | `not_found`         | Missing or soft-deleted resource |
+| `ServiceValidationError` | `validation_error`  | Field-level input validation     |
+
+**`code` is a wire value, not a Python constant**, which is why it is lowercase `snake_case`
+despite sitting on a class attribute. It is copied straight onto the response as `error.code`
+([`../api-design/AUTH-AND-ERRORS.md`](../api-design/AUTH-AND-ERRORS.md) Section _The error
+envelope_), and it matches the casing of an invariant register key so that every machine-readable
+error identifier in this project reads alike.
 
 **These four ship** — `apps/core/services/errors.py` — alongside two classes that are
 deliberately **outside** this tree: `InvariantViolation` (programmer error, 500) and

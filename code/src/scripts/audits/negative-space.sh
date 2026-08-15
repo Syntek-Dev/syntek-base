@@ -7,7 +7,7 @@
 #                     This audit correlates that file with the code, by name, in both
 #                     directions and on both surfaces.
 #
-#                     Nine [gate: fail] clauses and one [gate: warn]:
+#                     Twelve [gate: fail] clauses and one [gate: warn]:
 #                       constraint-unregistered        a Meta.constraints entry with no row
 #                       constraint-absent              a row naming a constraint no model declares
 #                       key-unraised                   a row whose Key nothing raises
@@ -17,6 +17,9 @@
 #                       htmx-handler-absent            hx- in a template, no global beforeSwap
 #                       request-id-middleware-absent   RequestIDMiddleware not in MIDDLEWARE
 #                       ts-flags-loosened              a negative-space TypeScript flag not true
+#                       mcp-error-middleware-absent    tools exist, no on_call_tool middleware
+#                       mcp-masking-off                tools exist, mask_error_details not True
+#                       mcp-request-id-absent          tools exist, the router mints no request id
 #                       worked-row-stale        [warn]  the teaching example beside real rows
 #
 #                     What it CANNOT decide, and does not pretend to — both are marked
@@ -37,9 +40,9 @@
 # SELF-TEST. --self-test runs every clause over the fixture pair in
 # fixtures/negative-space/ and asserts it separates them: `broken/` must trip every fail
 # clause, `clean/` must trip none. The fixtures are NOT a scan scope. This is what proves
-# the gate in a repository where four of the nine clauses are no-ops: apps/ carries no
-# models, templates/ and static/ are empty, so an ordinary run here is green having
-# measured almost nothing.
+# the gate in a repository where seven of the twelve clauses are no-ops: apps/ carries no
+# models, no template uses hx-, and the MCP surface is unwired, so an ordinary run here is
+# green having measured almost nothing.
 #
 # Usage: negative-space.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                          [--path PATH] [--self-test] [--help]
@@ -68,6 +71,9 @@ TEMPLATES_DIR="code/src/django"
 STATIC_DIR="code/src/django/static"
 SETTINGS_FILE="code/src/django/config/settings/base.py"
 TSCONFIG_FILE="code/src/mobile/tsconfig.json"
+MCP_TOOLS_DIR="code/src/django/apps"
+MCP_CONFIG_FILE="code/src/django/config/mcp.py"
+ASGI_FILE="code/src/django/config/asgi.py"
 
 # The four flags from code/docs/MOBILE-CODING-PRINCIPLES.md Section 1. Each bans a state;
 # `strict` implies none of them and expo/tsconfig.base sets none, so removing one is
@@ -75,6 +81,13 @@ TSCONFIG_FILE="code/src/mobile/tsconfig.json"
 TS_FLAGS=(noUncheckedIndexedAccess exactOptionalPropertyTypes noImplicitReturns noFallthroughCasesInSwitch)
 
 MIDDLEWARE_CLASS="apps.core.middleware.RequestIDMiddleware"
+
+# The MCP surface's three configs, from code/docs/mcp-server/. Keyed on FastMCP's own hook
+# name and on a class this project owns, never on a path — the same choice htmx-handler-absent
+# makes, so moving or renaming the module is not a CI failure.
+MCP_ERROR_HOOK="on_call_tool"
+MCP_MASK_SETTING="mask_error_details"
+REQUEST_ID_ASGI_CLASS="RequestIDASGIMiddleware"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 OUTPUT_FORMAT=""
@@ -102,7 +115,7 @@ Usage:
                                    config clauses always run)
   negative-space.sh --self-test    Prove the clauses still separate the fixtures
 
-Clauses — nine [gate: fail], one [gate: warn]:
+Clauses — twelve [gate: fail], one [gate: warn]:
   constraint-unregistered       a Meta.constraints entry with no register row
   constraint-absent             a row naming a constraint no model declares
   key-unraised                  a row whose Key nothing raises
@@ -112,6 +125,9 @@ Clauses — nine [gate: fail], one [gate: warn]:
   htmx-handler-absent           a template uses hx-, no global htmx:beforeSwap listener
   request-id-middleware-absent  RequestIDMiddleware is not in MIDDLEWARE
   ts-flags-loosened             one of the four TypeScript flags is not true
+  mcp-error-middleware-absent   tools exist, config/mcp.py has no on_call_tool middleware
+  mcp-masking-off               tools exist, mask_error_details is not True
+  mcp-request-id-absent         tools exist, the ASGI router mints no request id
   worked-row-stale      [warn]  the worked-row example still sits beside real rows
 
 Options:
@@ -385,11 +401,49 @@ run_ts_flags_clause() {
   done
 }
 
+# ── The MCP tool surface ──────────────────────────────────────────────────────
+# All three clauses are gated on a tool module existing, exactly as htmx-handler-absent is
+# gated on a template using hx-: the surface is unwired at baseline and demanding its
+# configuration from a project that has no tools would fail correct work.
+#
+# Limits, stated because they decide what a green run is worth: the first clause proves a
+# middleware with a tool hook is registered, never that it classifies correctly; the third
+# proves the router names the class, never that the class does the right thing.
+run_mcp_clauses() {
+  local tools_dir="$1" mcp_config="$2" asgi="$3"
+  [[ -d "$tools_dir" ]] || { skip "mcp-*: no $tools_dir"; return 0; }
+
+  local tools
+  tools=$(find "$tools_dir" -type f -name 'mcp_tools.py' ! -path '*/tests/*' -print 2>/dev/null | head -1)
+  [[ -n "$tools" ]] || { skip "mcp-*: no mcp_tools.py — the MCP surface is unwired"; return 0; }
+
+  # mcp-error-middleware-absent — one on_call_tool boundary, never one try/except per tool.
+  if [[ ! -f "$mcp_config" ]] || ! grep -q -- "$MCP_ERROR_HOOK" "$mcp_config"; then
+    fail mcp-error-middleware-absent \
+      "$tools defines tools but $mcp_config registers no \`$MCP_ERROR_HOOK\` middleware"
+  fi
+
+  # mcp-masking-off — the flag plus the exception type IS the rule. FastMCP's default is
+  # False, which sends an InvariantViolation's register key and detail to the model verbatim.
+  if [[ ! -f "$mcp_config" ]] || ! grep -qE "$MCP_MASK_SETTING[ \t]*=[ \t]*True" "$mcp_config"; then
+    fail mcp-masking-off \
+      "$mcp_config — \`$MCP_MASK_SETTING=True\` is not set; internals reach the model"
+  fi
+
+  # mcp-request-id-absent — minted above both mounts, or a tool call and a page are two
+  # records joined by timestamp.
+  if [[ ! -f "$asgi" ]] || ! grep -q -- "$REQUEST_ID_ASGI_CLASS" "$asgi"; then
+    fail mcp-request-id-absent \
+      "$asgi — the router does not register $REQUEST_ID_ASGI_CLASS; /mcp/ has no correlation"
+  fi
+}
+
 run_all() {
   run_register_clauses "$REGISTER_FILE" "$MODELS_DIR" "$PY_DIR" "$TS_DIR"
   run_htmx_clause "$TEMPLATES_DIR" "$STATIC_DIR"
   run_middleware_clause "$SETTINGS_FILE"
   run_ts_flags_clause "$TSCONFIG_FILE"
+  run_mcp_clauses "$MCP_TOOLS_DIR" "$MCP_CONFIG_FILE" "$ASGI_FILE"
 }
 
 point_scopes_at() {
@@ -402,6 +456,9 @@ point_scopes_at() {
   STATIC_DIR="$root"
   SETTINGS_FILE="$root/settings.py"
   TSCONFIG_FILE="$root/tsconfig.json"
+  MCP_TOOLS_DIR="$root"
+  MCP_CONFIG_FILE="$root/mcp.py"
+  ASGI_FILE="$root/asgi.py"
 }
 
 # ── Self-test ─────────────────────────────────────────────────────────────────
@@ -423,7 +480,8 @@ if $SELF_TEST; then
   CLEAN_BODY="$(cat "$TMP_FAIL")"
 
   EXPECTED=(constraint-unregistered constraint-absent key-unraised key-unregistered
-            key-duplicated htmx-handler-absent request-id-middleware-absent ts-flags-loosened)
+            key-duplicated htmx-handler-absent request-id-middleware-absent ts-flags-loosened
+            mcp-error-middleware-absent mcp-masking-off mcp-request-id-absent)
   MISSING=""
   for clause in "${EXPECTED[@]}"; do
     printf '%s\n' "$BROKEN_CLAUSES" | grep -qx -- "$clause" || MISSING="$MISSING $clause"
@@ -473,7 +531,7 @@ WARN_COUNT=$(grep -c . "$TMP_WARN" || true); WARN_COUNT=${WARN_COUNT:-0}
 FAIL_BODY="$(cat "$TMP_FAIL")"
 WARN_BODY="$(cat "$TMP_WARN")"
 
-log "  register: $REGISTER_FILE · surfaces: django + mobile · 9 fail, 1 warn"
+log "  register: $REGISTER_FILE · surfaces: django + mcp + mobile · 12 fail, 1 warn"
 log ""
 
 if [[ -n "$SKIP_NOTES" ]] && ! $QUIET; then

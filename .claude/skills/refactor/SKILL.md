@@ -75,9 +75,20 @@ Frontend: repeated markup into django-components, promoted to the shared library
 broadly reusable; repeated style literals into the token layer, consumed as `var(--token)` —
 `code/docs/architecture/FRONTEND-PATTERNS.md` and `code/docs/DESIGN-TOKENS.md` own the shapes.
 
-**Two things a move must never quietly drop:** the explicit permission check on a state-changing
-endpoint, and the ownership verification behind it. A refactor that relocates an endpoint and
-loses its Policy has introduced a vulnerability while claiming to change nothing.
+**Three things a move must never quietly drop:** the explicit permission check on a
+state-changing endpoint, the ownership verification behind it, and **the guard clause with its
+register row**. A refactor that relocates an endpoint and loses its Policy has introduced a
+vulnerability while claiming to change nothing.
+
+`how-to/src/INVARIANTS.md` names **one function** per `service-guard` row, so moving or renaming
+an enforcement point moves the row **in the same change**. Know which half of that CI can see:
+deleting a guard outright fails `audits/negative-space.sh` (`key-unraised`), and extracting one
+while leaving the original in place raises a single key at two sites (`key-duplicated`) — the
+second call site the register already forbids. **Moving a guard and leaving the row behind keeps
+the gate green**, because the key is still raised somewhere; that is the `[judgement]` half
+`code-reviewer` owns, so name it in the handoff rather than assuming CI will. Extracting into a
+named `_check_*()` helper is allowed and never required (`code/docs/NEGATIVE-SPACE.md`
+Section _The shape_); the register then names the helper.
 
 ## The sequence
 
@@ -105,8 +116,9 @@ references rule, and the ban on `TODO`/`FIXME`. It is the owner; this skill does
 ## Definition of done
 
 Tests unchanged and green; coverage not dropped; behaviour identical; every touched file within
-750 lines (800 grace); no permission check or ownership verification lost in a move; the
-documentation gate satisfied; the commit is `refactor(...)` and carries no behaviour change.
+750 lines (800 grace); no permission check, ownership verification or guard clause lost in a
+move, and every register row still naming the function that holds its guard; the documentation
+gate satisfied; the commit is `refactor(...)` and carries no behaviour change.
 
 ## Governing procedures (route here — do not restate at length)
 
@@ -123,5 +135,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/CODING-PRINCIPLES.md` — the length limits, naming, and the principles applied here
 - `code/docs/coding-principles/PRACTICAL-RULES.md` — decision structuring, DRY, KISS, YAGNI
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` · `code/docs/architecture/FRONTEND-PATTERNS.md`
+- `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the guard clause, and the register
+  row that moves with the function it names
 - `code/docs/testing/COVERAGE.md` — the floors a refactor must not drop below
 - `code/docs/PERFORMANCE.md` — read when the refactor touches a query or render hot path

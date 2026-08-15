@@ -1,9 +1,63 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.2.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 3.2.2 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v3.2.2 — 14/08/2026
+
+**Status:** Patch — four of the guides your project is built against gained new material.
+Nothing you have already written changes, there is no command to run, and nothing behaves
+differently until the next piece of code is written.
+
+### Why a documentation release is a release
+
+The guides that ship inside your project are not reference material sitting off to one side. They
+are what Claude reads before writing anything, so a rule missing from them is a rule that does not
+get followed. Adding one is the same kind of act as adding a check — it is just enforced by being
+read rather than by failing a build.
+
+### The reservation that reserves nothing
+
+When two people act on the same record at the same moment, code can reserve it so that only one of
+them changes it. Your project separately restricts every request to the data that person is
+allowed to see. Both of those are ordinary and both are correct — but they have to happen in that
+order, restriction first.
+
+Do it the other way round and the reservation is made before the system knows who is asking. There
+is nothing it is allowed to see yet, so it reserves nothing, reports no problem, and hands back an
+empty answer that reads exactly like "that record does not exist".
+
+The guide now states the order, shows the wrong and the right version side by side, and requires
+the code to stop loudly when a record it was certain about turns out to be missing. That last part
+is the real change. An empty answer has two possible causes here — the record is genuinely gone,
+or the restriction was never applied — and only one of them is the user's problem. Letting them
+look the same is how the second one ships without anyone noticing.
+
+### A shape to avoid, and how to check your own safety rules
+
+Two smaller additions travel with it.
+
+The first is a function shape worth not reaching for: one that accepts either a record or the
+reference that identifies it, and works out which it was given. It reads as a convenience. It
+means every place that calls it behaves in two different ways, and nobody can tell which without
+reading it, so the guide now recommends picking one.
+
+The second is about proof. Your project keeps a register of the rules that must never be broken,
+and an automatic check confirms each one has a named place enforcing it. That check compares the
+register against the code — it cannot tell you whether anything would notice if the enforcement
+were quietly removed. There is a tool that answers exactly that, by removing a rule on purpose and
+seeing whether a test complains. It is slow, so it runs on your machine rather than in the
+pipeline, and the guide now says plainly when it is worth the wait: when being wrong about that
+particular rule would be expensive.
+
+### If you have a project on an earlier version
+
+`copier update` brings the new material down. There is nothing to decide, nothing to migrate, and
+no command to run afterwards. Your own code and your own documentation are untouched.
 
 ---
 

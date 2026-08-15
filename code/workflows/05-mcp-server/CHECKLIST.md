@@ -26,6 +26,7 @@ model: opus
 - [ ] Django's mount is last (it is a catch-all); `/mcp` redirects to `/mcp/` · _opus_
 - [ ] `stateless_http=True`, or a recorded reason it is not · _opus_
 - [ ] The mount is gated on an explicit setting, defaulting off outside local · _opus_
+- [ ] The router registers `RequestIDASGIMiddleware` — one identifier across both mounts · _opus_
 
 ## Authentication and authorisation
 
@@ -41,7 +42,9 @@ model: opus
 
 - [ ] Tools live in `apps/<app>/mcp_tools.py`, registered via `register(mcp)` in `config/mcp.py` · _opus_
 - [ ] No business logic in any tool — it authorises, delegates to `services.py`, and maps · _opus_
-- [ ] Docstrings state purpose, when to use, what is irreversible, and exact allowed values · _opus_
+- [ ] Docstrings state purpose, when to use, what is irreversible, exact allowed values, and the failures the model can recover from · _opus_
+- [ ] `mask_error_details=True`, and the `on_call_tool` middleware is registered in `config/mcp.py` · _opus_
+- [ ] No `try/except` in any tool — the taxonomy is decided once, at the boundary · _opus_
 - [ ] Verb-phrase names in domain vocabulary; every parameter typed · _opus_
 - [ ] Task-shaped, not endpoint-shaped; the tool set is as small as it can be · _fable_
 - [ ] Returns are JSON-serialisable — no model instances, ciphertext, HMAC tokens, internal IDs, or unmasked PII · _opus_
@@ -55,6 +58,7 @@ model: opus
 - [ ] Per tool: another user's reference → not found · _opus_
 - [ ] Per mutation: the policy-denial path · _opus_
 - [ ] Tool list and schemas asserted (a renamed parameter is a breaking change) · _opus_
+- [ ] A programmer error is masked at the boundary; a user error's message still arrives · _opus_
 - [ ] First mount: a test asserts both ASGI mounts resolve · _opus_
 - [ ] Coverage floors met — 75% line and branch, **90% on the verifier and `current_user()`** · _opus_
 - [ ] All runs went through `code/src/scripts/tests/*.sh`, never raw `pytest` · _opus_

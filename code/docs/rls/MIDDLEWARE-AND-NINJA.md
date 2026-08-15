@@ -241,6 +241,39 @@ with transaction.atomic():
         cursor.execute("SELECT * FROM content_article")
 ```
 
+### Row locking
+
+`SET LOCAL` and `select_for_update()` both live for exactly one transaction, so they end up in
+the same `atomic()` block. That block is then doing two jobs, and only one of them is visible in
+the code.
+
+**A lock only ever covers rows the policy makes visible.** PostgreSQL applies the `SELECT`
+policy's `USING` clause when it chooses the rows, and `FOR UPDATE` locks what is left. With no
+scope variable set, the policy matches nothing, so the lock is taken on **zero rows** and the
+query returns `None` — no error, no warning, and a `TransactionManagementError` only if there is
+no transaction at all.
+
+```python
+# BAD — the lock is taken before the scope exists, so it covers nothing
+with transaction.atomic():
+    row = Article.objects.select_for_update().filter(pk=pk).first()
+    set_rls_context(str(user.pk))
+
+# GOOD — scope first, then lock, both inside the one transaction
+with transaction.atomic():
+    set_rls_context(str(user.pk))
+    row = Article.objects.select_for_update().filter(pk=pk).first()
+    if row is None:
+        raise InvariantViolation("article.locked_row_exists", pk=pk)
+```
+
+The guard is the point. "No row" here has two causes that look identical — the row is genuinely
+absent, or the scope was never set — and only one of them is a user's problem. Treating the
+result as a benign not-found is how a missing scope variable ships silently. Which class it
+belongs to and how it must surface: [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md).
+
+---
+
 ### New Modules — RLS is Mandatory
 
 Every new backend module that owns user-scoped tables must include RLS policies in `0001_initial.py`.

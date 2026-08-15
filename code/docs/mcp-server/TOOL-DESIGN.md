@@ -88,6 +88,60 @@ Four things to copy exactly:
 3. **No logic in the tool.** It authorises, delegates, maps. Identical to `api.py`.
 4. **Plain `dict`/`list` returns.** Return a JSON-serialisable shape, not a model instance.
 
+## The error taxonomy on this surface
+
+The three classes are [`../NEGATIVE-SPACE.md`](../NEGATIVE-SPACE.md)'s and are not restated
+here. Two facts are this surface's own, and both change what the rules have to do.
+
+**There are no status codes.** FastMCP returns a tool error as a `CallToolResult` with
+`isError` set — a JSON-RPC **success** carrying an error result. So a broken invariant does not
+stop anything: it becomes the agent's next input, to be read, reasoned over, and very likely
+worked around.
+
+> **This surface does not inherit the JSON API's expression.** The classes are shared because
+> both adapters call the same services; the wiring is not. That row points at the error envelope
+> and its six Ninja handlers, and `/mcp/` has no `NinjaAPI`, no `create_response`, and no Django
+> middleware at all ([`MOUNTING.md`](MOUNTING.md) → _The middleware cliff_).
+
+### One boundary, not one per tool
+
+Classification happens in a single `on_call_tool` middleware registered in `config/mcp.py` —
+the structural peer of the Ninja exception handlers in `config/api.py`. It logs at the class's
+level, captures to the tracker, and decides what crosses the boundary. **[gate: fail]**
+(`mcp-error-middleware-absent`)
+
+A `try/except` inside a tool is the **second call site the register forbids**, one layer out:
+the guard belongs in the service, and a tool that catches its own service's errors re-decides
+the taxonomy once per tool.
+
+### The type decides who speaks
+
+Build the server with `mask_error_details=True`. **[gate: fail]** (`mcp-masking-off`)
+
+FastMCP always transmits a `ToolError`'s message and masks everything else once that is on. So
+the flag plus the exception type **is** the rule — nothing depends on a handler someone
+remembered to write:
+
+| Class                 | Type at the boundary                              | What the model receives                   |
+| --------------------- | ------------------------------------------------- | ----------------------------------------- |
+| **Programmer error**  | `InvariantViolation` — **never** a `ToolError`    | a generic sentence and the correlation id |
+| **User error**        | `ServiceError` → re-raised as `ToolError`         | the specific, actionable message          |
+| **Environment error** | `DependencyUnavailable` — **never** a `ToolError` | a generic sentence and the correlation id |
+
+The default is `mask_error_details=False`, which would hand the model
+`InvariantViolation("order.total_matches_lines", "order=17 total=99")` verbatim — the register
+key and the debug context both. That is "generic, never internals" broken by a default, which is
+why the flag is gated rather than recommended.
+
+The user error's `code` travels in the message, because there is no envelope to carry it. The
+wording of any of these is the project's, not this guide's — see `how-to/src/BRAND-VOICE.md`.
+
+**An environment error is never an instruction to retry.** Transient failures are retried
+**server-side** (FastMCP's `RetryMiddleware`); the text the model reads says the operation did
+not complete, and never "try again". An agent retrying thousands of times is a threat this
+surface already carries a control for ([`AUTH-AND-THREATS.md`](AUTH-AND-THREATS.md) →
+_Unbounded cost / runaway loops_), and writing the invitation into the error is how you fund it.
+
 ## The docstring _is_ the contract
 
 For a Ninja endpoint, the OpenAPI description is documentation. For a tool it is the **prompt**
@@ -100,6 +154,7 @@ that manifests as the agent doing the wrong thing.
 | **When to use it**, and what to call first                   | Nothing (the model will guess) |
 | What is irreversible, chargeable, or visible to other people | Nothing                        |
 | The exact accepted values for constrained parameters         | "a valid status"               |
+| **The failures it can recover from**, and what to do instead | Nothing (the model will retry) |
 
 Name tools as **verb phrases in the domain's language** — `cancel_order_by_reference`, not
 `orders_delete` or `post_order_cancel`. Type every parameter; FastMCP derives the tool schema
@@ -154,7 +209,10 @@ checked on read.
 - [ ] No identity parameter; `current_user()` from the token.
 - [ ] Named policy check before every mutation, imported from the same module `api.py` uses.
 - [ ] No business logic — delegates to `services.py`.
-- [ ] Docstring states purpose, when to use, what is irreversible, and exact allowed values.
+- [ ] No `try/except` in the tool — classification is the `config/mcp.py` middleware's.
+- [ ] `mask_error_details=True`, and no error class outside the user one is a `ToolError`.
+- [ ] Docstring states purpose, when to use, what is irreversible, the exact allowed values,
+      and the failures the model can recover from.
 - [ ] Verb-phrase name in domain vocabulary; every parameter typed.
 - [ ] Task-shaped, not endpoint-shaped; the surface is as small as it can be.
 - [ ] Returns a JSON-serialisable shape, never a model instance or ciphertext.

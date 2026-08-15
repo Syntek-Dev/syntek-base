@@ -1,6 +1,16 @@
 ---
 type: guide
-skills: [planner, stack-django, stack-htmx-templates]
+skills:
+  [
+    planner,
+    stack-django,
+    stack-htmx-templates,
+    code-reviewer,
+    qa-tester,
+    security,
+    refactor,
+    bugfix,
+  ]
 model: fable
 ---
 
@@ -220,18 +230,24 @@ them.
 
 ### The taxonomy is surface-agnostic; the expression is not
 
-The same three classes hold on the JSON API, rendered pages, HTMX swaps, background tasks and
-management commands. **How each surface expresses them is that surface's guide**, not this one —
-an HTMX error must never be a silent empty swap, and a task's arguments are untrusted input, but
-those clauses live where the surface lives.
+The same three classes hold on the JSON API, agent-facing MCP tools, rendered pages, HTMX swaps,
+background tasks and management commands. **How each surface expresses them is that surface's
+guide**, not this one — an HTMX error must never be a silent empty swap, and a task's arguments
+are untrusted input, but those clauses live where the surface lives.
 
-| Surface                        | Its clause lives in                                                                                                                                 |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Rendered pages and HTMX        | [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) Section _An error the user never sees_                                   |
-| The JSON API                   | [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md) — the Ninja exception handlers                                                             |
-| Background tasks               | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) Section _The error taxonomy on this surface_ — and why the user class is **empty** there                   |
-| Management commands            | [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md) Section _The error taxonomy on this surface_ — an operator, a traceback, and exit 75             |
-| The mobile app _(mobile-only)_ | [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) Section 4 — the root boundary, and why an environment error is the ordinary case there |
+**A shared service layer is not a shared expression.** Two adapters over one seam raise the same
+exceptions and still have different wiring, so a surface earns a row of its own the moment its
+mechanism differs from its neighbour's — which is why the MCP row below exists rather than being
+read off the JSON API's.
+
+| Surface                        | Its clause lives in                                                                                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rendered pages and HTMX        | [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) Section _An error the user never sees_                                        |
+| The JSON API                   | [`api-design/AUTH-AND-ERRORS.md`](api-design/AUTH-AND-ERRORS.md) Section _The error envelope_ — the shape and all six Ninja handlers                     |
+| The MCP tool surface           | [`mcp-server/TOOL-DESIGN.md`](mcp-server/TOOL-DESIGN.md) Section _The error taxonomy on this surface_ — no status codes, and the type decides who speaks |
+| Background tasks               | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) Section _The error taxonomy on this surface_ — and why the user class is **empty** there                        |
+| Management commands            | [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md) Section _The error taxonomy on this surface_ — an operator, a traceback, and exit 75                  |
+| The mobile app _(mobile-only)_ | [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) Section 4 — the root boundary, and why an environment error is the ordinary case there      |
 
 ---
 

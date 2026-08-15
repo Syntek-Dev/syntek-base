@@ -45,14 +45,16 @@ auth-related code**, which includes the verifier and `current_user()`). See
 
 ### What must be covered
 
-| Test                                                     | Why                                                                        |
-| -------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Every tool with **no token** → rejected                  | The middleware cliff means this is not covered by anything else            |
-| Every tool with **another user's reference** → not found | The IDOR case; the highest-value test on this surface                      |
-| Every mutation's policy denial path                      | Proves the check is the same one `api.py` enforces                         |
-| Tool list and schemas (`client.list_tools()`)            | A renamed or retyped parameter is a breaking change for every agent client |
-| `config/asgi.py` — both mounts resolve                   | Route order and lifespan wiring are silent when wrong                      |
-| A collection tool's cap                                  | Proves the unbounded-return guard exists                                   |
+| Test                                                     | Why                                                                            |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Every tool with **no token** → rejected                  | The middleware cliff means this is not covered by anything else                |
+| Every tool with **another user's reference** → not found | The IDOR case; the highest-value test on this surface                          |
+| Every mutation's policy denial path                      | Proves the check is the same one `api.py` enforces                             |
+| Tool list and schemas (`client.list_tools()`)            | A renamed or retyped parameter is a breaking change for every agent client     |
+| `config/asgi.py` — both mounts resolve                   | Route order and lifespan wiring are silent when wrong                          |
+| A collection tool's cap                                  | Proves the unbounded-return guard exists                                       |
+| A service raising `InvariantViolation` → masked          | Proves the flag and the middleware are both live, not just present             |
+| A service raising a `ServiceError` → the message arrives | The other half — masking that too would leave the model with nothing to act on |
 
 Assert the **tool list and schemas** deliberately: an agent client holds the tool schema the
 way an HTTP client holds the OpenAPI document. Renaming a parameter breaks every configured
@@ -99,9 +101,10 @@ Two traps in that snippet, both worth the comment they carry:
 ## Observability
 
 Sentry's Django integration does not see `/mcp/` — it hooks Django's request cycle, which this
-mount bypasses. Add the ASGI or Starlette integration alongside it, and capture explicitly in
-the tool boundary. Otherwise a failing tool is invisible: the agent receives an error, decides
-to try something else, and nobody is paged.
+mount bypasses. Add the ASGI or Starlette integration alongside it, and capture in the
+`on_call_tool` middleware ([`TOOL-DESIGN.md`](TOOL-DESIGN.md) → _The error taxonomy on this
+surface_), which is the one place that already knows the error's class. Otherwise a failing tool
+is invisible: the agent receives an error, decides to try something else, and nobody is paged.
 
 Log per [`AUTH-AND-THREATS.md`](AUTH-AND-THREATS.md) → _What to log_: tool name, resolved user,
 outcome, duration — never the token, the raw arguments, or the full result. Route it through
