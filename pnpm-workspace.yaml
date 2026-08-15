@@ -39,23 +39,34 @@ allowBuilds:
 # there looking authoritative while deciding nothing.
 #
 # Verified the way the old comment demanded, by the report line rather than the
-# exit code — `bash code/src/scripts/audits/security.sh --js-only`, three ways:
+# exit code — `bash code/src/scripts/audits/security.sh --js-only`. The rename
+# was proven three ways on 14/08/2026, when four entries still resolved:
 #   auditConfig.ignoreGhsas  →  4 high (4 ignored)   clean
 #   audit.ignore             →  4 high (4 ignored)   clean
 #   neither key              →  4 high              VULNERABLE
 # The third run is the one that makes the other two mean anything: it is what
-# proves the entries below are load-bearing rather than decorative.
+# proves the entries below are load-bearing rather than decorative. Re-proven
+# 15/08/2026 by the same method after the deletion described next:
+#   audit.ignore             →  2 high (2 ignored)   clean
+#   neither key              →  2 high              VULNERABLE
 #
-# Four of the five entries resolve in this tree — GHSA-jxxr-4gwj-5jf2 now
-# matches nothing, so 4 is the expected count and not a shortfall. Left in
-# place rather than deleted: an ignore that matches nothing costs nothing, and
-# the advisory can return through a different consumer.
+# Two @grpc/grpc-js entries — GHSA-5375-pq7m-f5r2 and GHSA-99f4-grh7-6pcq —
+# were DELETED on 15/08/2026 rather than documented, because a patched release
+# existed the whole time they sat here. They arrived unannotated in fc905eb and
+# were carried unexplained for two weeks. @usebruno/requests declares ^1.14.3,
+# so the fixed 1.14.4 already satisfied the range: the lockfile was merely
+# stale, and `pnpm update @grpc/grpc-js` cleared both with no override needed.
+# The rule the deletion sets: an ignore whose advisory HAS a published fix is a
+# suppression, not a decision. Ignore on availability, never on inertia.
+#
+# One of the three remaining entries resolves to nothing — GHSA-jxxr-4gwj-5jf2
+# matches no package here, so 2 is the expected count and not a shortfall. Left
+# in place rather than deleted: an ignore that matches nothing costs nothing,
+# and the advisory can return through a different consumer.
 # Source: https://pnpm.io/cli/audit
 audit:
   ignore:
     - GHSA-jxxr-4gwj-5jf2
-    - GHSA-5375-pq7m-f5r2
-    - GHSA-99f4-grh7-6pcq
     # image-size — NO PATCHED RELEASE EXISTS. Both advisories name ">=2.0.3" as
     # the fix; the newest published version is 2.0.2, so there is nothing to
     # upgrade to and an override floor of >=2.0.3 fails the install outright
