@@ -1,12 +1,10 @@
 """The base every management command subclasses — the error taxonomy's expression on the CLI.
 
-A command has no HTTP status to carry the three classes
-(``code/docs/NEGATIVE-SPACE.md`` Section The error taxonomy), so the distinction has to be made in
-what the operator reads and what a scheduler can act on. Making it here rather than in each
-command is what stops thirty commands inventing thirty conventions; ruff ``TID251`` bans the
-direct ``BaseCommand`` import so that this really is the only place it is decided.
-
-Rule and rationale: ``code/docs/MANAGEMENT-COMMANDS.md``.
+A command has no HTTP status to carry the three classes — user error, environment error,
+programmer error — so the distinction has to be made in what the operator reads and what a
+scheduler can act on. Making it here rather than in each command is what stops thirty commands
+inventing thirty conventions; ruff ``TID251`` bans the direct ``BaseCommand`` import so that this
+really is the only place it is decided.
 """
 
 from __future__ import annotations
@@ -37,9 +35,7 @@ class ManagementCommand(BaseCommand):
     def execute(self, *args: Any, **options: Any) -> Any:
         # Django closes connections in `run_from_argv`, which `call_command()` never reaches — so
         # a command invoked from a task, a test, or another command would inherit whatever
-        # connection state its caller left. Closing on entry is what makes the two invocation
-        # paths equivalent, which is the rule `code/docs/PROCESS-MODEL.md` states and nothing
-        # previously enforced.
+        # connection state its caller left. Closing on entry makes the two paths equivalent.
         close_old_connections()
         try:
             return super().execute(*args, **options)

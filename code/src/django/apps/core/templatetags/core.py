@@ -3,9 +3,8 @@
 Django renders ``500.html`` with an **empty** ``Context`` and no request — its own
 documentation states that the default 500 view "passes no variables to the ``500.html``
 template and is rendered with an empty ``Context`` to lessen the chance of additional
-errors". So no context processor reaches an error page, and the rule in
-``code/docs/NEGATIVE-SPACE.md`` — render the identifier where a user can quote it — cannot
-be satisfied by one.
+errors". So no context processor reaches an error page, and the requirement that a user can
+read back an identifier when reporting a failure cannot be satisfied by one.
 
 A simple tag can, because it takes its value from the ``ContextVar`` in
 ``apps.core.middleware`` rather than from the context it is rendered with. That makes this

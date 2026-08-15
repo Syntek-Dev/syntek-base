@@ -115,24 +115,14 @@ _is_ the content: **declarative configuration** (`deny.toml`, `pyproject.toml`,
 it; and the **dev scripts** under `code/src/scripts/`, operator tooling under the
 `runbook` discipline that often names the very rule or document it enforces.
 
-### When to write one
+### When to write one, how long, and the self-containment rule
 
-Only when the reason is non-obvious and cannot be expressed in code:
+**Owned by `code/docs/coding-principles/STYLE-AND-PROCESS.md` Section _Comments and
+Documentation_** — when a comment is worth writing, that a comment is **one line** about why
+_that line_ is there, that a docstring runs **as long as its why needs** about why the _unit_
+exists, and that neither may point out of the code file. Read it there.
 
-- A constraint the code must satisfy but cannot state (a protocol quirk, a driver
-  or browser bug, an ordering nothing else enforces).
-- An invariant holding across a distance the reader cannot see locally.
-- A deliberate trade-off, and what it rejected.
-- A workaround, and the condition under which it can be removed.
-
-If deleting the comment would not confuse the next reader, do not write it.
-
-### No outside references
-
-A comment never points out of the code file. **Never** cite a story (`US###`),
-sprint, ADR, plan, bug record, ticket or issue number, PR, commit hash,
-`code/docs/*` path, URL, person, or date. The reason travels _in_ the comment — a
-reader who cannot open the reference still has to understand why.
+The example, because it is the rule's whole point rather than a restatement of it:
 
 ```python
 # WRONG — points outward, ages badly, says nothing on its own
@@ -143,17 +133,6 @@ DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
 # A guessable admin path attracts credential-stuffing traffic, so the prefix is
 # configurable and a deployment can move it without a code change.
 DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
-```
-
-### Docstrings
-
-One short line, stating **why** the module, function, or component exists. The
-typed signature already carries the parameters, the return, and (with the raising
-path) the exceptions, so no `Args:` / `Returns:` / `Raises:` block restates them.
-
-```python
-def constant_time_eq(left: bytes, right: bytes) -> bool:
-    """Compare without leaking the matching prefix length through timing."""
 ```
 
 ### The one exception — published interface text

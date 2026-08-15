@@ -44,18 +44,31 @@ configuration (`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML) — where a
 needs the trail that justifies it; and `code/src/scripts/**/*.sh`, operator tooling that often
 names the rule or document it enforces.
 
-- **Write a comment only for a non-obvious reason** — a constraint the code cannot state, an
-  invariant holding across a distance, a deliberate trade-off, or a workaround plus the condition
-  for removing it. If deleting the comment would not confuse the next reader, delete it.
-- **No outside references.** Never cite a story (`US###`), sprint, ADR, plan, bug record, ticket,
-  issue, PR, commit, `code/docs/*` path, URL, person, or date. The reason belongs in the comment
-  itself — a reader who cannot open the reference still has to understand why.
+**A docstring and a comment answer different questions, and that is what sets their length.**
+The docstring says why the **unit** exists — the module, class, function, method or component as
+a whole. A comment says why **this line** is here, inside the unit that contains it. One is about
+a thing; the other is about a position in it.
+
+- **A comment is one line.** Write one only for a non-obvious reason — a constraint the code
+  cannot state, an invariant holding across a distance, a deliberate trade-off, or a workaround
+  plus the condition for removing it. If deleting it would not confuse the next reader, delete it.
+- **A docstring runs as long as its why needs**, and no longer. It is mandatory on all public
+  APIs. No `Args:` / `Returns:` / `Raises:` blocks — the typed signature already carries them, and
+  restating a signature is the _what_ under another name. Every Django view and django-component
+  opens with one; a template's `{# #}` is a **comment** and takes the one-line rule above.
+- **Self-contained — no outside references, in either.** Never cite a story (`US###`), sprint,
+  ADR, plan, bug record, ticket, issue, PR, commit, **a repository path**, URL, person, or date.
+  Anything under `code/src/` must be understandable without opening anything else: state the
+  reason in full, here, or do not state it. A pointer is not a reason, and it rots at a
+  different rate from the code it sits in.
+- **Exception — the setup instruction.** A note on **placeholder content the project replaces at
+  first-time setup** may name the document that governs the replacement. Both halves are
+  required: the subject is shipped placeholder copy rather than code, and the path named is what
+  the replacement is written against. The test is who loses what when it is deleted — an
+  **operator** loses an instruction, never a **reader** a reason. A pointer that explains why
+  code does what it does is the banned shape however it is worded.
 - **No `TODO` / `FIXME` in committed code.** Deferred work goes to `DEFERRED.md` or `GAPS.md`,
   which are read and triaged.
-- **Docstrings** are mandatory on all public APIs and are **one line stating why the thing
-  exists** — no `Args:` / `Returns:` / `Raises:` blocks, because the typed signature already
-  carries them. Every Django view and django-component opens with one; templates carry a one-line
-  `{# #}` comment on the same terms.
 - **Exception — published interface text.** A Django Ninja endpoint docstring and `summary` (both
   render on the OpenAPI page) and a FastMCP tool docstring (the prompt a model reads when choosing
   a tool) are interface documentation, not comments: they state the full what. See
@@ -150,11 +163,13 @@ Before submitting code for review or marking a task complete, verify:
 - [ ] No commented-out code was left in the diff
 - [ ] Every comment and docstring in the diff carries a **why** — none restates a name, a type,
       or the line below it
-- [ ] No comment points outside the code file — no `US###`, sprint, ADR, ticket, PR, commit,
-      documentation path, URL, person, or date
+- [ ] Neither a comment nor a docstring points outside the code file — no `US###`, sprint, ADR,
+      ticket, PR, commit, repository path, URL, person, or date. The one exception is a setup
+      instruction on placeholder copy, naming the document the replacement is written against
 - [ ] No `TODO` / `FIXME` was introduced — deferred work is recorded in `DEFERRED.md` or `GAPS.md`
-- [ ] Docstrings are one line, with no `Args:` / `Returns:` / `Raises:` block (except a published
-      Ninja endpoint or FastMCP tool docstring, which states the full what)
+- [ ] Every comment is one line; every docstring states why its unit exists, with no `Args:` /
+      `Returns:` / `Raises:` block (except a published Ninja endpoint or FastMCP tool docstring,
+      which states the full what)
 - [ ] All imports are at the top of the file — no imports inside functions, methods, or classes
       unless a documented justified exception applies
 - [ ] Conditional chains of three or more branches encoding a named business rule are extracted to

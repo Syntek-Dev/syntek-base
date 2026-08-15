@@ -1,13 +1,12 @@
 """The exception bases every app's service layer builds on — two trees, unrelated on purpose.
 
 ``ServiceError`` and its subclasses are **user errors**: expected, actionable, mapped to a
-4xx by the API layer. Each app defines a thin base inheriting from these
-(``code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`` Section Service Exception Hierarchy).
+4xx by the API layer. Each app defines a thin base inheriting from these.
 
 ``InvariantViolation`` and ``DependencyUnavailable`` are **siblings of that tree, not
 members of it, and must never be moved into it.** A single broad ``except ServiceError``
-would otherwise turn a broken invariant into a friendly 400 — the precise failure
-``code/docs/NEGATIVE-SPACE.md`` Section The error taxonomy exists to prevent. A flag on a shared
+would otherwise turn a broken invariant into a friendly 400, losing both the 500 the
+operator needs and the tracker event that names which invariant broke. A flag on a shared
 base has the same weakness.
 """
 
@@ -51,8 +50,10 @@ class InvariantViolation(Exception):
     """A programmer error: something this codebase guarantees was found to be false.
 
     Surfaces as a 500 and one error-tracker event — never a friendly 4xx. ``key`` is the
-    row identifier in ``how-to/src/INVARIANTS.md``, so the event names *which* invariant
-    broke and the register and the running code stay one artefact rather than two lists.
+    stable identifier of the guarantee that broke, so an event names *which* one rather than
+    merely that something did. The project's invariant register is keyed on the same string,
+    which is what keeps the register and the running code one artefact instead of two lists
+    that drift apart.
     """
 
     def __init__(self, key: str, detail: str = "") -> None:

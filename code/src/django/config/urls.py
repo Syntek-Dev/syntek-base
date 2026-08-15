@@ -2,7 +2,9 @@
 
 Django's admin is the only route the baseline registers, and it mounts at the
 non-obvious ``DJANGO_ADMIN_PATH`` (``control/``) — never ``/admin/``, which is
-reserved for the project's own admin surface. See ``code/docs/URL-STRATEGY.md``.
+reserved for the project's own admin surface. A guessable admin path attracts
+credential-stuffing traffic, so the prefix is configurable and a deployment can
+move it without a code change.
 """
 
 from __future__ import annotations
