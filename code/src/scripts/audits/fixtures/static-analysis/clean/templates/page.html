@@ -1,0 +1,29 @@
+{# Fixture template for static-analysis.sh --self-test. Never rendered. #} {# The same five shapes
+as broken/templates/page.html, done the way the guides ask. #} {# It must trip NOTHING: a rule that
+fires here is a false positive, and the #} {# self-test fails on it just as loudly as on a missed
+finding. #}
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <title>Fixture</title>
+  </head>
+  <body>
+    {# Auto-escaping left on, which is the XSS control rather than a formatting default #}
+    <p>{{ profile_bio }}</p>
+
+    {# Markup built with format_html() in the view, where each argument is still escaped #}
+    <p>{{ profile_bio_fragment }}</p>
+
+    {# Alpine reads its data from json_script, never from an interpolated attribute #} {{
+    user_name|json_script:"user-name-data" }}
+    <div x-data="{ name: JSON.parse(document.getElementById('user-name-data').textContent) }">
+      <span x-text="name"></span>
+    </div>
+
+    {# Rendered through x-text, which writes text rather than parsing markup #}
+    <div x-text="rendered_comment"></div>
+
+    {# External script, so nothing is interpolated into a script body #}
+    <script src="{% static 'js/page.js' %}" defer></script>
+  </body>
+</html>

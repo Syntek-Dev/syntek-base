@@ -116,6 +116,7 @@ consumes this API; none of them changes the rule above for the web.
 ├── .mcp.json                        ← project MCP servers (code-review-graph, context7, mermaid)
 ├── .npmrc                           ← pnpm registry and install behaviour
 ├── .nvmrc                           ← Node.js version pin
+├── .opengrep-version                ← Opengrep engine pin (audits/static-analysis.sh + its CI job)
 ├── .prettierignore                  ← what Prettier never formats
 ├── .prettierrc                      ← Prettier formatting rules
 └── .python-version                  ← Python version pin

@@ -1,0 +1,30 @@
+{# Fixture template for static-analysis.sh --self-test. Never rendered. #} {# Trips five generic
+rules: django-autoescape-off-block, django-template-safe-filter, #} {#
+django-template-var-in-alpine-expression, django-template-var-in-inline-script, #} {#
+django-alpine-x-html-raw-sink. #}
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <title>Fixture</title>
+  </head>
+  <body>
+    {# django-autoescape-off-block: disarms every value in the block, including later ones #} {%
+    autoescape off %}
+    <p>{{ profile_bio }}</p>
+    {% endautoescape %} {# django-template-safe-filter: disarms one value #}
+    <p>{{ profile_bio|safe }}</p>
+
+    {# django-template-var-in-alpine-expression: template data parsed as JavaScript #}
+    <div x-data="{ name: '{{ user_name }}' }">
+      <span x-text="name"></span>
+    </div>
+
+    {# django-alpine-x-html-raw-sink: a raw-HTML sink regardless of its source #}
+    <div x-html="rendered_comment"></div>
+
+    {# django-template-var-in-inline-script: interpolation into a script body #}
+    <script>
+      const currentUser = "{{ user_name }}";
+    </script>
+  </body>
+</html>
