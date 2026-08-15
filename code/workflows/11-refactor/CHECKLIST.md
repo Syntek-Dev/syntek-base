@@ -28,6 +28,7 @@ model: opus
 - [ ] All functions have a single, clear purpose · _opus_
 - [ ] No file exceeds 750 lines · _opus_
 - [ ] Business logic is in service classes, not resolvers; named access rules use Policy classes, variant algorithms use Strategy classes · _opus_
+- [ ] Every abstraction introduced names its axis of change and its pattern, or states why plain extraction was enough (`code/docs/coding-principles/PRACTICAL-RULES.md` — _Design Patterns in Refactoring_) · _opus_
 - [ ] No inline imports without a documented reason · _opus_
 - [ ] All tests still pass after refactoring · _opus_
 - [ ] Coverage not reduced · _opus_

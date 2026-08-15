@@ -46,7 +46,9 @@ refactor separately.
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **refactor playbook**
   (`.claude/skills/refactor-safely.md`): `refactor_tool` suggest/dead_code/rename, then
   `get_impact_radius` + `get_affected_flows` before moving any code
-- `code/docs/coding-principles/PRACTICAL-RULES.md` — Decision Structuring (Policy/Strategy), DRY, KISS, YAGNI
+- `code/docs/coding-principles/PRACTICAL-RULES.md` — Design Patterns in Refactoring (the trigger
+  rule, the smell-to-pattern map, the decision record), Decision Structuring (Policy/Strategy),
+  DRY, KISS, YAGNI
 - `code/docs/coding-principles/STYLE-AND-PROCESS.md` — error handling, naming, import rules, code review checklist
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` — service layer and module structure
 - `code/docs/rendering/TEMPLATES-AND-INTERACTIVITY.md` — server/HTMX/Alpine boundary when refactoring frontend

@@ -133,7 +133,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/CODING-PRINCIPLES.md` — the length limits, naming, and the principles applied here
-- `code/docs/coding-principles/PRACTICAL-RULES.md` — decision structuring, DRY, KISS, YAGNI
+- `code/docs/coding-principles/PRACTICAL-RULES.md` — _Design Patterns in Refactoring_ (name the
+  axis of change and the pattern before abstracting, or say why plain extraction is enough),
+  decision structuring, DRY, KISS, YAGNI
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` · `code/docs/architecture/FRONTEND-PATTERNS.md`
 - `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the guard clause, and the register
   row that moves with the function it names

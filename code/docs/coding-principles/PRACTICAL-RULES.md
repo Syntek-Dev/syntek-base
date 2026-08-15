@@ -141,6 +141,107 @@ two places, or the intent is clearly a named domain concern from the outset.
 
 ---
 
+## Design Patterns in Refactoring
+
+A pattern is applied to make **future change cheap along the axis where change is actually
+expected**. Not for tidiness, and not because the result feels cleaner. It earns its place when it
+converts an **invasive** edit into an **additive** one: adding the next variant means writing new
+code, not editing existing code in three places. The second benefit is real but smaller — a
+recognisable Strategy or Adapter is **shared vocabulary**, telling the next reader where a new
+variant belongs without reverse-engineering the design first. A refactor that does neither has
+bought indirection and nothing else, and must not happen. **"It's cleaner" is not a justification**
+— it is the absence of one, and it is what tells you when to stop abstracting.
+
+### The trigger rule
+
+Before any refactor that abstracts, unifies, extracts, or deduplicates a function, method, or
+class, state two things:
+
+1. **The axis of change** it absorbs — what varies, with evidence that it varies.
+2. **The pattern** being applied, by name — or that none applies and why plain extraction is
+   enough.
+
+Plain extraction is the honest answer more often than not: lifting a named helper out of a long
+method absorbs no axis and needs no pattern. If you cannot name a concrete axis with evidence it is
+real, **do not abstract**. Where a well-known pattern fits, use it and use its published name —
+never invent a bespoke structure in its place, because a nameless one has to be re-read before it
+can be understood.
+
+### When not to abstract
+
+- **The Rule of Three applies unchanged** (_DRY vs WET_, above). Two similar call sites are a
+  coincidence; three are a pattern. Never unify on the second occurrence.
+- **Incidental duplication stays duplicated.** Code that looks alike but changes for different
+  reasons is not duplication. Unify by **reason to change**, never by shape — two services that
+  both build a six-field dict today will diverge the moment one gains a seventh.
+- **A wrong abstraction costs more than the duplication it replaced.** Duplication is visible and
+  cheap to undo. A bad abstraction hides its cost behind an interface every caller now depends on,
+  and undoing it means touching all of them.
+- **Prefer the simplest thing that removes the actual pain** — the pain you can point at, not the
+  one you anticipate (_YAGNI_, above).
+
+### Smell to pattern
+
+| Smell                                              | Pattern                           |
+| -------------------------------------------------- | --------------------------------- |
+| Branching on a type or mode to pick behaviour      | Strategy                          |
+| Long `if`/`elif` or `match` on an object's state   | State                             |
+| Same skeleton, differing steps                     | Template Method                   |
+| Callers coupled to concrete construction           | Factory Method / Abstract Factory |
+| Optional behaviour bolted onto an existing object  | Decorator                         |
+| Incompatible third-party or legacy interface       | Adapter                           |
+| Callers wrestling with a sprawling subsystem       | Facade                            |
+| Cross-cutting concern (caching, auth, logging)     | Proxy or middleware               |
+| Recursive tree handled with special-cased leaves   | Composite                         |
+| Telescoping constructors, long parameter lists     | Builder                           |
+| Hard-wired collaborators blocking tests            | Dependency injection              |
+| Data-access queries scattered across services      | Repository                        |
+| `None` checks repeated at every call site          | Null Object                       |
+| Two dimensions of variation multiplying subclasses | Bridge                            |
+
+Three rows are genuinely ambiguous in this stack:
+
+- **Strategy vs State.** A Strategy is chosen by the caller and stays put; a State replaces itself
+  as the object transitions. If the object decides its own next behaviour, it is State.
+- **Proxy vs middleware.** A per-object concern (a caching wrapper around one collaborator) is a
+  Proxy; a per-request concern is Django middleware, ordered in `settings.MIDDLEWARE`
+  ([`../architecture/SERVICE-AND-MIDDLEWARE.md`](../architecture/SERVICE-AND-MIDDLEWARE.md)).
+- **Repository vs the ORM.** Django's `Manager` and `QuerySet` **are** the repository. Express the
+  pattern as a custom manager or a queryset method; a separate repository class over the ORM is a
+  second abstraction across the same seam.
+
+A **Policy** is a Strategy whose axis is a business rule rather than an algorithm
+(_Decision Structuring_, above) — the same object under a narrower name, not a fifteenth row.
+
+### The decision record
+
+A chosen pattern carries a note of one or two sentences — a docstring on the interface, or a line
+in the PR body — stating three things: **the pattern**, **the axis of change** it absorbs, and
+**what would have to become true to remove it again**. That third clause is the only thing that
+lets a future reader delete an abstraction whose axis has gone away.
+
+```python
+class ExportFormatter(Protocol):
+    """Strategy — axis: output format (CSV, XLSX, PDF), one per download type.
+
+    Remove and inline if the product ever settles on a single export format.
+    """
+```
+
+### Review checklist
+
+Before opening a refactor PR, every answer is yes:
+
+- [ ] Can I name the axis of change this absorbs, in one sentence?
+- [ ] Is there evidence that axis is real — three existing consumers, or a committed requirement?
+- [ ] Can a new variant be added by writing new code, without editing existing code?
+- [ ] Does the abstraction carry the pattern's published name, discoverable from the class or
+      module name?
+- [ ] Is the decision record written, including what would justify removing it?
+- [ ] Would removing this abstraction make the code worse, rather than merely different?
+
+---
+
 ## Error Handling
 
 Prefer explicit error handling over silent failures. Never swallow an error without logging it.
