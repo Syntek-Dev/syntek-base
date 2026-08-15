@@ -19,7 +19,8 @@
 #                  to it, which meant the check silently passed on every run. A gate that
 #                  cannot fail is worse than no gate, because it is believed.
 #
-#                  Rule: .claude/CLAUDE.md Section 8 — Instructional file length
+#                  Rule: code/docs/DOCUMENTATION-LENGTH.md (stated in one bullet at
+#                        .claude/CLAUDE.md Section 8, which routes there)
 #
 # Scope scanned:  tracked (and untracked-but-not-ignored) Markdown that instructs:
 #                   * every CONTEXT.md and CLAUDE.md, wherever it sits

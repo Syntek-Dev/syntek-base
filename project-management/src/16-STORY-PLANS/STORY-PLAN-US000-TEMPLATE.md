@@ -405,6 +405,11 @@ dynamic workflows rather than ad-hoc single passes: fan out, verify adversariall
 Map the work to these orchestration stages — run each as a Claude dynamic workflow / subagent set,
 and treat verification + review as first-class, not afterthoughts.
 
+**The internal procedure comes first** (`.claude/CLAUDE.md` Section 2.7). The stages below name the
+`**/workflows/NN-…/` folder each one executes; the dynamic workflow supplies the fan-out and the
+verification, never a substitute set of steps. Improvise only where no internal workflow covers a
+phase, and say so.
+
 ### Stage 0 — Plan verification (before any code)
 
 - Spawn 2–3 independent reviewers (or a small `parallel()` workflow) to **adversarially critique this

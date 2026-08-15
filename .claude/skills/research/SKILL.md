@@ -16,10 +16,11 @@ that a decision builds on. It is the reading tier beneath a decision: the note i
 deliverable, and the `ADR` or `PLAN` that consumes it links back.
 
 **Boundary with `context7`.** For one library, SDK, or framework's own API — signatures,
-config, a version migration — the `context7` MCP is the first and only stop
-(`resolve-library-id` → `query-docs`). Reach for research when the question needs **synthesis
-across primary sources** that no single doc answers: weighing two libraries for an ADR,
-grounding a decision, or establishing how X behaves per the spec.
+config, a version migration — `context7` is the stop (`resolve-library-id` → `query-docs`), once
+the internal `**/docs/` have come up short: they rank ahead of it, and of web search behind it
+(`.claude/CLAUDE.md` Section 3.2 → _How to look something up_). Reach for research when the question needs
+**synthesis across primary sources** that no single doc answers: weighing two libraries for an
+ADR, grounding a decision, or establishing how X behaves per the spec.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 

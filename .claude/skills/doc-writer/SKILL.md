@@ -116,6 +116,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/DOCUMENTATION-PAIRING.md` — **the owning guide** for the pair
+- `code/docs/DOCUMENTATION-LENGTH.md` — its sibling, sizing what that one shapes: the 300-line
+  limit, the 270 ratchet, and the dated allowance that answers it
 - `code/docs/CODING-PRINCIPLES.md` — the style and error-handling rules a docstring reflects
 - `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — Section 4, the comment and docstring rule
 - `.claude/CLAUDE.md` Section 5 · Section 8 — the naming conventions and the length limits

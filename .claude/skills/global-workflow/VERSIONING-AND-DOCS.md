@@ -45,12 +45,8 @@ string that contradicts `VERSION`.
 | **Location**  | Alongside the layer they document (`code/docs/`, `project-management/docs/`, …)           |
 | **Length**    | Instructional `.md` ≤ **300 code lines** — gate: `audits/docs-length.sh`, never `cloc.sh` |
 
-**Instructional-file limit:** every `.md` that instructs Claude Code —
-`**/docs/*.md`, `**/workflows/**/*.md`, `.claude/**/*.md`, and all `CONTEXT.md`
-files — must not exceed 300 code lines. Oversized files split into focused
-sub-documents; the entry point becomes a thin index that cross-references them.
-This limit does **not** apply to root-level files (`README.md`, `CHANGELOG.md`,
-`GAPS.md`, …) or `**/src/*.md` human operational guides.
+**Instructional-file limit** — the scope, the exemptions, the 270-line ratchet and the dated
+allowance are all in `code/docs/DOCUMENTATION-LENGTH.md`, which owns the rule. Not restated here.
 
 ### Markdown style
 
@@ -67,6 +63,23 @@ This limit does **not** apply to root-level files (`README.md`, `CHANGELOG.md`,
 - **Horizontal rules** — `---` between major sections.
 - **British English** — follow the localisation table in [SKILL.md](SKILL.md).
 - **Line length** — keep under ~120 characters where practical.
+
+### Writing conventions
+
+- **Never use the section sign (U+00A7).** Write `Section 3.2`, or just `3.2` where the context
+  already says it is a section. Its doubled form, for a range, is banned too — write
+  `Sections 4 to 7`.
+- It is the scholarly and legal shorthand for "section", absorbed from RFCs, specs, statutes and
+  standards documents. The usage is correct and denser than this project wants: these files are
+  read under time pressure by people who are not lawyers.
+- **The rule is deliberately written without the character**, so that zero occurrences is an
+  invariant anything can check — `grep -rIP '\xc2\xa7' .` returning nothing is the pass condition.
+  Nothing runs it yet; it is a stated invariant, not a gate.
+- **Prefer plain ASCII punctuation** in anything an agent writes. The em dash is the deliberate
+  exception — it is house style throughout the prose here, and `audits/copy-emdash.sh` bans it
+  only in **public marketing copy**, never in documentation.
+- If that codepoint ever shows up as mojibake, mid-word, or somewhere "section" makes no sense,
+  that is a UTF-8/Latin-1 encoding fault rather than a writing-style one — fix it as corruption.
 
 A table of contents helps long human-facing docs, but thin instructional files
 under the 300-line limit generally do not need one — prefer a short section map.

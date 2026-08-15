@@ -3,6 +3,10 @@
 A curated index of internal documentation and external resources Claude should
 consult when working in this repository.
 
+**In what order to consult them — the internal `**/docs/` first, `context7` second, web search
+last — is `.claude/CLAUDE.md` Section 3.2, _How to look something up_.** This index is what that
+rule navigates; it does not restate it.
+
 ---
 
 ## Internal — Layer Entry Points
@@ -50,6 +54,7 @@ consult when working in this repository.
 | [code/docs/data-structures/TYPES-EXCEPTIONS.md](code/docs/data-structures/TYPES-EXCEPTIONS.md)               | The seven cases where a dictionary is right, the confinement policy, and the `DICT-OK:` escape hatch                                                                                              |
 | [code/docs/DESIGN-TOKENS.md](code/docs/DESIGN-TOKENS.md)                                                     | CSS design-token catalogue and the `var(--token)`-only usage rule                                                                                                                                 |
 | [code/docs/DISCOVERABILITY.md](code/docs/DISCOVERABILITY.md)                                                 | Being found — the `build_seo()` head pipeline, JSON-LD structured data, the root/`.well-known` surface register, and the body's shape (method side of `project-management/docs/SEO-CHECKLIST.md`) |
+| [code/docs/DOCUMENTATION-LENGTH.md](code/docs/DOCUMENTATION-LENGTH.md)                                       | Instructional file length — the 300-line limit, what is bound and exempt, the 270 ratchet and its dated allowance (gate: `audits/docs-length.sh`)                                                 |
 | [code/docs/DOCUMENTATION-PAIRING.md](code/docs/DOCUMENTATION-PAIRING.md)                                     | The `CONTEXT.md` / `CLAUDE.md` split — the decision test, the headings banned from an orientation file, route-don't-restate (audit: `audits/docs-pairing.sh`)                                     |
 | [code/docs/ENCRYPTION-GUIDE.md](code/docs/ENCRYPTION-GUIDE.md)                                               | Fernet PII encryption pipeline                                                                                                                                                                    |
 | [code/docs/NOTIFICATIONS.md](code/docs/NOTIFICATIONS.md)                                                     | Notifications — the send boundary, the shared branded template foundation, PII per channel (declared, not wired)                                                                                  |
