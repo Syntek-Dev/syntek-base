@@ -123,6 +123,12 @@ unvalidated response is a cast asserting a proof it does not have — the TypeSc
 the mobile API client, minted at the single point that parses a response and nowhere else. Adopt
 them before that and every call site inherits a false guarantee.
 
+The decline is **narrow, and does not extend to records.** An identifier stays a plain `string`;
+a set of keys known at design time is still a named `interface` or a discriminated union, and a
+closed set of values is still a literal union over an `as const` object. That standard, and the
+parse function whose arrival fires the trigger above, are
+[`data-structures/TYPES-TYPESCRIPT.md`](data-structures/TYPES-TYPESCRIPT.md).
+
 ---
 
 ## 4. How this surface expresses the error taxonomy
@@ -224,5 +230,6 @@ disagreeing about what counts as an error.
 | Token-first styling on this surface                  | `design-tokens/MOBILE.md`                |
 | WCAG 2.2 AA techniques for React Native              | `accessibility/MOBILE.md`                |
 | Platform conformance and adaptivity                  | `visual-design/MOBILE.md`                |
+| Records, unions and the parse boundary in TypeScript | `data-structures/TYPES-TYPESCRIPT.md`    |
 
 _Part of the `code/docs/` documentation family._

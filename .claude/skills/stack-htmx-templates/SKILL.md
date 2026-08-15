@@ -189,6 +189,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/FRONTEND-CODING-PRINCIPLES.md` — the template, component, HTMX and CSS specifics
+- `code/docs/data-structures/TYPES-BROWSER.md` — the typed view-model a handler renders, the
+  request type `hx-vals` maps onto, `Alpine.data` registration past a single boolean, and the
+  shared constants for swap targets and `HX-*` event names
 - `code/docs/ARCHITECTURE-PATTERNS.md` — the layered boundaries a rendered page sits inside
 - `code/docs/DESIGN-TOKENS.md` — the token catalogue and the `var(--token)`-only rule
 - `code/docs/RESPONSIVE-DESIGN.md` — breakpoints, fluid layout, mobile-first

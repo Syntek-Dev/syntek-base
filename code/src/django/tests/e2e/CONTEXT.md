@@ -26,6 +26,7 @@ If a test does not need one of those, it does not belong here.
 code/src/django/tests/e2e/
 ├── __init__.py                       ← package marker
 ├── a11y_config.py                    ← page list, axe tags, impact thresholds, scan projects
+├── browser_types.py                  ← Viewport · ColourScheme · ScanProject — the suite's value objects
 ├── CLAUDE.md                         ← operating rules
 ├── conftest.py                       ← viewport projects, base URL, overflow helper
 ├── CONTEXT.md                        ← this file
@@ -85,6 +86,22 @@ Scans run with `reduced_motion="reduce"`: scroll-driven reveal animations hold c
 Under reduced motion the reveal CSS is inert and the page renders fully visible.
 
 Results are written per page/project to `code/src/scripts/tests/reports/a11y/` (gitignored).
+
+## The configuration is typed, not a nest of dictionaries
+
+`SCAN_PROJECTS` and `VIEWPORTS` were both `dict[str, dict[str, …]]` — records whose keys were
+known at design time, which meant a misspelt `"colour_scheme"` was a `KeyError` at scan time
+rather than an error at edit time. They are now built from the three value objects in
+`browser_types.py`: `Viewport`, the `ColourScheme` enum, and `ScanProject`, which carries its own
+`name` so a project can be passed to a fixture as one value.
+
+That last point removed a real defect: the a11y fixture used to smuggle the project name onto the
+Playwright page with `page.__dict__["_scan_project"]`. It now yields a `ScannedPage` record
+holding the page and its project together.
+
+**Playwright's dictionary comes back at exactly one place** — `Viewport.to_playwright()` — which
+is the boundary conversion the standard prescribes, marked `DICT-OK:` and confined to that method.
+The rule: `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md`.
 
 ## Baseline state
 

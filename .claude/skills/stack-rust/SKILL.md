@@ -218,6 +218,10 @@ that calls it, and `cicd` where the image's Rust stage or a toolchain pin moves.
 ## Cross-references
 
 - `code/docs/RUST.md` and its `rust/` sub-docs — the guide behind this skill
+- `code/docs/data-structures/TYPES-RUST.md` — newtypes for identifiers and units, enums carrying
+  data per variant so illegal states cannot be constructed, and the wire/domain seam: a
+  `#[serde(deny_unknown_fields)]` DTO converted through `TryFrom`, with the domain type deriving
+  no serde at all. `serde` is not a workspace dependency, so adding it is a supply-chain event
 - `code/docs/encryption/RUST-CRYPTO.md` — how native crypto relates to the Fernet pipeline
 - `code/src/rust/CLAUDE.md` — the operating rules for the tree itself
 - `code/src/scripts/rust/CONTEXT.md` — why these scripts run on the host

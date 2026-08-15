@@ -137,6 +137,11 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/RENDERING.md` — where each interaction runs; the doctrine above in full
+- `code/docs/data-structures/TYPES-BROWSER.md` — both sides of an HTMX exchange are domain types:
+  a view-model out (never a context dict assembled inline in the handler), a request type in, and
+  swap targets, event names and `HX-*` values as shared constants. Also the `Alpine.data`
+  registration threshold — past one property or any method, the component leaves `x-data`. It
+  **supersedes** the inline `x-data` and bare `"itemSaved"` examples in `code/docs/rendering/`
 - `code/docs/DESIGN-TOKENS.md` — the token catalogue and the `var(--token)`-only contract
 - `code/docs/FRONTEND-CODING-PRINCIPLES.md` — component placement, grounding in the live code,
   the legal footer as data, and the single-component-system rule

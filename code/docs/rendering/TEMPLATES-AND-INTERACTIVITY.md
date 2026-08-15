@@ -118,6 +118,8 @@ real `<a href>` links so the page works with JS disabled.
 Rapid, fine-grained UI that should never touch the network lives in Alpine, driven by HTML
 attributes (CSP-clean — no inline `<script>`). Sync to the server on commit, not per-keystroke.
 
+A single boolean toggle with no methods is small enough to inline:
+
 ```html
 <div x-data="{ open: false }">
   <button @click="open = !open" :aria-expanded="open">Menu</button>
@@ -127,6 +129,13 @@ attributes (CSP-clean — no inline `<script>`). Sync to the server on commit, n
   </nav>
 </div>
 ```
+
+**Past that, the component is registered rather than inlined.** More than one property, or any
+method, and the object literal in `x-data` becomes an untyped state bag whose shape only the
+markup knows — so it moves to `Alpine.data('name', () => ({ … }))` in a static `.js` file, and
+`x-data` names it. The threshold, the store rule for shared state, and the frozen-constant
+replacement for magic status strings are
+[`../data-structures/TYPES-BROWSER.md`](../data-structures/TYPES-BROWSER.md).
 
 ---
 

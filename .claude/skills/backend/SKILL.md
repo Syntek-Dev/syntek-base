@@ -151,6 +151,10 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/DATABASE.md` — the data-layer pre-flight rules, read before any model or query
+- `code/docs/data-structures/TYPES-PYTHON.md` — records as frozen dataclasses or Ninja schemas,
+  `StrEnum` for a closed set, and exhaustive `match` closing on `InvariantViolation`; the rule it
+  expresses is `data-structures/TYPES-OVER-DICTIONARIES.md`, whose parse-at-the-boundary clause
+  decides where a payload stops being a dictionary — a service method never receives one
 - `code/docs/ARCHITECTURE-PATTERNS.md` — the service-layer boundary and module structure
 - `code/docs/API-DESIGN.md` — endpoint, Schema and error conventions
 - `code/docs/MCP-SERVER.md` — the `/mcp/` surface, its auth model, and what it does not inherit

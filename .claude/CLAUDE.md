@@ -253,6 +253,7 @@ Marketing `/` (slugs) · <%PROJECT_NAME%> Admin `/admin/` (UUIDs) · Client Port
 ## 8. Standards
 
 - **Database:** read `code/docs/DATABASE.md` before any model, migration, or query — scope columns, database-level constraints, lock-safe migrations, search, and the deferred-infrastructure register with its trigger conditions
+- **Domain objects over dictionaries:** a set of keys known at design time and carrying domain meaning is a **named type**, on every surface — dictionaries are for keys that are genuinely data. Parse at the boundary and pass objects inward; a closed set that behaviour branches on is an enum. **Mandatory for all new and modified code**, with one documented escape hatch: `DICT-OK: <reason> — confined to <boundary>`, greppable and required. Standard: `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md` · exceptions: `TYPES-EXCEPTIONS.md` · **gate: `code/src/scripts/audits/dict-discipline.sh`**
 - **Discoverability:** all public pages in `apps.marketing`. Two halves, and neither restates the other — **what must be true per page**: `project-management/docs/SEO-CHECKLIST.md` · **how this stack does it**: `code/docs/DISCOVERABILITY.md`
 - **Accessibility:** WCAG 2.2 AA on all interactive components — guide: `code/docs/ACCESSIBILITY.md`
 - **Versioning:** single-track semver — rules: `project-management/docs/VERSIONING-GUIDE.md` · bump via the `version` skill (or the `release` skill)

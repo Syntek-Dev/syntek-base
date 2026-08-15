@@ -8,8 +8,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 ## Purpose (one line)
 
 The split-out detail for the data-structures standard — fundamentals, domain
-modelling, anti-patterns, refactoring, and PostgreSQL schema design — behind the
-`code/docs/DATA-STRUCTURES.md` entry point.
+modelling, anti-patterns, refactoring, PostgreSQL schema design, and the six-part
+types-over-dictionaries family — behind the `code/docs/DATA-STRUCTURES.md` entry point.
 
 ## How to work here
 
@@ -26,6 +26,17 @@ modelling, anti-patterns, refactoring, and PostgreSQL schema design — behind t
 ## Guardrails
 
 - **300-line instructional limit** per file — split rather than overflow.
+- **`ANTI-PATTERNS.md` names the defects; the `TYPES-*` family states the rule.** Never restate
+  one in the other — a pattern gets a link, not a second explanation
+  (`code/src/scripts/audits/doctrine-drift.sh` is the gate). The same line divides
+  `TYPES-OVER-DICTIONARIES.md` from `TYPES-EXCEPTIONS.md`: the standard never lists an
+  exception, and the exceptions file never restates the standard.
+- **A change to the `DICT-OK:` marker string is a change to a script.** The marker is parsed by
+  `code/src/scripts/audits/dict-discipline.sh`; edit the guide and the script's clause `M`
+  together, and run `dict-discipline.sh --self-test` before committing either.
+- **A surface guide may not contradict its surface's own principles guide.** In particular
+  `TYPES-TYPESCRIPT.md` must not mandate branded ID types — `code/docs/MOBILE-CODING-PRINCIPLES.md`
+  Section 3 declined them at baseline with a stated trigger, and that decision is the owner's.
 - **Schema advice must stay migration-safe:** changes flow through
   `code/src/scripts/database/migrate.sh`, never hand-edited migrations — the guide
   must never suggest otherwise.

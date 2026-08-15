@@ -121,6 +121,13 @@ _exclude:
   # is wholly about a surface that is absent here, so it goes with the tree exactly as RUST.md
   # and DESKTOP.md do. Its index rows are likewise allowed to dangle, flagged mobile-only.
   - "<: if not INCLUDE_MOBILE :>/code/docs/MOBILE-CODING-PRINCIPLES.md<: endif :>"
+  # The surface members of the types-over-dictionaries family go the same way. Each is wholly
+  # about one surface's spelling of the standard and routes to that surface's stack skill in its
+  # frontmatter, so leaving one behind names a skill the project does not have —
+  # `audits/routing-skills.sh` reports exactly that. The standard itself
+  # (TYPES-OVER-DICTIONARIES.md), its exceptions and the Python and browser members are ungated:
+  # every project has those surfaces.
+  - "<: if not INCLUDE_MOBILE :>/code/docs/data-structures/TYPES-TYPESCRIPT.md<: endif :>"
   # First gated path under how-to/ — every entry above this point is code/ or .claude/. The rule
   # is the same one, not a new one: STORE-LISTING.md is a per-project ANSWER SHEET (the pattern of
   # INVARIANTS.md and PLATFORM-PROVIDERS.md) for a surface that may not exist, and an answer sheet
@@ -143,6 +150,9 @@ _exclude:
   - "<: if not INCLUDE_RUST :>/code/docs/RUST.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/rust<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/encryption/RUST-CRYPTO.md<: endif :>"
+  # The Rust member of the types-over-dictionaries family — same reasoning as the TypeScript one
+  # above: it routes to `stack-rust`, which is excluded below.
+  - "<: if not INCLUDE_RUST :>/code/docs/data-structures/TYPES-RUST.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/workflows/12-rust-extension<: endif :>"
   - "<: if not INCLUDE_RUST :>/.github/workflows/syntax-rust.yml<: endif :>"
   # Governance goes with the tree, exactly as for mobile and for the same description-match

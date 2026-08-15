@@ -41,10 +41,19 @@ for the handful of things the Django test client cannot see.
   specifically to keep `django_db` off it.
 - **Chromium only.** The runner installs one engine deliberately; do not parametrise
   across browsers without deciding to carry the install cost.
+- **Configuration is a value object, never a nested dictionary.** New scan or viewport
+  configuration extends `browser_types.py` (`Viewport`, `ColourScheme`, `ScanProject`) —
+  a `dict[str, dict[str, …]]` record here is the exact shape this suite was converted away
+  from (`code/docs/data-structures/TYPES-OVER-DICTIONARIES.md`). Playwright's mapping is
+  produced by `Viewport.to_playwright()` and nowhere else; that method is the only
+  sanctioned `DICT-OK:` in the package.
+- **Never stash state on a Playwright object's `__dict__`.** If a fixture must return a page
+  and something about it, return a record holding both — `ScannedPage` is the precedent.
 
 ## Output & naming
 
 - **Hand-written:** every `.py` here.
 - **Generated (gitignored):** `code/src/scripts/tests/reports/a11y/<page>--<project>.json`.
 - Modules `test_e2e_<area>.py`; fixtures in `conftest.py`; scan configuration in
-  `a11y_config.py` and nowhere else.
+  `a11y_config.py` and nowhere else; the shared value objects both of those are built from
+  in `browser_types.py`.

@@ -1,0 +1,56 @@
+# Domain-objects-over-dictionaries guard — the machine-checkable half of
+# code/docs/data-structures/TYPES-OVER-DICTIONARIES.md.
+#
+# The self-test runs FIRST and unconditionally. This repository ships almost no application
+# code, so the ordinary scan is green having measured nothing — exactly the false-green
+# defect audits/CLAUDE.md names. Proving the detector separates its fixtures is what makes
+# the clean scan below mean anything.
+#
+# No step-level surface guard is needed: dict-discipline.sh exits 0 with a note when the
+# mobile or Rust surface is absent, so a web-only project reports a green job rather than a
+# skipped one. Path filters are safe here because this is NOT a required status check — see
+# project-management/docs/GIT-GUIDE.md on why a path-filtered required check can block a
+# merge forever.
+name: Audit — Dictionary Discipline
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/apps/**"
+      - "code/src/mobile/**"
+      - "code/src/rust/crates/**"
+      - "code/src/scripts/audits/dict-discipline.sh"
+      - "code/src/scripts/audits/fixtures/dict-discipline/**"
+      - ".github/workflows/audit-dict-discipline.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/apps/**"
+      - "code/src/mobile/**"
+      - "code/src/rust/crates/**"
+      - "code/src/scripts/audits/dict-discipline.sh"
+      - "code/src/scripts/audits/fixtures/dict-discipline/**"
+      - ".github/workflows/audit-dict-discipline.yml"
+  workflow_dispatch:
+
+jobs:
+  dict-discipline:
+    name: Dictionary discipline audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Prove the detector separates its fixtures
+        run: bash code/src/scripts/audits/dict-discipline.sh --self-test
+
+      - name: Run dictionary discipline audit
+        run: bash code/src/scripts/audits/dict-discipline.sh --output md
+
+      - name: Upload dictionary discipline report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dict-discipline-report
+          path: code/src/scripts/audits/reports/dict-discipline-report.md
+          if-no-files-found: ignore

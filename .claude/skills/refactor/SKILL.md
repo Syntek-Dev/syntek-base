@@ -133,6 +133,11 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/CODING-PRINCIPLES.md` — the length limits, naming, and the principles applied here
+- `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md` — the standard a dictionary-to-type
+  conversion is performed against, and its _Migrating existing code_ rule: this binds new and
+  modified code, there is no mass refactor, and a backlog row is discharged **whole** — define
+  the type, convert every read in the same change, delete the dictionary. A half-migrated
+  structure is worse than an unmigrated one, because a reader must know which half they are in
 - `code/docs/coding-principles/PRACTICAL-RULES.md` — _Design Patterns in Refactoring_ (name the
   axis of change and the pattern before abstracting, or say why plain extraction is enough),
   decision structuring, DRY, KISS, YAGNI

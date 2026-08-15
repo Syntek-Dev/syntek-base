@@ -73,6 +73,12 @@ Place every interaction by class (full doctrine: [RENDERING.md](RENDERING.md)):
 - **Rapid / local interaction (live-filter, drag-reorder, menus, toggles) → Alpine** (`x-data`), no
   round-trip; sync to the server on commit, not per-keystroke.
 - **`hx-boost` is banned.** Every server op is an explicit `hx-*` element.
+- **Both sides of an HTMX exchange are typed.** The view builds a **view-model**, not a context
+  dictionary assembled inline; `hx-vals` sends named fields parsed server-side into a request
+  type; swap-target ids, event names and `HX-*` values are shared constants, never inline
+  literals. An Alpine component past one property or any method is registered with
+  `Alpine.data('name', …)` in a static file rather than inlined into `x-data`. Full rules:
+  [`data-structures/TYPES-BROWSER.md`](data-structures/TYPES-BROWSER.md).
 
 ---
 
@@ -255,5 +261,8 @@ In addition to the [global checklist in CODING-PRINCIPLES.md](coding-principles/
 - [ ] CSS: `@import` at top, queries at the bottom; logical properties; BEM; no per-component focus
       ring; no declaration block repeated in 4+ files
 - [ ] Any hand-written JS is a static file, data via `{% json_script %}`, no new dependency
+- [ ] Typed both ways — view-model out, request type in; no context dict assembled inline in the
+      view; `Alpine.data` for anything past a single boolean; swap targets, event names and
+      `HX-*` values are shared constants ([data-structures/TYPES-BROWSER.md](data-structures/TYPES-BROWSER.md))
 - [ ] No `console.log/warn/error()` in committed code
 - [ ] British English throughout

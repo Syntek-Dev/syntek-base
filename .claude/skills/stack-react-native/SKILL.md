@@ -269,6 +269,10 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/MOBILE-CODING-PRINCIPLES.md` — the TypeScript flags, exhaustiveness, error taxonomy
+- `code/docs/data-structures/TYPES-TYPESCRIPT.md` — records as interfaces, a literal union over an
+  `as const` object rather than TypeScript's `enum`, discriminated unions in place of a struct of
+  optional fields, and the parse function at the `fetch` seam. Branded IDs stay **declined** —
+  that decision is `MOBILE-CODING-PRINCIPLES.md` Section 3's, and this guide only records its trigger
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract, read every time
 - `code/docs/VISUAL-DESIGN.md` — Section 3 the project's **direction** and its six axes, Section 4.1 the
   universal tells, Section 5 the motion numbers (read every time)

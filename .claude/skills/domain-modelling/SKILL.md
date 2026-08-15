@@ -74,6 +74,10 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — modelling the data (entities, value objects, aggregates)
 - `code/docs/DATA-STRUCTURES.md` — the governing data-structures guide (entry point)
+- `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md` — the standard that makes a named concept
+  a named **type**: a term entering the model here should have a type carrying it, not a dictionary
+  key spelling it. Its enum test decides when a newly-named set is closed enough to be an enum;
+  `TYPES-EXCEPTIONS.md` is where a concept legitimately stays a mapping
 - `code/docs/DOCUMENTATION-PAIRING.md` — which file a new term belongs in, and why it is not both
 - `.claude/skills/codebase-design/SKILL.md` — the design work that produces the names this records
 - `.claude/skills/improve-codebase-architecture/SKILL.md` — the review whose decisions land here

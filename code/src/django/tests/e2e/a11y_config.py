@@ -6,11 +6,19 @@ it ships** — a page absent from ``PAGES`` is a page the gate does not scan.
 
 Every entry in ``SUPPRESSIONS`` must carry ``id``, ``selector``, ``justification`` and a
 non-empty ``ticket`` — undocumented waivers are rejected in review.
+
+``Suppression`` stays a ``TypedDict`` on purpose: it describes a **waiver record read by a
+script**, and its four keys are exactly what a reviewer writes by hand. ``SCAN_PROJECTS``
+used to be a ``dict[str, dict[str, object]]`` beside it, which was the same information with
+none of the checking — that inconsistency inside one module is why the value objects in
+``browser_types.py`` exist (``code/docs/data-structures/TYPES-PYTHON.md``).
 """
 
 from __future__ import annotations
 
 from typing import TypedDict
+
+from tests.e2e.browser_types import ColourScheme, ScanProject, Viewport
 
 # WCAG 2.2 AA only. AAA rules are excluded — they produce false positives against a
 # design that never claimed AAA.
@@ -46,12 +54,21 @@ SUPPRESSIONS: tuple[Suppression, ...] = ()
 #   )
 PAGES: tuple[str, ...] = ()
 
+# The two widths every scan project is built from. Named once so "the desktop width" is a
+# single edit rather than four matching literals.
+DESKTOP_VIEWPORT = Viewport(width=1280, height=800)
+MOBILE_VIEWPORT = Viewport(width=375, height=812)
+
 # The four scan projects: desktop and mobile, each in light and dark. Dark mode is applied
 # automatically via `prefers-color-scheme`, so dark-mode contrast regressions are only
 # caught if it is scanned too.
-SCAN_PROJECTS: dict[str, dict[str, object]] = {
-    "desktop": {"viewport": {"width": 1280, "height": 800}, "color_scheme": "light"},
-    "mobile": {"viewport": {"width": 375, "height": 812}, "color_scheme": "light"},
-    "desktop-dark": {"viewport": {"width": 1280, "height": 800}, "color_scheme": "dark"},
-    "mobile-dark": {"viewport": {"width": 375, "height": 812}, "color_scheme": "dark"},
-}
+#
+# A tuple of records, not a dict keyed by name: the name is a property of the project, so it
+# belongs on the object. Keying a dict by it put the identifier one level above the thing it
+# identified, which is what forced the fixture to smuggle the key alongside the value.
+SCAN_PROJECTS: tuple[ScanProject, ...] = (
+    ScanProject("desktop", DESKTOP_VIEWPORT, ColourScheme.LIGHT),
+    ScanProject("mobile", MOBILE_VIEWPORT, ColourScheme.LIGHT),
+    ScanProject("desktop-dark", DESKTOP_VIEWPORT, ColourScheme.DARK),
+    ScanProject("mobile-dark", MOBILE_VIEWPORT, ColourScheme.DARK),
+)
