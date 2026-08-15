@@ -140,3 +140,4 @@ delivery chain. It is invoked directly and does not route into `code/workflows/`
 - `code/src/scripts/development/*.sh` · `code/src/scripts/tests/*.sh` — the task-runner scripts coding lessons mirror.
 - `.claude/plugins/*.py` — read-only project inspection for step 2's lookups.
 - `how-to/docs/AI-DICTIONARY.md` — glossary of the AI-coding terms used here.
+- `how-to/docs/TOOLING-GUIDE.md` — what to type for a given task, when a lesson needs the real command.

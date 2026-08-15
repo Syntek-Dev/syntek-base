@@ -185,3 +185,16 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/20-frontend-code/` — the frontend build phase
 - `code/workflows/01-new-feature/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — template, component, and HTMX-partial tests
+
+## Cross-references
+
+- `code/docs/FRONTEND-CODING-PRINCIPLES.md` — the template, component, HTMX and CSS specifics
+- `code/docs/ARCHITECTURE-PATTERNS.md` — the layered boundaries a rendered page sits inside
+- `code/docs/DESIGN-TOKENS.md` — the token catalogue and the `var(--token)`-only rule
+- `code/docs/RESPONSIVE-DESIGN.md` — breakpoints, fluid layout, mobile-first
+- `code/docs/DISCOVERABILITY.md` — the per-page head pipeline and JSON-LD structured data
+- `code/docs/PERFORMANCE.md` — caching and the response-time targets a page is held to
+- `code/docs/SECURITY.md` — the escaping, CSRF and upload rules a template must not undo
+- `code/docs/TESTING.md` — the coverage floors, and where a template test belongs
+- `project-management/docs/SEO-CHECKLIST.md` — what must be true per page before a story closes
+- `project-management/docs/QA-GUIDE.md` · `project-management/docs/SECURITY-GUIDE.md` · `project-management/docs/RESPONSIVE-DESIGN.md` — the PM-side gates a page is judged against

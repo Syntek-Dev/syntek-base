@@ -108,7 +108,14 @@ analysis, the seam and orphan guards, and the dependency CVE audit. Full invento
   `routing-skills.sh`.** That third one is a genuinely different surface, not a fourth opinion on
   the same file: `skill-conformance.sh` reads `metadata.skills` **inside** a `SKILL.md`, while
   `routing-skills.sh` reads the `skills:` key in the routing frontmatter of a `docs/` guide or a
-  workflow `STEPS.md`. Different key, different file, and neither can see the other's.
+  workflow `STEPS.md`. Different key, different file.
+  **The two do now read one key in common, and the split is by question rather than by file.**
+  Clause 14 reads a guide's routing `skills:` — the same key `routing-skills.sh` reads — and asks
+  the opposite thing about it: that one asks whether the name **resolves** (outbound, and a
+  finding is the guide's), this one asks whether the claim is **answered** (inbound, and a
+  finding is the skill's, reported against its `SKILL.md`). One key, two directions, neither
+  clause able to reach the other's verdict — so route by which direction failed, not by which
+  file the key sits in.
 - **A vendored skill is exempt from the house rules and bound by the spec.** The `cloudinary-*`
   folders are symlinks refreshed from upstream through `skills-lock.json`, so an edit made to
   satisfy a house clause is reverted by the next refresh — which is why `skill-conformance.sh`

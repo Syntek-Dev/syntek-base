@@ -74,6 +74,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — modelling the data (entities, value objects, aggregates)
 - `code/docs/DATA-STRUCTURES.md` — the governing data-structures guide (entry point)
+- `code/docs/DOCUMENTATION-PAIRING.md` — which file a new term belongs in, and why it is not both
 - `.claude/skills/codebase-design/SKILL.md` — the design work that produces the names this records
 - `.claude/skills/improve-codebase-architecture/SKILL.md` — the review whose decisions land here
 - `.claude/CLAUDE.md` Section 5 (naming) · Section 8 (CONTEXT.md/CLAUDE.md pairing) · Section 9 (MEMORY) · Section 10 (GAPS)

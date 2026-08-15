@@ -115,6 +115,8 @@ and a rule with two enforcers drifts the moment the number moves.
 - [ ] Steering is positive, not prohibition; British English throughout.
 - [ ] `## Governing procedures` is present — naming the procedures, or saying there are none —
       and sits immediately before `## Cross-references` where the skill has one.
+- [ ] Every **top-level guide naming this skill** in its routing frontmatter is cited back in the
+      body — by path, or by a directory glob covering it.
 - [ ] Registered: `.claude/skills/CONTEXT.md` (tree + when-to-load) and the `.copier/README.md`
       register row.
 - [ ] `bash code/src/scripts/audits/skill-conformance.sh` and

@@ -157,3 +157,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/security/INPUT-AND-API.md` — boundary validation, throttling, upload hardening
 - `code/docs/architecture/CORE-AND-SCALING.md` — the phase-gate and keyset readiness rules
 - `code/docs/PERFORMANCE.md` — query optimisation, caching, response-time targets
+- `code/docs/BACKEND-CODING-PRINCIPLES.md` — the Django/Python/Celery specifics this builds to
+- `code/docs/URL-STRATEGY.md` — the route, slug and endpoint naming a new surface takes
+- `code/docs/PROCESS-MODEL.md` — worker class, event loop, and the ORM's sync boundary
+- `code/docs/TASK-AUTHORING.md` — the enqueue boundary, idempotency and retries for background work
+- `code/docs/MANAGEMENT-COMMANDS.md` — arguments as untrusted input, blast radius, exit codes
+- `code/docs/OBJECT-STORAGE.md` — the S3-API adapter contract and presigned-URL rules

@@ -117,3 +117,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/SECURITY.md` — the permission and IDOR controls a plan must honour
 - `code/docs/architecture/CORE-AND-SCALING.md` — the phase-gate invariants a plan must not break
 - `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook used for impact analysis
+- `code/docs/NEGATIVE-SPACE.md` — the invariants and error taxonomy a plan must design against

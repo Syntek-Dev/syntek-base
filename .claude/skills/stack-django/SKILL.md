@@ -276,9 +276,10 @@ def get_active_users(limit: int | None = None) -> QuerySet[User]:
 
 **Comments and docstrings carry the _why_ only** — the code states the what, and the
 typed signature already carries args, return, and raises, so no
-`Args:`/`Returns:`/`Raises:` block. Every module opens with a one-line docstring on why it
-exists. No pronouns. **Never reference a story (`US###`), sprint, ADR, ticket, PR, commit,
-`code/docs/*` path, person, or date from inside a code file**, and never leave a
+`Args:`/`Returns:`/`Raises:` block. Every module opens with a docstring on why it exists,
+as long as that reason needs; an inline **comment** is one line. No pronouns. **Never
+reference a story (`US###`), sprint, ADR, ticket, PR, commit, `docs/` path, person, or date
+from inside a code file**, and never leave a
 `TODO`/`FIXME` — deferred work belongs in `DEFERRED.md`/`GAPS.md`. The one exception is
 published interface text: a Ninja endpoint docstring and `summary` render on the OpenAPI
 page, and a FastMCP tool docstring is the prompt the model reads, so both state the full
@@ -359,3 +360,15 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/workflows/02-tdd-cycle/` — Red → Green → Refactor
 - `code/workflows/04-api-design/` — routers, Schemas, endpoints
 - `code/workflows/03-database-migration/` — schema changes
+
+<!-- docs-length-allow: clause 14 obliges this skill to cite back every top-level guide that names it, and more guides name this one than any other — the growth is those citations. Splitting the Django idioms is a real question about this skill's shape, not a side-effect of the node that added them (expires 01/11/2026) -->
+
+## Cross-references
+
+- `code/docs/BACKEND-CODING-PRINCIPLES.md` — the Django/Python/Celery specifics behind these idioms
+- `code/docs/ARCHITECTURE-PATTERNS.md` — the layered boundaries the service layer sits inside
+- `code/docs/DATA-STRUCTURES.md` — the model and type conventions the ORM layer encodes
+- `code/docs/LOGGING.md` — structured logging, and what must never reach a log line
+- `code/docs/MCP-SERVER.md` — the `/mcp/` surface beside `/api/`, and what it does not inherit
+- `code/docs/EXPORTS.md` · `code/docs/NOTIFICATIONS.md` · `code/docs/OBJECT-STORAGE.md` — declared, not wired: read before a story wires one
+- `project-management/docs/QA-GUIDE.md` · `project-management/docs/SECURITY-GUIDE.md` — what the PM layer gates this code against

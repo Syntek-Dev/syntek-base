@@ -110,3 +110,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/src/SERVER-ARCHITECTURE/` — the app→server contract the Compose and deploy must satisfy
 - `code/docs/SECURITY.md` — the CORS, secrets and `DEBUG` gating rules
 - `code/docs/LOGGING.md` — the deploy health signals, and why each names an interface
+- `how-to/docs/CELERY-FIRST-RUN.md` — bringing the worker and beat up the first time

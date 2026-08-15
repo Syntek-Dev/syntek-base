@@ -132,3 +132,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/docs/VERSIONING-GUIDE.md` — the semver rules a versioned commit obeys
 - `.claude/hooks/pre-pr-check.sh` — the quality gates a PR must pass before it is ready
 - `.claude/plugins/git-tool.py` — read-only repository state
+- `how-to/docs/GIT-WORKTREES.md` — creating and retiring the parallel-story worktrees

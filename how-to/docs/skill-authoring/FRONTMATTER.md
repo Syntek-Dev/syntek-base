@@ -71,6 +71,35 @@ restated one indentation level down where none of its clauses looks:
 runtime — but an open namespace is a second, unchecked home for every rule, and one place per
 rule is the whole standard.
 
+## The other `skills:` key — the one a guide writes, and this skill answers
+
+A **guide** carries its own `skills:` list (`.claude/CLAUDE.md` Section 2.5), and it is a
+different key in a different file from the one above. Two clauses read it, in opposite
+directions, and keeping them apart is what stops either being mistaken for the other:
+
+| Direction               | Asks                                    | Gate                             |
+| ----------------------- | --------------------------------------- | -------------------------------- |
+| Outbound — guide's half | does the name **resolve** to a skill?   | `audits/routing-skills.sh`       |
+| Inbound — skill's half  | does the skill **cite the guide back**? | `skill-conformance.sh` clause 14 |
+
+**The inbound half exists because the outbound one points down the minority path.** A guide's
+list is read by whoever opens the **guide** — but skills fire on description match
+(`.claude/CLAUDE.md` Section 2.3), so an agent reaches the skill first far more often, and the
+guide only if the skill names it. Left unchecked, a guide could name a skill for a year while
+the skill never mentioned the guide, and the doctrine would simply never arrive.
+
+**Cite every top-level guide that names this skill**, in the body — `## Cross-references` is
+where they go. Two deliberate limits:
+
+- **Top-level guides only.** A sub-document is reached through its index, and the index is what
+  a skill cites. Requiring each sub-document by name would make every skill enumerate a tree
+  that churns whenever a guide is split.
+- **A directory glob discharges the obligation.** `code/docs/*` already says where to look, and
+  is route-don't-restate done correctly; demanding the literal path as well would make the gate
+  punish the better pattern. Reach for it where a whole tree genuinely applies — a
+  cross-cutting skill named by a dozen guides for its conventions — and for a literal path
+  where the guide is this skill's actual subject.
+
 ## The four runtime keys admitted here
 
 Each of the four answers **where the skill runs**. None of them answers what it may do, which is

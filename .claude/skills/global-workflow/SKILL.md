@@ -51,7 +51,7 @@ user-facing copy, docstrings, and comments.
 - **Dev scripts:** `code/src/scripts/**/*.sh` (development, database, tests, syntax, audits).
 - **Plugin tools (read-only helpers):** `.claude/plugins/*.py` — e.g.
   `project-tool.py info`, `db-tool.py detect`, `env-tool.py find`, `git-tool.py`.
-- **Reference guides:** `code/docs/*` (coding), `project-management/docs/*` (PM, Git, versioning, GDPR, security).
+- **Reference guides:** `code/docs/*` (coding), `project-management/docs/*` (PM, Git, versioning, GDPR, security), `how-to/docs/*` (setup, CLI, worktrees, incidents, authoring).
 - **Step-by-step procedures:** `code/workflows/NN-*/`, `project-management/workflows/NN-*/`.
 - **Sibling skills:** `.claude/skills/stack-django/`, `.claude/skills/stack-htmx-templates/`.
 
@@ -63,7 +63,7 @@ user-facing copy, docstrings, and comments.
 - **Bumping a version** — MAJOR/MINOR/PATCH rules, pre-commit steps → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
 - **Authoring Markdown docs** — headings, tables, lists, code fences → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
 - **Documenting a bug fix** — required format and location → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
-- **Writing code comments** — why-only rule, no outside references, one-line docstrings, no-pronouns rule → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
+- **Writing code comments** — why-only rule, no outside references, one-line comments, no-pronouns rule → [VERSIONING-AND-DOCS.md](VERSIONING-AND-DOCS.md).
 
 ## Authoritative cross-references
 
@@ -73,6 +73,8 @@ shared baseline, they are the source of truth:
 - `project-management/docs/GIT-GUIDE.md` — branch naming, commits, PR process.
 - `project-management/docs/VERSIONING-GUIDE.md` — single-track semver, changelog format.
 - `.claude/CLAUDE.md` — global non-negotiables and routing.
+- `code/docs/DOCUMENTATION-PAIRING.md` — the `CONTEXT.md`/`CLAUDE.md` split and route-don't-restate.
+- `code/docs/CODE-REVIEW-GRAPH.md` — the graph refresh that ships alongside every docs change.
 
 ## Governing procedures (route here — do not restate at length)
 

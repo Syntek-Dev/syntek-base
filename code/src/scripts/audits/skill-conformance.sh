@@ -13,7 +13,7 @@
 #                        Both halves are checked, and reported apart — a spec breach and a
 #                        house-rule breach are different problems.
 #
-#                        Thirteen [gate: fail] clauses, no warn tier. Clause numbers are
+#                        Fourteen [gate: fail] clauses, no warn tier. Clause numbers are
 #                        appended, never renumbered — they appear in reports:
 #                          spec   1. frontmatter opens at byte 0 and is terminated
 #                          spec   2. `name` and `description` are both present
@@ -31,6 +31,9 @@
 #                          house 12. `metadata:` carries `skills` and nothing else, and
 #                                    every name in it resolves to a skill directory
 #                          house 13. no agent definition exists — .claude/agents/ is retired
+#                          house 14. every top-level guide naming this skill in its routing
+#                                    frontmatter is cited back by it — by path, or by a
+#                                    directory glob covering it
 #
 #                        The tier is the point, not a label. A key nothing defines is a
 #                        format problem; declining a key the runtime does document is a
@@ -502,6 +505,72 @@ while IFS= read -r -d '' dir; do
     done <<< "$meta_children"
   fi
 done < <(collect_skills)
+
+# Clause 14 — routing frontmatter's reciprocal half, and the only clause here driven from
+# OUTSIDE the skills tree.
+#
+# A guide's `skills: [...]` (.claude/CLAUDE.md Section 2.5) is read by whoever opens the GUIDE.
+# But Section 2.3 has skills fire on DESCRIPTION MATCH, so the dominant path runs the other way:
+# an agent reaches the skill first, and the guide only if the skill names it. Nothing checked
+# that direction. A guide could name a skill for a year while the skill never mentioned the
+# guide, and the doctrine simply never arrived — silence again, the same failure mode
+# routing-skills.sh was written for, one direction round.
+#
+# This is deliberately NOT in routing-skills.sh. Route a skill finding by what it is ABOUT:
+# the finding here is that a SKILL is missing something, so it belongs to the skill audit and
+# reports against SKILL.md. routing-skills.sh keeps the outbound half — does the named skill
+# exist — and neither duplicates the other's clause.
+#
+# SCOPE IS TOP-LEVEL GUIDES ONLY — code/docs/*.md, project-management/docs/*.md,
+# how-to/docs/*.md. A sub-document is reached through its index and the index is what a skill
+# cites; requiring each by name would make every skill enumerate a tree that churns whenever a
+# guide is split, which is route-don't-restate inverted.
+#
+# A DIRECTORY GLOB DISCHARGES THE OBLIGATION. A skill that routes to `code/docs/*` has already
+# said where to look and is doing route-don't-restate correctly. Demanding the literal path as
+# well would make this gate punish the better pattern and force an enumeration that rots on the
+# next guide added — global-workflow names eleven guides it has no reason to know individually,
+# and one glob answers all of them.
+#
+# Under --path scoped to ONE skill folder, only that skill's inbound guides are checked: the run
+# cannot speak for a skill it was not asked to look at.
+CLAUSE14_SCOPE=""
+if [[ -n "$TARGET_PATH" ]]; then
+  c14_t="${TARGET_PATH%/}"
+  if [[ -f "$c14_t/SKILL.md" ]]; then CLAUSE14_SCOPE="$(basename "$c14_t")"
+  elif [[ "$c14_t" != "$SCOPE_DIR" ]]; then CLAUSE14_SCOPE="!none"; fi
+fi
+
+c14_in_scope() {
+  case "$CLAUSE14_SCOPE" in
+    "") return 0 ;;
+    "!none") return 1 ;;
+    *) [[ "$1" == "$CLAUSE14_SCOPE" ]] ;;
+  esac
+}
+
+for guide in code/docs/*.md project-management/docs/*.md how-to/docs/*.md; do
+  [[ -f "$guide" ]] || continue
+  named="$(awk '
+      NR == 1 && $0 != "---" { exit }
+      NR == 1 { next }
+      /^---[[:space:]]*$/ { exit }
+      /^skills:/ { f = 1 }
+      f { printf "%s ", $0 }
+      f && /\]/ { exit }
+    ' "$guide" 2>/dev/null | sed -e 's/^skills:[[:space:]]*//' -e 's/[][,]/ /g' -e "s/[\"']//g")"
+  [[ -n "$named" ]] || continue
+  guide_dir="$(dirname "$guide")"
+  for sk in $named; do
+    [[ -n "$sk" ]] || continue
+    [[ -d "$SCOPE_DIR/$sk" ]] || continue
+    c14_in_scope "$sk" || continue
+    grep -rqF -- "$guide" "$SCOPE_DIR/$sk/" 2>/dev/null && continue
+    grep -rqF -- "$guide_dir/*" "$SCOPE_DIR/$sk/" 2>/dev/null && continue
+    printf '%s/%s/SKILL.md: [house 14] `%s` names this skill in its routing frontmatter and the skill never cites it back — an agent arriving by description match never learns the guide exists; cite the path, or `%s/*` where the whole tree applies\n' \
+      "$SCOPE_DIR" "$sk" "$guide" "$guide_dir" >> "$TMP_HITS"
+  done
+done
 
 if [[ "$SKILL_COUNT" -eq 0 && ! -s "$TMP_HITS" ]]; then
   bold "✓ No skills found under $SCOPE_DIR/ — nothing to check."

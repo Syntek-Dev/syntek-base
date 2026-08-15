@@ -146,3 +146,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/src/BRAND-VOICE.md` — the voice every user-facing string is written in
 - `code/docs/URL-STRATEGY.md` — `/admin/` is this project's admin, never Django contrib's
 - `code/src/django/apps/marketing/CONTEXT.md` · `code/src/django/components/CONTEXT.md`
+- `project-management/docs/RESPONSIVE-DESIGN.md` — a redirect stub; the content is the `code/docs/` one above

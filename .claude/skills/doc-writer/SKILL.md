@@ -38,8 +38,10 @@ and needs neither.
 - **Markdown carries everything** — the what, the who, the how, the when, the where, and the
   history.
 - **A comment or docstring inside a code file carries the _why_ only.** The code states the
-  what; a docstring is one line; and **nothing points outward** — no story, sprint, ticket, PR,
-  commit, `code/docs/*` path, person, date, `TODO` or `FIXME`.
+  what; a **comment is one line** about why that line is there, a **docstring runs as long as
+  its why needs** about why the unit exists; and **nothing points outward** — no story, sprint,
+  ticket, PR, commit, `docs/` path, person, date, `TODO` or `FIXME`. Lengths and the full ban
+  list: `code/docs/coding-principles/STYLE-AND-PROCESS.md`.
 
 **A docstring pass that adds an `Args:` block or a documentation cross-reference is a
 regression**, not an improvement: the typed signature already carries the arguments, and the
@@ -118,3 +120,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — Section 4, the comment and docstring rule
 - `.claude/CLAUDE.md` Section 5 · Section 8 — the naming conventions and the length limits
 - `code/docs/CODE-REVIEW-GRAPH.md` — the refresh that ships alongside a documentation change
+- `how-to/docs/SKILL-AUTHORING.md` — the standard for the one documentation class this does not own
+- `how-to/docs/AI-DICTIONARY.md` — the glossary a term is checked against before it is coined again
