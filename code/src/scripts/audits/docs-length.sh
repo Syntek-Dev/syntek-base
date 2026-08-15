@@ -34,12 +34,36 @@
 #                 The CONTEXT.md/CLAUDE.md pair inside an exempt tree is still checked:
 #                 the pair is ours and instructional wherever it lives.
 #
+# The ratchet (--since):  the warn tier used to print and oblige nobody. A file crossed 270
+#                  and sat there until somebody's unrelated edit was refused at 300, so the
+#                  pressure landed on whoever happened to be writing rather than on whoever
+#                  owned the guide. Measured 15/08/2026: two warn-tier files rose in a single
+#                  day, by edits from two different sessions, neither obliged to notice.
+#
+#                  So: below the warn tier, nothing changes. At or above it, a change that
+#                  makes the file LONGER fails unless it carries a DATED reason. That is what
+#                  the 90% tier was always for — "far enough from the wall to split
+#                  deliberately rather than under duress" — and nothing previously made the
+#                  deliberate split happen. A file created at or above the tier is held to the
+#                  same bar, because a new file is the cheapest moment to split it.
+#
+#                  The date is what separates a deferral from an amnesty. An undated
+#                  annotation is a permanent opt-out granted to exactly the files that earned
+#                  scrutiny; a dated one comes back. It is mandatory by format, which is what
+#                  makes this register different from the two that preceded it — the entries
+#                  that rotted in those were the ones nobody dated.
+#
+#                  Baselines differ by venue and the flag is the only difference: lefthook
+#                  passes --since HEAD for immediate local feedback, CI passes the merge-base
+#                  so cumulative branch growth cannot creep past one commit at a time.
+#
 # Usage: docs-length.sh [--output FORMAT] [--output-file PATH] [--quiet]
-#                       [--path PATH] [--limit N] [--help]
+#                       [--path PATH] [--limit N] [--since REF] [--self-test] [--help]
 #
 # Exit codes:  0 = every file within the limit (warnings do not fail)
-#              1 = one or more files over the limit
-#              2 = script error (bad arguments, or cloc not installed)
+#              1 = one or more files over the limit, or a ratchet finding
+#              2 = script error (bad arguments, cloc not installed, or a baseline that
+#                  could not be measured — never a silent pass)
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,6 +79,13 @@ OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
+SINCE_REF=""
+SELF_TEST=false
+
+# The annotation that defers a ratchet finding. Both halves are mandatory and the script
+# refuses a marker missing either: a bare one is indistinguishable from someone silencing an
+# audit they did not read, and an undated one is an amnesty rather than a deferral.
+ALLOW_RE='docs-length-allow:[[:space:]]*(.+)\(expires[[:space:]]+([0-9]{2})/([0-9]{2})/([0-9]{4})\)'
 
 log()  { $QUIET || printf '%s\n' "$*"; }
 die()  { printf 'docs-length.sh error: %s\n' "$*" >&2; exit 2; }
@@ -91,6 +122,24 @@ Exempt, per .claude/CLAUDE.md Section 8:
 Tiers:
   > 300 code lines      FAIL   split it; the entry point becomes a thin index
   >= 270 code lines     WARN   reported, never fails the run
+  >= 270 and GREW       FAIL   only with --since; the ratchet (below)
+
+The ratchet (--since REF):
+  Below 270 nothing changes. At or above it, a file that is LONGER than it was at REF
+  fails, as does a file created at or above it. Answer with a dated annotation on a line
+  of its own, anywhere in the file:
+
+    <!-- docs-length-allow: the audit inventory grows a row per script (expires 01/11/2026) -->
+
+  Both halves are mandatory. The reason survives review; the date makes it a deferral
+  rather than an amnesty, and the audit fails again once it passes. HTML comments are not
+  cloc CODE lines, so the annotation never counts against the file it sits in.
+
+  It must be the WHOLE line. That is what lets a guide document this syntax inline without
+  failing the rule it defines.
+
+  It silences the RATCHET only. Nothing silences the 300-line limit — a file over it is
+  split, never annotated.
 
 Options:
   --output FORMAT      Write a report: md | txt | json
@@ -99,6 +148,10 @@ Options:
   --quiet              Suppress terminal output — requires --output
   --path PATH          Restrict the check to a file or directory
   --limit N            Override the line limit (default 300)
+  --since REF          Enable the ratchet, measuring against this git ref.
+                         lefthook passes HEAD; CI passes the merge-base with the target
+                         branch, so growth cannot creep past one commit at a time.
+  --self-test          Prove the ratchet fires in both directions, then exit
   --help               Show this help
 
 Rule: .claude/CLAUDE.md Section 8 · pairing standard: code/docs/DOCUMENTATION-PAIRING.md
@@ -116,6 +169,8 @@ while [[ $# -gt 0 ]]; do
     --quiet)        QUIET=true; shift ;;
     --path)         require_arg "$@"; TARGET_PATH="$2"; shift 2 ;;
     --limit)        require_arg "$@"; LIMIT="$2"; shift 2 ;;
+    --since)        require_arg "$@"; SINCE_REF="$2"; shift 2 ;;
+    --self-test)    SELF_TEST=true; shift ;;
     --help|-h)      usage; exit 0 ;;
     *)              die "Unknown option: $1. Use --help for usage." ;;
   esac
@@ -142,6 +197,74 @@ command -v cloc >/dev/null 2>&1 || die "cloc is not installed — it is the metr
   Debian/Ubuntu: sudo apt-get install -y cloc
   macOS:         brew install cloc"
 
+# ── --self-test ───────────────────────────────────────────────────────────────
+# The ratchet cannot be proved against a static fixture directory the way the other audits
+# here are, because what it reads is git HISTORY. So it builds a throwaway repository, drops
+# a copy of this script at the same relative path — PROJECT_ROOT is derived from SCRIPT_DIR,
+# so the copy resolves the temp repo as its own root — and drives it through every branch.
+#
+# Six cases, and the three negatives matter as much as the three positives: a ratchet that
+# fires on a file that shrank would be reverted within a day.
+self_test() {
+  command -v git >/dev/null 2>&1 || die "--self-test needs git"
+
+  local root me pass=0 fail=0
+  root=$(mktemp -d)
+  me="$root/code/src/scripts/audits/docs-length.sh"
+  mkdir -p "$root/code/src/scripts/audits" "$root/code/docs"
+  cp "${BASH_SOURCE[0]}" "$me"
+
+  git -C "$root" init -q
+  git -C "$root" config user.email 'self-test@invalid'
+  git -C "$root" config user.name 'docs-length self-test'
+
+  # Body lines are cloc CODE lines; blanks and HTML comments are not. n lines in, n counted.
+  gen() { local n=$1 f=$2 i; { printf '# Fixture\n'; for ((i = 1; i < n; i++)); do
+    printf 'Line %d.\n' "$i"; done; } > "$root/$f"; }
+
+  check() {
+    local name=$1 want=$2 got=0
+    ( cd "$root" && bash "$me" --since HEAD --quiet --output json \
+        --output-file "$root/r.json" ) >/dev/null 2>&1 || got=$?
+    if [[ "$got" == "$want" ]]; then
+      printf '    \033[32m✓\033[0m %s\n' "$name"; pass=$((pass + 1))
+    else
+      printf '    \033[31m✗\033[0m %s — expected exit %s, got %s\n' "$name" "$want" "$got"
+      fail=$((fail + 1))
+    fi
+  }
+
+  gen 280 code/docs/GUIDE.md
+  git -C "$root" add -A && git -C "$root" commit -qm baseline
+
+  check 'unchanged file in the warn band is clean'          0
+  gen 285 code/docs/GUIDE.md
+  check 'growth inside the warn band fires'                 1
+  printf '\n<!-- docs-length-allow: proving the deferral (expires 01/01/2999) -->\n' >> "$root/code/docs/GUIDE.md"
+  check 'a dated reason defers it'                          0
+  sed -i 's|expires 01/01/2999|expires 01/01/2000|' "$root/code/docs/GUIDE.md"
+  check 'an expired deferral fires again'                   1
+  sed -i 's|docs-length-allow:.*|docs-length-allow: undated -->|' "$root/code/docs/GUIDE.md"
+  check 'an undated annotation is refused'                  1
+  gen 275 code/docs/GUIDE.md
+  check 'a file that shrank does not fire'                  0
+  gen 280 code/docs/NEW.md
+  check 'a new file born in the warn band fires'            1
+
+  rm -rf "$root"
+  log ""
+  if [[ "$fail" -eq 0 ]]; then
+    bold "✓ self-test: $pass/$pass ratchet cases separated."; log ""; exit 0
+  fi
+  bold "✗ self-test: $fail of $((pass + fail)) cases wrong — fix the detector, never the cases."
+  log ""; exit 2
+}
+
+if $SELF_TEST; then
+  log ""; bold "▸ docs-length.sh --self-test"; log ""
+  self_test
+fi
+
 cd "$PROJECT_ROOT"
 
 # An absolute path is what tab-completion and most hook wrappers produce, so accept one and
@@ -153,9 +276,12 @@ WARN_AT=$(( LIMIT * WARN_RATIO / 100 ))
 [[ "$WARN_AT" -lt 1 ]] && WARN_AT=1   # a zero threshold would warn on every empty file
 
 TMP_LIST=$(mktemp); TMP_CSV=$(mktemp); TMP_FAIL=$(mktemp); TMP_WARN=$(mktemp)
-TMP_SEEN=$(mktemp); TMP_MISSING=$(mktemp)
-trap 'rm -f "$TMP_LIST" "$TMP_CSV" "$TMP_FAIL" "$TMP_WARN" "$TMP_SEEN" "$TMP_MISSING"' EXIT
+TMP_SEEN=$(mktemp); TMP_MISSING=$(mktemp); TMP_COUNTS=$(mktemp); TMP_RATCHET=$(mktemp)
+BASE_DIR=$(mktemp -d)
+trap 'rm -f "$TMP_LIST" "$TMP_CSV" "$TMP_FAIL" "$TMP_WARN" "$TMP_SEEN" "$TMP_MISSING" \
+             "$TMP_COUNTS" "$TMP_RATCHET"; rm -rf "$BASE_DIR"' EXIT
 : > "$TMP_FAIL"; : > "$TMP_WARN"; : > "$TMP_SEEN"; : > "$TMP_MISSING"
+: > "$TMP_COUNTS"; : > "$TMP_RATCHET"
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
@@ -244,7 +370,7 @@ if [[ "$TOTAL" -gt 0 ]]; then
   # positive shape guard so a future cloc format change fails loudly instead of misreading a
   # column. Header row is language=="language"; trailer is language=="SUM".
   awk -F',' -v lim="$LIMIT" -v warn="$WARN_AT" \
-      -v failf="$TMP_FAIL" -v warnf="$TMP_WARN" -v seenf="$TMP_SEEN" '
+      -v failf="$TMP_FAIL" -v warnf="$TMP_WARN" -v seenf="$TMP_SEEN" -v countf="$TMP_COUNTS" '
     $1 == "language" || $1 == "SUM" || NF < 5 { next }
     $NF !~ /^[0-9]+$/ { next }
     {
@@ -253,6 +379,9 @@ if [[ "$TOTAL" -gt 0 ]]; then
       for (i = 3; i <= NF - 3; i++) name = name "," $i
       sub(/^\.\//, "", name)
       print name >> seenf
+      # The ratchet needs a per-file count, not just the name. Written for every file so the
+      # pass below can decide membership itself rather than re-deriving it from the tiers.
+      printf "%s\t%d\n", name, code >> countf
       if (code > lim)        printf "%5d  %s  (%+d over)\n", code, name, code - lim >> failf
       else if (code >= warn) printf "%5d  %s  (%d left)\n",  code, name, lim - code >> warnf
     }
@@ -270,13 +399,86 @@ if [[ "$TOTAL" -gt 0 ]]; then
   fi
 fi
 
+# ── The ratchet ───────────────────────────────────────────────────────────────
+# Only with --since, so an unflagged run behaves exactly as it always did. Below the warn
+# tier nothing changes; at or above it a file may not get LONGER without a dated reason.
+if [[ -n "$SINCE_REF" ]]; then
+  git rev-parse --verify --quiet "${SINCE_REF}^{commit}" >/dev/null || die \
+"--since ref '$SINCE_REF' does not resolve to a commit.
+  In CI this is nearly always a shallow checkout: actions/checkout defaults to fetch-depth 1,
+  so neither HEAD~ nor a merge-base exists there. Set fetch-depth: 0 rather than dropping the
+  flag — a ratchet that silently stops ratcheting is the defect this script exists to close."
+
+  TODAY=$(date -u '+%Y%m%d')
+
+  while IFS=$'\t' read -r name code; do
+    [[ -n "$name" ]] || continue
+    [[ "$code" -ge "$WARN_AT" ]] || continue
+
+    # The annotation is read before the baseline. A growth already accounted for need not be
+    # measured again, and an expired deferral has to speak up even if the file has shrunk.
+    #
+    # An annotation is a line that is NOTHING BUT the comment. The copy audits keep a guide
+    # from failing the rule it defines by never reading instructional Markdown; this one reads
+    # nothing else, so the distinction has to live in the shape instead of the scope. A syntax
+    # quoted inline in a sentence — `.claude/CLAUDE.md` Section 8 quotes this one, in backticks
+    # mid-bullet — is never a whole line on its own, and a real annotation always is.
+    marker="$(grep -oE '^[[:space:]]*<!--[[:space:]]*docs-length-allow:.*-->[[:space:]]*$' \
+      "$name" | head -1 || true)"
+    if [[ -n "$marker" ]]; then
+      if [[ "$marker" =~ $ALLOW_RE ]]; then
+        reason="${BASH_REMATCH[1]}"; dd="${BASH_REMATCH[2]}"
+        mm="${BASH_REMATCH[3]}"; yyyy="${BASH_REMATCH[4]}"
+        if [[ -z "${reason//[[:space:]]/}" ]]; then
+          printf '%s: the annotation is dated but gives no reason — say what earned it\n' \
+            "$name" >> "$TMP_RATCHET"
+        elif (( 10#${yyyy}${mm}${dd} < 10#$TODAY )); then
+          printf '%s: deferral expired %s/%s/%s — split it, or re-date it with a fresh reason\n' \
+            "$name" "$dd" "$mm" "$yyyy" >> "$TMP_RATCHET"
+        fi
+      else
+        printf '%s: malformed annotation — needs a reason AND (expires DD/MM/YYYY)\n' \
+          "$name" >> "$TMP_RATCHET"
+      fi
+      continue
+    fi
+
+    if git cat-file -e "${SINCE_REF}:${name}" 2>/dev/null; then
+      mkdir -p "$BASE_DIR/$(dirname "$name")"
+      # The .md suffix is load-bearing, not tidiness: cloc infers language from the extension
+      # and emits NOTHING AT ALL for an extensionless file, with nothing on stderr. A baseline
+      # written to a bare mktemp path therefore measures zero, compares clean, and reports no
+      # growth — this script's own founding defect reproduced one layer down. Rebuilding the
+      # path under $BASE_DIR preserves the suffix, which is the whole reason it is a directory.
+      git show "${SINCE_REF}:${name}" > "$BASE_DIR/$name"
+      base=$(cloc --include-lang=Markdown --by-file --csv --quiet "$BASE_DIR/$name" 2>/dev/null \
+        | awk -F',' '$1 != "language" && $1 != "SUM" && NF >= 5 && $NF ~ /^[0-9]+$/ { print $NF; exit }')
+      [[ "$base" =~ ^[0-9]+$ ]] || die \
+"could not measure '$name' at $SINCE_REF — the baseline is unknown, so growth cannot be
+  decided. Refusing to report a clean run having measured nothing."
+      if [[ "$code" -gt "$base" ]]; then
+        printf '%s: %d → %d code lines, at or above the %d tier\n' \
+          "$name" "$base" "$code" "$WARN_AT" >> "$TMP_RATCHET"
+      fi
+    else
+      # No baseline: the file is new. Held to the same bar deliberately — a file that may be
+      # born at 299 is a door the ratchet never sees through.
+      printf '%s: created at %d code lines, at or above the %d tier\n' \
+        "$name" "$code" "$WARN_AT" >> "$TMP_RATCHET"
+    fi
+  done < "$TMP_COUNTS"
+fi
+
 sort -rn -o "$TMP_FAIL" "$TMP_FAIL"
 sort -rn -o "$TMP_WARN" "$TMP_WARN"
+sort -o "$TMP_RATCHET" "$TMP_RATCHET"
 
 FAIL_COUNT=$(grep -c . "$TMP_FAIL" || true); FAIL_COUNT=${FAIL_COUNT:-0}
 WARN_COUNT=$(grep -c . "$TMP_WARN" || true); WARN_COUNT=${WARN_COUNT:-0}
+RATCHET_COUNT=$(grep -c . "$TMP_RATCHET" || true); RATCHET_COUNT=${RATCHET_COUNT:-0}
 FAIL_BODY="$(cat "$TMP_FAIL")"
 WARN_BODY="$(cat "$TMP_WARN")"
+RATCHET_BODY="$(cat "$TMP_RATCHET")"
 
 MISSING_COUNT=$(grep -c . "$TMP_MISSING" || true); MISSING_COUNT=${MISSING_COUNT:-0}
 
@@ -302,15 +504,25 @@ if [[ "$WARN_COUNT" -gt 0 ]] && ! $QUIET; then
   printf '\033[33m  ! %d file(s) approaching the limit\033[0m\n' "$WARN_COUNT"
   printf '%s\n\n' "$WARN_BODY" | sed 's/^/    /'
 fi
+if [[ "$RATCHET_COUNT" -gt 0 ]] && ! $QUIET; then
+  printf '\033[31m  ✗ %d ratchet finding(s) against %s\033[0m\n' "$RATCHET_COUNT" "$SINCE_REF"
+  printf '%s\n\n' "$RATCHET_BODY" | sed 's/^/    /'
+  printf '    A file at or above %d may not get longer without saying why. Split it, or add\n' "$WARN_AT"
+  printf '    anywhere in the file:\n\n'
+  printf '      <!-- docs-length-allow: <why this one earns the length> (expires DD/MM/YYYY) -->\n\n'
+fi
 
 if [[ -n "$OUTPUT_FORMAT" ]]; then
-  STATUS=$([[ "$FAIL_COUNT" -eq 0 ]] && echo '✓ within limits' || echo "✗ $FAIL_COUNT over the limit")
+  if [[ "$FAIL_COUNT" -gt 0 ]]; then STATUS="✗ $FAIL_COUNT over the limit"
+  elif [[ "$RATCHET_COUNT" -gt 0 ]]; then STATUS="✗ $RATCHET_COUNT ratchet finding(s)"
+  else STATUS='✓ within limits'; fi
   case "$OUTPUT_FORMAT" in
     txt)
       { printf 'docs-length audit — %s\n' "$TIMESTAMP"
         printf 'files=%s limit=%s over=%s approaching=%s\n\n' "$TOTAL" "$LIMIT" "$FAIL_COUNT" "$WARN_COUNT"
         printf '%s\n' "${FAIL_BODY:-No files over the limit.}"
-        printf '\n%s\n' "${WARN_BODY:-No files approaching the limit.}"; } > "$OUTPUT_FILE" ;;
+        printf '\n%s\n' "${WARN_BODY:-No files approaching the limit.}"
+        printf '\n%s\n' "${RATCHET_BODY:-No ratchet findings.}"; } > "$OUTPUT_FILE" ;;
     md)
       { printf '# Instructional Document Length Audit\n\n'
         printf '| | |\n|---|---|\n'
@@ -327,25 +539,36 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
           printf '_Every instructional file is within the limit._\n\n'
         fi
         if [[ "$WARN_COUNT" -gt 0 ]]; then printf '## Approaching the limit\n\n```text\n%s\n```\n\n' "$WARN_BODY"; fi
+        if [[ "$RATCHET_COUNT" -gt 0 ]]; then
+          printf '## Ratchet findings (against `%s`)\n\n' "$SINCE_REF"
+          printf 'A file at or above %s may not get longer without a dated reason.\n\n' "$WARN_AT"
+          printf '```text\n%s\n```\n\n' "$RATCHET_BODY"
+        fi
         printf 'Rule: `.claude/CLAUDE.md` Section 8 — Instructional file length.\n'
       } > "$OUTPUT_FILE" ;;
     json)
       { printf '{\n  "script": "docs-length",\n  "timestamp": "%s",\n' "$TIMESTAMP"
         printf '  "files_checked": %s,\n  "limit": %s,\n  "warn_at": %s,\n' "$TOTAL" "$LIMIT" "$WARN_AT"
         printf '  "over_limit": %s,\n  "approaching": %s,\n' "$FAIL_COUNT" "$WARN_COUNT"
-        printf '  "exit_code": %s\n}\n' "$([[ "$FAIL_COUNT" -eq 0 ]] && echo 0 || echo 1)"
+        printf '  "ratchet_findings": %s,\n  "ratchet_since": "%s",\n' "$RATCHET_COUNT" "$SINCE_REF"
+        printf '  "exit_code": %s\n}\n' \
+          "$([[ "$FAIL_COUNT" -eq 0 && "$RATCHET_COUNT" -eq 0 ]] && echo 0 || echo 1)"
       } > "$OUTPUT_FILE" ;;
   esac
   log "  Report written → $OUTPUT_FILE"
   log ""
 fi
 
-if [[ "$FAIL_COUNT" -eq 0 ]]; then
+if [[ "$FAIL_COUNT" -eq 0 && "$RATCHET_COUNT" -eq 0 ]]; then
   SUFFIX=""
   [[ "$WARN_COUNT" -gt 0 ]] && SUFFIX=" — $WARN_COUNT approaching it"
   bold "✓ All $TOTAL instructional file(s) within $LIMIT lines${SUFFIX}."
   log ""
   exit 0
+elif [[ "$FAIL_COUNT" -eq 0 ]]; then
+  bold "✗ $RATCHET_COUNT ratchet finding(s) — a file already at $WARN_AT+ grew without a reason."
+  log ""
+  exit 1
 else
   bold "✗ $FAIL_COUNT file(s) over $LIMIT lines — split them (.claude/CLAUDE.md Section 8)."
   log ""

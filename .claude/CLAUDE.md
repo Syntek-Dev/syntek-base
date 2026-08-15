@@ -225,7 +225,7 @@ These apply in every task, regardless of layer:
 - All secrets via environment variables — never hardcoded.
 - Django admin must **never** be mounted at `/admin/` — it mounts at the non-obvious `/control/` path.
 - Never commit `.env` files — use `.env.*.example` templates only.
-- Implementation docs and `CONTEXT.md`/`CLAUDE.md` updates must be complete before any commit — hard gate, not optional — and the code-review-graph refreshed alongside them (`code-review-graph update`, or the `build_or_update_graph_tool` MCP tool) so the layered docs and the graph stay in lockstep (`code/docs/CODE-REVIEW-GRAPH.md`).
+- Implementation docs and `CONTEXT.md`/`CLAUDE.md` updates must be complete before any commit — hard gate, not optional — and the code-review-graph refreshed alongside them, **staged first, then refreshed**, because the incremental pass never sees an unstaged new file (`code-review-graph update`, or the `build_or_update_graph_tool` MCP tool) so the layered docs and the graph stay in lockstep (`code/docs/CODE-REVIEW-GRAPH.md`).
 - **Token-first.** Design values are DB-canonical (`apps/design_tokens`). New values enter via the `/admin/design-tokens` editor or a migration — never as a raw literal in component/page CSS. Component CSS only ever consumes `var(--token)`, and the var name must resolve in the token layer (`code/src/django/static/css/tokens/*.css` + `surfaces.css`) — enforced by `code/src/scripts/audits/css-tokens.sh`. See `code/docs/DESIGN-TOKENS.md`.
 - New Django app → `bash code/src/scripts/development/new-django-app.sh <app_name>` — never run `manage.py startapp` or `django-admin startapp` directly.
 - New public marketing page → `bash code/src/scripts/development/new-django-view.sh <route_path>` — creates a Django view + template + URL entry. Never hand-create page routes outside this script.
@@ -264,6 +264,17 @@ Marketing `/` (slugs) · <%PROJECT_NAME%> Admin `/admin/` (UUIDs) · Client Port
   `**/src/*.md` (operator guides for humans, e.g. NIXOS-SETUP.md) — though a `CONTEXT.md` or
   `CLAUDE.md` inside an exempt tree is still bound. Oversized files are split; the entry point
   becomes a thin index that cross-references sub-documents.
+- **The warn tier has teeth — the ratchet.** From **270** code lines (90%) a file may not get
+  **longer** without a dated reason: `docs-length.sh --since <ref>` fails on growth at or above
+  the tier, and on a file **born** there. Lefthook measures from `HEAD`, CI from the merge-base.
+  Answer by splitting, or with a whole-line
+  `<!-- docs-length-allow: <reason> (expires DD/MM/YYYY) -->` — both halves mandatory, an undated
+  allowance being an amnesty for exactly the files that earned scrutiny. It defers the ratchet
+  only, never the 300 limit. **Nothing is exempt for growing by design**: a register that
+  outgrows the cap becomes an index, like anything else.
+
+<!-- docs-length-allow: this file gains a bullet whenever a rule is added, and at 277/300 it needs a split decision — but it is the auto-loaded root config whose @ imports every session depends on, so splitting it is its own node rather than a side-effect of the one that added the ratchet (expires 01/11/2026) -->
+
 - **Directory `CONTEXT.md` + `CLAUDE.md` pairing:** `CONTEXT.md` is **orientation** — what is
   here and **why** it is here (the directory tree, what-is-here). `CLAUDE.md` is **operating
   rules** — how to work here: it opens with `@./CONTEXT.md` (plus `@./REFERENCES.md` where one

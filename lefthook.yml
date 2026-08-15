@@ -85,9 +85,20 @@ pre-commit:
     # as above rather than a cross-file one: the audit decides its own scope, and a guide
     # split into a sub-folder must be re-measured as a set, not per staged file. cloc reads
     # ~700 small files in well under a second.
+    # The ratchet measures from HEAD here: immediate local feedback on the change in hand.
+    # CI measures from the merge-base instead, which is the half that stops growth creeping
+    # past one commit at a time. Same script, same flag, different ref.
+    #
+    # The flag is conditional because a repository's FIRST commit has no HEAD, and a
+    # generated project's initial commit would otherwise die on a missing baseline.
     docs-length:
       glob: "*.md"
-      run: bash code/src/scripts/audits/docs-length.sh
+      run: |
+        if git rev-parse --verify -q HEAD >/dev/null; then
+          bash code/src/scripts/audits/docs-length.sh --since HEAD
+        else
+          bash code/src/scripts/audits/docs-length.sh
+        fi
 
     # The human half of the template-docs read-only rule; the Claude half is the
     # PreToolUse hook .claude/hooks/template-docs-readonly.sh. Both stand down in
