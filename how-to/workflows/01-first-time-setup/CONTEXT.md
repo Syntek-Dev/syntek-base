@@ -30,7 +30,8 @@ then plan scale and architecture. Skip them on an onboarding; do not skip them o
 
 - The project runs entirely inside Docker — no local Python or Node installations needed
 - Environment files are not committed — copy from `.env.*.example` files
-- The backend container runs Django on port 8000; frontend on port 3000
+- One deployable, not two: Django serves the pages and the API. Nginx publishes it on host
+  port **81** (`http://dev.<%PROJECT_SLUG%>.localhost:81`); 8000 is the container's internal port
 - **The description comes before the voice, the voice before the plan, and the plan before the
   feature.** The brief in `CONTEXT.md` says what is being built and for whom; `BRAND-VOICE.md`
   says how the project speaks to that named reader; `/scale-planning` says at what size and

@@ -20,8 +20,8 @@ model: opus
 - [ ] `.env.dev` populated with required values · _opus_
 - [ ] All containers start and report healthy · _opus_
 - [ ] Migrations applied successfully · _opus_
-- [ ] Public site accessible at http://localhost:8000/ · _opus · claude-in-chrome_
-- [ ] API docs (OpenAPI) accessible at http://localhost:8000/api/docs · _opus · claude-in-chrome_
+- [ ] Public site accessible at http://dev.<%PROJECT_SLUG%>.localhost:81/ · _opus · claude-in-chrome_
+- [ ] API docs (OpenAPI) accessible at http://dev.<%PROJECT_SLUG%>.localhost:81/api/docs · _opus · claude-in-chrome_
 
 ---
 

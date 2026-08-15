@@ -11,9 +11,12 @@ DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]
 
+# The browser reaches the dev stack through nginx on host port 81, never Django's
+# container port 8000 — which is unpublished, so an origin naming it can never match.
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "http://dev.<%PROJECT_SLUG%>.localhost:81",
+    "http://127.0.0.1:81",
+    "http://localhost:81",
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

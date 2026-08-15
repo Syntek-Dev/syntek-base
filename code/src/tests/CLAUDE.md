@@ -21,7 +21,8 @@ configuration and environments only until the project has endpoints to assert ag
 - **Model:** Opus for authoring assertions and contract coverage and renames
   or running the script.
 - **Concrete steps:** copy `template-test.bru` into the right `api/<folder>/` and rename →
-  verify every endpoint against the live OpenAPI schema at `http://localhost:8000/api/docs`
+  verify every endpoint against the live OpenAPI schema at
+  `http://dev.<%PROJECT_SLUG%>.localhost:81/api/docs`
   → select the correct environment (`local`/`docker`/`staging`/`production`) → run
   `code/src/scripts/tests/api.sh`.
 - **Definition of done:** requests pass against the docker test stack; schema-verified;

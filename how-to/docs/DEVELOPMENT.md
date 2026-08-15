@@ -17,15 +17,15 @@ model: opus
 
 ## Overview
 
-| Layer                 | Technology                                                                                                                                     | Container | Dev URL                                           |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------- |
-| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:8000        |
-| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.<%PROJECT_SLUG%>.localhost:8000/admin/ |
-| **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                       |
-| **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                       |
+| Layer                 | Technology                                                                                                                                     | Container | Dev URL                                         |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------- |
+| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:81        |
+| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.<%PROJECT_SLUG%>.localhost:81/admin/ |
+| **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                     |
+| **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                     |
 
 One app process family (Django ASGI) serves the public site, the `/admin/` surface, and the
-Django Ninja API at `http://dev.<%PROJECT_SLUG%>.localhost:8000/api/`. Django admin is mounted at
+Django Ninja API at `http://dev.<%PROJECT_SLUG%>.localhost:81/api/`. Django admin is mounted at
 `/control/`, never `/admin/`.
 
 ---
@@ -70,8 +70,8 @@ bash code/src/scripts/database/manageusers.sh create-superuser
 bash code/src/scripts/database/manageusers.sh create-staff --email your@email.com --username you
 ```
 
-Verify at http://dev.<%PROJECT_SLUG%>.localhost:8000 and the API at
-http://dev.<%PROJECT_SLUG%>.localhost:8000/api/.
+Verify at http://dev.<%PROJECT_SLUG%>.localhost:81 and the API at
+http://dev.<%PROJECT_SLUG%>.localhost:81/api/.
 
 ---
 

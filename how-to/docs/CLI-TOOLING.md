@@ -55,7 +55,8 @@ bash code/src/scripts/development/logs.sh --follow
 bash code/src/scripts/development/logs.sh --service backend --follow
 ```
 
-The site is served by Django — with the stack up, visit `http://localhost:8000`.
+The site is served by Django — with the stack up, visit
+`http://dev.<%PROJECT_SLUG%>.localhost:81` (the URL `server.sh up` prints).
 
 ---
 

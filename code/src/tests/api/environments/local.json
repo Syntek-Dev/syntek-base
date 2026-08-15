@@ -3,7 +3,7 @@
   "variables": [
     {
       "name": "api_url",
-      "value": "http://localhost:8000",
+      "value": "http://dev.<%PROJECT_SLUG%>.localhost:81",
       "enabled": true
     },
     {

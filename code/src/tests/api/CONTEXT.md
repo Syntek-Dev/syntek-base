@@ -40,7 +40,7 @@ All requests target the Django Ninja API at `{{api_url}}/api/`.
 
 - **Host runner (default)**: the `host` environment — the test stack's nginx on `:83`
 - **CI / inside the Docker network**: the `docker` environment (`http://django-test:8000`)
-- **Local dev**: the `local` environment (`http://localhost:8000`)
+- **Local dev**: the `local` environment — the dev stack's nginx (`http://dev.<%PROJECT_SLUG%>.localhost:81`)
 - **Staging / production checks**: the `staging` and `production` environments
 
 ---

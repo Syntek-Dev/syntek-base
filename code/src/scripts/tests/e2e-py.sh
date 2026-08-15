@@ -12,7 +12,7 @@
 #
 # The dev stack serves the site through nginx on host port 81 (not 80 — a local router
 # commonly holds 127.0.0.1:80), which is the default below. Override for another target:
-#   E2E_BASE_URL=http://localhost:8000 bash code/src/scripts/tests/e2e-py.sh
+#   E2E_BASE_URL=http://dev-us042.<%PROJECT_SLUG%>.localhost:3080 bash code/src/scripts/tests/e2e-py.sh
 #
 # Usage: e2e-py.sh [pytest args]
 #

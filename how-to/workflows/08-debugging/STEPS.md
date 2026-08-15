@@ -44,7 +44,7 @@ bash code/src/scripts/development/logs.sh --service frontend --follow
 ### Step 2 — Isolate the Problem
 
 If the error is in a Django Ninja endpoint, test the operation directly in the OpenAPI docs:
-http://localhost:8000/api/docs
+http://dev.<%PROJECT_SLUG%>.localhost:81/api/docs
 
 If it is a frontend issue, open browser DevTools → Network → find the failing request.
 
