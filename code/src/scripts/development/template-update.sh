@@ -31,6 +31,9 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ORPHAN_AUDIT="$PROJECT_ROOT/code/src/scripts/audits/template-orphans.sh"
 DEPS_AUDIT="$PROJECT_ROOT/code/src/scripts/audits/dependency-drift.sh"
 
+# shellcheck source=code/src/scripts/_lib/conflict-markers.sh
+source "$SCRIPT_DIR/../_lib/conflict-markers.sh"
+
 APPLY=false
 TARGET_REF=""
 KEEP_SCRATCH=false
@@ -163,7 +166,12 @@ ADDED=$(cd "$SCRATCH" && git status --porcelain -uall | grep -c '^??' || true)
 # `|| true` is load-bearing: grep exits 1 when it matches nothing, and under
 # `set -o pipefail` that failure propagates out of the whole pipeline and, with
 # `set -e`, kills the script at exactly the moment there is good news to report.
-CONFLICTS=$( { grep -rl '^<<<<<<< ' "$SCRATCH" --exclude-dir=.git 2>/dev/null || true; } | wc -l | tr -d ' ')
+# Pattern shared with audits/conflict-markers.sh via _lib. This used to carry its own copy,
+# anchored to the start of the line, which misses the form Prettier leaves behind: the open
+# marker survives but indented, and the close becomes a nested blockquote. Two detectors for
+# one defect class that disagree is how one of them survived two releases.
+CONFLICT_FILES=$( { grep -rlE "$CONFLICT_MARKER_RE" "$SCRATCH" --exclude-dir=.git 2>/dev/null || true; } )
+CONFLICTS=$(printf '%s' "$CONFLICT_FILES" | grep -c . || true)
 
 log "  modified:  $CHANGED"
 log "  deleted:   $DELETED"
@@ -173,7 +181,7 @@ log ""
 
 if [[ "$CONFLICTS" -gt 0 ]]; then
   log "  Files that would carry conflict markers:"
-  grep -rl '^<<<<<<< ' "$SCRATCH" --exclude-dir=.git 2>/dev/null | sed "s|$SCRATCH/|    |" | head -20
+  printf '%s\n' "$CONFLICT_FILES" | sed "s|$SCRATCH/|    |" | head -20
   log ""
   log "  Conflicts are the loud failure and they are fine — you resolve them by hand."
   log ""

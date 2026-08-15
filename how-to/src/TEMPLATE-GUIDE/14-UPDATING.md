@@ -217,6 +217,8 @@ One limit worth knowing: a guard can only protect the updates that come after it
 
 Conflicts appear as normal git conflict markers in the affected files:
 
+<!-- conflict-markers: ignore — a worked example of what a conflict looks like, not a real one -->
+
 ```text
 <<<<<<< before updating
 your version
