@@ -30,7 +30,13 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-need_tool cargo-deny "Install it with: cargo install --locked cargo-deny"
+# The pinned version, read rather than restated — CI installs exactly this one, so a
+# local run that disagrees is answering a different advisory set from the gate.
+CARGO_DENY_PIN_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../rust" && pwd)/.cargo-deny-version"
+CARGO_DENY_VERSION=""
+[[ -f "$CARGO_DENY_PIN_FILE" ]] && CARGO_DENY_VERSION="$(tr -d '[:space:]' < "$CARGO_DENY_PIN_FILE")"
+
+need_tool cargo-deny "Install it with: cargo install --locked --version ${CARGO_DENY_VERSION:-<see code/src/rust/.cargo-deny-version>} cargo-deny"
 
 bold "▸ audit.sh (rust supply chain)"
 log ""

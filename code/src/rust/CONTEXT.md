@@ -19,6 +19,7 @@ code/src/rust/
 ├── Cargo.toml              ← workspace root; shared pins in [workspace.dependencies]
 ├── rust-toolchain.toml     ← the pinned compiler — rustup reads it automatically
 ├── deny.toml               ← cargo-deny supply-chain policy (advisories, licences, bans)
+├── .cargo-deny-version     ← the gate's own pin — `--locked` pins its deps, not the tool
 ├── clippy.toml             ← doc_markdown ident allow-list (PyO3, CPython, …)
 ├── .gitignore              ← target/ and build artefacts — never committed
 └── crates/                 ← the workspace members — one directory per crate

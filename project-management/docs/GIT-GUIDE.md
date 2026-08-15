@@ -226,6 +226,57 @@ unfiltered because it **is** a required check.
 to the branch-protection list while it still carries `paths:` is the failure above, and it will
 not be obvious — the first PR to trip it will look like a GitHub outage.
 
+### What earns a place in the required set
+
+Being unfiltered makes a job **eligible**. It does not make it required, and the difference had
+never been written down — which is how the set came to be smaller than the rule anyone would have
+stated. Two things qualify a job, and the second is easy to miss:
+
+1. **It executes here and can fail here.** The ordinary case.
+2. **Its step-level guard is worth protecting from regression.** A job that guards to success —
+   `pytest + coverage` without a `uv.lock`, the mobile jobs on a web-only project — proves
+   nothing about the code. It does prove the guard still works. Break the guard and the job
+   errors instead of reporting, which a required check catches and an advisory one does not.
+
+The second is not a new idea here, only a newly stated one: `jest-expo + coverage` has been
+required on exactly that basis, with `test.yml` recording the reason — _"a skipped job and a
+passing job look different to branch protection, and 'never ran' is not the same claim as
+'nothing to run'."_ A guarded job is required at **step** level, never job level, or it skips
+rather than reports and the check never arrives.
+
+**Read a green guarded check as "not applicable", never as "passing".** For the backend suites
+in this repository that is `TEMPLATE-GAPS.md` SL-1, and it does not weaken the case for requiring
+them: the claim being protected is about the guard, not the tests.
+
+**As of 3.2.2 four unfiltered jobs sit outside the set** — `pytest + coverage`,
+`Audit JS + Python dependencies`, `Citations resolve`, and `Routing skills resolve`. Each is a
+deliberate switch to flip, not a backlog to clear, and flipping one is a repository-settings
+change that no file in this repository can make.
+
+---
+
+## Toolchain pins
+
+Four files pin a tool version, one per toolchain, each read by both CI and the developer rather
+than restated in either:
+
+| File                                | Pins                | Read by                                                  |
+| ----------------------------------- | ------------------- | -------------------------------------------------------- |
+| `.nvmrc`                            | Node                | `nvm`, `actions/setup-node`                              |
+| `.python-version`                   | Python              | `uv`, `actions/setup-python`                             |
+| `code/src/rust/rust-toolchain.toml` | Rust channel        | `rustup`, automatically                                  |
+| `.opengrep-version`                 | The Opengrep engine | `audits/static-analysis.sh`, `audit-static-analysis.yml` |
+
+**Two of them are read by tooling that already knows the convention, and two are ours to read.**
+`rust-toolchain.toml` earns its non-matching name that way: rustup reads it and nothing else
+would. A root `.rust-version` beside the other three would look tidier and be worse — it would
+ship into projects generated without the Rust surface, and it would fork one number across two
+files that nothing keeps in step.
+
+`code/src/rust/.cargo-deny-version` is a fifth pin, deliberately scoped rather than promoted to
+the root, for the same reason: it is meaningless without the Rust surface it is gated with
+(`code/docs/rust/SUPPLY-CHAIN.md`).
+
 ---
 
 ## Database Migration PR Gates

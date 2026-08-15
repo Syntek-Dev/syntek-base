@@ -95,6 +95,24 @@ the MSRV up with it narrows what can compile these crates and buys nothing, sinc
 is pinned anyway. **Move `rust-version` only when the code here starts needing a newer language
 or standard-library feature.**
 
+### The gate's own version is pinned too
+
+`code/src/rust/.cargo-deny-version` pins cargo-deny itself, read by both
+`code/src/scripts/rust/audit.sh` and the CI job so there is one source of truth.
+
+`cargo install --locked cargo-deny` was the previous form, and `--locked` is the part that
+misleads: it pins cargo-deny's **own dependency tree**, not cargo-deny. The installed version
+therefore floated, so the gate was a different tool on every run — and since a cargo-deny release
+can add checks, change a default or alter how an advisory is graded, that is the one thing a
+supply-chain gate must not be. A gate whose verdict moves without the code moving cannot be
+trusted in either direction: a new failure looks like a regression, and a disappearing failure
+looks like a fix.
+
+Bumping it is a deliberate change, reviewed like a channel bump, because the same release can
+turn a clean tree red. The pin joins the repository's other three — `.nvmrc`,
+`.python-version`, and `rust-toolchain.toml` above — and the pattern behind all four is recorded
+in `project-management/docs/GIT-GUIDE.md`.
+
 ## Suppressing an advisory
 
 Only in `deny.toml`, and only with a dated comment:
