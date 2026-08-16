@@ -1,11 +1,102 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 4.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 4.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v4.1.0 — 15/08/2026
+
+**Status:** Minor — new standards for how your project's code is shaped and documented, four new
+automatic checks that hold them, and two fixes to things that had been quietly getting it wrong.
+Nothing you have written stops working.
+
+### Naming your data instead of describing it
+
+The largest addition is a standard your project has been enforcing sideways for months and never
+actually stated. When a set of information has a fixed shape known in advance — a customer, a
+booking, a set of display settings — it should be given a name and a definition, not carried
+around as an untitled bag of labelled values. The bag works. It also means nobody can tell what
+is supposed to be in it without finding somewhere that reads it, spelling mistakes in the labels
+go unnoticed until something breaks in front of a user, and every tool that could have warned you
+stays silent.
+
+Six new guides cover the principle, the cases where the loose form is genuinely the right answer,
+and how each part of the system spells it. There is an escape hatch for those cases, and using it
+requires writing down the reason — a check refuses one without.
+
+Three of the guides describe parts of the system your project can have but does not yet, and each
+says so at the top rather than pretending to describe something that exists.
+
+The template's own code was corrected to match before the standard shipped, because a rule that
+arrives alongside the very thing it forbids teaches the opposite of what it says.
+
+### When to reach for a familiar structure, and when not to
+
+A second guide answers a question that had only ever been settled by taste: when is it right to
+generalise two similar pieces of code into one? The rule is that you must first name the thing
+you expect to change, and show that it does change. Generalising for tidiness is not a reason,
+and the guide says so plainly — a wrong generalisation costs more than the repetition it
+replaced, because repetition is visible and local while a bad shared structure hides its cost
+behind something everything already depends on.
+
+It also requires a note recording what would have to become true for the generalisation to be
+removed again. That is the only thing that ever lets someone delete it later with confidence.
+
+### Documents that quietly grow forever
+
+Long instruction documents were capped already. What was missing was anything covering the
+approach to the cap: a document just under the limit could be nudged upwards by anyone, and over
+one day three separate pieces of work did exactly that, each spending headroom none of them had
+noticed using.
+
+There is now a ratchet. Below a certain length nothing changes. Above it, a document may not get
+longer without a written reason carrying an expiry date — and the check refuses a reason with no
+date, which is the kind that goes stale unnoticed. It compares against the point your branch
+started from rather than against your last change, because comparing to the last change would
+have permitted the same slow creep one step at a time.
+
+### Every working directory now explains itself
+
+Directories where people work carry two short files: one saying what is there, one saying how to
+work in it. The check for that pairing could only ever notice a directory with one of the two —
+a directory with neither was invisible to it. Seventeen were. The rule now asks who works in a
+directory rather than what created it, with sensible exceptions for generated output, test
+material, and folders already introduced by something else.
+
+### Leftover wreckage from a failed merge
+
+When two changes clash, the tools leave markers in the file showing both versions. Committing one
+by accident is easy and the result is usually nonsense. There is now a check for it — and it was
+built around a surprise: the automatic formatter silently eats one of the three markers and
+rewrites the line above it, so a check looking for that one would have missed the real thing. It
+looks for the two that survive.
+
+### Look here first
+
+A new rule states the order to consult sources in: your project's own guides first, general
+library documentation second, the open web last. It exists for a specific failure — a
+technically correct answer taken from outside, for a question this project had already decided
+differently, for reasons nothing outside could have known.
+
+### Two things that had been getting it wrong
+
+The map of your codebase that gets rebuilt as you work was skipping the files you had just
+written, so it looked perfectly current while being systematically behind. It now updates in the
+right order, and reports only when something actually changed.
+
+Four automatic actions had their time limits written in the wrong unit — thousandths of a second
+where whole seconds were expected. The shortest was set to over an hour and the longest to more
+than ten days, which is why nothing ever appeared to be wrong.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down: the new guides, the new checks, and the corrected files.
+Nothing you have written is touched and no decision is needed. The new checks apply from your
+next change onwards rather than to what is already there, so you will not open the update to a
+list of failures.
 
 ## v4.0.0 — 15/08/2026
 
