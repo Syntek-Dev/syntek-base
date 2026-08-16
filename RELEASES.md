@@ -1,11 +1,106 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.1.0 — 16/08/2026
+
+**Status:** Minor — the template can finally produce an exact record of the outside code it
+depends on, which switches on three checks that had been standing down, and four checks that
+were quietly letting problems past were repaired.
+
+### The record that could not be written
+
+A project keeps an exact list of every outside piece of code it uses and the precise version of
+each, so the same thing gets built on your machine, on a colleague's, and in the pipeline. This
+template could never produce one. Its own description carried a placeholder where its name
+should be, and the tool that writes the list refuses to read a description it cannot parse. The
+placeholder was filled in recently, so the list now exists and is kept alongside everything
+else.
+
+Three checks had been standing down on its absence and now run for real: the application image
+builds, the type checker reports no errors, and the scan for publicly known vulnerabilities
+reports none outstanding. All three had previously been recorded as skipped — which is the
+worst state a check can be in, because it appears in the list, reports a pass, and has looked
+at nothing.
+
+The list names this template rather than your project, so it deliberately never travels. Your
+project writes its own the moment it is created, under its own name. Inheriting the template's
+would fail your first build and leave a collision in that file at every upgrade.
+
+One repair travelled with it. The vulnerability scan used to produce the list as a side effect
+of reading it, which meant a check that only looks at things could quietly create the very file
+five other checks read to decide whether they should run at all. It is now forbidden from
+writing, and stops loudly instead.
+
+### A safety check that only knew the names it had been told
+
+One of the checks looks for places where information from the server is dropped into part of a
+page that the browser then runs as code — the classic way a hostile visitor gets their own code
+onto someone else's screen. It worked from a hand-written list of the places someone knew about
+on the day it was written. Anything not on that list passed, including one of the most common
+constructions there is.
+
+That is the wrong shape, not merely an incomplete list. The set of places that run code grows
+with every upstream release and every add-on; the set that does not is small and stable. The
+check now names the safe handful and treats everything else as suspect, so something nobody has
+invented yet is covered the day it arrives.
+
+Tightening the boundaries also exposed the opposite fault: a piece of markup that was entirely
+correct and entirely safe had been reported as a problem, and nobody had an example on file for
+it. The check now finds six real problems in the deliberately broken examples and reports
+nothing at all in the clean ones.
+
+### Comments that pointed somewhere else
+
+The rule that a comment must explain itself now covers every file this project runs, not only
+its application code. The old exemption was meant to let a script name the rule it enforces; it
+was being used to point at a planning note, a document or a neighbouring file **instead of**
+giving a reason. Scripts are where that rots fastest, because a check outlives the discussion
+that prompted it and the reader is the one who pays.
+
+172 comments across 61 scripts were rewritten to keep the reason and drop the pointer. Nothing
+the scripts do changed, and that was checked three separate ways rather than asserted. Two
+scripts were left exactly as they were, because they print their own opening comments as their
+help text, which makes those lines something a person reads rather than a note to the next
+author.
+
+About a dozen rewrites were wrong the first time, in one consistent way worth recording:
+deleting a pointer is reliable, replacing one is not, and a sentence written to fill the gap is
+where the invented facts came from. Every one was caught by a separate reading pass before this
+release and corrected.
+
+### A register satisfied by a mention
+
+A check confirms that every script and skill this template ships has its own row in the right
+table of the documentation your project receives. It was satisfied by the name appearing
+anywhere in that part of the page — so deleting the table row and writing a sentence about the
+same thing in its place passed cleanly. It now requires the row, and its own self-tests were
+sharpened to tell the two cases apart, which the previous ones structurally could not.
+
+### Smaller repairs
+
+The supply-chain check for the optional native code could only be run from one particular
+directory, so it had never run in the pipeline at all. Two suppressed security warnings were
+removed, both for problems that had left the project entirely. The installer crashed if your
+project name contained a percent sign, and left a fresh copy of the repository looking modified
+before you had touched it.
+
+The minimum compiler version declared for the native code was documented as decoration. It is
+not: the build tool reads it when choosing which versions of everything else it may use. It has
+been raised to match the compiler the project already installs for you.
+
+### If you have a project on an earlier version
+
+`copier update` brings down the repaired checks, the corrected guidance and the rewritten
+comments. Your own dependency record is untouched — the template's is deliberately excluded and
+cannot reach you. If your project includes the optional native code surface, the minimum
+compiler version it declares rises to match the compiler it already installs, so there is
+nothing to do by hand.
 
 ## v5.0.0 — 16/08/2026
 
