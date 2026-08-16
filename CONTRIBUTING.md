@@ -236,6 +236,35 @@ so they are advisory rather than blocking — but a failure in one is still a fa
 
 ---
 
+## Standing upstream obligations
+
+This template pins upstream technologies on behalf of every project generated from it, so some
+tracking is **the template's job, not the generated project's**. These obligations bind whoever
+maintains this repository. They are recorded here, and not in the template's own documentation
+tree, because this file is copier-excluded and never reaches a generated project — an obligation
+that shipped downstream would be describing work its reader does not own.
+
+| Upstream     | Obligation                                                           | Trigger                           |
+| ------------ | -------------------------------------------------------------------- | --------------------------------- |
+| **Expo SDK** | Follow every SDK release and cut a versioned template release for it | **Every SDK release, on release** |
+
+**Expo, in full.** Expo ships roughly three SDK releases a year. The template tracks each one and
+cuts a release for it **immediately** — not after waiting for the ecosystem to catch up. Waiting
+would be a per-technology judgement about readiness, and this template pins around twenty upstream
+technologies; a rule that needs a judgement call per release is a rule nobody applies. Downstream
+projects are protected by the other half of the split rather than by the delay: they adopt on
+their own trigger, the first build that ships to a store, and
+[`code/src/mobile/CLAUDE.md`](code/src/mobile/CLAUDE.md) owns that half.
+
+> **This table is a floor, not the register.** Expo is one of about twenty pinned upstream
+> technologies, and it is the only one with a stated trigger. Nothing here watches upstream
+> **releases** for any of the others — `.github/workflows/audit-deps.yml` is a CVE sweep, not a
+> release watcher. The general mechanism is being designed separately; until it exists, this table
+> gains a row per obligation that has actually been decided, and gains nothing by listing the ones
+> that have not.
+
+---
+
 ## Licensing of contributions
 
 By opening a pull request you agree that your contribution is licensed under the

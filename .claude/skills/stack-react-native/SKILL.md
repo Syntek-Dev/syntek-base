@@ -242,8 +242,9 @@ the React Native techniques; built to the screen's wireframe; no em dash in user
   Adding a TypeScript dependency to the repository root breaks the one-mechanism opt-in rule.
 - **No PII in device storage.** Nothing sensitive in AsyncStorage or an unencrypted store; use
   the platform secure store for credentials and clear form state after submission.
-- **The Expo SDK bump is a template release**, propagated by `copier update` — not a routine
-  dependency bump. The mobile app is its own semver track (`code/src/mobile/CONTEXT.md`).
+- **Expo SDK tracking is owned by `code/src/mobile/CLAUDE.md`** — who produces a bump, when this
+  project adopts one, and why `-r` must never reach the dependency sweep. Read it before touching
+  the pin. The mobile app is its own semver track (`code/src/mobile/CONTEXT.md`).
 - Source files ≤ 750 lines (800 grace).
 
 ## Handoff

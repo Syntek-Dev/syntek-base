@@ -37,8 +37,23 @@ Ninja API, never a client-side build for the Django-served pages.
   `expo prebuild` and keeping the output is an ADR-level decision, not an incidental one.
 - **No binary assets anywhere in this tree**, for the same reason. Icons and splash images are a
   per-project addition with a matching exclusion entry.
-- **The Expo SDK is pinned.** Bumping it is a versioned template release that flows downstream
-  through `copier update`, not a routine dependency bump — SDK majors have broken projects before.
+- **The Expo SDK is pinned, and tracking it is split by act.** The **template produces** the
+  bump — it follows every Expo SDK release and cuts a versioned template release for it, an
+  obligation recorded in the repository root's `CONTRIBUTING.md` and binding on whoever maintains
+  the template, not on you. **This project adopts** it, and the trigger is **the first build that
+  ships to a store**: pull the SDK when you are preparing a store build, not on a schedule and not
+  because a release exists. That is the same trigger shape the error tracker uses
+  (`code/docs/MOBILE-CODING-PRINCIPLES.md`), and for the same reason — a store is where an
+  outdated SDK actually bites.
+- **Adopting is never a routine bump.** SDK majors have broken projects before, so run
+  `code/src/scripts/development/template-update.sh` first and read what it predicts; it previews
+  by default and writes only under `--apply`. Verify the dependency changes it reports do not
+  break this app **before** applying, then run the suites.
+- **The pin survives the routine dependency sweep by one absent flag, so do not add it.**
+  `code/src/scripts/dependencies/update.sh` runs `pnpm update --latest` with **no `-r`**, and pnpm
+  does not cross workspace packages without it. But this directory **is** a workspace member
+  through `pnpm-workspace.yaml`'s `code/src/*` glob, so adding `-r` or `--recursive` there would
+  put the Expo SDK inside a routine sweep and silently break the rule above.
 - **Token-first applies here too.** Design values come from the generated token module, never a
   raw literal in a `StyleSheet`. Enforced by `code/src/scripts/audits/mobile-tokens.sh`; the
   "name resolves" half is free, because an unresolved token import does not compile.

@@ -31,6 +31,14 @@ considered, decision, and consequences.
 
 ## Guardrails
 
+- **This folder is scaffolding for a generated project — syntek-base does not author ADRs of its
+  own.** Only `ADR-000-TEMPLATE.md` ships, and it stays the only file here in the template. The
+  template's own decisions are recorded where they are enforced: the doctrine guide that owns the
+  rule, the `CONTEXT.md`/`CLAUDE.md` pair for the directory it governs, and the wayfinder map in
+  `../01-FEATURE/` that records why it was settled. **Do not offer an ADR for a decision about the
+  template itself** — a grilling pass reached exactly that offer on 16/08/2026 and it was declined,
+  so the rule is written here rather than re-litigated each time. A decision inside a **generated**
+  project is a different matter and this folder is for it.
 - **Accepted ADRs are immutable** — never rewrite the decision in place. To change
   course, raise a new ADR and mark the old one `superseded`, cross-referencing the
   replacement ADR; note the supersession on both records.
