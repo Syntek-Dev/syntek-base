@@ -1,11 +1,117 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 4.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 4.1.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v4.1.1 — 16/08/2026
+
+**Status:** Patch — one fix restores something that had stopped working outright, creating a
+brand new project from this template. The rest correct documentation that had drifted away from
+what the project actually does. Nothing you have already written changes.
+
+### Creating a new project had stopped working
+
+A recently added safeguard looks through your files for the markers left behind when two edits
+collide. To avoid tripping over itself, it assembles those markers a character at a time rather
+than spelling them out — which is correct, because a file that hunts for those markers must not
+contain any.
+
+The way it assembled one of them happened to spell the exact sequence the project generator
+treats as the opening of an instruction. The generator began reading an instruction, never found
+the end of it, and stopped with an error before writing a single file. Anyone starting a new
+project from this template got that error and nothing else.
+
+The same seven characters are now assembled in the other order, which produces an identical
+result and contains nothing the generator reads. The two spellings were compared character by
+character before the change went in rather than reasoned about, and afterwards a real project
+was generated from end to end to confirm it.
+
+Worth saying is why nobody noticed. A check that catches exactly this had been failing, naming
+the file, the line and the remedy, for seventeen consecutive changes. It only runs on the shared
+branches, and the work was on a branch of its own. That gap is what the next release closes.
+
+### The address in the instructions was one no browser could reach
+
+Seventeen places told you where to open your site. The address was not merely out of date — it
+could never have worked, because the number in it belongs to a door that exists only inside a
+container and is deliberately not opened to the outside. The address that does work is the one
+printed when you start the project, and it was already correct in the automated browser tests.
+All seventeen now agree with it.
+
+Two of the seventeen were doing more than misleading. The settings for the API testing tool
+aimed at an unreachable address, so the one configuration described as "point the desktop app at
+your running project" could not reach one. And the development settings listed two trusted
+origins no request could ever match, which is worse than listing none, because it reads as
+coverage.
+
+Six other mentions of the same number were deliberately left alone: they belong to health checks
+that run inside the containers, where it is exactly right.
+
+The sweep found the same stale assumption in other clothes. The first-time setup guide promised a
+separate front-end process, a port for it and a mail interface. None of the three exists. Someone
+who has just been given the right address should not meet the wrong shape of the system two lines
+later.
+
+### One security list, in two different years
+
+Your project checks new work against a published list of the ten most common classes of security
+failure. That list was renumbered by its publisher, and the project was carrying both versions at
+once: the guide that owns the subject used the new numbering, while the assessment forms, the
+security guide, three reading lists and every automated rule still used the old.
+
+The numbers are not the same numbers. The third entry means "injection" on one list and "supply
+chain" on the other, so a finding recorded as "the third one" could not be settled without
+knowing which document the person had open. The assessment forms are the sharp end, because they
+arrive blank for you to fill in.
+
+Everything is now on the current list, and the forms carry the year inside the number itself, so a
+completed one is self-describing a year from now. The re-slotting was worked out afresh rather
+than renamed, because the two lists do not map one to one: one category has been absorbed into
+another, one renamed and moved, and one is new with no predecessor at all.
+
+A separate correction travelled with it. An example in one of the guides showed how to filter a
+list of records by passing the visitor's own search terms straight through to the database. It
+reads as concise. What it means is that the visitor chooses not only the value but the field, so
+somebody could ask for records matching a related person's email address, or read a hidden column
+one letter at a time by asking whether it is greater than each letter in turn. The example now
+uses a fixed list of the filters we meant to offer, and the guide states the same rule for the
+three other places where a name supplied by a visitor would become a database field.
+
+### Credit, and a licence that is not what its badge says
+
+The layered documentation this template is built on came from a published methodology, and the
+credit for it was a name and two links. It now names the paper and the two openly licensed
+repositories beside it, and it repeats the caveat the paper itself makes: its figures come from
+practitioners reporting on their own work, with no controlled comparison behind them.
+
+One of those repositories advertises a permissive licence at its top level, and two folders inside
+it are not covered by it — they are all rights reserved and governed by separate terms. The rule
+here is to check the licence before borrowing anything; this is the case where the top-level
+answer and the files underneath disagree, so it is written down beside the credit rather than left
+to be discovered.
+
+### The description of your project had fallen behind your project
+
+Your project ships with a document describing its own folders, its automatic checks and its
+guides. Four recent additions each brought a check and none added its line, so the description was
+missing two checks, three pipeline jobs and one guide. A check that exists for exactly this had
+been failing and naming all six; nothing was running it. Every line was written from the thing's
+own description rather than guessed, because a plausible but wrong line passes that check and
+fails the only person it is for.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of this down. There is nothing to decide, nothing to migrate and no
+command to run afterwards; your own code and your own notes are untouched.
+
+Two things will look different. The addresses in the setup and debugging guides change to the one
+that works, and the blank security assessment forms change their numbering. If you have a
+part-completed assessment of your own, it keeps the old numbering — worth relabelling by hand so
+it is not misread later.
 
 ## v4.1.0 — 15/08/2026
 
