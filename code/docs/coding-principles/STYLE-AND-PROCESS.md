@@ -38,11 +38,14 @@ Everything else — the what, the how, the history, the story it came from, the 
 lives in the developer documentation (`code/docs/*`, `CONTEXT.md`, `CHANGELOG.md`, the PM
 artefacts), which is free to carry all of it. A code file never repeats it.
 
-**Scope:** application source that ships in a deployable — `.py`, `.html`, `.css`, `.js`, `.ts`,
-`.tsx`, `.rs`, `.slint`. Two exemptions, both because the reference _is_ the content: declarative
-configuration (`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML) — where a policy exception
-needs the trail that justifies it; and `code/src/scripts/**/*.sh`, operator tooling that often
-names the rule or document it enforces.
+**Scope:** every file this repository executes — application source in a deployable (`.py`,
+`.html`, `.css`, `.js`, `.ts`, `.tsx`, `.rs`, `.slint`) **and every script file (`*.sh`), wherever
+in the repository it sits.** A script is held to the same standard as any other language: its
+comments carry the why, and nothing in one points outside the file.
+
+One exemption, because there the reference _is_ the content: declarative configuration
+(`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML), where a policy exception needs the trail
+that justifies it. A `run:` block inside CI YAML is a script and takes the rule.
 
 **A docstring and a comment answer different questions, and that is what sets their length.**
 The docstring says why the **unit** exists — the module, class, function, method or component as
