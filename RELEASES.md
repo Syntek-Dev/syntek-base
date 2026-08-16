@@ -1,11 +1,92 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.2.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.2.1 — 16/08/2026
+
+**Status:** Patch — a fault that stopped anyone creating a new project from this template
+at all, two smaller faults in the scripts that run day-to-day work, and a batch of
+explanatory comments that had been describing a situation which no longer existed. Nothing
+you have already written changes.
+
+### Creating a new project had stopped working entirely
+
+This template is a set of files with placeholders in them, filled in at the moment a project
+is created. One of those files carried a comment warning against writing a placeholder a
+particular wrong way, and, to make the warning clear, it spelled the wrong way out. The
+machinery that fills in placeholders read the demonstration as a real instruction, could not
+make sense of it, and stopped. Every attempt to create a project failed, whatever options
+were chosen.
+
+The correction keeps the warning and drops the demonstration.
+
+The larger half is why nothing caught it. There is a check whose entire job is to find this
+exact kind of mistake, and it reported the files as healthy — the third time it has done so
+on a fault that stopped generation, with the first two recorded in its own notes. Its
+patterns could not see past the very character that causes the break. A new clause now looks
+specifically at that character, and the check gained a self-test proving each of its clauses
+catches its own fault and only its own.
+
+### A settings file was being run as though it were a program
+
+Several scripts read the file that holds the local settings by handing it to the shell to
+execute. The container tooling reads the very same file a different way, treating each value
+as plain text. The two disagree the moment a value contains punctuation the shell treats as
+an instruction — and one of them does. The shell gave up part-way through the file, and
+everything below that point was quietly left unset.
+
+Nothing announced this. Starting the stack failed while the stack was in fact already
+running, so the step that keeps the database password in step never ran and the banner
+printing the live address never appeared. Seeding the database created accounts with blank
+credentials. The browser test suite ran with no secret key. The database shell connected
+somewhere other than where it said.
+
+The file is now read as data rather than executed. Where a value refers to another value the
+reader refuses outright and says so, rather than half-guessing — a plausible wrong answer
+handed to a database password is worse than the failure it replaced. It was checked against
+what the container tooling itself produces for thirteen sample values, and the results match
+exactly.
+
+A third, smaller fix: the tool that draws the file-tree diagrams lost the space before the
+note it puts beside a filename, whenever the filename was long. The result read as though
+the file had a typo in it.
+
+### Explanations that had quietly stopped being true
+
+Sixteen files justified a decision by a reason that has since been overtaken twice. No
+behaviour changed anywhere — the only edits outside comments are four printed messages.
+Where a dead reason had been propping up a choice that is still right, the choice was
+re-argued rather than reverted.
+
+One finding is worth stating on its own. A reference in one guide pointed at a note that had
+since been rewritten to say the opposite of what was being claimed. Nothing about it looked
+broken: the note existed, the reference worked, the sentence read as properly sourced, and
+it was the reverse of the truth. A broken reference announces itself; a working one aimed at
+rewritten text does not.
+
+### Who updates the mobile toolkit, and when
+
+The mobile toolkit publishes roughly three releases a year, and this template promised to
+track them. It never said who pulls a new one into a working project, or when — so nobody
+owned it.
+
+That is now split by act rather than by person, because no single owner could hold both
+halves: we cannot know your app store schedule, and you should not have to watch an upstream
+on our behalf. We follow every release and publish a template release for it immediately.
+Your project takes it up when preparing a build that ships to an app store, which is where
+an outdated toolkit actually bites — not on a calendar, and not merely because a release
+exists.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down. There is nothing to decide, nothing to migrate and no
+command to run afterwards. Your own code and documentation are untouched. If you have ever
+tried and failed to create a fresh project from this template, that is fixed here.
 
 ## v5.2.0 — 16/08/2026
 
