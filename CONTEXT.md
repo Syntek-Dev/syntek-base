@@ -112,6 +112,7 @@ consumes this API; none of them changes the rule above for the web.
 ├── eslint.config.mjs                ← ESLint config for the repo tooling (no client-side build)
 ├── .dockerignore                    ← what never enters a Docker build context
 ├── .editorconfig                    ← baseline editor settings shared across contributors
+├── .gitattributes                   ← LF everywhere; the binary list — a CRLF checkout breaks the scripts
 ├── .gitignore                       ← what git never tracks
 ├── .markdownlint-cli2.jsonc         ← Markdown lint config
 ├── .mcp.json                        ← project MCP servers (code-review-graph, context7, mermaid)

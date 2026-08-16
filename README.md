@@ -60,6 +60,23 @@ itself needs no install — `uvx` fetches it.
 Details and per-platform notes:
 [`PREREQUISITES.md`](how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md).
 
+### Supported platforms
+
+Every development operation runs through a `code/src/scripts/**/*.sh` script, so the shell is
+part of the contract rather than a preference.
+
+| Platform    | Supported         | What you use                                                                                                                                                              |
+| ----------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Linux**   | Natively          | Docker Engine and the Compose v2 plugin, with your user in the `docker` group. Your normal shell.                                                                         |
+| **macOS**   | Natively          | Docker Desktop, or Colima if you prefer no GUI. bash or zsh, Apple silicon or Intel.                                                                                      |
+| **Windows** | **Through WSL 2** | Docker Desktop on the **WSL 2 backend**, the repository cloned **inside** the WSL 2 filesystem (`~/projects/…`, never `/mnt/c/…`), and every command run from that shell. |
+
+**On Windows, WSL 2 is required, not a fallback.** PowerShell, `cmd.exe` and Git Bash are not
+supported: Git Bash's MSYS path translation rewrites the arguments these scripts pass to
+`docker compose`, and working from `/mnt/c/…` puts every bind mount across the Windows filesystem
+boundary, which is slow enough to make the dev loop unpleasant. Docker Desktop already installs
+WSL 2 to run its own engine, so this asks for no component you would not have.
+
 ### Claude Code plan
 
 The skill suite routes across **two model tiers** — `fable` for planning, specification and design

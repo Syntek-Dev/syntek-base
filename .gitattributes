@@ -1,0 +1,59 @@
+# Line-ending and binary-safety rules for <%PROJECT_SLUG%>.
+#
+# WHY THIS FILE EXISTS. Every development operation runs through a
+# code/src/scripts/**/*.sh script, and the supported Windows path is WSL 2
+# (README.md -> Supported platforms). A Windows checkout with core.autocrlf=true
+# rewrites those scripts to CRLF, and the shebang then fails with an error that
+# names neither the file nor the cause:
+#
+#     /usr/bin/env: 'bash\r': No such file or directory
+#
+# Inside a container the same defect is worse, because it is not even reported at
+# the point of failure: the Django images COPY code/src/docker/django/entrypoint.*.sh
+# and exec them, so a CRLF checkout builds an image that will not start.
+#
+# Normalising here removes the whole class on every clone, without asking anyone to
+# configure git correctly first. Measured 16/08/2026: no tracked file contained a
+# CRLF when these rules were added, so they pin the status quo rather than rewrite it.
+
+# ── Text ──────────────────────────────────────────────────────────────────────
+# Normalise every text file to LF in the repository AND in the working tree.
+# `eol=lf` is stated rather than left to each developer's core.autocrlf because
+# nothing here wants CRLF: there is no .bat, .cmd or .ps1 in the tree, and the
+# shells, containers and interpreters that read these files are all POSIX.
+* text=auto eol=lf
+
+# Stated again for the files where a CRLF is a failure rather than a cosmetic
+# difference — a shebang, a container entrypoint, an interpreter directive, or a
+# value docker compose reads literally. Redundant against the rule above by design:
+# these are the lines someone must consciously delete to break the build.
+*.sh          text eol=lf
+*.py          text eol=lf
+*.rs          text eol=lf
+*.toml        text eol=lf
+*.conf        text eol=lf
+*.example     text eol=lf
+Dockerfile*   text eol=lf
+.python-version text eol=lf
+.nvmrc        text eol=lf
+
+# ── Binary ────────────────────────────────────────────────────────────────────
+# Never normalised, never diffed as text. No binary file is tracked today; these
+# rules exist so the first design asset committed under
+# project-management/src/00-ASSETS/ cannot be corrupted by the `text=auto` guess.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.avif  binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.zip   binary
+*.gz    binary
+*.mp4   binary
+*.webm  binary

@@ -80,17 +80,18 @@ Every directory with a `CONTEXT.md` also has a `CLAUDE.md`.
 
 ## Key docs
 
-| Guide                      | When to read                                                                                     |
-| -------------------------- | ------------------------------------------------------------------------------------------------ |
-| `docs/DEVELOPMENT.md`      | Environment setup, commands, troubleshooting                                                     |
-| `docs/CLI-TOOLING.md`      | Looking for the command that does a thing                                                        |
-| `docs/GIT-WORKTREES.md`    | Parallel feature development with isolated stacks                                                |
-| `docs/CELERY-FIRST-RUN.md` | Before wiring Celery, or first starting the worker/beat in any environment                       |
-| `docs/FEATURE-DEPLOY.md`   | Deploying a feature branch                                                                       |
-| `docs/TOOLING-GUIDE.md`    | Internal skills reference                                                                        |
-| `docs/AI-DICTIONARY.md`    | Looking up an AI-coding term                                                                     |
-| `docs/SKILL-AUTHORING.md`  | Before writing or editing a skill in `.claude/skills/`                                           |
-| `src/CONTRIBUTING.md`      | Branching, commits, testing, code quality, the pre-PR gates                                      |
-| `src/TEMPLATE-GUIDE/`      | Generating a project from the template, or updating one                                          |
-| `src/SCALE-ARCHITECTURE/`  | Sizing the deployment and proving it scales (`/scale-planning`)                                  |
-| `src/NIXOS-SETUP.md`       | Pointer stub — provisioning lives in the deploy repo; the contract in `src/SERVER-ARCHITECTURE/` |
+| Guide                                    | When to read                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `docs/DEVELOPMENT.md`                    | Environment setup, commands, troubleshooting                                                     |
+| `docs/CLI-TOOLING.md`                    | Looking for the command that does a thing                                                        |
+| `docs/GIT-WORKTREES.md`                  | Parallel feature development with isolated stacks                                                |
+| `docs/CELERY-FIRST-RUN.md`               | Before wiring Celery, or first starting the worker/beat in any environment                       |
+| `docs/FEATURE-DEPLOY.md`                 | Deploying a feature branch                                                                       |
+| `docs/TOOLING-GUIDE.md`                  | Internal skills reference                                                                        |
+| `docs/AI-DICTIONARY.md`                  | Looking up an AI-coding term                                                                     |
+| `docs/SKILL-AUTHORING.md`                | Before writing or editing a skill in `.claude/skills/`                                           |
+| `src/CONTRIBUTING.md`                    | Branching, commits, testing, code quality, the pre-PR gates                                      |
+| `src/TEMPLATE-GUIDE/03-PREREQUISITES.md` | Which platforms are supported and what each one needs — Windows is WSL 2 only                    |
+| `src/TEMPLATE-GUIDE/`                    | Generating a project from the template, or updating one                                          |
+| `src/SCALE-ARCHITECTURE/`                | Sizing the deployment and proving it scales (`/scale-planning`)                                  |
+| `src/NIXOS-SETUP.md`                     | Pointer stub — provisioning lives in the deploy repo; the contract in `src/SERVER-ARCHITECTURE/` |

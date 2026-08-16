@@ -36,6 +36,12 @@ debug failures; the `docs/` guides plus the step-by-step `workflows/` that drive
 - **Script-first, always.** Every operational command in these docs must resolve to a
   `code/src/scripts/**/*.sh` script — never a raw `pnpm`/`npm`/`npx`/`pip`/`uv`/
   `docker`/`python manage.py` invocation.
+- **One shell, and Windows reaches it through WSL 2.** Supported platforms are Linux and
+  macOS natively and Windows through WSL 2 — the contract is
+  `src/TEMPLATE-GUIDE/03-PREREQUISITES.md` → _Supported platforms_. Never author a
+  PowerShell, `cmd.exe` or Git Bash variant of a command into a guide here: a second
+  dialect is a second thing to keep correct, and Git Bash silently mangles the paths
+  these scripts hand to `docker compose`.
 - **Instructional `.md` ≤ 300 code lines** (`cloc`); split an oversized guide and
   leave a thin index (as `TOOLING-GUIDE.md` does over `tooling-guide/`).
 - **Not the place for code, stories, or PRs** — code → `code/CONTEXT.md`; stories,

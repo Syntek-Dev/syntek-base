@@ -391,11 +391,22 @@ local quality checks.
 | **Python**                            | 3.14 (see `.python-version`) | root pyproject tooling (ruff, basedpyright)  |
 | **uv**                                | 0.11+                        | Python environment and dependency management |
 
-**macOS / Linux:** install Docker Desktop or Docker Engine. On Linux, add your user to the
-`docker` group so you can run `docker compose` without `sudo`.
+### Supported platforms
 
-**Windows:** Docker Desktop with WSL 2 backend. All shell commands in this README assume a bash or
-zsh shell (Git Bash or WSL 2 terminal).
+Every development operation runs through a `code/src/scripts/**/*.sh` script, so the shell is
+part of the contract rather than a preference.
+
+| Platform    | Supported         | What you use                                                                                                                                                              |
+| ----------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Linux**   | Natively          | Docker Engine and the Compose v2 plugin, with your user in the `docker` group so `docker compose` needs no `sudo`. Your normal shell.                                     |
+| **macOS**   | Natively          | Docker Desktop, or Colima if you prefer no GUI. bash or zsh, Apple silicon or Intel.                                                                                      |
+| **Windows** | **Through WSL 2** | Docker Desktop on the **WSL 2 backend**, the repository cloned **inside** the WSL 2 filesystem (`~/projects/…`, never `/mnt/c/…`), and every command run from that shell. |
+
+**On Windows, WSL 2 is required, not a fallback.** PowerShell, `cmd.exe` and Git Bash are not
+supported: Git Bash's MSYS path translation rewrites the arguments these scripts pass to
+`docker compose`, and working from `/mnt/c/…` puts every bind mount across the Windows filesystem
+boundary, which is slow enough to make the dev loop unpleasant. Docker Desktop already installs
+WSL 2 to run its own engine, so this asks for no component you would not have.
 
 ---
 
