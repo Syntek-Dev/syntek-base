@@ -32,7 +32,12 @@ done
 
 # The pinned version, read rather than restated — CI installs exactly this one, so a
 # local run that disagrees is answering a different advisory set from the gate.
-CARGO_DENY_PIN_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../rust" && pwd)/.cargo-deny-version"
+#
+# Built from $RUST_DIR, which _common.sh resolved to an absolute path BEFORE it cd'd there.
+# Recomputing it from $BASH_SOURCE here instead is what broke this gate: after that cd, a
+# relative invocation (`bash code/src/scripts/rust/audit.sh`, the form every guide documents)
+# no longer resolves, and the whole supply-chain audit died on `cd` before running a check.
+CARGO_DENY_PIN_FILE="$RUST_DIR/.cargo-deny-version"
 CARGO_DENY_VERSION=""
 [[ -f "$CARGO_DENY_PIN_FILE" ]] && CARGO_DENY_VERSION="$(tr -d '[:space:]' < "$CARGO_DENY_PIN_FILE")"
 

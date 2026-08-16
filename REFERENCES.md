@@ -234,7 +234,7 @@ complete.
 | Technology             | Version | Documentation URL                                       |
 | ---------------------- | ------- | ------------------------------------------------------- |
 | Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
-| Rust (rust-only)       | 1.85+   | https://doc.rust-lang.org/stable/book/                  |
+| Rust (rust-only)       | 1.92+   | https://doc.rust-lang.org/stable/book/                  |
 | PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
 | Slint (desktop-only)   | 1.17    | https://slint.dev/docs                                  |

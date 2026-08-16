@@ -47,9 +47,10 @@ compiles native code that Python either cannot express safely or is too slow to 
   pass. Copyleft licences are denied by `deny.toml` — a licence change here is an ADR.
 - **The channel and the MSRV are not a matched set** — they answer different questions.
   `rust-toolchain.toml`'s channel is the compiler everyone builds with, and bumping it is a
-  template release rather than a routine dependency bump. `Cargo.toml`'s `rust-version` is the
-  floor **our source** needs (1.85, the edition-2024 floor); it moves only when the code starts
-  requiring a newer language or standard-library feature, never as a side-effect of a channel bump.
+  template release rather than a routine dependency bump. `Cargo.toml`'s `rust-version` (1.92) is
+  what **`resolver = "3"` resolves against** — MSRV-aware, so the floor decides which dependency
+  versions the graph may use whatever compiler is pinned. Move it when the graph needs it, naming
+  the crate that forced it (`code/docs/rust/SUPPLY-CHAIN.md` → _Toolchain pinning_).
 - **Never commit `target/`** or a built `.so`/`.pyd`/`.dylib` — they are binaries, and this
   repository is a Copier template that cannot render binaries.
 - Source files ≤ 750 lines (800 grace), as everywhere in `code/src/`.

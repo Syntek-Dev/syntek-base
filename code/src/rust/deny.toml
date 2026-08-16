@@ -8,30 +8,22 @@
 yanked = "deny"
 # Only flag "unmaintained" for crates this workspace depends on DIRECTLY.
 unmaintained = "workspace"
-ignore = [
-  # ── Desktop surface only. Both are DoS advisories in quick-xml 0.38.4, reached ONLY
-  # through Slint's accessibility stack:
-  #   quick-xml <- zbus_xml <- zbus-lockstep <- atspi-common <- accesskit_atspi_common
-  #             <- accesskit_unix <- accesskit_winit <- i-slint-backend-winit <- slint
-  #
-  # Not fixable here: 0.41.0 is the patched line, and every version pin up that chain
-  # blocks it, ending at Slint's own `=1.17.1`. Vendoring or forking AccessKit to reach
-  # it would be a far larger risk than the advisory.
-  #
-  # Why the residual risk is accepted:
-  #   - LINUX/BSD ONLY. accesskit_unix is target-gated to cfg(any(target_os = "linux",
-  #     dragonfly, freebsd, openbsd, netbsd)), so this chain is not compiled into a
-  #     Windows, macOS, Android or iOS build at all.
-  #   - The parser handles D-Bus introspection XML from the LOCAL AT-SPI session bus, not
-  #     network or user input. An attacker able to publish malicious XML there already
-  #     owns the user's session.
-  #   - Both are denial-of-service, not code execution or disclosure.
-  #
-  # Removing AccessKit is NOT the mitigation — it is what makes the app usable with a
-  # screen reader. Re-check 02/11/2026, or sooner if Slint bumps accesskit. — 02/08/2026
-  "RUSTSEC-2026-0194",
-  "RUSTSEC-2026-0195",
-]
+# EMPTY BY MEASUREMENT, 16/08/2026 — and the reason is worth keeping.
+#
+# This list carried RUSTSEC-2026-0194 and -0195, two DoS advisories in quick-xml 0.38.4
+# reached only through Slint's accessibility stack (quick-xml <- zbus_xml <- ... <-
+# accesskit_unix <- slint). They were accepted on 02/08/2026 as unfixable: the patched
+# 0.41.0 line was blocked by version pins all the way up to Slint's own `=1.17.1`.
+#
+# They are gone because the MSRV floor moved. `rust-version` 1.85 -> 1.92 let the
+# resolver take zbus 5.19, which no longer pulls quick-xml at all, so the whole chain
+# left the graph — and cargo-deny began warning `advisory-not-detected` on both.
+#
+# An ignore that matches nothing is not harmless. It suppresses silently: if the crate
+# ever returns through another path, the gate stays green and nobody is told. Delete an
+# entry the moment its subject leaves the graph, and let a real recurrence re-open the
+# argument on its own evidence.
+ignore = []
 
 [licenses]
 # Permissive only. A copyleft dependency would propagate to anything linking this crate,

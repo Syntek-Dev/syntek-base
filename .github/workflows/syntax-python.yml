@@ -62,7 +62,7 @@ on:
   workflow_dispatch:
 
 env:
-  UV_VERSION: "0.12.4"
+  UV_VERSION: "0.12.5"
   PYTHON_VERSION: "3.14"
 
 jobs:

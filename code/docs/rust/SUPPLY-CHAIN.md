@@ -87,13 +87,22 @@ a mistake corrected at 3.1.0. They answer different questions:
 | File                  | Field          | Answers                                                          |
 | --------------------- | -------------- | ---------------------------------------------------------------- |
 | `rust-toolchain.toml` | `channel`      | Which compiler everyone actually builds with                     |
-| `Cargo.toml`          | `rust-version` | The MSRV floor **our source** needs — 1.85, the edition-2024 one |
+| `Cargo.toml`          | `rust-version` | Which dependency versions cargo may **resolve** — the MSRV floor |
 
 A channel bump is still a template release rather than a routine dependency change: it can alter
-lint behaviour across every crate at once, because new clippy lints arrive denied. But dragging
-the MSRV up with it narrows what can compile these crates and buys nothing, since the toolchain
-is pinned anyway. **Move `rust-version` only when the code here starts needing a newer language
-or standard-library feature.**
+lint behaviour across every crate at once, because new clippy lints arrive denied.
+
+**The MSRV is a resolution input, and this guide said otherwise until 16/08/2026.** It read
+_"dragging the MSRV up buys nothing, since the toolchain is pinned anyway"_ — true when
+`rust-version` was only a promise to whoever compiles your source, and false under
+`resolver = "3"`, which is MSRV-aware. Cargo picks the newest dependency version compatible with
+the floor, so a floor left behind the channel holds the entire graph back while the pin says
+nothing is wrong. Measured: at `rust-version = "1.85"` an update logged _"Locking 57 packages to
+latest Rust 1.85 compatible versions"_ and **downgraded** `zbus` 5.18 → 5.14 along with
+`zvariant`, `zbus_names` and `zvariant_utils`, each of which requires 1.87.
+
+**Move `rust-version` when the graph needs it, not only when our own source does** — and say
+which crate forced it, because that is the evidence the next reader needs.
 
 ### The gate's own version is pinned too
 
