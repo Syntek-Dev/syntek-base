@@ -19,8 +19,8 @@ how-to/src/
 ├── INVARIANTS.md            ← the register: every invariant, its one enforcement point, its breach
 ├── PLATFORM-PROVIDERS.md    ← the register: every infra dependency, its seam kind, its alternates
 ├── STORE-LISTING.md         ← MOBILE-ONLY — the register: this project's App Store / Play listing values
-├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (template-only)
-├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (template-only)
+├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (ships, and is rendered)
+├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (ships, bar TEMPLATE-GAPS.md)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── 01-OVERVIEW.md · 02-STACK.md · 03-PREREQUISITES.md
 │   ├── 04-QUICKSTART.md · 05-ANSWERS.md · 06-GENERATION.md
@@ -34,9 +34,14 @@ how-to/src/
 └── SERVER-ARCHITECTURE/     ← what the server/edge must provide; feeds the NixOS deploy repo
 ```
 
-> `TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/` are **template-only** — `copier.yml` excludes them,
-> so they do not appear in a generated project. If you are reading this inside a generated
-> project, that is why they are absent.
+> **These files ship.** `copier.yml` excludes exactly one file in this tree —
+> `TEMPLATE-GUIDE/TEMPLATE-GAPS.md`, syntek-base's own open-items register. `TEMPLATE-TOKENS.md`
+> and the rest of `TEMPLATE-GUIDE/` land in a generated project, because most of what those
+> guides answer is asked long after generation: what am I looking at, which skill does this job,
+> how do I pull upstream fixes.
+>
+> The consequence for anyone editing them — they are rendered by Copier, so a literal token in
+> the prose is live template code — is `CLAUDE.md` → _Guardrails_.
 
 ## What is here
 
