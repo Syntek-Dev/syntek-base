@@ -1,11 +1,102 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.2.0 — 16/08/2026
+
+**Status:** Minor — your application can now answer the two questions the machinery running it
+has always been asking, and the gate that runs before every change was repaired so that it
+actually runs.
+
+### The health check that was never built
+
+Production and staging containers have always been configured to ask the application, every few
+seconds, whether it is well. The address they ask at had never been built, so the answer was
+always no. Every container that has ever gone to production or staging has been reporting
+itself permanently unhealthy — and that is not a cosmetic status. It is what the machinery
+around the application reads to decide whether to restart a copy, and whether to send it any
+visitors.
+
+The written specification for those answers already existed, and was exact. Nothing had
+implemented it. That gap is now closed.
+
+### Two questions, not one
+
+They look like the same question and they are not, and collapsing them is how a small problem
+becomes an outage.
+
+**Am I alive?** is answered without touching the database or the cache at all. If it consulted
+the database, a two-second database hiccup would read as "this copy of the application is
+broken", and every copy would be restarted at once — turning a blip into a real outage.
+Answering it is deliberately cheap and deliberately depends on nothing.
+
+**Am I ready to take visitors?** does consult them. The database is treated as essential; the
+cache is treated as survivable, because the application is written to keep working without it.
+So a cache problem produces a successful answer that says "degraded" in its own words, and only
+a genuinely unavailable essential dependency produces a refusal. Which of those a dependency is
+belongs to the dependency, not to the check — adding another one later is a single line and
+changes no logic.
+
+Two details are there for reasons worth stating. The answer is remembered for fifteen seconds,
+so a fleet of things all asking at once cannot become the load that breaks what they are
+asking about. And the cache check writes a value and reads it back, rather than only writing
+one, because the cache is deliberately configured to swallow its own errors — a failed write
+looks exactly like a successful one, so the round trip is the only honest signal left.
+
+### Tests for the parts everybody inherits
+
+With the application image buildable for the first time, the test suite ran here and came in
+below the level this project requires. Everything that was missing sat in the small set of
+foundations every generated project inherits: error handling, request identification, the
+shared groundwork for command-line tasks, and the checking of data arriving from outside.
+
+Those now have tests, and each one names a real failure with a real cost rather than a line of
+code — an internal fault dressed up as a polite message to the user, a submitted field silently
+thrown away, a visitor turned away because they arrived from a marketing link, one visitor's
+request identifier leaking into the next visitor's request, and a programmer's mistake tidied
+into a neat summary when the operator needed the full detail.
+
+### The gate that skipped the checks that would have found its own bugs
+
+The set of checks run before a change is proposed used to skip three of them in this
+repository, because something they needed could not be built here. That is no longer true, so
+they were switched on — and switching them on immediately found three faults, every one of
+which was live in real generated projects, where nothing had been skipped and nothing was
+masking anything.
+
+The part that talks to the containers was never handed the file holding the settings, so every
+one of those conversations had been failing outright — invisibly, because each one discards its
+own error output. The check for "is the application running" looked for names this project has
+never used, so it always concluded no: in a real project the gate would start everything, wait
+a minute and a half, fail to see it, and refuse to let the change through, every single time.
+And the gate read the settings file as though it were a script, which stopped dead on the first
+line containing a placeholder, leaving everything below it unset and printing a parser error
+across its own output.
+
+Two more, found alongside. One check's result had come to depend on the individual developer's
+disk, because a file created by the installer and never committed made it fail locally while a
+fresh copy passed; it now asks the version control system what is tracked instead of keeping
+its own copy of the rules. And two pipeline jobs were measuring nothing at all: one measured
+coverage of an area this repository does not have, and so passed by measuring an empty set,
+while the other never installed its test dependencies and picked them up by accident — which,
+in a pipeline, turns an out-of-date dependency record into a green result against versions
+nobody chose.
+
+### If you have a project on an earlier version
+
+`copier update` brings down the two health endpoints, their tests, the tests for the shared
+foundations, and the repaired gate. Your containers will start reporting themselves healthy for
+the first time, with no configuration change on your side, because the address they were
+already asking at now exists.
+
+Two files this touches are ones projects routinely edit — the settings and the list of
+addresses your application serves — so the update may ask you to reconcile those. Keep your own
+entries and the new ones; they do not overlap. There is nothing else to do by hand.
 
 ## v5.1.0 — 16/08/2026
 

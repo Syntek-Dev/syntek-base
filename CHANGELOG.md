@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 5.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [5.2.0] - 16/08/2026
+
+### Added
+
+- **`apps.health` and the two endpoints every production container has been probing since the day it shipped.** `Dockerfile.prod:48` and `Dockerfile.staging:48` have carried `HEALTHCHECK ... curl -f http://localhost:8000/health/` while no such route existed, so **every production and staging container shipped permanently unhealthy** — a state the orchestration around it acts on. `code/docs/logging/HEALTH-CONTRACT.md` specified both endpoints exactly; nothing implemented them. The app is scaffolded through `development/new-django-app.sh` and then stripped of `models/` and `migrations/`: it owns no models, for the same reason `apps.core` owns none.
+- **`GET /health/` returns 200 `ok` as plain text and touches no dependency.** Liveness that queried PostgreSQL would let an orchestrator turn a database blip into a rolling restart of every replica at once; taking a pod out of service is readiness's job, and the two questions have to stay separate or the cheap one inherits the expensive one's failure modes.
+- **`GET /health/ready/` probes PostgreSQL and Valkey, memoised for `HEALTH_CACHE_TTL_SECONDS` (15) so probing cannot stampede what it probes.** It returns **503 for `down` only**; `degraded` is a 200 whose body says so, because a cache outage is not a reason to remove a replica that can still serve.
+- **Criticality is a property of the dependency, not of the probe** — PostgreSQL is `CRITICAL`, Valkey `DEGRADABLE`, the latter because `IGNORE_EXCEPTIONS` is on. Adding a probe is one row in `PROBES` and touches no aggregation logic, and `Component` names only the two dependencies that actually exist: a probe that always passes reports health it never measured.
+- **The cache probe is a write-then-read rather than a bare `set`, for the same reason `IGNORE_EXCEPTIONS` forces everywhere else.** The setting swallows the error and `get` returns `None`, so a failed write is indistinguishable from a successful one — the round trip is the only signal that survives it.
+- **Tests for the four `apps.core` modules nobody could test, at 162 statements and 100%.** With the image buildable the suite ran here for the first time and reported **68.45%**, under the 75% floor. Every missing statement was in `apps.core`: `management/base.py`, `schemas.py`, `services/errors.py` and `templatetags/core.py` were all at **0%**, and `middleware.py` at 96%. These are the primitives every generated project inherits, so each test names a failure with a cost rather than a line — an `InvariantViolation` catchable as a `ServiceError`, which is a broken invariant arriving as a friendly 400; a request field silently discarded; a 422 on `?utm_source=`; a correlation identifier surviving into the next request on a reused worker thread; and a programmer error tidied into a `CommandError` instead of reaching the operator as a traceback.
+
+### Changed
+
+- **The dev and test Compose healthchecks move off `/control/`.** Its 302 proved the process was up by accident, and only for as long as the admin was the one route being served — a probe that passes for a reason unrelated to what it claims to measure is a probe that stops working on the first ordinary change.
+- **`.claude/hooks/pre-pr-check.sh` template mode now ADDS a check instead of dropping three.** It skipped lockfiles, typecheck and tests because the Django image could not be built here; that premise died with the lockfile commit. Nine checks run here, eight in a generated project, and `audits` is the one genuine asymmetry left.
+- **`test.yml` calls `backend-coverage.sh` instead of hand-rolling `docker compose run` with its own pytest invocations.** A second copy of a gate is the copy that rots, and this one had. The script owns the phases, the floor, and an auth gate that prints its denominator and fails closed when the app exists but is unmeasured. The promotion tier reaches it through a new `COV_FLOOR`, which refuses anything below 75 so an override selects a documented tier rather than inventing one.
+- **`TEMPLATE-GAPS.md` loses both standing limitations, which were false, and gains one that is true**: a green suite here covers the harness and the two apps the template ships, never a generated project's features. The fifteen N-035 decisions and the four items found on the way are recorded alongside it.
+
+### Fixed
+
+- **`test.yml`'s auth coverage leg measured nothing and passed.** It ran `coverage report --include='apps/users/*' --fail-under=90` against an app this repository does not have, so the denominator was empty and the 90% floor was satisfied by arithmetic rather than by tests. Its replacement prints the denominator, which is what makes the same failure visible next time.
+- **`test-e2e.yml` installed uv and jumped straight to `e2e-py.sh` with no sync at all**, so the `test` dependency group arrived implicitly, on first use. It now runs `uv sync --locked`: uv re-locks silently by default, and in CI that turns a stale lockfile into a green run against versions nobody committed.
+- **`_dc` and `_tc` passed no `--env-file`, so Compose could not interpolate `${SECRET_KEY:?…}` — a hard error, not a warning.** Every `_dc` and `_tc` call has therefore always failed, **silently**, because each call site sends stderr to `/dev/null`. The container half of every dual check was failing invisibly, and template mode relabelled the whole class "n/a" rather than reporting it. Reachable in a generated project, where template mode is off and nothing was masking anything.
+- **`dev_running` and `test_running` grepped for `backend`, `frontend` and `backend-test`.** This stack's services are `django` and `django-test`, so both probes always returned false: in a generated project the gate started the stack, waited 90 s, failed to see it, and **exited 2 on every single run**.
+- **The hook sourced `.env.dev` with bash to make Compose interpolation work, and bash aborts on the `POSTGRES_USER=` line**, whose value is the unrendered project-slug token — `<`, `%` and `>` are shell metacharacters. `SECRET_KEY` and everything after it went unexported, and a raw parse error printed over the gate's own output. The `source` is removed rather than quoted: `--env-file` uses Compose's own parser, which reads a token as an ordinary literal.
+- **`shipped-readme.sh` globbed the working directory, so whether the audit was red had become a property of the developer's disk.** `MACHINE-SPEC.md` is generated by `install.sh` and gitignored, and it failed an audit that a fresh clone passed. It now asks git what is tracked rather than keeping a second copy of `.gitignore` — the copy that drifts.
 
 ## [5.1.0] - 16/08/2026
 
