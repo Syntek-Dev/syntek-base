@@ -19,7 +19,14 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:81",
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# MAILERS, not EMAIL_BACKEND: Django 6.1 deprecates the whole EMAIL_* family with a
+# RemovedInDjango70Warning, and the two forms are mutually exclusive — defining MAILERS
+# alongside any deprecated EMAIL_* setting raises ImproperlyConfigured rather than
+# preferring one (django/conf/__init__.py). "default" is the alias Django looks for
+# (django/core/mail/handler.py).
+MAILERS = {
+    "default": {"BACKEND": "django.core.mail.backends.console.EmailBackend"},
+}
 
 # A variable the view never passed renders as an empty string by default, so a typo looks
 # like absent data. This makes it visible instead. Deliberately absent from staging and
