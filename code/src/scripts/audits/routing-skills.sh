@@ -28,10 +28,28 @@
 #                 Only the leading `---` frontmatter block is read; a `skills:` line in
 #                 prose or inside a fenced example is never a routing declaration.
 #
-# Usage: routing-skills.sh [--output FORMAT] [--output-file PATH] [--quiet]
-#                          [--path PATH] [--help]
+#                 THE KEY IS READ BY _lib/frontmatter-skills.sh, NOT HERE. This script
+#                 used to select with /^skills:[[:space:]]*\[/, which needs the opening
+#                 bracket on the SAME LINE as the key — so a Prettier-wrapped array was
+#                 skipped whole and its names were never validated, while the run reported
+#                 a confident count of everything else. Both selectors below (the scan and
+#                 the co-variance file list) now go through the shared reader, which is the
+#                 one that already handled the wrapped form. MAP-BASE-HEALTH N-030.
 #
-# Exit codes:  0 = clean   1 = violation(s)   2 = script error
+# SELF-TEST. --self-test runs the resolve clause over fixtures/routing-skills/{broken,clean}
+#            and asserts it separates them, with each fixture pair written in BOTH the
+#            inline and the wrapped form — a parser that reads one and skips the other
+#            fails it. It also asserts the co-variance clause's file selector sees a gated
+#            name in the wrapped form, because that selector was the defect's second half.
+#            It does NOT exercise the co-variance verdict itself: that reads copier.yml's
+#            own _exclude and when: clauses, and a fixture copier.yml would drift against
+#            the real one. Named in the summary rather than left for a reader to discover.
+#
+# Usage: routing-skills.sh [--output FORMAT] [--output-file PATH] [--quiet]
+#                          [--path PATH] [--self-test] [--help]
+#
+# Exit codes:  0 = clean   1 = violation(s), or the self-test no longer separates
+#              2 = script error (bad arguments, or --self-test with the fixtures missing)
 #
 set -euo pipefail
 
@@ -39,11 +57,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 SKILLS_DIR="$PROJECT_ROOT/.claude/skills"
+FIXTURES_DIR="$SCRIPT_DIR/fixtures/routing-skills"
+
+# shellcheck source=../_lib/frontmatter-skills.sh
+source "$SCRIPT_DIR/../_lib/frontmatter-skills.sh"
 
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
+SELF_TEST=false
 
 log()  { $QUIET || printf '%s\n' "$*"; }
 die()  { printf 'routing-skills.sh error: %s\n' "$*" >&2; exit 2; }
@@ -58,8 +81,9 @@ Usage:
   routing-skills.sh --output md     Also write a report to audits/reports/
   routing-skills.sh --path DIR      Restrict the check to a directory or file
   routing-skills.sh --quiet         Suppress progress output
+  routing-skills.sh --self-test     Prove the parser still reads both array forms
 
-Exit codes: 0 clean · 1 violations found · 2 script error
+Exit codes: 0 clean · 1 violations found (or the self-test no longer separates) · 2 script error
 EOF
 }
 
@@ -69,6 +93,7 @@ while [ $# -gt 0 ]; do
     --output-file) OUTPUT_FILE="${2:-}";   shift 2 ;;
     --path)        TARGET_PATH="${2:-}";   shift 2 ;;
     --quiet)       QUIET=true;             shift   ;;
+    --self-test)   SELF_TEST=true;         shift   ;;
     --help|-h)     usage; exit 0 ;;
     *)             die "unknown argument: $1" ;;
   esac
@@ -87,9 +112,15 @@ if [ ! -d "$SKILLS_DIR" ]; then
 fi
 
 # ── What we scan ─────────────────────────────────────────────────────────────
+#
+# The audit fixtures are excluded, on the docs-pairing.sh precedent: this script runs
+# against the whole tree, so a fixture carrying a deliberately unresolvable name would
+# fail the ordinary run rather than prove anything. They are reached only through
+# --self-test, which points the same collection at them on purpose.
 candidates() {
   { git ls-files -z; git ls-files -z --others --exclude-standard; } \
-    | tr '\0' '\n' | sort -u | grep -E '\.md$' || true
+    | tr '\0' '\n' | sort -u | grep -E '\.md$' \
+    | grep -v '^code/src/scripts/audits/fixtures/' || true
 }
 
 FILES="$(candidates)"
@@ -114,37 +145,31 @@ record() { # file line skill
 # correct: they are loadable skills like any other.
 resolves() { [ -d "$SKILLS_DIR/$1" ]; }
 
-while IFS= read -r file; do
-  [ -n "$file" ] || continue
-  [ -f "$file" ] || continue
+# Every name in a newline-separated file list, through the shared reader. Factored out
+# so --self-test drives the identical code path over the fixtures rather than a second
+# implementation of it — a proof of a different loop proves nothing about this one.
+collect() { # $1 = newline-separated file list
+  local file names_out lineno name
+  violations=0
+  report=""
+  checked_files=0
+  checked_names=0
 
-  # Frontmatter only: byte 0 must open the block, and we stop at its terminator.
-  IFS= read -r first < "$file" || continue
-  [ "$first" = "---" ] || continue
+  while IFS= read -r file; do
+    [ -n "$file" ] || continue
+    [ -f "$file" ] || continue
 
-  line="$(awk '
-    NR == 1 { next }
-    /^---[[:space:]]*$/ { exit }
-    /^skills:[[:space:]]*\[/ { print NR ":" $0; exit }
-  ' "$file" 2>/dev/null || true)"
+    names_out="$(frontmatter_skills "$file")"
+    [ -n "$names_out" ] || continue
 
-  [ -n "$line" ] || continue
-  lineno="${line%%:*}"
-  value="${line#*:}"
-
-  # skills: [a, b, c] → a b c
-  names="$(printf '%s\n' "$value" \
-    | sed -e 's/^[^[]*\[//' -e 's/\].*$//' -e 's/,/ /g' -e "s/[\"']//g")"
-
-  checked_files=$((checked_files + 1))
-  for name in $names; do
-    [ -n "$name" ] || continue
-    checked_names=$((checked_names + 1))
-    resolves "$name" || record "$file" "$lineno" "$name"
-  done
-done <<< "$FILES"
-
-log "  checked $checked_names skill name(s) across $checked_files file(s) with routing frontmatter"
+    checked_files=$((checked_files + 1))
+    while IFS=$'\t' read -r lineno name; do
+      [ -n "$name" ] || continue
+      checked_names=$((checked_names + 1))
+      resolves "$name" || record "$file" "$lineno" "$name"
+    done <<< "$names_out"
+  done <<< "$1"
+}
 
 # ── Gated co-variance ────────────────────────────────────────────────────────
 # The reason this audit needs no allowlist. A file naming a copier-gated skill must
@@ -196,6 +221,34 @@ gate_flags_for() { # path → flags, one per line
   done | sort -u
 }
 
+# Which files name this skill in their routing frontmatter — through the SAME shared
+# reader the resolve clause uses.
+#
+# THIS SELECTOR WAS THE SECOND HALF OF N-030 and the map charted only the first. It read
+# `head -20 | grep -E "^skills:.*<name>"`, so it was blind twice over: the name had to sit
+# on the key's own line, which a Prettier-wrapped array guarantees it does not, and the
+# frontmatter had to fit in twenty lines, which nothing promises. A gated skill named
+# inside a wrapped array was therefore exempt from the co-variance clause by accident —
+# the clause that exists precisely so this audit needs no allowlist.
+#
+# No pipeline into `grep -q` here, deliberately: `grep -q` exits on its first match and
+# SIGPIPEs whatever feeds it, and with `pipefail` on that reads as a failed pipeline. The
+# match would be discarded exactly when it was found.
+files_naming_skill() { # skill [file-list] → paths, one per line
+  local skill="$1" list="${2:-$FILES}" c n
+  while IFS= read -r c; do
+    [ -n "$c" ] || continue
+    [ -f "$c" ] || continue
+    while IFS=$'\t' read -r _ n; do
+      if [ "$n" = "$skill" ]; then
+        printf '%s\n' "$c"
+        break
+      fi
+    done < <(frontmatter_skills "$c")
+  done <<< "$list"
+  return 0
+}
+
 check_gated() { # skill flag
   local skill="$1" flag="$2" f gf covered
   while IFS= read -r f; do
@@ -211,11 +264,109 @@ check_gated() { # skill flag
       report+="| \`$f\` | — | names \`$skill\` (**$flag**-gated) but no _exclude entry guarantees that flag |"$'\n'
       log "  $f  names \`$skill\` ($flag-gated) but carries no matching _exclude entry"
     fi
-  done < <(printf '%s\n' "$FILES" | while IFS= read -r c; do
-      [ -f "$c" ] || continue
-      head -20 "$c" 2>/dev/null | grep -qE "^skills:.*[][, ]$skill[],[:space:]]" && printf '%s\n' "$c"
-    done)
+  done < <(files_naming_skill "$skill")
 }
+
+# ── Self-test ────────────────────────────────────────────────────────────────
+#
+# Every probe drives collect() and files_naming_skill() — the same functions the ordinary
+# run uses — over fixtures/routing-skills/. A proof of a reimplementation would prove
+# nothing about the code that ships.
+#
+# Each fixture pair is written TWICE, once inline and once wrapped, and that is the whole
+# design: a parser that reads one form and skips the other passes an inline-only proof
+# with nothing to show for it. The clean pair is asserted on its NAME COUNT as well as on
+# its finding count, because a skipped file and a correct file both report zero findings —
+# indistinguishable from the outside, and that indistinguishability is the defect class.
+#
+# WHAT THIS DOES NOT COVER, stated rather than left to be discovered: the co-variance
+# clause's verdict. That reads copier.yml's own _exclude list and when: chain, and a
+# fixture copier.yml would be a second contract drifting against the real one. Only the
+# clause's FILE SELECTOR is proved here — which is the half N-030 broke.
+ST_FAILS=0
+ST_PROBES=0
+
+st_fail() { ST_FAILS=$((ST_FAILS + 1)); printf '\033[31m  ✗ %s\033[0m\n' "$*" >&2; }
+
+st_probe() { # label file expected-violations expected-name expected-names-checked
+  local label="$1" file="$2" want_v="$3" want_name="$4" want_n="$5"
+  ST_PROBES=$((ST_PROBES + 1))
+
+  collect "$PROJECT_ROOT/$file"
+
+  if [ "$violations" -ne "$want_v" ]; then
+    st_fail "$label: expected $want_v finding(s), got $violations"
+    return
+  fi
+  if [ "$checked_names" -ne "$want_n" ]; then
+    st_fail "$label: read $checked_names name(s), expected $want_n — the file was parsed only in part, or skipped"
+    return
+  fi
+  if [ -n "$want_name" ] && [[ "$report" != *"$want_name"* ]]; then
+    st_fail "$label: the finding does not name \`$want_name\`"
+    return
+  fi
+  log "  ✓ $label"
+}
+
+self_test() {
+  local f wrapped_key
+  bold ""
+  bold "▸ routing-skills.sh --self-test"
+  log ""
+
+  [ -d "$FIXTURES_DIR/broken" ] && [ -d "$FIXTURES_DIR/clean" ] ||
+    die "fixtures missing at ${FIXTURES_DIR#"$PROJECT_ROOT"/} — refusing to report a proof that never ran"
+
+  # The wrapped fixtures only test the wrapped form for as long as they stay wrapped.
+  # Prettier keeps them so because eight names exceed its print width — but that is a
+  # property of the current config, not a promise, so it is asserted rather than assumed.
+  for f in clean/wrapped.md broken/wrapped.md; do
+    ST_PROBES=$((ST_PROBES + 1))
+    wrapped_key="$(awk 'NR==1{next} /^---[[:space:]]*$/{exit} /^skills:/{print; exit}' "$FIXTURES_DIR/$f")"
+    if [ "$wrapped_key" != "skills:" ]; then
+      st_fail "$f is no longer wrapped (its key line reads '$wrapped_key') — a reformat has collapsed it and this proof now tests the inline form twice"
+    else
+      log "  ✓ $f is still wrapped across lines"
+    fi
+  done
+
+  # The resolve clause, one probe per form so a failure names which one broke.
+  st_probe "clean/inline.md   trips nothing"    "${FIXTURES_DIR#"$PROJECT_ROOT"/}/clean/inline.md"    0 ""                      2
+  st_probe "clean/wrapped.md  trips nothing"    "${FIXTURES_DIR#"$PROJECT_ROOT"/}/clean/wrapped.md"   0 ""                      8
+  st_probe "broken/inline.md  trips one"        "${FIXTURES_DIR#"$PROJECT_ROOT"/}/broken/inline.md"   1 "no-such-skill-inline"  2
+  st_probe "broken/wrapped.md trips one"        "${FIXTURES_DIR#"$PROJECT_ROOT"/}/broken/wrapped.md"  1 "no-such-skill-wrapped" 8
+
+  # The co-variance clause's file selector — N-030's second anchor. clean/wrapped.md names
+  # a copier-gated skill inside a wrapped array; the selector has to find it there.
+  ST_PROBES=$((ST_PROBES + 1))
+  f="${FIXTURES_DIR#"$PROJECT_ROOT"/}/clean/wrapped.md"
+  if [ "$(files_naming_skill stack-rust "$PROJECT_ROOT/$f")" = "$PROJECT_ROOT/$f" ]; then
+    log "  ✓ the co-variance selector sees a gated name inside a wrapped array"
+  else
+    st_fail "the co-variance selector missed \`stack-rust\` in $f — the clause that removes this audit's need for an allowlist is blind again"
+  fi
+
+  log ""
+  if [ "$ST_FAILS" -eq 0 ]; then
+    bold "✓ Self-test passed — $ST_PROBES probes over both array forms."
+    log "  Not covered: the co-variance verdict (copier.yml's _exclude and when: chain), only its file selector."
+    log ""
+    return 0
+  fi
+  log "  the detector no longer separates the fixtures — fix the detector, never the fixtures."
+  log ""
+  return 1
+}
+
+if $SELF_TEST; then
+  self_test
+  exit $?
+fi
+
+# ── Run ──────────────────────────────────────────────────────────────────────
+collect "$FILES"
+log "  checked $checked_names skill name(s) across $checked_files file(s) with routing frontmatter"
 
 check_gated stack-react-native INCLUDE_MOBILE
 check_gated stack-rust         INCLUDE_RUST

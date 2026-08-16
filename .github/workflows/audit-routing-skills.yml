@@ -20,6 +20,14 @@
 #
 # No path filter. Any Markdown file can carry routing frontmatter, so scoping this to a
 # subset would recreate the blind spot it exists to close.
+#
+# THE SELF-TEST RUNS FIRST, and it is the step that makes the scan mean anything. The
+# ordinary run is green on a correct tree and was green on a broken one too: the parser
+# required a `skills:` array's opening bracket on the key's own line, so a Prettier-wrapped
+# array was skipped whole and never reported (MAP-BASE-HEALTH N-030). A count of everything
+# it did read is not evidence about what it did not. The fixtures carry each array form
+# twice, broken and clean, so a reader that understands one form and skips the other fails
+# here rather than passing the scan below.
 name: Audit — Routing Skills
 
 on:
@@ -35,6 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+
+      - name: Prove the parser (self-test against the fixture pair)
+        run: bash code/src/scripts/audits/routing-skills.sh --self-test
 
       - name: Run routing skills audit
         run: bash code/src/scripts/audits/routing-skills.sh --output md

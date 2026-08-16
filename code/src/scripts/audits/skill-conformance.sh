@@ -90,6 +90,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
+# Clause 14 reads a guide's routing `skills:` key. So does routing-skills.sh, asking the
+# opposite question of it — and the two used to carry separate parsers that disagreed
+# about which files even have the key (MAP-BASE-HEALTH N-030). One reader, one home.
+# shellcheck source=../_lib/frontmatter-skills.sh
+source "$SCRIPT_DIR/../_lib/frontmatter-skills.sh"
+
 SCOPE_DIR=".claude/skills"
 DESC_MAX=1024
 NAME_MAX=64
@@ -551,14 +557,7 @@ c14_in_scope() {
 
 for guide in code/docs/*.md project-management/docs/*.md how-to/docs/*.md; do
   [[ -f "$guide" ]] || continue
-  named="$(awk '
-      NR == 1 && $0 != "---" { exit }
-      NR == 1 { next }
-      /^---[[:space:]]*$/ { exit }
-      /^skills:/ { f = 1 }
-      f { printf "%s ", $0 }
-      f && /\]/ { exit }
-    ' "$guide" 2>/dev/null | sed -e 's/^skills:[[:space:]]*//' -e 's/[][,]/ /g' -e "s/[\"']//g")"
+  named="$(frontmatter_skills "$guide" | cut -f2)"
   [[ -n "$named" ]] || continue
   guide_dir="$(dirname "$guide")"
   for sk in $named; do
