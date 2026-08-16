@@ -107,9 +107,9 @@ fi
 # ── Restore ───────────────────────────────────────────────────────────────────
 bold "  Dropping and recreating '$DB_NAME'…"
 "${DC[@]}" exec -T db \
-  psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS $DB_NAME;" postgres
+  psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS \"$DB_NAME\";" postgres
 "${DC[@]}" exec -T db \
-  psql -U "$DB_USER" -c "CREATE DATABASE $DB_NAME;" postgres
+  psql -U "$DB_USER" -c "CREATE DATABASE \"$DB_NAME\";" postgres
 log ""
 
 bold "  Restoring from backup…"
