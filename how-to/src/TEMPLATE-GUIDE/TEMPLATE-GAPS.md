@@ -128,19 +128,16 @@ against versions nobody committed. Verified against uv's own CLI definitions, 16
 Each of these was invisible while a guard reported "not applicable", and each was reachable
 in a **generated project** — so the template was shipping them:
 
-| Defect                                                                                                                                                                                  | Class |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| `pre-pr-check.sh` `_dc`/`_tc` passed no `--env-file`, so every container check failed                                                                                                   | B     |
-| `dev_running`/`test_running` grepped `backend`/`backend-test` — services that do not exist here (they are `django`/`django-test`), so the gate would `exit 2` on every run in a project | B     |
-| `pre-pr-check.sh` sourced `.env.dev` with bash, which aborts on `POSTGRES_USER=<%PROJECT_SLUG%>`                                                                                        | A     |
-| `shipped-readme.sh` globbed the working directory, so a generated gitignored file failed an audit a fresh clone passed                                                                  | B     |
-| `test.yml`'s auth gate measured `apps/users/*`, an app that does not exist                                                                                                              | B     |
+| Defect                                                                                                                                                                                                                                                                                                                                                                             | Class |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `pre-pr-check.sh` `_dc`/`_tc` passed no `--env-file`, so every container check failed                                                                                                                                                                                                                                                                                              | B     |
+| `dev_running`/`test_running` grepped `backend`/`backend-test` — services that do not exist here (they are `django`/`django-test`), so the gate would `exit 2` on every run in a project                                                                                                                                                                                            | B     |
+| Four scripts read `.env` files with `set -a; source`, which aborts on `POSTGRES_USER=<%PROJECT_SLUG%>`: `pre-pr-check.sh` reported the whole container half n/a, `server.sh up` exited 2 with the stack already running (no DB password re-sync, no URL banner), `seed-dev.sh` injected empty credentials, and `e2e-py.sh` gave pytest-django a settings module with no SECRET_KEY | A     |
+| `shipped-readme.sh` globbed the working directory, so a generated gitignored file failed an audit a fresh clone passed                                                                                                                                                                                                                                                             | B     |
+| `test.yml`'s auth gate measured `apps/users/*`, an app that does not exist                                                                                                                                                                                                                                                                                                         | B     |
 
 ### Still open, found on the way
 
-- **`server.sh:112`** sources `.env.dev` with bash for its URL banner and hits the same
-  token-parse failure as the hook did. The banner is the thing `.claude/CLAUDE.md` Section 7
-  tells everyone to trust instead of quoting a URL from memory, and it does not print.
 - **`COVERAGE.md`** documents `-n auto` and two other pytest flags that are not in
   `addopts`, and `pytest-xdist` is not a declared dependency.
 - **The dev stack and every generated project both claim `10.0.1.0/24`**, so they cannot run

@@ -18,20 +18,19 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
-# Load env file so POSTGRES_USER / POSTGRES_DB are available in this shell
-# (--env-file only injects vars into the compose process, not the host shell)
-if [[ -f "$ENV_FILE" ]]; then
-  set -a
-  # shellcheck source=/dev/null
-  source "$ENV_FILE"
-  set +a
-fi
-
-DB_NAME="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
-DB_USER="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
+# Read POSTGRES_USER / POSTGRES_DB out of the env file — `--env-file` injects them into
+# the compose process, not into this shell. Parsed rather than sourced: a value carrying a
+# shell metacharacter aborts a `source` partway and silently leaves the rest unset
+# (_lib/env-file.sh).
+DB_NAME="$(env_value POSTGRES_DB "$ENV_FILE")"
+DB_USER="$(env_value POSTGRES_USER "$ENV_FILE")"
+DB_NAME="${DB_NAME:-<%PROJECT_SLUG%>_dev}"
+DB_USER="${DB_USER:-<%PROJECT_SLUG%>}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 USE_PSQL=false

@@ -17,6 +17,8 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
@@ -81,18 +83,15 @@ bold "▸ seed-dev.sh"
 log ""
 
 # ── Step 1: Dev users (superuser + staff) ─────────────────────────────────────
-# Credentials are sourced from .env.dev (set -a) so quoted values are stripped
-# the same way docker compose interprets them — a naive grep|cut keeps surrounding
-# quotes and bakes them into the password. Values are injected into the container
+# Credentials are PARSED from .env.dev by _lib/env-file.sh, which strips quoted values the
+# same way docker compose does — a naive grep|cut keeps surrounding quotes and bakes them
+# into the password. It replaced a `set -a; source`, which stripped quotes correctly but
+# executed the file: one value carrying a shell metacharacter aborted the source partway
+# and left every later credential unset, silently. Values are injected into the container
 # via -e (compose --env-file only substitutes YAML vars).
 bold "  Seeding dev users…"
 
-if [[ -f "$ENV_FILE" ]]; then
-  set -a
-  # shellcheck source=/dev/null
-  source "$ENV_FILE"
-  set +a
-fi
+env_export "$ENV_FILE"
 
 "${DC[@]}" exec -T \
   -e SU_USER="${DJANGO_SUPERUSER_USERNAME:-}" \

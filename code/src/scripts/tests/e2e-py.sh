@@ -32,6 +32,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 E2E_DIR="code/src/django/tests/e2e"
 
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
+
 E2E_BASE_URL="${E2E_BASE_URL:-http://dev.<%PROJECT_SLUG%>.localhost:81}"
 
 log() { printf '[e2e-py] %s\n' "$*"; }
@@ -54,10 +57,10 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.test"
 [[ -f "$ENV_FILE" ]] || ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.test.example"
 [[ -f "$ENV_FILE" ]] || die "no .env.test or .env.test.example in code/src/docker/"
 
-set -a
-# shellcheck disable=SC1090
-source "$ENV_FILE"
-set +a
+# Parsed, not sourced: `set -a; source` executes the file, so one value carrying a shell
+# metacharacter aborts it partway and leaves the rest of the settings unset — pytest-django
+# then imports a half-configured settings module (_lib/env-file.sh).
+env_export "$ENV_FILE"
 
 if ! curl -sf -o /dev/null "${E2E_BASE_URL}/control/"; then
   printf '[e2e-py] Stack not reachable at %s\n' "$E2E_BASE_URL" >&2

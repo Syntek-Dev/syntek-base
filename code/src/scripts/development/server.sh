@@ -96,6 +96,8 @@ cd "$PROJECT_ROOT"
 # Auto-detect worktree: if branch is us###/*, apply matching compose override.
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 
 # Base docker compose command with env file — all subcommands use this array.
 DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
@@ -108,13 +110,18 @@ DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
 # Runs only when the full stack is started (no --service flag).
 _sync_db_password() {
   [[ -n "$SERVICE" ]] && return 0
-  # shellcheck source=/dev/null
-  set -a; source "$ENV_FILE"; set +a
-  local db_user="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
-  [[ -z "${POSTGRES_PASSWORD:-}" ]] && return 0
+  # Parsed, not sourced. `set -a; source` handed the file to bash, which aborts on the
+  # first value carrying a shell metacharacter — under `set -euo pipefail` that killed
+  # `server.sh up` at exit 2 with the stack already running, so this re-sync never ran and
+  # the URL banner below never printed. See _lib/env-file.sh.
+  local db_user db_password
+  db_user="$(env_value POSTGRES_USER "$ENV_FILE")"
+  db_password="$(env_value POSTGRES_PASSWORD "$ENV_FILE")"
+  [[ -z "$db_user" ]] && db_user="<%PROJECT_SLUG%>"
+  [[ -z "$db_password" ]] && return 0
   # Password is piped to psql stdin — never appears in the process list.
   printf 'ALTER USER "%s" WITH PASSWORD '"'"'%s'"'"';\n' \
-    "$db_user" "$POSTGRES_PASSWORD" \
+    "$db_user" "$db_password" \
     | "${DC[@]}" exec -T db psql -U "$db_user" -d postgres > /dev/null 2>&1 \
     || log "  ⚠  Could not sync DB password (DB not ready — safe to ignore on first build)."
 }
