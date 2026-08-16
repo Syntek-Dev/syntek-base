@@ -14,14 +14,30 @@ model: opus
 
 ## Coverage Thresholds
 
-Every module must meet the following minimum coverage thresholds. CI enforces these — a PR that
-drops any metric below the floor is blocked.
+Every module must meet the following minimum coverage thresholds. The pre-PR hook and CI both
+enforce them — a PR that drops any metric below the floor is blocked.
 
-| Metric            | Minimum | Notes                                       |
-| ----------------- | ------- | ------------------------------------------- |
-| Line coverage     | 75%     | Hard floor — no exceptions                  |
-| Branch coverage   | 75%     | Both sides of every `if`/`else` exercised   |
-| Auth-related code | 90%     | `apps/users/` and any auth-adjacent service |
+| Metric            | Minimum | Notes                                            |
+| ----------------- | ------- | ------------------------------------------------ |
+| Line coverage     | 75%     | The always-floor; see _The promotion tier_ below |
+| Branch coverage   | 75%     | Both sides of every `if`/`else` exercised        |
+| Auth-related code | 90%     | `apps/users/` and any auth-adjacent service      |
+
+### The promotion tier
+
+**75% is the floor on every branch; 80% is the floor from `testing` upward.** A pull request whose
+base is `dev`, `staging` or `main` is promoting work that has already been merged once, and it
+clears the higher number or it does not promote. This guide owns the numbers only — the chain they
+key off is
+[`BRANCHES-AND-WORKTREES.md`](../../../project-management/docs/git/BRANCHES-AND-WORKTREES.md).
+
+The 90% auth floor does **not** tier; it applies unchanged on both.
+
+A change can therefore pass every gate on a feature branch and still fail promotion. That is the
+instrument working rather than a regression: coverage that only ever met 75 was never entitled to
+reach `staging`.
+
+### One standard per runtime
 
 There is **one standard, enforced once per runtime** — not one floor per layer. Template,
 component, and HTMX-partial tests are pytest tests and count towards the same number as the rest
@@ -40,6 +56,12 @@ numbers are enforced twice, independently:
 
 **Two gates to keep in step.** If a floor moves, it moves in both places or the standard has
 silently forked.
+
+> **The promotion tier is Python-side only, and deliberately so.** Jest holds a flat 75 on every
+> branch. `jest.config.js` carries a static `coverageThreshold`, and the mobile app is a separate
+> deployable on its own version track — giving it a branch-aware floor would put a second
+> promotion mechanism in a second toolchain to buy a symmetry the two deployables do not have.
+> The **floors** are what stay in step; the tier is not one of them.
 
 > **The 90% auth entry is not inert on the mobile side.** Jest fails a run whose
 > `coverageThreshold` glob matches nothing, so the per-glob auth entry ships as a **commented

@@ -82,16 +82,20 @@ jobs:
             sleep 2
           done
 
+      # The promotion tier, keyed off the PR's BASE branch: a PR into dev, staging or main
+      # is promoting work that has already been merged once. The local half reaches the same
+      # answer from the other side, keying off the branch you are ON (pre-pr-check.sh, where
+      # `testing` and above is the promotion tier — a PR from `testing` has base `dev`).
+      # Both numbers are owned by code/docs/testing/COVERAGE.md; change the guide first.
       - name: Determine coverage threshold
         if: steps.detect.outputs.present == 'true'
         id: threshold
         run: |
           BRANCH="${{ github.base_ref || github.ref_name }}"
-          if [[ "$BRANCH" == "main" || "$BRANCH" == "staging" ]]; then
-            echo "value=80" >> "$GITHUB_OUTPUT"
-          else
-            echo "value=75" >> "$GITHUB_OUTPUT"
-          fi
+          case "$BRANCH" in
+            dev | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
+            *) echo "value=75" >> "$GITHUB_OUTPUT" ;;
+          esac
 
       - name: Run pytest with coverage (two phases)
         if: steps.detect.outputs.present == 'true'

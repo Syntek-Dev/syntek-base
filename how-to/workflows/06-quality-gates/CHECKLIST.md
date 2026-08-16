@@ -47,7 +47,7 @@ model: opus
 ## Before pushing
 
 - [ ] `bash .claude/hooks/pre-pr-check.sh` run end to end and green · _opus_
-- [ ] Targeting `staging` or `main`? Coverage clears the stricter **80%** CI floor · _opus_
+- [ ] Targeting a promotion branch? Coverage clears the higher floor (`code/docs/testing/COVERAGE.md`) · _opus_
 - [ ] Content review done via `code/workflows/07-review/` — this gate checks form, not judgement · _opus_
 - [ ] Any local/CI disagreement treated as a mirroring bug and fixed, not routed around · _opus_
 - [ ] Branch and commit conventions match `project-management/docs/GIT-GUIDE.md` · _opus_

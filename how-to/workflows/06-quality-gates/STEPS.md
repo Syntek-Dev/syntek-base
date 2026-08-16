@@ -100,12 +100,12 @@ something; treat each as a question to answer.
 bash code/src/scripts/tests/all.sh --coverage
 ```
 
-Floors: 75% line and branch, 90% auth. Depth and failure routing are workflow
-`05-testing-and-coverage`.
+The floors and the promotion tier are `code/docs/testing/COVERAGE.md`. Depth and failure
+routing are workflow `05-testing-and-coverage`.
 
-**Check the branch you are targeting.** CI applies an **80%** floor on `staging` and
-`main` — above what the runner enforces — so a change that is green locally can still fail
-promotion. If you are heading for either, confirm you clear 80% before pushing.
+**Check the branch you are targeting.** The floor rises on the promotion branches, so a change
+that is green on a feature branch can still fail promotion. If you are heading for one, confirm
+you clear the higher number before pushing.
 
 ---
 

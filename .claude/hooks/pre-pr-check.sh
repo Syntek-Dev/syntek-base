@@ -131,13 +131,21 @@ case "$BRANCH" in
   *)                               BRANCH_TYPE="feature" ;;
 esac
 
-if [[ "$BRANCH_TYPE" == "staging" || "$BRANCH_TYPE" == "main" ]]; then
-  BRANCH_TIER="staging_main"
-  COVERAGE_THRESHOLD=80
-else
-  BRANCH_TIER="feature"
-  COVERAGE_THRESHOLD=0
-fi
+# The promotion tier is `testing` and above. A PR opened FROM any of those targets a
+# promotion branch, so it must clear the higher floor; a feature branch targets `testing`
+# and clears the always-floor. CI reaches the same answer from the other side, keying off
+# the PR's BASE branch (.github/workflows/test.yml). Both numbers are owned by
+# code/docs/testing/COVERAGE.md — never edit one here without moving it there first.
+case "$BRANCH_TYPE" in
+  testing|dev|staging|main)
+    BRANCH_TIER="promotion"
+    COVERAGE_THRESHOLD=80
+    ;;
+  *)
+    BRANCH_TIER="feature"
+    COVERAGE_THRESHOLD=75
+    ;;
+esac
 
 ATTEMPT=$(python3 -c "
 import json
@@ -148,7 +156,7 @@ except Exception:
     print(1)
 " 2>/dev/null || echo "1")
 
-TIER_SFX=$([[ "$BRANCH_TIER" == "staging_main" ]] && echo " [80% coverage floor]" || echo "")
+TIER_SFX=" [${COVERAGE_THRESHOLD}% coverage floor]"
 
 printf '\n'
 printf '╔══════════════════════════════════════════════════════════════════╗\n'
@@ -377,8 +385,7 @@ else
   printf '  [6/8] Type-check (local + Docker)\n'
   _check_typecheck
 
-  printf '  [7/8] Tests%s\n' \
-    "$([[ "$BRANCH_TIER" == "staging_main" ]] && echo ' + coverage (80% floor)' || echo '')"
+  printf '  [7/8] Tests + coverage (%s%% floor)\n' "$COVERAGE_THRESHOLD"
   _check_tests
   _apply_coverage_floor
 

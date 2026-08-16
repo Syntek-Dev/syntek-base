@@ -29,9 +29,9 @@ predict a clean CI run.
 - **Local and CI are deliberately mirrored.** `audits/security.sh` states outright that it
   mirrors the CI `[8/8] Security` gate so a clean local run predicts a clean CI run. When
   they disagree, that is a bug in the mirroring — fix it rather than routing around it.
-- **CI is stricter in one place:** an **80%** coverage floor applies on `staging` and
-  `main`, above the 75% the runner enforces. A change that passes locally can still fail
-  the promotion.
+- **The coverage floor rises on the promotion branches**, so a change that is green on a
+  feature branch can still fail promotion. The numbers and the branches they key off are
+  `code/docs/testing/COVERAGE.md` → _The promotion tier_, which owns them.
 - **The audits are separate from the eight gates**, and each has its own path-filtered CI
   workflow: `cloc`, `stubs`, `css-tokens`, `css-gradients`, `copy-emdash`, `mobile-tokens`,
   `security`, `seam-contract`, `negative-space`, `docs-pairing`, `docs-length`, `skill-conformance`, and the AI-slop

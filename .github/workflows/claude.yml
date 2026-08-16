@@ -5,8 +5,9 @@ name: Claude Code
 #   Checks [1/8]–[6/8] and [8/8] run natively (no Docker needed).
 #   Check [7/8] drives docker-compose.test.yml, exactly as test.yml does. The
 #   compose file is the ONE definition of the test db and cache.
-#   Coverage thresholds match the hooks: 75% pytest floor always, 80% CI floor on
-#   staging/main (same logic as _apply_coverage_floor in check-tests.sh).
+#   Coverage thresholds match the hooks: 75% always, 80% from `testing` upward (that is, a
+#   PR whose base is dev, staging or main), 90% on apps/users flat. Owned by
+#   code/docs/testing/COVERAGE.md; mirrored here, in test.yml, and in check-tests.sh.
 #
 # LOCKFILE GUARD — read this before touching any `uv` step below.
 # uv.lock is ABSENT BY DESIGN in the base template: it would pin the root project under
@@ -340,8 +341,10 @@ jobs:
 
   # ── [7/8] Tests ──────────────────────────────────────────────────────────────
   # Mirrors check-tests.sh + _apply_coverage_floor. Coverage thresholds:
-  #   - 75% pytest --cov-fail-under floor (always, matches backend-coverage.sh)
-  #   - 80% CI floor on staging/main (matches _apply_coverage_floor in check-tests.sh)
+  #   - 75% line and branch, on every branch (matches backend-coverage.sh)
+  #   - 80% when the PR's base is dev, staging or main (matches _apply_coverage_floor)
+  #   - 90% on apps/users — flat, it does not tier
+  # code/docs/testing/COVERAGE.md owns all three; change the guide before changing these.
   #
   # NO `services:` BLOCK — and it must stay that way. This job used to declare
   # GitHub service containers for db and cache, duplicating the pair already
@@ -411,47 +414,66 @@ jobs:
       # pytest runs INSIDE django-test, on the compose network, reaching the database
       # at `db:5432` — the address the compose file already gives it. Nothing is
       # published to the host and no DATABASE_URL is restated here.
+      # The promotion tier, computed exactly as test.yml computes it and pre-pr-check.sh
+      # sets it: a PR into dev, staging or main promotes work already merged once, and
+      # clears the higher floor. code/docs/testing/COVERAGE.md owns both numbers.
+      - name: Determine coverage threshold
+        if: steps.detect.outputs.present == 'true'
+        id: threshold
+        run: |
+          BRANCH="${{ github.base_ref || github.ref_name }}"
+          case "$BRANCH" in
+            dev | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
+            *) echo "value=75" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      # Coverage runs on EVERY branch. It used to run only when promoting, so a feature
+      # branch reported a green [7/8] having measured no coverage at all — the always-floor
+      # asserted by a step that never looked for it.
       - name: Backend — pytest
         if: steps.detect.outputs.present == 'true'
         run: |
           mkdir -p reports
-          if [[ "$GITHUB_REF" == "refs/heads/staging" || "$GITHUB_REF" == "refs/heads/main" || \
-                "$GITHUB_BASE_REF" == "staging" || "$GITHUB_BASE_REF" == "main" ]]; then
-            docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
-              -v "${{ github.workspace }}/reports:/workspace/reports" \
-              django-test pytest \
-                --cov=apps --cov-branch --cov-fail-under=75 \
-                --cov-report="html:/workspace/reports/html" \
-                --cov-report="xml:/workspace/reports/coverage.xml" \
+          docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
+            -v "${{ github.workspace }}/reports:/workspace/reports" \
+            django-test bash -c "
+              pytest \
+                --cov=apps \
+                --cov-branch \
+                --cov-fail-under=${{ steps.threshold.outputs.value }} \
+                --cov-report=html:/workspace/reports/html \
+                --cov-report=xml:/workspace/reports/coverage.xml \
                 --cov-report=term-missing \
-                --junit-xml="/workspace/reports/results.xml"
-          else
-            docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
-              -v "${{ github.workspace }}/reports:/workspace/reports" \
-              django-test pytest --junit-xml="/workspace/reports/results.xml"
-          fi
+                --junit-xml=/workspace/reports/results.xml &&
+              coverage report --include='apps/users/*' --fail-under=90
+            "
 
-      - name: Enforce 80% coverage floor (staging/main)
-        if: |
-          steps.detect.outputs.present == 'true' &&
-          (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main' ||
-           github.base_ref == 'staging' || github.base_ref == 'main')
+      # The auth floor above does not tier. This step re-asserts the line floor from the
+      # written artefact rather than from pytest's exit code alone, which is what makes a
+      # missing report a failure instead of a silent pass.
+      - name: Enforce the coverage floor
+        if: steps.detect.outputs.present == 'true'
+        env:
+          THRESHOLD: ${{ steps.threshold.outputs.value }}
         run: |
           python3 - <<'EOF'
-          import xml.etree.ElementTree as ET, json, sys
-          THRESHOLD = 80
+          import os
+          import sys
+          import xml.etree.ElementTree as ET
+
+          threshold = int(os.environ['THRESHOLD'])
           failed = []
           try:
               root = ET.parse('reports/coverage.xml').getroot()
               pct = int(float(root.get('line-rate', 0)) * 100)
               print(f'Backend:  {pct}%')
-              if pct < THRESHOLD:
-                  failed.append(f'backend {pct}% (requires {THRESHOLD}%)')
+              if pct < threshold:
+                  failed.append(f'backend {pct}% (requires {threshold}%)')
           except Exception as e:
               print(f'Backend coverage report missing: {e}')
               failed.append('backend coverage report missing')
           if failed:
-              print(f'\n80% floor not met: {", ".join(failed)}')
+              print(f'\n{threshold}% floor not met: {", ".join(failed)}')
               sys.exit(1)
           print('Coverage floor met.')
           EOF
