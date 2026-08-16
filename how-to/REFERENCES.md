@@ -58,6 +58,7 @@ points for that procedure.
 | `how-to/docs/TOOLING-GUIDE.md`      | Internal skills reference (index)                                                             |
 | `how-to/docs/CELERY-FIRST-RUN.md`   | Getting the Celery worker and beat running the first time                                     |
 | `how-to/docs/FEATURE-DEPLOY.md`     | Deploying a feature branch                                                                    |
+| `how-to/docs/HEALTH-PROBES.md`      | Diagnosing a red `/health/ready/` or a restart-looping container — the operator's half        |
 | `how-to/docs/INCIDENT-PRACTICE.md`  | Running a live incident: declare, shift handover, stand down, write up                        |
 | `how-to/docs/OPERATOR-DOC-CRAFT.md` | The conventions behind an executable guide: reader, homes, spine, commands, execute-to-verify |
 

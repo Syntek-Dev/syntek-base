@@ -14,15 +14,19 @@ api/
 ├── CONTEXT.md              ← this file
 ├── CLAUDE.md               ← operating rules
 ├── bruno.json              # Bruno collection config: name, version, ignore patterns
-└── environments/           # per-environment variable files (host, docker, local, staging, production)
+├── environments/           # per-environment variable files (host, docker, local, staging, production)
+└── health/                 ← liveness + readiness contract; the one folder not under /api/
 ```
 
-**The collection holds no requests at baseline.** The Django project serves no API — there
-is no `NinjaAPI` and no router — so there is nothing to assert against yet. Domain folders
-appear here as endpoints ship, one folder per domain (`auth/`, `users/`, …).
+**`health/` is the only folder at baseline.** The Django project serves no API — there is no
+`NinjaAPI` and no router — so there is nothing under `/api/` to assert against yet. The two
+health probes are the exception on purpose: they are plain Django views mounted at the root
+so they answer when `/api/` does not exist or cannot respond, and they have consumers outside
+this repository. Domain folders appear beside it as endpoints ship, one folder per domain
+(`auth/`, `users/`, …).
 
-`code/src/scripts/tests/api.sh` exits `0` without starting the test stack while that is the
-case, so the suite is green rather than red.
+`code/src/scripts/tests/api.sh` counts the requests before it starts anything, so the run is a
+real one from the first folder onwards rather than the stated no-op it used to be.
 
 > The annotated request template lives one level up at `../template-test.bru`, **outside**
 > the collection root. The Bruno CLI runs the collection recursively, so any `.bru` inside
@@ -36,7 +40,9 @@ case, so the suite is green rather than red.
 Bruno API testing collection for the <%PROJECT_NAME%> Django Ninja API. Run against a live
 backend to verify endpoint contracts, auth flows, and performance thresholds.
 
-All requests target the Django Ninja API at `{{api_url}}/api/`.
+All requests target the Django Ninja API at `{{api_url}}/api/` — bar `health/`, which targets
+`{{api_url}}` directly because the probes are root-mounted by contract
+(`code/docs/logging/HEALTH-CONTRACT.md`).
 
 - **Host runner (default)**: the `host` environment — the test stack's nginx on `:83`
 - **CI / inside the Docker network**: the `docker` environment (`http://django-test:8000`)

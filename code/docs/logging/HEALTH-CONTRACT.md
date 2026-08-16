@@ -129,6 +129,7 @@ internal Django app service `web:8000` and `/,/blog,/portal,/admin/login`).
 ## Cross-references
 
 - `code/src/django/apps/health/CONTEXT.md` — the health app
+- `how-to/docs/HEALTH-PROBES.md` — the operator's half: diagnosing a red probe or a restart-looping container. **This doc decides what the endpoints publish; that one is what someone reads at 2am when the status page turns**
 - `code/docs/logging/OBSERVABILITY.md` — the broader observability stack
 - `how-to/src/SERVER-ARCHITECTURE/` — the broader edge/compute contract this health/metrics contract is one part of; the endpoints here are themselves a SERVER-ARCHITECTURE edge requirement. **This doc owns the endpoint shapes and what each status means; SERVER-ARCHITECTURE owns what the server must expose and scrape** (`code/docs/architecture/BUILD-OPERATE-SEAM.md`)
 - `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` — the deploy-repo handoff that consumes these endpoints alongside the edge contract

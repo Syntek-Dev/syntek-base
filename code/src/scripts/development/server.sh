@@ -30,6 +30,7 @@ server.sh — Manage the development Docker Compose stack
 
 Usage:
   server.sh up       Start all services (or a single service)
+  server.sh stop     Stop services without removing them (or a single service)
   server.sh down     Stop and remove containers
   server.sh restart  Restart all services (or a single service)
   server.sh build    Build or rebuild service images
@@ -45,8 +46,13 @@ Options (down):
   --volumes          Also remove named volumes (wipes database data)
   --clean-hosts [N]  Remove /etc/hosts entries for story N (defaults to current us### branch)
 
-Options (restart, build):
+Options (stop, restart, build):
   --service SERVICE  Target a single service
+
+`stop` is what `down` is not: it leaves the containers and the network in place, so a single
+dependency can be taken away and given back. That is the only way to rehearse a degraded or
+down readiness probe through this script — `restart` returns the service faster than any
+probe interval, so the outage is never observed (how-to/docs/HEALTH-PROBES.md).
 
 Exit codes:  0 = success   1 = command failed   2 = script error
 EOF
@@ -59,7 +65,7 @@ COMMAND="${1:-}"
 shift || true
 
 case "$COMMAND" in
-  up|down|restart|build|status) ;;
+  up|stop|down|restart|build|status) ;;
   --help|-h) usage; exit 0 ;;
   "")        die "No command given. Use --help for usage." ;;
   *)         die "Unknown command '$COMMAND'. Use --help for usage." ;;
@@ -179,6 +185,20 @@ case "$COMMAND" in
       fi
       unset _hosts_num
     fi
+    ;;
+
+  stop)
+    bold "▸ server.sh stop"
+    log ""
+    if [[ -n "$SERVICE" ]]; then
+      "${DC[@]}" stop "$SERVICE"
+    else
+      "${DC[@]}" stop
+    fi
+    log ""
+    bold "✓ Stopped${SERVICE:+ $SERVICE}."
+    log "  Containers and network are intact — bring it back with:"
+    log "    bash code/src/scripts/development/server.sh up${SERVICE:+ --service $SERVICE}"
     ;;
 
   restart)

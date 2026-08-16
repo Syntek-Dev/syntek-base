@@ -110,6 +110,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/logging/DJANGO-LOGGING.md` — the `LOGGING` config, request logging, the levels
 - `code/docs/logging/OBSERVABILITY.md` — the three interfaces, pipeline, retention, dashboards
 - `code/docs/logging/HEALTH-CONTRACT.md` — the signals the scaling phase-gates key to
+- `how-to/docs/HEALTH-PROBES.md` — the operator's half of that contract: reading a red probe, and the memo that can hide an outage for one TTL
 - `code/docs/security/MONITORING-AND-INCIDENT.md` — the sensitive-data rules this enforces
 - `code/docs/security/AUDIT-TRAIL.md` — the audit record, which is not the log pipeline
 - `.claude/plugins/log-tool.py` · `.claude/plugins/env-tool.py` — read-only orientation

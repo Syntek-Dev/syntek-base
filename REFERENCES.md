@@ -90,6 +90,7 @@ rule navigates; it does not restate it.
 | [how-to/docs/CLI-TOOLING.md](how-to/docs/CLI-TOOLING.md)               | CLI tools reference: scripts, commands, shortcuts                                                                                     |
 | [how-to/docs/DEVELOPMENT.md](how-to/docs/DEVELOPMENT.md)               | Day-to-day development setup and workflow                                                                                             |
 | [how-to/docs/FEATURE-DEPLOY.md](how-to/docs/FEATURE-DEPLOY.md)         | Deploying a feature branch                                                                                                            |
+| [how-to/docs/HEALTH-PROBES.md](how-to/docs/HEALTH-PROBES.md)           | Diagnosing a red `/health/ready/` or a restart-looping container — the operator's half of the health contract                         |
 | [how-to/docs/INCIDENT-PRACTICE.md](how-to/docs/INCIDENT-PRACTICE.md)   | Running a live incident — declare, shift handover, stand down, blameless postmortem                                                   |
 | [how-to/docs/OPERATOR-DOC-CRAFT.md](how-to/docs/OPERATOR-DOC-CRAFT.md) | The conventions behind a guide a human executes — the reader, the two homes and their length standards, the spine, execute-to-verify  |
 | [how-to/docs/GIT-WORKTREES.md](how-to/docs/GIT-WORKTREES.md)           | Git worktree creation and management                                                                                                  |

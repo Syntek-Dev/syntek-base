@@ -94,3 +94,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/global-workflow/` — British English, Markdown style, commit conventions
 - `code/src/scripts/CONTEXT.md` — the scripts a guide is allowed to cite
 - `how-to/docs/INCIDENT-PRACTICE.md` — the worked example of a guide a human executes under pressure
+- `how-to/docs/HEALTH-PROBES.md` — a runbook written to this standard and proven by executing it; its Failure modes section is what execute-to-verify produces

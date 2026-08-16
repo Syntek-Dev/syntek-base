@@ -18,7 +18,8 @@ tests/
     ├── CONTEXT.md
     ├── CLAUDE.md
     ├── bruno.json
-    └── environments/
+    ├── environments/
+    └── health/         ← the only requests at baseline: the liveness/readiness contract
 ```
 
 ---
@@ -27,14 +28,17 @@ tests/
 
 Integration and contract tests that run against a live Django Ninja API. These are not unit tests — they require a running backend.
 
-| Entry               | Contents                                                                |
-| ------------------- | ----------------------------------------------------------------------- |
-| `api/`              | Bruno API collection — config and environments; **no requests yet**     |
-| `template-test.bru` | Annotated Django Ninja request template — copy into an `api/` subfolder |
+| Entry               | Contents                                                                       |
+| ------------------- | ------------------------------------------------------------------------------ |
+| `api/`              | Bruno API collection — config, environments, and the `health/` contract folder |
+| `template-test.bru` | Annotated request template — copy into an `api/` subfolder                     |
 
-The collection carries no requests at baseline because the project serves no API. Domain
-folders (`auth/`, `users/`, …) land here as endpoints ship;
-`code/src/scripts/tests/api.sh` exits `0` without starting the stack until then.
+**`health/` is the only folder at baseline, and it is deliberately not an API test.** The
+project serves no API yet; `/health/` and `/health/ready/` are plain Django views mounted at the
+root precisely so they answer when `/api/` does not exist or cannot respond. They are here
+because this is where HTTP-layer contract tests live, and because those two endpoints have
+consumers outside this repository. Domain folders (`auth/`, `users/`, …) land beside it as
+endpoints ship.
 
 ---
 
