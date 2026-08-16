@@ -35,19 +35,30 @@ name: Python — Lint, Format & Typecheck
 # then at `uv sync`, which is what the two paragraphs above finally answer. Each fix was
 # real and each merely uncovered the next one.
 
+# No path filter, deliberately — the filter was removed on 16/08/2026 so these three
+# jobs become ELIGIBLE for the required set. project-management/docs/git/PR-AND-REQUIRED-CHECKS.md,
+# Section "Required status checks and path filters": a workflow may be path-filtered, or it may
+# be a required status check, never both. While it was filtered, a documentation-only
+# pull request left ruff and basedpyright reporting nothing at all, so requiring them
+# would have blocked every such merge on a check that never arrives.
+#
+# The extra runs are affordable because the tree is small: 59 tracked .py files, on
+# which — measured locally on 16/08/2026, so this is the CHECKER's time and not the
+# job's — both ruff invocations return in under a second and basedpyright in ~1.4s at
+# 0 errors, 0 warnings, 0 notes. The job adds checkout, setup-uv and a `uv sync` on top
+# of that, and it is still the cheaper side of the trade: the alternative is the failure
+# mode above, which blocks a merge outright. Same trade syntax-markdown.yml made.
+#
+# ELIGIBILITY IS NOT MEMBERSHIP. Adding these to branch protection is a repository-
+# settings change no file in this repository can make — see
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md, Section "What earns a place in
+# the required set".
+# This change does the half that lives here.
 on:
   push:
     branches: [main, staging, dev, testing]
-    paths:
-      - "**/*.py"
-      - "pyproject.toml"
-      - ".github/workflows/syntax-python.yml"
   pull_request:
     branches: [main, staging, dev, testing]
-    paths:
-      - "**/*.py"
-      - "pyproject.toml"
-      - ".github/workflows/syntax-python.yml"
   workflow_dispatch:
 
 env:

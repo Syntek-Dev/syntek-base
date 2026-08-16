@@ -42,7 +42,8 @@ predict a clean CI run.
 - **An audit is never a required status check, and that is why it may be path-filtered.**
   A required check must report on every pull request; a path-filtered one does not run when a PR
   touches none of its paths, so it never reports and the merge waits forever
-  (`project-management/docs/GIT-GUIDE.md` → Required status checks and path filters).
+  (`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → Required status checks and path
+  filters).
 - **`static-analysis` is the one audit with no CI workflow yet.** It needs the Opengrep engine
   installed in the runner, and until that is wired it would report a green job having scanned
   nothing — which is worse than no job. Locally it behaves the same way: **without `opengrep` on

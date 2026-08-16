@@ -73,5 +73,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `project-management/docs/VERSIONING-GUIDE.md` — the semver rules and the files each bump touches
-- `project-management/docs/GIT-GUIDE.md` — the commit format and the breaking-change signal
+- `project-management/docs/git/COMMITS.md` — the commit format and the breaking-change signal
 - `how-to/docs/FEATURE-DEPLOY.md` — what the target environment has to be told about a change

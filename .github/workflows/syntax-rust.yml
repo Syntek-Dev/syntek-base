@@ -5,8 +5,8 @@
 # directory check appears here, unlike the mobile jobs in test.yml.
 #
 # Path filters are safe on this workflow because it is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md on why a path-filtered required check can block a
-# merge forever.
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md on why a path-filtered required
+# check can block a merge forever.
 name: Syntax — Rust
 
 on:

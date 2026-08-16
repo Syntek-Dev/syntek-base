@@ -13,8 +13,9 @@
 # missed. It is also cheap: ~2s for the whole tree.
 #
 # The consequence is that this workflow is ELIGIBLE for the required set, per
-# project-management/docs/GIT-GUIDE.md → What earns a place in the required set. Whether it
-# joins is a branch-protection decision, not a file change — see N-029.
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → What earns a place in the
+# required set. Whether it joins is a branch-protection decision, not a file change —
+# see N-029.
 name: Audit — Conflict Markers
 
 on:

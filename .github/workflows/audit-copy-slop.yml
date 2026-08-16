@@ -2,7 +2,8 @@
 # the family is split by input language.
 #
 # Path filters are safe here because this is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md → Required status checks and path filters.
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → Required status checks
+# and path filters.
 #
 # SCOPE IS THE POINT. copy-slop.sh enforces how-to/src/BRAND-VOICE.md Section 4, which governs
 # copy a USER READS. The paths below are the two marketing directories and nothing else:

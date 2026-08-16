@@ -64,7 +64,7 @@ CI must pass and QA sign-off received before merging `testing` → `dev`.
 
 ### Step 5 — Promote Through Chain
 
-Follow the gate rules in `project-management/docs/GIT-GUIDE.md`:
+Follow the gate rules in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`:
 
 ```text
 testing → dev → staging → main

@@ -111,7 +111,7 @@ looks like a fix.
 Bumping it is a deliberate change, reviewed like a channel bump, because the same release can
 turn a clean tree red. The pin joins the repository's other three — `.nvmrc`,
 `.python-version`, and `rust-toolchain.toml` above — and the pattern behind all four is recorded
-in `project-management/docs/GIT-GUIDE.md`.
+in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → Toolchain pins.
 
 ## Suppressing an advisory
 

@@ -67,7 +67,8 @@ us###/feature → testing → dev → staging → main
 | `staging`       | `main`    | **Client accepts**     | Back to `us###/feature` |
 
 Never commit directly to a protected branch. If a task starts on `main`, branch
-first. Full branch protection and merge rules: `project-management/docs/GIT-GUIDE.md`.
+first. Full branch protection and merge rules:
+`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`.
 
 ---
 

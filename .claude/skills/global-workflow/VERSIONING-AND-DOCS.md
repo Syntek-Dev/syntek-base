@@ -14,7 +14,7 @@ Single-track semver: `MAJOR.MINOR.PATCH`.
 declared public API that makes MAJOR decidable at all, the increment table, `0.y.z` and `1.0.0`,
 the pre-release and build-metadata grammar, precedence, the deprecation policy, and how to recover
 from a wrong release. How a commit _signals_ a breaking change — the `!` shorthand and the
-`BREAKING CHANGE:` footer — is in `project-management/docs/GIT-GUIDE.md`.
+`BREAKING CHANGE:` footer — is in `project-management/docs/git/COMMITS.md`.
 
 This section previously carried its own copy of the increment table. It was removed rather than
 corrected: a summary that restates an authoritative table is a drift site, not a convenience, and

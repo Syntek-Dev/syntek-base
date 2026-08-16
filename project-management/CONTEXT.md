@@ -15,7 +15,9 @@ project-management/
 │   ├── CONTEXT.md
 │   ├── gdpr/                    ← GDPR sub-documents (COMPLIANCE.md, DATA-RIGHTS.md)
 │   ├── GDPR-GUIDE.md            ← GDPR obligations, data flows, and legal bases (index)
-│   ├── GIT-GUIDE.md             ← branch strategy, commit format, PR flow, PR gates
+│   ├── git/                     ← git sub-documents (BRANCHES-AND-WORKTREES.md, COMMITS.md,
+│   │                              PR-AND-REQUIRED-CHECKS.md, MIGRATION-GATES.md)
+│   ├── GIT-GUIDE.md             ← branch, commit, PR and migration gates (index)
 │   ├── QA-GUIDE.md              ← QA planning and test documentation standards
 │   ├── RESPONSIVE-DESIGN.md     ← breakpoints, mobile-first, responsive patterns
 │   ├── SECURITY-GUIDE.md        ← security standards and threat modelling guide

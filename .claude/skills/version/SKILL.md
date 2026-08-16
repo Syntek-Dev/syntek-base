@@ -50,7 +50,7 @@ before classifying anything as breaking; a bump made without it is a guess weari
 
 **A commit carrying a breaking change is MAJOR whatever its type** — a `fix!:` that removes a
 field is a MAJOR, and `feat` alone never implies MINOR. The signalling convention is
-`project-management/docs/GIT-GUIDE.md`'s.
+`project-management/docs/git/COMMITS.md`'s.
 
 **Then ask whether a sub-package moved.** Each deployable carries its own independent semver and
 is bumped **only when its own code changed**. Never move a sub-package as a side-effect of a
@@ -137,6 +137,6 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/docs/VERSIONING-GUIDE.md` — **canonical**: the rules, the public-API
   declaration, the file list, the two-tier strategy, pre-release and precedence
-- `project-management/docs/GIT-GUIDE.md` — how a breaking change is signalled in the commit
+- `project-management/docs/git/COMMITS.md` — how a breaking change is signalled in the commit
 - `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — the documentation standards alongside
 - `.claude/plugins/git-tool.py` · `.claude/plugins/project-tool.py` — read-only state

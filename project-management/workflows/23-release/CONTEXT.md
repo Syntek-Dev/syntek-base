@@ -24,7 +24,8 @@ Use this workflow when cutting a release — version bump, changelog update, and
 ### Governing documents
 
 - `project-management/docs/VERSIONING-GUIDE.md` — version bump rules and file checklist; must be followed exactly
-- `project-management/docs/GIT-GUIDE.md` — branch promotion chain and staging verification gates
+- `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` — the branch promotion chain and its gate per step
+- `project-management/docs/git/MIGRATION-GATES.md` — the staging verification a risky migration must pass before `staging → main`
 
 ### Related reading
 
