@@ -58,10 +58,24 @@ _check_audits() {
     fi
   done
 
-  # The shipped-file integrity checks are CI-enforced and template-only: they
-  # prove that what a generated project receives still matches this repository.
-  # Nothing in the eight application checks looks at them.
-  for script in "$PROJECT_ROOT"/.github/scripts/shipped-*.sh; do
+  # The template-integrity checks, CI-enforced and template-only: they prove that
+  # what a generated project receives still matches this repository, and that it can
+  # be generated at all. Nothing in the eight application checks looks at them.
+  #
+  # SCOPED BY DIRECTORY SINCE 16/08/2026, and the glob it replaces is why. This loop
+  # read `shipped-*.sh` — the drifting list this file's own header warns about, wearing
+  # a wildcard so it looked like a scope. It covered two of the four scripts in that
+  # directory and silently excluded check-template-tokens.sh and
+  # check-template-parsers.sh, which are the two that answer "can this template still
+  # generate at all". MAP-BASE-HEALTH N-032 is what that cost: token syntax broke
+  # generation outright and this gate went on reporting every audit clean.
+  #
+  # Not --self-test here, and that is a scope decision rather than an oversight. Proving
+  # a detector still discriminates already has two homes — the `template-integrity`
+  # pre-commit leg in lefthook.yml and the jobs in
+  # .github/workflows/audit-template.yml, both of which run the self-test before the
+  # check. A third copy at this gate would buy nothing and cost the run twice over.
+  for script in "$PROJECT_ROOT"/.github/scripts/*.sh; do
     [[ -f "$script" ]] || continue
     name=$(basename "$script")
     local script_out

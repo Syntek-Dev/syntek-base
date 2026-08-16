@@ -20,22 +20,17 @@
 
 ## Template checks
 
-- [ ] I generated a project from this branch and it rendered with **zero** surviving tokens
+**Generation and token integrity are machine-checked on every push, to every branch** —
+`.github/workflows/audit-template.yml` generates a project both ways and runs the four
+`.github/scripts/` checks; lefthook's `template-integrity` leg runs the cheap half before the
+commit exists. Do not tick these by hand; read the run. To reproduce a failure locally:
 
-  ```bash
-  uvx copier copy --trust --defaults \
-    --data PROJECT_NAME="Test Project" --data ORG_NAME="Test Org" \
-    --data PROJECT_DESCRIPTION="A test project for checking that the template renders end to end." \
-    --data DEVELOPER_NAME="You" --data DEVELOPER_EMAIL="you@example.com" \
-    --data DATE="01/01/2027" . /tmp/syntek-check
-  grep -rIo '<%[A-Z_]*%>' /tmp/syntek-check --exclude-dir=.git | wc -l   # 0
-  ```
+```bash
+bash .github/scripts/check-template-tokens.sh    # token shape — the pre-commit gate
+bash .github/scripts/check-template-parsers.sh   # token position — every manifest parses
+```
 
-- [ ] Token integrity passes — no mangled, unregistered or unclosed tokens
-
-  ```bash
-  bash .github/scripts/check-template-tokens.sh
-  ```
+What is left is what no script can decide:
 
 - [ ] Any new token is registered in **both** `copier.yml` and `how-to/src/TEMPLATE-TOKENS.md`
 - [ ] No `{{ }}` used for tokens; any literal `<% %> <: :> <~ ~>` is wrapped in `<: raw :>`

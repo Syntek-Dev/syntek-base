@@ -2,9 +2,33 @@ name: Audit — Template Integrity
 
 # No path filter: this must run on every pull request so it can be a required check.
 # A path-filtered workflow that never reports leaves a PR blocked on "Expected".
+#
+# AND NO BRANCH FILTER ON PUSH, since 16/08/2026 — this is the only workflow here whose
+# push trigger names no branches. The list used to be the four chain branches, so a
+# feature branch got nothing at all until somebody opened a pull request.
+#
+# WHAT THAT COST, measured rather than argued (MAP-BASE-HEALTH N-032/N-033). A `<%`
+# written into a printf format string in audits/conflict-markers.sh on 15/08/2026 broke
+# `copier copy` outright — the template could not generate a project at all — and sat
+# undetected for seventeen commits on pm/base-health-map. check-template-tokens.sh had
+# been exiting 1 and naming the exact line the whole time. Nothing ran it.
+#
+# WHY THIS CLASS AND NOT THE OTHERS. Every other gate here can wait for the pull
+# request, because its defect is visible in the branch it was written on: a lint error,
+# a dead link, an oversized guide. A template-integrity defect is invisible until
+# somebody generates, and whoever generates is not whoever broke it — that is the whole
+# asymmetry, and it is what buys the extra runs.
+#
+# IT IS AFFORDABLE, and that was measured too: the last full run before this change
+# finished in 41 seconds wall clock — tokens 8s, shipped documentation 18s, generation
+# 37s, all in parallel. Every job is metadata-only; nothing is built.
+#
+# A branch with an open pull request runs this twice, once per event. That is accepted
+# rather than deduplicated: a concurrency group needs GitHub expression syntax, and this
+# file may not contain that sequence at all (see the NOTE above the last step in [3/4]).
 on:
   push:
-    branches: [main, staging, dev, testing]
+    branches: ["**"]
   pull_request:
     branches: [main, staging, dev, testing]
   workflow_dispatch:

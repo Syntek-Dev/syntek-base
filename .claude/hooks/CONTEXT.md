@@ -22,7 +22,7 @@ code-review-graph and reports what the refresh could not reach.
 ├── template-docs-readonly.sh ← PreToolUse hook — template docs are read-only in a generated project
 ├── graph-update.sh          ← PostToolUse hook — refresh the graph, name what it could not see
 └── lib/                     ← one gate per file, sourced by pre-pr-check.sh, never run directly
-    ├── check-audits.sh      ← TEMPLATE-ONLY — every audit + the shipped-file checks
+    ├── check-audits.sh      ← TEMPLATE-ONLY — every audit + every template-integrity check
     ├── check-cloc.sh        ← line-count validation
     ├── check-format.sh      ← code formatting
     ├── check-lint.sh        ← linting and style
@@ -47,17 +47,17 @@ code-review-graph and reports what the refresh could not reach.
 
 ## lib/ Contents
 
-| File                 | Purpose                                               |
-| -------------------- | ----------------------------------------------------- |
-| `check-audits.sh`    | **Template-only** — every audit + shipped-file checks |
-| `check-cloc.sh`      | Line count validation                                 |
-| `check-format.sh`    | Code formatting checks                                |
-| `check-lint.sh`      | Linting and style checks                              |
-| `check-lockfiles.sh` | Dependency lock file validation                       |
-| `check-security.sh`  | Security scanning                                     |
-| `check-stubs.sh`     | Test stub validation                                  |
-| `check-tests.sh`     | Test coverage and execution                           |
-| `check-typecheck.sh` | basedpyright type checking                            |
+| File                 | Purpose                                              |
+| -------------------- | ---------------------------------------------------- |
+| `check-audits.sh`    | **Template-only** — every audit + `.github/scripts/` |
+| `check-cloc.sh`      | Line count validation                                |
+| `check-format.sh`    | Code formatting checks                               |
+| `check-lint.sh`      | Linting and style checks                             |
+| `check-lockfiles.sh` | Dependency lock file validation                      |
+| `check-security.sh`  | Security scanning                                    |
+| `check-stubs.sh`     | Test stub validation                                 |
+| `check-tests.sh`     | Test coverage and execution                          |
+| `check-typecheck.sh` | basedpyright type checking                           |
 
 ## Session-continuity hooks
 
@@ -135,9 +135,13 @@ as failures is the false signal this repository audits for elsewhere.
 
 **`audits` is the substantive gate here**, and has no counterpart in an application: a
 template's product is its structure, routing and documentation, which is exactly what
-`code/src/scripts/audits/*.sh` and `.github/scripts/shipped-*.sh` read. It is scoped by
+`code/src/scripts/audits/*.sh` and `.github/scripts/*.sh` read. Both are scoped by
 directory rather than by a list, because a list drifts silently — a new audit the PR check
 never runs looks identical to one that passes.
+
+The second scope was a list until 16/08/2026, and it drifted exactly as predicted: it read
+`shipped-*.sh`, covering two of the four scripts and silently omitting the two that answer
+whether the template can be generated at all.
 
 This is **not** a softened gate. Nothing runnable is skipped, and a check with a host-side half
 still blocks on it — see the negative test in `check-format.sh`'s history.
