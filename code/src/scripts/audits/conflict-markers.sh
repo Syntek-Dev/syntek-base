@@ -101,9 +101,18 @@ if $SELF_TEST; then
   # The markers are BUILT, never written literally: a file that greps for conflict markers
   # must not contain any, or it flags itself on the first run. Naming the forms is also
   # clearer than the glyphs.
-  OPEN=$(printf '<%.0s' $(seq 7))
-  CLOSE=$(printf '>%.0s' $(seq 7))
-  MANGLED_CLOSE=$(printf '>%.0s ' $(seq 7)); MANGLED_CLOSE="${MANGLED_CLOSE% }"
+  #
+  # The conversion spec comes FIRST, and that ordering is load-bearing. Copier's
+  # variable delimiter is an angle bracket followed by a percent sign, so writing the
+  # repeat as bracket-then-spec puts that exact pair in the file: Jinja opens an
+  # expression, never finds the closer, and `copier copy` dies with a TemplateSyntaxError
+  # before a single file is written. This script shipped that way on 15/08/2026 and broke
+  # generation outright. `%.0s` consumes each `seq` argument and prints nothing, so the
+  # literal can sit on either side with identical output — put it on the right.
+  # Gate: `.github/scripts/check-template-tokens.sh`.
+  OPEN=$(printf '%.0s<' $(seq 7))
+  CLOSE=$(printf '%.0s>' $(seq 7))
+  MANGLED_CLOSE=$(printf '%.0s> ' $(seq 7)); MANGLED_CLOSE="${MANGLED_CLOSE% }"
 
   # Known-bad: raw open, mangled (indented) open, raw close, mangled (blockquote) close.
   { printf '%s HEAD\n'                "$OPEN"
