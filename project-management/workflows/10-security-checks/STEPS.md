@@ -19,7 +19,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | Step | Section                                                                                                                                |
 | ---- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | 2–3  | **Internal — Guides** → project-management/docs/SECURITY-GUIDE.md                                                                      |
-| 3–4  | **External — Compliance & Legal** → OWASP Top 10 (2021), STRIDE threat modelling, NIST Cybersecurity Framework 2.0, ISO/IEC 27001:2022 |
+| 3–4  | **External — Compliance & Legal** → OWASP Top 10 (2025), STRIDE threat modelling, NIST Cybersecurity Framework 2.0, ISO/IEC 27001:2022 |
 | 5    | **Internal — Live Artefacts** → src/10-SECURITY/                                                                                       |
 
 ---
@@ -59,8 +59,8 @@ For each identified point, apply STRIDE:
 
 For each finding from Step 2, record:
 
-- **OWASP category** — the most relevant A01–A10 category
-  (e.g. A01 Broken Access Control, A04 Insecure Design, A09 Security Logging Failures)
+- **OWASP category** — the most relevant A01–A10 category from the **2025** list, cited with its
+  year (e.g. `A01:2025` Broken Access Control, `A05:2025` Injection, `A06:2025` Insecure Design)
 - **NIST CSF 2.0 function** — the function most affected if the threat is exploited
   (GV Govern, ID Identify, PR Protect, DE Detect, RS Respond, RC Recover)
 

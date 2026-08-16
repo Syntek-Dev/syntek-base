@@ -38,9 +38,20 @@ An HTMX-facing view answers two callers: a full-page navigation, and an HTMX swa
 # apps/marketing/views.py
 from django.shortcuts import render
 
+# The caller picks a filter from this map; it never supplies a lookup of its own.
+_FILTERS = {"category": "category__slug", "year": "published_at__year"}
+
+
+def _filters_from(request) -> dict[str, str]:
+    return {
+        _FILTERS[name]: value
+        for name, value in request.GET.items()
+        if name in _FILTERS and value
+    }
+
 
 def portfolio(request):
-    items = PortfolioItem.objects.filter(**filters_from(request)).select_related("category")
+    items = PortfolioItem.objects.filter(**_filters_from(request)).select_related("category")
     context = {"items": items}
 
     if request.headers.get("HX-Request"):
@@ -56,6 +67,13 @@ def portfolio(request):
   cannot drift.
 - The partial is the response contract. Changing its outer element or `id` is a breaking change to
   every `hx-target` that points at it.
+- **A query-string name is chosen from an allowlist, never expanded into a lookup.** Passing
+  `request.GET` straight into `filter(**…)` lets the caller write the lookup as well as the value:
+  `?category__owner__email__contains=@` traverses a relation this view never meant to expose, and
+  `__gt` on a hidden column reads it a character at a time. Map each accepted name to a lookup you
+  wrote, as `_FILTERS` does above, and drop everything else. The rule holds for `order_by()`,
+  `values()` and `annotate()` too — they take field names, and a field name from a caller is a
+  read of whatever it resolves to.
 
 ---
 

@@ -153,7 +153,7 @@ Internal and external references for all coding work in this repository.
 
 ## External — Security & Standards
 
-- **OWASP Top 10 (2021)** — <https://owasp.org/www-project-top-ten/> — security baseline for all Django Ninja endpoints
+- **OWASP Top 10 (2025)** — <https://owasp.org/www-project-top-ten/> — security baseline for all Django Ninja endpoints. Injection is **A05:2025**, not the A03 of the 2021 list; the per-category mitigations are in `code/docs/security/OWASP-AND-CHECKLIST.md`
 - **OWASP REST Security Cheat Sheet** — <https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html> — JSON API security guidance
 - **NIST SP 800-63B** — <https://pages.nist.gov/800-63-4/sp800-63b.html> — authentication, password policy, and MFA requirements
 - **WCAG 2.2 AA** — <https://www.w3.org/TR/WCAG22/> — accessibility compliance standard for all frontend components

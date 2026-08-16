@@ -19,7 +19,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 | Step | Section                                                                                                              |
 | ---- | -------------------------------------------------------------------------------------------------------------------- |
 | 1–2  | **Guides in code/docs/** → SECURITY.md, CODING-PRINCIPLES.md                                                         |
-| 1–2  | **External — Security & Standards** → OWASP Top 10 (2021), OWASP REST Security Cheat Sheet, Django security overview |
+| 1–2  | **External — Security & Standards** → OWASP Top 10 (2025), OWASP REST Security Cheat Sheet, Django security overview |
 | 3    | **External — Testing** → pytest, pytest-django                                                                       |
 
 ---

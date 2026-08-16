@@ -31,7 +31,7 @@ rules:
     metadata:
       doctrine: "Django auto-escaping is the XSS defence; never route a value round it."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house
 
   - id: django-template-var-in-inline-script
@@ -52,7 +52,7 @@ rules:
     metadata:
       doctrine: "No inline script, and no server value interpolated into JavaScript."
       guide: code/docs/FRONTEND-CODING-PRINCIPLES.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       limitation: >-
         Matches only where the opening `<script>` tag and the `{{` share a line or are
         separated by plain text on the same run. A variable several lines into a long
@@ -76,7 +76,7 @@ rules:
     metadata:
       doctrine: "A partial is an XSS surface exactly like a full page."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house
 
   - id: django-autoescape-disabled-in-python
@@ -99,5 +99,5 @@ rules:
     metadata:
       doctrine: "Auto-escaping is a control, not a default to be tuned."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house

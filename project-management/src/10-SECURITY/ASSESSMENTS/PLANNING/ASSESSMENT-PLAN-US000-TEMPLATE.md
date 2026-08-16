@@ -57,18 +57,18 @@ The STRIDE model(s) this posture assessment synthesises. Cross-check
 
 Design-stage posture for each category. Status ∈ Addressed / Partial / Open / N/A.
 
-| ID  | Category                                   | Status            | Notes (open findings, controls relied on)        |
-| --- | ------------------------------------------ | ----------------- | ------------------------------------------------ |
-| A01 | Broken Access Control                      | [EXAMPLE] Partial | {controls in place; open finding IDs + severity} |
-| A02 | Cryptographic Failures                     | {status}          | {notes}                                          |
-| A03 | Injection                                  | {status}          | {notes}                                          |
-| A04 | Insecure Design                            | {status}          | {notes}                                          |
-| A05 | Security Misconfiguration                  | {status}          | {notes}                                          |
-| A06 | Vulnerable and Outdated Components         | {status}          | {notes}                                          |
-| A07 | Identification and Authentication Failures | {status}          | {notes}                                          |
-| A08 | Software and Data Integrity Failures       | {status}          | {notes}                                          |
-| A09 | Security Logging and Monitoring Failures   | {status}          | {notes}                                          |
-| A10 | Server-Side Request Forgery                | {status}          | {notes}                                          |
+| ID       | Category                              | Status            | Notes (open findings, controls relied on)        |
+| -------- | ------------------------------------- | ----------------- | ------------------------------------------------ |
+| A01:2025 | Broken Access Control (incl. SSRF)    | [EXAMPLE] Partial | {controls in place; open finding IDs + severity} |
+| A02:2025 | Security Misconfiguration             | {status}          | {notes}                                          |
+| A03:2025 | Software Supply Chain Failures        | {status}          | {notes}                                          |
+| A04:2025 | Cryptographic Failures                | {status}          | {notes}                                          |
+| A05:2025 | Injection                             | {status}          | {notes}                                          |
+| A06:2025 | Insecure Design                       | {status}          | {notes}                                          |
+| A07:2025 | Authentication Failures               | {status}          | {notes}                                          |
+| A08:2025 | Software and Data Integrity Failures  | {status}          | {notes}                                          |
+| A09:2025 | Security Logging & Alerting Failures  | {status}          | {notes}                                          |
+| A10:2025 | Mishandling of Exceptional Conditions | {status}          | {notes}                                          |
 
 _Record a status and a one-line note for every row — a blank row is an incomplete
 assessment. Cite each open finding by ID against the category it belongs to._

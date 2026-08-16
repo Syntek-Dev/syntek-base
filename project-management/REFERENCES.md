@@ -120,7 +120,7 @@ Each workflow `CONTEXT.md` with path and purpose.
 - **PECR (ICO)** — https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/ — cookie consent and electronic marketing rules
 - **ICO cookie guidance** — https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/guidance-on-the-use-of-cookies-and-similar-technologies/ — detailed cookie-consent rules
 - **WCAG 2.2** — https://www.w3.org/TR/WCAG22/ — AA compliance required on all interactive frontend components
-- **OWASP Top 10 (2021)** — https://owasp.org/www-project-top-ten/ — vulnerability categories mapped in all security assessments and audits
+- **OWASP Top 10 (2025)** — https://owasp.org/www-project-top-ten/ — vulnerability categories mapped in all security assessments and audits. The mapping table is in `docs/SECURITY-GUIDE.md`; cite a category with its year (`A05:2025`), because 2021 and 2025 number differently
 - **NIST Cybersecurity Framework 2.0** — https://www.nist.gov/cyberframework — risk management functions (Govern, Identify, Protect, Detect, Respond, Recover) applied in workflow 09
 - **STRIDE threat modelling** — https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats — threat classification used in `docs/SECURITY-GUIDE.md`
 - **ISO/IEC 27001:2022** — https://www.iso.org/standard/82875.html — information security management standard referenced in security assessments

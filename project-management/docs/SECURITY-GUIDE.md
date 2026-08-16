@@ -106,18 +106,27 @@ Document each finding as a row in the threat model table (see [What to Document]
 Map each finding to the most relevant OWASP category. This makes findings actionable during code
 review and provides a standard vocabulary for developers and reviewers.
 
-| ID  | Category                                   | Common in this project                                   |
-| --- | ------------------------------------------ | -------------------------------------------------------- |
-| A01 | Broken Access Control                      | Missing role checks, IDOR on object IDs                  |
-| A02 | Cryptographic Failures                     | PII stored unencrypted, weak session tokens              |
-| A03 | Injection                                  | Unparameterised queries, unsanitised Django Ninja inputs |
-| A04 | Insecure Design                            | Missing rate limiting, no abuse-case modelling           |
-| A05 | Security Misconfiguration                  | `DEBUG=True` in non-local env, permissive CORS           |
-| A06 | Vulnerable and Outdated Components         | Unpinned dependencies with known CVEs                    |
-| A07 | Identification and Authentication Failures | Weak password policy, no MFA on admin paths              |
-| A08 | Software and Data Integrity Failures       | No input validation on imports, unsigned artefacts       |
-| A09 | Security Logging and Monitoring Failures   | Missing audit log on destructive actions                 |
-| A10 | Server-Side Request Forgery (SSRF)         | Unvalidated URLs passed to backend HTTP clients          |
+**The list is the 2025 edition**, matching `code/docs/security/OWASP-AND-CHECKLIST.md`, which owns
+the mitigation for each row. Cite a category as `A05:2025` wherever the number alone could be read
+against the 2021 list — the two renumber differently, and the same identifier names a different
+category in each.
+
+| ID  | Category                              | Common in this project                                                                     |
+| --- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| A01 | Broken Access Control                 | Missing role checks, IDOR on object IDs; SSRF — unvalidated URLs passed to backend clients |
+| A02 | Security Misconfiguration             | `DEBUG=True` in non-local env, permissive CORS                                             |
+| A03 | Software Supply Chain Failures        | Unpinned dependencies with known CVEs, unverified package provenance                       |
+| A04 | Cryptographic Failures                | PII stored unencrypted, weak session tokens                                                |
+| A05 | Injection                             | Unparameterised queries, unsanitised Django Ninja inputs                                   |
+| A06 | Insecure Design                       | Missing rate limiting, no abuse-case modelling                                             |
+| A07 | Authentication Failures               | Weak password policy, no MFA on admin paths                                                |
+| A08 | Software and Data Integrity Failures  | No input validation on imports, unsigned artefacts                                         |
+| A09 | Security Logging & Alerting Failures  | Missing audit log on destructive actions                                                   |
+| A10 | Mishandling of Exceptional Conditions | An error path leaks a stack trace, or fails open instead of closed                         |
+
+**SSRF is no longer its own category** — 2025 consolidates it into A01, so a finding that would
+have been `A10:2021` is `A01:2025`. `A06:2021 Vulnerable and Outdated Components` likewise moves
+to `A03:2025 Software Supply Chain Failures`.
 
 ---
 

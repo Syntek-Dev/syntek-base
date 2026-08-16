@@ -20,8 +20,9 @@ response, the OWASP checklist, secrets and transport, and supply-chain security.
   index → any rule here must be enforceable and mirror the repo non-negotiables in
   `.claude/CLAUDE.md` Section 6. Audit and scan commands invoke `code/src/scripts/audits/*.sh`,
   never raw tools.
-- **Definition of done:** guidance is consistent with the shipped controls and OWASP
-  2021/2025 baseline; each file ≤ 300 code lines; British English.
+- **Definition of done:** guidance is consistent with the shipped controls and the OWASP
+  **2025** baseline — one edition, cited with its year (`A05:2025`), because 2021 and 2025
+  number differently; each file ≤ 300 code lines; British English.
 
 ## Guardrails
 

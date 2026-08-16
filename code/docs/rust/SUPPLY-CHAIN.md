@@ -133,7 +133,7 @@ dependency you must replace or remove.
 ## Cross-references
 
 - [`PYO3-BOUNDARY.md`](PYO3-BOUNDARY.md) — the boundary a compromised crate would sit behind
-- `code/docs/SECURITY.md` — the OWASP controls, including A06 vulnerable components
+- `code/docs/SECURITY.md` — the OWASP controls, including `A03:2025` software supply chain failures
 - `code/workflows/08-security-hardening/` — the audit any crypto crate must pass
 - `how-to/workflows/07-dependency-updates/` — the cadence bumps follow
 

@@ -60,7 +60,7 @@ rules:
     metadata:
       doctrine: "Assume all external input is hostile; parameterise, never interpolate."
       guide: code/docs/security/INPUT-AND-API.md
-      owasp: "A03:2021 Injection (SQL)"
+      owasp: "A05:2025 Injection (SQL)"
       why-not-ruff: >-
         Ruff's S ruleset is per-file, so it cannot see that the SQL string was built
         from request data in another module.
@@ -101,7 +101,7 @@ rules:
     metadata:
       doctrine: "Declare a Schema for every request body, query and path parameter."
       guide: code/docs/security/INPUT-AND-API.md
-      owasp: "A03:2021 Injection · A08:2021 Software and Data Integrity Failures"
+      owasp: "A05:2025 Injection · A08:2025 Software and Data Integrity Failures"
       authored: in-house
 
   - id: request-data-reaching-shell
@@ -142,7 +142,7 @@ rules:
     metadata:
       doctrine: "Allowlist, not blocklist; a shell boundary cannot be escaped safely."
       guide: code/docs/security/INPUT-AND-API.md
-      owasp: "A03:2021 Injection (OS command)"
+      owasp: "A05:2025 Injection (OS command)"
       authored: in-house
 
   - id: request-data-reaching-redirect
@@ -181,5 +181,5 @@ rules:
     metadata:
       doctrine: "The caller may choose from an allowlist, never supply the destination."
       guide: code/docs/security/INPUT-AND-API.md
-      owasp: "A01:2021 Broken Access Control (unvalidated redirect)"
+      owasp: "A01:2025 Broken Access Control (unvalidated redirect)"
       authored: in-house
