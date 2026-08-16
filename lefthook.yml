@@ -103,8 +103,9 @@ pre-commit:
     # The human half of the template-docs read-only rule; the Claude half is the
     # PreToolUse hook .claude/hooks/template-docs-readonly.sh. Both stand down in
     # syntek-base itself, where these files ARE the product — the discriminator is
-    # copier.yml, which is _exclude'd and so exists only here (same trick as the
-    # `[ -f uv.lock ]` leg above).
+    # copier.yml, which is _exclude'd and so exists only here. (This used to say "the same
+    # trick as the `[ -f uv.lock ]` leg above". There is no such leg any more: it was
+    # unguarded on 15/08/2026, and uv.lock has been committed since 16/08/2026.)
     #
     # The .copier-answers.yml exemption is what keeps `copier update` usable: an update
     # legitimately rewrites these guides and always restages the answers file alongside

@@ -10,12 +10,11 @@
 # It ships, so it runs on both sides of the template boundary and the two are genuinely
 # different:
 #
-#   In syntek-base      there is no uv.lock — absent by design, because it would pin the
-#                       root project under the literal project-slug token. Nothing can be
-#                       re-resolved here, so the Python leg reports declared floors
-#                       against PyPI and stops. Rust and JavaScript do have lockfiles and
-#                       behave normally.
-#   In a generated project  every lockfile exists and --apply re-resolves for real.
+#   In syntek-base      uv.lock is committed (16/08/2026), so all three lockfiles exist and
+#                       every leg re-resolves for real. It is copier-EXCLUDED, because it
+#                       pins the root project under the template's own name and must never
+#                       travel — but it is present and authoritative here.
+#   In a generated project  identical behaviour, against that project's own uv.lock.
 #
 # A FLOOR IS NOT A PIN. Raising `redis>=5.0.0` to `redis>=6.0` does not install redis 6 —
 # it forbids redis 5. What you actually get is decided by the lockfile, and the two

@@ -10,10 +10,12 @@ name: Claude Code
 #   code/docs/testing/COVERAGE.md; mirrored here, in test.yml, and in check-tests.sh.
 #
 # LOCKFILE GUARD — read this before touching any `uv` step below.
-# uv.lock is ABSENT BY DESIGN in the base template: it would pin the root project under
-# the literal project-slug token, so Copier generates it at generation time and removes
-# the ignore rule (see the root CONTEXT.md). Every `uv sync --frozen` here therefore
-# cannot resolve in THIS repository, which made six of these eight gates fail on every
+# uv.lock is COMMITTED as of 16/08/2026, so `uv sync --frozen` now resolves in THIS
+# repository and every `[ -f uv.lock ]` guard below takes its present branch. The guards
+# stay: this workflow SHIPS, and they are what makes one file correct on both sides of the
+# template boundary. They are no longer load-bearing here.
+# Until then the lock was absent by design — it would have pinned the root project under
+# the literal project-slug token — and that made six of these eight gates fail on every
 # single push and pull request raised against the template.
 #
 # The fix is the same one test.yml/test-api.yml/test-e2e.yml already carry: a
@@ -45,7 +47,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/staging' }}
 
 env:
-  UV_VERSION: "0.12.4"
+  UV_VERSION: "0.12.5"
   NODE_VERSION: "24"
   PYTHON_VERSION: "3.14"
 
@@ -102,12 +104,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -160,12 +163,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -219,12 +223,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -290,12 +295,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -517,12 +523,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate

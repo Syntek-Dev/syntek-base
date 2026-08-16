@@ -106,6 +106,7 @@ consumes this API; none of them changes the rule above for the web.
 ├── lefthook.yml                     ← pre-commit hook runner config
 ├── package.json                     ← root workspace package (pnpm)
 ├── pnpm-lock.yaml                   ← the resolved JS tooling graph — committed, never hand-edited
+├── uv.lock                          ← the resolved Python graph — committed, copier-excluded (see below)
 ├── pnpm-workspace.yaml              ← the pnpm workspace globs and audit ignore list
 ├── pyproject.toml                   ← Python tooling config and the django package manifest
 ├── eslint.config.mjs                ← ESLint config for the repo tooling (no client-side build)
@@ -122,10 +123,12 @@ consumes this API; none of them changes the rule above for the web.
 └── .python-version                  ← Python version pin
 ```
 
-Note: `uv.lock` is **absent by design** in the base template — it would pin the root project
-under the literal `<%PROJECT_SLUG%>` name. Copier generates it and removes the ignore rule at
-generation time, because a generated project must commit it (every Dockerfile builds with
-`uv sync --frozen`).
+Note: `uv.lock` **is committed here** (16/08/2026), so the Django image builds in this
+repository and its Python gates and suites run against a real dependency set. It pins
+`syntek-base` itself, so `copier.yml` lists it in `_exclude` and it never travels: a generated
+project would otherwise inherit a lock naming the template, fail `uv sync --frozen`, and hit a
+conflict in a lockfile on every `copier update`. Your project's own lock is written by the
+`uv lock` post-task at generation and committed with the initial commit.
 
 ## Layer Map
 

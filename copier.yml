@@ -35,6 +35,13 @@ _exclude:
   - /.github/scripts # template-integrity checks — meaningless once rendered
   - /.github/workflows/audit-template.yml
   - /README.md # the project's README ships from .copier/README.md (see _tasks)
+  # syntek-base commits its OWN uv.lock (16/08/2026) so its Python gates and suites can
+  # run against a real dependency set. That lock pins `syntek-base`, so it must not travel:
+  # a generated project would inherit a lock naming the template, `uv sync --frozen` would
+  # fail with "Missing workspace member", and — worse — every `copier update` would leave
+  # conflict markers in a lockfile, a file class that must never be hand-merged. Excluded
+  # here, regenerated below by the `uv lock` task under the project's own slug.
+  - /uv.lock
   # Root version state belongs to syntek-base, not to your project. A generated
   # project starts at 0.1.0 with an empty history, seeded from .copier/ by _tasks —
   # otherwise every new project would claim the template's version number and
@@ -648,15 +655,13 @@ _tasks:
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 
-  # The template gitignores uv.lock so a wrongly-named lock can never be committed
-  # during template development. A generated project is the opposite case: it MUST
-  # commit the lock, because every Dockerfile builds with `uv sync --frozen`.
-  - command: >-
-      perl -0777 -i -pe
-      's/^# Python lockfile — BASE TEMPLATE ONLY\.\n(?:#.*\n)*uv\.lock\n\n//m'
-      .gitignore
-    when: "<% _copier_operation == 'copy' %>"
-
+  # NO .gitignore SURGERY FOR uv.lock ANY MORE (16/08/2026). This slot held a perl task
+  # that stripped a `uv.lock` rule from .gitignore at generation, because the template
+  # ignored its own lock and a generated project must commit one. The template now commits
+  # its lock too — so there is no rule to strip, and `/uv.lock` in _exclude above stops the
+  # template's copy travelling. The generated project's own lock is written by the `uv lock`
+  # task below, after the manifest is branded, and is committed by the initial commit.
+  #
   # Brand the manifest. `pyproject.toml` carries the house constant `syntek-base` rather
   # than a token, because uv validates [project] name as a package name and rejects the
   # delimiters outright — a token there made the whole repository unlockable, and took

@@ -60,11 +60,11 @@ resolve can, which is why `--apply` re-resolves rather than editing a number.
 `update.sh` ships, so it runs in a generated project and in syntek-base itself — and the two
 differ:
 
-| Here       | In syntek-base                                                                                | In a generated project                    |
-| ---------- | --------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| Python     | **No `uv.lock`** — absent by design. Nothing to re-resolve, so it reports floors against PyPI | Lockfile present; `--apply` re-resolves   |
-| JavaScript | `pnpm-lock.yaml` present — behaves normally                                                   | Same                                      |
-| Rust       | `Cargo.lock` present when the surface exists                                                  | Absent entirely on a project without Rust |
+| Here       | In syntek-base                                                                       | In a generated project                    |
+| ---------- | ------------------------------------------------------------------------------------ | ----------------------------------------- |
+| Python     | `uv.lock` is committed here too, so `--apply` re-resolves it exactly as in a project | Lockfile present; `--apply` re-resolves   |
+| JavaScript | `pnpm-lock.yaml` present — behaves normally                                          | Same                                      |
+| Rust       | `Cargo.lock` present when the surface exists                                         | Absent entirely on a project without Rust |
 
 ## Not what this answers
 

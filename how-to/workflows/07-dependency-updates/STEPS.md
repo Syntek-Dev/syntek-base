@@ -73,9 +73,9 @@ For an advisory fix, pin the patched version in `pnpm-workspace.yaml` `overrides
 range — the repo already carries narrow overrides for exactly this, and they are scoped
 deliberately.
 
-> In **this template** `uv.lock` is absent by design, so the Python lock step produces a
-> file you must not commit here. Manifest and register changes still apply; the lock lands
-> in a generated project.
+> In **this template** `uv.lock` is committed (16/08/2026), so the Python lock step behaves
+> as it does in a generated project: re-resolve it, verify it, and commit it alongside the
+> manifest change. It is `_exclude`d from generation, so it never reaches your project.
 
 ---
 
