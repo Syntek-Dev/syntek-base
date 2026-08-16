@@ -48,63 +48,104 @@ the taxonomy rather than inventing a grouping: **A** token blast radius · **B**
 rather than a task, so neither belongs on the map. A new one is added here only when a gap is
 closed as _accepted_ rather than _fixed_.
 
-### SL-1 — The backend, API and browser suites never execute in this repository
+### SL-1 — A green suite here proves the template's own code, not your project's
 
-`uv.lock` is absent **by design**: it would pin the root project under the literal project-slug
-token, so Copier generates it at generation time. Every Dockerfile builds with
-`COPY pyproject.toml uv.lock ./`, so the Django image cannot build here at all. `test.yml`,
-`test-api.yml`, `test-e2e.yml` and `claude.yml`'s `[7/8] Tests` guard at **step** level and
-report success with an explanatory log line.
+**This entry replaces two, both deleted on 16/08/2026 as factually false.** They said the
+suites never execute here and that no tool needing `uv` runs here. Both were true when
+written and neither is true now, so keeping them would have made this file the thing it
+exists to prevent: a register that is trusted and wrong.
 
-`[7/8] Tests` was the exception until 14/08/2026, and the reason is worth keeping: it also
-declared GitHub **service containers**, which initialise _before_ the first step. A step-level
-guard cannot gate one, so the job died at `Initialize containers` on every run from 03/08/2026
-while its guard sat unreachable below. It now drives `docker-compose.test.yml` like its
-siblings. **The rule that leaves: a job carrying a `services:` block is not covered by the
-lockfile guard, whatever its steps say.**
+What removed them, in order:
 
-**The rule this leaves:** treat a green `pytest + coverage` in this repository as **"not
-applicable"**, never as "passing". The suites are exercised for the first time in a generated
-project. The realistic verification is the generation smoke test in `audit-template.yml`, plus
-running the suites once in a freshly generated project after any change to `code/src/django/`,
-the Dockerfiles, or the compose files.
+| Change                          | What it unblocked                                                         |
+| ------------------------------- | ------------------------------------------------------------------------- |
+| `24a5fb7`                       | Ruff, via `uvx --from` — the launcher never needed the manifest           |
+| `7cd385d`                       | Everything else: `[project] name` became the house constant `syntek-base` |
+| `uv.lock` committed, 16/08/2026 | The Django image builds here, so every suite and container gate can run   |
 
-This is permanent, and **nothing on `MAP-BASE-HEALTH.md` touches it** — `N-001` is about the
-manifest's package _name_, which is a different root cause from the missing lockfile. Fixing one
-does not fix the other.
+Verified on 16/08/2026, in this repository, not in a generated project: the dev stack comes
+up with all four containers healthy; `backend-coverage.sh` reports **100% over 162
+statements**; `basedpyright` reports **0 errors**; `pip-audit` reports **no known
+vulnerabilities**. `basedpyright` and `pip-audit` are therefore legitimate evidence here, and
+the instruction never to cite CI for them is withdrawn.
 
-### SL-2 — Any tool that needs `uv` to open the manifest does not run here
+**The limitation that genuinely remains, and it is permanent.** The template ships two apps —
+`apps.core` and `apps.health` — and no domain code. A green run here exercises the **harness
+and those two apps**: the compose stack, the two-phase runner, the coverage accumulation, the
+markers, and the endpoints `apps.health` owns. It says nothing about a generated project's
+features, because there are none here to say anything about.
 
-**Corrected 14/08/2026.** This entry previously said Python rules were proved by the host `ruff`
-binary and that CI must never be cited as evidence. **Commit `24a5fb7` superseded that for ruff,
-and the correction is the useful part** — the blocker was never the rules, only the launcher.
+**The rule this leaves:** a green suite in syntek-base is evidence about **syntek-base**.
+Read it as "the harness works and the shipped apps pass", never as "this template's projects
+pass". A change to `code/src/django/`, the Dockerfiles or the compose files still wants the
+generation smoke test in `audit-template.yml` behind it, because that is the only thing here
+that exercises a project rather than a template.
 
-`uv` refuses to parse `pyproject.toml` at all, because line 2 is `name = "<%PROJECT_SLUG%>"` and
-that is not a valid PEP 508 package name. It fails while **parsing**, before resolution begins,
-so `uv run` and `uv sync` both die and every step after them is skipped.
+**A second, narrower rule survives from the deleted SL-1 and is worth keeping:** a CI job
+carrying a `services:` block is not covered by a step-level guard, whatever its steps say —
+service containers initialise _before_ the first step, so the job dies at
+`Initialize containers` with its guard sitting unreachable below. That cost `[7/8] Tests`
+every run from 03/08/2026 to 14/08/2026.
 
-**Ruff escaped it.** Only the launcher needed the manifest; the rules never did. Both CI jobs and
-both lefthook legs now install ruff with `uvx --from`, which builds a throwaway environment and
-opens no `pyproject.toml`. The version constraint is read out of the manifest at run time rather
-than restated, so there is one source of truth. **Ruff lint and format are now enforced against
-this repository, and CI is legitimate evidence for a ruff rule.**
-
-**What still does not run here**, and the rule that leaves:
-
-| Tool                        | Why it cannot escape                                                               |
-| --------------------------- | ---------------------------------------------------------------------------------- |
-| `basedpyright`              | A type-checker with no dependency set gives a meaningless answer, not a weaker one |
-| `pip-audit` (`security.sh`) | Shells to `uv export` and `uv run`, both of which open the manifest                |
-| Anything calling `uv run`   | Same parse failure, one step earlier than the missing lockfile                     |
-
-Both guarded ones take the step-level lockfile guard: they run in a generated project and report
-a skip with a reason here. **Never cite CI as evidence for a `basedpyright` or `pip-audit`
-finding in syntek-base** — and where new template-level tooling needs a dependency but not the
+**One preference also survives.** Where template-level tooling needs a dependency but not the
 project's own environment, prefer `uvx --from` or `uv run --no-project --with <dep>` over
-`uv run`.
+`uv run`. That is now an efficiency argument rather than a workaround — it skips building the
+project environment for a tool that does not need it.
 
-Whether to fix the manifest name itself, or keep routing per tool, is `MAP-BASE-HEALTH.md`
-`N-001` — reopened on 14/08/2026 because `24a5fb7` changed what the fix would still buy.
+---
+
+## N-035 — settled and built, 16/08/2026
+
+The node that closed both entries above. Fifteen decisions were taken across three grilling
+rounds and carried out in one sitting; they are recorded here because a decision that lives
+only in a session transcript is not a decision anyone can act on later.
+
+| #   | Decision                                                                                    | Where it landed                                        |
+| --- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Q1  | Commit `uv.lock`, gated on a proven compose healthcheck and a real `/health/` first         | `uv.lock`, root `CONTEXT.md`                           |
+| Q2  | Settle the three non-lock blockers here rather than folding them in silently                | this table, Q4/Q8/Q9                                   |
+| Q3  | Fix the live false green; chart `claude.yml`'s unevidenced "Verified green" separately      | `test.yml`, `pre-pr-check.sh`                          |
+| Q4  | `audits/security.sh` gains `--frozen` so it can never manufacture the lockfile              | `code/src/scripts/audits/security.sh`                  |
+| Q5  | New **`apps.health`**, scaffolded via `new-django-app.sh` — not folded into `apps.core`     | `code/src/django/apps/health/`                         |
+| Q6  | Liveness + readiness over the dependencies that exist; API and pages arm as they land       | `apps/health/checks.py` — `Component` has two members  |
+| Q7  | Cover the template to 75%: the health app plus the four uncovered `core` modules            | 100% over 162 statements                               |
+| Q8  | The 90% auth leg is re-pointed and prints its denominator                                   | `backend-coverage.sh` owns it; `test.yml` now calls it |
+| Q9  | Explicit `--group test` at test call sites; `test-e2e.yml` gains the `uv sync` it never had | `e2e-py.sh`, `test-e2e.yml` (`uv sync --locked`)       |
+| Q10 | Dependency pruning is charted as its own node, not settled here                             | still open — `MAP-BASE-HEALTH.md`                      |
+| Q11 | One sitting, all of it, on this branch; the PR to `main` is gated on it being green         | this branch                                            |
+| Q12 | Toolchain and all three lockfiles to latest first, then lock                                | uv 0.12.5, pnpm 11.22.0, `Cargo.lock`                  |
+| Q13 | `uv.lock` added to copier `_exclude` — never travels, no `copier update` conflict           | `copier.yml` `_exclude` + the `uv lock` post-task      |
+| Q14 | Both standing limitations deleted; one true limitation replaces them                        | SL-1 above                                             |
+| Q15 | Forced N-036 subset only, then re-chart N-036 against the remeasured file list              | done; N-036 still open                                 |
+
+**`uv run` re-locks silently by default.** `--locked` asserts the lockfile is unchanged and
+exits non-zero if it is not; `--frozen` uses it as-is without checking. In CI the first is
+almost always what is wanted, because a bare `uv run` turns a stale lock into a green run
+against versions nobody committed. Verified against uv's own CLI definitions, 16/08/2026.
+
+### What the sitting found because the guards came off
+
+Each of these was invisible while a guard reported "not applicable", and each was reachable
+in a **generated project** — so the template was shipping them:
+
+| Defect                                                                                                                                                                                  | Class |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `pre-pr-check.sh` `_dc`/`_tc` passed no `--env-file`, so every container check failed                                                                                                   | B     |
+| `dev_running`/`test_running` grepped `backend`/`backend-test` — services that do not exist here (they are `django`/`django-test`), so the gate would `exit 2` on every run in a project | B     |
+| `pre-pr-check.sh` sourced `.env.dev` with bash, which aborts on `POSTGRES_USER=<%PROJECT_SLUG%>`                                                                                        | A     |
+| `shipped-readme.sh` globbed the working directory, so a generated gitignored file failed an audit a fresh clone passed                                                                  | B     |
+| `test.yml`'s auth gate measured `apps/users/*`, an app that does not exist                                                                                                              | B     |
+
+### Still open, found on the way
+
+- **`server.sh:112`** sources `.env.dev` with bash for its URL banner and hits the same
+  token-parse failure as the hook did. The banner is the thing `.claude/CLAUDE.md` Section 7
+  tells everyone to trust instead of quoting a URL from memory, and it does not print.
+- **`COVERAGE.md`** documents `-n auto` and two other pytest flags that are not in
+  `addopts`, and `pytest-xdist` is not a declared dependency.
+- **The dev stack and every generated project both claim `10.0.1.0/24`**, so they cannot run
+  concurrently on one host. Only the base pair collides; worktrees offset by story number.
+- **`pnpm-update.sh`'s header** claims files it no longer updates.
 
 ---
 

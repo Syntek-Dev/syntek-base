@@ -132,7 +132,23 @@ is_excluded() {
   local p="${1#./}"
   while read -r e; do [[ -z "$e" ]] && continue; [[ "$p" == "$e" || "$p" == "$e"/* ]] && return 0; done <<< "$EXCLUDED_FIXED"
   while read -r e; do [[ -z "$e" ]] && continue; [[ "$p" == "$e" || "$p" == "$e"/* ]] && return 0; done <<< "$EXCLUDED_GATED"
+  is_generated "$p" && return 0
   return 1
+}
+
+# Two ways a path fails to ship, and copier's `_exclude` only knows the first. The second is
+# a GENERATED artefact: gitignored, absent from a fresh clone, written by a tool at run time.
+# `code/docs/MACHINE-SPEC.md` is the case that found this — install.sh writes it, .gitignore
+# ignores it, and the checks below globbed the working directory, so a machine that had run
+# install.sh failed an audit a fresh clone passed. Whether the audit is red became a property
+# of the developer's disk rather than of the repository.
+#
+# git is asked rather than a second ignore list being maintained here: `.gitignore` is the
+# definition of "not in the repository", and a copy of it would drift the first time either
+# moved. Outside a work tree, `check-ignore` fails and everything is treated as shipping,
+# which is the safe direction — an over-reported finding is visible, a missed one is not.
+is_generated() {
+  git check-ignore -q -- "$1" 2>/dev/null
 }
 
 # A name must appear as a tree ROW, not merely somewhere in the tree text. Two ways a

@@ -21,7 +21,7 @@
 # Exit codes:  0 = all checks passed   2 = one or more checks failed / mismatched
 #
 # Pinned versions (update when the project's pinned toolchain moves):
-#   uv 0.12.4   pnpm 11.21.0
+#   uv 0.12.5   pnpm 11.22.0
 #
 set -uo pipefail
 
@@ -49,15 +49,17 @@ HISTORY_DIR="$HOME/.claude/pr-check-history"
 
 # ── 2b  Template mode — this repository is the template, not an application ───
 #
-# syntek-base IS the template. It ships no application code beyond the Django
-# skeleton, and six of the eight checks below take their authoritative reading
-# from inside the django container — which CANNOT BE BUILT here:
+# syntek-base IS the template, and it now ADDS a check rather than dropping three.
 #
-#   * uv.lock is absent by design (it would pin the root project under the
-#     literal project-slug token), and every Dockerfile builds `uv sync --frozen`
-#   * pyproject.toml cannot even be parsed by pip-audit — its `name` is an
-#     unrendered token
-#   * code/src/docker/.env.dev is gitignored, so the dev stack has no env at all
+# Until 16/08/2026 this flag dropped lockfiles, typecheck and tests, because the
+# django image could not be built here: pyproject.toml's `name` was an unrendered
+# token uv refused to parse, and no uv.lock could therefore exist for the
+# `uv sync --frozen` in every Dockerfile. `7cd385d` fixed the name; committing
+# uv.lock fixed the rest. The image builds, so all eight checks have a subject.
+#
+# What template mode still means: `audits` runs as a ninth check. A template's
+# product is its structure, routing and documentation, and nothing on the
+# application side reads those.
 #
 # Detection is exact rather than heuristic: copier.yml is listed in copier.yml's
 # own `_exclude`, so a GENERATED project never carries it. Its presence at the
@@ -77,37 +79,44 @@ HISTORY_DIR="$HOME/.claude/pr-check-history"
 TEMPLATE_MODE=false
 [[ -f "$PROJECT_ROOT/copier.yml" ]] && TEMPLATE_MODE=true
 
-# ── Load environment variables for docker compose interpolation ───────────────
-# docker-compose.dev.yml uses :? (required) syntax for secrets.
-# Source .env.dev so that docker compose can parse the file without error when
-# this hook runs in a shell that has not already loaded the project environment.
+# ── Environment files for docker compose interpolation ────────────────────────
+# Both compose files use `:?` (required) syntax for secrets, so compose needs the values
+# or it fails outright rather than warning.
+#
+# These were `set -a; source`d here until 16/08/2026, which was the wrong mechanism twice
+# over. It aborted on the first line bash cannot parse — in the template that is
+# `POSTGRES_USER=<%PROJECT_SLUG%>`, whose `<`, `%` and `>` are shell metacharacters —
+# leaving every later value, SECRET_KEY included, unexported. And it printed a raw parse
+# error over the gate's own output on every run. `--env-file` on each compose invocation
+# is what the rest of the repository already does; it uses compose's own parser, which
+# treats a token as an ordinary literal.
+#
+# The committed `.example` files are valid fallbacks: every value in them has a working
+# default, so a fresh clone runs the gate before copying anything.
 ENV_DEV="$PROJECT_ROOT/code/src/docker/.env.dev"
 ENV_TEST="$PROJECT_ROOT/code/src/docker/.env.test"
-if [[ -f "$ENV_DEV" ]]; then
-  set -a
-  # shellcheck source=/dev/null
-  source "$ENV_DEV"
-  set +a
-fi
-if [[ -f "$ENV_TEST" ]]; then
-  set -a
-  # shellcheck source=/dev/null
-  source "$ENV_TEST"
-  set +a
-fi
+[[ -f "$ENV_DEV" ]]  || ENV_DEV="$PROJECT_ROOT/code/src/docker/.env.dev.example"
+[[ -f "$ENV_TEST" ]] || ENV_TEST="$PROJECT_ROOT/code/src/docker/.env.test.example"
 
 # Auto-detect worktree so Docker checks target the right container set.
 # shellcheck source=../../code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPTS/_lib/worktree-detect.sh"
+# --env-file on every call, exactly as server.sh and backend-coverage.sh do it. Without it
+# compose cannot interpolate `${SECRET_KEY:?…}` or `${POSTGRES_PASSWORD:?…}`, which are hard
+# errors rather than warnings — so EVERY `_dc`/`_tc` invocation failed, silently, because
+# each call site sends stderr to /dev/null. That made the container half of every dual check
+# fail invisibly, and template mode then relabelled the whole class "n/a" instead of
+# reporting it. Sourcing the files into the environment above is not a substitute: the
+# values reach this shell, not the `docker compose` interpolator. Fixed 16/08/2026.
 if [[ -n "${OVERRIDE_DEV_FILE:-}" ]]; then
-  _dc() { docker compose -f "$DEV_COMPOSE" -f "$OVERRIDE_DEV_FILE" "$@"; }
+  _dc() { docker compose --env-file "$ENV_DEV" -f "$DEV_COMPOSE" -f "$OVERRIDE_DEV_FILE" "$@"; }
 else
-  _dc() { docker compose -f "$DEV_COMPOSE" "$@"; }
+  _dc() { docker compose --env-file "$ENV_DEV" -f "$DEV_COMPOSE" "$@"; }
 fi
 if [[ -n "${OVERRIDE_TEST_FILE:-}" ]]; then
-  _tc() { docker compose -f "$TEST_COMPOSE" -f "$OVERRIDE_TEST_FILE" "$@"; }
+  _tc() { docker compose --env-file "$ENV_TEST" -f "$TEST_COMPOSE" -f "$OVERRIDE_TEST_FILE" "$@"; }
 else
-  _tc() { docker compose -f "$TEST_COMPOSE" "$@"; }
+  _tc() { docker compose --env-file "$ENV_TEST" -f "$TEST_COMPOSE" "$@"; }
 fi
 
 BRANCH=$(git -C "$PROJECT_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
@@ -167,21 +176,19 @@ printf '  Commit: %s  |  Started: %s\n' "$COMMIT" "$TIMESTAMP"
 if [[ "$TEMPLATE_MODE" == "true" ]]; then
   printf '\n'
   printf '  TEMPLATE MODE — this repository is syntek-base itself, not an\n'
-  printf '  application generated from it. There is no application to check:\n'
-  printf '  the django image cannot be built here, so the container half of\n'
-  printf '  each check has no subject. Those halves are INAPPLICABLE — neither\n'
-  printf '  passing nor failing. See Section 2b.\n\n'
-  printf '  Running:  every check that has a host-side half, plus the audit\n'
-  printf '            suite, which is what actually governs a template.\n'
-  printf '  Not run:  lockfiles, typecheck, tests — container-only, no subject.\n'
+  printf '  application generated from it. Since 16/08/2026 that ADDS a check\n'
+  printf '  rather than dropping three: the django image builds here, so every\n'
+  printf '  gate has a subject. See Section 2b.\n\n'
+  printf '  Running:  all eight application checks, plus the audit suite, which\n'
+  printf '            is what actually governs a template.\n'
+  printf '  Note:     a green run here covers this template and the two apps it\n'
+  printf '            ships — not a generated project. TEMPLATE-GAPS.md, SL-1.\n'
 fi
 printf '\n'
 
 # ── 4  Ensure Docker daemon and containers are running ────────────────────────
 
-if [[ "$TEMPLATE_MODE" == "true" ]]; then
-  : # nothing to start — no application, no containers (Section 2b)
-elif ! docker info > /dev/null 2>&1; then
+if ! docker info > /dev/null 2>&1; then
   printf '  Docker daemon not running — attempting start...\n'
   sudo systemctl start docker 2>/dev/null || true
   for _i in $(seq 1 15); do docker info > /dev/null 2>&1 && break || sleep 1; done
@@ -194,16 +201,22 @@ elif ! docker info > /dev/null 2>&1; then
   printf '  Docker daemon started.\n\n'
 fi
 
+# The service names are read off docker-compose.dev.yml and docker-compose.test.yml, and
+# they are `django` and `django-test`. They were `backend`/`frontend`/`backend-test` until
+# 16/08/2026 — names from a different project's stack, which match nothing here — so both
+# probes always returned false. Nobody saw it because template mode short-circuited both
+# branches below: the bug was only reachable in a generated project, where the gate would
+# start the stack, wait 90 s, fail to see it, and exit 2 on every run.
 dev_running() {
   _dc ps --status running 2>/dev/null \
-    | grep -qE '\b(backend|frontend)\b'
+    | grep -qE '\bdjango\b'
 }
 test_running() {
   _tc ps --status running 2>/dev/null \
-    | grep -qE '\bbackend-test\b'
+    | grep -qE '\bdjango-test\b'
 }
 
-if [[ "$TEMPLATE_MODE" != "true" ]] && ! dev_running; then
+if ! dev_running; then
   printf '  Dev containers not running — starting dev stack...\n'
   bash "$SCRIPTS/development/server.sh" up
   for _i in $(seq 1 18); do
@@ -216,7 +229,7 @@ if [[ "$TEMPLATE_MODE" != "true" ]] && ! dev_running; then
   fi
 fi
 
-if [[ "$TEMPLATE_MODE" != "true" ]] && ! test_running; then
+if ! test_running; then
   printf '  Test stack not running — building and starting...\n'
   _tc up -d --build
   for _i in $(seq 1 18); do
@@ -234,13 +247,11 @@ fi
 VERSION_WARNINGS=()
 
 LOCAL_UV=$(uv --version 2>/dev/null | awk '{print $2}' || echo "not-found")
-if [[ "$TEMPLATE_MODE" == "true" ]]; then
-  # No container to read a version out of; drift is undefined, not "not-found".
-  DOCKER_UV="n/a"
-else
-  DOCKER_UV=$(_dc exec -T django \
-    uv --version 2>/dev/null | awk '{print $2}' || echo "not-found")
-fi
+# Read from the container on both sides of the template boundary since 16/08/2026: the
+# image builds here now, so host/container uv drift is a real reading rather than an
+# undefined one. It was pinned to "n/a" in template mode while there was no container.
+DOCKER_UV=$(_dc exec -T django \
+  uv --version 2>/dev/null | awk '{print $2}' || echo "not-found")
 LOCAL_PNPM=$(pnpm --version 2>/dev/null | tr -d '[:space:]' || echo "not-found")
 DOCKER_PNPM="n/a"  # no Node toolchain in the django image — pnpm is host-only
 
@@ -276,24 +287,10 @@ _dual_result() {
   local name="$1" local_exit="$2" docker_exit="$3" \
         local_out="$4" docker_out="$5"
 
-  # Template mode: there is no container, so there is no Docker reading — and
-  # drift between a host and a container that cannot exist is not a defect the
-  # gate can report. Judge the host half on its own merits and say so, rather
-  # than manufacturing a MISMATCH out of a missing subject (Section 2b).
-  if [[ "${TEMPLATE_MODE:-false}" == "true" ]]; then
-    CHECK_OUTPUT["$name"]=$(printf \
-      '── Local (host) ─────────────────────────────────────────────────────\n%s\n\n── Docker ───────────────────────────────────────────────────────────\nnot applicable — template repository, no application container\n' \
-      "$local_out")
-    if [[ $local_exit -eq 0 ]]; then
-      CHECK_PASS["$name"]="true"
-      CHECK_SUMMARY["$name"]="host ✓ (container half n/a — template)"
-    else
-      CHECK_PASS["$name"]="false"
-      # CHECK_SUMMARY left to the caller, as in the dual case
-    fi
-    return
-  fi
-
+  # No template-mode branch here since 16/08/2026. This used to short-circuit to a
+  # host-only verdict because the container could not exist; it can now, so drift between
+  # the host and the container is a real reading on both sides of the boundary — and
+  # suppressing it was suppressing exactly the defect this function exists to name.
   CHECK_OUTPUT["$name"]=$(printf \
     '── Local ────────────────────────────────────────────────────────────\n%s\n\n── Docker ───────────────────────────────────────────────────────────\n%s\n' \
     "$local_out" "$docker_out")
@@ -331,66 +328,53 @@ source "$HOOK_DIR/lib/check-security.sh"
 # shellcheck source=lib/check-audits.sh
 source "$HOOK_DIR/lib/check-audits.sh"
 
+# NINE checks here, EIGHT in a generated project — and the difference is now an addition
+# rather than a subtraction (16/08/2026).
+#
+# Template mode used to run six: lockfiles, typecheck and tests were DROPPED because each
+# reads its authoritative half from the django container and that container could not be
+# built here. That premise died when uv.lock was committed. All three now run, and the
+# first PR gate to include them found two bugs the drop had been hiding — the container
+# probes above matched no service, and the compose healthcheck named an unresolvable
+# database. A check that is skipped is a check that cannot report a regression.
+#
+# `audits` remains template-only, and is the one genuine asymmetry left: a template's
+# product is its structure, routing and documentation, which no application-side gate reads.
+TOTAL=8
+ALL_CHECKS=(cloc lockfiles format lint stubs typecheck tests security)
 if [[ "$TEMPLATE_MODE" == "true" ]]; then
-  # Six checks, not eight. lockfiles/typecheck/tests are dropped rather than
-  # reported as failures: each reads ONLY from the container, so in a template
-  # there is nothing for them to be right or wrong about (Section 2b). `audits` takes
-  # their place and is the substantive one here.
-  ALL_CHECKS=(cloc format lint stubs security audits)
+  TOTAL=9
+  ALL_CHECKS+=(audits)
+fi
 
-  printf '  [1/6] Line count (cloc)\n'
-  _check_cloc
+printf '  [1/%s] Line count (cloc)\n' "$TOTAL"
+_check_cloc
 
-  printf '  [2/6] Format (host)\n'
-  _check_format
+printf '  [2/%s] Lockfile alignment (local + Docker)\n' "$TOTAL"
+_check_lockfiles
 
-  printf '  [3/6] Lint (host)\n'
-  _check_lint
+printf '  [3/%s] Format (local + Docker)\n' "$TOTAL"
+_check_format
 
-  printf '  [4/6] Stub audit\n'
-  _check_stubs
+printf '  [4/%s] Lint (local + Docker)\n' "$TOTAL"
+_check_lint
 
-  printf '  [5/6] Security (host — JS/TS advisories)\n'
-  _check_security
+printf '  [5/%s] Stub audit\n' "$TOTAL"
+_check_stubs
 
-  printf '  [6/6] Template audits + shipped-file integrity\n'
+printf '  [6/%s] Type-check (local + Docker)\n' "$TOTAL"
+_check_typecheck
+
+printf '  [7/%s] Tests + coverage (%s%% floor)\n' "$TOTAL" "$COVERAGE_THRESHOLD"
+_check_tests
+_apply_coverage_floor
+
+printf '  [8/%s] Security (local + Docker)\n' "$TOTAL"
+_check_security
+
+if [[ "$TEMPLATE_MODE" == "true" ]]; then
+  printf '  [9/9] Template audits + shipped-file integrity\n'
   _check_audits
-
-  # Each check writes its own pass summary and several of them hard-code
-  # "Docker ✓". Nothing ran in Docker here, and a gate that reports a container
-  # result it never obtained is lying in the direction that matters — it reads
-  # as broader coverage than was achieved. Restate those as n/a.
-  for _c in "${ALL_CHECKS[@]}"; do
-    CHECK_SUMMARY["$_c"]="${CHECK_SUMMARY[$_c]//Docker ✓/Docker n\/a}"
-    CHECK_SUMMARY["$_c"]="${CHECK_SUMMARY[$_c]//local ✓/host ✓}"
-  done
-else
-  ALL_CHECKS=(cloc lockfiles format lint stubs typecheck tests security)
-
-  printf '  [1/8] Line count (cloc)\n'
-  _check_cloc
-
-  printf '  [2/8] Lockfile alignment (local + Docker)\n'
-  _check_lockfiles
-
-  printf '  [3/8] Format (local + Docker)\n'
-  _check_format
-
-  printf '  [4/8] Lint (local + Docker)\n'
-  _check_lint
-
-  printf '  [5/8] Stub audit\n'
-  _check_stubs
-
-  printf '  [6/8] Type-check (local + Docker)\n'
-  _check_typecheck
-
-  printf '  [7/8] Tests + coverage (%s%% floor)\n' "$COVERAGE_THRESHOLD"
-  _check_tests
-  _apply_coverage_floor
-
-  printf '  [8/8] Security (local + Docker)\n'
-  _check_security
 fi
 
 # ── 7  Tally ──────────────────────────────────────────────────────────────────
