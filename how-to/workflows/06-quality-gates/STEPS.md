@@ -36,8 +36,12 @@ bash code/src/scripts/syntax/format.sh
 bash code/src/scripts/syntax/lint.sh
 ```
 
-`format.sh` rewrites; `lint.sh` reports. Fix lint findings properly rather than suppressing
-them — a `noqa` needs a reason beside it, and a reviewer will ask.
+**Both of those report; neither writes.** `format.sh` defaults to a dry-run check — pass `--fix`
+to actually reformat. Reading "all files are correctly formatted" from a bare run and assuming
+the tree was rewritten is how a formatting failure reaches CI.
+
+Fix lint findings properly rather than suppressing them — a `noqa` needs a reason beside it, and
+a reviewer will ask.
 
 ---
 
@@ -49,9 +53,10 @@ them — a `noqa` needs a reason beside it, and a reviewer will ask.
 bash code/src/scripts/syntax/check.sh
 ```
 
-basedpyright runs in strict mode. A new `Any`, a silenced error, or a widened type to make
-the checker quiet is a change to the codebase's guarantees, not a fix — treat it as a
-reviewable decision.
+basedpyright runs in **`standard`** mode — `pyproject.toml:166` and
+`code/src/django/pyrightconfig.json:7` both set it, and neither says `strict`. A new `Any`, a
+silenced error, or a widened type to make the checker quiet is still a change to the codebase's
+guarantees, not a fix — treat it as a reviewable decision.
 
 ---
 
@@ -114,12 +119,21 @@ you clear the higher number before pushing.
 > **Model:** opus
 
 ```bash
-bash .claude/hooks/pre-pr-check.sh
+echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh
 ```
 
-This is the same eight-gate sequence CI runs, in the same order. Green here should mean
-green there — and when it does not, the mirroring itself is the bug: fix the script or the
-workflow so they agree, rather than pushing repeatedly to discover what CI wants.
+**That pipe is required, and the script is unusable without it.** `pre-pr-check.sh` is a
+Claude Code `PreToolUse` hook before it is anything else: it reads a JSON payload from stdin
+(`:30`) and exits 0 immediately unless the payload's command matches `gh pr create` (`:35`).
+Run bare, it has two modes and **neither runs a single gate** — with a terminal on stdin it
+blocks forever inside `cat`, and with stdin closed it exits **0** having checked nothing. A
+silent exit 0 from this command is the false green it exists to prevent, so treat any run that
+prints nothing as a failed invocation rather than a clean tree.
+
+This is the same eight-gate sequence CI runs, in the same order, plus `audits` as a ninth in
+this template. Green here should mean green there — and when it does not, the mirroring itself
+is the bug: fix the script or the workflow so they agree, rather than pushing repeatedly to
+discover what CI wants.
 
 In **this template repository** the hook runs a ninth gate, `audits`, and is otherwise the
 same: `uv.lock` is committed here (16/08/2026), so the django image builds and every gate has

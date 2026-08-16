@@ -256,9 +256,12 @@ differently. Each surface has one owning guide; read it before writing on that s
 
 ## Type hinting
 
-**CRITICAL: all Python code uses strict type hints** — enforced by basedpyright
-(`pyrightconfig.json`). Prefer modern built-in generics (`list[str]`, `X | None`) over the
-legacy `typing` aliases.
+**Annotate every signature** — parameters and return type, on every function and method.
+basedpyright checks them, but in **`standard`** mode, not `strict`: both
+`code/src/django/pyrightconfig.json:7` and `pyproject.toml:166` set `typeCheckingMode =
+"standard"`, so the checker will not flag an unannotated parameter or an implicit `Any` for
+you. The discipline is the author's; the tool only catches contradictions. Prefer modern
+built-in generics (`list[str]`, `X | None`) over the legacy `typing` aliases.
 
 ```python
 from django.db.models import QuerySet

@@ -85,8 +85,13 @@ deliberately.
 
 ```bash
 bash code/src/scripts/development/install.sh
-bash code/src/scripts/development/server.sh rebuild
+bash code/src/scripts/development/server.sh up --build
 ```
+
+`server.sh` has no `rebuild` command — its verbs are `up`, `down`, `restart`, `build` and
+`status`, and `up --build` is the one that rebuilds the images **and** brings the stack back on
+them. Note also that `development/install.sh` refreshes lockfiles only; it is not the root
+`install.sh`, which is what seeds `.env.*` and generates dev secrets at first-time setup.
 
 An upgrade is not real until the image builds. Every Dockerfile uses `uv sync --frozen`,
 so a stale lockfile fails the build rather than quietly resolving something else — which is
@@ -109,8 +114,13 @@ bash code/src/scripts/development/pnpm-update.sh --pin X.Y.Z
 ```bash
 bash code/src/scripts/audits/security.sh
 bash code/src/scripts/tests/all.sh --coverage
-bash .claude/hooks/pre-pr-check.sh
+echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh
 ```
+
+**The pipe on the third line is required.** `pre-pr-check.sh` is a `PreToolUse` hook that reads
+its payload from stdin and exits 0 unless it names `gh pr create` — run bare it either blocks
+forever or exits 0 having checked nothing. Workflow `06-quality-gates` Step 5 carries the full
+explanation.
 
 A dependency change is exactly the kind that passes unit tests and breaks a build, a type
 signature, or a runtime import. Run the whole gate (workflow `06-quality-gates`), not just

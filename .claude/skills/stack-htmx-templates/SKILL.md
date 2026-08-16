@@ -30,7 +30,7 @@ component design (`07-COMPONENTS`); never invent a generic layout.
 | Render         | Django Templates (DTL) served by `apps.marketing`; one process, no Node        |
 | Components     | **django-components** in `code/src/django/components/` (`{% component %}`)     |
 | Server ops     | **HTMX** (fragment swaps) — always with a visible indicator                    |
-| Local interact | **Alpine.js** (`x-data`), vendored at `static/vendor/alpine/alpine.min.js`     |
+| Local interact | **Alpine.js** (`x-data`) — self-hosted under `static/vendor/` when first used  |
 | Styling        | Vanilla CSS, 100% `var(--token)`; tokens served live from `/assets/tokens.css` |
 | Icons          | Self-hosted FontAwesome Free via the `{% icon %}` builtin tag                  |
 | SEO            | `apps.marketing.seo.build_seo` + `_seo_head.html`                              |
@@ -166,7 +166,9 @@ namespaced by a `marketing:cache-version` counter. Any content publish
 
 - Page/view/template correctness → **backend pytest** (fragment assertions, golden-fixture parity
   for the Python `render_blocks`). There is no JavaScript unit-test layer.
-- Alpine has no unit layer → interactive coverage is **Playwright**; keep the 51-route axe scan.
+- Alpine has no unit layer → interactive coverage is **Playwright**; keep the axe scan green as
+  routes land (`code/src/django/tests/e2e/test_e2e_a11y.py` — `PAGES` is empty at baseline, so
+  every scan skips until the first marketing route is added to it).
 - Ban `hx-boost`; focus + `aria-live` conventions for swaps (`code/docs/ACCESSIBILITY.md`).
 
 ---
