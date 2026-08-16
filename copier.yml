@@ -616,6 +616,18 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v3.0.0-self-authored-agents.sh"
     when: "<% _stage == 'after' %>"
 
+  # v4.0.0 moves `pyproject.toml`'s [project] name off the project-slug token and onto the
+  # house constant `syntek-base`, restored to the project's own slug by a _task. _tasks run
+  # on `copy` and never on `update`, so an update rewrites a live project's manifest to the
+  # TEMPLATE's name — cleanly, with no conflict, and reporting success. That breaks `uv
+  # sync --frozen` against the project's committed lock on the next container build.
+  # This one ACTS rather than advising: it is a one-line restore with exactly one correct
+  # value, read back out of .copier-answers.yml, and leaving it to a human means leaving a
+  # broken build behind a success message.
+  - version: v4.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v4.0.0-manifest-name.sh"
+    when: "<% _stage == 'after' %>"
+
   # .copier/ is a staging directory, not project content. _tasks empty it and remove
   # it — but _tasks run on `copy` only, so on an `update` the staged seeds land in the
   # project and simply sit there, looking like version files a developer might edit.

@@ -1,11 +1,100 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.2.2 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 4.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v4.0.0 — 15/08/2026
+
+**Status:** Major release — breaking. One of the questions asked when a project is created has
+been retired, and the file naming your project changes shape underneath you. The update carries
+your project across both on its own.
+
+### Read this first if you have a project on 3.x
+
+The file that lists your project's Python dependencies opens by naming the project. That name
+used to be filled in when your project was created. It now holds a fixed stand-in that is
+swapped for your project's own name at the moment the project is generated — and that swap only
+ever happens at generation, never on an update. Left alone, the update would therefore overwrite
+that one line with the stand-in: cleanly, with nothing flagged, and reporting success.
+
+It is not left alone. This release ships a migration that runs as part of the update, reads your
+project's own name back out of the answers file, and puts it back. You do not have to do
+anything, and running it a second time changes nothing.
+
+Why it is worth a paragraph rather than a footnote: had the line been left as the stand-in, the
+damage would not have shown up in the update at all. It would have surfaced later, as a failed
+container build complaining about a mismatch for a package nobody renamed.
+
+### Why a single line was worth a major release
+
+The tool that works out which versions of your dependencies to install reads that name first,
+and it refuses names containing the punctuation the old stand-in used. Not a warning — it
+stopped reading the file entirely, so the exact list of installed versions could never be
+produced.
+
+Four other things need that list before they can do anything: the type checker, the scan for
+known vulnerabilities in your dependencies, the code formatter, and the entire test suite. Each
+of them had been written to step aside politely when the list was unavailable, which is what
+they did, on every single run. All four reported success. They had been doing so for as long as
+the stand-in had been there.
+
+### The retired question
+
+Creating a project asks you to name several parts of the application. One of those parts was
+never actually renameable — it is written out literally in the code, in the settings and in a
+dozen guides — so answering anything other than the default produced a project whose
+documentation disagreed with its own code. A question whose answer is ignored everywhere is not
+a choice, it is a claim that a choice exists.
+
+It is gone. If your saved answers still record it, it is simply ignored from now on. Nothing in
+your project moves and there is nothing to decide.
+
+### Guessing replaced by asking
+
+There was already a check looking for stand-ins left in places they should not be. It could
+never have caught this one, because the same stand-in in the same place is accepted by one
+toolchain and rejected by another — so no list of dangerous places can ever be correct.
+
+The new check hands each file to the tool that actually reads it and requires that tool to open
+it successfully. It catches this fault by definition, including a version of it from last month
+where two characters were read as instructions rather than as part of a name. It also proves
+itself before it runs, by deliberately feeding a broken file in and requiring a refusal.
+
+### Two checks that had been reporting success without checking anything
+
+The deep scan of your own source code depends on a program that is not published anywhere it
+could be installed from, so it was never present — and the check was written to pass quietly
+when it was missing. It now installs a specific version in the pipeline, confirms the download
+is genuinely signed by its publisher before running it, stays optional on your own machine, and
+proves it can still spot a fault before every scan.
+
+The check on third-party Rust dependencies fetched a fresh copy of its own tool each run
+without saying which version. Its verdict could therefore change while your code stayed still —
+a new complaint looked like a regression and a disappearing one looked like a fix. It is now
+pinned, like the other three toolchain versions this project records.
+
+### Two warnings you had been told to ignore
+
+Two known vulnerabilities in a dependency of a dependency had been silenced, with no reason
+recorded for either. A fixed version had been available the entire time; the recorded versions
+were merely out of date, and updating them cleared both. The rule left in their place: silence
+a warning only when there is genuinely nothing to upgrade to, never because upgrading is
+inconvenient.
+
+### If you have a project on an earlier version
+
+`copier update` brings everything down, and the migration described at the top restores your
+project's name on its own — there is no manual step and no command to run afterwards. Your saved
+answers may still list the retired question; leave it, it is ignored. Nothing else needs a
+decision.
+
+Worth one check afterwards, and only one: open the dependency file and confirm the first line
+names your project rather than `syntek-base`. If it does not, the migration could not read your
+answers file, and setting that line by hand and re-locking is all that is needed.
 
 ## v3.2.2 — 14/08/2026
 
