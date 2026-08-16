@@ -23,6 +23,16 @@ finding. #}
     {# Rendered through x-text, which writes text rather than parsing markup #}
     <div x-text="rendered_comment"></div>
 
+    {# The five Alpine directives that do NOT take a JavaScript expression, each carrying a server
+    value on purpose. Django escapes them and nothing evaluates them, so every one of these is
+    correct — and the deny-list has to stay silent on all five, or inverting it would have bought
+    coverage with false positives. A rule that fires here is a bug in the rule (rules/CLAUDE.md),
+    and this self-test fails on it as loudly as on a missed finding. #}
+    <span x-ref="{{ ref_name }}"></span>
+    <div x-transition:enter="{{ enter_classes }}"></div>
+    <template x-teleport="{{ modal_target }}"></template>
+    <div x-cloak x-ignore></div>
+
     {# External script, so nothing is interpolated into a script body #}
     <script src="{% static 'js/page.js' %}" defer></script>
   </body>

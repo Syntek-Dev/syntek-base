@@ -19,6 +19,21 @@ django-alpine-x-html-raw-sink. #}
       <span x-text="name"></span>
     </div>
 
+    {# The same rule, on the four shapes its old hand-written attribute list missed. Each is the
+    identical injection in an attribute Alpine evaluates identically; each reported clean until the
+    list was inverted into a deny-list. MAP-BASE-HEALTH N-034. #}
+    <template x-for="item in {{ items }}"><li x-text="item"></li></template>
+    <div x-modelable="{{ bound_property }}"></div>
+    <div x-id="['{{ id_prefix }}']"></div>
+    <div x-bind="{{ attribute_object }}"></div>
+
+    {# And once more single-quoted. The inner double quotes are deliberate and load-bearing:
+    Prettier rewrites a single-quoted attribute to double quotes whenever it can do so without
+    escaping, so a naive single-quote fixture is silently converted and stops testing the branch it
+    exists for. With a double quote inside the value, flipping would cost an escape and Prettier
+    leaves it — which is also the form a real Alpine expression takes. #}
+    <div x-show='{ label: "{{ user_label }}" }'></div>
+
     {# django-alpine-x-html-raw-sink: a raw-HTML sink regardless of its source #}
     <div x-html="rendered_comment"></div>
 
