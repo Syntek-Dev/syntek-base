@@ -2,9 +2,11 @@
 
 Scripts for managing the local development Docker Compose stack. They resolve
 `code/src/docker/docker-compose.dev.yml` automatically and mostly drive Compose from the
-host; the two scaffolders (`new-django-app.sh`) and the installers are the exceptions —
-the first runs `manage.py startapp` inside the `django` container, the latter two run
-`uv` / `pnpm` on the host.
+host; the scaffolders and the installers are the exceptions — `new-django-app.sh` runs
+`manage.py startapp` inside the `django` container, while the three `install-*.sh` scripts
+run on the host, because what they install is the host's own toolchain: `uv` for Python,
+`pnpm` for the repo JS tooling, and a signature-verified binary for the static-analysis
+engine.
 
 ## Directory Tree
 
@@ -17,6 +19,7 @@ code/src/scripts/development/
 ├── install.sh               ← thin forwarder to install-frontend.sh
 ├── install-backend.sh       ← regenerate uv.lock / sync the Python .venv
 ├── install-frontend.sh      ← regenerate pnpm-lock.yaml / sync repo JS tooling
+├── install-opengrep.sh      ← install the pinned, cosign-verified static-analysis engine
 ├── logs.sh                  ← tail / view service logs
 ├── new-django-app.sh        ← scaffold a new Django app with standard boilerplate
 ├── new-django-view.sh       ← scaffold a marketing page: Django view + template + urls entry
@@ -33,21 +36,22 @@ code/src/scripts/development/
 
 ## Scripts
 
-| Script                  | Purpose                                                                      |
-| ----------------------- | ---------------------------------------------------------------------------- |
-| `server.sh`             | Manage the dev stack — `up [--seed]`, `down`, `restart`, `build`, `status`   |
-| `logs.sh`               | View and tail container logs with service/follow/tail/since filters          |
-| `shell.sh`              | Open an interactive shell (`bash` / `sh`) inside any service container       |
-| `install.sh`            | Backwards-compatible forwarder to `install-frontend.sh`                      |
-| `install-backend.sh`    | Regenerate `uv.lock`; `--sync` installs into `.venv`, `--check` verifies     |
-| `install-frontend.sh`   | Regenerate `pnpm-lock.yaml` for the repo tooling (no client-side build)      |
-| `pnpm-update.sh`        | `pnpm self-update`, then pin the version in `package.json` + Dockerfiles     |
-| `new-django-app.sh`     | Scaffold a new Django app with standard boilerplate                          |
-| `new-django-view.sh`    | Add a public marketing page to an **existing** `apps.marketing`              |
-| `hosts-story-add.sh`    | Add the `/etc/hosts` entries a `us###` worktree stack needs (sudo)           |
-| `hosts-story-remove.sh` | Remove those entries when the worktree is torn down (sudo)                   |
-| `template-update.sh`    | Dry-run a `copier update` on a throwaway copy — preview only until `--apply` |
-| `sync-trees.sh`         | Reconcile the `## Directory Tree` block in every `CONTEXT.md` against disk   |
+| Script                  | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `server.sh`             | Manage the dev stack — `up [--seed]`, `down`, `restart`, `build`, `status`                                                                                                                                                                                                                                                                                                                                               |
+| `logs.sh`               | View and tail container logs with service/follow/tail/since filters                                                                                                                                                                                                                                                                                                                                                      |
+| `shell.sh`              | Open an interactive shell (`bash` / `sh`) inside any service container                                                                                                                                                                                                                                                                                                                                                   |
+| `install.sh`            | Backwards-compatible forwarder to `install-frontend.sh`                                                                                                                                                                                                                                                                                                                                                                  |
+| `install-backend.sh`    | Regenerate `uv.lock`; `--sync` installs into `.venv`, `--check` verifies                                                                                                                                                                                                                                                                                                                                                 |
+| `install-frontend.sh`   | Regenerate `pnpm-lock.yaml` for the repo tooling (no client-side build)                                                                                                                                                                                                                                                                                                                                                  |
+| `install-opengrep.sh`   | Install the engine `audits/static-analysis.sh` runs — pinned by `.opengrep-version`, Sigstore-verified with cosign, version asserted against what landed. Lives here rather than beside the audit because two things glob `audits/*.sh` and act on every member: the pre-PR gate **runs** each one, and `shipped-readme.sh` requires each in the README's audit register. cosign is required with no unverified fallback |
+| `pnpm-update.sh`        | `pnpm self-update`, then pin the version in `package.json` + Dockerfiles                                                                                                                                                                                                                                                                                                                                                 |
+| `new-django-app.sh`     | Scaffold a new Django app with standard boilerplate                                                                                                                                                                                                                                                                                                                                                                      |
+| `new-django-view.sh`    | Add a public marketing page to an **existing** `apps.marketing`                                                                                                                                                                                                                                                                                                                                                          |
+| `hosts-story-add.sh`    | Add the `/etc/hosts` entries a `us###` worktree stack needs (sudo)                                                                                                                                                                                                                                                                                                                                                       |
+| `hosts-story-remove.sh` | Remove those entries when the worktree is torn down (sudo)                                                                                                                                                                                                                                                                                                                                                               |
+| `template-update.sh`    | Dry-run a `copier update` on a throwaway copy — preview only until `--apply`                                                                                                                                                                                                                                                                                                                                             |
+| `sync-trees.sh`         | Reconcile the `## Directory Tree` block in every `CONTEXT.md` against disk                                                                                                                                                                                                                                                                                                                                               |
 
 > `new-django-view.sh` extends a marketing app; it does not create one. At baseline
 > `apps/marketing` does not exist, so the script exits `1` and names what is missing.

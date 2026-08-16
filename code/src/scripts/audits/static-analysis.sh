@@ -37,6 +37,15 @@
 #   job this script was a gate nobody had ever watched run — "an audit that cannot run
 #   where it ships is one nobody ever sees fail" (the audits CONTEXT.md).
 #
+#   OPTIONAL IS NOT THE SAME AS UNREACHABLE, and for a while it was. There was no local
+#   route to the engine at all: the instruction here said pick an asset, chmod +x it and
+#   put it on PATH — an unverified binary, by hand, contradicting the CI job's own stated
+#   policy that this is the first downloaded binary in the toolchain and does not arrive
+#   unverified. So a rule could be written, committed and released without its author ever
+#   watching it run, and the only thing standing between a broken rule and a green CI was
+#   a fixture nobody could exercise. development/install-opengrep.sh is that route, and it
+#   verifies the same signature against the same pinned identity CI does.
+#
 #   VERSION PIN. The engine version lives in the root .opengrep-version, read here and
 #   by the CI job, so there is one source of truth. It joins .nvmrc, .python-version and
 #   code/src/rust/rust-toolchain.toml as this repository's fourth toolchain pin.
@@ -77,13 +86,15 @@ SCOPES=(
   "code/src/django"
 )
 
-INSTALL_HINT='Install Opengrep from its release page, matching the pinned version:
-    https://github.com/opengrep/opengrep/releases
-  The pin is the root .opengrep-version. Pick the asset for your platform
-  (opengrep_manylinux_x86, opengrep_osx_arm64, ...), chmod +x it, and put it on PATH.
-  Opengrep is deliberately optional here: it is not declared in install.sh,
-  pyproject.toml or package.json, and a local run never fails without it. CI installs
-  the pinned build and verifies its signature, which is where this gate actually bites.'
+INSTALL_HINT='Install the pinned engine:
+    bash code/src/scripts/development/install-opengrep.sh
+  It reads the root .opengrep-version, picks the signed asset for your platform, and
+  verifies its Sigstore signature against the release-workflow identity before anything
+  is made executable. cosign is required and there is no path in it that installs an
+  unverified binary.
+  Opengrep stays deliberately optional: it is not declared in install.sh, pyproject.toml
+  or package.json, and a local run never fails without it. CI installs the same pinned
+  build and verifies the same signature, which is where this gate actually bites.'
 
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
