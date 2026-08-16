@@ -1,11 +1,128 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.2.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.3.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.3.0 — 16/08/2026
+
+**Status:** Minor — you can now ask, in one command, whether the running system is healthy,
+and get an answer in words rather than a status code. A written procedure for diagnosing it
+comes with it, along with a stated list of the operating systems this project supports and
+several corrections to guides that described commands nobody had run.
+
+### Asking whether the system is healthy
+
+Your project already answers two questions for machines: is the application process alive,
+and can it actually reach the things it depends on. Container tooling and status pages use
+them. They were built for that audience and stopped there.
+
+That left the person on the other end of an alert to work out for themselves which of the
+two questions had failed, which is the difference between a restart and an investigation. It
+is the most common wasted hour there is.
+
+There is now a single command that asks both and tells you what the answer means. It comes
+back with one of three words. Everything is working. Something is degraded, meaning the
+cache has gone but the site is still serving correct pages to real people. Or it is down,
+meaning the database cannot be reached and requests cannot be served.
+
+That middle case is the reason the distinction is worth having. A cache outage costs speed,
+not correctness, so treating it as a full failure would turn a public status page red for
+something no visitor could ever notice.
+
+The command deliberately does not fix anything. Diagnosis and repair are different jobs, and
+a tool that quietly does both gets reached for reflexively, before anyone has understood
+what is wrong.
+
+One detail worth knowing: the answer is remembered briefly rather than recalculated on every
+request, so a single reading taken seconds after an alert can still be describing the world
+as it was before the fault. There is an option that watches for long enough to see past
+that, and it is the honest way to read the result.
+
+### A written procedure, and a way to rehearse a failure
+
+A step-by-step guide now sits alongside the command: how to establish which of the two
+questions is actually failing, what each answer points at, how to recover, and what to do
+when both look fine and the status page is still red. It was written by carrying it out, not
+from memory, which is where its list of things that go wrong came from.
+
+Rehearsing a failure needed something the project could not previously do: take one
+dependency away and give it back, without the system springing back so fast that the outage
+is never observable. There is now a way to pause a service while leaving everything else
+standing, which is the only shape that works for this.
+
+Two of the automated test suites also stopped checking that the system was awake by asking
+the administration area, which can be moved to a different address. They ask the health
+question instead, which is fixed and exists precisely so things outside the project can rely
+on it.
+
+### Which operating systems this is supported on
+
+Every operation here runs through a script, so the shell is part of the contract rather than
+a preference. That had never been written down, and the advice that existed implied Windows
+alternatives were merely untried.
+
+They are not supported, and the reason is now stated as two separate requirements, because
+meeting one does not meet the other: one popular Windows shell silently rewrites the file
+paths these scripts pass to the container tooling, so a command that reads perfectly
+correctly fails while naming paths nobody typed; and keeping the project on the Windows side
+of the filesystem makes every file access cross a boundary slow enough to spoil the working
+day, which is where most Windows developers land by default.
+
+Linux and macOS are supported as they are. Windows is supported through its Linux
+compatibility layer, which the standard container software already installs to run its own
+engine, so nothing extra is being asked for.
+
+A related class of failure is now prevented outright rather than described. Windows checkouts
+can rewrite the invisible end-of-line characters in every script, after which they fail with
+an error naming neither the file nor the cause — and inside a container it is worse, because
+the failure is not reported where it happens at all: the image simply will not start. The
+project now pins those characters itself, so no one has to configure anything correctly
+first. Nothing in the repository needed changing to make this true; it locks in what was
+already the case.
+
+### Guides that described commands nobody had run
+
+Five documents told you to do things that were correct when written and had since been
+overtaken. Each still parsed, still named a real command, and only running it revealed the
+drift.
+
+The one that mattered is the pre-release check. Two guides told you to run it directly. It
+is not that kind of tool — it is designed to be triggered automatically and fed information,
+and run by hand it either hangs indefinitely or reports success while checking absolutely
+nothing. A silent pass from the check whose entire purpose is preventing false passes is the
+worst possible outcome, so both guides now show the correct invocation and say plainly that
+a silent run is a failed one.
+
+The rest were smaller and are all corrected: the type checker runs in its standard mode
+rather than its strictest, which matters because the discipline is then yours; the formatting
+command reports rather than rewrites unless told to; two commands were quoted with options
+they have never had; and two claims about the front end described a state the project has not
+reached yet.
+
+### Two things fixed underneath
+
+The email settings were written in a style the web framework replaces in its next version,
+so every run raised a deprecation warning — silently during development, and in the test
+configuration where it was eventually going to become an outright failure. The two styles
+cannot be mixed, so the change is complete rather than gradual. Behaviour is identical in
+both environments.
+
+And the database reset script could try to drop a database with no name at all. The setting
+it read is not present in the usual configuration file, and its fallback was placed on the
+branch that only runs when the file is missing entirely. Every near-identical sibling script
+already had it the right way round, which is exactly why the fault survived. Both now also
+quote the name properly, which is the difference between a bad value failing loudly and one
+quietly meaning something else.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down. There is nothing to decide and nothing to migrate. The
+new health command and its guide arrive ready to use; if you have local settings for email,
+check them against the new form, since the old and new styles cannot both be present.
 
 ## v5.2.1 — 16/08/2026
 
