@@ -34,6 +34,7 @@ no per-story Nginx variants to generate.
 | ----------- | ---------------------------------- | ----------------------------------- |
 | `/static/`  | Nginx, from the staticfiles volume | `alias`, not proxied                |
 | `/media/`   | `django:8000`                      |                                     |
+| `/health/`  | `django:8000`                      | Liveness and readiness probes       |
 | `/control/` | `django:8000`                      | Django's built-in admin             |
 | `/`         | `django:8000`                      | Catch-all — every application route |
 

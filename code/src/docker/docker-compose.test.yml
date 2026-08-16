@@ -19,9 +19,13 @@ services:
     volumes:
       - type: tmpfs
         target: /var/lib/postgresql
+    # The probe reads the container's OWN environment ($$ escapes compose interpolation), so
+    # nothing project-specific appears inside a CMD-SHELL string. A token interpolated here
+    # instead is a shell redirection, not a name: `-d <%PROJECT_SLUG%>_test` sends the shell
+    # looking for a file called `%PROJECT_SLUG%`, the probe never runs, and `db` never reports
+    # healthy — which silently stops every service that waits on it.
     healthcheck:
-      test:
-        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-<%PROJECT_SLUG%>} -d <%PROJECT_SLUG%>_test"]
+      test: ["CMD-SHELL", 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -48,9 +52,9 @@ services:
     volumes:
       - ../scripts/tests/reports:/workspace/code/src/scripts/tests/reports:rw
       - staticfiles_test:/workspace/code/src/django/staticfiles
-    # See the note in docker-compose.dev.yml — /control/ is the only baseline route.
+    # See the note in docker-compose.dev.yml — /health/ is the dedicated liveness route.
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:8000/control/ >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health/ >/dev/null || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 20

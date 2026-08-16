@@ -18,9 +18,13 @@ services:
       - postgres_dev_data:/var/lib/postgresql
       - ./postgres/postgresql.dev.conf:/etc/postgresql/postgresql.conf:ro
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    # The probe reads the container's OWN environment ($$ escapes compose interpolation), so
+    # nothing project-specific appears inside a CMD-SHELL string. A token interpolated here
+    # instead is a shell redirection, not a name: `-d <%PROJECT_SLUG%>_dev` sends the shell
+    # looking for a file called `%PROJECT_SLUG%`, the probe never runs, and `db` never reports
+    # healthy — which silently stops every service that waits on it.
     healthcheck:
-      test:
-        ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-<%PROJECT_SLUG%>} -d <%PROJECT_SLUG%>_dev"]
+      test: ["CMD-SHELL", 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -51,11 +55,13 @@ services:
       REDIS_URL: redis://cache:6379/0
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
       DEBUG: "${DEBUG:-true}"
-    # /control/ is the only route the baseline serves; it answers 302 → the admin login,
-    # which is enough to prove the process is up and the URLconf loaded. Repoint this at a
-    # dedicated liveness route once one exists.
+    # /health/ — the dedicated liveness route, which now exists (apps.health). It answers
+    # 200 `ok` and touches no dependency, so this probe reports on the process rather than
+    # on PostgreSQL. Previously /control/, whose 302 proved the same thing by accident and
+    # only while the admin remained the one route the baseline served. The prod and staging
+    # images already probed /health/, so until it landed they shipped permanently unhealthy.
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:8000/control/ >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health/ >/dev/null || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10

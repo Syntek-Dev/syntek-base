@@ -2,8 +2,9 @@
 
 The Django project at its **baseline**: Django's own defaults plus the infrastructure
 wiring this repository provides (PostgreSQL, Valkey, the environment-split settings).
-The only application code is `apps/core` — project-wide primitives, no models; `apps/`
-is otherwise awaiting its first domain module.
+The only application code is `apps/core` — project-wide primitives — and `apps/health`,
+which answers the liveness and readiness probes. Neither owns a model; `apps/` is otherwise
+awaiting its first domain module.
 
 **Last Updated**: <%DATE%>
 
@@ -30,11 +31,12 @@ django/
 ├── apps/                   # Django applications
 │   ├── __init__.py
 │   ├── core/               # shipped: schema bases, exception trees, middleware, command base (no models)
+│   ├── health/             # shipped: /health/ liveness + /health/ready/ readiness (no models)
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
 ├── config/                 # project configuration package
 │   ├── settings/           # base.py, dev.py, staging.py, production.py, test.py
-│   ├── urls.py             # Django admin at /control/ only
+│   ├── urls.py             # health routes at /health/, Django admin at /control/
 │   ├── asgi.py
 │   └── wsgi.py
 ├── static/                 # static asset source — the global HTMX error handler only
@@ -59,11 +61,11 @@ django/
 
 ## Key Entry Points
 
-| Path                      | Purpose                                     |
-| ------------------------- | ------------------------------------------- |
-| `config/settings/base.py` | Shared settings — all environments inherit  |
-| `config/urls.py`          | Root URL conf — Django admin at `/control/` |
-| `manage.py`               | Django CLI entry point                      |
+| Path                      | Purpose                                                 |
+| ------------------------- | ------------------------------------------------------- |
+| `config/settings/base.py` | Shared settings — all environments inherit              |
+| `config/urls.py`          | Root URL conf — `/health/` and the admin at `/control/` |
+| `manage.py`               | Django CLI entry point                                  |
 
 ## What the baseline deliberately omits
 

@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # Local. `core` owns no models — it is registered so `apps.core` is a real app
     # rather than a bare package, and so app-loading order is explicit once it has any.
     "apps.core",
+    # `health` owns no models either. Registered because its probes and views are app
+    # code, and because an unregistered package cannot carry an AppConfig.
+    "apps.health",
 ]
 
 MIDDLEWARE = [
@@ -116,6 +119,11 @@ SESSION_COOKIE_SAMESITE = "Lax"
 # own admin surface, and a guessable path draws credential-stuffing traffic. Configurable
 # so a deployment can move it again without a code change.
 DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
+
+# How long /health/ready/ may serve a memoised verdict. Short by design: it exists so an
+# external prober cannot stampede PostgreSQL and Valkey, not to make the endpoint cheap.
+# Raising it past a probe interval means the status page reports the previous interval.
+HEALTH_CACHE_TTL_SECONDS = int(os.environ.get("HEALTH_CACHE_TTL_SECONDS", "15"))
 
 LANGUAGE_CODE = "en-gb"
 TIME_ZONE = "Europe/London"
