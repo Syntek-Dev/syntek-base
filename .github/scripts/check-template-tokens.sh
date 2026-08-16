@@ -17,21 +17,21 @@
 #
 #   4. Literal block/comment delimiters, BARE — an opening `<:` or `<~` with no `>` after
 #      it on the line. Jinja needs only the opener to fail, so this is exactly as fatal as
-#      check 3, and it was invisible until 13/08/2026.
+#      check 3, and it was invisible until this check was written.
 #
 #   Plus: an unclosed `<%` variable opener, reported alongside 4.
 #
 # Numbers are stable identifiers — other documents cite them. Append, never renumber.
 #
-# TWO CORRECTIONS LANDED 13/08/2026, both in the single regex that was check 3:
+# TWO CORRECTIONS HAVE LANDED, both in the single regex that was check 3:
 #
 #   It read `<[:|]`. copier.yml sets block to `<: :>` and comment to `<~ ~>`, so that class
 #   policed `<|` — which is not a delimiter in this template and never could be — while the
 #   comment opener `<~` went unexamined entirely. The class is now `[:~]`.
 #
-#   It also required a closing `>`. `code/src/scripts/development/sync-trees.sh` carried the
-#   line `if "<:" in v:` — a bare opener, no `>` — which broke EVERY generation with
-#   TemplateSyntaxError while this script reported `✓ 1974 well-formed tokens`. A gate that
+#   It also required a closing `>`. A shipped script carried the line `if "<:" in v:` — a
+#   bare opener, no `>` — which broke EVERY generation with TemplateSyntaxError while this
+#   script reported `✓ 1974 well-formed tokens`. A gate that
 #   reports all-clear on the defect it was written for is worse than no gate, because it is
 #   believed. Hence check 4, and hence --self-test below.
 #
@@ -117,7 +117,7 @@ run_checks() {
   blocks=$(scan '<[:~][^>]*>' | grep -vE '<: *(raw|endraw) *:>') || true
 
   # 4 — an opener with no `>` after it. Jinja fails on the opener alone, so requiring the
-  # closer (as this check did until 13/08/2026) is a hole the size of the defect.
+  # closer (as this check once did) is a hole the size of the defect.
   bare_blocks=$(scan '<[:~][^>]*$') || true
 
   unregistered=""

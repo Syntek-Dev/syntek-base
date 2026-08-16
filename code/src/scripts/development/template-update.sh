@@ -166,10 +166,10 @@ ADDED=$(cd "$SCRATCH" && git status --porcelain -uall | grep -c '^??' || true)
 # `|| true` is load-bearing: grep exits 1 when it matches nothing, and under
 # `set -o pipefail` that failure propagates out of the whole pipeline and, with
 # `set -e`, kills the script at exactly the moment there is good news to report.
-# Pattern shared with audits/conflict-markers.sh via _lib. This used to carry its own copy,
-# anchored to the start of the line, which misses the form Prettier leaves behind: the open
-# marker survives but indented, and the close becomes a nested blockquote. Two detectors for
-# one defect class that disagree is how one of them survived two releases.
+# The pattern is shared with the conflict-marker audit through the helper library, never copied. This once carried
+# its own, anchored to the start of the line, which misses the form Prettier leaves behind:
+# the open marker survives but indented, and the close becomes a nested blockquote. Two
+# detectors for one defect class that disagree is how one of them survived two releases.
 CONFLICT_FILES=$( { grep -rlE "$CONFLICT_MARKER_RE" "$SCRATCH" --exclude-dir=.git 2>/dev/null || true; } )
 CONFLICTS=$(printf '%s' "$CONFLICT_FILES" | grep -c . || true)
 

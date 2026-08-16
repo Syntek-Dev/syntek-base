@@ -5,7 +5,7 @@
 #                  An em dash in user-facing prose is a recognisable machine-authored
 #                  tell. <%ORG_NAME%> marketing copy rewords instead — a comma, colon, full
 #                  stop, parentheses, or a reworded clause — and NEVER substitutes a
-#                  spaced en dash. Voice: BRAND-VOICE.md. Rule: VISUAL-DESIGN.md Section 4.1.
+#                  spaced en dash.
 #
 #                  Numeric/day en dashes (–, U+2013) in ranges (Mon–Fri, 9–5) are
 #                  correct typography and are NOT flagged.

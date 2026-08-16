@@ -4,8 +4,8 @@
 #   progressive-enhancement scripts under code/src/django/static/js/. ESLint runs in the
 #   host Node toolchain, so this leg is host-only and folded identically into both legs
 #   (no container to drift against). Django templates carry no ESLint — they are covered
-#   by the Python gate (ruff) + backend pytest (check-tests).
-# Source: .claude/hooks/pre-pr-check.sh
+#   by the Python gate (ruff) and the backend pytest gate.
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, DEV_COMPOSE, _dual_result, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_lint() {

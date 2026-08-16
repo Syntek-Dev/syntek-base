@@ -2,8 +2,8 @@
 #
 # security.sh — Dependency security audit: pnpm audit (JS/TS) + pip-audit / uv audit (Python).
 #
-#   Mirrors the CI "[8/8] Security" gate (.github/workflows/claude.yml) so a clean local
-#   run predicts a clean CI run. The gate runs, per ecosystem:
+#   Mirrors the CI "[8/8] Security" gate so a clean local run predicts a clean CI run.
+#   The gate runs, per ecosystem:
 #     JS/TS:  pnpm audit --audit-level low      (honours audit.ignore in
 #                                                 pnpm-workspace.yaml — read natively by pnpm 11)
 #     Python: uv run pip-audit                  (CVE scan of the locked backend deps)

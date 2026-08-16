@@ -17,12 +17,10 @@
 #                     `*-TEMPLATE.md` files are real and citable for the same reason.
 #
 #                     What it CANNOT check is whether a resolving path is the RIGHT one, or
-#                     whether a count stated in words is true. Both stay reviewer judgement —
-#                     see .github/scripts/shipped-readme.sh, which says the same of its own.
+#                     whether a count stated in words is true. Both stay reviewer judgement.
 #
-# Scope scanned:  tracked AND untracked-but-not-ignored files, matching
-#                 .github/scripts/check-template-tokens.sh — the file you just wrote is the
-#                 one most needing the check, and it is not tracked yet.
+# Scope scanned:  tracked AND untracked-but-not-ignored files — the file you just wrote is
+#                 the one most needing the check, and it is not tracked yet.
 #
 # Exempt:         history (CHANGELOG/RELEASES/VERSION-HISTORY) records what was true then;
 #                 how-to/src/TEMPLATE-GUIDE/ is copier-excluded AND must be able to name a
@@ -78,7 +76,7 @@ cd "$PROJECT_ROOT" || die "cannot enter $PROJECT_ROOT"
 # ── What we scan ─────────────────────────────────────────────────────────────
 # Tracked plus untracked-but-not-ignored, deduplicated. Ignored files are absent
 # by construction, which is how this repo's own throwaway handoffs and feature
-# maps stay invisible to the check (see handoffs/.gitignore).
+# maps stay invisible to the check.
 candidates() {
   { git ls-files -z; git ls-files -z --others --exclude-standard; } \
     | tr '\0' '\n' | sort -u | grep -E '\.(md|sh)$' || true
@@ -159,7 +157,7 @@ while IFS= read -r file; do
     # `doc-references: ignore` suppresses a line outright. It is for the one case neither
     # rule reaches: a document QUOTING a path in order to ban it, or naming a path that
     # belongs to another repository. Accepted on the line OR the line directly above it,
-    # the same annotation convention css-gradients.sh already uses.
+    # the same annotation convention the sibling audits already use.
     line="$(sed -n "${lineno}p" "$file" 2>/dev/null || true)"
     prev="$(sed -n "$((lineno > 1 ? lineno - 1 : 1))p" "$file" 2>/dev/null || true)"
     case "$prev" in *'doc-references: ignore'*) line="$line doc-references: ignore" ;; esac

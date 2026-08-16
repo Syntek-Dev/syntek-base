@@ -1,5 +1,5 @@
 # check-lockfiles.sh — lockfile alignment: Docker container vs lockfile + local env drift.
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, DEV_COMPOSE, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_lockfiles() {

@@ -34,8 +34,8 @@
 #                     dangle by design so the index carries no conditional contents.
 #
 #                 NOT HANDLED HERE: `.copier/README.md`'s Project Tree. That is a
-#                 template-integrity concern and `.github/scripts/shipped-readme.sh`
-#                 already owns it — two tools writing one block would fight.
+#                 template-integrity concern and the template-integrity check already
+#                 owns it — two tools writing one block would fight.
 #
 # Requirements: git, python3. No network.
 #
@@ -183,7 +183,7 @@ def copier_excluded():
     # Copier's block-opening delimiter, assembled from its two characters rather than
     # written out. THIS FILE IS RENDERED: spelling the pair literally makes Jinja parse
     # it as a tag while generating every project, and the whole generation dies with
-    # TemplateSyntaxError. It did, from v2.4.0 until 13/08/2026.
+    # TemplateSyntaxError. It has already done exactly that in a shipped release.
     block_open = "<" + ":"
     for line in body.split("\n"):
         if re.match(r'^[a-zA-Z_]+:', line):

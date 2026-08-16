@@ -20,7 +20,7 @@
 #
 # Exit codes:  0 = all checks passed   2 = one or more checks failed / mismatched
 #
-# Pinned versions (update when CLAUDE.md stack table changes):
+# Pinned versions (update when the project's pinned toolchain moves):
 #   uv 0.12.4   pnpm 11.21.0
 #
 set -uo pipefail
@@ -63,8 +63,8 @@ HISTORY_DIR="$HOME/.claude/pr-check-history"
 # own `_exclude`, so a GENERATED project never carries it. Its presence at the
 # root means this is the template itself.
 #
-# This is NOT softening the gate, and the distinction matters because
-# .claude/hooks/CLAUDE.md forbids softening one to make a PR pass. Nothing that
+# This is NOT softening the gate, and the distinction matters because softening
+# a gate to make a PR pass is forbidden outright here. Nothing that
 # can run here is skipped. The Docker halves are not failing — they are
 # INAPPLICABLE, there is no subject for them to check, and a gate that reports a
 # failure where no subject exists trains the reader to ignore it. That is the
@@ -73,7 +73,7 @@ HISTORY_DIR="$HOME/.claude/pr-check-history"
 # So template mode: judges every dual check on its LOCAL half alone, drops the
 # three that have no local half whatsoever (lockfiles, typecheck, tests), and
 # ADDS the check that is authoritative for a template and has no counterpart in
-# an application — the audit suite that CI runs. See TEMPLATE-GAPS.md SL-1.
+# an application — the audit suite that CI runs.
 TEMPLATE_MODE=false
 [[ -f "$PROJECT_ROOT/copier.yml" ]] && TEMPLATE_MODE=true
 
@@ -134,8 +134,8 @@ esac
 # The promotion tier is `testing` and above. A PR opened FROM any of those targets a
 # promotion branch, so it must clear the higher floor; a feature branch targets `testing`
 # and clears the always-floor. CI reaches the same answer from the other side, keying off
-# the PR's BASE branch (.github/workflows/test.yml). Both numbers are owned by
-# code/docs/testing/COVERAGE.md — never edit one here without moving it there first.
+# the PR's BASE branch. Both numbers are owned by the project's coverage standard — never
+# edit one here without moving it there first.
 case "$BRANCH_TYPE" in
   testing|dev|staging|main)
     BRANCH_TIER="promotion"
@@ -254,8 +254,8 @@ DOCKER_PNPM="n/a"  # no Node toolchain in the django image — pnpm is host-only
 
 # The code-review-graph refresh is incremental: it diffs against a git ref, so an untracked
 # source file is never parsed and the refresh still reports success. Warn rather than gate —
-# staging is a judgement about what belongs in the commit, not a quality failure. The rule this
-# serves is `.claude/CLAUDE.md` Section 6; the mechanism is `code/docs/CODE-REVIEW-GRAPH.md`.
+# staging is a judgement about what belongs in the commit, not a quality failure. What it
+# serves is the commit gate that requires the graph refreshed over staged work.
 UNGRAPHED=$(git -C "$PROJECT_ROOT" ls-files --others --exclude-standard 2>/dev/null \
   | grep -cE '\.(sh|bash|py|ts|tsx|js|mjs|cjs|rs)$' || true)
 [[ "${UNGRAPHED:-0}" -gt 0 ]] && \

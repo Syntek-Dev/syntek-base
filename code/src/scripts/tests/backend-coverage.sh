@@ -149,11 +149,11 @@ printf '[backend-coverage] Auth coverage check: apps/%s/ line coverage must meet
 # A standalone `coverage report` exec cannot resolve the `.coverage` data file against
 # `[tool.coverage.run] source = ["apps"]` from the container WORKDIR (/workspace) — the `apps`
 # package actually lives at code/src/django/apps, so coverage maps nothing and fails closed with
-# "No data" regardless of the real number (GAP-BACKEND-COVERAGE-AUTH-GATE). Instead we derive the
-# apps/users aggregate LINE coverage directly from the Cobertura coverage.xml Phase 2 just wrote:
-# paths there are recorded as code/src/django/apps/users/…, and the pyproject `omit` (migrations,
-# tests, __init__) is already honoured in the XML. Fails closed if the XML is missing/unparseable
-# or if no apps/users lines are present.
+# "No data" regardless of the real number. Instead we derive the apps/users aggregate LINE
+# coverage directly from the Cobertura coverage.xml Phase 2 just wrote: paths there are recorded
+# as code/src/django/apps/users/…, and the pyproject `omit` (migrations, tests, __init__) is
+# already honoured in the XML. Fails closed if the XML is missing/unparseable or if no apps/users
+# lines are present.
 "${DC_TEST[@]}" exec -T django-test \
   python - "$CONTAINER_OUTPUT/coverage.xml" "$AUTH_APP" <<'PY'
 import sys

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
 # copy-slop.sh: the PROSE half of the AI-slop audit. Checks the machine-checkable
-#               clauses of how-to/src/BRAND-VOICE.md Section 4 — the copy tells that
-#               VISUAL-DESIGN.md Section 6 marks `[gate: prose]` and hands to this leg —
-#               at the two tiers Section 6 defines:
+#               brand-voice clauses of Section 4 — the copy tells the visual-design
+#               doctrine marks `[gate: prose]` and hands to this leg — at two tiers:
 #                 [gate: fail]  an unambiguous match. Exit 1, blocks
 #                 [gate: warn]  a threshold, a ratio, or a word that is sometimes
 #                               correct English. Reported, exit stays 0
-#               Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
+#               A threshold on vocabulary fails correct work, which is why it warns
+#               rather than blocks: a script does not overrule a writer.
 #
 # Clauses, and the tier each is checked at:
 #
@@ -52,9 +52,10 @@
 #                                         warns and is freely silenced.
 #
 # NOT owned here, deliberately:
-#   - The em dash is copy-emdash.sh's, and stays there. This script never looks at one.
+#   - The em dash belongs to the audit written for it alone, and stays there. This script
+#     never looks at one.
 #   - Bold applied to a whole sentence, though it is a real tell: its input is MARKUP,
-#     so it is template-slop.sh's `bold-whole-sentence` by the input-language split.
+#     so it belongs to the markup half of this family by the input-language split.
 #   - Every [judgement] clause in Section 4, because each needs the MEANING of the surrounding
 #     copy and no grep has that: the tricolon whose third item is filler, the rhetorical
 #     question as a CATEGORY (only the named phrases above are gated), a heading that
@@ -62,11 +63,11 @@
 #     reader just read. A clean run here does not mean those were honoured — it means no
 #     script was ever going to be the thing that checked them.
 #
-# SCOPE, AND THE ONE THING THIS MUST NEVER SCAN. BRAND-VOICE.md Section 4 governs copy a USER
+# SCOPE, AND THE ONE THING THIS MUST NEVER SCAN. The brand voice governs copy a USER
 # READS. It does NOT govern instructional documentation, code comments, commit messages or
-# ADRs, which are engineering prose. Pointing this script at `**/*.md` would fight this
-# repository's own guides and fail on them — so the scan is the same two directories
-# copy-emdash.sh reads, and nothing else:
+# decision records, which are engineering prose. Pointing this script at `**/*.md` would
+# fight this repository's own guides and fail on them — so the scan is the two marketing
+# directories and nothing else:
 #   code/src/django/apps/marketing/pagedata   (*.py  — page copy modules)
 #   code/src/django/apps/marketing/templates  (*.html — marketing templates)
 # The other registers Section 4 names (product UI, notifications, support articles) have no home
@@ -77,8 +78,8 @@
 # comment is not copy. In a template it sees text nodes plus a closed set of user-visible
 # attributes (alt, title, placeholder, aria-label, content), never class names, URLs,
 # `{% tags %}`, `{{ variables }}`, `{# comments #}`, or the contents of pre/code/script/
-# style/verbatim. That narrowing is Section 6's "scope the scan narrowly" rule: seam-contract.sh
-# flagged 34 issues on its first draft, 33 of them false.
+# style/verbatim. That narrowing is the "scope the scan narrowly" rule: a sibling audit in
+# this folder flagged 34 issues on its first draft, 33 of them false.
 #
 # NO-OP WHEN ABSENT. `apps/marketing/` does not exist at template baseline, so the script
 # exits 0 with a note rather than failing, which is what lets it run unconditionally in CI.
@@ -100,8 +101,7 @@
 # It applies at BOTH TIERS, and the reason is not the tier — it is whether the finding has a
 # line to annotate. A warning a writer deliberately earned ("a robust seal") is exactly the
 # case an annotation exists for. What cannot be annotated is `exclamation-count`, which is a
-# per-file count and names no line; that, not the tier, is the real boundary
-# (VISUAL-DESIGN.md Section 6).
+# per-file count and names no line; that, not the tier, is the real boundary.
 #
 # Usage: copy-slop.sh [--output FORMAT] [--output-file PATH] [--quiet] [--path PATH]
 #                     [--help]
@@ -116,13 +116,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
-# Each entry: "<dir>:<glob>" — the same two scopes copy-emdash.sh reads.
+# Each entry: "<dir>:<glob>" — the two marketing copy surfaces, and nothing else.
 SCOPES=(
   "code/src/django/apps/marketing/pagedata:*.py"
   "code/src/django/apps/marketing/templates:*.html"
 )
 
-# At most one exclamation mark per surface (BRAND-VOICE.md Section 4). One file is the proxy.
+# At most one exclamation mark per surface. One file is this script's proxy for a surface.
 MAX_EXCLAMATIONS=1
 
 # ── Defaults ──────────────────────────────────────────────────────────────────

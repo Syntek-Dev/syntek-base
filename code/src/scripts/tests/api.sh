@@ -145,7 +145,7 @@ fi
 #   manual — requests that can't pass in a normal run (rate-limit needs >60 rapid requests).
 #   wip    — requests blocked on test-data/service infrastructure not present in the test stack
 #            (seeded SEO records, a seeded client + Cloudinary mock, a seeded blog post, and the
-#            not-yet-implemented user(id) endpoint). See BUG-API-SUITE-UNRUN-09-06-2026.md.
+#            not-yet-implemented user(id) endpoint).
 # The request template lives outside the collection root so recursion never picks it up.
 ( cd "$COLLECTION" && \
   BRUNO_VAR_test_password="${BRUNO_VAR_test_password}" \

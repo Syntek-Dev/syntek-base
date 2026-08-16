@@ -7,17 +7,16 @@
 #     · Django TEMPLATE issues. Ruff cannot see a .html file at all, so `{% autoescape
 #       off %}`, `|safe`, and a template variable interpolated into an Alpine expression
 #       or an inline script are unscanned today.
-#     · Cross-file taint. pyproject.toml already enables ruff's "S" ruleset
-#       (flake8-bandit), which runs per file via code/src/scripts/syntax/lint.sh. A
-#       per-file linter flags a bare eval(); it cannot see that the argument came off
-#       request.GET two modules away.
+#     · Cross-file taint. Ruff's "S" ruleset (flake8-bandit) is already enabled and runs
+#       per file in the lint step. A per-file linter flags a bare eval(); it cannot see
+#       that the argument came off request.GET two modules away.
 #
-#   It does NOT duplicate code/src/scripts/audits/security.sh, which is CVE-only
-#   (pip-audit + pnpm audit over the dependency tree).
+#   It does NOT duplicate the dependency CVE audit, which reads no source at all —
+#   pip-audit and pnpm audit over the dependency tree.
 #
 #   ENGINE AND LICENCE (settled by grilling; do not change without re-grilling):
-#     · Engine: Opengrep (github.com/opengrep/opengrep), plain LGPL-2.1, no Commons
-#       Clause. Running it over this codebase propagates nothing to the scanned code.
+#     · Engine: Opengrep, plain LGPL-2.1, no Commons Clause. Running it over this
+#       codebase propagates nothing to the scanned code.
 #     · Rules: written in-house, in rules/, from this repository's own guides. No rule
 #       text is vendored, copied, adapted or paraphrased from opengrep-rules
 #       (LGPL-2.1 plus a Commons Clause, which would propagate into every generated
@@ -27,15 +26,14 @@
 #     · The scan therefore runs with --config pointed at the local rules directory.
 #       Never --config p/... : that fetches the registry rulesets this decision rejects.
 #
-#   OPTIONAL ON A LAPTOP, MANDATORY IN CI (settled by grilling; N-007 on
-#   MAP-BASE-HEALTH). Opengrep is not in install.sh, pyproject.toml or package.json, so
-#   an ordinary local run still prints how to get it, writes its report, and exits 0 —
-#   a developer who has not installed an optional engine is not a build failure.
-#   That contract is only defensible because CI carries the other half:
-#   .github/workflows/audit-static-analysis.yml installs the pinned engine, verifies its
+#   OPTIONAL ON A LAPTOP, MANDATORY IN CI (settled by grilling). The engine is declared
+#   in no install script and no dependency manifest here, so an ordinary local run still prints how to get
+#   it, writes its report, and exits 0 — a developer who has not installed an optional
+#   engine is not a build failure. That contract is only defensible because CI carries
+#   the other half: the job that owns this audit installs the pinned engine, verifies its
 #   signature, runs --self-test, and fails if any of that does not happen. Without that
-#   job this script was a gate nobody had ever watched run — "an audit that cannot run
-#   where it ships is one nobody ever sees fail" (the audits CONTEXT.md).
+#   job this script was a gate nobody had ever watched run, and an audit that cannot run
+#   where it ships is one nobody ever sees fail.
 #
 #   OPTIONAL IS NOT THE SAME AS UNREACHABLE, and for a while it was. There was no local
 #   route to the engine at all: the instruction here said pick an asset, chmod +x it and
@@ -43,18 +41,19 @@
 #   policy that this is the first downloaded binary in the toolchain and does not arrive
 #   unverified. So a rule could be written, committed and released without its author ever
 #   watching it run, and the only thing standing between a broken rule and a green CI was
-#   a fixture nobody could exercise. development/install-opengrep.sh is that route, and it
-#   verifies the same signature against the same pinned identity CI does.
+#   a fixture nobody could exercise. The signature-verifying installer named in the hint
+#   below is that route, and it checks the same signature against the same pinned identity
+#   CI does.
 #
 #   VERSION PIN. The engine version lives in the root .opengrep-version, read here and
-#   by the CI job, so there is one source of truth. It joins .nvmrc, .python-version and
-#   code/src/rust/rust-toolchain.toml as this repository's fourth toolchain pin.
+#   by the CI job, so there is one source of truth. It is this repository's fourth
+#   toolchain pin, beside the Node, Python and Rust ones.
 #
 #   SELF-TEST. --self-test scans fixtures/static-analysis/{broken,clean} and asserts the
 #   rules separate them: broken/ must trip every rule id, clean/ must trip none. It
-#   exits 2 without the engine where the ordinary scan exits 0 — the render-slop.sh
-#   precedent, and for its reason: a proof that cannot fail is worse than no proof,
-#   because its green result is believed.
+#   exits 2 without the engine where the ordinary scan exits 0 — the precedent the
+#   rendered-slop audit set, and for its reason: a proof that cannot fail is worse
+#   than no proof, because its green result is believed.
 #
 # Usage: static-analysis.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                           [--path PATH] [--self-test] [--help]
@@ -214,7 +213,7 @@ fi
 # ── Self-test ─────────────────────────────────────────────────────────────────
 # Scans the fixture pair and asserts the rules separate it. Exits 2 rather than 0 when
 # it cannot run, which is the opposite of the ordinary scan's contract and deliberate:
-# an unrunnable proof reports green and is believed (render-slop.sh, same reasoning).
+# an unrunnable proof reports green and is believed.
 if $SELF_TEST; then
   ST_TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
   log ""

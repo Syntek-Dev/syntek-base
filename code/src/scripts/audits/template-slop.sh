@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 #
-# template-slop.sh: the MARKUP half of the AI-slop audit. Checks the three
-#                   VISUAL-DESIGN.md Section 4.1 clauses whose input is Django template
-#                   markup, at the two tiers Section 6 defines:
+# template-slop.sh: the MARKUP half of the AI-slop audit. Checks the three universal
+#                   visual-language clauses whose input is Django template markup, at the
+#                   two tiers the doctrine defines:
 #                     [gate: fail]  an unambiguous match. Exit 1, blocks
 #                     [gate: warn]  a threshold or a ratio. Reported, exit stays 0
-#                   Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
+#                   The tiers split that way because a threshold on composition fails
+#                   correct work, and a script does not overrule a designer.
 #
 # Clauses, and the tier each is checked at:
 #
 #   [gate: fail]  emoji-in-chrome
 #                 An emoji in a heading or in UI chrome. Icons are to come from the
-#                 project's single icon set, to be delivered by the {% icon %} tag (the
-#                 rule is VISUAL-DESIGN.md doctrine; neither the tag nor any template
-#                 exists at baseline), so an emoji glyph standing in for an icon is an
-#                 unambiguous match. Chrome is a NAMED,
-#                 CLOSED element set (below) rather than "the whole template": an
-#                 emoji in body prose is not what Section 4.1 bans, and flagging it would be
-#                 a false positive.
+#                 project's single icon set, to be delivered by the {% icon %} tag (a
+#                 standing rule; neither the tag nor any template exists at baseline), so
+#                 an emoji glyph standing in for an icon is an unambiguous match. Chrome
+#                 is a NAMED, CLOSED element set (below) rather than "the whole
+#                 template": an emoji in body prose is not what the clause bans, and
+#                 flagging it would be a false positive.
 #
 #   [gate: warn]  pill-above-heading
 #                 A pill/eyebrow above every heading. Pills label taxonomy; a pill on
@@ -29,22 +29,23 @@
 #                 ratio, and warned for the same reason.
 #
 #   [gate: warn]  bold-whole-sentence
-#                 BRAND-VOICE.md Section 4 Structure: bold the term, not the thought. Bolding
+#                 The brand-voice structure rule: bold the term, not the thought. Bolding
 #                 whole sentences is one of the most recognisable machine-authored
-#                 signatures. It lives HERE and not in copy-slop.sh because its input is
+#                 signatures. It lives HERE and not in the prose half because its input is
 #                 markup — <strong>/<b> — which is the same input-language split that put
-#                 the desktop leg in desktop/style-check.sh. It warns because a bolded
+#                 the desktop leg with the desktop scripts. It warns because a bolded
 #                 lede is a real editorial device, and only a reader knows which this is.
 #                 Fires when a bolded run runs to 8+ words, or carries sentence-ending
 #                 punctuation across 4+ words.
 #
-# NOT owned here, deliberately: the inline-gradient tell is css-gradients.sh's, the
-# phantom-token check is css-tokens.sh's, and the copy tells (em dash, filler copy)
-# are copy-emdash.sh's and the brand-voice guide's. Every [judgement] clause belongs
-# to the reviewer and no script decides one. `undifferentiated-buttons` is the one
-# clause with two inputs: css-slop.sh judges it from the STYLESHEET (variant rules
-# that do not exist), this script from the MARKUP (buttons used without a variant).
-# One clause name, two halves, neither able to see the other's evidence.
+# NOT owned here, deliberately: the inline-gradient tell and the phantom-token check
+# belong to the stylesheet guards, and the copy tells (em dash, filler copy) to the prose
+# guard and to the brand-voice standard, which is a reviewer's to enforce rather than a
+# script's. Every [judgement] clause belongs to the reviewer and no script decides one.
+# `undifferentiated-buttons` is the one clause with two inputs: the CSS half judges it
+# from the STYLESHEET (variant rules that do not exist), this script from the MARKUP
+# (buttons used without a variant). One clause name, two halves, neither able to see the
+# other's evidence.
 #
 # Scopes scanned (*.html only):
 #   code/src/django/templates    (project template directory)
@@ -53,9 +54,9 @@
 # NO-OP WHEN ABSENT. The surface is empty at template baseline (no templates and no
 # components exist until the first feature builds them), so the script exits 0 with a
 # note rather than failing. That is what lets it run unconditionally in CI, and it
-# mirrors mobile-tokens.sh on a web-only project. A --output run still writes a clean,
-# zero-finding report on that path, so a consumer that runs the audit and then reads
-# the report file never finds it missing.
+# mirrors what the mobile token audit does on a web-only project. A --output run
+# still writes a clean, zero-finding report on that path, so a consumer that runs the
+# audit and then reads the report file never finds it missing.
 #
 # Chrome element set (deliberately closed and narrow): h1 h2 h3 h4 h5 h6, button,
 # label, summary, legend, th, caption, nav, title. An emoji counts only when it sits
@@ -91,8 +92,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
-# The third scope is design-time. See css-slop.sh for why consolidated wireframes join
-# this family by input language, and why stage 1 does not.
+# The third scope is design-time: a consolidated wireframe is a styled HTML screen, so by
+# input language it belongs here. The earlier stage holds one screen per story and stays
+# out of scope, because the ratios below are properties of a page SET and that set only
+# exists whole once the screens are consolidated.
 SCOPES=(
   "code/src/django/templates"
   "code/src/django/components"

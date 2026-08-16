@@ -19,9 +19,9 @@ django-alpine-x-html-raw-sink. #}
       <span x-text="name"></span>
     </div>
 
-    {# The same rule, on the four shapes its old hand-written attribute list missed. Each is the
-    identical injection in an attribute Alpine evaluates identically; each reported clean until the
-    list was inverted into a deny-list. MAP-BASE-HEALTH N-034. #}
+    {# The same rule, on four shapes a hand-written attribute list missed. Each is the identical
+    injection in an attribute Alpine evaluates identically, and each reported clean while the rule
+    named directives one by one instead of excluding the few that take no expression. #}
     <template x-for="item in {{ items }}"><li x-text="item"></li></template>
     <div x-modelable="{{ bound_property }}"></div>
     <div x-id="['{{ id_prefix }}']"></div>

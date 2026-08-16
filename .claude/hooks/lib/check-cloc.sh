@@ -1,5 +1,5 @@
 # check-cloc.sh — line-count enforcement via cloc.sh (local only).
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, SCRIPTS, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_cloc() {

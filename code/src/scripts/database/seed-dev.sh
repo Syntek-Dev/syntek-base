@@ -82,9 +82,9 @@ log ""
 
 # ── Step 1: Dev users (superuser + staff) ─────────────────────────────────────
 # Credentials are sourced from .env.dev (set -a) so quoted values are stripped
-# the same way docker compose and shell.sh interpret them — a naive grep|cut
-# keeps surrounding quotes and bakes them into the password. Values are injected
-# into the container via -e (compose --env-file only substitutes YAML vars).
+# the same way docker compose interprets them — a naive grep|cut keeps surrounding
+# quotes and bakes them into the password. Values are injected into the container
+# via -e (compose --env-file only substitutes YAML vars).
 bold "  Seeding dev users…"
 
 if [[ -f "$ENV_FILE" ]]; then

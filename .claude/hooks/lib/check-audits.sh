@@ -2,7 +2,7 @@
 #
 # TEMPLATE MODE ONLY. In a generated project the eight application checks are the
 # gate and this one does not run; in syntek-base itself the application checks
-# have no subject (see pre-pr-check.sh Section 2b) and THIS is the substantive gate —
+# have no subject and THIS is the substantive gate —
 # the template's product is its structure, its routing and its documentation, and
 # that is exactly what these scripts read.
 #
@@ -33,7 +33,7 @@
 # desktop, CSS). One that fails for want of a surface is a bug in that audit, and
 # surfacing it here is correct rather than something to filter out.
 #
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_audits() {
@@ -62,19 +62,19 @@ _check_audits() {
   # what a generated project receives still matches this repository, and that it can
   # be generated at all. Nothing in the eight application checks looks at them.
   #
-  # SCOPED BY DIRECTORY SINCE 16/08/2026, and the glob it replaces is why. This loop
-  # read `shipped-*.sh` — the drifting list this file's own header warns about, wearing
+  # SCOPED BY DIRECTORY, and the glob it replaces is why. This loop once read
+  # `shipped-*.sh` — the drifting list this file's own header warns about, wearing
   # a wildcard so it looked like a scope. It covered two of the four scripts in that
   # directory and silently excluded check-template-tokens.sh and
   # check-template-parsers.sh, which are the two that answer "can this template still
-  # generate at all". MAP-BASE-HEALTH N-032 is what that cost: token syntax broke
-  # generation outright and this gate went on reporting every audit clean.
+  # generate at all". That is what it cost: token syntax broke generation outright
+  # and this gate went on reporting every audit clean.
   #
   # Not --self-test here, and that is a scope decision rather than an oversight. Proving
   # a detector still discriminates already has two homes — the `template-integrity`
-  # pre-commit leg in lefthook.yml and the jobs in
-  # .github/workflows/audit-template.yml, both of which run the self-test before the
-  # check. A third copy at this gate would buy nothing and cost the run twice over.
+  # pre-commit leg and the template-audit CI jobs, both of which run the self-test
+  # before the check. A third copy at this gate would buy nothing and cost the run
+  # twice over.
   for script in "$PROJECT_ROOT"/.github/scripts/*.sh; do
     [[ -f "$script" ]] || continue
     name=$(basename "$script")

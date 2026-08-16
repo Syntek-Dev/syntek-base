@@ -3,7 +3,7 @@
 # There is no JavaScript type-check leg: the site is server-rendered and the project carries
 #   no TypeScript. The Django templates are covered by the Python gate (basedpyright) and
 #   backend pytest.
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, DEV_COMPOSE, _dual_result, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_typecheck() {

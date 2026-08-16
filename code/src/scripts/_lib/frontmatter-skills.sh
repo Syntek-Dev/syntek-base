@@ -2,25 +2,24 @@
 #
 # frontmatter-skills.sh — the one reader for a routing `skills:` list.
 #
-# Sourced, never executed. Two callers, asking opposite questions of the same key
-# (.claude/CLAUDE.md Section 2.5):
+# Sourced, never executed. Two audits ask opposite questions of the same routing key:
 #
-#   audits/routing-skills.sh      outbound — does every name RESOLVE to a skill directory
-#   audits/skill-conformance.sh   inbound  — does the named skill CITE the guide back (clause 14)
+#   the outbound one   does every name RESOLVE to a skill directory
+#   the inbound one    does the named skill CITE the guide back
 #
 # WHY IT IS SHARED, AND WHAT THE TWO COPIES COST. They had already drifted, and in the
-# direction that matters: clause 14 read the multi-line form, routing-skills.sh selected
-# with /^skills:[[:space:]]*\[/ and needed the opening bracket on the SAME LINE as the
-# key. Prettier wraps a long array across lines at its print width, so
-# code/docs/NEGATIVE-SPACE.md writes one — and that file was skipped whole. Its eight
-# names had never been validated, while the audit reported "541 skill name(s) across 235
-# file(s) ... Every routing skill resolves". The count is the tell: honest about what it
-# checked, silent about what it never opened. Proven by inserting a fictional name into
-# that array and watching the run stay green (MAP-BASE-HEALTH N-030).
+# direction that matters: the inbound reader read the multi-line form, the outbound one
+# selected with /^skills:[[:space:]]*\[/ and needed the opening bracket on the SAME LINE
+# as the key. Prettier wraps a long array across lines at its print width, so one shipped
+# guide writes one — and that file was skipped whole. Its eight names had never been
+# validated, while the audit reported "541 skill name(s) across 235 file(s) ... Every
+# routing skill resolves". The count is the tell: honest about what it checked, silent
+# about what it never opened. Proven by inserting a fictional name into that array and
+# watching the run stay green.
 #
-# So this is the third parser deleted rather than the third parser written, on the
-# _lib/conflict-markers.sh precedent: a pattern with two enforcers belongs here, and the
-# weaker copy is always the one running where it matters.
+# So this is the third parser deleted rather than the third parser written: a pattern with
+# two enforcers belongs here, and the weaker copy is always the one running where it
+# matters.
 #
 # WHAT COUNTS AS A ROUTING DECLARATION. The leading frontmatter block only — byte 0 must
 # open it, and reading stops at its terminator. A `skills:` line in prose or inside a

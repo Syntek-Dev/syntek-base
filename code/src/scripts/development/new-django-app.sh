@@ -127,8 +127,8 @@ CTXEOF
 
 # Every directory with a CONTEXT.md must also have a CLAUDE.md: `@./CONTEXT.md` to
 # auto-load the tree, a Read order line, then the four H2 sections. A bare
-# `@./CONTEXT.md` stub is the pre-03/07/2026 convention and is not acceptable
-# (.claude/CLAUDE.md Section 8) — fill the TODOs as the app takes shape.
+# `@./CONTEXT.md` stub is the superseded convention and is not acceptable. Fill the TODOs
+# as the app takes shape.
 cat > "${APP_DIR}/CLAUDE.md" <<CLAUDEEOF
 @./CONTEXT.md
 

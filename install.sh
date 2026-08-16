@@ -310,7 +310,7 @@ if [[ "$RUNTIME" == "none" ]]; then
 fi
 
 # The CLI existing does not mean the daemon is reachable. This is the check that
-# actually predicts whether `server.sh up` will work.
+# actually predicts whether the dev stack will start.
 if ! docker info >/dev/null 2>&1; then
   err "The docker CLI is installed but the daemon is not reachable."
   case "$HOST_OS" in

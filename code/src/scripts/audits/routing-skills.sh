@@ -2,12 +2,12 @@
 #
 # routing-skills.sh — Every skill named in routing frontmatter must exist.
 #
-#                     Routing frontmatter (.claude/CLAUDE.md Section 2.5) tells an agent which
-#                     skills to load for a piece of work. Nothing validated the names.
-#                     A `skills: [bugfix]` naming a directory that does not exist was
-#                     green in every audit, in lefthook, and in CI — the skill simply
-#                     never arrived, and the work proceeded without the conventions it
-#                     was supposed to carry. Silence is the whole failure mode.
+#                     Routing frontmatter tells an agent which skills to load for a
+#                     piece of work. Nothing validated the names. A `skills: [bugfix]`
+#                     naming a directory that does not exist was green in every audit,
+#                     in lefthook, and in CI — the skill simply never arrived, and the
+#                     work proceeded without the conventions it was supposed to carry.
+#                     Silence is the whole failure mode.
 #
 #                     One check, one rule: every name in a frontmatter `skills:` list
 #                     resolves to a .claude/skills/<name>/ directory.
@@ -23,8 +23,8 @@
 #                     for that work, or whether a needed skill was omitted. Both stay
 #                     reviewer judgement.
 #
-# Scope scanned:  tracked AND untracked-but-not-ignored *.md, matching doc-references.sh —
-#                 the file you just wrote is the one most needing the check.
+# Scope scanned:  tracked AND untracked-but-not-ignored *.md — the file you just wrote is
+#                 the one most needing the check.
 #                 Only the leading `---` frontmatter block is read; a `skills:` line in
 #                 prose or inside a fenced example is never a routing declaration.
 #
@@ -34,7 +34,7 @@
 #                 skipped whole and its names were never validated, while the run reported
 #                 a confident count of everything else. Both selectors below (the scan and
 #                 the co-variance file list) now go through the shared reader, which is the
-#                 one that already handled the wrapped form. MAP-BASE-HEALTH N-030.
+#                 one that already handled the wrapped form.
 #
 # SELF-TEST. --self-test runs the resolve clause over fixtures/routing-skills/{broken,clean}
 #            and asserts it separates them, with each fixture pair written in BOTH the
@@ -113,7 +113,7 @@ fi
 
 # ── What we scan ─────────────────────────────────────────────────────────────
 #
-# The audit fixtures are excluded, on the docs-pairing.sh precedent: this script runs
+# The audit fixtures are excluded, as the documentation-pairing audit excludes its own: this script runs
 # against the whole tree, so a fixture carrying a deliberately unresolvable name would
 # fail the ordinary run rather than prove anything. They are reached only through
 # --self-test, which points the same collection at them on purpose.
@@ -187,7 +187,7 @@ covariance=0
 # That clause is DESCRIBED here, never quoted. This script ships, and copier renders
 # every shipped file (`_templates_suffix` is empty), so a literal token written in this
 # comment is not an example — it is a substitution, and a generated project would
-# receive the line reading `when: "True"`. check-template-tokens.sh is what catches it.
+# receive the line reading `when: "True"`. The template-token check is what catches it.
 when_flag() { # flag → the flag its question is conditional on, or empty
   awk -v q="$1:" '
     $0 ~ "^" q "[[:space:]]*$" { inq = 1; next }
@@ -224,12 +224,12 @@ gate_flags_for() { # path → flags, one per line
 # Which files name this skill in their routing frontmatter — through the SAME shared
 # reader the resolve clause uses.
 #
-# THIS SELECTOR WAS THE SECOND HALF OF N-030 and the map charted only the first. It read
-# `head -20 | grep -E "^skills:.*<name>"`, so it was blind twice over: the name had to sit
-# on the key's own line, which a Prettier-wrapped array guarantees it does not, and the
-# frontmatter had to fit in twenty lines, which nothing promises. A gated skill named
-# inside a wrapped array was therefore exempt from the co-variance clause by accident —
-# the clause that exists precisely so this audit needs no allowlist.
+# THIS SELECTOR WAS THE SECOND HALF OF THE WRAPPED-ARRAY BLIND SPOT DESCRIBED ABOVE, and
+# only the first half was noticed. It read `head -20 | grep -E "^skills:.*<name>"`, so it was blind twice over:
+# the name had to sit on the key's own line, which a Prettier-wrapped array guarantees it
+# does not, and the frontmatter had to fit in twenty lines, which nothing promises. A
+# gated skill named inside a wrapped array was therefore exempt from the co-variance
+# clause by accident — the clause that exists precisely so this audit needs no allowlist.
 #
 # No pipeline into `grep -q` here, deliberately: `grep -q` exits on its first match and
 # SIGPIPEs whatever feeds it, and with `pipefail` on that reads as a failed pipeline. The
@@ -282,7 +282,7 @@ check_gated() { # skill flag
 # WHAT THIS DOES NOT COVER, stated rather than left to be discovered: the co-variance
 # clause's verdict. That reads copier.yml's own _exclude list and when: chain, and a
 # fixture copier.yml would be a second contract drifting against the real one. Only the
-# clause's FILE SELECTOR is proved here — which is the half N-030 broke.
+# clause's FILE SELECTOR is proved here — the half whose blindness went unnoticed.
 ST_FAILS=0
 ST_PROBES=0
 
@@ -337,8 +337,9 @@ self_test() {
   st_probe "broken/inline.md  trips one"        "${FIXTURES_DIR#"$PROJECT_ROOT"/}/broken/inline.md"   1 "no-such-skill-inline"  2
   st_probe "broken/wrapped.md trips one"        "${FIXTURES_DIR#"$PROJECT_ROOT"/}/broken/wrapped.md"  1 "no-such-skill-wrapped" 8
 
-  # The co-variance clause's file selector — N-030's second anchor. clean/wrapped.md names
-  # a copier-gated skill inside a wrapped array; the selector has to find it there.
+  # The co-variance clause's file selector — the parser defect's second half.
+  # clean/wrapped.md names a copier-gated skill inside a wrapped array; the selector has
+  # to find it there.
   ST_PROBES=$((ST_PROBES + 1))
   f="${FIXTURES_DIR#"$PROJECT_ROOT"/}/clean/wrapped.md"
   if [ "$(files_naming_skill stack-rust "$PROJECT_ROOT/$f")" = "$PROJECT_ROOT/$f" ]; then

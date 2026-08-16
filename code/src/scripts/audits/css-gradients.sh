@@ -3,9 +3,9 @@
 # css-gradients.sh — Ban raw inline gradients in component and page CSS.
 #
 #                    A raw linear-/radial-/conic-gradient(...) composed inline in
-#                    component or page CSS is the generic "AI-look" tell
-#                    (code/docs/VISUAL-DESIGN.md Section 4.1 — a universal tell, banned on
-#                    every direction and every surface). Brand gradients are
+#                    component or page CSS is the generic "AI-look" tell — a universal
+#                    one, banned on every visual direction and every surface rather
+#                    than only where it clashes. Brand gradients are
 #                    DB-canonical --gradient-* tokens (static/css/tokens/
 #                    gradients.css) and must be consumed via var(--gradient-*).
 #

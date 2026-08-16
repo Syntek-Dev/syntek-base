@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
 # mobile-tokens.sh — Enforce the token-first law on the MOBILE surface: no raw design
-#                    values in StyleSheet code. The sibling of css-tokens.sh.
+#                    values in StyleSheet code. The sibling of the web token guard.
 #
 #                    Only ONE half of the law needs a script here. The web guard checks
 #                    both "no raw literals" and "the name resolves"; on mobile the second
 #                    half is free, because the emitted token module is TYPED — an
-#                    unresolved token import does not compile, and typecheck.sh already
-#                    fails the build. So this script checks raw literals only.
+#                    unresolved token import does not compile, and the type-check gate
+#                    already fails the build. So this script checks raw literals only.
 #
 # Scope scanned (*.ts, *.tsx):
 #   code/src/mobile        (the whole mobile surface)
@@ -27,7 +27,7 @@
 # and never will, so flagging them would train people to ignore the gate.
 #
 # Escape hatch: put `token-allow` in a comment on the offending line or the line above,
-# with a reason. Mirrors css-gradients.sh's `gradient-allow`. Use it for values that are
+# with a reason. Mirrors the sibling gradient audit's `gradient-allow`. Use it for values that are
 # genuinely structural, never to silence real debt.
 #
 # Usage: mobile-tokens.sh [--output FORMAT] [--output-file PATH] [--quiet] [--path PATH]

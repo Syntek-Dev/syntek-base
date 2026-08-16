@@ -37,8 +37,8 @@
 #
 #                        The tier is the point, not a label. A key nothing defines is a
 #                        format problem; declining a key the runtime does document is a
-#                        CHOICE, and the reader has to be able to tell which they may argue
-#                        with (how-to/docs/skill-authoring/FRONTMATTER.md → Three claims).
+#                        CHOICE, and the reader has to be able to tell which of the two
+#                        they may argue with.
 #
 #                        Clause 12 is the reason `metadata` is admitted at all. It is the
 #                        spec's own extension point for "additional properties not defined by
@@ -62,16 +62,14 @@
 #                        may assume.
 #
 #                        Vendored skills (a symlinked folder — the cloudinary set, refreshed
-#                        from upstream via skills-lock.json) are held to the SPEC half only:
+#                        the skills lockfile) are held to the SPEC half only:
 #                        the published six, with no extension admitted. Hand-editing one to
 #                        satisfy a house rule is undone by the next refresh, so clauses 7-11
 #                        do not apply to them.
 #
-#                        Length is NOT checked here — docs-length.sh owns the 300-line cap
-#                        across all of .claude/**, and one rule with two enforcers drifts.
-#
-#                        Rule: how-to/docs/SKILL-AUTHORING.md
-#                        Spec: https://agentskills.io/specification
+#                        Length is NOT checked here — the instructional-length audit owns
+#                        the 300-line cap across all of .claude/**, and one rule with two
+#                        enforcers drifts.
 #
 # Scope scanned:  .claude/skills/*/SKILL.md
 #                 The four code-review-graph cards (.claude/skills/*.md) are flat files, not
@@ -90,9 +88,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
-# Clause 14 reads a guide's routing `skills:` key. So does routing-skills.sh, asking the
-# opposite question of it — and the two used to carry separate parsers that disagreed
-# about which files even have the key (MAP-BASE-HEALTH N-030). One reader, one home.
+# Clause 14 reads a guide's routing `skills:` key, and so does the outbound routing audit,
+# asking the opposite question of it — and the two used to carry separate parsers that
+# disagreed about which files even have the key. One reader, one home.
 # shellcheck source=../_lib/frontmatter-skills.sh
 source "$SCRIPT_DIR/../_lib/frontmatter-skills.sh"
 
@@ -249,8 +247,8 @@ collect_skills() {
 # second vendored set needs no edit here.
 #
 # Symlink is the whole test, deliberately. A vendored skill is exempt from the house rules
-# because editing it is futile — the next `skills-lock.json` refresh overwrites the file.
-# That is true of a symlink into `.agents/` and false of a copy, which is authored content
+# because editing it is futile — the next lockfile refresh overwrites the file. That is
+# true of a symlink into the vendored tree and false of a copy, which is authored content
 # living here under someone else's name and is held to every clause.
 is_vendored() { [[ -L "${1%/}" ]]; }
 
@@ -327,21 +325,20 @@ EXT_KEYS=" context agent background model "
 # `effort` is here rather than absent for exactly that reason. Unlisted, a skill authoring it
 # reported `[spec 6] … and Claude Code documents no such key` — and the second half of that
 # sentence was false in the gate's own output, which is the tier confusion this script's
-# header exists to prevent. Declined on the merits: settings.json already sets effortLevel
-# project-wide, so a per-skill key either restates it or contradicts .claude/CLAUDE.md Section 4;
-# and it answers HOW HARD THE MODEL THINKS, a property of the caller's session, where the
-# four admitted keys answer WHERE THE RUN HAPPENS, a property of the skill.
+# header exists to prevent. Declined on the merits: this project already sets the effort
+# level once, project-wide, so a per-skill key either restates that or contradicts it; and
+# it answers HOW HARD THE MODEL THINKS, a property of the caller's session, where the four
+# admitted keys answer WHERE THE RUN HAPPENS, a property of the skill.
 DECLINED_EXT_KEYS=" disable-model-invocation effort "
 
 # What a first-party skill may actually author: the two required spec fields, `metadata` for
 # the dependency register clause 12 governs, and the four admitted runtime keys. Everything
-# else is declined by choice — the reasons are in
-# how-to/docs/skill-authoring/FRONTMATTER.md → What is declined, and why.
+# else is declined by choice, not because the runtime would reject it.
 HOUSE_KEYS=" name description metadata context agent background model "
 
 # The only fork targets this project admits. The runtime also accepts a custom subagent from
-# .claude/agents/; that door is closed here by choice, with a reopening test recorded in
-# how-to/docs/skill-authoring/FORK-DECISION.md → The custom-agent door. Clause 13 closes the
+# .claude/agents/; that door is closed here by choice, and reopens only on evidence that a
+# named skill needs a durable capability no built-in target provides. Clause 13 closes the
 # other side of it — this clause refuses the NAME, that one refuses the folder it would live in.
 FORK_AGENTS=" Explore Plan general-purpose "
 
@@ -515,17 +512,17 @@ done < <(collect_skills)
 # Clause 14 — routing frontmatter's reciprocal half, and the only clause here driven from
 # OUTSIDE the skills tree.
 #
-# A guide's `skills: [...]` (.claude/CLAUDE.md Section 2.5) is read by whoever opens the GUIDE.
-# But Section 2.3 has skills fire on DESCRIPTION MATCH, so the dominant path runs the other way:
-# an agent reaches the skill first, and the guide only if the skill names it. Nothing checked
-# that direction. A guide could name a skill for a year while the skill never mentioned the
-# guide, and the doctrine simply never arrived — silence again, the same failure mode
-# routing-skills.sh was written for, one direction round.
+# A guide's routing `skills: [...]` is read by whoever opens the GUIDE. But a skill fires on
+# DESCRIPTION MATCH, so the dominant path runs the other way: an agent reaches the skill
+# first, and the guide only if the skill names it. Nothing checked that direction. A guide
+# could name a skill for a year while the skill never mentioned the guide, and the doctrine
+# simply never arrived — silence again, the same failure mode the outbound routing audit was
+# written for, one direction round.
 #
-# This is deliberately NOT in routing-skills.sh. Route a skill finding by what it is ABOUT:
+# This deliberately does not live in that audit. Route a skill finding by what it is ABOUT:
 # the finding here is that a SKILL is missing something, so it belongs to the skill audit and
-# reports against SKILL.md. routing-skills.sh keeps the outbound half — does the named skill
-# exist — and neither duplicates the other's clause.
+# reports against SKILL.md. The outbound half — does the named skill exist — stays where it
+# is, and neither duplicates the other's clause.
 #
 # SCOPE IS TOP-LEVEL GUIDES ONLY — code/docs/*.md, project-management/docs/*.md,
 # how-to/docs/*.md. A sub-document is reached through its index and the index is what a skill

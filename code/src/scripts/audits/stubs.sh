@@ -16,8 +16,8 @@
 # Rust's `todo!()`, `unimplemented!()` and `unreachable!()` are NOT grepped here. All
 # three are denied at the lint level in every crate's [lints.clippy] — clippy parses
 # Rust, so it cannot be fooled by a macro name in a string or a doc example, and it
-# offers a per-site `#[allow]` carrying a reason. Rule and escape hatch:
-# code/docs/rust/PYO3-BOUNDARY.md. A `// STUB` comment is what clippy cannot see.
+# offers a per-site `#[allow]` carrying a reason, which is also the escape hatch.
+# A `// STUB` comment is what clippy cannot see.
 #
 # The Cargo build tree (`target/`) is excluded: it holds thousands of generated .rs
 # files carrying upstream crates' markers, none of them anyone's to fix here.
@@ -292,8 +292,8 @@ fi
 # Comment markers only. `todo!()`, `unimplemented!()` and `unreachable!()` are denied at
 # the lint level in every crate's [lints.clippy] instead — clippy parses Rust, so it
 # cannot be fooled by a macro name inside a string, a comment or a doc example, and it
-# offers a per-site `#[allow]` that carries a reason where a grep offers nothing.
-# The rule: code/docs/rust/PYO3-BOUNDARY.md → Never panic across the boundary.
+# offers a per-site `#[allow]` that carries a reason where a grep offers nothing. The rule
+# they enforce is that nothing panics across the Python boundary.
 #
 # A `// STUB` comment is the one marker clippy genuinely cannot see, so it stays here.
 #

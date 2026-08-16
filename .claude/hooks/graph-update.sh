@@ -2,18 +2,18 @@
 # graph-update.sh — refresh the code-review-graph, and say so when the refresh could not see
 # everything.
 #
-# Registered as a PostToolUse hook in .claude/settings.json (matcher "Edit|Write|Bash").
+# Registered as a PostToolUse hook on the Edit, Write and Bash tools.
 #
 # WHY A WRAPPER RATHER THAN THE BARE COMMAND. `code-review-graph update` is incremental: it
 # diffs against a git ref, so a file that is new and **unstaged** is never parsed and the update
 # still reports success. The graph therefore looks continuously fresh while systematically
-# missing every untracked source file — the false green that `.claude/CLAUDE.md` Section 6's hard
-# gate depends on not happening. Measured 15/08/2026: a new untracked .py file was absent from
-# the graph after an incremental pass, and present after `git add` + the same pass.
+# missing every untracked source file — the false green that the hard commit gate on a fresh
+# graph depends on not happening. Measured: a new untracked .py file was absent from the graph
+# after an incremental pass, and present after `git add` + the same pass.
 #
 # So this script runs the refresh and then reports what the refresh could not reach. It reports
 # **only when the set changes**, because a notice repeated on every tool call is a notice nobody
-# reads — the same reasoning as context-threshold-handoff.sh's once-per-session 50% tier.
+# reads — the same reasoning as the once-per-session context-threshold advisory.
 #
 # PostToolUse stdout is discarded (written to the debug log, not shown), so the notice is
 # emitted as JSON `systemMessage`, which surfaces to <%DEVELOPER_NAME%>.

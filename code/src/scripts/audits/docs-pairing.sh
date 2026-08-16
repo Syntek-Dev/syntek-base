@@ -15,8 +15,6 @@
 #                   paragraph exists, only a reader can tell it says something. That row
 #                   is deliberately reviewer judgement.
 #
-#                   Rule: code/docs/DOCUMENTATION-PAIRING.md
-#
 # Scope scanned:  every CONTEXT.md and CLAUDE.md tracked in the repository
 #
 # Usage: docs-pairing.sh [--output FORMAT] [--output-file PATH] [--quiet]
@@ -210,8 +208,8 @@ for cld in "${CLAUDES[@]}"; do
 done
 
 # ── Checks 6–9 and the warn tier: the CONTEXT.md shape ────────────────────────
-# Headings that are an instruction wearing an orientation heading. Mapping to the
-# section each one moves to: code/docs/DOCUMENTATION-PAIRING.md Section 5.
+# Headings that are an instruction wearing an orientation heading. Each one moves to a
+# named section of the paired CLAUDE.md, or to the guide that owns the rule.
 BANNED='^#{2,3} +(Rules|Guardrails|Constraints|Global constraints|Requirements|Prerequisites|Quality gates|Hard gates|Standards|Conventions|Naming|Naming convention|Naming conventions|File naming|How to work here|Definition of done)\b'
 
 for ctx in "${CONTEXTS[@]}"; do
@@ -228,7 +226,7 @@ for ctx in "${CONTEXTS[@]}"; do
     fail "$ctx: carries \`**Claude Model:**\` routing metadata — model tier is an operating rule"
 
   # Every top-level row says what it is. A row with a bare name is accurate and is
-  # still not orientation — it is what sync-trees.sh inserts for a human to describe.
+  # still not orientation — it is what the tree generator inserts for a human to describe.
   while IFS= read -r r; do
     fail "$ctx: tree row \`$r\` has no description"
   done < <(awk '

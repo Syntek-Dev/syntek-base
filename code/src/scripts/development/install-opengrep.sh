@@ -7,16 +7,16 @@
 #                       honest because CI carries the other half — but until this script
 #                       there was no local route to the engine at all, so a rule could be
 #                       written, committed and released without its author ever once
-#                       watching it run. "An audit that cannot run where it ships is one
-#                       nobody ever sees fail" (audits/CONTEXT.md) applied to the rule
-#                       author rather than to the gate.
+#                       watching it run. An audit that cannot run where it ships is one
+#                       nobody ever sees fail, and that applies to the rule's author as
+#                       much as it does to the gate.
 #
 #                       The instruction that stood in its place was worse than absent. It
 #                       read: pick the asset for your platform, chmod +x it, put it on
 #                       PATH — an unverified binary, downloaded over the internet, made
-#                       executable by hand. audit-static-analysis.yml states the opposite
-#                       policy outright: this is the first downloaded binary in the
-#                       repository's toolchain and it does not arrive unverified.
+#                       executable by hand. The CI job that runs this audit states the
+#                       opposite policy outright: this is the first downloaded binary in
+#                       the repository's toolchain and it does not arrive unverified.
 #
 #                       COSIGN IS REQUIRED, NOT PREFERRED. There is no degraded path that
 #                       installs an unverified binary with a warning, because the degraded
@@ -31,26 +31,25 @@
 #                       is asserted separately, against what actually landed on disk.
 #
 #                       IT LIVES HERE RATHER THAN BESIDE THE AUDIT IT SERVES, and the reason
-#                       is mechanical: two things glob audits/*.sh and act on every member.
-#                       .claude/hooks/lib/check-audits.sh RUNS each one, so an installer
-#                       shelved there would put a signed 46 MB download inside the pre-PR
-#                       gate; shipped-readme.sh check 4 requires each one in the README's
+#                       is mechanical: two things glob the audit directory and act on every
+#                       member. The pre-PR gate RUNS each one, so an installer shelved there
+#                       would put a signed 46 MB download inside every pre-PR run; the
+#                       template-integrity check requires each one in the README's
 #                       audit-script register, where an installer is not an audit and the row
 #                       would be a lie. Both would need a by-name exception on a scope whose
-#                       own header argues that lists drift silently. development/ globs
-#                       nothing, and install-backend.sh and install-frontend.sh are already
-#                       its neighbours.
+#                       own header argues that lists drift silently. This directory globs
+#                       nothing, and the two other installers are already its neighbours.
 #
 #                       THE SIGNING IDENTITY IS HELD IN TWO PLACES, deliberately and not
-#                       silently: here, and in .github/workflows/audit-static-analysis.yml,
-#                       which installs the engine its own way on a runner that has sudo and
-#                       a known architecture. That is a duplicated constant rather than a
+#                       silently: here, and in the CI workflow for this audit, which installs
+#                       the engine its own way on a runner that has sudo and a known
+#                       architecture. That is a duplicated constant rather than a
 #                       duplicated rule — if upstream moves its release workflow, whichever
 #                       copy is stale fails LOUDLY, because verification simply refuses. A
 #                       version bump updates both together.
 #
 # Pin:          the root .opengrep-version, read and never restated. This repository's
-#               fourth toolchain pin, beside .nvmrc, .python-version and rust-toolchain.toml.
+#               fourth toolchain pin, beside those for Node, Python and Rust.
 #
 # Requirements: curl, base64, cosign. No sudo: the default prefix is a user directory.
 #
@@ -69,7 +68,7 @@ PIN_FILE="$PROJECT_ROOT/.opengrep-version"
 
 RELEASE_BASE="https://github.com/opengrep/opengrep/releases/download"
 
-# Pinned exactly rather than by regex, matching audit-static-analysis.yml: only the
+# Pinned exactly rather than by regex, matching what CI verifies against: only the
 # opengrep release workflow, running on GitHub's OIDC issuer, may have produced this
 # binary. If upstream renames or moves that workflow this fails loudly on the next
 # version bump, which is the correct outcome and better than a regex loose enough to

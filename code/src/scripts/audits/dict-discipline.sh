@@ -2,8 +2,7 @@
 #
 # dict-discipline.sh — Enforce the decidable half of "domain objects over dictionaries":
 #                      a dictionary used as a record in DOMAIN code, where a named type
-#                      belongs. The standard is code/docs/data-structures/TYPES-OVER-DICTIONARIES.md
-#                      and the exceptions are TYPES-EXCEPTIONS.md.
+#                      belongs.
 #
 #                      What a script CAN decide: a bare-dict return, an untyped map
 #                      annotation, HashMap<String, Value>, Record<string, any>, and an
@@ -17,15 +16,15 @@
 #   code/src/rust/crates/*/src      (*.rs, excluding target/)
 #
 #   Test code is NOT in the fail tier — "test fixtures and throwaway scripts" is a listed
-#   exception in TYPES-EXCEPTIONS.md. Marker hygiene (clause M) still runs everywhere,
-#   because an unexplained annotation is unexplained wherever it sits.
+#   exception to the standard. Marker hygiene (clause M) still runs everywhere, because
+#   an unexplained annotation is unexplained wherever it sits.
 #
 # NO-OP WHEN ABSENT — a project without the mobile or Rust surface still exits 0 with a
-# note, mirroring mobile-tokens.sh, so CI needs no step-level guard.
+# note rather than failing, so CI needs no step-level guard.
 #
 # Escape hatch: `DICT-OK: <reason> — confined to <boundary>` in a comment on the offending
 # line or the line above. The reason is MANDATORY — a bare marker is itself a finding
-# (clause M), the same rule audits/CLAUDE.md states for slop-allow and token-allow.
+# (clause M), the same rule the sibling audits apply to slop-allow and token-allow.
 #
 # Usage: dict-discipline.sh [--output FORMAT] [--output-file PATH] [--quiet] [--path PATH]
 #                           [--self-test] [--help]
@@ -224,7 +223,7 @@ run_scan() {
 
 # ── Self-test ─────────────────────────────────────────────────────────────────
 # This repository ships almost no application code, so an ordinary run is green having
-# measured nothing. A gate nobody has watched fail is not a gate — audits/CLAUDE.md.
+# measured nothing. A gate nobody has watched fail is not a gate.
 if $SELF_TEST; then
   bold "dict-discipline.sh --self-test"
 

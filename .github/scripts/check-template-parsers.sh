@@ -3,7 +3,7 @@
 # check-template-parsers.sh — prove every toolchain can still parse its own manifest
 # in the TEMPLATE, before a project is generated.
 #
-# THE DEFECT CLASS. `check-template-tokens.sh` beside this one checks token SHAPE — is it
+# THE DEFECT CLASS. The sibling token check beside this one checks token SHAPE — is it
 # well-formed, is it registered, is a delimiter spelled out. This script checks token
 # POSITION, which is the other half and cannot be done by reading text:
 #
@@ -14,19 +14,19 @@
 #   in a generated project. The gate then proves nothing until after generation, which is the
 #   one place nobody looks.
 #
-# WHY A PROBE AND NOT A LIST OF POSITIONS. Written 15/08/2026 for MAP-BASE-HEALTH N-024,
-# whose charted plan was to teach the sibling script "the handful of positions that qualify".
-# That plan does not survive contact with the evidence: pnpm parses `<%PROJECT_SLUG%>` in
-# package.json's `name` without complaint, in both the root and mobile manifests, while uv
-# rejects the identical token in pyproject.toml's `name` and refuses to load the project.
-# Same syntactic position, opposite verdict — so "is this an identifier position?" is not
-# statically decidable, and any hand-maintained register of positions is just the rule again,
-# one level up, still carried by whoever remembers to read it.
+# WHY A PROBE AND NOT A LIST OF POSITIONS. The obvious plan is to teach the sibling check
+# "the handful of positions that qualify". That plan does not survive contact with the
+# evidence: pnpm parses `<%PROJECT_SLUG%>` in package.json's `name` without complaint, in
+# both the root and mobile manifests, while uv rejects the identical token in
+# pyproject.toml's `name` and refuses to load the project. Same syntactic position, opposite
+# verdict — so "is this an identifier position?" is not statically decidable, and any
+# hand-maintained register of positions is just the rule again, one level up, still carried
+# by whoever remembers to read it.
 #
 # So this script does not look at positions at all. It runs each toolchain's OWN parser and
 # requires success. That catches the class by definition, including the cases a position list
-# would never have held: `--health-cmd` (fixed at 70fc963) broke because `<` and `>` are shell
-# REDIRECTS, not because a name was invalid.
+# would never have held: `--health-cmd` broke because `<` and `>` are shell REDIRECTS, not
+# because a name was invalid.
 #
 # WHAT EACH PROBE COSTS. All are metadata-only — no build, no network beyond a dependency
 # resolve, nothing written to the tree.
@@ -135,9 +135,9 @@ run_probes() {
 
 # ── Self-test ─────────────────────────────────────────────────────────────────
 #
-# The sibling script's rule applies here too: a gate nobody has watched fail is not known to
-# work. Rather than mutate a real manifest, build a synthetic one carrying a token in the
-# exact position that motivated this script, and assert uv rejects it.
+# A gate nobody has watched fail is not known to work. Rather than mutate a real manifest,
+# build a synthetic one carrying a token in the exact position that motivated this script,
+# and assert uv rejects it.
 self_test() {
   local tmpdir rc out
   printf '\033[1m▸ check-template-parsers.sh --self-test\033[0m\n\n'

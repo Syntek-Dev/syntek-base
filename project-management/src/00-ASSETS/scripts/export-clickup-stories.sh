@@ -16,7 +16,7 @@
 #
 # The generated US###-CLIENT.md files are written read-only (0444): this script is
 # the only sanctioned writer. To change one, edit the SOURCE story in 01-STORIES/
-# and re-run. A lefthook pre-commit (precommit-clickup.sh) regenerates them on commit.
+# and re-run. A lefthook pre-commit hook regenerates them on commit.
 #
 # Usage: bash export-clickup-stories.sh [US###] [--help]
 #

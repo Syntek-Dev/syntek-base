@@ -23,7 +23,7 @@ echo "[dev] Starting Uvicorn (--reload; watches .py + templates)..."
 # including django-components templates, whose per-class template cache is cleared by the reload.
 # It handles inode-replacing editors (unlike gunicorn's --reload with the Uvicorn worker, which is
 # flaky). Static (CSS/JS) is served live by WhiteNoise finders — no reload needed. Staging and prod
-# keep Gunicorn + UvicornWorker unchanged (see entrypoint.staging.sh / entrypoint.prod.sh).
+# keep Gunicorn + UvicornWorker unchanged.
 exec uvicorn config.asgi:application \
   --host 0.0.0.0 --port 8000 \
   --reload \

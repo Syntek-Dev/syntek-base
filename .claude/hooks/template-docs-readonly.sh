@@ -10,19 +10,19 @@
 # WHY THEY ARE READ-ONLY. These files describe the template, not your project. Editing one
 # does not change how your project works — it only guarantees a conflict the next time
 # `copier update` runs, because upstream owns the same lines. Every other file in the tree is
-# yours to change (`TEMPLATE-GUIDE/11-CUSTOMISING.md`); these are the two that are not.
+# yours to change; these are the two that are not.
 #
 # WHY IT IS A HOOK AND NOT A DENY RULE OR chmod:
-#   - A `permissions.deny` entry in settings.json would apply in syntek-base too, where these
-#     files are the maintained product and MUST be writable. settings.json ships; a deny rule
-#     cannot tell the two repositories apart. This hook can.
+#   - A `permissions.deny` entry in the project settings would apply in syntek-base too, where
+#     these files are the maintained product and MUST be writable. Those settings ship; a deny
+#     rule cannot tell the two repositories apart. This hook can.
 #   - `chmod 444` would block `copier update` itself from refreshing them, which is the whole
 #     mechanism that keeps them current. Read-only to a human, writable to the updater, is
 #     exactly the split a hook expresses and a file mode cannot.
 #
 # THE DISCRIMINATOR. `copier.yml` is `_exclude`d, so it exists in syntek-base and in NO
-# generated project. Its presence means "this IS the template" and the hook stands down. Same
-# principle as lefthook.yml's `[ -f uv.lock ]` leg.
+# generated project. Its presence means "this IS the template" and the hook stands down. The
+# pre-commit half of this guard tells the two repositories apart on the same principle.
 #
 # Exit 0 allow · exit 2 block (stderr is fed back to the model).
 

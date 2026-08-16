@@ -13,14 +13,12 @@
 #                  comments do not count against it. That is deliberate: it is a budget on
 #                  content, not on formatting, so a table that breathes is not penalised.
 #
-#                  Why this script exists: cloc.sh enforces the 750/800 limit on SOURCE
-#                  files via `wc -l` and passes --exclude-lang=Markdown, so it cannot see
-#                  this rule at all. Several guides nonetheless routed the 300-line check
-#                  to it, which meant the check silently passed on every run. A gate that
-#                  cannot fail is worse than no gate, because it is believed.
-#
-#                  Rule: code/docs/DOCUMENTATION-LENGTH.md (stated in one bullet at
-#                        .claude/CLAUDE.md Section 8, which routes there)
+#                  Why this script exists: the line-count audit enforces the 750/800 limit
+#                  on SOURCE files via `wc -l` and passes --exclude-lang=Markdown, so it
+#                  cannot see this rule at all. Several guides nonetheless routed the
+#                  300-line check to it, which meant the check silently passed on every
+#                  run. A gate that cannot fail is worse than no gate, because it is
+#                  believed.
 #
 # Scope scanned:  tracked (and untracked-but-not-ignored) Markdown that instructs:
 #                   * every CONTEXT.md and CLAUDE.md, wherever it sits
@@ -38,8 +36,8 @@
 # The ratchet (--since):  the warn tier used to print and oblige nobody. A file crossed 270
 #                  and sat there until somebody's unrelated edit was refused at 300, so the
 #                  pressure landed on whoever happened to be writing rather than on whoever
-#                  owned the guide. Measured 15/08/2026: two warn-tier files rose in a single
-#                  day, by edits from two different sessions, neither obliged to notice.
+#                  owned the guide. Measured: two warn-tier files rose in a single day, by
+#                  edits from two different sessions, neither obliged to notice.
 #
 #                  So: below the warn tier, nothing changes. At or above it, a change that
 #                  makes the file LONGER fails unless it carries a DATED reason. That is what
@@ -71,7 +69,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
-# The limit from .claude/CLAUDE.md Section 8. The warn tier is 90% of it — far enough from the
+# The instructional-document limit. The warn tier is 90% of it — far enough from the
 # wall to split deliberately rather than under duress.
 LIMIT=300
 WARN_RATIO=90
@@ -422,7 +420,7 @@ if [[ -n "$SINCE_REF" ]]; then
     # An annotation is a line that is NOTHING BUT the comment. The copy audits keep a guide
     # from failing the rule it defines by never reading instructional Markdown; this one reads
     # nothing else, so the distinction has to live in the shape instead of the scope. A syntax
-    # quoted inline in a sentence — `.claude/CLAUDE.md` Section 8 quotes this one, in backticks
+    # quoted inline in a sentence — the guide stating this rule quotes it, in backticks
     # mid-bullet — is never a whole line on its own, and a real annotation always is.
     marker="$(grep -oE '^[[:space:]]*<!--[[:space:]]*docs-length-allow:.*-->[[:space:]]*$' \
       "$name" | head -1 || true)"
@@ -485,8 +483,8 @@ MISSING_COUNT=$(grep -c . "$TMP_MISSING" || true); MISSING_COUNT=${MISSING_COUNT
 
 if [[ "$TOTAL" -eq 0 ]]; then
   # Nothing instructional in scope is a clean no-op, not an error — the same self-guarding
-  # contract every other audit here honours (CLAUDE.md → Guardrails), and it still writes a
-  # report so a CI job told to collect the artefact always finds one.
+  # contract every other audit here honours, and it still writes a report so a CI job told
+  # to collect the artefact always finds one.
   log "  nothing instructional${TARGET_PATH:+ under $TARGET_PATH} — nothing to check"
 else
   log "  checked $TOTAL instructional file(s) against a $LIMIT-line limit (warn at $WARN_AT)"

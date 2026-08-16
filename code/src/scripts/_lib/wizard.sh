@@ -27,7 +27,7 @@
 # Never write a real secret to stdout, a log, or a tracked file. `write_env` targets
 # .env files, which are gitignored; `.env.*.example` templates take placeholders only.
 #
-# Authored for this project. See .claude/skills/wizard/SKILL.md for how to build one.
+# Authored for this project.
 
 if [[ -t 1 ]] && [[ -z "${NO_COLOUR:-}" ]]; then
   _W_BOLD=$'\033[1m'; _W_DIM=$'\033[2m'; _W_RED=$'\033[31m'

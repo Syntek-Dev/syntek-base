@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # cloc.sh — Count lines per file (wc -l enforcement) and generate a cloc language
-#           breakdown report. Matches the project's file-size limits in CLAUDE.md.
+#           breakdown report. The thresholds below mirror the project's file-size limits, which are set in the
+#            coding standards rather than here.
 #
 #           Per-file thresholds (total file lines):
 #             ≥ 750 lines → WARNING  (printed; does not fail)

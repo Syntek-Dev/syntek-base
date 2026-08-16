@@ -14,8 +14,6 @@
 #                    exists but no longer says what the contract claims. Only the
 #                    same-change rule defends against that.
 #
-#                    Rule: code/docs/architecture/BUILD-OPERATE-SEAM.md
-#
 # Scope scanned:  how-to/src/SERVER-ARCHITECTURE/*.md  (excluding CONTEXT.md, CLAUDE.md)
 #
 # Usage: seam-contract.sh [--output FORMAT] [--output-file PATH] [--quiet]

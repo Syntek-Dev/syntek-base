@@ -25,9 +25,9 @@ finding. #}
 
     {# The five Alpine directives that do NOT take a JavaScript expression, each carrying a server
     value on purpose. Django escapes them and nothing evaluates them, so every one of these is
-    correct — and the deny-list has to stay silent on all five, or inverting it would have bought
-    coverage with false positives. A rule that fires here is a bug in the rule (rules/CLAUDE.md),
-    and this self-test fails on it as loudly as on a missed finding. #}
+    correct, and a rule matching every attribute except a named few has to stay silent on all five —
+    otherwise its wider coverage was bought with false positives. A finding here is a bug in the
+    rule, and the self-test fails on it as loudly as on a missed finding. #}
     <span x-ref="{{ ref_name }}"></span>
     <div x-transition:enter="{{ enter_classes }}"></div>
     <template x-teleport="{{ modal_target }}"></template>

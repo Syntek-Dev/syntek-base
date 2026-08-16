@@ -140,8 +140,7 @@ fi
 # ── Setup ─────────────────────────────────────────────────────────────────────
 cd "$PROJECT_ROOT"
 # Only the Python step needs the stack: basedpyright runs in the django container, while
-# the mobile type-check runs on the host. A mobile-only run works with the stack down,
-# mirroring how a Markdown-only lint.sh run does.
+# the mobile type-check runs on the host, so a mobile-only run works with the stack down.
 if [[ " ${FILE_TYPES[*]} " == *" python "* ]]; then
   check_any_container
 fi

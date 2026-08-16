@@ -4,20 +4,20 @@
 #
 # Fired by Claude Code after every Bash tool call.
 # Exits 0 immediately for any command that is not "gh pr create" / "gh pr new",
-# or if the tool call itself errored (Change 9a).
+# or if the tool call itself errored.
 #
 # When triggered on a successful PR creation:
-#   - Extracts the PR number from tool output, falls back to gh pr view (Change 9b)
+#   - Extracts the PR number from tool output, falls back to gh pr view
 #   - Reads attempt history from ~/.claude/pr-check-history/<branch>.json
 #   - Posts a structured markdown comment with check results, version info,
-#     prior failed attempts, and resolution commits (commit-range, Change 9c)
+#     prior failed attempts, and resolution commits (resolved by commit range)
 #
 # This script never blocks (exits 0 even on comment failure).
 #
 set -uo pipefail
 
 # ── 1  Fast-path guard ────────────────────────────────────────────────────────
-# Change 9a: also skip if the tool call itself returned an error
+# Also skip if the tool call itself returned an error.
 
 INPUT=$(cat)
 
@@ -25,7 +25,7 @@ COMMAND=$(printf '%s' "$INPUT" \
   | python3 -c 'import sys,json; d=json.load(sys.stdin); print(d.get("tool_input",{}).get("command",""))' \
   2>/dev/null || true)
 
-# Change 9a: don't post if gh pr create/new failed.
+# Don't post if gh pr create/new failed.
 # The Bash PostToolUse payload has no guaranteed `isError`/`output` field, so
 # default to "not an error" (the hook only fires after the tool ran) and treat
 # the call as failed only when an error flag is *explicitly* truthy. The
@@ -68,7 +68,7 @@ HISTORY_FILE="$HOME/.claude/pr-check-history/${BRANCH_SAFE}.json"
 PR_FAIL_FILE="$HOME/.claude/pr-check-history/${BRANCH_SAFE}-failure.md"
 
 # ── 3  Extract PR number ──────────────────────────────────────────────────────
-# Change 9b: extract PR number (not just URL), fall back to gh pr view
+# Extract the PR number (not just the URL), falling back to gh pr view.
 
 PR_NUMBER=$(printf '%s' "$TOOL_OUTPUT" \
   | grep -oE '/(pull|pulls)/[0-9]+' | head -1 | grep -oE '[0-9]+' || true)

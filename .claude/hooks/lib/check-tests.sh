@@ -7,15 +7,15 @@
 # and carries no JavaScript test layer, so there is no frontend coverage source and the
 # coverage floor applies to the backend alone.
 #
-# THE NUMBERS ARE NOT DECIDED HERE. code/docs/testing/COVERAGE.md owns them:
-# COVERAGE_THRESHOLD is set by pre-pr-check.sh from the branch tier (75 always, 80 from
-# `testing` upward); AUTH_FLOOR does not tier. Change the guide first, then these.
-# Source: .claude/hooks/pre-pr-check.sh
+# THE NUMBERS ARE NOT DECIDED HERE. The project's coverage standard owns them:
+# COVERAGE_THRESHOLD is set by the caller from the branch tier (75 always, 80 from
+# `testing` upward); AUTH_FLOOR does not tier. Change the standard first, then these.
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: SCRIPTS, BRANCH_TIER, COVERAGE_THRESHOLD, PROJECT_ROOT,
 #       CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT, BACKEND_COV
 
-# The app whose coverage carries the auth floor. Mirrors AUTH_APP in
-# code/src/scripts/tests/backend-coverage.sh — keep the two in step.
+# The app whose coverage carries the auth floor. Mirrors the AUTH_APP the backend
+# coverage script measures — keep the two in step.
 : "${AUTH_APP:=users}"
 AUTH_FLOOR=90
 

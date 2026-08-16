@@ -2,7 +2,7 @@
 #
 # dependency-drift.sh — Report the dependency changes a template update would impose.
 #
-# `template-orphans.sh` catches the update that silently loses your files. This catches
+# The sibling orphan audit catches the update that silently loses your files. This catches
 # the one that silently changes what your project builds against.
 #
 # A template release routinely moves dependency floors, toolchain pins and action

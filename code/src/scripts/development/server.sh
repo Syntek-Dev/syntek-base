@@ -141,8 +141,8 @@ case "$COMMAND" in
     # registers Django's admin at /control/ and nothing else; the marketing, portal,
     # and API prefixes appear here as the apps that serve them are built.
     if [[ -n "$OVERRIDE_DEV_FILE" ]]; then
-      # Worktree stacks isolate by host IP (127.0.0.<story>) — see
-      # docker-compose.us<NNN>.dev.yml for the port that override publishes.
+      # Worktree stacks isolate by host IP (127.0.0.<story>), and the per-story
+      # compose override publishes the port behind that address.
       _host="dev-us${WORKTREE_US_NUM}.<%PROJECT_SLUG%>.localhost"
     else
       # Host 81, not 80 — a local router (e.g. DDEV) commonly holds 127.0.0.1:80.

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # context-threshold-handoff.sh — warn the session before the context window runs out.
 #
-# Registered as a UserPromptSubmit hook in .claude/settings.json.
+# Registered as a UserPromptSubmit hook.
 #
-# Same split as pre-compact-handoff.sh, moved earlier: a hook cannot invoke a skill or stop
-# a turn, so this script measures and reminds while .claude/CLAUDE.md Section 2.6 carries the
-# behaviour. PreCompact alone is too late — by the time compaction fires the window is
-# already spent, and a handoff written under that pressure is the worst one of the session.
+# A hook cannot invoke a skill or stop a turn, so this script measures and reminds while
+# the session-continuity house rule carries the behaviour. The compaction hook makes the
+# same split, later: PreCompact alone is too late — by the time compaction fires the window
+# is already spent, and a handoff written under that pressure is the worst one of the session.
 #
 #   ≥50%  advise  — once per session; steer toward a stopping point.
 #   ≥75%  insist  — every prompt; write the handoff now.

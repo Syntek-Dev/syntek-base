@@ -3,21 +3,21 @@
 # conflict-markers.sh — Ban unresolved git conflict markers anywhere in the tree.
 #
 #                       A committed conflict marker passed every gate this repository had for
-#                       two releases: `.claude/skills/stack-fastmcp/SKILL.md` carried an
-#                       unresolved stash conflict from `3bd49e8`, and Prettier had reformatted
-#                       the markers into *valid Markdown* — so it linted clean, formatted clean,
-#                       and an anchored grep found nothing. It surfaced only because someone
-#                       happened to edit that section.
+#                       two releases: a documentation file carried an unresolved stash
+#                       conflict, and Prettier had reformatted the markers into *valid
+#                       Markdown* — so it linted clean, formatted clean, and an anchored grep
+#                       found nothing. It surfaced only because someone happened to edit that
+#                       section.
 #
 #                       Nothing else owns this check. It spans every file type rather than one
 #                       language, which is why it is its own audit and not a clause inside a
-#                       language-scoped one. The pattern lives in `_lib/conflict-markers.sh`
-#                       and is shared with `development/template-update.sh`, which had its own
-#                       weaker, anchored copy.
+#                       language-scoped one. The pattern is sourced from the shared shell
+#                       library so that the template-update script, which had its own weaker
+#                       anchored copy, matches exactly what this audit matches.
 #
-# Scope scanned:  tracked AND untracked-but-not-ignored files, matching doc-references.sh —
-#                 the file you just wrote is the one most needing the check, and it is not
-#                 tracked yet. Binary files are skipped.
+# Scope scanned:  tracked AND untracked-but-not-ignored files — the file you just wrote is
+#                 the one most needing the check, and it is not tracked yet. Binary files
+#                 are skipped.
 #
 # Exempt:         nothing by path. A deliberate example (how a conflict *looks*) carries
 #                 `conflict-markers: ignore` on the line, the line above, or the opening fence
@@ -91,8 +91,8 @@ cd "$PROJECT_ROOT"
 
 # ── Self-test ────────────────────────────────────────────────────────────────
 # The whole point of this audit is a form that fooled every other gate, so the detector is
-# proven to fire in BOTH directions before it is trusted — the render-slop / static-analysis
-# contract. Every known-bad line below is a real form, not an invented one.
+# proven to fire in BOTH directions before it is trusted: a green run that measured nothing
+# is believed. Every known-bad line below is a real form, not an invented one.
 if $SELF_TEST; then
   bold "▸ conflict-markers.sh --self-test"
   tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
@@ -106,10 +106,9 @@ if $SELF_TEST; then
   # variable delimiter is an angle bracket followed by a percent sign, so writing the
   # repeat as bracket-then-spec puts that exact pair in the file: Jinja opens an
   # expression, never finds the closer, and `copier copy` dies with a TemplateSyntaxError
-  # before a single file is written. This script shipped that way on 15/08/2026 and broke
-  # generation outright. `%.0s` consumes each `seq` argument and prints nothing, so the
-  # literal can sit on either side with identical output — put it on the right.
-  # Gate: `.github/scripts/check-template-tokens.sh`.
+  # before a single file is written. This script once shipped that way and broke generation
+  # outright. `%.0s` consumes each `seq` argument and prints nothing, so the literal can sit
+  # on either side with identical output — put it on the right.
   OPEN=$(printf '%.0s<' $(seq 7))
   CLOSE=$(printf '%.0s>' $(seq 7))
   MANGLED_CLOSE=$(printf '%.0s> ' $(seq 7)); MANGLED_CLOSE="${MANGLED_CLOSE% }"
@@ -157,14 +156,15 @@ GOOD
     || { printf '\033[31m  ✗ exempted fence ignored\033[0m\n'; fails=1; }
 
   # Prettier separates an HTML comment from a fence with a blank line, so the directive must
-  # survive one. This is the exact shape in how-to/src/TEMPLATE-GUIDE/14-UPDATING.md.
+  # survive one. This is the exact shape a formatted guide in this repository already carries,
+  # not a hypothetical.
   printf '<!-- %s -->\n\n```text\n%s a\n```\n' \
     'conflict-markers: ignore' "$OPEN" >"$tmp/blank.md"
   [[ "$(conflict_markers_scan "$tmp/blank.md" | wc -l | tr -d ' ')" -eq 0 ]] \
     && log "  ✓ directive survives a blank line before the fence" \
     || { printf '\033[31m  ✗ blank line broke the directive\033[0m\n'; fails=1; }
 
-  # The blind spot Q3 rejected: an ordinary fence must NOT hide a real conflict.
+  # The blind spot that was rejected outright: an ordinary fence must NOT hide a real conflict.
   printf '```text\n%s a\n```\n' "$OPEN" >"$tmp/plain.md"
   [[ "$(conflict_markers_scan "$tmp/plain.md" | wc -l | tr -d ' ')" -eq 1 ]] \
     && log "  ✓ an UNexempted fence is still scanned" \

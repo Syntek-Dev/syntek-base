@@ -3,7 +3,7 @@
 # shipped-memory.sh — Verify a generated project receives an EMPTY project-memory store.
 #
 #                     `.claude/MEMORY.md` is the one shipped file an agent writes to
-#                     unprompted, and `.claude/CLAUDE.md` Section 2.1 has every session read it
+#                     unprompted, and the project's read order has every session read it
 #                     second — before the work, ahead of any docs. That combination makes
 #                     it the worst possible carrier for syntek-base's own memory: entries
 #                     about this repo's .gitignore overrides, which account may bypass
@@ -114,8 +114,8 @@ run_checks() {
 
   # ── 1. copier.yml excludes the live file ────────────────────────────────────
   #
-  # Same block parse shipped-readme.sh uses: the _exclude list ends at the next
-  # top-level key, and `_tasks:` matches that pattern too.
+  # The same block parse the shipped-README check uses: the _exclude list ends at the
+  # next top-level key, and `_tasks:` matches that pattern too.
   local excluded
   excluded=$(awk '/^_exclude:/{f=1;next} /^[a-zA-Z_]+:/{f=0} f && /^[[:space:]]*-/' "$COPIER" \
     | sed 's/^[[:space:]]*-[[:space:]]*//' | sed 's/^"//;s/"$//' || true)
@@ -124,8 +124,8 @@ run_checks() {
 
   # ── 2. _tasks seeds it ──────────────────────────────────────────────────────
   #
-  # Without this an excluded MEMORY.md simply never arrives, and Section 2.1's read-second
-  # instruction points at nothing.
+  # Without this an excluded MEMORY.md simply never arrives, and the read-second
+  # instruction every session follows points at nothing.
   local tasks
   tasks=$(awk '/^_tasks:/{f=1;next} /^[a-zA-Z_]+:/{f=0} f' "$COPIER" || true)
   grep -qF "mv $SEED_REL $LIVE_REL" <<< "$tasks" \

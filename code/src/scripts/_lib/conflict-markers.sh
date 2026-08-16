@@ -2,15 +2,15 @@
 #
 # conflict-markers.sh — the one pattern for an unresolved git conflict marker.
 #
-# Sourced, never executed. Two callers: audits/conflict-markers.sh (the repo-wide gate) and
-# development/template-update.sh (the copier scratch directory). They must not drift — two
+# Sourced, never executed. Two callers: the repo-wide marker gate, and the
+# template-update check over the copier scratch directory. They must not drift — two
 # detectors for one defect class that disagree is how the defect below survived two releases.
 #
 # WHY THE OPEN AND THE CLOSE, AND NOT THE MIDDLE.
 #
 # A conflict writes three markers. Prettier reformats Markdown, and what it leaves behind was
-# measured against the real incident (`.claude/skills/stack-fastmcp/SKILL.md` at `3bd49e8`,
-# committed and green for two releases):
+# measured against the real incident — a mangled marker that sat committed and green for two
+# releases:
 #
 #   <<<<<<< Updated upstream   ->   "  <<<<<<< …"   conflict-markers: ignore
 #                                   indented as a list continuation. The literal survives;
@@ -29,13 +29,13 @@
 # template comment). It is therefore not matched at all: every real conflict carries an open
 # and a close, so nothing is lost, and the gate ships green instead of red.
 #
-# Measured 15/08/2026 across the tree: open 3 hits, close 1, mangled-close 0, all accounted
-# for. `^={7}` would have added a false positive on day one.
+# Measured across the tree: open 3 hits, close 1, mangled-close 0, all accounted for.
+# `^={7}` would have added a false positive on day one.
 
 # Open (raw or mangled), raw close, mangled close. Deliberately unanchored.
 CONFLICT_MARKER_RE='(<{7})|(>{7})|((> ){6,}>)'
 
-# Suppression, following the house convention (doc-references.sh, css-gradients.sh): the
+# Suppression, following the house convention the other suppressible audits share: the
 # directive is honoured on the line itself, on the line directly above it, or — because an HTML
 # comment inside a fenced block would render as literal text to the reader — on the opening
 # fence of the block the marker sits in.

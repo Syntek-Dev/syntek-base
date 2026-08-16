@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # pre-compact-handoff.sh — intercept context compaction; steer the session to the handoff skill.
 #
-# Registered as a PreCompact hook in .claude/settings.json (matchers "auto" and "manual").
+# Registered as a PreCompact hook under both the "auto" and "manual" matchers.
 # A hook runs a shell command — it CANNOT invoke a skill or stop the session; only the model can.
 # So this script's job is narrow: stop silent auto-compaction and surface a loud, actionable
-# reminder to hand off instead (the house rule, .claude/CLAUDE.md Section 2.6).
+# reminder to hand off instead, as the house rule requires.
 #
 #   $1 = auto    → auto-compaction fired: BLOCK it (exit 2) and remind. Never compact silently.
 #   $1 = manual  → the user ran /compact deliberately: WARN only (exit 0); don't block a choice.

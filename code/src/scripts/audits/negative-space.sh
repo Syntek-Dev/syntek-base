@@ -34,7 +34,6 @@
 #                       * `assert` outside tests  → ruff S101
 #                       * `from ninja import Schema` → ruff TID251
 #
-#                     Rule: code/docs/NEGATIVE-SPACE.md
 #                     Register: how-to/src/INVARIANTS.md
 #
 # SELF-TEST. --self-test runs every clause over the fixture pair in
@@ -75,16 +74,16 @@ MCP_TOOLS_DIR="code/src/django/apps"
 MCP_CONFIG_FILE="code/src/django/config/mcp.py"
 ASGI_FILE="code/src/django/config/asgi.py"
 
-# The four flags from code/docs/MOBILE-CODING-PRINCIPLES.md Section 1. Each bans a state;
-# `strict` implies none of them and expo/tsconfig.base sets none, so removing one is
-# silent — tsc still exits 0.
+# The four TypeScript flags this project's mobile coding standard requires. Each bans a
+# state; `strict` implies none of them and expo/tsconfig.base sets none, so removing one
+# is silent — tsc still exits 0.
 TS_FLAGS=(noUncheckedIndexedAccess exactOptionalPropertyTypes noImplicitReturns noFallthroughCasesInSwitch)
 
 MIDDLEWARE_CLASS="apps.core.middleware.RequestIDMiddleware"
 
-# The MCP surface's three configs, from code/docs/mcp-server/. Keyed on FastMCP's own hook
-# name and on a class this project owns, never on a path — the same choice htmx-handler-absent
-# makes, so moving or renaming the module is not a CI failure.
+# The MCP surface's three configs. Keyed on FastMCP's own hook name and on a class this
+# project owns, never on a path — the same choice htmx-handler-absent makes, so moving or
+# renaming the module is not a CI failure.
 MCP_ERROR_HOOK="on_call_tool"
 MCP_MASK_SETTING="mask_error_details"
 REQUEST_ID_ASGI_CLASS="RequestIDASGIMiddleware"
