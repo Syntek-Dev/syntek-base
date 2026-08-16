@@ -19,11 +19,16 @@
 #      it on the line. Jinja needs only the opener to fail, so this is exactly as fatal as
 #      check 3, and it was invisible until this check was written.
 #
+#   5. A stray `%` inside a variable opener — the shape printf's own escape produces when a
+#      token's percent signs are doubled to survive a format string. Check 1 and the unclosed
+#      scan both match `[^%]*` between the delimiters, so neither can cross the very character
+#      that breaks it: both report clean while Jinja dies on the opener.
+#
 #   Plus: an unclosed `<%` variable opener, reported alongside 4.
 #
 # Numbers are stable identifiers — other documents cite them. Append, never renumber.
 #
-# TWO CORRECTIONS HAVE LANDED, both in the single regex that was check 3:
+# THREE CORRECTIONS HAVE LANDED. The first two are in the single regex that was check 3:
 #
 #   It read `<[:|]`. copier.yml sets block to `<: :>` and comment to `<~ ~>`, so that class
 #   policed `<|` — which is not a delimiter in this template and never could be — while the
@@ -34,6 +39,12 @@
 #   script reported `✓ 1974 well-formed tokens`. A gate that
 #   reports all-clear on the defect it was written for is worse than no gate, because it is
 #   believed. Hence check 4, and hence --self-test below.
+#
+#   Check 5 is the third correction, and the same blindness in a new shape: install.sh
+#   doubled a token's percent signs inside a printf format string, `copier copy` died on
+#   install.sh line 160 with `unexpected '%'`, and this script reported
+#   `✓ 1999 well-formed tokens`. Both variable-shape checks anchor on `[^%]*` between the
+#   delimiters, which cannot cross the one character that broke generation.
 #
 # Template-only paths are exempt: copier.yml and .copier-answers.yml hold real Jinja, and
 # TEMPLATE-GUIDE/ and TEMPLATE-TOKENS.md are excluded from rendering, so they may quote
@@ -104,6 +115,9 @@ candidates() { { git ls-files -z; git ls-files -z --others --exclude-standard; }
 
 scan() { candidates | xargs -0 grep -Hno "$1" 2>/dev/null | grep -vE "$EXEMPT"; }
 
+# Check 5 needs alternation, which basic regular expressions cannot express portably.
+scan_ere() { candidates | xargs -0 grep -HnoE "$1" 2>/dev/null | grep -vE "$EXEMPT"; }
+
 # ── The checks, as one re-runnable unit ───────────────────────────────────────
 run_checks() {
   # grep exits 1 on a file with no match and xargs then returns 123, so pipefail comes off
@@ -119,6 +133,11 @@ run_checks() {
   # 4 — an opener with no `>` after it. Jinja fails on the opener alone, so requiring the
   # closer (as this check once did) is a hole the size of the defect.
   bare_blocks=$(scan '<[:~][^>]*$') || true
+
+  # 5 — a `%` inside the opener that is not the closer. Two shapes reach Jinja identically:
+  # a `%` followed by anything other than `>`, and a `%` that ends the line. Both sit in the
+  # blind spot check 1 and the unclosed scan share, since `[^%]*` stops at the first `%`.
+  stray_percent=$(scan_ere '<%[^%]*%([^>]|$)') || true
 
   unregistered=""
   while IFS= read -r line; do
@@ -171,6 +190,13 @@ report() {
     status=1
   fi
 
+  if [[ -n "$stray_percent" ]]; then
+    printf '\033[31mStray %% inside a token opener\033[0m — Jinja fails on the opener, whatever follows:\n\n%s\n\n' "$stray_percent"
+    printf '  A doubled percent is printf escaping, not template syntax. Pass the value as a\n'
+    printf '  printf ARGUMENT so the token never enters a format string, or reword the line.\n\n'
+    status=1
+  fi
+
   return "$status"
 }
 
@@ -210,7 +236,7 @@ self_test() {
   printf '<%%PROJECT_NAME%%>\n' > "$tmpdir/clean.md"
   ST_PROBES=$((ST_PROBES + 1))
   run_checks
-  if [[ -n "$malformed$unregistered$blocks$bare_blocks$unclosed" ]]; then
+  if [[ -n "$malformed$unregistered$blocks$bare_blocks$unclosed$stray_percent" ]]; then
     printf '\033[31m  ✗ a well-formed token tripped a check — the baseline is broken\033[0m\n' >&2
     exit 2
   fi
@@ -236,6 +262,14 @@ self_test() {
   rm -f "$tmpdir/f.md"
 
   printf 'a <%%TRUNCATED\n' > "$tmpdir/f.md"; probe "the unclosed-variable check still fires"         unclosed
+  rm -f "$tmpdir/f.md"
+
+  # printf halves each pair, so these two write the shapes install.sh carried and would have
+  # carried had the line ended one character earlier.
+  printf '<%%%%PROJECT_SLUG%%%%>\n' > "$tmpdir/f.md"; probe "check 5 fires on a doubled opener"       stray_percent
+  rm -f "$tmpdir/f.md"
+
+  printf 'a <%%TRUNCATED%%\n' > "$tmpdir/f.md"; probe "check 5 fires on a token cut after its %"      stray_percent
   rm -f "$tmpdir/f.md"
 
   printf '\n'
