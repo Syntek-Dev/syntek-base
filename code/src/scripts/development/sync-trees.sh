@@ -306,11 +306,16 @@ for ctx in contexts:
     # The row carries a TODO annotation rather than nothing. A bare row reads as a
     # finished tree and gets committed; a TODO is a question the audit and the hook both
     # refuse to let past, which is the only reliable moment to ask for the why.
+    # `ljust` only pads; it never truncates and never adds a separator when the row is
+    # already at or past the column. A filename longer than the block's arrow column
+    # therefore used to come out as `test_endpoints.py← TODO:` with no gap at all, which
+    # reads as a typo in the file the author is being asked to fix. Pad to at least one
+    # space past the row so the arrow is always separated, joining the column where it
+    # fits and starting a wider one where it does not.
     new_rows = []
     for nm in missing_from_tree:
         row = f"├── {nm}"
-        row = row.ljust(ann_col) if ann_col else row + " "
-        new_rows.append(row + "← TODO: what this is and why it is here")
+        new_rows.append(row.ljust(max(ann_col, len(row) + 1)) + "← TODO: what this is and why it is here")
 
     # Keep "└──" on whatever ends up last.
     if branch_of_last.startswith("└"):
