@@ -149,12 +149,14 @@ Two things to do on a freshly generated project:
 ├── .github/
 │   └── workflows/                       ← CI: syntax, test, and audit checks
 │       ├── audit-cloc.yml               ← fails if any source file exceeds 800 lines
+│       ├── audit-conflict-markers.yml   ← unresolved conflict markers in any text file — no path filter
 │       ├── audit-copy-emdash.yml        ← bans em dashes in public marketing copy
 │       ├── audit-copy-slop.yml          ← the AI-slop family, prose half
 │       ├── audit-css-gradients.yml      ← bans raw inline gradients in component and page CSS
 │       ├── audit-css-slop.yml           ← the AI-slop family, CSS half
 │       ├── audit-css-tokens.yml         ← every var(--x) must resolve in the token layer
 │       ├── audit-deps.yml               ← scheduled CVE sweep (pnpm audit + pip-audit) and lockfile drift
+│       ├── audit-dict-discipline.yml    ← a dictionary used as a record where a named type belongs
 │       ├── audit-doc-references.yml     ← every citation in a shipped file must resolve
 │       ├── audit-docs-length.yml        ← the 300-line instructional-document limit
 │       ├── audit-docs-pairing.yml       ← the CONTEXT.md / CLAUDE.md split
@@ -166,6 +168,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
 │       ├── audit-skill-conformance.yml  ← every skill against the Agent Skills specification
+│       ├── audit-static-analysis.yml    ← the Opengrep leg — Django template XSS and cross-file taint
 │       ├── audit-stubs.yml              ← detects hard stubs and TODO/FIXME/HACK markers
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
@@ -192,6 +195,7 @@ Two things to do on a freshly generated project:
 │   │   ├── DATA-STRUCTURES.md           (+ data-structures/ — FUNDAMENTALS, SCHEMA-DESIGN, DOMAIN-MODELLING, …)
 │   │   ├── DESIGN-TOKENS.md             (+ design-tokens/ — MODEL, CASCADE, EDITOR)
 │   │   ├── DISCOVERABILITY.md           (+ discoverability/ — WEB-METADATA, STRUCTURED-DATA, ROOT-SURFACE, …)
+│   │   ├── DOCUMENTATION-LENGTH.md      ← the 300-line instructional limit and the 270 ratchet
 │   │   ├── DOCUMENTATION-PAIRING.md     ← the CONTEXT.md / CLAUDE.md split and its decision test
 │   │   ├── ENCRYPTION-GUIDE.md          (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
 │   │   ├── EXPORTS.md                   ← downloadable file exports (declared, not wired)
@@ -267,12 +271,21 @@ Two things to do on a freshly generated project:
 │   │   │   ├── COMPLIANCE.md
 │   │   │   └── DATA-RIGHTS.md
 │   │   ├── GDPR-GUIDE.md                ← GDPR obligations, data flows, and legal bases (index)
-│   │   ├── GIT-GUIDE.md                 ← branch strategy, PR flow, and commit conventions
+│   │   ├── git/                         ← git sub-documents
+│   │   │   ├── BRANCHES-AND-WORKTREES.md
+│   │   │   ├── COMMITS.md
+│   │   │   ├── MIGRATION-GATES.md
+│   │   │   └── PR-AND-REQUIRED-CHECKS.md
+│   │   ├── GIT-GUIDE.md                 ← branch, commit, PR and migration gates (index)
 │   │   ├── QA-GUIDE.md                  ← QA process, test plans, and sign-off criteria
 │   │   ├── RESPONSIVE-DESIGN.md         ← breakpoints, fluid layout, and mobile-first rules
 │   │   ├── SECURITY-GUIDE.md            ← security sprint dependencies and hardening checklist
 │   │   ├── SEO-CHECKLIST.md             ← per-page SEO requirements for marketing pages
-│   │   ├── PLANNING-GUIDE.md     ← sprint format, capacity, and MoSCoW conventions
+│   │   ├── planning/                    ← planning sub-documents
+│   │   │   ├── CADENCE.md
+│   │   │   ├── SPRINTS.md
+│   │   │   └── STORIES.md
+│   │   ├── PLANNING-GUIDE.md            ← sprint format, capacity, and MoSCoW conventions
 │   │   └── VERSIONING-GUIDE.md          ← semver rules, VERSION file, and CHANGELOG format
 │   ├── export/                          ← PDF/ZIP exports for client review + clickup/ (read-only ClickUp story exports)
 │   ├── REFERENCES.md
@@ -1164,9 +1177,11 @@ table ever falls behind it.
 | ---------------------- | ---------------------------------------------------------------------------------------- |
 | `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown       |
 | `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK)  |
+| `conflict-markers.sh`  | Unresolved git conflict markers in any text file, raw or reformatted by Prettier         |
 | `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens               |
 | `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                         |
 | `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source          |
+| `dict-discipline.sh`   | A dictionary used as a record in domain code, where a named type belongs                 |
 | `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds   |
 | `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                     |
 | `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` Section 4)                    |
