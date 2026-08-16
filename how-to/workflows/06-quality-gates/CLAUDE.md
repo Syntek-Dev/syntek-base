@@ -33,8 +33,8 @@ clean local run predicts a clean CI run.
   here — `code/docs/testing/COVERAGE.md` owns it, and a second copy is a second home.
 - **This gate checks form, not judgement.** Green gates do not mean the change is right;
   `code/workflows/07-review/` is where content is reviewed, and it comes first.
-- **In this template several gates skip by design** (no `uv.lock`). Expected here; not a
-  broken gate, and not something to "fix" by unguarding them.
+- **In this template no gate skips for want of a lockfile.** `uv.lock` is committed here, so
+  a gate that reports nothing to run is a defect to chase, never the expected state.
 - Editing these workflow `.md` files: keep each **≤ 300 code lines**.
 
 ## Output & naming

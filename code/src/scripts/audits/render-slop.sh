@@ -285,10 +285,11 @@ log ""
 # ── The detector ──────────────────────────────────────────────────────────────
 # Python because Playwright is a Python library here; a heredoc because that is how
 # the sibling static-analysis audit already embeds Python. `--no-project --with`
-# rather than a bare `uv run`: pyproject.toml names the root package
-# <%PROJECT_SLUG%>, which is not a valid package name, so a bare `uv run` fails in
-# the base template itself — and a gate that cannot run where it ships is the one
-# failure this fixture pair exists to prevent.
+# rather than a bare `uv run`: the flags build an ephemeral environment holding just
+# this detector's own dependency, so the audit runs on a host that has never synced
+# the project's dev group and never mutates the project environment it is auditing.
+# That was originally a workaround — the root package name was an unrendered token
+# uv refused to parse — and it outlived the defect on its own merits.
 tr '\0' '\n' < "$TMP_FILES" > "$TMP_LIST"
 
 set +e

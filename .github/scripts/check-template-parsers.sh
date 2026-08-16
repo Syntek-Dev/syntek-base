@@ -16,12 +16,19 @@
 #
 # WHY A PROBE AND NOT A LIST OF POSITIONS. The obvious plan is to teach the sibling check
 # "the handful of positions that qualify". That plan does not survive contact with the
-# evidence: pnpm parses `<%PROJECT_SLUG%>` in package.json's `name` without complaint, in
-# both the root and mobile manifests, while uv rejects the identical token in
-# pyproject.toml's `name` and refuses to load the project. Same syntactic position, opposite
-# verdict — so "is this an identifier position?" is not statically decidable, and any
-# hand-maintained register of positions is just the rule again, one level up, still carried
-# by whoever remembers to read it.
+# evidence: pnpm parses `<%PROJECT_SLUG%>` in package.json's `name` without complaint — it
+# still does, in both the root and mobile manifests — while uv rejects the identical token
+# in a pyproject.toml `name` and refuses to load the project. Same syntactic position,
+# opposite verdict — so "is this an identifier position?" is not statically decidable, and
+# any hand-maintained register of positions is just the rule again, one level up, still
+# carried by whoever remembers to read it.
+#
+# THE UV HALF IS A FACT ABOUT UV, NOT A REPORT ON THIS TREE. syntek-base's own `name` has
+# been the house constant `syntek-base` since `7cd385d`, precisely because the token there
+# was fatal — so the live manifest no longer demonstrates the claim the probe is built on.
+# What keeps it honest is `--self-test` below, which builds a throwaway manifest carrying
+# the token in that exact position and asserts uv still rejects it. Read the claim in the
+# present tense about uv; read the repository as the case already fixed.
 #
 # So this script does not look at positions at all. It runs each toolchain's OWN parser and
 # requires success. That catches the class by definition, including the cases a position list

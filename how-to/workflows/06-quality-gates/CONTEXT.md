@@ -53,9 +53,10 @@ predict a clean CI run.
   threshold on composition or vocabulary fails correct work, so the script reports and a person
   decides (`code/docs/VISUAL-DESIGN.md` Section 6). **Exit 0 with warnings is not a clean run** — it is
   a run with unanswered questions in it.
-- **In this template, some gates report success with nothing to run.** `uv.lock` is absent
-  by design, so the Python half of several CI jobs is guarded and skips. In a generated
-  project they all execute.
+- **In this template every gate has a subject.** `uv.lock` is committed here (16/08/2026), so
+  the Python half of each job resolves a real dependency set and runs, exactly as in a
+  generated project. The pre-PR hook adds a ninth, template-only gate — `audits`
+  (`.claude/hooks/CONTEXT.md`). A gate reporting nothing to run is now a defect to chase.
 
 ## Cross-references
 

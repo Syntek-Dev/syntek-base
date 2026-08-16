@@ -121,8 +121,8 @@ This is the same eight-gate sequence CI runs, in the same order. Green here shou
 green there — and when it does not, the mirroring itself is the bug: fix the script or the
 workflow so they agree, rather than pushing repeatedly to discover what CI wants.
 
-In **this template repository** several gates report success with nothing to run, because
-`uv.lock` is absent by design. That is expected here and not a sign of a broken gate; in a
-generated project every gate executes.
+In **this template repository** the hook runs a ninth gate, `audits`, and is otherwise the
+same: `uv.lock` is committed here (16/08/2026), so the django image builds and every gate has
+a subject. A gate reporting nothing to run is a defect here, not the expected state.
 
 Only then raise the PR — `project-management/workflows/22-pr-and-review/`.

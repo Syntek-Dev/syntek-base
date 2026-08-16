@@ -38,10 +38,14 @@ jobs:
       - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
-          # The template commits no uv.lock, so setup-uv finds nothing to cache and its
-          # POST step would fail saving a directory that was never created. Kept after the
-          # 15/08/2026 unguarding: `uv sync` below now RUNS here, but it resolves fresh
-          # rather than restoring a cache, so there is still nothing to save.
+          # Kept as a defensive no-op, not as a workaround. It was load-bearing while the
+          # template committed no uv.lock: setup-uv found nothing to cache and its POST step
+          # failed saving a directory that was never created, with every check step green.
+          # uv.lock is committed here since 16/08/2026, so the sync below populates the cache
+          # and there is something to save — but this workflow SHIPS, and a generated project
+          # runs it before its own `uv lock` post-task has necessarily produced one. The flag
+          # costs nothing when there is a cache and prevents a green-then-red run when there
+          # is not.
           ignore-nothing-to-cache: true
 
       - uses: pnpm/action-setup@v6
@@ -51,9 +55,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       # UNGUARDED 15/08/2026. The Python half of this sweep used to be skipped whenever
-      # uv.lock was absent, which in the base template is always: pyproject.toml's `name`
-      # was an unrendered token, uv refused to parse the manifest, and the nightly CVE
-      # scan covered the JS tree only. The name is now the house constant `syntek-base`,
+      # uv.lock was absent, which in the base template was then always: pyproject.toml's
+      # `name` was an unrendered token, uv refused to parse the manifest, and the nightly
+      # CVE scan covered the JS tree only. The name is now the house constant `syntek-base`,
       # branded at generation, so BOTH dependency trees get their nightly scan here.
       #
       # The lock decides the sync mode, never whether the audit happens. Root working
@@ -66,7 +70,7 @@ jobs:
             echo "uv.lock present — auditing from the committed lock."
           else
             echo "flag=" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template; resolving fresh. Both trees still audited."
+            echo "No uv.lock yet — resolving fresh. Both trees still audited."
           fi
 
       - name: Install backend deps (uv)

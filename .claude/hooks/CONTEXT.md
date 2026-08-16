@@ -1,7 +1,7 @@
 # .claude/hooks
 
 Pre-PR quality gate hooks, two session-continuity hooks, and one write guard. `pre-pr-check.sh`
-runs 8 quality gates before a PR is marked ready; results are posted to the PR by
+runs 8 quality gates before a PR is marked ready (9 in this template); results are posted by
 `post-pr-comment.sh`. `context-threshold-handoff.sh` (UserPromptSubmit) warns as the context
 window fills, and `pre-compact-handoff.sh` (PreCompact) intercepts compaction — both steer the
 session to the `handoff` skill (see `.claude/CLAUDE.md` Section 2.6).
@@ -15,7 +15,7 @@ code-review-graph and reports what the refresh could not reach.
 .claude/hooks/
 ├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
-├── pre-pr-check.sh          ← the eight pre-PR quality gates, orchestrated
+├── pre-pr-check.sh          ← the eight pre-PR quality gates (nine here), orchestrated
 ├── post-pr-comment.sh       ← posts a pre-pr-check run to the PR as a comment
 ├── context-threshold-handoff.sh ← UserPromptSubmit hook — warns at 50% context, insists at 75%
 ├── pre-compact-handoff.sh   ← PreCompact hook — blocks auto-compaction, steers to `handoff`
@@ -112,28 +112,32 @@ notice repeated on every tool call is a notice nobody reads. `PostToolUse` stdou
 rather than shown, so the notice is emitted as JSON `systemMessage`. The same count appears as a
 non-blocking warning in `pre-pr-check.sh`, which is where missing it costs the most.
 
-## Template mode — six checks, not eight
+## Template mode — nine checks, not eight
 
 `pre-pr-check.sh` detects whether it is running inside **syntek-base itself** or inside a
-project generated from it, and the gate is not the same in both.
+project generated from it, and the gate is not the same in both. **The difference is an
+addition rather than a subtraction** (16/08/2026).
 
 The signal is `copier.yml` at the repository root. `copier.yml` lists itself in its own
 `_exclude`, so a **generated project never carries it** — its presence is exact, not a
 heuristic.
 
-In the template there is no application: `uv.lock` is absent by design, `pyproject.toml`'s
-`name` is an unrendered token, and `code/src/docker/.env.dev` is gitignored, so the django
-image cannot be built at all. Six of the eight checks read their authoritative half from that
-container. Those halves are **inapplicable — neither passing nor failing** — and reporting them
-as failures is the false signal this repository audits for elsewhere.
+Template mode used to drop lockfiles, typecheck and tests, because each reads its
+authoritative half from the django container and that container could not be built here. That
+premise died when `uv.lock` was committed. All three now run, and the image builds, so all
+eight checks have a subject. `code/src/docker/.env.dev` being gitignored does not reinstate
+the exemption: the hook falls back to the committed `.env.dev.example`, every value in which
+has a working default, so a fresh clone runs the gate before copying anything.
 
-|         | Template mode                                              | Generated project          |
-| ------- | ---------------------------------------------------------- | -------------------------- |
-| Runs    | cloc · format · lint · stubs · security · **audits**       | the eight below            |
-| Dropped | lockfiles · typecheck · tests — container-only, no subject | —                          |
-| Docker  | never started                                              | started, and drift-checked |
+|        | Template mode                      | Generated project          |
+| ------ | ---------------------------------- | -------------------------- |
+| Runs   | the eight below, **plus `audits`** | the eight below            |
+| Docker | started, and drift-checked         | started, and drift-checked |
 
-**`audits` is the substantive gate here**, and has no counterpart in an application: a
+The eight, in the order they run: cloc · lockfiles · format · lint · stubs · typecheck ·
+tests · security. Template mode appends `audits` as the ninth.
+
+**`audits` is the one genuine asymmetry left**, and has no counterpart in an application: a
 template's product is its structure, routing and documentation, which is exactly what
 `code/src/scripts/audits/*.sh` and `.github/scripts/*.sh` read. Both are scoped by
 directory rather than by a list, because a list drifts silently — a new audit the PR check

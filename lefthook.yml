@@ -21,12 +21,15 @@ pre-commit:
       run: pnpm exec prettier --check {staged_files}
 
     # `uvx --from` rather than `uv run`, for the same reason as .github/workflows/
-    # syntax-python.yml: `uv run` resolves the project first, and in syntek-base
-    # pyproject.toml's `name` is still an unrendered token that uv rejects while
-    # PARSING. These two legs were therefore dead in this repository — silently, because
-    # they only fire when a .py file is staged, which is rare here. `uvx` installs into a
-    # throwaway environment and reads no manifest, so ruff runs on the template and on a
-    # generated project alike. The constraint is the one pyproject.toml declares.
+    # syntax-python.yml — but the ORIGINAL reason has expired and the choice has not.
+    # It used to be forced: `uv run` resolves the project first, pyproject.toml's `name`
+    # was an unrendered token uv rejected while PARSING, and these two legs were therefore
+    # dead in this repository — silently, because they only fire when a .py file is staged,
+    # which is rare here. The name is now the house constant `syntek-base` and uv parses it.
+    # `uvx` STAYS on its own merits: ruff's rules are self-contained, so a pre-commit lint
+    # costs one pinned tool in a throwaway environment rather than the project's whole
+    # resolved dependency set, and it behaves identically on the template and on a generated
+    # project. The constraint is the one pyproject.toml declares.
     ruff-lint:
       glob: "*.py"
       run: uvx --from "$(grep -oE '\"ruff[^\"]*\"' pyproject.toml | head -1 | tr -d '\"')" ruff check --force-exclude {staged_files}

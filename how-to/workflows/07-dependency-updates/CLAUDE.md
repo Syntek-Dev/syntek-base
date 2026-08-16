@@ -30,8 +30,9 @@ resolving the advisories the nightly sweep reports.
 - **Pin advisories via `overrides`; never loosen a range** to make an audit pass.
 - **Toolchain pins are a matched set** — `.nvmrc`, `.python-version`, `package.json`, and
   workflow `env:` blocks move together, or CI fails alone.
-- **In this template `uv.lock` is absent by design** and must not be committed here;
-  Copier generates it at generation time.
+- **In this template `uv.lock` is committed** (16/08/2026) and is refreshed here like any
+  other lockfile. It pins `syntek-base`, so `copier.yml` excludes it and a generated project
+  locks its own at generation.
 - Editing these workflow `.md` files: keep each **≤ 300 code lines**.
 
 ## Output & naming

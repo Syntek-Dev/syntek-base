@@ -23,11 +23,16 @@ _check_security() {
   # has been reporting correctly all along. Pass nothing and let the config do
   # its job; that is pnpm's own documented behaviour.
   # ── Local Python (ruff flake8-bandit rules) ────────────────────────────────
-  # `uv run` resolves the project before running anything, which a TEMPLATE
-  # cannot satisfy: pyproject.toml's `name` is an unrendered token and uv.lock is
-  # absent by design. The rules themselves are perfectly runnable — only the
-  # launcher is not — so template mode calls ruff directly, exactly as the
-  # format gate already does. The check still RUNS; it is not skipped.
+  # Template mode calls ruff directly; a generated project goes through `uv run`.
+  # The reason for the split has expired, and the split has not. It used to be
+  # forced: `uv run` resolves the project before running anything, and a TEMPLATE
+  # could not satisfy that — pyproject.toml's `name` was an unrendered token uv
+  # refused to parse, so no uv.lock could exist either. `7cd385d` fixed the name
+  # and that premise died when uv.lock was committed; `uv run` launches on both
+  # sides now. The direct call stays because the rules never needed the project:
+  # ruff's flake8-bandit set is self-contained, this is the HOST half of a dual
+  # check and every host half here uses the raw tool by design, and the Docker leg
+  # below still exercises `uv run` in the container. The check RUNS either way.
   if [[ "${TEMPLATE_MODE:-false}" == "true" ]]; then
     local_py=$(cd "$PROJECT_ROOT" && \
       ruff check --select S code/src/django/ 2>&1) || local_exit=1

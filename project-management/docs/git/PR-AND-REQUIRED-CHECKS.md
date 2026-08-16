@@ -73,9 +73,9 @@ stated. Two things qualify a job, and the second is easy to miss:
 
 1. **It executes here and can fail here.** The ordinary case.
 2. **Its step-level guard is worth protecting from regression.** A job that guards to success —
-   `pytest + coverage` without a `uv.lock`, the mobile jobs on a web-only project — proves
-   nothing about the code. It does prove the guard still works. Break the guard and the job
-   errors instead of reporting, which a required check catches and an advisory one does not.
+   the mobile jobs on a web-only project — proves nothing about the code. It does prove the
+   guard still works. Break the guard and the job errors instead of reporting, which a required
+   check catches and an advisory one does not.
 
 The second is not a new idea here, only a newly stated one: `jest-expo + coverage` has been
 required on exactly that basis, with `test.yml` recording the reason — _"a skipped job and a
@@ -83,9 +83,13 @@ passing job look different to branch protection, and 'never ran' is not the same
 'nothing to run'."_ A guarded job is required at **step** level, never job level, or it skips
 rather than reports and the check never arrives.
 
-**Read a green guarded check as "not applicable", never as "passing".** For the backend suites
-in this repository that is `TEMPLATE-GAPS.md` SL-1, and it does not weaken the case for requiring
-them: the claim being protected is about the guard, not the tests.
+**Read a green guarded check as "not applicable", never as "passing".** That does not weaken the
+case for requiring a guarded job: the claim being protected is about the guard, not the tests.
+
+**The backend suites are no longer an instance of this, and the change is recent.** They guarded
+to success here while `uv.lock` was absent; the lock was committed on 16/08/2026 and they now
+execute against the two shipped apps. What a green run here does and does not prove is
+`TEMPLATE-GAPS.md` SL-1 — a narrower claim than "not applicable", and a different one.
 
 **The table below is the promotion target as of 3.2.2, not a census of everything unfiltered.**
 Each row is a deliberate switch to flip, not a backlog to clear, and flipping one is a

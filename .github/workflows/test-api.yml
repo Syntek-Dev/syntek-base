@@ -46,10 +46,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # See the equivalent guard in test.yml. uv.lock is absent by design in the base
-      # template, and every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, so the
-      # django-test image cannot build here. Report success rather than failing on every
-      # pull request raised against the template itself.
+      # See the equivalent guard in test.yml. uv.lock is COMMITTED as of 16/08/2026, so this
+      # guard takes its present branch and the API suite runs here. It stays because this
+      # workflow SHIPS: every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, and a
+      # generated project has no lock of its own until the `uv lock` copier task has written
+      # one, so the django-test image cannot build in that window. The guard is what keeps
+      # one file correct on both sides of the template boundary — report success there
+      # rather than failing on a pull request with nothing to test.
       - name: Detect the backend lockfile
         id: detect
         run: |
@@ -58,7 +61,7 @@ jobs:
             echo "uv.lock present — running the API suite."
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — this is the base template. The image cannot build."
+            echo "No uv.lock yet — the django-test image cannot build."
           fi
 
       - name: Create .env.test

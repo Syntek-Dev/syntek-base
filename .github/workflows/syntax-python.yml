@@ -2,32 +2,45 @@ name: Python — Lint, Format & Typecheck
 
 # One blocker, two different answers, because the two tools need different things.
 #
-# THE BLOCKER. In syntek-base the root pyproject.toml's `name` is still the unrendered
+# THE BLOCKER, AND ITS DEATH. The root pyproject.toml's `name` used to be the unrendered
 # project-slug token, and uv rejects that as an invalid package name while PARSING THE
-# MANIFEST, before dependency resolution begins. Anything that opens the manifest —
-# `uv sync`, `uv run` — therefore dies on a template regardless of lockfiles. In a
-# GENERATED project the name is rendered and the question does not arise.
+# MANIFEST, before dependency resolution begins — so anything that opened the manifest
+# (`uv sync`, `uv run`) died here regardless of lockfiles. `7cd385d` made that name the
+# house constant `syntek-base`, branded at generation by a copier _task, and uv.lock was
+# committed on 16/08/2026 to give the manifest a resolved set to sync from. Both halves
+# of the blocker are gone: every uv step below RUNS in this repository.
+#
+# The two answers outlived it, because each is the right answer for its own tool rather
+# than only a way round a broken manifest.
 #
 # RUFF: RUN IT ANYWAY (fixed 14/08/2026). Only the LAUNCHER needed the manifest; the
-# rules never did. These jobs now install ruff with `uvx --from`, which parses no
+# rules never did. These jobs install ruff with `uvx --from`, which parses no
 # pyproject.toml, so lint and format are enforced by CI on the template itself — which
 # they never were before. The constraint is read out of pyproject.toml at run time
 # rather than restated here, so there is one source of truth and a missing constraint
-# fails the job loudly instead of silently resolving to whatever is newest.
+# fails the job loudly instead of silently resolving to whatever is newest. `uvx` stays
+# now the blocker is dead: a linter whose rules are self-contained costs one pinned tool
+# in a throwaway environment rather than the project's whole resolved dependency set.
 #
 # This supersedes the note that used to sit here telling the reader to cite the local
 # ruff binary and "never CI" as evidence for a Python rule. CI is now the evidence.
 #
-# BASEDPYRIGHT: GUARD IT (14/08/2026). A type-checker with no dependency set does not
-# produce a weaker result, it produces a meaningless one — every import unresolved. It
-# therefore takes the step-level lockfile guard that claude.yml, test.yml and
-# audit-deps.yml already use: it runs in a generated project and reports a skip, with a
-# reason, in the template. Not the same treatment as ruff, because it is not the same
-# situation: ruff's rules are self-contained and basedpyright's are not.
+# BASEDPYRIGHT: SYNC, DON'T ROUTE ROUND IT (14/08/2026; unguarded 15/08/2026). A
+# type-checker with no dependency set does not produce a weaker result, it produces a
+# meaningless one — every import unresolved. So it keeps `uv sync` + `uv run` and reads
+# the manifest where ruff routes around it. It carried the step-level lockfile guard that
+# claude.yml, test.yml and audit-deps.yml use until the name was fixed; it skips nowhere
+# now, and the lockfile decides only the sync MODE (see the step below). Not the same
+# treatment as ruff, because it is not the same situation: ruff's rules are self-contained
+# and basedpyright's are not.
 #
-# The mobile jobs DO run here, and the difference is the useful part: pnpm skips name
-# validation on a private package, so the identical token is harmless in package.json
-# and fatal in pyproject.toml. One tokenised name is not evidence about another.
+# The contrast with pnpm is the useful part, and that half is still live: pnpm skips name
+# validation on a private package, so the identical `<%PROJECT_SLUG%>` token still sits
+# harmlessly in the root and mobile package.json `name` fields — and the JS and mobile jobs
+# over in syntax-js-ts.yml run on the template because of it — while uv rejects it in a
+# pyproject.toml `name`, which is why this repository's own is a house constant. One
+# tokenised name is not evidence about another, and .github/scripts/check-template-parsers.sh
+# is where each toolchain is asked rather than guessed at.
 #
 # Historical, and it took three goes: these jobs first failed at `astral-sh/setup-uv`
 # pinned to @v4 with no `version:`; then at its POST step, which errors when caching is
@@ -168,9 +181,11 @@ jobs:
       # dependency set and this gate RUNS HERE rather than reporting a skip.
       #
       # The lockfile still decides the sync MODE — never whether the gate happens.
-      # `--frozen` asserts a committed lock is current, which is the right assertion in a
-      # generated project and an impossible one in the template, which commits no lock.
-      # That is the whole remaining difference, and it is one flag rather than one gate.
+      # `--frozen` asserts a committed lock is current. syntek-base has committed its own
+      # uv.lock since 16/08/2026, so this guard now takes the --frozen branch on BOTH sides
+      # of the template boundary. It stays because this workflow SHIPS: a generated project
+      # has no lock of its own until the `uv lock` copier task has written one, and the
+      # fallback is what keeps this one file correct in that window. One flag, never a gate.
       - name: Choose the sync mode
         id: sync
         run: |
@@ -179,7 +194,7 @@ jobs:
             echo "uv.lock present — installing from the committed lock."
           else
             echo "flag=" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template; resolving fresh. The gate still runs."
+            echo "No uv.lock yet — resolving fresh. The gate still runs."
           fi
 
       - name: Install dependencies

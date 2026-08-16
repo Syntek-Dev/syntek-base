@@ -334,9 +334,9 @@ success with a note, and its `--self-test` refuses to run at all):
 uv run --no-project --with playwright playwright install chromium
 ```
 
-`--no-project` is not optional here. The root `pyproject.toml` names the package
-`<%PROJECT_SLUG%>`, which is not a valid package name, so a bare `uv run` fails in the base
-template — and an audit that cannot run where it ships is one nobody ever sees fail.
+`--no-project` is deliberate. It resolves an ephemeral environment holding only Playwright, so
+the install runs on a host that has never synced the project's dev group and never mutates the
+project environment — an audit that cannot run where it ships is one nobody ever sees fail.
 
 Install cloc:
 

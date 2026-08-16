@@ -87,10 +87,13 @@ jobs:
 
   # POSITION, where [1/4] checks SHAPE. A token is inert in a comment and fatal in any
   # position a real parser validates, and the two cannot be told apart by reading text:
-  # pnpm accepts <%PROJECT_SLUG%> in package.json's `name` while uv rejects the identical
-  # token in pyproject.toml's. So this job asks each toolchain rather than guessing —
-  # every manifest must parse HERE, before generation, or its gates prove nothing until
-  # after it. Full reasoning in the script header. MAP-BASE-HEALTH N-024.
+  # pnpm accepts <%PROJECT_SLUG%> in package.json's `name` — both manifests still carry
+  # one — while uv rejects the identical token in a pyproject.toml `name`, which is why
+  # this repository's own is the house constant `syntek-base`. So this job asks each
+  # toolchain rather than guessing — every manifest must parse HERE, before generation,
+  # or its gates prove nothing until after it. The uv half is kept live by the script's
+  # own --self-test rather than by the tree. Full reasoning in the script header.
+  # MAP-BASE-HEALTH N-024.
   parsers:
     name: "[4/4] Parser Probes"
     runs-on: ubuntu-latest
@@ -99,7 +102,10 @@ jobs:
 
       - uses: astral-sh/setup-uv@v10.0.1
         with:
-          # The template commits no uv.lock, so there is nothing to restore or save.
+          # This job only PROBES — `uv lock --dry-run` resolves and installs nothing — so
+          # the cache directory can end up empty and setup-uv's POST step would otherwise
+          # fail saving a directory that was never created. Not a claim about the lockfile:
+          # syntek-base has committed its own since 16/08/2026.
           ignore-nothing-to-cache: true
 
       - uses: pnpm/action-setup@v6
