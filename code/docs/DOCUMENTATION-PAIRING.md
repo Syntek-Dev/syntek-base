@@ -115,10 +115,14 @@ Three headings that look like rules and are not, so they stay:
   routes elsewhere, which is orientation. It is not a prohibition on conduct.
 - **`## Dependencies`** — what the things in this directory need in order to work, as above.
 
-`## Key concepts` is the common trap. Domain facts belong there — _"OWASP A01–A10 are the
-security baseline"_, _"the coverage floor is 75% line and branch, 90% auth"_. The moment a bullet
-acquires _must_ or _never_ it is a guardrail, and a guardrail stated twice in two wordings is the
-drift this standard exists to prevent.
+`## Key concepts` is the common trap, and the trap is subtler than fact-versus-rule. Domain facts
+belong there — but **a fact that already has an owner is a restatement whatever its grammar**, so
+the test is Section 6's rather than the grammatical one it looks like. _"The three tiers run
+specify → decide → record"_ is `project-management/src/`'s own fact and belongs in its
+`CONTEXT.md`; the **coverage floor** belongs to `code/docs/testing/COVERAGE.md`, so naming its
+numbers anywhere else is the Section 6 _Bad_ case wearing a `## Key concepts` heading. The moment
+a bullet acquires _must_ or _never_ it is a guardrail besides, and a guardrail stated twice in two
+wordings is the drift this standard exists to prevent.
 
 ## 6. Route, do not restate
 
@@ -129,7 +133,13 @@ thirty-nine of them will be missed.
 
 - **Good** — _"coverage floors met (`code/docs/testing/COVERAGE.md`)"_.
 - **Bad** — _"coverage floors met: 75% line and branch, 90% auth"_ in a file that does not own
-  the number.
+  the numbers.
+
+**That pair is not hypothetical, and the bad half decayed while sitting in this guide.** On
+16/08/2026 the coverage floor gained a promotion tier, so the bad version is now **incomplete as
+well as duplicated** — and nothing about it reads as stale, which is exactly why a reader would
+have believed it. The good version needed no edit, because a citation does not go out of date when
+the thing it cites changes. That is the whole argument for this section, and it happened here.
 
 Restate only where the rule has **no other owner** and this directory is where it is decided.
 That is the test for whether a `CLAUDE.md` bullet is carrying its own weight.
