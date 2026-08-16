@@ -1,11 +1,133 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 4.1.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.0.0 — 16/08/2026
+
+**Status:** Major — the code-quality checks that used to run only when code changed now run on
+every proposed change, so a change that previously passed without ever being examined can now
+fail. Nothing you have written changes, and nothing behaves differently once your project is
+running.
+
+### Checks that ran only sometimes now run always
+
+Your project has three automatic checks over its code: two on style and formatting, one on
+whether the code's own descriptions of its data are consistent. They were set to run only when
+the change included code, which sounds sensible and quietly is not.
+
+The consequence is that they could never be made compulsory. A rule saying a change must not
+merge until a check passes cannot be applied to a check that sometimes does not arrive at all —
+a documentation-only change would wait forever for a verdict that was never coming. So the three
+existed, ran often, and were a condition of nothing.
+
+They now run on every proposed change, which is what makes them eligible to be required. Turning
+that requirement on is a settings change in your code hosting service that no file in your
+project can make; this release does the half that lives in the files.
+
+### Why that is a breaking change rather than an improvement
+
+If your project contains code that has never been through those checks — and it may well, because
+until now a change that did not touch code was never examined — then the first change you propose
+after taking this update can fail on faults that were already there and are not yours.
+
+Nothing has become worse. Something that was already true has become visible, which is the point,
+but it can arrive at an inconvenient moment and it is why this is a whole-number release rather
+than a quiet one.
+
+The extra time was measured before it was accepted. On a project the size of this template the
+three checks finish in about three seconds between them, on top of the usual setup the pipeline
+does anyway. The alternative was leaving them optional forever.
+
+A second, smaller version of the same shift: how much of your code is exercised by tests is now
+measured on every branch rather than only on the branches heading for release.
+
+### One number, in one place
+
+Your project requires a proportion of its code to be covered by tests, and that requirement is a
+ladder: a floor everywhere, a higher step for work heading towards release, and a higher one
+again for anything touching sign-in. The document that declares itself the single source of truth
+for that number knew only the bottom step, and described it as absolute. Four other documents and
+three parts of the pipeline knew the whole ladder.
+
+Settling it turned up three checks that disagreed with the rule they claimed to enforce. Two ran
+the tests on ordinary branches without measuring coverage at all and set the requirement to zero,
+so the check reported a pass having measured nothing. The third applied the sign-in requirement in
+two of the four places it belonged. All three now do what the rule says, and sign-in is measured
+on its own rather than inside the total, because a project can clear the overall figure while its
+most sensitive area sits below its own floor.
+
+The number now has one home, and the documents that repeated it point at it instead.
+
+### The long git guide is now an index over four shorter ones
+
+The guide covering branches, commits, pull requests and the checks that gate a merge had grown
+past the length this project allows for a document Claude reads before working. It is now a short
+index with four documents beneath it, split by subject.
+
+Every heading keeps its wording exactly, because thirty-one places elsewhere refer to those
+headings by name and each was repointed. Of the two hundred and fifty-eight lines of content,
+seven changed: one paragraph was rewritten deliberately and nothing else was touched.
+
+It also gained the thing that caused the growth — a written list of the eleven checks a change
+should have to pass before it can merge, as a list to work through rather than a description of
+what is already switched on.
+
+The update carries your project across that split without you having to look for anything. Any
+note of your own that pointed at a section of the old single guide is found and listed for you,
+with the file, the line, and which of the four documents that subject moved to. It lists rather
+than rewrites, because only the person who wrote the sentence knows which section they meant, and
+a reference silently repointed at the wrong one is worse than a reference you were asked to check.
+
+### A scanner you can finally run before you push
+
+There is a security scanner in the pipeline that reads your project for patterns an ordinary
+code checker cannot see. On your own machine it is optional by design: if the engine is not
+installed it says so and stands aside, which is honest only because the pipeline carries the
+other half.
+
+What was missing was any way to install that engine locally at all. A new rule for the scanner
+could be written, committed and released without its author ever watching it run.
+
+The instruction standing in for that was worse than nothing: download a program from the
+internet, mark it as runnable, and put it where your machine will find it — while the pipeline's
+own written policy on the same subject said the exact opposite.
+
+There is now a command that does it properly. It reads the pinned version, fetches the right
+build for your machine, checks the publisher's cryptographic signature against the same identity
+the pipeline requires, confirms that what arrived is the version that was asked for, and only
+then makes it runnable. If the signature cannot be checked it stops and tells you what to
+install; there is deliberately no reduced path, because a supply-chain check everyone skips is a
+check nobody has. Every way of failing was tried and watched failing before the way of succeeding
+was believed.
+
+### Two checks that were not looking where they claimed
+
+One check confirms that every document naming a specialist names one that exists. It recognised
+that list only when written on a single line, and the code formatter breaks long lists across
+several — so one guide was skipped in its entirety and its eight names had never been checked,
+while the run reported that every name resolved. The count was the giveaway: honest about what it
+read, silent about what it never opened. A second copy of the same reading rule, in a different
+check, was blind the same way. Both now share one implementation, and the proof written for it
+covers both spellings, because a proof using only the form that already worked demonstrates
+nothing.
+
+Separately, the checks that confirm this template can still produce a working project now run on
+your machine before a commit, not only after a change is proposed. The two cheap ones moved
+forward and the two expensive ones stayed. That gap is what allowed the generation failure fixed
+in the last release to survive seventeen commits with a check naming it the whole time.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down, and the migration described above runs as part of it.
+
+One thing is worth expecting rather than doing: the next change you propose will be examined more
+thoroughly than the last one. If it fails on code you did not touch, that is this release working
+as intended — fix it once and it stays fixed.
 
 ## v4.1.1 — 16/08/2026
 

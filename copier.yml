@@ -628,6 +628,20 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v4.0.0-manifest-name.sh"
     when: "<% _stage == 'after' %>"
 
+  # v5.0.0 splits project-management/docs/GIT-GUIDE.md into a thin index over four
+  # sub-documents under project-management/docs/git/. Both files are template-owned, so
+  # copier replaces them wholesale and the template's own 31 citations travel down with
+  # the update. What it cannot reach is a citation the PROJECT wrote at a section of the
+  # old single-file guide — and that one does not break loudly, because the path still
+  # resolves against the surviving index while the section moved a level down, and
+  # doc-references.sh only asks whether a cited path resolves. Advisory: the right
+  # destination depends on which section was meant, so it reports each with file and line
+  # and maps the subjects, rather than guessing between four files and being confidently
+  # wrong in a sentence that reads as deliberate.
+  - version: v5.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v5.0.0-git-guide-split.sh"
+    when: "<% _stage == 'after' %>"
+
   # .copier/ is a staging directory, not project content. _tasks empty it and remove
   # it — but _tasks run on `copy` only, so on an `update` the staged seeds land in the
   # project and simply sit there, looking like version files a developer might edit.
