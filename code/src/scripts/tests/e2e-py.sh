@@ -67,8 +67,13 @@ fi
 
 # Chromium only — the suite declares no other browser, and installing all three costs
 # ~400MB for engines nothing runs.
+# --group test is required, not decorative. playwright and pytest are declared in the
+# `test` dependency group, and `[tool.uv]` sets no `default-groups`, so a bare `uv run`
+# syncs `dev` alone and dies with "Failed to spawn: playwright". It works on a developer
+# laptop only because install-backend.sh --sync installs EVERY group — so this failed
+# nowhere a human looked and everywhere CI ran.
 log 'Installing Playwright Chromium if needed…'
-uv run playwright install chromium > /dev/null 2>&1 ||
+uv run --group test playwright install chromium > /dev/null 2>&1 ||
   log 'WARNING: chromium install failed; continuing in case it is already present'
 
 # Default to the whole suite ONLY when the caller named no target of their own —
@@ -93,4 +98,4 @@ fi
 
 log "Running the e2e suite against ${E2E_BASE_URL}…"
 # -m e2e selects the browser suite. `-x` (stop on first failure) comes from addopts.
-E2E_BASE_URL="$E2E_BASE_URL" uv run pytest -m e2e "$@"
+E2E_BASE_URL="$E2E_BASE_URL" uv run --group test pytest -m e2e "$@"

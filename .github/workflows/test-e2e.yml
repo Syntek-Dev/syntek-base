@@ -53,6 +53,19 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         uses: astral-sh/setup-uv@v10.0.1
 
+      # e2e-py.sh runs playwright and pytest on the RUNNER, not in a container, so the host
+      # needs the `test` group installed. The job never had this step: it installed uv and
+      # jumped straight to the script, leaving `uv run --group test` to build the environment
+      # implicitly on first use.
+      #
+      # `--locked` rather than a bare sync, because uv's default is to re-lock silently when
+      # the manifest and the lockfile disagree. In CI that turns a stale uv.lock into a green
+      # run against dependency versions nobody committed. --locked asserts instead: if the
+      # lockfile needs updating, the job fails and says so.
+      - name: Install the test group
+        if: steps.detect.outputs.present == 'true'
+        run: uv sync --locked --group test
+
       - name: Create .env.dev
         if: steps.detect.outputs.present == 'true'
         run: |
