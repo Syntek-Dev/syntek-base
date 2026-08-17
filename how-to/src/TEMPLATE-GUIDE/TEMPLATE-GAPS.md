@@ -1,6 +1,6 @@
 # Template Gaps — syntek-base's own open items
 
-**Last Updated**: 14/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 17/08/2026 | **Maintained By**: Syntek Studio
 
 Open items belonging to **`syntek-base` itself** — the template repository, not any project
 generated from it.
@@ -24,9 +24,11 @@ generated from it.
 into `project-management/src/01-FEATURE/MAP-BASE-HEALTH.md` — twenty-three decision nodes in
 five batches — and removed from here, so there is one working copy rather than two that drift.
 
-> **That map is deliberately untracked.** `project-management/src/.gitignore` is an allowlist,
-> so `MAP-BASE-HEALTH.md` is local to a working clone and never ships. **A fresh clone will not
-> have it.** The full prose of every entry it replaced is recoverable with:
+> **That map is committed but never ships.** Since 17/08/2026 the feature maps are tracked, so
+> they sync across devices — a fresh clone **does** have `MAP-BASE-HEALTH.md`. It still never
+> reaches a generated project: `copier.yml` `_exclude` empties every artefact tree at generation,
+> gated by `.github/scripts/shipped-artefacts.sh`. The full prose of every entry it replaced is
+> recoverable with:
 >
 > ```bash
 > git show e16b499:how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md

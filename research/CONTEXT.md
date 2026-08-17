@@ -10,7 +10,8 @@ and feeds a decision — an ADR or a PLAN links back to it.
 research/
 ├── CONTEXT.md   ← this file
 ├── CLAUDE.md    ← operating rules
-└── <TOPIC>.md   ← one per question (created by /research)
+├── <TOPIC>.md   ← one per question (created by /research)
+└── jve-interpretable-context-methodology-paper-2603.16021v2.pdf ← the CC BY 4.0 source paper INTERPRETABLE-CONTEXT-METHODOLOGY.md cites, kept beside it so the exact version its per-claim citations were checked against cannot move under them
 ```
 
 ## Boundary with context7

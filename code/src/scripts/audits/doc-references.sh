@@ -74,9 +74,9 @@ done
 cd "$PROJECT_ROOT" || die "cannot enter $PROJECT_ROOT"
 
 # ── What we scan ─────────────────────────────────────────────────────────────
-# Tracked plus untracked-but-not-ignored, deduplicated. Ignored files are absent
-# by construction, which is how this repo's own throwaway handoffs and feature
-# maps stay invisible to the check.
+# Tracked plus untracked-but-not-ignored, deduplicated. Ignored files are absent by
+# construction — but nothing this check cares about relies on that any more: the
+# artefact trees are committed as of 17/08/2026 and are named in is_exempt() below.
 candidates() {
   { git ls-files -z; git ls-files -z --others --exclude-standard; } \
     | tr '\0' '\n' | sort -u | grep -E '\.(md|sh)$' || true
@@ -87,6 +87,17 @@ is_exempt() {
     CHANGELOG.md|RELEASES.md|VERSION-HISTORY.md)  return 0 ;;
     how-to/src/TEMPLATE-GUIDE/*)                  return 0 ;;
     handoffs/*|.copier/*)                         return 0 ;;
+    # The artefact trees. This rule polices what a SHIPPED file may cite, and none of
+    # these ship — copier.yml `_exclude` empties every one of them at generation. A map
+    # cites sibling maps and paths that do not exist yet BY DESIGN: charting future work
+    # is what it is for, and the citation resolves when the work lands.
+    #
+    # These were exempt by accident until 17/08/2026, and the candidates() comment above
+    # still described that mechanism: the trees were gitignored, so `git ls-files` never
+    # saw them. They are committed now — so they sync across devices — which made 160
+    # citations visible in one commit. The exemption is stated here instead.
+    research/*|learning/*)                        return 0 ;;
+    project-management/src/01-FEATURE/*)          return 0 ;;
     code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
     .agents/*)                                    return 0 ;;  # vendored third-party skills
   esac

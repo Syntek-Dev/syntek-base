@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 17/08/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -155,9 +155,10 @@ Not a layer — four working areas at the root, each written by one skill and re
 | `questionnaires/` | `/to-questionnaire` | Outbound discovery questionnaires                     |
 | `learning/`       | `/teach`            | A throwaway sandbox — the one place `/teach` writes   |
 
-In a **generated project** all four are tracked, because there they are the work. In `syntek-base`
-itself each carries a `.gitignore` that is excluded from generation, so the template can exercise
-its own scaffolding without shipping the test artefacts.
+In a **generated project** all four are tracked, because there they are the work — and they arrive
+empty, holding nothing but their `CONTEXT.md` and `CLAUDE.md`. `syntek-base` tracks its own too,
+so they sync across devices; `copier.yml` `_exclude` is what empties them at generation, since a
+note answering a question about the template means nothing in a project built from it.
 
 ## Root files
 

@@ -84,22 +84,75 @@ _exclude:
   # generated project. Same test as the root GAPS.md, which ships and therefore stays an
   # empty stub.
   - /how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
-  # The nested .gitignore files that must NOT travel with the template. Git honours a
-  # .gitignore in any directory, which is how syntek-base can ignore the artefacts it writes
-  # while TESTING its own scaffolding — handoffs, feature maps, stories, sprints, ADRs, plans,
-  # research notes, questionnaires, lessons — while a generated project tracks every one of
-  # them, because there they are the work rather than a test of it. Each folder's CONTEXT.md
-  # describes the generated project's behaviour and is therefore correct as shipped; these
-  # files are the syntek-base-only override, and excluding them here is what keeps the
-  # override repo-local. The root .gitignore stays shipped and updatable by `copier update`.
+  # ── The artefact trees: tracked HERE, never shipped ──────────────────────────────────────
   #
-  # project-management/src/.gitignore is an allowlist covering the whole tree, so it also
-  # covers 01-FEATURE — which is why that folder no longer carries a .gitignore of its own.
-  - /handoffs/.gitignore
-  - /project-management/src/.gitignore
-  - /research/.gitignore
+  # syntek-base commits its own handoffs, feature maps, research notes and lessons (17/08/2026)
+  # so they sync across <%DEVELOPER_NAME%>'s devices. They are still meaningless in a generated
+  # project — a note answering a question about the TEMPLATE, a map of the template's own
+  # decision frontier — so the exclusion moved here, from the nested .gitignore files that
+  # previously held it. Each folder's CONTEXT.md describes the generated project's behaviour
+  # (where these artefacts ARE the work and stay tracked) and is correct as shipped.
+  #
+  # THIS BLOCK IS NOW THE ONLY GUARD. Previously the artefacts were untracked, so Copier could
+  # not see them even with a hole in this list: its dirty-HEAD path runs `git add -A`, which
+  # honours .gitignore. That backstop is gone. A missing negation below silently ships this
+  # repository's internal notes into every generated project — hence the ALLOWLIST shape and
+  # the .github/scripts/shipped-artefacts.sh gate that proves it on every push.
+  #
+  # An allowlist because the failure modes are asymmetric: a denylist of artefact patterns
+  # fails by shipping a local file, an allowlist fails by not shipping a new template file —
+  # which the first generation reveals. It also needs no edit when a numbered folder is added.
+  #
+  # A DIRECTORY EXCLUSION DOES NOT PRUNE ITS CONTENTS. Copier walks with a flat recursive
+  # scantree and `continue`s on one entry at a time, and _render_file does
+  # `parent.mkdir(parents=True)` — so a file whose parent directory was excluded still renders.
+  # Every pattern below therefore matches files recursively (`/**`), never a bare directory.
+  # Directories need no re-inclusion: they are created implicitly by the files that survive.
+  #
+  # questionnaires/ is NOT here — it keeps its nested .gitignore, because a returned
+  # questionnaire holds a named outsider's answers and this repository is public.
   - /questionnaires/.gitignore
-  - /learning/.gitignore
+  - /research/**
+  - "!/research/CONTEXT.md"
+  - "!/research/CLAUDE.md"
+  - /handoffs/**
+  - "!/handoffs/CONTEXT.md"
+  - "!/handoffs/CLAUDE.md"
+  - /learning/**
+  - "!/learning/CONTEXT.md"
+  - "!/learning/CLAUDE.md"
+  # project-management/src/ — the same allowlist the nested .gitignore carried, verbatim in
+  # intent: every folder ships its documentation pair and its templates, nothing else.
+  - /project-management/src/**
+  # The documentation pair every directory in this tree ships (docs-pairing.sh enforces it).
+  # `a/**/b` matches `a/b` too, so this covers the tree root as well as every folder under it.
+  - "!/project-management/src/**/CONTEXT.md"
+  - "!/project-management/src/**/CLAUDE.md"
+  # Every per-story template — the shape a real artefact is written from. Matches at any depth,
+  # which covers the three-stage folders (04–08) and the PLANNING/IMPLEMENTATION pairs (09–13).
+  - "!/project-management/src/**/*TEMPLATE*"
+  # Named shipped content: real template files that carry no TEMPLATE in the name.
+  - "!/project-management/src/00-ASSETS/scripts/*.sh"
+  # The brand-guide and component-guide build sources (Python → LaTeX). The rendered PDFs are
+  # build output and are deliberately NOT re-included — a generated project builds its own.
+  - "!/project-management/src/06-BRAND-GUIDE/guide-build/*.py"
+  - "!/project-management/src/06-BRAND-GUIDE/guide-build/*.tex"
+  - "!/project-management/src/07-COMPONENTS/component-build/*.py"
+  - "!/project-management/src/07-COMPONENTS/component-build/*.tex"
+  # The stylesheet every wireframe links.
+  - "!/project-management/src/08-WIREFRAMES/SHARED/wireframe.css"
+  # The six GDPR register skeletons — filled in per project, but shipped as empty registers.
+  - "!/project-management/src/09-GDPR/BREACH-NOTIFICATION.md"
+  - "!/project-management/src/09-GDPR/CONSENT-LAWFUL-BASIS.md"
+  - "!/project-management/src/09-GDPR/DATA-INVENTORY.md"
+  - "!/project-management/src/09-GDPR/DATA-SUBJECT-RIGHTS.md"
+  - "!/project-management/src/09-GDPR/RETENTION-DELETION.md"
+  - "!/project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md"
+  # The two test records are templates named for the story they are copied to, not for their role.
+  - "!/project-management/src/17-TESTS/US000-MANUAL-TESTING.md"
+  - "!/project-management/src/17-TESTS/US000-TEST-STATUS.md"
+  # The incident register's index — the one file in 22-INCIDENTS that is not an incident.
+  - "!/project-management/src/22-INCIDENTS/INCIDENT-INDEX.md"
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
   # SINGLE conditionalisation mechanism — no file ever has templated contents. When the
   # answer is false these paths are never rendered at all, so a Jinja error inside a mobile

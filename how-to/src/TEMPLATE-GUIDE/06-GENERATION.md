@@ -1,6 +1,6 @@
 # Generation — What Copier Actually Does
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 17/08/2026
 
 A precise account of what happens between running `copier copy` and having a project. Read this
 when something went wrong, when you are reviewing a change to `copier.yml`, or when you simply
@@ -95,23 +95,30 @@ tree is a `TemplateSyntaxError` at generation, and the fix is a `raw` block
 
 ### Excluded from rendering
 
-Files belonging to the template itself never reach your project. There are five groups, and the
+Files belonging to the template itself never reach your project. There are six groups, and the
 reason differs in each:
 
-| Group                       | Entries                                                                                                                                                       |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **The template's own docs** | `copier.yml` · `LICENSE` · `SECURITY.md` · `CONTRIBUTING.md` · `README.md` · `how-to/src/TEMPLATE-GUIDE/` · `how-to/src/TEMPLATE-TOKENS.md`                   |
-| **Template-only CI**        | `.github/CODEOWNERS` · `.github/ISSUE_TEMPLATE` · `.github/PULL_REQUEST_TEMPLATE.md` · `.github/scripts` · `.github/workflows/audit-template.yml`             |
-| **Seeded state**            | `VERSION` · `VERSION-HISTORY.md` · `CHANGELOG.md` · `RELEASES.md` · `.claude/MEMORY.md` · `.copier/migrations` — each re-supplied from `.copier/` (see below) |
-| **Repo-local overrides**    | the nested `.gitignore` files under `handoffs/`, `project-management/src/`, `research/`, `questionnaires/`, `learning/`                                       |
-| **Opt-out surfaces**        | the mobile, Rust and desktop trees, their scripts, guides, workflows, CI jobs and stack skills — gated by a templated entry (see `11-CUSTOMISING.md`)         |
-| **Never a checkout**        | `*.pdf` · `node_modules` · `.code-review-graph` · `.venv` · `__pycache__` · `*.py[co]` · `.DS_Store`                                                          |
+| Group                       | Entries                                                                                                                                                                          |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **The template's own docs** | `copier.yml` · `LICENSE` · `SECURITY.md` · `CONTRIBUTING.md` · `README.md` · `how-to/src/TEMPLATE-GUIDE/` · `how-to/src/TEMPLATE-TOKENS.md`                                      |
+| **Template-only CI**        | `.github/CODEOWNERS` · `.github/ISSUE_TEMPLATE` · `.github/PULL_REQUEST_TEMPLATE.md` · `.github/scripts` · `.github/workflows/audit-template.yml`                                |
+| **Seeded state**            | `VERSION` · `VERSION-HISTORY.md` · `CHANGELOG.md` · `RELEASES.md` · `.claude/MEMORY.md` · `.copier/migrations` — each re-supplied from `.copier/` (see below)                    |
+| **The artefact trees**      | everything under `handoffs/`, `research/`, `learning/` and `project-management/src/` bar the `CONTEXT.md`/`CLAUDE.md` pairs and the templates — plus `questionnaires/.gitignore` |
+| **Opt-out surfaces**        | the mobile, Rust and desktop trees, their scripts, guides, workflows, CI jobs and stack skills — gated by a templated entry (see `11-CUSTOMISING.md`)                            |
+| **Never a checkout**        | `*.pdf` · `node_modules` · `.code-review-graph` · `.venv` · `__pycache__` · `*.py[co]` · `.DS_Store`                                                                             |
 
-Three notes:
+Four notes:
 
 - **Patterns are gitignore-style**, so they are root-anchored with a leading slash where they must
   be. Without it, `README.md` would also match `.copier/README.md` and `CONTRIBUTING.md` would
   swallow `how-to/src/CONTRIBUTING.md`, which your project needs.
+- **The artefact trees are an allowlist, and a directory pattern is not enough.** `syntek-base`
+  commits its own handoffs, feature maps, research notes and lessons so they sync across the
+  maintainer's devices, so `_exclude` is the only thing keeping them out of your project. Each
+  tree is excluded recursively (`/research/**`) and its keepers re-included with `!`, because a
+  bare directory entry does **not** prune what is inside it: Copier walks a flat recursive
+  `scantree` and skips one entry at a time, and it re-creates parent directories for any file it
+  renders. `.github/scripts/shipped-artefacts.sh` asserts the result on a real generation.
 - **PDFs are excluded because they are binary.** With `_templates_suffix: ""` Copier attempts to
   render everything, and binary content is not decodable. The excluded PDFs are generated
   artefacts — the brand guide and component sheet — which your project rebuilds from the sources

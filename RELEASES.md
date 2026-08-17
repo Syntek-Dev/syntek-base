@@ -1,11 +1,71 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.3.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.4.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.4.0 — 17/08/2026
+
+**Status:** Minor — mostly a change to how this template keeps its own working notes, which
+you will not see. What reaches you is small and additive: rendered design documents no longer
+get committed by accident, and there is a new rule about quoting other people's writing. A new
+automated check now proves, on every change, that none of the template's private notes can
+arrive in your project.
+
+### The one thing that could have gone wrong, and now cannot
+
+This template writes notes while it is being built — planning maps, research, session handovers,
+practice work. None of it means anything in a project generated from it: a note answering a
+question about the template, a map of the template's own unfinished decisions. Your project has
+always received those folders empty, holding only the files that explain what they are for, and
+it still does.
+
+What changed is how that emptiness is guaranteed. Until now those notes were simply never
+recorded in version control, so there were two independent things standing between them and
+your project — and one of them was doing the work silently, without anyone realising. Recording
+the notes so they follow the maintainer between machines removed that hidden second guard, and
+left the single remaining rule carrying the whole weight.
+
+A rule that quietly does all the work is the kind that fails without anyone noticing. So a check
+now generates a real project on every change and inspects what actually arrived: each of those
+folders must contain nothing but its explanatory files, and every genuine starting template must
+be present. That second half matters as much as the first — a rule written too tightly stops
+sending you a file you needed, and nobody discovers it until they go looking for one.
+
+The check also proves itself. Before it passes judgement, it deliberately breaks a copy of the
+generated project in four different ways and confirms it catches each one. A safeguard nobody
+has watched fail is a safeguard nobody knows works.
+
+### Rendered documents stop being committed by accident
+
+Your project ships two documents it builds for itself: a brand guide and a component sheet, each
+assembled from a script into a finished PDF. The instructions are meant to be kept; the finished
+PDF is meant to be rebuilt, not stored, because a stored copy drifts out of step with the
+instructions that produced it and nobody can tell which is current.
+
+The project now knows to leave those rendered files out of version control, along with the
+scratch files the typesetter leaves behind. Nothing needed removing to make this true — it locks
+in what was already the case, so the first person to run either build does not accidentally
+commit its output.
+
+### A rule about quoting other people's work
+
+Research notes gathered while building are now kept and shared, which means a quotation in a note
+is a quotation published rather than a private jotting. Those are different acts, and they need
+different permissions.
+
+There is now an explicit rule: check the licence before writing a verbatim line. Some sources
+grant no permission to republish at all, and for those the fact is taken and the wording written
+afresh, with the source credited by link. Sources that do grant it are quoted and credited in the
+same change, never later.
+
+That rule replaced something that had been true only by accident — notes were previously
+unpublished, so the question never arose. The record of which outside sources this project has
+read, and what may be done with each, has been rewritten to say so plainly rather than to rely on
+a circumstance that has since changed.
 
 ## v5.3.0 — 16/08/2026
 

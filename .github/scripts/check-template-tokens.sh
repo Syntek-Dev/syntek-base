@@ -51,6 +51,12 @@
 # token syntax freely. .github/scripts/ is exempt too, which is what lets THIS file spell
 # every delimiter out above.
 #
+# The artefact trees join them on the same principle, from 17/08/2026: copier.yml `_exclude`
+# empties handoffs/, research/, learning/ and project-management/src/ at generation, so a
+# delimiter written in a feature map cannot reach a render. They were exempt by accident
+# before — gitignored, so `git ls-files` never saw them — and committing them so they sync
+# across devices made three maps visible that quote token syntax while discussing it.
+#
 # SELF-TEST. --self-test repoints the candidate list at a temporary directory of fixtures —
 #            one per check, plus a clean file that must trip nothing — and asserts each
 #            check fires on its own and only its own. The fixtures are written here rather
@@ -94,6 +100,7 @@ done
 # syntax freely, and copier.yml / .copier-answers.yml hold real Jinja.
 EXEMPT='^(copier\.yml|\.copier-answers\.yml|README\.md|LICENSE|SECURITY\.md|CONTRIBUTING\.md):'
 EXEMPT="$EXEMPT"'|^(how-to/src/TEMPLATE-GUIDE/|how-to/src/TEMPLATE-TOKENS\.md:)'
+EXEMPT="$EXEMPT"'|^(handoffs/|research/|learning/|project-management/src/01-FEATURE/)'
 EXEMPT="$EXEMPT"'|^\.github/(scripts/|CODEOWNERS|ISSUE_TEMPLATE/|PULL_REQUEST_TEMPLATE\.md:|workflows/audit-template\.yml:)'
 
 # The registered questions are the top-level UPPER_SNAKE keys in copier.yml.

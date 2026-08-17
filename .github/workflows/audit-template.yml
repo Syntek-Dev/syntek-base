@@ -200,6 +200,22 @@ jobs:
           done
           exit $status
 
+      # The artefact trees, which are a DIFFERENT class from the step above. Those files
+      # are template-only and were never tracked in a form that could ship; these are
+      # syntek-base's own handoffs, feature maps, research notes and lessons, committed
+      # since 17/08/2026 so they sync across devices. That commit removed the backstop
+      # this repository had relied on without noticing: Copier's dirty-HEAD path runs
+      # `git add -A`, which honours .gitignore, so while the artefacts were untracked a
+      # hole in `_exclude` shipped nothing. `_exclude` is now the only guard, and the trap
+      # is specific — a directory exclusion does NOT prune its contents, because Copier
+      # walks a flat recursive scantree and `_render_file` re-creates parent directories.
+      # The self-test runs first, for the reason the two jobs above both spell out.
+      - name: Prove the detector (self-test against a leaking generated tree)
+        run: bash .github/scripts/shipped-artefacts.sh --self-test "$RUNNER_TEMP/gen-false"
+
+      - name: A generated project must receive empty artefact trees
+        run: bash .github/scripts/shipped-artefacts.sh "$RUNNER_TEMP/gen-false" "$RUNNER_TEMP/gen-true"
+
       - name: The generated project must be complete
         run: |
           status=0
