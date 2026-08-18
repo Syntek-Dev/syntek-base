@@ -23,8 +23,21 @@
 #                 the one most needing the check, and it is not tracked yet.
 #
 # Exempt:         history (CHANGELOG/RELEASES/VERSION-HISTORY) records what was true then;
-#                 how-to/src/TEMPLATE-GUIDE/ is copier-excluded AND must be able to name a
-#                 broken citation in order to log it; handoffs/ and .copier/ are staging.
+#                 how-to/src/TEMPLATE-GUIDE/ must be able to name a broken citation in order
+#                 to log it; handoffs/ and .copier/ are staging.
+#
+#                 CORRECTED 18/08/2026: this line used to read "TEMPLATE-GUIDE/ is
+#                 copier-excluded AND must be able to name a broken citation". The first
+#                 half is FALSE and has been since f5fef31 (14/08, v3.2.0) -- that tree
+#                 SHIPS. Only /how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md is in copier.yml
+#                 `_exclude` (:86), and the comment at copier.yml:75-81 says so in terms.
+#                 So the surviving half covers TEMPLATE-GAPS.md, the register that logs
+#                 broken citations -- and the rest of the tree is now exempted as a CITING
+#                 file on a premise that no longer applies to it. Whether that exemption
+#                 should narrow to TEMPLATE-GAPS.md alone is MAP-BASE-HEALTH N-031's
+#                 decision, not a fix to make in passing: it turns on which citations of an
+#                 excluded path are the deliberate-dangle class, which is a judgement rather
+#                 than a measurement. The code below is deliberately unchanged.
 #
 # Usage: doc-references.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                          [--path PATH] [--help]

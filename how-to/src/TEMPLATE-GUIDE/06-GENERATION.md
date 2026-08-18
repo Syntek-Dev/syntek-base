@@ -98,16 +98,24 @@ tree is a `TemplateSyntaxError` at generation, and the fix is a `raw` block
 Files belonging to the template itself never reach your project. There are six groups, and the
 reason differs in each:
 
-| Group                       | Entries                                                                                                                                                                          |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **The template's own docs** | `copier.yml` · `LICENSE` · `SECURITY.md` · `CONTRIBUTING.md` · `README.md` · `how-to/src/TEMPLATE-GUIDE/` · `how-to/src/TEMPLATE-TOKENS.md`                                      |
-| **Template-only CI**        | `.github/CODEOWNERS` · `.github/ISSUE_TEMPLATE` · `.github/PULL_REQUEST_TEMPLATE.md` · `.github/scripts` · `.github/workflows/audit-template.yml`                                |
-| **Seeded state**            | `VERSION` · `VERSION-HISTORY.md` · `CHANGELOG.md` · `RELEASES.md` · `.claude/MEMORY.md` · `.copier/migrations` — each re-supplied from `.copier/` (see below)                    |
-| **The artefact trees**      | everything under `handoffs/`, `research/`, `learning/` and `project-management/src/` bar the `CONTEXT.md`/`CLAUDE.md` pairs and the templates — plus `questionnaires/.gitignore` |
-| **Opt-out surfaces**        | the mobile, Rust and desktop trees, their scripts, guides, workflows, CI jobs and stack skills — gated by a templated entry (see `11-CUSTOMISING.md`)                            |
-| **Never a checkout**        | `*.pdf` · `node_modules` · `.code-review-graph` · `.venv` · `__pycache__` · `*.py[co]` · `.DS_Store`                                                                             |
+| Group                       | Entries                                                                                                                                                                                                                                                                                                                                                                               |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **The template's own docs** | `copier.yml` · `LICENSE` · `SECURITY.md` · `CONTRIBUTING.md` · `README.md` · `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` — **the guide tree itself ships, bar that one file**                                                                                                                                                                                                        |
+| **Template-only CI**        | `.github/CODEOWNERS` · `.github/ISSUE_TEMPLATE` · `.github/PULL_REQUEST_TEMPLATE.md` · `.github/scripts` · `.github/workflows/audit-template.yml`                                                                                                                                                                                                                                     |
+| **Seeded state**            | `VERSION` · `VERSION-HISTORY.md` · `CHANGELOG.md` · `RELEASES.md` · `.claude/MEMORY.md` · `.copier/migrations`, each re-supplied from `.copier/` (see below) · `uv.lock`, **regenerated** by the `uv lock` task rather than seeded                                                                                                                                                    |
+| **The artefact trees**      | everything under `handoffs/`, `research/`, `learning/` and `project-management/src/` bar the `CONTEXT.md`/`CLAUDE.md` pairs, the `*TEMPLATE*` files and **fifteen further named paths** — the six GDPR documents, the brand-guide and component build scripts, the shared wireframe stylesheet, the two `US000` test sheets and the incident index — plus `questionnaires/.gitignore` |
+| **Opt-out surfaces**        | the mobile, Rust and desktop trees, their scripts, guides, workflows, CI jobs and stack skills — gated by a templated entry (see `11-CUSTOMISING.md`)                                                                                                                                                                                                                                 |
+| **Never a checkout**        | `.git` · `*.pdf` · `node_modules` · `.code-review-graph` · `.venv` · `__pycache__` · `*.py[co]` · `.DS_Store`                                                                                                                                                                                                                                                                         |
 
-Four notes:
+Five notes:
+
+- **The guide tree you are reading ships, and that is why the checks below exclude it.** Only
+  `TEMPLATE-GAPS.md` — syntek-base's own open items — is held back. Everything else here is
+  rendered like any ordinary file, so the guides that quote token or delimiter syntax wrap it in
+  `raw` blocks and the literal text survives into your project. The token sweep under _Verifying a
+  generation_ therefore has to skip `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md`: the tokens it
+  would find there are documentation, not a failed render. **`copier.yml` is excluded**, so a
+  sentence in any shipped file that cites it resolves in the template and dangles in your project.
 
 - **Patterns are gitignore-style**, so they are root-anchored with a leading slash where they must
   be. Without it, `README.md` would also match `.copier/README.md` and `CONTRIBUTING.md` would
