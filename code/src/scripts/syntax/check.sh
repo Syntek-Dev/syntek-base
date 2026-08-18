@@ -21,6 +21,11 @@
 #       no automated changes (no type checker supports safe auto-fix).
 #
 # Exit codes:  0 = clean   1 = type errors found   2 = script error
+#              3 = every leg that ran was clean, and at least one leg COULD NOT RUN
+#
+# `3` is non-zero deliberately, so a caller treating any non-zero as failure fails closed.
+# Rule: code/docs/GATE-REPORTING.md — "could not look" is never reported as "looked, and it
+# was clean".
 #
 set -euo pipefail
 
@@ -41,6 +46,9 @@ OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
 OVERALL_EXIT=0
+# Legs that could not run. A skipped leg produced NO result, so it must never reach the
+# same verdict as a leg that ran and found nothing (code/docs/GATE-REPORTING.md).
+declare -a UNRUN=()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -80,6 +88,7 @@ Notes:
     type errors; it prints guidance on how to fix common classes of errors.
 
 Exit codes:  0 = clean   1 = type errors found   2 = script error
+             3 = clean, but a leg could not run (see the summary for which)
 EOF
 }
 
@@ -235,7 +244,8 @@ if wants python; then
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  django container not running — skipping Python type-check"
+    log "  ⚠  django container not running — Python type-check COULD NOT RUN"
+    UNRUN+=("Python/basedpyright (django container not running)")
     log ""
   fi
 fi
@@ -283,6 +293,19 @@ if $FIX && [[ $OVERALL_EXIT -ne 0 ]]; then
     printf '    • Use cast() or TYPE_IGNORE with a comment for third-party stubs\n'
     printf '    • Run: docker compose exec django basedpyright --verifytypes <module>\n\n'
   } | tee -a "$TMPFILE" | $QUIET && cat >> "$TMPFILE" || cat
+fi
+
+# ── Verdict ───────────────────────────────────────────────────────────────────
+# Decided BEFORE the report is written, so the persisted artefact carries the verdict the
+# terminal shows. A leg that could not run produced no result and may not reach the clean
+# verdict. Rule: code/docs/GATE-REPORTING.md.
+if [[ ${#UNRUN[@]} -gt 0 && $OVERALL_EXIT -eq 0 ]]; then
+  OVERALL_EXIT=3
+fi
+UNRUN_TEXT=""
+if [[ ${#UNRUN[@]} -gt 0 ]]; then
+  UNRUN_TEXT=$(printf '%s; ' "${UNRUN[@]}")
+  UNRUN_TEXT="${UNRUN_TEXT%; }"
 fi
 
 # ── Report output ─────────────────────────────────────────────────────────────
@@ -373,6 +396,10 @@ fi
 # ── Summary ───────────────────────────────────────────────────────────────────
 if [[ $OVERALL_EXIT -eq 0 ]]; then
   bold "✓ No type errors found."
+elif [[ $OVERALL_EXIT -eq 3 ]]; then
+  bold "⚠ INCOMPLETE — every leg that ran was clean, and ${#UNRUN[@]} could not run."
+  for leg in "${UNRUN[@]}"; do log "    · $leg"; done
+  log "  This is not a clean result."
 else
   bold "✗ Type errors found."
   log "  Fix manually — type checkers do not support automatic correction."

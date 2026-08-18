@@ -59,7 +59,8 @@ surface's Alpine and enhancement scripts) · `typescript` (the **mobile** surfac
 - `lint.sh --unsafe-fix` (ruff only) — only where no safe fix exists **and** the change is
   provably behaviour-preserving. Read the diff before accepting it.
 - `check.sh` is dry-run: no type checker auto-fixes, so type errors are resolved by hand.
-- CSS has no linter — `format.sh` covers it. Token rules belong to the `frontend` skill.
+- CSS has no linter, and `lint.sh` **rejects** `--file-type css` rather than passing over it — a token that can only ever print a clean result is a false one. `format.sh` owns CSS. Token rules belong to the `frontend` skill.
+- **Exit `3` is not a pass.** It means every leg that ran was clean and at least one could not run — the summary names which. Resolve it or state it; never report it as green (`code/docs/GATE-REPORTING.md`).
 - `check.sh` rejects `--file-type javascript`: the web surface has no type-checker, so lint it
   instead. Naming a surface the project lacks exits `2` — never treat that as a pass.
 - The `typescript` and `rust` legs **delegate** to `scripts/mobile/*.sh` and

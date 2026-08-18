@@ -200,6 +200,7 @@ Two things to do on a freshly generated project:
 │   │   ├── ENCRYPTION-GUIDE.md          (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
 │   │   ├── EXPORTS.md                   ← downloadable file exports (declared, not wired)
 │   │   ├── FRONTEND-CODING-PRINCIPLES.md
+│   │   ├── GATE-REPORTING.md            ← what a gate may claim it looked at; absent tool vs absent surface
 │   │   ├── LOGGING.md                   (+ logging/ — DJANGO-LOGGING, FRONTEND-LOGGING, OBSERVABILITY, CLOUDINARY)
 │   │   ├── MANAGEMENT-COMMANDS.md       ← the CLI surface: untrusted arguments, blast radius, exit codes
 │   │   ├── MCP-SERVER.md                (+ mcp-server/ — MOUNTING, TOOL-DESIGN, AUTH-AND-THREATS, TESTING-AND-OPS)

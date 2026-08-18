@@ -42,7 +42,15 @@ the shipped template documentation read-only in a generated project.
 - No secrets in scripts or PR comments — tokens come from the environment only.
 - `pre-compact-handoff.sh` **blocks** auto-compaction (exit 2) and only warns on a manual
   `/compact` — do not weaken this; silent compaction is the thing it exists to prevent.
-- `context-threshold-handoff.sh` **always exits 0** — it sits on every prompt submission, so
+- **A check that could not run reports `unmeasured`, never a pass.** `_dual_result` takes a
+  per-leg state and `CHECK_PASS` carries `unmeasured` beside `true`/`false`; the pre-PR gate
+  reports it in its own tier and **does not block on it**, because a missing host tool is
+  ordinary on a developer's machine and a gate that blocks the maintainer is a gate that gets
+  switched off. An `unmeasured` host leg is never paired into a `MISMATCH` verdict — a
+  mismatch asserts two results and there is only one. Rule: `code/docs/GATE-REPORTING.md`.
+- `context-threshold-handoff.sh` is **exempt from that rule, and the exemption is the reason
+  below rather than an oversight** — it produces no verdict, so it claims nothing and cannot
+  claim something false. It **always exits 0** — it sits on every prompt submission, so
   a miscounted token must never block <%DEVELOPER_NAME%> from typing. Every failure path
   (no `jq`, no transcript, unparseable payload) exits silently rather than guessing.
 - **Count the main chain only** — usage records flagged `isSidechain` are subagent windows;

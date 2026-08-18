@@ -489,7 +489,7 @@ Docker behaviour aligned — everyone runs the same tool versions against the sa
 | Seed dev data                 | `bash code/src/scripts/database/seed-dev.sh`                                                                             | Docker |
 | Reset / backup / restore DB   | `database/{reset,backup,restore,shell,manageusers,verify-db-security}.sh`                                                | Docker |
 | Format                        | `bash code/src/scripts/syntax/format.sh [--fix]` (ruff format + Prettier for CSS/MD/JSON/YAML)                           | Both   |
-| Lint                          | `bash code/src/scripts/syntax/lint.sh [--fix] [--unsafe-fix]` (ruff + markdownlint; `--file-type css` for CSS)           | Both   |
+| Lint                          | `bash code/src/scripts/syntax/lint.sh [--fix] [--unsafe-fix]` (ruff, markdownlint, ESLint; CSS is `format.sh` only)      | Both   |
 | Typecheck                     | `bash code/src/scripts/syntax/check.sh` (basedpyright — Python only; there is no TypeScript)                             | Docker |
 | cloc audit                    | `bash code/src/scripts/audits/cloc.sh [--path ...]`                                                                      | Local  |
 | Stub audit                    | `bash code/src/scripts/audits/stubs.sh [--strict]`                                                                       | Local  |

@@ -112,7 +112,6 @@ fi
 
 collect_files() {
   if [[ -n "$TARGET_PATH" ]]; then
-    [[ -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
     if [[ -d "$TARGET_PATH" ]]; then
       find "$TARGET_PATH" -type f -name '*.md' ! -name 'CONTEXT.md' ! -name 'CLAUDE.md' -print0
     else
@@ -171,6 +170,12 @@ check_numbered_sections() {
     END { if (heading != "" && !found) print f ":" hline ": numbered section has no **Source:** — " heading }
   ' "$file"
 }
+
+# --path is validated HERE, at top level, and not inside the collector below. The guard used
+# to live in the collector, which runs in a process substitution — so `die`'s `exit 2` killed
+# only the subshell, the error went to stderr, and the script carried on to print its success
+# line at exit 0 over a scope it never honoured. Rule: code/docs/GATE-REPORTING.md.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
 
 while IFS= read -r -d '' file; do
   check_paths "$file" >> "$TMP_HITS" || true

@@ -283,6 +283,11 @@ FRONTEND_COV=0
 
 # Shared result setter for dual-environment checks.
 # Sets CHECK_PASS and CHECK_SUMMARY (mismatch cases); caller sets summary for both-fail.
+# The value a leg passes for "I could not run". Deliberately NOT an exit code: an exit code
+# is a RESULT, and the whole point of this value is that there is no result.
+# Rule: code/docs/GATE-REPORTING.md.
+LEG_UNMEASURED="unmeasured"
+
 _dual_result() {
   local name="$1" local_exit="$2" docker_exit="$3" \
         local_out="$4" docker_out="$5"
@@ -294,7 +299,29 @@ _dual_result() {
   CHECK_OUTPUT["$name"]=$(printf \
     '── Local ────────────────────────────────────────────────────────────\n%s\n\n── Docker ───────────────────────────────────────────────────────────\n%s\n' \
     "$local_out" "$docker_out")
-  if   [[ $local_exit -eq 0 && $docker_exit -eq 0 ]]; then
+  # A leg that could not run has produced no result, so it can neither pass nor MISMATCH —
+  # a mismatch asserts two results and there would be only one. Handled before the integer
+  # comparisons below, which would otherwise read the sentinel as a failure.
+  if [[ "$local_exit" == "$LEG_UNMEASURED" || "$docker_exit" == "$LEG_UNMEASURED" ]]; then
+    local ran_exit ran_side unmeasured_side
+    if [[ "$local_exit" == "$LEG_UNMEASURED" ]]; then
+      ran_exit="$docker_exit"; ran_side="Docker"; unmeasured_side="local"
+    else
+      ran_exit="$local_exit"; ran_side="local"; unmeasured_side="Docker"
+    fi
+    if [[ "$ran_exit" == "$LEG_UNMEASURED" ]]; then
+      CHECK_PASS["$name"]="unmeasured"
+      CHECK_SUMMARY["$name"]="NOT MEASURED — neither leg could run"
+    elif [[ $ran_exit -eq 0 ]]; then
+      CHECK_PASS["$name"]="unmeasured"
+      CHECK_SUMMARY["$name"]="NOT MEASURED — the $unmeasured_side leg could not run; the $ran_side leg was clean"
+    else
+      # One real failure and one absent result: report the failure, and never dress it as
+      # a mismatch.
+      CHECK_PASS["$name"]="false"
+      CHECK_SUMMARY["$name"]="FAILED in $ran_side (the $unmeasured_side leg could not run — no mismatch can be asserted)"
+    fi
+  elif [[ $local_exit -eq 0 && $docker_exit -eq 0 ]]; then
     CHECK_PASS["$name"]="true"
   elif [[ $local_exit -eq 0 && $docker_exit -ne 0 ]]; then
     CHECK_PASS["$name"]="false"
@@ -380,9 +407,16 @@ fi
 # ── 7  Tally ──────────────────────────────────────────────────────────────────
 
 FAILED_CHECKS=()
+UNMEASURED_CHECKS=()
 OVERALL_PASS=true
 for _c in "${ALL_CHECKS[@]}"; do
-  [[ "${CHECK_PASS[$_c]:-false}" == "false" ]] && FAILED_CHECKS+=("$_c") && OVERALL_PASS=false || true
+  case "${CHECK_PASS[$_c]:-false}" in
+    # Reported, never silent — but not blocking. A missing host tool is ordinary on a
+    # developer's machine, and a gate that blocks the maintainer is a gate that gets
+    # switched off (code/docs/GATE-REPORTING.md).
+    unmeasured) UNMEASURED_CHECKS+=("$_c") ;;
+    false)      FAILED_CHECKS+=("$_c"); OVERALL_PASS=false ;;
+  esac
 done
 
 # ── 8  Write history ──────────────────────────────────────────────────────────
@@ -640,13 +674,23 @@ fi
 
 # ── 10  Terminal results ──────────────────────────────────────────────────────
 
-_icon() { [[ "${CHECK_PASS[$1]:-false}" == "true" ]] && printf '✓' || printf '✗'; }
+_icon() {
+  case "${CHECK_PASS[$1]:-false}" in
+    true)       printf '✓' ;;
+    unmeasured) printf '⚠' ;;
+    *)          printf '✗' ;;
+  esac
+}
 
 printf '\nCHECK RESULTS\n'
 printf '────────────────────────────────────────────────────────────────────\n'
 for _c in "${ALL_CHECKS[@]}"; do
   printf '  %s  %-12s  %s\n' "$(_icon "$_c")" "$_c" "${CHECK_SUMMARY[$_c]:-}"
 done
+if [[ ${#UNMEASURED_CHECKS[@]} -gt 0 ]]; then
+  printf '  ⚠  NOT MEASURED: %s\n' "${UNMEASURED_CHECKS[*]}"
+  printf '     These did not run, which is not a pass. Install what is missing to close them.\n'
+fi
 printf '\n'
 
 if [[ "$OVERALL_PASS" == "true" ]]; then

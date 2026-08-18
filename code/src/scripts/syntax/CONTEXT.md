@@ -51,7 +51,11 @@ here. Repeat the flag for more than one.
 | `typescript` | **Mobile** — `code/src/mobile/`                 | ESLint (mobile config) | `tsc --noEmit` | Prettier    |
 | `rust`       | **Native** — `code/src/rust/`, desktop included | rustfmt + clippy       | `cargo check`  | rustfmt     |
 | `markdown`   | repo-wide                                       | markdownlint-cli2      | — not typed    | Prettier    |
-| `css`        | repo-wide                                       | — no linter            | — not typed    | Prettier    |
+| `css`        | repo-wide — **`format.sh` only**                | — rejected, see below  | — not typed    | Prettier    |
+
+**`lint.sh` rejects `--file-type css`.** No CSS linter is configured, so a `css` lint token
+could only ever print an informational line and pass — which reads as a clean result over a
+population nothing examined. `format.sh` owns CSS and still takes the token.
 
 `javascript` and `typescript` name **different surfaces and never overlap**: the root ESLint
 config ignores `code/src/mobile/`, and TypeScript exists nowhere else in the tree. `check.sh`
@@ -93,7 +97,11 @@ narrowing.
 
 - `0` — clean / all formatted / no changes
 - `1` — issues found / formatting needed / type errors
-- `2` — script error (bad arguments, containers not running)
+- `2` — script error (bad arguments, containers not running, an absent surface named explicitly)
+- `3` — **every leg that ran was clean, and at least one leg could not run.** Not a pass. The
+  summary names which legs and why, and every `--output` report carries the same verdict plus an
+  `unrun` field. Non-zero deliberately, so a caller treating any non-zero as failure fails
+  closed. Rule: `code/docs/GATE-REPORTING.md`
 
 ## Reports
 

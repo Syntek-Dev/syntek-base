@@ -52,8 +52,15 @@ two surfaces.
   look" filed as "looked, and it was clean" is the defect these scripts exist to catch.
 - **This is not a formatting-preference dial** — mirror the lefthook pre-commit gate,
   never diverge tool config from it.
-- Exit-code contract is load-bearing: `0` clean, `1` issues, `2` script error — CI
-  depends on it; never mask a failure into `0`.
+- **Exit-code contract is load-bearing: `0` clean, `1` issues, `2` script error, `3` at
+  least one requested leg could not run.** Never mask a failure into `0`, and never let a
+  leg that did not run reach `0` either — `3` exists so "could not look" cannot be read as
+  "looked, and it was clean". It is non-zero deliberately, so a caller treating any non-zero
+  as failure fails closed. Rule and rationale: `code/docs/GATE-REPORTING.md`.
+  (The previous wording justified this contract with "CI depends on it". That was false when
+  written and is still false: nothing automated invokes these scripts — the seven references
+  across `.github/`, `.claude/hooks/` and `lefthook.yml` are advice strings and one human
+  checkbox. The contract survives on its merits, which are the reader's, not CI's.)
 - Shell scripts are exempt from the 750-line source limit but stay focused.
 
 ## Output & naming

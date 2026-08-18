@@ -69,6 +69,11 @@ PYEOF
     [[ $diff_e -ne 0 ]] && exit_code=1
   fi
 
+  # Legs that could not run. Neither of the two host legs below has a result when its
+  # prerequisite is absent, so neither may reach the "local ✓ container ✓" summary.
+  # Rule: code/docs/GATE-REPORTING.md.
+  local -a unmeasured=()
+
   # ── Local Python (.venv) ───────────────────────────────────────────────────
   out+="\n── Local Python (.venv) ───────────────────────────────────────────\n"
   local venv_dir=""
@@ -131,7 +136,8 @@ PYEOF
       fi
     fi
   else
-    out+="  No local .venv found — skipping (run: bash code/src/scripts/development/install-backend.sh --sync)\n"
+    out+="  No local .venv found — this leg COULD NOT RUN (run: bash code/src/scripts/development/install-backend.sh --sync)\n"
+    unmeasured+=("local .venv")
   fi
 
   # ── JS tooling (pnpm) — host-only; the django image carries no Node ────────
@@ -146,11 +152,17 @@ PYEOF
       out+="  node_modules match pnpm-lock.yaml\n"
     fi
   else
-    out+="  No node_modules found — skipping (run: pnpm install)\n"
+    out+="  No node_modules found — this leg COULD NOT RUN (run: pnpm install)\n"
+    unmeasured+=("host node_modules")
   fi
 
   CHECK_OUTPUT["lockfiles"]="$out"
-  if [[ $exit_code -eq 0 ]]; then
+  if [[ $exit_code -eq 0 && ${#unmeasured[@]} -gt 0 ]]; then
+    # Everything that ran matched, and something did not run. The old form printed
+    # "local ✓ container ✓" over host legs that never happened.
+    CHECK_PASS["lockfiles"]="unmeasured"
+    CHECK_SUMMARY["lockfiles"]="NOT MEASURED — ${unmeasured[*]} could not run; every leg that ran matched"
+  elif [[ $exit_code -eq 0 ]]; then
     CHECK_PASS["lockfiles"]="true"
     CHECK_SUMMARY["lockfiles"]="Python + JS packages match lockfiles (local ✓ container ✓)"
   else

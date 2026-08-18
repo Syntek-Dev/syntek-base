@@ -19,6 +19,11 @@
 #                  [--output-file PATH] [--quiet] [--path PATH] [--help]
 #
 # Exit codes:  0 = all files formatted   1 = formatting needed   2 = script error
+#              3 = every leg that ran was clean, and at least one leg COULD NOT RUN
+#
+# `3` is non-zero deliberately, so a caller treating any non-zero as failure fails closed.
+# Rule: code/docs/GATE-REPORTING.md — "could not look" is never reported as "looked, and it
+# was clean".
 #
 set -euo pipefail
 
@@ -41,6 +46,9 @@ OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
 OVERALL_EXIT=0
+# Legs that could not run. A skipped leg produced NO result, so it must never reach the
+# same verdict as a leg that ran and found nothing (code/docs/GATE-REPORTING.md).
+declare -a UNRUN=()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -80,6 +88,7 @@ Notes:
   • --output writes a report regardless of whether --fix was used.
 
 Exit codes:  0 = all formatted / no changes   1 = formatting needed or applied   2 = script error
+             3 = clean, but a leg could not run (see the summary for which)
 EOF
 }
 
@@ -271,7 +280,8 @@ if wants python; then
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  django container not running — skipping Python format"
+    log "  ⚠  django container not running — Python format COULD NOT RUN"
+    UNRUN+=("Python/ruff format (django container not running)")
     log ""
   fi
 fi
@@ -293,7 +303,8 @@ if wants_prettier; then
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  pnpm not found on host — skipping Prettier (it runs on the host; install pnpm/Node)"
+    log "  ⚠  pnpm not found on host — Prettier COULD NOT RUN (it runs on the host; install pnpm/Node)"
+    UNRUN+=("JS/TS/CSS/Markdown/Prettier (pnpm not on host PATH)")
     log ""
   fi
 fi
@@ -314,6 +325,19 @@ fi
 if ! $FIX && [[ $OVERALL_EXIT -ne 0 ]]; then
   log "  Files above need formatting. Run with --fix to reformat them."
   log ""
+fi
+
+# ── Verdict ───────────────────────────────────────────────────────────────────
+# Decided BEFORE the report is written, so the persisted artefact carries the verdict the
+# terminal shows. A leg that could not run produced no result and may not reach the clean
+# verdict. Rule: code/docs/GATE-REPORTING.md.
+if [[ ${#UNRUN[@]} -gt 0 && $OVERALL_EXIT -eq 0 ]]; then
+  OVERALL_EXIT=3
+fi
+UNRUN_TEXT=""
+if [[ ${#UNRUN[@]} -gt 0 ]]; then
+  UNRUN_TEXT=$(printf '%s; ' "${UNRUN[@]}")
+  UNRUN_TEXT="${UNRUN_TEXT%; }"
 fi
 
 # ── Report output ─────────────────────────────────────────────────────────────
@@ -411,6 +435,10 @@ fi
 # ── Summary ───────────────────────────────────────────────────────────────────
 if [[ $OVERALL_EXIT -eq 0 ]]; then
   bold "✓ All files are correctly formatted."
+elif [[ $OVERALL_EXIT -eq 3 ]]; then
+  bold "⚠ INCOMPLETE — every leg that ran was clean, and ${#UNRUN[@]} could not run."
+  for leg in "${UNRUN[@]}"; do log "    · $leg"; done
+  log "  This is not a clean result, and --fix did not reach those files either."
 elif $FIX; then
   bold "⚡ Formatting applied."
 else

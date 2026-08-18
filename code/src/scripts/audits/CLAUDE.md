@@ -42,7 +42,11 @@ analysis, the seam and orphan guards, and the dependency CVE audit. Full invento
   audit. **`mobile-tokens.sh` is its mobile counterpart** and enforces the same law with
   a different clause (no raw literals in `StyleSheet`); its `token-allow` annotation is
   for genuinely structural values only, never to defer real design debt.
-- **A self-guarding audit must exit 0, not fail, when its surface is absent.**
+- **A self-guarding audit must exit 0, not fail, when its surface is absent — and must say
+  so in its output.** That zero means "nothing of this kind is here", never "nothing is
+  wrong here", and only the printed note makes the two legible apart. This is the
+  absent-**surface** row of `code/docs/GATE-REPORTING.md`; an absent **tool** is the other
+  row and is never clean.
   `mobile-tokens.sh` returns success with a note on a web-only project — that is what
   lets it run unconditionally in CI without a step-level guard. The same holds for
   `seam-contract.sh`, the slop family and `static-analysis.sh`.

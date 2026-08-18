@@ -20,6 +20,11 @@
 #                [--output-file PATH] [--quiet] [--path PATH] [--help]
 #
 # Exit codes:  0 = clean   1 = lint issues found   2 = script error
+#              3 = every leg that ran was clean, and at least one leg COULD NOT RUN
+#
+# `3` is non-zero deliberately, so a caller treating any non-zero as failure fails closed.
+# Rule: code/docs/GATE-REPORTING.md — "could not look" is never reported as "looked, and it
+# was clean".
 #
 set -euo pipefail
 
@@ -41,6 +46,9 @@ OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
 OVERALL_EXIT=0
+# Legs that could not run. A skipped leg produced NO result, so it must never reach the
+# same verdict as a leg that ran and found nothing (code/docs/GATE-REPORTING.md).
+declare -a UNRUN=()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -62,7 +70,7 @@ Options:
   --fix                Apply safe automatic fixes
   --unsafe-fix         Apply safe and unsafe automatic fixes (ruff only)
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | markdown | css | javascript | typescript | rust
+                         python | markdown | javascript | typescript | rust
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/reports/lint-report.<FORMAT>)
@@ -72,7 +80,7 @@ Options:
 
 Notes:
   • ruff runs in the django container; every other tool runs on the host.
-  • CSS has no lint tool configured — use format.sh for CSS formatting.
+  • There is no `css` type here — no CSS linter is configured. format.sh owns CSS.
   • javascript is the WEB surface (root eslint config); typescript is the MOBILE
     surface (code/src/mobile/, its own config). They do not overlap.
   • typescript and rust delegate to scripts/mobile/lint.sh and scripts/rust/lint.sh,
@@ -82,6 +90,7 @@ Notes:
   • JSON output captures each tool's text output in a structured envelope.
 
 Exit codes:  0 = clean   1 = lint issues found   2 = script error
+             3 = clean, but a leg could not run (see the summary for which)
 EOF
 }
 
@@ -168,8 +177,9 @@ EXPLICIT_TYPES=false
 
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|markdown|css|javascript|typescript|rust) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python markdown css javascript typescript rust" ;;
+    python|markdown|javascript|typescript|rust) ;;
+    css) die "--file-type 'css' is not linted — no CSS linter is configured. Use format.sh --file-type css for formatting." ;;
+    *) die "Invalid --file-type '$ft'. Choose: python markdown javascript typescript rust" ;;
   esac
 done
 
@@ -243,7 +253,8 @@ if wants python; then
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  django container not running — skipping Python lint"
+    log "  ⚠  django container not running — Python lint COULD NOT RUN"
+    UNRUN+=("Python/ruff (django container not running)")
     log ""
   fi
 fi
@@ -256,29 +267,45 @@ fi
 if wants markdown; then
   if host_has_pnpm; then
     bold "── Markdown (markdownlint-cli2) ───────────────────────────────────────────"
-    # A directory --path is widened to a recursive glob; default lints the repo.
+    # SCOPING. markdownlint-cli2 APPENDS the config's `globs` array to whatever the CLI
+    # gives it, so passing a path WIDENS rather than narrows — measured at 794 files for a
+    # one-file request, which is why a scoped run reported findings in files it was never
+    # given. `--no-globs` stops the append. The `:` prefix then marks each argument a
+    # literal path, and literal paths are STILL filtered through the config's NEGATED globs
+    # — so all 16 exclusions survive a scoped run. Proven both ways: a file excluded only by
+    # `globs` (not by `ignores`) lints under a bare path and is skipped under `:`.
+    # `--no-globs` alone would have kept only the 4 exclusions `ignores` repeats.
+    declare -a md_args=(pnpm exec markdownlint-cli2)
+    declare -a md_targets=()
     if [[ -z "$TARGET_PATH" ]]; then
-      md_pattern="**/*.md"
-    elif [[ -d "$TARGET_PATH" ]]; then
-      md_pattern="${TARGET_PATH%/}/**/*.md"
+      md_args+=("**/*.md")
     else
-      md_pattern="$TARGET_PATH"
+      md_args+=(--no-globs)
+      if [[ -d "$TARGET_PATH" ]]; then
+        while IFS= read -r md_file; do md_targets+=(":$md_file"); done \
+          < <(find "${TARGET_PATH%/}" -type f -name '*.md' | sort)
+      elif [[ -e "$TARGET_PATH" ]]; then
+        md_targets+=(":$TARGET_PATH")
+      else
+        die "--path '$TARGET_PATH' does not exist."
+      fi
+      md_args+=("${md_targets[@]+"${md_targets[@]}"}")
     fi
-    declare -a md_args=(pnpm exec markdownlint-cli2 "$md_pattern")
     $FIX && md_args+=(--fix)
-    run_on_host "${md_args[@]}"
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    # An empty scope is a population of zero the search COULD have filled, so clean is the
+    # honest verdict — said out loud rather than left to look like a pass.
+    if [[ -n "$TARGET_PATH" && ${#md_targets[@]} -eq 0 ]]; then
+      log "  ℹ  no .md files under '$TARGET_PATH' — nothing to lint"
+    else
+      run_on_host "${md_args[@]}"
+      [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    fi
     log ""
   else
-    log "  ⚠  pnpm not found on host — skipping Markdown lint (it runs on the host; install pnpm/Node)"
+    log "  ⚠  pnpm not found on host — Markdown lint COULD NOT RUN (it runs on the host; install pnpm/Node)"
+    UNRUN+=("Markdown/markdownlint (pnpm not on host PATH)")
     log ""
   fi
-fi
-
-# ── CSS — no linter configured ────────────────────────────────────────────────
-if wants css; then
-  log "  ℹ  CSS linting is not configured. Use format.sh for CSS formatting."
-  log ""
 fi
 
 # ── JavaScript — ESLint, the WEB surface ──────────────────────────────────────
@@ -294,7 +321,8 @@ if wants javascript; then
     [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
     log ""
   else
-    log "  ⚠  pnpm not found on host — skipping JavaScript lint (it runs on the host; install pnpm/Node)"
+    log "  ⚠  pnpm not found on host — JavaScript lint COULD NOT RUN (it runs on the host; install pnpm/Node)"
+    UNRUN+=("JavaScript/ESLint (pnpm not on host PATH)")
     log ""
   fi
 fi
@@ -325,6 +353,20 @@ if wants rust; then
   log ""
 fi
 
+# ── Verdict ───────────────────────────────────────────────────────────────────
+# Decided BEFORE the report is written, so the persisted artefact carries the verdict the
+# terminal shows. A leg that could not run produced no result and may not reach the clean
+# verdict: 3 means "what ran was clean, and this did not run".
+# Rule: code/docs/GATE-REPORTING.md.
+if [[ ${#UNRUN[@]} -gt 0 && $OVERALL_EXIT -eq 0 ]]; then
+  OVERALL_EXIT=3
+fi
+UNRUN_TEXT=""
+if [[ ${#UNRUN[@]} -gt 0 ]]; then
+  UNRUN_TEXT=$(printf '%s; ' "${UNRUN[@]}")
+  UNRUN_TEXT="${UNRUN_TEXT%; }"
+fi
+
 # ── Report output ─────────────────────────────────────────────────────────────
 if [[ -n "$OUTPUT_FORMAT" ]]; then
   RAW=$(<"$TMPFILE")
@@ -341,8 +383,9 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '| **Generated** | %s |\n' "$TIMESTAMP"
         printf '| **Mode** | %s |\n' "$MODE"
         printf '| **Types** | %s |\n' "${FILE_TYPES[*]}"
-        printf '| **Status** | %s |\n\n' \
-          "$([[ $OVERALL_EXIT -eq 0 ]] && echo '✓ Clean' || echo '✗ Issues found')"
+        printf '| **Status** | %s |\n' \
+          "$([[ $OVERALL_EXIT -eq 0 ]] && echo '✓ Clean' || { [[ $OVERALL_EXIT -eq 3 ]] && echo '⚠ Incomplete — a leg could not run' || echo '✗ Issues found'; })"
+        printf '| **Could not run** | %s |\n\n' "${UNRUN_TEXT:-none}"
         if [[ -n "$RAW" ]]; then
           printf '```text\n%s\n```\n' "$RAW"
         else
@@ -360,6 +403,8 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "file_types": [%s],\n' \
           "$(printf '"%s",' "${FILE_TYPES[@]}" | sed 's/,$//')"
         printf '  "exit_code": %d,\n' "$OVERALL_EXIT"
+        printf '  "unrun": [%s],\n' \
+          "$(if [[ ${#UNRUN[@]} -gt 0 ]]; then printf '"%s",' "${UNRUN[@]}" | sed 's/,$//'; fi)"
         printf '  "output": %s\n' \
           "$(printf '%s' "$RAW" | python3 -c \
             'import sys,json; print(json.dumps(sys.stdin.read()))' \
@@ -398,8 +443,9 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
     <tr><th>Mode</th><td>$MODE</td></tr>
     <tr><th>File types</th><td>${FILE_TYPES[*]}</td></tr>
     <tr><th>Status</th><td class="$([[ $OVERALL_EXIT -eq 0 ]] && echo ok || echo fail)">
-      $([[ $OVERALL_EXIT -eq 0 ]] && echo '&#10003; Clean' || echo '&#10007; Issues found')
+      $([[ $OVERALL_EXIT -eq 0 ]] && echo '&#10003; Clean' || { [[ $OVERALL_EXIT -eq 3 ]] && echo '&#9888; Incomplete &mdash; a leg could not run' || echo '&#10007; Issues found'; })
     </td></tr>
+    <tr><th>Could not run</th><td>${UNRUN_TEXT:-none}</td></tr>
   </table>
   <pre>$escaped</pre>
 </body>
@@ -416,9 +462,17 @@ fi
 # ── Summary ───────────────────────────────────────────────────────────────────
 if [[ $OVERALL_EXIT -eq 0 ]]; then
   bold "✓ No lint issues found."
+elif [[ $OVERALL_EXIT -eq 3 ]]; then
+  bold "⚠ INCOMPLETE — every leg that ran was clean, and ${#UNRUN[@]} could not run."
+  for leg in "${UNRUN[@]}"; do log "    · $leg"; done
+  log "  This is not a clean result. Install what is missing, or scope with --file-type."
 else
   bold "✗ Lint issues found."
   $FIX || log "  Run with --fix to apply safe automatic fixes."
+  if [[ ${#UNRUN[@]} -gt 0 ]]; then
+    log "  Additionally, ${#UNRUN[@]} leg(s) could not run:"
+    for leg in "${UNRUN[@]}"; do log "    · $leg"; done
+  fi
 fi
 log ""
 

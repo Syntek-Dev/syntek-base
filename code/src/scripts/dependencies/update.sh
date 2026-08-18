@@ -125,6 +125,21 @@ wants() {
   return 1
 }
 
+# Name the files that ACTUALLY moved. `pnpm update --latest` frequently rewrites only
+# pnpm-lock.yaml — a declared range like ^1.2.0 already admits 1.9.0, so the manifest needs no
+# edit — and the old wording claimed both every time. Reporting an action that did not happen is
+# the same defect as reporting a check that did not run (code/docs/GATE-REPORTING.md).
+_report_pnpm_writes() {
+  local label="$1" moved=()
+  git -C "$PROJECT_ROOT" diff --quiet -- package.json 2>/dev/null || moved+=("package.json")
+  git -C "$PROJECT_ROOT" diff --quiet -- pnpm-lock.yaml 2>/dev/null || moved+=("pnpm-lock.yaml")
+  if [[ ${#moved[@]} -eq 0 ]]; then
+    log "  $label — already current; no file changed."
+  else
+    log "  $label in $(IFS=', '; echo "${moved[*]}")."
+  fi
+}
+
 cd "$PROJECT_ROOT"
 
 # ── Python ────────────────────────────────────────────────────────────────────
@@ -210,10 +225,10 @@ if wants javascript; then
   elif [[ "$MODE" == "apply" ]]; then
     if [[ -n "$PACKAGE" ]]; then
       pnpm update --latest "$PACKAGE"
-      log "  $PACKAGE updated in package.json and pnpm-lock.yaml."
+      _report_pnpm_writes "$PACKAGE updated"
     else
       pnpm update --latest
-      log "  package.json and pnpm-lock.yaml updated."
+      _report_pnpm_writes "packages updated"
     fi
   else
     if OUT="$(pnpm outdated 2>&1)"; then

@@ -231,10 +231,16 @@ fi
 
 # Enumerate skill folders. A skill is a DIRECTORY holding SKILL.md; the flat *.md cards
 # beside them are code-review-graph output and are not skills under the spec.
+# --path is validated at top level, immediately below this function, and NOT inside it. The
+# guard used to live here — reading `$t` rather than `$TARGET_PATH`, which is why a grep on
+# the guard string missed this member entirely. Inside a process substitution `die`'s
+# `exit 2` kills only the subshell, so the script carried on and printed
+# "✓ No skills found under .claude/skills/ — nothing to check." at exit 0: a success line
+# naming the DEFAULT scope while the operator had asked for another path.
+# Rule: code/docs/GATE-REPORTING.md.
 collect_skills() {
   if [[ -n "$TARGET_PATH" ]]; then
     local t="${TARGET_PATH%/}"
-    [[ -e "$t" ]] || die "--path '$t' does not exist"
     if [[ -f "$t" ]]; then printf '%s\0' "$(dirname "$t")"
     elif [[ -f "$t/SKILL.md" ]]; then printf '%s\0' "$t"
     else find "$t" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 2>/dev/null | sort -z; fi
@@ -242,6 +248,8 @@ collect_skills() {
     find "$SCOPE_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 2>/dev/null | sort -z
   fi
 }
+
+[[ -z "$TARGET_PATH" || -e "${TARGET_PATH%/}" ]] || die "--path '$TARGET_PATH' does not exist"
 
 # Vendored = the skill folder is a SYMLINK. Detected by shape rather than by name, so a
 # second vendored set needs no edit here.

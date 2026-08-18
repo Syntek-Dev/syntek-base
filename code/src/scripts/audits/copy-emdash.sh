@@ -103,7 +103,6 @@ bold "▸ copy-emdash.sh — $TIMESTAMP"
 # Collect matching files (NUL-delimited) for either the override path or the scopes.
 collect_files() {
   if [[ -n "$TARGET_PATH" ]]; then
-    [[ -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
     if [[ -d "$TARGET_PATH" ]]; then
       find "$TARGET_PATH" -type f -print0
     else
@@ -121,6 +120,12 @@ collect_files() {
 
 log "  scanning marketing copy for em dashes…"
 log ""
+
+# --path is validated HERE, at top level, and not inside the collector below. The guard used
+# to live in the collector, which runs in a process substitution — so `die`'s `exit 2` killed
+# only the subshell, the error went to stderr, and the script carried on to print its success
+# line at exit 0 over a scope it never honoured. Rule: code/docs/GATE-REPORTING.md.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
 
 : > "$TMP_HITS"
 while IFS= read -r -d '' file; do
