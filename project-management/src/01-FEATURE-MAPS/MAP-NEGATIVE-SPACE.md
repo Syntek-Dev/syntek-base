@@ -1,6 +1,6 @@
 # MAP-NEGATIVE-SPACE — Constrain what is not allowed, and fail loudly
 
-**Charted**: 09/08/2026 · **Charted by**: Sam Bailey · **Workflow**: `01-feature`
+**Charted**: 09/08/2026 · **Charted by**: Sam Bailey · **Workflow**: `01-feature-map`
 **Last verified**: 14/08/2026 — N-007 to N-011 re-checked against the tree at **v3.2.1 + `93037ba`**
 (the earlier pass this line recorded ran at v3.1.0). Every core claim holds; four drifted and are
 amended in place below
@@ -1013,7 +1013,7 @@ or `README.md`, which is where the rule says it should.
 
 **No node blocks a story**, because this epic cuts no stories — it produces documentation, one
 audit script and routing, inside the template itself. It follows `MAP-DOCTRINE-UPGRADE`'s process
-precedent: `01-feature`, `21-implementation-documentation`, `22-pr-and-review` and `23-release`
+precedent: `01-feature-map`, `21-implementation-documentation`, `22-pr-and-review` and `23-release`
 apply; the per-story specification machinery (`02`–`13`, `15`–`17`) and the build phases
 (`18`–`20`) do not, because there is no schema, user flow, wireframe or user-facing surface to
 specify.
@@ -1224,7 +1224,7 @@ and `23-release`, per the process precedent recorded above.
 - [x] **Every node marked "blocking a story" is resolved** — none are; this epic cuts no stories
 - [x] Every resolved node links to the artefact it became
 - [x] Index row — **deliberately not added**, corrected 14/08/2026. This box was ticked against a
-      row that was never written: `01-FEATURE/CONTEXT.md` still reads _"None charted yet"_. That
+      row that was never written: `01-FEATURE-MAPS/CONTEXT.md` still reads _"None charted yet"_. That
       is right, and the tick was the error — the file **ships**, so it may cite layering-system
       artefacts only, never a per-project instance. Same ruling as `MAP-BASE-HEALTH.md`
 

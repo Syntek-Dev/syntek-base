@@ -1,6 +1,6 @@
 # MAP-NAVIGATION — Can this repository describe itself to a cold agent?
 
-**Charted**: 16/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature`
+**Charted**: 16/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Status**: **Resolving** — the two census nodes settled 16/08/2026
 **Frontier open**: 10 · **Blocking open**: 3 · **Fog of war open**: 5
 
@@ -281,14 +281,14 @@ In scope, not yet sharp enough to state as a decision.
 
 ## Out of scope
 
-| Ruled out                                                 | Why                                                                                                            |
-| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Adopting ICM's six forms, or the `icm-architect` skill    | Assessed 16/08/2026: enforcement is absent upstream, and this repository's equivalents are stricter and gated  |
-| Reopening the `CONTEXT.md` / `CLAUDE.md` pairing doctrine | Settled, owned by `code/docs/DOCUMENTATION-PAIRING.md`, gated by `audits/docs-pairing.sh`                      |
-| Copying any text from either ICM repository               | Facts and method only; the protocol repo's bundled Anthropic files are not MIT (`THIRD-PARTY-NOTICES.md`)      |
-| Retiring or replacing the code-review-graph               | It answers the code half well; this epic is about the markdown half                                            |
-| A generated project's own map maintenance                 | Different owner, same reason `MAP-BASE-HEALTH` excludes a generated project's `GAPS.md`                        |
-| Adding an index row to `src/01-FEATURE/CONTEXT.md`        | **Every map here is gitignored**, and `doc-references.sh` forbids a shipped file citing a per-project instance |
+| Ruled out                                                 | Why                                                                                                                                                                                                                                |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Adopting ICM's six forms, or the `icm-architect` skill    | Assessed 16/08/2026: enforcement is absent upstream, and this repository's equivalents are stricter and gated                                                                                                                      |
+| Reopening the `CONTEXT.md` / `CLAUDE.md` pairing doctrine | Settled, owned by `code/docs/DOCUMENTATION-PAIRING.md`, gated by `audits/docs-pairing.sh`                                                                                                                                          |
+| Copying any text from either ICM repository               | Facts and method only; the protocol repo's bundled Anthropic files are not MIT (`THIRD-PARTY-NOTICES.md`)                                                                                                                          |
+| Retiring or replacing the code-review-graph               | It answers the code half well; this epic is about the markdown half                                                                                                                                                                |
+| A generated project's own map maintenance                 | Different owner, same reason `MAP-BASE-HEALTH` excludes a generated project's `GAPS.md`                                                                                                                                            |
+| Adding an index row to `src/01-FEATURE-MAPS/CONTEXT.md`   | **Every map here is git-tracked but copier-excluded** — `copier.yml`'s `_exclude` empties `project-management/src/**`, so a row would name a file no generated project has; `doc-references.sh` forbids the citation independently |
 
 ---
 
@@ -318,7 +318,8 @@ In scope, not yet sharp enough to state as a decision.
       censuses die with this map** — which is the cost of the refusal, and is named here so it is
       chosen rather than discovered
 - [x] **Index row deliberately not added** — see _Out of scope_; the shipped index correctly reads
-      "None charted yet", because no map is tracked
+      "None charted yet", because no map reaches a generated project — every one is committed
+      here and excluded by `copier.yml` at generation
 
 **This map may produce no stories at all.** If N-004 refuses, the outcome is a written decision and
 the epic closes — which is why refusal is named in the Destination rather than treated as failure.

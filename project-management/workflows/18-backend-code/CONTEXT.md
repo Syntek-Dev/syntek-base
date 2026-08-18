@@ -60,7 +60,7 @@ feature. The database schema must be approved before this workflow begins.
 | --------------------------------------- | -------------------------------------------------------- |
 | `code/workflows/02-tdd-cycle/`          | Red-green-refactor steps for every new service method    |
 | `code/workflows/03-database-migration/` | Apply and verify the approved migration in the container |
-| `code/workflows/01-new-feature/`        | Full-stack feature checklist that wraps this workflow    |
+| `code/workflows/01-implement-story/`    | Full-stack feature checklist that wraps this workflow    |
 
 #### project-management/ — what precedes this, and what follows
 

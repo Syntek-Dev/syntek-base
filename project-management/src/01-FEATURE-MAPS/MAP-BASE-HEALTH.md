@@ -1,6 +1,6 @@
 # MAP-BASE-HEALTH — syntek-base's own open items
 
-**Charted**: 13/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature`
+**Charted**: 13/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Last verified**: 16/08/2026 — **A verification pass, not a resolve session; nothing below was
 settled today.** All ten open nodes were re-checked against the tree and **every one still holds** —
 N-030 was reproduced by injecting a fictional skill name into the multi-line array and watching
@@ -2342,7 +2342,7 @@ doctrine `code/docs/rust/SUPPLY-CHAIN.md:129` asks only for _"a re-check date"_.
 carried "N-022 × N-031 share 10 files", anchored at `lefthook.yml` and
 `how-to/workflows/06-quality-gates/*`. Neither anchor is Batch E: both sit in **N-036's** own file
 table (`lefthook.yml:25` and `how-to/workflows/06-quality-gates/STEPS.md:125`), a **Batch D** node
-blocked on N-035. The string "10 files" appears nowhere in `01-FEATURE/`, so the count's origin is
+blocked on N-035. The string "10 files" appears nowhere in `01-FEATURE-MAPS/`, so the count's origin is
 unrecoverable — most likely that table, read as if it belonged to the node beside it. Measured, the real overlaps are:
 
 | Collision                                 | Shared surface                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -2428,7 +2428,7 @@ working on it, which is the fact worth carrying rather than the number.
 
   ```bash
   git grep -nE '`code/src/django/[^`]+`' -- '*.md' \
-    | grep -vE '^(CHANGELOG|RELEASES|VERSION-HISTORY)\.md:|^how-to/src/TEMPLATE-GUIDE/|^handoffs/|^\.copier/|^research/|^learning/|^project-management/src/01-FEATURE/|^code/docs/cloudinary/|^\.agents/'
+    | grep -vE '^(CHANGELOG|RELEASES|VERSION-HISTORY)\.md:|^how-to/src/TEMPLATE-GUIDE/|^handoffs/|^\.copier/|^research/|^learning/|^project-management/src/01-FEATURE-MAPS/|^code/docs/cloudinary/|^\.agents/'
   ```
 
   then drop every citation whose path exists. The exclusion list is `doc-references.sh:85-104`'s
@@ -3212,7 +3212,7 @@ N-035 so the replacement wording is decided once and written once.
       settled on 18/08/2026 and both counts moved together for once**, the row and these two
       lines written in the same pass rather than one of them a day later, which is the fix for
       the fifth and sixth drifts named above: **24 + 35 = 59 = N-059**)
-- [x] Index row — **deliberately not added**: `01-FEATURE/CONTEXT.md` ships, and a shipped file
+- [x] Index row — **deliberately not added**: `01-FEATURE-MAPS/CONTEXT.md` ships, and a shipped file
       may cite layering-system artefacts only, never a per-project instance
 - [ ] **Sibling maps read before the next resolve session** — added 16/08/2026. Four live maps
       share this folder and one of them routes findings here; eight sat unadopted for a day because

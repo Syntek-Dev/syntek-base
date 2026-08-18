@@ -24,7 +24,7 @@ nodes** to grilling to settle. Wayfinder is the cartographer; grilling is the pe
 wayfinder when the work spans several stories and cannot be resolved in one grilling pass; reach
 straight for `/grill-with-docs` when it is a single surface.
 
-**The map is a markdown artefact** — `project-management/src/01-FEATURE/MAP-<FEATURE>.md`. It is a
+**The map is a markdown artefact** — `project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md`. It is a
 low-resolution index, never a storage vault: detail lives in the ADR, plan, or story each entry
 links to. The decisions it graduates land in their existing homes (ADRs, plans, stories,
 `GAPS.md`, `DEFERRED.md`); the stories it spawns sync to ClickUp through the existing
@@ -44,7 +44,7 @@ Wayfinder runs in one of three modes per session: **SUGGEST** (optional, before 
 feature — mine the register for candidates), **CHART** (one session — read the register, pin the
 destination, map the frontier, write the map) or **RESOLVE** (later sessions — settle the next
 frontier node, graduate it, redraw the frontier). A charted epic reads as one
-`project-management/src/01-FEATURE/MAP-<FEATURE>.md` whose resolved nodes fan out into the ADRs
+`project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` whose resolved nodes fan out into the ADRs
 they became, the stories they were sliced into, and any cross-story blocker left in `GAPS.md`.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
@@ -89,10 +89,10 @@ mode — no map, and no edit to the register.
 4. **Wire the blocking edges.** In a second pass, write each node's blockers as prose links to the
    nodes it depends on, so the takeable edge — the unblocked nodes — is visible at a glance.
    _Done when every Frontier node names its blockers (or "none") and at least one node is unblocked._
-5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE/` with the
+5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with the
    sections below; tag each Frontier node with its type (research / tracer / grilling / task), and
    record the triaged register entries under **Register claimed**. Add the map to the index in
-   `src/01-FEATURE/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
+   `src/01-FEATURE-MAPS/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
    low-resolution route rather than a storage vault._
 6. **Fire the research nodes, then stop.** Dispatch any research nodes (facts, not decisions) in
    parallel now — they need no human. Charting is one session: do **not** settle grilling, tracer,
@@ -228,7 +228,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/grill-with-docs/SKILL.md` — how a grilling node records its decision (the
   three-test ADR gate + glossary-into-`CONTEXT.md`).
 - `.claude/skills/grill-me/SKILL.md` — the stateless twin, for thinking a node through without recording.
-- `project-management/src/01-FEATURE/CONTEXT.md` — the map index, where a new map is registered.
+- `project-management/src/01-FEATURE-MAPS/CONTEXT.md` — the map index, where a new map is registered.
 - `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
   slice graduates into.
 - `project-management/src/14-DECISIONS/` — ADR home; take the next free `ADR-###`.

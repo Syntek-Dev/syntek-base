@@ -31,10 +31,10 @@ there is a single split, and it is about **where the work runs**:
 | Kind                | What it is                                                                | Where it runs                                                    |
 | ------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | **Reference skill** | States conventions — `stack-django`, `codebase-design`, `global-workflow` | Inline, in the current context. Never forks                      |
-| **Task skill**      | An executable procedure — `feature`, `bugfix`, `story`, `release`         | Forks into a fresh context, unless its input is the conversation |
+| **Task skill**      | An executable procedure — `implement-story`, `bugfix`, `story`, `release` | Forks into a fresh context, unless its input is the conversation |
 
 Skills fire on **description match**, so most work needs no explicit routing — name one only to
-force a choice. The ones you will hit first are the task skills that sequence others: `feature`
+force a choice. The ones you will hit first are the task skills that sequence others: `implement-story`
 (a new capability), `bugfix` (something is broken), `review` (a quality pass before a PR),
 `security` (an OWASP audit), `refactor` (restructuring without behaviour change), `story` and
 `sprint` (planning), `pr` (raise and promote), `release` (bump, changelog, deploy). Each pulls in

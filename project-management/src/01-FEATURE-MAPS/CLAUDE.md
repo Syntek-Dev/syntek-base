@@ -1,6 +1,6 @@
 @./CONTEXT.md
 
-# CLAUDE.md — src/01-FEATURE/
+# CLAUDE.md — src/01-FEATURE-MAPS/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
 (what a map holds, the index, the not-finished rule — imported above) → this file.
@@ -12,7 +12,7 @@ and recording each node as it is settled; the foundation every later planning ga
 
 ## How to work here
 
-- **Routing:** never author here free-hand — maps come from `workflows/01-feature/` via the
+- **Routing:** never author here free-hand — maps come from `workflows/01-feature-map/` via the
   `planner` skill loading `.claude/skills/wayfinder/SKILL.md`. CHART writes the map; RESOLVE
   updates it one node per session.
 - **Model:** Fable — charting a frontier and settling trade-offs is the reasoning tier

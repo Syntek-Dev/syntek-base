@@ -16,7 +16,7 @@ chart (01)  →  specify (02–13)  →  decide & plan (14–16)  →  consolida
 
 Three properties make this work, and all three are easy to get wrong:
 
-- **Work starts with a feature, not a story.** `01-feature` charts the decision frontier and
+- **Work starts with a feature, not a story.** `01-feature-map` charts the decision frontier and
   settles it. Stories are then _cut from_ the resolved map, which is why they stop rediscovering
   the same cross-cutting questions.
 - **Specify is a per-story loop, not a batch.** One story goes all the way from `02` to
@@ -104,8 +104,8 @@ Do it after ten features and you are not planning; you are auditing choices alre
 /wayfinder chart <feature>
 ```
 
-Produces `project-management/src/01-FEATURE/MAP-<FEATURE>.md` via
-`project-management/workflows/01-feature/` — the open decisions in dependency order, each tagged
+Produces `project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` via
+`project-management/workflows/01-feature-map/` — the open decisions in dependency order, each tagged
 research / tracer / grilling / task.
 
 Charting is **one session and settles nothing** beyond research nodes. You then run
@@ -196,7 +196,7 @@ Three PM phases drive the code workflows:
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `18-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project                     |
 | `19-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
-| `20-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                           |
+| `20-frontend-code/` | `01-implement-story/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                       |
 
 The canonical map of which PM workflow pairs with which code workflow is the cross-layer table
 in the root `REFERENCES.md` — neither layer restates it.

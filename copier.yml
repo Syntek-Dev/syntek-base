@@ -729,7 +729,7 @@ _tasks:
       mv .copier/VERSION-HISTORY.md VERSION-HISTORY.md &&
       mv .copier/CHANGELOG.md CHANGELOG.md &&
       mv .copier/RELEASES.md RELEASES.md &&
-      mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md &&
+      mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md &&
       mv .copier/MEMORY.md .claude/MEMORY.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"

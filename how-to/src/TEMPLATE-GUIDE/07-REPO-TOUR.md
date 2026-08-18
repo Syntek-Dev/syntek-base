@@ -104,7 +104,7 @@ The heaviest layer, and the one that makes the process real.
 project-management/src/
 ├── 00-ASSETS/                    ← logos, export scripts — reference, not a stage
 │   ── discover, once per feature (01) ──
-├── 01-FEATURE/                   ← the wayfinder decision maps
+├── 01-FEATURE-MAPS/                   ← the wayfinder decision maps
 │   ── specify (02–13) ──
 ├── 02-STORIES/ 03-SPRINTS/ 04-DATABASE/ 05-USER-FLOW/ 06-BRAND-GUIDE/
 ├── 07-COMPONENTS/ 08-WIREFRAMES/ 09-GDPR/ 10-SECURITY/ 11-QA/ 12-SEO/ 13-API-DESIGN/

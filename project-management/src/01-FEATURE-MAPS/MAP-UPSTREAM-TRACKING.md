@@ -1,6 +1,6 @@
 # MAP-UPSTREAM-TRACKING — watching what this template pins
 
-**Seeded**: 16/08/2026 · **Seeded by**: Sam · **Workflow**: `01-feature`
+**Seeded**: 16/08/2026 · **Seeded by**: Sam · **Workflow**: `01-feature-map`
 **Status**: **Seeded, not charted** — the frontier below is deliberately empty
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 0
 
@@ -14,7 +14,7 @@
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and
 > `copier.yml` `_exclude` empties the artefact trees at generation — deliberately: these are
 > **the template's** upstream pins, and a generated project inherits its own set rather than this
-> one. **No row is added to `01-FEATURE/CONTEXT.md`'s Map index** — that file ships, and a shipped
+> one. **No row is added to `01-FEATURE-MAPS/CONTEXT.md`'s Map index** — that file ships, and a shipped
 > file may cite layering-system artefacts only, never a per-project instance (the same rule
 > `MAP-BASE-HEALTH` records against itself).
 

@@ -35,7 +35,7 @@ under each of its four category folders rather than at its root.
 | Path                   | Tier          | Contents                                                                                                                  |
 | ---------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `src/00-ASSETS/`       | reference     | Logo SVGs, raster exports, and asset pipeline scripts                                                                     |
-| `src/01-FEATURE/`      | discover      | Wayfinder decision maps (`MAP-<FEATURE>.md`) — charted once per feature                                                   |
+| `src/01-FEATURE-MAPS/` | discover      | Wayfinder decision maps (`MAP-<FEATURE>.md`) — charted once per feature                                                   |
 | `src/02-STORIES/`      | specify       | User stories (`US###.md`); template `US000-TEMPLATE.md`                                                                   |
 | `src/03-SPRINTS/`      | specify       | High-level sprint records (`SPRINT-##.md`) — backlog → sprint organisation                                                |
 | `src/04-DATABASE/`     | specify       | **3 stages** (IDEAS → CONSOLIDATED → IMPL) + `ERD-DIAGRAMS/`; schema, PII, RLS, migration notes                           |
@@ -71,7 +71,7 @@ Each workflow `CONTEXT.md` with path and purpose.
 
 | Workflow path                                          | Purpose                                                             |
 | ------------------------------------------------------ | ------------------------------------------------------------------- |
-| `workflows/01-feature/CONTEXT.md`                      | Chart a feature's decision frontier with wayfinder, then resolve it |
+| `workflows/01-feature-map/CONTEXT.md`                  | Chart a feature's decision frontier with wayfinder, then resolve it |
 | `workflows/02-story-creation/CONTEXT.md`               | Write a well-formed user story with acceptance criteria             |
 | `workflows/03-sprint-planning/CONTEXT.md`              | Organise stories into a balanced sprint using MoSCoW                |
 | `workflows/04-database-schema/CONTEXT.md`              | Design and sign off a database schema before any coding begins      |

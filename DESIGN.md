@@ -115,12 +115,12 @@ repository at all. Both are gated by eye against Section 3.
 
 ### Code Layer — Implementation Workflows
 
-| Workflow                                                                     | Purpose                                                   |
-| ---------------------------------------------------------------------------- | --------------------------------------------------------- |
-| [`code/workflows/01-new-feature/`](code/workflows/01-new-feature/CONTEXT.md) | Full cycle for implementing a new frontend feature        |
-| [`code/workflows/02-tdd-cycle/`](code/workflows/02-tdd-cycle/CONTEXT.md)     | TDD for UI components — write tests first, then implement |
-| [`code/workflows/07-review/`](code/workflows/07-review/CONTEXT.md)           | Code review checklist with UI-specific checks             |
-| [`code/workflows/11-refactor/`](code/workflows/11-refactor/CONTEXT.md)       | Refactoring UI components without regressions             |
+| Workflow                                                                             | Purpose                                                   |
+| ------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| [`code/workflows/01-implement-story/`](code/workflows/01-implement-story/CONTEXT.md) | Full cycle for implementing a new frontend feature        |
+| [`code/workflows/02-tdd-cycle/`](code/workflows/02-tdd-cycle/CONTEXT.md)             | TDD for UI components — write tests first, then implement |
+| [`code/workflows/07-review/`](code/workflows/07-review/CONTEXT.md)                   | Code review checklist with UI-specific checks             |
+| [`code/workflows/11-refactor/`](code/workflows/11-refactor/CONTEXT.md)               | Refactoring UI components without regressions             |
 
 ### Design Skills
 

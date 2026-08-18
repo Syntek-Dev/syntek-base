@@ -16,7 +16,7 @@ state/routing, and service-layer/middleware design — behind the
 
 - **Routing:** `doc-writer` (Opus) or `planner` (Fable) to author;
   these guides govern any new Django app or public template route and the
-  `01-new-feature` workflow.
+  `01-implement-story` workflow.
 - **Model:** Fable for substantive guidance; Opus for typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc (`AUTH-CONTRACT.md`,
   `CORE-AND-SCALING.md`, `FRONTEND-PATTERNS.md`, `SERVICE-AND-MIDDLEWARE.md`) →

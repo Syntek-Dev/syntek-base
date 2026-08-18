@@ -129,7 +129,7 @@ implementation — a feature is not codeable until workflows 02–16 are complet
 
 The story plan produced by `16-story-plans/` is the master a developer codes from. Frontend
 implementation then runs through `20-frontend-code/`, which drives
-`code/workflows/01-new-feature/` and `code/workflows/02-tdd-cycle/`.
+`code/workflows/01-implement-story/` and `code/workflows/02-tdd-cycle/`.
 
 ---
 

@@ -7,7 +7,7 @@ description: "Cross-cutting engineering standards for <%PROJECT_NAME%> — local
 
 Project-wide conventions that sit beneath every layer of <%PROJECT_NAME%>. The
 per-layer guides (`code/docs/*`, `project-management/docs/*`) own the deep detail;
-this skill is the shared baseline that the task skills (`feature`,
+this skill is the shared baseline that the task skills (`implement-story`,
 `bugfix`, `refactor`, `review`, `security`, `pr`, `release`, `story`) all carry.
 
 **Stack:** Django 6 + Django Ninja + PostgreSQL backend · Django templates +

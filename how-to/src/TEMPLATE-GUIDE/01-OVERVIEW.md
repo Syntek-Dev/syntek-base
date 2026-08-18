@@ -55,8 +55,8 @@ skimmed guide is a guide that does not change behaviour. Operator guides for hum
 ### 3. The PM layer specifies; the code layer builds
 
 Work does not start in an editor — and it does not start with a story either. It starts with a
-**feature map**: `project-management/workflows/01-feature/` charts the feature's open decisions
-into `project-management/src/01-FEATURE/MAP-<FEATURE>.md` before a single story exists. Stories
+**feature map**: `project-management/workflows/01-feature-map/` charts the feature's open decisions
+into `project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` before a single story exists. Stories
 are then _cut from_ the resolved map, move through the design and compliance gates (schema, user
 flow, GDPR, security, QA, SEO, API contract), become a decision record and a plan, and only then
 reach implementation.
@@ -93,7 +93,7 @@ process is not the only option.
 ### 4. Work routes to a skill; skills dispatch rather than freelance
 
 Everything Claude does here is a **skill**, selected by matching your request against its
-description. A task skill — `feature`, `bugfix`, `review`, `security`, `refactor`, `story`, `pr`,
+description. A task skill — `implement-story`, `bugfix`, `review`, `security`, `refactor`, `story`, `pr`,
 `release` — routes to the matching workflow and pulls in the scoped skills each phase needs:
 `backend`, `frontend`, `database`, `test-writer`, `qa-tester` and the rest, each loading only
 what its remit requires.

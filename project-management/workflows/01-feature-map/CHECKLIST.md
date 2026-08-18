@@ -1,5 +1,5 @@
 ---
-workflow: 01-feature
+workflow: 01-feature-map
 phase: discovery
 skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
 model: fable
@@ -60,7 +60,7 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] Every frontier node names its blockers, or "none"
 - [ ] At least one node is unblocked — a frontier with no takeable edge is mis-wired
 - [ ] Every node tagged research / tracer / grilling / task
-- [ ] `MAP-<FEATURE>.md` created from the template and added to the `src/01-FEATURE/` index
+- [ ] `MAP-<FEATURE>.md` created from the template and added to the `src/01-FEATURE-MAPS/` index
 - [ ] Research nodes dispatched
 - [ ] **Nothing else settled in the charting session**
 
@@ -86,6 +86,6 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] The map reads as a low-resolution route, not a storage vault
 - [ ] Every claimed register entry names the node or story that will retire it
 - [ ] No story has been written — that is `02-story-creation`
-- [ ] `src/01-FEATURE/CONTEXT.md` index current
+- [ ] `src/01-FEATURE-MAPS/CONTEXT.md` index current
 - [ ] Instructional `.md` files ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY

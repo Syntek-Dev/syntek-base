@@ -70,10 +70,10 @@ that section entirely; nothing else in this workflow changes.
 
 #### code/workflows/ — companion workflows to run alongside this one
 
-| Workflow                         | Purpose                                               |
-| -------------------------------- | ----------------------------------------------------- |
-| `code/workflows/01-new-feature/` | Full-stack feature checklist that wraps this workflow |
-| `code/workflows/02-tdd-cycle/`   | Red-green-refactor steps for component and page tests |
+| Workflow                             | Purpose                                               |
+| ------------------------------------ | ----------------------------------------------------- |
+| `code/workflows/01-implement-story/` | Full-stack feature checklist that wraps this workflow |
+| `code/workflows/02-tdd-cycle/`       | Red-green-refactor steps for component and page tests |
 
 #### Source locations
 

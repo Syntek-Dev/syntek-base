@@ -42,7 +42,7 @@ depth / seam) comes from `.claude/skills/codebase-design`.
 
 **Run this before the first feature, not after the tenth.** It is Step 8 of
 `how-to/workflows/01-first-time-setup/`, immediately after the project brief is sharpened, and
-before `project-management/workflows/01-feature/` charts anything. The reason is not the server
+before `project-management/workflows/01-feature-map/` charts anything. The reason is not the server
 sizing — that can wait. It is that this is the pass which forces the questions while they are
 still cheap: how many users, what the read/write mix is, which phase-gate the design must not
 foreclose, and what the server and edge must provide. Answering those after ten features means
@@ -128,7 +128,7 @@ features add new server needs (a new route needs a CSP source; a new upload need
 ### 2. Chart or resolve (wayfinder)
 
 Load `.claude/skills/wayfinder`. The map is
-`project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`.
+`project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md`.
 
 - **CHART** (one session) — pin the destination, map the frontier breadth-first across both
   tracks (SCALE and SERVER), wire the blocking edges, fire the research nodes, then stop.

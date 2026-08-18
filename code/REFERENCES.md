@@ -16,7 +16,7 @@ Internal and external references for all coding work in this repository.
 
 ### Workflow CONTEXT files
 
-- `code/workflows/01-new-feature/CONTEXT.md` — add a new full-stack feature
+- `code/workflows/01-implement-story/CONTEXT.md` — add a new full-stack feature
 - `code/workflows/02-tdd-cycle/CONTEXT.md` — Red → Green → Refactor TDD cycle
 - `code/workflows/03-database-migration/CONTEXT.md` — Django model and migration workflow
 - `code/workflows/04-api-design/CONTEXT.md` — Django Ninja API design

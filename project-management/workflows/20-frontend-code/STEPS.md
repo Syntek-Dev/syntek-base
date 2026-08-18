@@ -86,7 +86,7 @@ An HTMX partial needs no scaffold — add `_<name>.html` beside the page templat
 
 ### Step 3 — Implement Pages and Routes
 
-Follow `code/workflows/01-new-feature/` for the full-stack feature checklist.
+Follow `code/workflows/01-implement-story/` for the full-stack feature checklist.
 
 ```text
 frontend [describe the pages and routes to implement]

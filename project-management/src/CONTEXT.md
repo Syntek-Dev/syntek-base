@@ -48,7 +48,7 @@ project-management/src/
 ├── 00-ASSETS/          ← logos, brand assets, export scripts (pre-workflow reference)
 │
 │   ── Discover (01) ──
-├── 01-FEATURE/         ← MAP-<FEATURE>.md — wayfinder decision maps
+├── 01-FEATURE-MAPS/         ← MAP-<FEATURE>.md — wayfinder decision maps
 │
 │   ── Specify (02–13) ──
 ├── 02-STORIES/         ← US###.md (+ US000-TEMPLATE.md)

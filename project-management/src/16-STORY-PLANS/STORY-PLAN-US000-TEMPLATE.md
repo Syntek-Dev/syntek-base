@@ -363,7 +363,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 
 | Workflow                                 | When                                                                        |
 | ---------------------------------------- | --------------------------------------------------------------------------- |
-| `code/workflows/01-new-feature/`         | The build spine for a full-stack capability                                 |
+| `code/workflows/01-implement-story/`     | The build spine for a full-stack capability                                 |
 | `code/workflows/02-tdd-cycle/`           | ✓ always — Red → Green → Refactor for every unit of behaviour               |
 | `code/workflows/04-api-design/`          | Any Django Ninja endpoint / schema work                                     |
 | `code/workflows/03-database-migration/`  | Any schema change / migration                                               |
@@ -418,7 +418,7 @@ phase, and say so.
 
 ### Stage 1 — Build (TDD inner loop)
 
-- Follow `code/workflows/01-new-feature/` with `02-tdd-cycle/` as the inner loop: **Red → Green →
+- Follow `code/workflows/01-implement-story/` with `02-tdd-cycle/` as the inner loop: **Red → Green →
   Refactor**, one unit of behaviour at a time. Baseline before writing: `syntax/check.sh`.
 - Use subagents per layer (backend / API / frontend) where they can proceed independently; serialise
   where one truly blocks another (mirror _Dependencies_).

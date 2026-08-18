@@ -1,19 +1,19 @@
 ---
-name: feature
+name: implement-story
 description: >-
-  Build a new full-stack feature for <%PROJECT_NAME%> end to end — plan, failing tests, models
+  Build one `US###` user story for <%PROJECT_NAME%> end to end — plan, failing tests, models
   and migration, service layer, Django Ninja endpoints, the HTMX frontend, review, QA,
-  documentation and commit, in that order. Load when a new capability has to be built rather
-  than an existing one changed. Not fixing something broken (`bugfix`), not restructuring
-  working code without changing behaviour (`refactor`), not a single scoped layer of a feature
-  someone else is sequencing (`backend`, `frontend`, `database`), and not the PR that ships it
-  (`pr`).
+  documentation and commit, in that order. Load when a story is ready to implement. **The unit
+  is one story, not a whole feature** — an epic spanning several stories is charted first with
+  `wayfinder`, then cut into stories. Not fixing something broken (`bugfix`), not restructuring
+  working code without changing behaviour (`refactor`), not a single scoped layer someone else
+  is sequencing (`backend`, `frontend`, `database`), and not the PR that ships it (`pr`).
 model: opus
 metadata:
   skills: global-workflow grilling
 ---
 
-# Build a Feature (<%PROJECT_NAME%>)
+# Implement a Story (<%PROJECT_NAME%>)
 
 **Task skill, inline** (axis 2 — the request, its scope and its trade-offs arrive in the
 conversation, and every phase below is a dispatch rather than work done here).
@@ -84,10 +84,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   `code/workflows/02-tdd-cycle/` and `code/workflows/03-database-migration/`
 - `project-management/workflows/19-api-code/` — the API phase; drives `code/workflows/04-api-design/`
 - `project-management/workflows/20-frontend-code/` — the frontend phase; drives
-  `code/workflows/01-new-feature/`
+  `code/workflows/01-implement-story/`
 - `project-management/workflows/21-implementation-documentation/` — records, findings, docs and
   the graph refresh; a hard gate before the commit
-- `project-management/workflows/22-pr-and-review/` — PR, review, merge
 
 ## Cross-references
 

@@ -9,7 +9,7 @@ arguments.
 ## Directory Tree
 
 ```text
-project-management/workflows/01-feature/
+project-management/workflows/01-feature-map/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules for this workflow
 ├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)
@@ -20,7 +20,7 @@ project-management/workflows/01-feature/
 
 Turn a feature idea into a **resolved decision map** before a single story is written. Wayfinder
 charts the feature's decision frontier — every open question, in dependency order — and then each
-node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE/`.
+node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE-MAPS/`.
 
 This is the foundation the whole planning loop stands on. Stories written against a resolved map
 describe _what to build_; stories written without one spend `02`–`14` rediscovering the same

@@ -1,7 +1,7 @@
 ---
-workflow: 01-new-feature
+workflow: 01-implement-story
 phase: build
-skills: [feature, stack-django, stack-htmx-templates, global-workflow]
+skills: [implement-story, stack-django, stack-htmx-templates, global-workflow]
 model: opus
 ---
 

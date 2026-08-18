@@ -203,7 +203,7 @@ in_row() { # $1 = a register blob, $2 = the entry name (backticks added here)
 
 # How many backticked names share the first cell of the row carrying this one. Only the
 # self-test needs it: the skills register groups siblings on one row
-# (`feature` · `bugfix` · `refactor`), so replacing that row with prose would produce
+# (`implement-story` · `bugfix` · `refactor`), so replacing that row with prose would produce
 # three findings where the probe asserts one.
 row_name_count() { # $1 = a register blob, $2 = the entry name
   awk -v n="\`$2\`" '

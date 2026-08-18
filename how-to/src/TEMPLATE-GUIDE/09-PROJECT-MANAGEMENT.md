@@ -19,7 +19,7 @@ was planned but **what actually shipped and where it diverged**. That makes `src
 answer to "what is this project?" — better than the plans alone, which lose the drift, and better
 than the codebase alone, which loses the reasoning.
 
-This is why `01-feature` reads the whole of `src/` before charting anything new: a feature mapped
+This is why `01-feature-map` reads the whole of `src/` before charting anything new: a feature mapped
 against what was really built is mapped against reality.
 
 ---
@@ -37,7 +37,7 @@ against what was really built is mapped against reality.
 
 ```text
 00-ASSETS      reference
-01-FEATURE     ← chart it (once per feature)
+01-FEATURE-MAPS     ← chart it (once per feature)
 02-STORIES     ┐
 03-SPRINTS     │
 04-DATABASE    │
@@ -133,24 +133,24 @@ evidence afterwards.
 For a normal story, most of them are `N/A` — and recording that is the correct outcome, not a
 shortcut.
 
-| Folder           | You write here when…                                      |
-| ---------------- | --------------------------------------------------------- |
-| `01-FEATURE`     | Starting anything bigger than one story                   |
-| `02-STORIES`     | Always                                                    |
-| `03-SPRINTS`     | Always — the record accumulates stories until it fills    |
-| `04-DATABASE`    | The story touches the schema                              |
-| `05-USER-FLOW`   | It introduces or changes a user journey                   |
-| `06-BRAND-GUIDE` | It needs a token — usually "reused existing", in 3 lines  |
-| `07-COMPONENTS`  | It needs a component — usually "reused existing"          |
-| `08-WIREFRAMES`  | It introduces a screen                                    |
-| `09-GDPR`        | It touches personal data                                  |
-| `10-SECURITY`    | It ships a security surface                               |
-| `11-QA`          | Always                                                    |
-| `12-SEO`         | It adds a public URL — otherwise `SEO: N/A` with a reason |
-| `13-API-DESIGN`  | It adds or changes Django Ninja surface                   |
-| `14-DECISIONS`   | A choice is hard to reverse                               |
-| `15`, `16`       | When the sprint fills                                     |
-| `17`–`21`        | After the code ships                                      |
+| Folder            | You write here when…                                      |
+| ----------------- | --------------------------------------------------------- |
+| `01-FEATURE-MAPS` | Starting anything bigger than one story                   |
+| `02-STORIES`      | Always                                                    |
+| `03-SPRINTS`      | Always — the record accumulates stories until it fills    |
+| `04-DATABASE`     | The story touches the schema                              |
+| `05-USER-FLOW`    | It introduces or changes a user journey                   |
+| `06-BRAND-GUIDE`  | It needs a token — usually "reused existing", in 3 lines  |
+| `07-COMPONENTS`   | It needs a component — usually "reused existing"          |
+| `08-WIREFRAMES`   | It introduces a screen                                    |
+| `09-GDPR`         | It touches personal data                                  |
+| `10-SECURITY`     | It ships a security surface                               |
+| `11-QA`           | Always                                                    |
+| `12-SEO`          | It adds a public URL — otherwise `SEO: N/A` with a reason |
+| `13-API-DESIGN`   | It adds or changes Django Ninja surface                   |
+| `14-DECISIONS`    | A choice is hard to reverse                               |
+| `15`, `16`        | When the sprint fills                                     |
+| `17`–`21`         | After the code ships                                      |
 
 ---
 

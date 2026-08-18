@@ -170,7 +170,7 @@ Task 1 moves seven files:
 .copier/CHANGELOG.md           →  CHANGELOG.md                (empty)
 .copier/RELEASES.md            →  RELEASES.md                 (empty)
 .copier/MEMORY.md              →  .claude/MEMORY.md           (headings and rules, no entries)
-.copier/MAP-SCALE-PLANNING.md  →  project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md
+.copier/MAP-SCALE-PLANNING.md  →  project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md
 ```
 
 The last one exists because six shipped guides cite that map, and a citation resolving to nothing

@@ -30,26 +30,26 @@ the description match is failing and that is worth reporting.
 
 ## Start here — the six that cover most days
 
-| Skill     | Reach for it when                                                         |
-| --------- | ------------------------------------------------------------------------- |
-| `feature` | A new capability, end to end — plan, tests, backend, frontend, docs, ship |
-| `bugfix`  | Something is broken. Reproduce, root-cause, regression-test, fix          |
-| `review`  | A change needs checking before you propose it                             |
-| `story`   | A requirement has to become a testable `US###`                            |
-| `pr`      | A finished branch is ready to propose                                     |
-| `release` | A tested branch is ready to ship                                          |
+| Skill             | Reach for it when                                                         |
+| ----------------- | ------------------------------------------------------------------------- |
+| `implement-story` | A new capability, end to end — plan, tests, backend, frontend, docs, ship |
+| `bugfix`          | Something is broken. Reproduce, root-cause, regression-test, fix          |
+| `review`          | A change needs checking before you propose it                             |
+| `story`           | A requirement has to become a testable `US###`                            |
+| `pr`              | A finished branch is ready to propose                                     |
+| `release`         | A tested branch is ready to ship                                          |
 
-Each **sequences the others itself.** `feature` dispatches `planner`, `test-writer`, `database`,
+Each **sequences the others itself.** `implement-story` dispatches `planner`, `test-writer`, `database`,
 `backend`, `frontend`, `code-reviewer`, `qa-tester` and `git` across eleven phases, each as its
 own fresh dispatch — so reach for the skill whose remit is the **whole arc**, not the individual
 layers.
 
-**One thing comes before `feature`, and it is the easiest to skip.** `feature` starts from a
+**One thing comes before `implement-story`, and it is the easiest to skip.** `implement-story` starts from a
 story plan; it does not chart. Anything bigger than a single session is charted with
 `/wayfinder` **first**, and the stories are cut from the resolved map. The two never call each
 other — they meet at an artefact: wayfinder graduates a buildable slice into
-`16-STORY-PLANS/`, and that plan is exactly what `feature` picks up. Reach straight for
-`feature` only when you could already write the story yourself.
+`16-STORY-PLANS/`, and that plan is exactly what `implement-story` picks up. Reach straight for
+`implement-story` only when you could already write the story yourself.
 
 ---
 

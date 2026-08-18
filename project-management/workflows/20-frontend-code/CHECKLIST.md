@@ -20,7 +20,7 @@ model: opus
 - [ ] `code/docs/coding-principles/STYLE-AND-PROCESS.md` read — component naming and design rules applied
 - [ ] `code/docs/ACCESSIBILITY.md` read — WCAG 2.2 AA requirements noted for all interactive components
 - [ ] `code/docs/performance/FRONTEND-PERFORMANCE.md` read — lazy loading and bundle size rules applied
-- [ ] `code/workflows/01-new-feature/` followed — full-stack feature checklist completed
+- [ ] `code/workflows/01-implement-story/` followed — full-stack feature checklist completed
 - [ ] `code/workflows/02-tdd-cycle/` followed — tests written before implementation (no stubs)
 - [ ] Wireframes and component designs reviewed before implementation begins
 - [ ] Existing components in `code/src/django/components/` checked before creating new ones

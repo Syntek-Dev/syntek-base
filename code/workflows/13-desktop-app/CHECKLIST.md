@@ -16,7 +16,7 @@ model: opus
 
 ## Gate
 
-- [ ] The work belongs on the **desktop surface** — not a web page (`01-new-feature`) and not a
+- [ ] The work belongs on the **desktop surface** — not a web page (`01-implement-story`) and not a
       headless native primitive (`12-rust-extension`) · _opus_
 - [ ] The screen was grilled against its wireframe and confirmed before markup was written
 - [ ] Entered from `project-management/workflows/20-frontend-code/`, not from a design gate

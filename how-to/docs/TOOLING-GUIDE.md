@@ -36,7 +36,7 @@ believed as readily as the original. How to write or edit one: `how-to/docs/SKIL
 
 Describe the work and the runtime selects the skill whose description matches it; type `/name`
 for the skills that define a slash command; or name the skill in the request. For an end-to-end
-run, reach for the skill whose remit is the **whole arc** — `feature` covers plan → red tests →
+run, reach for the skill whose remit is the **whole arc** — `implement-story` covers plan → red tests →
 build → review → ship, and sequences the scoped skills itself — rather than driving each scoped
 skill by hand.
 

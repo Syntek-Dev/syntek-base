@@ -44,7 +44,7 @@ piecemeal. Only then does code start.
 
 ## Related
 
-- `project-management/workflows/01-feature/` — the wayfinder map the whole loop is cut from
+- `project-management/workflows/01-feature-map/` — the wayfinder map the whole loop is cut from
 - `project-management/workflows/CONTEXT.md` — the workflow index and the cadence diagram
 - `project-management/docs/QA-GUIDE.md` · `SECURITY-GUIDE.md` · `GDPR-GUIDE.md` — the
   per-discipline gates a story passes through inside the loop

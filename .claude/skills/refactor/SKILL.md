@@ -4,7 +4,7 @@ description: >-
   Restructure working code in <%PROJECT_NAME%> without changing what it does — split a file
   past the 750-line limit, lift business logic out of an endpoint into a service, remove
   duplication, deepen a shallow module, rename for clarity. Load when the code is correct but
-  its shape is wrong. Never to add a capability (`feature`), fix a fault (`bugfix`), or write
+  its shape is wrong. Never to add a capability (`implement-story`), fix a fault (`bugfix`), or write
   the tests that make the restructure safe (`test-writer`) — and not the scan that ranks
   candidates before one is chosen (`improve-codebase-architecture`).
 model: opus

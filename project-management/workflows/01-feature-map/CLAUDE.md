@@ -1,6 +1,6 @@
 @./CONTEXT.md
 
-# CLAUDE.md — workflows/01-feature/
+# CLAUDE.md — workflows/01-feature-map/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
 (purpose, the two modes, the reading order — imported above) → this file → `STEPS.md`
@@ -65,7 +65,7 @@ re-asking the same questions.
 ## Output & naming
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the map `MAP-<FEATURE>.md` under
-  `src/01-FEATURE/`.
+  `src/01-FEATURE-MAPS/`.
 - **Produced by following it:** ADRs in `src/14-DECISIONS/`, `GAPS.md`/`DEFERRED.md` entries, and
   the resolved-decision links the map carries.
 - Maps `MAP-<FEATURE>.md` — `<FEATURE>` in `SCREAMING-KEBAB-CASE`; workflow folders

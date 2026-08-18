@@ -23,7 +23,7 @@ added by copying it.
 
 **Naming:** `STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md` per story; `PLAN-<DESCRIPTOR>.md`
 for cross-cutting programme plans. Wayfinder feature maps live upstream in
-`../01-FEATURE/`, not here.
+`../01-FEATURE-MAPS/`, not here.
 
 ## Where it sits (decide & plan tier)
 

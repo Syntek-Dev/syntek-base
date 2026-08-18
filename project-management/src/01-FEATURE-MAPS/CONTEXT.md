@@ -1,13 +1,13 @@
-# project-management/src/01-FEATURE
+# project-management/src/01-FEATURE-MAPS
 
 Feature decision maps — one `MAP-<FEATURE>.md` per feature or epic, produced by
-`workflows/01-feature/` using wayfinder. The map charts the feature's decision frontier and
+`workflows/01-feature-map/` using wayfinder. The map charts the feature's decision frontier and
 records each decision as it is settled. **It is the foundation every later planning gate reads.**
 
 ## Directory Tree
 
 ```text
-project-management/src/01-FEATURE/
+project-management/src/01-FEATURE-MAPS/
 ├── CONTEXT.md            ← this file (also the map index)
 ├── CLAUDE.md             ← operating rules for this folder
 ├── MAP-000-TEMPLATE.md   ← copy this to chart a feature
@@ -72,6 +72,6 @@ story is written is a feature that never starts.
 - `../14-DECISIONS/` — where hard-to-reverse resolutions graduate
 - `../02-STORIES/` — the stories cut from a resolved map
 - `../16-STORY-PLANS/` — per-story plans, which cite the ADRs this map produced
-- `project-management/workflows/01-feature/` — the workflow that produces these
+- `project-management/workflows/01-feature-map/` — the workflow that produces these
 
 **Last Updated**: <%DATE%>

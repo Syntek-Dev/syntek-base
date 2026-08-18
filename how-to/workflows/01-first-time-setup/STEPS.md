@@ -216,7 +216,7 @@ one you are building is what stops the first feature carrying machinery it will 
 _Done when both snapshots carry real figures rather than `TBD` markers, and the scaling
 phase-gate the project is designing under is named._
 
-Next: `project-management/workflows/01-feature/` — chart the first feature against both.
+Next: `project-management/workflows/01-feature-map/` — chart the first feature against both.
 
 ---
 

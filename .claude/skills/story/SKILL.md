@@ -81,7 +81,7 @@ this is a convention the caller holds, not something the runtime enforces.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/02-story-creation/` — **the procedure of record for this skill**
-- `project-management/workflows/01-feature/` — when the requirement is an epic that must be
+- `project-management/workflows/01-feature-map/` — when the requirement is an epic that must be
   charted before any story is cut
 - `project-management/workflows/16-story-plans/` — the per-story plan this story feeds
 

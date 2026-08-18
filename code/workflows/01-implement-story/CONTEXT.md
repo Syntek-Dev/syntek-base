@@ -7,7 +7,7 @@ much rework happens. This workflow exists to fix that order — and to reach the
 ## Directory Tree
 
 ```text
-code/workflows/01-new-feature/
+code/workflows/01-implement-story/
 ├── CHECKLIST.md             ← verification checklist before marking complete
 ├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file (when to use, key concepts, governing documents)

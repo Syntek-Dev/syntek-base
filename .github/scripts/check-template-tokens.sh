@@ -100,7 +100,7 @@ done
 # syntax freely, and copier.yml / .copier-answers.yml hold real Jinja.
 EXEMPT='^(copier\.yml|\.copier-answers\.yml|README\.md|LICENSE|SECURITY\.md|CONTRIBUTING\.md):'
 EXEMPT="$EXEMPT"'|^(how-to/src/TEMPLATE-GUIDE/|how-to/src/TEMPLATE-TOKENS\.md:)'
-EXEMPT="$EXEMPT"'|^(handoffs/|research/|learning/|project-management/src/01-FEATURE/)'
+EXEMPT="$EXEMPT"'|^(handoffs/|research/|learning/|project-management/src/01-FEATURE-MAPS/)'
 EXEMPT="$EXEMPT"'|^\.github/(scripts/|CODEOWNERS|ISSUE_TEMPLATE/|PULL_REQUEST_TEMPLATE\.md:|workflows/audit-template\.yml:)'
 
 # The registered questions are the top-level UPPER_SNAKE keys in copier.yml.

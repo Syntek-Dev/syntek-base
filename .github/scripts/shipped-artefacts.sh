@@ -100,9 +100,9 @@ NAMED_SHIPPED=(
   "22-INCIDENTS/INCIDENT-INDEX.md"
 )
 
-# Seeded into 01-FEATURE by a _task, so it is legitimately present in a generated project
+# Seeded into 01-FEATURE-MAPS by a _task, so it is legitimately present in a generated project
 # despite not being template content under project-management/src/.
-SEEDED=("01-FEATURE/MAP-SCALE-PLANNING.md")
+SEEDED=("01-FEATURE-MAPS/MAP-SCALE-PLANNING.md")
 
 QUIET=false
 SELF_TEST=false
@@ -270,9 +270,9 @@ self_test() {
   rm -f "$GEN/research/SOME-NOTE.md"
 
   # ── 3. A feature map leaks ──────────────────────────────────────────────────
-  printf '# A map of the template\n' > "$GEN/$SRC_TREE/01-FEATURE/MAP-SOMETHING.md"
-  probe "check 3 fires when a feature map leaks" "01-FEATURE/MAP-SOMETHING.md leaked"
-  rm -f "$GEN/$SRC_TREE/01-FEATURE/MAP-SOMETHING.md"
+  printf '# A map of the template\n' > "$GEN/$SRC_TREE/01-FEATURE-MAPS/MAP-SOMETHING.md"
+  probe "check 3 fires when a feature map leaks" "01-FEATURE-MAPS/MAP-SOMETHING.md leaked"
+  rm -f "$GEN/$SRC_TREE/01-FEATURE-MAPS/MAP-SOMETHING.md"
 
   # ── 4. A named template file is missing ─────────────────────────────────────
   mv "$GEN/$SRC_TREE/${NAMED_SHIPPED[0]}" "$tmpdir/held"

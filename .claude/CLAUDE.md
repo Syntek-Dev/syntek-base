@@ -270,7 +270,7 @@ running skill interrogates, looks facts up rather than asking, and takes no acti
 **Above one sitting, chart before you grill.** Work spanning several stories — an epic, a
 cross-cutting migration — cannot be settled in one pass. `/wayfinder` maps the decision frontier
 and dispatches batches of nodes back to grilling to settle them
-(`.claude/skills/wayfinder/SKILL.md`; procedure: `project-management/workflows/01-feature/`). A
+(`.claude/skills/wayfinder/SKILL.md`; procedure: `project-management/workflows/01-feature-map/`). A
 single design surface goes straight to `/grill-with-docs`.
 
 **`.claude/skills/grilling/SKILL.md` owns the shape and nothing else restates it** — the round

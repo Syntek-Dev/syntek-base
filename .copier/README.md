@@ -226,7 +226,7 @@ Two things to do on a freshly generated project:
 │   │   ├── scripts/                     ← audits, database, deployment, development, syntax, tests (+ shared _lib/)
 │   │   └── tests/                       ← Bruno API test collections (one collection per domain)
 │   └── workflows/                       ← 11 coding workflows in three families
-│       ├── 01-new-feature/              ← build
+│       ├── 01-implement-story/              ← build
 │       ├── 02-tdd-cycle/
 │       ├── 03-database-migration/
 │       ├── 04-api-design/
@@ -292,7 +292,7 @@ Two things to do on a freshly generated project:
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
-│   │   ├── 01-FEATURE/                 ← MAP-<FEATURE>.md decision maps (wayfinder)
+│   │   ├── 01-FEATURE-MAPS/                 ← MAP-<FEATURE>.md decision maps (wayfinder)
 │   │   ├── 02-STORIES/
 │   │   ├── 03-SPRINTS/
 │   │   ├── 04-DATABASE/
@@ -315,7 +315,7 @@ Two things to do on a freshly generated project:
 │   │   ├── 21-REFACTORING/
 │   │   └── 22-INCIDENTS/               ← the PII-free incident register; no story, no workflow
 │   └── workflows/                       ← 23 step-by-step PM workflows
-│       ├── 01-feature/                 ← chart the feature's decision frontier (wayfinder)
+│       ├── 01-feature-map/                 ← chart the feature's decision frontier (wayfinder)
 │       ├── 02-story-creation/
 │       ├── 03-sprint-planning/
 │       ├── 04-database-schema/
@@ -813,7 +813,7 @@ project opted in: **`12-rust-extension/`** (rust-only) and **`13-desktop-app/`**
 
 | Family                 | #   | Workflow                  | Purpose                                                                  |
 | ---------------------- | --- | ------------------------- | ------------------------------------------------------------------------ |
-| **Build**              | 01  | `01-new-feature/`         | Add a full-stack feature (backend + frontend) from story to commit       |
+| **Build**              | 01  | `01-implement-story/`     | Add a full-stack feature (backend + frontend) from story to commit       |
 |                        | 02  | `02-tdd-cycle/`           | Test-driven development — Red → Green → Refactor                         |
 |                        | 03  | `03-database-migration/`  | The data layer — create and run a new Django migration                   |
 |                        | 04  | `04-api-design/`          | The JSON layer at `/api/` — Django Ninja routers, Schemas, endpoints     |
@@ -841,7 +841,7 @@ the commit step. This is a hard gate — do not commit until it is complete:
 For feature workflows, implementation records must also be written before the commit: GDPR,
 security assessment, security audit, threat model, QA, SEO (if public pages), API design (if
 schema changed), code review record, and test records. See
-`code/workflows/01-new-feature/STEPS.md` Step 10 for the full table.
+`code/workflows/01-implement-story/STEPS.md` Step 10 for the full table.
 
 Open issues that cannot be resolved in the current PR go to `/GAPS.md`. Items explicitly
 deferred to a named future story go to `/DEFERRED.md`. Both files must be current before any
@@ -850,10 +850,10 @@ PR is opened.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 22-pr-and-review
+01-implement-story  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 22-pr-and-review
 ```
 
-- Start with `01-new-feature` to plan the feature scope.
+- Start with `01-implement-story` to plan the feature scope.
 - Work in `02-tdd-cycle` — write failing tests first, then implement.
 - If the feature exposes a new Django Ninja API, follow `04-api-design` in parallel.
 - If the feature touches PII, run `06-gdpr-enforcement` before raising a PR.
@@ -889,7 +889,7 @@ runs `fable`. `sonnet` and `haiku` are never used.
 
 | Skill                                               | Load when                                                                    |
 | --------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `feature` · `bugfix` · `refactor`                   | Build something new · fix something broken · reshape something that works    |
+| `implement-story` · `bugfix` · `refactor`           | Build something new · fix something broken · reshape something that works    |
 | `review` · `security`                               | Check a change before it ships · audit and harden against OWASP and CE       |
 | `pr` · `release`                                    | Raise the pull request · cut the release                                     |
 | `story` · `sprint` · `planner`                      | Write the story · slice the sprint · architect the implementation plan       |

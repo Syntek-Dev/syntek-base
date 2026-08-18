@@ -120,7 +120,7 @@ agent: general-purpose
 background: false
 ```
 
-It forks unless its input is the conversation itself — `feature` and `bugfix` run inline and
+It forks unless its input is the conversation itself — `implement-story` and `bugfix` run inline and
 dispatch each phase, because the request, its scope and its trade-offs only exist in the thread.
 Which one yours is, and why the fork target is fixed:
 `how-to/docs/skill-authoring/FORK-DECISION.md`.

@@ -1,6 +1,6 @@
 # MAP-SUBDOMAIN-ROUTING — which surface answers on which host
 
-**Seeded**: 16/08/2026 · **Seeded by**: Sam · **Workflow**: `01-feature`
+**Seeded**: 16/08/2026 · **Seeded by**: Sam · **Workflow**: `01-feature-map`
 **Status**: **Seeded, not charted** — the frontier below is deliberately empty
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 0
 
@@ -17,7 +17,7 @@
 > **syntek-base's own** doctrine, and a generated project inherits the decided rule rather than
 > the argument that produced it. The name matters — a map called `MAP-TEMPLATE-*.md` would match
 > the `!*TEMPLATE*` negation and ship.
-> **No row is added to `01-FEATURE/CONTEXT.md`'s map index** for the same reason: that file ships,
+> **No row is added to `01-FEATURE-MAPS/CONTEXT.md`'s map index** for the same reason: that file ships,
 > and a row pointing at an unshipped map would dangle in every generated project.
 
 ---

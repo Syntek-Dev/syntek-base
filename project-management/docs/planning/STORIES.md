@@ -16,7 +16,7 @@ Writing a `US###` (`src/02-STORIES/`) and its implementation plan
 
 ## Cutting stories from the map
 
-Stories are cut from the resolved `MAP-<FEATURE>.md` (`src/01-FEATURE/`), not invented from a
+Stories are cut from the resolved `MAP-<FEATURE>.md` (`src/01-FEATURE-MAPS/`), not invented from a
 conversation. A story whose shape is still an open node on the map is premature — settle the node
 first, or the story's acceptance criteria encode a guess.
 

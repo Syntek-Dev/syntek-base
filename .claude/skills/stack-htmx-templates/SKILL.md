@@ -185,7 +185,7 @@ namespaced by a `marketing:cache-version` counter. Any content publish
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/20-frontend-code/` — the frontend build phase
-- `code/workflows/01-new-feature/` — the full-stack feature procedure
+- `code/workflows/01-implement-story/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — template, component, and HTMX-partial tests
 
 ## Cross-references

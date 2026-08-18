@@ -13,7 +13,7 @@ that every MSP/SCP policy document must follow.
 This is **drafting, not implementation**. The output is Markdown policy text, a **draft
 for professional review** — never presented as final or as legal advice, and it never
 builds routes, runs migrations, or touches source. Publishing a signed-off policy behind a
-marketing legal page is a separate task for the `feature` / `frontend` path.
+marketing legal page is a separate task for the `implement-story` / `frontend` path.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
 

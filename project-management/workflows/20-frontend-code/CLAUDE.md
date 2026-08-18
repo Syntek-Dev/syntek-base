@@ -15,7 +15,7 @@ component designs are signed off.
 ## How to work here
 
 - **Routing:** this workflow _drives code_ under the `stack-htmx-templates` skill (Opus), alongside
-  `code/workflows/01-new-feature/` and `02-tdd-cycle/`. Hard gates to read first:
+  `code/workflows/01-implement-story/` and `02-tdd-cycle/`. Hard gates to read first:
   `code/docs/ACCESSIBILITY.md` (WCAG 2.2 AA) and `testing/COVERAGE.md`. New public page
   → `code/src/scripts/development/new-django-view.sh` — never hand-create route
   directories.

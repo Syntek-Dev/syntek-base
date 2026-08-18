@@ -121,7 +121,7 @@ rule navigates; it does not restate it.
 | Workflow                 | CONTEXT.md                                                                                           |
 | ------------------------ | ---------------------------------------------------------------------------------------------------- |
 | Index                    | [code/workflows/CONTEXT.md](code/workflows/CONTEXT.md)                                               |
-| 01 — New feature         | [code/workflows/01-new-feature/CONTEXT.md](code/workflows/01-new-feature/CONTEXT.md)                 |
+| 01 — New feature         | [code/workflows/01-implement-story/CONTEXT.md](code/workflows/01-implement-story/CONTEXT.md)         |
 | 02 — TDD cycle           | [code/workflows/02-tdd-cycle/CONTEXT.md](code/workflows/02-tdd-cycle/CONTEXT.md)                     |
 | 03 — Database migration  | [code/workflows/03-database-migration/CONTEXT.md](code/workflows/03-database-migration/CONTEXT.md)   |
 | 04 — API design          | [code/workflows/04-api-design/CONTEXT.md](code/workflows/04-api-design/CONTEXT.md)                   |
@@ -163,7 +163,7 @@ rule navigates; it does not restate it.
 | Workflow                          | CONTEXT.md                                                                                                                                         |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Index                             | [project-management/workflows/CONTEXT.md](project-management/workflows/CONTEXT.md)                                                                 |
-| 01 — Feature                      | [project-management/workflows/01-feature/CONTEXT.md](project-management/workflows/01-feature/CONTEXT.md)                                           |
+| 01 — Feature                      | [project-management/workflows/01-feature-map/CONTEXT.md](project-management/workflows/01-feature-map/CONTEXT.md)                                   |
 | 02 — Story creation               | [project-management/workflows/02-story-creation/CONTEXT.md](project-management/workflows/02-story-creation/CONTEXT.md)                             |
 | 03 — Sprint planning              | [project-management/workflows/03-sprint-planning/CONTEXT.md](project-management/workflows/03-sprint-planning/CONTEXT.md)                           |
 | 04 — Database schema              | [project-management/workflows/04-database-schema/CONTEXT.md](project-management/workflows/04-database-schema/CONTEXT.md)                           |
@@ -206,7 +206,7 @@ complete.
 | `13-api-design`                   | `04-api-design`                                                              | Ninja contract decided → expressed as routers/Schemas, **entered via `19`**      |
 | `18-backend-code`                 | `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | PM phase drives all three; `12` is **rust-only** and absent without that surface |
 | `19-api-code`                     | `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | PM phase drives all four; `05` only when the story needs an agent-facing surface |
-| `20-frontend-code`                | `01-new-feature` · `02-tdd-cycle` · `13-desktop-app`                         | PM phase drives all three; `13` is **desktop-only** and absent without it        |
+| `20-frontend-code`                | `01-implement-story` · `02-tdd-cycle` · `13-desktop-app`                     | PM phase drives all three; `13` is **desktop-only** and absent without it        |
 | `21-implementation-documentation` | _(receives from `01`, `02`)_                                                 | **Owns** all records, findings, docs, and the graph refresh                      |
 | `22-pr-and-review`                | `07-review`                                                                  | Content review (code layer) → process, merge, verification (PM layer)            |
 | _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                        | Entered from `21` findings routed to `src/20-BUGS/`                              |
@@ -218,16 +218,16 @@ complete.
 
 **Ownership boundaries — do not duplicate across the seam:**
 
-| Fact                                                   | Sole owner                             |
-| ------------------------------------------------------ | -------------------------------------- |
-| Implementation record formats, templates, destinations | PM `21-implementation-documentation`   |
-| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `21-implementation-documentation`   |
-| `GAPS.md` / `DEFERRED.md` reads — suggest and triage   | PM `01-feature` (claims, never closes) |
-| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `21-implementation-documentation`   |
-| Branch promotion, approvals, merge gates               | PM `22-pr-and-review`                  |
-| Code content review (OWASP, coverage, principles)      | code `07-review`                       |
-| Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`        |
-| Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)     |
+| Fact                                                   | Sole owner                                 |
+| ------------------------------------------------------ | ------------------------------------------ |
+| Implementation record formats, templates, destinations | PM `21-implementation-documentation`       |
+| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `21-implementation-documentation`       |
+| `GAPS.md` / `DEFERRED.md` reads — suggest and triage   | PM `01-feature-map` (claims, never closes) |
+| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `21-implementation-documentation`       |
+| Branch promotion, approvals, merge gates               | PM `22-pr-and-review`                      |
+| Code content review (OWASP, coverage, principles)      | code `07-review`                           |
+| Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`            |
+| Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)         |
 
 ---
 

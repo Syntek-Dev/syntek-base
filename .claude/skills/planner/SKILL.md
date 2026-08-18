@@ -108,7 +108,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/16-story-plans/` — **the procedure of record for this skill**
 - `project-management/workflows/15-sprint-plans/` — the sprint sequencing a plan sits inside
-- `code/workflows/01-new-feature/` — the build procedure the plan is written against
+- `code/workflows/01-implement-story/` — the build procedure the plan is written against
 
 ## Cross-references
 

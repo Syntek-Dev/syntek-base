@@ -82,7 +82,7 @@ This snapshot is **regenerated if missing and reconciled on every `/scale-planni
 ADRs, app CONTEXT.md files) and patches drift before any new decision is grilled. Nothing here
 is authoritative over the code — the code is the source; these documents are its current,
 verified reading. Decisions (tier targets, headroom values) are settled through
-`grill-with-docs` and charted on `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`.
+`grill-with-docs` and charted on `project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md`.
 
 ## Cross-references
 

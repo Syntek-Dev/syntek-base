@@ -110,7 +110,7 @@ is_exempt() {
     # saw them. They are committed now — so they sync across devices — which made 160
     # citations visible in one commit. The exemption is stated here instead.
     research/*|learning/*)                        return 0 ;;
-    project-management/src/01-FEATURE/*)          return 0 ;;
+    project-management/src/01-FEATURE-MAPS/*)          return 0 ;;
     code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
     .agents/*)                                    return 0 ;;  # vendored third-party skills
   esac
@@ -198,7 +198,7 @@ while IFS= read -r file; do
     if [ "$is_naming_row" = false ] && printf '%s' "$token" \
        | grep -qE '^(ADR-[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-US[0-9]{3}|API-US[0-9]{3})'; then
       base="${token##*/}"
-      if ! is_seeded "$token" && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE/$base" ]; then
+      if ! is_seeded "$token" && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE-MAPS/$base" ]; then
         record "$file" "$lineno" "instance citation" "$token"
         continue
       fi

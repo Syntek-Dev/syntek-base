@@ -21,7 +21,7 @@ Use this workflow when building or changing the **native desktop application** a
 API, or a release build.
 
 Use it only when the work belongs on the desktop **surface**. A feature that should be a web page
-belongs in `01-new-feature`; a native primitive with no UI belongs in `12-rust-extension`.
+belongs in `01-implement-story`; a native primitive with no UI belongs in `12-rust-extension`.
 
 **Desktop-only.** This workflow exists only in a project generated with `INCLUDE_DESKTOP`, which is
 itself only offered when `INCLUDE_RUST` is true.

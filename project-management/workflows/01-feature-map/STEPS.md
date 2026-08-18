@@ -1,5 +1,5 @@
 ---
-workflow: 01-feature
+workflow: 01-feature-map
 phase: discovery
 skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
 model: fable
@@ -134,10 +134,10 @@ _Done when every frontier node names its blockers (or "none") and at least one i
 
 > **Model:** fable
 
-Copy `src/01-FEATURE/MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md`. Tag each frontier node with its
+Copy `src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md`. Tag each frontier node with its
 type: **research** (looked up, no human), **tracer** (spike to raise fidelity), **grilling**
 (one `/grill-with-docs` surface), **task** (manual unblocking work). Fill **Register claimed**
-from the Step 2 triage. Add the map to the index in `src/01-FEATURE/CONTEXT.md`.
+from the Step 2 triage. Add the map to the index in `src/01-FEATURE-MAPS/CONTEXT.md`.
 
 _Done when the map exists, is indexed, carries its claimed register entries, and reads as a route
 rather than a vault._

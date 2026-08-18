@@ -21,7 +21,7 @@ generated from it.
 ## The active items live on a map, not here
 
 **Charted 13/08/2026.** The twenty-two actionable entries this file used to carry were charted
-into `project-management/src/01-FEATURE/MAP-BASE-HEALTH.md` — twenty-three decision nodes in
+into `project-management/src/01-FEATURE-MAPS/MAP-BASE-HEALTH.md` — twenty-three decision nodes in
 five batches — and removed from here, so there is one working copy rather than two that drift.
 
 > **That map is committed but never ships.** Since 17/08/2026 the feature maps are tracked, so

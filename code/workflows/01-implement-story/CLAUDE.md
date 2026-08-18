@@ -1,6 +1,6 @@
 @./CONTEXT.md
 
-# CLAUDE.md — workflows/01-new-feature/
+# CLAUDE.md — workflows/01-implement-story/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
 (when to use, key concepts — imported above) → this file.

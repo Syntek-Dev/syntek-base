@@ -107,7 +107,7 @@ decisions live — the code, not the spike, keeps only what was validated:
 ### Spike, not a product surface
 
 A prototype is disposable. It is **not** a charted epic
-(`project-management/src/01-FEATURE/MAP-<FEATURE>.md` and the story plans it fans into) and
+(`project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` and the story plans it fans into) and
 **not** the wireframes workflow (`project-management/workflows/08-wireframes/`) — those build
 production component-preview and wireframe tooling that ships. Reach for a spike to answer a
 question fast; reach for those to build the product.
@@ -132,7 +132,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/05-user-flow-design/` — answering one open flow question
 - `project-management/workflows/08-wireframes/` — answering one open screen question
-- `code/workflows/01-new-feature/` — before committing to a real build
+- `code/workflows/01-implement-story/` — before committing to a real build
 
 ## Cross-references
 
@@ -146,7 +146,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/src/scripts/development/shell.sh` · `new-django-view.sh` · `server.sh` — the run
   commands; `code/src/scripts/audits/css-tokens.sh` — the relaxed token gate.
 - `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` ·
-  `project-management/src/01-FEATURE/` · `project-management/workflows/08-wireframes/` — plan
+  `project-management/src/01-FEATURE-MAPS/` · `project-management/workflows/08-wireframes/` — plan
   template, and the charted epics and workflow to distinguish a spike from.
 - `project-management/src/14-DECISIONS/` · `project-management/src/02-STORIES/US###.md` —
   ADR home (take the next free `ADR-###`) and story home.

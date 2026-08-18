@@ -37,6 +37,6 @@ Same pattern as `../GDPR-GUIDE.md` over `../gdpr/`: a thin index, sub-documents 
 
 - `../PLANNING-GUIDE.md` — the index
 - `project-management/workflows/CONTEXT.md` — the workflow index and cadence diagram
-- `project-management/workflows/01-feature/` — the map the loop is cut from
+- `project-management/workflows/01-feature-map/` — the map the loop is cut from
 
 **Last Updated**: <%DATE%>

@@ -101,7 +101,7 @@ change also needs developer documentation, and `completion` to record the docume
 ## Governing procedures (route here — do not restate at length)
 
 **No governing workflow.** Help content is not a gated product artefact — it is written when a
-shipped capability needs explaining, usually by the `feature` or `release` sequence. Do not
+shipped capability needs explaining, usually by the `implement-story` or `release` sequence. Do not
 route it into `code/workflows/`, `project-management/workflows/`, or `how-to/workflows/`; those
 sequence the building of the thing, not the explaining of it.
 

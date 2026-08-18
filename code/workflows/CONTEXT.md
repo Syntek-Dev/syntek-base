@@ -15,7 +15,7 @@ code/workflows/
 ├── CONTEXT.md               ← this file
 │
 │   ── Build (01–06) ──
-├── 01-new-feature/          ← add a new full-stack feature (backend + frontend)
+├── 01-implement-story/          ← add a new full-stack feature (backend + frontend)
 ├── 02-tdd-cycle/            ← TDD: Red → Green → Refactor (the method the others use)
 ├── 03-database-migration/   ← create and run a new Django database migration
 ├── 04-api-design/           ← design and implement a new Django Ninja API surface
@@ -46,7 +46,7 @@ before marking complete), and `CLAUDE.md` (operating rules).
 
 | Workflow                 | Purpose                                                              |
 | ------------------------ | -------------------------------------------------------------------- |
-| `01-new-feature/`        | Add a new full-stack feature (backend + frontend)                    |
+| `01-implement-story/`    | Add a new full-stack feature (backend + frontend)                    |
 | `02-tdd-cycle/`          | Test-driven development cycle — the method `01`/`03`–`06` build by   |
 | `03-database-migration/` | The data layer — new models, altered fields, any schema change       |
 | `04-api-design/`         | The JSON layer at `/api/` — Django Ninja routers, Schemas, endpoints |
