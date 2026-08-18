@@ -70,6 +70,21 @@ arithmetic was untouched at that point: **24 + 35 = 59 = N-059**, per batch A 0 
 E 9 · unbatched 4. **Batch A's frontier is empty for the third time and the
 class is still not called closed** — see the verdict in _Batch A_.
 
+**A release session 18/08/2026 settled nothing and corrected three things, and the sharpest of
+them is that this map's one _measured_ claim about the version state had a hole in it.** **5.5.0**
+was cut for the seven commits since the 5.4.0 bump — MINOR, and the handoff's open question 1 dies
+with it: `lint.sh` rejecting `--file-type css` is **not** a MAJOR, because `CONTRIBUTING.md:185-205`
+puts a script flag outside the template contract, so the question was decidable by reading rather
+than by judgement. **`v5.4.0` had never been tagged** — 57 log entries against 56 tags — and
+N-040's verdict records four-way parity as _measured_, which it was at 5.3.0 and stopped being one
+commit later with nothing watching. Restored and re-measured at **58/58/58/58**. Corrections:
+**`how-to/src/TEMPLATE-GUIDE/` ships** (`f5fef31`, 14/08, **v3.2.0**) and this map asserted
+otherwise in its own voice at **exactly one site** — N-012's rejected option (c) — the node blocks
+having already carried it, so the sweep found one live falsehood rather than the several expected;
+and **N-037 grew by a third in two days with nobody working on it**, 87 → **117** sites across
+62 files, though its **50 unique paths** make the repair a third of what the site count implies.
+**Counts unchanged and recounted from the tables anyway**: 22 + 37 = 59 = N-059.
+
 **A commit landed 18/08/2026 that was not a node, and it moved two open nodes' evidence — so the
 map records it in both directions.** `b4ed0b9` fixed the `COMMITS.md` Step 2 finding rather than
 charting it as N-060, at Sam's call. The re-measurement pass that followed re-resolved **fifteen
@@ -416,8 +431,13 @@ already done and done well, and two live suppressions had no justification at al
 **N-012 was settled by a fourth option nobody charted, and the fourth option dissolves the question
 rather than answering it.** The node offered three paths for the three notes `README.md` and
 `THIRD-PARTY-NOTICES.md` made undeletable — (a) narrow the never-quoted precedent to redistributed
-rule text, (b) paraphrase the quotations, (c) move the evidence into the excluded `TEMPLATE-GUIDE/`
+rule text, (b) paraphrase the quotations, (c) move the evidence into the ~~excluded~~ `TEMPLATE-GUIDE/`
 and repoint `README.md`, which was rejected because it dangles the citation for a generated project.
+**Corrected 18/08/2026 — that tree is not excluded and has not been since `f5fef31` (14/08, v3.2.0);
+see N-043.** The description was true when the option was framed and is the only place this map
+still asserted the falsehood in its own voice. It changes nothing about the outcome — `5a00dde`
+took a fourth path — but (c)'s stated **reason for rejection** is void twice over: a citation into
+a shipping tree does not dangle downstream at all.
 `5a00dde` instead **deleted all four notes and made the folder self-ignoring**, then removed the
 reason anything pointed at them: every `README.md` _Influences_ row is now **self-citing** — it links
 the primary source and names what that source contributed — and the two rows a link cannot settle
@@ -2047,6 +2067,18 @@ their project did not receive. Measured against `copier.yml` on 16/08/2026:
   `doc-references.sh:26` still calls the tree copier-excluded. **The node shrinks by one and
   survives.** A **fifth** site of the same falsehood sits in `doc-references.sh:26`, whose header
   comment also calls the tree copier-excluded.
+- **The load-bearing fact, stated plainly because four sites on this page depend on it and none
+  of them said it outright — re-measured 18/08/2026.** **`how-to/src/TEMPLATE-GUIDE/` SHIPS**, and
+  so does `how-to/src/TEMPLATE-TOKENS.md`. The directory left `_exclude` at **`f5fef31`** (14/08,
+  **v3.2.0**, _"the guide ships with the project, and turns read-only when it does"_). The **only**
+  path under it named in `_exclude` is `/how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`, at
+  `copier.yml:86`, and the comment above it at `copier.yml:75-81` says so in terms. **Every
+  remaining assertion that the tree is excluded is false**, wherever it appears — in the shipped
+  register this node charts, in `doc-references.sh:26`, or in this map's own prose. **Consequence
+  nobody has written down: because those files are rendered like any other, a guide in that tree
+  quoting token or delimiter syntax must wrap it in a `raw` block** — which is why the exclusion
+  belief is not merely untidy. It is the reason `06-GENERATION.md`'s own author could write a
+  literal token into a shipped, rendered file and expect it to survive.
 - **Anchors settled.** `copier.yml`'s `_exclude` spans **`:29-197`** — `_exclude:` at `:29`, last
   entry `.DS_Store` at `:197`, next top-level key at `:201` — and names
   `/how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` at **`:86`**. This node's own line range is written
@@ -2380,7 +2412,36 @@ The floor read _"~ten unaddressed assertions"_ in one skill file. Measured acros
 instructional corpus: **87 backticked citations into the Django source tree do not resolve, across
 42 of 270 shipped instructional documents.**
 
+**Re-measured 18/08/2026 and it has grown by a third in two days — 87 → 117 sites, 42 → 62 files.**
+The node is now the largest open item on this map by site count, and it grew while nobody was
+working on it, which is the fact worth carrying rather than the number.
+
+| Reading                                    | 16/08 | 18/08   | Notes                                                                                               |
+| ------------------------------------------ | ----- | ------- | --------------------------------------------------------------------------------------------------- |
+| Unresolved **sites**, shipped population   | 87    | **117** | Backticked `code/src/django/…` citations that do not resolve, with `is_exempt()`'s trees subtracted |
+| **Files** carrying at least one            | 42    | **62**  | Denominator is the whole tracked `*.md` corpus, not 270                                             |
+| Unresolved **unique paths**                | —     | **50**  | Never measured before; the repair surface is far smaller than the site count suggests               |
+| Unfiltered sites (artefact trees included) | —     | 135     | Not the node's population — `is_exempt()` exempts those trees deliberately                          |
+
+- **Carry the command, not the number** — this map's own standing rule, and this node is one of the
+  three that earned it. Regenerate with:
+
+  ```bash
+  git grep -nE '`code/src/django/[^`]+`' -- '*.md' \
+    | grep -vE '^(CHANGELOG|RELEASES|VERSION-HISTORY)\.md:|^how-to/src/TEMPLATE-GUIDE/|^handoffs/|^\.copier/|^research/|^learning/|^project-management/src/01-FEATURE/|^code/docs/cloudinary/|^\.agents/'
+  ```
+
+  then drop every citation whose path exists. The exclusion list is `doc-references.sh:85-104`'s
+  `is_exempt()` transcribed — **if that function changes, this number changes with it**, which is
+  the coupling to N-031 restated as an arithmetic fact rather than a scheduling preference.
+
+- **50 unique paths against 117 sites means the repair is roughly 2.3 citations per broken path.**
+  Nothing had measured that ratio, and it moves the remedy: this is not 117 individual judgements
+  about what a template may forward-voice, it is **50**, most of them repeated. The two heaviest
+  files are `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` and
+  `code/docs/FRONTEND-CODING-PRINCIPLES.md` at **nine sites each**.
 - **One missing `case` hides all of them.** `code/src/scripts/audits/doc-references.sh:243-249`
+  **— re-anchored 18/08/2026 to `:252-258`, a drift of nine.** It
   carries no `code/src/django/*` arm, so every claim about that tree is skipped. This map already
   adjudicated the skip itself as _"true as a fact, wrong as a defect"_ under _Refused_ — the skip is
   deliberate and carries its rationale. **What is new is the size of what it hides**, which nothing
@@ -2398,9 +2459,15 @@ hint'` returns exactly one hit, `.claude/skills/stack-django/SKILL.md:6`, the fr
   `:260-262`. A nav label pointing at a correct section is not a false assertion about the tree.
 - **Sequenced with N-031 and N-043, not after them.** `doc-references.sh`'s exemption policy is the
   single common cause behind all three — `:88` hides eight of N-031's citers, the missing
-  `code/src/django/*` arm hides all 87 here, and the script's own header at `:26` repeats the
-  falsehood N-043 charts. **Settle the exemption policy once and three nodes shrink together**, which
-  is a batching argument this map did not previously make.
+  `code/src/django/*` arm hides all ~~87~~ **117** here, and the script's own header at `:26` repeats
+  the falsehood N-043 charts. **Settle the exemption policy once and three nodes shrink together**,
+  which is a batching argument this map did not previously make.
+- **All three anchors re-verified at HEAD 18/08/2026, and only one had moved.** `:26` (the header
+  falsehood) and `:88` (`is_exempt()`'s `how-to/src/TEMPLATE-GUIDE/*` arm) both hold **exactly**;
+  the allowlist `case` moved `:243-249` → **`:252-258`**. **One file, three edits, two adjacent
+  `case` blocks** — which is why these three cannot be worked concurrently even though the map
+  batches them: each edit invalidates the others' line numbers, exactly as `84067c9` had to
+  re-resolve fifteen anchors at non-uniform offsets of +52 and +64.
 
 **N-045 — the request template a developer copies describes the wrong stack entirely.**
 `code/src/tests/template-test.bru` is annotated end to end for **GraphQL**: it POSTs to
@@ -2538,10 +2605,14 @@ floor.** A handoff carried "N-031 ↔ N-035 coupling, proven two-way". Re-measur
   this node at its charted scope leaves the gate red on two sites it never listed.
 - **The measured citer set is at least eight shipped files against this table's three.** Add
   `how-to/src/CONTEXT.md:31` and `how-to/src/TEMPLATE-GUIDE/{CLAUDE.md:25,39,52 · CONTEXT.md:11,54,59 · 15-TROUBLESHOOTING.md:332}`.
-  That directory **left `_exclude` at 3.2.0** and only `TEMPLATE-GAPS.md` itself is named at
-  `copier.yml:86`, so those three files now **ship** — while `doc-references.sh`'s `is_exempt`
-  still exempts `how-to/src/TEMPLATE-GUIDE/*` as a **citing** file, an exemption written when that
-  tree was template-only. **Three shipped citers invisible to the gate by a stale exemption.**
+  That directory **left `_exclude` at 3.2.0** — pinned 18/08/2026 to **`f5fef31`**, 14/08,
+  _"the guide ships with the project, and turns read-only when it does"_ — and only
+  `TEMPLATE-GAPS.md` itself is named at `copier.yml:86`, so those three files now **ship**, while
+  `doc-references.sh`'s `is_exempt` still exempts `how-to/src/TEMPLATE-GUIDE/*` as a **citing**
+  file, an exemption written when that tree was template-only. **Three shipped citers invisible to
+  the gate by a stale exemption.** Re-verified at HEAD 18/08/2026: the exemption arm is still there
+  and the `:88` anchor **holds exactly**. Full statement of the shipping fact, and the `raw`-block
+  consequence that makes it more than untidy, is in **N-043**; this node does not restate it.
 - **"At least eight" was a floor and the floor was low — measured 16/08/2026 at 33 files / 77
   sites**, reproduced independently by two agents over the same pathspec, and roughly **25 files**
   after hand-discriminating the `how-to/src/CONTRIBUTING.md` false positives. **Stop carrying the
@@ -3070,6 +3141,7 @@ N-035 so the replacement wording is decided once and written once.
 | 18/08/2026 | N-053 | **Batch A's frontier empties for the third time, and the node's own remedy was the thing that did not survive.** First node opened after a gap — the map was two days stale and the tree had moved by a version bump and two commits — so every premise was re-measured before it was believed. **All of them held**, including `LOOP_EXIT=0` reproduced by execution and both populations re-swept at the map's own figures (74 files carrying `<%`, exactly one in an executable shell word; three CI wait loops, two unfailable). **Three of the node's own facts did not.** Its prescribed fix — `pg_isready -U "$POSTGRES_USER"` — **would have failed open**, because a workflow `run:` block is expanded by the runner and this job's `env:` sets no `POSTGRES_*`; proven with an argv stub receiving `[-U] [] [-d] []`. Compose's `$$` and a `run:` block are two escaping regimes and the node collapsed them; the working form is `exec -T db sh -c '…'`. It **walked past a member inside its own citation** — `test-e2e.yml:89`, in the very block held up as the correct form, carried the same `/control/` residue it charts at `test-api.yml:100`. And **both** `test-api.yml` loops were unfailable, not one, so the charted token fix alone would have left a bare Batch B defect where a Batch A one had been. **The residue's correction was itself off by one**: seventeen is right, four is not — `8050ac7` introduced the break and `21d77d7` fixed it, so five commits carried it; both shipped headers now name both quantities and say what each measures. **The `--health-cmd` overclaim was refuted by measurement and had been stated twice** — a compose file carrying the token in a `CMD-SHELL` healthcheck passes `docker compose config` at exit 0 — so `check-template-parsers.sh` now states its boundary and routes the shell-word row to doctrine, no parse-success probe being able to reach it. **Proven in both directions against a real container**: new form `accepting connections` exit 0, old form `no such file or directory: %PROJECT_SLUG%`; the new loop driven to **exit 1** unreachable and **exit 0** healthy. Keeper — in this tree `POSTGRES_USER` is literally the token and Postgres created that role, which is why asking the container for its own user is right in the template and downstream alike. Five files, all six lefthook legs and three audits green. **`exec -T` was conformance, not a decision**: 18 sites carry it and these two were the only ones without. **The sibling-map duty was paid and found two rows missing from this map's own table** — seven live maps, not five. **Stated rather than implied: these CI steps have still never run.** The last ten `test-api` runs finished in 7-32s with `steps.detect` false, newest 15/08, before `b20167b` committed the lock — so their first real execution will be their first ever | [x] |
 | 18/08/2026 | _none — a finding fixed rather than charted, then a re-measurement pass_ | **The `COMMITS.md` Step 2 finding was offered as N-060 and Sam declined the node, so it was fixed instead — and the fix touched two open nodes' evidence, which is the reason this row exists.** The finding: Step 2, mandated _"before every commit, no exceptions"_, documented two commands that **both exit 2** — `lint.sh --file-type typescript` and `check.sh --file-type typescript`, where `lint.sh` accepted `python markdown css` and `check.sh` accepted `python javascript`. **Not a typo of one word**: `lint.sh` had no JS or TS lane at all, and `check.sh`'s `javascript` token gated `tsc`, naming the wrong language for the only leg it controlled. Settled by grilling over eleven questions: one token per **language** — `javascript` the web surface's Alpine and enhancement scripts, `typescript` the mobile surface, `rust` the Cargo workspace — with the aggregates **delegating** to `scripts/mobile/*.sh` and `scripts/rust/*.sh`, which stay canonical for CI and lefthook. `rust/lint.sh` gained `--fmt-only` because its `--fix` also runs `clippy --fix`, and a format command must not rewrite logic. **A bare run now covers exactly the surfaces present**, proven against a tree with neither optional directory; naming an absent surface exits **2**, which deleted an N-055 member. **Two findings arrived on the way.** `format.sh` could not reach the 11 tracked `.ts`/`.tsx` files that root `pnpm format` and lefthook's prettier leg both cover, so `format.sh --fix` could leave a tree the hook then rejected — proven in both directions with a planted breach. And **`--help` was broken on all ten `rust/` and `mobile/` scripts and had been**: `_common.sh` cds into the surface directory before argument parsing, so the relative `BASH_SOURCE[0]` stopped resolving and `bash code/src/scripts/mobile/lint.sh --help` — exactly how every doc invokes it — printed `sed: can't read`. Uncharted, in the blast radius, fixed with an absolute `SCRIPT_SELF`. Shipped as `b4ed0b9`, 29 files, all nine lefthook legs green, 20 audits green, both fixture self-tests still separating, backend 50+22 / mobile 16 / rust green. **Then the pass that this row is really about: 47 agents over N-046 and N-055 — five measurements, one adversary per finding, one completeness critic — because the commit had moved files both nodes cite.** 49 findings survived, **10 were refuted by the adversary**, and the corrections were not cosmetic: N-046's specimen count was wrong **in both directions** (eight correct siblings, not three; and **four** scripts carry the subshell defect, not one), its `format.sh` bullet's specimen is dead while a **stronger** member lives on in `.claude/skills/review/SKILL.md:21` — false since the file was created and never edited since — and N-055's _"only guard of its kind"_ confused a search with a population. **Fifteen stale anchors re-resolved, and the offsets are not uniform**, so none was recoverable by adding a constant. **`b4ed0b9` removed one N-055 member and added three**, all three found by the completeness critic rather than by any finder or adversary — a finder is scoped to a bullet, and a bullet cannot ask about a member created after it was written. **Nothing was charted and nothing was resolved as a node, so the counts do not move**: 24 + 35 = 59 = N-059, recounted from the tables | [x] |
 | 18/08/2026 | N-046 · N-055 | **Batch B's third sitting, taken as one because the map's own collision table forbade taking them apart — and the pass that opened it refuted six of the two nodes' own facts before a line was written.** The rule is stated once, in a new `code/docs/GATE-REPORTING.md`: _"could not look" is never reported as "looked, and it was clean"_. It turns on a distinction nothing in this repository had written down — an absent **tool** leaves a full population unexamined and is never clean; an absent **surface** leaves a legitimately empty one and correctly is — which is why `audits/CLAUDE.md`'s self-guarding rule survives as the guide's second row instead of being contradicted by it, and which finally gives the **N-055/N-056 boundary** a line. Three families route to it and none restates it. **Three idioms, one rule**: exit `3` for the syntax scripts (non-zero deliberately, so a caller treating any non-zero as failure fails closed), an `unmeasured` state for the hook check libraries (reported in its own tier, **not blocking** — a missing host tool is ordinary on a developer's machine and a gate that blocks the maintainer gets switched off), and `audits/` unchanged. **The verdict is now decided before the report is written**, so `--output json` carries `exit_code: 3` and an `unrun` array where it used to carry `{"exit_code": 0, "output": ""}` over zero files examined — the half that had no notice in either channel. `_dual_result`'s seven state combinations were unit-tested; host-unrun + Docker-red now names the real failure instead of asserting **`MISMATCH: passed locally, failed in Docker`** over a host result that was never produced. **`lint.sh` lost the `css` token** — a type that could only ever print an informational line and pass is a clean verdict over a population nothing examined; a breaking change to a documented flag, taken deliberately. **Six of the nodes' own facts died.** N-046's specimen count was wrong **in both directions**: eight siblings carry the correct guard, not three, and **four** scripts carry the subshell defect, not one — `copy-emdash`, `seam-contract`, `conflict-markers` and `skill-conformance`, the last printing a success line naming the **default** scope while the operator had asked for another path. `skill-conformance`'s guard reads `$t` and not `$TARGET_PATH`, **so no grep on the guard string could ever have closed that population — only executing every script did.** N-046's `format.sh` specimen was dead and its mechanism was not: `.claude/skills/review/SKILL.md:21` asserts _"This skill writes. Its pre-flight runs `format.sh`, which rewrites source"_ — one commit in its history, never edited, **false on the day it was authored**, in a skill an agent executes whose definition of done consumed the inference. N-055's _"only guard of its kind in the directory"_ confused a search with a population, and `_dual_result` has **four** callers, not the five the node claimed. **And a charted member was refused**: `context-threshold-handoff.sh` is documented in `.claude/hooks/CLAUDE.md` as always exiting 0 by design, because it fires on every prompt submission and must never block typing — it produces no verdict, so it claims nothing and cannot claim something false. The class is five, not six. **The remedy the map called expensive turned out to be free**: `--no-globs` was charted as discarding all 16 `globs` negations with `ignores` re-covering only 4, but `--no-globs` **plus `:`-prefixed literal paths** keeps every one, because `markdownlint-cli2` filters literal files through the config's negated globs regardless — proven both ways, and a one-file request went from **794 files to 1**. **Two new defect shapes were found and both are the inverse of this node's**: ESLint errors when every file under a `--path` is ignored, and ruff answers `No such file or directory` for any `--path` outside the django container's single mount, so both reported **false reds** — a result the run did not produce, in the other direction. Neither was charted; both are fixed and the guide covers both. **`b4ed0b9` removed one N-055 member and added three, and all three were found by the completeness critic rather than by any of the five finders or their ten adversaries** — a finder is scoped to a bullet, and a bullet cannot ask about a member created after it was written. Shipped as **two** commits, deliberately: `3c0da01` closes the class, `be63789` the self-inflicted set, because burying the second inside the first is how it stops being visible. Counts recounted from the tables, not carried forward: **22 + 37 = 59 = N-059** | [x] |
+| 18/08/2026 | _none — version + corrections_ | **A release session, and it found a hole in the one thing this map had already declared measured.** Cut **5.5.0** for the seven commits since the 5.4.0 bump — MINOR against `CONTRIBUTING.md:185-205`, syntek-base's public API being the template contract: `copier.yml` untouched across the whole range, no routing contract removed, no inherited directory moved, one file added. **That settles the handoff's open question 1 by reading rather than judgement** — `lint.sh` rejecting `--file-type css` is a script flag, which that declaration puts outside the contract and inside its PATCH row, so a deliberate breaking change to a documented flag does **not** force a MAJOR. **`v5.4.0` had never been tagged.** `VERSION` read 5.4.0 from `866d59d` (17/08) and all three logs carried the entry, but no tag existed locally or on origin and no release was cut: **57 log entries against 56 tags**. N-040's verdict records four-way parity as _measured_ — each of the three logs and the tag namespace holding 56, every `comm -3` empty — and that was true when written at 5.3.0 and **stopped being true one commit later, with nothing watching**. The handoff recorded `VERSION` as five commits back and did not notice the tag was absent at all, which is the same shape as N-040's own defect one turn further out. Tagged at `866d59d`, the commit where the version actually moved — **not N-047's failure mode**, which is eight bumps back-filled onto one frozen tree where no tag could key a migration to its break. Parity restored and re-measured: **58/58/58/58, every `comm -3` empty**. Both releases cut as **pre-release**, matching every v4.x/v5.x before them. **Corrections written, nothing settled.** `TEMPLATE-GUIDE/` **ships** — pinned to `f5fef31`, 14/08, **v3.2.0** — and the map asserted otherwise in its **own voice at exactly one site**, N-012's rejected option (c) in _Resolved decisions_; N-043 and N-031 already carried the correction, so the sweep found one live falsehood rather than the several expected. The fact is now stated once in N-043 with the consequence nobody had written down: those files are **rendered**, so a guide there quoting token syntax needs a `raw` block, which is why the belief is more than untidy. **N-037 has grown by a third in two days with nobody working on it — 87 → 117 sites, 42 → 62 files** — and gained a reading it never had: **50 unique unresolved paths**, so the remedy is 50 judgements repeated 2.3 times each, not 117. Its missing-`case` anchor re-resolved `:243-249` → **`:252-258`**, a drift of nine, while N-043's `:26` and N-031's `:88` both **hold exactly** — one file, three edits, two adjacent `case` blocks, which is the measured argument that these three batch together but cannot run concurrently | [x] |
 
 ---
 
