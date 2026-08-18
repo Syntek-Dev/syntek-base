@@ -120,6 +120,11 @@ Never invoke `pnpm`, `expo`, `tsc` or `jest` directly:
 | Test            | `code/src/scripts/mobile/test.sh`      |
 | Bundle          | `code/src/scripts/mobile/bundle.sh`    |
 
+The syntax aggregates delegate here under the **`typescript`** token
+(`syntax/lint.sh --file-type typescript`, `syntax/check.sh --file-type typescript`). Use the
+scripts above when you need their own flags; `javascript` is the **web** surface and never
+reaches this tree.
+
 **Metro runs on the host, not in Docker** — the one dev operation that is not containerised. Expo
 Go runs on a physical device, and a device cannot reach a `127.0.0.N` loopback alias, so Metro
 must be on the LAN. Its port joins the story's existing reserved block (`8081 + story number`).

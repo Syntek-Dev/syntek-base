@@ -1,7 +1,20 @@
 #!/usr/bin/env bash
 #
-# lint.sh — Lint the codebase using ruff (Python) and markdownlint-cli2
-#           (Markdown). Dry-run by default.
+# lint.sh — Lint the codebase: ruff (Python), markdownlint-cli2 (Markdown), ESLint
+#           (the web surface's JavaScript), and the mobile and Rust owners for their
+#           own surfaces. Dry-run by default.
+#
+# ONE TOKEN PER LANGUAGE, AND THE TOKEN NAMES THE LANGUAGE
+#   javascript  the WEB surface — Alpine and the progressive-enhancement scripts under
+#               code/src/django/static/js/, linted by the ROOT eslint config
+#   typescript  the MOBILE surface — code/src/mobile/, which carries its own eslint,
+#               typescript-eslint and tsconfig. The root config ignores that tree, so
+#               `javascript` genuinely cannot reach it
+#   rust        the Cargo workspace, including the desktop crate
+#
+# This script AGGREGATES; it never reimplements. `typescript` and `rust` delegate to
+# scripts/mobile/lint.sh and scripts/rust/lint.sh, which remain what CI and lefthook
+# invoke. See code/src/scripts/syntax/CONTEXT.md.
 #
 # Usage: lint.sh [--fix] [--unsafe-fix] [--file-type TYPE] [--output FORMAT]
 #                [--output-file PATH] [--quiet] [--path PATH] [--help]
@@ -49,7 +62,7 @@ Options:
   --fix                Apply safe automatic fixes
   --unsafe-fix         Apply safe and unsafe automatic fixes (ruff only)
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | markdown | css
+                         python | markdown | css | javascript | typescript | rust
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/reports/lint-report.<FORMAT>)
@@ -58,8 +71,14 @@ Options:
   --help               Show this help
 
 Notes:
-  • Runs inside Docker containers via docker compose exec.
+  • ruff runs in the django container; every other tool runs on the host.
   • CSS has no lint tool configured — use format.sh for CSS formatting.
+  • javascript is the WEB surface (root eslint config); typescript is the MOBILE
+    surface (code/src/mobile/, its own config). They do not overlap.
+  • typescript and rust delegate to scripts/mobile/lint.sh and scripts/rust/lint.sh,
+    and are added to a bare run only when their surface is present. Naming one
+    explicitly on a project that lacks it is an error, not a skip.
+  • --path cannot scope typescript or rust — those owners lint their workspace whole.
   • JSON output captures each tool's text output in a structured envelope.
 
 Exit codes:  0 = clean   1 = lint issues found   2 = script error
@@ -68,6 +87,14 @@ EOF
 
 require_arg() {
   [[ $# -gt 1 ]] || die "$1 requires a value"
+}
+
+# Defined here rather than beside the tool sections, because the surface guards in
+# argument validation below need it.
+wants() {
+  local target="$1"
+  for ft in "${FILE_TYPES[@]}"; do [[ "$ft" == "$target" ]] && return 0; done
+  return 1
 }
 
 container_running() {
@@ -133,13 +160,53 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
     *) die "Invalid --output value '$OUTPUT_FORMAT'. Choose: md txt json html" ;;
   esac
 fi
+# Whether the CALLER named the types. An auto-added type is one this script chose, and
+# a surface this script chose is one it already checked was there — so the two cases
+# below are genuinely different and only the explicit one can be wrong.
+EXPLICIT_TYPES=false
+[[ ${#FILE_TYPES[@]} -gt 0 ]] && EXPLICIT_TYPES=true
+
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|markdown|css) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python markdown css" ;;
+    python|markdown|css|javascript|typescript|rust) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python markdown css javascript typescript rust" ;;
   esac
 done
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python markdown)
+
+MOBILE_DIR="$PROJECT_ROOT/code/src/mobile"
+RUST_DIR="$PROJECT_ROOT/code/src/rust"
+
+if $EXPLICIT_TYPES; then
+  # An explicitly requested surface that is not here is a BAD INVOCATION, not a clean
+  # result. Never warn-and-exit-0: "could not look" must not be filed as "looked, and
+  # it was clean".
+  wants typescript && [[ ! -d "$MOBILE_DIR" ]] && \
+    die "--file-type typescript needs code/src/mobile/ — this project was generated without the mobile surface."
+  wants rust && [[ ! -d "$RUST_DIR" ]] && \
+    die "--file-type rust needs code/src/rust/ — this project was generated without the Rust surface."
+else
+  # A bare run lints every surface that is actually present.
+  FILE_TYPES=(python markdown javascript)
+  [[ -d "$MOBILE_DIR" ]] && FILE_TYPES+=(typescript)
+  [[ -d "$RUST_DIR" ]] && FILE_TYPES+=(rust)
+fi
+
+# --path asks for a subtree. The delegated owners lint their workspace as a unit and
+# have no --path of their own, so honouring the narrower request means leaving them
+# out — and SAYING which, because a silently dropped type reads as a type that passed.
+if [[ -n "$TARGET_PATH" ]]; then
+  declare -a scoped=() dropped=()
+  for ft in "${FILE_TYPES[@]}"; do
+    case "$ft" in
+      typescript|rust)
+        $EXPLICIT_TYPES && die "--path cannot scope --file-type $ft: scripts/$( [[ $ft == rust ]] && echo rust || echo mobile )/lint.sh lints its workspace whole. Drop --path, or drop --file-type $ft."
+        dropped+=("$ft") ;;
+      *) scoped+=("$ft") ;;
+    esac
+  done
+  FILE_TYPES=("${scoped[@]}")
+  [[ ${#dropped[@]} -gt 0 ]] && DROPPED_NOTE="${dropped[*]}"
+fi
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -161,14 +228,8 @@ log ""
 bold "▸ lint.sh — $TIMESTAMP"
 log "  mode: $MODE"
 log "  types: ${FILE_TYPES[*]}"
+[[ -n "${DROPPED_NOTE:-}" ]] && log "  dropped by --path: ${DROPPED_NOTE} (their owners lint the whole workspace)"
 log ""
-
-# ── File-type selector helpers ────────────────────────────────────────────────
-wants() {
-  local target="$1"
-  for ft in "${FILE_TYPES[@]}"; do [[ "$ft" == "$target" ]] && return 0; done
-  return 1
-}
 
 # ── Python — ruff check ───────────────────────────────────────────────────────
 if wants python; then
@@ -217,6 +278,50 @@ fi
 # ── CSS — no linter configured ────────────────────────────────────────────────
 if wants css; then
   log "  ℹ  CSS linting is not configured. Use format.sh for CSS formatting."
+  log ""
+fi
+
+# ── JavaScript — ESLint, the WEB surface ──────────────────────────────────────
+# Runs on the HOST against the ROOT config, which is what keeps this byte-identical to
+# CI's eslint job, lefthook's eslint leg and `pnpm lint:js`. The root config ignores
+# code/src/mobile/, so this cannot reach the mobile tree — that is typescript's job.
+if wants javascript; then
+  if host_has_pnpm; then
+    bold "── JavaScript (ESLint — web surface) ──────────────────────────────────────"
+    declare -a js_args=(pnpm exec eslint "${TARGET_PATH:-.}")
+    $FIX && js_args+=(--fix)
+    run_on_host "${js_args[@]}"
+    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    log ""
+  else
+    log "  ⚠  pnpm not found on host — skipping JavaScript lint (it runs on the host; install pnpm/Node)"
+    log ""
+  fi
+fi
+
+# ── TypeScript — the MOBILE surface ───────────────────────────────────────────
+# Delegated, not reimplemented: the mobile app owns its eslint, typescript-eslint and
+# config, so this aggregate only decides WHETHER to run it. Unreachable unless the
+# surface exists — an explicit request without it died in validation above.
+if wants typescript; then
+  bold "── TypeScript (ESLint — mobile surface) ───────────────────────────────────"
+  declare -a ts_args=(bash "$PROJECT_ROOT/code/src/scripts/mobile/lint.sh")
+  $FIX && ts_args+=(--fix)
+  run_on_host "${ts_args[@]}"
+  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+  log ""
+fi
+
+# ── Rust — the Cargo workspace ────────────────────────────────────────────────
+# Delegated for the same reason. The owner runs `cargo fmt --check` alongside clippy, so
+# a formatting breach fails the LINT gate here exactly as it does in CI — which is why
+# format.sh asks that script for its narrow --fmt-only half rather than duplicating it.
+if wants rust; then
+  bold "── Rust (rustfmt + clippy) ────────────────────────────────────────────────"
+  declare -a rs_args=(bash "$PROJECT_ROOT/code/src/scripts/rust/lint.sh")
+  $FIX && rs_args+=(--fix)
+  run_on_host "${rs_args[@]}"
+  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
   log ""
 fi
 

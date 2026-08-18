@@ -161,6 +161,17 @@ bash code/src/scripts/tests/e2e-py.sh
 bash code/src/scripts/tests/e2e-py.sh --headed   # watch it drive the browser
 ```
 
+### JavaScript lint
+
+The web surface's own JavaScript — the Alpine and progressive-enhancement scripts under
+`code/src/django/static/js/`. `typescript` is a different token for a different surface.
+
+```bash
+# ESLint, root config, host
+bash code/src/scripts/syntax/lint.sh --file-type javascript
+bash code/src/scripts/syntax/lint.sh --fix --file-type javascript
+```
+
 ### CSS lint, format, and the token guards
 
 ```bash
@@ -216,8 +227,18 @@ bash code/src/scripts/syntax/check.sh --file-type python
 bash code/src/scripts/tests/backend-coverage.sh
 bash code/src/scripts/tests/api.sh
 bash code/src/scripts/syntax/lint.sh --file-type markdown
+bash code/src/scripts/syntax/lint.sh --file-type javascript
 bash code/src/scripts/syntax/format.sh --file-type css
 bash code/src/scripts/audits/css-tokens.sh
+```
+
+**On a project with the mobile or Rust surface, prefer the unscoped pair** — it adds
+`typescript` and `rust` when those directories exist and leaves them out when they do not,
+so one command is right everywhere:
+
+```bash
+bash code/src/scripts/syntax/lint.sh
+bash code/src/scripts/syntax/check.sh
 ```
 
 To run the full suite (backend + API) in one go:
@@ -246,6 +267,11 @@ bash code/src/scripts/tests/all.sh --api
 | Backend type-check           | `bash code/src/scripts/syntax/check.sh --file-type python`        |
 | Backend format               | `bash code/src/scripts/syntax/format.sh --fix --file-type python` |
 | Markdown lint                | `bash code/src/scripts/syntax/lint.sh --file-type markdown`       |
+| JavaScript lint (web)        | `bash code/src/scripts/syntax/lint.sh --file-type javascript`     |
+| TypeScript lint (mobile)     | `bash code/src/scripts/syntax/lint.sh --file-type typescript`     |
+| TypeScript type-check        | `bash code/src/scripts/syntax/check.sh --file-type typescript`    |
+| Rust lint / type-check       | `bash code/src/scripts/syntax/lint.sh --file-type rust`           |
+| Every surface at once        | `bash code/src/scripts/syntax/lint.sh` (unscoped)                 |
 | CSS format                   | `bash code/src/scripts/syntax/format.sh --fix --file-type css`    |
 | CSS token guard              | `bash code/src/scripts/audits/css-tokens.sh`                      |
 | CSS gradient guard           | `bash code/src/scripts/audits/css-gradients.sh`                   |

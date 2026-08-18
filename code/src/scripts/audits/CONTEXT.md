@@ -248,10 +248,10 @@ directories and nothing else. The rule that keeps it that way is in `CLAUDE.md`.
 
 ### stubs.sh only
 
-| Flag               | Description                                                               |
-| ------------------ | ------------------------------------------------------------------------- |
-| `--strict`         | Also list `# TODO`, `# FIXME`, `# HACK` soft markers (does not fail)      |
-| `--file-type TYPE` | Restrict to `python`, `typescript`, or `javascript` (repeat for multiple) |
+| Flag               | Description                                                                      |
+| ------------------ | -------------------------------------------------------------------------------- |
+| `--strict`         | Also list `# TODO`, `# FIXME`, `# HACK` soft markers (does not fail)             |
+| `--file-type TYPE` | Restrict to `python`, `javascript`, `typescript` or `rust` (repeat for multiple) |
 
 ## TDD/BDD Red Phase Bypass (stubs.sh)
 

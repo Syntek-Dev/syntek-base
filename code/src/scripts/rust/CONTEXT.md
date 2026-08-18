@@ -20,7 +20,7 @@ code/src/scripts/rust/
 ├── _common.sh   ← shared setup — sourced, never called
 ├── build.sh     ← compile the workspace; install the extension into the venv
 ├── test.sh      ← the Rust-side test suite
-├── lint.sh      ← rustfmt + clippy at -D warnings
+├── lint.sh      ← rustfmt + clippy at -D warnings (--fmt-only for rustfmt alone)
 └── audit.sh     ← cargo-deny: advisories, licences, bans, sources
 ```
 
@@ -30,7 +30,7 @@ code/src/scripts/rust/
 | ---------- | ------------------------------------------------------ | --------------------- |
 | `build.sh` | Compile and install the extension into the venv        | `--release` `--check` |
 | `test.sh`  | Run the workspace's Rust tests                         | `--path NAME`         |
-| `lint.sh`  | `cargo fmt --check` and clippy with warnings as errors | `--fix`               |
+| `lint.sh`  | `cargo fmt --check` and clippy with warnings as errors | `--fix` `--fmt-only`  |
 | `audit.sh` | Supply-chain gate against `code/src/rust/deny.toml`    | `--update`            |
 
 Exit codes follow the house contract: `0` success, `1` the tool reported failure, `2` script

@@ -37,7 +37,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --help | -h)
-      sed -n '3,11p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      sed -n '3,11p' "$SCRIPT_SELF" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *) die "Unknown option '$1'. Use --help for usage." ;;

@@ -44,17 +44,27 @@ Every syntax operation goes through the project scripts. `ruff`, `eslint`, `pret
 `basedpyright`, `tsc` and `markdownlint` are never invoked directly.
 
 ```bash
-bash code/src/scripts/syntax/lint.sh                       # detect lint issues (all types)
+bash code/src/scripts/syntax/lint.sh                       # every surface this project has
 bash code/src/scripts/syntax/lint.sh --fix                 # apply safe fixes
-bash code/src/scripts/syntax/lint.sh --file-type python    # scope to one file type
-bash code/src/scripts/syntax/format.sh --fix               # reformat (ruff format + Prettier)
-bash code/src/scripts/syntax/check.sh                      # type-check (basedpyright + tsc)
+bash code/src/scripts/syntax/lint.sh --file-type python    # scope to one language
+bash code/src/scripts/syntax/format.sh --fix               # reformat (ruff + Prettier + rustfmt)
+bash code/src/scripts/syntax/check.sh                      # basedpyright + tsc + cargo check
 ```
+
+**One token per language, and it names the language.** `python` · `javascript` (the **web**
+surface's Alpine and enhancement scripts) · `typescript` (the **mobile** surface) · `rust` ·
+`markdown` · `css`. `javascript` and `typescript` never overlap. Full table:
+`code/src/scripts/syntax/CONTEXT.md` → _File types_.
 
 - `lint.sh --unsafe-fix` (ruff only) — only where no safe fix exists **and** the change is
   provably behaviour-preserving. Read the diff before accepting it.
 - `check.sh` is dry-run: no type checker auto-fixes, so type errors are resolved by hand.
 - CSS has no linter — `format.sh` covers it. Token rules belong to the `frontend` skill.
+- `check.sh` rejects `--file-type javascript`: the web surface has no type-checker, so lint it
+  instead. Naming a surface the project lacks exits `2` — never treat that as a pass.
+- The `typescript` and `rust` legs **delegate** to `scripts/mobile/*.sh` and
+  `scripts/rust/*.sh`. Drive a single surface through its owner when you want its own flags
+  (`typecheck.sh --watch`, `lint.sh --fmt-only`).
 
 ## Steps
 

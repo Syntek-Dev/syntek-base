@@ -20,6 +20,11 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd)"
+# The absolute path of the script that sourced this file. Computed HERE, before the cd
+# at the foot of this file: every caller's --help reads its own header with sed, and a
+# relative $0 (`bash code/src/scripts/mobile/lint.sh`, which is how every doc in this
+# repository invokes these) stops resolving the moment the working directory moves.
+SCRIPT_SELF="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 RUST_DIR="$PROJECT_ROOT/code/src/rust"
 

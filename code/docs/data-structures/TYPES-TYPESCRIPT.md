@@ -278,12 +278,17 @@ here, and not before.
 
 ## What CI enforces
 
-| Gate                                        | What it holds                                          |
-| ------------------------------------------- | ------------------------------------------------------ |
-| `code/src/scripts/mobile/typecheck.sh`      | `tsc --noEmit` — the flags, the unions, exhaustiveness |
-| `code/src/scripts/mobile/lint.sh`           | ESLint, including unused variables                     |
-| `code/src/scripts/mobile/test.sh`           | Jest, and the coverage floors `lib/` counts toward     |
-| `code/src/scripts/audits/negative-space.sh` | That the four `tsconfig.json` flags are still `true`   |
+| Gate                                        | What it holds                                             |
+| ------------------------------------------- | --------------------------------------------------------- |
+| `code/src/scripts/mobile/typecheck.sh`      | `tsc --noEmit` — the flags, the unions, exhaustiveness    |
+| `code/src/scripts/mobile/lint.sh`           | ESLint, including unused variables                        |
+| `code/src/scripts/mobile/test.sh`           | Jest, and the coverage floors `lib/` counts toward        |
+| `code/src/scripts/audits/negative-space.sh` | That the four `tsconfig.json` flags are still `true`      |
+| `code/src/scripts/audits/stubs.sh`          | Stub markers in `*.ts`/`*.tsx` (`--file-type typescript`) |
+
+The first two are also reachable as `syntax/lint.sh --file-type typescript` and
+`syntax/check.sh --file-type typescript`, which delegate to them. CI invokes the owners
+directly; the aggregate exists so one local command covers every surface.
 
 ESLint owns unused variables, which is why `noUnusedLocals` and `noUnusedParameters` are
 deliberately absent from `tsconfig.json` — one rule with two enforcers drifts, and the copy is

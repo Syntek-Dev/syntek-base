@@ -56,10 +56,16 @@ worktrees therefore never collide on Metro any more than they do on nginx. Overr
 
 ## Where the aggregates delegate
 
-`syntax/check.sh` and `tests/all.sh` both **guard on this directory existing** and delegate to it
-when present, so "check everything" and "test everything" stay honest on a mobile project without
-either script gaining templated contents. On a web-only project the guard is false and nothing
-changes.
+`syntax/lint.sh --file-type typescript`, `syntax/check.sh --file-type typescript` and
+`tests/all.sh` all **guard on this directory existing** and delegate to it when present, so "lint
+everything", "check everything" and "test everything" stay honest on a mobile project without any
+of them gaining templated contents. On a web-only project the guard is false: the type is left out
+of an unscoped run, and naming it explicitly exits `2` rather than reporting a clean pass.
+
+The aggregates are a convenience, not a replacement. These scripts stay canonical — CI's two
+mobile jobs in `.github/workflows/syntax-js-ts.yml` and lefthook's `eslint-mobile` leg invoke them
+directly, and only they carry the surface's own flags (`typecheck.sh --watch`, `test.sh
+--coverage`).
 
 ## Cross-references
 

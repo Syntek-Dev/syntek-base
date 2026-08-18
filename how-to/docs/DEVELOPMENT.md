@@ -125,12 +125,18 @@ bash code/src/scripts/syntax/format.sh --file-type python
 bash code/src/scripts/syntax/check.sh --file-type python
 bash code/src/scripts/tests/backend.sh
 
-# CSS
+# Web frontend — CSS, and the Alpine/enhancement JavaScript
 bash code/src/scripts/syntax/format.sh --file-type css
+bash code/src/scripts/syntax/lint.sh --file-type javascript
 
 # Markdown (all .md files must declare code block languages — MD040)
 bash code/src/scripts/syntax/lint.sh --file-type markdown
 ```
+
+**Or run them unscoped and let the scripts decide.** A bare `lint.sh` / `check.sh` covers
+every surface this project actually has — adding `typescript` when `code/src/mobile/` exists
+and `rust` when `code/src/rust/` does. Naming a surface the project lacks exits `2` rather
+than passing quietly. Vocabulary: `code/src/scripts/syntax/CONTEXT.md`.
 
 ---
 

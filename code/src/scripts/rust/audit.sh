@@ -23,7 +23,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --update) UPDATE=true; shift ;;
     --help | -h)
-      sed -n '3,14p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      sed -n '3,14p' "$SCRIPT_SELF" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *) die "Unknown option '$1'. Use --help for usage." ;;

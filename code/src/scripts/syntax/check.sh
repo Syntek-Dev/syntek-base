@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 #
-# check.sh — Type-check the codebase using basedpyright (Python) and
-#            Dry-run only.
+# check.sh — Type-check the codebase: basedpyright (Python), tsc (the mobile surface's
+#            TypeScript) and cargo check (the Rust workspace). Dry-run only.
+#
+# THE WEB SURFACE HAS NO TYPE-CHECK, AND THAT IS NOT AN OMISSION
+# Its pages are server-rendered by Django; its only JavaScript is the Alpine and
+# progressive-enhancement scripts, which ESLint lints and nothing type-checks. So
+# `--file-type javascript` is rejected here rather than silently accepted — the token
+# is real, it just has no leg on this script. TypeScript lives on the MOBILE surface
+# alone. See code/src/scripts/syntax/CONTEXT.md.
+#
+# This script AGGREGATES; it never reimplements. `typescript` and `rust` delegate to
+# scripts/mobile/typecheck.sh and scripts/rust/build.sh --check, which remain what CI
+# invokes.
 #
 # Usage: check.sh [--fix] [--file-type TYPE] [--output FORMAT]
 #                 [--output-file PATH] [--quiet] [--path PATH] [--help]
@@ -38,7 +49,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-check.sh — Type-check using basedpyright (Python)
+check.sh — Type-check using basedpyright (Python), tsc (mobile) and cargo check (Rust)
 
 Usage:
   check.sh                         Dry-run all supported file types
@@ -48,8 +59,8 @@ Usage:
 Options:
   --fix                Print fix guidance (no automated type fixes are available)
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | javascript
-                         (markdown and css are not type-checked)
+                         python | typescript | rust
+                         (markdown, css and javascript are not type-checked)
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/reports/check-report.<FORMAT>)
@@ -59,6 +70,12 @@ Options:
 
 Notes:
   • basedpyright uses project config at code/src/django/pyrightconfig.json.
+  • typescript is the MOBILE surface; the web surface has no TypeScript and its
+    JavaScript is linted, not type-checked — use lint.sh --file-type javascript.
+  • typescript and rust delegate to scripts/mobile/typecheck.sh and
+    scripts/rust/build.sh --check, and join a bare run only when their surface is
+    present. Naming one on a project that lacks it is an error, not a skip.
+  • --path cannot scope typescript or rust — those owners check their workspace whole.
   • --fix is accepted for API consistency but no type checker auto-corrects
     type errors; it prints guidance on how to fix common classes of errors.
 
@@ -68,6 +85,14 @@ EOF
 
 require_arg() {
   [[ $# -gt 1 ]] || die "$1 requires a value"
+}
+
+# Defined here rather than beside the tool sections, because the surface guards in
+# argument validation below need it.
+wants() {
+  local target="$1"
+  for ft in "${FILE_TYPES[@]}"; do [[ "$ft" == "$target" ]] && return 0; done
+  return 1
 }
 
 container_running() {
@@ -117,19 +142,53 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
     *) die "Invalid --output value '$OUTPUT_FORMAT'. Choose: md txt json html" ;;
   esac
 fi
+# Whether the CALLER named the types. An auto-added type is one this script chose, and
+# a surface this script chose is one it already checked was there.
+EXPLICIT_TYPES=false
+[[ ${#FILE_TYPES[@]} -gt 0 ]] && EXPLICIT_TYPES=true
+
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|javascript) ;;
+    python|typescript|rust) ;;
+    javascript) die "--file-type 'javascript' is not type-checked. The web surface has no TypeScript, and its Alpine and enhancement scripts are linted instead: use lint.sh --file-type javascript. For the mobile surface, use --file-type typescript." ;;
     markdown|css) die "--file-type '$ft' is not type-checked. Remove it or use lint.sh instead." ;;
-    *) die "Invalid --file-type '$ft'. Choose: python javascript" ;;
+    *) die "Invalid --file-type '$ft'. Choose: python typescript rust" ;;
   esac
 done
-# Default to Python, plus the mobile surface when this project has one. The existence
-# guard is what keeps "check everything" honest without templated file contents: a
-# web-only project has no code/src/mobile/, so the default is unchanged for it.
-if [[ ${#FILE_TYPES[@]} -eq 0 ]]; then
+
+MOBILE_DIR="$PROJECT_ROOT/code/src/mobile"
+RUST_DIR="$PROJECT_ROOT/code/src/rust"
+
+if $EXPLICIT_TYPES; then
+  # An explicitly requested surface that is not here is a BAD INVOCATION, not a clean
+  # result. This replaces a branch that used to print a warning and exit 0.
+  wants typescript && [[ ! -d "$MOBILE_DIR" ]] && \
+    die "--file-type typescript needs code/src/mobile/ — this project was generated without the mobile surface."
+  wants rust && [[ ! -d "$RUST_DIR" ]] && \
+    die "--file-type rust needs code/src/rust/ — this project was generated without the Rust surface."
+else
+  # "Check everything" stays honest without templated file contents: a web-only project
+  # has neither directory, so its default is Python alone, exactly as before.
   FILE_TYPES=(python)
-  [[ -d "$PROJECT_ROOT/code/src/mobile" ]] && FILE_TYPES+=(javascript)
+  [[ -d "$MOBILE_DIR" ]] && FILE_TYPES+=(typescript)
+  [[ -d "$RUST_DIR" ]] && FILE_TYPES+=(rust)
+fi
+
+# --path asks for a subtree; the delegated owners check their workspace as a unit and
+# have no --path of their own. Dropping them is how the narrower request is honoured,
+# and naming what was dropped is how that stays visible.
+if [[ -n "$TARGET_PATH" ]]; then
+  declare -a scoped=() dropped=()
+  for ft in "${FILE_TYPES[@]}"; do
+    case "$ft" in
+      typescript|rust)
+        $EXPLICIT_TYPES && die "--path cannot scope --file-type $ft: its owner checks the workspace whole. Drop --path, or drop --file-type $ft."
+        dropped+=("$ft") ;;
+      *) scoped+=("$ft") ;;
+    esac
+  done
+  FILE_TYPES=("${scoped[@]}")
+  [[ ${#dropped[@]} -gt 0 ]] && DROPPED_NOTE="${dropped[*]}"
 fi
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
@@ -154,25 +213,12 @@ log ""
 bold "▸ check.sh — $TIMESTAMP"
 log "  mode: type-check (read-only)"
 log "  types: ${FILE_TYPES[*]}"
+[[ -n "${DROPPED_NOTE:-}" ]] && log "  dropped by --path: ${DROPPED_NOTE} (their owners check the whole workspace)"
 if $FIX; then
   log ""
   log "  ℹ  --fix is set. Type checkers do not auto-fix errors — see guidance below."
 fi
 log ""
-
-# ── File-type selector helpers ────────────────────────────────────────────────
-wants() {
-  local target="$1"
-  for ft in "${FILE_TYPES[@]}"; do [[ "$ft" == "$target" ]] && return 0; done
-  return 1
-}
-
-wants_ts_js() {
-  for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in javascript) return 0 ;; esac
-  done
-  return 1
-}
 
 # ── Python — basedpyright ─────────────────────────────────────────────────────
 if wants python; then
@@ -198,19 +244,33 @@ fi
 # Delegated, not reimplemented: the mobile app owns its own tsconfig and TypeScript
 # version, so this aggregate only decides WHETHER to run it. Runs on the host, like
 # Prettier and markdownlint — no container mounts the mobile tree.
-if wants javascript; then
-  if [[ -d "$PROJECT_ROOT/code/src/mobile" ]]; then
-    bold "── TypeScript (tsc — mobile surface) ──────────────────────────────────────"
-    if bash "$PROJECT_ROOT/code/src/scripts/mobile/typecheck.sh" 2>&1 | tee -a "$TMPFILE"; then
-      :
-    else
-      OVERALL_EXIT=1
-    fi
-    log ""
+#
+# There is no "surface absent" branch here any more. It used to print a warning and
+# exit 0, which files "could not look" as "looked, and it was clean". The type is now
+# either auto-added because the directory exists, or explicitly named and validated
+# against that directory above — so by this line the surface is present.
+if wants typescript; then
+  bold "── TypeScript (tsc — mobile surface) ──────────────────────────────────────"
+  if bash "$PROJECT_ROOT/code/src/scripts/mobile/typecheck.sh" 2>&1 | tee -a "$TMPFILE"; then
+    :
   else
-    log "  ⚠  no code/src/mobile/ — this project has no mobile surface; skipping"
-    log ""
+    OVERALL_EXIT=1
   fi
+  log ""
+fi
+
+# ── Rust — cargo check over the workspace ─────────────────────────────────────
+# Delegated to the Rust surface's own owner for the same reason, and `build.sh --check`
+# is the type-check half of it: cargo check --workspace --all-targets, no artefact.
+# Reached only when code/src/rust/ is present, on the same argument as above.
+if wants rust; then
+  bold "── Rust (cargo check) ─────────────────────────────────────────────────────"
+  if bash "$PROJECT_ROOT/code/src/scripts/rust/build.sh" --check 2>&1 | tee -a "$TMPFILE"; then
+    :
+  else
+    OVERALL_EXIT=1
+  fi
+  log ""
 fi
 
 # ── --fix advisory ────────────────────────────────────────────────────────────

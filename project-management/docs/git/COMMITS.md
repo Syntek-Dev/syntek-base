@@ -19,23 +19,43 @@ Index: [`../GIT-GUIDE.md`](../GIT-GUIDE.md).
 
 Run these commands before every commit — no exceptions.
 
-### Step 1 — Backend lint
+### Step 1 — Apply what can be applied
 
 ```bash
 bash code/src/scripts/syntax/lint.sh --fix --file-type python
-bash code/src/scripts/syntax/lint.sh --file-type python
 ```
 
-### Step 2 — Frontend lint and type-check
+### Step 2 — Verify every surface this project has
 
 ```bash
-bash code/src/scripts/syntax/lint.sh --file-type typescript
-bash code/src/scripts/syntax/check.sh --file-type typescript
+bash code/src/scripts/syntax/lint.sh
+bash code/src/scripts/syntax/check.sh
 ```
+
+**Unscoped deliberately.** A bare run covers exactly the surfaces that are present — it
+adds `typescript` when `code/src/mobile/` exists and `rust` when `code/src/rust/` does,
+and leaves each out otherwise. That is what makes these same two lines correct on a
+web-only project and on one carrying all three surfaces.
+
+Scope with `--file-type` when you want faster feedback on one thing:
+
+| Token              | Covers                                                   | Tools                            |
+| ------------------ | -------------------------------------------------------- | -------------------------------- |
+| `python`           | `code/src/django/`                                       | ruff · basedpyright              |
+| `javascript`       | the **web** surface — Alpine and enhancement scripts     | ESLint (root config)             |
+| `typescript`       | **mobile-only** — `code/src/mobile/`                     | ESLint (mobile config) · `tsc`   |
+| `rust`             | **rust-only** — `code/src/rust/`, desktop crate included | rustfmt · clippy · `cargo check` |
+| `markdown` · `css` | repo-wide                                                | markdownlint · Prettier          |
+
+Two things the table does not say twice. `javascript` and `typescript` name **different
+surfaces** and never overlap: the root ESLint config ignores `code/src/mobile/`, and
+TypeScript exists nowhere else. And naming a surface this project does **not** have is an
+**error, not a no-op** — `--file-type typescript` on a web-only project exits `2`,
+because a check that could not run must never be reported as a check that came back clean.
 
 ### Step 3 — Commit
 
-Only commit once all linters exit cleanly.
+Only commit once both commands exit `0`.
 
 ---
 

@@ -61,13 +61,14 @@ Usage:
   stubs.sh                         Scan all file types (hard stubs only)
   stubs.sh --strict                Also report TODO / FIXME / HACK soft markers
   stubs.sh --file-type python      Restrict to Python only
+  stubs.sh --file-type typescript  Restrict to the mobile surface's TypeScript
   stubs.sh --file-type rust        Restrict to the Rust workspace only
 
 Options:
   --strict             Show soft markers (# TODO / # FIXME / # HACK / // TODO etc.)
                        Soft markers are listed but do not cause failure.
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | javascript | rust
+                         python | javascript | typescript | rust
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/stubs-report.<FORMAT>)
@@ -94,8 +95,11 @@ Soft markers detected (--strict only; listed but do not fail):
   TS/JS   │ // TODO  ·  // FIXME  ·  // HACK
   Rust    │ // TODO  ·  // FIXME  ·  // HACK
 
-Scanned extensions:
-  *.py  ·  *.ts  ·  *.tsx  ·  *.rs  (plus *.js  ·  *.jsx  when --file-type javascript)
+Scanned extensions — one token per language, matching syntax/lint.sh's vocabulary:
+  python      *.py
+  javascript  *.js  ·  *.jsx      the WEB surface's Alpine and enhancement scripts
+  typescript  *.ts  ·  *.tsx      the MOBILE surface
+  rust        *.rs
   *.md and all other file types are excluded — Markdown is linted/formatted separately.
 
 Excluded paths:
@@ -134,13 +138,15 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|javascript|rust) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python javascript rust" ;;
+    python|javascript|typescript|rust) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python javascript typescript rust" ;;
   esac
 done
-# `rust` is in the default set so the CI gate covers it without a flag. On a project
-# without the Rust surface the scan matches nothing and costs one grep.
-[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python javascript rust)
+# Every type is in the default set so the CI gate covers each without a flag. This
+# script only greps, so unlike the syntax scripts it needs no surface guard: on a
+# project without the mobile or Rust surface the scan matches nothing and costs one
+# grep per extension.
+[[ ${#FILE_TYPES[@]} -eq 0 ]] && FILE_TYPES=(python javascript typescript rust)
 
 if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
   mkdir -p "$REPORTS_DIR"
@@ -177,9 +183,11 @@ wants() {
   return 1
 }
 
+# The two curly-brace languages share one scan section and one comment syntax, so the
+# section runs when EITHER is wanted; which extensions it reads is decided inside.
 wants_ts_js() {
   for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in javascript) return 0 ;; esac
+    case "$ft" in javascript|typescript) return 0 ;; esac
   done
   return 1
 }
@@ -262,10 +270,11 @@ if wants python; then
   log ""
 fi
 
-# ── JavaScript ────────────────────────────────────────────────────────────────
+# ── TypeScript / JavaScript ───────────────────────────────────────────────────
 if wants_ts_js; then
-  bold "── JavaScript ─────────────────────────────────────────────────────────────"
-  declare -a ts_exts=("*.ts" "*.tsx")
+  bold "── TypeScript / JavaScript ────────────────────────────────────────────────"
+  declare -a ts_exts=()
+  wants typescript && ts_exts+=("*.ts" "*.tsx")
   wants javascript && ts_exts+=("*.js" "*.jsx")
 
   scan "throw new Error (not implemented)" hard \
