@@ -266,6 +266,15 @@ while IFS= read -r file; do
       # Generated output. The folder appears when the script that fills it is run,
       # so its absence is the normal state, not a broken citation.
       */reports/*|*/coverage/*|*/staticfiles/*|.claude/worktrees/*|.claude/worktrees) continue ;;
+      # The same class as a FILE rather than a folder, and the reason this arm needed
+      # stating twice. `install.sh` writes code/docs/MACHINE-SPEC.md (install.sh:25,:518)
+      # and .gitignore:43 ignores it, so it is present on a developer's disk and absent
+      # from a fresh checkout -- which made this gate's verdict a property of the disk
+      # rather than of the repository: exit 0 here, exit 1 in a clean clone. Measured
+      # 18/08/2026, blast radius exactly one citing site over the whole repo
+      # (.github/scripts/shipped-readme.sh:141, the comment explaining this very hazard
+      # for a different script). MAP-BASE-HEALTH N-042.
+      code/docs/MACHINE-SPEC.md) continue ;;
       code/docs/*|code/workflows/*|code/src/scripts/*|code/CONTEXT.md|code/CLAUDE.md|code/REFERENCES.md) ;;
       how-to/docs/*|how-to/workflows/*|how-to/src/*) ;;
       project-management/docs/*|project-management/workflows/*) ;;
