@@ -62,9 +62,22 @@ and was wrong on a detail**: eight version commits, not five, which every agent 
 caught independently.
 
 **Frontier open**: 24 · **Blocking open**: 0 · **Resolved**: 35 — recounted from the tables
-18/08/2026 after N-053 settled, and checked: **24 + 35 = 59 = N-059**. Per batch:
+18/08/2026 after N-053 settled and **re-counted unchanged the same day** after `b4ed0b9`, which
+fixed a finding Sam declined to chart. Nothing was charted and nothing resolved as a node, so the
+arithmetic is untouched: **24 + 35 = 59 = N-059**. Per batch:
 A 0 · B 7 · D 4 · E 9 · unbatched 4. **Batch A's frontier is empty for the third time and the
 class is still not called closed** — see the verdict in _Batch A_.
+
+**A commit landed 18/08/2026 that was not a node, and it moved two open nodes' evidence — so the
+map records it in both directions.** `b4ed0b9` fixed the `COMMITS.md` Step 2 finding rather than
+charting it as N-060, at Sam's call. The re-measurement pass that followed re-resolved **fifteen
+stale anchors** across N-046 and N-055, **refuted ten** of its own 59 findings through an
+adversarial leg, and established that the commit **removed one N-055 member and added three**. The
+lesson this map has now measured at a new boundary: **a session that touches a charted node's
+files owes that node a re-measurement**, and the leg that found the three new members was neither
+the finders nor their adversaries but the completeness critic — because a finder is scoped to a
+bullet, and a bullet cannot ask about a member created after it was written. Details in _Batch B_
+and the _Session log_.
 
 **N-053 settled 18/08/2026, and it is the first node on this map taken after a two-day gap —
 so every premise was re-measured before any of it was believed.** All of them held. **Three of
@@ -1064,14 +1077,28 @@ Three scripts each report something other than what happened:
 - **`syntax/format.sh` bare is a dry-run** that prints "All files are correctly formatted", which
   workflow `06` read as "the tree was rewritten" for as long as it has existed. The script is
   right and the reader is wrong, which is the definition of a misleading report.
+  **Re-measured 18/08/2026: the cited specimen is dead and the mechanism is not — and the
+  surviving member is worse than the one that died.** `06-quality-gates/STEPS.md` was corrected at
+  `f4a988b` (16/08, 17:46) and reads right at `:39-41`. But `f4a988b` touched five files and
+  **`.claude/skills/review/SKILL.md` was not one of them**: `:21` states _"**This skill writes.**
+  Its pre-flight runs `format.sh`, which rewrites source."_, its pre-flight at `:28-31` invokes
+  `format.sh` **bare**, and its definition of done at `:62` consumes the false inference. That is
+  the identical falsehood in a stronger form, **in a skill an agent executes**. The file has one
+  commit in its history (`bcb1efb`, 12/08/2026) and has never been edited, so it has been false
+  for as long as it has existed — the same phrase this node applies to workflow `06`. The map has
+  no hit for it. Secondary: `f4a988b`'s body and `VERSION-HISTORY.md:13` both frame those five
+  documents as _"correct when written and falsified by a change elsewhere"_, which is false for
+  this member — it was wrong on the day it was authored.
 - ~~**`development/sync-trees.sh --path <dir>` reports "Every CONTEXT.md tree matches its
   directory"** for a directory the unscoped run reports as drifted.~~ **Specimen dead — the block
   was repaired at `ec8e807` (16/08, 17:42), four hours before this node was written.** The
   mechanism may well survive; it now **needs a new specimen** before it can be scheduled.
 - **`syntax/lint.sh --path <file>` does not scope markdownlint — re-measured and confirmed
   16/08/2026, and the contest was answered by the tool rather than the script.** The contest was
-  right about `lint.sh` and wrong about the cause: `:198-205` genuinely scopes `md_pattern` to
-  `--path` and has since `ee5c2bb` (01/08/2026), and `:206` passes it as the sole glob.
+  right about `lint.sh` and wrong about the cause: `:259-266` genuinely scopes `md_pattern` to
+  `--path` and has since `ee5c2bb` (01/08/2026), and `:267` passes it as the sole glob.
+  **Re-anchored 18/08/2026** — these read `:198-205` and `:206` until `b4ed0b9` rewrote the file;
+  the blocks are byte-identical and moved +61.
   **`markdownlint-cli2` then appends the `globs` array from `.markdownlint-cli2.jsonc:2-21` to
   whatever the CLI gave it**, so the path narrows nothing. Observed: a run scoped to
   `how-to/docs/HEALTH-PROBES.md` printed the full glob array after the path and **`Linting: 793
@@ -1096,10 +1123,26 @@ session that ran it**.
 **A replacement specimen arrives from N-056, and it belongs here by class and by type.**
 `copy-emdash.sh:106`'s `[[ -e "$TARGET_PATH" ]] || die` sits inside `collect_files()`, invoked in
 a process substitution at `:128`, so `die`'s `exit 2` kills the **subshell** and the script prints
-its error to stderr then `✓ No em dashes in marketing copy.` at **exit 0**. Three siblings carry
+its error to stderr then `✓ No em dashes in marketing copy.` at **exit 0**. ~~Three siblings carry
 the identical guard outside a subshell and exit `2` (`css-gradients.sh:101`, `css-tokens.sh:107`,
-`copy-slop.sh:233`). That is _a scope it did not honour_, with the correct form three times over
-in its own directory — the live specimen the struck `sync-trees.sh` bullet asked for.
+`copy-slop.sh:233`).~~ That is _a scope it did not honour_ — the live specimen the struck
+`sync-trees.sh` bullet asked for. **But the count was wrong in both directions, corrected
+18/08/2026 by running every script in `audits/` rather than grepping the guard string.**
+
+- **Eight** siblings carry the correct form, not three — add `negative-space.sh:521`,
+  `render-slop.sh:189`, `template-slop.sh:206`, `css-slop.sh:200`, `static-analysis.sh:306`.
+- **And it is not a one-script defect. Four** scripts put the guard inside a function invoked from
+  `done < <(func)`, so `die`'s `exit 2` kills only the subshell and each prints a success line at
+  exit 0 over a `--path` it never honoured: `copy-emdash.sh:106`/`:128`;
+  `seam-contract.sh:115`/`:178`; `conflict-markers.sh:201`/`:215`, which prints
+  `scanned 0 text file(s)` and then `✓ No unresolved conflict markers in 0 text file(s)`; and
+  `skill-conformance.sh:237`/`:510`, whose success line **names the default scope while the
+  operator asked for another path**.
+- **Why a grep could not have closed this, which is the standing lesson landing again.**
+  `skill-conformance.sh`'s guard reads `$t`, not `$TARGET_PATH`, so a search on the guard string
+  misses it; only executing each script closes the population. A fix scoped to `copy-emdash.sh`
+  alone leaves **three identical live defects**, and none of the three is charted for this defect
+  anywhere on this map.
 
 **Typed `task`: nothing is undecided** — each is a report that should describe the action taken.
 **But see N-055 and the collision table**: N-055 works the same two files, and the `lint.sh` line
@@ -1285,19 +1328,58 @@ weakest.
 - **The syntax pair is the purest instance, and the persisted artefact is worse than the
   terminal.** With `pnpm` off `PATH`, `format.sh --file-type markdown` prints
   `⚠ pnpm not found on host — skipping Prettier`, then `✓ All files are correctly formatted.`, and
-  exits **0**; `lint.sh` is the same shape (`format.sh:232-247`, `:348-349`, `:358` ·
-  `lint.sh:195-215`, `:312-313`, `:320`). `OVERALL_EXIT` is only ever touched **inside** the branch
-  that ran (`:241` / `:209`). **New, and found by neither leg of the pass:** `log()` at
-  `format.sh:35` writes to stdout and never to `$TMPFILE`, which `:257` reads to build every report
+  exits **0**; `lint.sh` is the same shape (`format.sh:284-299`, `:412-413`, `:422` ·
+  `lint.sh:256-276`, `:417-418`, `:425`). `OVERALL_EXIT` is only ever touched **inside** the branch
+  that ran (`:293` / `:270`). **New, and found by neither leg of the pass:** `log()` at
+  `format.sh:46` writes to stdout and never to `$TMPFILE`, which `:321` reads to build every report
   — so `--output json --quiet` yields `{"exit_code": 0, "output": ""}` over zero files examined,
   with **no notice in either channel**.
-- **The member live on this machine is `check-typecheck.sh`, and it is the only guard of its kind
-  in the directory.** `basedpyright` is not on this host's `PATH`; `:14-19`'s `else` leaves
+  **Every anchor in this bullet was re-resolved 18/08/2026** — they read `format.sh:232-247`,
+  `:348-349`, `:358`, `:241`, `:35`, `:257` and `lint.sh:195-215`, `:312-313`, `:320`, `:209` until
+  `b4ed0b9` rewrote all three scripts. Each was exact at `a9c56a1`, verified in both directions
+  against `git show c006ff5:<path>`; **the offset is not uniform** (the Prettier leg moved +52, the
+  tail +64), so no anchor here may be recovered by adding a constant.
+  **And the bullet under-counts `lint.sh` now: there are TWO skip sites, not one.** `b4ed0b9`
+  added a `javascript` leg with the identical shape — `:289` `if host_has_pnpm; then` / `:297`
+  `⚠ … skipping JavaScript lint`, with its `OVERALL_EXIT=1` at `:294` inside the ran-branch.
+  **This map's own remedy produced a new member of the node it was measured beside.**
+  Two directions confirmed by an A/B control on a deliberately mis-formatted file outside the
+  repo: **pnpm present → exit 1 `✗ Formatting issues found.`; pnpm absent → exit 0 with the
+  success line.** The green is false, not coincidentally true. A further shape nobody had named:
+  **`--fix` prints the same success string when nothing ran**, because the `⚡ Formatting applied.`
+  branch at `format.sh:414-415` is an `elif` under `OVERALL_EXIT -eq 0` and is unreachable
+  whenever the only lane was skipped. And the reach is wider than "a host without Node":
+  `package.json:5` pins `"packageManager": "pnpm@11.22.0"`, so a **corepack-only** host hits the
+  skip branch even though `corepack pnpm` works.
+- **The member live on this machine is `check-typecheck.sh`, and ~~it is the only guard of its
+  kind in the directory~~ it is the only one of the directory's three skip sites that fires
+  here.** `basedpyright` is not on this host's `PATH`; `:14-19`'s `else` leaves
   `local_exit` at its `:10` initialiser, `:27` hands that `0` to `_dual_result`,
   `pre-pr-check.sh:297-298` reads `0 && 0` as a pass, and `:29-30` writes
-  **`No type errors (Python local ✓ Docker ✓)`**. `grep -rn "command -v" .claude/hooks/lib/`
-  returns **one hit across nine files**; `check-format.sh:14-15` and `check-lint.sh:16-17` run the
-  raw tool unguarded and fail closed. The honest form is two files away.
+  **`No type errors (Python local ✓ Docker ✓)`**.
+  **Corrected 18/08/2026 — "only guard of its kind" confused a search with a population.**
+  `check-typecheck.sh:14`'s `command -v basedpyright` is the directory's only **PATH-lookup**
+  guard (`grep -rn "command -v" .claude/hooks/lib/` — one hit across nine files, both numbers
+  re-confirmed), but not its only skip-and-pass guard: `check-lockfiles.sh:78`
+  (`if [[ -n "$venv_dir" ]]`) and `:139` (`if [[ -d "$PROJECT_ROOT/node_modules" ]]`) are the
+  same mechanism in **file-test** form. `:134` and `:149` print `skipping`, neither `else` touches
+  `exit_code`, and `:153-155` then prints `Python + JS packages match lockfiles (local ✓
+container ✓)`. The three skips are live in **different conditions, not different kinds** — here
+  the root `.venv` and `node_modules` both exist and `basedpyright` does not.
+  `check-format.sh:14-15` and `check-lint.sh:16-17` run the raw tool unguarded and fail closed;
+  **`check-tests.sh:108-109` already carries the tri-state** (`auth unmeasurable` → red), so the
+  honest form is **one** file away, not two.
+- **A fifth member, outside `hooks/lib/` and outside every census this node has run.**
+  `.claude/hooks/context-threshold-handoff.sh:25` — `command -v jq >/dev/null 2>&1 || exit 0`, the
+  only other `command -v` in the hooks tree. With `jq` absent the hook exits 0 having measured
+  nothing, and the 50%/75% thresholds `.claude/CLAUDE.md` Section 2.6 calls **"measured not
+  guessed"** go unmeasured, with no notice in either channel. **The class is five gates, not
+  four**, and the header count above is stale by one.
+- **A sixth, and it is the one that needs no absent prerequisite at all.** `lint.sh:278-282`'s
+  `if wants css` prints `ℹ CSS linting is not configured.`, never touches `OVERALL_EXIT`, and
+  falls through to `✓ No lint issues found.` at exit 0. It predates `b4ed0b9` (`c006ff5:217-219`,
+  so live at the charting commit `a9c56a1`) and appears in **neither** this node nor N-046 —
+  found 18/08/2026 by the completeness critic, not by any finder.
 - **It breaks a rule written one directory up, about the tool that rule names.**
   `.claude/hooks/CLAUDE.md:23-27` calls the dual-check design deliberate, lists **`basedpyright`**
   among the host-side raw tools, and states its purpose as catching host/container drift. A guard
@@ -1318,8 +1400,8 @@ weakest.
   a doctrine line.** Nothing automated invokes `syntax/format.sh` or `syntax/lint.sh` — seven hits
   across `.github/`, `.claude/hooks/` and `lefthook.yml`, every one an advice string or the human
   checkbox at `PULL_REQUEST_TEMPLATE.md:50-51`. So `medium` is right **there**. But
-  `syntax/CLAUDE.md:41` justifies the exit-code contract with **"CI depends on it"**, and that is
-  false at HEAD by the same grep: the rule survives on its merits and loses its stated reason,
+  `syntax/CLAUDE.md:56` justifies the exit-code contract with **"CI depends on it"**, and that is
+  false at HEAD by the same grep (`:41` until `b4ed0b9`): the rule survives on its merits and loses its stated reason,
   which is the N-036 shape exactly. **The downgrade must not generalise** —
   `.claude/settings.json:132-141` registers `pre-pr-check.sh` as a `PreToolUse` hook whose matcher
   at `:134` is `"Bash"`, so it fires on **every** Bash call; the `gh pr create|new` filter is
@@ -1327,21 +1409,83 @@ weakest.
   gate. **The two files were cross-wired at the same line number in this node's own draft**, which
   is the citation-drift class it sits beside.
 - **Typed `grilling`, against the candidate's `task`, for the reason that shrank N-046.**
-  `syntax/CLAUDE.md:40` publishes three codes — `0` clean, `1` issues, `2` script error — and
-  **has no case for "could not look"**; `_dual_result` takes two integers and has no representation
+  `syntax/CLAUDE.md:55` publishes three codes — `0` clean, `1` issues, `2` script error — and
+  **has no case for "could not look"** (`:40` until `b4ed0b9` moved it +15; the text is
+  byte-identical, and the claim survives the rewrite in substance); `_dual_result` takes two integers and has no representation
   for "not run" across the five checks that call it. Both forks cost: failing closed blocks a PR
   from any host without `basedpyright`, **including this one**, and a per-leg tri-state changes
   shared code under five callers. That is a contract decision, not a message edit.
 - **Not blocking, on the N-053 and N-042 precedent**: it gates neither a merge nor a story; it
   fails to gate anything, which is the defect. **Not already charted** — N-046's bullets are all
   scripts that _ran_ and mis-described the run, and N-053 is this effect from a token cause.
-- **It collides with N-046 on two files, and the ranges nest.** N-046's `lint.sh` bullet works
-  `:198-206`; this node cites `lint.sh:195-215` for the skip, and both point at the same success
-  string in `format.sh`. **Settle N-046's bullet first or together** — a fix to either that edits
-  the success line without the other's evidence in view will look complete and close half the class.
+- **It collides with N-046 on ~~two~~ THREE files, and the ranges nest.** N-046's `lint.sh`
+  bullet works `:259-266`; this node cites `lint.sh:256-276` for the skip, and both point at the
+  same success string in `format.sh`. **Settle N-046's bullet first or together** — a fix to
+  either that edits the success line without the other's evidence in view will look complete and
+  close half the class.
+  **Widened 18/08/2026 by `b4ed0b9`, which every agent measured and none connected.** `check.sh`
+  now shares `log()` at `:46`, `TMPFILE` at `:207`, `RAW=$(<"$TMPFILE")` at `:290`, the `--path`
+  drop block at `:180-191`, the `DROPPED_NOTE` print at `:216` and the default narrowing at
+  `:171-174` with both collision files. Every finder asked whether `check.sh` is an N-055
+  **member**; none asked whether it joins the **collision**. A fix to the shared success string,
+  to `log()`, or to the `$TMPFILE` path now moves in three files.
+  **And the two nodes' remedies sit in the same `if/else`.** `--no-globs` — N-046's remedy —
+  would be added at `lint.sh:267`, inside the `if host_has_pnpm` limb at `:257` whose `else` at
+  `:272-275` **is** N-055's member. Nobody has measured what a `--no-globs` edit does to N-055's
+  evidence, or the reverse.
+  **The control that proves N-046's cause was never run, and it lives in the other collision
+  file.** `lint.sh --file-type markdown --path <file>` reports `Linting: 794 files`;
+  `format.sh --file-type markdown --path <file>` scopes **correctly**, because
+  `prettier_pattern()` (`format.sh:231-260`) hands Prettier the pattern as its sole glob and
+  Prettier has no config-side append. That contrast is what shows the fault is
+  `markdownlint-cli2`'s appended `globs` rather than the `--path` contract the two scripts share.
 - **No self-test would have caught any of it**: `grep -c "self-test"` returns `0` for all four
   files, against the `audits/*.sh` convention that carries one. Population stated rather than
-  implied — **three skip sites, two files, nine hook libs**.
+  implied — **three skip sites, two files, nine hook libs**. **That sentence counts the hook libs
+  (`check-typecheck.sh:18`, `check-lockfiles.sh:134`, `:149` — three sites in two of nine files),
+  not the syntax pair, and it is arithmetically exact at HEAD.** Two agents returned opposite
+  verdicts on it on 18/08/2026 for want of a named referent; the referent is written down here so
+  the next reader does not have to guess it.
+
+**`b4ed0b9` removed one member of N-055 and added three, and a map that recorded only the
+removal would be a map you could not trust.** The commit is the `--file-type` work of 18/08/2026
+(see _Session log_); it was not taken against either node, and every item below was found by the
+re-measurement pass that followed it rather than by the session that wrote it.
+
+- **Removed, and it is the only subtraction.** `check.sh`'s absent-mobile-surface branch used to
+  print `⚠ no code/src/mobile/ — this project has no mobile surface; skipping` and exit `0`. It
+  is gone: the type is either auto-added because the directory exists, or explicitly named and
+  validated against that directory, so an absent surface now exits `2`.
+- **Added (1) — `rust/lint.sh:42-55`, an N-046 member in a file the commit touched.** The
+  `--fmt-only` block runs `cargo fmt --all` (`:47`, which **rewrites source**) or
+  `cargo fmt --all --check` (`:49`), then **unconditionally** prints `✓ Rust formatting clean.`
+  (`:53`) and exits `0` (`:54`). A `--fix` run that rewrites the workspace reports a **state**,
+  never the action — N-046's definition. Reached from `format.sh:306-307`. Its pre-existing
+  sibling at `:60-69` is the same shape, so the commit **copied an existing defect** rather than
+  inventing one, which is the more useful fact about it.
+- **Added (2) — a silent surface drop in all three syntax scripts.** `lint.sh:187-192`,
+  `format.sh:175-180`, `check.sh:171-174`: a bare run appends `typescript`/`rust` **only if the
+  directory exists**, with no `⚠`, no `ℹ` and no report field. On a project generated without
+  either surface — the template's normal case — the legs vanish and the script prints `✓`.
+  Invisible to every census this node has run, because they all grep `skipping` or `⚠`.
+- **Added (3) — the persisted artefact misstates the scope requested, which is worse than
+  omitting it.** The `--path` drop at `lint.sh:197-209` sets `DROPPED_NOTE`, printed at `:231`
+  through `log()` (`:46`) — stdout only, never `$TMPFILE`, which `:330` reads. So
+  `lint.sh --path how-to/docs --output json --quiet` yields
+  `"file_types": ["python","markdown","javascript"]` with **no trace of the two dropped types**:
+  the report states the post-drop set as though it were the set asked for. Same shape at
+  `format.sh:184-196`/`:218`/`:321` and `check.sh:180-191`/`:216`/`:290`. **The notice was written
+  specifically so the drop would not be silent, and it is silent in the only channel that
+  persists** — which is N-055's own `log()`-versus-`$TMPFILE` bullet reproduced on a feature added
+  beside it.
+
+**The standing lesson takes the obvious form and one less obvious one.** A session that touches a
+charted node's files owes that node a re-measurement — that is the obvious half, and it is why
+these four items exist. The less obvious half: **three of them were found by the completeness
+critic, not by any of the five finders or their adversaries.** The finders were each scoped to a
+node's existing bullets, and a bullet cannot ask about a member created after it was written. The
+critic's question — _what did this pass fail to look at?_ — is the only leg that could have found
+them, and it found the CSS lane member above by the same route.
 
 **N-056 — six gates report a clean verdict over a population they never had, and one of them is
 the pre-commit hook.** Charted 16/08/2026. Every figure below was executed at HEAD `a9c56a1`, not
@@ -1868,7 +2012,9 @@ against it.** `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` Section _Excluded fro
 (`:96`, prose at `:98`, table at `:101-108`) is what a downstream reader consults to learn what
 their project did not receive. Measured against `copier.yml` on 16/08/2026:
 
-- `:98` announces **"five groups"** above a table of **six** data rows (`:103-108`).
+- ~~`:98` announces **"five groups"** above a table of **six** data rows (`:103-108`).~~
+  **Dead — re-measured 18/08/2026.** `:98` now reads _"There are six groups"_, fixed by `866d59d`
+  (17/08, the 5.4.0 bump) as a side-effect rather than by a session taking this node.
 - `:103` lists **`how-to/src/TEMPLATE-GUIDE/`** as excluded. `copier.yml:75-81` says in terms:
   _"how-to/src/TEMPLATE-GUIDE/ SHIPS, deliberately"_ — only `TEMPLATE-GAPS.md` inside it is named
   in `_exclude`.
@@ -1887,7 +2033,17 @@ their project did not receive. Measured against `copier.yml` on 16/08/2026:
   `how-to/CONTEXT.md`, `how-to/REFERENCES.md`, `how-to/src/CLAUDE.md` and `how-to/src/CONTEXT.md` —
   **but not `06-GENERATION.md`**, whose last commit is still `e93b00c` (14/08). That raises the
   node's priority and drops its research cost to nearly nothing: the wording to copy already exists
-  in four files. A **fifth** site of the same falsehood sits in `doc-references.sh:26`, whose header
+  in four files.
+  **Half of that framing is dead as of 18/08/2026, and the half that survives is the cheap one.**
+  `06-GENERATION.md`'s last commit is now `866d59d` (17/08), so it is **no longer an untouched
+  file** and the "skipped by the sweep" argument no longer raises the priority — the sweep's
+  successor reached it and fixed one of the six claims while leaving four. The research cost stays
+  at nearly nothing, because the wording to copy still exists in four files. **Four of the six
+  claims hold verbatim at HEAD**: `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md` are both still listed
+  as excluded and neither is in `_exclude`; the _Seeded state_ row still omits `/uv.lock`
+  (`copier.yml:44`); `copier.yml:30` still excludes `/copier.yml` itself; and
+  `doc-references.sh:26` still calls the tree copier-excluded. **The node shrinks by one and
+  survives.** A **fifth** site of the same falsehood sits in `doc-references.sh:26`, whose header
   comment also calls the tree copier-excluded.
 - **Anchors settled.** `copier.yml`'s `_exclude` spans **`:29-197`** — `_exclude:` at `:29`, last
   entry `.DS_Store` at `:197`, next top-level key at `:201` — and names
@@ -2155,14 +2311,14 @@ table (`lefthook.yml:25` and `how-to/workflows/06-quality-gates/STEPS.md:125`), 
 blocked on N-035. The string "10 files" appears nowhere in `01-FEATURE/`, so the count's origin is
 unrecoverable — most likely that table, read as if it belonged to the node beside it. Measured, the real overlaps are:
 
-| Collision                                 | Shared surface                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **N-020 × N-031 × N-044**                 | `how-to/docs/INCIDENT-PRACTICE.md:199-206` — one passage names the absent deploy scripts (`:200`), cites the excluded register (`:203`), and names `health-check.sh` (`:201`). **Corrected 16/08: N-021 is not on this passage** — the map's own verdict at MAP:1224-1231 says so and this row had not been updated; N-044 was absent and belongs                                                                                                                                                                                                                                                            |
-| **N-021 × N-031**                         | `code/docs/security/MONITORING-AND-INCIDENT.md:69-73` — the same paragraph announces the four runbooks and carries the dangling citation                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **N-026 × N-037**                         | `.claude/skills/stack-django/SKILL.md:168,302-308` — must be sequenced together                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| ~~**N-031 × N-036**~~ _(dropped)_         | ~~`.claude/hooks/CONTEXT.md` · `how-to/src/TEMPLATE-TOKENS.md`~~ — **N-036 settled 16/08/2026**, so this is no longer a live collision. Row kept struck rather than deleted, because the shared files are still N-031's evidence                                                                                                                                                                                                                                                                                                                                                                             |
-| **N-031 × N-050 × N-057** _(cross-batch)_ | `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` — **added 16/08, widened the same day.** `:92` cites the excluded `TEMPLATE-GAPS.md` and `:99` cites the per-project node id `N-029`, **both N-031's**; `:94` carries the dead `3.2.2`, **N-050's**, and _"promotion target"_ in the same sentence, **N-057's** — as are the required-set table at `:103-113` and the falsehoods at `:57-61`. `:106`'s `Hold` row inside that table is **N-030's residue**, a settled node's live remainder rather than a fourth owner. One file, three nodes and a residue — none may fix another's half in passing |
-| **N-046 × N-055** _(within Batch B)_      | `code/src/scripts/syntax/format.sh` · `lint.sh` — **added 16/08.** N-046 works `lint.sh:198-206` for the unscoped-markdownlint bullet; N-055 cites `lint.sh:195-215` for the skipped-leg bullet, and both nodes point at the **same success string** in `format.sh`. The ranges nest. A fix to either that edits the success line without the other's evidence in view will look complete and close half the class                                                                                                                                                                                           |
+| Collision                                 | Shared surface                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **N-020 × N-031 × N-044**                 | `how-to/docs/INCIDENT-PRACTICE.md:199-206` — one passage names the absent deploy scripts (`:200`), cites the excluded register (`:203`), and names `health-check.sh` (`:201`). **Corrected 16/08: N-021 is not on this passage** — the map's own verdict at MAP:1224-1231 says so and this row had not been updated; N-044 was absent and belongs                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **N-021 × N-031**                         | `code/docs/security/MONITORING-AND-INCIDENT.md:69-73` — the same paragraph announces the four runbooks and carries the dangling citation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **N-026 × N-037**                         | `.claude/skills/stack-django/SKILL.md:168,302-308` — must be sequenced together                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ~~**N-031 × N-036**~~ _(dropped)_         | ~~`.claude/hooks/CONTEXT.md` · `how-to/src/TEMPLATE-TOKENS.md`~~ — **N-036 settled 16/08/2026**, so this is no longer a live collision. Row kept struck rather than deleted, because the shared files are still N-031's evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **N-031 × N-050 × N-057** _(cross-batch)_ | `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` — **added 16/08, widened the same day.** `:92` cites the excluded `TEMPLATE-GAPS.md` and `:99` cites the per-project node id `N-029`, **both N-031's**; `:94` carries the dead `3.2.2`, **N-050's**, and _"promotion target"_ in the same sentence, **N-057's** — as are the required-set table at `:103-113` and the falsehoods at `:57-61`. `:106`'s `Hold` row inside that table is **N-030's residue**, a settled node's live remainder rather than a fourth owner. One file, three nodes and a residue — none may fix another's half in passing                                                                                                                                                               |
+| **N-046 × N-055** _(within Batch B)_      | `code/src/scripts/syntax/format.sh` · `lint.sh` — **added 16/08; re-anchored and widened to THREE files 18/08.** N-046 works `lint.sh:259-266` for the unscoped-markdownlint bullet; N-055 cites `lint.sh:256-276` for the skipped-leg bullet, and both nodes point at the **same success string** in `format.sh`. The ranges nest. A fix to either that edits the success line without the other's evidence in view will look complete and close half the class. **`b4ed0b9` moved every anchor in this row and added `check.sh` to it** — it now shares `log()`, `$TMPFILE`, the `--path` drop block and the default narrowing with both. N-046's `--no-globs` remedy would land at `lint.sh:267`, inside the `if host_has_pnpm` limb whose `else` **is** N-055's member |
 
 - **`INCIDENT-PRACTICE.md:206` re-scopes N-020 outright** — _"rollback during an incident is
   **manual, via the `<%DEPLOY_REPO%>` runbooks**"_ — which is the second document, after
@@ -2271,12 +2427,22 @@ collection that carries no tags.
 **N-037 — a skill is a shipped document too, and nothing checks what one claims about the tree.**
 Routed here by `MAP-ABSENCE` and each claim re-measured on 16/08/2026:
 
-| Claim                                                                                          | Measured                                                                                                                                                                        |
-| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `stack-htmx-templates/SKILL.md:33` — Alpine "vendored at `static/vendor/alpine/alpine.min.js`" | `code/src/django/static/` holds `CONTEXT.md`, `CLAUDE.md` and `js/observability.js`. **No `vendor/` at any depth**, and no htmx or Alpine file anywhere under `code/src/django` |
-| `stack-htmx-templates/SKILL.md:169` — "keep the 51-route axe scan"                             | `config/urls.py` is the **only** `urls.py` in the tree; there are no app route modules                                                                                          |
-| `stack-django/SKILL.md:259` — "all Python code uses strict type hints"                         | `code/src/django/pyrightconfig.json` and `pyproject.toml:166` **both** say `typeCheckingMode = "standard"`                                                                      |
+| Claim                                                                                          | Measured                                                                                                                                                                           |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stack-htmx-templates/SKILL.md:33` — Alpine "vendored at `static/vendor/alpine/alpine.min.js`" | `code/src/django/static/` holds `CONTEXT.md`, `CLAUDE.md` and `js/observability.js`. **No `vendor/` at any depth**, and no htmx or Alpine file anywhere under `code/src/django`    |
+| `stack-htmx-templates/SKILL.md:169` — "keep the 51-route axe scan"                             | ~~`config/urls.py` is the **only** `urls.py` in the tree; there are no app route modules~~ **Evidence dead 18/08/2026** — `apps/health/urls.py` ships, so there are two. See below |
+| `stack-django/SKILL.md:259` — "all Python code uses strict type hints"                         | `code/src/django/pyrightconfig.json` and `pyproject.toml:166` **both** say `typeCheckingMode = "standard"`                                                                         |
 
+- **Row 2's evidence died and its finding did not, and the map already held the refutation.**
+  Re-measured 18/08/2026: `find code/src/django -name 'urls.py'` returns **two** —
+  `config/urls.py` and `apps/health/urls.py`. The stated evidence _"the only `urls.py` in the
+  tree"_ is therefore false. **This map knew:** N-020's own entry records `config/urls.py:21`
+  reading `path("", include("apps.health.urls"))` and `apps/health/` shipping four modules, and
+  nobody propagated it across the two nodes. The **finding** stands — two route modules is not
+  fifty-one — but a session opening this node on the written evidence would have been refuted at
+  its first command. Rows 1 and 3 hold exactly: no `vendor/` at any depth under
+  `code/src/django/static/` (which holds `CONTEXT.md`, `CLAUDE.md` and `js/observability.js`), and
+  both `pyrightconfig.json:7` and `pyproject.toml:166` still say `"standard"`.
 - **The `pyrightconfig.json` half of the routed claim was wrong and is refused.** `MAP-ABSENCE`
   implied the citation dangles; the file exists at `code/src/django/pyrightconfig.json`. Only the
   **mode** is false. Charting the overstatement would have sent a session looking for a missing file.
@@ -2900,6 +3066,7 @@ N-035 so the replacement wording is decided once and written once.
 | 16/08/2026 | _none — Batch E and N-039 challenge; Batch A closure refused_ | **Sixteen agents over two legs — challenge, verify, review, no step reviewing its own work — across all eight Batch E nodes plus N-039, and a measure-then-refute pair on the Batch A closure Sam asked for. Nothing settled; two nodes charted; the closure refused by a member rather than by history.** **Batch A does not close.** The criterion was established rather than assumed: **Batch C closed on node settlement**, its generalisation reading being a later, hedged rationalisation — a low bar, and the bar Sam asked for. Batch A fails it anyway, because **`.github/workflows/test-api.yml:86` is a live member**: a token in a shell word, measured not argued (`LOOP_EXIT=0`, three `No such file or directory`, the `&& break` never firing), which went live at `b20167b` when `uv.lock` flipped the step's `[ -f uv.lock ]` guard from skip to run — **an activation this map predicted and nobody swept for**. The population is now closed at **74 tracked non-markdown files carrying `<%`, exactly one in an executable shell word, no third member** → **N-053**. Two shipped gate headers overclaim and ride with it: `check-template-parsers.sh:34-37` claims the class _"by definition, including `--health-cmd`"_, false by measurement and in principle, and `lefthook.yml:142`/`audit-template.yml:13` print the branch length (seventeen) while naming the ride (four). **N-054** charted from the reviewers' own sweep: `HEALTH-CONTRACT.md:34` names four readiness dependencies against `checks.py`'s two and `:32` publishes a `/metrics/` nothing serves, both left standing by `ec8e807`, which edited that very file. **Two nodes grew sharply and both had under-counted themselves** — N-031's citer set 3 → **33 files / 77 sites** plus an unnamed class of **41 shipped files citing the self-excluding `copier.yml`**, and N-037's floor ~10 → **87 sites across 42 of 270 shipped documents**, every one hidden by a single missing `code/src/django/*` case in `doc-references.sh`. That same missing case couples N-031, N-037 and N-043 to one decision, **a batching argument this map did not previously make**. **N-046 shrank** to one confirmed bullet: one specimen was repaired four hours before the node was charted, the other is contradicted by the script since 01/08. Corrections landed on N-020 (the build half of _"builds or pushes"_ is false — `grep 'docker build'` cannot match `docker compose … build`), N-023 (the cross-references **dangled from birth**; `git log -G` empty across seven commits; residue **9 sites / 7 files** with the denominator finally stated), N-026 (`apps/core/services/` dates to `ce259df` 11/08, not 14/08), N-042 (blast radius **exactly one site** over a 1,007-file candidate set) and N-045 (a copied file breaks at **variable resolution** before it reaches the 404). **N-021 needed no edit at all** — a confident refutation had silently changed the subject from `test.py`'s hashers to Postgres host auth. **The pass failed twice in the same way and caught itself both times**, which is the evening's real finding and is now the standing lesson's general shape: **a frontier is only empty when a search that could have found a member came back empty**. Both failures were claims of absence from a search that could not have found the thing, both came from the two **bounded** legs, and each was caught by a different downstream agent — **a pass with any single leg missing would have written a false verdict here** | [x] |
 | 16/08/2026 | _none — Batch B verification_ | **An 11-agent pass over Batch B — challenge, verify, review, no step reviewing its own work, read-only throughout — plus an earlier killed run of the same scopes whose N-046 and settled-node results were preserved as an independent second measurement. Nothing settled; five nodes charted (N-055 to N-058 into Batch B, N-059 unbatched); four amendments; `Blocking open` held at 0 against two proposals to raise it.** The batch's thesis instanced itself four ways. **N-055**: four gates skip a leg they cannot run and print success — with two facts neither leg of the pass produced: `format.sh --output json --quiet` persists `{"exit_code": 0, "output": ""}` over zero files examined, and a skipped host leg makes `pre-pr-check.sh:299-301` fabricate `MISMATCH: passed locally, failed in Docker`. **N-056**: six gates green over a population of zero — where `docs-pairing.sh`, offered as the class's closure, measured as its **worst member**, printing a pre-filter denominator of 216 files against a nonexistent `--path`. **N-057**: a required status check no pull-request event can produce (`audit-deps.yml`, the only one of 35 workflows with neither `push:` nor `pull_request:`), in a guide that went stale **2h17m** after it was written — the ten-unnamed-contexts direction **refused**, engaging this map's own prior refusal of the two-context version. **N-058**: two bare `pre-pr-check.sh` invocations survived N-010's fix, one in a skill an agent executes, both observed at EXIT=0 having run none of the eight gates — N-010's row not reopened, the miss sitting outside its two named files. **N-059**, unbatched: lefthook 2.1.10 **does expand braces** — four live legs in the same file depend on it, the exact glob the shipped comment says _"matched nothing"_ fires on `TEMPLATE-TOKENS.md`, and the real fault is **order-sensitivity** (a multi-alternative brace group whose wildcard-bearing alternative is not last silently mis-compiles), recorded nowhere. Refuted along the way: check-lockfiles' fresh-clone framing (three `_dc exec` failures each set `exit_code=1`, so no container is a red check); the dossier's "790 vs 793" (no count was ever charted); the challenger's claim that N-042 leans on a workflow comment (the map never cites it — the lean was the challenger's own, its evidence field admitting branch protection was never measured); and the same challenger's refutation of the map's four-violation record, which had compared HEAD against the `TEMPLATE-GAPS.md`-deleted reproduction. Amendments: N-046's `lint.sh` bullet **un-contests** with the cause moved from the script to `markdownlint-cli2`'s appended `globs` array (a run scoped to one file linted **793** and reported its only findings in a file it was not given), and it gains `copy-emdash.sh` as the live specimen its struck bullet asked for; N-042 was **understating itself** — `Citations resolve` is one of ruleset `20221742`'s 20 required contexts, so its red is unmergeable into `main`; N-053 gained a token-free second member (`test-api.yml:98-103`, uncorrected N-035 residue probing `/control/`, misattributing a dead database as a Bruno failure 120 seconds later); N-030's residue citations re-anchored after drifting in under a day. **The pass corrected its own instructions twice** — the re-measurement leg re-typed four of five candidates from `task` to `grilling`, each because the remedy carries a cost the `task` framing hid, and the amendments leg refuted two premises in the brief it was given. Cost: eleven agents in three steps, one killed run salvaged as a second measurement, and not one repository file written | [x] |
 | 18/08/2026 | N-053 | **Batch A's frontier empties for the third time, and the node's own remedy was the thing that did not survive.** First node opened after a gap — the map was two days stale and the tree had moved by a version bump and two commits — so every premise was re-measured before it was believed. **All of them held**, including `LOOP_EXIT=0` reproduced by execution and both populations re-swept at the map's own figures (74 files carrying `<%`, exactly one in an executable shell word; three CI wait loops, two unfailable). **Three of the node's own facts did not.** Its prescribed fix — `pg_isready -U "$POSTGRES_USER"` — **would have failed open**, because a workflow `run:` block is expanded by the runner and this job's `env:` sets no `POSTGRES_*`; proven with an argv stub receiving `[-U] [] [-d] []`. Compose's `$$` and a `run:` block are two escaping regimes and the node collapsed them; the working form is `exec -T db sh -c '…'`. It **walked past a member inside its own citation** — `test-e2e.yml:89`, in the very block held up as the correct form, carried the same `/control/` residue it charts at `test-api.yml:100`. And **both** `test-api.yml` loops were unfailable, not one, so the charted token fix alone would have left a bare Batch B defect where a Batch A one had been. **The residue's correction was itself off by one**: seventeen is right, four is not — `8050ac7` introduced the break and `21d77d7` fixed it, so five commits carried it; both shipped headers now name both quantities and say what each measures. **The `--health-cmd` overclaim was refuted by measurement and had been stated twice** — a compose file carrying the token in a `CMD-SHELL` healthcheck passes `docker compose config` at exit 0 — so `check-template-parsers.sh` now states its boundary and routes the shell-word row to doctrine, no parse-success probe being able to reach it. **Proven in both directions against a real container**: new form `accepting connections` exit 0, old form `no such file or directory: %PROJECT_SLUG%`; the new loop driven to **exit 1** unreachable and **exit 0** healthy. Keeper — in this tree `POSTGRES_USER` is literally the token and Postgres created that role, which is why asking the container for its own user is right in the template and downstream alike. Five files, all six lefthook legs and three audits green. **`exec -T` was conformance, not a decision**: 18 sites carry it and these two were the only ones without. **The sibling-map duty was paid and found two rows missing from this map's own table** — seven live maps, not five. **Stated rather than implied: these CI steps have still never run.** The last ten `test-api` runs finished in 7-32s with `steps.detect` false, newest 15/08, before `b20167b` committed the lock — so their first real execution will be their first ever | [x] |
+| 18/08/2026 | _none — a finding fixed rather than charted, then a re-measurement pass_ | **The `COMMITS.md` Step 2 finding was offered as N-060 and Sam declined the node, so it was fixed instead — and the fix touched two open nodes' evidence, which is the reason this row exists.** The finding: Step 2, mandated _"before every commit, no exceptions"_, documented two commands that **both exit 2** — `lint.sh --file-type typescript` and `check.sh --file-type typescript`, where `lint.sh` accepted `python markdown css` and `check.sh` accepted `python javascript`. **Not a typo of one word**: `lint.sh` had no JS or TS lane at all, and `check.sh`'s `javascript` token gated `tsc`, naming the wrong language for the only leg it controlled. Settled by grilling over eleven questions: one token per **language** — `javascript` the web surface's Alpine and enhancement scripts, `typescript` the mobile surface, `rust` the Cargo workspace — with the aggregates **delegating** to `scripts/mobile/*.sh` and `scripts/rust/*.sh`, which stay canonical for CI and lefthook. `rust/lint.sh` gained `--fmt-only` because its `--fix` also runs `clippy --fix`, and a format command must not rewrite logic. **A bare run now covers exactly the surfaces present**, proven against a tree with neither optional directory; naming an absent surface exits **2**, which deleted an N-055 member. **Two findings arrived on the way.** `format.sh` could not reach the 11 tracked `.ts`/`.tsx` files that root `pnpm format` and lefthook's prettier leg both cover, so `format.sh --fix` could leave a tree the hook then rejected — proven in both directions with a planted breach. And **`--help` was broken on all ten `rust/` and `mobile/` scripts and had been**: `_common.sh` cds into the surface directory before argument parsing, so the relative `BASH_SOURCE[0]` stopped resolving and `bash code/src/scripts/mobile/lint.sh --help` — exactly how every doc invokes it — printed `sed: can't read`. Uncharted, in the blast radius, fixed with an absolute `SCRIPT_SELF`. Shipped as `b4ed0b9`, 29 files, all nine lefthook legs green, 20 audits green, both fixture self-tests still separating, backend 50+22 / mobile 16 / rust green. **Then the pass that this row is really about: 47 agents over N-046 and N-055 — five measurements, one adversary per finding, one completeness critic — because the commit had moved files both nodes cite.** 49 findings survived, **10 were refuted by the adversary**, and the corrections were not cosmetic: N-046's specimen count was wrong **in both directions** (eight correct siblings, not three; and **four** scripts carry the subshell defect, not one), its `format.sh` bullet's specimen is dead while a **stronger** member lives on in `.claude/skills/review/SKILL.md:21` — false since the file was created and never edited since — and N-055's _"only guard of its kind"_ confused a search with a population. **Fifteen stale anchors re-resolved, and the offsets are not uniform**, so none was recoverable by adding a constant. **`b4ed0b9` removed one N-055 member and added three**, all three found by the completeness critic rather than by any finder or adversary — a finder is scoped to a bullet, and a bullet cannot ask about a member created after it was written. **Nothing was charted and nothing was resolved as a node, so the counts do not move**: 24 + 35 = 59 = N-059, recounted from the tables | [x] |
 
 ---
 
