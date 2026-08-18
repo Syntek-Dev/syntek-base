@@ -61,9 +61,18 @@ settled one node and killed another's premise. **Sam's own framing was tested ra
 and was wrong on a detail**: eight version commits, not five, which every agent in both chains
 caught independently.
 
-**Frontier open**: 25 · **Blocking open**: 0 · **Resolved**: 34 — recounted from the tables
-16/08/2026 after the Batch B challenge pass, and checked: **25 + 34 = 59 = N-059**. Per batch:
-A 1 · B 7 · D 4 · E 9 · unbatched 4. **Resolved does not move — that pass settled nothing.**
+**Frontier open**: 24 · **Blocking open**: 0 · **Resolved**: 35 — recounted from the tables
+18/08/2026 after N-053 settled, and checked: **24 + 35 = 59 = N-059**. Per batch:
+A 0 · B 7 · D 4 · E 9 · unbatched 4. **Batch A's frontier is empty for the third time and the
+class is still not called closed** — see the verdict in _Batch A_.
+
+**N-053 settled 18/08/2026, and it is the first node on this map taken after a two-day gap —
+so every premise was re-measured before any of it was believed.** All of them held. **Three of
+the node's own facts did not.** Its stated remedy would have failed open, it walked past a
+member sitting inside the block it held up as the correct form, and the "four commits" its
+residue bullet corrected `lefthook.yml` to is **five**. The reshaped scope was Sam's call.
+**The standing lesson gained nothing new and was vindicated twice more**: a node's own remedy
+is a claim like any other, and so is a node's own correction of somebody else's number.
 
 **N-010 settled 16/08/2026, and it closed Batch B's original pair.** All five how-to workflows
 were executed rather than reviewed, and **its charted premise was dead before it opened**:
@@ -186,13 +195,21 @@ outcome is load-bearing, the outcome is stated in full rather than cited.
 16/08/2026.** Four sibling maps now sit in this folder, three of them charted on 15/08 while this
 one was being resolved:
 
-| Map                           | Status                            | Bears on this map                                                                                                        |
-| ----------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `MAP-NEGATIVE-SPACE`          | Shipped, frontier 0               | Already accounted for — it graduated `N-026` and `N-027` here on 14/08                                                   |
-| `MAP-DOMAIN-OBJECTS`          | Resolving, frontier 0             | Shipped `TYPES-*` and `audits/dict-discipline.sh` at `b404307` — a standard and a new gate                               |
-| `MAP-ABSENCE`                 | Charting, 11 open, **1 blocking** | **Routed eight live defects here on 15/08 and marked them unactioned.** They still were                                  |
-| `MAP-PROGRESSIVE-ENHANCEMENT` | Charting, 16 open, **3 blocking** | A separate epic; no overlap found, but it is spending the same repository                                                |
-| `MAP-NAVIGATION`              | Charting, 12 open, **3 blocking** | **Charted 16/08 and missing from this table until 16/08.** Routes nothing here; inherits a standing lesson from this map |
+| Map                           | Status                             | Bears on this map                                                                                                        |
+| ----------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `MAP-NEGATIVE-SPACE`          | Shipped, frontier 0                | Already accounted for — it graduated `N-026` and `N-027` here on 14/08                                                   |
+| `MAP-DOMAIN-OBJECTS`          | Resolving, frontier 0              | Shipped `TYPES-*` and `audits/dict-discipline.sh` at `b404307` — a standard and a new gate                               |
+| `MAP-ABSENCE`                 | Charting, 11 open, **1 blocking**  | **Routed eight live defects here on 15/08 and marked them unactioned.** They still were                                  |
+| `MAP-PROGRESSIVE-ENHANCEMENT` | Charting, 16 open, **3 blocking**  | A separate epic; no overlap found, but it is spending the same repository                                                |
+| `MAP-NAVIGATION`              | Resolving, 10 open, **3 blocking** | **Charted 16/08 and missing from this table until 16/08.** Routes nothing here; inherits a standing lesson from this map |
+| `MAP-SUBDOMAIN-ROUTING`       | Seeded, frontier 0                 | **Missing from this table until 18/08/2026**, found by the sibling read N-053 owed. Routes nothing here                  |
+| `MAP-UPSTREAM-TRACKING`       | Seeded, frontier 0                 | Seeded by this map's own N-022 and named only in that node's prose — **never added to this table until 18/08/2026**      |
+
+> **The duty found a missing row on both of its first two executions — 16/08 and 18/08.** That is
+> now twice out of two, on a table this map maintains about itself, and it is the argument for
+> leaving the gate item unticked rather than a reason to distrust any one session. **Seven live
+> sibling maps, not five.** Nothing new was routed here on 18/08: `MAP-ABSENCE`'s eight remain
+> the only inbound set and all eight are still accounted for.
 
 **The Destination says "answerable from one place". It is not, and pretending otherwise is how the
 eight sat unread for a day.** A routed finding is **inbound work with no owner until this map
@@ -299,6 +316,7 @@ shipped code.
 | N-035 | Chart SL-1 and SL-2: both premises are dead                                        | grilling        | 16/08/2026 | 7 commits `b805774`…`bde5cc6` — **`uv.lock` committed** + `copier.yml` `_exclude` · **`apps.health`** built for the probe every container already ran · `apps.core` 68% → **100%** · SL-2 deleted, SL-1 rewritten to the limitation that survives. Row written by the N-036 session; **every claim re-measured, none refuted**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | N-010 | Execute how-to workflows `04`, `05`, `06`, `07`, `09`                              | task            | 16/08/2026 | All five executed here — the "needs generation" premise died with N-035's `uv.lock`. **9 defects, 7 of them commands that do not exist or cannot work**, all fixed: `pre-pr-check.sh` documented so it ran nothing (`06`, `07`), `server.sh rebuild` and `shell.sh --command` do not exist, `reset.sh` **had never once worked**. Produced `how-to/docs/HEALTH-PROBES.md`, `development/health.sh`, `server.sh stop`, and the collection's first Bruno tests (11/11)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | N-040 | ~~seventeen~~ ~~41 commits~~ **`VERSION` and the three logs were behind the tree** | task            | 16/08/2026 | **Settled outside this map, 69 minutes after its last write** — map mtime 17:11, the bumps 18:16–18:20. Eight `chore(version)` commits `a0b48f7`…`a9c56a1` back-filled **4.0.0 → 5.3.0 across 45 commits**. **Four-way parity measured, not read**: `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md` and the tag namespace each hold 56 versions, every `comm -3` empty; `VERSION` = 5.3.0 = the newest of all three = `git tag --points-at HEAD`; `git rev-list --count a9c56a1..HEAD` = **0**. All ten items the node listed as unlogged are described at `CHANGELOG.md:13-240`. **The increment was a judgement and was exercised** — `7cd385d` and `8b66790` earned the two MAJORs, each shipping its `copier.yml` `_migrations:` entry. **The sequencing behind N-032 was moot, not honoured**: `git log --oneline v4.0.0..v5.3.0 \| grep -vc 'chore(version)'` = 0, so every tag was cut from one frozen tree and no ordering could have tagged a broken template — **and that same frozen tree is why `N-047`'s migration is mis-keyed**. Residue charted as **N-047**, **N-050** and **N-051** |
+| N-053 | A token in a live shell word makes a CI step pass having verified nothing          | task            | 18/08/2026 | Both `test-api.yml` wait loops rewritten — `exec -T`, container-side expansion via `sh -c`, and a trailing `exit 1`; `:100` and `test-e2e.yml:89` repointed `/control/` → `/health/`; the `--health-cmd` overclaim deleted from `check-template-parsers.sh` and its compose row re-labelled **NOT the shell-word case**; `lefthook.yml` and `audit-template.yml` taught that seventeen and five are different quantities. **Populations re-swept and both closed**: 74 → **73** files carry `<%` and none occupies an executable shell word; all **three** CI wait loops now end `exit 1`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 **N-019 verdict — the routing was the easy half, and the node's real find is that the routing
 declaration itself is a one-way claim nobody checks.** The premise re-verified exactly as charted:
@@ -746,9 +764,10 @@ yet: the position that broke was a shell word, not a manifest field.
 
 ## Frontier
 
-25 open — **recounted from the tables 16/08/2026, after the Batch B challenge pass added N-055 to
-N-059.** Per batch: A 1 · B 7 · D 4 · E 9 · unbatched 4, and **25 + 34 = 59 = N-059**. The pass
-before it left 20 (N-053, N-054). 23 at charting, 21 by the end of 14/08, 23 again on intake that
+24 open — **recounted from the tables 18/08/2026, after N-053 settled.** Per batch:
+A **0** · B 7 · D 4 · E 9 · unbatched 4, and **24 + 35 = 59 = N-059**. The reading before it was
+25 on 16/08 after the Batch B challenge pass added N-055 to N-059; the pass before that left 20
+(N-053, N-054). 23 at charting, 21 by the end of 14/08, 23 again on intake that
 evening, 15 after the
 first 15/08 sittings **which closed two whole classes**, then 10 as Batch D and N-009 and N-025
 fell, 12 because settling N-025 charted two new nodes out of its own evidence (N-030, N-031) —
@@ -881,9 +900,72 @@ shape underneath them is not a boundary at all:
 
 ### Batch A — Token blast radius
 
-| Node  | Decision                                                                           | Type | Blocked by | Blocking a story? |
-| ----- | ---------------------------------------------------------------------------------- | ---- | ---------- | ----------------- |
-| N-053 | **New.** A token in a live shell word makes a CI step pass having verified nothing | task | none       | no                |
+**Frontier empty — N-053 settled 18/08/2026, see _Resolved decisions_.** The class is **not**
+called closed, on its own record: it has produced a member on three separate occasions after
+being declared shut. What is different this time is that both populations were **re-swept after
+the fix** rather than argued from the node table — 73 files carry `<%`, none in an executable
+shell word, and all three CI wait loops end `exit 1`.
+
+**N-053 verdict — the node was right about the repository and wrong about its own remedy, and
+the remedy was the part nobody would have re-measured.** Every charted premise reproduced at
+HEAD two days after it was written, including `LOOP_EXIT=0` by execution. Three of the node's
+own claims did not survive.
+
+- **The stated fix would have failed open, which is the class it was convened to close.** The
+  node prescribed `pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"`, _"reading the container's
+  own environment exactly as `docker-compose.test.yml:28` already does"_. It does not: a
+  workflow `run:` block is expanded by the **runner**, and `test-api.yml`'s `env:` at `:35-43`
+  sets five variables, none of them `POSTGRES_*`. Proven with an argv stub — the probe receives
+  `[-U] [] [-d] []`. Compose's `$$` and a `run:` block are two escaping regimes and the node
+  collapsed them into one. The working form is `exec -T db sh -c '…'` with single quotes.
+  **A remedy written into a node is a claim, not a conclusion** — the standing lesson had never
+  been pointed at a node's own _Became_ half before.
+- **It walked past a member inside the block it cited as the correct form.**
+  `test-e2e.yml:88-96` was held up for ending `exit 1`; its probe at `:89` was the same
+  uncorrected `/control/` residue the node charts at `test-api.yml:100`.
+  `docker-compose.dev.yml:58-62` documents the move to `/health/` in terms. **The node read the
+  sibling for the half it wanted and not for the half it was charting** — N-054's shape exactly,
+  one file further out.
+- **Both `test-api.yml` loops were unfailable, not one.** `:84-89` has no failure path either,
+  so the charted token fix alone would have converted a Batch A defect into a bare Batch B one
+  and closed the node on it.
+- **`exec -T` was missing from both and this was conformance, not a decision.** Every
+  `docker compose exec` in the repository carries it — 18 sites across `.claude/hooks/lib/`,
+  `code/src/scripts/tests/`, `audits/security.sh` and `syntax/` — and these two were the only
+  ones without.
+- **The residue's own correction was off by one.** The node taught `lefthook.yml:142` and
+  `audit-template.yml:13` that seventeen and four are different quantities. Seventeen is right
+  (`git rev-list --count main..c6cea78`); **four is not**. `8050ac7` introduced the break and
+  `21d77d7` fixed it, so the commits that carried it are `8050ac7`, `a358791`, `b404307`,
+  `0e62bdc`, `47bafb1` — **five**, and `21d77d7` is the fix rather than a carrier. Both files
+  now name both quantities and say what each measures. **Third instance of the habit this map
+  named as _carry the command, not the number_, and the first inside a correction of somebody
+  else's number.**
+- **The `--health-cmd` overclaim was refuted by measurement, and it was stated twice.**
+  `check-template-parsers.sh` claimed the probe catches the class _"by definition, including
+  `--health-cmd`"_, and its cost table called the compose probe _"the shell-word case"_. A
+  synthetic compose file carrying the token inside a `CMD-SHELL` healthcheck passes
+  `docker compose config` at **exit 0**, run here rather than inherited. Both lines now state
+  the boundary and route the shell-word row to `TEMPLATE-TOKENS.md`, whose remedy is doctrine
+  because no parse-success probe can ever reach it. The node's anchor for the first was `:34-37`;
+  it is **`:33-36`**, drifted in under two days.
+- **Proven in both directions against a real container, not argued.** The test stack's `db`
+  service was brought up under a scratch project name: the new form returns
+  `accepting connections` at exit 0 while the old token form returns
+  `no such file or directory: %PROJECT_SLUG%`. The new loop shape was then driven twice —
+  unreachable service → **exit 1**, healthy service → **exit 0**. Worth keeping: in this tree
+  `POSTGRES_USER` is literally `<%PROJECT_SLUG%>` and Postgres created that role happily, which
+  is why asking the container what its own user is, is correct in the template **and** downstream.
+- **Gates green:** all six lefthook pre-commit legs (prettier, template-integrity with three
+  self-tests, sync-trees, code-review-graph), `check-template-tokens.sh` at 2025 tokens,
+  `check-template-parsers.sh --self-test`, and `doc-references.sh`, `seam-contract.sh` and
+  `conflict-markers.sh` run individually.
+- **Honest limit, and one house rule bent to get it.** The behavioural proof used a direct
+  `docker compose` invocation rather than a `code/src/scripts/**` wrapper, because no script
+  drives a single service for a probe and `tests/api.sh` would have run the whole suite. Named
+  here rather than left implicit. The CI steps themselves remain **unexercised** — the last ten
+  `test-api` runs all finished in 7-32s with `steps.detect` false, the newest on 15/08, before
+  `b20167b` committed the lock. **The first real run of these loops will be their first ever.**
 
 **Closure was proposed on 16/08/2026 and refused — by a member, not by history.** The criterion was
 established rather than assumed: **Batch C closed on node settlement**, not on generalisation. Its
@@ -2817,6 +2899,7 @@ N-035 so the replacement wording is decided once and written once.
 | 16/08/2026 | _none — charting_ | **Six nodes charted from the challenge pass's own evidence: N-047 to N-052, and the frontier grew from 12 to 18 on an evening that settled a node and killed another's premise.** Charted in the order the evidence ranked them, not by batch. **N-047 is the only node on this map whose cost lands in someone else's repository** — the `v5.0.0` migration advisory fires four tags after the break it warns about, because retroactive batch tagging put all 45 content commits inside the `v4.0.0` tree; a project updating to v4.0.0/v4.1.0/v4.1.1 takes the break and never sees the warning. Typed `grilling` because the facts are measurable and the remedy is not: re-keying rewrites what a published tag meant. **N-048 and N-049 are the members Batch D's reopening claim was moved onto** after N-044 failed the class test — the Prometheus job name (four homes, two spellings, and `HEALTH-CONTRACT.md:134` disclaiming ownership then asserting at `:95`), and **N-016 decaying**, the first demonstration on this map that a _resolved_ node can come back. N-048 carries a correction to the map with it: `doctrine-drift.sh` **can** reach that instance, so the twice-stated "the Batch D audit cannot hold a Batch D rule" is too pessimistic by one counter-example. **N-050 and N-051 are charted as a pair across two batches** — the shipped `3.2.2` assertion and the three-homed version rule that produced it — on the N-035/N-036 precedent that a cause and its sweep are decided once and written once. **N-052 closes the loop on N-044**: the naming hygiene that node now carries has no enforcement, because `doc-references.sh:183-186` skips any token without a slash, leaving all five `health-check.sh` sites and 15 of 16 `health.sh` references ungoverned. Typed `grilling` on N-025's standing warning — the population has never been measured and the rule must be true before the instrument ships. **Four candidates were deliberately not charted**, and the reason is uniform: each argues about the taxonomy rather than instancing it, and the fog-of-war question owns that. **Three more were refused pending re-measurement** — the "Supported platforms" triple-home whose drift half no agent verified, and the N-028 and N-036 residues that reached the reviewer unmeasured. **The standing lesson applied to the pass's own output**: a finding good enough to report is not automatically good enough to chart | [x] |
 | 16/08/2026 | _none — Batch E and N-039 challenge; Batch A closure refused_ | **Sixteen agents over two legs — challenge, verify, review, no step reviewing its own work — across all eight Batch E nodes plus N-039, and a measure-then-refute pair on the Batch A closure Sam asked for. Nothing settled; two nodes charted; the closure refused by a member rather than by history.** **Batch A does not close.** The criterion was established rather than assumed: **Batch C closed on node settlement**, its generalisation reading being a later, hedged rationalisation — a low bar, and the bar Sam asked for. Batch A fails it anyway, because **`.github/workflows/test-api.yml:86` is a live member**: a token in a shell word, measured not argued (`LOOP_EXIT=0`, three `No such file or directory`, the `&& break` never firing), which went live at `b20167b` when `uv.lock` flipped the step's `[ -f uv.lock ]` guard from skip to run — **an activation this map predicted and nobody swept for**. The population is now closed at **74 tracked non-markdown files carrying `<%`, exactly one in an executable shell word, no third member** → **N-053**. Two shipped gate headers overclaim and ride with it: `check-template-parsers.sh:34-37` claims the class _"by definition, including `--health-cmd`"_, false by measurement and in principle, and `lefthook.yml:142`/`audit-template.yml:13` print the branch length (seventeen) while naming the ride (four). **N-054** charted from the reviewers' own sweep: `HEALTH-CONTRACT.md:34` names four readiness dependencies against `checks.py`'s two and `:32` publishes a `/metrics/` nothing serves, both left standing by `ec8e807`, which edited that very file. **Two nodes grew sharply and both had under-counted themselves** — N-031's citer set 3 → **33 files / 77 sites** plus an unnamed class of **41 shipped files citing the self-excluding `copier.yml`**, and N-037's floor ~10 → **87 sites across 42 of 270 shipped documents**, every one hidden by a single missing `code/src/django/*` case in `doc-references.sh`. That same missing case couples N-031, N-037 and N-043 to one decision, **a batching argument this map did not previously make**. **N-046 shrank** to one confirmed bullet: one specimen was repaired four hours before the node was charted, the other is contradicted by the script since 01/08. Corrections landed on N-020 (the build half of _"builds or pushes"_ is false — `grep 'docker build'` cannot match `docker compose … build`), N-023 (the cross-references **dangled from birth**; `git log -G` empty across seven commits; residue **9 sites / 7 files** with the denominator finally stated), N-026 (`apps/core/services/` dates to `ce259df` 11/08, not 14/08), N-042 (blast radius **exactly one site** over a 1,007-file candidate set) and N-045 (a copied file breaks at **variable resolution** before it reaches the 404). **N-021 needed no edit at all** — a confident refutation had silently changed the subject from `test.py`'s hashers to Postgres host auth. **The pass failed twice in the same way and caught itself both times**, which is the evening's real finding and is now the standing lesson's general shape: **a frontier is only empty when a search that could have found a member came back empty**. Both failures were claims of absence from a search that could not have found the thing, both came from the two **bounded** legs, and each was caught by a different downstream agent — **a pass with any single leg missing would have written a false verdict here** | [x] |
 | 16/08/2026 | _none — Batch B verification_ | **An 11-agent pass over Batch B — challenge, verify, review, no step reviewing its own work, read-only throughout — plus an earlier killed run of the same scopes whose N-046 and settled-node results were preserved as an independent second measurement. Nothing settled; five nodes charted (N-055 to N-058 into Batch B, N-059 unbatched); four amendments; `Blocking open` held at 0 against two proposals to raise it.** The batch's thesis instanced itself four ways. **N-055**: four gates skip a leg they cannot run and print success — with two facts neither leg of the pass produced: `format.sh --output json --quiet` persists `{"exit_code": 0, "output": ""}` over zero files examined, and a skipped host leg makes `pre-pr-check.sh:299-301` fabricate `MISMATCH: passed locally, failed in Docker`. **N-056**: six gates green over a population of zero — where `docs-pairing.sh`, offered as the class's closure, measured as its **worst member**, printing a pre-filter denominator of 216 files against a nonexistent `--path`. **N-057**: a required status check no pull-request event can produce (`audit-deps.yml`, the only one of 35 workflows with neither `push:` nor `pull_request:`), in a guide that went stale **2h17m** after it was written — the ten-unnamed-contexts direction **refused**, engaging this map's own prior refusal of the two-context version. **N-058**: two bare `pre-pr-check.sh` invocations survived N-010's fix, one in a skill an agent executes, both observed at EXIT=0 having run none of the eight gates — N-010's row not reopened, the miss sitting outside its two named files. **N-059**, unbatched: lefthook 2.1.10 **does expand braces** — four live legs in the same file depend on it, the exact glob the shipped comment says _"matched nothing"_ fires on `TEMPLATE-TOKENS.md`, and the real fault is **order-sensitivity** (a multi-alternative brace group whose wildcard-bearing alternative is not last silently mis-compiles), recorded nowhere. Refuted along the way: check-lockfiles' fresh-clone framing (three `_dc exec` failures each set `exit_code=1`, so no container is a red check); the dossier's "790 vs 793" (no count was ever charted); the challenger's claim that N-042 leans on a workflow comment (the map never cites it — the lean was the challenger's own, its evidence field admitting branch protection was never measured); and the same challenger's refutation of the map's four-violation record, which had compared HEAD against the `TEMPLATE-GAPS.md`-deleted reproduction. Amendments: N-046's `lint.sh` bullet **un-contests** with the cause moved from the script to `markdownlint-cli2`'s appended `globs` array (a run scoped to one file linted **793** and reported its only findings in a file it was not given), and it gains `copy-emdash.sh` as the live specimen its struck bullet asked for; N-042 was **understating itself** — `Citations resolve` is one of ruleset `20221742`'s 20 required contexts, so its red is unmergeable into `main`; N-053 gained a token-free second member (`test-api.yml:98-103`, uncorrected N-035 residue probing `/control/`, misattributing a dead database as a Bruno failure 120 seconds later); N-030's residue citations re-anchored after drifting in under a day. **The pass corrected its own instructions twice** — the re-measurement leg re-typed four of five candidates from `task` to `grilling`, each because the remedy carries a cost the `task` framing hid, and the amendments leg refuted two premises in the brief it was given. Cost: eleven agents in three steps, one killed run salvaged as a second measurement, and not one repository file written | [x] |
+| 18/08/2026 | N-053 | **Batch A's frontier empties for the third time, and the node's own remedy was the thing that did not survive.** First node opened after a gap — the map was two days stale and the tree had moved by a version bump and two commits — so every premise was re-measured before it was believed. **All of them held**, including `LOOP_EXIT=0` reproduced by execution and both populations re-swept at the map's own figures (74 files carrying `<%`, exactly one in an executable shell word; three CI wait loops, two unfailable). **Three of the node's own facts did not.** Its prescribed fix — `pg_isready -U "$POSTGRES_USER"` — **would have failed open**, because a workflow `run:` block is expanded by the runner and this job's `env:` sets no `POSTGRES_*`; proven with an argv stub receiving `[-U] [] [-d] []`. Compose's `$$` and a `run:` block are two escaping regimes and the node collapsed them; the working form is `exec -T db sh -c '…'`. It **walked past a member inside its own citation** — `test-e2e.yml:89`, in the very block held up as the correct form, carried the same `/control/` residue it charts at `test-api.yml:100`. And **both** `test-api.yml` loops were unfailable, not one, so the charted token fix alone would have left a bare Batch B defect where a Batch A one had been. **The residue's correction was itself off by one**: seventeen is right, four is not — `8050ac7` introduced the break and `21d77d7` fixed it, so five commits carried it; both shipped headers now name both quantities and say what each measures. **The `--health-cmd` overclaim was refuted by measurement and had been stated twice** — a compose file carrying the token in a `CMD-SHELL` healthcheck passes `docker compose config` at exit 0 — so `check-template-parsers.sh` now states its boundary and routes the shell-word row to doctrine, no parse-success probe being able to reach it. **Proven in both directions against a real container**: new form `accepting connections` exit 0, old form `no such file or directory: %PROJECT_SLUG%`; the new loop driven to **exit 1** unreachable and **exit 0** healthy. Keeper — in this tree `POSTGRES_USER` is literally the token and Postgres created that role, which is why asking the container for its own user is right in the template and downstream alike. Five files, all six lefthook legs and three audits green. **`exec -T` was conformance, not a decision**: 18 sites carry it and these two were the only ones without. **The sibling-map duty was paid and found two rows missing from this map's own table** — seven live maps, not five. **Stated rather than implied: these CI steps have still never run.** The last ten `test-api` runs finished in 7-32s with `steps.detect` false, newest 15/08, before `b20167b` committed the lock — so their first real execution will be their first ever | [x] |
 
 ---
 
@@ -2830,8 +2913,9 @@ N-035 so the replacement wording is decided once and written once.
 - [x] **Every node marked "blocking a story" is resolved** — **regressed and restored on
       16/08/2026.** Ticked on 15/08 when N-001 settled at `7cd385d`; broken the next morning by
       **N-032**, which gated not story-writing but _producing a project at all_; **re-ticked the
-      same day**, once a full `copier copy` returned exit 0. The remaining **25** nodes are
-      non-blocking by their own wiring (**recounted nine times on 16/08/2026**; this line read 14,
+      same day**, once a full `copier copy` returned exit 0. The remaining **24** nodes are
+      non-blocking by their own wiring (**recounted a tenth time on 18/08/2026 when N-053
+      settled**, and nine times on 16/08/2026; this line read 14,
       then 12 before N-022 settled, 11 before N-036 did, 10 before N-035's row was moved, 9 before
       the Batch E verification pass charted N-042, N-043 and N-044, **13 after N-010 settled and
       charted N-045 and N-046**, 12 when N-040 closed, **18 once the challenge pass charted N-047 to
@@ -2840,12 +2924,13 @@ N-035 so the replacement wording is decided once and written once.
       as blocking and both were refused on the same precedent** — N-057, a required check no
       pull-request event can produce, and N-042, now measured as a required context rather than
       merely a red job. Each blocks a **merge**, and one of them has never once been exercised
-      because the operating account bypasses it by default. **N-053 is
-      the closest of the twenty-five to blocking and still does not**, on the N-042 precedent recorded
-      below it: it makes a CI step pass having verified nothing, which is a false green on
-      promotion — it gates neither a merge nor a story, it fails to gate anything, which is the
-      defect. A reviewer proposed marking it blocking; refused here on that precedent, and the
-      disagreement is recorded rather than resolved silently. **The sixth recount arrived at 12 again, and that was a coincidence, not a
+      because the operating account bypasses it by default. ~~**N-053 is
+      the closest of the twenty-five to blocking and still does not**~~ — **settled 18/08/2026**,
+      so the claim passes back to N-042. The refusal is kept because the reasoning outlives the
+      node: it made a CI step pass having verified nothing, which is a false green on promotion —
+      it gated neither a merge nor a story, it failed to gate anything, which was the defect. A
+      reviewer proposed marking it blocking; refused on the N-042 precedent, and the disagreement
+      is recorded rather than resolved silently. **The sixth recount arrived at 12 again, and that was a coincidence, not a
       carry-forward** — N-040 closing removed one node from a table N-010 had grown by one. A
       figure that is right by accident is what the standing rule forbids relying on, so every
       reading here is taken from the tables. **N-042 is still the closest to blocking and still
@@ -2858,7 +2943,7 @@ N-035 so the replacement wording is decided once and written once.
       **Worth recording for the round trip rather than the
       outcome: the tick was true both times and the repository was broken in between.** This gate
       reads the frontier, and the frontier only knows what someone has looked at
-- [x] Every resolved node links to the artefact it became — all **34** carry a commit, a script, or
+- [x] Every resolved node links to the artefact it became — all **35** carry a commit, a script, or
       a named guide section in the _Became_ column (**recounted seven times on 16/08/2026**: it read
       20, then 22, while the table held 25; corrected to 27, stale again at 29 as N-034 and N-041
       landed, 30 when N-022 settled that afternoon, 31 when N-036 did, and 32 when N-035's row was
@@ -2878,8 +2963,11 @@ N-035 so the replacement wording is decided once and written once.
       safe. It was recounted anyway. **The evening challenge pass settled nothing either, so 34
       stands** — recounted from the table a ninth time rather than carried, and cross-checked
       against the frontier by the arithmetic the map prescribes. **The Batch B challenge pass
-      settled nothing either, so 34 stands a tenth time** — five nodes charted, no `Became` cell
-      written, and the arithmetic re-run from the tables: **25 + 34 = 59 = N-059**)
+      settled nothing either, so 34 stood a tenth time** — five nodes charted, no `Became` cell
+      written, and the arithmetic re-run from the tables: 25 + 34 = 59 = N-059. **N-053 then
+      settled on 18/08/2026 and both counts moved together for once**, the row and these two
+      lines written in the same pass rather than one of them a day later, which is the fix for
+      the fifth and sixth drifts named above: **24 + 35 = 59 = N-059**)
 - [x] Index row — **deliberately not added**: `01-FEATURE/CONTEXT.md` ships, and a shipped file
       may cite layering-system artefacts only, never a per-project instance
 - [ ] **Sibling maps read before the next resolve session** — added 16/08/2026. Four live maps
@@ -2898,3 +2986,9 @@ N-035 so the replacement wording is decided once and written once.
       it measured two of this map's own nodes against the tree and read no sibling map. It did,
       however, settle N-040 and rescope N-044, which makes it the first pass to move rows without
       paying the duty. **Whoever opens the next node owes the read regardless of which node it is.**
+      **Discharged for N-053, 18/08/2026** — the duty's second execution, and like its first it
+      immediately found rows missing from this map's own sibling table: **seven live maps, not
+      five**, `MAP-SUBDOMAIN-ROUTING` never listed and `MAP-UPSTREAM-TRACKING` named only in
+      N-022's prose. No sibling claims any file in N-053's set, nothing new was routed here, and
+      `MAP-ABSENCE`'s eight remain accounted for. Two of two executions have paid for themselves,
+      which is why this stays unticked

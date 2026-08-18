@@ -82,11 +82,15 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: bash code/src/scripts/development/server.sh up --build
 
+      # /health/ rather than /control/: the liveness route is a fixed contract, while the
+      # admin sits behind the configurable DJANGO_ADMIN_PATH and only ever proved the stack
+      # was up by the accident of its 302. nginx proxies it through the `location /`
+      # catch-all in dev.conf, so it is reachable on host port 81 like anything else.
       - name: Wait for the stack
         if: steps.detect.outputs.present == 'true'
         run: |
           for _ in $(seq 1 60); do
-            if curl -sf -o /dev/null http://localhost:81/control/; then
+            if curl -sf -o /dev/null http://localhost:81/health/; then
               echo "stack is up"; exit 0
             fi
             sleep 2

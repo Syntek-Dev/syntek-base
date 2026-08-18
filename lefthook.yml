@@ -138,8 +138,11 @@ pre-commit:
     # That workflow runs on every branch now, so a pull request is no longer the first
     # signal — but the window BETWEEN commits still had none, and that is where the damage
     # happened. On 16/08/2026 a bare copier variable opener written into a printf format
-    # string in code/src/scripts/audits/conflict-markers.sh broke `copier copy` outright,
-    # and rode seventeen commits on pm/base-health-map undetected. check-template-tokens.sh
+    # string in code/src/scripts/audits/conflict-markers.sh broke `copier copy` outright.
+    # TWO NUMBERS, AND THEY MEASURE DIFFERENT THINGS — the branch ran seventeen commits
+    # without a pull request, and the break was live for five of them, from the commit that
+    # introduced it to the commit before its fix. The seventeen is the size of the blind
+    # window; the five is what actually shipped broken through it. check-template-tokens.sh
     # had been exiting 1 and naming the exact line the whole time. It takes 2.2 seconds.
     # Nothing local ran it.
     #

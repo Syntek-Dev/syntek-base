@@ -31,9 +31,17 @@
 # present tense about uv; read the repository as the case already fixed.
 #
 # So this script does not look at positions at all. It runs each toolchain's OWN parser and
-# requires success. That catches the class by definition, including the cases a position list
-# would never have held: `--health-cmd` broke because `<` and `>` are shell REDIRECTS, not
-# because a name was invalid.
+# requires success — which catches every position where the delimiters are ILLEGAL, without
+# anyone maintaining a list of which those are.
+#
+# WHAT IT CANNOT REACH, STATED HERE BECAUSE THIS HEADER USED TO CLAIM THE OPPOSITE. A shell
+# word is the one position where the delimiters are legal and ACTIVE: `<` and `>` are
+# redirects, so the command parses cleanly and then does something else. A probe whose test
+# is parse-SUCCESS can never fire there. Measured 18/08/2026 — a compose file carrying the
+# token inside a CMD-SHELL healthcheck passes `docker compose config` at exit 0. That is the
+# `70fc963` case and the `test-api.yml:86` case (MAP-BASE-HEALTH N-053), and neither would
+# have been caught here. The remedy for that row is doctrine, not a gate: a shell word never
+# carries a token — see the position table in how-to/src/TEMPLATE-TOKENS.md.
 #
 # WHAT EACH PROBE COSTS. All are metadata-only — no build, no network beyond a dependency
 # resolve, nothing written to the tree.
@@ -41,7 +49,7 @@
 #   uv lock --dry-run          the Python manifest and its whole dependency graph
 #   cargo metadata --no-deps   the Rust workspace and every member Cargo.toml
 #   pnpm ls -r --depth -1      the JS workspace and every member package.json
-#   docker compose config      each compose file, interpolated — this is the shell-word case
+#   docker compose config      each compose file, interpolated — NOT the shell-word case
 #
 # The compose probe passes each file its matching `.env.<env>.example`. Without one, compose
 # fails on unset required variables rather than on anything to do with tokens, and a gate that

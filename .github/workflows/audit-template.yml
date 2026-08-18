@@ -9,9 +9,12 @@ name: Audit — Template Integrity
 #
 # WHAT THAT COST, measured rather than argued (MAP-BASE-HEALTH N-032/N-033). A `<%`
 # written into a printf format string in audits/conflict-markers.sh on 15/08/2026 broke
-# `copier copy` outright — the template could not generate a project at all — and sat
-# undetected for seventeen commits on pm/base-health-map. check-template-tokens.sh had
-# been exiting 1 and naming the exact line the whole time. Nothing ran it.
+# `copier copy` outright — the template could not generate a project at all. TWO NUMBERS,
+# AND THEY MEASURE DIFFERENT THINGS: pm/base-health-map ran seventeen commits with no pull
+# request to trigger this workflow, and the break was live for five of them (8050ac7 to
+# 47bafb1, fixed at 21d77d7). Seventeen is the blind window; five is what shipped broken
+# through it. check-template-tokens.sh had been exiting 1 and naming the exact line the
+# whole time. Nothing ran it.
 #
 # WHY THIS CLASS AND NOT THE OTHERS. Every other gate here can wait for the pull
 # request, because its defect is visible in the branch it was written on: a lint error,

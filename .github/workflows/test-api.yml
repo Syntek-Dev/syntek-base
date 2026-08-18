@@ -78,29 +78,62 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE up -d db cache
 
+      # WHY BOTH WAIT LOOPS LOOK LIKE THIS. Three constraints, each of which was breached
+      # here at once, and each of which fails SILENTLY when breached.
+      #
+      # 1. THE PROBE EXPANDS INSIDE THE CONTAINER — `sh -c` plus single quotes. A copier
+      #    token is not a name in a shell word: its delimiters are legal and ACTIVE, so
+      #    `-U` followed by one is a redirection, the runner goes looking for a file, the
+      #    probe never executes and the loop cannot tell. Expanding on the runner instead
+      #    is the same trap one step further on — this job's `env:` sets no POSTGRES_USER,
+      #    so a double-quoted "$POSTGRES_USER" would pass an empty string and fail open.
+      #    Single quotes keep the expansion container-side, which is exactly what
+      #    docker-compose.test.yml's healthcheck achieves with `$$`.
+      #
+      # 2. THE LOOP MUST END `exit 1`. `for ... && break ... done` with no failure path
+      #    exits 0 whether or not the service came up, so the fault surfaces at the first
+      #    step that CAN fail — two minutes later, in another file, as somebody else's bug.
+      #    test-e2e.yml carries the same shape written correctly.
+      #
+      # 3. `exec -T`. Every other `docker compose exec` in this repository has it; these
+      #    two were the only ones without.
       - name: Wait for database
         if: steps.detect.outputs.present == 'true'
         run: |
           for i in $(seq 1 30); do
-            docker compose -f $COMPOSE_FILE exec db \
-              pg_isready -U <%PROJECT_SLUG%> -d <%PROJECT_SLUG%>_test && break
+            if docker compose -f $COMPOSE_FILE exec -T db \
+              sh -c 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"'; then
+              echo "db is up"; exit 0
+            fi
             echo "Waiting for db... ($i/30)"
             sleep 2
           done
+          echo "db did not come up in 60s" >&2
+          docker compose -f $COMPOSE_FILE logs db || true
+          exit 1
 
       - name: Start backend
         if: steps.detect.outputs.present == 'true'
         run: docker compose -f $COMPOSE_FILE up -d django-test
 
+      # /health/ is the dedicated liveness route (apps.health), and the one this stack's own
+      # healthcheck probes. /control/ is Django's admin behind the CONFIGURABLE
+      # DJANGO_ADMIN_PATH: its 302 proved liveness by accident, and a deployment that moves
+      # the prefix breaks the probe for a reason nobody would look for here.
       - name: Wait for backend
         if: steps.detect.outputs.present == 'true'
         run: |
           for i in $(seq 1 30); do
-            docker compose -f $COMPOSE_FILE exec django-test \
-              curl -sf http://localhost:8000/control/ && break
+            if docker compose -f $COMPOSE_FILE exec -T django-test \
+              curl -sf -o /dev/null http://localhost:8000/health/; then
+              echo "backend is up"; exit 0
+            fi
             echo "Waiting for backend... ($i/30)"
             sleep 2
           done
+          echo "backend did not come up in 60s" >&2
+          docker compose -f $COMPOSE_FILE logs django-test || true
+          exit 1
 
       # NOTE: the API test users were seeded by a management command that the Django
       # baseline no longer carries. Reinstate a seed step alongside the first
