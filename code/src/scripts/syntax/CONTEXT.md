@@ -106,6 +106,12 @@ narrowing.
 ## Reports
 
 Generated reports are written to `reports/` and gitignored by default.
+
+**Every report carries the same verdict the terminal shows, plus what the run did not cover** —
+`unrun` (legs that could not run), `dropped_by_path` (types `--path` could not scope) and
+`surfaces_absent` (types left out because the project has no such surface). The scope a run
+actually had is a property of the artefact, not only of the screen: a persisted report naming
+`file_types` alone states the post-drop set as though it were the set asked for.
 Default filenames: `lint-report.<FORMAT>`, `check-report.<FORMAT>`, `format-report.<FORMAT>`.
 
 ## Dependencies

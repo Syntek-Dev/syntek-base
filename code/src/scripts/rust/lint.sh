@@ -39,18 +39,47 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Report the ACTION, never only a state. Both blocks below can REWRITE source under --fix —
+# `cargo fmt --all` always, `clippy --fix` sometimes rewriting logic rather than layout — and a
+# success line reading "clean" is true either way while telling the reader nothing about what
+# just happened to their tree. Rule: code/docs/GATE-REPORTING.md.
+# CONTENT digests, not `git status`: a file that was ALREADY dirty before the run stays dirty
+# after it, so a porcelain comparison reports "nothing changed" over a real rewrite. target/ is
+# excluded — it is generated, gitignored, and thousands of files.
+_snapshot() {
+  find "$RUST_DIR" -type f \( -name '*.rs' -o -name '*.toml' \) -not -path '*/target/*' -print0 2>/dev/null \
+    | sort -z | xargs -0 md5sum 2>/dev/null || true
+}
+_report_writes() {
+  local label="$1" before="$2" after changed
+  after=$(_snapshot)
+  if [[ "$before" == "$after" ]]; then
+    bold "✓ $label — no file was changed."
+  else
+    # `|| true` is load-bearing under `set -o pipefail`: diff exits 1 precisely WHEN there are
+    # differences, which is the only branch that reaches this line.
+    changed=$( { diff <(printf '%s\n' "$before") <(printf '%s\n' "$after") 2>/dev/null || true; } \
+      | awk '/^>/ {print $NF}' | sed "s|^$RUST_DIR/||" | sort -u | paste -sd', ')
+    bold "✓ $label — rewrote: ${changed:-(files under code/src/rust/)}"
+  fi
+}
+
 if $FMT_ONLY; then
   bold "▸ lint.sh (rust — rustfmt only)"
   log ""
 
   if $FIX; then
+    _before=$(_snapshot)
     cargo fmt --all
+    log ""
+    _report_writes "rustfmt applied" "$_before"
   else
+    # `--check` exits non-zero when anything needs formatting and `set -e` stops the script,
+    # so reaching this line genuinely means clean. The state IS the result here.
     cargo fmt --all --check
+    log ""
+    bold "✓ Rust formatting clean."
   fi
-
-  log ""
-  bold "✓ Rust formatting clean."
   exit 0
 fi
 
@@ -58,12 +87,16 @@ bold "▸ lint.sh (rust)"
 log ""
 
 if $FIX; then
+  _before=$(_snapshot)
   cargo fmt --all
   cargo clippy --workspace --all-targets --fix --allow-dirty --allow-staged -- -D warnings
+  log ""
+  # Named separately from rustfmt because `clippy --fix` rewrites LOGIC, not layout, and the
+  # reader needs to know which files to re-read rather than merely re-format.
+  _report_writes "rustfmt + clippy --fix applied" "$_before"
 else
   cargo fmt --all --check
   cargo clippy --workspace --all-targets -- -D warnings
+  log ""
+  bold "✓ Rust lint clean."
 fi
-
-log ""
-bold "✓ Rust lint clean."

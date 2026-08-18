@@ -49,6 +49,11 @@ OVERALL_EXIT=0
 # Legs that could not run. A skipped leg produced NO result, so it must never reach the
 # same verdict as a leg that ran and found nothing (code/docs/GATE-REPORTING.md).
 declare -a UNRUN=()
+# Types the caller did not get, and why. An absent SURFACE is a legitimately empty
+# population, so leaving it out is correct and the run stays clean — but a reader cannot tell
+# "there is no mobile app here" from "the mobile app was checked" unless the script says which.
+# Rule: code/docs/GATE-REPORTING.md.
+declare -a SURFACES_ABSENT=()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -197,8 +202,8 @@ if $EXPLICIT_TYPES; then
 else
   # A bare run lints every surface that is actually present.
   FILE_TYPES=(python markdown javascript)
-  [[ -d "$MOBILE_DIR" ]] && FILE_TYPES+=(typescript)
-  [[ -d "$RUST_DIR" ]] && FILE_TYPES+=(rust)
+  if [[ -d "$MOBILE_DIR" ]]; then FILE_TYPES+=(typescript); else SURFACES_ABSENT+=("typescript — no code/src/mobile/"); fi
+  if [[ -d "$RUST_DIR" ]]; then FILE_TYPES+=(rust); else SURFACES_ABSENT+=("rust — no code/src/rust/"); fi
 fi
 
 # --path asks for a subtree. The delegated owners lint their workspace as a unit and
@@ -239,18 +244,32 @@ bold "▸ lint.sh — $TIMESTAMP"
 log "  mode: $MODE"
 log "  types: ${FILE_TYPES[*]}"
 [[ -n "${DROPPED_NOTE:-}" ]] && log "  dropped by --path: ${DROPPED_NOTE} (their owners lint the whole workspace)"
+if [[ ${#SURFACES_ABSENT[@]} -gt 0 ]]; then
+  log "  not present in this project: $(IFS='; '; echo "${SURFACES_ABSENT[*]}")"
+fi
 log ""
 
 # ── Python — ruff check ───────────────────────────────────────────────────────
 if wants python; then
   if container_running django; then
     bold "── Python (ruff check) ────────────────────────────────────────────────────"
+    # The django container mounts code/src/django ALONE, so a --path outside it does not
+    # exist in there: ruff answers "No such file or directory" and the leg is reported as
+    # issues found. That is a false RED — the inverse of a false green and just as untrue.
+    # Outside that tree the population is legitimately empty, so it is clean and said.
+    # Rule: code/docs/GATE-REPORTING.md.
     py_path="${TARGET_PATH:-code/src/django/}"
-    declare -a ruff_args=(ruff check "$py_path")
-    $FIX && ruff_args+=(--fix)
-    $UNSAFE_FIX && ruff_args+=(--unsafe-fixes)
-    run_in django "${ruff_args[@]}"
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    if [[ -n "$TARGET_PATH" && "${TARGET_PATH#code/src/django}" == "$TARGET_PATH" ]]; then
+      log "  ℹ  '$TARGET_PATH' is outside code/src/django/ — no Python here for ruff to read"
+      py_path=""
+    fi
+    if [[ -n "$py_path" ]]; then
+      declare -a ruff_args=(ruff check "$py_path")
+      $FIX && ruff_args+=(--fix)
+      $UNSAFE_FIX && ruff_args+=(--unsafe-fixes)
+      run_in django "${ruff_args[@]}"
+      [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    fi
     log ""
   else
     log "  ⚠  django container not running — Python lint COULD NOT RUN"
@@ -315,10 +334,22 @@ fi
 if wants javascript; then
   if host_has_pnpm; then
     bold "── JavaScript (ESLint — web surface) ──────────────────────────────────────"
-    declare -a js_args=(pnpm exec eslint "${TARGET_PATH:-.}")
-    $FIX && js_args+=(--fix)
-    run_on_host "${js_args[@]}"
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    # ESLint ERRORS when every file under a path is ignored ("all of the files matching the
+    # glob pattern are ignored"), which turns an empty population into a red gate — the
+    # inverse of a false green and just as untrue. A scope with no lintable JavaScript is a
+    # population of zero the search could have filled, so it is clean and SAID.
+    # Rule: code/docs/GATE-REPORTING.md.
+    js_scope="${TARGET_PATH:-.}"
+    js_count=$(find "$js_scope" -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \) \
+      -not -path '*/node_modules/*' -not -path '*/.venv/*' 2>/dev/null | head -1 | wc -l)
+    if [[ "$js_count" -eq 0 ]]; then
+      log "  ℹ  no .js/.mjs/.cjs files under '$js_scope' — nothing to lint"
+    else
+      declare -a js_args=(pnpm exec eslint "$js_scope")
+      $FIX && js_args+=(--fix)
+      run_on_host "${js_args[@]}"
+      [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    fi
     log ""
   else
     log "  ⚠  pnpm not found on host — JavaScript lint COULD NOT RUN (it runs on the host; install pnpm/Node)"
@@ -403,6 +434,8 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "file_types": [%s],\n' \
           "$(printf '"%s",' "${FILE_TYPES[@]}" | sed 's/,$//')"
         printf '  "exit_code": %d,\n' "$OVERALL_EXIT"
+        printf '  "dropped_by_path": "%s",\n' "${DROPPED_NOTE:-}"
+        printf '  "surfaces_absent": "%s",\n' "$(IFS='; '; echo "${SURFACES_ABSENT[*]-}")"
         printf '  "unrun": [%s],\n' \
           "$(if [[ ${#UNRUN[@]} -gt 0 ]]; then printf '"%s",' "${UNRUN[@]}" | sed 's/,$//'; fi)"
         printf '  "output": %s\n' \

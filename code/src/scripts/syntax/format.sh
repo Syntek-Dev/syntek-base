@@ -49,6 +49,11 @@ OVERALL_EXIT=0
 # Legs that could not run. A skipped leg produced NO result, so it must never reach the
 # same verdict as a leg that ran and found nothing (code/docs/GATE-REPORTING.md).
 declare -a UNRUN=()
+# Types the caller did not get, and why. An absent SURFACE is a legitimately empty
+# population, so leaving it out is correct and the run stays clean — but a reader cannot tell
+# "there is no mobile app here" from "the mobile app was checked" unless the script says which.
+# Rule: code/docs/GATE-REPORTING.md.
+declare -a SURFACES_ABSENT=()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -185,7 +190,7 @@ else
   # typescript is unconditional: see the header. rust is not — rustfmt has nothing to
   # read without the workspace.
   FILE_TYPES=(python javascript typescript css markdown)
-  [[ -d "$RUST_DIR" ]] && FILE_TYPES+=(rust)
+  if [[ -d "$RUST_DIR" ]]; then FILE_TYPES+=(rust); else SURFACES_ABSENT+=("rust — no code/src/rust/"); fi
 fi
 
 # --path asks for a subtree. Prettier and ruff honour it; rustfmt formats the workspace
@@ -225,6 +230,9 @@ bold "▸ format.sh — $TIMESTAMP"
 log "  mode: $MODE"
 log "  types: ${FILE_TYPES[*]}"
 [[ -n "${DROPPED_NOTE:-}" ]] && log "  dropped by --path: ${DROPPED_NOTE} (rustfmt formats the whole workspace)"
+if [[ ${#SURFACES_ABSENT[@]} -gt 0 ]]; then
+  log "  not present in this project: $(IFS='; '; echo "${SURFACES_ABSENT[*]}")"
+fi
 log ""
 
 # ── File-type selector helpers ────────────────────────────────────────────────
@@ -271,13 +279,24 @@ prettier_pattern() {
 if wants python; then
   if container_running django; then
     bold "── Python (ruff format) ───────────────────────────────────────────────────"
+    # The django container mounts code/src/django ALONE, so a --path outside it does not
+    # exist in there: ruff answers "No such file or directory" and the leg is reported as
+    # issues found. That is a false RED — the inverse of a false green and just as untrue.
+    # Outside that tree the population is legitimately empty, so it is clean and said.
+    # Rule: code/docs/GATE-REPORTING.md.
     py_path="${TARGET_PATH:-code/src/django/}"
-    if $FIX; then
-      run_in django ruff format "$py_path"
-    else
-      run_in django ruff format --check "$py_path"
+    if [[ -n "$TARGET_PATH" && "${TARGET_PATH#code/src/django}" == "$TARGET_PATH" ]]; then
+      log "  ℹ  '$TARGET_PATH' is outside code/src/django/ — no Python here for ruff to read"
+      py_path=""
     fi
-    [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    if [[ -n "$py_path" ]]; then
+      if $FIX; then
+        run_in django ruff format "$py_path"
+      else
+        run_in django ruff format --check "$py_path"
+      fi
+      [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+    fi
     log ""
   else
     log "  ⚠  django container not running — Python format COULD NOT RUN"
@@ -377,6 +396,10 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "file_types": [%s],\n' \
           "$(printf '"%s",' "${FILE_TYPES[@]}" | sed 's/,$//')"
         printf '  "exit_code": %d,\n' "$OVERALL_EXIT"
+        printf '  "unrun": [%s],\n' \
+          "$(if [[ ${#UNRUN[@]} -gt 0 ]]; then printf '"%s",' "${UNRUN[@]}" | sed 's/,$//'; fi)"
+        printf '  "dropped_by_path": "%s",\n' "${DROPPED_NOTE:-}"
+        printf '  "surfaces_absent": "%s",\n' "$(IFS='; '; echo "${SURFACES_ABSENT[*]-}")"
         printf '  "output": %s\n' \
           "$(printf '%s' "$RAW" | python3 -c \
             'import sys,json; print(json.dumps(sys.stdin.read()))' \

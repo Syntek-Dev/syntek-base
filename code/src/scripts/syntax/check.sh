@@ -49,6 +49,11 @@ OVERALL_EXIT=0
 # Legs that could not run. A skipped leg produced NO result, so it must never reach the
 # same verdict as a leg that ran and found nothing (code/docs/GATE-REPORTING.md).
 declare -a UNRUN=()
+# Types the caller did not get, and why. An absent SURFACE is a legitimately empty
+# population, so leaving it out is correct and the run stays clean — but a reader cannot tell
+# "there is no mobile app here" from "the mobile app was checked" unless the script says which.
+# Rule: code/docs/GATE-REPORTING.md.
+declare -a SURFACES_ABSENT=()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -129,6 +134,21 @@ run_in() {
   set -e
 }
 
+# Host counterpart of run_in, for the delegated surface owners. Honours --quiet, which the
+# previous `| tee -a "$TMPFILE"` form did not: a --quiet run leaked the mobile and Rust output
+# to the terminal while promising to suppress it.
+run_on_host() {
+  set +e
+  if $QUIET; then
+    "$@" >> "$TMPFILE" 2>&1
+    LAST_EXIT=$?
+  else
+    "$@" 2>&1 | tee -a "$TMPFILE"
+    LAST_EXIT=${PIPESTATUS[0]}
+  fi
+  set -e
+}
+
 # ── Argument parsing ──────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -179,8 +199,8 @@ else
   # "Check everything" stays honest without templated file contents: a web-only project
   # has neither directory, so its default is Python alone, exactly as before.
   FILE_TYPES=(python)
-  [[ -d "$MOBILE_DIR" ]] && FILE_TYPES+=(typescript)
-  [[ -d "$RUST_DIR" ]] && FILE_TYPES+=(rust)
+  if [[ -d "$MOBILE_DIR" ]]; then FILE_TYPES+=(typescript); else SURFACES_ABSENT+=("typescript — no code/src/mobile/"); fi
+  if [[ -d "$RUST_DIR" ]]; then FILE_TYPES+=(rust); else SURFACES_ABSENT+=("rust — no code/src/rust/"); fi
 fi
 
 # --path asks for a subtree; the delegated owners check their workspace as a unit and
@@ -223,6 +243,9 @@ bold "▸ check.sh — $TIMESTAMP"
 log "  mode: type-check (read-only)"
 log "  types: ${FILE_TYPES[*]}"
 [[ -n "${DROPPED_NOTE:-}" ]] && log "  dropped by --path: ${DROPPED_NOTE} (their owners check the whole workspace)"
+if [[ ${#SURFACES_ABSENT[@]} -gt 0 ]]; then
+  log "  not present in this project: $(IFS='; '; echo "${SURFACES_ABSENT[*]}")"
+fi
 if $FIX; then
   log ""
   log "  ℹ  --fix is set. Type checkers do not auto-fix errors — see guidance below."
@@ -261,11 +284,8 @@ fi
 # against that directory above — so by this line the surface is present.
 if wants typescript; then
   bold "── TypeScript (tsc — mobile surface) ──────────────────────────────────────"
-  if bash "$PROJECT_ROOT/code/src/scripts/mobile/typecheck.sh" 2>&1 | tee -a "$TMPFILE"; then
-    :
-  else
-    OVERALL_EXIT=1
-  fi
+  run_on_host bash "$PROJECT_ROOT/code/src/scripts/mobile/typecheck.sh"
+  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
   log ""
 fi
 
@@ -275,11 +295,8 @@ fi
 # Reached only when code/src/rust/ is present, on the same argument as above.
 if wants rust; then
   bold "── Rust (cargo check) ─────────────────────────────────────────────────────"
-  if bash "$PROJECT_ROOT/code/src/scripts/rust/build.sh" --check 2>&1 | tee -a "$TMPFILE"; then
-    :
-  else
-    OVERALL_EXIT=1
-  fi
+  run_on_host bash "$PROJECT_ROOT/code/src/scripts/rust/build.sh" --check
+  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
   log ""
 fi
 
@@ -341,6 +358,10 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "file_types": [%s],\n' \
           "$(printf '"%s",' "${FILE_TYPES[@]}" | sed 's/,$//')"
         printf '  "exit_code": %d,\n' "$OVERALL_EXIT"
+        printf '  "unrun": [%s],\n' \
+          "$(if [[ ${#UNRUN[@]} -gt 0 ]]; then printf '"%s",' "${UNRUN[@]}" | sed 's/,$//'; fi)"
+        printf '  "dropped_by_path": "%s",\n' "${DROPPED_NOTE:-}"
+        printf '  "surfaces_absent": "%s",\n' "$(IFS='; '; echo "${SURFACES_ABSENT[*]-}")"
         printf '  "output": %s\n' \
           "$(printf '%s' "$RAW" | python3 -c \
             'import sys,json; print(json.dumps(sys.stdin.read()))' \
