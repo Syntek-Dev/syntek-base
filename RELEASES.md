@@ -1,11 +1,88 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.4.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 5.5.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v5.5.0 — 18/08/2026
+
+**Status:** Minor — the checks that guard your code stop claiming to have looked at things they
+never looked at, and the commands you are told to run before every commit now run. Nothing you
+have written changes. One command option was withdrawn, and it is named below.
+
+### The commands the guide told you to run did not work
+
+This project asks you to run two checks before every commit, and names them in the contributing
+guide as required rather than advisory. Neither accepted the option the guide told you to pass.
+They did not fail quietly — they stopped and complained — so anybody following the instruction
+hit a wall on their first attempt and had to guess what was meant.
+
+The cause was larger than a mistyped word. The checks had no lane for two of the languages in
+the project at all. The tools existed and were being used elsewhere, by the automated pipeline
+and by the commit hook; what was missing was the way in through the command you are pointed at.
+
+There is now one name per language, and the name is the language: **javascript** for the small
+scripts that make web pages interactive, **typescript** for the mobile app, and **rust** for the
+native code. They cannot overlap or reach into each other's territory. Running the checks
+without naming a language covers exactly the parts your project actually has — so the same
+instruction is correct whether you took the mobile and native options at setup or neither.
+Naming a part you do not have stops and tells you so, rather than passing silently.
+
+### A check that could not look was telling you it had looked
+
+This is the release's real subject, and it is worth stating plainly because it is the kind of
+fault that costs you nothing until the day it costs you everything.
+
+Several checks in this project would report a clean result when the tool they depend on was not
+installed, or when they could not reach the files they were meant to read. A green tick that
+means "I found no problems" and a green tick that means "I never looked" are not the same
+message, and only one of them is safe to act on. If you have ever trusted a passing check and
+been surprised later, this is the shape of how that happens.
+
+Every one of them now says which is which. Where a check could not run part of its job, it names
+the part, reports a distinct result rather than success, and records the same thing in the file
+it writes for other tools to read — that last part mattering because the file was the half nobody
+was watching. Where a check genuinely has nothing to examine, because your project does not
+include that part, it says that too and stays green. The rule is written down once, in its own
+document, so the next check written here inherits it.
+
+The same fault ran in the other direction as well, and was fixed with it: two checks reported
+**problems** where there was nothing to examine — a folder with no code of that kind in it, or a
+folder the tool could not reach. A false alarm is as untrue as a false all-clear, and it is worse
+for your attention, because the way to make it stop is to stop reading the output.
+
+### Checks that ignored the folder you pointed them at
+
+Four checks accepted a folder to look in, silently disregarded it, examined the whole project
+instead, and then printed a success message naming the folder they had actually used. One of
+them named the wrong folder in that very message. All four now stop with an error when the
+folder you gave them is not usable, and none of them can report success over ground it did not
+cover.
+
+Alongside that, asking for help on any of the ten mobile and native commands printed an internal
+error instead of the help text — for as long as those commands have existed, and by exactly the
+route every document tells you to invoke them.
+
+### A pipeline step that waited for the database and never checked it
+
+An automated step meant to wait for the database to come up was not testing anything. Because of
+how a placeholder in the setup template interacted with the shell, the test was never run, and
+the step reported success whatever the state of the database. The failure then appeared two
+minutes later somewhere else entirely, looking like a completely different problem. Three such
+waiting steps were rewritten so that a genuine timeout now fails.
+
+### The one thing withdrawn
+
+The code-checking command no longer accepts `css` as a language to check. There is no CSS checker
+configured in this project, so that option could only ever print a note and pass — a clean result
+over something nothing had examined, which is the exact fault this release exists to remove. The
+**formatting** command keeps its `css` option, which does real work on real files.
+
+If you have that option written into a script or a note of your own, remove it. It will now stop
+with an error rather than pretending.
 
 ## v5.4.0 — 17/08/2026
 
