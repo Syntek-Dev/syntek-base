@@ -137,7 +137,7 @@ repository at all. Both are gated by eye against Section 3.
 | ---------------------------------------- | -------------------------------------------------------------- |
 | `code/src/django/apps/marketing/`        | Public page views + Django templates (SSR)                     |
 | `code/src/django/components/`            | django-components server component library (`{% component %}`) |
-| `code/src/django/static/css/tokens/`     | Design token CSS (consumed as `var(--token)`)                  |
+| `code/docs/DESIGN-TOKENS.md`             | The token catalogue, and where the token CSS lands             |
 | `project-management/src/06-BRAND-GUIDE/` | Brand foundations (canonical `DESIGN/Foundations*.html`)       |
 | `project-management/src/07-COMPONENTS/`  | Component designs — states, variants, patterns                 |
 | `project-management/src/08-WIREFRAMES/`  | Screen wireframes (`WF-###`)                                   |

@@ -55,22 +55,26 @@ feedback. Un-fed-back latency reads as broken.
   only _enhance_. A page with scripts blocked still renders and links still work.
 - **No inline `<script>`/`<style>`** (CSP-clean). Alpine reads HTML attributes (`x-data`, `@click`);
   htmx is configured via a `<meta name="htmx-config">`; per-page JS is a static file.
-- **Server-render first, cache whole.** Anonymous GET pages are cached by `cache_marketing`
-  (versioned Valkey page cache). Anything that varies per-visitor (consent banner, analytics) is
-  decided **client-side** so the cached HTML is identical for everyone.
+- **Server-render first, cache whole.** Anonymous GET pages **will be** cached by
+  `cache_marketing` (a versioned Valkey page cache, `code/docs/PERFORMANCE.md`). Anything that
+  varies per-visitor (consent banner, analytics) is decided **client-side** so the cached HTML is
+  identical for everyone.
 - **Accessibility on swaps:** manage focus and use `aria-live` for HTMX-swapped regions; assert the
   markup-level rules in pytest and work the manual checklist (`code/docs/ACCESSIBILITY.md`).
 
-## Where each concern lives
+## Where each concern will live
 
-| Concern                | Home                                                                   |
-| ---------------------- | ---------------------------------------------------------------------- |
-| Page views / templates | `apps/marketing/views/` + `templates/marketing/` (extends `base.html`) |
-| Reusable UI            | django-components in `code/src/django/components/`                     |
-| Server ops (HTMX)      | view returns a fragment; template posts with `hx-post` + indicator     |
-| Local interactivity    | Alpine `x-data` (nav menu, dropdowns, consent banner, tabs)            |
-| Per-page SEO `<head>`  | `apps/marketing/seo.build_seo` + `_seo_head.html`                      |
-| Block content          | Python `render_blocks` (server-side, golden-fixture tested)            |
+**The rows say where a concern belongs, not what is on disk.** The marketing app, the component
+library and `build_seo()` each arrive with the first story that needs them.
+
+| Concern                | Home                                                                                                                                        |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page views / templates | The marketing app (`code/src/django/apps/marketing/`) for views; its page templates under the site-wide root (`code/src/django/templates/`) |
+| Reusable UI            | django-components (`code/src/django/components/`, or the owning app's own)                                                                  |
+| Server ops (HTMX)      | view returns a fragment; template posts with `hx-post` + indicator                                                                          |
+| Local interactivity    | Alpine `x-data` (nav menu, dropdowns, consent banner, tabs)                                                                                 |
+| Per-page SEO `<head>`  | `build_seo()` + the `_seo_head.html` partial (`code/docs/discoverability/WEB-METADATA.md`)                                                  |
+| Block content          | Python `render_blocks` (server-side, golden-fixture tested)                                                                                 |
 
 ## Testing
 
@@ -88,6 +92,5 @@ feedback. Un-fed-back latency reads as broken.
 - `rendering/PITFALLS-AND-EXAMPLES.md` — HTMX / Alpine pitfalls with worked examples.
 
 See also: `.claude/skills/stack-htmx-templates/SKILL.md` (stack idioms),
-`apps/marketing/CONTEXT.md` (app structure), `code/docs/PERFORMANCE.md` (caching).
-</content>
-</invoke>
+`code/docs/architecture/FRONTEND-PATTERNS.md` (app structure), `code/docs/PERFORMANCE.md`
+(caching).

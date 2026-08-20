@@ -22,7 +22,8 @@ serve them, and the register below is the only place that says which.
 `robots.txt`, the sitemap set, `llms.txt` and any feed are **Django views**, not static files,
 because each depends on live state — published pages, current routes, the environment's domain.
 
-They live in `apps/core/views/seo.py`.
+They belong with the core app (`code/src/django/apps/core/`), which has no views package yet —
+where this goes, not where it is.
 
 ### robots.txt
 

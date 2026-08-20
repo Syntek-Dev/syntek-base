@@ -169,7 +169,7 @@ Responsive images using `<picture>` with media queries:
 ## Print Styles
 
 There is no separate `print.css` file in this project. Add `@media print {}` blocks directly to the
-global stylesheet (`code/src/django/static/css/`) or to the relevant django-component CSS file.
+global stylesheet, or to the relevant django-component CSS file.
 
 ```css
 @media print {

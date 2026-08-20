@@ -68,16 +68,17 @@ rest — is `code/docs/ENCRYPTION-GUIDE.md`'s; this table is only who may reach 
 
 ### Admin RBAC role management
 
-The role-management endpoints (create, update, delete, assign) are gated by the canonical
-**area-RBAC predicate** `apps.users.services.admin_member_service._actor_has_permission` —
-superuser **or** an active area admin. This is the first statement of every `AdminRoleService`
-method (OWASP A01), never re-implemented per call site. Ninja endpoints add only an
-authentication check, then translate typed service errors into the response Schema's error
-entries (no exception class names leak).
+None of this is built — `code/src/django/apps/` holds `core/` and `health/` only. The
+role-management endpoints (create, update, delete, assign) **will be** gated by one canonical
+**area-RBAC predicate** — an `_actor_has_permission` in the identity app's admin-member service —
+resolving to superuser **or** an active area admin. It **will be** the first statement of every
+`AdminRoleService` method (OWASP A01), never re-implemented per call site. Ninja endpoints add
+only an authentication check, then translate typed service errors into the response Schema's
+error entries (no exception class names leak).
 
 **Privilege-escalation surface — a role can grant module access.** Because a role's
-`AdminRolePermission` rows feed the ABAC fallback in `can_access_module`, a role is an
-access-granting object. The superadmin-only gate (`gdpr`, `integrations`, `billing`) runs
+`AdminRolePermission` rows **will feed** the ABAC fallback in `can_access_module`, a role **will
+be** an access-granting object. The superadmin-only gate (`gdpr`, `integrations`, `billing`) runs
 **before** any role lookup, so a non-superuser can never reach those modules even if a crafted
 role lists them — the role's entries for those modules stay inert. Effective access is a
 direct `ModulePermission` override first, role fallback second; a direct override always wins.
@@ -175,22 +176,24 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]  # raises KeyError if not set — i
 
 `admin_db = "admin_db"` (the BYPASSRLS database role alias) bypasses PostgreSQL Row Level Security.
 
-**Authorised call sites (hard limit):**
+**Authorised call sites (hard limit).** This is a policy, not an inventory: none of the modules
+below exists at baseline, and the table is the closed list any implementation is held to.
 
-| Location                                                                      | Reason                                                                                                                                                                      |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps.users.backends` — authentication backend                                | Login must succeed without a current RLS session variable                                                                                                                   |
-| `apps.users.services.password_reset` — reset token lookup                     | Reset links arrive without a session                                                                                                                                        |
-| `apps.<%AUDIT_APP%>.services.AuditDecryptionService.resolve` — PII resolution | Superuser incident investigation must resolve another user's encrypted email/username; default connection's RLS restricts `users_user` SELECT to the calling user's own row |
-| `apps.<%AUDIT_APP%>.services.gdpr.gdpr_erase` — erasure anonymisation         | Article 17 erasure nulls the identifying columns on every audit row for a subject, across scopes the caller cannot see (`code/docs/security/AUDIT-TRAIL.md`)                |
-| `apps.<%AUDIT_APP%>.tasks` — retention purge                                  | The retention sweep deletes expired rows across every scope, so it cannot run under a caller's row-security session variable (`code/docs/security/AUDIT-TRAIL.md`)          |
+| Location                                                                      | Reason                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `apps.<%IDENTITY_APP%>.backends` — authentication backend                     | Login must succeed without a current RLS session variable                                                                                                                                  |
+| `apps.<%IDENTITY_APP%>.services.password_reset` — reset token lookup          | Reset links arrive without a session                                                                                                                                                       |
+| `apps.<%AUDIT_APP%>.services.AuditDecryptionService.resolve` — PII resolution | Superuser incident investigation must resolve another user's encrypted email/username; the default connection's row-security policy restricts the user table to the calling user's own row |
+| `apps.<%AUDIT_APP%>.services.gdpr.gdpr_erase` — erasure anonymisation         | Article 17 erasure nulls the identifying columns on every audit row for a subject, across scopes the caller cannot see (`code/docs/security/AUDIT-TRAIL.md`)                               |
+| `apps.<%AUDIT_APP%>.tasks` — retention purge                                  | The retention sweep deletes expired rows across every scope, so it cannot run under a caller's row-security session variable (`code/docs/security/AUDIT-TRAIL.md`)                         |
 
 Adding a new `admin_db` call site requires a documented security justification and code review
 sign-off from a <%ORG_NAME%> core maintainer. Any grep for `using=admin_db` outside the table above
 should trigger a review comment. **This table is the only authoritative list**; no other guide
 restates it.
 
-Pre-commit hook pattern to enforce this:
+Pre-commit hook pattern to enforce this. The negative lookahead names the same two apps as the
+table, and both are rendered from this project's copier answers rather than written literally:
 
 ```yaml
 - repo: local
@@ -200,7 +203,7 @@ Pre-commit hook pattern to enforce this:
       language: pygrep
       entry: 'using\s*=\s*["\']?admin_db["\']?'
       args: ["--negate"]
-      files: '^code/src/django/(?!apps/users/(backends|services/password_reset)|apps/audit/(services|tasks)).*\.py$'
+      files: '^code/src/django/(?!apps/<%IDENTITY_APP%>/(backends|services/password_reset)|apps/<%AUDIT_APP%>/(services|tasks)).*\.py$'
       pass_filenames: true
 ```
 

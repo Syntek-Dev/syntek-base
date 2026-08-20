@@ -52,9 +52,10 @@ guide.
 - **Gradients are sanctioned `--gradient-*` tokens, never composed inline.** A raw
   `linear-gradient(135deg, …)` in component or page CSS is the generic AI-look tell — even when its
   stops are tokens. Consume `var(--gradient-*)` or a per-sector `var(--sector-tone-*)`; add a new
-  brand gradient as a token in the token layer (`code/src/django/static/css/tokens/gradients.css`) plus a
-  `design_tokens` migration, never as an inline literal. A functional gradient (loading shimmer,
-  image or scrim mask) may stay inline **only** with a `gradient-allow` annotation. Enforced by
+  brand gradient as a token in the token layer's `gradients.css` (`code/docs/DESIGN-TOKENS.md`)
+  plus a `design_tokens` migration, never as an inline literal. A functional gradient (loading
+  shimmer, image or scrim mask) may stay inline **only** with a `gradient-allow` annotation.
+  Enforced by
   `code/src/scripts/audits/css-gradients.sh`. No blue→purple, violet, indigo, or rainbow gradient —
   ever.
 
@@ -140,12 +141,11 @@ expressed in CSS.
 
 ## Compose from the component vocabulary
 
-Duplicating a shared component is a defect. **[judgement]** Build from the project's django-components catalogue
-(e.g. `code/src/django/components/`) — hero variants, feature cards, sector/service grids, CTA
-banners, process timelines, pricing matrices, testimonial cards/rows, content cards, badges,
-breadcrumbs, cards, `section`, and `container` — and the shared UI primitives in the shared
-component library. Reach for an existing component before authoring markup; a new component type is
-added to the catalogue first, then used.
+Duplicating a shared component is a defect. **[judgement]** Build from the project's
+django-components catalogue — the shared root at `code/src/django/components/` and each app's own,
+with `../FRONTEND-CODING-PRINCIPLES.md` Section _Component & Code Placement_ owning which home a
+component belongs in. Reach for an existing component before authoring markup; a new component type
+is added to the catalogue first, then used.
 
 ---
 

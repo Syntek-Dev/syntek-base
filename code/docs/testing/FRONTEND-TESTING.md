@@ -261,7 +261,7 @@ Use the same `factory_boy` factories as the rest of the suite — see
 ## Coverage
 
 Template and component tests count towards the single backend floor (75% line and branch,
-90% for `apps/users`). There is no separate frontend floor — see [`COVERAGE.md`](COVERAGE.md).
+90% for the identity app). There is no separate frontend floor — see [`COVERAGE.md`](COVERAGE.md).
 The browser suite is excluded: it drives a running stack over HTTP and instruments nothing.
 
 _Part of the `code/docs/` documentation family. See [`../TESTING.md`](../TESTING.md) for the full index._

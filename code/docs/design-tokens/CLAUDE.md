@@ -14,15 +14,17 @@ endpoints, and the `/admin/design-tokens` editor and governance — behind the
 
 ## How to work here
 
-- **Routing:** `doc-writer` (Opus) to author; the live implementation is
-  `code/src/django/apps/design_tokens/` — keep this spec in step with it.
+- **Routing:** `doc-writer` (Opus) to author. **The implementation this spec describes is not
+  built** — this folder is the contract a later story implements, and the two move together from
+  the moment it lands.
 - **Model:** Opus for substantive spec work and typos or re-indexing.
 - **Concrete steps:** edit the relevant sub-doc (`MODEL.md`, `CASCADE.md`,
   `EDITOR.md`, `MOBILE.md`) → keep `DESIGN-TOKENS.md` a thin index that still states the
   token-first law → update the `CONTEXT.md` file table on any change → verify length
   with `code/src/scripts/audits/docs-length.sh`.
-- **Definition of done:** spec matches the shipped models, cascade, Ninja endpoints, and
-  editor; each file ≤ 300 lines; cross-references resolve; British English.
+- **Definition of done:** the spec is internally consistent and, once the app exists, matches
+  the implemented models, cascade, endpoints and editor; each file ≤ 300 lines;
+  cross-references resolve; British English.
 
 ## Guardrails
 
@@ -35,11 +37,11 @@ endpoints, and the `/admin/design-tokens` editor and governance — behind the
   restated there (`mobile-tokens.sh`) because `var()` does not exist in React Native.
 - **Never state the no-rebuild promise unqualified** — it is web-only. A token change
   reaches an installed mobile app only through a rebuild and a store release.
-- Keep `MODEL.md`'s categories/flags and `CASCADE.md`'s axes exactly as implemented, and
-  keep `MOBILE.md`'s axis table honest about which three collapse to BASE.
+- `MODEL.md`'s categories/flags and `CASCADE.md`'s axes **are** the specification; once the app
+  is built they become the thing it is checked against, and the two move together from then on.
+  Keep `MOBILE.md`'s axis table honest about which three collapse to BASE.
 
 ## Output & naming
 
 - **Hand-written** sub-docs only; nothing generated here.
-- Files `SCREAMING-SNAKE-CASE.md`; parent guide is `code/docs/DESIGN-TOKENS.md`;
-  live app spec is `code/src/django/apps/design_tokens/CONTEXT.md`.
+- Files `SCREAMING-SNAKE-CASE.md`; parent guide is `code/docs/DESIGN-TOKENS.md`.

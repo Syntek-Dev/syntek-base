@@ -73,4 +73,3 @@ Before releasing any API endpoint:
 - [ ] The endpoint has integration tests covering happy path, auth failure, and validation failure
 
 _Part of the `code/docs/` documentation family. See [`../API-DESIGN.md`](../API-DESIGN.md) for the full index._
-</content>

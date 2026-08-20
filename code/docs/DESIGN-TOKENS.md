@@ -10,19 +10,21 @@ model: opus
 **Version:** 0.1.0
 **Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
-**Status:** Django-served token CSS + git write-back delivery in place.
 **Claude Model:** opus — Architecture review, schema design, frontend integration patterns
 **MCP Servers:** code-review-graph (impact analysis before implementation)
+
+**Status: declared, not wired.** The token layer, the `/assets/tokens.css` view and the git
+write-back arrive with the `design_tokens` app; what exists today is this contract.
 
 ---
 
 ## Overview
 
-The design-token system makes every UI value (colour, typography, spacing, shadow, radius, motion,
-surface, z-index, breakpoint) **database-canonical** and editable from the custom `/admin/` admin
-area. PostgreSQL is the source of truth; a generator renders the values to a single CSS cascade
-that Django serves as a stylesheet and persists back to the repo (git write-back). There is **no
-Node server** — the CSS is a plain file served by Django.
+The design-token system **will make** every UI value (colour, typography, spacing, shadow, radius,
+motion, surface, z-index, breakpoint) **database-canonical** and editable from the custom `/admin/`
+admin area. PostgreSQL will be the source of truth; a generator will render the values to a single
+CSS cascade that Django serves as a stylesheet and persists back to the repo (git write-back).
+There is **no Node server** — the CSS will be a plain file served by Django.
 
 ```text
 PostgreSQL (DesignToken + DesignTokenValue rows)
@@ -35,14 +37,14 @@ PostgreSQL (DesignToken + DesignTokenValue rows)
       → StyleSheet values imported from @/tokens                            [mobile surface]
 ```
 
-> **The no-rebuild promise is web-only.** Editing a token is live on the web with no frontend
-> rebuild. On the **mobile surface** the emitted module is compiled into the application, so a
-> token change reaches an installed app only via a rebuild and a store release. Never state the
+> **The no-rebuild promise is web-only.** Editing a token **will be** live on the web with no
+> frontend rebuild. On the **mobile surface** the emitted module **will be** compiled into the
+> application, so a token change reaches an installed app only via a rebuild and a store release. Never state the
 > promise unqualified. See [design-tokens/MOBILE.md](design-tokens/MOBILE.md).
 
-The seed source of the database is the CSS token layer at
-`code/src/django/static/css/tokens/*.css` (plus `surfaces.css`), so the DB and the committed CSS
-stay two views of one truth.
+The seed source of the database **will be** the CSS token layer that arrives with it —
+`surfaces.css` among those stylesheets — so the DB and the committed CSS stay two views of one
+truth.
 
 ---
 
@@ -54,8 +56,8 @@ django-component, and CSS file:
 1. **New design values enter via the editor** (`/admin/design-tokens`) **or a migration** — never
    as a raw literal (colour, length, shadow, duration, …) in component or page CSS.
 2. **Component and page CSS only ever consume `var(--token)`.** No hard-coded visual values.
-3. **The referenced var name must resolve** to a token in the styling layer
-   (`code/src/django/static/css/tokens/*.css` + `surfaces.css`), which is the DB seed source.
+3. **The referenced var name must resolve** to a token defined in the styling layer
+   (`surfaces.css` among those stylesheets), which becomes the DB seed source.
 
 Rule 3 is **enforced in CI** by `code/src/scripts/audits/css-tokens.sh` (and the
 `audit-css-tokens.yml` workflow): any `var(--x)` that resolves nowhere fails the build, because a
@@ -66,10 +68,10 @@ advisory; do not add it as a failing script.
 ### The law on the mobile surface
 
 Rules 1–3 are written in CSS, so the **enforcement clause** — not the law — is restated for the
-optional mobile surface. There, `StyleSheet` values come only from the generated token module,
-never a raw literal, enforced by `code/src/scripts/audits/mobile-tokens.sh`. Only the
+optional mobile surface. There, `StyleSheet` values **will come** only from the generated token
+module, never a raw literal, enforced by `code/src/scripts/audits/mobile-tokens.sh`. Only the
 no-raw-literals half needs a script: the emitted module is typed, so an unresolved token import
-does not compile and `typecheck.sh` already fails the build. Detail:
+will not compile and `typecheck.sh` **will fail** the build. Detail:
 [design-tokens/MOBILE.md](design-tokens/MOBILE.md).
 
 Run the guard locally before raising a PR:
@@ -78,7 +80,7 @@ Run the guard locally before raising a PR:
 bash code/src/scripts/audits/css-tokens.sh
 ```
 
-> **Adding a value:** add the token in `shared/src/css/tokens/` (the seed source) **and** via the
+> **Adding a value:** add the token to the CSS token layer (the seed source) **and** via the
 > editor/DB, then reference it with `var(--token)`. Do not write the literal inline.
 
 ### Locked tokens (dedicated, never aliased)
@@ -89,10 +91,10 @@ them. The **presence-status** tokens — `--presence-online` (a specific green),
 
 - They are **literal specific values, NOT aliases** of a semantic token — never
   `--presence-online: var(--color-success)`. Each carries a locked hex.
-- They are DB-canonical (an `apps/design_tokens` migration seeds them with `is_editable=False` =
-  system-locked, not editable via the editor) **and** declared in
-  `shared/src/css/tokens/colours.css`, so `var(--presence-*)` resolves for `css-tokens.sh` and
-  `render_current_css` emits them.
+- They are DB-canonical (a `design_tokens` migration **will seed** them with
+  `is_editable=False` = system-locked, not editable via the editor) **and** declared in the token
+  layer's `colours.css`, so `var(--presence-*)` **will resolve** for `css-tokens.sh` and
+  `render_current_css` **will emit** them.
 - Consuming CSS uses ONLY these tokens for the status colour (e.g. a presence dot in
   `components/chat_thread.css`); the non-colour dot SHAPE carries the a11y load (WCAG 1.4.1).
 
@@ -117,7 +119,7 @@ need:
 ## Critical constraint — breakpoints
 
 CSS custom properties **cannot be used inside `@media` query conditions** (CSS specification
-restriction). Breakpoint tokens are stored as the `breakpoint` DB category with
+restriction). Breakpoint tokens **will be stored** as the `breakpoint` DB category with
 `is_reference_only=True` — they are documentation/reference rows and are **never emitted to a CSS
 rule**. The actual pixel values are baked into `@media` conditions in the CSS. See
 [responsive/BREAKPOINTS.md](responsive/BREAKPOINTS.md). All other categories work as runtime CSS
@@ -127,10 +129,9 @@ variables.
 
 ## Cross-references
 
-- `code/docs/FRONTEND-CODING-PRINCIPLES.md` — token-first CSS consumption rules
+- `code/docs/FRONTEND-CODING-PRINCIPLES.md` — token-first CSS consumption rules, component
+  placement, and the BEM convention
 - `code/docs/responsive/USER-PREFERENCES.md` — the preference cascade the generator emits
 - `code/docs/responsive/BREAKPOINTS.md` — reference-only breakpoint tokens
-- `code/src/django/apps/design_tokens/CONTEXT.md` — the live app, models, Ninja endpoints, and tasks
-- `code/src/django/components/CONTEXT.md` — the django-components library and its BEM conventions
 - `code/src/scripts/audits/css-tokens.sh` — phantom-token enforcement (the token-first gate)
 - `.claude/CLAUDE.md` Section 6 — the token-first non-negotiable

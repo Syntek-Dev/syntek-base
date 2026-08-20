@@ -156,8 +156,7 @@ it parses the body and is the first-party surface, not a third-party receiver.
 
 ### Plain Django view — the repo pattern
 
-This is the default and matches existing endpoints such as
-`code/src/django/apps/media/views/admin_upload.py`.
+This is the default.
 
 ```python
 @csrf_exempt

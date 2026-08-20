@@ -340,4 +340,3 @@ One template serves the first render, the success swap, and the error swap — s
 cannot drift apart.
 
 _Part of the `code/docs/` documentation family. See [`../RENDERING.md`](../RENDERING.md) for the full index._
-</content>

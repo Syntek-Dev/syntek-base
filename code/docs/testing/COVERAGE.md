@@ -21,7 +21,11 @@ enforce them — a PR that drops any metric below the floor is blocked.
 | ----------------- | ------- | ------------------------------------------------ |
 | Line coverage     | 75%     | The always-floor; see _The promotion tier_ below |
 | Branch coverage   | 75%     | Both sides of every `if`/`else` exercised        |
-| Auth-related code | 90%     | `apps/users/` and any auth-adjacent service      |
+| Auth-related code | 90%     | The identity app and any auth-adjacent service   |
+
+**Which app that is, is a per-project answer.** `code/src/scripts/tests/backend-coverage.sh` reads
+it from `AUTH_APP` (default `users`) and skips the leg — saying so in its output — while that app
+does not exist. Never hardcode the name in a second place.
 
 ### The promotion tier
 

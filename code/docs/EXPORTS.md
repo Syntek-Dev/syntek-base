@@ -33,11 +33,11 @@ against two PDF libraries is two rendering models, two sets of brand CSS, and tw
 | **JSON**  | stdlib `json` | Pretty for a human reader, compact for a machine one                              |
 
 **The PDF choice is the load-bearing one.** `weasyprint` makes a PDF a _template_, so an invoice
-is authored the same way a page is and inherits `code/src/django/static/css/tokens/` rather than
-a second set of literals. A drawing-primitive library would put the brand in two places, which
-is the drift `code/docs/DESIGN-TOKENS.md` exists to prevent. The cost is honest and worth
-stating: `weasyprint` pulls native libraries (Pango, cairo), so it lands in the image as well as
-the lockfile.
+is authored the same way a page is and inherits the token layer (`code/docs/DESIGN-TOKENS.md`)
+rather than a second set of literals. A drawing-primitive library would put the brand in two
+places, which is the drift that guide exists to prevent. The cost is honest and worth stating:
+`weasyprint` pulls native libraries (Pango, cairo), so it lands in the image as well as the
+lockfile.
 
 A dependency is added through the procedure in `how-to/workflows/07-dependency-updates/` — never
 a raw `pip` or `uv` call.

@@ -17,14 +17,14 @@ model: opus
 These media queries reflect explicit OS-level or browser-level settings. They are non-negotiable —
 always respect them. Ignoring them is an accessibility failure.
 
-> **Token-first.** All six of these preference axes are modelled as `DesignTokenValue` variant
-> rows in the `design_tokens` system, and the generator (`services/render.py`) emits the **full
-> preference cascade** — `:root`, `[data-theme]`, `@media (prefers-color-scheme)`, and the
-> single-axis and compound `@media` blocks below — from those rows. **Never hand-edit the
-> generated or preference blocks**; change the value via the `/admin/design-tokens` editor (or the
-> `shared/src/css/tokens/` seed source) and let the generator re-emit. See
-> [../DESIGN-TOKENS.md](../DESIGN-TOKENS.md) and
-> [../design-tokens/CASCADE.md](../design-tokens/CASCADE.md).
+> **Token-first.** All six of these preference axes **will be** modelled as `DesignTokenValue`
+> variant rows in the `design_tokens` system, and the generator **will emit** the **full preference
+> cascade** — `:root`, `[data-theme]`, `@media (prefers-color-scheme)`, and the single-axis and
+> compound `@media` blocks below — from those rows. **Never hand-edit the generated or preference
+> blocks**; change the value via the `/admin/design-tokens` editor (or the CSS token layer that
+> seeds it) and let the generator re-emit. The generator is specified in
+> [../design-tokens/CASCADE.md](../design-tokens/CASCADE.md); the token layer in
+> [../DESIGN-TOKENS.md](../DESIGN-TOKENS.md).
 
 | Query                          | Values                                    | What it signals                             |
 | ------------------------------ | ----------------------------------------- | ------------------------------------------- |
@@ -43,7 +43,8 @@ Design and implement for both light and dark at the same time. Never add dark mo
 
 ### How this project implements dark mode
 
-All theming lives in `code/src/django/static/css/tokens/`. Two distinct layers:
+All theming belongs in the CSS token layer once it lands (`code/docs/DESIGN-TOKENS.md`). Two
+distinct files within it:
 
 | File           | Purpose                                                          |
 | -------------- | ---------------------------------------------------------------- |

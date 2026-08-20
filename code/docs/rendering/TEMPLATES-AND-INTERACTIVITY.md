@@ -65,9 +65,10 @@ def services(request):
 ```
 
 Reusable UI is a **django-component**, not a template partial copied around. SEO `<head>` content
-is built by `apps/marketing/seo.build_seo` and rendered through the `_seo_head.html` partial, so it
-arrives in the initial HTML for crawlers. New public pages are scaffolded with
-`bash code/src/scripts/development/new-django-view.sh <route_path>`, never hand-created.
+**will be** built by `build_seo()` and rendered through the `_seo_head.html` partial
+(`code/docs/discoverability/WEB-METADATA.md`), so it arrives in the initial HTML for crawlers. New
+public pages are scaffolded with `bash code/src/scripts/development/new-django-view.sh <route_path>`,
+never hand-created.
 
 ---
 
@@ -139,7 +140,10 @@ replacement for magic status strings are
 
 ---
 
-## Where each surface lives
+## Where each surface will live
+
+**The rows decide where an interaction runs, not what is on disk.** `cache_marketing` and
+`build_seo()` arrive with the stories that need them.
 
 | Data / interaction                    | Runs where               | How                                                        |
 | ------------------------------------- | ------------------------ | ---------------------------------------------------------- |
@@ -151,4 +155,3 @@ replacement for magic status strings are
 | SEO-critical page content             | Server (Django template) | `build_seo` + `_seo_head.html` in the initial HTML         |
 
 _Part of the `code/docs/` documentation family. See [`../RENDERING.md`](../RENDERING.md) for the full index._
-</content>
