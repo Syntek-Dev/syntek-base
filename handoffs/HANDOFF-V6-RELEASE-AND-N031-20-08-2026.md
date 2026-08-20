@@ -1,16 +1,16 @@
-# HANDOFF — v6.0.0 sits uncommitted in a second worktree; N-037 is settled and pushed
+# HANDOFF — two branches shipped and pushed; the rebase and the tag decision remain
 
-**Written**: 20/08/2026 · **Branch**: `pm/base-health-map` · **HEAD**: `61c4560` · **Pushed**: yes
-· **Tree**: clean · **Second worktree**: `../syntek-base-v6` on `pm/v6-rename-feature-surfaces`,
-**33 files uncommitted**
+**Written**: 20/08/2026 · **Branch**: `pm/base-health-map` · **HEAD**: `2b1a5bf` · **Pushed**: yes
+· **Tree**: clean · **Second worktree**: `../syntek-base-v6` on `pm/v6-rename-feature-surfaces`
+at `c155801`, **committed and pushed, tree clean**
 
 ## Goal
 
 Resolve `project-management/src/01-FEATURE-MAPS/MAP-BASE-HEALTH.md` one sitting at a time. This
-session settled **N-037** and moved **N-042**, and in parallel finished the **v6.0.0 rename** in a
-second worktree. **The v6 work is complete and entirely uncommitted.** The next session commits it,
-rebases it onto `pm/base-health-map`, and resolves the version-document conflicts that rebase will
-produce.
+session settled **N-037** and moved **N-042**, and in parallel finished and shipped the **v6.0.0
+rename** on its own branch. **Both branches are committed and pushed; nothing is uncommitted
+anywhere.** The next session **rebases `pm/v6-rename-feature-surfaces` onto `pm/base-health-map`**,
+resolves the version-document conflicts, and decides whether a `5.6.0` tag is cut at all.
 
 Frontier now **19 open · 0 blocking · 40 resolved** — recounted from the tables, `19 + 40 = 59 =
 N-059`. Per batch: A 0 · B 4 · D 4 · E 7 · unbatched 4.
@@ -40,19 +40,18 @@ the exact pre-change baseline · `ruff`, `ruff format`, `basedpyright` all clean
 
 ## In-flight
 
-**Nothing is mid-edit in the main tree. Everything below is in the second worktree.**
+**Nothing is mid-edit anywhere — both trees are clean and both branches are pushed.** What follows is not half-done work but the state the rebase has to reconcile.
 
-- **`../syntek-base-v6` — 33 files, all uncommitted, work COMPLETE.**
-  `.copier/migrations/v6.0.0-rename-feature-surfaces.sh` (24.6 KB, mode 755, 24 self-test
-  assertions) · `copier.yml:724` carries the `v6.0.0` `_migrations` entry · `VERSION` reads
-  `6.0.0` · labels and roster prose swept.
-  **That worktree now holds the only live copy of the v6 design record** — its `CHANGELOG.md`
-  `[6.0.0]` entry and the migration script's header. Committing it is therefore not merely
-  finishing the work; it is what puts the reasoning somewhere permanent. Do that before anything
-  that could reset the worktree.
-- **`../syntek-base-v6/CHANGELOG.md` — the entry says the bump is from `5.5.0`.** After the rebase
-  that is **false**; it will be from whatever the main branch bumps to. **This is a content edit,
-  not a merge choice** — `git` will take both hunks happily and leave the claim standing.
+- **`../syntek-base-v6` at `c155801` — committed and pushed, 33 files, tree clean.**
+  `.copier/migrations/v6.0.0-rename-feature-surfaces.sh` (24.6 KB, mode 755, **24** mutation-proven
+  self-test assertions) · `copier.yml:724` carries the `v6.0.0` `_migrations` entry · `VERSION`
+  reads `6.0.0` · labels and roster prose swept. The v6 design record is now durable: the
+  `CHANGELOG.md` `[6.0.0]` entry and the migration script's header, both committed.
+- **`../syntek-base-v6/CHANGELOG.md` says the bump is from `5.5.0`, and that is CURRENTLY TRUE.**
+  `pm/base-health-map` was never bumped — `VERSION` there still reads `5.5.0` — so a rebase today
+  leaves the claim correct. **It becomes false only if `5.6.0` is cut first**, which is Open
+  Question 1. Decide the tag before the rebase, not after, because the changelog prose is a
+  content edit and `git` will take both hunks happily and leave a false predecessor standing.
 - **`REFERENCES.md` — edited on both branches.** Non-adjacent lines (the main branch added a
   `PROJECT-PATHS.md` row; the worktree fixed labels at `:124`, `:166`, `:209`), so the conflict is
   real but small.
@@ -61,21 +60,24 @@ the exact pre-change baseline · `ruff`, `ruff format`, `basedpyright` all clean
 
 ## Next
 
-**Commit the 33 files in `../syntek-base-v6`, then rebase that branch onto `pm/base-health-map`.**
-Run the gates in the worktree first; `doc-references.sh` will be red there on the five
-`PROJECT-PATHS.md` findings until the rebase brings that file across, and that red is expected and
-external.
+**Settle Open Question 1 — is a `5.6.0` tag cut at all — and then rebase
+`pm/v6-rename-feature-surfaces` onto `pm/base-health-map`.** The answer changes the changelog prose,
+so it comes first. `doc-references.sh` is red on the v6 branch on five `PROJECT-PATHS.md` findings
+and goes green the moment the rebase brings that file across; that red is expected and external.
 
 ## Then, in order
 
-1. **Bump `pm/base-health-map` to `5.6.0`** — MINOR, and the row is decidable without judgement:
+1. **Decide whether `5.6.0` is cut at all (Open Question 1).** If it is: MINOR, and the row is
+   decidable without judgement:
    `CONTRIBUTING.md:200-203`, _"Adding a question with a default, a new guide, a new skill, a new
    workflow"_. Two new guides shipped (`FORWARD-VOICE.md`, `PROJECT-PATHS.md`). Nothing in the eight
    commits removes a question, a token, a routing contract, or an inherited directory.
-2. **Rebase the v6 branch on top**, so its bump becomes `5.6.0 → 6.0.0` and the history stays
-   linear — which is what v6-design Q12 wanted before a second worktree existed.
-3. **Rewrite the v6 changelog entry** to name the real predecessor. Do not hand-merge version
-   state: `.claude/skills/resolving-merge-conflicts/SKILL.md` names it as a file class that must
+2. **Rebase `pm/v6-rename-feature-surfaces` onto `pm/base-health-map`** — linear history on one
+   branch, which is what v6-design Q12 wanted before a second worktree existed. Expect a conflict
+   in `REFERENCES.md` on non-adjacent lines: this branch added a `PROJECT-PATHS.md` row, the v6
+   branch fixed workflow labels at `:124`, `:166` and `:209`.
+3. **Rewrite the v6 changelog entry ONLY IF `5.6.0` was cut**, to name the real predecessor. It
+   is correct as it stands if it was not. Do not hand-merge version state either way: `.claude/skills/resolving-merge-conflicts/SKILL.md` names it as a file class that must
    not be merged blind.
 4. **Tag and release** through `project-management/workflows/23-release/`. **No tag exists and none
    should be created before the rebase** — verified `git tag -l 'v6*'` is empty, 63 tags, latest
