@@ -59,7 +59,7 @@ JSON (`/api/*`). Backend models and services must exist before this workflow beg
 
 #### Source locations
 
-- `code/src/django/config/api.py` — the single `NinjaAPI` (mount new app routers here); `config/urls.py` serves it at `/api/`
+- `code/src/django/config/api.py` — the single `NinjaAPI` (mount new app routers here). **Created by the first endpoint story (Step 2); absent at baseline** (`how-to/src/PROJECT-PATHS.md`). `config/urls.py` will serve it at `/api/` from that point
 - `code/src/django/apps/<name>/api.py` — the per-app Ninja `router` (endpoints + Schemas) for the feature
 
 #### project-management/ — what precedes this, and what follows

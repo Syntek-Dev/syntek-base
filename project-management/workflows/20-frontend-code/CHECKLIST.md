@@ -28,7 +28,7 @@ model: opus
 - [ ] Pages and routes implemented per the wireframes
 - [ ] All components implement every required state (default, hover, focus, disabled, error, success, empty)
 - [ ] Design tokens applied via CSS custom properties — no raw hex values or hard-coded sizes
-- [ ] New CSS values checked against the design-token layer (`code/src/django/apps/design_tokens/`) before hardcoding — token added via the `/admin/design-tokens` editor or a migration if missing
+- [ ] New CSS values checked against the design-token layer (`code/docs/DESIGN-TOKENS.md`) before hardcoding — a missing token is added at its canonical source, never as a literal
 - [ ] No CSS declaration block repeated in 4+ files — extracted to `sections/utility.css` or a section layer
 - [ ] Logical properties used (`margin-block-end`, `padding-inline`, etc.) — no physical properties in new or refactored CSS
 - [ ] Component CSS does not re-declare another component's internal declarations

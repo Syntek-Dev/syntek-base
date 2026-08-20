@@ -18,9 +18,9 @@ project-management/src/06-BRAND-GUIDE/IMPLEMENTATION/
 
 ## What it holds
 
-Per story: each consolidated token the story consumed, confirmed present in `apps.design_tokens`
-and resolving in the token CSS layer; confirmation that no raw literal was used in component
-CSS; and any deviation from the consolidated set.
+Per story: each consolidated token the story consumed, confirmed present in the DB-canonical
+token layer (`code/docs/DESIGN-TOKENS.md`) and resolving in the token CSS; confirmation that no
+raw literal was used in component CSS; and any deviation from the consolidated set.
 
 ## The literal check is the one that matters
 

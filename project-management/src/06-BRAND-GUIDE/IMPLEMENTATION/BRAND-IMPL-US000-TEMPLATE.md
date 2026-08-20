@@ -12,9 +12,9 @@
 
 ## 1 — Tokens consumed
 
-| Token | In `apps.design_tokens` | Resolves in token CSS | Matches consolidated value | Evidence |
-| ----- | ----------------------- | --------------------- | -------------------------- | -------- |
-|       |                         |                       |                            |          |
+| Token | In the token layer | Resolves in token CSS | Matches consolidated value | Evidence |
+| ----- | ------------------ | --------------------- | -------------------------- | -------- |
+|       |                    |                       |                            |          |
 
 ---
 

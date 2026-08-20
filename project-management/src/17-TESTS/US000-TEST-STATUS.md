@@ -19,11 +19,11 @@ why below (e.g. "E2E — none this story: no user-facing journey added").
 
 | Suite                        | Test file(s)                                            | Count   | Result            | Coverage  |
 | ---------------------------- | ------------------------------------------------------- | ------- | ----------------- | --------- |
-| _[EXAMPLE] Unit_             | _`apps/{app}/tests/test_login.py`_                      | _24_    | _24 ✅ / 0 ❌_    | _{NN}%_   |
-| _[EXAMPLE] Integration_      | _`apps/{app}/tests/integration/test_signup_flow.py`_    | _11_    | _11 ✅ / 0 ❌_    | _{NN}%_   |
-| _[EXAMPLE] Templates/HTMX_   | _`apps/{app}/tests/test_views.py` (Django test client)_ | _9_     | _9 ✅ / 0 ❌_     | _{NN}%_   |
-| _[EXAMPLE] API / contract_   | _`code/src/tests/api/{collection}.bru` (Bruno)_         | _8_     | _8 ✅ / 0 ❌_     | _—_       |
-| _[EXAMPLE] E2E (Playwright)_ | _`code/src/django/tests/e2e/test_e2e_journey.py`_       | _5_     | _5 ✅ / 0 ❌_     | _—_       |
+| _[EXAMPLE] Unit_             | _`apps/<app>/tests/test_login.py`_                      | _24_    | _24 ✅ / 0 ❌_    | _{NN}%_   |
+| _[EXAMPLE] Integration_      | _`apps/<app>/tests/integration/test_signup_flow.py`_    | _11_    | _11 ✅ / 0 ❌_    | _{NN}%_   |
+| _[EXAMPLE] Templates/HTMX_   | _`apps/<app>/tests/test_views.py` (Django test client)_ | _9_     | _9 ✅ / 0 ❌_     | _{NN}%_   |
+| _[EXAMPLE] API / contract_   | _`code/src/tests/api/<collection>.bru` (Bruno)_         | _8_     | _8 ✅ / 0 ❌_     | _—_       |
+| _[EXAMPLE] E2E (Playwright)_ | _`code/src/django/tests/e2e/test_e2e_<journey>.py`_     | _5_     | _5 ✅ / 0 ❌_     | _—_       |
 | _[EXAMPLE] Accessibility_    | _`code/src/django/tests/e2e/test_e2e_a11y.py` (axe)_    | _3_     | _3 ✅ / 0 ❌_     | _0 viol._ |
 | **Totals**                   |                                                         | **{N}** | **{N} ✅ / 0 ❌** | **{NN}%** |
 

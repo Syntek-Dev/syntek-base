@@ -135,7 +135,7 @@ Each workflow `CONTEXT.md` with path and purpose.
 - **Core Web Vitals** — https://web.dev/articles/vitals — LCP < 2.5 s, CLS < 0.1, INP < 200 ms targets applied across all public pages
 - **llms.txt specification** — https://llmstxt.org/ — an index for agents that read rather than crawl. **Not a search or citation signal**; see `code/docs/discoverability/ROOT-SURFACE.md` Section 1
 - **Google — AI features and your website** — https://developers.google.com/search/docs/appearance/ai-features — the primary source stating that AI Overviews and AI Mode need no additional optimisation, no new machine-readable files, and no special schema
-- **Per-page metadata** — rendered server-side via Django templates and the SEO app (`code/src/django/apps/seo`) — sets title, description, Open Graph, and canonical tags on all public pages
+- **Per-page metadata** — rendered server-side via Django templates and the `build_seo()` head pipeline, **which will set** title, description, Open Graph and canonical tags on all public pages once it is wired (`code/docs/discoverability/WEB-METADATA.md`)
 - **Open Graph protocol** — https://ogp.me/ — metadata standard for social sharing previews
 
 ---

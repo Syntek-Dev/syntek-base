@@ -102,20 +102,22 @@ frontend [describe the pages and routes to implement]
 
 **Component placement — decide before writing any component code:**
 
-| Artefact type                                                        | Location                                                                                                                                     |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Design tokens (colour, spacing, radius, typography, shadows, motion) | `code/src/django/apps/design_tokens/` — DB-canonical; enter via the `/admin/design-tokens` editor or a migration, consumed as `var(--token)` |
-| Reusable server-rendered component (used in 2+ pages or areas)       | `code/src/django/components/<name>/` — a django-component, reused via `{% component %}`                                                      |
-| Area layout shell (reusable page skeleton within an area)            | a base template in `code/src/django/templates/` extended via `{% extends %}` — see the `marketing`, `portal` areas for the pattern           |
-| Page-specific template partial or HTMX/Alpine behaviour              | alongside the page template in `code/src/django/templates/`                                                                                  |
-| HTMX swap target (a fragment a view returns on `HX-Request`)         | `_<name>.html` beside the page template, `{% include %}`d by the full page so both paths share one source                                    |
-| Route, page, or view                                                 | `code/src/django/apps/marketing/` (view + `urls.py`) with its template in `code/src/django/templates/`                                       |
+| Artefact type                                                        | Location                                                                                                                                                      |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Design tokens (colour, spacing, radius, typography, shadows, motion) | DB-canonical, consumed as `var(--token)` — `code/docs/DESIGN-TOKENS.md` names the layer and how a value is added                                              |
+| Reusable server-rendered component (rendered by more than one app)   | a django-component in whichever of the two component roots ownership assigns — `code/docs/FRONTEND-CODING-PRINCIPLES.md` Section _Component & Code Placement_ |
+| Area layout shell (reusable page skeleton within an area)            | a base template in `code/src/django/templates/` extended via `{% extends %}`, holding the chrome every page in that area shares                               |
+| Page-specific template partial or HTMX/Alpine behaviour              | alongside the page template in `code/src/django/templates/`                                                                                                   |
+| HTMX swap target (a fragment a view returns on `HX-Request`)         | `_<name>.html` beside the page template, `{% include %}`d by the full page so both paths share one source                                                     |
+| Route, page, or view                                                 | `code/src/django/apps/marketing/` (view + `urls.py`) with its template in `code/src/django/templates/`                                                        |
 
-`code/src/django/apps/design_tokens/` is the **only** source of design token values. No page
-or component CSS may define its own colour, spacing, radius, typography, shadow, or motion values.
-If a token does not exist, add it via the `/admin/design-tokens` editor or a migration — never a
-raw literal in component/page CSS. Component CSS only ever consumes `var(--token)`.
-`code/src/django/components/` is the authority for component styling and BEM conventions.
+Design token values have exactly one source, and it is DB-canonical —
+`code/docs/DESIGN-TOKENS.md` owns that rule and names the app that will hold it. No page or
+component CSS may define its own colour, spacing, radius, typography, shadow, or motion values; a
+missing token is added at its canonical source, never as a raw literal in component or page CSS.
+Component CSS only ever consumes `var(--token)`.
+`code/docs/FRONTEND-CODING-PRINCIPLES.md` is the authority for component styling and BEM
+conventions.
 
 If a page renders Cloudinary-hosted images or video, build the delivery URL server-side with the
 Cloudinary Python SDK. Invoke `/cloudinary-transformations` for transformation URL syntax before

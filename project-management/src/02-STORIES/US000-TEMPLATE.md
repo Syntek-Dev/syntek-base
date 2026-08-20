@@ -246,7 +246,7 @@ Then the state changes in the browser with no server round-trip
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the Django template `<head>` (the SEO app `build_seo` helper)
+- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the Django template `<head>`, through the `build_seo()` helper the first public page brings with it (`code/docs/discoverability/WEB-METADATA.md`)
 - [ ] `og:title`, `og:description`, and `og:image` are set for all new public pages
 - [ ] Canonical URL is set correctly — no duplicate content risk
 - [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`, `Organization`)
@@ -278,7 +278,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when DB flag is N/A. -->
 
-- [ ] Create Django model `[ModelName]` in `code/src/django/apps/[app]/models.py`
+- [ ] Create Django model `[ModelName]` in `code/src/django/apps/<app>/models.py`
 - [ ] Add fields: [field list with types and constraints]
 - [ ] Add unique constraint on `([field_a, field_b])`
 - [ ] Add index on `[field_c]` for `[query pattern]`
@@ -298,7 +298,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when Backend flag is N/A. -->
 
-- [ ] Implement service method `[name]` in `code/src/django/apps/[app]/services.py` wrapped in `transaction.atomic()`
+- [ ] Implement service method `[name]` in `code/src/django/apps/<app>/services.py` wrapped in `transaction.atomic()`
 - [ ] Verify caller ownership of user-supplied `[id field]` before querying (IDOR prevention)
 - [ ] Implement `post_save` signal for `[Model]` using `get_or_create` (idempotent)
 - [ ] Create Celery task `[task_name]` with schedule `[cron expression]`
@@ -320,8 +320,8 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Pages and components -->
 
-- [ ] Scaffold the public page via `bash code/src/scripts/development/new-django-view.sh [route_path]` — a Django view + template + `urls.py` entry in `apps.marketing`
-- [ ] Build `[ComponentName]` as a django-component in `code/src/django/components/[name]/` (HTMX + Alpine, token-driven CSS)
+- [ ] Scaffold the public page via `bash code/src/scripts/development/new-django-view.sh <route_path>` — a Django view + template + `urls.py` entry in `apps.marketing`
+- [ ] Build `[ComponentName]` as a django-component in the root its ownership assigns it — `code/docs/FRONTEND-CODING-PRINCIPLES.md` Section _Component & Code Placement_ (HTMX + Alpine, token-driven CSS)
 - [ ] Wire server-side rendering / HTMX interactions — no client-side API fetch anywhere
 - [ ] Implement form validation (required fields, character limits, live counters)
 - [ ] Implement permission-based control visibility (hidden / disabled with tooltip)
@@ -341,7 +341,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when GDPR flag is N/A. -->
 
-- [ ] Add `EncryptedField` (Fernet AES-256-GCM) to `[field_name]` in `[app]/models.py`
+- [ ] Add `EncryptedField` (Fernet AES-256-GCM) to `[field_name]` in `<app>/models.py`
 - [ ] Add HMAC-SHA3-256 companion field `[hmac_token]` for erasure lookup without decryption
 - [ ] Implement `[app].gdpr_erase([identifier])` — nulls `[field list]`, retains row
 - [ ] Wire `[app].gdpr_erase()` into the US### erasure orchestrator
@@ -365,7 +365,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 <!-- Always applicable when Backend or Frontend ≠ N/A.
      Reference: code/docs/LOGGING.md -->
 
-- [ ] Backend: use `logging.getLogger("apps.[app-name]")` for all log calls in `[app]/services.py` and `[app]/api.py` (Ninja endpoints)
+- [ ] Backend: use `logging.getLogger("apps.[app-name]")` for all log calls in `<app>/services.py` and `<app>/api.py` (Ninja endpoints)
 - [ ] Backend: add `DEBUG` log at entry of `[service_method]` with `[entity]_id` and `action` only
 - [ ] Backend: add `INFO` log on success of `[service_method]` with `[entity]_id` and `duration_ms`
 - [ ] Backend: add `WARNING` log on permission-denied in `[endpoint]` — include `actor_id`, `action`; never include token or PII
@@ -378,7 +378,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] Set `<title>` and `<meta name="description">` via the Django template `<head>` (SEO app `build_seo` helper) for `[page / route]`
+- [ ] Set `<title>` and `<meta name="description">` via the Django template `<head>` for `[page / route]` — through the `build_seo()` helper (`code/docs/discoverability/WEB-METADATA.md`)
 - [ ] Set `og:title`, `og:description`, `og:image` for `[page / route]`
 - [ ] Set canonical URL for `[page / route]`
 - [ ] Add JSON-LD structured data (`[schema type]`) to `[page / route]`

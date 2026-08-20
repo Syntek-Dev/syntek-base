@@ -156,7 +156,7 @@
 <!-- Remove this section when SEO flag is N/A. -->
 
 - [ ] The `seo` skill run against all public pages introduced in this sprint; output reviewed and all issues resolved
-- [ ] `<title>` set via the Django template `<head>` (SEO app `build_seo` helper) — max 60 chars — contains primary keyword
+- [ ] `<title>` set via the Django template `<head>`, through the `build_seo()` helper (`code/docs/discoverability/WEB-METADATA.md`) — max 60 chars — contains primary keyword
 - [ ] `<meta name="description">` set — max 160 chars — unique to this page
 - [ ] `<link rel="canonical">` present and correct
 - [ ] `og:title`, `og:description`, `og:image` (min 1200 × 630 px) all set
@@ -207,7 +207,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 | Story | Task                                                                              | Done |
 | ----- | --------------------------------------------------------------------------------- | ---- |
-| US### | Implement service method `[name]` in `[app]/services.py` — `transaction.atomic()` | [ ]  |
+| US### | Implement service method `[name]` in `<app>/services.py` — `transaction.atomic()` | [ ]  |
 | US### | Implement `post_save` signal for `[Model]` — idempotent via `get_or_create`       | [ ]  |
 | US### | Create Celery task `[task_name]` with schedule `[cron]`                           | [ ]  |
 | US### | Add `audit_auditlog` entry on `[event]`                                           | [ ]  |

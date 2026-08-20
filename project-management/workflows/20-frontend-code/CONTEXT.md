@@ -78,11 +78,16 @@ that section entirely; nothing else in this workflow changes.
 #### Source locations
 
 - `code/src/django/` — Django project root (public frontend: views, templates, components)
-- `code/src/django/apps/marketing/` — public marketing pages (views + `urls.py`);
-  scaffold a new page with `code/src/scripts/development/new-django-view.sh`
+- `code/src/django/apps/marketing/` — the app directory holding the public pages, created by
+  `code/src/scripts/development/new-django-app.sh` on the first story that needs one
+  (`how-to/src/PROJECT-PATHS.md`). Its `views/`, `urls.py` and `seo.py` are written by that story,
+  not by the scaffolder; `code/src/scripts/development/new-django-view.sh` adds later pages and
+  refuses until those exist
 - `code/src/django/templates/` — Django page templates
-- `code/src/django/components/` — django-components server-rendered UI library; check here
-  first before creating any new component
+- `code/src/django/components/` — the cross-app django-components library, created by this
+  workflow at Step 4 on the first story that needs a component shared across apps
+  (`how-to/src/PROJECT-PATHS.md`). Which root a component belongs in is stated once, in
+  `code/docs/FRONTEND-CODING-PRINCIPLES.md`; check both roots before creating a new one
 
 #### project-management/ — what precedes this, what follows, and the guides
 

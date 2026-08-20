@@ -59,19 +59,19 @@ impossible to run in its own slot.
 
 ## SEO criteria quick reference
 
-| Area              | Target / Rule                                                              |
-| ----------------- | -------------------------------------------------------------------------- |
-| Title             | Set via `apps.seo` `build_seo`; max 60 chars; contains the primary keyword |
-| Meta description  | Set via `build_seo`; max 160 chars; descriptive and unique                 |
-| Open Graph        | `og:title`, `og:description`, `og:image` all planned                       |
-| Canonical URL     | `<link rel="canonical">` planned; no duplicate content                     |
-| JSON-LD           | Schema type chosen for the page (Article, BreadcrumbList, Organization, …) |
-| Slug / URL        | Lowercase, hyphenated, human-readable, keyword-bearing                     |
-| Sitemap           | Inclusion decided; Celery regeneration noted if applicable                 |
-| robots.txt        | Indexing decision stated explicitly                                        |
-| Core Web Vitals   | Budgets set: LCP < 2.5 s · CLS < 0.1 · INP < 200 ms                        |
-| Images            | Alt-text intent stated per image role                                      |
-| Heading hierarchy | One `<h1>`; `<h2>`/`<h3>` order planned from the wireframe                 |
+| Area              | Target / Rule                                                                                                              |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Title             | Set via the `build_seo()` helper (`code/docs/discoverability/WEB-METADATA.md`); max 60 chars; contains the primary keyword |
+| Meta description  | Set via `build_seo`; max 160 chars; descriptive and unique                                                                 |
+| Open Graph        | `og:title`, `og:description`, `og:image` all planned                                                                       |
+| Canonical URL     | `<link rel="canonical">` planned; no duplicate content                                                                     |
+| JSON-LD           | Schema type chosen for the page (Article, BreadcrumbList, Organization, …)                                                 |
+| Slug / URL        | Lowercase, hyphenated, human-readable, keyword-bearing                                                                     |
+| Sitemap           | Inclusion decided; Celery regeneration noted if applicable                                                                 |
+| robots.txt        | Indexing decision stated explicitly                                                                                        |
+| Core Web Vitals   | Budgets set: LCP < 2.5 s · CLS < 0.1 · INP < 200 ms                                                                        |
+| Images            | Alt-text intent stated per image role                                                                                      |
+| Heading hierarchy | One `<h1>`; `<h2>`/`<h3>` order planned from the wireframe                                                                 |
 
 ## Cross-references
 

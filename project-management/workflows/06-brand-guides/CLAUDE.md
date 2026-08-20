@@ -28,9 +28,9 @@ component design begins.
 
 ## Guardrails
 
-- **Token-first.** Brand values are DB-canonical — they enter the token layer via the
-  `/admin/design-tokens` editor or a migration, never as raw literals in component CSS
-  (`code/docs/DESIGN-TOKENS.md`). Breakpoints are build-time only, **not** DB-driven.
+- **Token-first.** Brand values are DB-canonical; how a value enters the token layer is
+  `code/docs/DESIGN-TOKENS.md`. Never a raw literal in component CSS. Breakpoints are
+  build-time only, **not** DB-driven.
 - **A change that alters existing tokens requires a token migration plan** — do not
   silently rewrite live values.
 - Colour contrast WCAG AA 4.5:1; the Brand Guide Figma file is client-facing — keep it
@@ -41,6 +41,6 @@ component design begins.
 
 - **Hand-written:** `BRAND-COLOURS.md`, `BRAND-TYPOGRAPHY.md`, `BRAND-SPACING.md`,
   `BRAND-LOGOS.md` in `src/06-BRAND-GUIDE/`; `STEPS.md`/`CHECKLIST.md` updates.
-- **Downstream (not in this folder):** Figma files and the design token models in
-  `code/src/django/apps/design_tokens/`.
+- **Downstream (not in this folder):** Figma files, and the design token models a later story will
+  build to the contract in `code/docs/DESIGN-TOKENS.md`.
 - Documentation files `SCREAMING-SNAKE-CASE.md`; dates DD/MM/YYYY.

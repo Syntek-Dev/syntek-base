@@ -17,8 +17,8 @@ tokens a story consumed exist in the token layer and match `../CONSOLIDATED-IDEA
 - **Model:** Opus — verifying tokens landed is mechanical. Escalate to `frontend` (Fable) only
   where a deviation needs judging.
 - **Concrete steps:** copy `BRAND-IMPL-US000-TEMPLATE.md` →
-  `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → confirm each consumed token exists in
-  `apps.design_tokens` and resolves in the token CSS layer → **run
+  `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → confirm each consumed token exists in the
+  DB-canonical token layer (`code/docs/DESIGN-TOKENS.md`) and resolves in the token CSS → **run
   `bash code/src/scripts/audits/css-tokens.sh` and record the result** → justify any deviation.
 - **Definition of done:** every consumed token verified present and resolving; the token audit
   recorded clean (or its failures routed); deviations justified; British English.

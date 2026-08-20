@@ -57,9 +57,9 @@ shapes and endpoint signatures first.
 
 Create the Ninja request/response Schemas and the `router` for the feature in the
 relevant Django app's `api.py`. Mount that router onto the project's single `NinjaAPI`,
-defined once in `code/src/django/config/api.py` and served at `/api/` by `config/urls.py`.
-If no `NinjaAPI` exists yet, this story creates it — see
-`code/docs/api-design/NINJA-CONVENTIONS.md`.
+defined once in `code/src/django/config/api.py`, which `config/urls.py` mounts at `/api/`
+from the story that creates it — there is no `/api/` route at baseline. If no `NinjaAPI`
+exists yet, this story creates it — see `code/docs/api-design/NINJA-CONVENTIONS.md`.
 
 ### Step 3 — Write Read Endpoints
 

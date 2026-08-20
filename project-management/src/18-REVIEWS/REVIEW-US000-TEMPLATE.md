@@ -26,9 +26,9 @@ explicitly out of scope or deferred to a follow-on story.
 
 | File                                                  | Change                                      |
 | ----------------------------------------------------- | ------------------------------------------- |
-| _[EXAMPLE] `apps/{app}/services/{svc}.py`_            | _Created — {service}, {method}, guards_     |
-| _[EXAMPLE] `apps/{app}/api.py`_                       | _Added `{endpoint}` operation + Schema_     |
-| _[EXAMPLE] `apps/{app}/migrations/0002_add_field.py`_ | _Created — {model}, constraint, RLS policy_ |
+| _[EXAMPLE] `apps/<app>/services/<svc>.py`_            | _Created — {service}, {method}, guards_     |
+| _[EXAMPLE] `apps/<app>/api.py`_                       | _Added `{endpoint}` operation + Schema_     |
+| _[EXAMPLE] `apps/<app>/migrations/0002_add_field.py`_ | _Created — {model}, constraint, RLS policy_ |
 
 _One row per changed file; delete the `[EXAMPLE]` rows._
 
@@ -42,11 +42,11 @@ tracks it to closure (Open / Fixed `{commit}` / Deferred `{US###}` / Won't-fix `
 
 | ID                | Severity   | File:line                            | Issue                                                      | Resolution/Status    |
 | ----------------- | ---------- | ------------------------------------ | ---------------------------------------------------------- | -------------------- |
-| _[EXAMPLE] R-001_ | _Critical_ | _`apps/{app}/api.py:42`_             | _Endpoint runs before permission check_                    | _Fixed — `{commit}`_ |
-| _[EXAMPLE] R-002_ | _High_     | _`apps/{app}/services/{svc}.py:88`_  | _User-supplied `id` not ownership-checked (IDOR)_          | _Fixed — `{commit}`_ |
-| _[EXAMPLE] R-003_ | _Medium_   | _`apps/{app}/models/{model}.py:31`_  | _`null=True` mismatch between model and migration_         | _Deferred — US###_   |
-| _[EXAMPLE] R-004_ | _Low_      | _`apps/{app}/services/{svc}.py:120`_ | _N+1: second query per call, no `select_related`_          | _Open_               |
-| _[EXAMPLE] R-005_ | _Info_     | _`apps/{app}/schemas.py:15`_         | _`exclude_unset` partial-update pattern confirmed correct_ | _No action_          |
+| _[EXAMPLE] R-001_ | _Critical_ | _`apps/<app>/api.py:42`_             | _Endpoint runs before permission check_                    | _Fixed — `{commit}`_ |
+| _[EXAMPLE] R-002_ | _High_     | _`apps/<app>/services/<svc>.py:88`_  | _User-supplied `id` not ownership-checked (IDOR)_          | _Fixed — `{commit}`_ |
+| _[EXAMPLE] R-003_ | _Medium_   | _`apps/<app>/models/<model>.py:31`_  | _`null=True` mismatch between model and migration_         | _Deferred — US###_   |
+| _[EXAMPLE] R-004_ | _Low_      | _`apps/<app>/services/<svc>.py:120`_ | _N+1: second query per call, no `select_related`_          | _Open_               |
+| _[EXAMPLE] R-005_ | _Info_     | _`apps/<app>/schemas.py:15`_         | _`exclude_unset` partial-update pattern confirmed correct_ | _No action_          |
 
 Severity scale: **Critical** (merge blocker — exploit, data loss, broken auth) ·
 **High** (must-fix before merge) · **Medium** (fix now or ticket with a named story) ·

@@ -65,5 +65,4 @@ None — brand guide work is a design phase; no code safety gates apply.
 - `code/docs/DESIGN-TOKENS.md` — DB-driven token system that brand decisions feed into
 - `project-management/src/06-BRAND-GUIDE/` — finalised brand decision records (markdown)
 - `project-management/workflows/07-component-designs/` — follow this after brand guides are agreed
-- `code/src/django/apps/design_tokens/` — design token models live here
-- `code/src/django/` — CSS custom properties from the token system are consumed in the token-driven vanilla CSS of the Django templates and django-components
+- `code/src/django/` — CSS custom properties from the token system will be consumed in the token-driven vanilla CSS of the Django templates and django-components

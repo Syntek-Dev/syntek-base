@@ -53,9 +53,9 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   with every story that ships on it (`code/docs/DATABASE.md` — constraints in the
   database, scope column with its policy and index, lock-safe migration shape). Visual
   drift is cheap by comparison; do `04-DATABASE` before the design folders.
-- **Token-first survives consolidation.** Consolidated design values are DB-canonical
-  (`code/docs/DESIGN-TOKENS.md`) — they enter via the `/admin/design-tokens` editor or a
-  migration, never as a literal in component CSS.
+- **Token-first survives consolidation.** Consolidated design values are DB-canonical; how a
+  value enters the token layer is `code/docs/DESIGN-TOKENS.md`. Never a literal in component
+  CSS.
 - **A consolidation that changes a planned shape must correct the plan.** Leaving a
   `STORY-PLAN-US###-*.md` asserting a superseded design is how the whole two-stage model
   fails — the developer codes from the plan, not from here.

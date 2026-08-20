@@ -4,8 +4,8 @@
 **Stage-1 records weighed**: `BRAND-IDEA-US###-*.md`, `BRAND-IDEA-US###-*.md`, …
 
 > Copy to `BRAND-CONSOLIDATED-<DOMAIN>.md`. This document drives the **single** regeneration of
-> `../guide-build/brand_guide.py` for the cycle, and its values become DB-canonical in
-> `apps.design_tokens`.
+> `../guide-build/brand_guide.py` for the cycle, and its values become the DB-canonical token
+> set that `code/docs/DESIGN-TOKENS.md` defines.
 
 ---
 
