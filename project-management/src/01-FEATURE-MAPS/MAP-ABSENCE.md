@@ -1,6 +1,6 @@
 # MAP-ABSENCE — Absence is not one thing
 
-**Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature`
+**Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Status**: **Charting** — frontier drawn, nothing settled beyond the research nodes
 **Frontier open**: 11 · **Blocking open**: 1 (N-008) · **Fog of war open**: 4
 **Measured at**: 15/08/2026 11:26, against `pm/base-health-map` at `7cd385d` **plus 10 uncommitted

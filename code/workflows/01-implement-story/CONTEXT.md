@@ -1,6 +1,6 @@
-# Workflow: Add a New Full-Stack Feature
+# Workflow: Implement a Story
 
-A feature crosses the backend and the frontend, so the order the two are built in decides how
+A story crosses the backend and the frontend, so the order the two are built in decides how
 much rework happens. This workflow exists to fix that order — and to reach the shared gates
 (records, docs, graph) through the PM layer rather than at each developer's discretion.
 
@@ -16,8 +16,9 @@ code/workflows/01-implement-story/
 
 ## When to use this
 
-Use this workflow when adding any new capability to the website that requires both backend
-(Django) and frontend (Django templates + django-components + HTMX + Alpine) work.
+Use this workflow when one `US###` story requires both backend (Django) and frontend (Django
+templates + django-components + HTMX + Alpine) work. An epic spanning several stories is charted
+with `wayfinder` first, then cut into stories — the unit here is one story, never the epic.
 
 ## Key concepts
 

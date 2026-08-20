@@ -5,7 +5,7 @@ skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
 model: fable
 ---
 
-# Feature — Checklist
+# Feature Map — Checklist
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)

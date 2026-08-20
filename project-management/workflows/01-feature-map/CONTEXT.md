@@ -1,4 +1,4 @@
-# Workflow 01 — Feature
+# Workflow 01 — Feature Map
 
 **Last Updated**: <%DATE%>
 

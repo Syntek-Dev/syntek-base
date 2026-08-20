@@ -95,7 +95,7 @@ project-management/workflows/
 ├── CLAUDE.md                   ← operating rules for this folder
 │
 │   ── Discover, once per feature (01) ──
-├── 01-feature/                 ← wayfinder: chart the decision frontier, resolve it
+├── 01-feature-map/             ← wayfinder: chart the decision frontier, resolve it
 │
 │   ── Specify, one story at a time (02–13) ──
 ├── 02-story-creation/          ← write a well-formed user story with acceptance criteria
@@ -134,7 +134,7 @@ Every folder carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.
 
 | Workflow                           | Purpose                                                          |
 | ---------------------------------- | ---------------------------------------------------------------- |
-| `01-feature/`                      | Chart the feature's decision frontier with wayfinder, resolve it |
+| `01-feature-map/`                  | Chart the feature's decision frontier with wayfinder, resolve it |
 | `02-story-creation/`               | Write a well-formed user story with acceptance criteria          |
 | `03-sprint-planning/`              | Open the sprint record and accumulate stories against capacity   |
 | `04-database-schema/`              | Design and sign off this story's schema before coding            |

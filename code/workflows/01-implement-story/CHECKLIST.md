@@ -5,7 +5,7 @@ skills: [implement-story, stack-django, stack-htmx-templates, global-workflow]
 model: opus
 ---
 
-# Add a New Full-Stack Feature — Checklist
+# Implement a Story — Checklist
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)

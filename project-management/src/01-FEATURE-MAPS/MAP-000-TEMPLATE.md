@@ -1,6 +1,6 @@
 # MAP-[FEATURE] — [Title]
 
-**Charted**: DD/MM/YYYY · **Charted by**: [name] · **Workflow**: `01-feature`
+**Charted**: DD/MM/YYYY · **Charted by**: [name] · **Workflow**: `01-feature-map`
 **Status**: Charting / Resolving / Blockers clear — stories may start / Complete
 **Frontier open**: [n] · **Blocking open**: [n]
 

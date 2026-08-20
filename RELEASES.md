@@ -1,11 +1,121 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 5.5.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 6.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v6.0.0 — 20/08/2026
+
+**Status:** Major — four folders in your project are renamed, and taking this update moves
+anything **you** wrote inside them across to the new names for you. Nothing your project does at
+runtime changes, and no code is touched. If you have written notes, maps or a skill of your own
+inside any of the four, read the last two sections — they are the reason this is a whole-number
+release.
+
+### One word was being used for two different sizes of work
+
+This project has a step where you map out a large piece of work and decide the questions it
+raises, and a separate step where you build one small, self-contained item from that map. Both
+were called a "feature". Same word, same repository, sometimes in neighbouring sentences.
+
+That is not merely untidy. The two steps have different sizes, different outputs and different
+starting points, and the instructions Claude reads to choose between them were pointing at
+folders whose names could not tell them apart. Renaming them is the fix, and renaming a folder
+your project has inherited is a break, whatever the reason for it.
+
+| It used to be called                       | It is now called                               |
+| ------------------------------------------ | ---------------------------------------------- |
+| `.claude/skills/feature/`                  | `.claude/skills/implement-story/`              |
+| `code/workflows/01-new-feature/`           | `code/workflows/01-implement-story/`           |
+| `project-management/workflows/01-feature/` | `project-management/workflows/01-feature-map/` |
+| `project-management/src/01-FEATURE/`       | `project-management/src/01-FEATURE-MAPS/`      |
+
+Every mention of the old names inside the template was repointed at the same time — seventy-two
+files. The release history is the deliberate exception: an entry written four whole-number
+releases ago names the folder as it was called then, and rewriting it to say otherwise would be
+tidying a word by falsifying a record.
+
+### Why the update needs to do more than rename the folders
+
+When you take a template update, the update replaces the files the template owns and removes the
+old folder they lived in. Files **you** put there were never the template's, so it cannot move
+them and it will not delete them. They are simply left behind, in a folder that nothing now
+points at.
+
+Nothing goes wrong loudly. There is no clash to resolve and no error to read. The update finishes
+and reports success, and your own work is sitting in a folder with the old name that no
+instruction, index or search path will ever visit again.
+
+So this update carries a step that runs after the rename and does three things:
+
+- **It moves your files** out of each of the four old folders and into the new one, keeping any
+  sub-folders you made. It only does this once the template has actually renamed that folder, so
+  it can never move something out from under you early.
+- **It corrects references you wrote** that name one of the old paths, in any of your own notes
+  or documents. Running it twice changes nothing the second time.
+- **It tells you about one thing rather than changing it.** The word "feature" written in an
+  ordinary sentence is sometimes the old folder name and sometimes just the English word, and only
+  the person who wrote the sentence knows which. Those are listed with the file and line for you
+  to look at. They never cause the update to fail.
+
+### One folder is left behind in every project, whether or not you wrote anything
+
+This is worth stating plainly, because it means the step above is not a precaution for careful
+projects — it applies to yours.
+
+When your project was first generated, the template placed a planning document in the
+`01-FEATURE` folder for you. That placement happens only at generation and never on an update, so
+an update removes the files the template still owns in that folder and leaves that one document
+behind on its own. Every project generated before this release has it. The rescue step is what
+picks it up.
+
+### What was proven before this shipped, and what was not
+
+The rescue was tested two independent ways, because either on its own would have been a check
+reporting a look it never took.
+
+The first is a self-test built into the step itself: twenty-four assertions, each one confirmed to
+go red when the thing it covers is deliberately broken. Three of the original fourteen were
+weak — one was planting its test file somewhere the rescue never looks, and so had been passing
+for the wrong reason.
+
+The second was the real thing: a project generated from the previous release, files of our own
+written into all four folders, then the update taken. That run found a fault the self-test could
+not have caught, and it hit the one document every project has. The rescue moved it correctly and
+then failed to correct a reference inside it, because the list of files to check was being read
+from a place that still described the old location. It is fixed, and running the whole thing
+twice now leaves the project byte-for-byte identical the second time.
+
+**What has not been proven, stated rather than implied: no real project has been carried across
+this break.** There is no live project generated from this template to try it on, so every file
+the rescue moved during testing was one we planted for the purpose. That is an absence of
+specimens, not evidence of safety.
+
+There is a related limit worth knowing. Your project has a check that notices folders left behind
+by an update — but it only looks in one of the four places this release renames. The other three
+have no alarm on them at all, so the rescue is the only thing that will ever find work stranded
+there. That was measured, not assumed: with the rescue removed, all four folders strand and the
+check reports one.
+
+### Smaller things in the same release
+
+**A check that was green or red depending on whether you had run the installer.** One of the
+checks that confirms every document reference points at something real was failing on a fresh copy
+of the project and passing on a machine where the setup script had been run — because the file it
+was looking for is written by that script and deliberately not stored in the project. Whether the
+check passed was a fact about your machine rather than about your project. It now knows the
+difference.
+
+**A setup guide that contradicted itself about its own contents.** One page said a folder of
+guides is not included in your generated project; a hundred lines further down, the same page gave
+you a command to run inside your project that only makes sense if it is. The command was right and
+the sentence was wrong, settled by generating a project and checking, rather than by argument.
+
+**A new writing rule for the project's own documentation** is now listed in the three places
+Claude looks for such rules, having arrived reachable from none of them.
 
 ## v5.5.0 — 18/08/2026
 

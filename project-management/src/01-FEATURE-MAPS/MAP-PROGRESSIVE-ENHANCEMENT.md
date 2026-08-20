@@ -1,6 +1,6 @@
 # MAP-PROGRESSIVE-ENHANCEMENT — the technology ladder, the no-JS floor, and the browser contract
 
-**Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature`
+**Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Status**: Charting
 **Frontier open**: 16 · **Blocking open**: 3 · **Resolved**: 9
 **All three research nodes have returned. Two of the three delivered addenda only**, so N-024

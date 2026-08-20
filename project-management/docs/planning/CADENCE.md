@@ -29,7 +29,7 @@ output is still a designed system rather than an accreted one.
 
 ## Map the feature first
 
-`01-feature` charts the feature's decision frontier with wayfinder, then settles each node. The
+`01-feature-map` charts the feature's decision frontier with wayfinder, then settles each node. The
 resolved `MAP-<FEATURE>.md` is what the stories are cut from — and what stops every later
 grilling pass re-asking the same cross-cutting questions.
 

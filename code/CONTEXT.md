@@ -74,7 +74,7 @@ code/
 └── workflows/                       ← step-by-step coding workflows, by family below
     ├── CONTEXT.md
     │   ── Build (01–06) ──
-    ├── 01-implement-story/              ← full-stack feature development
+    ├── 01-implement-story/          ← one US### story, backend and frontend
     ├── 02-tdd-cycle/                ← Red → Green → Refactor
     ├── 03-database-migration/       ← Django model and migration workflow
     ├── 04-api-design/               ← Django Ninja API design (/api/)

@@ -8,7 +8,7 @@ the target `NN-…/` workflow's `CONTEXT.md`/`CLAUDE.md`.
 
 ## Purpose (one line)
 
-The ordered PM playbook — twenty-three numbered procedures (`01-feature` …
+The ordered PM playbook — twenty-three numbered procedures (`01-feature-map` …
 `23-release`) that carry a feature from its decision map and a written story, through
 design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and release.
 

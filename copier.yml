@@ -695,6 +695,36 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v5.0.0-git-guide-split.sh"
     when: "<% _stage == 'after' %>"
 
+  # v6.0.0 renames the four surfaces where "feature" meant two different sizes — an epic
+  # charted on a map, and one buildable story: `.claude/skills/feature/` ->
+  # `implement-story/`, `code/workflows/01-new-feature/` -> `01-implement-story/`,
+  # `project-management/workflows/01-feature/` -> `01-feature-map/`, and
+  # `project-management/src/01-FEATURE/` -> `01-FEATURE-MAPS/`. Copier moves the scaffolding
+  # it owns and deletes the old path, so anything the DEVELOPER wrote in those folders is
+  # left in a husk nothing routes to — the v2.0.0 silent-orphan failure again.
+  #
+  # This one ACTS on two things and only reports on the third. It moves stranded files,
+  # guarded per tree by the marker the template owns there (CONTEXT.md, or SKILL.md for the
+  # skills tree) so a directory copier has not renamed yet is never touched; and it repoints
+  # path and `skills:` citations with negative-lookahead rules — `01-FEATURE(?!-MAPS)` —
+  # which makes a second run a no-op by construction rather than by a flag. It only REPORTS
+  # backticked `feature` prose, because that word is sometimes the old skill and sometimes
+  # plain English and only the author of the sentence knows which; those findings can never
+  # affect the exit code.
+  #
+  # The stranding is measured, not assumed: a live v5.5.0 -> v6.0.0 update leaves
+  # MAP-SCALE-PLANNING.md alone in `src/01-FEATURE/` and `audits/template-orphans.sh` exits
+  # 1. That file arrives through a _task, and _tasks run on copy and never on update, so the
+  # orphan is guaranteed in every project rather than only in ones that wrote something.
+  #
+  # Keyed v6.0.0 because that is the release the directories MOVED in — same commit as the
+  # four renames — not the release somebody noticed. MAP-BASE-HEALTH N-047 records this
+  # repository mis-keying a migration by tagging a batch retroactively, which strands every
+  # project that updated in between; the script header says the same, for the next reader.
+  - version: v6.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v6.0.0-rename-feature-surfaces.sh"
+    when: "<% _stage == 'after' %>"
+
   # .copier/ is a staging directory, not project content. _tasks empty it and remove
   # it — but _tasks run on `copy` only, so on an `update` the staged seeds land in the
   # project and simply sit there, looking like version files a developer might edit.

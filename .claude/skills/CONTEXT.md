@@ -14,7 +14,7 @@ tooling; plugin references were rewritten to internal paths.
 .claude/skills/
 ├── CONTEXT.md              ← this file
 ├── CLAUDE.md               ← operating rules
-├── implement-story/        ← build a new capability end to end: plan → red → build → review → ship
+├── implement-story/        ← build one `US###` story end to end: plan → red → build → review → ship
 ├── bugfix/                 ← reproduce, root-cause, regression-test, fix minimally (scoped: `## Root cause`)
 ├── refactor/               ← restructure working code with behaviour held identical
 ├── review/                 ← sequence the content review, the hostile QA pass, the conditional security pass
@@ -124,7 +124,7 @@ tooling; plugin references were rewritten to internal paths.
 
 | Skill                           | Load when                                                                                                                                             |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `implement-story`               | A new capability has to be built end to end — plan, red tests, backend, API, frontend, review, QA, docs, commit                                       |
+| `implement-story`               | One `US###` story is ready to build end to end — plan, red tests, backend, API, frontend, review, QA, docs, commit; an epic goes to `wayfinder` first |
 | `bugfix`                        | Something is broken. Diagnosis alone enters its `## Root cause` phase; the full sequence fixes, QAs, documents and commits                            |
 | `refactor`                      | The code is correct but its shape is wrong — split, extract, deepen, rename, with behaviour held identical                                            |
 | `review`                        | A change needs checking before it is proposed — sequences `code-reviewer`, `qa-tester`, and `security` where it applies                               |

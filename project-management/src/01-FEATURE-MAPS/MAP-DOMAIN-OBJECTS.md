@@ -1,6 +1,6 @@
 # MAP-DOMAIN-OBJECTS — A dictionary is a data structure, not a type
 
-**Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature`
+**Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Status**: **Resolving** — charted and resolved in one session by explicit instruction
 **Frontier open**: 0 · **Blocking open**: 0 · **Fog of war open**: 2
 

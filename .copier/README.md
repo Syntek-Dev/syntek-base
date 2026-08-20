@@ -227,7 +227,7 @@ Two things to do on a freshly generated project:
 │   │   ├── scripts/                     ← audits, database, deployment, development, syntax, tests (+ shared _lib/)
 │   │   └── tests/                       ← Bruno API test collections (one collection per domain)
 │   └── workflows/                       ← 11 coding workflows in three families
-│       ├── 01-implement-story/              ← build
+│       ├── 01-implement-story/          ← build
 │       ├── 02-tdd-cycle/
 │       ├── 03-database-migration/
 │       ├── 04-api-design/
@@ -294,7 +294,7 @@ Two things to do on a freshly generated project:
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
-│   │   ├── 01-FEATURE-MAPS/                 ← MAP-<FEATURE>.md decision maps (wayfinder)
+│   │   ├── 01-FEATURE-MAPS/             ← MAP-<FEATURE>.md decision maps (wayfinder)
 │   │   ├── 02-STORIES/
 │   │   ├── 03-SPRINTS/
 │   │   ├── 04-DATABASE/
@@ -317,7 +317,7 @@ Two things to do on a freshly generated project:
 │   │   ├── 21-REFACTORING/
 │   │   └── 22-INCIDENTS/               ← the PII-free incident register; no story, no workflow
 │   └── workflows/                       ← 23 step-by-step PM workflows
-│       ├── 01-feature-map/                 ← chart the feature's decision frontier (wayfinder)
+│       ├── 01-feature-map/              ← chart the feature's decision frontier (wayfinder)
 │       ├── 02-story-creation/
 │       ├── 03-sprint-planning/
 │       ├── 04-database-schema/

@@ -30,7 +30,7 @@ project-management/
 │   ├── 00-ASSETS/               ← logos, brand assets, export scripts (pre-workflow ref)
 │   │
 │   │   ── Discover (01) ──
-│   ├── 01-FEATURE-MAPS/              ← MAP-<FEATURE>.md (wayfinder decision maps)
+│   ├── 01-FEATURE-MAPS/         ← MAP-<FEATURE>.md (wayfinder decision maps)
 │   │
 │   │   ── Specify (02–13) ──
 │   ├── 02-STORIES/              ← US###.md (user stories)
@@ -62,7 +62,7 @@ project-management/
 │   │   ── Record, not per story (22) ──
 │   └── 22-INCIDENTS/            ← INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md + INCIDENT-INDEX.md (PII-free)
 └── workflows/               ← step-by-step PM workflows (01–23)
-    ├── 01-feature-map/                              ← discover: chart the feature
+    ├── 01-feature-map/                          ← discover: chart the feature
     ├── 02-story-creation/ … 13-api-design/     ← specify a feature
     ├── 14-decisions/ 15-sprint-plans/ 16-story-plans/  ← decide & plan
     ├── 17-consolidate-design-work/              ← consolidate the per-story design work
