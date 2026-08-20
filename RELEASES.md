@@ -117,6 +117,44 @@ the sentence was wrong, settled by generating a project and checking, rather tha
 **A new writing rule for the project's own documentation** is now listed in the three places
 Claude looks for such rules, having arrived reachable from none of them.
 
+**A required check policed a folder your project may not have.** The test pipeline enforced a 90%
+coverage floor against `apps/users` with the name written in by hand. The setting that names your
+identity app was always meant to be honoured there, so a project that called it anything else got
+a required check pointing at a path it does not contain. It is now honoured where it executes.
+
+**The component library was listed as a dependency and never switched on.** `django-components`
+was installed, and nothing in the settings mentioned it — so the `{% component %}` tag the guides
+tell you to use would not have worked in a new project. It is now configured: both component
+folders are searched, and the tag is available without loading it in every template.
+
+**Where a component belongs is now one rule in one place.** Three documents gave three different
+answers, and one of them disagreed with itself in neighbouring rows of the same table. A component
+used by two or more apps lives in the shared folder, one owned by a single app lives with that
+app, and you move it on the second user.
+
+**Four checks reported a clean run over folders that do not exist.** Two style checks and two
+marketing-copy checks were pointed at paths this project never creates, so each printed a tick
+having examined nothing — and would have done so in every generated project, indefinitely. All
+four now look where the files actually are, and say what they examined rather than only that they
+passed.
+
+**Lint blamed your code for a library missing from your machine.** Where a system library the
+desktop app needs is absent, the build stops before any lint can run, and that was being reported
+as lint failures in your own code. It now reports that it could not run, which is a different
+result from clean.
+
+**Twenty-five guides, and the design index, described an app, a stylesheet and a crypto module
+this project does not contain** — in the present tense, as though you could open them. A folder
+that genuinely ships was concealing the false claims made about its contents, which is why they
+survived every check ever run.
+
+**The templates you copy to start a story carried three placeholder styles between them.** They
+are now one, so a path you are meant to fill in reads the same wherever you meet it.
+
+**A new register records what a document is allowed to promise.** A guide may name a file your
+project does not have yet, provided it also names what creates it; otherwise it is a wish rather
+than a promise, and the check now tells the two apart.
+
 ## v5.5.0 — 18/08/2026
 
 **Status:** Minor — the checks that guard your code stop claiming to have looked at things they
