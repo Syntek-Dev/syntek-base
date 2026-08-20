@@ -113,7 +113,44 @@ discovered later:
 - **It cannot judge a register row.** That a creator resolves does not mean it creates that
   path. Reviewer's judgement, on the `[judgement]` convention the audit guides use.
 
-## 6. Where each half lives
+## 6. Direction is declared per claim, never per file
+
+> **A disclaimer at the top of a document does not reach a claim in its body.** Direction is a
+> property of the sentence, not of the file the sentence sits in.
+
+A file-level note is read once, by the person who wrote it. Every later reader arrives through a
+search, a cross-reference or a diff, lands mid-document, and takes the sentence in front of them at
+face value. Worse, a reviewer who _has_ read the header credits it with a coverage it never had, so
+the contradiction survives the one pass that could have caught it. The document opens with "nothing
+here is built yet" and asserts a hundred lines down that a module exists, and neither statement
+looks wrong to anybody reading only one of them.
+
+The mechanism is per line for exactly the reason `template-only` is per line (Section 4): a
+declaration that cannot be seen from the claim it governs is not a declaration.
+
+Three specimens, measured 20/08/2026 and corrected in the same change as this section — recorded
+because the shape recurs, not because those lines still read this way:
+
+| Document                                              | Declared at the top                                  | Asserted in the body                                                                         |
+| ----------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `code/docs/api-design/WEBHOOKS.md`                    | `:17` "Nothing here need be built yet."              | `:159` "matches existing endpoints such as" a view module nothing in this project creates    |
+| `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` | `:8` "Do not treat the placeholder values as real."  | `:33` a **Source:** field citing a header comment inside a template file that does not exist |
+| `code/docs/design-tokens/EDITOR.md`                   | `:62` the heading "Extension points (not yet built)" | `:68` "The `preview` dry-run endpoint and the `/assets/tokens.css` view already exist"       |
+
+**A heading is not a declaration either.** `EDITOR.md`'s "(not yet built)" sat six lines above the
+row that contradicted it, and still did not carry, because the row is what gets quoted, linked and
+believed on its own.
+
+**What to do instead**, and the choice between the two is not a matter of taste:
+
+- **The document is entirely forward** — then write each claim in forward voice. "Will be",
+  "arrives with", "once X lands" costs three words per sentence and travels with the sentence when
+  someone quotes it.
+- **The document is mixed** — then mark the forward claims individually and leave the rest alone. A
+  blanket header over a mixed document is the worst of the three states available: false for the
+  built half, and invisible to the unbuilt half.
+
+## 7. Where each half lives
 
 | Fact                                            | Owner                                       |
 | ----------------------------------------------- | ------------------------------------------- |

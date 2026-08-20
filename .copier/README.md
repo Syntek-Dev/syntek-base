@@ -254,6 +254,7 @@ Two things to do on a freshly generated project:
 │   │   ├── CONTEXT.md
 │   │   ├── CONTRIBUTING.md              ← contributing, testing, and code-quality standards
 │   │   ├── NIXOS-SETUP.md               ← pointer stub → NixOS deploy repo + SERVER-ARCHITECTURE/
+│   │   ├── PROJECT-PATHS.md             ← the path register: what a shipped doc may promise, and what creates it
 │   │   ├── SCALE-ARCHITECTURE/          ← how the app scales (scale-planning snapshot)
 │   │   └── SERVER-ARCHITECTURE/         ← app→server contract (feeds the NixOS deploy repo)
 │   └── workflows/                       ← 9 operational workflows in four families

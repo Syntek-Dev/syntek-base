@@ -87,6 +87,7 @@ rule navigates; it does not restate it.
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | [how-to/src/BRAND-VOICE.md](how-to/src/BRAND-VOICE.md)                 | Brand voice — tone, the four registers, banned machine-authored tells (settled at first-time setup)                                   |
 | [how-to/src/INVARIANTS.md](how-to/src/INVARIANTS.md)                   | This project's invariant register — one named enforcement point each (rule: `code/docs/NEGATIVE-SPACE.md`)                            |
+| [how-to/src/PROJECT-PATHS.md](how-to/src/PROJECT-PATHS.md)             | This project's path register — what a shipped document may promise, and what creates it (rule: `code/docs/FORWARD-VOICE.md`)          |
 | [how-to/src/STORE-LISTING.md](how-to/src/STORE-LISTING.md)             | **Mobile-only.** This project's App Store / Play listing values against their limits (rule: `code/docs/discoverability/APP-STORE.md`) |
 | [how-to/docs/CELERY-FIRST-RUN.md](how-to/docs/CELERY-FIRST-RUN.md)     | Getting the Celery worker and beat running the first time                                                                             |
 | [how-to/docs/CLI-TOOLING.md](how-to/docs/CLI-TOOLING.md)               | CLI tools reference: scripts, commands, shortcuts                                                                                     |

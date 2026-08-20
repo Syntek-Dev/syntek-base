@@ -12,6 +12,37 @@
 #                     Check 1 — dangling path.     A backticked repo path that does not exist.
 #                     Check 2 — instance citation. A named instance artefact, cited as real.
 #
+#                     ADDED 20/08/2026: Check 1 peels a trailing LINE ANCHOR before the
+#                     existence test. An anchor names a location INSIDE a file rather than
+#                     another file -- `foo.py:7` cites `foo.py` -- and both the `:N` and the
+#                     `:N:M` column form are peeled. It sits AFTER the path guard, so a port
+#                     (`django:8000`) and an OWASP id (`A05:2025`) never reach it: neither
+#                     carries a slash, and that guard already drops them. Check 2 tests the
+#                     RAW token and is deliberately left alone -- hoisting the peel above it
+#                     would move `base` and the is_seeded lookup with it, which is a second
+#                     decision nobody has made. Known limit of that scoping, stated rather
+#                     than left to be found: a line-anchored INSTANCE citation would still
+#                     false-positive at Check 2. None exists today.
+#
+#                     ADDED 20/08/2026: `doc-references: template-only` suppresses a finding
+#                     exactly as `doc-references: ignore` does, on the line or the line
+#                     directly above, and records a DIFFERENT judgement -- the check applies
+#                     and the citation is deliberate, because the path does not survive
+#                     generation. Both markers stay literal and greppable so the two
+#                     judgements can still be told apart. Rule and the difference between
+#                     them: `code/docs/FORWARD-VOICE.md` Section 4.
+#
+#                     ADDED 20/08/2026: `code/src/django/` is CHECKED. It used to fall to
+#                     the catch-all with the artefact trees, unexamined, because there was
+#                     nowhere to record that a path a project builds is genuinely coming.
+#                     `how-to/src/PROJECT-PATHS.md` is that place, so such a citation is now
+#                     a checked promise: a path with a row there passes, and one without is
+#                     a dangling path like any other. TENSE IS IRRELEVANT to this -- "will
+#                     build" and "is live" fail alike, because the check reads the path. The
+#                     remedy for a finding is `code/docs/FORWARD-VOICE.md` Section 1's
+#                     default disposition: correct the citation or drop it. A row is written
+#                     when a creator can be NAMED, never to quieten a finding.
+#
 #                     Naming PATTERNS are not citations and are not flagged: "take the next
 #                     free `ADR-###` in `14-DECISIONS/`" names a format, not a document. The
 #                     `*-TEMPLATE.md` files are real and citable for the same reason.
@@ -40,20 +71,30 @@
 #                 than a measurement. The code below is deliberately unchanged.
 #
 # Usage: doc-references.sh [--output FORMAT] [--output-file PATH] [--quiet]
-#                          [--path PATH] [--help]
+#                          [--path PATH] [--self-test] [--help]
 #
-# Exit codes:  0 = clean   1 = violation(s)   2 = script error
+# Self-test:      --self-test runs the ordinary scan over fixtures/doc-references/{broken,clean}
+#                 and asserts it separates them: broken/ must fire on every clause, clean/ on
+#                 none. It covers the three clauses above and nothing else, because a green run
+#                 that measured nothing is believed. The fixtures hold deliberate dangling
+#                 paths, so an ordinary run must not read them -- is_exempt() keeps that tree
+#                 out and --self-test is the only way in.
+#
+# Exit codes:  0 = clean   1 = violation(s), or a self-test the detector no longer passes
+#              2 = script error (bad arguments, or --self-test with the fixtures missing)
 #
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
+FIXTURES_DIR="code/src/scripts/audits/fixtures/doc-references"
 
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
+SELF_TEST=false
 
 log()  { $QUIET || printf '%s\n' "$*"; }
 die()  { printf 'doc-references.sh error: %s\n' "$*" >&2; exit 2; }
@@ -68,8 +109,13 @@ Usage:
   doc-references.sh --output md     Also write a report to audits/reports/
   doc-references.sh --path DIR      Restrict the check to a directory or file
   doc-references.sh --quiet         Suppress progress output
+  doc-references.sh --self-test     Prove the detector still separates the fixtures
 
-Exit codes: 0 clean · 1 violations found · 2 script error
+Suppress a citation with `doc-references: ignore` (neither check applies) or
+`doc-references: template-only` (the check applies; the path does not ship), on the
+line or the line directly above it. The two are not synonyms — `code/docs/FORWARD-VOICE.md`.
+
+Exit codes: 0 clean · 1 violations found, or a failed self-test · 2 script error
 EOF
 }
 
@@ -79,6 +125,7 @@ while [ $# -gt 0 ]; do
     --output-file) OUTPUT_FILE="${2:-}";   shift 2 ;;
     --path)        TARGET_PATH="${2:-}";   shift 2 ;;
     --quiet)       QUIET=true;             shift   ;;
+    --self-test)   SELF_TEST=true;         shift   ;;
     --help|-h)     usage; exit 0 ;;
     *)             die "unknown argument: $1" ;;
   esac
@@ -113,6 +160,13 @@ is_exempt() {
     project-management/src/01-FEATURE-MAPS/*)          return 0 ;;
     code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
     .agents/*)                                    return 0 ;;  # vendored third-party skills
+    # This audit's own fixtures, exempted as docs-pairing.sh exempts the same tree and for
+    # the same reason: the audits run against these files, so a fixture that deliberately
+    # carries a dangling path would redden the ordinary run rather than prove anything. They
+    # are reached only through --self-test, which points the identical scan at them on
+    # purpose -- so the exemption lifts there and nowhere else.
+    code/src/scripts/audits/fixtures/*)
+      if ! $SELF_TEST; then return 0; fi ;;
   esac
   return 1
 }
@@ -123,6 +177,20 @@ SEEDED="$(grep -oE 'mv \.copier/[^ ]+ ([^ ]+)' copier.yml 2>/dev/null | awk '{pr
 
 is_seeded() {
   [ -n "$SEEDED" ] && printf '%s\n' "$SEEDED" | grep -qxF "$1"
+}
+
+# Direction A — the register. `how-to/src/PROJECT-PATHS.md` names every path a shipped
+# document may cite that this repository does not hold, together with what creates it in a
+# real project. Read from the `## Registered paths` section alone, so the neighbouring
+# "deliberately not registered" table cannot silence anything: a refusal there is a verdict,
+# never a permission. Trailing slashes come off, because `$resolved` has already lost its
+# own. Rule: `code/docs/FORWARD-VOICE.md` Section 3.
+REGISTER_FILE="how-to/src/PROJECT-PATHS.md"
+REGISTERED="$(awk '/^## Registered paths/{on=1; next} /^## /{on=0} on' "$REGISTER_FILE" 2>/dev/null \
+  | grep -oE '^\| `[^`]+`' | tr -d '|` ' | sed 's:/$::' || true)"
+
+is_registered() {
+  [ -n "$REGISTERED" ] && printf '%s\n' "$REGISTERED" | grep -qxF "$1"
 }
 
 # Copier renders this file into every generated project, so the two delimiter pairs must
@@ -156,138 +224,285 @@ record() { # file line kind detail
   log "  $1:$2  [$3]  $4"
 }
 
+# The scan itself, taking a newline-separated file list. Factored out so --self-test drives
+# the IDENTICAL loop over the fixtures rather than a second implementation of it: a proof of
+# a reimplementation proves nothing about the code that ships. `violations` and `report` stay
+# global because the report section below reads them once the scan returns.
+scan_files() { # $1 = newline-separated file list
+  violations=0
+  report=""
+  local file lineno token line prev is_naming_row stripped resolved sibling base
+  local resolved_skip=false
+
+  while IFS= read -r file; do
+    [ -n "$file" ] || continue
+    [ -f "$file" ] || continue
+    is_exempt "$file" && continue
+
+    # Every backticked token in the file, with its line number.
+    while IFS=: read -r lineno token; do
+      [ -n "$token" ] || continue
+      is_pattern "$token" && continue
+
+      # An example marked as an example is not a citation. A naming table shows the pattern
+      # in one column and a worked example in the next; prose writes "e.g." or "[EXAMPLE]".
+      # In both, the token demonstrates a convention rather than pointing at a document, and
+      # the marker is on the same line. Unmarked prose naming a specific story number is NOT
+      # covered — that reads as a real story, and in a template that ships none it is exactly
+      # the origin-project leakage this audit exists to catch.
+      #
+      # `doc-references: ignore` suppresses a line outright. It is for the one case neither
+      # rule reaches: a document QUOTING a path in order to ban it, or naming a path that
+      # belongs to another repository. Accepted on the line OR the line directly above it,
+      # the same annotation convention the sibling audits already use.
+      #
+      # `doc-references: template-only` suppresses the same finding and records the opposite
+      # judgement: the check DOES apply, and the citation is deliberate because the path is
+      # copier-excluded and will not exist in a generated project. Nothing on this side of
+      # that seam can observe the failure, so the declaration is made on the line. The two
+      # markers are matched separately and written out in full rather than folded into one
+      # pattern, so `grep` still tells the two judgements apart in the tree
+      # (`code/docs/FORWARD-VOICE.md` Section 4).
+      line="$(sed -n "${lineno}p" "$file" 2>/dev/null || true)"
+      prev="$(sed -n "$((lineno > 1 ? lineno - 1 : 1))p" "$file" 2>/dev/null || true)"
+      case "$prev" in
+        *'doc-references: ignore'*)        line="$line doc-references: ignore" ;;
+        *'doc-references: template-only'*) line="$line doc-references: template-only" ;;
+      esac
+      case "$line" in
+        *'doc-references: ignore'*)              is_naming_row=true ;;
+        *'doc-references: template-only'*)       is_naming_row=true ;;
+        *'###'*|*'-##'*|*'{###}'*)               is_naming_row=true ;;
+        *'<DESCRIPTOR>'*|*'<TITLE>'*|*'<NNN>'*)  is_naming_row=true ;;
+        *'e.g.'*|*'E.g.'*|*'for example'*)       is_naming_row=true ;;
+        *'[EXAMPLE]'*|*'house style'*)           is_naming_row=true ;;
+        *)                                       is_naming_row=false ;;
+      esac
+
+      # ── Check 2 — instance citation ─────────────────────────────────────────
+      if [ "$is_naming_row" = false ] && printf '%s' "$token" \
+         | grep -qE '^(ADR-[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-US[0-9]{3}|API-US[0-9]{3})'; then
+        base="${token##*/}"
+        if ! is_seeded "$token" && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE-MAPS/$base" ]; then
+          record "$file" "$lineno" "instance citation" "$token"
+          continue
+        fi
+      fi
+
+      # ── Check 1 — dangling repo path ────────────────────────────────────────
+      case "$token" in
+        */*) ;;   # only tokens that look like a path
+        *)   continue ;;
+      esac
+      case "$token" in
+        http*|*@*|*' '*) continue ;;
+      esac
+
+      # Trailing backslashes survive from shell heredocs in the *.sh files.
+      stripped="${token%\\}"
+      # A line anchor names a location INSIDE a file, not another file: `foo.py:7` cites
+      # `foo.py`. Peeled here, beside the other two peels and never before the path guard
+      # above -- a port (`django:8000`) and an OWASP id (`A05:2025`) carry no slash, and that
+      # guard is what already drops them. TWO branches, not one: `.+` is greedy, so a single
+      # `^(.+):[0-9]+(:[0-9]+)?$` turns `a/b.py:12:34` into `a/b.py:12` rather than `a/b.py`.
+      # Scoped to Check 1 deliberately -- Check 2 above reads the raw token, and hoisting this
+      # over it would change `base` and the is_seeded lookup as a side effect.
+      if [[ "$stripped" =~ ^(.+):[0-9]+:[0-9]+$ ]] || [[ "$stripped" =~ ^(.+):[0-9]+$ ]]; then
+        stripped="${BASH_REMATCH[1]}"
+      fi
+      stripped="${stripped%/}"
+
+      # Resolve relatives against the CITING file's directory, not the repo root —
+      # a ../SIBLING-FOLDER/ reference means something different in each file that
+      # writes it, and resolving them all from the root invents failures.
+      # A `./` prefix is written for the repo root in practice, so accept either
+      # reading rather than pick one and generate a false positive from the other.
+      case "$stripped" in
+        ../*|./*) resolved="$(cd "$(dirname "$file")" 2>/dev/null && printf '%s' "$PWD")/$stripped"
+                  resolved="${resolved#"$PROJECT_ROOT"/}"
+                  [ -e "${stripped#./}" ] && continue ;;
+        *)        resolved="$stripped" ;;
+      esac
+
+      # The house shorthand drops the leading directories, naming a script or a guide by
+      # its group alone. It is CONTEXT-DEPENDENT: the same rust/ prefix means a sibling
+      # folder in code/docs/ and a script group under code/src/scripts/. Try sibling first,
+      # then the script root; only then treat it as unresolved. Without this, every
+      # shorthand reference is invisible to the anchor below and the check silently passes.
+      case "$resolved" in
+        */*)
+          case "$resolved" in
+            # A bare name with no extension is prose (`database/postgres` is a service).
+            *.sh|*.md|*.py|*.yml|*/) ;;
+            *) resolved_skip=true ;;
+          esac
+          if [ "${resolved_skip:-false}" = false ] && [ ! -e "$resolved" ]; then
+            sibling="$(dirname "$file")/$resolved"
+            sibling="${sibling#./}"
+            if [ -e "$sibling" ]; then
+              resolved="$sibling"
+            elif [ -e "code/src/scripts/$resolved" ]; then
+              resolved="code/src/scripts/$resolved"
+            else
+              case "$resolved" in
+                audits/*|tests/*|syntax/*|database/*|development/*|deployment/*|desktop/*|mobile/*|rust/*)
+                  resolved="code/src/scripts/$resolved" ;;
+              esac
+            fi
+          fi
+          resolved_skip=false ;;
+      esac
+
+      # Which trees are checkable. A path under `project-management/src/` is where a
+      # project's own artefacts land — absent here by design, different at every number
+      # downstream — so it falls to the catch-all and is never tested.
+      #
+      # CHANGED 20/08/2026: `code/src/django/` no longer falls with it. This comment used
+      # to argue the opposite, naming `code/src/django/components/` alongside the artefact
+      # trees on one shared reason: flagging a path a project builds would hold the gate
+      # permanently red, which is the same as having no gate. That reasoning had one
+      # premise, and the premise has changed — there was nowhere to write down that such a
+      # path is coming. `how-to/src/PROJECT-PATHS.md` is that place now, so a citation of
+      # a project-built path is a CHECKED PROMISE rather than an unprovable assertion: it
+      # carries a row, and the row names what creates it. Three paths clear that bar today.
+      # Everything else under this tree is tested exactly like any other citation, and the
+      # remedy for a finding is the default disposition in `code/docs/FORWARD-VOICE.md`
+      # Section 1 — correct the citation or drop it, never add a row to quieten it.
+      #
+      # Tense buys nothing here, and that is the point. "The app a story will build" and
+      # "the live app" fail identically, because the gate reads the PATH. Forward voice is
+      # still required of the prose (`code/docs/FORWARD-VOICE.md` Section 6) — it is what
+      # keeps a registered promise readable as a promise — but it is a rule for the writer
+      # and the reviewer, and this check does not enforce it.
+      case "$resolved" in
+        # Generated output. The folder appears when the script that fills it is run,
+        # so its absence is the normal state, not a broken citation.
+        */reports/*|*/coverage/*|*/staticfiles/*|.claude/worktrees/*|.claude/worktrees) continue ;;
+        # The same class as a FILE rather than a folder, and the reason this arm needed
+        # stating twice. `install.sh` writes code/docs/MACHINE-SPEC.md (install.sh:25,:518)
+        # and .gitignore:43 ignores it, so it is present on a developer's disk and absent
+        # from a fresh checkout -- which made this gate's verdict a property of the disk
+        # rather than of the repository: exit 0 here, exit 1 in a clean clone. Measured
+        # 18/08/2026, blast radius exactly one citing site over the whole repo
+        # (.github/scripts/shipped-readme.sh:141, the comment explaining this very hazard
+        # for a different script). MAP-BASE-HEALTH N-042.
+        code/docs/MACHINE-SPEC.md) continue ;;
+        code/docs/*|code/workflows/*|code/src/scripts/*|code/CONTEXT.md|code/CLAUDE.md|code/REFERENCES.md) ;;
+        code/src/django/*) ;;
+        how-to/docs/*|how-to/workflows/*|how-to/src/*) ;;
+        project-management/docs/*|project-management/workflows/*) ;;
+        .claude/*|.github/*) ;;
+        *) continue ;;
+      esac
+
+      [ -e "$resolved" ] && continue
+      is_seeded "$resolved" && continue
+      is_registered "$resolved" && continue
+      [ "$is_naming_row" = true ] && continue
+      record "$file" "$lineno" "dangling path" "$token"
+    done < <(grep -noE '`[^`]+`' "$file" 2>/dev/null | sed 's/`//g' || true)
+  done <<< "$1"
+}
+
+# ── Self-test ────────────────────────────────────────────────────────────────
+# Three clauses were added on 20/08/2026 and an ordinary run of this repository proves almost
+# nothing about them: no line-anchored citation resolves here, no line carries the
+# template-only marker, and the code/src/django/ arm has nothing left to fire on the moment
+# the tree is green -- which is exactly when nobody looks at it again. A green run over a
+# population of nought is believed exactly as much as a green run over a real one, so the
+# clauses are proven in BOTH directions against fixtures instead -- fires on known-bad, silent
+# on known-good. Only those three are covered; the checks that shipped before them are
+# unchanged and are not re-proven here.
+#
+# Fix the detector, never the fixtures.
+st_fails=0
+st_probes=0
+st_fail() { st_fails=$((st_fails + 1)); printf '\033[31m  ✗ %s\033[0m\n' "$*" >&2; }
+
+st_probe() { # label file want-violations want-substring
+  local label="$1" file="$2" want_v="$3" want_sub="${4:-}"
+  st_probes=$((st_probes + 1))
+  scan_files "$file"
+  if [ "$violations" -ne "$want_v" ]; then
+    st_fail "$label: expected $want_v finding(s), got $violations"
+    return
+  fi
+  if [ -n "$want_sub" ] && [ "${report#*"$want_sub"}" = "$report" ]; then
+    st_fail "$label: no finding names \`$want_sub\`"
+    return
+  fi
+  log "  ✓ $label"
+}
+
+self_test() {
+  bold "▸ doc-references.sh --self-test"
+  log ""
+  [ -d "$FIXTURES_DIR/broken" ] && [ -d "$FIXTURES_DIR/clean" ] \
+    || die "fixtures missing at $FIXTURES_DIR — refusing to report a proof that never ran"
+
+  log "  known-bad — every line printed below is expected:"
+  # The anchor peel must not make a dangling path resolve, and the finding must still quote
+  # the citation as the author wrote it: `record` reports the raw token, never the peeled one.
+  st_probe "broken/anchors.md      fires on both anchor forms" \
+    "$FIXTURES_DIR/broken/anchors.md" 2 'NO-SUCH-GUIDE.md:7'
+  # A marker two lines above is not the documented window, and template-only is per line
+  # rather than per file. Both halves fail here, which is what keeps the token narrow.
+  st_probe "broken/tokens.md       fires past the marker's window" \
+    "$FIXTURES_DIR/broken/tokens.md" 2 'FIXTURE-ONLY-TWO-LINES-ABOVE.md'
+  # The arm, in the direction nobody watches: a project-built path with no row must fire,
+  # and forward voice must not save it. Both citations below are unbacked; one is written
+  # "will write" and fails identically, because the clause reads the path.
+  st_probe "broken/django-arm.md   fires on an unregistered project-built path" \
+    "$FIXTURES_DIR/broken/django-arm.md" 2 'no_such_app/views.py'
+
+  log ""
+  log "  known-good — nothing below should print a finding:"
+  # Without the peel every line here is a finding, and the `:N:M` form is the one that a
+  # single greedy regex gets wrong: it would leave `…doc-references.sh:12` and report it.
+  st_probe "clean/anchors.md       silent on :N, :N:M, a port and an OWASP id" \
+    "$FIXTURES_DIR/clean/anchors.md" 0
+  st_probe "clean/tokens.md        silent on template-only, on-line and line-above" \
+    "$FIXTURES_DIR/clean/tokens.md" 0
+  # The other direction, and the one probe here that reads a file outside this folder:
+  # the three rows in how-to/src/PROJECT-PATHS.md, plus a path under the same tree that
+  # passes on existing alone. Retiring a row reddens this probe, which is the point.
+  st_probe "clean/django-arm.md    silent on the registered rows and on what exists" \
+    "$FIXTURES_DIR/clean/django-arm.md" 0
+
+  # The fixtures must stay invisible to an ordinary run, or this proof reddens the gate it
+  # exists to prove. Asserted directly, with the flag put back the way a normal run sees it.
+  st_probes=$((st_probes + 1))
+  SELF_TEST=false
+  if is_exempt "$FIXTURES_DIR/broken/anchors.md"; then
+    log "  ✓ the fixture tree is exempt from an ordinary run"
+  else
+    st_fail "the fixture tree is NOT exempt — an ordinary run would report its dangling paths"
+  fi
+  SELF_TEST=true
+
+  log ""
+  if [ "$st_fails" -eq 0 ]; then
+    bold "✓ Self-test passed — $st_probes probes over the three clauses added 20/08/2026."
+    log "  Not covered: the two checks that shipped before them, and Direction B itself —"
+    log "  nothing here reads copier.yml's _exclude list (code/docs/FORWARD-VOICE.md Section 5)."
+    return 0
+  fi
+  bold "✗ Self-test FAILED — the detector no longer separates the fixtures."
+  return 1
+}
+
+if $SELF_TEST; then
+  self_test
+  exit $?
+fi
+
+# ── Run ──────────────────────────────────────────────────────────────────────
 FILES="$(candidates)"
 [ -n "$TARGET_PATH" ] && FILES="$(printf '%s\n' "$FILES" | grep -E "^${TARGET_PATH%/}(/|$)" || true)"
 
 bold "doc-references.sh — checking citations resolve"
 
-while IFS= read -r file; do
-  [ -n "$file" ] || continue
-  [ -f "$file" ] || continue
-  is_exempt "$file" && continue
-
-  # Every backticked token in the file, with its line number.
-  while IFS=: read -r lineno token; do
-    [ -n "$token" ] || continue
-    is_pattern "$token" && continue
-
-    # An example marked as an example is not a citation. A naming table shows the pattern
-    # in one column and a worked example in the next; prose writes "e.g." or "[EXAMPLE]".
-    # In both, the token demonstrates a convention rather than pointing at a document, and
-    # the marker is on the same line. Unmarked prose naming a specific story number is NOT
-    # covered — that reads as a real story, and in a template that ships none it is exactly
-    # the origin-project leakage this audit exists to catch.
-    #
-    # `doc-references: ignore` suppresses a line outright. It is for the one case neither
-    # rule reaches: a document QUOTING a path in order to ban it, or naming a path that
-    # belongs to another repository. Accepted on the line OR the line directly above it,
-    # the same annotation convention the sibling audits already use.
-    line="$(sed -n "${lineno}p" "$file" 2>/dev/null || true)"
-    prev="$(sed -n "$((lineno > 1 ? lineno - 1 : 1))p" "$file" 2>/dev/null || true)"
-    case "$prev" in *'doc-references: ignore'*) line="$line doc-references: ignore" ;; esac
-    case "$line" in
-      *'doc-references: ignore'*)              is_naming_row=true ;;
-      *'###'*|*'-##'*|*'{###}'*)               is_naming_row=true ;;
-      *'<DESCRIPTOR>'*|*'<TITLE>'*|*'<NNN>'*)  is_naming_row=true ;;
-      *'e.g.'*|*'E.g.'*|*'for example'*)       is_naming_row=true ;;
-      *'[EXAMPLE]'*|*'house style'*)           is_naming_row=true ;;
-      *)                                       is_naming_row=false ;;
-    esac
-
-    # ── Check 2 — instance citation ─────────────────────────────────────────
-    if [ "$is_naming_row" = false ] && printf '%s' "$token" \
-       | grep -qE '^(ADR-[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-US[0-9]{3}|API-US[0-9]{3})'; then
-      base="${token##*/}"
-      if ! is_seeded "$token" && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE-MAPS/$base" ]; then
-        record "$file" "$lineno" "instance citation" "$token"
-        continue
-      fi
-    fi
-
-    # ── Check 1 — dangling repo path ────────────────────────────────────────
-    case "$token" in
-      */*) ;;   # only tokens that look like a path
-      *)   continue ;;
-    esac
-    case "$token" in
-      http*|*@*|*' '*) continue ;;
-    esac
-
-    # Trailing backslashes survive from shell heredocs in the *.sh files.
-    stripped="${token%\\}"
-    stripped="${stripped%/}"
-
-    # Resolve relatives against the CITING file's directory, not the repo root —
-    # a ../SIBLING-FOLDER/ reference means something different in each file that
-    # writes it, and resolving them all from the root invents failures.
-    # A `./` prefix is written for the repo root in practice, so accept either
-    # reading rather than pick one and generate a false positive from the other.
-    case "$stripped" in
-      ../*|./*) resolved="$(cd "$(dirname "$file")" 2>/dev/null && printf '%s' "$PWD")/$stripped"
-                resolved="${resolved#"$PROJECT_ROOT"/}"
-                [ -e "${stripped#./}" ] && continue ;;
-      *)        resolved="$stripped" ;;
-    esac
-
-    # The house shorthand drops the leading directories, naming a script or a guide by
-    # its group alone. It is CONTEXT-DEPENDENT: the same rust/ prefix means a sibling
-    # folder in code/docs/ and a script group under code/src/scripts/. Try sibling first,
-    # then the script root; only then treat it as unresolved. Without this, every
-    # shorthand reference is invisible to the anchor below and the check silently passes.
-    case "$resolved" in
-      */*)
-        case "$resolved" in
-          # A bare name with no extension is prose (`database/postgres` is a service).
-          *.sh|*.md|*.py|*.yml|*/) ;;
-          *) resolved_skip=true ;;
-        esac
-        if [ "${resolved_skip:-false}" = false ] && [ ! -e "$resolved" ]; then
-          sibling="$(dirname "$file")/$resolved"
-          sibling="${sibling#./}"
-          if [ -e "$sibling" ]; then
-            resolved="$sibling"
-          elif [ -e "code/src/scripts/$resolved" ]; then
-            resolved="code/src/scripts/$resolved"
-          else
-            case "$resolved" in
-              audits/*|tests/*|syntax/*|database/*|development/*|deployment/*|desktop/*|mobile/*|rust/*)
-                resolved="code/src/scripts/$resolved" ;;
-            esac
-          fi
-        fi
-        resolved_skip=false ;;
-    esac
-
-    # Only paths the TEMPLATE owns are checkable. `code/src/django/components/` and
-    # `project-management/src/02-STORIES/US001.md` are where a project's own work will
-    # land — absent here by design, present once it is built. Flagging those would make
-    # the gate permanently red, which is the same as having no gate.
-    case "$resolved" in
-      # Generated output. The folder appears when the script that fills it is run,
-      # so its absence is the normal state, not a broken citation.
-      */reports/*|*/coverage/*|*/staticfiles/*|.claude/worktrees/*|.claude/worktrees) continue ;;
-      # The same class as a FILE rather than a folder, and the reason this arm needed
-      # stating twice. `install.sh` writes code/docs/MACHINE-SPEC.md (install.sh:25,:518)
-      # and .gitignore:43 ignores it, so it is present on a developer's disk and absent
-      # from a fresh checkout -- which made this gate's verdict a property of the disk
-      # rather than of the repository: exit 0 here, exit 1 in a clean clone. Measured
-      # 18/08/2026, blast radius exactly one citing site over the whole repo
-      # (.github/scripts/shipped-readme.sh:141, the comment explaining this very hazard
-      # for a different script). MAP-BASE-HEALTH N-042.
-      code/docs/MACHINE-SPEC.md) continue ;;
-      code/docs/*|code/workflows/*|code/src/scripts/*|code/CONTEXT.md|code/CLAUDE.md|code/REFERENCES.md) ;;
-      how-to/docs/*|how-to/workflows/*|how-to/src/*) ;;
-      project-management/docs/*|project-management/workflows/*) ;;
-      .claude/*|.github/*) ;;
-      *) continue ;;
-    esac
-
-    [ -e "$resolved" ] && continue
-    is_seeded "$resolved" && continue
-    [ "$is_naming_row" = true ] && continue
-    record "$file" "$lineno" "dangling path" "$token"
-  done < <(grep -noE '`[^`]+`' "$file" 2>/dev/null | sed 's/`//g' || true)
-done <<< "$FILES"
+scan_files "$FILES"
 
 # ── Report ───────────────────────────────────────────────────────────────────
 if [ "$violations" -eq 0 ]; then

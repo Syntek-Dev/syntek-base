@@ -18,6 +18,7 @@ how-to/src/
 ├── CONTRIBUTING.md          ← contributing, testing, and code-quality standards for this project
 ├── INVARIANTS.md            ← the register: every invariant, its one enforcement point, its breach
 ├── PLATFORM-PROVIDERS.md    ← the register: every infra dependency, its seam kind, its alternates
+├── PROJECT-PATHS.md         ← the register: every path a shipped doc promises, and what creates it
 ├── STORE-LISTING.md         ← MOBILE-ONLY — the register: this project's App Store / Play listing values
 ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (ships, and is rendered)
 ├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (ships, bar TEMPLATE-GAPS.md)
@@ -51,6 +52,7 @@ how-to/src/
 | `CONTRIBUTING.md`       | Contributing to this codebase — branching, commits, testing, code quality, gates  |
 | `INVARIANTS.md`         | Adding a constraint or a guard — recording the one place an invariant is enforced |
 | `PLATFORM-PROVIDERS.md` | Choosing or swapping an infrastructure provider, or classifying a new dependency  |
+| `PROJECT-PATHS.md`      | Citing a path this repository does not hold — recording what creates it, and when |
 | `TEMPLATE-GUIDE/`       | Generating a project from syntek-base, or maintaining the template                |
 | `TEMPLATE-TOKENS.md`    | You need the token vocabulary and what each one reaches                           |
 | `NIXOS-SETUP.md`        | Looking for host provisioning — it points at the deploy repository                |
