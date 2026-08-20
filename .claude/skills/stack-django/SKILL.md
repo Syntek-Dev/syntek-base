@@ -49,10 +49,10 @@ work, or a review of the same. For the frontend equivalent see `.claude/skills/s
 | **Cache/queue** | Valkey                                         |
 | **Testing**     | pytest, pytest-django                          |
 
-The public UI is **server-rendered HTML** — Django templates + django-components + HTMX +
-Alpine (see `.claude/skills/stack-htmx-templates/`). The **Django Ninja** JSON API (`/api/`,
-auto OpenAPI at `/api/docs`) is the only API surface. `templates/` holds
-the public pages and components alongside internal artefacts (e.g. audit email bodies).
+The public UI is **server-rendered HTML** — Django templates + django-components + HTMX + Alpine
+(see `.claude/skills/stack-htmx-templates/`). The **Django Ninja** JSON API (`/api/`, auto OpenAPI
+at `/api/docs`) is the only API surface. `templates/` holds the 500 page today; the marketing
+pages and the base template arrive with the first story (`code/src/django/templates/CONTEXT.md`).
 
 ---
 
@@ -309,7 +309,7 @@ code/src/django/
 │       ├── policies.py     # named permission checks (OWASP A01)
 │       ├── migrations/
 │       └── tests/          # unit/ + integration/
-├── templates/              # internal-only (e.g. audit email bodies) — not public UI
+├── templates/              # 500.html today; the marketing pages arrive with the first story
 ├── conftest.py             # shared pytest fixtures
 └── manage.py               # invoked only via scripts, never directly
 ```

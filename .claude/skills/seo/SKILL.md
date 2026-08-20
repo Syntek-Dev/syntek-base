@@ -20,10 +20,12 @@ metadata:
 **Task skill, forked** (axis 3 — an executable wiring task whose output is head metadata,
 structured data and crawler configuration).
 
-**All of it is server-rendered by Django. There is no client-side metadata layer.** The
-per-page head is built by `apps.marketing.seo.build_seo()` and rendered through the
-`_seo_head.html` partial; JSON-LD comes from the `seo.py` builders; robots, sitemap and
-llms.txt are the Django views in `apps/core/views/seo.py`.
+**All of it is server-rendered by Django. There is no client-side metadata layer.** None of the
+modules named in this paragraph exists at baseline — this is the shape the wiring takes, not an
+inventory. The per-page head **will be** built by `build_seo()` and rendered through the `_seo_head.html` partial (contract:
+`code/docs/discoverability/WEB-METADATA.md`); JSON-LD **will come** from the structured-data
+builders (`code/docs/discoverability/STRUCTURED-DATA.md`); robots, sitemap and llms.txt are
+Django views rather than static files (`code/docs/discoverability/ROOT-SURFACE.md`).
 
 ---
 
@@ -45,13 +47,14 @@ above are open, that is a `grilling` pass run inline first.
 
 - **Metadata** — title, description, canonical and robots directives through **one
   `build_seo()` call per page**; the view passes the returned dict to the template and
-  `_seo_head.html` renders the tags.
-- **Open Graph and Twitter Cards** — emitted by `_seo_head.html` from the same dict, with image
+  `_seo_head.html` **will render** the tags.
+- **Open Graph and Twitter Cards** — the same partial emits them from the same dict, with image
   dimensions and alt text.
 - **JSON-LD structured data** — server-rendered `<script type="application/ld+json">` from the
-  `seo.py` builders, with dynamic fields sourced from the domain services (SSR), never the JSON
-  API.
-- **robots.txt, sitemap, llms.txt** — the `apps/core/views/seo.py` views. Allow the AI crawlers
+  structured-data builders, with dynamic fields sourced from the domain services (SSR), never
+  the JSON API.
+- **robots.txt, sitemap, llms.txt** — Django views, not static files
+  (`code/docs/discoverability/ROOT-SURFACE.md`). Allow the AI crawlers
   (GPTBot, ClaudeBot, PerplexityBot, Google-Extended). **Disallow `/admin/` and `/portal/`** —
   the admin and the client portal are private and must never be indexed.
 - **The body's shape** — BLUF structure, question-format headings, FAQ and comparison blocks,
@@ -92,7 +95,7 @@ Report in this shape, then name what is owed:
 ## SEO: [page / feature]
 Metadata:   title · description · canonical · OG · Twitter  (build_seo → _seo_head.html)
 Structured: [Organization | Article | FAQ | Breadcrumb | …]
-Crawler:    apps/core/views/seo.py — robots · sitemap · llms.txt  (admin/portal excluded)
+Crawler:    robots · sitemap · llms.txt  (admin/portal excluded)
 Body:       BLUF · question headings · last-updated
 Files:      [changed paths]
 Env:        [new variables — names only]
@@ -114,8 +117,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/docs/SEO-CHECKLIST.md` — **what must be true per page**; the audit baseline
 - `code/docs/DISCOVERABILITY.md` — **how this stack does it**; the method side of that seam
+- `code/docs/discoverability/WEB-METADATA.md` — the `build_seo()` contract and where the head
+  partial will sit
 - `code/docs/discoverability/CONTENT-STRUCTURE.md` — the body's shape, and Section 1's myth disposals
 - `code/docs/discoverability/ROOT-SURFACE.md` — every root and `.well-known` file, and who owns it
 - `code/docs/RENDERING.md` — why critical content is never JS-gated
 - `code/docs/URL-STRATEGY.md` — canonical URL and slug rules across the three prefixes
-- `code/src/django/apps/marketing/CONTEXT.md` — where `build_seo` and the head partial sit

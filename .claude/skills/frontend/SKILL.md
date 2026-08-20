@@ -72,8 +72,9 @@ Place every interaction by class, not by habit (full doctrine: `code/docs/RENDER
 ## Guardrails
 
 - **Token-first CSS.** Component and page CSS consume `var(--token)` only — never a raw hex,
-  px or rem literal. New values enter through the `/admin/design-tokens` editor or a migration,
-  and the var must resolve in the token layer. Verify: `audits/css-tokens.sh`.
+  px or rem literal. A missing value is added to the token layer, never written as a literal,
+  and the var must resolve there — how the token layer is defined and where values enter is
+  `code/docs/DESIGN-TOKENS.md`. Verify: `audits/css-tokens.sh`.
 - **Gradients are tokens, never inline.** No raw `linear-`/`radial-`/`conic-gradient(…)` in
   component or page CSS — a generic inline ramp (blue→purple above all) is the AI-look tell.
   A functional gradient (shimmer, mask) stays inline only with a `gradient-allow` annotation.
@@ -150,5 +151,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/ACCESSIBILITY.md` · `code/docs/RESPONSIVE-DESIGN.md` — the two standards floors
 - `how-to/src/BRAND-VOICE.md` — the voice every user-facing string is written in
 - `code/docs/URL-STRATEGY.md` — `/admin/` is this project's admin, never Django contrib's
-- `code/src/django/apps/marketing/CONTEXT.md` · `code/src/django/components/CONTEXT.md`
+- `code/docs/architecture/FRONTEND-PATTERNS.md` — where a page's modules sit inside a Django app
 - `project-management/docs/RESPONSIVE-DESIGN.md` — a redirect stub; the content is the `code/docs/` one above

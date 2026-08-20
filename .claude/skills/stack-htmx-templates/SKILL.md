@@ -6,7 +6,8 @@ description: Frontend stack reference for <%PROJECT_NAME%> — Django templates 
 Reference for the **Django-templated** frontend of <%PROJECT_NAME%>. The `frontend` skill loads
 this for stack idioms; `seo`, `backend`, `security`, and
 `review` cite it at the UI boundary. Aligns with `project-management/workflows/20-frontend-code/`,
-`code/docs/RENDERING.md` (the interaction doctrine), and `apps/marketing/CONTEXT.md`.
+`code/docs/RENDERING.md` (the interaction doctrine), and
+`code/docs/architecture/FRONTEND-PATTERNS.md` (where a page's modules sit inside the app).
 
 British English throughout (<%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>) — in templates, Python, and copy.
 All user-facing copy follows the brand voice — `how-to/src/BRAND-VOICE.md`
@@ -25,20 +26,25 @@ component design (`07-COMPONENTS`); never invent a generic layout.
 
 ## Architecture
 
-| Layer          | Technology                                                                     |
-| -------------- | ------------------------------------------------------------------------------ |
-| Render         | Django Templates (DTL) served by `apps.marketing`; one process, no Node        |
-| Components     | **django-components** in `code/src/django/components/` (`{% component %}`)     |
-| Server ops     | **HTMX** (fragment swaps) — always with a visible indicator                    |
-| Local interact | **Alpine.js** (`x-data`) — self-hosted under `static/vendor/` when first used  |
-| Styling        | Vanilla CSS, 100% `var(--token)`; tokens served live from `/assets/tokens.css` |
-| Icons          | Self-hosted FontAwesome Free via the `{% icon %}` builtin tag                  |
-| SEO            | `apps.marketing.seo.build_seo` + `_seo_head.html`                              |
-| Cache          | `apps.marketing.cache.cache_marketing` — versioned Valkey page cache           |
-| Rich admin     | Django templates + HTMX + Alpine, same as the public site                      |
+This is the shape a page takes, not an inventory of what is built — each row says when what it
+names arrives, or that it is already here.
 
-Static files: WhiteNoise (hashed + pre-compressed in staging/prod). There is no client
-build step anywhere in the project. Run everything through `code/src/scripts/**` — never `python`/`pytest`/`docker` direct.
+| Layer          | Technology                                                                                                                                                                                                  |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Render         | Django Templates (DTL), one process, no Node. The `apps.marketing` app that serves the public pages **arrives with the first story that needs a page**                                                      |
+| Components     | **django-components** (`{% component %}`) — installed and configured (`code/src/django/config/settings/base.py`); placement: `code/docs/FRONTEND-CODING-PRINCIPLES.md`                                      |
+| Server ops     | **HTMX** (fragment swaps) — always with a visible indicator; `django-htmx` is pinned, and the vendored library **arrives with the first page that loads it**                                                |
+| Local interact | **Alpine.js** (`x-data`) — self-hosted, never a CDN, and **vendored by the first page that uses it** (`code/src/django/static/CONTEXT.md`)                                                                  |
+| Styling        | Vanilla CSS, 100% `var(--token)` — the catalogue and the var-only rule are `code/docs/DESIGN-TOKENS.md`; the stylesheet tree **arrives with the first page** (`code/src/django/static/CONTEXT.md`)          |
+| Icons          | Self-hosted Font Awesome Free through an `{% icon %}` tag (`code/docs/visual-design/WEB.md`), which **arrives with the first story needing one** — `apps.core`'s tag library holds `{% request_id %}` today |
+| SEO            | `build_seo()` + `_seo_head.html` **arrive with the first public page** (contract: `code/docs/discoverability/WEB-METADATA.md`)                                                                              |
+| Cache          | `cache_marketing` — a versioned Valkey page cache, **written by the story that first needs one** (`code/docs/RENDERING.md`)                                                                                 |
+| Rich admin     | Django templates + HTMX + Alpine, same as the public site                                                                                                                                                   |
+
+Static files: **WhiteNoise** in staging and production (hashed, pre-compressed, served from the app
+process) — the package is pinned in `pyproject.toml` and is not yet wired into `MIDDLEWARE` or
+`STORAGES`. There is no client build step anywhere in the project. Run everything through
+`code/src/scripts/**` — never `python`/`pytest`/`docker` direct.
 
 ---
 
@@ -60,7 +66,9 @@ No inline `<script>`/`<style>` (CSP-clean); Alpine reads HTML attributes, htmx i
 
 ## django-components pattern
 
-One folder per component: `components/<snake>/<snake>.py` + `<snake>.html`.
+One folder per component — `<snake>/<snake>.py` + `<snake>.html` + `<snake>.css` — inside
+whichever of the two component roots owns it (`code/docs/FRONTEND-CODING-PRINCIPLES.md` Section
+_Component & Code Placement_).
 
 ```python
 # components/feature_card/feature_card.py
@@ -84,44 +92,51 @@ class FeatureCard(Component):
   `{% slot "default" default %}{% endslot %}` in the template; consumers fill it between
   `{% component %}…{% endcomponent %}`. Self-close leaf components: `{% component "x" a=1 / %}`.
 - The `.html` only assembles BEM class strings; the visual logic is in the component's own CSS,
-  co-located at `code/src/django/components/<snake>/<snake>.css` and aggregated by
-  `static/css/marketing.css`.
+  co-located in the component's folder as `<snake>.css`. There is no build step to aggregate it.
 - **Component props are plain Python:** an `icon` name → `{% icon "name" style="solid" cls="…" %}`;
   list props (items/tiers) → Python lists of dicts looped in the template.
-- Verify a component renders: `docker compose … exec … backend python -c "…Template('{% load component_tags %}{% component \"x\" / %}').render(Context({}))"`.
+- Verify a component renders through the test suite (`bash code/src/scripts/tests/backend.sh`) —
+  a render assertion in a test, never an ad-hoc shell invocation.
 
 ---
 
 ## Building a marketing page
 
-1. **View** in `apps/marketing/views/<area>.py` — thin: build `seo`, pull published content from a
-   **public** service (`published_blog_posts`, `listing_by_slug`, …), render a template.
-   - Never call an admin-gated resolver. Replicate the two resolver masks: portfolio `client_name`
-     only when `client_name_permitted`; blog author `display_name`/`public_id` only.
-   - Clear eager loads you don't render: `.prefetch_related(None)` / `.select_related(None)` — the
-     dev `nplusone` guard **raises** on unnecessary eager loads.
-2. **SEO** — `seo.build_seo(title=…, description=…, path=…, robots=…, og_image=…, json_ld=[…])`;
-   overlay an admin `SeoRecord` with `seo.overlay_record`. JSON-LD via the builders in `seo.py`
-   (`organization_schema`, `webpage_schema`, `breadcrumb_schema`) — emitted safe-escaped.
-3. **Template** extends `marketing/base.html`, fills `{% block marketing_content %}`, loads page CSS
-   via `{% block page_css %}`. Static copy lives in `apps/marketing/pagedata/`.
-4. **URL** in `apps/marketing/urls.py` (I own it); wrap cacheable GET views with `cache_marketing`.
-   `/contact/` is NOT cached (per-request CSRF + POST).
+`bash code/src/scripts/development/new-django-view.sh <route_path>` writes the route files. It
+refuses until the marketing app and its packages exist and names each missing piece, so the shape
+below is what a story fills in rather than what it finds:
 
-Chrome (nav/footer/CTA) is injected by the `marketing_chrome` context processor and rendered by the
-`site_nav` / `site_footer` components in `base.html` — pages never re-supply it.
+1. **View** — thin: build the SEO context, pull published content from a **public** service,
+   render a template. Never call an admin-gated resolver, and replicate its field masks rather
+   than widening them. Clear eager loads you do not render (`.prefetch_related(None)` /
+   `.select_related(None)`) — the dev-only `nplusone` guard **raises** on an unnecessary one
+   (`code/docs/performance/DATABASE-PERFORMANCE.md`).
+2. **SEO** — one `build_seo()` call per page; JSON-LD from the structured-data builders, emitted
+   safe-escaped. Contract: `code/docs/discoverability/WEB-METADATA.md`.
+3. **Template** extends `marketing/base.html`, fills `{% block marketing_content %}`, loads page CSS
+   via `{% block page_css %}`. Static page copy is a `pagedata/` module — the scope
+   `code/src/scripts/audits/copy-slop.sh` scans.
+4. **URL** — wrap cacheable anonymous GET views with `cache_marketing`. A page carrying a
+   per-request CSRF token or a POST is never cached.
+
+Shared chrome (nav, footer, CTA) is rendered once by the base template and never re-supplied by a
+page; the legal set inside the shared footer is data, not markup
+(`code/docs/FRONTEND-CODING-PRINCIPLES.md`).
 
 ---
 
-## HTMX form pattern (the contact enquiry is the reference)
+## HTMX form pattern (the enquiry form is the worked example)
 
 - `hx-post` on the form, `hx-target` on its container, `hx-disabled-elt="this"` +
   a visible `.htmx-indicator` (mandatory latency feedback). On success return a success fragment;
   on error re-render the form fragment with errors. **Non-HTMX POST must also work** (full-page
   re-render) as progressive enhancement.
-- CSRF: `base.html` sets `hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'` and forms include
-  `{% csrf_token %}`. POST views call the same service the Ninja endpoint wrapped
-  (`submit_enquiry`), resolving the IP via `apps.core.utils.get_client_ip`.
+- CSRF: the marketing base template **will set**
+  `hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'` and forms include `{% csrf_token %}`. A POST
+  view calls the same service as the Ninja endpoint, resolving the client IP through the shared
+  helper. CSRF spelling and the write rule: `code/docs/rendering/PITFALLS-AND-EXAMPLES.md`
+  Section _An HTMX write without a CSRF token_. The form and POST-view shape:
+  `code/docs/rendering/TEMPLATES-AND-INTERACTIVITY.md` Section _HTMX server operations_.
 
 ---
 
@@ -154,11 +169,15 @@ over the taxonomy in `code/docs/NEGATIVE-SPACE.md`.
 
 ## Caching
 
-`cache_marketing(ttl)` (in `urls.py`) read-through-caches anonymous GET 200 responses in Valkey,
-namespaced by a `marketing:cache-version` counter. Any content publish
-(BlogPost / PortfolioItem / Testimonial / SectorPage save) bumps the version via
-`apps/marketing/signals.py` → the whole surface invalidates. Consent + analytics are **client-side**
-(`_consent_banner.html` / `analytics.js`) so a cached page is identical for every visitor.
+`cache_marketing(ttl)` **will** read-through-cache anonymous GET 200 responses in Valkey,
+namespaced by a version counter that any content publish bumps — so the whole surface invalidates
+in one write rather than key by key. Nothing that varies per visitor may reach a cached page:
+consent and analytics stay client-side, so one cached response is correct for everybody.
+
+Version-counter invalidation: `code/docs/performance/DATABASE-PERFORMANCE.md` Section _Cache
+Invalidation_. Why nothing per-visitor may reach a cached page:
+`code/docs/rendering/PITFALLS-AND-EXAMPLES.md` Section _Per-visitor content baked into cached
+HTML_.
 
 ---
 
