@@ -132,13 +132,15 @@ consumers hold; commit it so CI can diff it (`code/docs/api-design/NINJA-CONVENT
 
 ### Step 7 — Frontend: Components and Pages
 
-**Component placement — decide before writing any component code:**
+**Component placement — decide before writing any component code.** Which of the two component
+roots a component belongs in is decided by **ownership**, and that rule is stated once, in
+[`code/docs/FRONTEND-CODING-PRINCIPLES.md`](../../docs/FRONTEND-CODING-PRINCIPLES.md) Section
+_Component & Code Placement_. Read it before filling the row below; this step does not restate it.
 
 | Artefact type                                                        | Location                                                                                                  |
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | Design tokens (colour, spacing, radius, typography, shadows, motion) | DB-canonical in `apps/design_tokens`; CSS seed at `static/css/tokens/*.css`                               |
-| Reusable component (`.py` + `.html` + `.css`, co-located)            | `code/src/django/components/<snake>/` — rendered with `{% component %}`                                   |
-| Reusable server-rendered component                                   | a django-component under the owning Django app                                                            |
+| Reusable component (`.py` + `.html` + `.css`, co-located)            | the root ownership selects (`code/docs/FRONTEND-CODING-PRINCIPLES.md`); `{% component %}` renders it      |
 | Public page (Django view + template + URL)                           | scaffold with `bash code/src/scripts/development/new-django-view.sh <route_path>`                         |
 | HTMX partial (a swap target)                                         | `_<name>.html` beside the full-page template, `{% include %}`d by it so both paths render the same markup |
 | Per-page JavaScript (rare)                                           | a static `.js` file — never an inline `<script>`                                                          |

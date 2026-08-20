@@ -40,11 +40,14 @@ server/Python principles in
 
 ## Templates & django-components
 
-Shared UI is a **django-component**, never inline markup. One folder per component:
-`code/src/django/components/<snake>/<snake>.py` + `<snake>.html`; render with `{% component "<snake>" %}`.
+Shared UI is a **django-component**, never inline markup. One folder per component —
+`<snake>/<snake>.py` + `<snake>.html`, rendered with `{% component "<snake>" %}`. **Which** root
+that folder sits under is decided by ownership, and
+[Component & Code Placement](#component--code-placement) below is the only place this project
+states that rule.
 
-- **Reuse before you build.** Check the `code/src/django/components/` catalogue first — duplicating
-  a shared component is a defect.
+- **Reuse before you build.** Check both component roots first — duplicating a shared component
+  is a defect.
 - **Views stay thin.** A view composes data from the domain services and renders a template; business
   logic lives in the service layer, never the view or the template. Public pages pull published
   content from services directly (SSR).
@@ -104,9 +107,11 @@ The visual counterpart — the <%ORG_NAME%> signature and the anti-generic manda
 
 ## CSS — Coding Principles
 
-Applies to every `.css` file in `code/src/django/static/css/` (page and layer CSS) and to the CSS
-co-located with each django-component in `code/src/django/components/<snake>/`. Tokens live in
-`code/src/django/static/css/tokens/`.
+Applies to every `.css` file the project ships: the page and layer stylesheets under
+`code/src/django/static/`, and the CSS co-located with each django-component in its own folder
+(_Component & Code Placement_ below names which root that is). The token layer is not built yet
+(Section _What is not built yet_); where its values live is
+[DESIGN-TOKENS.md](DESIGN-TOKENS.md)'s to state, not this guide's.
 
 - **Token-first.** Never define a colour, spacing, radius, typography, shadow, or motion value in a
   component or page CSS file — consume `var(--token)` only (see below + [DESIGN-TOKENS.md](DESIGN-TOKENS.md)).
@@ -138,12 +143,12 @@ spec: **[DESIGN-TOKENS.md](DESIGN-TOKENS.md)**. Consumption rules:
 - **Only ever consume `var(--token)`.** Component CSS reads tokens; it never defines visual values.
 - **Gradients are tokens too.** Never compose a `linear-/radial-/conic-gradient(…)` inline in
   component or page CSS — a generic inline gradient is the AI-look tell (`VISUAL-DESIGN.md`). Consume
-  `var(--gradient-*)` / `var(--sector-tone-*)`; add a new brand gradient via
-  `shared/src/css/tokens/gradients.css` + a `design_tokens` migration. A functional gradient (loading
+  `var(--gradient-*)` / `var(--sector-tone-*)`; add a new brand gradient to the token layer
+  ([DESIGN-TOKENS.md](DESIGN-TOKENS.md)) before consuming it. A functional gradient (loading
   shimmer, scrim mask) may stay inline **only** with a `gradient-allow` annotation. Enforced by
   `code/src/scripts/audits/css-gradients.sh`.
-- **The var must resolve** in the token layer (`shared/src/css/tokens/*.css` + `surfaces.css`, served
-  live at `/assets/tokens.css`). A phantom `var(--x)` is silently dropped by Lightning CSS —
+- **The var must resolve** in the token layer ([DESIGN-TOKENS.md](DESIGN-TOKENS.md)). A phantom
+  `var(--x)` is silently dropped by Lightning CSS —
   **enforced in CI** by `code/src/scripts/audits/css-tokens.sh`. Run it before a PR:
 
 ```bash
@@ -156,16 +161,31 @@ bash code/src/scripts/audits/css-tokens.sh
 
 Before writing new code, decide where it belongs:
 
-| Artefact                      | Location                                                                       |
-| ----------------------------- | ------------------------------------------------------------------------------ |
-| Server component (shared UI)  | `code/src/django/components/<snake>/` — `.py` + `.html`, `{% component %}`     |
-| Public page (view + template) | `code/src/django/apps/marketing/` — thin view + Django template (SSR)          |
-| Design token value            | DB-canonical (`apps/design_tokens`); the CSS seed is `static/css/tokens/*.css` |
-| Reusable component + its CSS  | `code/src/django/components/<snake>/` — `.py` + `.html` + `.css`, co-located   |
-| Per-page JavaScript           | a static file under `code/src/django/static/js/` — never an inline `<script>`  |
+| Artefact                             | Location                                                                      |
+| ------------------------------------ | ----------------------------------------------------------------------------- |
+| Component **more than one** app uses | `code/src/django/components/<snake>/` — `.py` + `.html` + `.css`, co-located  |
+| Component **one** app owns           | `code/src/django/apps/<app>/components/<snake>/` — the same three files       |
+| Public page (view + template)        | `code/src/django/apps/marketing/` — thin view + Django template (SSR)         |
+| Design token value                   | DB-canonical (the `design_tokens` app); the CSS seed is the token layer       |
+| Per-page JavaScript                  | a static file under `code/src/django/static/js/` — never an inline `<script>` |
 
-`apps/design_tokens` is the single source of token values; `code/src/django/components/` is the
-authority for component styling and BEM. Never duplicate or conflict with an established component
+**Both component locations are correct, and the discriminator is ownership — never size, maturity
+or how good the component is.** A component more than one app renders is shared and lives at the
+top-level root; a component a single app renders is that app's and lives beside it. The folder
+name is `<snake>` in both, because the component is imported as a Python module and a hyphen
+cannot be one.
+
+**Neither location needs a registration step**, and that is the point of choosing them: it is
+django-components' own default search. `COMPONENTS.dirs` names the top-level root and
+`COMPONENTS.app_dirs` names the per-app folder, both wired in
+`code/src/django/config/settings/base.py`, so a component is found wherever ownership put it.
+
+**Promote on the second consumer, not in anticipation of one.** A component moves up to the
+top-level root the day a second app renders it — a folder move plus the import fix. Guessing
+earlier fills the shared root with things one app uses, and the root stops meaning anything.
+
+This guide is the authority for BEM and component styling; the shipped components are the
+reference for established patterns. Never duplicate or conflict with an established component
 pattern. When in doubt, extend the existing component before adding a new one.
 
 **The legal footer is data, not markup.** The shared `site_footer` renders the full legal set —
@@ -242,7 +262,8 @@ In addition to the [global checklist in CODING-PRINCIPLES.md](coding-principles/
 
 - [ ] Built from the shipped code — real components/tokens/conventions reused, wireframe/design
       reconciled against what is actually there (not improvised from the plan)
-- [ ] Shared UI is a `{% component %}`, not inline markup; views thin; templates logic-free
+- [ ] Shared UI is a `{% component %}`, not inline markup; placed by ownership — shared root for
+      two or more consumers, the owning app's folder for one; views thin; templates logic-free
 - [ ] Interactions placed by class — server default, HTMX (with a visible indicator) for server ops,
       Alpine for local; `hx-boost` absent; usable with JS disabled
 - [ ] Nothing fails silently — a 5xx swaps a real error region rather than nothing, and an

@@ -107,48 +107,47 @@ urlpatterns = [
 
 ### Django + Ninja
 
+**The shape a project grows into, not an inventory of what is here.** The template ships
+`config/` and two model-less apps; every module below arrives with the story that needs it.
+
 ```text
 code/src/django/
 ├── apps/
-│   ├── marketing/
+│   ├── <app>/
 │   │   ├── models.py
 │   │   ├── services.py       # business logic
 │   │   ├── schemas.py        # Ninja (Pydantic) request/response models
 │   │   ├── api.py            # Ninja Router (JSON endpoints)
 │   │   ├── views.py          # Django template views (public pages)
 │   │   ├── urls.py
-│   │   ├── tasks.py          # Celery tasks
 │   │   ├── templates/        # Django templates
-│   │   ├── components/       # django-components
+│   │   ├── components/       # django-components this app owns
 │   │   └── tests/
-│   ├── media/
-│   └── users/
+│   └── …
+├── components/               # django-components more than one app uses
 ├── config/
 │   ├── settings/
 │   │   ├── base.py
 │   │   ├── dev.py
 │   │   ├── test.py
+│   │   ├── staging.py
 │   │   └── production.py
-│   ├── urls.py
-│   └── celery.py
+│   └── urls.py
 └── manage.py
 ```
 
-### Frontend assets
-
-```text
-code/src/
-└── shared/
-    └── src/css/tokens/      # design-token CSS (var(--token) source of truth)
-```
+**Two component roots, and which one a component belongs in is decided by ownership.** That rule
+is stated once, in [`../FRONTEND-CODING-PRINCIPLES.md`](../FRONTEND-CODING-PRINCIPLES.md)
+Section _Component & Code Placement_, together with the settings that make both roots searchable.
+This guide shows where the two roots sit; it does not decide between them.
 
 ### Rules
 
-- Group by feature/domain, not by technical layer. A `marketing/` app holding its models,
-  services, API, views, and tests is easier to navigate than split `models/`, `services/` trees.
+- Group by feature/domain, not by technical layer. An app holding its models, services, API,
+  views, and tests is easier to navigate than split `models/`, `services/` trees.
 - Keep test files adjacent to or mirroring the source structure.
 - Configuration lives in `config/`. There is no separate client-side source tree — every surface
-  is rendered from `templates/` and `components/`.
+  is server-rendered from Django templates and django-components.
 
 ---
 
