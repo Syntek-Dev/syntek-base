@@ -199,6 +199,7 @@ Two things to do on a freshly generated project:
 │   │   ├── DOCUMENTATION-PAIRING.md     ← the CONTEXT.md / CLAUDE.md split and its decision test
 │   │   ├── ENCRYPTION-GUIDE.md          (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
 │   │   ├── EXPORTS.md                   ← downloadable file exports (declared, not wired)
+│   │   ├── FORWARD-VOICE.md             ← what a shipped doc may claim about the tree it is read in
 │   │   ├── FRONTEND-CODING-PRINCIPLES.md
 │   │   ├── GATE-REPORTING.md            ← what a gate may claim it looked at; absent tool vs absent surface
 │   │   ├── LOGGING.md                   (+ logging/ — DJANGO-LOGGING, FRONTEND-LOGGING, OBSERVABILITY, CLOUDINARY)
