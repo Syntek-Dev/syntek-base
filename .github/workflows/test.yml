@@ -82,31 +82,46 @@ jobs:
 
       # One gate, called from both sides. This step used to hand-roll `docker compose run`
       # with its own pytest and coverage invocations, which made CI a SECOND copy of the
-      # gate — and it was the copy that rotted. Its auth leg read
-      # `coverage report --include='apps/users/*' --fail-under=90` against an app this
-      # repository does not have, so it measured nothing and reported success on every run.
-      # backend-coverage.sh owns the two phases, the floor, the image build, the teardown,
-      # and an auth gate that prints its denominator and fails closed when the app is
-      # present but unmeasured. It also satisfies the script-first rule this step broke.
+      # gate — and it was the copy that rotted. Its auth leg hardcoded the identity app,
+      # `--include='apps/users/*' --fail-under=90`, which was wrong in two directions at
+      # once: `users` is only the DEFAULT answer to the IDENTITY_APP question, so a project
+      # answering `accounts` got a floor enforced on a directory it does not have, and this
+      # repository has no apps at all, so the leg measured nothing and reported success on
+      # every run. backend-coverage.sh owns the two phases, the floor, the image build, the
+      # teardown, and an auth gate that reads AUTH_APP (default `users`), prints its
+      # denominator and fails closed when the app is present but unmeasured. It also
+      # satisfies the script-first rule this step broke.
+      #
+      # NO --output, and the constraint is the MOUNT rather than the path shape. A bare
+      # `reports` is refused outright — backend-coverage.sh compares the argument as a
+      # STRING against `$PROJECT_ROOT` and exits 2. Making it absolute clears that guard and
+      # hits the real one: the script reaches the container with `docker compose exec`, and
+      # docker-compose.test.yml gives django-test exactly ONE writable bind mount —
+      # ../scripts/tests/reports:/workspace/code/src/scripts/tests/reports. An --output
+      # outside it writes the XML into the image layer, where nothing on the runner can read
+      # it. The script's DEFAULT is the one directory inside that mount, so passing nothing
+      # is what lands the artefacts, and the two steps below read it there. Same call as
+      # claude.yml [7/8] — one gate, invoked identically from both sides. Measured
+      # 20/08/2026.
       - name: Run pytest with coverage (two phases)
         if: steps.detect.outputs.present == 'true'
         env:
           COV_FLOOR: ${{ steps.threshold.outputs.value }}
-        run: bash code/src/scripts/tests/backend-coverage.sh --output reports
+        run: bash code/src/scripts/tests/backend-coverage.sh
 
       - name: Upload coverage report
         if: always() && steps.detect.outputs.present == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: backend-coverage
-          path: reports/coverage.xml
+          path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           retention-days: 30
 
       - name: Post coverage comment
         if: always() && steps.detect.outputs.present == 'true' && github.event_name == 'pull_request'
         uses: MishaKav/pytest-coverage-comment@v1.11.0
         with:
-          pytest-xml-coverage-path: reports/coverage.xml
+          pytest-xml-coverage-path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           title: Backend Coverage
 
       # No tear-down step: backend-coverage.sh traps EXIT and brings the stack down with its

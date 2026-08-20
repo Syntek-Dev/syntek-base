@@ -30,8 +30,11 @@ frontend upstream to size or route.
 
 - **Source:** `pyproject.toml` — "Security headers (CSP included) are set at the edge
   in the Nix server repo — NEVER in this repo — so django-csp is deliberately absent."
-  Reaffirmed in `code/src/django/templates/base.html` (header comment; HTMX configured
-  without inline JS, CSP-clean). Deploy side: `deploy:` the Nginx module (CSP baseline +
+  Reaffirmed in `code/docs/FRONTEND-CODING-PRINCIPLES.md` — the **CSP-clean** rule under
+  _Templates & django-components_: no inline `<script>` or `<style>`, HTMX configured
+  through a `<meta>` tag, per-page JS a static file. That guide is where the rule lives;
+  the base template a project writes is built to it, and is cited nowhere here because it
+  holds no row in `how-to/src/PROJECT-PATHS.md`. Deploy side: `deploy:` the Nginx module (CSP baseline +
   per-app `cspDirectives` merge; `add_header Content-Security-Policy … always`).
 - **Current status:** _TBD — reconcile against this project's live code._ Design
   intent: the app ships **no** CSP or security-header middleware; dev/test run without

@@ -35,8 +35,8 @@ onto**. Every item below corresponds to an entry in that contract; add there fir
 (`OBJECT_STORE_PUBLIC_ENDPOINT_URL`, the private-docs S3 surface).
 
 **Where:** the NixOS deploy repo (edge) / Cloudflare — **not** this repo. Security headers
-(including CSP) are set at the edge (`code/src/django/templates/base.html` header comment
-notes this).
+(including CSP) are set at the edge — `pyproject.toml` states this in terms, which is why
+django-csp is deliberately absent from the dependency set.
 
 **Why:** a view renders the media as `<img>` / `<video>` / download `<a>` against those hosts.
 On a CSP-enforcing environment they are blocked from rendering until allow-listed. Add them to

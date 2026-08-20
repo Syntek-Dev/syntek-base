@@ -187,17 +187,37 @@ content) keeps its default, and the doc rows that mention it can be deleted afte
 | `<%NOTIFICATIONS_APP%>` | App owning notifications and their delivery      | `notifications` | `snake_case` |
 | `<%LEGAL_APP%>`         | App owning cookie consent and legal pages        | `legal`         | `snake_case` |
 
-`apps.marketing`, `apps.seo`, `apps.design_tokens` and **`apps.core`** are **house constants**, not
-tokens — they are the same in every project and stay literal.
+`apps.marketing`, `apps.design_tokens` and **`apps.core`** are **house constants**, not tokens —
+they are the same in every project and stay literal.
 
 **`<%CORE_APP%>` was retired on 15/08/2026, and the reason is the general rule.** The five tokens
-above name apps **a story has yet to create**: nothing in the template claims to be `apps/users/`,
-so the token is the only thing that ever names it and the answer is honoured everywhere. `apps/core/`
-is the opposite case — it **already ships**, as a literal directory, with `name = "apps.core"` in
-its `apps.py`, `apps.core` in `INSTALLED_APPS`, literal imports throughout, and a dozen guides
-naming it. Answering `CORE_APP=shared` produced a project whose documentation disagreed with its own
-code. **A token whose referent is hardcoded everywhere else is not a choice; it is a claim that a
-choice exists.**
+above name apps **a story has yet to create**: no directory in the template _is_ `apps/users/`, so
+answering `IDENTITY_APP=accounts` contradicts no shipped code. `apps/core/` is the opposite case —
+it **already ships**, as a literal directory, with `name = "apps.core"` in its `apps.py`,
+`apps.core` in `INSTALLED_APPS`, literal imports throughout, and a dozen guides naming it.
+Answering `CORE_APP=shared` produced a project whose documentation disagreed with its own code.
+**A token whose referent is hardcoded everywhere else is not a choice; it is a claim that a choice
+exists.**
+
+**What that argument does not claim is that `users` never appears literally.** It appears around
+thirty times across the tree — in worked examples, log-query snippets, a coverage-floor row and
+several dated historical notes — and those stay literal on purpose: a `grep "apps.accounts"`
+example teaches a reader nothing a `grep "apps.users"` one does not, and rewriting history to name
+an app the defect never named would make the record false. **The line the token has to hold is
+executable.** Anything that _runs_ against the identity app reads the answer rather than the
+default, or the token is decoration:
+
+| Site                                                          | How it reads the answer                                             |
+| ------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `code/src/scripts/tests/backend-coverage.sh`                  | `AUTH_APP="${AUTH_APP:-users}"`, and skips while that app is absent |
+| `.github/workflows/claude.yml` · `.github/workflows/test.yml` | Both call that script rather than a hardcoded `--include` glob      |
+
+Both CI jobs hardcoded `apps/users/*` until 20/08/2026, and both ship — so a project answering
+`accounts` was handed a gate enforcing a 90% floor on a directory it does not have, while this
+repository, which has no apps at all, saw the same leg measure nothing and report success on every
+run. **A prose example naming the default is a reading aid; a gate naming it is a broken gate**, and
+keeping the two apart is what keeps this token a real choice rather than the claim `<%CORE_APP%>`
+was retired for making.
 
 ### Planning cadence
 

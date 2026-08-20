@@ -139,7 +139,8 @@ clear** — see Failure modes.
 ## Failure modes
 
 **Readiness can miss a dependency outage entirely, and this is the failure mode to internalise.**
-The verdict is memoised for `HEALTH_CACHE_TTL_SECONDS` (default 15, `config/settings/base.py:126`)
+The verdict is memoised for `HEALTH_CACHE_TTL_SECONDS` (default 15, set in
+`code/src/django/config/settings/base.py`)
 so external probing cannot stampede the database. An outage that starts and ends inside one TTL
 is therefore never observed.
 

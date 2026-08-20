@@ -69,9 +69,26 @@
 # fight this repository's own guides and fail on them — so the scan is the two marketing
 # directories and nothing else:
 #   code/src/django/apps/marketing/pagedata   (*.py  — page copy modules)
-#   code/src/django/apps/marketing/templates  (*.html — marketing templates)
+#   code/src/django/templates/marketing       (*.html — marketing templates)
 # The other registers Section 4 names (product UI, notifications, support articles) have no home
 # in the tree at baseline. When one gets a home, it is added to SCOPES here, not assumed.
+#
+# THE TEMPLATE SCOPE IS templates/marketing/, NOT apps/marketing/templates/. Django's APP_DIRS
+# loader would find either, so both are plausible and only one is what this project builds:
+# `code/src/scripts/development/new-django-view.sh` writes the page template there, and
+# `code/src/django/templates/CONTEXT.md` and `code/docs/FRONTEND-CODING-PRINCIPLES.md` name
+# that same directory. A fourth source is weaker than it looks and is quoted as what it is:
+# `project-management/workflows/20-frontend-code/STEPS.md` puts every template under
+# `code/src/django/templates/`, which corroborates the direction — not under the app —
+# without naming the marketing subdirectory at all.
+#
+# The scope directory is written in plain prose everywhere it appears — the block above and
+# SCOPES below — and never in backticks. It is a path a project builds, and it holds no row
+# in `how-to/src/PROJECT-PATHS.md`, so citing it would be a promise nobody has undertaken
+# (`code/docs/FORWARD-VOICE.md`). The scope was `apps/marketing/templates` until
+# 20/08/2026 — a directory the file collector skips in silence, so this leg would have
+# gone on reporting clean having read nothing even in a fully built project. Rule:
+# `code/docs/GATE-REPORTING.md`.
 #
 # ONLY RENDERED COPY IS READ, never the code around it. In a `.py` module the scan sees
 # string literals and nothing else, so `unlock_account` is not a corporate verb and a `#`
@@ -81,7 +98,7 @@
 # style/verbatim. That narrowing is the "scope the scan narrowly" rule: a sibling audit in
 # this folder flagged 34 issues on its first draft, 33 of them false.
 #
-# NO-OP WHEN ABSENT. `apps/marketing/` does not exist at template baseline, so the script
+# NO-OP WHEN ABSENT. Neither scope exists at template baseline, so the script
 # exits 0 with a note rather than failing, which is what lets it run unconditionally in CI.
 # A --output run still writes a clean, zero-finding report on that path, so a consumer told
 # to collect the report file always finds it.
@@ -119,7 +136,7 @@ REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 # Each entry: "<dir>:<glob>" — the two marketing copy surfaces, and nothing else.
 SCOPES=(
   "code/src/django/apps/marketing/pagedata:*.py"
-  "code/src/django/apps/marketing/templates:*.html"
+  "code/src/django/templates/marketing:*.html"
 )
 
 # At most one exclamation mark per surface. One file is this script's proxy for a surface.

@@ -36,7 +36,7 @@ model: opus
 
 ### CSS refactoring (apply when CSS files are in scope)
 
-- [ ] No hardcoded typography, colour, spacing, or shadow values — all use `var(--token-*)` from `shared/src/css/tokens/` · _opus_
+- [ ] No hardcoded typography, colour, spacing, or shadow values — every one resolves to a token defined in the token layer (`code/docs/DESIGN-TOKENS.md` names it) · _opus_
 - [ ] No declaration block repeated in 4+ distinct files — extracted to a shared utility class in `utility.css` or a section layer file · _opus_
 - [ ] Logical properties used throughout — `margin-block-end`, `padding-inline`, `border-block-start` etc.; no `margin-bottom`, `padding-left`, `border-top` · _opus_
 - [ ] No per-component `outline: none; box-shadow: var(--shadow-focus)` focus ring — the global rule in `base/reset.css` handles all focus states · _opus_
