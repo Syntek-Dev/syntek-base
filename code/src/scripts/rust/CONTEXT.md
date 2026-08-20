@@ -17,7 +17,7 @@ therefore an explicit host prerequisite on a Rust project.
 code/src/scripts/rust/
 ├── CONTEXT.md   ← this file
 ├── CLAUDE.md    ← operating rules
-├── _common.sh   ← shared setup — sourced, never called
+├── _common.sh   ← shared setup + the cargo-result classifier — sourced, never called
 ├── build.sh     ← compile the workspace; install the extension into the venv
 ├── test.sh      ← the Rust-side test suite
 ├── lint.sh      ← rustfmt + clippy at -D warnings (--fmt-only for rustfmt alone)
@@ -36,6 +36,21 @@ code/src/scripts/rust/
 Exit codes follow the house contract: `0` success, `1` the tool reported failure, `2` script
 error. Each script hard-fails with an install hint when a toolchain binary is missing, rather than
 letting `cargo` emit a bare "not found".
+
+**`2` also covers a workspace that would not build**, and `lint.sh` and `build.sh` both depend on
+it: cargo spends one exit code (`101`) on a diagnostic it raised and on a build script that
+panicked over a missing system library, and those are not the same result — the first is a finding
+about the code, the second is no finding at all. Both tell them apart with the shared classifier in
+`_common.sh` (`_cargo` captures the output, `_workspace_was_diagnosed` asks whether anything in
+_this_ workspace was diagnosed, `_no_build_reason` names the cause), and both report the second as
+`2` with that cause, so `syntax/lint.sh`, `syntax/format.sh` and `syntax/check.sh` can file the leg
+as COULD NOT RUN.
+
+**What each does with the answer differs, and that is the point.** For `lint.sh` a workspace that
+will not build is never a lint finding — clippy read nothing. For `build.sh` the opposite holds:
+`cargo check` _is_ the type gate, so rustc diagnosing our own code is exactly the result asked for
+and exits `1`. One shared question, two verdicts, one home for the question. Rule:
+`code/docs/GATE-REPORTING.md`; the reasoning is in each script's header.
 
 ## Two test suites, both required
 

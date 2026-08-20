@@ -296,7 +296,19 @@ fi
 if wants rust; then
   bold "── Rust (cargo check) ─────────────────────────────────────────────────────"
   run_on_host bash "$PROJECT_ROOT/code/src/scripts/rust/build.sh" --check
-  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+  # 1 and 2 are different results here, and cargo spends one exit code on both. A type error
+  # in code/src/rust/ IS this leg's finding — `cargo check` is the type gate, so rustc
+  # diagnosing our code is the answer that was asked for. A workspace that never reached our
+  # crates at all — an absent system library, a build script that panicked — produced no
+  # type-check result, and the owner says so with 2. Its `build.sh error:` line names the
+  # cause and is the only thing in this run that knows it, so quote it rather than re-derive.
+  if [[ $LAST_EXIT -eq 2 ]]; then
+    rs_why=$(grep -a 'build.sh error: ' "$TMPFILE" | tail -n 1 | sed 's/.*build\.sh error: //')
+    log "  ⚠  ${rs_why:-the Rust owner could not run} — Rust type-check COULD NOT RUN"
+    UNRUN+=("Rust/cargo check (${rs_why:-see the Rust section above})")
+  elif [[ $LAST_EXIT -ne 0 ]]; then
+    OVERALL_EXIT=1
+  fi
   log ""
 fi
 

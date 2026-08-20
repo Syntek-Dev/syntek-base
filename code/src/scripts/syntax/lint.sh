@@ -375,12 +375,31 @@ fi
 # Delegated for the same reason. The owner runs `cargo fmt --check` alongside clippy, so
 # a formatting breach fails the LINT gate here exactly as it does in CI — which is why
 # format.sh asks that script for its narrow --fmt-only half rather than duplicating it.
+#
+# The precondition is the OWNER'S exit code, not a `command -v cargo` here, and that is the
+# whole difference from the three legs above. Their prerequisite is knowable for free — a
+# container is up or it is not, pnpm is on PATH or it is not. This one is not: a Cargo
+# workspace cannot be known to build without building it, and cargo being on PATH says
+# nothing about whether the system libraries its dependencies link against are installed.
+# A cheap check here would be decoration twice over — it would miss the failure that
+# actually happens, and _common.sh already makes an absent cargo a `2` with the rustup hint,
+# which is the same route as the one below.
 if wants rust; then
   bold "── Rust (rustfmt + clippy) ────────────────────────────────────────────────"
   declare -a rs_args=(bash "$PROJECT_ROOT/code/src/scripts/rust/lint.sh")
   $FIX && rs_args+=(--fix)
   run_on_host "${rs_args[@]}"
-  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+  # 2 from that owner means it produced NO lint result — cargo absent, rustfmt missing from
+  # the pinned toolchain, or a workspace that would not build. Its `lint.sh error:` line
+  # names which, and it is the only thing in this run that knows: the aggregate delegates
+  # cargo's dialect along with cargo's invocation, so quote that line rather than re-derive it.
+  if [[ $LAST_EXIT -eq 2 ]]; then
+    rs_why=$(grep -a 'lint.sh error: ' "$TMPFILE" | tail -n 1 | sed 's/.*lint\.sh error: //')
+    log "  ⚠  ${rs_why:-the Rust owner could not run} — Rust lint COULD NOT RUN"
+    UNRUN+=("Rust/clippy (${rs_why:-see the Rust section above})")
+  elif [[ $LAST_EXIT -ne 0 ]]; then
+    OVERALL_EXIT=1
+  fi
   log ""
 fi
 

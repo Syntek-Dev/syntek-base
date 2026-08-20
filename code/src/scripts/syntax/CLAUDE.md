@@ -50,6 +50,11 @@ two surfaces.
 - **A surface that is absent is an error, not a skip.** An explicitly requested
   `--file-type` whose surface is missing exits `2`. Never warn-and-exit-`0`: "could not
   look" filed as "looked, and it was clean" is the defect these scripts exist to catch.
+- **A surface that is present but unusable is a leg that could not run** — a different case,
+  and it belongs in `UNRUN`, never in `OVERALL_EXIT=1`. A delegated owner says so with exit
+  `2`; check that code before treating non-zero as findings, and take the **reason** from the
+  owner's own error line rather than re-deriving it from its tool's output, because the
+  aggregate delegates the tool's dialect along with its invocation.
 - **This is not a formatting-preference dial** — mirror the lefthook pre-commit gate,
   never diverge tool config from it.
 - **Exit-code contract is load-bearing: `0` clean, `1` issues, `2` script error, `3` at

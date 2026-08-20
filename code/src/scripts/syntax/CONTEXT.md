@@ -131,6 +131,22 @@ The delegated surfaces carry their own prerequisites and fail hard rather than s
 mobile scripts require `code/src/mobile/node_modules` (`scripts/mobile/install.sh`), and the Rust
 scripts require `cargo` on the host, pinned by `code/src/rust/rust-toolchain.toml`.
 
+**The Rust leg's prerequisite is the one that cannot be checked in advance**, and all three
+scripts treat it accordingly. A container is up or it is not and `pnpm` is on `PATH` or it is not,
+but a Cargo workspace cannot be known to build without building it — cargo on `PATH` says nothing
+about the system libraries its dependencies link against. So the precondition here is the owner's
+**exit code**: `scripts/rust/lint.sh` and `scripts/rust/build.sh` both exit `2` when they produced
+no result at all (cargo absent, rustfmt missing from the pinned toolchain, or a workspace that
+would not build), the aggregate files that leg as could-not-run and the whole run becomes `3`,
+quoting the owner's own error line so the summary names the missing dependency rather than saying
+"rust lint failed".
+
+`check.sh`'s Rust leg is the one that inverts. `cargo check` **is** the type gate, so a rustc
+diagnostic against `code/src/rust/` is this leg's finding and exits `1` — it is a run that never
+reached our crates that produces no result and becomes `3`. Reading it the other way round would
+either hide a real type error or report an absent system library as broken code. The owner draws
+that distinction; the aggregate only reads the code it chose.
+
 ## Cross-references
 
 - `code/src/scripts/mobile/CONTEXT.md` — the mobile owner these delegate to

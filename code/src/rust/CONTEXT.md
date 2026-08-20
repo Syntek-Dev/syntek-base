@@ -33,7 +33,7 @@ code/src/rust/
 ## `nativecore` is a house constant
 
 The crate and its Python module are called `nativecore` in **every** generated project — like
-`apps.marketing`, `apps.seo` and `apps.design_tokens`, the name is deliberately not tokenised, so
+`apps.marketing` and `apps.design_tokens`, the name is deliberately not tokenised, so
 `import nativecore` means the same thing across the estate and a guide can name it literally.
 
 ## Why the build backend lives in the crate, not the root

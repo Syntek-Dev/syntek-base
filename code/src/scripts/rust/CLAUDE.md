@@ -37,6 +37,18 @@ the host against the toolchain pinned in `code/src/rust/rust-toolchain.toml`.
   not apply.
 - **Clippy runs at `-D warnings`** so a local run and CI agree. Never soften it with a blanket
   `#[allow]` at crate root; scope an allow to the item and justify it.
+- **A workspace that will not build exits `2`, never `1`.** cargo answers both with `101`, and
+  collapsing them reports "could not look" as "looked, and found something". Any script here that
+  reads a cargo failure decides which it was before choosing a code, and the `die` message names
+  the cause — the missing system library, the absent component — because the `syntax/` aggregates
+  quote that line verbatim into their COULD NOT RUN summaries and a reader has to be able to act
+  on it. Rule: `code/docs/GATE-REPORTING.md`.
+- **The decision has ONE home: `_cargo`, `_workspace_was_diagnosed` and `_no_build_reason` in
+  `_common.sh`.** Run cargo through `_cargo` and ask those two, never a second copy of the
+  span test — `audits/doctrine-drift.sh` exists because one rule in two places drifts.
+  **The verdict, though, belongs to the caller**, and the two here draw opposite ones: a
+  workspace that will not build is never a clippy finding, while a rustc diagnostic against
+  `code/src/rust/` is precisely what `build.sh --check` was asked for and exits `1`.
 - **Aggregates delegate here; they never reimplement.** Wire a new operation into
   `syntax/check.sh` or `tests/all.sh` behind the same directory-existence guard the mobile group
   uses, rather than duplicating logic.

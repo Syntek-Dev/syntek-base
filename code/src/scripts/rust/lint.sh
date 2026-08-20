@@ -20,7 +20,26 @@
 # layout. So the aggregator asks for the narrow half by name instead of accepting a
 # source rewrite it never advertised. Nothing else passes this flag.
 #
-# Exit codes:  0 = clean   1 = lint or format issues   2 = script error
+# Exit codes:  0 = clean   1 = lint or format issues
+#              2 = script error, INCLUDING a workspace that would not build — no lint
+#                  result exists, so there is nothing to report about the code
+#
+# WHY A WORKSPACE THAT WILL NOT BUILD IS 2 AND NEVER 1
+# `cargo clippy` exits 101 for a lint it denied AND for a workspace that never compiled —
+# a build script panicking over an absent system library, a missing linker, an unreachable
+# registry. Those are not the same result: the first is a finding ABOUT THE CODE, the
+# second is no finding at all, because clippy never read the code. Filing it as 1 reports
+# "could not look" as "looked, and found something" — the same lie as a false green, just
+# pointing the other way. Rule: code/docs/GATE-REPORTING.md.
+# They are told apart by the one question the exit code cannot answer — did anything in
+# THIS workspace get diagnosed? — and every rustc and clippy diagnostic answers it by
+# rendering a `--> path:line:col` span, which a run that died in a dependency's build
+# script never emits, and a run that died inside a dependency emits only into the registry.
+# syntax/lint.sh reads the 2 and files the Rust leg as COULD NOT RUN, quoting the reason
+# out of this script's `lint.sh error:` line. That reason must therefore name a cause a
+# reader can act on — "rust lint failed" tells nobody which library to install.
+# The span question and the reason are asked by build.sh too, so both live in _common.sh;
+# what differs is only the verdict each draws, and that stays here.
 #
 SCRIPT_NAME="lint.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
@@ -64,19 +83,49 @@ _report_writes() {
   fi
 }
 
+# rustfmt exits 1 for "this needs reformatting", which is a finding, and 101 when it is not
+# installed for the pinned toolchain, which is no formatting verdict at all.
+_fmt() {
+  local rc=0
+  _cargo fmt "$@" || rc=$?
+  case $rc in
+    0) return 0 ;;
+    1)
+      log ""
+      bold "✗ Rust formatting issues found."
+      $FIX || log "  Run lint.sh --fix, or syntax/format.sh --file-type rust --fix."
+      exit 1
+      ;;
+    *)
+      die "cargo fmt could not run (exit $rc), so nothing was checked: rustfmt is missing from the toolchain pinned in code/src/rust/rust-toolchain.toml, or a file could not be parsed. Add it with: rustup component add rustfmt"
+      ;;
+  esac
+}
+
+# Called only after a clippy invocation failed. Turns cargo's single 101 into this script's
+# two answers, per the header.
+_clippy_verdict() {
+  if _workspace_was_diagnosed; then
+    log ""
+    bold "✗ Rust lint issues found."
+    exit 1
+  fi
+  die "$(_no_build_reason)"
+}
+
 if $FMT_ONLY; then
   bold "▸ lint.sh (rust — rustfmt only)"
   log ""
 
   if $FIX; then
     _before=$(_snapshot)
-    cargo fmt --all
+    _fmt --all
     log ""
     _report_writes "rustfmt applied" "$_before"
   else
-    # `--check` exits non-zero when anything needs formatting and `set -e` stops the script,
-    # so reaching this line genuinely means clean. The state IS the result here.
-    cargo fmt --all --check
+    # `_fmt` exits before this line unless `--check` came back clean, so the state IS the
+    # result here.
+    _fmt --all --check
     log ""
     bold "✓ Rust formatting clean."
   fi
@@ -88,15 +137,21 @@ log ""
 
 if $FIX; then
   _before=$(_snapshot)
-  cargo fmt --all
-  cargo clippy --workspace --all-targets --fix --allow-dirty --allow-staged -- -D warnings
+  _fmt --all
+  _clippy_rc=0
+  _cargo clippy --workspace --all-targets --fix --allow-dirty --allow-staged -- -D warnings \
+    || _clippy_rc=$?
   log ""
   # Named separately from rustfmt because `clippy --fix` rewrites LOGIC, not layout, and the
-  # reader needs to know which files to re-read rather than merely re-format.
+  # reader needs to know which files to re-read rather than merely re-format. Reported BEFORE
+  # the verdict below, because a run that then fails has still rewritten the tree.
   _report_writes "rustfmt + clippy --fix applied" "$_before"
+  if [[ $_clippy_rc -ne 0 ]]; then
+    _clippy_verdict
+  fi
 else
-  cargo fmt --all --check
-  cargo clippy --workspace --all-targets -- -D warnings
+  _fmt --all --check
+  _cargo clippy --workspace --all-targets -- -D warnings || _clippy_verdict
   log ""
   bold "✓ Rust lint clean."
 fi

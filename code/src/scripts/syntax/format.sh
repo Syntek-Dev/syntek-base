@@ -336,7 +336,17 @@ if wants rust; then
   declare -a rs_args=(bash "$PROJECT_ROOT/code/src/scripts/rust/lint.sh" --fmt-only)
   $FIX && rs_args+=(--fix)
   run_on_host "${rs_args[@]}"
-  [[ $LAST_EXIT -ne 0 ]] && OVERALL_EXIT=1
+  # 2 from that owner means it produced NO formatting result — cargo absent, rustfmt missing
+  # from the pinned toolchain, or a workspace that would not build. Its `lint.sh error:` line
+  # names which, and it is the only thing in this run that knows: the aggregate delegates
+  # cargo's dialect along with cargo's invocation, so quote that line rather than re-derive it.
+  if [[ $LAST_EXIT -eq 2 ]]; then
+    rs_why=$(grep -a 'lint.sh error: ' "$TMPFILE" | tail -n 1 | sed 's/.*lint\.sh error: //')
+    log "  ⚠  ${rs_why:-the Rust owner could not run} — Rust formatting COULD NOT RUN"
+    UNRUN+=("Rust/rustfmt (${rs_why:-see the Rust section above})")
+  elif [[ $LAST_EXIT -ne 0 ]]; then
+    OVERALL_EXIT=1
+  fi
   log ""
 fi
 
