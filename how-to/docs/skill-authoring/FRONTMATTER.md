@@ -143,9 +143,11 @@ they place a run, this one grants a power.
 surface the file is **absent**, not present-and-incompatible. The field would restate a decision
 the file's own absence already makes.
 
-**`disable-model-invocation`.** Invocation is already decided by the description's wording — a
-rich "Load when…" trigger list for model-auto-loading, a "type `/name`" phrasing for human-reached
-(the trade is set out in `CRAFT.md` Section 1). Adding a key that switches the same behaviour puts one
+**`disable-model-invocation`.** _Model_ invocation is already decided by the description's
+wording — a rich "Load when…" trigger list for auto-loading, a "type `/name`" phrasing for
+human-gated (the trade is set out in `CRAFT.md` Section 1). _User_ invocation is not gated at all:
+every skill is typeable as `/name` whatever its description says, so the key could only ever
+switch the half the wording already owns. Adding a key that switches the same behaviour puts one
 meaning in two places, and the two drift the first time only one of them is edited.
 
 **`effort`**, on the same admission test that admits the four above. They answer **where the run

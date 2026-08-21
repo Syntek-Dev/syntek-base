@@ -34,11 +34,11 @@ believed as readily as the original. How to write or edit one: `how-to/docs/SKIL
 
 ## Quick Start
 
-Describe the work and the runtime selects the skill whose description matches it; type `/name`
-for the skills that define a slash command; or name the skill in the request. For an end-to-end
-run, reach for the skill whose remit is the **whole arc** — `implement-story` covers plan → red tests →
-build → review → ship, and sequences the scoped skills itself — rather than driving each scoped
-skill by hand.
+Describe the work and the runtime selects the skill whose description matches it; type `/name` —
+every skill answers to its own; or name the skill in the request. For an end-to-end run, reach for
+the skill whose remit is the **whole arc** — `implement-story` covers plan → red tests → build →
+review → ship, and sequences the scoped skills itself — rather than driving each scoped skill by
+hand.
 
 Full walkthrough: [`tooling-guide/WORKFLOW.md`](tooling-guide/WORKFLOW.md). Which skill owns
 what: `.claude/skills/CONTEXT.md`.
