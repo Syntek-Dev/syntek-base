@@ -129,7 +129,7 @@ re-run the audit until it is clean.
 
 ### The same failure in reverse — v3.0.0 and agents you wrote yourself
 
-**v3.0.0 deletes `.claude/agents/` in full.** Its 54 agent definitions — plus the directory's own
+**v3.0.0 deletes .claude/agents/ in full.** Its 54 agent definitions — plus the directory's own
 `CONTEXT.md` and `CLAUDE.md` — were rewritten as skills under `.claude/skills/`, and not one for
 one: several folded together. For a project that never wrote its own agent the update is clean,
 because Copier removes what it generated and there is nothing to decide.

@@ -47,17 +47,17 @@ code-review-graph and reports what the refresh could not reach.
 
 ## lib/ Contents
 
-| File                 | Purpose                                              |
-| -------------------- | ---------------------------------------------------- |
-| `check-audits.sh`    | **Template-only** — every audit + `.github/scripts/` |
-| `check-cloc.sh`      | Line count validation                                |
-| `check-format.sh`    | Code formatting checks                               |
-| `check-lint.sh`      | Linting and style checks                             |
-| `check-lockfiles.sh` | Dependency lock file validation                      |
-| `check-security.sh`  | Security scanning                                    |
-| `check-stubs.sh`     | Test stub validation                                 |
-| `check-tests.sh`     | Test coverage and execution                          |
-| `check-typecheck.sh` | basedpyright type checking                           |
+| File                 | Purpose                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------- |
+| `check-audits.sh`    | **Template-only** — every audit + `.github/scripts/` <!-- doc-references: template-only --> |
+| `check-cloc.sh`      | Line count validation                                                                       |
+| `check-format.sh`    | Code formatting checks                                                                      |
+| `check-lint.sh`      | Linting and style checks                                                                    |
+| `check-lockfiles.sh` | Dependency lock file validation                                                             |
+| `check-security.sh`  | Security scanning                                                                           |
+| `check-stubs.sh`     | Test stub validation                                                                        |
+| `check-tests.sh`     | Test coverage and execution                                                                 |
+| `check-typecheck.sh` | basedpyright type checking                                                                  |
 
 ## Session-continuity hooks
 

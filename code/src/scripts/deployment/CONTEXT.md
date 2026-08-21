@@ -19,6 +19,14 @@ code/src/scripts/deployment/
 
 Deployment scripts will be added as the CI/CD pipeline matures. Expected additions:
 
+**These are plans, not registered promises, and their absence from `how-to/src/PROJECT-PATHS.md`
+is deliberate.** `code/docs/FORWARD-VOICE.md` Section 3 admits a path to that register only with
+the script, workflow or step that creates it — and nothing in this repository creates these
+three. An entry that cannot name its creator is a wish, so the names stay here, qualified as
+planned, rather than being registered against a creator invented to satisfy the column. Whoever
+writes one writes it under the name below: all six sites that mention them across the repository
+already agree, and that consistency is the only thing being asserted.
+
 | Script            | Purpose                                       |
 | ----------------- | --------------------------------------------- |
 | `deploy.sh`       | Trigger a deployment to staging or production |

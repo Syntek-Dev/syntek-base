@@ -121,7 +121,7 @@ records the argument and defers the decision to N-029.
   while never having opened the file. Requiring a green that means nothing is the instrument
   outrunning the rule. Flip it once the parser reads both forms.
 - **The four `audit-template.yml` rows protect syntek-base and nothing else.** That workflow and
-  `.github/scripts/` are both `_exclude`d, so these checks do not exist in a generated project —
+  `.github/scripts/` are both `_exclude`d, so these checks do not exist in a generated project — <!-- doc-references: template-only -->
   do not carry them into one's own protection rules.
 
 ---

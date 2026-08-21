@@ -186,8 +186,8 @@ The more you edit files the template also maintains, the more `copier update` co
 Two tactics:
 
 - **Append rather than rewrite.** Adding a section to a guide conflicts less than restructuring it.
-- **Put project-specific rules in project-specific files.** A new `code/docs/OUR-CONVENTIONS.md`
-  never conflicts; edits to `code/docs/CODING-PRINCIPLES.md` do.
+- **Put project-specific rules in project-specific files.** A new guide of your own under
+  `code/docs/` never conflicts; edits to `code/docs/CODING-PRINCIPLES.md` do.
 
 **One thing that is not about conflicts at all: never renumber a
 `project-management/src/NN-…/` folder.** Those hold your artefacts, and Copier only tracks files

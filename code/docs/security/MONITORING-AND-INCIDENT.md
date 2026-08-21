@@ -69,8 +69,8 @@ alerting, and tamper protection.
 > **Four security-specific recoveries are still unwritten, and named here deliberately:** the
 > concrete Django shell commands for account compromise (admin token revocation via `admin_db`),
 > audit log tampering, Valkey cache compromise, and emergency key rotation. `INCIDENT-PRACTICE.md`
-> is the general practice, not those four runbooks. The gap is recorded in
-> `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` — write the commands down as you use them.
+> is the general practice, not those four runbooks. Record the gap in `GAPS.md` — write the
+> commands down as you use them.
 
 When you discover a security vulnerability or suspect a breach, follow this process. Speed matters —
 the faster the response, the smaller the impact.

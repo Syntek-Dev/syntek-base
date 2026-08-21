@@ -52,7 +52,7 @@ Adding the folder is not shipping it. A skill nobody has listed is a skill nobod
 1. `.claude/skills/CONTEXT.md` — the tree **and** the when-to-load table. This is the roster,
    and it is the only one: `.claude/CLAUDE.md` routes to it rather than restating it, so a
    second registration step no longer exists to forget.
-2. `.copier/README.md` — the register row, which `.github/scripts/shipped-readme.sh` enforces
+2. `.copier/README.md` — the register row, which `.github/scripts/shipped-readme.sh` enforces <!-- doc-references: template-only -->
    in CI.
 
 ## The gate
@@ -94,9 +94,9 @@ and a rule with two enforcers drifts the moment the number moves.
       fork call.
 - [ ] Anything forked names `agent: general-purpose` and `background: false` explicitly — any
       other pair needs the reopening test in `FORK-DECISION.md`, not a judgement call.
-- [ ] Invocation is deliberate: a rich "Load when…" description for model-auto-loading, or an
-      "Invoke by typing `/name`" description for user-typed; the trade (context vs cognitive load)
-      is the right one.
+- [ ] Invocation is deliberate: a rich "Load when…" description so the skill fires unaided, or an
+      "Invoke by typing `/name`" description so it waits for a human; the trade (context vs
+      cognitive load) is the right one. Typing `/name` works either way and is never the question.
 - [ ] Description front-loads the leading word, carries one trigger per branch, and repeats no
       identity already in the body.
 - [ ] Description **discriminates against its named near-neighbours** — the change says which

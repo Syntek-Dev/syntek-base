@@ -164,7 +164,7 @@ Only the ones your story actually touches:
 | SEO             | `12-seo-checks/`        | New public pages                                      |
 | API design      | `13-api-design/`        | New or changed Ninja endpoints                        |
 
-Each writes its artefact under the matching numbered `src/` folder, tied to `US001`.
+Each writes its artefact under the matching numbered `src/` folder, tied to US001.
 
 These run on **Fable** — the reasoning tier. Specification is where thinking is cheapest.
 

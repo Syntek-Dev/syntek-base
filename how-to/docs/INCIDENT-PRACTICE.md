@@ -199,8 +199,8 @@ folder's `CLAUDE.md` carries the rules; this guide carries the reason.
 
 **There is no deployment rollback script in this repository.** `code/src/scripts/deployment/`
 ships empty — `deploy.sh`, `rollback.sh` and `health-check.sh` are named as planned in
-`how-to/docs/tooling-guide/CONFIGURATION.md` and do not exist. This is recorded in
-`how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`; it is a gap, not a decision.
+`how-to/docs/tooling-guide/CONFIGURATION.md` and do not exist. Record it in `GAPS.md`; it is a
+gap, not a decision.
 
 So rollback during an incident is **manual, via the `<%DEPLOY_REPO%>` runbooks**, and this guide
 will not pretend otherwise. Two things you can do here:

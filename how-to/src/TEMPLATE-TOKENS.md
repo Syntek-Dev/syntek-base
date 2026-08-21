@@ -384,7 +384,7 @@ written only about identifiers would never have caught it.
   `uv lock` runs. Use this shape where the generated project genuinely needs its own name; note
   the cost, which is that `copier update` never runs `_tasks`.
 
-**The rule has a gate, and did not until 15/08/2026.** `.github/scripts/check-template-parsers.sh`
+**The rule has a gate, and did not until 15/08/2026.** `.github/scripts/check-template-parsers.sh` <!-- doc-references: template-only -->
 runs each toolchain's own parser — `uv lock --dry-run`, `cargo metadata`, `pnpm ls`,
 `docker compose config` — and requires every manifest to load in the template. It does **not**
 check positions, and that is deliberate: `pnpm` accepts `<%PROJECT_SLUG%>` in `package.json`'s

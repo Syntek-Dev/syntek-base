@@ -88,7 +88,7 @@ So a new artefact folder takes the next free number **at the end**, even where t
 workflow↔`src` mirroring. The mirroring is a convenience; somebody's work is not.
 
 If a release genuinely must move such a directory, it ships a migration in the same commit —
-`copier.yml` → `_migrations`, with the script in `.copier/migrations/`. Verify it with
+`copier.yml` → `_migrations`, with the script in `.copier/migrations/`. Verify it with <!-- doc-references: template-only -->
 `code/src/scripts/audits/template-orphans.sh`.
 
 Then register the workflow in its `CONTEXT.md` and the root `REFERENCES.md`, and — if it pairs
