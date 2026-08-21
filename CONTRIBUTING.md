@@ -212,27 +212,23 @@ existing project has to be carried across the break rather than left on the old 
 
 ## What CI will run against you
 
-`main` is protected. A pull request is required, and these checks must pass before it can merge:
+`main` is protected. A pull request is required, and a set of status checks must pass before it
+can merge. **That set's membership lives in branch protection and is not copied here** — a list
+written twice drifts once, and this one had drifted. Read the live set with the `gh api` block in
+`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → _Changing the set_, which also holds
+the criteria a job must meet to join it.
 
-| Check                       | What it enforces                                                                                                                               |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `[1/8] Line Count`          | no source file over 800 lines                                                                                                                  |
-| `[2/8] Lockfile Alignment`  | `uv.lock` and `pnpm-lock.yaml` match their manifests                                                                                           |
-| `[3/8] Format`              | ruff format + Prettier                                                                                                                         |
-| `[4/8] Lint`                | ruff + ESLint                                                                                                                                  |
-| `[5/8] Stub Audit`          | no `NotImplementedError`, `TODO`, `FIXME`, `HACK`                                                                                              |
-| `[6/8] Type-check`          | basedpyright                                                                                                                                   |
-| `[7/8] Tests`               | pytest                                                                                                                                         |
-| `[8/8] Security`            | static security audit                                                                                                                          |
-| `TruffleHog — Secrets Scan` | no credentials committed                                                                                                                       |
-| `[1/2] Template Tokens`     | no mangled, unregistered or unclosed tokens                                                                                                    |
-| `[2/2] Template Generation` | a project actually generates from your branch, with zero surviving tokens, no template-only file leaking, and `${{ }}` / `[[ ]]` syntax intact |
+Broadly, expect: the `[n/8]` gates in `claude.yml` (line count, lockfile alignment, format, lint,
+stubs, types, tests, security), the secrets scan, the language and Markdown syntax workflows, and
+the template-integrity jobs that generate a whole project from your branch.
 
 Conversations on the PR must be resolved before merge. Force-pushes and branch deletion on `main`
 are blocked.
 
-Other workflows (Markdown lint, CSS token audits, e2e tests) run only when relevant paths change,
-so they are advisory rather than blocking — but a failure in one is still a failure. Fix it.
+Path-filtered audits — the CSS token and slop family, e2e tests — run only when their own inputs
+change and cannot block a merge. An **unfiltered** audit is a different case and may well be
+required, so do not read "audit" as "advisory" — check the live set. Either way a failure is a
+failure. Fix it.
 
 ---
 

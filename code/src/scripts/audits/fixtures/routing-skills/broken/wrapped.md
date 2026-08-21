@@ -18,7 +18,7 @@ model: fable
 
 Fixture for routing-skills.sh --self-test. Never read as documentation.
 
-This is N-030 itself, written down. Seven names resolve and the eighth does not, so the
+This is MAP-BASE-HEALTH N-030 itself, written down. Seven names resolve and the eighth does not, so the
 file must produce exactly one finding naming no-such-skill-wrapped. Before the shared
 reader it produced none: the selector required the opening bracket on the key's own line,
 never matched, and skipped the file entire while the run reported success.

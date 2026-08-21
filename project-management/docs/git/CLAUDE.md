@@ -30,8 +30,9 @@ The four git sub-documents — `BRANCHES-AND-WORKTREES.md`, `COMMITS.md`,
   (`git/PR-AND-REQUIRED-CHECKS.md → Required status checks and path filters` and its siblings) — a reworded
   heading breaks every citation silently, and nothing re-resolves it. Add a heading, or move a
   whole section between these files, but do not rewrite one in place.
-- **Copy a CI check name, never retype it.** The required-set table in
-  `PR-AND-REQUIRED-CHECKS.md` matches branch protection by exact string, em dashes included.
+- **Copy a CI check name, never retype it.** Branch protection matches by exact string, em dashes
+  included — and **never write the membership down here**: the set lives in branch protection
+  alone, and `PR-AND-REQUIRED-CHECKS.md` holds only the criteria and the command that reads it.
 - **These guides describe the process; the workflows execute it.** Do not restate a workflow's
   `STEPS.md` here — cite it.
 - **The increment rules belong to `VERSIONING-GUIDE.md`.** `COMMITS.md` owns only how a commit

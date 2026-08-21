@@ -17,12 +17,12 @@ project-management/docs/git/
 
 ## Which file owns what
 
-| File                        | Owns                                                                                                                          | Read before                             |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `BRANCHES-AND-WORKTREES.md` | Worktree paths, Docker project names and dev/test URLs; the five-branch chain; `us###/` and `pm/`                             | Opening a branch or a parallel worktree |
-| `COMMITS.md`                | The lint and test gates; the message template, co-author trailer, type and scope values, breaking-change signalling           | Every commit and every push             |
-| `PR-AND-REQUIRED-CHECKS.md` | The merge gate per promotion step; the path-filter-or-required rule and the target required set; the four toolchain pin files | Raising a PR or changing a CI workflow  |
-| `MIGRATION-GATES.md`        | HMAC companion completeness, `app_user` grants, and the staging verification procedure and sign-off                           | Reviewing or promoting a migration      |
+| File                        | Owns                                                                                                                                                                                                               | Read before                             |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| `BRANCHES-AND-WORKTREES.md` | Worktree paths, Docker project names and dev/test URLs; the five-branch chain; `us###/` and `pm/`                                                                                                                  | Opening a branch or a parallel worktree |
+| `COMMITS.md`                | The lint and test gates; the message template, co-author trailer, type and scope values, breaking-change signalling                                                                                                | Every commit and every push             |
+| `PR-AND-REQUIRED-CHECKS.md` | The merge gate per promotion step; the path-filter-or-required rule, what earns a place in the required set, and `Changing the set` — which holds the `gh api` command that reads it; the four toolchain pin files | Raising a PR or changing a CI workflow  |
+| `MIGRATION-GATES.md`        | HMAC companion completeness, `app_user` grants, and the staging verification procedure and sign-off                                                                                                                | Reviewing or promoting a migration      |
 
 **One fact, one file.** The branch chain diagram appears in `BRANCHES-AND-WORKTREES.md` as the
 naming standard and in `PR-AND-REQUIRED-CHECKS.md` as the gate table — the same five names, but

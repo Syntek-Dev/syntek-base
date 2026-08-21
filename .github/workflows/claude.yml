@@ -553,7 +553,7 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This is N-004's CI half:
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This is MAP-BASE-HEALTH N-004's CI half:
       # the local `audits/security.sh` runs both legs and this gate ran the JS one only,
       # so the PR gate was quieter than the script a developer runs beside it. Both legs
       # now execute on both sides. Verified green the day it was unguarded — ruff --select

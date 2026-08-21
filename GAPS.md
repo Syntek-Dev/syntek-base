@@ -31,17 +31,3 @@ Append a new entry at the top, newest first:
 ```
 
 ---
-
-## 20/08/2026 — `main` has not been reconciled since v3.2.2, and v6.0.0 stacks a second MAJOR on the gap
-
-**Type:** Active gap
-**Summary:** `main` sits at `a1e0f68` / `v3.2.2`, **80 commits behind** `pm/base-health-map`.
-Every tag from `v4.0.0` to `v6.0.0` was cut on this branch line and none has been merged back, so
-the default branch names a version no release has matched for three majors. There are no open pull
-requests. Carried out of `HANDOFF-V6-RELEASE-AND-N031-20-08-2026.md` Open Question 3 when that
-handoff was pruned; it was never a blocker for the release sequence and is not one now, which is
-precisely why it has gone unaddressed through four of them.
-**Blocked by / Action:** A decision, not a task — whether `main` is reconciled by merging the
-branch line into it, by moving the default branch, or by leaving it as an abandoned marker. Costs
-nothing today and grows by one MAJOR each release. Route through
-`project-management/workflows/22-pr-and-review/`.

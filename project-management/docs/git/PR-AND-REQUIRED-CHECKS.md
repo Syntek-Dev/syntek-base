@@ -54,12 +54,25 @@ So each CI workflow makes one choice, and **says which in a comment at the top o
 | **Required status check** | **None**      | It must report on every pull request, including ones it has no work for |
 | **Advisory / audit**      | Path-filtered | It runs only when its own inputs change, and never blocks a merge       |
 
-The audits under `code/src/scripts/audits/` are the second kind: one path-filtered workflow each,
-none of them a required check. That is what lets them be cheap and specific. Dropping a path
-filter makes a workflow **eligible** to be required and nothing more: `syntax-markdown.yml` and
-`syntax-js-ts.yml` are unfiltered and required, `syntax-python.yml` unfiltered since 16/08/2026
-and not yet required. Which jobs are in the set is the next section's table, and this sentence
-deliberately keeps no second copy of it — a membership list written twice drifts once.
+Most audits are the second kind — **20 of the 26 `audit-*.yml` workflows carry a path filter**,
+one per named surface, and that is what lets them be cheap and specific. The other six are
+unfiltered. Dropping a path filter makes a workflow **eligible** to be required and nothing
+more; `syntax-markdown.yml`, `syntax-js-ts.yml` and `syntax-python.yml` are unfiltered on that
+same reasoning. Regenerate both counts with
+`for f in .github/workflows/audit-*.yml; do grep -qE '^\s+paths:' "$f" || echo "$f"; done`.
+
+**Which jobs are in the set is branch protection, and this guide keeps no second copy of it** —
+a membership list written twice drifts once, and this file did exactly that for five days. A
+workflow header may state what it is _eligible_ for, because that is a property of the file;
+anything anywhere claiming what is _in_ the set is commentary, and must be re-checked against
+the command below before it is believed. Read the live set:
+
+```bash
+gh api 'repos/{owner}/{repo}/rulesets' --jq '.[] | "\(.id) \(.name)"'
+gh api 'repos/{owner}/{repo}/rulesets/<id>' \
+  --jq '.rules[] | select(.type=="required_status_checks")
+        | .parameters.required_status_checks[].context'
+```
 
 **Promoting an audit to required means deleting its path filter in the same change.** Adding it
 to the branch-protection list while it still carries `paths:` is the failure above, and it will
@@ -77,11 +90,18 @@ stated. Two things qualify a job, and the second is easy to miss:
    guard still works. Break the guard and the job errors instead of reporting, which a required
    check catches and an advisory one does not.
 
-The second is not a new idea here, only a newly stated one: `jest-expo + coverage` has been
-required on exactly that basis, with `test.yml` recording the reason — _"a skipped job and a
+The second is not a new idea here, only a newly stated one: `jest-expo + coverage` is the
+standing example, with `test.yml` recording the reason — _"a skipped job and a
 passing job look different to branch protection, and 'never ran' is not the same claim as
-'nothing to run'."_ A guarded job is required at **step** level, never job level, or it skips
-rather than reports and the check never arrives.
+'nothing to run'."_
+
+**The guard's level matters, and only for one kind of guard.** A **surface-presence** guard — _is
+there a mobile app in this project at all?_ — belongs at **step** level, never job level: a
+job-level one makes the whole job skip rather than report, and the check never arrives. An
+**event-type** guard is a different thing and is safe at job level, because a pull request is one
+of the events it admits, so the job always reports on the event that matters. All eight `[n/8]`
+jobs in `claude.yml` are guarded that way (`grep -cE '^    if: github.event_name'
+.github/workflows/claude.yml`), and every one of them still reports on a pull request.
 
 **Read a green guarded check as "not applicable", never as "passing".** That does not weaken the
 case for requiring a guarded job: the claim being protected is about the guard, not the tests.
@@ -89,40 +109,28 @@ case for requiring a guarded job: the claim being protected is about the guard, 
 **The backend suites are no longer an instance of this, and the change is recent.** They guarded
 to success here while `uv.lock` was absent; the lock was committed on 16/08/2026 and they now
 execute against the two shipped apps. What a green run here does and does not prove is
-`TEMPLATE-GAPS.md` SL-1 — a narrower claim than "not applicable", and a different one.
+`TEMPLATE-GAPS.md` SL-1 — a narrower claim than "not applicable", and a different one. <!-- doc-references: template-only -->
 
-**The table below is the promotion target as of 3.2.2, not a census of everything unfiltered.**
-Each row is a deliberate switch to flip, not a backlog to clear, and flipping one is a
-**repository-settings change that no file in this repository can make**; the half that lives here
-is done. A job being unfiltered and absent from this table means only that nothing has yet argued
-it belongs — `Unresolved conflict-marker audit` is the open case, and `audit-conflict-markers.yml`
-records the argument and defers the decision to N-029.
+### Changing the set
 
-| Check name — branch protection matches this string exactly | Workflow                   | Note                      |
-| ---------------------------------------------------------- | -------------------------- | ------------------------- |
-| `pytest + coverage`                                        | `test.yml`                 | Guarded — criterion 2     |
-| `Audit JS + Python dependencies`                           | `audit-deps.yml`           |                           |
-| `Citations resolve`                                        | `audit-doc-references.yml` |                           |
-| `Routing skills resolve`                                   | `audit-routing-skills.yml` | **Hold — see below**      |
-| `Ruff — Lint`                                              | `syntax-python.yml`        | Eligible since 16/08/2026 |
-| `Ruff — Format`                                            | `syntax-python.yml`        | Eligible since 16/08/2026 |
-| `basedpyright — Typecheck`                                 | `syntax-python.yml`        | Eligible since 16/08/2026 |
-| `[1/4] Template Tokens`                                    | `audit-template.yml`       | syntek-base only          |
-| `[2/4] Shipped Documentation`                              | `audit-template.yml`       | syntek-base only          |
-| `[3/4] Template Generation`                                | `audit-template.yml`       | syntek-base only          |
-| `[4/4] Parser Probes`                                      | `audit-template.yml`       | syntek-base only          |
+Flipping a check is a **repository-settings change that no file in this repository can make**.
+This guide holds the criteria and the traps; branch protection holds the membership.
 
-- **Copy the names, never retype them.** The three `syntax-python.yml` rows carry an em dash, not
-  a hyphen, and a check is matched by string — a retyped `Ruff - Lint` is a required check that
-  never arrives, which is the pending-forever failure this section opened with.
-- **`Routing skills resolve` waits for a parser fix.** `routing-skills.sh` selects a frontmatter
-  array with a regex needing the opening bracket on the key's own line, so a multi-line `skills:`
-  array is skipped whole and its names are never validated: the gate reports every name resolving
-  while never having opened the file. Requiring a green that means nothing is the instrument
-  outrunning the rule. Flip it once the parser reads both forms.
-- **The four `audit-template.yml` rows protect syntek-base and nothing else.** That workflow and
-  `.github/scripts/` are both `_exclude`d, so these checks do not exist in a generated project — <!-- doc-references: template-only -->
-  do not carry them into one's own protection rules.
+- **Copy the names, never retype them.** Several carry an em dash rather than a hyphen —
+  `Ruff — Lint`, `basedpyright — Typecheck`, `TruffleHog — Secrets Scan` — and a check is
+  matched by exact string, so a retyped `Ruff - Lint` is a required check that never arrives.
+  That is the pending-forever failure this section opened with, reached by a second route.
+- **A required check must be reachable by a `pull_request` event.** Path filters are the obvious
+  way to fail this; triggers are the quiet one. A workflow running only on `schedule` and
+  `workflow_dispatch` has no filter to delete and still cannot report, so it pends forever —
+  `audit-deps.yml` is the standing example: it runs only on `schedule` and `workflow_dispatch`,
+  so it has no filter to delete and still cannot report, and its own header says so. Its
+  reporting twin, `[8/8] Security` in `claude.yml`, runs the identical two legs on every pull
+  request and is the one that belongs in the set.
+- **The `[n/4]` checks exist only in syntek-base.** They come from `audit-template.yml`, and
+  that workflow and `.github/scripts/` are both `_exclude`d <!-- doc-references: template-only -->,
+  so they do not exist in a generated project — never carry them into one's own protection
+  rules.
 
 ---
 

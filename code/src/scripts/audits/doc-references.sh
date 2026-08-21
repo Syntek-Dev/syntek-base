@@ -150,7 +150,7 @@ candidates() {
 is_exempt() {
   case "$1" in
     CHANGELOG.md|RELEASES.md|VERSION-HISTORY.md)  return 0 ;;
-    # NARROWED 21/08/2026 (N-031) from `how-to/src/TEMPLATE-GUIDE/*`. That tree ships as of
+    # NARROWED 21/08/2026 (MAP-BASE-HEALTH N-031) from `how-to/src/TEMPLATE-GUIDE/*`. That tree ships as of
     # f5fef31; only this one file is copier-excluded, and only this one file exists to log a
     # broken citation. The seven guides beside it are ordinary shipped files and are scanned.
     how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md)   return 0 ;;

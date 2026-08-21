@@ -14,6 +14,15 @@ name: Dependency Audit Sweep
 #            (+ minimumReleaseAgeExclude), then `pnpm install --lockfile-only`.
 #   Python → `uv lock --upgrade-package <pkg>` (verify no breaking major bump).
 # Both fixes live in root lock/config and propagate on merge to testing.
+#
+# NOT ELIGIBLE FOR THE REQUIRED SET, and the `on:` block below is the whole reason — this is a
+# property of the file, not of anyone's branch protection. A required check is satisfied only by
+# a run a `pull_request` event starts, and this workflow has no such trigger, so a protection
+# rule naming it would pend "Expected — waiting for status" until someone force-merged. There is
+# no path filter to delete; the only fix would be adding `pull_request:`, which contradicts the
+# reason this file exists (see above). Its reporting twin, "[8/8] Security" in claude.yml, runs
+# the identical two legs on every pull request and is the one that belongs in the set.
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → Changing the set.
 
 on:
   schedule:

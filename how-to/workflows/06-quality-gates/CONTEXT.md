@@ -39,11 +39,12 @@ predict a clean CI run.
   `copy-slop`, `render-slop`, plus `style-check` on a desktop project. They are cheap; run them —
   `render-slop` is the one exception to cheap, because it drives a browser, and it self-guards to
   a note when Chromium is absent.
-- **An audit is never a required status check, and that is why it may be path-filtered.**
+- **A path-filtered audit is never a required status check, and that is why it may be filtered.**
   A required check must report on every pull request; a path-filtered one does not run when a PR
-  touches none of its paths, so it never reports and the merge waits forever
-  (`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → Required status checks and path
-  filters).
+  touches none of its paths, so it never reports and the merge waits forever. An **unfiltered**
+  audit is the other case entirely — six of the 26 carry no filter, and any of those may be
+  required (`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → What earns a place in the
+  required set).
 - **`static-analysis` is the one audit with no CI workflow yet.** It needs the Opengrep engine
   installed in the runner, and until that is wired it would report a green job having scanned
   nothing — which is worse than no job. Locally it behaves the same way: **without `opengrep` on

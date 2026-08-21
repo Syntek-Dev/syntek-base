@@ -25,9 +25,11 @@ the two copies had already diverged on what MAJOR means.
 Before every commit:
 
 1. Determine the increment (MAJOR / MINOR / PATCH).
-2. Update the version files (`VERSION`, `VERSION-HISTORY.md`, and any header
-   `**Version**:` lines the change touches).
-3. Update `CHANGELOG.md` — changelog-first, before staging.
+2. Write `CHANGELOG.md` **first** — it is the evidence for the increment, not a summary of it.
+3. Update the version files. **Which files that is belongs to `VERSIONING-GUIDE.md`** and is
+   deliberately not listed here — the copy that used to sit on this line named three of six, and
+   the one omission nothing else caught, `README.md`, stayed stale for eight releases. Same
+   reason the increment table above was deleted rather than corrected.
 4. Stage the version and changelog files with the change.
 
 To bump mechanically, delegate to the `release` skill (via the Agent tool) or

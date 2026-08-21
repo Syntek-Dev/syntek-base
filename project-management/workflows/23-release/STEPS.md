@@ -33,8 +33,11 @@ version bump [patch | minor | major]
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `version` · **Model:** opus · **MCP:** none
 
-This updates: `VERSION`, `VERSION-HISTORY.md`, `RELEASES.md`, `CHANGELOG.md`,
-`pyproject.toml`.
+Which files that updates is `project-management/docs/VERSIONING-GUIDE.md`'s list, executed by the
+`version` skill — not restated here. **The root bump never moves `pyproject.toml`**: that is the
+`code/src/django/` sub-package manifest, and the guide forbids moving a sub-package version as
+part of a root bump. A sub-package whose own code changed is bumped on its own terms, which is
+what `CHECKLIST.md` checks.
 
 ### Step 2 — Store Listing Copy — only if this release bumped the mobile package
 

@@ -58,8 +58,9 @@ Confirm the current branch matches the work in hand. Feature and bugfix work bel
 ## Commits
 
 1. **Review the staged diff** — scope, no `.env`, no secrets, docs complete.
-2. **Delegate the version bump** where the change warrants one. `version` owns `VERSION`, the
-   three logs and the header stamps. **Never edit a version file here.**
+2. **Delegate the version bump** where the change warrants one. `version` owns the whole version
+   set — which files that is belongs to `project-management/docs/VERSIONING-GUIDE.md` and is not
+   listed here. **Never edit a version file here.**
 3. **Write the message in the guide's format** — Conventional Commits, imperative mood,
    British English, with the co-author trailer the guide specifies. **Read the model name from
    `.claude/CLAUDE.md` Section 4 at the time of writing; never carry a pinned version string.**

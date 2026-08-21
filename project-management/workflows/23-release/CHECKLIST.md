@@ -18,8 +18,8 @@ model: opus
 
 - [ ] Renew `security.txt` `Expires` date — set to 12 months from today, updating the `/.well-known/security.txt` file served by the Django site
 - [ ] Version bumped correctly (patch / minor / major)
-- [ ] All version files updated: `VERSION`, `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`
-- [ ] `pyproject.toml` version matches
+- [ ] **Every** root version file updated — the list is `project-management/docs/VERSIONING-GUIDE.md`'s, and it is longer than four
+- [ ] No sub-package manifest moved by the root bump (`pyproject.toml`, `code/src/mobile/package.json`) unless its own code changed
 - [ ] **If this release bumped `code/src/mobile/`** (`app.json` `expo.version` moved):
       `how-to/src/STORE-LISTING.md` carries this release's What's New / release-notes text, with
       its **Used** count filled, and the same text is entered in App Store Connect and the Play
