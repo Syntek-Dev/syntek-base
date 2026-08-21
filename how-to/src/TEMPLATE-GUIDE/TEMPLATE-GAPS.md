@@ -94,6 +94,41 @@ project's own environment, prefer `uvx --from` or `uv run --no-project --with <d
 `uv run`. That is now an efficiency argument rather than a workaround — it skips building the
 project environment for a tool that does not need it.
 
+### SL-2 — The template ships no deployment scripts, because it ships no deployment
+
+**Added 21/08/2026, closing `MAP-BASE-HEALTH` N-020 as _accepted_ rather than _fixed_.**
+`code/src/scripts/deployment/` holds its documentation pair and a `reports/` folder and no
+scripts. `deploy.sh`, `rollback.sh` and `health-check.sh` are named as planned in six sites
+across five files, and all six agree — that consistency is the only thing asserted, and it is
+what N-044 settled.
+
+**Why it is accepted and not scheduled.** All three wait on the same absent thing, and the
+map's own rule is that _a task is an unwritten artefact with a **named owner**_:
+
+| Script            | What it waits on                                                                                                     |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `deploy.sh`       | No workflow **publishes** an image, while `docker-compose.prod.yml:17` pulls one from GHCR with no `build:` fallback |
+| `rollback.sh`     | No contract row anywhere in `SERVER-ARCHITECTURE/`; waits on `/scale-planning`                                       |
+| `health-check.sh` | Nothing to check the health **of** — it is the caller of a deploy that does not run                                  |
+
+A three-way split was proposed on 16/08/2026 on the premise that `health-check.sh` _"now needs
+only an owner (N-044)"_. **N-044 settled by finding that nothing in this repository creates
+these three scripts** — the blocker was confirmed, not cleared — so the split's premise is
+spent and it is refused here. `how-to/src/PROJECT-PATHS.md` correctly carries no entry for any
+of them: `code/docs/FORWARD-VOICE.md` Section 3 admits a path to that register only with the
+thing that creates it, and an entry that cannot name its creator is a wish.
+
+**Reopens when** any workflow **publishes** an image to a registry. That is the single trigger
+for all three: it gives `deploy.sh` its subject and `health-check.sh` its caller.
+
+**Say _publishes_, not _builds_ — measured 21/08/2026 across all 35 workflow files.** One
+already builds: `test-api.yml:75` runs `docker compose … build django-test`. What none does is
+push — no `docker push`, no `docker/login-action`, no `build-push-action`, and no `ghcr.io`
+reference anywhere in `.github/workflows/`. A trigger worded _builds an image_ would read as
+already met and reopen this entry against a test image that never leaves the runner. The map
+recorded the same slip in the other direction on 16/08/2026, when a `grep 'docker build'` could
+not match `docker compose … build`; one grep dialect is not a population.
+
 ---
 
 ## N-035 — settled and built, 16/08/2026

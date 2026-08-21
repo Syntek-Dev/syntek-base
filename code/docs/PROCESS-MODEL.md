@@ -16,7 +16,7 @@ lives; the surface guides that touch it route back here rather than restating it
 
 **Status: the web process family runs; the task family is declared, not wired.** Everything in
 _What actually runs_ below is verified against `code/src/docker/`. Celery is a different matter:
-`celery[redis]>=5.3` is declared in the root `pyproject.toml` and nothing else exists. There is
+`celery[redis]>=5.6` is declared in the root `pyproject.toml` and nothing else exists. There is
 no `config/celery.py`, no task module, no `CELERY_*` setting, and no `worker` or `beat` service
 in any of the four Compose files. `code/src/django/config/__init__.py` records that deliberately.
 The task-worker material here is written in the forward voice for the first feature that needs

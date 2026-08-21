@@ -18,7 +18,7 @@ model: opus
 > below — never a silent flip.
 
 > **Baseline state — Celery is declared, not wired.** Three separate things, and only
-> the first is true today: (1) the **dependency** `celery[redis]>=5.3` is declared in
+> the first is true today: (1) the **dependency** `celery[redis]>=5.6` is declared in
 > the root `pyproject.toml`; (2) **no Compose service** — no Compose file under
 > `code/src/docker/` defines a `worker` or a `beat`, in any environment;
 > (3) **no app configuration** — there is no `config/celery.py`, no `CELERY_*` setting under

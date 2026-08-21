@@ -31,10 +31,21 @@ and touches nothing product-specific.
 | `GET /health/ready/` | public   | `{"status":"operational\|degraded\|down"}` | `200`/`503` | Readiness — aggregate dependency health |
 | `GET /metrics/`      | loopback | Prometheus text exposition                 | `200`       | Backend metrics (django-prometheus)     |
 
-`/health/ready/` is dependency-aware (PostgreSQL + Valkey + Django Ninja API + curated pages) and
-short-TTL cached (`HEALTH_CACHE_TTL_SECONDS`, default 15s), so external probing cannot stampede the
-database/cache. It deliberately exposes **overall status only** — no component breakdown, versions, or
-hostnames. `503` is returned only for `down`; `degraded` still returns `200`.
+**`GET /metrics/` is declared, not wired.** `django-prometheus` is a dependency
+(root `pyproject.toml`) but `django_prometheus` is not in `INSTALLED_APPS` and `config/urls.py` does
+not route it, so nothing serves this path today. The row stands because it is the contract the deploy
+repository provisions against; the app side wires up **when a scrape target exists to read it** —
+the trigger recorded in [`OBSERVABILITY.md`](OBSERVABILITY.md) → _Deferred, with a trigger_, whose
+Section _Backend — `django-prometheus`_ holds the wiring. Exposing the endpoint with nothing scraping
+it is an unmonitored surface, not an early win.
+
+`/health/ready/` is dependency-aware — **PostgreSQL and Valkey are probed; the Django Ninja API and
+the curated pages are reserved** — and short-TTL cached (`HEALTH_CACHE_TTL_SECONDS`, default 15s),
+so external probing cannot stampede the database/cache. Neither reserved surface is wired in the
+template, and a probe that always passes reports health it never measured, so **each arrives with
+its surface** (`code/src/django/apps/health/checks.py`, `Component`). It deliberately exposes
+**overall status only** — no component breakdown, versions, or hostnames. `503` is returned only for
+`down`; `degraded` still returns `200`.
 
 Detailed per-component health (database, cache, API, pages, edge, and the observability tools) is
 **admin-only** — surfaced in the `/admin/` Health tab and backed by a session-authed Django Ninja
@@ -92,7 +103,7 @@ metrics-deploy gap):
 ```nix
 scrapeConfigs = [
   # … existing node + zfs …
-  { job_name = "<%ORG_SLUG%>-web"; metrics_path = "/metrics/"; static_configs = [ { targets = [ "127.0.0.1:8000" ]; labels = { service = "web"; }; } ]; }
+  { job_name = "<%ORG_SLUG%>-backend"; metrics_path = "/metrics/"; static_configs = [ { targets = [ "127.0.0.1:8000" ]; labels = { service = "web"; }; } ]; }
 ];
 ```
 
