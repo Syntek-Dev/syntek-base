@@ -489,7 +489,9 @@ In scope, not yet sharp enough to state as a decision.
 ## Graduated outside this map
 
 Live defects this chart surfaced that are **not this epic's to fix**. Recorded so the evidence is
-not lost, and routed rather than adopted. **Nothing here has been actioned.**
+not lost, and routed rather than adopted. **Nothing here was actioned by this map** — two rows
+have since been fixed where they were routed, and are struck below rather than deleted, so the
+finding and its close stay legible together.
 
 | Finding                                                                                                                                            | Route                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -497,11 +499,31 @@ not lost, and routed rather than adopted. **Nothing here has been actioned.**
 | `shipped-readme.sh` RED — 3 registration findings (`conflict-markers.sh`, two CI workflows)                                                        | `MAP-BASE-HEALTH` — new node                     |
 | Eight shipped docs carry leaked `</content>` / `</invoke>` tool-call artefacts, committed at `35eeb12`; the entire `rendering/` family is affected | `MAP-BASE-HEALTH` — new node                     |
 | `x-for` missing from `audits/rules/django-template-xss.yml:22` — a live template-injection gap                                                     | `MAP-BASE-HEALTH` — new node                     |
-| `stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)                                                    | `MAP-BASE-HEALTH` — new node                     |
-| `stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`                                                                         | `MAP-BASE-HEALTH` — new node                     |
+| ~~`stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)~~ **CLOSED 16/08/2026 at `f4a988b`**             | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there** |
+| ~~`stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`~~ **CLOSED 16/08/2026 at `f4a988b`**                                  | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there** |
 | `DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11                                                                                  | `MAP-DOMAIN-OBJECTS` (same folder, same session) |
 | `doc-references.sh` structurally cannot resolve any path under `code/src/django/`                                                                  | `MAP-BASE-HEALTH` — new node                     |
 | `07-review/STEPS.md` Step 1 names `code-reviewer` in its heading and `review` in its dispatch line                                                 | `MAP-BASE-HEALTH` — new node                     |
+
+**The two struck rows were closed by `f4a988b` (16/08/2026), and this re-reads the close off the
+working tree rather than off the commit message.** The commit on its own settles nothing here: it
+touches **five** files under the subject _"docs(guides): five documents described commands nobody
+had run against the tree"_, and only two of them are these skills. All three claims are gone from
+where they now sit. `stack-htmx-templates/SKILL.md:37` names no vendored path at all — Alpine is
+_"self-hosted, never a CDN, and **vendored by the first page that uses it**"_ — and the string
+`51` appears nowhere in that file; the axe-scan bullet at `:188-190` points instead at
+`code/src/django/tests/e2e/test_e2e_a11y.py` and states at `:189` that `PAGES` is empty at
+baseline. `stack-django/SKILL.md:260` reads **`standard`**, not `strict`, citing
+`code/src/django/pyrightconfig.json:7` and `pyproject.toml:166` on the line below it. **The
+citations moved twice, not once:** `f4a988b` rewrote both htmx claims in place at `:33` and
+`:169`, and `3b87426` (20/08/2026) then rewrote the Alpine row a second time and pushed the
+testing bullet down nineteen lines — so a line number lifted from either commit is wrong about
+the tree this map is read in. `MAP-BASE-HEALTH` asserts the same three as its **N-037** claims,
+fixed there by **N-010** — named for the reference, not relied on for the fact.
+
+**The other seven rows are unchecked here and remain open as charted.** They were not re-measured
+in this pass, so an absent strike means nothing was looked at, never that the finding was found to
+be clean (`code/docs/GATE-REPORTING.md`).
 
 ---
 

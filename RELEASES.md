@@ -1,9 +1,33 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.2.1 — 22/08/2026
+
+**Status:** Patch — bookkeeping for the planning notes this repository keeps about itself. No file
+your project uses changes.
+
+### The working notes catch up with the work
+
+This template keeps decision maps — running documents that list the open questions behind a large
+piece of work, and record how each one was settled. They are the template's own notes, and they
+are excluded from every generated project.
+
+This update writes up the sittings behind the last few releases: the questions that were settled,
+what was measured to settle them, and the recount of what remains open.
+
+One entry is worth describing, because it is a habit rather than an event. A map recorded two
+findings as routed elsewhere; both had in fact been fixed some days earlier. They are struck
+through rather than deleted, so that the original finding and its closure stay readable side by
+side — and the closure was confirmed by reading the current files, not by trusting the message on
+the commit that claimed it. The remaining seven findings on that map are left untouched and
+explicitly marked as **not re-checked**, because a finding nobody looked at must never be recorded
+as a finding that came back clean.
 
 ---
 

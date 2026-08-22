@@ -130,7 +130,7 @@ table) → C (supplies N-008's trigger) → D (independent; takeable any time).
   attaches to the **wrong stack in a worktree**. The sibling `how-to/workflows/08-debugging/STEPS.md:33-39`
   supplies the correct idiom verbatim. 44 of 45 workflows comply.
 - **N-002** · `REFERENCES.md:200` and `project-management/workflows/CONTEXT.md:172` say implementation is
-  gated on PM `02`–`17`; `code/workflows/CONTEXT.md:111` says `01`–`15`. Both restating files carry
+  gated on PM `02`–`18`; `code/workflows/CONTEXT.md:111` says `01`–`15`. Both restating files carry
   _"Do not restate it here"_ two lines above. The dropped `18-consolidate-design-work` is the gate the
   PM layer's next bullet calls **hard**.
 - **N-007** · `code/docs/DOCUMENTATION-LENGTH.md:35`, `docs-length.sh:28,114` and

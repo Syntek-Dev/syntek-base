@@ -1015,7 +1015,7 @@ or `README.md`, which is where the rule says it should.
 audit script and routing, inside the template itself. It follows `MAP-DOCTRINE-UPGRADE`'s process
 precedent: `01-feature-map`, `22-implementation-documentation`, `23-pr-and-review` and `24-release`
 apply; the per-story specification machinery (`02`–`13`, `15`–`17`) and the build phases
-(`18`–`20`) do not, because there is no schema, user flow, wireframe or user-facing surface to
+(`19`–`21`) do not, because there is no schema, user flow, wireframe or user-facing surface to
 specify.
 
 **The doctrine core is complete, the gate runs, and every surface now expresses the taxonomy.**

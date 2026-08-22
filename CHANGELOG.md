@@ -1,12 +1,23 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.2.1] - 22/08/2026
+
+### Changed
+
+- **`MAP-BASE-HEALTH.md` records the fifth sitting** — the nodes settled in `7.0.1` through `7.2.0` move into Resolved with the measurements that settled them, the frontier is recounted, and the counts are verified against the tables rather than carried forward from the previous sitting. Five sittings running, every charted anchor has had to be re-measured before a question could be asked, and the map says so.
+- **`MAP-ABSENCE.md` strikes the two rows a past commit closed and leaves them legible.** They are struck rather than deleted, so the finding and its close stay readable together, and the close is re-read **off the working tree** rather than off the commit message — that commit touches five files under a subject naming none of them, so it settles nothing on its own. Both claims are gone from where they now sit, and the citations moved twice rather than once, so a line number lifted from either commit is wrong about the tree the map is read in. **The other seven rows are unchecked and remain open as charted**: an absent strike means nothing was looked at, never that the finding was found to be clean.
+- **`MAP-NAVIGATION.md` repoints three references** at the implementation-documentation workflow's new number, which the `7.0.0` sweep reached by name but not in prose.
+- **`HANDOFF-MAP-BASE-HEALTH-SITTINGS-21-08-2026.md` is re-cut against the tree it now describes**, so the bridge a fresh session reads matches what has actually shipped.
 
 ---
 
