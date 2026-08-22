@@ -1,9 +1,50 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.0.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.2 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.0.2 — 22/08/2026
+
+**Status:** Patch — two scripts for working with the database were describing themselves
+inaccurately, and one of them had a mode that could not run on the images this template ships.
+
+### "All security checks passed" was covering two settings
+
+There is a script called `verify-db-security.sh`. Its name suggests it confirms your database is
+secure. It checks two things: that Django's own configuration check passes, and one PostgreSQL
+logging setting. That is the entire list.
+
+It reads no access rules. It does not test whether one customer's data is actually walled off
+from another's, does not look at what any database account is permitted to do, and does not touch
+encryption or the audit trail. A green result from it was being read as a much broader assurance
+than it could possibly give.
+
+The script now states its two checks at the top, states plainly what it does **not** examine, and
+ends with "Both checks passed — Django configuration and `log_statement`. Nothing else was
+examined." What actually proves your data is walled off is the cross-account test suite, and every
+document that cited this script now says so.
+
+### The database shell was quietly connecting as the most powerful account
+
+`shell.sh` opened a session against the development database using the account the database
+container was created with. That account is the cluster's superuser: it can see everything, and
+it steps straight past the rules that separate one customer's data from another's.
+
+That is fine for administration and misleading for checking. Someone opening a shell to confirm
+that a data-separation rule works would have seen every row regardless of whether the rule was
+there at all.
+
+The raw session now needs an explicit `--psql`, and the documentation for it says what it connects
+as and what it bypasses.
+
+The default mode had a separate problem: it asks Django to open the shell, and Django needs a
+command-line program the shipped image does not install. It failed with a Django error advising a
+restart of something that was already running. It now checks for the program first and, if it is
+absent, stops with a short explanation and the one-line change to the image that adds it.
 
 ---
 

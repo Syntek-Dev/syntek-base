@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 #
-# verify-db-security.sh — Verify database security configuration.
+# verify-db-security.sh — Verify two database configuration settings.
 #
-# Checks:
+# Checks, and this list is exhaustive:
 #   1. Django system check (confirms no configuration errors)
 #   2. PostgreSQL log_statement setting (must be 'none' in dev)
+#
+# WHAT IT DOES NOT CHECK, said here because the name invites the assumption and the
+# summary line used to make it: nothing about row-level security — no policy is read,
+# no `rowsecurity` flag is queried, no policy is exercised against a scoped session.
+# Nothing about role permissions, grants, or `rolbypassrls`. Nothing about encryption,
+# PII columns, or the audit trail. A green run here is evidence about two settings and
+# says nothing about whether this database is secure. RLS is proven by the RLS tests
+# (`code/docs/RLS-GUIDE.md`); the access-control audit is the `security` skill's.
 #
 # Usage:
 #   bash code/src/scripts/database/verify-db-security.sh
 #
-# Exit codes:  0 = all checks passed   1 = check failed   2 = script error
+# Exit codes:  0 = both checks passed   1 = a check failed   2 = script error
 #
 set -euo pipefail
 
@@ -80,4 +88,4 @@ else
 fi
 log ""
 
-bold "✓ All security checks passed."
+bold "✓ Both checks passed — Django configuration and log_statement. Nothing else was examined."

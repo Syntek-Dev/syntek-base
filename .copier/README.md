@@ -1100,7 +1100,7 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 | `reset.sh`              | Drop and recreate the dev database, then re-migrate (destructive)      |
 | `backup.sh`             | Create a `pg_dump` backup of the dev database                          |
 | `restore.sh`            | Restore the dev database from a backup file (destructive)              |
-| `shell.sh`              | Open Django `dbshell` or a direct `psql` session                       |
+| `shell.sh --psql`       | Open a `psql` session in the db container (connects as the superuser)  |
 | `verify-db-security.sh` | Verify database security config (Django checks + PostgreSQL settings)  |
 
 ```bash
@@ -1113,7 +1113,6 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 ./code/src/scripts/database/reset.sh
 ./code/src/scripts/database/backup.sh
 ./code/src/scripts/database/restore.sh <backup-file>
-./code/src/scripts/database/shell.sh
 ./code/src/scripts/database/shell.sh --psql
 ```
 

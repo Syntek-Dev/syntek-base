@@ -68,11 +68,11 @@ non-negotiable project rule.
 | Django shell             | `bash code/src/scripts/development/shell.sh`                 |
 | Make migrations          | `bash code/src/scripts/database/migrate.sh make`             |
 | Apply migrations         | `bash code/src/scripts/database/migrate.sh run`              |
-| Database shell (psql)    | `bash code/src/scripts/database/shell.sh`                    |
+| Database shell (psql)    | `bash code/src/scripts/database/shell.sh --psql`             |
 | Seed dev data            | `bash code/src/scripts/database/seed-dev.sh`                 |
 | Run backend tests        | `bash code/src/scripts/tests/backend.sh`                     |
 | Backend coverage         | `bash code/src/scripts/tests/backend-coverage.sh`            |
-| Verify RLS/DB security   | `bash code/src/scripts/database/verify-db-security.sh`       |
+| Check DB security config | `bash code/src/scripts/database/verify-db-security.sh`       |
 | New Django app           | `bash code/src/scripts/development/new-django-app.sh <name>` |
 | Manage users             | `bash code/src/scripts/database/manageusers.sh`              |
 

@@ -41,8 +41,9 @@ bash code/src/scripts/database/shell.sh --psql
 ```
 
 `shell.sh --psql` prints `▸ shell.sh — psql (<user> @ <database>)` before it hands you the
-session — read that line, then `\q`. **It is interactive and takes no query flag**, so there is
-no non-interactive way to ask which database you are pointed at.
+session — read that line, then `\q`. **It takes no query flag**, but it is not interactive-only:
+`echo 'SELECT current_database();' | bash code/src/scripts/database/shell.sh --psql` pipes the
+statement in, prints the answer and exits 0 — the same check without a session to leave.
 
 You do not have to rely on it. Every script that can destroy data names its target first:
 `backup.sh` banners `▸ backup.sh — <database> → <path>`, and `restore.sh` and `reset.sh` both
@@ -122,8 +123,8 @@ Never assume the operation did what it said:
 
 ```bash
 bash code/src/scripts/database/migrate.sh check          # no unapplied migrations
-bash code/src/scripts/database/verify-db-security.sh     # config + log_statement
-bash code/src/scripts/database/shell.sh                  # spot-check the data
+bash code/src/scripts/database/verify-db-security.sh     # Django system check + log_statement
+bash code/src/scripts/database/shell.sh --psql           # spot-check the data
 ```
 
 After a restore or reset, run the test suite before trusting the environment:

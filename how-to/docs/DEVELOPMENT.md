@@ -220,11 +220,11 @@ Nginx container IP(s) (default `[]` = no X-Forwarded-For trust — fail-safe).
 | `development/new-django-view.sh` | Scaffold a new Django-served page (view + template + URL)  |
 | `database/migrate.sh`            | Run Django migrations                                      |
 | `database/reset.sh`              | Reset the database; `--seed` also creates dev accounts     |
-| `database/shell.sh`              | Open a psql shell                                          |
+| `database/shell.sh --psql`       | Open a psql shell (connects as the superuser)              |
 | `database/backup.sh`             | Back up the database                                       |
 | `database/restore.sh`            | Restore a database backup                                  |
 | `database/manageusers.sh`        | Create superusers and manage DB users                      |
-| `database/verify-db-security.sh` | Verify DB security settings (RLS, roles)                   |
+| `database/verify-db-security.sh` | Django system check + PostgreSQL `log_statement` (not RLS) |
 | `tests/backend.sh`               | Run backend tests                                          |
 | `tests/backend-coverage.sh`      | Backend tests with coverage report                         |
 | `tests/api.sh`                   | Run Django Ninja API integration tests                     |

@@ -1,12 +1,23 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.0.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.2 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.0.2] - 22/08/2026
+
+### Fixed
+
+- **`verify-db-security.sh` said "All security checks passed" over two settings.** It runs Django's system check and reads PostgreSQL's `log_statement`, and that is the whole list. It reads no row-security policy, queries no `rowsecurity` flag, exercises no policy against a scoped session, and looks at nothing to do with role grants, `rolbypassrls`, encryption, PII columns or the audit trail. The name invited the assumption and the summary line confirmed it. The header now carries an explicit **what it does not check**, and the closing line reads "Both checks passed — Django configuration and `log_statement`. Nothing else was examined." Isolation is proven by the cross-user tests (`code/docs/RLS-GUIDE.md`), never by this script.
+- **`shell.sh` opened a superuser session and said nothing about it.** `POSTGRES_USER` is the cluster's bootstrap superuser — the image creates it with `initdb --username="$POSTGRES_USER"` — so the session holds `rolsuper` and `rolbypassrls` and nothing sets a read-only default. What it sees is not what an application user sees, which is exactly the wrong thing to be unaware of while spot-checking a scoped table. The raw session moves behind an explicit **`--psql`**, and the flag's documentation says what it connects as.
+- **`shell.sh` without `--psql` runs Django's `dbshell`, which needs a binary the shipped image does not carry** — `Dockerfile.dev` installs `libpq-dev`, the client library, not `postgresql-client`, the binary. The script probes for it and exits `2` naming the cause, rather than dying inside Django with a message telling the reader to restart a stack that is already up. A project that wants the mode adds `postgresql-client` to that image.
+- **Every document that repeated either claim is corrected in the same change** — `code/src/scripts/database/CONTEXT.md`, `.claude/skills/database/SKILL.md`, `.claude/skills/stack-django/SKILL.md`, `how-to/docs/DEVELOPMENT.md`, `how-to/workflows/04-database-operations/STEPS.md` and `.copier/README.md`. The database workflow also gains the non-interactive form: `echo 'SELECT current_database();' | bash code/src/scripts/database/shell.sh --psql` answers "which database am I pointed at" without leaving a session behind.
 
 ---
 
