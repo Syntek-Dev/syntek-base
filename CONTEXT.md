@@ -88,7 +88,7 @@ consumes this API; none of them changes the rule above for the web.
 ├── CONTEXT.md                       ← this file
 ├── REFERENCES.md                    ← curated index of internal docs and external resources
 ├── README.md                        ← the public front door — what this template is and how to use it
-├── DESIGN.md                        ← design entry point (standards, constraints, Figma)
+├── DESIGN.md                        ← design entry point (standards, constraints, design workflows)
 ├── GAPS.md                          ← active gaps, blockers, sprint dependencies
 ├── DEFERRED.md                      ← deferred-work register
 ├── CHANGELOG.md                     ← what changed in each release, newest first
@@ -172,7 +172,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **7.1.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.2.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

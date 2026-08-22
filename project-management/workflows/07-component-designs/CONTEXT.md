@@ -28,40 +28,24 @@ Run it after brand guides are agreed and before wireframing feature screens.
 
 ## Key concepts
 
-- Components are designed in Figma using brand tokens — never raw hex values
+- Components are designed against brand tokens — never raw hex values
 - Every component requires all states: default, hover, focus, disabled, error, success, empty
-- Figma Code Connect maps component designs to codebase implementations
+- Every component record names the django-component it maps to, or records that it is new
 - Always check the django-components library (`code/src/django/components/`) before
   designing a new component. If an existing component covers the need (even with minor
   CSS token overrides), reuse it rather than designing from scratch.
 
-### Constraint-based flexible layout
+### Responsive behaviour
 
-All components in the component library use **`layoutMode: 'NONE'`** (frame with absolute
-child positioning). Responsiveness is achieved entirely through **Figma child constraints**, not
-auto-layout. This means every child element must have its constraints explicitly set:
+A component is designed **mobile-first at 360 px portrait** and must hold its shape across the
+breakpoint set below. Two references own the mechanics and are not restated here:
+`code/docs/responsive/BREAKPOINTS.md` (the breakpoint tokens and the device data behind them) and
+`code/docs/responsive/CONTAINER-QUERIES.md` (a component adapts to its container, not the
+viewport).
 
-| Element role                            | Horizontal | Vertical  |
-| --------------------------------------- | ---------- | --------- |
-| Background fill rectangle               | `STRETCH`  | `STRETCH` |
-| Left-pinned content (logo, card start)  | `MIN`      | `CENTER`  |
-| Right-pinned content (CTA, hamburger)   | `MAX`      | `CENTER`  |
-| Centred content (hero text, quotes)     | `CENTER`   | `MIN`     |
-| Full-width text or divider              | `STRETCH`  | `MIN`     |
-| Proportionally scaled image placeholder | `SCALE`    | `STRETCH` |
-| Fixed-position badge (e.g. status dot)  | `MAX`      | `MAX`     |
-
-When a component instance is placed in a wireframe frame, it is resized as:
-`inst.resize(breakpointWidth, inst.height)` — width matches the breakpoint; natural height is
-preserved. The STRETCH background fills the full width; constrained children stay correctly
-positioned without distortion.
-
-**Do not use proportional scaling** (`scale = bp.W / inst.width; inst.resize(bp.W, inst.height * scale)`)
-— this causes tall components to balloon at large breakpoints.
-
-**In-place rebuild pattern**: When correcting an existing component, clear its children and
-rebuild using the same COMPONENT node (same key). Instances in wireframe files auto-update when
-the library is re-published — no need to re-place instances.
+Sanity-check every design at both ends of the range — **320 px** and **10240 px**. Backgrounds
+must fill, pinned elements must stay pinned, and nothing may distort or detach. A component that
+only holds at one width is not designed.
 
 ### 13 wireframe breakpoints
 
@@ -81,7 +65,7 @@ the library is re-published — no need to re-place instances.
 | 4xl  | 7680       | Desktop        |
 | 5xl  | 10240      | Desktop        |
 
-Desktop threshold: W ≥ 1024 → `Navbar/Desktop`; W < 1024 → `Navbar/Mobile`.
+Desktop threshold: W ≥ 1024 takes the desktop navbar; W < 1024 takes the mobile navbar.
 
 ## Cross-references
 

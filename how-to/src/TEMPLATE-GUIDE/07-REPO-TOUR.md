@@ -167,7 +167,7 @@ note answering a question about the template means nothing in a project built fr
 | ----------------------------------------------------- | ------------------------------------------------------------------- |
 | `CONTEXT.md`                                          | Project overview, full directory tree, layer map                    |
 | `REFERENCES.md`                                       | Curated index of every internal guide and external resource         |
-| `DESIGN.md`                                           | Design entry point — standards, constraints, Figma                  |
+| `DESIGN.md`                                           | Design entry point — standards, constraints, design workflows       |
 | `GAPS.md`                                             | Active gaps, blockers, sprint dependencies                          |
 | `DEFERRED.md`                                         | Work explicitly deferred to a named future story                    |
 | `VERSION`                                             | The single source of truth — a new project starts at `0.1.0`        |

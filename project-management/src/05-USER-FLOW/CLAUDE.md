@@ -50,7 +50,7 @@ built (`IMPLEMENTATION/`), with rendered PNGs in `DIAGRAMS/`.
 - **Hand-written:** every flow narrative, consolidation, and record, from its stage template.
 - **Templates:** `USER-FLOW-IDEA-US000-TEMPLATE.md`, `USER-FLOW-CONSOLIDATED-000-TEMPLATE.md`,
   `USER-FLOW-IMPL-US000-TEMPLATE.md` — the copy sources; do not delete or repurpose.
-- **Generated (never hand-edit):** the PNGs under `DIAGRAMS/` — exported from Mermaid/Figma.
+- **Generated (never hand-edit):** the PNGs under `DIAGRAMS/` — exported from Mermaid.
 - `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md` · `USER-FLOW-CONSOLIDATED-<AREA>.md` ·
   `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; diagrams `flow-<area>-<screen>.png`;
   stories `US###`; dates DD/MM/YYYY.

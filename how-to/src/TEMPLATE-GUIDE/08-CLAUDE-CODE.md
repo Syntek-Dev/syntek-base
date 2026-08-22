@@ -233,12 +233,11 @@ through `code/src/scripts/`.
 | `code-review-graph` | Structural context and impact analysis — cheaper than Grep | `.mcp.json`          |
 | `context7`          | Current library and framework documentation                | `.mcp.json`          |
 | `mcp-mermaid`       | Architecture and flow diagrams                             | `.mcp.json`          |
-| `figma`             | Design reads and writes, Code Connect                      | machine-global       |
 | `claude-in-chrome`  | Rendered UI inspection and browser automation              | the Chrome extension |
 
 The first three are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
-gets them, launched on demand through `uvx` and `npx`. The last two are yours to install; nothing
-in the repository supplies them.
+gets them, launched on demand through `uvx` and `npx`. The last one is yours to install; nothing
+in the repository supplies it.
 
 **The graph and the layered docs are two views of the same codebase** — machine-derived structure
 and human-curated orientation. Explore with both, and refresh the graph whenever you revise the

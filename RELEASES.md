@@ -1,9 +1,45 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.2.0 — 22/08/2026
+
+**Status:** Minor — the design steps stop depending on a hosted design tool. Every design artefact
+now lives in your repository. If you were using Figma alongside this template, nothing stops you;
+it is simply no longer what the instructions assume.
+
+### Designs that live in the repository
+
+Three of the planning steps here produce design work: brand guides, component designs and
+wireframes. Their instructions used to assume a hosted design tool, and a fair amount of the
+detail was about that tool rather than about design — how to set resizing rules on a frame, how to
+rebuild a component so existing copies update, which script pattern silently discards its work.
+
+All of it is gone, and what replaces it is the medium each artefact was already in:
+
+- **Wireframes** are self-contained HTML screens committed alongside everything else. No content
+  delivery network, no framework, no web fonts — a screen opens by double-clicking it, and it
+  shows up in a diff like any other file.
+- **The brand guide** is the PDF generated at consolidation. That is the client-facing document.
+- **Component designs** are records in the components folder. Each one names the actual component
+  in the codebase it maps to, or says it is new — so a design can be built without guessing.
+- **User-flow diagrams** are Mermaid, with the images exported from it.
+
+Component responsiveness is now stated as a range rather than as a tool's settings: designed for a
+360 px phone first, then checked at 320 px and at 10240 px, with backgrounds filling and pinned
+elements staying pinned at both ends. A component that only holds at one width is not designed.
+
+### What has not been decided
+
+There is an open question about where the client-facing half of design work should be produced,
+now that the repository holds the internal half outright. It is written down as an open map with
+every question still unanswered, deliberately — it is charted, not settled. Nothing acts on it
+yet, and nothing in your project depends on the answer.
 
 ---
 

@@ -56,7 +56,7 @@ Include:
 - Alternative paths (e.g. unauthenticated user, validation failure)
 - Exit points (logout, cancellation, completion redirect)
 
-Tools: Figma FigJam, Mermaid, or a plain Markdown diagram — any committed format is
+Tools: Mermaid or a plain Markdown diagram — any committed format is
 acceptable.
 
 ### Step 4 — Mark Data Touchpoints

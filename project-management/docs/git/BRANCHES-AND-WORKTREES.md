@@ -50,7 +50,7 @@ us###/feature  →  testing  →  dev  →  staging  →  main
 
 Branch names follow one of two prefixes:
 
-| Prefix               | When to use                                                  | Example                 |
-| -------------------- | ------------------------------------------------------------ | ----------------------- |
-| `us###/<short-desc>` | Feature or fix work scoped to a user story                   | `us015/homepage-layout` |
-| `pm/<short-desc>`    | Project management work (stories, sprints, wireframes, docs) | `pm/wireframes-figma`   |
+| Prefix               | When to use                                                  | Example                  |
+| -------------------- | ------------------------------------------------------------ | ------------------------ |
+| `us###/<short-desc>` | Feature or fix work scoped to a user story                   | `us015/homepage-layout`  |
+| `pm/<short-desc>`    | Project management work (stories, sprints, wireframes, docs) | `pm/wireframes-checkout` |

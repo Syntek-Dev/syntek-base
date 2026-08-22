@@ -14,7 +14,7 @@ rule navigates; it does not restate it.
 | Document                                                       | Purpose                                                          |
 | -------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [CONTEXT.md](CONTEXT.md)                                       | Project overview, directory tree, layer map                      |
-| [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, Figma workflows      |
+| [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, design workflows     |
 | [GAPS.md](GAPS.md)                                             | Active architectural gaps, blockers, and sprint dependencies     |
 | [.claude/CLAUDE.md](.claude/CLAUDE.md)                         | Global rules, model selection, routing, security non-negotiables |
 | [code/CONTEXT.md](code/CONTEXT.md)                             | Code layer entry point                                           |

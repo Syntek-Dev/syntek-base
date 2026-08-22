@@ -38,12 +38,12 @@ Brand decisions flow through four stages:
    └── BRAND-COLOURS.md, BRAND-TYPOGRAPHY.md, BRAND-SPACING.md, BRAND-LOGOS.md
        Document the finalised values: hex codes, typeface names, spacing scale, logo variants
 
-3. Client presentation — Brand Guide (Figma)
-   └── Visual reference file; clients invited as guests to view and comment
-       Pages: Cover · Brand Colours · Brand Typography · Brand Spacing · Brand Logos · Brand Icons
+3. Client presentation — guide-build/brand-guide.pdf
+   └── The cumulative deliverable, generated from brand_guide.py at consolidation
+       Sections: Colours · Typography · Spacing · Logos · Icons
 
-4. Implementation — Component Library (Figma) + Django design token system
-   └── Foundations and Typography pages built from the decision records
+4. Implementation — src/07-COMPONENTS/ + Django design token system
+   └── The component set built from the decision records
        Tokens fed into the design-token admin area → CSS variables → frontend stylesheet
 ```
 
@@ -53,9 +53,9 @@ Brand decisions flow through four stages:
   (colours, typography, spacing stored via the design-token admin area → CSS custom properties → frontend stylesheet)
 - Breakpoints are build-time only and are not DB-driven
 - A brand guide change that alters existing tokens requires a token migration plan
-- The Brand Guide Figma file is client-facing — keep it clean and presentation-ready
+- `guide-build/brand-guide.pdf` is client-facing — keep it clean and presentation-ready
 - The markdown files in `src/06-BRAND-GUIDE/` are the internal specification Claude reads
-  when building the Figma Component Library
+  when building the component set in `src/07-COMPONENTS/`
 
 ## Cross-references
 

@@ -49,13 +49,13 @@ Review the user flows and user stories for the in-scope area.
 List every UI component needed. For each one, check whether it already exists in:
 
 - `code/src/django/components/`
-- The Figma component library
+- The consolidated set in `project-management/src/07-COMPONENTS/CONSOLIDATED-IDEAS/`
 
 Reuse existing components before designing new ones.
 
-### Step 2 — Design New Components in Figma
+### Step 2 — Design New Components
 
-> **Model:** opus · **MCP:** figma (reference only)
+> **Model:** opus
 
 For each new component, design all required variants and states:
 
@@ -69,40 +69,18 @@ For each new component, design all required variants and states:
 
 Use brand tokens (colour, typography, spacing) — never raw hex values or hard-coded sizes.
 
-#### 2a — Set child constraints (flexible layout)
+#### 2a — Hold the design across the breakpoint set
 
-Every component frame uses `layoutMode: 'NONE'`. Responsive behaviour comes entirely from
-**Figma child constraints** — set them explicitly on every child element before signing off:
-
-| Element role                            | Horizontal | Vertical |
-| --------------------------------------- | ---------- | -------- |
-| Background fill rectangle               | STRETCH    | STRETCH  |
-| Left-pinned content (logo, card start)  | MIN        | CENTER   |
-| Right-pinned content (CTA, hamburger)   | MAX        | CENTER   |
-| Centred content (hero text, quotes)     | CENTER     | MIN      |
-| Full-width text or divider              | STRETCH    | MIN      |
-| Proportionally scaled image placeholder | SCALE      | STRETCH  |
-| Fixed-position badge (e.g. status dot)  | MAX        | MAX      |
-
-Verify by temporarily resizing the component frame to the smallest (320 px) and largest
-(10240 px) widths — backgrounds must fill, and pinned elements must stay correctly positioned.
-
-#### 2b — In-place rebuild via Figma MCP
-
-When rebuilding an existing component programmatically via `mcp__figma__use_figma`:
-
-1. Clear the component's children first (do not create a new COMPONENT node — preserve the key).
-2. Rebuild child elements with correct `constraints` on each node.
-3. Re-publish the library — existing instances in wireframe files auto-update; no re-placing needed.
-
-**Figma MCP page-switch rule**: if the target page is not already current, split into two script
-runs — Run 1: `await figma.setCurrentPageAsync(targetPage)` only. Run 2: build all content on
-`figma.currentPage`. Never switch page and mutate content in the same run (children will not
-persist).
+Responsive behaviour is part of the design, not a later pass. Design mobile-first at 360 px
+portrait, then check the component at both ends of the range — **320 px** and **10240 px**.
+Backgrounds must fill, pinned elements must stay pinned, and nothing may distort or detach.
+The breakpoint set and the desktop threshold are in this folder's `CONTEXT.md`; the mechanics
+are `code/docs/responsive/BREAKPOINTS.md` and `code/docs/responsive/CONTAINER-QUERIES.md`.
 
 ### Step 3 — Annotate Components
 
-For each component, document in Figma or an accompanying note:
+For each component, record in its `COMP-IDEA-US###-<DESCRIPTOR>.md`
+(`project-management/src/07-COMPONENTS/USER-STORY-IDEAS/`):
 
 - Props / variants exposed to consumers
 - Accessibility requirements (ARIA role, keyboard interaction, focus management)
@@ -119,20 +97,16 @@ Review every interactive component against WCAG 2.2 AA:
 
 Reference `code/docs/ACCESSIBILITY.md` for the full checklist.
 
-### Step 5 — Set Up Code Connect Mappings
+### Step 5 — Map Each Design to the Component Library
 
-Where a Figma component maps to an existing or new codebase component, register the
-mapping using the Figma MCP:
-
-```text
-mcp__figma__get_code_connect_suggestions
-mcp__figma__send_code_connect_mappings
-```
+Every component record names its counterpart in `code/src/django/components/` — the existing
+django-component it reuses, or the name a new one will take. A design with no named counterpart
+is a design nobody can implement without guessing.
 
 ### Step 6 — Sign Off
 
 Component designs must be agreed before frontend implementation begins.
-Record sign-off via PR review or a comment in the Figma file.
+Record sign-off via PR review or in the component record itself.
 
 ### Step 7 — Commit
 

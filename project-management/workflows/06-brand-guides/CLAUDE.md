@@ -15,13 +15,13 @@ component design begins.
 
 - **Routing:** run `STEPS.md` against `CHECKLIST.md`. Design phase — no code safety
   gates. Four stages: ideate (Claude Design) → record (`src/06-BRAND-GUIDE/`) → present
-  (Brand Guide Figma, client-facing) → implement (Component Library + token system).
+  (the `brand-guide.pdf`, client-facing) → implement (component set + token system).
 - **Model:** Fable — brand and token decisions are substantive.
 - **Concrete steps:** confirm no in-progress component design depends on tokens you are
   changing → document finalised values (hex, typeface names, spacing scale, logo
   variants) as the `BRAND-*.md` records → check contrast and legibility
   (`code/docs/ACCESSIBILITY.md`) → these records are the spec Claude reads when building
-  the Figma Component Library.
+  the component set in `src/07-COMPONENTS/`.
 - **Definition of done:** decision records complete and self-consistent; any change to
   existing tokens carries a token migration plan; checklist satisfied.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
@@ -33,7 +33,7 @@ component design begins.
   build-time only, **not** DB-driven.
 - **A change that alters existing tokens requires a token migration plan** — do not
   silently rewrite live values.
-- Colour contrast WCAG AA 4.5:1; the Brand Guide Figma file is client-facing — keep it
+- Colour contrast WCAG AA 4.5:1; `guide-build/brand-guide.pdf` is client-facing — keep it
   presentation-ready.
 - Documentation only — no code.
 
@@ -41,6 +41,6 @@ component design begins.
 
 - **Hand-written:** `BRAND-COLOURS.md`, `BRAND-TYPOGRAPHY.md`, `BRAND-SPACING.md`,
   `BRAND-LOGOS.md` in `src/06-BRAND-GUIDE/`; `STEPS.md`/`CHECKLIST.md` updates.
-- **Downstream (not in this folder):** Figma files, and the design token models a later story will
-  build to the contract in `code/docs/DESIGN-TOKENS.md`.
+- **Downstream (not in this folder):** the `guide-build/` PDF, and the design token models a
+  later story will build to the contract in `code/docs/DESIGN-TOKENS.md`.
 - Documentation files `SCREAMING-SNAKE-CASE.md`; dates DD/MM/YYYY.

@@ -3,11 +3,11 @@
 **Project**: <%PROJECT_NAME%> Website | **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%>
 **Stack**: Django Templates + django-components · HTMX · Alpine.js · Vanilla CSS (design tokens). Server-rendered throughout — no client-side framework, no bundler.
 
-This file is the **design-time** entry point for all design work — the quick context source when producing wireframes and component designs with the Figma MCP or Claude Design. It maps the relevant standards, guides, and workflows, and points those tools at the brand and component sources they should read.
+This file is the **design-time** entry point for all design work — the quick context source when producing wireframes and component designs. It maps the relevant standards, guides, and workflows, and names the brand and component sources they read.
 
 **Design-time → code-time.** DESIGN.md governs the _design_ phase (produce the artefacts); its code-time counterpart is [`code/docs/VISUAL-DESIGN.md`](code/docs/VISUAL-DESIGN.md), which governs _implementing_ those artefacts against the live codebase. The two are one pipeline:
 
-- **Design-time (here):** Figma MCP / Claude Design read [`project-management/src/06-BRAND-GUIDE/`](project-management/src/06-BRAND-GUIDE) (foundations — colour, type, motion, spacing, icons, logo) and [`project-management/src/07-COMPONENTS/`](project-management/src/07-COMPONENTS) (component designs, states, variants) to produce the wireframes in [`project-management/src/08-WIREFRAMES/`](project-management/src/08-WIREFRAMES).
+- **Design-time (here):** the design gates read [`project-management/src/06-BRAND-GUIDE/`](project-management/src/06-BRAND-GUIDE) (foundations — colour, type, motion, spacing, icons, logo) and [`project-management/src/07-COMPONENTS/`](project-management/src/07-COMPONENTS) (component designs, states, variants) to produce the wireframes in [`project-management/src/08-WIREFRAMES/`](project-management/src/08-WIREFRAMES).
 - **Code-time ([VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)):** the `frontend` skill implements those artefacts — grounded in the live code, which drifts from planning — in the <%PROJECT_NAME%> visual signature.
 
 ---
@@ -92,8 +92,8 @@ not a second copy of the list.
 guess a direction. That is not a gate failure; it is first-time setup Step 9 not having been run.
 
 **`06-BRAND-GUIDE` and `07-COMPONENTS` have no script gate**, and the reason is input language, not
-importance: their artefacts are LaTeX, Python and PDF, plus Figma files that are not in the
-repository at all. Both are gated by eye against Section 3.
+importance: their artefacts are LaTeX, Python and PDF, which none of the slop audits reads.
+Both are gated by eye against Section 3.
 
 ---
 
@@ -141,45 +141,6 @@ repository at all. Both are gated by eye against Section 3.
 | `project-management/src/06-BRAND-GUIDE/` | Brand foundations (canonical `DESIGN/Foundations*.html`)       |
 | `project-management/src/07-COMPONENTS/`  | Component designs — states, variants, patterns                 |
 | `project-management/src/08-WIREFRAMES/`  | Screen wireframes (`WF-###`)                                   |
-
----
-
-## Figma MCP Patterns
-
-These rules apply to all `use_figma` scripts run via the Figma MCP server.
-
-### Never use an async IIFE
-
-`(async () => { await ...; })()` returns a Promise immediately. The Figma MCP plugin commits changes at script end — before the Promise resolves — so all async work inside the IIFE is silently discarded.
-
-**Always use top-level `await`:**
-
-```javascript
-// Correct — top-level await, all async work first
-await Promise.all([figma.loadFontAsync({ family: "Inter", style: "Regular" })]);
-const [comp] = await Promise.all([figma.importComponentByKeyAsync("abc123")]);
-
-// All subsequent code is synchronous — committed at script end
-for (const item of items) {
-  const frame = figma.createFrame();
-  // … populate frame …
-}
-```
-
-### Appending to a non-current page
-
-`pageNode.appendChild(frame)` works correctly even when the target page is not the currently active Figma page. Use `figma.root.children.find()` to get the page node, then append directly — no page switch needed:
-
-```javascript
-const homePage = figma.root.children.find((p) => p.name === "Home");
-homePage.appendChild(frame); // persists correctly
-```
-
-`setCurrentPageAsync` does not persist across script runs — the MCP plugin's `figma.currentPage` is fixed to whichever page was active when the plugin first loaded.
-
-### Reading children of a non-current page across script runs
-
-`pageNode.children` consistently returns `[]` in a fresh script run for non-current pages, even when the page contains many nodes. Within the same script run, mutations are visible in `children`. Across runs, use `get_metadata` via the Figma MCP to read node IDs from non-current pages.
 
 ---
 

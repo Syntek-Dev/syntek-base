@@ -63,7 +63,7 @@ From the user story, identify:
 
 ### Step 2 — Sketch the Layout
 
-> **Model:** opus · **MCP:** figma (reference only)
+> **Model:** opus
 
 Produce a wireframe for each distinct view. Include:
 
@@ -75,7 +75,7 @@ Produce a wireframe for each distinct view. Include:
 **The medium is fixed: a self-contained HTML screen.** Copy
 `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/WF-IDEA-US000-TEMPLATE.html` and compose from the `wf-*`
 classes in `SHARED/wireframe.css`. No CDN, no framework, no external fonts — it must open over
-`file://`. Figma and Excalidraw are **not** alternatives here: a second medium would put the
+`file://`. A hosted design tool is **not** an alternative here: a second medium would put the
 design tier behind a hosted dependency and make it undiffable.
 
 **Mobile-only.** A screen on the mobile surface is wireframed the same way, in the same folder,
@@ -120,7 +120,7 @@ Record sign-off in the document or via PR review.
 ### Step 6 — Proceed to the Next Gate
 
 **Not to code.** Signed-off wireframes unlock the remaining design and compliance gates, not
-implementation — a feature is not codeable until workflows 02–16 are complete
+implementation — a feature is not codeable until workflows 02–17 are complete
 (`project-management/workflows/CLAUDE.md`). Continue in order:
 
 `09-gdpr-compliance` → `10-security-checks` → `11-qa-checks` → `12-seo-checks` (public pages)

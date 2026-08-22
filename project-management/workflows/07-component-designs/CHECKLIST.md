@@ -19,31 +19,24 @@ model: fable
 - [ ] All required components identified from user flows and stories
 - [ ] Existing components checked — no unnecessary new components created
 - [ ] Every component designed **within the committed direction** — checked against the six axes in `code/docs/VISUAL-DESIGN.md` Section 3, never against taste
-- [ ] Checked by eye against Section 4.1 and Section 4.2 — **no script gate here**: these artefacts are Figma and LaTeX, which none of the slop audits reads (`DESIGN.md` → _The design-time gate_)
-- [ ] Every new component designed in Figma using brand tokens (no raw hex values) · _opus · MCP: figma_
+- [ ] Checked by eye against Section 4.1 and Section 4.2 — **no script gate here**: these artefacts are Markdown and LaTeX, which none of the slop audits reads (`DESIGN.md` → _The design-time gate_)
+- [ ] Every new component designed against brand tokens (no raw hex values)
 - [ ] All states designed: default, hover, focus, disabled, error, success, empty/loading
-- [ ] Props / variants annotated in Figma
+- [ ] Props / variants annotated in the component record
 - [ ] Accessibility annotations included: ARIA role, keyboard interaction, focus management
 - [ ] Responsive behaviour documented
 - [ ] WCAG 2.2 AA contrast ratios verified for all colour combinations
 - [ ] Focus indicators visible and meet 3:1 contrast ratio
 - [ ] Touch targets are at least 24 × 24 px
-- [ ] Code Connect mappings registered for all Figma ↔ codebase component pairs · _opus · MCP: figma_
+- [ ] Every component mapped to its django-component, or recorded as new
 
-### Flexible layout constraints
+### Responsive behaviour
 
-- [ ] Every component uses `layoutMode: 'NONE'` (no auto-layout on the root frame)
-- [ ] Background rectangle has `STRETCH × STRETCH` constraints
-- [ ] Left-pinned children (logo, card content start) have `MIN × CENTER` constraints
-- [ ] Right-pinned children (CTA, hamburger, close) have `MAX × CENTER` constraints
-- [ ] Centred content (hero text, quotes, modal body) has `CENTER × MIN` constraints
-- [ ] Full-width text or dividers have `STRETCH × MIN` constraints
-- [ ] Image / media placeholders have `SCALE × STRETCH` constraints
-- [ ] Fixed-position badges (status dot, notification pip) have `MAX × MAX` constraints
-- [ ] No child element left with default `MIN × MIN` unless intentionally left-top-pinned
-- [ ] Resized to 320 px width — backgrounds fill, pinned elements stay correctly positioned
-- [ ] Resized to 10240 px width — no element distorts or detaches from its expected position
-- [ ] If rebuilt in-place via Figma MCP: same COMPONENT node used (key preserved); library re-published after rebuild
+- [ ] Designed mobile-first at 360 px portrait
+- [ ] Holds at 320 px — backgrounds fill, pinned elements stay correctly positioned
+- [ ] Holds at 10240 px — no element distorts or detaches from its expected position
+- [ ] Adapts to its container rather than the viewport (`code/docs/responsive/CONTAINER-QUERIES.md`)
+- [ ] Navbar variant correct either side of the 1024 px desktop threshold
 
 ---
 
@@ -59,5 +52,5 @@ model: fable
 ## Definition of Done
 
 - [ ] Component designs reviewed and signed off before frontend implementation begins
-- [ ] Code Connect mappings committed
-- [ ] Design artefacts accessible in Figma for frontend developers
+- [ ] Component-to-django-component mappings recorded
+- [ ] Design artefacts committed under `project-management/src/07-COMPONENTS/` for frontend developers

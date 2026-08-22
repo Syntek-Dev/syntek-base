@@ -48,7 +48,7 @@ applying Django-template assumptions to React Native.
 
 ### Step 1 — Grill, then Review Wireframes and Component Designs
 
-> **Model:** opus · **MCP:** figma, code-review-graph (reference only)
+> **Model:** opus · **MCP:** code-review-graph (reference only)
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the component structure (reuse from the
@@ -56,8 +56,8 @@ django-components library vs new), the states to implement (default, hover, focu
 disabled, error, empty), the interactions, whether each one runs on the server, through
 HTMX, or in Alpine, and the WCAG 2.2 AA accessibility requirements before building.
 
-Read the signed-off wireframes from `project-management/src/08-WIREFRAMES/` and the Figma
-component designs for the feature area.
+Read the signed-off wireframes from `project-management/src/08-WIREFRAMES/` and the component
+designs in `project-management/src/07-COMPONENTS/` for the feature area.
 
 Before writing any code, read:
 
@@ -123,7 +123,7 @@ If a page renders Cloudinary-hosted images or video, build the delivery URL serv
 Cloudinary Python SDK. Invoke `/cloudinary-transformations` for transformation URL syntax before
 writing.
 
-Build each component against its Figma design:
+Build each component against its component design:
 
 - Apply design tokens via CSS custom properties — no raw hex values
 - Implement all required states (default, hover, focus, disabled, error, success, empty)

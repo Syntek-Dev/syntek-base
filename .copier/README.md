@@ -507,17 +507,17 @@ task, keeping responses fast and token-efficient.
 | **Code**               | `code/`               | Source code, coding standards, tests, quality workflows |
 | **How-To**             | `how-to/`             | Setup guides, daily development commands, debugging     |
 | **Project management** | `project-management/` | User stories, sprints, plans, GDPR, security audits     |
-| **Design**             | `DESIGN.md`           | Design standards, constraints, Figma and UI workflows   |
+| **Design**             | `DESIGN.md`           | Design standards, constraints, and UI workflows         |
 | **Claude config**      | `.claude/`            | Operating manual, skills, hooks, and helper scripts     |
 
 ### Routing — read only the layer you need
 
-| Task type                                                 | Read first                      |
-| --------------------------------------------------------- | ------------------------------- |
-| Writing, reviewing, or testing code                       | `code/CONTEXT.md`               |
-| Stories, sprints, PRs, releases, GDPR, SEO                | `project-management/CONTEXT.md` |
-| Setup, daily dev, CLI usage, debugging                    | `how-to/CONTEXT.md`             |
-| Figma, component design, wireframes, brand, responsive UI | `DESIGN.md`                     |
+| Task type                                          | Read first                      |
+| -------------------------------------------------- | ------------------------------- |
+| Writing, reviewing, or testing code                | `code/CONTEXT.md`               |
+| Stories, sprints, PRs, releases, GDPR, SEO         | `project-management/CONTEXT.md` |
+| Setup, daily dev, CLI usage, debugging             | `how-to/CONTEXT.md`             |
+| Component design, wireframes, brand, responsive UI | `DESIGN.md`                     |
 
 Always-applicable guides: `project-management/docs/GIT-GUIDE.md` ·
 `project-management/docs/VERSIONING-GUIDE.md`
@@ -542,7 +542,7 @@ reference material rather than everything at once.
 | First time in this repository              | `how-to/CONTEXT.md`             |
 | Writing or reviewing code                  | `code/CONTEXT.md`               |
 | Planning, writing stories, or PM work      | `project-management/CONTEXT.md` |
-| Doing design work (Figma, wireframes, UI)  | `DESIGN.md`                     |
+| Doing design work (wireframes, brand, UI)  | `DESIGN.md`                     |
 | Configuring Claude Code, skills, and hooks | `.claude/CLAUDE.md`             |
 
 ---
@@ -644,12 +644,13 @@ erDiagram
     USER ||--|| PROFILE : has
 ```
 
-### Wireframes with Figma
+### Wireframes
 
-UI wireframes are designed in Figma and linked (not embedded) from
-`project-management/src/08-WIREFRAMES/`. Each wireframe entry records the Figma URL, the story it
-belongs to, and the sign-off status. No frontend work begins on a feature until the wireframe is
-signed off — use `project-management/workflows/08-wireframes/`.
+UI wireframes are self-contained HTML screens committed under
+`project-management/src/08-WIREFRAMES/` — no CDN, no framework, no external fonts, so a screen
+opens over `file://` and diffs like any other file. Each records the story it belongs to and its
+sign-off status. No frontend work begins on a feature until the wireframe is signed off — use
+`project-management/workflows/08-wireframes/`.
 
 ### User flow diagrams
 
@@ -958,7 +959,6 @@ inspect the local environment for context. They do **not** run dev operations �
 | `context7`          | Machine-global     | Only if installed locally              |
 | `claude-in-chrome`  | Machine-global     | Only if installed locally              |
 | `mcp-mermaid`       | Machine-global     | Only if installed locally              |
-| `figma`             | Machine-global     | Only if installed locally              |
 
 ---
 

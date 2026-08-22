@@ -159,7 +159,6 @@ hostnames.
 | **Bruno**                   | Running the committed API collections through a GUI.                                                                                                                                                    |
 | **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                  |
 | **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                   |
-| **Figma MCP server**        | Design reads and writes, and Code Connect. Machine-global, and your own to install.                                                                                                                     |
 
 The three MCP servers the project actually depends on — `code-review-graph`, `context7` and
 `mcp-mermaid` — need **no installation**. They are declared in the shipped `.mcp.json` and

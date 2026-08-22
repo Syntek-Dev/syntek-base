@@ -26,10 +26,10 @@ client bundle.
 
 ### Branching
 
-| Prefix               | For                                        | Example                 |
-| -------------------- | ------------------------------------------ | ----------------------- |
-| `us###/<short-desc>` | work scoped to a user story                | `us015/homepage-layout` |
-| `pm/<short-desc>`    | project management, process, documentation | `pm/wireframes-figma`   |
+| Prefix               | For                                        | Example                  |
+| -------------------- | ------------------------------------------ | ------------------------ |
+| `us###/<short-desc>` | work scoped to a user story                | `us015/homepage-layout`  |
+| `pm/<short-desc>`    | project management, process, documentation | `pm/wireframes-checkout` |
 
 Full branch and promotion rules: `project-management/docs/GIT-GUIDE.md`.
 

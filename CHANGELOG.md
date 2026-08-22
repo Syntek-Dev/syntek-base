@@ -1,12 +1,30 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.2.0] - 22/08/2026
+
+### Changed
+
+- **The design tier's artefact of record is in the repository.** `DESIGN.md` loses its `## Figma MCP Patterns` section — the async-IIFE rule, the non-current-page append, the cross-run children behaviour — and its design-time framing no longer routes through a hosted tool. The three slop gates it lists are unchanged; what changed is the sentence naming what they read, which is Markdown and LaTeX rather than "Figma and LaTeX".
+- **`07-component-designs` replaces Figma's constraint model with a stated responsive range.** The `layoutMode: 'NONE'` rule, the seven-row child-constraint table, the `inst.resize()` recipe, the in-place-rebuild pattern and the Code Connect step all go. A component is designed **mobile-first at 360 px portrait** and checked at both ends — 320 px and 10240 px — with the mechanics owned by `code/docs/responsive/BREAKPOINTS.md` and `code/docs/responsive/CONTAINER-QUERIES.md` rather than restated. Every component record now names the django-component it maps to, or records that it is new: a design with no named counterpart is a design nobody can implement without guessing.
+- **`06-brand-guides` names `guide-build/brand-guide.pdf` as the client-facing deliverable**, generated from `brand_guide.py` at consolidation, and the implementation target is `src/07-COMPONENTS/` plus the Django token system.
+- **`08-wireframes` states the medium positively.** Screens are self-contained HTML committed under `project-management/src/08-WIREFRAMES/` — no CDN, no framework, no external fonts, so a screen opens over `file://` and diffs like any other file. A hosted design tool is not an alternative here, because a second medium would put the source of truth outside the repository.
+- **`05-user-flow-design` and `src/05-USER-FLOW/` name Mermaid alone** as the diagram source; the `DIAGRAMS/` PNGs are exported from it.
+- **`21-frontend-code/STEPS.md` reads the component designs from `project-management/src/07-COMPONENTS/`** rather than from a Figma file, and drops `figma` from its MCP line.
+- **`how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` and `08-CLAUDE-CODE.md` stop listing a Figma MCP server** among the tools you install yourself; `.copier/README.md`, root `CONTEXT.md`, `REFERENCES.md`, `07-REPO-TOUR.md` and `code/docs/VISUAL-DESIGN.md` all lose the same reference, and the branch-name example `pm/wireframes-figma` becomes `pm/wireframes-checkout`.
+
+### Added
+
+- **`project-management/src/01-FEATURE-MAPS/MAP-CLAUDE-DESIGN-HANDOFF.md`** — the successor charted rather than assumed: whether the client-signoff half of the design tier is produced in Claude Design from a brief this repository authors, after `18-consolidate-design-work` has reconciled the per-story work. **Every node is unresolved by instruction**; the chart sitting draws the frontier and a later `/wayfinder resolve` pass settles it. No row is added to the feature-map index, because that file ships and may cite layering-system artefacts only.
 
 ---
 
