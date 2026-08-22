@@ -151,9 +151,9 @@ does — and filing it as a protocol or adapter seam would cheapen both terms.
 | `<%INCIDENT_TRACKER%>` | Where the substance of an incident is held | `ClickUp`     | free text |
 
 **The interface is access control**, and that is the whole point. The in-repo register at
-`project-management/src/22-INCIDENTS/` is **PII-free by rule** and ships, so log excerpts,
+`project-management/src/23-INCIDENTS/` is **PII-free by rule** and ships, so log excerpts,
 identifiers and any postmortem touching personal data need a home with permissions. The default is
-`None — record in 22-INCIDENTS/ only`, and it is a first-class answer: a project without a tracker
+`None — record in 23-INCIDENTS/ only`, and it is a first-class answer: a project without a tracker
 keeps that substance **outside the repository** rather than relaxing the rule to fit a report in.
 The practice is `how-to/docs/INCIDENT-PRACTICE.md`.
 
@@ -223,13 +223,13 @@ was retired for making.
 
 The story-point ceiling that drives the planning loop. Stories are planned one at a time through
 workflows `01`–`13`; when the open sprint's accepted points reach `<%SPRINT_CAPACITY_SP%>`,
-workflows `14` and `15` run for that sprint before the next story is planned. The grace value is
+workflows `15` and `16` run for that sprint before the next story is planned. The grace value is
 a hard ceiling for the case where the next story would otherwise split badly — not a routine
 target. Full rules: `project-management/docs/PLANNING-GUIDE.md`.
 
 | Token                    | Meaning                                                  | Example value | Format           |
 | ------------------------ | -------------------------------------------------------- | ------------- | ---------------- |
-| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `14`+`15` pass | `11`          | `int`            |
+| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `15`+`16` pass | `11`          | `int`            |
 | `<%SPRINT_GRACE_SP%>`    | Hard ceiling a sprint may stretch to                     | `13`          | `int` > capacity |
 
 Both default to the house values (11 / 13). Tune them to your team's **measured** velocity after

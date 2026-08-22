@@ -13,7 +13,7 @@ evidence.
 
 ## How to work here
 
-- **Routing:** written during `project-management/workflows/21-implementation-documentation/` (or the
+- **Routing:** written during `project-management/workflows/22-implementation-documentation/` (or the
   `workflows/10-security-checks/` review step) via the `security` skill (Fable), once the
   code audit in `../../AUDITS/IMPLEMENTATION/` is complete, against the story's
   `../PLANNING/ASSESSMENT-PLAN-US###-*.md` baseline.

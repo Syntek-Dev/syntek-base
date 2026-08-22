@@ -42,7 +42,7 @@ new Router modules, Schema request/response models, or endpoints.
 - `project-management/workflows/13-api-design/` — PM-layer API design precedes this workflow; the
   signed-off `API-US###-*.md` is the contract this one expresses in code. Contract decided there
   (Fable), code shape decided here (Opus).
-- `project-management/workflows/19-api-code/` — **this workflow is entered from there**, not
+- `project-management/workflows/20-api-code/` — **this workflow is entered from there**, not
   directly from `13-api-design/`
-- `project-management/workflows/21-implementation-documentation/` — writes the `API-IMPL-US###-*.md`
+- `project-management/workflows/22-implementation-documentation/` — writes the `API-IMPL-US###-*.md`
   record verifying the built API against the contract; do not write it here

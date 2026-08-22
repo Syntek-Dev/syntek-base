@@ -264,7 +264,7 @@ decision, not the template's**:
    upgrade path; committing them means you now own native maintenance — and, if you still
    generate from this template, an exclusion entry for every binary they contain
    (`11-CUSTOMISING.md` → _Binaries_).
-3. Record it as an ADR in `project-management/src/14-DECISIONS/`. It changes your upgrade story.
+3. Record it as an ADR in `project-management/src/15-DECISIONS/`. It changes your upgrade story.
 
 iOS development builds need macOS or a paid cloud build service; neither is assumed here.
 

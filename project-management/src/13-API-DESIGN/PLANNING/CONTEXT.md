@@ -28,8 +28,8 @@ are then verified — against the shipped endpoints — in the matching
 `../IMPLEMENTATION/API-IMPL-US###-*.md` record.
 
 The design is written **after** the schema is agreed in `../../04-DATABASE/` and
-**before** the story enters `../../15-SPRINT-PLANS/`; it feeds directly into
-`project-management/workflows/19-api-code/` during implementation.
+**before** the story enters `../../16-SPRINT-PLANS/`; it feeds directly into
+`project-management/workflows/20-api-code/` during implementation.
 
 ## The 10-step structure
 

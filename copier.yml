@@ -149,10 +149,10 @@ _exclude:
   - "!/project-management/src/09-GDPR/RETENTION-DELETION.md"
   - "!/project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md"
   # The two test records are templates named for the story they are copied to, not for their role.
-  - "!/project-management/src/17-TESTS/US000-MANUAL-TESTING.md"
-  - "!/project-management/src/17-TESTS/US000-TEST-STATUS.md"
-  # The incident register's index — the one file in 22-INCIDENTS that is not an incident.
-  - "!/project-management/src/22-INCIDENTS/INCIDENT-INDEX.md"
+  - "!/project-management/src/18-TESTS/US000-MANUAL-TESTING.md"
+  - "!/project-management/src/18-TESTS/US000-TEST-STATUS.md"
+  # The incident register's index — the one file in 23-INCIDENTS that is not an incident.
+  - "!/project-management/src/23-INCIDENTS/INCIDENT-INDEX.md"
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
   # SINGLE conditionalisation mechanism — no file ever has templated contents. When the
   # answer is false these paths are never rendered at all, so a Jinja error inside a mobile
@@ -428,10 +428,10 @@ INCIDENT_TRACKER:
   help: >-
     Where the substance of an incident is held — log excerpts, identifiers, and any
     postmortem touching personal data. The interface is ACCESS CONTROL: the in-repo
-    register at project-management/src/22-INCIDENTS/ is PII-free by rule and ships, so
+    register at project-management/src/23-INCIDENTS/ is PII-free by rule and ships, so
     anything sensitive needs a home with permissions. ClickUp, Linear, Jira, a bespoke
     admin area — or leave the default, and keep that substance outside the repository.
-  default: None — record in 22-INCIDENTS/ only
+  default: None — record in 23-INCIDENTS/ only
 
 # ── Locale, licence and people ───────────────────────────────────────────────
 
@@ -523,8 +523,8 @@ LEGAL_APP:
 
 # ── Planning cadence ─────────────────────────────────────────────────────────
 # The sprint point ceiling that triggers the sprint-planning pass. Stories are
-# planned one at a time through workflows 01–13; when the open sprint's accepted
-# story points reach SPRINT_CAPACITY_SP, workflows 14 and 15 run for that sprint
+# planned one at a time through workflows 01–14; when the open sprint's accepted
+# story points reach SPRINT_CAPACITY_SP, workflows 15 and 16 run for that sprint
 # before the next story is planned. The grace value is the hard ceiling a sprint
 # may reach to avoid splitting a story badly — never a routine target.
 # Rules: project-management/docs/PLANNING-GUIDE.md (planning/CADENCE.md).
@@ -533,7 +533,7 @@ SPRINT_CAPACITY_SP:
   type: int
   help: >-
     Story points that fill a sprint and trigger the sprint-planning pass
-    (workflows 14 + 15). Tune to your team's measured velocity after two sprints.
+    (workflows 15 + 16). Tune to your team's measured velocity after two sprints.
   default: 11
 
 SPRINT_GRACE_SP:
@@ -654,6 +654,16 @@ DATE:
 # a project has no use for the migrations that produced it.
 
 _migrations:
+  # v7.0.0 opens src/14 for the new 14-LOGGING artefact folder, shifting 14-DECISIONS and
+  # everything after it up by one. That is the SECOND deliberate exercise of the exception to
+  # the frozen-numbering rule in project-management/src/CONTEXT.md — a release may renumber
+  # that tree only if it ships the rescue migration in the same commit. Same failure mode as
+  # v2.0.0 below, same cure, and listed first because migrations run in declaration order and
+  # this one must not be reached before the v2.0.0 pass has settled an older project's tree.
+  - version: v7.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.0.0-renumber-src.sh"
+    when: "<% _stage == 'after' %>"
+
   - version: v2.0.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v2.0.0-renumber-src.sh"
     when: "<% _stage == 'after' %>"

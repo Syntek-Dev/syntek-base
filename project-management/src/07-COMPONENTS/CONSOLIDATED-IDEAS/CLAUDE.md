@@ -13,8 +13,8 @@ per-story needs into components with variants and driving the single regeneratio
 
 ## How to work here
 
-- **Routing:** produced only by `workflows/17-consolidate-design-work/`, after every story has
-  cleared `16-story-plans`. Consolidate alongside `../../06-BRAND-GUIDE/CONSOLIDATED-IDEAS/`.
+- **Routing:** produced only by `workflows/18-consolidate-design-work/`, after every story has
+  cleared `17-story-plans`. Consolidate alongside `../../06-BRAND-GUIDE/CONSOLIDATED-IDEAS/`.
 - **Model:** Fable throughout — recognising that two needs are one component with two variants
   is design judgement. Opus only for running the generator and committing its outputs.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` need → group the ones that are one

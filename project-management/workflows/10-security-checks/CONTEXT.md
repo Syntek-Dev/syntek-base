@@ -18,6 +18,12 @@ project-management/workflows/10-security-checks/
 
 ## When to use this
 
+**Entry condition: the story's `Security` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story names a security concern. A story whose
+`Security` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow after wireframes and before sprint planning to:
 
 - Threat-model the planned features based on user flows and wireframes
@@ -50,7 +56,7 @@ Use this workflow after wireframes and before sprint planning to:
 - `code/workflows/08-security-hardening/` — **the code-layer counterpart**: this workflow
   threat-models the design and produces findings; that one audits and hardens the built code
   against OWASP A01–A10 and NIST SP 800-63B. Design-stage findings recorded here are what it
-  verifies; it is entered from `19-api-code/` (after mutating endpoints exist) or as a
+  verifies; it is entered from `20-api-code/` (after mutating endpoints exist) or as a
   release/incident pass, never directly from this workflow.
 - `code/docs/SECURITY.md` — technical security requirements developers must implement from findings
 - `code/docs/ENCRYPTION-GUIDE.md` — encryption requirements identified during threat modelling

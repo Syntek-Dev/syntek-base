@@ -59,6 +59,6 @@ itself only offered when `INCLUDE_RUST` is true.
 - `code/workflows/12-rust-extension/` — when the window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here
-- `project-management/workflows/20-frontend-code/` — **this workflow is entered from there**
-- `project-management/workflows/21-implementation-documentation/` — writes the implementation
+- `project-management/workflows/21-frontend-code/` — **this workflow is entered from there**
+- `project-management/workflows/22-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

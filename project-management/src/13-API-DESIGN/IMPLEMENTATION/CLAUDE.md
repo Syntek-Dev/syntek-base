@@ -14,8 +14,8 @@ before the story merges.
 
 ## How to work here
 
-- **Routing:** written during `project-management/workflows/21-implementation-documentation/`, after the
-  feature's Ninja API ships and before it moves to `../../17-TESTS/`, against the story's
+- **Routing:** written during `project-management/workflows/22-implementation-documentation/`, after the
+  feature's Ninja API ships and before it moves to `../../18-TESTS/`, against the story's
   contract in `../PLANNING/API-PLAN-US###-*.md`; governed by `code/docs/API-DESIGN.md`.
 - **Model:** Fable — the contract diff, permission-matrix check, and breaking-change
   assessment are substantive judgement; Opus only for a rename, filing, or date-stamp.

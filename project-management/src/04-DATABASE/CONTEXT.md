@@ -1,7 +1,7 @@
 # project-management/src/04-DATABASE
 
 Database design, in **three stages**. Each story designs the schema it needs
-(`USER-STORY-IDEAS/`); once every story is planned, `17-consolidate-design-work` reconciles
+(`USER-STORY-IDEAS/`); once every story is planned, `18-consolidate-design-work` reconciles
 those into one schema (`CONSOLIDATED-IDEAS/`); after the code ships, each story records what
 was actually built (`IMPLEMENTATION/`). Rendered ERDs live in `ERD-DIAGRAMS/`.
 
@@ -15,11 +15,11 @@ project-management/src/04-DATABASE/
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── DB-IDEA-US000-TEMPLATE.md
 │   └── DB-IDEA-US###-<DESCRIPTOR>.md
-├── CONSOLIDATED-IDEAS/      ← stage 2: the unified schema (workflow 17)
+├── CONSOLIDATED-IDEAS/      ← stage 2: the unified schema (workflow 18)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── DB-CONSOLIDATED-000-TEMPLATE.md
 │   └── DB-CONSOLIDATED-<DOMAIN>.md
-├── IMPLEMENTATION/          ← stage 3: what shipped, per story (workflow 21)
+├── IMPLEMENTATION/          ← stage 3: what shipped, per story (workflow 22)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── DB-IMPL-US000-TEMPLATE.md
 │   └── DB-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -36,7 +36,7 @@ designed against six stories' worth of settled schema — but it guarantees drif
 will model the same entity differently, or each add a `created_by` with a different delete
 behaviour.
 
-`17-consolidate-design-work` is the second half of that bargain: it reconciles the per-story
+`18-consolidate-design-work` is the second half of that bargain: it reconciles the per-story
 designs into one schema before any migration is written. **Schema is the expensive kind of
 drift** — a fragmented schema gets costlier with every story that ships on top of it, unlike a
 duplicated button — which is why `16` resolves this folder first.
@@ -46,8 +46,8 @@ duplicated button — which is why `16` resolves this folder first.
 | Stage                 | Written by  | Scope     | Naming                                     |
 | --------------------- | ----------- | --------- | ------------------------------------------ |
 | `USER-STORY-IDEAS/`   | workflow 04 | one story | `DB-IDEA-US###-<DESCRIPTOR>.md`            |
-| `CONSOLIDATED-IDEAS/` | workflow 17 | a domain  | `DB-CONSOLIDATED-<DOMAIN>.md`              |
-| `IMPLEMENTATION/`     | workflow 21 | one story | `DB-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
+| `CONSOLIDATED-IDEAS/` | workflow 18 | a domain  | `DB-CONSOLIDATED-<DOMAIN>.md`              |
+| `IMPLEMENTATION/`     | workflow 22 | one story | `DB-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 Descriptors in `SCREAMING-KEBAB-CASE`; `<DOMAIN>` kebab-case; dates DD/MM/YYYY.
 
@@ -62,6 +62,6 @@ and why, which is the evidence when a consolidated decision is later questioned.
 - `code/docs/RLS-GUIDE.md` — row-level security policy conventions
 - `code/docs/ENCRYPTION-GUIDE.md` — field-level PII encryption pipeline
 - `project-management/workflows/04-database-schema/` — produces stage 1
-- `project-management/workflows/17-consolidate-design-work/` — produces stage 2
+- `project-management/workflows/18-consolidate-design-work/` — produces stage 2
 
 **Last Updated**: <%DATE%>

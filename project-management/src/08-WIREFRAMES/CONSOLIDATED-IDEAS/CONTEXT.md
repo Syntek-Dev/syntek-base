@@ -1,6 +1,6 @@
 # project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS
 
-**Stage 2** — the screen set that gets built. Written by `workflows/17-consolidate-design-work/`
+**Stage 2** — the screen set that gets built. Written by `workflows/18-consolidate-design-work/`
 once every story has been planned: the per-story screens in `../USER-STORY-IDEAS/` rebuilt on
 the consolidated components, plus a record of what was reconciled.
 
@@ -37,7 +37,7 @@ and the accessibility pass over the rebuilt set.
 
 ## When to write one
 
-- During `workflows/17-consolidate-design-work/`, **after** components and flows are consolidated
+- During `workflows/18-consolidate-design-work/`, **after** components and flows are consolidated
   — this stage depends on both
 - Never mid-cycle with stories still to plan
 

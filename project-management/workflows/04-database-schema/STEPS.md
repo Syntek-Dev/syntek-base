@@ -34,7 +34,7 @@ interview <%DEVELOPER_NAME%> — entities and their real-world meaning,
 relationships and cardinality, ownership/tenancy (RLS scope), constraints and
 invariants, PII fields and lawful basis, retention, and expected query shapes. Record
 resolved terminology in the nearest `CONTEXT.md` glossary and hard-to-reverse calls as
-an ADR in `project-management/src/14-DECISIONS/`.
+an ADR in `project-management/src/15-DECISIONS/`.
 
 Then list all entities involved, their fields, data types, constraints, and how they
 relate to one another (one-to-many, many-to-many, etc.).
@@ -81,8 +81,8 @@ consumed at two points:
 | Consumer                                | When                                                                       |
 | --------------------------------------- | -------------------------------------------------------------------------- |
 | `13-api-design/`                        | Next design gate — the Ninja Schema models must reflect this schema        |
-| `18-backend-code/`                      | Implementation phase — the models and services are built from it           |
-| `code/workflows/03-database-migration/` | Driven **from** `18-backend-code/`, once the story plan (16) is signed off |
+| `19-backend-code/`                      | Implementation phase — the models and services are built from it           |
+| `code/workflows/03-database-migration/` | Driven **from** `19-backend-code/`, once the story plan (17) is signed off |
 
 Never write the migration here, and do not enter `code/workflows/03-database-migration/`
 directly from this workflow — it runs inside the backend build phase.

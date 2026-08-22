@@ -104,7 +104,7 @@ Phases 3 and 5 are separate Agent tool calls to `general-purpose`, naming the sk
    confirms the structure improved and the behaviour did not.
 4. **Documentation** — a hard gate before the commit. Every `CONTEXT.md` affected by a moved,
    renamed or restructured file; a `CONTEXT.md` + `CLAUDE.md` pair in every new directory; a
-   record under `project-management/src/21-REFACTORING/` where the change is material; `GAPS.md`
+   record under `project-management/src/22-REFACTORING/` where the change is material; `GAPS.md`
    for debt surfaced and not addressed. A renamed or deepened module is recorded via the
    `domain-modelling` skill, in the nearest `CONTEXT.md`.
 5. **Commit** — the `git` skill, message `refactor(<scope>): <short description>`.
@@ -127,8 +127,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/workflows/11-refactor/` — **the procedure of record for this skill**
 - `code/workflows/02-tdd-cycle/` — the green baseline required before any refactor step
 - `code/workflows/10-debug/` — where a bug surfaced mid-refactor is fixed, first and separately
-- `project-management/workflows/21-implementation-documentation/` — how a refactor is
-  commissioned: findings routed to `project-management/src/21-REFACTORING/`
+- `project-management/workflows/22-implementation-documentation/` — how a refactor is
+  commissioned: findings routed to `project-management/src/22-REFACTORING/`
 
 ## Cross-references
 

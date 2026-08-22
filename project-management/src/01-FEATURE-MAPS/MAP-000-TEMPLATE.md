@@ -35,7 +35,7 @@ exhaustive.
 
 **This is a claim, not a close.** Nothing here edits `GAPS.md` or `DEFERRED.md`. The entry is
 marked `✅ CLOSED` (or the `DEFERRED.md` row removed) by
-`workflows/21-implementation-documentation/`, against shipped code.
+`workflows/22-implementation-documentation/`, against shipped code.
 
 | Register    | Entry                                   | Verdict | Retired by                     |
 | ----------- | --------------------------------------- | ------- | ------------------------------ |
@@ -56,6 +56,32 @@ Each links to the artefact it became. **An answer that lives only here has not b
 | ----- | -------------------------- | -------- | ---------- | ------------------------------ |
 | N-001 | [EXAMPLE] Tenancy boundary | grilling | DD/MM/YYYY | [EXAMPLE] `ADR-0##-TENANCY.md` |
 | N-002 | [PLACEHOLDER]              |          |            |                                |
+
+---
+
+## Slices
+
+The buildable slices this feature cuts into — **the base the stories are written from**. A slice
+is a manifest, not a design: it names which gates must run and the first-pass values they start
+from. The gate owns the design, may add to a value, and the story is updated to match when the
+gate closes.
+
+**Flags are written inline and `N/A` is omitted**, so a typical slice stays one line and this
+section stays an index. The full 13-flag roster and each flag's gate:
+`../02-STORIES/US000-TEMPLATE.md`.
+
+| Slice | Story   | Title         | Flags                                                                     |
+| ----- | ------- | ------------- | ------------------------------------------------------------------------- |
+| S-01  | `US###` | [EXAMPLE] {…} | [EXAMPLE] DB: `ModelA` · API: `POST /model-a` · GDPR: yes · QA: unit, E2E |
+| S-02  | —       | [PLACEHOLDER] | [PLACEHOLDER]                                                             |
+
+**The `Story` column is back-filled by `02-story-creation`**, which allocates the next free
+`US###` when it writes the story. A slice with no story yet reads `—`; wayfinder never reserves
+a number, because a slice that is later merged or dropped would burn it and `US###` gaps are
+permanent.
+
+**A slice is not a story.** Nothing here is written into `../02-STORIES/` from this map — the
+row is the input to `02-story-creation`, which cuts the story from it.
 
 ---
 
@@ -116,6 +142,7 @@ One row per RESOLVE session, so the map's history is legible without git archaeo
 - [ ] Every node typed and blocker-wired
 - [ ] **Every node marked "blocking a story" is resolved**
 - [ ] Every resolved node links to the artefact it became
+- [ ] **Every slice has a flag manifest** — every gate it needs, `N/A` omitted
 - [ ] Index row in `CONTEXT.md` current
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**

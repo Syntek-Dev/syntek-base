@@ -63,7 +63,7 @@ alerting, and tamper protection.
 > This document keeps owning the **build** side — the controls, what must be logged, and the
 > regulatory duty; `INCIDENT-PRACTICE.md` owns what a human does while it is happening: declaring,
 > running it, the shift handover, standing down, and the blameless postmortem. The postmortem's
-> residue lands in `project-management/src/22-INCIDENTS/`, which is **PII-free by rule** — the
+> residue lands in `project-management/src/23-INCIDENTS/`, which is **PII-free by rule** — the
 > substance goes to the project's incident tracker, never into the repository.
 >
 > **Four security-specific recoveries are still unwritten, and named here deliberately:** the
@@ -110,7 +110,7 @@ the faster the response, the smaller the impact.
   actions to prevent recurrence. The format is `how-to/docs/INCIDENT-PRACTICE.md` Section 5.
 - **The report splits in two, and the split is a security control, not a filing preference.** A
   PII-free register entry — that it happened, severity, dates, outcome, status — goes to
-  `project-management/src/22-INCIDENTS/`, which is in git and ships. Everything else — log
+  `project-management/src/23-INCIDENTS/`, which is in git and ships. Everything else — log
   excerpts, identifiers, affected counts, and any report touching personal data or credentials —
   goes to the project's incident tracker, or outside the repository where there is none. Never
   relax that to keep a report in one piece.

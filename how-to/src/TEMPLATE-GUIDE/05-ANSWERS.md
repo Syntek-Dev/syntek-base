@@ -143,9 +143,9 @@ It is separate because the interface is **access control**, not a wire protocol:
 changes where a human types rather than what the code does, so it is neither a protocol seam nor
 an adapter seam (`code/docs/architecture/PROVIDER-NEUTRALITY.md`).
 
-The in-repo register at `project-management/src/22-INCIDENTS/` is **PII-free by rule** and it
+The in-repo register at `project-management/src/23-INCIDENTS/` is **PII-free by rule** and it
 ships, so anything sensitive needs a home with permissions. Leaving the default
-(`None — record in 22-INCIDENTS/ only`) is a legitimate answer — it means you undertake to keep
+(`None — record in 23-INCIDENTS/ only`) is a legitimate answer — it means you undertake to keep
 that substance out of the repository entirely.
 
 ## Locale and currency
@@ -217,7 +217,7 @@ team has a measured velocity.
 
 These drive the cadence in `project-management/docs/PLANNING-GUIDE.md`: you plan one story
 at a time through workflows `02`–`14`, and when the open sprint reaches the capacity figure you
-run `15-sprint-plans` and `16-story-plans` for that sprint before starting the next story.
+run `16-sprint-plans` and `17-story-plans` for that sprint before starting the next story.
 
 Revisit them after two sprints, once you know what you actually deliver. Changing them later is a
 one-line edit in `project-management/docs/PLANNING-GUIDE.md` — no regeneration needed.

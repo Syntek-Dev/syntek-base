@@ -44,7 +44,7 @@ Skip if <%DEVELOPER_NAME%> already has the feature in mind. Run it when the next
 on a cadence — after a release, at the start of a planning cycle.
 
 1. Read every open `GAPS.md` entry (ignore `✅ CLOSED`) and every `DEFERRED.md` row whose target
-   story has not shipped, then the `IMPLEMENTATION/` and `19-FINDINGS/` records behind them — a
+   story has not shipped, then the `IMPLEMENTATION/` and `20-FINDINGS/` records behind them — a
    one-line summary is rarely the whole story.
 2. **Cluster by shared cause, surface, or dependency.** Five deferrals waiting on the same missing
    table are one feature, not five. An entry that is a one-story fix is not a feature — route it
@@ -97,7 +97,7 @@ as a footnote discovered at implementation. A gap that blocks it is a decision n
 assumption.
 
 **Claim, never close.** Do not edit `GAPS.md` or `DEFERRED.md` here. Closing an entry is
-`21-implementation-documentation`'s job, against shipped code — a claim is a promise, a close is
+`22-implementation-documentation`'s job, against shipped code — a claim is a promise, a close is
 evidence.
 
 _Done when every open entry carries a verdict and the closes/blocks entries are on the map._
@@ -153,26 +153,43 @@ nodes in this session.** Charting ends with the frontier drawn and unresolved.
 
 ## RESOLVE — one node per later session
 
-### Step 8 — Take a node, settle it, graduate it
+### Step 8 — Take a batch, settle it, graduate it
 
 > **Model:** fable
 
 Per session:
 
 1. **Load the map** — destination and current frontier in view.
-2. **Take the next node** — the one <%DEVELOPER_NAME%> names, or the first unblocked one; confirm it is
-   genuinely takeable.
-3. **Settle it by type** — grilling → `/grill-with-docs`; research → look it up; tracer →
-   `/prototype`; task → do the unblocking work.
+2. **Take the next batch, not the next node** — start from <%DEVELOPER_NAME%>'s pick or the
+   unblocked frontier, and gather the nodes that belong together: shared subject, mutual
+   dependence, or shared evidence. Split where a node has open blockers, is a different type, or
+   would push the batch past one honest sitting. Confirm every member is takeable.
+3. **Settle the batch by type** — grilling nodes go to `/grill-with-docs` as **one pass**;
+   research → look it up (dispatch in parallel); tracer → `/prototype`; task → do the unblocking
+   work. A mixed batch runs its research legs first.
 4. **Graduate the outcome** to its real home via the graduation table — an ADR in
-   `src/14-DECISIONS/`, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term. Never leave
+   `src/15-DECISIONS/`, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term. Never leave
    the answer only on the map.
-5. **Redraw the frontier** — move the node to resolved, sharpen any fog the outcome clarified
-   into new nodes, re-wire the blocking edges.
+5. **Redraw the frontier** — move the whole batch to resolved, sharpen any fog the outcome
+   clarified into new nodes, re-wire the blocking edges.
 6. **Re-triage the register if the outcome moved it** — a settled node that retires a further
    entry adds a **Register claimed** row; one that raises a new blocker appends to `GAPS.md`.
 
 _Repeat until no **blocking** node remains open._
+
+### Step 8a — Cut the slices
+
+> **Model:** fable
+
+Once no blocking node remains, fill the map's **Slices** section: one row per buildable slice of
+user-visible value, with its **flag manifest** — every gate the story will need, `N/A` omitted,
+carrying first-pass values (`DB: ModelA · API: POST /model-a · GDPR: yes`). The 13-flag roster is
+`src/02-STORIES/US000-TEMPLATE.md`.
+
+This is the base `02-story-creation` writes each story from. Leave the `Story` column `—`; that
+gate allocates the number and back-fills it.
+
+_Done when every slice has a manifest and no slice has a reserved `US###`._
 
 ### Step 9 — Close out
 

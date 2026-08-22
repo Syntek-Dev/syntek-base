@@ -39,7 +39,7 @@ Stories may start once every node marked **blocking** is resolved. Fog of war ma
 
 ## Then plan one story at a time
 
-A single story runs the whole specify tier — `02-story-creation` through `14-decisions` — before
+A single story runs the whole specify tier — `02-story-creation` through `15-decisions` — before
 the next story starts.
 
 The reason is compounding. Story 2 is planned with everything story 1 settled already in hand;
@@ -49,20 +49,56 @@ across the backlog throws that away and re-litigates the same questions at every
 ```text
 01  chart the feature (once)
      ↓
-02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13 → 14
-                                                              │
-                                          sprint full? ───────┤
-                                            │            no → └→ next story
+02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13 → 14 → 15
+                                                                   │
+                                          sprint full? ────────────┤
+                                            │            no → └────→ next story
                                            yes
                                             ↓
-                                     15 → 16  (for that sprint's stories)
+                                     16 → 17  (for that sprint's stories)
                                             │
                                             └→ next story
      ↓  (once every story is planned)
-17  consolidate the per-story design work
+18  consolidate the per-story design work
      ↓
-18 → 19 → 20  implement
+19 → 20 → 21  implement
 ```
+
+---
+
+## The flags are the gate entry conditions
+
+Every story carries a 13-row FLAGS table, one row per gate, filled at `02-story-creation` from
+the feature map's slice row. **A flag reading `N/A` means that gate is skipped for that story;
+any other value means it runs.** That is the whole routing mechanism — the loop above is the
+running order, and the flags decide which of its gates a given story actually enters.
+
+| Flag       | Gate                   |     | Flag     | Gate                |
+| ---------- | ---------------------- | --- | -------- | ------------------- |
+| DB         | `04-database-schema`   |     | SEO      | `12-seo-checks`     |
+| User Flow  | `05-user-flow-design`  |     | API      | `13-api-design`     |
+| Brand      | `06-brand-guides`      |     | Logging  | `14-logging-checks` |
+| Components | `07-component-designs` |     | Backend  | `19-backend-code`   |
+| Wireframes | `08-wireframes`        |     | Frontend | `21-frontend-code`  |
+| GDPR       | `09-gdpr-compliance`   |     |          |                     |
+| Security   | `10-security-checks`   |     |          |                     |
+| QA         | `11-qa-checks`         |     |          |                     |
+
+Three rules follow, and each closes a way the mechanism fails quietly:
+
+- **A blank row is not `N/A`.** `N/A` is a decision with a reason; blank is an unanswered
+  question that skips a gate without anyone choosing to. All 13 rows are filled or the story is
+  not written.
+- **The flag is a manifest, never the design.** It says which gates run and gives them their
+  first-pass values. The gate owns the design, may add to a value, and the story is updated to
+  match at gate close. Treating the flag as authoritative and skipping the gate is the failure
+  this table invites.
+- **A downstream checklist reads the flag.** Any box demanding a gate's artefact is written
+  "for every in-scope story whose <flag> is not `N/A`" — an unconditional demand cannot be
+  ticked by a story that correctly skipped the gate.
+
+Each gate states its own condition in its `CONTEXT.md` → _When to use this_. This table is where
+the rule lives; those are the local facts.
 
 ---
 
@@ -98,7 +134,7 @@ for every story in the sprint **by construction**.
 
 **Prerequisites** — all must hold for **every story in the filling sprint**:
 
-- The story has cleared `14-decisions` — the whole specify tier is done for it
+- The story has cleared `15-decisions` — the whole specify tier is done for it
 - GDPR review complete (`src/09-GDPR/PLANNING/`)
 - Security threat model and assessment complete (`src/10-SECURITY/`)
 - QA plan exists with no unresolved `AC-GAP` entries (`src/11-QA/PLANNING/`)
@@ -114,7 +150,7 @@ drop it back to the backlog rather than planning a sprint around it.
 ## Then consolidate
 
 Planning per story means design arrives per story, and it drifts by construction. Once **every**
-story is planned, `17-consolidate-design-work` reconciles the accumulated schema, flows, tokens,
+story is planned, `18-consolidate-design-work` reconciles the accumulated schema, flows, tokens,
 components, and screens into one coherent design. Implementation starts after that, never before.
 
 ---

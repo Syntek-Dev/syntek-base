@@ -139,4 +139,4 @@ In **this template repository** the hook runs a ninth gate, `audits`, and is oth
 same: `uv.lock` is committed here (16/08/2026), so the django image builds and every gate has
 a subject. A gate reporting nothing to run is a defect here, not the expected state.
 
-Only then raise the PR — `project-management/workflows/22-pr-and-review/`.
+Only then raise the PR — `project-management/workflows/23-pr-and-review/`.

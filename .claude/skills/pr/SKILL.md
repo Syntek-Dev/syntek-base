@@ -58,7 +58,7 @@ folders, refreshed `**Last Updated**` dates, any new constraint, pattern or deci
 `CONTEXT.md` **plus its `CLAUDE.md`** inside every new directory the PR introduces.
 
 **Implementation records** — one for every compliance domain in scope. The formats, templates
-and destinations belong to `project-management/workflows/21-implementation-documentation/`,
+and destinations belong to `project-management/workflows/22-implementation-documentation/`,
 which is entered rather than restated: GDPR, security assessments, QA, SEO and API design each
 have their own `IMPLEMENTATION/` folder under `project-management/src/`.
 
@@ -73,9 +73,9 @@ one was used.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/22-pr-and-review/` — **the procedure of record** — branch
+- `project-management/workflows/23-pr-and-review/` — **the procedure of record** — branch
   promotion, approvals, merge gates
-- `project-management/workflows/21-implementation-documentation/` — must be complete **before**
+- `project-management/workflows/22-implementation-documentation/` — must be complete **before**
   the PR is raised; owns every record format and destination
 - `code/workflows/07-review/` — the content review dispatched at phase 2
 - `how-to/workflows/02-worktree-setup/` — when the story runs in a parallel worktree

@@ -2,7 +2,7 @@
 
 **Last Updated**: <%DATE%>
 
-Twenty-three numbered procedures, and here the numbers really are the running order: `02`–`14`
+Twenty-four numbered procedures, and here the numbers really are the running order: `02`–`15`
 run per story, `15`–`16` per sprint, `17` once the backlog is planned, and `18`–`23` build and
 ship it.
 
@@ -45,7 +45,7 @@ after ten features and you are answering them against decisions already made.
 ## The planning cadence
 
 **Plan one story at a time, all the way through.** Take a single user story from
-`02-story-creation` through to `14-decisions` before starting the next one. Do not batch:
+`02-story-creation` through to `15-decisions` before starting the next one. Do not batch:
 do not write every story, then every schema, then every flow.
 
 The reason is compounding. Story 2 is planned with everything story 1 settled already in
@@ -54,21 +54,21 @@ resolved decisions. Batching throws that away and re-litigates the same question
 gate.
 
 ```text
-01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13
-                                                              │
-                                          sprint full? ───────┤
-                                            │            no → └→ next story
+01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13 → 14 → 15
+                                                                        │
+                                          sprint full? ─────────────────┤
+                                            │            no → └─────────→ next story
                                            yes
                                             ↓
-                                     15 → 16  (for that sprint's stories)
+                                     16 → 17  (for that sprint's stories)
                                             │
                                             └→ next story
 ```
 
-**When a sprint fills, plan it.** Each story that clears `14-decisions` is slotted into the
+**When a sprint fills, plan it.** Each story that clears `15-decisions` is slotted into the
 open `SPRINT-##.md` record with its story points. When the accepted total reaches
 `<%SPRINT_CAPACITY_SP%>` SP — stretching to `<%SPRINT_GRACE_SP%>` only where the next
-story would otherwise split badly — run `15-sprint-plans` and `16-story-plans` for that
+story would otherwise split badly — run `16-sprint-plans` and `17-story-plans` for that
 sprint's stories before planning resumes. A completed sprint plan then informs the next
 set of stories, the same way each story informs the next. Rules and the ceiling:
 `project-management/docs/PLANNING-GUIDE.md`.
@@ -76,14 +76,14 @@ set of stories, the same way each story informs the next. Rules and the ceiling:
 **Then consolidate.** Planning per story means design work arrives per story: five stories
 produce five sets of tables, flows, tokens, components, and screens, and they will drift.
 That is the accepted cost of the loop, not an accident. Once every story is through `16`,
-`17-consolidate-design-work` reconciles the accumulated per-story work into one coherent
+`18-consolidate-design-work` reconciles the accumulated per-story work into one coherent
 design. Only then does implementation begin.
 
 Design and schema folders (`src/04`–`src/08`) carry that three-stage shape directly:
 
 ```text
 USER-STORY-IDEAS/   →   CONSOLIDATED-IDEAS/   →   IMPLEMENTATION/
-  stage 1, per story      stage 2, workflow 17      what shipped
+  stage 1, per story      stage 2, workflow 18      what shipped
   frozen once 16 runs
 ```
 
@@ -97,7 +97,7 @@ project-management/workflows/
 │   ── Discover, once per feature (01) ──
 ├── 01-feature-map/             ← wayfinder: chart the decision frontier, resolve it
 │
-│   ── Specify, one story at a time (02–13) ──
+│   ── Specify, one story at a time (02–14) ──
 ├── 02-story-creation/          ← write a well-formed user story with acceptance criteria
 ├── 03-sprint-planning/         ← open a sprint record; accumulate stories against capacity
 ├── 04-database-schema/         ← design and sign off this story's schema before coding
@@ -110,24 +110,25 @@ project-management/workflows/
 ├── 11-qa-checks/               ← QA planning from wireframes before development
 ├── 12-seo-checks/              ← verify SEO on any public-facing page
 ├── 13-api-design/              ← design the Django Ninja API contract
+├── 14-logging-checks/          ← the story's log surface and its exclusion list
 │
-│   ── Decide & plan (14–16) ──
-├── 14-decisions/               ← author an ADR; end of the per-story loop
-├── 15-sprint-plans/            ← on sprint fill: the detailed sprint plan
-├── 16-story-plans/             ← on sprint fill: the per-story implementation plan
+│   ── Decide & plan (15–17) ──
+├── 15-decisions/               ← author an ADR; end of the per-story loop
+├── 16-sprint-plans/            ← on sprint fill: the detailed sprint plan
+├── 17-story-plans/             ← on sprint fill: the per-story implementation plan
 │
 │   ── Consolidate (17) ──
-├── 17-consolidate-design-work/ ← unify the per-story design + schema work, once
+├── 18-consolidate-design-work/ ← unify the per-story design + schema work, once
 │
-│   ── Implement (18–20) ──
-├── 18-backend-code/            ← implement Django models, services, and business logic
-├── 19-api-code/                ← implement the Django Ninja API layer
-├── 20-frontend-code/           ← implement Django templates + django-components
+│   ── Implement (19–21) ──
+├── 19-backend-code/            ← implement Django models, services, and business logic
+├── 20-api-code/                ← implement the Django Ninja API layer
+├── 21-frontend-code/           ← implement Django templates + django-components
 │
-│   ── Record & ship (21–23) ──
-├── 21-implementation-documentation/ ← update docs + write IMPLEMENTATION records
-├── 22-pr-and-review/           ← create, review, and merge a feature PR
-└── 23-release/                 ← cut a release (version bump, changelog, deployment)
+│   ── Record & ship (22–24) ──
+├── 22-implementation-documentation/ ← update docs + write IMPLEMENTATION records
+├── 23-pr-and-review/           ← create, review, and merge a feature PR
+└── 24-release/                 ← cut a release (version bump, changelog, deployment)
 ```
 
 Every folder carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.
@@ -147,16 +148,17 @@ Every folder carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.
 | `11-qa-checks/`                    | QA planning from wireframes — test scenarios before any code     |
 | `12-seo-checks/`                   | Verify SEO on any public-facing page the story adds              |
 | `13-api-design/`                   | Design the Django Ninja API contract for the story               |
-| `14-decisions/`                    | Author an ADR — the last gate in the per-story loop              |
-| `15-sprint-plans/`                 | On sprint fill: the detailed sprint plan                         |
-| `16-story-plans/`                  | On sprint fill: the per-story implementation plan (code master)  |
-| `17-consolidate-design-work/`      | Unify the per-story design and schema work into one system       |
-| `18-backend-code/`                 | Implement Django models, services, and business logic (TDD)      |
-| `19-api-code/`                     | Implement the Django Ninja API layer                             |
-| `20-frontend-code/`                | Implement Django templates + django-components (HTMX/Alpine)     |
-| `21-implementation-documentation/` | Update docs + write IMPLEMENTATION records after code            |
-| `22-pr-and-review/`                | Create, review, and merge a feature PR                           |
-| `23-release/`                      | Cut a release (version bump, changelog, deployment)              |
+| `14-logging-checks/`               | Set the story's log surface and what must never reach a log line |
+| `15-decisions/`                    | Author an ADR — the last gate in the per-story loop              |
+| `16-sprint-plans/`                 | On sprint fill: the detailed sprint plan                         |
+| `17-story-plans/`                  | On sprint fill: the per-story implementation plan (code master)  |
+| `18-consolidate-design-work/`      | Unify the per-story design and schema work into one system       |
+| `19-backend-code/`                 | Implement Django models, services, and business logic (TDD)      |
+| `20-api-code/`                     | Implement the Django Ninja API layer                             |
+| `21-frontend-code/`                | Implement Django templates + django-components (HTMX/Alpine)     |
+| `22-implementation-documentation/` | Update docs + write IMPLEMENTATION records after code            |
+| `23-pr-and-review/`                | Create, review, and merge a feature PR                           |
+| `24-release/`                      | Cut a release (version bump, changelog, deployment)              |
 
 ## Pairing with the code layer
 
@@ -169,10 +171,10 @@ Three rules follow from it:
 
 - **Design gates never trigger a code workflow directly.** `04-database-schema` and `08-wireframes`
   hand forward to the next gate, not to `code/workflows/`. Implementation is reached only through
-  `18-backend-code`, `19-api-code`, and `20-frontend-code`, once `02`–`17` are complete.
-- **`17-consolidate-design-work` is a hard gate on implementation.** No code starts from
+  `19-backend-code`, `20-api-code`, and `21-frontend-code`, once `02`–`18` are complete.
+- **`18-consolidate-design-work` is a hard gate on implementation.** No code starts from
   unconsolidated per-story design; that is what makes planning per story safe.
-- **`21-implementation-documentation` owns the whole closeout** — records, findings,
+- **`22-implementation-documentation` owns the whole closeout** — records, findings,
   `GAPS.md`/`DEFERRED.md`, the `CONTEXT.md`/`CLAUDE.md` update, and the graph refresh. Workflow
   `22` verifies them; the code workflows hand off to `21` and restate nothing.
 
@@ -205,7 +207,9 @@ behind in a folder nothing points at any more. No conflict is raised. Nothing fa
 simply orphaned, and the more of it there is, the more is lost.
 
 So the `src/` numbers are **frozen — append only**, on the same rule `code/workflows/` and
-`how-to/workflows/` already follow. If a new artefact folder is needed it takes the next free
+`how-to/workflows/` already follow. A release may renumber the tree **only if it ships a
+migration in the same commit** that carries the developer's files across — taken twice, at
+v2.0.0 and v7.0.0, and never on the grounds that a migration could be written. If a new artefact folder is needed it takes the next free
 number at the end, whatever the workflow order says. The workflow↔`src` mirroring is a
 convenience, not an invariant; when the two disagree, the mirroring gives way, because one side
 is documentation and the other is somebody's work.

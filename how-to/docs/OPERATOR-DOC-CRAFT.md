@@ -93,7 +93,7 @@ often skipped.
 - **Code standards, docstrings, and every `CONTEXT.md`/`CLAUDE.md` outside `how-to/`** belong to
   the developer-docs remit, not this one.
 - **End-user help for the product** is a different audience and a different register.
-- **Implementation records** belong to `project-management/workflows/21-implementation-documentation/`.
+- **Implementation records** belong to `project-management/workflows/22-implementation-documentation/`.
 - **Skills are a different standard** — `how-to/docs/SKILL-AUTHORING.md`.
 
 ## Indexing is part of writing

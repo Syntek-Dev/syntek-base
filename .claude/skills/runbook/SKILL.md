@@ -84,7 +84,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/workflows/01-first-time-setup/` · `how-to/workflows/03-daily-development/` ·
   `how-to/workflows/08-debugging/` — the procedures most often documented against
 - `code/workflows/07-review/` — when the guide documents code-level standards as well
-- `project-management/workflows/21-implementation-documentation/` — owns implementation
+- `project-management/workflows/22-implementation-documentation/` — owns implementation
   records; a guide is not one
 
 ## Cross-references

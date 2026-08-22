@@ -13,7 +13,7 @@ sign-off before merge.
 
 ## How to work here
 
-- **Routing:** written during `project-management/workflows/21-implementation-documentation/`, once the
+- **Routing:** written during `project-management/workflows/22-implementation-documentation/`, once the
   feature is implemented and before the story closes, using the `qa-tester` skill (Fable)
   against the story's plan in `../PLANNING/QA-PLAN-US###-*.md`; governed by
   `project-management/docs/QA-GUIDE.md`.
@@ -40,8 +40,8 @@ sign-off before merge.
 - **Documentation only — no source, secrets, or `.env` content.** Keep accessibility,
   GDPR, and security claims consistent with `project-management/docs/QA-GUIDE.md` and
   `code/docs/SECURITY.md`.
-- Downstream automated status and manual guides live in `../../17-TESTS/`; code-review
-  notes in `../../18-REVIEWS/` — do not duplicate them here.
+- Downstream automated status and manual guides live in `../../18-TESTS/`; code-review
+  notes in `../../19-REVIEWS/` — do not duplicate them here.
 
 ## Output & naming
 

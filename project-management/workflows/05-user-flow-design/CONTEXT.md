@@ -17,6 +17,12 @@ project-management/workflows/05-user-flow-design/
 
 ## When to use this
 
+**Entry condition: the story's `User Flow` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story introduces a user journey. A story whose
+`User Flow` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow when mapping out how users move through the product for a given feature
 area. Run it after story creation and before brand guides or wireframes.
 

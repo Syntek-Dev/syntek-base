@@ -2,7 +2,7 @@
 
 The component library, in **three stages** over one cumulative deliverable. Each story records
 the components it needs (`USER-STORY-IDEAS/`); once every story is planned,
-`17-consolidate-design-work` merges the duplicates into one component set
+`18-consolidate-design-work` merges the duplicates into one component set
 (`CONSOLIDATED-IDEAS/`) and re-runs the generator; after the code ships, each story records what
 actually landed in the django-components library (`IMPLEMENTATION/`).
 
@@ -19,11 +19,11 @@ project-management/src/07-COMPONENTS/
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── COMP-IDEA-US000-TEMPLATE.md
 │   └── COMP-IDEA-US###-<DESCRIPTOR>.md
-├── CONSOLIDATED-IDEAS/      ← stage 2: the unified component set (workflow 17)
+├── CONSOLIDATED-IDEAS/      ← stage 2: the unified component set (workflow 18)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── COMP-CONSOLIDATED-000-TEMPLATE.md
 │   └── COMP-CONSOLIDATED-<FAMILY>.md
-├── IMPLEMENTATION/          ← stage 3: components as shipped, per story (workflow 21)
+├── IMPLEMENTATION/          ← stage 3: components as shipped, per story (workflow 22)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── COMP-IMPL-US000-TEMPLATE.md
 │   └── COMP-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -51,8 +51,8 @@ the signal.
 | Stage                 | Written by  | Scope      | Naming                                       |
 | --------------------- | ----------- | ---------- | -------------------------------------------- |
 | `USER-STORY-IDEAS/`   | workflow 07 | one story  | `COMP-IDEA-US###-<DESCRIPTOR>.md`            |
-| `CONSOLIDATED-IDEAS/` | workflow 17 | one family | `COMP-CONSOLIDATED-<FAMILY>.md`              |
-| `IMPLEMENTATION/`     | workflow 21 | one story  | `COMP-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
+| `CONSOLIDATED-IDEAS/` | workflow 18 | one family | `COMP-CONSOLIDATED-<FAMILY>.md`              |
+| `IMPLEMENTATION/`     | workflow 22 | one story  | `COMP-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 `<FAMILY>` ∈ `BUTTONS`, `FORMS`, `BADGES`, `ALERTS`, `CARDS`, `NAVIGATION`, `FEEDBACK` — matching
 the `component-build/section-*.tex` partials. **Stage 1 is frozen once stage 2 runs.**
@@ -66,6 +66,6 @@ the `component-build/section-*.tex` partials. **Stage 1 is frozen once stage 2 r
 - `code/src/django/components/` — where implemented components live
 - `code/docs/DESIGN-TOKENS.md` · `code/docs/ACCESSIBILITY.md`
 - `project-management/workflows/07-component-designs/` — produces stage 1
-- `project-management/workflows/17-consolidate-design-work/` — produces stage 2
+- `project-management/workflows/18-consolidate-design-work/` — produces stage 2
 
 **Last Updated**: <%DATE%>

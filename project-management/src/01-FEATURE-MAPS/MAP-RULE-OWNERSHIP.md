@@ -32,7 +32,7 @@ catches them.
 | Domain                     | Repository documentation governance — the three-role split (`.claude/CLAUDE.md` global rules · per-folder `CLAUDE.md` local rules · `CONTEXT.md` orientation) and the audits that hold it up                                                                                  |
 | Skills to load             | `doc-writer` · `scaffold` · `domain-modelling` · `codebase-design` · `grill-with-docs`                                                                                                                                                                                        |
 | Standing preferences       | **Route, don't restate** (`code/docs/DOCUMENTATION-PAIRING.md` §6) · a gate is **derived from a stated rule, never from taste** (`code/src/scripts/audits/CLAUDE.md`) · **no gate may disagree with the settled rule** (Sam, MAP-BASE-HEALTH N-028)                           |
-| Umbrella ADRs              | None — `14-DECISIONS/` holds only `ADR-000-TEMPLATE.md`. N-003 and N-004 are the two likeliest to earn the first                                                                                                                                                              |
+| Umbrella ADRs              | None — `15-DECISIONS/` holds only `ADR-000-TEMPLATE.md`. N-003 and N-004 are the two likeliest to earn the first                                                                                                                                                              |
 | Relationship to other maps | Deliberately **not** folded into `MAP-BASE-HEALTH` (N-059, Frontier 17), which is a catch-all for syntek-base's open items. These nine share one cause and one remedy. The split has a measured cost here — `MAP-ABSENCE` routed eight findings there and nobody adopted them |
 | Register entries triaged   | **0 closes · 0 blocks · 1 unrelated**                                                                                                                                                                                                                                         |
 
@@ -54,7 +54,7 @@ every `workflow:` matches its folder, only `fable`/`opus` appear, and **no workf
 | DEFERRED.md | _(file holds no rows)_                                                      | —         | —          |
 
 `GAPS.md` held exactly one open entry at charting and it is a branch/release decision the entry
-itself routes to `22-pr-and-review`. **This feature closes nothing and is blocked by nothing** —
+itself routes to `23-pr-and-review`. **This feature closes nothing and is blocked by nothing** —
 the triage is exhaustive at one entry, which is what makes the count provable rather than
 reassuring.
 
@@ -131,7 +131,7 @@ table) → C (supplies N-008's trigger) → D (independent; takeable any time).
   supplies the correct idiom verbatim. 44 of 45 workflows comply.
 - **N-002** · `REFERENCES.md:200` and `project-management/workflows/CONTEXT.md:172` say implementation is
   gated on PM `02`–`17`; `code/workflows/CONTEXT.md:111` says `01`–`15`. Both restating files carry
-  _"Do not restate it here"_ two lines above. The dropped `17-consolidate-design-work` is the gate the
+  _"Do not restate it here"_ two lines above. The dropped `18-consolidate-design-work` is the gate the
   PM layer's next bullet calls **hard**.
 - **N-007** · `code/docs/DOCUMENTATION-LENGTH.md:35`, `docs-length.sh:28,114` and
   `audits/CONTEXT.md:165` all write `**/src/*.md` (one level); `is_instructional()` at
@@ -198,7 +198,7 @@ table) → C (supplies N-008's trigger) → D (independent; takeable any time).
 | Restructuring `code/src/scripts/audits/CONTEXT.md`         | **Fails the deletion test** — splitting moves complexity into a third file rather than concentrating it; the inventory is genuinely one table, and its dated allowance (expires 01/12/2026) already supplies a trigger |
 | Reopening **whether** the coverage-floor restatements stay | Settled at `12973ef` (MAP-BASE-HEALTH N-028). N-008 charts only the missing revisit trigger, not the decision                                                                                                          |
 | Changing the 750/800 or 300/270 thresholds themselves      | The numbers are not in question anywhere in this map — only **where they are written** and **whether anything guards them**                                                                                            |
-| `main` reconciliation (`GAPS.md` 20/08/2026)               | Unrelated to rule ownership; the entry routes itself to `22-pr-and-review`                                                                                                                                             |
+| `main` reconciliation (`GAPS.md` 20/08/2026)               | Unrelated to rule ownership; the entry routes itself to `23-pr-and-review`                                                                                                                                             |
 | Folding these nodes into `MAP-BASE-HEALTH`                 | Q2. One cause, one remedy, its own frontier — kept out of a 446KB catch-all at N-059                                                                                                                                   |
 | Adding the `CONTEXT.md` index row for this map             | Q4. It would ship a citation to a map no generated project holds. Charted as N-010 instead of obeyed                                                                                                                   |
 

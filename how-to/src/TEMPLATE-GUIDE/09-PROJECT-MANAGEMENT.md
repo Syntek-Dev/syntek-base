@@ -30,10 +30,10 @@ against what was really built is mapped against reality.
 | ----------------- | ------- | --------------------------------------------------------------------------- |
 | **Reference**     | `00`    | Logos and export scripts. Not a workflow stage.                             |
 | **Discover**      | `01`    | Chart the feature's decision frontier. Once per feature.                    |
-| **Specify**       | `02–13` | Story, schema, flows, design, GDPR, security, QA, SEO, API. **Per story.**  |
-| **Decide & plan** | `14–16` | ADRs, then the sprint plan, then the story plan.                            |
-| **Record**        | `17–21` | Tests, reviews, findings, bugs, refactors. After code ships. **Per story.** |
-| **Record**        | `22`    | Declared incidents. **Not** per story, and no workflow — see below.         |
+| **Specify**       | `02–14` | Story, schema, flows, design, GDPR, security, QA, SEO, API. **Per story.**  |
+| **Decide & plan** | `15–17` | ADRs, then the sprint plan, then the story plan.                            |
+| **Record**        | `18–22` | Tests, reviews, findings, bugs, refactors. After code ships. **Per story.** |
+| **Record**        | `23`    | Declared incidents. **Not** per story, and no workflow — see below.         |
 
 ```text
 00-ASSETS      reference
@@ -50,27 +50,27 @@ against what was really built is mapped against reality.
 11-QA          │
 12-SEO         │
 13-API-DESIGN  ┘
-14-DECISIONS   ← ADRs; end of the per-story loop
-15-SPRINT-PLANS┐
-16-STORY-PLANS ┘ ← fire when the sprint fills
-17-TESTS       ┐
-18-REVIEWS     │
-19-FINDINGS    ├─ records, written after the code ships
-20-BUGS        │
-21-REFACTORING ┘
-22-INCIDENTS   ← the incident register; no story, no workflow, no PII
+15-DECISIONS   ← ADRs; end of the per-story loop
+16-SPRINT-PLANS┐
+17-STORY-PLANS ┘ ← fire when the sprint fills
+18-TESTS       ┐
+19-REVIEWS     │
+20-FINDINGS    ├─ records, written after the code ships
+21-BUGS        │
+22-REFACTORING ┘
+23-INCIDENTS   ← the incident register; no story, no workflow, no PII
 ```
 
-**`22-INCIDENTS/` breaks both rules on this page, on purpose.** Every other folder is entered
+**`23-INCIDENTS/` breaks both rules on this page, on purpose.** Every other folder is entered
 from a numbered workflow and anchored to a `US###`; this one is entered from a guide
 (`how-to/docs/INCIDENT-PRACTICE.md`) and the `/incident` skill, because an incident is
 **unplanned** — there is no gate to schedule it through — and it is not caused by, scoped to, or
 owned by a story. It is also **PII-free by rule**: the row says an incident happened and how it
 ended, while log excerpts, identifiers and any postmortem touching personal data go to the
-tracker you named at generation time. Do not go looking for `workflows/22-incidents/`.
+tracker you named at generation time. Do not go looking for `workflows/23-incidents/`.
 
 **Workflow numbers mirror `src/` numbers through `16`.** `workflows/04-database-schema` writes
-`src/04-DATABASE`. After `16` they diverge: `17-consolidate-design-work` writes into the design
+`src/04-DATABASE`. After `16` they diverge: `18-consolidate-design-work` writes into the design
 folders, and `18`–`23` have no `src/` folder of their own.
 
 ---
@@ -96,14 +96,14 @@ because design fragments across stories in a way compliance does not.
 
 ```text
 USER-STORY-IDEAS/  →  CONSOLIDATED-IDEAS/  →  IMPLEMENTATION/
-  per story             workflow 17              what shipped
-  frozen once 17 runs   ← this is what gets built
+  per story             workflow 18              what shipped
+  frozen once 18 runs   ← this is what gets built
 ```
 
 Planning per story means each story designs the tables, flows, tokens, components, and screens it
 needs **in isolation**. That is deliberate — it keeps each story thinking end-to-end — but it
 guarantees drift: two stories will model the same entity differently or invent the same button
-twice. `17-consolidate-design-work` reconciles it before any code.
+twice. `18-consolidate-design-work` reconciles it before any code.
 
 Each of these folders also keeps one **cumulative** asset outside the stages — `ERD-DIAGRAMS/`,
 `DIAGRAMS/`, `guide-build/`, `component-build/`, `SHARED/wireframe.css`. The brand and component
@@ -148,7 +148,7 @@ shortcut.
 | `11-QA`           | Always                                                    |
 | `12-SEO`          | It adds a public URL — otherwise `SEO: N/A` with a reason |
 | `13-API-DESIGN`   | It adds or changes Django Ninja surface                   |
-| `14-DECISIONS`    | A choice is hard to reverse                               |
+| `15-DECISIONS`    | A choice is hard to reverse                               |
 | `15`, `16`        | When the sprint fills                                     |
 | `17`–`21`         | After the code ships                                      |
 
@@ -175,7 +175,7 @@ filenames and `DD/MM/YYYY` in prose.
    `CONSOLIDATED-IDEAS/`.
 3. **Skipping a folder silently.** "No SEO here" is a legitimate answer, recorded as `SEO: N/A`
    with a reason. An absent record is indistinguishable from an overlooked one.
-4. **Treating records as paperwork.** `19-FINDINGS` is what makes the next story better, and the
+4. **Treating records as paperwork.** `20-FINDINGS` is what makes the next story better, and the
    `IMPLEMENTATION/` records are what make `src/` trustworthy for the next feature's map. Skip
    them and the layer degrades into a plan nobody believes.
 

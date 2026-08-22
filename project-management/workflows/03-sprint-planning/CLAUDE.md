@@ -21,16 +21,19 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 - **Model:** Fable — scoping and prioritisation are judgement calls.
 - **Concrete steps:** confirm a story backlog exists in `src/02-STORIES/` and the prior
   sprint is closing → pick candidate stories with MoSCoW (Must/Should/Could/Won't) →
-  write the goal and scope as `SPRINT-##.md` in `project-management/src/03-SPRINTS/`.
+  write the goal and scope as `SPRINT-##.md` in `project-management/src/03-SPRINTS/` →
+  compute the FLAGS table as the **union** of the member stories' flags.
+- **The flags are computed, not authored** — the union of the Story Summary's stories, narrowed
+  only for an explicit Part A / Part B split. Rule: `docs/planning/SPRINTS.md`.
 - **Definition of done:** `SPRINT-##.md` records intent (goal + candidates); the
-  definitive plan is deferred to `workflows/15-sprint-plans/` after the pre-sprint
+  definitive plan is deferred to `workflows/16-sprint-plans/` after the pre-sprint
   checks — do not write story assignments or phase breakdowns here.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
 
 - **This record captures intent only.** Detailed story assignment, phase breakdown, and
-  GDPR/security/QA constraints belong to `workflows/15-sprint-plans/` — keep the two
+  GDPR/security/QA constraints belong to `workflows/16-sprint-plans/` — keep the two
   distinct.
 - Check candidate stories against open GDPR (`src/09-GDPR/`), security
   (`src/10-SECURITY/`), and QA (`src/11-QA/`) findings before committing scope.
@@ -40,4 +43,4 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 
 - **Hand-written:** the sprint record and `STEPS.md`/`CHECKLIST.md` updates.
 - High-level records `SPRINT-##.md` in `src/03-SPRINTS/`; detailed plans
-  `SPRINT-PLAN-##.md` live under `src/15-SPRINT-PLANS/`; dates DD/MM/YYYY.
+  `SPRINT-PLAN-##.md` live under `src/16-SPRINT-PLANS/`; dates DD/MM/YYYY.

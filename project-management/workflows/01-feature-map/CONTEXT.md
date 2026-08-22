@@ -23,7 +23,7 @@ charts the feature's decision frontier — every open question, in dependency or
 node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE-MAPS/`.
 
 This is the foundation the whole planning loop stands on. Stories written against a resolved map
-describe _what to build_; stories written without one spend `02`–`14` rediscovering the same
+describe _what to build_; stories written without one spend `02`–`15` rediscovering the same
 questions, story by story, and answering them inconsistently.
 
 ## When to use this
@@ -43,11 +43,15 @@ questions, story by story, and answering them inconsistently.
 
 ## Key concepts
 
-- **Runs once per feature, not per story.** Everything from `02` to `14` is a per-story loop;
+- **Runs once per feature, not per story.** Everything from `02` to `15` is a per-story loop;
   this sits outside it and upstream of it.
 - **Two modes, several sessions.** **CHART** maps the frontier in one session. **RESOLVE** settles
-  one node per later session, graduates the outcome to its real home, and redraws the frontier.
+  a **batch** of related nodes per later session — grouped because deciding them apart would mean
+  deciding them twice — graduates each outcome to its real home, and redraws the frontier.
   Charting deliberately does _not_ settle anything beyond research nodes.
+- **The map carries the slices, not the stories.** Once the blocking nodes are settled, the
+  **Slices** section lists each buildable slice with its flag manifest — which gates the story
+  will need, and their first-pass values. `02-story-creation` cuts the story from that row.
 - **The map is an index, not a vault.** Each resolved node links to the ADR, plan, or story it
   became. Detail lives there; the map stays low-resolution and readable at a glance.
 - **A resolved node is a question later gates do not have to re-ask.** This is the whole payoff:
@@ -63,7 +67,7 @@ questions, story by story, and answering them inconsistently.
   "done" means; what blocks it is a decision node, not an assumption discovered at implementation.
 - **Claiming is not closing.** This gate records on the map that a feature will retire an entry.
   Marking `✅ CLOSED` — or removing a `DEFERRED.md` row — belongs to
-  `21-implementation-documentation`, against shipped code. A claim is a promise; a close is
+  `22-implementation-documentation`, against shipped code. A claim is a promise; a close is
   evidence.
 
 ## Reading order — what wayfinder loads, in order
@@ -101,6 +105,6 @@ a map drawn from the plans alone loses the drift.
 - `.claude/skills/grill-with-docs/SKILL.md` — the per-node engine for grilling-type nodes
 - `.claude/skills/research/SKILL.md` — for research nodes needing primary sources
 - `.claude/skills/prototype/SKILL.md` — for tracer nodes needing a spike
-- `project-management/src/14-DECISIONS/` — where hard-to-reverse outcomes graduate
+- `project-management/src/15-DECISIONS/` — where hard-to-reverse outcomes graduate
 - `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook for mapping the surface
 - `project-management/workflows/02-story-creation/` — the next workflow; stories cut from the map

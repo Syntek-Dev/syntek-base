@@ -1,7 +1,7 @@
 # project-management/src/05-USER-FLOW
 
 User journeys, in **three stages**. Each story maps the flows it introduces
-(`USER-STORY-IDEAS/`); once every story is planned, `17-consolidate-design-work` stitches those
+(`USER-STORY-IDEAS/`); once every story is planned, `18-consolidate-design-work` stitches those
 fragments into whole journeys (`CONSOLIDATED-IDEAS/`); after the code ships, each story records
 the flow as built (`IMPLEMENTATION/`). Rendered diagrams live in `DIAGRAMS/`.
 
@@ -15,11 +15,11 @@ project-management/src/05-USER-FLOW/
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── USER-FLOW-IDEA-US000-TEMPLATE.md
 │   └── USER-FLOW-IDEA-US###-<DESCRIPTOR>.md
-├── CONSOLIDATED-IDEAS/      ← stage 2: whole journeys per area (workflow 17)
+├── CONSOLIDATED-IDEAS/      ← stage 2: whole journeys per area (workflow 18)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── USER-FLOW-CONSOLIDATED-000-TEMPLATE.md
 │   └── USER-FLOW-CONSOLIDATED-<AREA>.md
-├── IMPLEMENTATION/          ← stage 3: the flow as built, per story (workflow 21)
+├── IMPLEMENTATION/          ← stage 3: the flow as built, per story (workflow 22)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── USER-FLOW-IMPL-US000-TEMPLATE.md
 │   └── USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -35,7 +35,7 @@ stories — registration, email verification, consent capture, the failure paths
 its own slice without seeing the others. That is what the per-story loop is for, and it is also
 why the fragments do not add up to a coherent journey on their own.
 
-`17-consolidate-design-work` stitches them into one canonical flow per **area**, where every
+`18-consolidate-design-work` stitches them into one canonical flow per **area**, where every
 decision node resolves both outcomes across the whole journey rather than only within one
 story's slice. The gaps between fragments — a state one story leaves the user in that no other
 story picks up — are exactly what consolidation exists to find.
@@ -45,8 +45,8 @@ story picks up — are exactly what consolidation exists to find.
 | Stage                 | Written by  | Scope     | Naming                                            |
 | --------------------- | ----------- | --------- | ------------------------------------------------- |
 | `USER-STORY-IDEAS/`   | workflow 05 | one story | `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md`            |
-| `CONSOLIDATED-IDEAS/` | workflow 17 | one area  | `USER-FLOW-CONSOLIDATED-<AREA>.md`                |
-| `IMPLEMENTATION/`     | workflow 21 | one story | `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
+| `CONSOLIDATED-IDEAS/` | workflow 18 | one area  | `USER-FLOW-CONSOLIDATED-<AREA>.md`                |
+| `IMPLEMENTATION/`     | workflow 22 | one story | `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 `<AREA>` and descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY.
 
@@ -60,6 +60,6 @@ story picks up — are exactly what consolidation exists to find.
 - `../09-GDPR/` — where flagged data touchpoints are given a lawful basis
 - `code/docs/URL-STRATEGY.md` — the route structure flows must follow
 - `project-management/workflows/05-user-flow-design/` — produces stage 1
-- `project-management/workflows/17-consolidate-design-work/` — produces stage 2
+- `project-management/workflows/18-consolidate-design-work/` — produces stage 2
 
 **Last Updated**: <%DATE%>

@@ -101,6 +101,7 @@ updating.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
+- `project-management/workflows/14-logging-checks/` — the planning gate: a story's log surface and its exclusion list, before the code exists
 - `code/workflows/09-debugging-with-logs/` — the observability procedure
 - `how-to/workflows/08-debugging/` — when the stack itself is unhealthy rather than the code
 

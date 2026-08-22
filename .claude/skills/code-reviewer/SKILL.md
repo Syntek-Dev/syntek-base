@@ -199,7 +199,7 @@ runtime failure, and `completion` to record the review status.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/07-review/` — the review procedure, its checklist, and the code-smell baseline
-- `project-management/workflows/22-pr-and-review/` — where the review record is filed
+- `project-management/workflows/23-pr-and-review/` — where the review record is filed
 
 ## Cross-references
 

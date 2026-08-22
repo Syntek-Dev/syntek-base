@@ -62,7 +62,7 @@ flow, GDPR, security, QA, SEO, API contract), become a decision record and a pla
 reach implementation.
 
 ```text
-chart (01)  →  specify (02–13)  →  decide & plan (14–16)  →  consolidate (17)  →  implement (18–20)  →  record & ship (21–23)
+chart (01)  →  specify (02–14)  →  decide & plan (15–17)  →  consolidate (18)  →  implement (19–21)  →  record & ship (22–24)
 ```
 
 **Charting is what the `wayfinder` skill is for.** `/wayfinder chart <feature>` draws the
@@ -80,10 +80,10 @@ fog of war may stay open, because a feature that must be fully known before any 
 is a feature that never starts.
 
 Specify through plan then runs **one story at a time** — a story goes all the way to
-`14-decisions` before the next one starts, so each story is planned against everything the
-previous ones established. When the open sprint fills, `15-sprint-plans` and `16-story-plans` run
+`15-decisions` before the next one starts, so each story is planned against everything the
+previous ones established. When the open sprint fills, `16-sprint-plans` and `17-story-plans` run
 for that sprint before planning resumes. Once every story is planned,
-`17-consolidate-design-work` unifies the per-story design and schema work into one coherent
+`18-consolidate-design-work` unifies the per-story design and schema work into one coherent
 whole, and only then does implementation begin.
 
 A code workflow is never entered directly from a design gate. If that sounds heavy for a

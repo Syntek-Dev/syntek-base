@@ -8,7 +8,7 @@ this folder's `CONTEXT.md` (stage-1 scope, the seam rule — imported above) →
 ## Purpose (one line)
 
 Stage-1 per-story flow fragments — one `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md` mapping only the
-journey slice that story introduces, written before it reaches `14-decisions`.
+journey slice that story introduces, written before it reaches `15-decisions`.
 
 ## How to work here
 

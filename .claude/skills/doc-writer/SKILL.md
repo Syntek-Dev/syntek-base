@@ -109,7 +109,7 @@ rather than describing, `scaffold` where a whole new structure is needed, and `g
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/21-implementation-documentation/` — the closeout: the records,
+- `project-management/workflows/22-implementation-documentation/` — the closeout: the records,
   the findings, the `CONTEXT.md`/`CLAUDE.md` updates, and the graph refresh
 - `code/workflows/07-review/` — documentation is a hard gate before review hands to the PR
 

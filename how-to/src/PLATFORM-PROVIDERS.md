@@ -148,7 +148,7 @@ protocol seam nor an adapter seam, and calling it either would cheapen both term
 | **Incident tracker** | A human-readable record with **access control** | <%INCIDENT_TRACKER%> | ClickUp · Linear · Jira · a bespoke admin area · none |
 
 The interface is the access control, and that is the whole point. The
-[`22-INCIDENTS/`](../../project-management/src/22-INCIDENTS/CONTEXT.md) register is in git and
+[`23-INCIDENTS/`](../../project-management/src/23-INCIDENTS/CONTEXT.md) register is in git and
 ships, so it is **PII-free by rule**; the tracker is where log excerpts, identifiers and any
 report touching personal data go. A project that answers `none` keeps that substance outside the
 repository entirely — the rule is never relaxed to keep a report in one piece. The practice is

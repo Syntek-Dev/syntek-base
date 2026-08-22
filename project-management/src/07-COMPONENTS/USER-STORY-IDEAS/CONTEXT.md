@@ -31,13 +31,13 @@ describing needs can be recognised as one component at consolidation; two storie
 designed a finished component cannot, because the differences look deliberate.
 
 Where you notice an earlier story's record describing something similar, **note it**. Do not
-merge them here — `17-consolidate-design-work` decides that with every story's needs in view.
+merge them here — `18-consolidate-design-work` decides that with every story's needs in view.
 
 **Do not edit `../component-build/`.** The generator is re-run once, at consolidation.
 
 ## Frozen at consolidation
 
-Once `17-consolidate-design-work` runs, every file here is frozen. The decided component set
+Once `18-consolidate-design-work` runs, every file here is frozen. The decided component set
 lives in `../CONSOLIDATED-IDEAS/`.
 
 ## Cross-references

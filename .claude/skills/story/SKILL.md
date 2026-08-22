@@ -83,7 +83,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/02-story-creation/` — **the procedure of record for this skill**
 - `project-management/workflows/01-feature-map/` — when the requirement is an epic that must be
   charted before any story is cut
-- `project-management/workflows/16-story-plans/` — the per-story plan this story feeds
+- `project-management/workflows/17-story-plans/` — the per-story plan this story feeds
 
 ## Cross-references
 

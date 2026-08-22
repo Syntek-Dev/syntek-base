@@ -20,7 +20,7 @@ grilling pass that settles it is the first half of the work).
 
 **Model.** `model: fable` above applies to the turn that loads this skill and is not a
 guarantee. The durable carrier for the planning tier is the `model: fable` routing frontmatter
-on `project-management/workflows/16-story-plans/`.
+on `project-management/workflows/17-story-plans/`.
 
 You architect **within the existing stack** — never introduce a technology outside it. The plan
 is the contract every later phase reads, and it lands before any implementation phase starts.
@@ -83,7 +83,7 @@ before committing it to a phase.
 
 ## Output
 
-`project-management/src/16-STORY-PLANS/`, from
+`project-management/src/17-STORY-PLANS/`, from
 `STORY-PLAN-US000-TEMPLATE.md`. That template is the shape of record and is not restated here;
 the naming convention is `project-management/src/CONTEXT.md`'s. Each phase must be
 independently testable, sized for a focused session, with inter-phase dependencies explicit and
@@ -106,8 +106,8 @@ where the feature shifts a per-surface load curve. This skill plans; it does not
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/16-story-plans/` — **the procedure of record for this skill**
-- `project-management/workflows/15-sprint-plans/` — the sprint sequencing a plan sits inside
+- `project-management/workflows/17-story-plans/` — **the procedure of record for this skill**
+- `project-management/workflows/16-sprint-plans/` — the sprint sequencing a plan sits inside
 - `code/workflows/01-implement-story/` — the build procedure the plan is written against
 
 ## Cross-references

@@ -15,7 +15,7 @@ The four git sub-documents — `BRANCHES-AND-WORKTREES.md`, `COMMITS.md`,
 - **Routing:** reference guides, not artefacts. Enter via `../GIT-GUIDE.md` and read the one
   matching the operation in hand; edit it when the convention changes. Substantive edits load the
   `git` skill, and a change to the merge gates is checked against
-  `project-management/workflows/22-pr-and-review/`.
+  `project-management/workflows/23-pr-and-review/`.
 - **Model:** Opus throughout — these are process conventions, and every touch here (a new scope
   value, a check name, a version-header bump) is mechanical rather than a design decision.
 - **Concrete steps:** edit the owning sub-document → check the other three do not now contradict

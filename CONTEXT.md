@@ -74,8 +74,8 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── REFERENCES.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR, QA)
 │   ├── export/                      ← ClickUp sync artefacts and task map
-│   ├── src/                         ← live PM artefacts (00-ASSETS … 22-INCIDENTS)
-│   └── workflows/                   ← step-by-step PM workflows (01–23)
+│   ├── src/                         ← live PM artefacts (00-ASSETS … 23-INCIDENTS)
+│   └── workflows/                   ← step-by-step PM workflows (01–24)
 ├── handoffs/                        ← session handoff documents (auto-compaction replacement)
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
@@ -172,7 +172,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **6.0.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.0.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

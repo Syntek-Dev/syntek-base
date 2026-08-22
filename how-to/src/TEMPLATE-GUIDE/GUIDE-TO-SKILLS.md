@@ -52,7 +52,7 @@ layers.
 story plan; it does not chart. Anything bigger than a single session is charted with
 `/wayfinder` **first**, and the stories are cut from the resolved map. The two never call each
 other — they meet at an artefact: wayfinder graduates a buildable slice into
-`16-STORY-PLANS/`, and that plan is exactly what `implement-story` picks up. Reach straight for
+`17-STORY-PLANS/`, and that plan is exactly what `implement-story` picks up. Reach straight for
 `implement-story` only when you could already write the story yourself.
 
 ---

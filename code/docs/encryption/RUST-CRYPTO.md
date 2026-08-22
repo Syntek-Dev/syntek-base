@@ -106,7 +106,7 @@ contained change requiring no data migration.
 
 Re-encrypting stored data to a native implementation is a different proposition entirely —
 key rotation, a backfill migration, a dual-read window, and a rollback plan. It is an ADR
-(`project-management/src/14-DECISIONS/`) and a story, never an incidental improvement.
+(`project-management/src/15-DECISIONS/`) and a story, never an incidental improvement.
 
 ## Cross-references
 

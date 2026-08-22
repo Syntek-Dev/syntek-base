@@ -9,28 +9,27 @@
 
 **Timeline:** TBD · **Capacity:** [used] / [total] SP
 
-<!-- FLAGS
-     DB        — shortlist of models created / modified across this sprint, or N/A
-     User Flow — Yes (new user journeys introduced) or N/A
-     Backend   — Yes or N/A
-     API       — shortlist of Ninja endpoints introduced, or N/A
-     Frontend  — Public / Admin / Both / N/A  (all server-rendered Django templates)
-     GDPR      — Yes (PII introduced or processed) or N/A
-     Security  — shortlist of concerns across this sprint, or N/A
-     SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
-     Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
+<!-- FLAGS — the UNION of the member stories' flags, one row per gate.
+     Computed from the Story Summary below, not authored independently. The one permitted
+     narrowing is a story split across sprints (Part A / Part B): this sprint carries only the
+     half it delivers. Any other divergence from the union is a mistake in one of the two.
+     Row meanings and the per-gate routing: src/02-STORIES/US000-TEMPLATE.md. -->
 
-| Flag      | Value                             |
-| --------- | --------------------------------- |
-| DB        | `ModelA`, `ModelB`                |
-| User Flow | Yes                               |
-| Backend   | Yes                               |
-| API       | `POST /model-a`, `PATCH /model-a` |
-| Frontend  | Both                              |
-| GDPR      | Yes                               |
-| Security  | rate-limit, audit-log             |
-| SEO       | /blog, /about                     |
-| Testing   | unit, integration, E2E            |
+| Flag       | Value                                                  |
+| ---------- | ------------------------------------------------------ |
+| DB         | `ModelA`, `ModelB`                                     |
+| User Flow  | Yes                                                    |
+| Brand      | `--color-accent`                                       |
+| Components | `Button`, `Card`                                       |
+| Wireframes | /dashboard                                             |
+| GDPR       | Yes                                                    |
+| Security   | rate-limit, audit-log                                  |
+| QA         | unit, integration, E2E — happy-path, permission-denied |
+| SEO        | /blog, /about                                          |
+| API        | `POST /model-a`, `PATCH /model-a`                      |
+| Logging    | login-success, permission-denied                       |
+| Backend    | Yes                                                    |
+| Frontend   | Both                                                   |
 
 ---
 
@@ -142,8 +141,8 @@
 
 ### Logging Acceptance Criteria
 
-<!-- Always applicable when Backend or Frontend ≠ N/A.
-     Every story in this sprint that touches server-side code must meet these criteria. -->
+<!-- Remove this section when the Logging flag is N/A.
+     Every story in this sprint whose own Logging flag is not N/A must meet these criteria. -->
 
 - [ ] All new service methods, Ninja endpoints, and Django views use the named logger (`logging.getLogger("apps.X")`) — no bare `print()` on any server path, and no stray `console.log()` in committed JavaScript
 - [ ] All `[enc]`-marked fields from the sprint's schema designs (`04-DATABASE/DB-<FEATURE>-DD-MM-YYYY.md`) are absent from every log line produced by stories in this sprint
@@ -168,13 +167,20 @@
 - [ ] LCP < 2.5 s · CLS < 0.1 · INP < 200 ms — recorded in Lighthouse audit
 - [ ] Lighthouse report exported alongside the story's SEO record — `project-management/src/12-SEO/IMPLEMENTATION/LIGHTHOUSE-[US###]-[ROUTE]-[DD-MM-YYYY].json`
 
-### Testing Acceptance Criteria
+### QA Acceptance Criteria — Automated
 
-<!-- Remove this section when Testing flag is N/A. -->
+<!-- Remove this section when the QA flag is N/A. -->
 
 - [ ] Coverage is at or above 75 % line and branch for all modules introduced or modified this sprint (at or above 90 % for auth-related paths) — one floor, since template, django-component, and HTMX-partial tests are pytest tests
-- [ ] Unit, integration, and E2E tests cover all stories as indicated in the Test Scope table in the Testing Tasks section below
-- [ ] All manual checks listed in the Testing Tasks section below are complete and signed off
+- [ ] Unit, integration, and E2E tests cover all stories as indicated in the Test Scope table in the QA Tasks section below
+- [ ] Every story's `US###-TEST-STATUS.md` is written and its coverage transcribed, not asserted
+
+### QA Acceptance Criteria — Manual
+
+<!-- Remove this section when the QA flag names no manual type. -->
+
+- [ ] All manual checks listed in the QA Tasks section below are complete and signed off
+- [ ] Every story's `US###-MANUAL-TESTING.md` carries a tester sign-off block
 
 ---
 
@@ -260,8 +266,8 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 ### Logging Tasks
 
-<!-- Always applicable when Backend or Frontend ≠ N/A.
-     Reference: code/docs/LOGGING.md -->
+<!-- Remove this section when the Logging flag is N/A.
+     Reference: code/docs/LOGGING.md · the per-story plans in src/14-LOGGING/PLANNING/ -->
 
 | Story | Layer   | Task                                                                                          | Done |
 | ----- | ------- | --------------------------------------------------------------------------------------------- | ---- |
@@ -287,9 +293,9 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Run Lighthouse to verify Core Web Vitals targets; record results                 | [ ]  |
 | US### | Run the `seo` skill to confirm all SEO checks pass                               | [ ]  |
 
-### Testing Tasks
+### QA Tasks — Automated
 
-<!-- Remove this section when Testing flag is N/A. -->
+<!-- Remove this section when the QA flag is N/A. -->
 
 **Test scope per story:**
 
@@ -298,7 +304,9 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Yes  | Yes         | Yes | Yes    |
 | US### | Yes  | Yes         | No  | No     |
 
-**Manual checks this sprint:**
+### QA Tasks — Manual
+
+<!-- Remove this section when the QA flag names no manual type. -->
 
 - [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop, colour picker, file upload]
 - [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
@@ -320,6 +328,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass
 - [ ] No secrets, debug flags, or hardcoded IDs introduced in this sprint
 - [ ] All GDPR tasks checked off (if GDPR: Yes)
+- [ ] Every story's logging plan satisfied and its exclusion check run (if Logging: not N/A)
 - [ ] All security acceptance criteria signed off (if Security: not N/A)
 - [ ] SEO acceptance criteria signed off and Lighthouse results recorded (if SEO: not N/A)
 

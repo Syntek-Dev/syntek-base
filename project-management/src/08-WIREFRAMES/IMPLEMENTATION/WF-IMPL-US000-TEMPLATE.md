@@ -62,8 +62,8 @@ Where the wireframe specified an interaction, confirm where it now runs
 | ----- | --------- | ---------------------------------- | ------------- | --------- |
 | D-001 |           |                                    |               |           |
 
-**Routing:** consolidation missed a screen → `../../19-FINDINGS/` · build departed from an
-agreed layout → `../../20-BUGS/` · accepted trade-off → note here with a reason.
+**Routing:** consolidation missed a screen → `../../20-FINDINGS/` · build departed from an
+agreed layout → `../../21-BUGS/` · accepted trade-off → note here with a reason.
 
 - [ ] No unexplained deviation remains
 

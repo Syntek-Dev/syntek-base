@@ -72,4 +72,4 @@ predict a clean CI run.
 - `code/src/scripts/syntax/CONTEXT.md` — lint, format, and type-check runners
 - `how-to/workflows/05-testing-and-coverage/` — the tests gate, in depth
 - `code/workflows/07-review/` — content review, which precedes this process gate
-- `project-management/workflows/22-pr-and-review/` — the PR itself, once gates are green
+- `project-management/workflows/23-pr-and-review/` — the PR itself, once gates are green

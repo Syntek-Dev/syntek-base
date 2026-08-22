@@ -265,7 +265,7 @@ Design-quality gates — tick each before the contract is signed off.
 - `code/docs/API-DESIGN.md` — Django Ninja conventions this design is written against
 - `code/docs/SECURITY.md` — the permission/IDOR rules this design specifies and code enforces
 - `project-management/workflows/13-api-design/` — the workflow that produces this design;
-  it feeds `project-management/workflows/19-api-code/`
+  it feeds `project-management/workflows/20-api-code/`
 
 ---
 

@@ -22,9 +22,9 @@ re-asking the same questions.
   reasoning tier the whole implementation builds on. Opus only for mechanical touches: a link
   fix, moving a resolved row, a date bump.
 - **Concrete steps:** load the context in the documented order → CHART (pin the destination, map
-  the frontier breadth-first, wire blocking edges, write the map, fire research nodes) → then
-  RESOLVE one node per session until no blocker remains open → graduate every outcome to its real
-  home → satisfy `CHECKLIST.md`.
+  the frontier breadth-first, wire blocking edges, write the map with its **Slices** manifest,
+  fire research nodes) → then RESOLVE a batch of related nodes per session until no blocker
+  remains open → graduate every outcome to its real home → satisfy `CHECKLIST.md`.
 - **Definition of done:** the destination and out-of-scope bounds are written and confirmed;
   every knowable decision is a node or honestly parked in fog of war; no blocking node remains
   unresolved; every resolved node links to the artefact it became.
@@ -44,8 +44,9 @@ re-asking the same questions.
   graduates to. A map that accumulates the reasoning becomes the thing nobody reads.
 - **Fog of war is honest, not embarrassing.** Something in scope but not yet sharp enough to
   state as a decision goes there. Forcing it into a node produces a decision made on nothing.
-- **Do not write stories here.** Stories are cut in `02-story-creation`, from the map. A story
-  written during discovery bypasses its own gate.
+- **Do not write stories here.** A slice graduates to a **Slices** row carrying its flag
+  manifest — never to `US###.md`, and never with a story number reserved. `02-story-creation`
+  cuts the story and allocates the number. A story written during discovery bypasses its own gate.
 - **Every resolved node graduates.** An answer left only on the map is lost the moment the map is
   superseded — it belongs in an ADR, a plan, a story, `GAPS.md`, or `DEFERRED.md`.
 - **Read the register before charting, and triage all of it.** `GAPS.md` and `DEFERRED.md` are not
@@ -54,7 +55,7 @@ re-asking the same questions.
   it happens to retire unrecorded.
 - **Claim, never close.** This workflow writes claimed entries onto the map; it does not mark
   `✅ CLOSED` or delete a `DEFERRED.md` row. That is
-  `21-implementation-documentation`'s, against shipped code — editing the register here puts a gap
+  `22-implementation-documentation`'s, against shipped code — editing the register here puts a gap
   in the closed state with nothing built behind it.
 - **Step 0 suggests; it never chooses.** Candidates are put to <%DEVELOPER_NAME%> ranked, and nothing is
   written until one is picked. A candidate that is really one story routes to `02-story-creation`
@@ -66,7 +67,7 @@ re-asking the same questions.
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the map `MAP-<FEATURE>.md` under
   `src/01-FEATURE-MAPS/`.
-- **Produced by following it:** ADRs in `src/14-DECISIONS/`, `GAPS.md`/`DEFERRED.md` entries, and
+- **Produced by following it:** ADRs in `src/15-DECISIONS/`, `GAPS.md`/`DEFERRED.md` entries, and
   the resolved-decision links the map carries.
 - Maps `MAP-<FEATURE>.md` — `<FEATURE>` in `SCREAMING-KEBAB-CASE`; workflow folders
   `NN-kebab-case/`; dates DD/MM/YYYY.

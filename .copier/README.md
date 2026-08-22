@@ -307,16 +307,17 @@ Two things to do on a freshly generated project:
 │   │   ├── 11-QA/
 │   │   ├── 12-SEO/
 │   │   ├── 13-API-DESIGN/
-│   │   ├── 14-DECISIONS/
-│   │   ├── 15-SPRINT-PLANS/
-│   │   ├── 16-STORY-PLANS/
-│   │   ├── 17-TESTS/
-│   │   ├── 18-REVIEWS/
-│   │   ├── 19-FINDINGS/
-│   │   ├── 20-BUGS/
-│   │   ├── 21-REFACTORING/
-│   │   └── 22-INCIDENTS/               ← the PII-free incident register; no story, no workflow
-│   └── workflows/                       ← 23 step-by-step PM workflows
+│   │   ├── 14-LOGGING/
+│   │   ├── 15-DECISIONS/
+│   │   ├── 16-SPRINT-PLANS/
+│   │   ├── 17-STORY-PLANS/
+│   │   ├── 18-TESTS/
+│   │   ├── 19-REVIEWS/
+│   │   ├── 20-FINDINGS/
+│   │   ├── 21-BUGS/
+│   │   ├── 22-REFACTORING/
+│   │   └── 23-INCIDENTS/               ← the PII-free incident register; no story, no workflow
+│   └── workflows/                       ← 24 step-by-step PM workflows
 │       ├── 01-feature-map/              ← chart the feature's decision frontier (wayfinder)
 │       ├── 02-story-creation/
 │       ├── 03-sprint-planning/
@@ -330,16 +331,17 @@ Two things to do on a freshly generated project:
 │       ├── 11-qa-checks/
 │       ├── 12-seo-checks/
 │       ├── 13-api-design/
-│       ├── 14-decisions/               ← ADRs
-│       ├── 15-sprint-plans/
-│       ├── 16-story-plans/             ← the per-story plan a developer codes from
-│       ├── 17-consolidate-design-work/ ← unify per-story design before any code
-│       ├── 18-backend-code/
-│       ├── 19-api-code/
-│       ├── 20-frontend-code/
-│       ├── 21-implementation-documentation/ ← docs closeout + graph refresh
-│       ├── 22-pr-and-review/
-│       └── 23-release/
+│       ├── 14-logging-checks/          ← the story's log surface and its exclusion list
+│       ├── 15-decisions/               ← ADRs
+│       ├── 16-sprint-plans/
+│       ├── 17-story-plans/             ← the per-story plan a developer codes from
+│       ├── 18-consolidate-design-work/ ← unify per-story design before any code
+│       ├── 19-backend-code/
+│       ├── 20-api-code/
+│       ├── 21-frontend-code/
+│       ├── 22-implementation-documentation/ ← docs closeout + graph refresh
+│       ├── 23-pr-and-review/
+│       └── 24-release/
 ├── .agents/                             ← vendored third-party skills (Cloudinary) — see THIRD-PARTY-NOTICES.md
 ├── .zed/                                ← Zed editor settings
 ├── handoffs/                            ← session handoff documents (the auto-compaction replacement)
@@ -599,10 +601,10 @@ Sprint work follows a two-stage process:
 A high-level record capturing the sprint goal and candidate stories. Written at the start of a
 cycle using `project-management/workflows/03-sprint-planning/`.
 
-**Stage 2 — Detailed sprint plan** (`project-management/src/15-SPRINT-PLANS/`, `SPRINT-PLAN-##.md`):
+**Stage 2 — Detailed sprint plan** (`project-management/src/16-SPRINT-PLANS/`, `SPRINT-PLAN-##.md`):
 Written _after_ GDPR, security, and QA checks are complete. Records the definitive story
 assignments, per-phase breakdown (backend → API → frontend → PR), developer constraints from the
-checks, and the sprint definition of done. Use `project-management/workflows/15-sprint-plans/`.
+checks, and the sprint definition of done. Use `project-management/workflows/16-sprint-plans/`.
 
 Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
 `project-management/docs/PLANNING-GUIDE.md` for the full format and conventions.
@@ -661,10 +663,10 @@ begins.
 | QA gap analysis report          | `QA-REPORT-<AREA>.md`            | `project-management/src/11-QA/PLANNING/`       |
 | QA plan (pre-development)       | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/11-QA/PLANNING/`       |
 | QA review (post-implementation) | `QA-IMPL-US###-<DESCRIPTION>.md` | `project-management/src/11-QA/IMPLEMENTATION/` |
-| Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/15-SPRINT-PLANS/`      |
-| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/17-TESTS/`             |
-| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/17-TESTS/`             |
-| Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/20-BUGS/`              |
+| Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/16-SPRINT-PLANS/`      |
+| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/18-TESTS/`             |
+| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/18-TESTS/`             |
+| Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/21-BUGS/`              |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
 tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
@@ -685,12 +687,12 @@ tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to
 | `11-qa-checks/`         | QA planning from wireframes before any code is written       |
 | `12-seo-checks/`        | SEO review and metadata checks before frontend work          |
 | `13-api-design/`        | Designing the Django Ninja API surface                       |
-| `15-sprint-plans/`      | Writing the detailed sprint plan after all pre-sprint checks |
-| `18-backend-code/`      | Implementing Django models, services, and business logic     |
-| `19-api-code/`          | Implementing the Django Ninja API layer                      |
-| `20-frontend-code/`     | Implementing Django templates, components, and HTMX partials |
-| `22-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
-| `23-release/`           | Cutting a release (version bump, changelog, deploy)          |
+| `16-sprint-plans/`      | Writing the detailed sprint plan after all pre-sprint checks |
+| `19-backend-code/`      | Implementing Django models, services, and business logic     |
+| `20-api-code/`          | Implementing the Django Ninja API layer                      |
+| `21-frontend-code/`     | Implementing Django templates, components, and HTMX partials |
+| `23-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
+| `24-release/`           | Cutting a release (version bump, changelog, deploy)          |
 
 ---
 
@@ -852,7 +854,7 @@ PR is opened.
 ### Typical feature development sequence
 
 ```text
-01-implement-story  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 22-pr-and-review
+01-implement-story  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 23-pr-and-review
 ```
 
 - Start with `01-implement-story` to plan the feature scope.
@@ -861,12 +863,12 @@ PR is opened.
 - If the feature touches PII, run `06-gdpr-enforcement` before raising a PR.
 - Before opening the PR, run `07-review` to verify OWASP coverage, coding principles, and
   coverage floors.
-- Hand off to the PM layer with `project-management/workflows/22-pr-and-review/`.
+- Hand off to the PM layer with `project-management/workflows/23-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/08-debugging  →  10-debug  →  07-review  →  PM: 22-pr-and-review
+how-to/08-debugging  →  10-debug  →  07-review  →  PM: 23-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use

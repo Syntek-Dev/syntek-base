@@ -30,10 +30,10 @@ and recording each node as it is settled; the foundation every later planning ga
 - **Index, not vault.** A node's reasoning lives in the ADR, plan, or story it graduates to. A
   map that grows the detail becomes the document nobody reads, which defeats its only purpose.
 - **Every resolved node graduates.** An answer left only here dies with the map. It belongs in
-  `../14-DECISIONS/`, a plan, a story, `GAPS.md`, or `DEFERRED.md`.
+  `../15-DECISIONS/`, a plan, a story, `GAPS.md`, or `DEFERRED.md`.
 - **Register claimed is a claim, never a close.** A map records which `GAPS.md` / `DEFERRED.md`
   entries the feature will retire, so the intent survives into the stories cut from it. Marking
-  `✅ CLOSED` or deleting a `DEFERRED.md` row is `workflows/21-implementation-documentation/`'s,
+  `✅ CLOSED` or deleting a `DEFERRED.md` row is `workflows/22-implementation-documentation/`'s,
   against shipped code — never done from a map.
 - **Fog of war stays honest.** Do not promote something to a node to make the map look complete —
   a decision node with nothing behind it produces a decision made on nothing.

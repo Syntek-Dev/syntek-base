@@ -51,7 +51,7 @@ None — debugging is reactive; no mandatory pre-reads before investigating a bu
 - `code/docs/logging/DJANGO-LOGGING.md` — reading structured log output
 - `code/workflows/09-debugging-with-logs/` — observability-based companion workflow
 - `code/docs/cloudinary/CONTEXT.md` — when debugging Cloudinary SDK calls, transformation URLs, or media delivery errors; invoke `/cloudinary-docs` or `/cloudinary-transformations`
-- `project-management/src/20-BUGS/` — bug report artefacts
-- `project-management/workflows/21-implementation-documentation/` — **how work reaches this
-  workflow**: findings recorded there with a defect disposition are routed to `src/20-BUGS/` and
+- `project-management/src/21-BUGS/` — bug report artefacts
+- `project-management/workflows/22-implementation-documentation/` — **how work reaches this
+  workflow**: findings recorded there with a defect disposition are routed to `src/21-BUGS/` and
   become the input for a debug pass. There is no PM-layer debug workflow — 19 is the entry point.

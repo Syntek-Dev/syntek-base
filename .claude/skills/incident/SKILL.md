@@ -36,7 +36,7 @@ autonomously, because the blast radius is live and the human is under load.
   configuration edit against staging or production — not even when the fix is obvious. Propose it,
   name the command, and wait. <%DEVELOPER_NAME%> executes.
 - **Never write personal data, credentials, log excerpts or stack traces into the repository.**
-  The register is PII-free by rule (`project-management/src/22-INCIDENTS/CLAUDE.md`). Where an
+  The register is PII-free by rule (`project-management/src/23-INCIDENTS/CLAUDE.md`). Where an
   excerpt matters, describe its shape and put the excerpt in `<%INCIDENT_TRACKER%>`.
 - **Never decide the severity, the comms, or the stand-down.** Those are the commander's, and the
   regulatory ones are the project lead's. Claude recommends; the human decides.
@@ -124,18 +124,18 @@ Now, while the notes are fresh — not tomorrow.
 1. **Draft the postmortem** to the six sections in `INCIDENT-PRACTICE.md` Section 5. The root cause
    answers **two** questions: what broke, and why it reached a live environment uncaught.
 2. **Create the register entry** — copy
-   `project-management/src/22-INCIDENTS/INCIDENT-000-TEMPLATE.md` to
+   `project-management/src/23-INCIDENTS/INCIDENT-000-TEMPLATE.md` to
    `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` using the **declaration** date. Fill it from the notes.
 3. **Re-read it for PII, credentials, identifiers and log excerpts before writing the file.** This
    is a distinct pass, not a habit of mind. Anything that fails it goes to `<%INCIDENT_TRACKER%>`
    and the entry references it.
 4. **Add the row** to `INCIDENT-INDEX.md`, most recent first, status matching the file.
-5. **Route every follow-up to a real home** — a defect to `project-management/src/20-BUGS/`, an
+5. **Route every follow-up to a real home** — a defect to `project-management/src/21-BUGS/`, an
    architectural gap to `GAPS.md`, deferred work to `DEFERRED.md`, a missing control to
    `code/docs/security/`. At least one, always.
 
 **Done when:** the entry exists, the index row matches it, the PII pass has been run explicitly,
-and every follow-up names an owner and a home outside `22-INCIDENTS/`.
+and every follow-up names an owner and a home outside `23-INCIDENTS/`.
 
 ## Reference
 
@@ -152,7 +152,7 @@ and every follow-up names an owner and a home outside `22-INCIDENTS/`.
 
 - **Nothing is live yet** — a failing test or broken build is `how-to/workflows/08-debugging/`.
 - **The cause is known and it is a defect** — go straight to `code/workflows/10-debug/` and file
-  in `project-management/src/20-BUGS/`.
+  in `project-management/src/21-BUGS/`.
 - **Writing the incident-response _policy_** — that is the `msp-scp-documents` skill. This skill
   runs an incident; that one documents what the organisation promises about them.
 - **The context window fills mid-incident** — use `/handoff` as well, for the Claude half.
@@ -173,7 +173,7 @@ Two procedures are reached _from_ an incident and keep their own gates:
 
 - [`how-to/docs/INCIDENT-PRACTICE.md`](../../../how-to/docs/INCIDENT-PRACTICE.md) — the doctrine
   this skill executes; the guide owns every rule, this file owns the interaction
-- `project-management/src/22-INCIDENTS/` — the PII-free register, its index and its template;
+- `project-management/src/23-INCIDENTS/` — the PII-free register, its index and its template;
   `CLAUDE.md` there carries the writing rules
 - `code/docs/security/MONITORING-AND-INCIDENT.md` — the build-side controls, what must be logged,
   and the breach-notification duty
@@ -185,4 +185,4 @@ Two procedures are reached _from_ an incident and keep their own gates:
 - `code/src/scripts/development/logs.sh` · `code/src/scripts/database/backup.sh` ·
   `code/src/scripts/database/restore.sh` · `code/src/scripts/database/verify-db-security.sh` —
   the scripts an incident actually reaches for
-- `GAPS.md` · `DEFERRED.md` · `project-management/src/20-BUGS/` — where follow-ups land
+- `GAPS.md` · `DEFERRED.md` · `project-management/src/21-BUGS/` — where follow-ups land

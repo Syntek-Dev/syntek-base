@@ -13,7 +13,7 @@ data, and the root/`.well-known` surface — behind the `code/docs/DISCOVERABILI
 ## How to work here
 
 - **Routing:** `seo` (Opus) to author; `doc-writer` (Opus) for restructuring. These guides govern
-  the SEO wiring in `project-management/workflows/20-frontend-code/` and are the method side of
+  the SEO wiring in `project-management/workflows/21-frontend-code/` and are the method side of
   `workflows/12-seo-checks/`.
 - **Model:** Opus throughout — implementation doctrine, not planning.
 - **Concrete steps:** edit the relevant sub-doc → keep `../DISCOVERABILITY.md` a thin index and

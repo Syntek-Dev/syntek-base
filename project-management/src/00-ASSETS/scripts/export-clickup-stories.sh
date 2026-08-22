@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # export-clickup-stories.sh — Generate client-friendly, ClickUp-ready Markdown per story.
 #
-# For every US###.md in 01-STORIES, emits a stripped US###-CLIENT.md into
+# For every US###.md in 02-STORIES, emits a stripped US###-CLIENT.md into
 # project-management/export/clickup/ containing ONLY the client-facing fields:
 #
 #   - Title          (h1)
@@ -15,7 +15,7 @@
 # those are internal-only and never leave for ClickUp.
 #
 # The generated US###-CLIENT.md files are written read-only (0444): this script is
-# the only sanctioned writer. To change one, edit the SOURCE story in 01-STORIES/
+# the only sanctioned writer. To change one, edit the SOURCE story in 02-STORIES/
 # and re-run. A lefthook pre-commit hook regenerates them on commit.
 #
 # Usage: bash export-clickup-stories.sh [US###] [--help]
@@ -34,7 +34,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
-STORIES_DIR="$PROJECT_ROOT/project-management/src/01-STORIES"
+STORIES_DIR="$PROJECT_ROOT/project-management/src/02-STORIES"
 OUTPUT_DIR="$PROJECT_ROOT/project-management/export/clickup"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

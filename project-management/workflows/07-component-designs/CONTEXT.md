@@ -17,6 +17,12 @@ project-management/workflows/07-component-designs/
 
 ## When to use this
 
+**Entry condition: the story's `Components` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story introduces or reuses a component. A story whose
+`Components` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow when designing reusable UI components before frontend implementation.
 Run it after brand guides are agreed and before wireframing feature screens.
 

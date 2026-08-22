@@ -211,8 +211,8 @@ that calls it, and `cicd` where the image's Rust stage or a toolchain pin moves.
 
 - `code/workflows/12-rust-extension/` — the procedure for this surface
 - `code/workflows/02-tdd-cycle/` · `08-security-hardening/` — both suites, then the audit
-- `project-management/workflows/18-backend-code/` — the build phase this is entered from
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/19-backend-code/` — the build phase this is entered from
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/07-dependency-updates/` — the cadence a crate or toolchain bump follows
 
 ## Cross-references

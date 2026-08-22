@@ -99,8 +99,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `how-to/workflows/07-dependency-updates/` — adding, upgrading or removing a dependency
 - `how-to/workflows/01-first-time-setup/` — the environment a pipeline has to reproduce
-- `project-management/workflows/23-release/` — the release and deploy procedure it serves
-- `project-management/workflows/22-pr-and-review/` — the PR gates CI enforces
+- `project-management/workflows/24-release/` — the release and deploy procedure it serves
+- `project-management/workflows/23-pr-and-review/` — the PR gates CI enforces
 
 ## Cross-references
 

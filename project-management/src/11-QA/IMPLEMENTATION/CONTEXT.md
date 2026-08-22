@@ -17,7 +17,7 @@ project-management/src/11-QA/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a review during `project-management/workflows/21-implementation-documentation/`, once a story's
+Write a review during `project-management/workflows/22-implementation-documentation/`, once a story's
 code is ready for review and before the story closes. Copy `QA-IMPL-US000-TEMPLATE.md`,
 open the story's plan in `../PLANNING/QA-PLAN-US###-*.md`, and verify each planned
 scenario against the running build.
@@ -38,8 +38,8 @@ scenario against the running build.
 - `../PLANNING/` — the pre-development QA plans these reviews verify
 - `../CONTEXT.md` — the QA folder overview and the per-story PLANNING/IMPLEMENTATION split
 - `../../02-STORIES/` — the user stories under review
-- `../../17-TESTS/` · `../../18-REVIEWS/` — downstream test status and code-review notes
+- `../../18-TESTS/` · `../../19-REVIEWS/` — downstream test status and code-review notes
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
-- `project-management/workflows/21-implementation-documentation/` — where these reviews are written
+- `project-management/workflows/22-implementation-documentation/` — where these reviews are written
 
 **Last Updated**: <%DATE%>

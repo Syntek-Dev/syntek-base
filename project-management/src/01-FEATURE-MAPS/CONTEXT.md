@@ -18,10 +18,10 @@ project-management/src/01-FEATURE-MAPS/
 
 ## Why this exists
 
-Everything from `02-story-creation` to `14-decisions` is a **per-story loop**. Without a map, each
+Everything from `02-story-creation` to `15-decisions` is a **per-story loop**. Without a map, each
 story rediscovers the same cross-cutting questions — the auth model, the tenancy boundary, where
 state lives — and answers them slightly differently, because each story sees only its own slice.
-The consolidation gate at `17` then has to unpick five inconsistent answers.
+The consolidation gate at `18` then has to unpick five inconsistent answers.
 
 Charting first inverts that. The questions are asked once, before any story exists, and every
 story is cut from the settled answers.
@@ -42,11 +42,13 @@ story is cut from the settled answers.
 
 ## Map index
 
-| Map                | Feature | Status | Frontier open | Charted |
-| ------------------ | ------- | ------ | ------------- | ------- |
-| _None charted yet_ | —       | —      | —             | —       |
+| Map                | Feature | Status | Frontier open | Slices | Charted |
+| ------------------ | ------- | ------ | ------------- | ------ | ------- |
+| _None charted yet_ | —       | —      | —             | —      | —       |
 
-Add a row on charting; keep the status and open-node count current as nodes resolve.
+Add a row on charting; keep the status, open-node count and slice count current as nodes
+resolve. **A map present in this folder with no row here is an index that has drifted** —
+the row is added in the same change as the map, never retrospectively.
 
 **One map arrives before any feature does.** `MAP-SCALE-PLANNING.md` is seeded into this folder at
 generation, every row reading `TBD`, because six shipped guides route to it. It is **seeded, not
@@ -68,10 +70,10 @@ story is written is a feature that never starts.
 - `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART and RESOLVE, node types, the graduation
   table, and the claiming-versus-closing line
 - `GAPS.md` · `DEFERRED.md` — the standing register a map claims from; closed by
-  `project-management/workflows/21-implementation-documentation/`, never here
-- `../14-DECISIONS/` — where hard-to-reverse resolutions graduate
+  `project-management/workflows/22-implementation-documentation/`, never here
+- `../15-DECISIONS/` — where hard-to-reverse resolutions graduate
 - `../02-STORIES/` — the stories cut from a resolved map
-- `../16-STORY-PLANS/` — per-story plans, which cite the ADRs this map produced
+- `../17-STORY-PLANS/` — per-story plans, which cite the ADRs this map produced
 - `project-management/workflows/01-feature-map/` — the workflow that produces these
 
 **Last Updated**: <%DATE%>

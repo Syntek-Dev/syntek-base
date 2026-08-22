@@ -5,7 +5,7 @@ description: Frontend stack reference for <%PROJECT_NAME%> — Django templates 
 
 Reference for the **Django-templated** frontend of <%PROJECT_NAME%>. The `frontend` skill loads
 this for stack idioms; `seo`, `backend`, `security`, and
-`review` cite it at the UI boundary. Aligns with `project-management/workflows/20-frontend-code/`,
+`review` cite it at the UI boundary. Aligns with `project-management/workflows/21-frontend-code/`,
 `code/docs/RENDERING.md` (the interaction doctrine), and
 `code/docs/architecture/FRONTEND-PATTERNS.md` (where a page's modules sit inside the app).
 
@@ -203,7 +203,7 @@ HTML_.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/20-frontend-code/` — the frontend build phase
+- `project-management/workflows/21-frontend-code/` — the frontend build phase
 - `code/workflows/01-implement-story/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — template, component, and HTMX-partial tests
 

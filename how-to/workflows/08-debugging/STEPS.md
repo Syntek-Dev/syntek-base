@@ -89,7 +89,7 @@ separately.
 ### Step 6 — Document and Fix
 
 If the bug warrants a bug report:
-Save to `project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
+Save to `project-management/src/21-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
 
 > **Model:** opus
 

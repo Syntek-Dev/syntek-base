@@ -92,7 +92,7 @@ Save the screen to `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/` — 
 screen, which shares the number of its web counterpart where one exists.
 
 **Do not use the bare `WF-###-` form here.** That is stage 2, written by
-`17-consolidate-design-work` into `CONSOLIDATED-IDEAS/`: a consolidated screen drops the `IDEA`
+`18-consolidate-design-work` into `CONSOLIDATED-IDEAS/`: a consolidated screen drops the `IDEA`
 marker and the story number because it belongs to the product rather than to one story. Full
 convention: `project-management/src/08-WIREFRAMES/CONTEXT.md`.
 
@@ -124,11 +124,11 @@ implementation — a feature is not codeable until workflows 02–16 are complet
 (`project-management/workflows/CLAUDE.md`). Continue in order:
 
 `09-gdpr-compliance` → `10-security-checks` → `11-qa-checks` → `12-seo-checks` (public pages)
-→ `13-api-design` (if the story touches the Ninja API) → `14-decisions` → `15-sprint-plans`
-→ `16-story-plans`.
+→ `13-api-design` (if the story touches the Ninja API) → `15-decisions` → `16-sprint-plans`
+→ `17-story-plans`.
 
-The story plan produced by `16-story-plans/` is the master a developer codes from. Frontend
-implementation then runs through `20-frontend-code/`, which drives
+The story plan produced by `17-story-plans/` is the master a developer codes from. Frontend
+implementation then runs through `21-frontend-code/`, which drives
 `code/workflows/01-implement-story/` and `code/workflows/02-tdd-cycle/`.
 
 ---

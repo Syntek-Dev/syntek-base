@@ -42,7 +42,7 @@ AI discoverability (`llms.txt`) where relevant.
 
 - `PLANNING/CONTEXT.md` · `IMPLEMENTATION/CONTEXT.md` — the two per-story sub-folders
 - `project-management/workflows/12-seo-checks/` — produces the `PLANNING/` plan and audits
-- `project-management/workflows/22-pr-and-review/` — where the `IMPLEMENTATION/` record lands
+- `project-management/workflows/23-pr-and-review/` — where the `IMPLEMENTATION/` record lands
 - `project-management/docs/SEO-CHECKLIST.md` — full SEO standards and checklist
 - `project-management/src/02-STORIES/` — a story's `### SEO Acceptance Criteria` section
 - `code/docs/RENDERING.md` — the code-side metadata/JSON-LD/sitemap implementation

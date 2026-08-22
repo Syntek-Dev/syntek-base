@@ -25,7 +25,7 @@ model: opus
 
 ## Execution Checklist
 
-- [ ] Architectural plan saved to `project-management/src/16-STORY-PLANS/` · _opus_
+- [ ] Architectural plan saved to `project-management/src/17-STORY-PLANS/` · _opus_
 - [ ] Failing tests written before implementation · _opus_
 - [ ] Models and migration created and applied · _opus_
 - [ ] Service layer implemented with `transaction.atomic()` on multi-write methods · _opus_
@@ -43,10 +43,10 @@ model: opus
 ## Mobile surface (mobile-only)
 
 **Skip if `code/src/mobile/` does not exist** — inapplicable, not unmet. The items themselves are
-owned by `project-management/workflows/20-frontend-code/CHECKLIST.md` → _Mobile surface_; they are
+owned by `project-management/workflows/21-frontend-code/CHECKLIST.md` → _Mobile surface_; they are
 not restated here.
 
-- [ ] Step 7M completed and 20-frontend-code's mobile checklist fully satisfied
+- [ ] Step 7M completed and 21-frontend-code's mobile checklist fully satisfied
 - [ ] `bash code/src/scripts/mobile/test.sh --coverage` and `bundle.sh` both pass
 
 ---
@@ -55,12 +55,12 @@ not restated here.
 
 Workflow 21 writes these; this checklist only confirms they exist before the PR. The record
 formats, templates, and destinations live in
-`project-management/workflows/21-implementation-documentation/` — never restate them here.
+`project-management/workflows/22-implementation-documentation/` — never restate them here.
 
-- [ ] `project-management/workflows/21-implementation-documentation/` run to completion for this story · _opus_
+- [ ] `project-management/workflows/22-implementation-documentation/` run to completion for this story · _opus_
 - [ ] Its `CHECKLIST.md` fully satisfied — every applicable IMPLEMENTATION record written from template and linked to `US###` · _opus_
 - [ ] No spec left with a `PLANNING/` artefact but no `IMPLEMENTATION/` record · _opus_
-- [ ] Findings record written to `project-management/src/19-FINDINGS/` (even if nothing was found) · _opus_
+- [ ] Findings record written to `project-management/src/20-FINDINGS/` (even if nothing was found) · _opus_
 - [ ] `/GAPS.md` and `/DEFERRED.md` updated from those findings · _opus_
 - [ ] Touched `CONTEXT.md`/`CLAUDE.md` complete and the code-review-graph refreshed — hard gate before commit (`.claude/CLAUDE.md` Section 6) · _opus_
 

@@ -11,7 +11,7 @@ generated project with the stack running (`04-QUICKSTART.md`), and that you have
 ## The shape
 
 ```text
-chart (01)  →  specify (02–13)  →  decide & plan (14–16)  →  consolidate (17)  →  implement (18–20)  →  record & ship (21–23)
+chart (01)  →  specify (02–14)  →  decide & plan (15–17)  →  consolidate (18)  →  implement (19–21)  →  record & ship (22–24)
 ```
 
 Three properties make this work, and all three are easy to get wrong:
@@ -20,7 +20,7 @@ Three properties make this work, and all three are easy to get wrong:
   settles it. Stories are then _cut from_ the resolved map, which is why they stop rediscovering
   the same cross-cutting questions.
 - **Specify is a per-story loop, not a batch.** One story goes all the way from `02` to
-  `14-decisions` before the next begins, so each is planned against everything the previous ones
+  `15-decisions` before the next begins, so each is planned against everything the previous ones
   settled.
 - **Sprint planning fires on fill, not per story.** Each finished story is slotted into the open
   sprint record; when it reaches the point ceiling, `15` and `16` run for that sprint's stories,
@@ -141,8 +141,8 @@ an estimate, and a status.
 `project-management/workflows/03-sprint-planning/` → `src/03-SPRINTS/SPRINT-01.md`.
 
 A running ledger, not a plan: the sprint goal, and each story added with its points as it clears
-`14-decisions`. When the total reaches the capacity ceiling the sprint is **full**, and that is
-what triggers `15-sprint-plans`.
+`15-decisions`. When the total reaches the capacity ceiling the sprint is **full**, and that is
+what triggers `16-sprint-plans`.
 
 For your first story the sprint will not be full — so you carry straight on to the design gates,
 and come back to `15`/`16` later.
@@ -170,13 +170,13 @@ These run on **Fable** — the reasoning tier. Specification is where thinking i
 
 ## 4. Decide and plan
 
-**ADRs** (`14-decisions/`) capture choices with consequences, so they are not re-litigated in
+**ADRs** (`15-decisions/`) capture choices with consequences, so they are not re-litigated in
 review six weeks later.
 
-**Sprint plan** (`15-sprint-plans/`) — the definitive assignments and per-phase breakdown, written
+**Sprint plan** (`16-sprint-plans/`) — the definitive assignments and per-phase breakdown, written
 _after_ the gates because they constrain it.
 
-**Story plan** (`16-story-plans/`) — `STORY-PLAN-US001-*.md`. **This is what you code from.** It
+**Story plan** (`17-story-plans/`) — `STORY-PLAN-US001-*.md`. **This is what you code from.** It
 references the sprint plan, the decisions, and every specification above it.
 
 ## 5. Branch
@@ -194,9 +194,9 @@ Three PM phases drive the code workflows:
 
 | Phase               | Drives                                                                                                                   |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `18-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project                     |
-| `19-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
-| `20-frontend-code/` | `01-implement-story/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                       |
+| `19-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project                     |
+| `20-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
+| `21-frontend-code/` | `01-implement-story/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                       |
 
 The canonical map of which PM workflow pairs with which code workflow is the cross-layer table
 in the root `REFERENCES.md` — neither layer restates it.
@@ -232,13 +232,13 @@ For anything touching auth, permissions or personal data, also load the `securit
 
 ## 8. Document — the hard gate
 
-**Nothing commits until this is done.** `project-management/workflows/21-implementation-documentation/`
+**Nothing commits until this is done.** `project-management/workflows/22-implementation-documentation/`
 owns it:
 
 - update the directory tree in every affected `CONTEXT.md`
 - create `CONTEXT.md` + `CLAUDE.md` in every new directory
 - write the implementation records — GDPR, security, QA, SEO, API, review, tests
-- route findings: `19-FINDINGS/`, bugs to `20-BUGS/`, refactors to `21-REFACTORING/`
+- route findings: `20-FINDINGS/`, bugs to `21-BUGS/`, refactors to `22-REFACTORING/`
 - update `GAPS.md` and `DEFERRED.md`
 - refresh the code-review-graph
 
@@ -248,7 +248,7 @@ owns it:
 Raise a PR for this branch.
 ```
 
-`project-management/workflows/22-pr-and-review/`. The `pre-pr-check.sh` hook fires before
+`project-management/workflows/23-pr-and-review/`. The `pre-pr-check.sh` hook fires before
 `gh pr create` and runs eight gates — format, lint, typecheck, tests, security, stubs, cloc,
 lockfiles. It blocks the PR rather than letting CI find it later.
 

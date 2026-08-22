@@ -48,5 +48,5 @@ risky one is verified on staging before it may be promoted to `main`.
 
 - `how-to/docs/GIT-WORKTREES.md` — the full worktree guide the naming table summarises
 - `how-to/workflows/02-worktree-setup/` — the procedure that creates one
-- `project-management/workflows/22-pr-and-review/` — the procedure the PR gates are executed by
+- `project-management/workflows/23-pr-and-review/` — the procedure the PR gates are executed by
 - `project-management/docs/VERSIONING-GUIDE.md` — what a breaking-change signal means for the number

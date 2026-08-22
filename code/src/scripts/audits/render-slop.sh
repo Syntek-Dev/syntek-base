@@ -26,7 +26,7 @@
 #   project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS
 #
 # DESIGN-TIME ONLY, and stage 1 is deliberately absent. USER-STORY-IDEAS/ holds one
-# screen per story and is frozen once workflow 17 runs; a page-SET clause has nothing
+# screen per story and is frozen once workflow 18 runs; a page-SET clause has nothing
 # to say about a single screen, and a gate there would invite edits to an audit trail
 # the PM layer says is never rewritten. The consolidated folder is the one place the
 # whole set exists at once, and it exists before any code.
@@ -263,7 +263,7 @@ write_report() {
 # ── No-op when the surface is absent ──────────────────────────────────────────
 if [[ "$FILE_COUNT" -eq 0 ]]; then
   SURFACE_ABSENT=true
-  SURFACE_NOTE="Surface absent: no consolidated wireframe was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition. The base template ships none — screens arrive from workflow 08 and are consolidated by workflow 17."
+  SURFACE_NOTE="Surface absent: no consolidated wireframe was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition. The base template ships none — screens arrive from workflow 08 and are consolidated by workflow 18."
   log ""
   bold "▸ render-slop.sh · $TIMESTAMP"
   log "  no *.html under: ${ROOTS[*]}"

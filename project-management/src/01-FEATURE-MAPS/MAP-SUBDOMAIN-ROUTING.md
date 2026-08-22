@@ -41,7 +41,7 @@ host→URLconf seam is touched is itself undecided.
 | Domain                   | URL and host architecture — the seam between `code/docs/URL-STRATEGY.md` and `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`                            |
 | Skills to load           | `backend` · `stack-django` · `security` · `cicd` · `doc-writer` · `seo` · `scale-planning` (the edge contract is one of its two snapshots)                    |
 | Standing preferences     | **No ADRs in this repo** (see Out of scope) · this repo **specifies**, the deploy repo **implements** · a rule ships with a gate · no new copier token wanted |
-| Umbrella ADRs            | **None, and none is possible** — this template authors no ADRs (`../14-DECISIONS/CLAUDE.md`)                                                                  |
+| Umbrella ADRs            | **None, and none is possible** — this template authors no ADRs (`../15-DECISIONS/CLAUDE.md`)                                                                  |
 | Register entries triaged | 0 — not charted yet. Root `GAPS.md` and `DEFERRED.md` were both empty at seeding                                                                              |
 
 ---
@@ -160,7 +160,7 @@ In scope, not yet sharp enough to state as a decision. **Leaving something here 
 | The `status.` host itself                    | Settled contract since before this map. It enters as a **worked example** of the per-host obligation, not as a question                                                  |
 | Tenant-per-subdomain multi-tenancy           | A different feature. `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md:214` names tenant resolution from a subdomain; **this map is about surfaces, not tenants**        |
 | Building any client-facing host              | `email.` / `chat.` / `video.` are the motivating case for **not foreclosing** the shape. Building one is its own feature with its own map                                |
-| Authoring an ADR for any of it               | This template authors no ADRs (`../14-DECISIONS/CLAUDE.md`). The shipped guide is the decision record                                                                    |
+| Authoring an ADR for any of it               | This template authors no ADRs (`../15-DECISIONS/CLAUDE.md`). The shipped guide is the decision record                                                                    |
 
 ---
 

@@ -31,8 +31,8 @@ writing `SEO-PLAN-US###-<DESCRIPTOR>.md` into `src/12-SEO/PLANNING/`.
 ## Guardrails
 
 - **Never audit a built page here.** There is no page yet — this gate runs inside the per-story
-  specify loop, before `20-frontend-code`. Lighthouse scores, rendered-tag checks, and the
-  `IMPLEMENTATION/` record all belong to `21-implementation-documentation`.
+  specify loop, before `21-frontend-code`. Lighthouse scores, rendered-tag checks, and the
+  `IMPLEMENTATION/` record all belong to `22-implementation-documentation`.
 - **A story with no public URL records `SEO: N/A`** with a reason. Inventing criteria for a page
   that will not exist creates a checklist nobody can satisfy.
 - **Targets must be concrete.** "Good meta description" is not a target; the intended text, or a
@@ -49,5 +49,5 @@ writing `SEO-PLAN-US###-<DESCRIPTOR>.md` into `src/12-SEO/PLANNING/`.
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the plan `SEO-PLAN-US###-<DESCRIPTOR>.md` under
   `src/12-SEO/PLANNING/`, linked to its `US###`.
 - **Not produced here:** the `IMPLEMENTATION/` record and any Lighthouse export — those are
-  written by `21-implementation-documentation`.
+  written by `22-implementation-documentation`.
 - Documentation `SCREAMING-SNAKE-CASE.md`; descriptors `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY.

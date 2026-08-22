@@ -56,6 +56,6 @@ second contract for no new capability. If the caller is an HTTP client, use `04-
 - `code/docs/URL-STRATEGY.md` — why `/mcp/` is a sibling of `/api/`, never nested inside it
 - `code/workflows/02-tdd-cycle/` — the Red → Green → Refactor cycle tools are built through
 - `code/workflows/08-security-hardening/` — the audit `/mcp/` must pass before public exposure
-- `project-management/workflows/19-api-code/` — **this workflow is entered from there**
-- `project-management/workflows/21-implementation-documentation/` — writes the implementation
+- `project-management/workflows/20-api-code/` — **this workflow is entered from there**
+- `project-management/workflows/22-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

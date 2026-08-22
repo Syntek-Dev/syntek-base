@@ -140,7 +140,7 @@ still owed, and `review` where the version set should be independently checked.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/23-release/` — the release procedure that calls this
+- `project-management/workflows/24-release/` — the release procedure that calls this
 
 ## Cross-references
 

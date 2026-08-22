@@ -56,5 +56,5 @@ model: opus
 ## Definition of Done
 
 - [ ] Behaviour is identical to before the refactor — verified by passing tests
-- [ ] Refactoring notes saved to `project-management/src/21-REFACTORING/` if the change is significant
+- [ ] Refactoring notes saved to `project-management/src/22-REFACTORING/` if the change is significant
 - [ ] Committed and pushed

@@ -244,9 +244,9 @@ caller said to.
 - `code/workflows/13-desktop-app/` — the procedure for this surface
 - `code/workflows/12-rust-extension/` — when a window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
-- `project-management/workflows/20-frontend-code/` — the build phase this is entered from
+- `project-management/workflows/21-frontend-code/` — the build phase this is entered from
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/07-dependency-updates/` — the cadence a Slint bump follows
 
 ## Cross-references

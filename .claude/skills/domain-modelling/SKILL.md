@@ -13,7 +13,7 @@ description: >-
 
 The project's domain vocabulary is **distributed, not a single glossary file**: every directory's
 `CONTEXT.md` is the orientation ("what is here") for its area, and the ADRs in
-`project-management/src/14-DECISIONS/` record the decisions behind the names. This skill keeps that
+`project-management/src/15-DECISIONS/` record the decisions behind the names. This skill keeps that
 model current as a design or refactor crystallises new concepts — so a name enters the model the
 moment it earns its place, not in a later doc sweep.
 
@@ -37,7 +37,7 @@ Do these **inline, as the decision lands** — never batch them for later.
 
 3. **Settle a load-bearing decision → offer an ADR.**
    When a design choice would otherwise be re-suggested or re-litigated by a future review, record it
-   as an ADR in `project-management/src/14-DECISIONS/` (naming per `.claude/CLAUDE.md` Section 5),
+   as an ADR in `project-management/src/15-DECISIONS/` (naming per `.claude/CLAUDE.md` Section 5),
    framed as: _"recording this so future architecture reviews don't re-propose it."_ Only for reasons
    a future explorer would actually need — skip the ephemeral ("not worth it right now") and the
    self-evident. A rejected refactor with a real reason is an ADR; a rejected refactor with no
@@ -67,8 +67,8 @@ Do these **inline, as the decision lands** — never batch them for later.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/04-database-schema/` — naming the concepts the schema encodes
-- `project-management/workflows/14-decisions/` — recording a load-bearing decision
-- `project-management/workflows/21-implementation-documentation/` — where a new term lands in the touched `CONTEXT.md`
+- `project-management/workflows/15-decisions/` — recording a load-bearing decision
+- `project-management/workflows/22-implementation-documentation/` — where a new term lands in the touched `CONTEXT.md`
 
 ## Cross-references
 

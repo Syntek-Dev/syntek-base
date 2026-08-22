@@ -13,7 +13,7 @@ closing each planned constraint with evidence.
 
 ## How to work here
 
-- **Routing:** written during `project-management/workflows/21-implementation-documentation/` (or on
+- **Routing:** written during `project-management/workflows/22-implementation-documentation/` (or on
   `workflows/10-security-checks/` verification) for any story that shipped a security
   surface, using the `security` skill (Fable) against the story's plan in
   `../PLANNING/AUDIT-PLAN-US###-*.md` and the shipped code.

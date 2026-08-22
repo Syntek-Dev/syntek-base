@@ -22,8 +22,14 @@ the backend and frontend teams use as the single source of truth for the interfa
 
 ## When to run
 
+**Entry condition: the story's `API` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story introduces a
+Ninja endpoint. A story whose `API` flag reads `N/A` skips this gate, and every downstream
+checklist reads the flag rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 - After `workflows/04-database-schema/` is complete for the relevant models
-- Before `workflows/15-sprint-plans/` — the API design informs story point estimates
+- Before `workflows/16-sprint-plans/` — the API design informs story point estimates
 - Required for every story that introduces or modifies a Django Ninja endpoint or Schema
   model
 
@@ -55,10 +61,10 @@ the backend and frontend teams use as the single source of truth for the interfa
 | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `04-database-schema`            | Upstream — schema must be agreed first                                                                                                              |
 | `10-security-checks`            | Parallel or prior — feeds permission rules                                                                                                          |
-| `15-sprint-plans`               | Downstream — API doc informs estimates                                                                                                              |
-| `19-api-code`                   | Implementation phase — uses this doc as contract                                                                                                    |
-| `code/workflows/04-api-design/` | Code-layer counterpart — expresses this contract as Ninja routers, Schemas, and endpoints; entered **from** `19-api-code`, never directly from here |
-| `22-pr-and-review`              | Review gate — API doc checked against implementation                                                                                                |
+| `16-sprint-plans`               | Downstream — API doc informs estimates                                                                                                              |
+| `20-api-code`                   | Implementation phase — uses this doc as contract                                                                                                    |
+| `code/workflows/04-api-design/` | Code-layer counterpart — expresses this contract as Ninja routers, Schemas, and endpoints; entered **from** `20-api-code`, never directly from here |
+| `23-pr-and-review`              | Review gate — API doc checked against implementation                                                                                                |
 
 **Layer split:** this workflow decides the contract (Fable); `code/workflows/04-api-design/`
 decides how that contract is expressed in Django Ninja code (Opus). Design here, build there.
@@ -78,6 +84,6 @@ decides how that contract is expressed in Django Ninja code (Opus). Design here,
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — domain modelling that Ninja Schema models must reflect
 - `code/docs/performance/DATABASE-PERFORMANCE.md` — pagination limits, N+1 prevention, and caching decisions at design stage
 - `code/docs/api-design/REST-CONVENTIONS.md` — the shared REST/HTTP contract the Ninja API follows: URL structure, HTTP methods, status codes, pagination
-- `project-management/workflows/15-sprint-plans/` — downstream workflow; API doc informs estimates
+- `project-management/workflows/16-sprint-plans/` — downstream workflow; API doc informs estimates
 - `code/workflows/04-api-design/` — the code-layer counterpart that implements this contract; it
-  names this workflow as its upstream, and is entered from `19-api-code/`
+  names this workflow as its upstream, and is entered from `20-api-code/`

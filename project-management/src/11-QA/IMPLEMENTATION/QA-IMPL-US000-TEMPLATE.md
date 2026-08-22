@@ -125,7 +125,7 @@ Where the story touches personal data, evidence that the shipped code protects i
 - [ ] Accessibility observations confirmed against the build
 - [ ] GDPR & security observations confirmed (or N/A recorded)
 - [ ] Coverage floors met for all modules in scope
-- [ ] Manual testing sign-off (see `../../17-TESTS/US###-MANUAL-TESTING.md`)
+- [ ] Manual testing sign-off (see `../../18-TESTS/US###-MANUAL-TESTING.md`)
 - [ ] Reviewer approval — **blocks merge until complete**
 
 ---
@@ -134,7 +134,7 @@ Where the story touches personal data, evidence that the shipped code protects i
 
 - `../PLANNING/QA-PLAN-US###-<DESCRIPTOR>.md` — the pre-development plan verified here
 - `../../02-STORIES/US###.md` — the story under review
-- `../../17-TESTS/US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md` — downstream test records
-- `../../18-REVIEWS/` — code-review notes from the same PR
+- `../../18-TESTS/US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md` — downstream test records
+- `../../19-REVIEWS/` — code-review notes from the same PR
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
-- `project-management/workflows/21-implementation-documentation/` — where this review is written
+- `project-management/workflows/22-implementation-documentation/` — where this review is written

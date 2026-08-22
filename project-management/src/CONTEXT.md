@@ -3,11 +3,11 @@
 **Last Updated**: <%DATE%> · **Language**: British English (en_GB)
 
 Source artefacts for project management, planning, and compliance — a base-repo
-scaffold. The numbered folders run in **three tiers**: _specify_ (02–13), _decide &
-plan_ (14–16), then _implement & record_ (17–22). `00-ASSETS` is pre-workflow reference.
+scaffold. The numbered folders run in **three tiers**: _specify_ (02–14), _decide &
+plan_ (15–17), then _implement & record_ (18–23). `00-ASSETS` is pre-workflow reference.
 Each compliance folder (09–13) carries per-story `PLANNING/` + `IMPLEMENTATION/`
-templates, mirroring the 09-GDPR pattern. Everything from 02 to 21 is anchored to a
-user story; **22-INCIDENTS is the one folder that is not**, because an incident is not
+templates, mirroring the 09-GDPR pattern. Everything from 02 to 22 is anchored to a
+user story; **23-INCIDENTS is the one folder that is not**, because an incident is not
 caused by, scoped to, or owned by a story.
 
 **The stack these artefacts specify.** Every template here is written against one
@@ -28,14 +28,14 @@ surface. Interaction tiers and the page-vs-API split: `code/docs/RENDERING.md` �
 
 | Tier                       | Folders | What happens                                                                                                                                                      |
 | -------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Specify**                | 02–13   | Write the story, organise sprints, and produce every design & compliance spec — DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
-| **Decide & plan**          | 14–16   | Make the architectural decisions (ADRs), then plan each sprint, then plan each story — all **before any code**                                                    |
-| **Implement & record**     | 17–21   | After code ships: record tests, reviews, findings, bugs, and refactoring, **per story**                                                                           |
-| **Record (not per story)** | 22      | The PII-free incident register — declared incidents, their severity and outcome. No story anchor, and no workflow: an incident is unplanned                       |
+| **Specify**                | 02–14   | Write the story, organise sprints, and produce every design & compliance spec — DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
+| **Decide & plan**          | 15–17   | Make the architectural decisions (ADRs), then plan each sprint, then plan each story — all **before any code**                                                    |
+| **Implement & record**     | 18–22   | After code ships: record tests, reviews, findings, bugs, and refactoring, **per story**                                                                           |
+| **Record (not per story)** | 23      | The PII-free incident register — declared incidents, their severity and outcome. No story anchor, and no workflow: an incident is unplanned                       |
 
-The **story plan (16) is the master reference the developer codes from** — it points
-back up to its sprint plan (15), the decisions (14), and every 02–13 spec. Sprint plans
-(15) feed the story plans; the sprint plan sets the goal, story set, and sequence.
+The **story plan (17) is the master reference the developer codes from** — it points
+back up to its sprint plan (16), the decisions (15), and every 02–14 spec. Sprint plans
+(16) feed the story plans; the sprint plan sets the goal, story set, and sequence.
 
 ---
 
@@ -50,7 +50,7 @@ project-management/src/
 │   ── Discover (01) ──
 ├── 01-FEATURE-MAPS/    ← MAP-<FEATURE>.md — wayfinder decision maps
 │
-│   ── Specify (02–13) ──
+│   ── Specify (02–14) ──
 ├── 02-STORIES/         ← US###.md (+ US000-TEMPLATE.md)
 ├── 03-SPRINTS/         ← SPRINT-##.md — backlog → sprint organisation (high-level)
 │   (04–08 are three-stage: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/)
@@ -65,21 +65,22 @@ project-management/src/
 ├── 11-QA/              ← PLANNING/ + IMPLEMENTATION/ (per story)
 ├── 12-SEO/             ← PLANNING/ + IMPLEMENTATION/ (per story)
 ├── 13-API-DESIGN/      ← PLANNING/ + IMPLEMENTATION/ (per story)
+├── 14-LOGGING/         ← PLANNING/ + IMPLEMENTATION/ (per story)
 │
-│   ── Decide & plan (14–16) ──
-├── 14-DECISIONS/       ← ADR-###-<TITLE>.md (architectural decision records)
-├── 15-SPRINT-PLANS/    ← detailed sprint execution plans
-├── 16-STORY-PLANS/     ← per-story implementation plan (the code master reference)
+│   ── Decide & plan (15–17) ──
+├── 15-DECISIONS/       ← ADR-###-<TITLE>.md (architectural decision records)
+├── 16-SPRINT-PLANS/    ← detailed sprint execution plans
+├── 17-STORY-PLANS/     ← per-story implementation plan (the code master reference)
 │
-│   ── Implement & record, per story (17–21) ──
-├── 17-TESTS/           ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
-├── 18-REVIEWS/         ← REVIEW-US###-<DESCRIPTOR>.md
-├── 19-FINDINGS/        ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-├── 20-BUGS/            ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-├── 21-REFACTORING/     ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ── Implement & record, per story (18–22) ──
+├── 18-TESTS/           ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+├── 19-REVIEWS/         ← REVIEW-US###-<DESCRIPTOR>.md
+├── 20-FINDINGS/        ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+├── 21-BUGS/            ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+├── 22-REFACTORING/     ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
 │
-│   ── Record, not per story (22) ──
-└── 22-INCIDENTS/       ← INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md + INCIDENT-INDEX.md (PII-free)
+│   ── Record, not per story (23) ──
+└── 23-INCIDENTS/       ← INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md + INCIDENT-INDEX.md (PII-free)
 ```
 
 Every folder carries a `CONTEXT.md` + `CLAUDE.md`; the 09–13 folders scaffold their
@@ -105,6 +106,15 @@ work is silently orphaned — and the longer the project has run, the more of it
 So a new artefact folder takes the **next free number at the end**, even where that breaks the
 workflow↔`src` mirroring. The mirroring is a convenience; the developer's work is not.
 
+**The one exception, and its price.** A release may renumber this tree **only if it ships a
+migration in the same commit** that moves the developer's files across — the shape of
+`.copier/migrations/v2.0.0-renumber-src.sh`: idempotent, refusing to overwrite, and skipping any
+folder that still carries a `CONTEXT.md`. Exercised twice: **v2.0.0** to open `01` for the
+feature map, and **v7.0.0** to open `14` for `14-LOGGING`. Both were taken deliberately, against
+a template with no live projects at risk, and neither makes the rule advisory — a migration is
+always writable, so "we could write one" is not a reason to renumber. The default remains append
+only.
+
 Enforced by `code/src/scripts/audits/template-orphans.sh`, which fails on any artefact sitting
 in a directory the current template no longer defines.
 
@@ -123,15 +133,16 @@ in a directory the current template no longer defines.
 | `QA-PLAN-US###-*.md` · `QA-IMPL-US###-*.md`                             | `11-QA/PLANNING` · `/IMPLEMENTATION`                                                                 |
 | `SEO-PLAN-US###-*.md` · `SEO-IMPL-US###-*.md`                           | `12-SEO/PLANNING` · `/IMPLEMENTATION`                                                                |
 | `API-PLAN-US###-*.md` · `API-IMPL-US###-*.md`                           | `13-API-DESIGN/PLANNING` · `/IMPLEMENTATION`                                                         |
-| `ADR-###-<TITLE>.md`                                                    | `14-DECISIONS/`                                                                                      |
-| `##-SPRINT-PLAN-##.md`                                                  | `15-SPRINT-PLANS/`                                                                                   |
-| `STORY-PLAN-US###-<DESCRIPTOR>.md`                                      | `16-STORY-PLANS/`                                                                                    |
-| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `17-TESTS/`                                                                                          |
-| `REVIEW-US###-<DESCRIPTOR>.md`                                          | `18-REVIEWS/`                                                                                        |
-| `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                              | `19-FINDINGS/`                                                                                       |
-| `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                  | `20-BUGS/`                                                                                           |
-| `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                          | `21-REFACTORING/`                                                                                    |
-| `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` · `INCIDENT-INDEX.md`             | `22-INCIDENTS/` (no `US###` form — an incident is not owned by a story)                              |
+| `LOGGING-PLAN-US###-*.md` · `LOGGING-IMPL-US###-*.md`                   | `14-LOGGING/PLANNING` · `/IMPLEMENTATION`                                                            |
+| `ADR-###-<TITLE>.md`                                                    | `15-DECISIONS/`                                                                                      |
+| `##-SPRINT-PLAN-##.md`                                                  | `16-SPRINT-PLANS/`                                                                                   |
+| `STORY-PLAN-US###-<DESCRIPTOR>.md`                                      | `17-STORY-PLANS/`                                                                                    |
+| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `18-TESTS/`                                                                                          |
+| `REVIEW-US###-<DESCRIPTOR>.md`                                          | `19-REVIEWS/`                                                                                        |
+| `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                              | `20-FINDINGS/`                                                                                       |
+| `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                  | `21-BUGS/`                                                                                           |
+| `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                          | `22-REFACTORING/`                                                                                    |
+| `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` · `INCIDENT-INDEX.md`             | `23-INCIDENTS/` (no `US###` form — an incident is not owned by a story)                              |
 
 Descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY; story numbers zero-padded to three digits.
 
@@ -146,13 +157,13 @@ an extra stage, because design fragments across stories in a way compliance does
 
 Stories are planned **one at a time** (`workflows/CONTEXT.md` → _The planning cadence_), so each
 story designs the schema, flows, tokens, components, and screens it needs in isolation. That
-drifts by construction. `17-consolidate-design-work` reconciles it once every story is planned.
+drifts by construction. `18-consolidate-design-work` reconciles it once every story is planned.
 
 | Sub-folder            | When           | Holds                                            |
 | --------------------- | -------------- | ------------------------------------------------ |
-| `USER-STORY-IDEAS/`   | workflow 04–08 | the per-story design — **frozen** once `17` runs |
-| `CONSOLIDATED-IDEAS/` | workflow 17    | the unified design; **this is what gets built**  |
-| `IMPLEMENTATION/`     | workflow 21    | the per-story record of what actually shipped    |
+| `USER-STORY-IDEAS/`   | workflow 04–08 | the per-story design — **frozen** once `18` runs |
+| `CONSOLIDATED-IDEAS/` | workflow 18    | the unified design; **this is what gets built**  |
+| `IMPLEMENTATION/`     | workflow 22    | the per-story record of what actually shipped    |
 
 Each also keeps one **cumulative** asset outside the stages — `ERD-DIAGRAMS/`, `DIAGRAMS/`,
 `guide-build/`, `component-build/`, `SHARED/wireframe.css`. The brand and component PDFs are

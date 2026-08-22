@@ -15,7 +15,7 @@ architectural decisions are promoted to the doc that owns them — the promotion
 `DEFERRED.md` before charting a feature — to **suggest** candidate features from what has
 accumulated, and to triage every open entry against the feature being charted (closes / blocks /
 unrelated). An entry a feature will close is **claimed** on its `MAP-<FEATURE>.md`; the
-`✅ CLOSED` mark itself is only applied by `workflows/21-implementation-documentation/`, against
+`✅ CLOSED` mark itself is only applied by `workflows/22-implementation-documentation/`, against
 shipped code.
 
 ## Format

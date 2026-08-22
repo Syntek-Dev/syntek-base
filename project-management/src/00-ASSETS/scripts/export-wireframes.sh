@@ -34,11 +34,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 
-SCREENS_DIR="$PROJECT_ROOT/project-management/src/07-WIREFRAMES/SCREENS"
+SCREENS_DIR="$PROJECT_ROOT/project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS"
 OUTPUT_DIR="$PROJECT_ROOT/project-management/export"
 
 # Relative path from project root to SCREENS dir — used to build HTTP URLs.
-SCREENS_REL="project-management/src/07-WIREFRAMES/SCREENS"
+SCREENS_REL="project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 

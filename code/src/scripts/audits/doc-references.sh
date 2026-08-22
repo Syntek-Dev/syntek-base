@@ -44,7 +44,7 @@
 #                     when a creator can be NAMED, never to quieten a finding.
 #
 #                     Naming PATTERNS are not citations and are not flagged: "take the next
-#                     free `ADR-###` in `14-DECISIONS/`" names a format, not a document. The
+#                     free `ADR-###` in `15-DECISIONS/`" names a format, not a document. The
 #                     `*-TEMPLATE.md` files are real and citable for the same reason.
 #
 #                     What it CANNOT check is whether a resolving path is the RIGHT one, or

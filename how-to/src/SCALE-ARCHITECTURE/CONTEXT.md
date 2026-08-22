@@ -87,7 +87,7 @@ verified reading. Decisions (tier targets, headroom values) are settled through
 ## Cross-references
 
 - `how-to/src/SERVER-ARCHITECTURE/` — the downstream server-facing spec (assigned compute + buffer)
-- `project-management/src/14-DECISIONS/` — where the scaling and cache-posture decisions are recorded
+- `project-management/src/15-DECISIONS/` — where the scaling and cache-posture decisions are recorded
 - `code/docs/architecture/CORE-AND-SCALING.md` — the day-to-day scaling rules
 - `code/docs/PERFORMANCE.md` (+ `performance/API-AND-MONITORING.md`) — budgets and load-test triggers
 - `<%DEPLOY_REPO%>` (deploy repo) — the provisioning this snapshot's topology maps

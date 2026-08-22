@@ -88,10 +88,10 @@ to commit the updated artefacts.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/22-pr-and-review/` — a story is not complete until its PR merged
-- `project-management/workflows/23-release/` — **the procedure of record** for sprint and
+- `project-management/workflows/23-pr-and-review/` — a story is not complete until its PR merged
+- `project-management/workflows/24-release/` — **the procedure of record** for sprint and
   release completion
-- `project-management/workflows/21-implementation-documentation/` — the records the
+- `project-management/workflows/22-implementation-documentation/` — the records the
   documentation gate above checks for
 
 ## Cross-references

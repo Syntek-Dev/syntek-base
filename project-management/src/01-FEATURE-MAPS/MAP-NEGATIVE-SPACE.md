@@ -156,7 +156,7 @@ If a node's outcome would remove something on the Keep list, it was mis-scoped �
 | Domain                                 | Correctness doctrine · invariant enforcement · error taxonomy · audit tooling · skill routing                                                                                                                                                |
 | Skills to load                         | `codebase-design` · `domain-modelling` · `grill-with-docs` · `stack-django` · `stack-htmx-templates` · `stack-react-native` (N-011) · `runbook` (the audit register)                                                                         |
 | Standing preferences                   | Additive first · one enforcement point + the DB constraint · no restatement of an enforced guide · baseline edits declare their deletion class · instructional `.md` ≤ 300 lines · surfaces gated by copier `_exclude` only                  |
-| Umbrella ADRs                          | **None.** Fourteenth consecutive decline on the settled precedent: `14-DECISIONS/` is user-story-focused, so architecture doctrine goes to `code/docs/` and its per-project half to `how-to/src/`. Confirmed by Sam at charting              |
+| Umbrella ADRs                          | **None.** Fourteenth consecutive decline on the settled precedent: `15-DECISIONS/` is user-story-focused, so architecture doctrine goes to `code/docs/` and its per-project half to `how-to/src/`. Confirmed by Sam at charting              |
 | Register entries triaged               | 0 closes · 2 blocks · 12 unrelated (root `GAPS.md` and `DEFERRED.md` are empty stubs by design; at charting all 14 open entries sat in `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` — since 13/08/2026, `MAP-BASE-HEALTH.md`)                |
 | Research                               | All three research nodes settled at charting — N-001 (the enforcement inventory), N-002 (exclusion + partial unique constraints), N-003 (Ninja's silent-ignore default). Verdicts below; no `research/` note earned one, each feeds one node |
 | Relationship to `MAP-DOCTRINE-UPGRADE` | **Separate map, deliberately.** That epic's destination is _design_ discipline (what good looks like); this one is _correctness_ discipline (what must never be true). No shared blocking edges; the Keep lists are disjoint                 |
@@ -527,7 +527,7 @@ a `TEMPLATE-GAPS.md` entry (09/08/2026).
 > deferral implied — the two PM asset builders keep shelling out to `xelatex`, with a reasoned
 > per-file exemption in `pyproject.toml` rather than a rewrite; the `E501` pair is gone. **The
 > entry behind this looks closable, and this map does not close it** — wayfinder claims, and
-> `21-implementation-documentation` closes against shipped code. Route: the dated entries moved
+> `22-implementation-documentation` closes against shipped code. Route: the dated entries moved
 > to `MAP-BASE-HEALTH.md` on 13/08/2026.
 
 **N-009 verdict — `string_if_invalid` cannot be the enforcement, so the template surface ships an
@@ -1013,7 +1013,7 @@ or `README.md`, which is where the rule says it should.
 
 **No node blocks a story**, because this epic cuts no stories — it produces documentation, one
 audit script and routing, inside the template itself. It follows `MAP-DOCTRINE-UPGRADE`'s process
-precedent: `01-feature-map`, `21-implementation-documentation`, `22-pr-and-review` and `23-release`
+precedent: `01-feature-map`, `22-implementation-documentation`, `23-pr-and-review` and `24-release`
 apply; the per-story specification machinery (`02`–`13`, `15`–`17`) and the build phases
 (`18`–`20`) do not, because there is no schema, user flow, wireframe or user-facing surface to
 specify.
@@ -1065,8 +1065,8 @@ same-change rule does not fire. Gates green on discharge: `negative-space.sh` (n
 **12 fail, 1 warn** — the count N-013's verdict reads stale on), `docs-length.sh` (717 files, none
 over), `doc-references.sh`, and the section-sign invariant at zero.
 
-**Next — none.** The epic goes to `21-implementation-documentation`, then `22-pr-and-review`
-and `23-release`, per the process precedent recorded above.
+**Next — none.** The epic goes to `22-implementation-documentation`, then `23-pr-and-review`
+and `24-release`, per the process precedent recorded above.
 
 ---
 

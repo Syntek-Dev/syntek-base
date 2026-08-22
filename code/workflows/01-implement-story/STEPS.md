@@ -48,7 +48,7 @@ planner [feature name and scope]
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
 permissions, and edge cases before producing the plan.
 
-Save the plan to `project-management/src/16-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`.
+Save the plan to `project-management/src/17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`.
 
 ### Step 2 — Write Failing Tests First (Red Phase)
 
@@ -176,7 +176,7 @@ deployable, not a client for the Django pages, so nothing from Step 7 carries ac
 expo-router files under `code/src/mobile/app/`; styling is `StyleSheet` over the token module;
 WCAG 2.2 AA holds with a React Native technique set (`code/docs/accessibility/MOBILE.md`).
 
-Full procedure, including the checklist: `project-management/workflows/20-frontend-code/`
+Full procedure, including the checklist: `project-management/workflows/21-frontend-code/`
 → Step 4M.
 
 ### Step 8 — Make Tests Green
@@ -210,7 +210,7 @@ qa-tester
 
 ### Step 10 — Implementation Documentation (hand off to PM 19)
 
-Hand the story to `project-management/workflows/21-implementation-documentation/`. That
+Hand the story to `project-management/workflows/22-implementation-documentation/`. That
 workflow **owns** the closeout and is its single source of truth — do not restate the record
 formats, destinations, or templates here; a second copy is exactly how they drift.
 
@@ -225,7 +225,7 @@ It covers, in order:
 1. the IMPLEMENTATION record for every design/compliance spec that applied to the story —
    GDPR, security, QA, SEO, API — each copied from its `.../IMPLEMENTATION/US000-TEMPLATE.md`
    and closed against its `PLANNING/` artefact with code evidence
-2. the story's findings record in `project-management/src/19-FINDINGS/`
+2. the story's findings record in `project-management/src/20-FINDINGS/`
 3. the `/GAPS.md` and `/DEFERRED.md` routing for anything that cannot close in this PR
 4. the `CONTEXT.md` / `CLAUDE.md` closeout across every touched layer, **and** the
    code-review-graph refresh alongside it

@@ -30,8 +30,8 @@ it in a browser directly.
 ## What does NOT go here
 
 - The skill definition + report format → `.claude/skills/improve-codebase-architecture/`
-- A resolved decision from a review → an ADR in `project-management/src/14-DECISIONS/`
-- Refactor notes → `project-management/src/21-REFACTORING/`
+- A resolved decision from a review → an ADR in `project-management/src/15-DECISIONS/`
+- Refactor notes → `project-management/src/22-REFACTORING/`
 - Runtime application logs → `code/src/logs/`
 
 ## Opening a report
@@ -46,4 +46,4 @@ xdg-open "$(ls -t code/src/improvement-architecture/*.html | head -1)"   # Linux
 
 - `.claude/skills/improve-codebase-architecture/SKILL.md` — the skill that writes these reports
 - `.claude/skills/codebase-design/SKILL.md` — the vocabulary the reports use
-- `project-management/src/14-DECISIONS/` — where a decision surfaced by a review is recorded
+- `project-management/src/15-DECISIONS/` — where a decision surfaced by a review is recorded

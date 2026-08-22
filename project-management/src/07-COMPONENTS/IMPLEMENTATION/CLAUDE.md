@@ -12,7 +12,7 @@ components a story used are implemented and match `../CONSOLIDATED-IDEAS/`.
 
 ## How to work here
 
-- **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
+- **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated set and the shipped django-components.
 - **Model:** Opus — verifying components landed is mechanical. Escalate to `frontend` (Fable)
   where a deviation needs judging.
@@ -32,8 +32,8 @@ components a story used are implemented and match `../CONSOLIDATED-IDEAS/`.
 - **Focus indicator is a hard check.** An interactive component with no visible focus state
   fails WCAG 2.2 AA and is a blocker, not a nit (`code/docs/ACCESSIBILITY.md`).
 - **A component used but absent from the consolidated set is a deviation.** Say whether
-  consolidation missed it or the build invented it: consolidation gap → `../../19-FINDINGS/`,
-  invented component → `../../20-BUGS/`.
+  consolidation missed it or the build invented it: consolidation gap → `../../20-FINDINGS/`,
+  invented component → `../../21-BUGS/`.
 - **Record, never fix** — corrections land in `code/`.
 - **Never rename or back-date a filed record.**
 - **Documentation only** — no component code, no secrets.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # sync-clickup.sh — Push the generated ClickUp client exports to ClickUp (idempotent upsert).
 #
-# The repo is the source of truth. Statuses are edited in 01-STORIES/, rendered to
+# The repo is the source of truth. Statuses are edited in 02-STORIES/, rendered to
 # export/clickup/US###-CLIENT.md by export-clickup-stories.sh, and this script upserts
 # each one as a ClickUp task. A durable story->task-id map
 # (export/clickup-task-map.json) keeps re-runs idempotent — updates never create duplicates.

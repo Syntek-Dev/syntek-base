@@ -8,7 +8,7 @@ this folder's `CONTEXT.md` (stage-1 scope, the freeze rule — imported above) �
 ## Purpose (one line)
 
 Stage-1 per-story schema designs — one `DB-IDEA-US###-<DESCRIPTOR>.md` per story, covering only
-the tables that story needs, written before the story reaches `14-decisions`.
+the tables that story needs, written before the story reaches `15-decisions`.
 
 ## How to work here
 

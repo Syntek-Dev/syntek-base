@@ -49,8 +49,8 @@ this section exists.
 | ----- | --------- | ------------------------------------- | ------------- | --------- |
 | D-001 |           |                                       |               |           |
 
-**Routing:** consolidation missed a needed component → `../../19-FINDINGS/` · build invented one
-→ `../../20-BUGS/` · accepted trade-off → note here with a reason.
+**Routing:** consolidation missed a needed component → `../../20-FINDINGS/` · build invented one
+→ `../../21-BUGS/` · accepted trade-off → note here with a reason.
 
 - [ ] No unexplained deviation remains
 

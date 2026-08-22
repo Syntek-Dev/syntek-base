@@ -17,7 +17,7 @@ project-management/src/13-API-DESIGN/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a record during `project-management/workflows/21-implementation-documentation/`, after a story's
+Write a record during `project-management/workflows/22-implementation-documentation/`, after a story's
 Ninja API code ships and before the story closes. Copy `API-IMPL-US000-TEMPLATE.md`, open
 the story's design contract in `../PLANNING/API-PLAN-US###-*.md`, and verify the shipped
 API against it.
@@ -47,9 +47,9 @@ header outcome and needs nothing further.
 - `API-IMPL-US000-TEMPLATE.md` — the per-story verification template
 - `../PLANNING/` — the pre-implementation design contracts these records verify
 - `../CONTEXT.md` — the API-design folder overview and the PLANNING/IMPLEMENTATION split
-- `../../17-TESTS/` · `../../18-REVIEWS/` — downstream test status and code-review notes
+- `../../18-TESTS/` · `../../19-REVIEWS/` — downstream test status and code-review notes
 - `code/docs/API-DESIGN.md` · `code/docs/SECURITY.md` — the Django Ninja conventions and the
   permission/IDOR enforcement these records must stay consistent with
-- `project-management/workflows/21-implementation-documentation/` — where these records are written
+- `project-management/workflows/22-implementation-documentation/` — where these records are written
 
 **Last Updated**: <%DATE%>

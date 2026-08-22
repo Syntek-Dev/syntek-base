@@ -73,7 +73,7 @@ to application code, precisely because that is where the implementations diverge
 
 The register of what this project actually resolves to is
 [`how-to/src/PLATFORM-PROVIDERS.md`](../../how-to/src/PLATFORM-PROVIDERS.md). When the engine
-is chosen, record it there and in an ADR under `project-management/src/14-DECISIONS/`.
+is chosen, record it there and in an ADR under `project-management/src/15-DECISIONS/`.
 
 ---
 

@@ -12,7 +12,7 @@ model: fable
 
 > **This gate plans; it does not verify.** Everything measured against a built page — rendered
 > tags, Lighthouse, the `IMPLEMENTATION/` record — is checked in
-> `21-implementation-documentation`, not here.
+> `22-implementation-documentation`, not here.
 
 ---
 
@@ -57,7 +57,7 @@ model: fable
 ## Gaps
 
 - [ ] Every `SEO-GAP-n` is resolved in this plan or fed back into `src/02-STORIES/US###.md`
-- [ ] No `[OPEN]` gap remains — an open gap must not survive into `14-decisions`
+- [ ] No `[OPEN]` gap remains — an open gap must not survive into `15-decisions`
 
 ## Consistency
 
@@ -74,4 +74,4 @@ model: fable
 ## Definition of Done
 
 - [ ] Every box above ticked, or the whole plan is a justified `SEO: N/A`
-- [ ] The story can proceed to `13-api-design/` and `14-decisions/`
+- [ ] The story can proceed to `13-api-design/` and `15-decisions/`

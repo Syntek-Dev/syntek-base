@@ -15,8 +15,8 @@ built (`IMPLEMENTATION/`), with rendered PNGs in `DIAGRAMS/`.
 ## How to work here
 
 - **Routing:** never author here free-hand. Stage 1 comes from `workflows/05-user-flow-design/`,
-  stage 2 from `workflows/17-consolidate-design-work/`, stage 3 from
-  `workflows/21-implementation-documentation/`.
+  stage 2 from `workflows/18-consolidate-design-work/`, stage 3 from
+  `workflows/22-implementation-documentation/`.
 - **Model:** Fable for mapping and for consolidation — journey design and gap-finding are
   substantive; Opus for mechanical touches (a rename, re-exporting a diagram, a stub edit).
 - **Concrete steps:** pick the stage → copy that folder's template → write the narrative

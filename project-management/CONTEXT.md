@@ -32,7 +32,7 @@ project-management/
 │   │   ── Discover (01) ──
 │   ├── 01-FEATURE-MAPS/         ← MAP-<FEATURE>.md (wayfinder decision maps)
 │   │
-│   │   ── Specify (02–13) ──
+│   │   ── Specify (02–14) ──
 │   ├── 02-STORIES/              ← US###.md (user stories)
 │   ├── 03-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation)
 │   │   (04–08: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/ + a cumulative asset)
@@ -46,30 +46,31 @@ project-management/
 │   ├── 11-QA/                   ← PLANNING/ + IMPLEMENTATION/
 │   ├── 12-SEO/                  ← PLANNING/ + IMPLEMENTATION/
 │   ├── 13-API-DESIGN/           ← PLANNING/ + IMPLEMENTATION/
+│   ├── 14-LOGGING/              ← PLANNING/ + IMPLEMENTATION/
 │   │
-│   │   ── Decide & plan (14–16) ──
-│   ├── 14-DECISIONS/            ← ADR-###-<TITLE>.md
-│   ├── 15-SPRINT-PLANS/         ← detailed sprint execution plans
-│   ├── 16-STORY-PLANS/          ← per-story implementation plan (code master reference)
+│   │   ── Decide & plan (15–17) ──
+│   ├── 15-DECISIONS/            ← ADR-###-<TITLE>.md
+│   ├── 16-SPRINT-PLANS/         ← detailed sprint execution plans
+│   ├── 17-STORY-PLANS/          ← per-story implementation plan (code master reference)
 │   │
-│   │   ── Implement & record (17–21, per story) ──
-│   ├── 17-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
-│   ├── 18-REVIEWS/              ← REVIEW-US###-*.md
-│   ├── 19-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-│   ├── 20-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
-│   ├── 21-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   │   ── Implement & record (18–22, per story) ──
+│   ├── 18-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 19-REVIEWS/              ← REVIEW-US###-*.md
+│   ├── 20-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ├── 21-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
+│   ├── 22-REFACTORING/          ← REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
 │   │
-│   │   ── Record, not per story (22) ──
-│   └── 22-INCIDENTS/            ← INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md + INCIDENT-INDEX.md (PII-free)
-└── workflows/               ← step-by-step PM workflows (01–23)
+│   │   ── Record, not per story (23) ──
+│   └── 23-INCIDENTS/            ← INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md + INCIDENT-INDEX.md (PII-free)
+└── workflows/               ← step-by-step PM workflows (01–24)
     ├── 01-feature-map/                          ← discover: chart the feature
-    ├── 02-story-creation/ … 13-api-design/     ← specify a feature
-    ├── 14-decisions/ 15-sprint-plans/ 16-story-plans/  ← decide & plan
-    ├── 17-consolidate-design-work/              ← consolidate the per-story design work
-    ├── 18-backend-code/ 19-api-code/ 20-frontend-code/  ← implement
-    ├── 21-implementation-documentation/         ← docs + implementation records
-    ├── 22-pr-and-review/                        ← PR, review, merge
-    └── 23-release/                              ← version bump, changelog, deploy
+    ├── 02-story-creation/ … 14-logging-checks/ ← specify a feature
+    ├── 15-decisions/ 16-sprint-plans/ 17-story-plans/  ← decide & plan
+    ├── 18-consolidate-design-work/              ← consolidate the per-story design work
+    ├── 19-backend-code/ 20-api-code/ 21-frontend-code/  ← implement
+    ├── 22-implementation-documentation/         ← docs + implementation records
+    ├── 23-pr-and-review/                        ← PR, review, merge
+    └── 24-release/                              ← version bump, changelog, deploy
 ```
 
 Every `src/` and `workflows/` sub-folder carries a `CONTEXT.md` + `CLAUDE.md`; each
@@ -102,19 +103,19 @@ artefacts to a user story** via per-story `PLANNING/` + `IMPLEMENTATION/` templa
 
 | Tier                      | Paths                                                                                               |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Specify** (02–13)       | stories, sprints, DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
-| **Decide & plan** (14–16) | `14-DECISIONS/` (ADRs) → `15-SPRINT-PLANS/` → `16-STORY-PLANS/` (the code master)                   |
-| **Record** (17–21)        | `17-TESTS/`, `18-REVIEWS/`, `19-FINDINGS/`, `20-BUGS/`, `21-REFACTORING/` — per story               |
-| **Record** (22)           | `22-INCIDENTS/` — the PII-free incident register; **not** per story, and has no workflow            |
+| **Specify** (02–14)       | stories, sprints, DB, user flow, brand, components, wireframes, GDPR, security, QA, SEO, API design |
+| **Decide & plan** (15–17) | `15-DECISIONS/` (ADRs) → `16-SPRINT-PLANS/` → `17-STORY-PLANS/` (the code master)                   |
+| **Record** (18–22)        | `18-TESTS/`, `19-REVIEWS/`, `20-FINDINGS/`, `21-BUGS/`, `22-REFACTORING/` — per story               |
+| **Record** (23)           | `23-INCIDENTS/` — the PII-free incident register; **not** per story, and has no workflow            |
 
-The **story plan (16)** is what a developer codes from; it references its sprint plan
-(15), the decisions (14), and every 02–13 spec. Sprint plans (15) feed the story plans.
+The **story plan (17)** is what a developer codes from; it references its sprint plan
+(16), the decisions (15), and every 02–14 spec. Sprint plans (16) feed the story plans.
 
 ## Workflow gates
 
 - A feature is not ready to code until the specify → decide → plan tiers are complete
-- A PR is not ready to merge until `workflows/22-pr-and-review/` is signed off
-- A release is not ready until `workflows/23-release/` is followed
+- A PR is not ready to merge until `workflows/23-pr-and-review/` is signed off
+- A release is not ready until `workflows/24-release/` is followed
 - Every new directory in any layer must have a `CONTEXT.md` (and a `CLAUDE.md`)
 
 ## Key docs

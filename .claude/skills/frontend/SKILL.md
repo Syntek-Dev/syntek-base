@@ -129,7 +129,7 @@ change with no behaviour change.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/20-frontend-code/` — the frontend build phase
+- `project-management/workflows/21-frontend-code/` — the frontend build phase
 - `project-management/workflows/07-component-designs/` — the component designs consumed here
 - `project-management/workflows/08-wireframes/` — the wireframes consumed here
 - `code/workflows/01-implement-story/` — the full-stack feature procedure

@@ -83,7 +83,7 @@ only in prose beside a worked example is a key nothing can correlate with the co
 which is exactly the drift between register and runtime this column exists to close.
 
 **A `service-guard` row names one function. A second call site is a finding**, recorded in
-`project-management/src/19-FINDINGS/` — not a judgement call.
+`project-management/src/20-FINDINGS/` — not a judgement call.
 
 **This register owns one fact and routes the rest.** No row restates a rule that `DATABASE.md`,
 `SCHEMA-DESIGN.md`, `TASK-AUTHORING.md` or `rls/MIDDLEWARE-AND-NINJA.md` already carries; the
@@ -268,7 +268,7 @@ A `service-guard` row in the register points at one function. This is what has t
    why it is the dangerous one: nothing fails when someone adds it.
 
 Enforced by **ruff `S101`** (`pyproject.toml`), exempting `*/tests/*` and `conftest.py`. A
-`# noqa: S101` is a **finding**, recorded in `project-management/src/19-FINDINGS/` — not a
+`# noqa: S101` is a **finding**, recorded in `project-management/src/20-FINDINGS/` — not a
 workaround. Narrowing a type for the type checker is not an exception to this: `if x is None:
 raise …` narrows identically for basedpyright and survives `-O`.
 

@@ -35,7 +35,7 @@ than somebody happening to look. Today exactly one of roughly twenty does.
 | Domain                   | Template maintenance — syntek-base's own upstream surface, not a generated project's           |
 | Skills to load           | `cicd` (the pipelines and the dependency set) · `wayfinder` (to chart) · `runbook` (the guide) |
 | Standing preferences     | The obligation belongs to whoever maintains the template; it never ships downstream            |
-| Umbrella ADRs            | **None, and none is possible** — this template authors no ADRs (`../14-DECISIONS/CLAUDE.md`)   |
+| Umbrella ADRs            | **None, and none is possible** — this template authors no ADRs (`../15-DECISIONS/CLAUDE.md`)   |
 | Register entries triaged | 0 — not charted yet                                                                            |
 
 ---
@@ -97,7 +97,7 @@ In scope, not yet sharp enough to state as a decision. **Leaving something here 
 | Security advisories                          | Already covered — `audit-deps.yml` sweeps CVEs daily and `rust/audit.sh` gates the Rust tree. This map is about **releases**, which is a different signal |
 | A generated project's own dependency updates | `how-to/workflows/07-dependency-updates/` and `code/src/scripts/dependencies/update.sh` own that                                                          |
 | The Expo trigger itself                      | Settled by N-022 on `MAP-BASE-HEALTH`, 16/08/2026. It enters here as a **worked example**, not a question                                                 |
-| Authoring an ADR for any of it               | This template authors no ADRs (`../14-DECISIONS/CLAUDE.md`)                                                                                               |
+| Authoring an ADR for any of it               | This template authors no ADRs (`../15-DECISIONS/CLAUDE.md`)                                                                                               |
 
 ---
 

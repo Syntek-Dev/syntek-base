@@ -65,7 +65,7 @@ Confirm the current branch matches the work in hand. Feature and bugfix work bel
    British English, with the co-author trailer the guide specifies. **Read the model name from
    `.claude/CLAUDE.md` Section 4 at the time of writing; never carry a pinned version string.**
 4. **A bugfix commit references its root-cause record**, which must already exist at
-   `project-management/src/20-BUGS/BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. If there is none,
+   `project-management/src/21-BUGS/BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. If there is none,
    hand back to `bugfix` before committing.
 
 ## Pull requests
@@ -121,9 +121,9 @@ a PR is raised, `qa-tester` before a merge, `cicd` where a pipeline needs to tri
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/22-pr-and-review/` — the PR-and-review procedure
-- `project-management/workflows/23-release/` — the release procedure
-- `project-management/workflows/21-implementation-documentation/` — the hard gate on the commit
+- `project-management/workflows/23-pr-and-review/` — the PR-and-review procedure
+- `project-management/workflows/24-release/` — the release procedure
+- `project-management/workflows/22-implementation-documentation/` — the hard gate on the commit
 - `how-to/workflows/02-worktree-setup/` — creating and starting a parallel-story worktree
 - `code/workflows/07-review/` — the content review that precedes the PR
 

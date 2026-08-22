@@ -103,5 +103,5 @@ Any departure from `../PLANNING/AUDIT-PLAN-US###-<DESCRIPTOR>.md`, with justific
 - `../../VULNERABILITIES/IMPLEMENTATION/` · `../../THREAT-MODEL/IMPLEMENTATION/` — sibling sub-areas for closed findings and the re-assessed STRIDE model
 - `../../../02-STORIES/` — the story audited
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE / OWASP / NIST CSF reference
-- `project-management/workflows/21-implementation-documentation/` — where this record is written
+- `project-management/workflows/22-implementation-documentation/` — where this record is written
 - `code/docs/SECURITY.md` — the code-side controls these findings must stay consistent with

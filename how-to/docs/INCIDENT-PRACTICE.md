@@ -25,7 +25,7 @@ Type `/incident` to have Claude run this with you — `.claude/skills/incident/S
 | The incident-response **policy** — P1–P4, ICO duties | `.claude/skills/msp-scp-documents/INCIDENT-CONTINUITY.md`                          |
 | **Detecting** that something is wrong                | `code/docs/logging/HEALTH-CONTRACT.md` — Gatus, the public status page, Prometheus |
 | **Diagnosing** the cause                             | `code/workflows/09-debugging-with-logs/`, then `code/workflows/10-debug/`          |
-| The **defect** record and its regression test        | `project-management/src/20-BUGS/`                                                  |
+| The **defect** record and its regression test        | `project-management/src/21-BUGS/`                                                  |
 | Security controls, and the breach-notification duty  | `code/docs/security/MONITORING-AND-INCIDENT.md`                                    |
 
 This guide owns one thing the others do not: **the human process around the outage** — who
@@ -159,7 +159,7 @@ Six sections:
 | **Follow-up actions** | Each with an owner and a home. **At least one, always** — an incident with no follow-up was not investigated |
 
 Route each follow-up to where work actually lives — a defect to
-`project-management/src/20-BUGS/`, an architectural gap to `GAPS.md`, deferred work to
+`project-management/src/21-BUGS/`, an architectural gap to `GAPS.md`, deferred work to
 `DEFERRED.md`, a missing control to `code/docs/security/`. A follow-up recorded only in the
 postmortem is a follow-up that will not happen.
 
@@ -169,7 +169,7 @@ postmortem is a follow-up that will not happen.
 
 Two homes, and the split is not a filing preference:
 
-- **`project-management/src/22-INCIDENTS/`** — the **PII-free** register. That an incident
+- **`project-management/src/23-INCIDENTS/`** — the **PII-free** register. That an incident
   happened, its severity, dates, outcome, status, and a reference to the tracker. It is in git,
   it is public to everyone with repo access, and it ships. Nothing sensitive goes in it, ever.
 - **`<%INCIDENT_TRACKER%>`** — everything else. Log excerpts, user identifiers, affected record
@@ -230,8 +230,8 @@ Prove it independently of the steps that got you here:
 - `code/docs/logging/HEALTH-CONTRACT.md` — what reports the system is unhealthy, and to whom
 - `code/workflows/09-debugging-with-logs/` · `code/workflows/10-debug/` — finding the cause,
   then fixing it with a regression test
-- `project-management/src/22-INCIDENTS/` — the PII-free register and its template
-- `project-management/src/20-BUGS/` — where a defect surfaced by an incident is recorded
+- `project-management/src/23-INCIDENTS/` — the PII-free register and its template
+- `project-management/src/21-BUGS/` — where a defect surfaced by an incident is recorded
 - `.claude/skills/handoff/SKILL.md` — the _other_ handover: Claude session continuity, not this
 - `.claude/skills/runbook/SKILL.md` — the craft this guide is written to
 

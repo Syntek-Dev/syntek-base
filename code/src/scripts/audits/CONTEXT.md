@@ -103,7 +103,7 @@ depends on unread — the gate would report green having measured nothing, which
 `docs-length.sh` was written to close in its own domain.
 
 **Stage 1 (`USER-STORY-IDEAS/`) is deliberately out of scope, for all four.** It holds one screen
-per story and is frozen once workflow `17` runs, while the clauses that matter most here — Section 4.1's
+per story and is frozen once workflow `18` runs, while the clauses that matter most here — Section 4.1's
 repetition tell and Section 4.2's rhythm clause — are properties of a page **set**. The consolidated
 folder is the only place the whole set exists at once, and it exists there before any code, which
 is the one point where a page-set judgement is cheap. That closes the gap `code-reviewer.md` names

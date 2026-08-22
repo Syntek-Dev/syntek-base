@@ -15,7 +15,7 @@ compiles native code that Python either cannot express safely or is too slow to 
 
 - **Routing:** the `stack-rust` skill owns this tree. Enter through
   `code/workflows/12-rust-extension/`, which is itself entered from
-  `project-management/workflows/18-backend-code/` — never directly from a design gate.
+  `project-management/workflows/19-backend-code/` — never directly from a design gate.
 - **Grill first:** the workflow's Step 1 is a grilling pass, and its opening question is the
   gate — _does this need to be Rust at all?_ A rewrite of working Python is a cost with no named
   benefit (`.claude/CLAUDE.md` Section 10).

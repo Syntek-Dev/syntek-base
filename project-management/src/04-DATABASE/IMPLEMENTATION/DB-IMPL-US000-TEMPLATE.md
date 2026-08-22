@@ -88,7 +88,7 @@ The interesting section. For each deviation, say **which side was wrong**.
 | ----- | --------- | ----------------------------------------- | ------------- | --------- |
 | D-001 |           |                                           |               |           |
 
-**Routing:** consolidation error → `../../19-FINDINGS/` · build error → `../../20-BUGS/` ·
+**Routing:** consolidation error → `../../20-FINDINGS/` · build error → `../../21-BUGS/` ·
 accepted trade-off → note here with a reason.
 
 - [ ] No unexplained deviation remains

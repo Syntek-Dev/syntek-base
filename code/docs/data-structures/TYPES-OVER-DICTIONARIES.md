@@ -290,7 +290,7 @@ signature, not a domain type. Both are correct as written; see
 
 Run `code/src/scripts/syntax/check.sh` before claiming any of the type-checked rows; the checker
 decides them faster and more honestly than reading does. A rejected finding is recorded in
-`project-management/src/19-FINDINGS/`, not argued in a thread.
+`project-management/src/20-FINDINGS/`, not argued in a thread.
 
 ---
 

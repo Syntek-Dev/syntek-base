@@ -12,7 +12,7 @@ its GDPR requirements were met in code and closing its `../PLANNING/` plan with 
 
 ## How to work here
 
-- **Routing:** written during `project-management/workflows/21-implementation-documentation/` for any
+- **Routing:** written during `project-management/workflows/22-implementation-documentation/` for any
   story that processes personal data, loading the `gdpr-mechanics` skill (Fable) against the
   story's plan in `../PLANNING/GDPR-PLAN-US###-*.md`.
 - **Model:** Fable — verifying data flows, lawful bases, retention, and erasure paths

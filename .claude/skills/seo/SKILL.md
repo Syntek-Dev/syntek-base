@@ -111,7 +111,7 @@ scheduled rather than request-time, and `doc-writer` to record the configuration
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/12-seo-checks/` — the verification procedure
-- `project-management/workflows/20-frontend-code/` — the phase this wiring lands in
+- `project-management/workflows/21-frontend-code/` — the phase this wiring lands in
 
 ## Cross-references
 

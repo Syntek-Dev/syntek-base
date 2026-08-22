@@ -114,5 +114,5 @@ posture targets from the baseline, and that no CRITICAL/HIGH was introduced.}
 - `../../VULNERABILITIES/IMPLEMENTATION/` — any newly found CRITICAL/HIGH escalated here
 - `../../../02-STORIES/` — the source story
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
-- `project-management/workflows/21-implementation-documentation/` — where this record is written
+- `project-management/workflows/22-implementation-documentation/` — where this record is written
 - `code/docs/SECURITY.md` — the enforcement side these claims must stay consistent with

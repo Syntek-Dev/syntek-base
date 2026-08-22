@@ -49,7 +49,7 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] Entries that **block** this feature are frontier nodes, typed and wired — not assumptions
 - [ ] What the feature closes is reflected in the **destination**, not left as a footnote
 - [ ] **`GAPS.md` and `DEFERRED.md` were not edited** — claiming is not closing; the close belongs
-      to `21-implementation-documentation`, against shipped code
+      to `22-implementation-documentation`, against shipped code
 
 ## CHART
 
@@ -72,6 +72,7 @@ Every box must be ticked before `02-story-creation/` may begin.
 ## RESOLVE
 
 - [ ] Every **blocking** node is resolved — fog and non-blocking nodes may remain open
+- [ ] Nodes were taken in **batches**, and each batch's reason for grouping was stated in one line
 - [ ] Each node was settled by its type (grilling / research / tracer / task)
 - [ ] Every resolved node **graduated** to its real home — ADR, `GAPS.md`, `DEFERRED.md`, or a
       glossary term
@@ -85,6 +86,8 @@ Every box must be ticked before `02-story-creation/` may begin.
 
 - [ ] The map reads as a low-resolution route, not a storage vault
 - [ ] Every claimed register entry names the node or story that will retire it
+- [ ] **Every slice has a flag manifest** — each gate it needs, `N/A` omitted, first-pass values set
+- [ ] No slice reserves a `US###` — the `Story` column reads `—` until `02-story-creation` fills it
 - [ ] No story has been written — that is `02-story-creation`
 - [ ] `src/01-FEATURE-MAPS/CONTEXT.md` index current
 - [ ] Instructional `.md` files ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`

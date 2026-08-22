@@ -120,7 +120,7 @@ and `verify-db-security.sh` passing for every scoped table; the migration record
 `03-database-migration/STEPS.md`; every affected `CONTEXT.md` updated.
 
 **Findings are recorded, not fixed in the same pass.** A divergence from `code/docs/DATABASE.md`
-found while doing the work goes to `project-management/src/19-FINDINGS/` through workflow `21`.
+found while doing the work goes to `project-management/src/20-FINDINGS/` through workflow `22`.
 Where an existing migration or model carries no explanation for its shape, **flag the absence
 rather than inventing the reasoning**, and mark anything inferred `TODO(verify)`.
 
@@ -138,9 +138,9 @@ coverage.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/04-database-schema/` — the schema, designed and signed off first
-- `project-management/workflows/18-backend-code/` — the build phase that drives the migration
+- `project-management/workflows/19-backend-code/` — the build phase that drives the migration
 - `code/workflows/03-database-migration/` — writing and applying it; the procedure of record
-- `project-management/workflows/21-implementation-documentation/` — where findings are filed
+- `project-management/workflows/22-implementation-documentation/` — where findings are filed
 - `how-to/workflows/04-database-operations/` — backup, restore, reset and seed, never schema
 
 ## Cross-references

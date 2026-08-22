@@ -14,7 +14,7 @@ resolving the advisories the nightly sweep reports.
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Execution
   → `cicd` (Opus); a load-bearing choice is grilled and recorded as an ADR via
-  `project-management/workflows/14-decisions/` (Fable).
+  `project-management/workflows/15-decisions/` (Fable).
 - **Model:** Opus for the change and verification; Fable for the ADR.
 - **Concrete steps:** justify → edit manifest and refresh lockfile → reinstall and rebuild
   → run the full gate → commit manifest and lockfile together.
@@ -39,5 +39,5 @@ resolving the advisories the nightly sweep reports.
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`, `CONTEXT.md` — the workflow itself.
 - **Produced by following it:** manifest and lockfile changes, committed together in a
-  commit of their own; optionally an ADR under `project-management/src/14-DECISIONS/`.
+  commit of their own; optionally an ADR under `project-management/src/15-DECISIONS/`.
 - Numeric `NN-` folder prefix; documentation `SCREAMING-SNAKE-CASE.md`.

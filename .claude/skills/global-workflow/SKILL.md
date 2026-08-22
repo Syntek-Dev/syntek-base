@@ -80,6 +80,6 @@ shared baseline, they are the source of truth:
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/22-pr-and-review/` — branches, commits, PRs
-- `project-management/workflows/23-release/` — version bumps and releases
+- `project-management/workflows/23-pr-and-review/` — branches, commits, PRs
+- `project-management/workflows/24-release/` — version bumps and releases
 - `how-to/workflows/02-worktree-setup/` — parallel-story worktrees

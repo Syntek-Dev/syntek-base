@@ -15,8 +15,8 @@ and the one cumulative PDF deliverable in `component-build/`.
 ## How to work here
 
 - **Routing:** stage 1 from `workflows/07-component-designs/`, stage 2 from
-  `workflows/17-consolidate-design-work/`, stage 3 from
-  `workflows/21-implementation-documentation/`. Build mechanics: `component-build/CLAUDE.md`.
+  `workflows/18-consolidate-design-work/`, stage 3 from
+  `workflows/22-implementation-documentation/`. Build mechanics: `component-build/CLAUDE.md`.
 - **Model:** Fable for component and variant decisions and for consolidation; Opus for
   mechanical touches — running the generator, a wording fix, a rename.
 - **Concrete steps:** pick the stage → copy that folder's template → record the components →

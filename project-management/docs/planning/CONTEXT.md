@@ -19,8 +19,8 @@ project-management/docs/planning/
 | File         | Owns                                                                         | Serves                                     |
 | ------------ | ---------------------------------------------------------------------------- | ------------------------------------------ |
 | `CADENCE.md` | The per-story loop, the fill trigger, `SPRINT_CAPACITY_SP`/`SPRINT_GRACE_SP` | Every workflow `01`–`17`                   |
-| `STORIES.md` | Connextra format, statuses, Fibonacci estimation, the story plan             | `src/02-STORIES/` · `src/16-STORY-PLANS/`  |
-| `SPRINTS.md` | MoSCoW, exec-order vs sprint-number, the four phases, the sprint plan        | `src/03-SPRINTS/` · `src/15-SPRINT-PLANS/` |
+| `STORIES.md` | Connextra format, statuses, Fibonacci estimation, the story plan             | `src/02-STORIES/` · `src/17-STORY-PLANS/`  |
+| `SPRINTS.md` | MoSCoW, exec-order vs sprint-number, the four phases, the sprint plan        | `src/03-SPRINTS/` · `src/16-SPRINT-PLANS/` |
 
 **The capacity figure is stated once**, in `CADENCE.md`. `SPRINTS.md` points at it rather than
 repeating it — two copies of a tunable number is how they drift apart.

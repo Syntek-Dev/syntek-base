@@ -163,7 +163,7 @@ security posture:
 The template argues against this in several places, and those arguments are in `02-STACK.md`. If you
 still want to:
 
-1. Write an ADR in `project-management/src/14-DECISIONS/` — the reasoning outlives the decision.
+1. Write an ADR in `project-management/src/15-DECISIONS/` — the reasoning outlives the decision.
 2. Update `how-to/src/TEMPLATE-TOKENS.md` under _What stays fixed_.
 3. Sweep the documentation that asserts the old choice. There is more of it than you expect —
    `code/docs/RENDERING.md`, `ARCHITECTURE-PATTERNS.md`, the stack skills, and the skill

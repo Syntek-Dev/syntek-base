@@ -3,28 +3,43 @@
 **Epic:** [Epic Name — e.g. Authentication & Access Control / Core Features / Public Pages]
 **Status:** Open
 
-<!-- FLAGS
-     DB        — shortlist of models created / modified, or N/A
-     User Flow — Yes or N/A
-     Backend   — Yes or N/A
-     API       — shortlist of Ninja endpoints introduced, or N/A
-     Frontend  — Public / Admin / Both / N/A  (all server-rendered Django templates)
-     GDPR      — Yes (complete GDPR section below) or N/A
-     Security  — shortlist of concerns (e.g. rate-limit, audit-log, XSS-escape, IDOR), or N/A
-     SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
-     Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
+<!-- FLAGS — one row per gate, and the flag is that gate's entry condition.
+     A flag reading N/A means the gate is skipped for this story; every other value means it runs.
+     The value is a MANIFEST, not the design: the gate owns the design, may add to this list, and
+     the story is updated to match when the gate closes.
 
-| Flag      | Value                                                |
-| --------- | ---------------------------------------------------- |
-| DB        | `ModelA`, `ModelB`                                   |
-| User Flow | Yes                                                  |
-| Backend   | Yes                                                  |
-| API       | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a` |
-| Frontend  | Both                                                 |
-| GDPR      | Yes                                                  |
-| Security  | rate-limit, audit-log, XSS-escape                    |
-| SEO       | /blog, /about                                        |
-| Testing   | unit, integration, E2E                               |
+     DB         — models created / modified            → 04-database-schema
+     User Flow  — Yes or N/A                           → 05-user-flow-design
+     Brand      — tokens introduced / consumed         → 06-brand-guides
+     Components — components introduced / reused       → 07-component-designs
+     Wireframes — screens or routes needing a screen   → 08-wireframes
+     GDPR       — Yes (personal data) or N/A           → 09-gdpr-compliance
+     Security   — concerns (rate-limit, audit-log, …)  → 10-security-checks
+     QA         — test types — scenario classes        → 11-qa-checks
+     SEO        — affected public pages / routes       → 12-seo-checks
+     API        — Ninja endpoints introduced           → 13-api-design
+     Logging    — events logged                        → 14-logging-checks
+     Backend    — Yes or N/A                           → 19-backend-code
+     Frontend   — Public / Admin / Both / N/A          → 21-frontend-code
+
+     Logging has no derived condition: it is its own gate. Every value is filled from the
+     feature map's slice row (src/01-FEATURE-MAPS/) at 02-story-creation. -->
+
+| Flag       | Value                                                          |
+| ---------- | -------------------------------------------------------------- |
+| DB         | `ModelA`, `ModelB`                                             |
+| User Flow  | Yes                                                            |
+| Brand      | `--color-accent`, `--space-lg`                                 |
+| Components | `Button`, `Card`                                               |
+| Wireframes | /dashboard, /settings                                          |
+| GDPR       | Yes                                                            |
+| Security   | rate-limit, audit-log, XSS-escape                              |
+| QA         | unit, integration, E2E, manual — happy-path, permission-denied |
+| SEO        | /blog, /about                                                  |
+| API        | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a`           |
+| Logging    | login-success, login-failure, permission-denied                |
+| Backend    | Yes                                                            |
+| Frontend   | Both                                                           |
 
 ---
 
@@ -231,8 +246,9 @@ Then the state changes in the browser with no server round-trip
 
 ### Logging Acceptance Criteria
 
-<!-- Always applicable when Backend or Frontend ≠ N/A.
-     Log IDs — never log values. Never log [enc] fields. -->
+<!-- Remove this section when the Logging flag is N/A.
+     Planned by 14-logging-checks → src/14-LOGGING/PLANNING/; proven by
+     src/14-LOGGING/IMPLEMENTATION/. Log IDs — never log values. Never log [enc] fields. -->
 
 - [ ] All server-side log calls use `logging.getLogger("apps.[app-name]")` (Django) — no bare `print()` on any server path, and no stray `console.log()` in committed JavaScript
 - [ ] `[key operation]` logs entry at `DEBUG` with safe fields: `[entity]_id`, `action` — no PII, no `[enc]` field values
@@ -257,16 +273,25 @@ Then the state changes in the browser with no server round-trip
 - [ ] All images on the page have descriptive `alt` text; no image is served without `alt`
 - [ ] Heading hierarchy is correct: one `<h1>` per page; `<h2>` / `<h3>` used in logical order
 
-### Testing Acceptance Criteria
+### QA Acceptance Criteria — Automated
 
-<!-- Remove this section when Testing flag is N/A. -->
+<!-- Remove this section when the QA flag is N/A.
+     Closed by `../18-TESTS/US###-TEST-STATUS.md`. -->
 
 - [ ] Coverage is at or above 75 % line and branch for all modules (at or above 90 % for auth-related paths) after this story — one floor: template, django-component, and HTMX-partial tests are pytest tests and count towards it
 - [ ] Unit tests cover the success path, validation error, and permission error for `[service_function]`
 - [ ] Unit tests cover constraint enforcement and signal idempotence for `[ModelName]`
 - [ ] Integration tests cover the success path, 401, and 403 for all endpoints introduced by this story
 - [ ] E2E tests cover the primary user flow, the permission-denied path, and at least one form validation error
+
+### QA Acceptance Criteria — Manual
+
+<!-- Remove this section when the QA flag names no manual type.
+     Closed by `../18-TESTS/US###-MANUAL-TESTING.md`. -->
+
 - [ ] Manual checks cover any UI behaviour not reachable by automation (e.g. [drag-and-drop, colour picker])
+- [ ] Every scenario class named in the QA flag has a walk-through with a stated expected result
+- [ ] A tester other than the author has signed the walk-through off
 
 ---
 
@@ -362,8 +387,8 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 ### Logging Tasks
 
-<!-- Always applicable when Backend or Frontend ≠ N/A.
-     Reference: code/docs/LOGGING.md -->
+<!-- Remove this section when the Logging flag is N/A.
+     Reference: code/docs/LOGGING.md · the plan in src/14-LOGGING/PLANNING/ -->
 
 - [ ] Backend: use `logging.getLogger("apps.[app-name]")` for all log calls in `<app>/services.py` and `<app>/api.py` (Ninja endpoints)
 - [ ] Backend: add `DEBUG` log at entry of `[service_method]` with `[entity]_id` and `action` only
@@ -390,9 +415,9 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] Verify heading hierarchy: one `<h1>` per page; `<h2>` / `<h3>` in logical order
 - [ ] Run the `seo` skill to confirm all SEO checks pass
 
-### Testing Tasks
+### QA Tasks — Automated
 
-<!-- Remove this section when Testing flag is N/A. -->
+<!-- Remove this section when the QA flag is N/A. -->
 
 <!-- Unit tests -->
 
@@ -424,7 +449,9 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] `[ComponentName]` — permission-gated controls are absent for insufficient permission
 - [ ] `[partial]` — returned on `HX-Request` with no page chrome; full page returned otherwise
 
-<!-- Manual checks -->
+### QA Tasks — Manual
+
+<!-- Remove this section when the QA flag names no manual type. -->
 
 - [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop reorder, colour picker render]
 - [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
@@ -445,6 +472,7 @@ All must pass.
 - [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass
 - [ ] No secrets, debug flags, or hardcoded IDs introduced
 - [ ] GDPR section reviewed and all GDPR tasks checked off (if GDPR: Yes)
+- [ ] Logging plan satisfied and the exclusion check run (if Logging: not N/A)
 - [ ] Security acceptance criteria signed off (if Security: not N/A)
 - [ ] SEO acceptance criteria signed off and Lighthouse run recorded (if SEO: not N/A)
 

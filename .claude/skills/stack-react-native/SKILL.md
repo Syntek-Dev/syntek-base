@@ -265,10 +265,10 @@ and `gdpr-mechanics` where a nutrition label or Data Safety declaration is in pl
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/20-frontend-code/` — the build phase; its mobile-flagged steps
+- `project-management/workflows/21-frontend-code/` — the build phase; its mobile-flagged steps
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here
 - `code/workflows/01-implement-story/` · `02-tdd-cycle/` — the feature and TDD procedures
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/03-daily-development/` — starting a session; Metro is the one host process
 - `code/src/mobile/CLAUDE.md` — the operating rules for the tree itself
 

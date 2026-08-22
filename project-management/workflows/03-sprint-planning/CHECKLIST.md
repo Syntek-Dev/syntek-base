@@ -14,6 +14,12 @@ model: fable
 
 > **See** `project-management/REFERENCES.md` → **External — Agile & Project Management** (MoSCoW, Definition of Done) · **Internal — Live Artefacts** (src/03-SPRINTS/) for supporting references.
 
+## Flags
+
+- [ ] The FLAGS table is the **union** of the member stories' flags, computed from the Story Summary
+- [ ] No row is narrower than a member story's, except for an explicit Part A / Part B split
+- [ ] All 13 rows carry a value or `N/A`
+
 ## Execution Checklist
 
 - [ ] Sprint goal is clear and achievable

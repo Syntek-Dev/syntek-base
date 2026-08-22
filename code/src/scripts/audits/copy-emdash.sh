@@ -19,7 +19,7 @@
 # project builds: `code/src/scripts/development/new-django-view.sh` writes the page
 # template there, and `code/src/django/templates/CONTEXT.md` and
 # `code/docs/FRONTEND-CODING-PRINCIPLES.md` name that same directory. A fourth source is weaker than it looks and is quoted as
-# what it is: `project-management/workflows/20-frontend-code/STEPS.md` puts every
+# what it is: `project-management/workflows/21-frontend-code/STEPS.md` puts every
 # template under `code/src/django/templates/`, which corroborates the direction — not
 # under the app — without naming the marketing subdirectory at all.
 #

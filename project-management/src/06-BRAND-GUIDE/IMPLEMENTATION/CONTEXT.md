@@ -1,7 +1,7 @@
 # project-management/src/06-BRAND-GUIDE/IMPLEMENTATION
 
 **Stage 3** — tokens as shipped. One record per user story, written during
-`workflows/21-implementation-documentation/`, confirming that the tokens the story consumed
+`workflows/22-implementation-documentation/`, confirming that the tokens the story consumed
 exist in the DB-canonical token layer and match `../CONSOLIDATED-IDEAS/`.
 
 ## Directory Tree
@@ -35,6 +35,6 @@ where the story states it ran clean, with the audit output as evidence.
 - `../USER-STORY-IDEAS/` — the frozen ask, for tracing intent
 - `code/docs/DESIGN-TOKENS.md` — the DB-canonical token layer
 - `code/src/scripts/audits/css-tokens.sh` — the audit this record cites
-- `../../19-FINDINGS/` — where a divergence worth carrying forward is recorded
+- `../../20-FINDINGS/` — where a divergence worth carrying forward is recorded
 
 **Last Updated**: <%DATE%>

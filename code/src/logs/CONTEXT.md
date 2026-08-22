@@ -32,7 +32,7 @@ All files in this directory are gitignored. Only this `CONTEXT.md` and `.gitkeep
 - Exception reports → Glitchtip (staging/prod) or the console (dev/test)
 - Metrics → Prometheus
 - Aggregated logs → Loki
-- Bug reports or incident notes → `project-management/src/20-BUGS/`
+- Bug reports or incident notes → `project-management/src/21-BUGS/`
 
 ## Accessing logs locally
 

@@ -1,7 +1,7 @@
 # project-management/src/08-WIREFRAMES
 
 Wireframes, in **three stages**. Each story wireframes the screens it introduces
-(`USER-STORY-IDEAS/`); once every story is planned, `17-consolidate-design-work` rebuilds them
+(`USER-STORY-IDEAS/`); once every story is planned, `18-consolidate-design-work` rebuilds them
 as one coherent screen set on the consolidated components (`CONSOLIDATED-IDEAS/`); after the
 code ships, each story records the screen as built (`IMPLEMENTATION/`).
 
@@ -20,13 +20,13 @@ project-management/src/08-WIREFRAMES/
 │   ├── WF-IDEA-US000-TEMPLATE.html
 │   ├── WF-IDEA-US###-<Screen-Name>.html
 │   └── WF-IDEA-US###-MOBILE-<Screen-Name>.html
-├── CONSOLIDATED-IDEAS/      ← stage 2: the unified screen set (workflow 17)
+├── CONSOLIDATED-IDEAS/      ← stage 2: the unified screen set (workflow 18)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── WF-CONSOLIDATED-000-TEMPLATE.md   ← the merge record
 │   ├── WF-CONSOLIDATED-<AREA>.md
 │   ├── WF-###-<Screen-Name>.html         ← the screens that get built
 │   └── WF-###-MOBILE-<Screen-Name>.html
-├── IMPLEMENTATION/          ← stage 3: the screen as built, per story (workflow 21)
+├── IMPLEMENTATION/          ← stage 3: the screen as built, per story (workflow 22)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── WF-IMPL-US000-TEMPLATE.md
 │   └── WF-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -50,8 +50,8 @@ from are consistent by construction, not by luck.
 | Stage                 | Written by  | Scope     | Naming                                                               |
 | --------------------- | ----------- | --------- | -------------------------------------------------------------------- |
 | `USER-STORY-IDEAS/`   | workflow 08 | one story | `WF-IDEA-US###-<Screen-Name>.html`                                   |
-| `CONSOLIDATED-IDEAS/` | workflow 17 | the set   | `WF-###-<Screen-Name>.html` + one `WF-CONSOLIDATED-<AREA>.md` record |
-| `IMPLEMENTATION/`     | workflow 21 | one story | `WF-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                           |
+| `CONSOLIDATED-IDEAS/` | workflow 18 | the set   | `WF-###-<Screen-Name>.html` + one `WF-CONSOLIDATED-<AREA>.md` record |
+| `IMPLEMENTATION/`     | workflow 22 | one story | `WF-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                           |
 
 **Mobile screens** carry a `MOBILE` marker in the filename and share the number of their web
 counterpart where one exists. **Stage 1 is frozen once stage 2 runs.**
@@ -87,6 +87,6 @@ Compose at a phone viewport; 390 × 844 is the reference.
 - `../07-COMPONENTS/CONSOLIDATED-IDEAS/` — the components stage 2 rebuilds on
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA, considered at layout stage
 - `project-management/workflows/08-wireframes/` — produces stage 1
-- `project-management/workflows/17-consolidate-design-work/` — produces stage 2
+- `project-management/workflows/18-consolidate-design-work/` — produces stage 2
 
 **Last Updated**: <%DATE%>

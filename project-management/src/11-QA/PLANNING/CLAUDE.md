@@ -34,7 +34,7 @@ and GDPR/security expectations from the wireframe before any code is written.
   are _specified_ here and _verified_ against the build in `../IMPLEMENTATION/`; keep them
   consistent with `docs/QA-GUIDE.md`, `code/docs/ACCESSIBILITY.md`, and `code/docs/SECURITY.md`.
 - **Documentation only — no source, secrets, or `.env` content.** Automated results and
-  manual guides live downstream in `../../17-TESTS/`; do not duplicate them here.
+  manual guides live downstream in `../../18-TESTS/`; do not duplicate them here.
 - One plan per story; do not batch multiple stories into one file.
 
 ## Output & naming

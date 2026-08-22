@@ -54,15 +54,15 @@ folder is where they are cheap to see.
 
 | Gate                          | Scope                                                          | Owned by                                 |
 | ----------------------------- | -------------------------------------------------------------- | ---------------------------------------- |
-| `audits/css-slop.sh`          | `08-WIREFRAMES/SHARED` + `CONSOLIDATED-IDEAS` + the Django CSS | `17-consolidate-design-work`             |
-| `audits/template-slop.sh`     | `08-WIREFRAMES/CONSOLIDATED-IDEAS` + the Django templates      | `17-consolidate-design-work`             |
-| `audits/render-slop.sh`       | `08-WIREFRAMES/CONSOLIDATED-IDEAS`, **rendered at 1280 px**    | `17-consolidate-design-work`             |
+| `audits/css-slop.sh`          | `08-WIREFRAMES/SHARED` + `CONSOLIDATED-IDEAS` + the Django CSS | `18-consolidate-design-work`             |
+| `audits/template-slop.sh`     | `08-WIREFRAMES/CONSOLIDATED-IDEAS` + the Django templates      | `18-consolidate-design-work`             |
+| `audits/render-slop.sh`       | `08-WIREFRAMES/CONSOLIDATED-IDEAS`, **rendered at 1280 px**    | `18-consolidate-design-work`             |
 | Direction conformance, by eye | every screen, against the Section 3 axis table                 | `08-wireframes` · `07-component-designs` |
 
 `SHARED/` is in the CSS scope and is not a stage: `wireframe.css` is the one stylesheet every
 screen links, so gating the markup without it would measure nothing and report green.
 
-Run all three over the consolidated set as part of workflow `17`:
+Run all three over the consolidated set as part of workflow `18`:
 
 ```bash
 bash code/src/scripts/audits/css-slop.sh
@@ -109,9 +109,9 @@ repository at all. Both are gated by eye against Section 3.
 | [`project-management/workflows/08-wireframes/`](project-management/workflows/08-wireframes/CONTEXT.md)               | Low- and mid-fidelity wireframes for layout decisions       |
 | [`project-management/workflows/09-gdpr-compliance/`](project-management/workflows/09-gdpr-compliance/CONTEXT.md)     | GDPR-compliant UI patterns — consent, data forms, notices   |
 | [`project-management/workflows/11-qa-checks/`](project-management/workflows/11-qa-checks/CONTEXT.md)                 | QA verification before a feature ships                      |
-| [`project-management/workflows/20-frontend-code/`](project-management/workflows/20-frontend-code/CONTEXT.md)         | Translating designs into Django templates + components      |
-| [`project-management/workflows/22-pr-and-review/`](project-management/workflows/22-pr-and-review/CONTEXT.md)         | PR review process including visual and accessibility checks |
-| [`project-management/workflows/23-release/`](project-management/workflows/23-release/CONTEXT.md)                     | Cutting a release after all design and frontend work ships  |
+| [`project-management/workflows/21-frontend-code/`](project-management/workflows/21-frontend-code/CONTEXT.md)         | Translating designs into Django templates + components      |
+| [`project-management/workflows/23-pr-and-review/`](project-management/workflows/23-pr-and-review/CONTEXT.md)         | PR review process including visual and accessibility checks |
+| [`project-management/workflows/24-release/`](project-management/workflows/24-release/CONTEXT.md)                     | Cutting a release after all design and frontend work ships  |
 
 ### Code Layer — Implementation Workflows
 

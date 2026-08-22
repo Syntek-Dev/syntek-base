@@ -33,7 +33,7 @@ Both screens are measured at **1280 × 800**, and that is the whole argument for
 the same markup is a one-, two- or three-column device depending on width, and CSS text has no
 viewport. At 375 px and 768 px both fixtures read clean, including the positive.
 
-The negative reproduces the composition workflow `17`'s gate shipped in the wireframe template —
+The negative reproduces the composition workflow `18`'s gate shipped in the wireframe template —
 three cards into a two-column grid, reading 2 + 1 — so the fixture and the real artefact agree
 about what "right" looks like.
 

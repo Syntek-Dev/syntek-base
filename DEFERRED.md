@@ -12,6 +12,6 @@ order.
 `GAPS.md` before charting a feature — to **suggest** candidate features from what has
 accumulated, and to triage every open row against the feature being charted (closes / blocks /
 unrelated). A row a feature will close is **claimed** on its `MAP-<FEATURE>.md`; the row is only
-removed by `workflows/21-implementation-documentation/`, against shipped code.
+removed by `workflows/22-implementation-documentation/`, against shipped code.
 
 ---

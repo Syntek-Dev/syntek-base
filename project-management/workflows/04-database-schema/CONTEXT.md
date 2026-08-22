@@ -17,6 +17,12 @@ project-management/workflows/04-database-schema/
 
 ## When to use this
 
+**Entry condition: the story's `DB` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story creates or modifies a model. A story whose
+`DB` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow before writing any Django model or migration — whenever a new
 data structure, relationship, or schema change is being planned.
 
@@ -43,4 +49,4 @@ data structure, relationship, or schema change is being planned.
 - `code/docs/security/AUTH-AND-AUTHZ.md` — database security, enumeration prevention, and IDOR considerations
 - `project-management/docs/GDPR-GUIDE.md` — data classification for new personal data fields
 - `code/workflows/03-database-migration/` — implements this schema, but is entered from
-  `18-backend-code/` once the story plan (16) is signed off — **not** directly from here
+  `19-backend-code/` once the story plan (17) is signed off — **not** directly from here

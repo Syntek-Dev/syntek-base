@@ -16,7 +16,7 @@ merged, verified feature.
 
 - **Routing:** never write here free-hand — `PLANNING/` plans come from
   `workflows/11-qa-checks/` (after security checks and wireframe sign-off);
-  `IMPLEMENTATION/` reviews come from `workflows/22-pr-and-review/`. Both are governed by
+  `IMPLEMENTATION/` reviews come from `workflows/23-pr-and-review/`. Both are governed by
   `docs/QA-GUIDE.md`; run the heavier passes through the `qa-tester` skill.
 - **Model:** Fable for the QA reasoning (scenarios, edge cases, deviation analysis,
   sign-off); Opus only for mechanical touches — filing, renaming, date-stamping.
@@ -36,7 +36,7 @@ merged, verified feature.
 - **Per story** — one plan and one review per story, tied to a `US###`; there is no
   cross-cutting report folder.
 - QA here **precedes or accompanies** development; automated results and manual guides
-  live downstream in `src/17-TESTS/` — do not duplicate them here. Every new directory
+  live downstream in `src/18-TESTS/` — do not duplicate them here. Every new directory
   needs a `CONTEXT.md`; instructional files stay ≤ 300 code lines.
 
 ## Output & naming

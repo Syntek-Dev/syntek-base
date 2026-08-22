@@ -18,7 +18,7 @@ metadata:
 **Task skill, inline** (axis 2 — the request, its scope and its trade-offs arrive in the
 conversation, and every phase below is a dispatch rather than work done here).
 
-**A story is not codeable without its plan.** `project-management/workflows/16-story-plans/`
+**A story is not codeable without its plan.** `project-management/workflows/17-story-plans/`
 produces the master this sequence builds from; if there is no `STORY-PLAN-US###`, phase 1 makes
 one before anything else starts.
 
@@ -64,7 +64,7 @@ Nothing commits until this is done, and it is the gate most often skipped:
    any new constraint, pattern or decision.
 2. Every new directory the feature introduced carries a `CONTEXT.md` **and** its `CLAUDE.md`.
 3. The implementation records from phase 9 are written — owned by
-   `project-management/workflows/21-implementation-documentation/`, which also refreshes the
+   `project-management/workflows/22-implementation-documentation/`, which also refreshes the
    code-review-graph so the docs and the graph stay in lockstep.
 4. `GAPS.md` and `DEFERRED.md` are current.
 
@@ -79,13 +79,13 @@ dispatches; the documentation gate is satisfied; the commit is conventional.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/16-story-plans/` — the master plan this builds from
-- `project-management/workflows/18-backend-code/` — the backend phase; drives
+- `project-management/workflows/17-story-plans/` — the master plan this builds from
+- `project-management/workflows/19-backend-code/` — the backend phase; drives
   `code/workflows/02-tdd-cycle/` and `code/workflows/03-database-migration/`
-- `project-management/workflows/19-api-code/` — the API phase; drives `code/workflows/04-api-design/`
-- `project-management/workflows/20-frontend-code/` — the frontend phase; drives
+- `project-management/workflows/20-api-code/` — the API phase; drives `code/workflows/04-api-design/`
+- `project-management/workflows/21-frontend-code/` — the frontend phase; drives
   `code/workflows/01-implement-story/`
-- `project-management/workflows/21-implementation-documentation/` — records, findings, docs and
+- `project-management/workflows/22-implementation-documentation/` — records, findings, docs and
   the graph refresh; a hard gate before the commit
 
 ## Cross-references

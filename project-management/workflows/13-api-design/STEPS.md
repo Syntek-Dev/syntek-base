@@ -170,7 +170,7 @@ Share the draft document with at least one other team member. Confirm:
 
 1. Save the document to `src/13-API-DESIGN/API-US###-<descriptor>.md`
 2. Add a reference in the user story (`src/02-STORIES/US###.md`) under a **API Design** section
-3. Proceed to `workflows/15-sprint-plans/` to include this story in the next sprint
+3. Proceed to `workflows/16-sprint-plans/` to include this story in the next sprint
 
 ---
 

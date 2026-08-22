@@ -72,8 +72,8 @@ of `0` from both pre-flight commands**, never inferred from having run them.
 ## Handoff
 
 Report what was reviewed, which passes ran, and the findings by severity with their owners.
-Findings that will not be fixed in this change go to `project-management/src/19-FINDINGS/` via
-`21-implementation-documentation`, which owns them; this skill does not write the register.
+Findings that will not be fixed in this change go to `project-management/src/20-FINDINGS/` via
+`22-implementation-documentation`, which owns them; this skill does not write the register.
 
 ## Governing procedures (route here — do not restate at length)
 
@@ -81,8 +81,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/workflows/07-review/` — **the procedure of record** for the content of a change
 - `code/workflows/08-security-hardening/` — where a security finding raised here is fixed
-- `project-management/workflows/22-pr-and-review/` — the PR process, its approvals and merge gates
-- `project-management/workflows/21-implementation-documentation/` — owns findings and records
+- `project-management/workflows/23-pr-and-review/` — the PR process, its approvals and merge gates
+- `project-management/workflows/22-implementation-documentation/` — owns findings and records
 
 ## Cross-references
 

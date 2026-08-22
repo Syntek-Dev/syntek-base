@@ -17,6 +17,12 @@ project-management/workflows/11-qa-checks/
 
 ## When to use this
 
+**Entry condition: the story's `QA` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story needs testing — it always does unless it ships nothing. A story whose
+`QA` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow after security checks and before sprint planning to:
 
 - Review wireframes and user flows for testability
@@ -47,4 +53,4 @@ None — QA planning is pre-code; no safety gates apply.
 - `project-management/docs/GIT-GUIDE.md` — commit and PR conventions
 - `code/docs/TESTING.md` — test taxonomy and coverage floors that QA scenarios feed into
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA checks that QA must cover for all interactive components
-- `project-management/workflows/15-sprint-plans/` — next step after QA
+- `project-management/workflows/16-sprint-plans/` — next step after QA

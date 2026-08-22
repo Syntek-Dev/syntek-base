@@ -17,6 +17,12 @@ project-management/workflows/06-brand-guides/
 
 ## When to use this
 
+**Entry condition: the story's `Brand` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story introduces or consumes a design token. A story whose
+`Brand` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow when establishing or updating the visual brand identity — colour palette,
 typography, spacing, and tone. Brand decisions must be agreed before component design begins.
 

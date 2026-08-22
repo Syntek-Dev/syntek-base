@@ -44,7 +44,7 @@ Same pattern as `../GDPR-GUIDE.md` over `../gdpr/` and `../PLANNING-GUIDE.md` ov
 
 - `../GIT-GUIDE.md` — the index
 - `how-to/docs/GIT-WORKTREES.md` — the full worktree guide the naming table summarises
-- `project-management/workflows/22-pr-and-review/` — the procedure the PR gates are executed by
+- `project-management/workflows/23-pr-and-review/` — the procedure the PR gates are executed by
 - `project-management/docs/VERSIONING-GUIDE.md` — what a breaking-change signal means for the number
 
 **Last Updated**: <%DATE%>

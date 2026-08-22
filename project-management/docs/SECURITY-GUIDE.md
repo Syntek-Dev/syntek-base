@@ -66,7 +66,7 @@ Security checks run once per sprint cycle, after wireframes are signed off and b
 plans are written:
 
 ```text
-08-wireframes  →  09-gdpr-compliance  →  10-security-checks  →  11-qa-checks  →  13-api-design  →  14-decisions  →  15-sprint-plans  →  16-story-plans
+08-wireframes  →  09-gdpr-compliance  →  10-security-checks  →  11-qa-checks  →  13-api-design  →  15-decisions  →  16-sprint-plans  →  17-story-plans
 ```
 
 Any `HIGH` or `CRITICAL` findings must be resolved (by updating the design or adding explicit

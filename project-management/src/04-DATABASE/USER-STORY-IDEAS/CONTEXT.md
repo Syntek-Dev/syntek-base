@@ -30,20 +30,20 @@ earlier stories already settled — do not try to anticipate the whole schema, a
 retro-fit an earlier story's design to match yours.
 
 Where you notice a collision with an earlier story's design, **note it in the document** rather
-than resolving it here. Those notes are the input `17-consolidate-design-work` works from, and a
+than resolving it here. Those notes are the input `18-consolidate-design-work` works from, and a
 collision flagged at design time is far cheaper to resolve than one discovered during
 consolidation.
 
 ## Frozen at consolidation
 
-Once `17-consolidate-design-work` runs, every file here is **frozen** — never edited again. It
+Once `18-consolidate-design-work` runs, every file here is **frozen** — never edited again. It
 is the record of what each story asked for and why, and the evidence when a consolidated
 decision is questioned later. The unified schema lives in `../CONSOLIDATED-IDEAS/`.
 
 ## When to write one
 
 - During a story's pass through `workflows/04-database-schema/`
-- Before that story reaches `14-decisions`
+- Before that story reaches `15-decisions`
 - A story that touches no schema needs no file here — record `N/A` in its story plan instead
 
 ## Cross-references

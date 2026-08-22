@@ -1,6 +1,6 @@
 # COMP-CONSOLIDATED-[FAMILY] — Decided Component Set
 
-**Date**: DD/MM/YYYY · **Consolidated by**: [name] · **Workflow**: `17-consolidate-design-work`
+**Date**: DD/MM/YYYY · **Consolidated by**: [name] · **Workflow**: `18-consolidate-design-work`
 **Stage-1 records merged**: `COMP-IDEA-US###-*.md`, `COMP-IDEA-US###-*.md`, …
 
 > Copy to `COMP-CONSOLIDATED-<FAMILY>.md`. This drives the **single** regeneration of

@@ -1,6 +1,6 @@
 # BRAND-CONSOLIDATED-[DOMAIN] — Decided Token Set
 
-**Date**: DD/MM/YYYY · **Consolidated by**: [name] · **Workflow**: `17-consolidate-design-work`
+**Date**: DD/MM/YYYY · **Consolidated by**: [name] · **Workflow**: `18-consolidate-design-work`
 **Stage-1 records weighed**: `BRAND-IDEA-US###-*.md`, `BRAND-IDEA-US###-*.md`, …
 
 > Copy to `BRAND-CONSOLIDATED-<DOMAIN>.md`. This document drives the **single** regeneration of

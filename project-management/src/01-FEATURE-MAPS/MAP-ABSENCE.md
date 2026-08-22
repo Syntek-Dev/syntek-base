@@ -81,7 +81,7 @@ Not the mass conversion of existing code, of which there is almost none.
 | Domain                   | Absence semantics · optional modelling · response contracts · lint and audit legs                                                                                                                                                                              |
 | Skills to load           | `grill-with-docs` · `doc-writer` · `stack-django` · `stack-htmx-templates` · `stack-rust` · `stack-react-native` · `code-reviewer` · `refactor`                                                                                                                |
 | Standing preferences     | Cite `TYPES-*`, never restate it · additive first · every clause declares its deletion class · a new guide is born under 270 cloc · surfaces gated by copier `_exclude` only                                                                                   |
-| Umbrella ADRs            | **None.** Fifteenth consecutive decline on the settled precedent: `14-DECISIONS/` is user-story-focused, so architecture doctrine goes to `code/docs/` and its per-project half to `how-to/src/`                                                               |
+| Umbrella ADRs            | **None.** Fifteenth consecutive decline on the settled precedent: `15-DECISIONS/` is user-story-focused, so architecture doctrine goes to `code/docs/` and its per-project half to `how-to/src/`                                                               |
 | Register entries triaged | **0 closes · 0 blocks · 0 unrelated** — root `GAPS.md` and `DEFERRED.md` are empty stubs by design, and `TEMPLATE-GAPS.md` carries standing limitations only since 13/08/2026                                                                                  |
 | Scope confirmed by Sam   | 15/08/2026 — five surfaces (four briefed + mobile TS) · new top-level guide · sibling of `NEGATIVE-SPACE.md` · doctrine + existing mechanical legs · HTMX pin in scope, vendoring deferred · `code-reviewer` **and the refactor setup** gain routed dimensions |
 | Research                 | All seven nodes settled at charting (N-001 to N-007), each adversarially refuted by an independent verifier. **Six of seven had absence claims overturned.** Verdicts below                                                                                    |
@@ -330,7 +330,7 @@ nothing, so audit scripts ship everywhere and must self-skip. `INCLUDE_MOBILE` d
 
 **Measured, not asserted.** `rg -ni 'optional|absence|\bnull\b|\bNone\b'` across
 `.claude/skills/refactor/SKILL.md`, all four `code/workflows/11-refactor/` files and all three
-`project-management/src/21-REFACTORING/` files returns **4 hits, all false positives** — "the
+`project-management/src/22-REFACTORING/` files returns **4 hits, all false positives** — "the
 optional opener", "MCP: none", `outline: none`, and "'None.' is a valid entry". Sam's request
 lands on genuinely empty ground.
 

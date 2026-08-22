@@ -12,7 +12,7 @@ proving with code evidence that a `../PLANNING/` finding is fixed and closing it
 
 ## How to work here
 
-- **Routing:** written during `project-management/workflows/21-implementation-documentation/` once the
+- **Routing:** written during `project-management/workflows/22-implementation-documentation/` once the
   remediation story ships, using the `security` skill (Fable), against the finding in
   `../PLANNING/VULN-PLAN-US###-*.md`. Standards:
   `project-management/docs/SECURITY-GUIDE.md`.

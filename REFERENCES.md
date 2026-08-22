@@ -178,16 +178,17 @@ rule navigates; it does not restate it.
 | 11 — QA checks                    | [project-management/workflows/11-qa-checks/CONTEXT.md](project-management/workflows/11-qa-checks/CONTEXT.md)                                       |
 | 12 — SEO checks                   | [project-management/workflows/12-seo-checks/CONTEXT.md](project-management/workflows/12-seo-checks/CONTEXT.md)                                     |
 | 13 — API design                   | [project-management/workflows/13-api-design/CONTEXT.md](project-management/workflows/13-api-design/CONTEXT.md)                                     |
-| 14 — Decisions                    | [project-management/workflows/14-decisions/CONTEXT.md](project-management/workflows/14-decisions/CONTEXT.md)                                       |
-| 15 — Sprint plans                 | [project-management/workflows/15-sprint-plans/CONTEXT.md](project-management/workflows/15-sprint-plans/CONTEXT.md)                                 |
-| 16 — Story plans                  | [project-management/workflows/16-story-plans/CONTEXT.md](project-management/workflows/16-story-plans/CONTEXT.md)                                   |
-| 17 — Consolidate design work      | [project-management/workflows/17-consolidate-design-work/CONTEXT.md](project-management/workflows/17-consolidate-design-work/CONTEXT.md)           |
-| 18 — Backend code                 | [project-management/workflows/18-backend-code/CONTEXT.md](project-management/workflows/18-backend-code/CONTEXT.md)                                 |
-| 19 — API code                     | [project-management/workflows/19-api-code/CONTEXT.md](project-management/workflows/19-api-code/CONTEXT.md)                                         |
-| 20 — Frontend code                | [project-management/workflows/20-frontend-code/CONTEXT.md](project-management/workflows/20-frontend-code/CONTEXT.md)                               |
-| 21 — Implementation documentation | [project-management/workflows/21-implementation-documentation/CONTEXT.md](project-management/workflows/21-implementation-documentation/CONTEXT.md) |
-| 22 — PR and review                | [project-management/workflows/22-pr-and-review/CONTEXT.md](project-management/workflows/22-pr-and-review/CONTEXT.md)                               |
-| 23 — Release                      | [project-management/workflows/23-release/CONTEXT.md](project-management/workflows/23-release/CONTEXT.md)                                           |
+| 14 — Logging checks               | [project-management/workflows/14-logging-checks/CONTEXT.md](project-management/workflows/14-logging-checks/CONTEXT.md)                             |
+| 15 — Decisions                    | [project-management/workflows/15-decisions/CONTEXT.md](project-management/workflows/15-decisions/CONTEXT.md)                                       |
+| 16 — Sprint plans                 | [project-management/workflows/16-sprint-plans/CONTEXT.md](project-management/workflows/16-sprint-plans/CONTEXT.md)                                 |
+| 17 — Story plans                  | [project-management/workflows/17-story-plans/CONTEXT.md](project-management/workflows/17-story-plans/CONTEXT.md)                                   |
+| 18 — Consolidate design work      | [project-management/workflows/18-consolidate-design-work/CONTEXT.md](project-management/workflows/18-consolidate-design-work/CONTEXT.md)           |
+| 19 — Backend code                 | [project-management/workflows/19-backend-code/CONTEXT.md](project-management/workflows/19-backend-code/CONTEXT.md)                                 |
+| 20 — API code                     | [project-management/workflows/20-api-code/CONTEXT.md](project-management/workflows/20-api-code/CONTEXT.md)                                         |
+| 21 — Frontend code                | [project-management/workflows/21-frontend-code/CONTEXT.md](project-management/workflows/21-frontend-code/CONTEXT.md)                               |
+| 22 — Implementation documentation | [project-management/workflows/22-implementation-documentation/CONTEXT.md](project-management/workflows/22-implementation-documentation/CONTEXT.md) |
+| 23 — PR and review                | [project-management/workflows/23-pr-and-review/CONTEXT.md](project-management/workflows/23-pr-and-review/CONTEXT.md)                               |
+| 24 — Release                      | [project-management/workflows/24-release/CONTEXT.md](project-management/workflows/24-release/CONTEXT.md)                                           |
 
 ---
 
@@ -206,13 +207,13 @@ complete.
 | `09-gdpr-compliance`              | `06-gdpr-enforcement`                                                                               | Obligations specified → enforced in code; review is a hard prerequisite                   |
 | `10-security-checks`              | `08-security-hardening`                                                                             | Design threat model → built-code audit, **entered via `19`** or `23`                      |
 | `13-api-design`                   | `04-api-design`                                                                                     | Ninja contract decided → expressed as routers/Schemas, **entered via `19`**               |
-| `18-backend-code`                 | `01-implement-story` · `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | `01` wraps the phase, entered here; `12` is **rust-only** and absent without that surface |
-| `19-api-code`                     | `01-implement-story` · `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | The same `01` pass continues; `05` only when the story needs an agent-facing surface      |
-| `20-frontend-code`                | `01-implement-story` · `02-tdd-cycle` · `13-desktop-app`                                            | The same `01` pass closes here; `13` is **desktop-only** and absent without it            |
-| `21-implementation-documentation` | _(receives from `01`, `02`)_                                                                        | **Owns** all records, findings, docs, and the graph refresh                               |
-| `22-pr-and-review`                | `07-review`                                                                                         | Content review (code layer) → process, merge, verification (PM layer)                     |
-| _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                                               | Entered from `21` findings routed to `src/20-BUGS/`                                       |
-| _no PM workflow_                  | `11-refactor`                                                                                       | Entered from `21` findings routed to `src/21-REFACTORING/`                                |
+| `19-backend-code`                 | `01-implement-story` · `02-tdd-cycle` · `03-database-migration` · `12-rust-extension`               | `01` wraps the phase, entered here; `12` is **rust-only** and absent without that surface |
+| `20-api-code`                     | `01-implement-story` · `04-api-design` · `02-tdd-cycle` · `08-security-hardening` · `05-mcp-server` | The same `01` pass continues; `05` only when the story needs an agent-facing surface      |
+| `21-frontend-code`                | `01-implement-story` · `02-tdd-cycle` · `13-desktop-app`                                            | The same `01` pass closes here; `13` is **desktop-only** and absent without it            |
+| `22-implementation-documentation` | _(receives from `01`, `02`)_                                                                        | **Owns** all records, findings, docs, and the graph refresh                               |
+| `23-pr-and-review`                | `07-review`                                                                                         | Content review (code layer) → process, merge, verification (PM layer)                     |
+| _no PM workflow_                  | `09-debugging-with-logs` · `10-debug`                                                               | Entered from `21` findings routed to `src/21-BUGS/`                                       |
+| _no PM workflow_                  | `11-refactor`                                                                                       | Entered from `21` findings routed to `src/22-REFACTORING/`                                |
 
 **`01-implement-story` wraps `18`–`20`; it does not sit under one of them.** Its own procedure
 runs plan → red tests → models and migration → services → endpoints → frontend as one sequence, so
@@ -220,17 +221,17 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 
 **PM-only, no code counterpart:** `02-story-creation`, `03-sprint-planning`, `05-user-flow-design`,
 `06-brand-guides`, `07-component-designs`, `08-wireframes`, `11-qa-checks`, `12-seo-checks`,
-`14-decisions`, `15-sprint-plans`, `16-story-plans`, `23-release`.
+`14-logging-checks`, `15-decisions`, `16-sprint-plans`, `17-story-plans`, `24-release`.
 
 **Ownership boundaries — do not duplicate across the seam:**
 
 | Fact                                                   | Sole owner                                 |
 | ------------------------------------------------------ | ------------------------------------------ |
-| Implementation record formats, templates, destinations | PM `21-implementation-documentation`       |
-| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `21-implementation-documentation`       |
+| Implementation record formats, templates, destinations | PM `22-implementation-documentation`       |
+| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `22-implementation-documentation`       |
 | `GAPS.md` / `DEFERRED.md` reads — suggest and triage   | PM `01-feature-map` (claims, never closes) |
-| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `21-implementation-documentation`       |
-| Branch promotion, approvals, merge gates               | PM `22-pr-and-review`                      |
+| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `22-implementation-documentation`       |
+| Branch promotion, approvals, merge gates               | PM `23-pr-and-review`                      |
 | Code content review (OWASP, coverage, principles)      | code `07-review`                           |
 | Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`            |
 | Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)         |

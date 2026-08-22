@@ -9,7 +9,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The high-level sprint records — one `SPRINT-##.md` per sprint carrying goal, timeline,
 capacity, story table, and dependency notes; the detailed per-sprint plans live one
-folder along in `15-SPRINT-PLANS/`.
+folder along in `16-SPRINT-PLANS/`.
 
 ## How to work here
 
@@ -32,7 +32,7 @@ folder along in `15-SPRINT-PLANS/`.
   an under-capacity sprint in the notes.
 - **Honour the dependency chain** — sprint numbering is not execution order; never
   schedule a story ahead of its blocker. Flag any data-migration risk in the notes.
-- **High-level records only** — detailed plans belong in `15-SPRINT-PLANS/`; do not
+- **High-level records only** — detailed plans belong in `16-SPRINT-PLANS/`; do not
   duplicate them here.
 - **Documentation only** — no code, secrets, or `.env` content. These records are exempt
   from the 300-line instructional limit, but `CONTEXT.md` is not.

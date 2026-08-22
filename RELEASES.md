@@ -1,9 +1,57 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 6.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.0.0 — 22/08/2026
+
+**Status:** Major — nineteen folders in your project are renumbered, and taking this update moves
+anything **you** wrote inside them across for you. Nothing your project does at runtime changes,
+and no application code is touched. If you have written stories, decisions, sprint plans or test
+records, read the last section — it is the reason this is a whole-number release.
+
+### What this is for
+
+Every user story already had a table of flags at the top — DB, GDPR, Security, SEO and the rest.
+It looked like it decided which planning steps a story goes through. It did not: nothing filled
+it in, and nothing read it. You could leave every row blank and no step would notice.
+
+It now works the way it looks. **One row per planning step, and a row reading `N/A` means that
+step is skipped for that story.** Fill the table once when you write the story, and you have said
+which of the fourteen planning steps it needs.
+
+### What changed for you
+
+- **The flags table has thirteen rows instead of nine**, one for each planning step, and each row
+  says which step it turns on. Fill it in when you write the story; leave nothing blank.
+- **A new planning step, "logging checks", decides what your feature writes to its log files** —
+  and, more usefully, what must never appear in one. It runs after the API step, because it needs
+  your endpoint list and your list of encrypted fields to be useful.
+- **"Testing" and "QA" were the same thing under two names.** They are now one, split into the
+  two things you actually produce: an automated test record and a manual walk-through.
+- **Your feature map now lists the stories it will become**, each with its flags already filled
+  in. Writing the story becomes copying that row out rather than starting from a blank page.
+- **Steps 14 to 23 are now 15 to 24**, because the new logging step takes number 14.
+
+### If you have already written work in these folders
+
+Take the update as normal. A rescue script runs automatically and moves your files from the old
+folder numbers to the new ones — your decisions, sprint plans, story plans, test records,
+reviews, findings, bug reports, refactoring notes and incident register. It never overwrites: if
+a file of the same name already exists on both sides it stops, lists them, and asks you to
+reconcile those by hand. Nothing is deleted.
+
+Afterwards, `git status` shows you exactly what moved.
+
+### One thing worth knowing
+
+Five of the six export scripts under `00-ASSETS/scripts/` had been pointing at folder names that
+stopped existing several releases ago, so they quietly produced nothing. They work again. If you
+tried a PDF or ClickUp export before and got an empty result, that is why.
 
 ---
 
@@ -2001,7 +2049,7 @@ characters.
 `how-to/src/STORE-LISTING.md` is what **this** project actually says — a value and a used-count
 per field, beside the budget it has to fit. A blank cell is an unanswered question, not a default.
 
-`project-management/workflows/23-release/` makes it a release gate, and a conditional one. The new
+`project-management/workflows/24-release/` makes it a release gate, and a conditional one. The new
 Step 2 fires only when the release moved `code/src/mobile/`; a root-only bump reaches no store, and
 a project without the mobile surface never meets the condition. The What's New row is
 **overwritten, not appended** — this register records what the store says now, and the history
@@ -2192,7 +2240,7 @@ The decision went the other way from writing them. **This project does not use A
 work already lives — the feature map, the story plan, the nearest `CONTEXT.md` glossary, a
 `research/` note.
 
-The trigger was narrow and then generalised. `project-management/src/14-DECISIONS/` is not
+The trigger was narrow and then generalised. `project-management/src/15-DECISIONS/` is not
 copier-excluded, so an ADR written here about the template's own tooling would ship into every
 generated project as a decision that project never made. That alone rules the folder out for
 template work; the wider call retires the machinery rather than leaving it merely unused.
@@ -2302,7 +2350,7 @@ without a single failure to mark the occasion.
 
 It was describing a repository three surfaces out of date: a `code/src/` tree missing
 `improvement-architecture/`, a `.github/workflows/` list naming 11 of 28, a `code/docs/` tree
-missing eight ungated guides, a `src/` tree stopping at `21-REFACTORING`, and a workflow count of
+missing eight ungated guides, a `src/` tree stopping at `22-REFACTORING`, and a workflow count of
 21 when there are 23.
 
 `shipped-readme.sh` now guards it, along with `how-to/src/TEMPLATE-TOKENS.md`. Both are documents
@@ -2447,7 +2495,7 @@ judge whether its own explanation worked.
 
 ### The incident register
 
-`project-management/src/22-INCIDENTS/` is new, and it breaks two conventions on purpose. It is
+`project-management/src/23-INCIDENTS/` is new, and it breaks two conventions on purpose. It is
 **not story-anchored** — an incident does not belong to a `US###` — and it is **PII-free**, because
 an incident record is the document most likely to be read by someone who should never have seen the
 personal data that caused it.
@@ -3154,7 +3202,7 @@ feature in hand: **closes**, **blocks**, or **unrelated**, with the unrelated co
 the triage is provably exhaustive.
 
 **Claiming is not closing.** `01-feature` records on the map that a feature will retire an entry;
-`21-implementation-documentation` marks it closed against shipped code, and is now the only place
+`22-implementation-documentation` marks it closed against shipped code, and is now the only place
 that can. A claim the story did not actually retire stays open, and the reason becomes a finding.
 
 ### Comments say why, and nothing else
@@ -3218,12 +3266,12 @@ conflict flow; the safest route is to update into a scratch directory first and 
 **Planning now runs one story at a time.** Previously the numbered gates read as a batch — write
 every story, then every schema, then every flow. That guaranteed the same cross-cutting questions
 got answered slightly differently at every gate. A story now runs the whole specify tier
-(`02`–`13`) and finishes at `14-decisions` before the next one starts, so story 7 is planned with
+(`02`–`13`) and finishes at `15-decisions` before the next one starts, so story 7 is planned with
 six stories' worth of settled decisions already in hand.
 
 **Sprint planning fires on fill, not per story.** Each finished story is slotted into the open
 sprint record with its points. When it reaches the ceiling — `SPRINT_CAPACITY_SP`, default 11,
-grace 13 — `15-sprint-plans` and `16-story-plans` run for that sprint, then planning resumes. Both
+grace 13 — `16-sprint-plans` and `17-story-plans` run for that sprint, then planning resumes. Both
 figures are new Copier questions and are meant to be retuned against measured velocity after two
 sprints.
 
@@ -3241,7 +3289,7 @@ USER-STORY-IDEAS/  →  CONSOLIDATED-IDEAS/  →  IMPLEMENTATION/
   frozen once 17 runs  ← this is what gets built
 ```
 
-`17-consolidate-design-work` reconciles the accumulated work once every story is planned. It
+`18-consolidate-design-work` reconciles the accumulated work once every story is planned. It
 resolves the schema first, because a fragmented schema gets costlier with every story that ships
 on top of it. Stage 1 is frozen rather than deleted — it is the record of what each story asked
 for, and the evidence when a consolidated decision is later questioned.
@@ -3250,7 +3298,7 @@ for, and the evidence when a consolidated decision is later questioned.
 
 - `12-seo-checks` became a **planning** gate. It sat in the specify tier but required a deployed
   page, which made it impossible to run in its own slot. Auditing the built page and writing the
-  `IMPLEMENTATION/` record moved to `21-implementation-documentation`, which already owned every
+  `IMPLEMENTATION/` record moved to `22-implementation-documentation`, which already owned every
   other implementation record.
 - `SPRINT-PLANNING-GUIDE.md` split into `PLANNING-GUIDE.md` over
   `planning/{CADENCE,STORIES,SPRINTS}.md`. The old name had stopped describing its contents once
@@ -3365,7 +3413,7 @@ reason the default is `false`.
   `SecretBytes` type that wipes itself on drop
 - `code/src/scripts/rust/` — build, test, lint and a `cargo-deny` supply-chain gate
 - `code/docs/RUST.md` plus three sub-documents: the PyO3 boundary, memory hygiene, supply chain
-- `code/workflows/12-rust-extension/`, entered from PM `18-backend-code`
+- `code/workflows/12-rust-extension/`, entered from PM `19-backend-code`
 - A `rust` agent and a `stack-rust` skill, excluded together with the tree
 - `syntax-rust.yml` — clippy at `-D warnings`, the Rust suite, and the dependency audit
 
@@ -3680,7 +3728,7 @@ and the domain-specific example artefacts are cleared so the template ships temp
 
 - **Three tiers, explicitly numbered** — specify (01–12) → decide and plan (13–15) → record (16–20), with the story plan as the code master
 - **Workflows to 21** — API design, decisions, sprint and story plans, three implementation phases, implementation documentation, PR and review, and release
-- **Documentation is a hard gate** — `21-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
+- **Documentation is a hard gate** — `22-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
 - **No project data** — example artefacts and organisation assets are cleared; what ships is the structure and the templates
 
 ---

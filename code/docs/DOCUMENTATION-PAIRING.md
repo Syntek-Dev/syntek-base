@@ -209,7 +209,7 @@ name as unwritten.
 
 ## Governing procedures (route here — do not restate at length)
 
-- `project-management/workflows/21-implementation-documentation/` — the closeout that updates
+- `project-management/workflows/22-implementation-documentation/` — the closeout that updates
   every touched `CONTEXT.md`/`CLAUDE.md` pair and refreshes the graph
 - `how-to/workflows/09-write-operator-guide/` — the operator-doc counterpart for `how-to/`
 

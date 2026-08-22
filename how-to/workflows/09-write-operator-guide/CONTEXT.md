@@ -62,5 +62,5 @@ uses it to document its own operations, which the template cannot do on its beha
 - `how-to/docs/SKILL-AUTHORING.md` — the sibling standard, for skills rather than guides
 - `.claude/skills/global-workflow/` — British English, Markdown style, commit conventions
 - `code/src/scripts/CONTEXT.md` — the scripts a guide is allowed to cite
-- `project-management/workflows/21-implementation-documentation/` — owns implementation
+- `project-management/workflows/22-implementation-documentation/` — owns implementation
   records; this workflow does not

@@ -37,7 +37,7 @@ model: fable
 
 ## Definition of Done
 
-- [ ] QA documents exist for every in-scope story
+- [ ] QA documents exist for every in-scope story whose `QA` flag is not `N/A`
 - [ ] All user stories have complete acceptance criteria
 - [ ] QA documentation committed and pushed
-- [ ] Ready to proceed to `workflows/15-sprint-plans`
+- [ ] Ready to proceed to `workflows/16-sprint-plans`

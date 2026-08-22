@@ -56,9 +56,9 @@ missing piece, and prints the command that creates it.
 
 | Path                              | Created by                                       | When                                                                                                                                           |
 | --------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code/src/django/apps/marketing/` | `code/src/scripts/development/new-django-app.sh` | The first story that needs a public page — Step 2 of `project-management/workflows/20-frontend-code/`, which cannot scaffold a page without it |
-| `code/src/django/config/api.py`   | `project-management/workflows/19-api-code/`      | The first story that adds an endpoint — Step 2, in the same change as the router it mounts                                                     |
-| `code/src/django/components/`     | `project-management/workflows/20-frontend-code/` | The first story with a reusable server-rendered component — Step 4                                                                             |
+| `code/src/django/apps/marketing/` | `code/src/scripts/development/new-django-app.sh` | The first story that needs a public page — Step 2 of `project-management/workflows/21-frontend-code/`, which cannot scaffold a page without it |
+| `code/src/django/config/api.py`   | `project-management/workflows/20-api-code/`      | The first story that adds an endpoint — Step 2, in the same change as the router it mounts                                                     |
+| `code/src/django/components/`     | `project-management/workflows/21-frontend-code/` | The first story with a reusable server-rendered component — Step 4                                                                             |
 
 ### What the marketing row does not cover
 
@@ -82,7 +82,7 @@ something nothing has promised.
 
 ### What the API row does not cover
 
-**The row covers the project-level `NinjaAPI` and nothing else.** `19-api-code` Step 2 creates the
+**The row covers the project-level `NinjaAPI` and nothing else.** `20-api-code` Step 2 creates the
 single `NinjaAPI` in `code/src/django/config/api.py` if no story has yet, and mounts the feature's
 router onto it.
 

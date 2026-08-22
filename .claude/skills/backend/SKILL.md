@@ -137,15 +137,15 @@ data-subject right is in play. **Suggest, do not chain**, unless the caller said
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/18-backend-code/` — the build phase that drives this work
-- `project-management/workflows/19-api-code/` — the build phase for the Django Ninja layer
+- `project-management/workflows/19-backend-code/` — the build phase that drives this work
+- `project-management/workflows/20-api-code/` — the build phase for the Django Ninja layer
 - `project-management/workflows/04-database-schema/` — the approved schema, a prerequisite
 - `code/workflows/03-database-migration/` — writing and applying the migration
 - `code/workflows/04-api-design/` — expressing the contract as routers and Schemas
 - `code/workflows/05-mcp-server/` — the FastMCP tool surface at `/mcp/`
 - `code/workflows/08-security-hardening/` — permission and RLS hardening
 - `code/workflows/02-tdd-cycle/` — implementing against pre-written failing tests
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/08-debugging/` — when the stack itself is unhealthy, not the code
 
 ## Cross-references

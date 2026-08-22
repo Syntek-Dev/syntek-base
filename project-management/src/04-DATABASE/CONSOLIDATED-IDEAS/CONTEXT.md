@@ -1,7 +1,7 @@
 # project-management/src/04-DATABASE/CONSOLIDATED-IDEAS
 
 **Stage 2** — the unified schema. One document per domain, written by
-`workflows/17-consolidate-design-work/` once every story has been planned, reconciling the
+`workflows/18-consolidate-design-work/` once every story has been planned, reconciling the
 per-story designs in `../USER-STORY-IDEAS/` into the schema that actually gets built.
 
 ## Directory Tree
@@ -31,17 +31,17 @@ Full shape: `DB-CONSOLIDATED-000-TEMPLATE.md`.
 ## This is what gets built
 
 A migration written from a `../USER-STORY-IDEAS/` design rather than from here reintroduces
-exactly the fragmentation consolidation removed. Workflow `18-backend-code` reads this folder.
+exactly the fragmentation consolidation removed. Workflow `19-backend-code` reads this folder.
 
 ## Resolutions that are hard to reverse become ADRs
 
 Where a consolidation choice is hard to undo, or a later decision would need to explicitly
-supersede it, it is raised as an `ADR-###` in `../../14-DECISIONS/` and cited from here rather
+supersede it, it is raised as an `ADR-###` in `../../15-DECISIONS/` and cited from here rather
 than buried in the resolution log.
 
 ## When to write one
 
-- During `workflows/17-consolidate-design-work/`, after every story has cleared `16-story-plans`
+- During `workflows/18-consolidate-design-work/`, after every story has cleared `17-story-plans`
 - Never mid-cycle with stories still to plan — the second pass invalidates the first
 
 ## Cross-references
@@ -49,9 +49,9 @@ than buried in the resolution log.
 - `DB-CONSOLIDATED-000-TEMPLATE.md` — the per-domain consolidation template
 - `../USER-STORY-IDEAS/` — the frozen stage-1 designs this reconciles
 - `../IMPLEMENTATION/` — the per-story records of what was actually built from this
-- `../../14-DECISIONS/` — where a hard-to-reverse resolution is recorded
-- `../../16-STORY-PLANS/` — plans that may need correcting when this changes a shape
+- `../../15-DECISIONS/` — where a hard-to-reverse resolution is recorded
+- `../../17-STORY-PLANS/` — plans that may need correcting when this changes a shape
 - `code/docs/DATABASE.md` — constraints, scope columns, lock-safe migration shape
-- `project-management/workflows/17-consolidate-design-work/` — the workflow that produces these
+- `project-management/workflows/18-consolidate-design-work/` — the workflow that produces these
 
 **Last Updated**: <%DATE%>

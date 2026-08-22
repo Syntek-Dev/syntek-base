@@ -1,7 +1,7 @@
 # project-management/src/08-WIREFRAMES/IMPLEMENTATION
 
 **Stage 3** — the screen as built. One record per user story, written during
-`workflows/21-implementation-documentation/`, confirming that the shipped Django templates
+`workflows/22-implementation-documentation/`, confirming that the shipped Django templates
 follow the consolidated screens in `../CONSOLIDATED-IDEAS/`.
 
 ## Directory Tree
@@ -36,6 +36,6 @@ resembles the HTML.
 - `../USER-STORY-IDEAS/` — the frozen stage-1 screen, for tracing intent
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA verified against the running page
 - `code/docs/responsive/BREAKPOINTS.md` — the breakpoints checked
-- `../../19-FINDINGS/` — where a divergence worth carrying forward is recorded
+- `../../20-FINDINGS/` — where a divergence worth carrying forward is recorded
 
 **Last Updated**: <%DATE%>

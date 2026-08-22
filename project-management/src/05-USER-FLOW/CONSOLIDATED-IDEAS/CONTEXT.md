@@ -1,7 +1,7 @@
 # project-management/src/05-USER-FLOW/CONSOLIDATED-IDEAS
 
 **Stage 2** — whole journeys. One document per interaction **area**, written by
-`workflows/17-consolidate-design-work/` once every story has been planned, stitching the
+`workflows/18-consolidate-design-work/` once every story has been planned, stitching the
 per-story fragments in `../USER-STORY-IDEAS/` into the journey that wireframes and code follow.
 
 ## Directory Tree
@@ -36,7 +36,7 @@ a quiet addition here.
 
 ## When to write one
 
-- During `workflows/17-consolidate-design-work/`, after every story has cleared `16-story-plans`
+- During `workflows/18-consolidate-design-work/`, after every story has cleared `17-story-plans`
 - Never mid-cycle with stories still to plan
 
 ## Cross-references
@@ -46,7 +46,7 @@ a quiet addition here.
 - `../IMPLEMENTATION/` — the per-story records of what was built from this
 - `../../08-WIREFRAMES/CONSOLIDATED-IDEAS/` — the screens that realise these journeys
 - `../../09-GDPR/` — where data touchpoints get a lawful basis
-- `../../16-STORY-PLANS/` — plans that may need correcting when a journey changes
-- `project-management/workflows/17-consolidate-design-work/` — the workflow that produces these
+- `../../17-STORY-PLANS/` — plans that may need correcting when a journey changes
+- `project-management/workflows/18-consolidate-design-work/` — the workflow that produces these
 
 **Last Updated**: <%DATE%>

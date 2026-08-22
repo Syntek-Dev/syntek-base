@@ -105,26 +105,27 @@ project-management/src/
 ├── 00-ASSETS/                    ← logos, export scripts — reference, not a stage
 │   ── discover, once per feature (01) ──
 ├── 01-FEATURE-MAPS/              ← the wayfinder decision maps
-│   ── specify (02–13) ──
+│   ── specify (02–14) ──
 ├── 02-STORIES/ 03-SPRINTS/ 04-DATABASE/ 05-USER-FLOW/ 06-BRAND-GUIDE/
 ├── 07-COMPONENTS/ 08-WIREFRAMES/ 09-GDPR/ 10-SECURITY/ 11-QA/ 12-SEO/ 13-API-DESIGN/
-│   ── decide & plan (14–16) ──
-├── 14-DECISIONS/ 15-SPRINT-PLANS/ 16-STORY-PLANS/
-│   ── record, per story (17–21) ──
-├── 17-TESTS/ 18-REVIEWS/ 19-FINDINGS/ 20-BUGS/ 21-REFACTORING/
-│   ── record, not per story (22) ──
-└── 22-INCIDENTS/
+├── 14-LOGGING/
+│   ── decide & plan (15–17) ──
+├── 15-DECISIONS/ 16-SPRINT-PLANS/ 17-STORY-PLANS/
+│   ── record, per story (18–22) ──
+├── 18-TESTS/ 19-REVIEWS/ 20-FINDINGS/ 21-BUGS/ 22-REFACTORING/
+│   ── record, not per story (23) ──
+└── 23-INCIDENTS/
 ```
 
-The numbered `src/` folders mirror the numbered `workflows/` up to `16`. **`16-STORY-PLANS/` is
+The numbered `src/` folders mirror the numbered `workflows/` up to `17`. **`17-STORY-PLANS/` is
 what a developer actually codes from** — it references the sprint plan, the decisions, and every
-02–13 specification.
+02–14 specification.
 
 **These numbers are frozen — append only, never renumber.** They hold artefacts you wrote, and
 Copier tracks only what it generated, so renumbering one strands your work silently on the next
 update (`14-UPDATING.md`).
 
-**`22-INCIDENTS/` is the exception to both patterns**, and knowing why saves you looking for
+**`23-INCIDENTS/` is the exception to both patterns**, and knowing why saves you looking for
 things that do not exist: it has no matching workflow, because an incident is unplanned and
 cannot be gated, and it is not anchored to a `US###`, because an incident is not caused by or
 owned by a story. It is a **PII-free** register — the substance of an incident lives in your
@@ -186,7 +187,7 @@ note answering a question about the template means nothing in a project built fr
 | How to do a task properly           | The matching `workflows/NN-…/STEPS.md`       |
 | What a directory is for             | Its `CONTEXT.md`                             |
 | What I am allowed to do here        | Its `CLAUDE.md`                              |
-| Why a decision was made             | `project-management/src/14-DECISIONS/`       |
+| Why a decision was made             | `project-management/src/15-DECISIONS/`       |
 | What is currently broken or blocked | `GAPS.md`                                    |
 
 Or ask Claude — the structure exists so it can answer accurately.

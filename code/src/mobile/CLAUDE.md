@@ -16,7 +16,7 @@ Ninja API, never a client-side build for the Django-served pages.
 - **Routing:** React Native work loads the `stack-react-native` skill. The `frontend` skill stays
   Django-templates-only and does **not** own this tree; `test-writer`, `qa-tester` and
   `code-reviewer` may load `stack-react-native` without owning React Native conventions. Start
-  substantive work from `project-management/workflows/20-frontend-code/`, whose mobile steps are
+  substantive work from `project-management/workflows/21-frontend-code/`, whose mobile steps are
   flagged mobile-only.
 - **Model:** Opus for code, tests and review; Fable only where a design or schema decision is
   being made upstream of the code.
@@ -65,7 +65,7 @@ Ninja API, never a client-side build for the Django-served pages.
   change. Reachable as `@/lib/…` — the alias resolves in both `tsc` and Jest.
 - **The compiler flags in `tsconfig.json` are a rule, not a preference.** The four beyond
   `strict` each ban a state (`code/docs/MOBILE-CODING-PRINCIPLES.md` Section 1). Loosening one to make
-  a build pass is a finding for `project-management/src/19-FINDINGS/`; the fix is a guard or a
+  a build pass is a finding for `project-management/src/20-FINDINGS/`; the fix is a guard or a
   length check, never a `!` non-null assertion.
 - **Stay self-contained.** TypeScript, eslint and their config live here and only here. Adding a
   TypeScript dependency to the repository root would breach the one-conditionalisation-mechanism
