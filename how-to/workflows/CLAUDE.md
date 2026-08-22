@@ -8,9 +8,9 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-The step-by-step operational workflows — first-time setup (`01`), daily development
-(`02`), debugging (`03`), and worktree setup (`04`) — each a `CONTEXT.md` +
-`STEPS.md` + `CHECKLIST.md` triad.
+The nine step-by-step operational workflows, in four families — set up (`01`–`02`),
+run (`03`–`07`), diagnose (`08`), author (`09`). `CONTEXT.md` names each; the
+four-file shape every one of them keeps is under **Guardrails** below.
 
 ## How to work here
 
@@ -31,7 +31,8 @@ The step-by-step operational workflows — first-time setup (`01`), daily develo
 
 - **Script-first:** no raw `pnpm`/`uv`/`docker`/`python manage.py` in any step.
 - **Respect the hard gates:** e.g. `project-management/docs/GIT-GUIDE.md` branch
-  naming before the first commit (workflows `02`/`04`); do not reorder around them.
+  naming — workflow `02` before the worktree is created, `03` before the first
+  commit; do not reorder around them.
 - **≤ 300 code lines** per file; every workflow keeps its four-file shape
   (`CONTEXT.md` · `CLAUDE.md` · `STEPS.md` · `CHECKLIST.md`).
 

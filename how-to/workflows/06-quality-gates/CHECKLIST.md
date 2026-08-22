@@ -46,7 +46,8 @@ model: opus
 
 ## Before pushing
 
-- [ ] `bash .claude/hooks/pre-pr-check.sh` run end to end and green · _opus_
+- [ ] `pre-pr-check.sh` green end to end — the piped form in `STEPS.md`; run bare it exits 0
+      having run nothing · _opus_
 - [ ] Targeting a promotion branch? Coverage clears the higher floor (`code/docs/testing/COVERAGE.md`) · _opus_
 - [ ] Content review done via `code/workflows/07-review/` — this gate checks form, not judgement · _opus_
 - [ ] Any local/CI disagreement treated as a mirroring bug and fixed, not routed around · _opus_

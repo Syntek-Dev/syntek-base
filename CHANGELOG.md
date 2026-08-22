@@ -1,12 +1,26 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.0.2 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.3 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.0.3] - 22/08/2026
+
+### Fixed
+
+- **Two documented invocations of `pre-pr-check.sh` ran no gate at all.** The script is a `PreToolUse` hook: it reads a JSON payload on stdin and matches the command inside it. Run bare it exits `0` having examined nothing — the precise false green it exists to prevent — and `.claude/skills/git/SKILL.md` and `how-to/workflows/06-quality-gates/CHECKLIST.md` both told the reader to run it bare. The skill now carries the piped form, `echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh`, and says the pipe is required.
+- **The hook fires on `gh pr create` and not on `gh pr ready`**, so a draft being promoted has had no gate since it was created. `.claude/skills/pr/SKILL.md` says so, and a deliberate pre-flight there is named as legitimate rather than as duplication.
+- **A checklist box and its `STEPS.md` twin may carry the bare name or the exact form, and nothing in between.** A shortened third variant reads as runnable, differs from what was meant to run, and a sweep that corrects the steps never opens the box beside them — which is how one gate came to be documented correctly in one file and falsely in the one that gates it. The rule is now written down in `how-to/docs/OPERATOR-DOC-CRAFT.md`.
+- **`check-audits.sh` verified nothing about its own exclusions.** Three audits and one template-integrity check are deliberately not run by the pre-PR gate, each because something else owns them. That claim is now executed rather than asserted: before either loop runs, each entry is checked for a script that still exists, an owner that still exists, and an owner that still **names** it — the third being the leg a rename defeats. A stale entry fails the gate rather than quietly widening the scope.
+- **A scope that ran nothing is no longer reported as clean.** Both loops glob a directory, and a glob over a missing directory — or one holding only excluded scripts — yields zero iterations and no failures, reaching the same verdict as a full clean run. Each loop counts what it ran, and a count of zero is a finding.
+- **The summary names what ran and what did not.** The single figure it replaced, "26 audit(s) clean", counted the template-integrity checks as audits and said nothing about the four scripts stepped over, so the one number a reader had could not be reconciled with the directory.
+- **`how-to/workflows/CLAUDE.md` describes the nine operational workflows in their four families** rather than the four it used to name, and `how-to/workflows/02-worktree-setup/CHECKLIST.md` replaces a bare `docker ps` with `server.sh status` run inside each worktree, plus the by-hand comparison that check actually requires — `server.sh status` is `docker compose ps` scoped to one project and cannot see the other worktree's containers.
 
 ---
 

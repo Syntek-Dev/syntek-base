@@ -70,11 +70,18 @@ Confirm the current branch matches the work in hand. Feature and bugfix work bel
 
 ## Pull requests
 
-Run the pre-PR gate first and only mark a PR ready once every gate is green:
+The gate runs itself on `gh pr create` — the `PreToolUse` hook in `.claude/settings.json` fires
+it, so do not duplicate that run by hand (`.claude/skills/pr/SKILL.md`). It does **not** fire on
+`gh pr ready`, so a draft being promoted has had no gate since it was created. To check one
+deliberately, pipe the payload the hook expects:
 
 ```bash
-bash .claude/hooks/pre-pr-check.sh
+echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh
 ```
+
+**The pipe is required and the script is unusable without it** — run bare it exits 0 having run
+no gate at all, which is the false green it exists to prevent. Mechanism and the full reasoning:
+`how-to/workflows/06-quality-gates/STEPS.md`.
 
 Create and manage PRs with the `gh` CLI:
 

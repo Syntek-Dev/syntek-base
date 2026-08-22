@@ -45,7 +45,9 @@ holds, not something the runtime enforces.
 
    Two hooks fire on their own and must not be duplicated by hand: `pre-pr-check.sh` runs the
    quality gates on `gh pr create` via the project's `PreToolUse` hook, and
-   `post-pr-comment.sh` posts their results to GitHub.
+   `post-pr-comment.sh` posts their results to GitHub. **On `gh pr create` only** — the matcher
+   does not cover `gh pr ready`, so promoting a draft runs nothing. A deliberate pre-flight
+   there is not duplication, and takes the piped form in `.claude/skills/git/SKILL.md`.
 
 4. **Documentation** — no dispatch, and a **hard gate before the PR is marked ready**. See below.
 5. **Exit the worktree** — conditional. Where the story ran in a git worktree, call

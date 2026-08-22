@@ -1,9 +1,52 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.0.2 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.3 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.0.3 — 22/08/2026
+
+**Status:** Patch — a command this repository told you to run was not running the checks it
+named, and the check runner behind it was reporting on scripts it had never opened.
+
+### A documented command that quietly did nothing
+
+Before a pull request is raised, a script here runs the whole gate: line counts, formatting,
+linting, types, tests, security and every audit. It is wired to fire automatically when a pull
+request is created.
+
+Because of how it is wired, it expects to be handed a small piece of information about what
+triggered it. Run on its own with nothing handed to it, it finishes immediately and reports
+success, having checked nothing whatsoever.
+
+Two places in this repository told you to run it exactly that way. Both are corrected: the
+instruction now shows the form that works, and says outright that the plain form finishes clean
+without looking.
+
+There is also a gap worth knowing: the automatic run happens when a pull request is **created**,
+not when a draft is marked ready. If you open something as a draft and promote it later, nothing
+has re-checked it in between, so running the gate by hand at that point is worth doing.
+
+### The gate was stepping over scripts and not saying so
+
+The runner deliberately skips four checks, each because something else already covers it.
+"Something else already covers it" was written in a comment and never tested. If the thing that
+covered it were deleted, or renamed, or stopped calling it, the runner would have gone on
+skipping and gone on reporting everything clean.
+
+Each exclusion is now verified before it is honoured — the script still exists, its stated owner
+still exists, and that owner still names it — and a stale one stops the run rather than silently
+widening the scope.
+
+The same run now also refuses to call an empty scope a pass. If the folder of checks were missing,
+or held only the scripts being stepped over, the old code found no failures and reported success.
+It now reports that it found nothing to look at, which is a different answer.
+
+Finally, the summary line says how many checks ran, of which kind, and which were not run here by
+name. The single number it replaced could not be squared with the folder it claimed to describe.
 
 ---
 

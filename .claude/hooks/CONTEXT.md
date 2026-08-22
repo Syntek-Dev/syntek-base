@@ -22,7 +22,7 @@ code-review-graph and reports what the refresh could not reach.
 ├── template-docs-readonly.sh ← PreToolUse hook — template docs are read-only in a generated project
 ├── graph-update.sh          ← PostToolUse hook — refresh the graph, name what it could not see
 └── lib/                     ← one gate per file, sourced by pre-pr-check.sh, never run directly
-    ├── check-audits.sh      ← TEMPLATE-ONLY — every audit + every template-integrity check
+    ├── check-audits.sh      ← TEMPLATE-ONLY — both script directories, minus a declared exclusion
     ├── check-cloc.sh        ← line-count validation
     ├── check-format.sh      ← code formatting
     ├── check-lint.sh        ← linting and style
@@ -47,17 +47,17 @@ code-review-graph and reports what the refresh could not reach.
 
 ## lib/ Contents
 
-| File                 | Purpose                                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------- |
-| `check-audits.sh`    | **Template-only** — every audit + `.github/scripts/` <!-- doc-references: template-only --> |
-| `check-cloc.sh`      | Line count validation                                                                       |
-| `check-format.sh`    | Code formatting checks                                                                      |
-| `check-lint.sh`      | Linting and style checks                                                                    |
-| `check-lockfiles.sh` | Dependency lock file validation                                                             |
-| `check-security.sh`  | Security scanning                                                                           |
-| `check-stubs.sh`     | Test stub validation                                                                        |
-| `check-tests.sh`     | Test coverage and execution                                                                 |
-| `check-typecheck.sh` | basedpyright type checking                                                                  |
+| File                 | Purpose                                                                                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `check-audits.sh`    | **Template-only** — the audits + `.github/scripts/`, each minus a declared exclusion <!-- doc-references: template-only --> |
+| `check-cloc.sh`      | Line count validation                                                                                                       |
+| `check-format.sh`    | Code formatting checks                                                                                                      |
+| `check-lint.sh`      | Linting and style checks                                                                                                    |
+| `check-lockfiles.sh` | Dependency lock file validation                                                                                             |
+| `check-security.sh`  | Security scanning                                                                                                           |
+| `check-stubs.sh`     | Test stub validation                                                                                                        |
+| `check-tests.sh`     | Test coverage and execution                                                                                                 |
+| `check-typecheck.sh` | basedpyright type checking                                                                                                  |
 
 ## Session-continuity hooks
 
@@ -140,15 +140,42 @@ tests · security. Template mode appends `audits` as the ninth.
 **`audits` is the one genuine asymmetry left**, and has no counterpart in an application: a
 template's product is its structure, routing and documentation, which is exactly what
 `code/src/scripts/audits/*.sh` and `.github/scripts/*.sh` read. Both are scoped by
-directory rather than by a list, because a list drifts silently — a new audit the PR check
-never runs looks identical to one that passes.
+**directory**, so a newly added script runs by default — never by an inclusion list, which
+drifts silently and in the dangerous direction: a new audit the PR check never runs looks
+identical to one that passes.
 
-The second scope was a list until 16/08/2026, and it drifted exactly as predicted: it read
-`shipped-*.sh`, covering two of the four scripts and silently omitting the two that answer
-whether the template can be generated at all.
+The second scope was an inclusion list until 16/08/2026, and it drifted exactly as predicted:
+it read `shipped-*.sh`, covering two of the four scripts then present and silently omitting the
+two that answer whether the template can be generated at all.
 
-This is **not** a softened gate. Nothing runnable is skipped, and a check with a host-side half
-still blocks on it — see the negative test in `check-format.sh`'s history.
+**Each scope now names scripts out of its directory, and that is a different mechanism rather
+than the same one in disguise.** An exclusion list drifts the safe way round: a script added
+tomorrow is not named in it, so it runs, and if it should not have it fails loudly on its first
+pass. Three audits are named out — `cloc.sh` and `security.sh` because gates `[1/8]` and `[8/8]`
+already own them and running them twice reports one defect as two, `dependency-drift.sh` because
+it is a `copier update` helper that requires `--incoming DIR`. One integrity check is named out
+too: `shipped-artefacts.sh` asserts on a tree `copier copy` produced and exits `2` bare, so widening
+the second scope to the whole directory left the gate unable to pass at all. Everything else in
+both directories runs, and **no count of either is written here** — the run prints its own, and
+a number copied into a document goes stale the next time a script is added.
+
+That leaves an exclusion list two silent failure modes — an entry matching no script, and an
+owner that has been deleted or has stopped invoking it — and `check-audits.sh` checks both
+before either loop runs, failing the gate rather than stepping over a scan nobody is running
+(`code/docs/GATE-REPORTING.md`). The integrity owner is a CI job rather than a lib check, so the
+guard opens `.github/workflows/audit-template.yml` and requires it to still name the script.
+
+**A scope that ran nothing is a finding, not a pass.** A glob over a missing directory, or over
+one holding only excluded scripts, yields no iterations and no failures — reaching the verdict a
+full clean run over the whole template would. Each loop counts what it ran and a zero is
+reported, so every count in the summary can be traced to an execution.
+
+This is **not** a softened gate, and the exclusions do not make it one: the two audits named as
+owned run as gates `[1/8]` and `[8/8]`, `development/template-update.sh` is what passes the
+third an incoming tree, and `shipped-artefacts.sh` runs in `audit-template.yml`'s
+`[3/4] Template Generation` job — which fires on a push to any branch and on any pull request
+into `main`, `staging`, `dev` or `testing`. A check with a host-side half still blocks on it —
+see the negative test in `check-format.sh`'s history.
 
 ## Dual-Check Design
 
