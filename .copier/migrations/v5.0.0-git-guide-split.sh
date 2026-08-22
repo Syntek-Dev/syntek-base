@@ -24,8 +24,11 @@
 # between four sub-documents would rewrite a proportion of them wrongly, and a wrong
 # citation that reads as deliberate is worse than one a person was asked to check.
 #
-# Runs automatically as a copier `_migrations` entry when an update crosses v5.0.0. Safe to
-# run by hand afterwards: it only reads.
+# Runs automatically as a copier `_migrations` entry, keyed TWICE in copier.yml — at v4.0.0,
+# the release the split actually shipped in, and at v5.0.0, the release it was first keyed to.
+# An update crossing both prints this report twice, which is accepted because the script only
+# reads. The FILENAME keeps v5.0.0: it records the release the advisory was written for, not
+# the releases it fires on. Safe to run by hand afterwards, for the same reason.
 #
 # Working directory is the project being updated.
 #

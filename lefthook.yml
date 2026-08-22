@@ -113,11 +113,25 @@ pre-commit:
     # The .copier-answers.yml exemption is what keeps `copier update` usable: an update
     # legitimately rewrites these guides and always restages the answers file alongside
     # them, so that combination is allowed through. A hand edit never looks like that.
-    # Deliberately UNGLOBBED, and self-gating instead. A brace-expansion glob
-    # (`how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}`) silently matched nothing here —
-    # lefthook does not expand braces — so the job never ran and the guard was decorative.
-    # A guard that fails open is worse than none, because it is believed. Selecting the
-    # paths inside the run block removes the glob dialect from the trust chain entirely.
+    # Deliberately UNGLOBBED, and self-gating instead. The original guard globbed
+    # `how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}` and covered only half of what it
+    # named, so staging a TEMPLATE-GUIDE/ file went unguarded. A guard that fails open is
+    # worse than none, because it is believed.
+    #
+    # THE REASON RECORDED AT THE TIME WAS WRONG, and it is corrected here because this is the
+    # sentence an author meets before writing a `glob:` above. a05b1c7 and the 3.2.1 log
+    # entries said "lefthook does not expand braces". It does — the four brace-bearing `glob:`
+    # legs above (eslint, eslint-mobile, prettier, and the `*{CONTEXT,CLAUDE}.md` pair check)
+    # cannot fire without brace expansion, and a `/` inside a group works too. Located by name,
+    # not by line: every line anchor this repository has written into prose has drifted. Measured on the pinned binary (2.1.10) by driving one pattern four ways: what
+    # silently mis-compiles is a MULTI-ALTERNATIVE group whose wildcard-bearing alternative is
+    # not LAST. `{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}` matches only the second; the identical
+    # pair SWAPPED matches both. A glob that changes meaning when you reorder its alternatives
+    # is the fail-open shape this job was rewritten to escape.
+    #
+    # The measured rule condemns none of the four live globs above — none puts a wildcard and a
+    # `/` in the same brace group. What it condemns is trusting the dialect: selecting the
+    # paths inside the run block removes it from the trust chain entirely.
     template-docs-readonly:
       run: |
         if [ -f copier.yml ]; then exit 0; fi

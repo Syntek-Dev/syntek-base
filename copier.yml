@@ -681,6 +681,28 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v4.0.0-manifest-name.sh"
     when: "<% _stage == 'after' %>"
 
+  # The SAME advisory, keyed a second time at v4.0.0, because that is the release the split
+  # actually shipped in: `git show v4.0.0:project-management/docs/GIT-GUIDE.md | wc -l` is 52,
+  # the post-split index, and all six sub-documents are already in that tree. The v5.0.0 key
+  # below is where somebody NOTICED — eight version commits back-filled onto one frozen tree,
+  # which is the retroactive-tagging failure the v6.0.0 entry names and MAP-BASE-HEALTH N-047
+  # charts. This entry is that node's remedy.
+  #
+  # BOTH KEYS STAY, and the trigger rule is why: copier fires a migration when
+  # old_version < key <= new_version. Re-keying v5.0.0 -> v4.0.0 would have closed the
+  # v4.0.0..v4.1.1 window and simultaneously BROKEN the project already sitting inside it,
+  # whose next update to >= v5.0.0 is the only thing that reaches it today — 4.1.1 < 4.0.0 is
+  # false, so a lone v4.0.0 key would never fire for it. Two keys cover both populations and
+  # one cannot, whichever single version it names.
+  #
+  # The cost is a duplicate report on one path: an update from below v4.0.0 to >= v5.0.0
+  # crosses both keys and prints the advisory twice. Accepted rather than guarded — the script
+  # only reads and always exits 0, so the second run costs one repeated list, and a `when:`
+  # narrow enough to suppress it would be a third thing to keep true.
+  - version: v4.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v5.0.0-git-guide-split.sh"
+    when: "<% _stage == 'after' %>"
+
   # v5.0.0 splits project-management/docs/GIT-GUIDE.md into a thin index over four
   # sub-documents under project-management/docs/git/. Both files are template-owned, so
   # copier replaces them wholesale and the template's own 31 citations travel down with
