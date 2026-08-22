@@ -1,12 +1,20 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.2.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.2 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.2.2] - 22/08/2026
+
+### Changed
+
+- **`.claude/settings.json` gains `"outputStyle": "Concise"` and `"promptSuggestionEnabled": false`**, joining `model`, `effortLevel`, `ultracode` and `enableWorkflows` as session defaults a generated project inherits. Both are preferences rather than behaviour: the first matches the chat-output standard `.claude/CLAUDE.md` Section 1 already sets out in full, and the second turns off the follow-up suggestions. Neither changes what any skill, workflow or gate does.
 
 ---
 

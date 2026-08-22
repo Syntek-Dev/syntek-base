@@ -128,6 +128,7 @@
     ]
   },
   "model": "opus",
+  "outputStyle": "Concise",
   "hooks": {
     "PreToolUse": [
       {
@@ -229,6 +230,7 @@
   "disableArtifact": true,
   "disableClaudeAiConnectors": true,
   "disableRemoteControl": true,
+  "promptSuggestionEnabled": false,
   "autoCompactEnabled": false,
   "enabledPlugins": {
     "syntek-dev-suite@syntek-marketplace": false,

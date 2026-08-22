@@ -1,9 +1,30 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.2.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.2 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.2.2 — 22/08/2026
+
+**Status:** Patch — two Claude Code preferences are now set in the settings file your project
+inherits. Nothing else changes.
+
+### Two session defaults, written down
+
+The settings file that ships with your project already pins which model Claude uses and how much
+reasoning effort it spends. Two more preferences join them:
+
+- **Concise output.** Claude's replies lead with the answer and skip the preamble and the closing
+  recap. This is the same standard the project instructions already describe at length; setting it
+  here simply means the tool is configured to match the rule rather than relying on the rule alone.
+- **Prompt suggestions off.** The follow-up prompts Claude Code offers at the end of a turn are
+  disabled.
+
+Both are preferences about presentation. No skill, workflow or check behaves differently, and you
+can change either in your own copy without consequence.
 
 ---
 
