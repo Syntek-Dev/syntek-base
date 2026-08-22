@@ -1,9 +1,52 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.0.1 — 22/08/2026
+
+**Status:** Patch — the checks that guard this repository stopped being able to report a clean
+result over something they had not looked at. Nothing you have written changes, and no folder
+moves.
+
+### A check that examined nothing was reporting the same result as a check that passed
+
+There is a folder of small checking scripts here — line lengths, broken links, documentation
+pairing, marketing copy, and about twenty more. Each can be pointed at part of the repository
+instead of the whole of it, with `--path`.
+
+Three things were wrong with that, and they add up to one fault.
+
+**Pointing a check somewhere that does not exist.** Some checks noticed and stopped. Others took
+the argument, found nothing to look at, and printed the same confident success line they print
+after reading the whole tree. A typo and a genuinely empty folder produced identical output.
+
+**Pointing a check outside the repository.** Ten of the twenty-four accepted `--path /etc` and
+audited it — one of them announced that a system directory contained no machine-written
+marketing prose. That is a true sentence about the wrong subject.
+
+**Pointing a check at a folder it was never meant to read.** Two of the checks exist to police
+public marketing text, where a particular dash is banned. Documentation here uses that dash
+deliberately. Unscoped, the checks read only the marketing folders. Given `--path`, they read
+whatever they were handed — so the ban could be applied to the very guides that write the rule.
+
+All three are closed. A path is resolved to one canonical form before anything is tested, a path
+that does not exist or that lands outside the repository stops the run and says which, and the
+file types a check reads are the same whether it is scoped or not.
+
+### Every run now says what it read
+
+The wider change is that a verdict is printed underneath the count it is a verdict over. A run
+reports how many files it opened, how many it skipped by rule, and how many things it actually
+tested. "Nothing found" over nothing read is now visibly different from "nothing found" over the
+whole repository, which is the only way the first can stop being mistaken for the second.
+
+The same treatment went to the script that keeps the directory listings in the documentation
+honest: an empty scope finishes successfully and says it was empty, while a mistyped one stops.
 
 ---
 

@@ -33,6 +33,9 @@ TARGET_PATH=""
 OVERALL_EXIT=0
 WARN_COUNT=0
 ERROR_COUNT=0
+# The denominator. A run that reports "all files within limits" without it cannot be told
+# apart from a run that found no file to measure — and those are opposite results.
+FILE_COUNT=0
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { $QUIET || printf '%s\n' "$*"; }
@@ -54,18 +57,25 @@ Options:
                          (default: code/src/scripts/audits/reports/cloc-report.<FORMAT>)
   --quiet              Suppress terminal output — requires --output
   --path PATH          Restrict scan to a specific file or directory
+                         A path that does not exist is a bad argument, not an empty
+                         scope: exit 2, never a green run over a scope never honoured.
+                         So is an empty one, and so is a path outside the repository.
+                         Absolute, ./-prefixed and ..-containing forms are all accepted
+                         and resolved; `.` scans the whole repository, which is WIDER
+                         than the unscoped default of code/src.
   --help               Show this help
 
 Thresholds (total file lines, including blank lines and comments):
   ≥ 750 lines → WARNING   (printed; does not fail)
   ≥ 800 lines → ERROR     (exit 1 — project hard limit per CLAUDE.md)
 
-Enforced file types:
-  *.py  ·  *.html  ·  *.css  ·  *.js  ·  *.jsx  ·  *.ts  ·  *.tsx
+Enforced file types — this list IS the population, so the summary names it when it
+finds nothing, and the two must not drift apart:
+  *.py  ·  *.html  ·  *.css  ·  *.rs  ·  *.slint  ·  *.js  ·  *.jsx  ·  *.ts  ·  *.tsx
 
 Excluded paths:
   node_modules/  ·  .venv/  ·  __pycache__/  ·  migrations/  ·  .next/
-  generated/  ·  dist/  ·  .git/  ·  staticfiles/  ·  static/vendor/
+  generated/  ·  dist/  ·  .git/  ·  staticfiles/  ·  static/vendor/  ·  rust/target/
 
 Excluded file types:
   *.md — Markdown files are linted and formatted separately; they are not subject
@@ -79,8 +89,14 @@ Exit codes:  0 = all files within limits   1 = file(s) ≥ 800 lines   2 = scrip
 EOF
 }
 
+# A value is a value, not merely a token in the position where one goes. `--path ""` counted
+# as an argument and then swept the default roots, so a caller whose computed scope came back
+# empty was handed a full run reading as though the scope had been honoured. cloc.sh,
+# docs-length.sh, routing-skills.sh and stubs.sh all refuse an empty value at exit 2 as of
+# 22/08/2026; the folder's other --path takers were left as they were, so check by running
+# one rather than by reading this line.
 require_arg() {
-  [[ $# -gt 1 ]] || die "$1 requires a value"
+  [[ $# -gt 1 && -n "$2" ]] || die "$1 requires a non-empty value"
 }
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
@@ -120,12 +136,59 @@ fi
 # ── Setup ─────────────────────────────────────────────────────────────────────
 cd "$PROJECT_ROOT"
 
+# Normalise --path before anything reads it. `find` takes an absolute or ./-prefixed root
+# happily, so this script never had the blindness its git-listing siblings did — but it also
+# took `--path /etc` and audited it, reporting a verdict on four files outside the repository
+# as though they were this project's. A scope is a narrowing of THIS tree; anything else is a
+# bad argument. `.` and `..` are resolved lexically so the existence test and the scan agree
+# on one string. Rule: code/docs/GATE-REPORTING.md.
+scope_abs() { # $1 = --path value → the absolute path it names, . and .. resolved lexically
+  local raw="$1" seg norm=""
+  local -a parts
+  case "$raw" in /*) ;; *) raw="$PROJECT_ROOT/$raw" ;; esac
+  IFS='/' read -r -a parts <<< "$raw"
+  for seg in "${parts[@]}"; do
+    case "$seg" in
+      ''|.) ;;
+      ..)   if [[ "$norm" == */* ]]; then norm="${norm%/*}"; else norm=""; fi ;;
+      *)    norm="${norm:+$norm/}$seg" ;;
+    esac
+  done
+  printf '/%s\n' "$norm"
+}
+
+SCOPE_AS=""   # names the typed form in the error below, when normalising changed it
+if [[ -n "$TARGET_PATH" ]]; then
+  SCOPE_RAW="$TARGET_PATH"
+  SCOPE_ABS="$(scope_abs "$TARGET_PATH")"
+  if [[ "$SCOPE_ABS" == "$PROJECT_ROOT" ]]; then
+    # `.` — the repository root, kept as an explicit scan root rather than folded into the
+    # unscoped run: unscoped here means `code/src`, so treating `.` as "no scope" would
+    # QUIETLY NARROW what the caller asked for, which is the same defect from the other side.
+    TARGET_PATH="$PROJECT_ROOT"
+  elif [[ "$SCOPE_ABS" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${SCOPE_ABS#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$TARGET_PATH' resolves to $SCOPE_ABS, outside $PROJECT_ROOT"
+  fi
+  [[ "$TARGET_PATH" == "$SCOPE_RAW" ]] || SCOPE_AS=" — '$SCOPE_RAW' resolves to it"
+fi
+
+# --path is validated HERE, at top level, and not left to the `find` below — that find
+# has its stderr sent to /dev/null and prints nothing for a root that does not exist, so
+# the enforcement loop runs zero times, `cloc` is handed the same missing root and emits
+# nothing, and the script reaches "✓ All files within limits" at exit 0 over a scope it
+# never honoured. Rule: code/docs/GATE-REPORTING.md.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist$SCOPE_AS"
+
 TMPFILE=$(mktemp)
 ENFORCE_TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE" "$ENFORCE_TMPFILE"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 SCAN_ROOT="${TARGET_PATH:-$PROJECT_ROOT/code/src}"
+# "under pyproject.toml" is not a place. One word, so a single-file scope reads as one.
+SCOPE_WORD=at; [[ -d "$SCAN_ROOT" ]] && SCOPE_WORD=under
 
 log ""
 bold "▸ cloc.sh — $TIMESTAMP"
@@ -173,6 +236,7 @@ SOURCE_EXTS=(
 while IFS= read -r -d '' f; do
   lines=$(wc -l < "$f" | tr -d ' ')
   rel="${f#$PROJECT_ROOT/}"
+  FILE_COUNT=$((FILE_COUNT + 1))
 
   if [[ $lines -ge $ERROR_THRESHOLD ]]; then
     OVERALL_EXIT=1
@@ -191,10 +255,26 @@ done < <(
     2>/dev/null
 )
 
-if [[ $WARN_COUNT -eq 0 && $ERROR_COUNT -eq 0 ]]; then
-  log "  All files within limits."
+if [[ $FILE_COUNT -eq 0 ]]; then
+  # "in scope", not "here": the excluded paths are pruned before anything is counted, so a
+  # root that is itself excluded — code/src/rust/target holds 68 generated .rs files — yields
+  # zero by POLICY rather than by absence, and only one of those two is "nothing of this kind".
+  log "  No file of an enforced type in scope $SCOPE_WORD this root — none present, or all excluded."
+elif [[ $WARN_COUNT -eq 0 && $ERROR_COUNT -eq 0 ]]; then
+  log "  All $FILE_COUNT file(s) within limits."
 fi
 log ""
+
+# One verdict, computed once and read by the terminal, the markdown and the HTML alike. A
+# report claiming "all files within limits" beside a terminal saying "nothing to check" is
+# two answers to one question, and the reader believes whichever they opened.
+if [[ $FILE_COUNT -eq 0 ]]; then
+  STATUS_TEXT="✓ No file of an enforced type in scope — none present, or all excluded"
+elif [[ $OVERALL_EXIT -eq 0 ]]; then
+  STATUS_TEXT="✓ All $FILE_COUNT file(s) within limits"
+else
+  STATUS_TEXT="✗ Files exceed hard limit"
+fi
 
 # ── cloc language summary ─────────────────────────────────────────────────────
 bold "── Language breakdown (cloc) ──────────────────────────────────────────────"
@@ -255,7 +335,14 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 
   case "$OUTPUT_FORMAT" in
     txt)
-      cp "$TMPFILE" "$OUTPUT_FILE"
+      # The status line leads, because the body below it is a violations block that reads
+      # identically whether the run measured 48 files or none. The denominator is what tells
+      # those apart, and a report is read without the terminal output beside it.
+      { printf 'cloc audit — %s\n' "$TIMESTAMP"
+        printf 'root=%s files=%s warnings=%s errors=%s\n' \
+          "$SCAN_ROOT" "$FILE_COUNT" "$WARN_COUNT" "$ERROR_COUNT"
+        printf 'status: %s\n\n' "$STATUS_TEXT"
+        cat "$TMPFILE"; } > "$OUTPUT_FILE"
       ;;
 
     md)
@@ -265,10 +352,10 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '| **Generated** | %s |\n' "$TIMESTAMP"
         printf '| **Warn threshold** | ≥%d lines |\n' "$WARN_THRESHOLD"
         printf '| **Error threshold** | ≥%d lines |\n' "$ERROR_THRESHOLD"
+        printf '| **Files measured** | %d |\n' "$FILE_COUNT"
         printf '| **Warnings** | %d |\n' "$WARN_COUNT"
         printf '| **Errors** | %d |\n' "$ERROR_COUNT"
-        printf '| **Status** | %s |\n\n' \
-          "$([[ $OVERALL_EXIT -eq 0 ]] && echo '✓ All files within limits' || echo '✗ Files exceed hard limit')"
+        printf '| **Status** | %s |\n\n' "$STATUS_TEXT"
         printf '```text\n%s\n```\n' "$RAW"
       } > "$OUTPUT_FILE"
       ;;
@@ -280,6 +367,10 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "timestamp": "%s",\n' "$TIMESTAMP"
         printf '  "warn_threshold": %d,\n' "$WARN_THRESHOLD"
         printf '  "error_threshold": %d,\n' "$ERROR_THRESHOLD"
+        printf '  "files_measured": %d,\n' "$FILE_COUNT"
+        # The status string, not only the counts: a consumer reading the artefact should not
+        # have to infer "measured nothing" from a zero it might not think to look at.
+        printf '  "status": "%s",\n' "$STATUS_TEXT"
         printf '  "warnings": %d,\n' "$WARN_COUNT"
         printf '  "errors": %d,\n' "$ERROR_COUNT"
         printf '  "exit_code": %d,\n' "$OVERALL_EXIT"
@@ -320,10 +411,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Warn threshold</th><td>≥${WARN_THRESHOLD} lines</td></tr>
     <tr><th>Error threshold</th><td>≥${ERROR_THRESHOLD} lines</td></tr>
+    <tr><th>Files measured</th><td>$FILE_COUNT</td></tr>
     <tr><th>Warnings</th><td>$WARN_COUNT</td></tr>
     <tr><th>Errors</th><td>$ERROR_COUNT</td></tr>
     <tr><th>Status</th><td class="$([[ $OVERALL_EXIT -eq 0 ]] && echo ok || echo fail)">
-      $([[ $OVERALL_EXIT -eq 0 ]] && echo '&#10003; All files within limits' || echo '&#10007; Files exceed hard limit')
+      $STATUS_TEXT
     </td></tr>
   </table>
   <pre>$escaped</pre>
@@ -339,13 +431,32 @@ HTML
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
+# An empty population gets its own headline. Exit 0 is still the honest code — no source
+# file of an enforced type is a legitimately empty scope, not an unexamined one — but
+# "✓ All files within limits" over zero files reads as "nothing is wrong here" when what
+# happened is "nothing of this kind is here". Only the wording tells them apart.
+#
+# It says "in scope" rather than "here" because the exclusions are part of the scope: point
+# --path at a pruned directory and the count is zero over files that plainly exist. Naming
+# them is what lets a reader tell an absent surface from an excluded one.
+if [[ $FILE_COUNT -eq 0 ]]; then
+  bold "✓ Nothing to enforce: no file of an enforced type in scope $SCOPE_WORD $SCAN_ROOT."
+  log "  Enforced: *.py *.html *.css *.rs *.slint *.js *.jsx *.ts *.tsx — none of them in"
+  log "  scope, so the 750/800 limit measured nothing. Excluded wherever they sit:"
+  log "  node_modules .venv __pycache__ migrations .next generated dist .git staticfiles"
+  log "  static/vendor rust/target — a root that is itself one of those counts zero."
+  log "  (Any cloc breakdown above covers every language, which is a wider population.)"
+  log ""
+  exit 0
+fi
+
 if [[ $OVERALL_EXIT -eq 0 ]]; then
   if [[ $WARN_COUNT -gt 0 ]]; then
     sw="$([[ $WARN_COUNT -ne 1 ]] && echo 's' || echo '')"
     bold "⚠ All files under hard limit, but $WARN_COUNT file${sw} approaching it (≥${WARN_THRESHOLD} lines)."
     log "  Consider splitting files that are approaching ${ERROR_THRESHOLD} lines."
   else
-    bold "✓ All files within limits."
+    bold "✓ All $FILE_COUNT file(s) within limits."
   fi
 else
   se="$([[ $ERROR_COUNT -ne 1 ]] && echo 's' || echo '')"

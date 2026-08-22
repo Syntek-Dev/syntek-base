@@ -146,10 +146,14 @@ Options:
                          (default: code/src/scripts/audits/reports/docs-length-report.<FORMAT>)
   --quiet              Suppress terminal output — requires --output
   --path PATH          Restrict the check to a file or directory
+                         A path that does not exist is a bad argument, not an empty
+                         scope: exit 2, never a green run over a scope never honoured.
   --limit N            Override the line limit (default 300)
   --since REF          Enable the ratchet, measuring against this git ref.
                          lefthook passes HEAD; CI passes the merge-base with the target
                          branch, so growth cannot creep past one commit at a time.
+                         An empty REF is refused at exit 2, exactly as an unresolvable
+                         one is: omit the flag to run without the ratchet.
   --self-test          Prove the ratchet fires in both directions, then exit
   --help               Show this help
 
@@ -159,7 +163,26 @@ Exit codes:  0 = within limits   1 = over the limit   2 = script error / cloc mi
 EOF
 }
 
-require_arg() { [[ $# -gt 1 ]] || die "$1 requires a value"; }
+# A value is a value, not merely a token in the position where one goes. Counting arguments
+# alone let `--since ""` through: the ratchet is entered on `[[ -n "$SINCE_REF" ]]` further
+# down, so an empty ref skipped the whole ratchet in silence and the run exited 0, while
+# `--since deadbeef` exited 2 by the same reasoning stated out loud. Two spellings of "the ref
+# you gave me is not usable", one loud and one green — and the green one is the reporting
+# defect this script was written to close, reappearing in its own argument handling.
+#
+# The CI job can produce the empty form, so this is not merely latent. It passes
+# `--since "$(git merge-base HEAD "$BASE_SHA")"` (.github/workflows/audit-docs-length.yml
+# lines 66-67) from a `run: |` block, which GitHub runs under `bash -e` — and a command
+# substitution that fails inside an ARGUMENT does not abort the step the way a failed
+# assignment would, so an unresolvable merge-base reaches this script as `--since ""`.
+# `fetch-depth: 0` (line 51) is what makes that rare, not impossible. lefthook passes HEAD
+# or omits the flag (lefthook.yml lines 101 and 103), and neither is empty.
+#
+# --path takes the same refusal, and so does it in cloc.sh, routing-skills.sh and stubs.sh
+# as of 22/08/2026: an empty scope is a caller's computed variable come back empty, and
+# sweeping the whole tree answers a scope nobody asked for while the output still reads as
+# though one had been honoured. The folder's other --path takers were left as they were.
+require_arg() { [[ $# -gt 1 && -n "$2" ]] || die "$1 requires a non-empty value"; }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -266,10 +289,50 @@ fi
 
 cd "$PROJECT_ROOT"
 
-# An absolute path is what tab-completion and most hook wrappers produce, so accept one and
-# reduce it to the repo-relative form the comparison below is written in.
-TARGET_PATH="${TARGET_PATH#"$PROJECT_ROOT"/}"
-TARGET_PATH="${TARGET_PATH#./}"
+# An absolute path is what tab-completion and most hook wrappers produce, and a ./-prefixed
+# one is what a shell loop produces, so accept both and reduce them to the repo-relative form
+# in_scope() is written in. Stripping two prefixes was not enough: `.`, `..` inside a path and
+# a path outside the repository all survived it, passed the existence test below against the
+# filesystem, and then matched no row in a comparison that only knows repo-relative strings.
+# The normalisation therefore runs BEFORE the test, so both judge the same string.
+scope_abs() { # $1 = --path value → the absolute path it names, . and .. resolved lexically
+  local raw="$1" seg norm=""
+  local -a parts
+  case "$raw" in /*) ;; *) raw="$PROJECT_ROOT/$raw" ;; esac
+  IFS='/' read -r -a parts <<< "$raw"
+  for seg in "${parts[@]}"; do
+    case "$seg" in
+      ''|.) ;;
+      ..)   if [[ "$norm" == */* ]]; then norm="${norm%/*}"; else norm=""; fi ;;
+      *)    norm="${norm:+$norm/}$seg" ;;
+    esac
+  done
+  printf '/%s\n' "$norm"
+}
+
+SCOPE_AS=""   # names the typed form in the error below, when normalising changed it
+if [[ -n "$TARGET_PATH" ]]; then
+  SCOPE_RAW="$TARGET_PATH"
+  SCOPE_ABS="$(scope_abs "$TARGET_PATH")"
+  if [[ "$SCOPE_ABS" == "$PROJECT_ROOT" ]]; then
+    # `.` — the whole repository, which is the unscoped run over the identical population,
+    # not a prefix no repo-relative path can start with.
+    TARGET_PATH=""
+  elif [[ "$SCOPE_ABS" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${SCOPE_ABS#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$TARGET_PATH' resolves to $SCOPE_ABS, outside $PROJECT_ROOT"
+  fi
+  [[ "$TARGET_PATH" == "$SCOPE_RAW" ]] || SCOPE_AS=" — '$SCOPE_RAW' resolves to it"
+fi
+
+# --path is validated HERE, at top level, and against the FILESYSTEM — not left to in_scope(),
+# which is a string comparison against `git ls-files` output and cannot tell a renamed
+# directory from an empty one. A path that does not exist matched no row, the file list came
+# back empty, and the run reached its success line at exit 0 having measured nothing. That is
+# the scoping fault of code/docs/GATE-REPORTING.md Section 5: a zero population for a reason
+# never checked. It must be a bad argument instead — exit 2, like every other audit here.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist$SCOPE_AS"
 
 WARN_AT=$(( LIMIT * WARN_RATIO / 100 ))
 [[ "$WARN_AT" -lt 1 ]] && WARN_AT=1   # a zero threshold would warn on every empty file
@@ -481,7 +544,12 @@ RATCHET_BODY="$(cat "$TMP_RATCHET")"
 
 MISSING_COUNT=$(grep -c . "$TMP_MISSING" || true); MISSING_COUNT=${MISSING_COUNT:-0}
 
-if [[ "$TOTAL" -eq 0 ]]; then
+# TOTAL counts what was MEASURED: a file in scope but not on disk was diverted into
+# TMP_MISSING above and never reached the list. So TOTAL == 0 has two causes that must not
+# share a sentence — an empty scope, and a scope whose every file went unread.
+if [[ "$TOTAL" -eq 0 && "$MISSING_COUNT" -gt 0 ]]; then
+  log "  nothing measured${TARGET_PATH:+ under $TARGET_PATH} — every file in scope is listed below"
+elif [[ "$TOTAL" -eq 0 ]]; then
   # Nothing instructional in scope is a clean no-op, not an error — the same self-guarding
   # contract every other audit here honours, and it still writes a report so a CI job told
   # to collect the artefact always finds one.
@@ -512,16 +580,28 @@ if [[ "$RATCHET_COUNT" -gt 0 ]] && ! $QUIET; then
 fi
 
 if [[ -n "$OUTPUT_FORMAT" ]]; then
-  if [[ "$FAIL_COUNT" -gt 0 ]]; then STATUS="✗ $FAIL_COUNT over the limit"
-  elif [[ "$RATCHET_COUNT" -gt 0 ]]; then STATUS="✗ $RATCHET_COUNT ratchet finding(s)"
-  else STATUS='✓ within limits'; fi
+  # The unmeasured files are part of the verdict, not a footnote to it: a status claiming an
+  # empty scope beside a `missing` count above zero is the terminal's contradiction written
+  # into the artefact, where no one is reading the two lines together.
+  UNMEASURED=""
+  [[ "$MISSING_COUNT" -gt 0 ]] && UNMEASURED=" — $MISSING_COUNT in the index but not on disk, unmeasured"
+  if [[ "$FAIL_COUNT" -gt 0 ]]; then STATUS="✗ $FAIL_COUNT over the limit$UNMEASURED"
+  elif [[ "$RATCHET_COUNT" -gt 0 ]]; then STATUS="✗ $RATCHET_COUNT ratchet finding(s)$UNMEASURED"
+  elif [[ "$TOTAL" -eq 0 && "$MISSING_COUNT" -gt 0 ]]; then
+    STATUS="⚠ nothing measured — $MISSING_COUNT file(s) in scope, all in the index but not on disk"
+  elif [[ "$TOTAL" -eq 0 ]]; then STATUS='✓ no instructional file in scope — nothing of this kind here'
+  else STATUS="✓ within limits ($TOTAL file(s) measured)$UNMEASURED"; fi
+  MISSING_BODY="$(cat "$TMP_MISSING")"
   case "$OUTPUT_FORMAT" in
     txt)
       { printf 'docs-length audit — %s\n' "$TIMESTAMP"
-        printf 'files=%s limit=%s over=%s approaching=%s\n\n' "$TOTAL" "$LIMIT" "$FAIL_COUNT" "$WARN_COUNT"
+        printf 'files=%s limit=%s over=%s approaching=%s unmeasured=%s\n' \
+          "$TOTAL" "$LIMIT" "$FAIL_COUNT" "$WARN_COUNT" "$MISSING_COUNT"
+        printf 'status=%s\n\n' "$STATUS"
         printf '%s\n' "${FAIL_BODY:-No files over the limit.}"
         printf '\n%s\n' "${WARN_BODY:-No files approaching the limit.}"
-        printf '\n%s\n' "${RATCHET_BODY:-No ratchet findings.}"; } > "$OUTPUT_FILE" ;;
+        printf '\n%s\n' "${RATCHET_BODY:-No ratchet findings.}"
+        printf '\n%s\n' "${MISSING_BODY:-No files in the index but missing from disk.}"; } > "$OUTPUT_FILE" ;;
     md)
       { printf '# Instructional Document Length Audit\n\n'
         printf '| | |\n|---|---|\n'
@@ -530,6 +610,7 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '| **Limit** | %s code lines (`cloc --include-lang=Markdown`) |\n' "$LIMIT"
         printf '| **Over the limit** | %s |\n' "$FAIL_COUNT"
         printf '| **Approaching (>= %s)** | %s |\n' "$WARN_AT" "$WARN_COUNT"
+        printf '| **In the index, not on disk** | %s |\n' "$MISSING_COUNT"
         printf '| **Status** | %s |\n\n' "$STATUS"
         if [[ "$FAIL_COUNT" -gt 0 ]]; then
           printf '## Over the limit\n\nSplit each into a `kebab-case/` sub-folder and leave the entry point a thin index.\n\n'
@@ -543,6 +624,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
           printf 'A file at or above %s may not get longer without a dated reason.\n\n' "$WARN_AT"
           printf '```text\n%s\n```\n\n' "$RATCHET_BODY"
         fi
+        if [[ "$MISSING_COUNT" -gt 0 ]]; then
+          printf '## Not measured\n\n'
+          printf 'In the index but not on disk (deleted, unstaged). The limit ruled on none of these.\n\n'
+          printf '```text\n%s\n```\n\n' "$MISSING_BODY"
+        fi
         printf 'Rule: `.claude/CLAUDE.md` Section 8 — Instructional file length.\n'
       } > "$OUTPUT_FILE" ;;
     json)
@@ -550,6 +636,14 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "files_checked": %s,\n  "limit": %s,\n  "warn_at": %s,\n' "$TOTAL" "$LIMIT" "$WARN_AT"
         printf '  "over_limit": %s,\n  "approaching": %s,\n' "$FAIL_COUNT" "$WARN_COUNT"
         printf '  "ratchet_findings": %s,\n  "ratchet_since": "%s",\n' "$RATCHET_COUNT" "$SINCE_REF"
+        # files_checked is what was READ, so it needs its companion: a file in scope and not
+        # on disk is counted here and nowhere else. Without it, "files_checked": 0 and a
+        # status of "nothing of this kind here" are indistinguishable from a scope whose
+        # every file went unread — which is this guide's whole subject.
+        printf '  "missing": %s,\n' "$MISSING_COUNT"
+        # The same status string the markdown carries. A zero in files_checked is the
+        # denominator; this is the sentence that says what the zero means.
+        printf '  "status": "%s",\n' "$STATUS"
         printf '  "exit_code": %s\n}\n' \
           "$([[ "$FAIL_COUNT" -eq 0 && "$RATCHET_COUNT" -eq 0 ]] && echo 0 || echo 1)"
       } > "$OUTPUT_FILE" ;;
@@ -558,7 +652,29 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   log ""
 fi
 
-if [[ "$FAIL_COUNT" -eq 0 && "$RATCHET_COUNT" -eq 0 ]]; then
+if [[ "$TOTAL" -eq 0 && "$MISSING_COUNT" -gt 0 ]]; then
+  # The empty-population headline must not fire here. Every file in scope WAS instructional;
+  # none could be read, so "no instructional file" is false and "nothing of this kind here"
+  # is the reading code/docs/GATE-REPORTING.md Section 1 forbids — "could not look" reported
+  # as "looked, and it was clean", printed two lines from the list of what went unread.
+  # Exit 0 is unchanged: a deletion staged one command later is ordinary work, and failing
+  # here would block the commit that tidies it.
+  bold "⚠ Nothing measured${TARGET_PATH:+ under $TARGET_PATH}: all $MISSING_COUNT file(s) in scope are unread."
+  log "  Each is in the index but not on disk, listed above, so the $LIMIT-line limit ruled"
+  log "  on nothing. Stage the deletion or restore the file, then re-run to get a verdict."
+  log ""
+  exit 0
+elif [[ "$TOTAL" -eq 0 ]]; then
+  # Exit 0 stays right — no instructional file in scope is a legitimately empty population,
+  # not an unexamined one — but "✓ All 0 instructional file(s) within 300 lines" reads as a
+  # verdict on the files rather than an admission there were none. Only the wording separates
+  # "nothing of this kind here" from "nothing wrong here" (code/docs/GATE-REPORTING.md).
+  bold "✓ Nothing to check: no instructional file${TARGET_PATH:+ under $TARGET_PATH}."
+  log "  No file was measured, so the $LIMIT-line limit ruled on nothing. In scope would be"
+  log "  any CONTEXT.md or CLAUDE.md, or any .md under docs/, workflows/ or .claude/."
+  log ""
+  exit 0
+elif [[ "$FAIL_COUNT" -eq 0 && "$RATCHET_COUNT" -eq 0 ]]; then
   SUFFIX=""
   [[ "$WARN_COUNT" -gt 0 ]] && SUFFIX=" — $WARN_COUNT approaching it"
   bold "✓ All $TOTAL instructional file(s) within $LIMIT lines${SUFFIX}."

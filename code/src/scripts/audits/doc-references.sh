@@ -75,6 +75,19 @@
 #                   git archive HEAD | tar -x -C "$SCRATCH" && cd "$SCRATCH" && git init -q .
 #                   git add -A && git commit -qm base && bash code/src/scripts/audits/doc-references.sh
 #
+# ADDED 22/08/2026: THE RUN NAMES ITS POPULATION, not only its verdict. Until now the whole
+#                 output of a clean run was "Clean — every citation resolves", which is the
+#                 same sentence over the whole repository and over none: the unscoped run read
+#                 955 files when this was written, `--path .github/workflows` holds no .md or
+#                 .sh at all, `--path research` holds only exempt ones, and
+#                 `--path does/not/exist` collected nothing whatever — all four printed that
+#                 sentence and exited 0. A verdict with no denominator cannot be told apart
+#                 from "could not look", so the run now reports the files it read, the files it
+#                 skipped by rule, the backticked tokens it examined and the subset of those
+#                 tested as repo paths, and a scoped run names its scope. The nonexistent scope
+#                 is refused outright at exit 2 (the guard below).
+#                 Rule: `code/docs/GATE-REPORTING.md`, Section 1 and Section 5.
+#
 # Usage: doc-references.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                          [--path PATH] [--self-test] [--help]
 #
@@ -116,6 +129,11 @@ Usage:
   doc-references.sh --quiet         Suppress progress output
   doc-references.sh --self-test     Prove the detector still separates the fixtures
 
+Every run names what it read — files scanned, files exempt by rule, backticked tokens
+checked and how many of those were tested as repo paths — before its verdict. A scope is
+normalised to the repo-relative form first, and one that does not exist, or that resolves
+outside the repository, is refused at exit 2.
+
 Suppress a citation with `doc-references: ignore` (neither check applies) or
 `doc-references: template-only` (the check applies; the path does not ship), on the
 line or the line directly above it. The two are not synonyms — `code/docs/FORWARD-VOICE.md`.
@@ -124,11 +142,16 @@ Exit codes: 0 clean · 1 violations found, or a failed self-test · 2 script err
 EOF
 }
 
+# A flag whose value is missing took `${2:-}` and then `shift 2` on one argument, which under
+# `set -e` ended the run at exit 1 with nothing printed — the code that means "citations do not
+# resolve", for a mistake in the command line. A bad argument is exit 2 and says which one.
+require_arg() { [ $# -gt 1 ] || die "$1 requires a value"; }
+
 while [ $# -gt 0 ]; do
   case "$1" in
-    --output)      OUTPUT_FORMAT="${2:-}"; shift 2 ;;
-    --output-file) OUTPUT_FILE="${2:-}";   shift 2 ;;
-    --path)        TARGET_PATH="${2:-}";   shift 2 ;;
+    --output)      require_arg "$@"; OUTPUT_FORMAT="$2"; shift 2 ;;
+    --output-file) require_arg "$@"; OUTPUT_FILE="$2";   shift 2 ;;
+    --path)        require_arg "$@"; TARGET_PATH="$2";   shift 2 ;;
     --quiet)       QUIET=true;             shift   ;;
     --self-test)   SELF_TEST=true;         shift   ;;
     --help|-h)     usage; exit 0 ;;
@@ -137,6 +160,61 @@ while [ $# -gt 0 ]; do
 done
 
 cd "$PROJECT_ROOT" || die "cannot enter $PROJECT_ROOT"
+
+# --path is NORMALISED and validated HERE, at top level, before candidates() runs — never left
+# to the filter over the file list, which runs after collection and would simply match nothing.
+# Two argument faults share that shape, and neither may reach a success line:
+#
+#   a scope that does not exist   a typo, or a path since renamed. Exit 2 — a clean exit 0 is
+#                                 the answer a directory genuinely holding no citation gets,
+#                                 and the two must not read alike.
+#   a scope git never writes      `.`, a `./` prefix, an absolute path (what tab-completion
+#                                 produces) or an interior `..`. All of them EXIST, so an -e
+#                                 guard passes them, and all of them then match zero rows of
+#                                 `git ls-files` output, which writes none of those forms.
+#                                 Measured 22/08/2026, before this block: `--path .` read 0
+#                                 files and printed "Nothing to check" over a repository whose
+#                                 unscoped run read 955 at the time. That is the scoping fault of
+#                                 GATE-REPORTING.md Section 5 wearing the remedy for the
+#                                 reporting one — a stronger claim over the same unread
+#                                 population.
+#
+# So the existence test and the file filter read the SAME normalised, repo-relative value, and
+# the repository root normalises to the unscoped run rather than to a scope matching nothing.
+# Resolution is textual rather than `realpath`: it adds no dependency, needs no path to exist,
+# and refuses a path outside the tree by naming what it resolved to. Symlinks are not followed,
+# so a symlinked route into the tree is refused rather than silently accepted.
+# Rule: code/docs/GATE-REPORTING.md.
+normalise_scope() {   # prints the absolute path with . and .. resolved; empty means /
+  local abs seg out=""
+  case "$1" in /*) abs="$1" ;; *) abs="$PROJECT_ROOT/$1" ;; esac
+  while [[ -n "$abs" ]]; do
+    seg="${abs%%/*}"
+    if [[ "$abs" == */* ]]; then abs="${abs#*/}"; else abs=""; fi
+    case "$seg" in
+      ''|.) ;;
+      ..)   out="${out%/*}" ;;
+      *)    out="$out/$seg" ;;
+    esac
+  done
+  printf '%s' "$out"
+}
+
+RAW_PATH=""
+if [ -n "$TARGET_PATH" ]; then
+  RAW_PATH="$TARGET_PATH"
+  ABS_PATH="$(normalise_scope "$RAW_PATH")"
+  if [ "$ABS_PATH" = "$PROJECT_ROOT" ]; then
+    TARGET_PATH=""                              # the root: the whole repository, unscoped
+  elif [[ "$ABS_PATH" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${ABS_PATH#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$RAW_PATH' resolves to '${ABS_PATH:-/}', outside $PROJECT_ROOT"
+  fi
+fi
+READ_AS=""
+[ "$RAW_PATH" = "$TARGET_PATH" ] || READ_AS=" (read as '$TARGET_PATH')"
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$RAW_PATH' does not exist$READ_AS"
 
 # ── What we scan ─────────────────────────────────────────────────────────────
 # Tracked plus untracked-but-not-ignored, deduplicated. Ignored files are absent by
@@ -225,6 +303,23 @@ is_pattern() {
 # ── Collect ──────────────────────────────────────────────────────────────────
 violations=0
 report=""
+# The denominator, and the four numbers it takes to make a zero legible. `scanned_files` is
+# what was READ; `exempt_files` is what was excluded by rule rather than absent (is_exempt
+# above names each class and why); `checked_tokens` is every backticked span that survived the
+# pattern filter, which is exactly what Check 2 was run against; `path_tests` is the subset of
+# those that reached Check 1's existence test.
+#
+# CORRECTED 22/08/2026: `checked_tokens` was `checked_citations`, printed as "citation(s)". It
+# is incremented ABOVE the `*/*` path guard, so it counts `git`, `--path` and `var(--token)`
+# beside the paths — most of what it holds is not a citation, and naming it one overstated
+# Check 1's coverage in the same direction the count line was added to correct. Renamed rather
+# than moved below the guard: Check 2 reads the RAW token and fires on a slashless `US###`, so
+# counting below it would understate that check by as much as the old name overstated the
+# other. Two numbers, each true of the check it belongs to.
+scanned_files=0
+exempt_files=0
+checked_tokens=0
+path_tests=0
 
 record() { # file line kind detail
   violations=$((violations + 1))
@@ -239,18 +334,30 @@ record() { # file line kind detail
 scan_files() { # $1 = newline-separated file list
   violations=0
   report=""
+  scanned_files=0
+  exempt_files=0
+  checked_tokens=0
+  path_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
   local resolved_skip=false
 
   while IFS= read -r file; do
     [ -n "$file" ] || continue
     [ -f "$file" ] || continue
-    is_exempt "$file" && continue
+    if is_exempt "$file"; then
+      exempt_files=$((exempt_files + 1))
+      continue
+    fi
+    scanned_files=$((scanned_files + 1))
 
     # Every backticked token in the file, with its line number.
     while IFS=: read -r lineno token; do
       [ -n "$token" ] || continue
+      # Counted below the pattern filter, not above it: a token carrying a placeholder, a glob
+      # or a `###` is a naming convention being shown rather than a citation, so it is not part
+      # of the population either check could have fired on.
       is_pattern "$token" && continue
+      checked_tokens=$((checked_tokens + 1))
 
       # An example marked as an example is not a citation. A naming table shows the pattern
       # in one column and a worked example in the next; prose writes "e.g." or "[EXAMPLE]".
@@ -403,6 +510,11 @@ scan_files() { # $1 = newline-separated file list
         *) continue ;;
       esac
 
+      # Counted HERE, at the existence test, and nowhere earlier: everything above this line
+      # is Check 1 deciding whether the token is a repo path at all, and a token dropped by
+      # the URL, shorthand or checkable-tree arms was never tested. This is the population a
+      # dangling-path finding could have come from.
+      path_tests=$((path_tests + 1))
       [ -e "$resolved" ] && continue
       is_seeded "$resolved" && continue
       is_registered "$resolved" && continue
@@ -506,14 +618,31 @@ fi
 
 # ── Run ──────────────────────────────────────────────────────────────────────
 FILES="$(candidates)"
-[ -n "$TARGET_PATH" ] && FILES="$(printf '%s\n' "$FILES" | grep -E "^${TARGET_PATH%/}(/|$)" || true)"
+# Filtered on a LITERAL prefix rather than a regex. `.claude`, `.github` and `.copier` all open
+# with a `.`, which a regex reads as "any character" — `^.claude(/|$)` would take a `Xclaude/`
+# path too. awk's index() has no metacharacters, so the scope means the path that was typed.
+if [ -n "$TARGET_PATH" ]; then
+  FILES="$(printf '%s\n' "$FILES" | awk -v p="$TARGET_PATH" 'index($0, p "/") == 1 || $0 == p')"
+fi
 
 bold "doc-references.sh — checking citations resolve"
+[ -n "$TARGET_PATH" ] && log "  scope: $TARGET_PATH"
 
 scan_files "$FILES"
 
 # ── Report ───────────────────────────────────────────────────────────────────
-if [ "$violations" -eq 0 ]; then
+# The count comes before the verdict, because it is what the verdict is a verdict OVER. An
+# exempt file is named separately from an absent one: the first was excluded by a rule this
+# script states, the second was never there, and only the second makes a clean run empty.
+log "  read    $scanned_files file(s); $exempt_files exempt by rule"
+log "  checked $checked_tokens backticked token(s) — $path_tests of them tested as repo paths"
+
+if [ "$scanned_files" -eq 0 ]; then
+  # An absent surface, not an absent tool: the population is legitimately empty, so exit 0 is
+  # honest — but only while the run says the population was empty. A bare success line here
+  # reads as "looked, and it was clean" (code/docs/GATE-REPORTING.md Section 2).
+  bold "Nothing to check — nothing eligible to read under ${TARGET_PATH:-the repository}."
+elif [ "$violations" -eq 0 ]; then
   bold "Clean — every citation resolves."
 else
   bold "$violations citation(s) do not resolve."
@@ -527,9 +656,19 @@ fi
 if [ -n "$OUTPUT_FORMAT" ]; then
   mkdir -p "$REPORTS_DIR"
   out="${OUTPUT_FILE:-$REPORTS_DIR/doc-references.md}"
+  # The artefact carries the denominator too. A consumer reading only the file — a CI job
+  # collecting it, or a --quiet run that printed nothing — otherwise cannot tell a scan of the
+  # whole tree from one that read no file at all, which is the same defect on a different
+  # surface (code/docs/GATE-REPORTING.md).
   {
     printf '# doc-references\n\n'
+    printf 'Scope: %s\n\n' "${TARGET_PATH:-the whole repository}"
+    printf 'Files scanned: %s (%s exempt by rule)\n\n' "$scanned_files" "$exempt_files"
+    printf 'Backticked tokens checked: %s (%s tested as repo paths)\n\n' "$checked_tokens" "$path_tests"
     printf 'Violations: %s\n\n' "$violations"
+    if [ "$scanned_files" -eq 0 ]; then
+      printf 'Nothing to check: no eligible file under this scope, so no citation could fail.\n'
+    fi
     if [ "$violations" -gt 0 ]; then
       printf '| File | Line | Kind | Citation |\n| --- | --- | --- | --- |\n%s' "$report"
     fi

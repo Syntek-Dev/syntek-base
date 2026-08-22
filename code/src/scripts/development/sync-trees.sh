@@ -18,7 +18,11 @@
 #                             orientation, and nobody ever goes back for it afterwards.
 #                   REPORTED  an entry in the block that is not on disk. Never deleted
 #                             automatically — see the two exemptions below, either of
-#                             which makes a "missing" entry correct.
+#                             which makes a "missing" entry correct. A nested block's
+#                             omission is reported too: only a flat block is safe to write
+#                             into, so --write cannot resolve it either. A --write run
+#                             reports everything it could not resolve and fails on it;
+#                             it only stops naming what it has just fixed.
 #                   PRESERVED everything else, byte for byte: annotations, column
 #                             alignment, ordering, section divider lines, and depth.
 #
@@ -46,8 +50,10 @@
 #   --staged   Only CONTEXT.md files whose directory has a staged change (for the hook)
 #   --path P   Only this CONTEXT.md, or every one under this directory
 #
-# Exit codes:  0 = trees match   1 = drift, or rows were added and still need describing
-#              2 = script error
+# Exit codes:  0 = trees match, or nothing was in scope (which one is said in the output)
+#              1 = drift, or rows were added and still need describing
+#              2 = script error, including a --path that does not exist. A scope that is
+#                  empty and a scope that is a typo are different answers, not one.
 #
 set -euo pipefail
 
@@ -79,6 +85,12 @@ done
 
 cd "$PROJECT_ROOT"
 command -v python3 >/dev/null 2>&1 || die "python3 is required"
+
+# --path is validated HERE, at top level and before any collection, so a scope that does not
+# exist is a bad argument (exit 2) rather than a scope that legitimately holds no CONTEXT.md
+# (exit 0 with a note). Without this the two are indistinguishable in the output, and the
+# typo gets the same confident line as the honest no-op. Idiom: `code/src/scripts/audits/`.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
 
 MODE="$MODE" STAGED="$STAGED" TARGET_PATH="$TARGET_PATH" QUIET="$QUIET" python3 - <<'PYEOF'
 import os, re, subprocess, sys
@@ -200,7 +212,21 @@ def copier_excluded():
 
 EXCLUDED = copier_excluded()
 
-drift, wrote = [], []
+# `drift` is every finding a --check run reports. `by_hand` is the subset a --write run
+# cannot resolve for itself, tracked at the point of classification rather than recovered
+# afterwards by matching on the wording: a write run must report exactly what it left
+# behind, and a filter keyed on a message string silently drops any class whose wording
+# does not happen to match it.
+drift, by_hand, wrote = [], [], []
+
+# An empty scope is a legitimate no-op — a commit can honestly stage only files in
+# directories that own no CONTEXT.md — but the success line below reads as "every tree was
+# checked and matched", which over a population of zero is a result this run does not have.
+# Say which it is. The exit code is unchanged: nothing was found because there was nothing
+# to look at, which is clean (`code/docs/GATE-REPORTING.md`, the absent-surface row).
+if not contexts:
+    log("\033[1m✓ No CONTEXT.md in scope — no tree to check.\033[0m")
+    sys.exit(0)
 
 for ctx in contexts:
     text = ctx.read_text()
@@ -278,10 +304,18 @@ for ctx in contexts:
         for L in body
     )
     for nm in missing_from_tree:
-        drift.append(f"{ctx}: tree omits {nm}" if flat
-                     else f"{ctx}: tree omits {nm} — nested tree, place it by hand")
+        if flat:
+            drift.append(f"{ctx}: tree omits {nm}")
+        else:
+            # A nested block is never written into (see below), so this finding
+            # survives a --write run exactly as a "not on disk" one does.
+            d = f"{ctx}: tree omits {nm} — nested tree, place it by hand"
+            drift.append(d)
+            by_hand.append(d)
     for nm in not_on_disk:
-        drift.append(f"{ctx}: tree lists {nm}, which is not on disk (resolve by hand)")
+        d = f"{ctx}: tree lists {nm}, which is not on disk (resolve by hand)"
+        drift.append(d)
+        by_hand.append(d)
 
     # Only a FLAT block is safe to write into. In a nested tree the box-drawing
     # encodes parentage — inserting a top-level row after the last one lands it
@@ -340,7 +374,7 @@ if wrote:
     log("  Replace every TODO before committing — a row that is accurate and says")
     log("  nothing is not orientation. `CONTEXT.md` answers what is here AND why.")
 
-unresolved = [d for d in drift if "not on disk" in d] if MODE == "write" else drift
+unresolved = by_hand if MODE == "write" else drift
 if unresolved:
     if not wrote:
         log("\033[1m▸ sync-trees.sh\033[0m")

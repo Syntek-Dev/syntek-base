@@ -48,8 +48,10 @@
 # Usage: routing-skills.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                          [--path PATH] [--self-test] [--help]
 #
-# Exit codes:  0 = clean   1 = violation(s), or the self-test no longer separates
-#              2 = script error (bad arguments, or --self-test with the fixtures missing)
+# Exit codes:  0 = clean, or nothing of this kind in scope (the headline says which)
+#              1 = violation(s), or the self-test no longer separates
+#              2 = script error (bad arguments, a --path that does not exist, or
+#                  --self-test with the fixtures missing)
 #
 set -euo pipefail
 
@@ -83,23 +85,92 @@ Usage:
   routing-skills.sh --quiet         Suppress progress output
   routing-skills.sh --self-test     Prove the parser still reads both array forms
 
-Exit codes: 0 clean · 1 violations found (or the self-test no longer separates) · 2 script error
+A --path that does not exist is a bad argument, not an empty scope: exit 2, never a green
+run over a scope never honoured. So is an empty one, and so is a path outside the
+repository. An absolute path and a ./-prefixed path are both accepted and reduced to the
+repo-relative form the filter is written in; `.` is the whole repository, which is the
+unscoped run. A scope holding no routing frontmatter at all is exit 0 with the headline
+saying so — nothing of this kind here, not nothing wrong here.
+
+Exit codes: 0 clean (or nothing in scope) · 1 violations found (or the self-test no longer
+separates) · 2 script error
 EOF
 }
 
+# The sibling idiom (cloc.sh, stubs.sh, copy-emdash.sh), adopted here because its absence
+# was load-bearing. `--output`, `--output-file` and `--path` each took "${2:-}" and then
+# `shift 2`, and a flag given LAST has only one argument to shift: under `set -e` the failed
+# shift killed the script at exit 1 with nothing printed at all. Exit 1 is this audit's code
+# for "routing-skill problems found", so a typed-and-truncated command line was reported to
+# its caller as findings — a verdict over a run that never began. A bad argument is exit 2.
+#
+# A value is a value, not merely a token in the position where one goes: counting arguments
+# alone let `--path ""` through, and an empty scope is not the whole repository — it is a
+# caller's computed variable that came back empty, answered with a full-tree sweep nobody
+# asked for. cloc.sh, docs-length.sh, routing-skills.sh and stubs.sh all refuse an empty
+# value at exit 2 as of 22/08/2026; the folder's other --path takers were left as they were,
+# so check by running one rather than by reading this line.
+require_arg() { [ $# -gt 1 ] && [ -n "$2" ] || die "$1 requires a non-empty value"; }
+
 while [ $# -gt 0 ]; do
   case "$1" in
-    --output)      OUTPUT_FORMAT="${2:-}"; shift 2 ;;
-    --output-file) OUTPUT_FILE="${2:-}";   shift 2 ;;
-    --path)        TARGET_PATH="${2:-}";   shift 2 ;;
-    --quiet)       QUIET=true;             shift   ;;
-    --self-test)   SELF_TEST=true;         shift   ;;
+    --output)      require_arg "$@"; OUTPUT_FORMAT="$2"; shift 2 ;;
+    --output-file) require_arg "$@"; OUTPUT_FILE="$2";   shift 2 ;;
+    --path)        require_arg "$@"; TARGET_PATH="$2";   shift 2 ;;
+    --quiet)       QUIET=true;                           shift   ;;
+    --self-test)   SELF_TEST=true;                       shift   ;;
     --help|-h)     usage; exit 0 ;;
     *)             die "unknown argument: $1" ;;
   esac
 done
 
 cd "$PROJECT_ROOT" || die "cannot enter $PROJECT_ROOT"
+
+# Normalise --path to the repo-relative form BEFORE the existence test, because the test and
+# the filter must judge the same string. Below, --path is applied as a literal prefix over
+# `git ls-files`, whose paths are repo-relative and unprefixed — so an absolute path (what
+# tab-completion produces), a ./-prefixed one, or one containing .. passed an existence test
+# against the filesystem and then matched no row. The collection came back empty and the run
+# announced "no routing frontmatter under <dir>" over a directory holding hundreds of names:
+# the same Section 5 scoping fault the guard was added to close, reached by a new spelling.
+# A path outside the repository can never match a row either, so it is a bad argument too.
+# Rule: code/docs/GATE-REPORTING.md.
+scope_abs() { # $1 = --path value → the absolute path it names, . and .. resolved lexically
+  local raw="$1" seg norm=""
+  local -a parts
+  case "$raw" in /*) ;; *) raw="$PROJECT_ROOT/$raw" ;; esac
+  IFS='/' read -r -a parts <<< "$raw"
+  for seg in "${parts[@]}"; do
+    case "$seg" in
+      ''|.) ;;
+      ..)   if [[ "$norm" == */* ]]; then norm="${norm%/*}"; else norm=""; fi ;;
+      *)    norm="${norm:+$norm/}$seg" ;;
+    esac
+  done
+  printf '/%s\n' "$norm"
+}
+
+SCOPE_AS=""   # names the typed form in the error below, when normalising changed it
+if [ -n "$TARGET_PATH" ]; then
+  SCOPE_RAW="$TARGET_PATH"
+  SCOPE_ABS="$(scope_abs "$TARGET_PATH")"
+  if [ "$SCOPE_ABS" = "$PROJECT_ROOT" ]; then
+    # `.` — the whole repository, which is exactly the unscoped run over the same population,
+    # not a prefix that no repo-relative path can start with.
+    TARGET_PATH=""
+  elif [ "${SCOPE_ABS#"$PROJECT_ROOT"/}" != "$SCOPE_ABS" ]; then
+    TARGET_PATH="${SCOPE_ABS#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$TARGET_PATH' resolves to $SCOPE_ABS, outside $PROJECT_ROOT"
+  fi
+  [ "$TARGET_PATH" = "$SCOPE_RAW" ] || SCOPE_AS=" — '$SCOPE_RAW' resolves to it"
+fi
+
+# --path is validated HERE, at top level, and against the FILESYSTEM rather than against the
+# candidate list — the two are not the same question. A typo'd or renamed directory matches
+# no row, so the collection is empty, no name is read, and the run prints its success line at
+# exit 0 over a scope that does not exist.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist$SCOPE_AS"
 
 bold ""
 bold "▸ routing-skills.sh — $(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -125,7 +196,12 @@ candidates() {
 
 FILES="$(candidates)"
 if [ -n "$TARGET_PATH" ]; then
-  FILES="$(printf '%s\n' "$FILES" | grep -E "^${TARGET_PATH%/}(/|$)" || true)"
+  # A LITERAL prefix, not a regex one. The scope arrives from a command line, so `grep -E`
+  # read every metacharacter in it: `^docs/a+b(/|$)` skipped that directory's own files and
+  # matched `docs/aab/` instead, and `^docs/a.b(/|$)` matched `docs/axb/` as well — wrong in
+  # both directions, and silent. awk's index() compares strings.
+  FILES="$(printf '%s\n' "$FILES" \
+    | awk -v t="${TARGET_PATH%/}" 'index($0, t "/") == 1 || $0 == t')"
 fi
 
 # ── Collect ──────────────────────────────────────────────────────────────────
@@ -376,14 +452,25 @@ check_gated stack-slint        INCLUDE_DESKTOP
 # ── Report ───────────────────────────────────────────────────────────────────
 total=$((violations + covariance))
 bold ""
-if [ "$total" -eq 0 ]; then
-  bold "✓ Every routing skill resolves, and every gated name co-varies with its flag."
-else
+if [ "$total" -gt 0 ]; then
   bold "✗ $total routing-skill problem(s)."
   log ""
   log "Rule: every name in a frontmatter skills: list resolves to .claude/skills/<name>/."
   log "Fix the name, create the skill, or drop it — never widen this audit. A gated"
   log "skill needs its file excluded on the same copier flag, not an exemption here."
+elif [ "$checked_names" -eq 0 ]; then
+  # The denominator was already printed above; this is the headline agreeing with it. A run
+  # that read no `skills:` key has resolved no name, so "every routing skill resolves" is a
+  # claim about an empty set — true, and useless, and read as a pass. The zero has to be
+  # legible as "nothing of this kind here", not "nothing wrong here". Exit 0 stays correct:
+  # an absent surface is a legitimately empty population (code/docs/GATE-REPORTING.md).
+  bold "✓ Nothing to check: no routing frontmatter${TARGET_PATH:+ under $TARGET_PATH}."
+  log "  No file carries a skills: key, so no name could fail to resolve and no gated name"
+  log "  could fail to co-vary. Nothing of this kind here — not a clean bill of health."
+  log "  Population: tracked and untracked-but-not-ignored *.md, this folder's fixtures"
+  log "  excluded. A gitignored tree is invisible to it, and reads as empty here."
+else
+  bold "✓ All $checked_names routing skill name(s) across $checked_files file(s) resolve, and every gated name co-varies."
 fi
 
 if [ -n "$OUTPUT_FORMAT" ]; then
@@ -391,8 +478,17 @@ if [ -n "$OUTPUT_FORMAT" ]; then
   out="${OUTPUT_FILE:-$REPORTS_DIR/routing-skills.md}"
   {
     printf '# routing-skills\n\n'
+    # The denominator belongs in the artefact too. A report carrying only "Unresolved
+    # names: 0" is the same false reassurance the headline above just stopped giving —
+    # a CI job collecting this file has no other way to tell zero-found from zero-read.
+    printf 'Files with routing frontmatter: %s\n' "$checked_files"
+    printf 'Skill names read: %s\n' "$checked_names"
     printf 'Unresolved names: %s\n' "$violations"
     printf 'Gated co-variance breaches: %s\n\n' "$covariance"
+    if [ "$checked_names" -eq 0 ]; then
+      printf 'No file%s carries a `skills:` key, so no name could fail to resolve.\n\n' \
+        "${TARGET_PATH:+ under $TARGET_PATH}"
+    fi
     if [ "$total" -gt 0 ]; then
       printf '| File | Line | Problem |\n| --- | --- | --- |\n%s' "$report"
     fi

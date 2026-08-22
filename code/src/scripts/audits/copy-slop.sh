@@ -98,10 +98,20 @@
 # style/verbatim. That narrowing is the "scope the scan narrowly" rule: a sibling audit in
 # this folder flagged 34 issues on its first draft, 33 of them false.
 #
-# NO-OP WHEN ABSENT. Neither scope exists at template baseline, so the script
-# exits 0 with a note rather than failing, which is what lets it run unconditionally in CI.
-# A --output run still writes a clean, zero-finding report on that path, so a consumer told
-# to collect the report file always finds it.
+# NO-OP WHEN ABSENT, AND IT NAMES WHICH ABSENCE. Neither scope exists at template baseline,
+# so the script exits 0 with a note rather than failing, which is what lets it run
+# unconditionally in CI. A --output run still writes a clean, zero-finding report on that
+# path, so a consumer told to collect the report file always finds it.
+#
+# A zero file count means TWO different things and only the scope separates them. Unscoped it
+# is the absent copy surface, and "this project has not written any user-facing copy yet" is a
+# fact the run established. Under --path it is the caller's own path, and all the run
+# established is that the path holds no file of a type this audit reads — it never opened the
+# copy surface at all. Until 22/08/2026 both printed the project sentence, so `--path` over any
+# directory of documentation returned a confident claim about a population that run had never
+# looked at: GATE-REPORTING.md Section 1 at the smaller scale, in the script that was the model
+# for the same fix in copy-emdash.sh. Both channels branch, the printed lines and SURFACE_NOTE
+# alike, because a CI consumer parses the second and never sees the first.
 #
 # ESCAPE HATCH, and what actually scopes it. Put `slop-allow` in a comment on the offending
 # line or the line above, with a reason:
@@ -177,7 +187,13 @@ Options:
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/copy-slop-report.<FORMAT>)
   --quiet              Suppress terminal output (requires --output)
-  --path PATH          Restrict the scan to a file or directory (*.py and *.html only)
+  --path PATH          Restrict the scan to a file or directory (*.py and *.html only).
+                         Normalised to the repo-relative form first, so `.`, a `./`
+                         prefix, an absolute path and an interior `..` all name what
+                         they look like, and the repository root itself means the
+                         unscoped run over the two declared scopes. A path that does
+                         not exist, or one outside the repository, is a bad argument
+                         and exits 2, never a clean run
   --help               Show this help
 
 Two tiers in one run:
@@ -240,6 +256,53 @@ trap 'rm -f "$TMP_FILES" "$TMP_HITS"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
+# ── Scope normalisation ───────────────────────────────────────────────────────
+# --path is normalised BEFORE it is tested, because the collector below walks the
+# filesystem with `find`, which accepts every form of a path as itself — so an -e guard
+# that passes is the only thing between the caller and a scope this audit was never written
+# over. Measured on 22/08/2026, before this block: `--path .` walked the whole repository,
+# reporting "files: 4582" and 1305 [gate: fail] matches, most of them in .venv and none of
+# them marketing copy, and `--path /etc` read 3 files out of a system directory and printed
+# "No machine-authored prose tell in user-facing copy." Both paths exist; neither is
+# user-facing copy. That is the widening the file-type contract closes for extensions,
+# arriving instead through the scope. So the repository root resolves to the unscoped run
+# over SCOPES rather than to the whole tree, a path resolving outside this repository is a
+# bad argument at exit 2, and a `./` prefix, an absolute path (what tab-completion produces)
+# and an interior `..` all name what they look like. Resolution is textual rather than
+# `realpath`: it adds no dependency and needs no path to exist. It does not follow symlinks,
+# so a symlinked route into the tree is refused rather than accepted. The existence test and
+# the collector then read the SAME normalised value. Rule: code/docs/GATE-REPORTING.md.
+normalise_scope() {   # prints the absolute path with . and .. resolved; empty means /
+  local abs seg out=""
+  case "$1" in /*) abs="$1" ;; *) abs="$PROJECT_ROOT/$1" ;; esac
+  while [[ -n "$abs" ]]; do
+    seg="${abs%%/*}"
+    if [[ "$abs" == */* ]]; then abs="${abs#*/}"; else abs=""; fi
+    case "$seg" in
+      ''|.) ;;
+      ..)   out="${out%/*}" ;;
+      *)    out="$out/$seg" ;;
+    esac
+  done
+  printf '%s' "$out"
+}
+
+RAW_PATH=""
+if [[ -n "$TARGET_PATH" ]]; then
+  RAW_PATH="$TARGET_PATH"
+  ABS_PATH="$(normalise_scope "$RAW_PATH")"
+  if [[ "$ABS_PATH" == "$PROJECT_ROOT" ]]; then
+    TARGET_PATH=""                                   # the root: the declared scopes, unscoped
+  elif [[ "$ABS_PATH" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${ABS_PATH#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$RAW_PATH' resolves to '${ABS_PATH:-/}', outside $PROJECT_ROOT"
+  fi
+fi
+READ_AS=""
+[[ "$RAW_PATH" == "$TARGET_PATH" ]] || READ_AS=" (read as '$TARGET_PATH')"
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$RAW_PATH' does not exist$READ_AS"
+
 # ── File collection ───────────────────────────────────────────────────────────
 # With --path the extension still decides how a file is read, because the two parsers
 # are not interchangeable. Anything that is neither *.py nor *.html is skipped rather
@@ -247,7 +310,6 @@ TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 declare -a ROOTS=()
 : > "$TMP_FILES"
 if [[ -n "$TARGET_PATH" ]]; then
-  [[ -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
   ROOTS=("$TARGET_PATH")
   if [[ -d "$TARGET_PATH" ]]; then
     find "$TARGET_PATH" -type f \( -name '*.py' -o -name '*.html' \) -print0 >> "$TMP_FILES" || true
@@ -272,13 +334,24 @@ FILE_COUNT=$(tr -cd '\0' < "$TMP_FILES" | wc -c | tr -d ' ')
 # reports/copy-slop-report.<FORMAT> must always find the file. An absent surface writes
 # a clean, zero-finding report naming the reason rather than exiting 0 with nothing on
 # disk, which under `--quiet --output json` would leave the consumer no signal at all.
+#
+# Every format carries the scope, for the reason in the header: a zero file count means two
+# different things, and a consumer parsing the report never sees the terminal lines that say
+# which of them this run found.
 json_escape() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 
 write_report() {
   [[ -n "$OUTPUT_FORMAT" ]] || return 0
   local status
   if $SURFACE_ABSENT; then
-    status="✓ surface absent, nothing to check"
+    # The status field is machine-read too, so it separates the two empty populations as the
+    # note does. "Surface absent" under --path would be the project-level claim again, in the
+    # one field a consumer reads first.
+    if [[ -n "$TARGET_PATH" ]]; then
+      status="✓ scope empty, no file of a type this audit reads"
+    else
+      status="✓ surface absent, nothing to check"
+    fi
   elif [[ "$FAIL_COUNT" -eq 0 ]]; then
     status="✓ no blocking clause ($WARN_COUNT warning(s))"
   else
@@ -288,6 +361,7 @@ write_report() {
   case "$OUTPUT_FORMAT" in
     txt)
       { printf 'copy-slop audit · %s\n' "$TIMESTAMP"
+        printf 'scope=%s\n' "${TARGET_PATH:-(the declared scopes)}"
         printf 'files=%s fail=%s warn=%s\n' "$FILE_COUNT" "$FAIL_COUNT" "$WARN_COUNT"
         printf 'status: %s\n' "$status"
         [[ -n "$SURFACE_NOTE" ]] && printf '%s\n' "$SURFACE_NOTE"
@@ -297,6 +371,7 @@ write_report() {
       { printf '# Copy Slop Audit Report\n\n'
         printf '| | |\n|---|---|\n'
         printf '| **Generated** | %s |\n' "$TIMESTAMP"
+        printf '| **Scope** | %s |\n' "${TARGET_PATH:-the declared scopes}"
         printf '| **Files scanned** | %s |\n' "$FILE_COUNT"
         printf '| **Blocking (gate: fail)** | %s |\n' "$FAIL_COUNT"
         printf '| **Advisory (gate: warn)** | %s |\n' "$WARN_COUNT"
@@ -311,6 +386,7 @@ write_report() {
       } > "$OUTPUT_FILE" ;;
     json)
       { printf '{\n  "script": "copy-slop",\n  "timestamp": "%s",\n' "$TIMESTAMP"
+        printf '  "scope": "%s",\n' "$(json_escape "${TARGET_PATH:-}")"
         printf '  "surface_present": %s,\n' "$($SURFACE_ABSENT && echo false || echo true)"
         printf '  "files": %s,\n  "fail": %s,\n  "warn": %s,\n' "$FILE_COUNT" "$FAIL_COUNT" "$WARN_COUNT"
         printf '  "surface_note": "%s",\n' "$(json_escape "$SURFACE_NOTE")"
@@ -326,11 +402,19 @@ write_report() {
 # ── No-op when the copy surface is absent ─────────────────────────────────────
 if [[ "$FILE_COUNT" -eq 0 ]]; then
   SURFACE_ABSENT=true
-  SURFACE_NOTE="Surface absent: no marketing copy module or template was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition."
+  # Name WHICH empty population this is — see the header. The project sentence is a claim
+  # about the copy surface and belongs only to the run that looked at it.
   log ""
   bold "▸ copy-slop.sh · $TIMESTAMP"
-  log "  no *.py or *.html under: ${ROOTS[*]}"
-  log "  This project has not written any user-facing copy yet."
+  if [[ -n "$TARGET_PATH" ]]; then
+    SURFACE_NOTE="Scope empty: --path ${ROOTS[*]} holds no *.py or *.html, so no clause could match and this run is clean by definition rather than by inspection. It says nothing about the project's copy surface, which this run did not look at."
+    log "  no *.py or *.html under: ${ROOTS[*]}"
+    log "  --path holds no file of a type this audit reads."
+  else
+    SURFACE_NOTE="Surface absent: no marketing copy module or template was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition."
+    log "  no *.py or *.html under: ${ROOTS[*]}"
+    log "  This project has not written any user-facing copy yet."
+  fi
   log ""
   write_report
   bold "✓ Nothing to check."

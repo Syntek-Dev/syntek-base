@@ -43,8 +43,29 @@
 # models, no template uses hx-, and the MCP surface is unwired, so an ordinary run here is
 # green having measured almost nothing.
 #
+# NO --path, AND THAT IS A DECISION. This audit is a two-way reconciliation between one
+# register file and the whole tree, so a narrowed source scan does not narrow the question —
+# it corrupts it, and the thirteen clauses break three ways under one.
+#   TWO INVERT. `constraint-absent` and `key-unraised` read the register and ask the code to
+#   answer, so a narrowed source scan turns a row that IS backed outside the path into a
+#   finding that it is backed nowhere — a manufactured failure, not a missed one.
+#   THREE UNDER-REPORT. `constraint-unregistered`, `key-unregistered` and `key-duplicated` run
+#   the other way, code to register, and lose real findings instead: a key raised at a second
+#   site outside the path simply stops being a duplicate.
+#   FIVE NEVER MOVED AT ALL — `request-id-middleware-absent` (settings/base.py),
+#   `ts-flags-loosened` (mobile/tsconfig.json), and the three MCP clauses (config/mcp.py twice,
+#   config/asgi.py). The deleted block repointed four source scopes and left every config path
+#   and the register itself where they were.
+# The flag was accepted and then ignored — a bare run, `--path learning` and `--path code/docs`
+# printed identical output but for the timestamp, including the line naming three surfaces it
+# had not looked at. Accepting a scope and honouring none of it is the defect in
+# code/docs/GATE-REPORTING.md
+# Section 5, so it is refused at the parser instead, the way dependency-drift.sh, doctrine-drift.sh
+# and security.sh refuse it. Narrow the run with --self-test, which repoints EVERY scope
+# coherently, or read the whole tree.
+#
 # Usage: negative-space.sh [--output FORMAT] [--output-file PATH] [--quiet]
-#                          [--path PATH] [--self-test] [--help]
+#                          [--self-test] [--help]
 #
 # Exit codes:  0 = clean, or warnings only, or the surface is absent
 #              1 = fail-tier finding(s), or the self-test no longer separates the fixtures
@@ -92,7 +113,6 @@ REQUEST_ID_ASGI_CLASS="RequestIDASGIMiddleware"
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
-TARGET_PATH=""
 SELF_TEST=false
 
 FAIL_COUNT=0
@@ -110,9 +130,13 @@ negative-space.sh — verify the enforcement-point register against the code
 Usage:
   negative-space.sh                Check the register, both surfaces, and the two configs
   negative-space.sh --output md    Also write a report
-  negative-space.sh --path DIR     Restrict the source scan (the register and the two
-                                   config clauses always run)
   negative-space.sh --self-test    Prove the clauses still separate the fixtures
+
+There is no --path. This reconciles one register against the whole tree in BOTH
+directions, so narrowing the source scan does not narrow the question — it makes a
+register row backed outside the narrowed path report as backed nowhere, and hides the
+findings that run the other way. --self-test is the only scope change, and it repoints
+every scope together.
 
 Clauses — twelve [gate: fail], one [gate: warn]:
   constraint-unregistered       a Meta.constraints entry with no register row
@@ -134,7 +158,6 @@ Options:
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/negative-space-report.<FORMAT>)
   --quiet              Suppress terminal output — requires --output
-  --path PATH          Restrict the source scan to a file or directory
   --self-test          Run every clause over fixtures/negative-space/{broken,clean}
   --help               Show this help
 
@@ -154,7 +177,9 @@ while [[ $# -gt 0 ]]; do
     --output)       require_arg "$@"; OUTPUT_FORMAT="$2"; shift 2 ;;
     --output-file)  require_arg "$@"; OUTPUT_FILE="$2"; shift 2 ;;
     --quiet)        QUIET=true; shift ;;
-    --path)         require_arg "$@"; TARGET_PATH="$2"; shift 2 ;;
+    # Named rather than left to the catch-all, because it USED to be accepted. A reader
+    # who ran it yesterday needs the reason, not "Unknown option" — see the header note.
+    --path)         die "--path is not accepted: this reconciles how-to/src/INVARIANTS.md against the whole tree in both directions, and a narrowed source scan reports rows as backed nowhere that are backed outside it. Use --self-test, or run unscoped." ;;
     --self-test)    SELF_TEST=true; shift ;;
     --help|-h)      usage; exit 0 ;;
     *)              die "Unknown option: $1. Use --help for usage." ;;
@@ -517,12 +542,12 @@ fi
 log ""
 bold "▸ negative-space.sh — $TIMESTAMP"
 
-if [[ -n "$TARGET_PATH" ]]; then
-  [[ -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
-  MODELS_DIR="$TARGET_PATH"; PY_DIR="$TARGET_PATH"; TS_DIR="$TARGET_PATH"
-  TEMPLATES_DIR="$TARGET_PATH"
-fi
-
+# The scopes are whatever the declarations at the top of this file say, always. Nothing
+# repoints them here: the only sanctioned repoint is point_scopes_at() under --self-test,
+# which moves the whole set at once so the register and the code it is checked against
+# stay the same tree. A partial repoint — four source scopes moved and the register left
+# where it was — is what the deleted --path block did, and it is the one shape of this
+# script that can print a verdict about a correlation it never performed.
 run_all
 
 FAIL_COUNT=$(grep -c . "$TMP_FAIL" || true); FAIL_COUNT=${FAIL_COUNT:-0}

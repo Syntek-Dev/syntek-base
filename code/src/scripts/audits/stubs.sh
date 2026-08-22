@@ -74,6 +74,12 @@ Options:
                          (default: code/src/scripts/audits/reports/stubs-report.<FORMAT>)
   --quiet              Suppress terminal output — requires --output
   --path PATH          Restrict scan to a specific file or directory
+                         A path that does not exist is a bad argument, not an empty
+                         scope: exit 2, never a green run over a scope never honoured.
+                         So is an empty one, and so is a path outside the repository.
+                         Absolute, ./-prefixed and ..-containing forms are all accepted
+                         and resolved; `.` scans the whole repository, which is WIDER
+                         than the unscoped default of code/src.
   --help               Show this help
 
 TDD/BDD red phase:
@@ -110,8 +116,14 @@ Exit codes:  0 = clean (or TDD red phase)   1 = hard stubs found   2 = script er
 EOF
 }
 
+# A value is a value, not merely a token in the position where one goes. `--path ""` counted
+# as an argument and then scanned the default root, so a caller whose computed scope came back
+# empty was handed a full run reading as though the scope had been honoured. cloc.sh,
+# docs-length.sh, routing-skills.sh and stubs.sh all refuse an empty value at exit 2 as of
+# 22/08/2026; the folder's other --path takers were left as they were, so check by running
+# one rather than by reading this line.
 require_arg() {
-  [[ $# -gt 1 ]] || die "$1 requires a value"
+  [[ $# -gt 1 && -n "$2" ]] || die "$1 requires a non-empty value"
 }
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
@@ -162,19 +174,59 @@ fi
 # ── Setup ─────────────────────────────────────────────────────────────────────
 cd "$PROJECT_ROOT"
 
+# Normalise --path before anything reads it. `find` and `grep -r` take an absolute or
+# ./-prefixed root happily, so this script never had the blindness its git-listing siblings
+# did — but it also took `--path /etc` and scanned it, reporting hard stubs in files outside
+# the repository as this project's findings. A scope is a narrowing of THIS tree; anything
+# else is a bad argument. `.` and `..` are resolved lexically so the existence test and the
+# scan agree on one string. Rule: code/docs/GATE-REPORTING.md.
+scope_abs() { # $1 = --path value → the absolute path it names, . and .. resolved lexically
+  local raw="$1" seg norm=""
+  local -a parts
+  case "$raw" in /*) ;; *) raw="$PROJECT_ROOT/$raw" ;; esac
+  IFS='/' read -r -a parts <<< "$raw"
+  for seg in "${parts[@]}"; do
+    case "$seg" in
+      ''|.) ;;
+      ..)   if [[ "$norm" == */* ]]; then norm="${norm%/*}"; else norm=""; fi ;;
+      *)    norm="${norm:+$norm/}$seg" ;;
+    esac
+  done
+  printf '/%s\n' "$norm"
+}
+
+SCOPE_AS=""   # names the typed form in the error below, when normalising changed it
+if [[ -n "$TARGET_PATH" ]]; then
+  SCOPE_RAW="$TARGET_PATH"
+  SCOPE_ABS="$(scope_abs "$TARGET_PATH")"
+  if [[ "$SCOPE_ABS" == "$PROJECT_ROOT" ]]; then
+    # `.` — the repository root, kept as an explicit scan root rather than folded into the
+    # unscoped run: unscoped here means `code/src`, so treating `.` as "no scope" would
+    # QUIETLY NARROW what the caller asked for, which is the same defect from the other side.
+    TARGET_PATH="$PROJECT_ROOT"
+  elif [[ "$SCOPE_ABS" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${SCOPE_ABS#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$TARGET_PATH' resolves to $SCOPE_ABS, outside $PROJECT_ROOT"
+  fi
+  [[ "$TARGET_PATH" == "$SCOPE_RAW" ]] || SCOPE_AS=" — '$SCOPE_RAW' resolves to it"
+fi
+
+# --path is validated HERE, at top level, and not left to the greps below — each of them
+# already swallows its own stderr and is followed by `|| true`, so a root that does not
+# exist produces the identical output to a root full of clean code: nothing. The run then
+# reaches "✓ No hard stubs found." at exit 0 having read no file at all. Rule:
+# code/docs/GATE-REPORTING.md.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist$SCOPE_AS"
+
 TMPFILE=$(mktemp)
 trap 'rm -f "$TMPFILE"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 MODE=$($STRICT && echo "strict" || echo "hard-stubs")
 SCAN_ROOT="${TARGET_PATH:-$PROJECT_ROOT/code/src}"
-
-log ""
-bold "▸ stubs.sh — $TIMESTAMP"
-log "  mode:  $MODE"
-log "  types: ${FILE_TYPES[*]}"
-log "  root:  $SCAN_ROOT"
-log ""
+# "under stubs.sh" is not a place. One word, so a single-file scope reads as one.
+SCOPE_WORD=at; [[ -d "$SCAN_ROOT" ]] && SCOPE_WORD=under
 
 # ── File-type selectors ───────────────────────────────────────────────────────
 wants() {
@@ -207,6 +259,62 @@ EXCL=(
   # none of which anyone here can act on.
   --exclude-dir=target
 )
+
+# ── The population ────────────────────────────────────────────────────────────
+# A grep that matches nothing and a grep that read nothing print the same thing, so the
+# denominator is counted separately and printed in the header. Both the pruned directories
+# and the extensions are DERIVED from what the scan itself uses — a second copy of either
+# list is a denominator that drifts away from the numerator without anyone noticing.
+declare -a PRUNE_EXPR=()
+for excl in "${EXCL[@]}"; do
+  PRUNE_EXPR+=(-o -name "${excl#--exclude-dir=}")
+done
+
+declare -a POP_EXTS=()
+wants python     && POP_EXTS+=(-o -name "*.py")
+wants typescript && POP_EXTS+=(-o -name "*.ts" -o -name "*.tsx")
+wants javascript && POP_EXTS+=(-o -name "*.js" -o -name "*.jsx")
+wants rust       && POP_EXTS+=(-o -name "*.rs")
+
+# `${arr[@]:1}` drops the leading -o each list was built with, which is cheaper to read
+# than tracking a separator flag through two loops.
+# `-H` follows a symlink given ON THE COMMAND LINE and no other, which is what makes this
+# count agree with the scan below. Without it `find` refuses to descend a symlinked
+# --path root and reports 0, while the scan's `grep -r` follows that same symlink and
+# would have read the tree — so the empty-population branch fired and printed a clean
+# verdict over files nothing had looked at. The counter and the scanner must walk the
+# same tree or the denominator is about a different population than the findings.
+FILE_COUNT=$(
+  find -H "$SCAN_ROOT" \
+    \( -type d \( "${PRUNE_EXPR[@]:1}" \) -prune \) \
+    -o -type f \( "${POP_EXTS[@]:1}" \) -print 2>/dev/null | wc -l | tr -d ' '
+)
+
+log ""
+bold "▸ stubs.sh — $TIMESTAMP"
+log "  mode:  $MODE"
+log "  types: ${FILE_TYPES[*]}"
+log "  root:  $SCAN_ROOT"
+log "  files: $FILE_COUNT"
+log ""
+
+# ── No-op when no file of a scanned type is present ───────────────────────────
+# An absent surface is a legitimately empty population, not an unexamined one, so exit 0
+# is the honest verdict — but "✓ No hard stubs found." over zero files reads as "nothing
+# is wrong here" when what happened is "nothing of this kind is here". Only the wording
+# separates them, and a report is still written so a CI job collecting the artefact always
+# finds one. Rule: code/docs/GATE-REPORTING.md; idiom: audits/CLAUDE.md.
+SURFACE_ABSENT=false
+if [[ "$FILE_COUNT" -eq 0 ]]; then
+  SURFACE_ABSENT=true
+  # "in scope", not "here": the excluded directories are pruned from the count and from
+  # every grep alike, and `find` prunes a ROOT whose own name is on the list — point --path
+  # at code/src/rust/target, which holds 68 generated .rs files, and this is zero by POLICY
+  # rather than by absence. The numerator agrees (GNU grep skips a command-line root the
+  # same way), so the verdict is sound; it is the sentence that has to stop saying "here".
+  log "  No ${FILE_TYPES[*]} file in scope $SCOPE_WORD this root — none present, or all excluded."
+  log ""
+fi
 
 # scan LABEL SEVERITY PATTERN EXT...
 # Appends findings to TMPFILE; updates counters and OVERALL_EXIT.
@@ -248,7 +356,10 @@ scan() {
 }
 
 # ── Python / Django ───────────────────────────────────────────────────────────
-if wants python; then
+# Each section is skipped outright when the population is empty. Printing a section header
+# over a root holding no file of that language is the visual form of the claim this whole
+# change removes: it looks like a leg that ran.
+if ! $SURFACE_ABSENT && wants python; then
   bold "── Python / Django ────────────────────────────────────────────────────────"
   scan "raise NotImplementedError" hard \
     'raise NotImplementedError' \
@@ -271,7 +382,7 @@ if wants python; then
 fi
 
 # ── TypeScript / JavaScript ───────────────────────────────────────────────────
-if wants_ts_js; then
+if ! $SURFACE_ABSENT && wants_ts_js; then
   bold "── TypeScript / JavaScript ────────────────────────────────────────────────"
   declare -a ts_exts=()
   wants typescript && ts_exts+=("*.ts" "*.tsx")
@@ -308,7 +419,7 @@ fi
 #
 # RUST-ONLY in practice: on a web-only project this grep matches nothing and the section
 # prints a clean header, which is cheaper than a directory guard.
-if wants rust; then
+if ! $SURFACE_ABSENT && wants rust; then
   bold "── Rust ───────────────────────────────────────────────────────────────────"
 
   scan "// STUB marker" hard \
@@ -329,12 +440,31 @@ if wants rust; then
 fi
 
 # ── Report output ─────────────────────────────────────────────────────────────
+# One verdict, computed once and read by the markdown, the JSON and the HTML alike — a
+# report saying "no hard stubs" beside a terminal saying "nothing to check" is two answers
+# to one question, and the reader believes whichever they opened.
+if $SURFACE_ABSENT; then
+  STATUS_TEXT="✓ No file of a scanned type in scope — none present, or all excluded"
+elif [[ $OVERALL_EXIT -eq 0 ]]; then
+  STATUS_TEXT="✓ No hard stubs in $FILE_COUNT file(s)"
+else
+  STATUS_TEXT="✗ Hard stubs found"
+fi
+
 if [[ -n "$OUTPUT_FORMAT" ]]; then
   RAW=$(<"$TMPFILE")
 
   case "$OUTPUT_FORMAT" in
     txt)
-      cp "$TMPFILE" "$OUTPUT_FILE"
+      # A header, not a bare copy of the hits file. `cp` alone wrote a ZERO-BYTE report on
+      # every clean run — and a zero-byte file is the written form of saying nothing: it
+      # cannot distinguish "read 62 files, found no stub" from "read none". The counts and
+      # the status line go in first, then the findings.
+      { printf 'stubs audit — %s\n' "$TIMESTAMP"
+        printf 'mode=%s types=%s files=%s hard=%s soft=%s\n' \
+          "$MODE" "${FILE_TYPES[*]}" "$FILE_COUNT" "$HARD_HITS" "$SOFT_HITS"
+        printf 'status: %s\n\n' "$STATUS_TEXT"
+        printf '%s\n' "${RAW:-No stubs or markers found.}"; } > "$OUTPUT_FILE"
       ;;
 
     md)
@@ -344,10 +474,10 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '| **Generated** | %s |\n' "$TIMESTAMP"
         printf '| **Mode** | %s |\n' "$MODE"
         printf '| **Types** | %s |\n' "${FILE_TYPES[*]}"
+        printf '| **Files scanned** | %d |\n' "$FILE_COUNT"
         printf '| **Hard stubs** | %d |\n' "$HARD_HITS"
         printf '| **Soft markers** | %d |\n' "$SOFT_HITS"
-        printf '| **Status** | %s |\n\n' \
-          "$([[ $OVERALL_EXIT -eq 0 ]] && echo '✓ No hard stubs' || echo '✗ Hard stubs found')"
+        printf '| **Status** | %s |\n\n' "$STATUS_TEXT"
         if [[ -n "$RAW" ]]; then
           printf '```text\n%s\n```\n' "$RAW"
         else
@@ -364,6 +494,8 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
         printf '  "mode": "%s",\n' "$MODE"
         printf '  "file_types": [%s],\n' \
           "$(printf '"%s",' "${FILE_TYPES[@]}" | sed 's/,$//')"
+        printf '  "files_scanned": %d,\n' "$FILE_COUNT"
+        printf '  "surface_present": %s,\n' "$($SURFACE_ABSENT && echo false || echo true)"
         printf '  "hard_hits": %d,\n' "$HARD_HITS"
         printf '  "soft_hits": %d,\n' "$SOFT_HITS"
         printf '  "total_hits": %d,\n' "$TOTAL_HITS"
@@ -405,10 +537,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
     <tr><th>Generated</th><td>$TIMESTAMP</td></tr>
     <tr><th>Mode</th><td>$MODE</td></tr>
     <tr><th>File types</th><td>${FILE_TYPES[*]}</td></tr>
+    <tr><th>Files scanned</th><td>$FILE_COUNT</td></tr>
     <tr><th>Hard stubs</th><td>$HARD_HITS</td></tr>
     <tr><th>Soft markers</th><td>$SOFT_HITS</td></tr>
     <tr><th>Status</th><td class="$([[ $OVERALL_EXIT -eq 0 ]] && echo ok || echo fail)">
-      $([[ $OVERALL_EXIT -eq 0 ]] && echo '&#10003; No hard stubs' || echo '&#10007; Hard stubs found')
+      $STATUS_TEXT
     </td></tr>
   </table>
   <pre>$escaped</pre>
@@ -424,8 +557,17 @@ HTML
 fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
+if $SURFACE_ABSENT; then
+  bold "✓ Nothing to check: no ${FILE_TYPES[*]} file in scope $SCOPE_WORD $SCAN_ROOT."
+  log "  No file was read, so no stub could be found. Excluded wherever they sit:"
+  log "  node_modules .venv __pycache__ migrations .next generated dist .git audits"
+  log "  target — a root that is itself one of those is pruned, and counts zero."
+  log ""
+  exit 0
+fi
+
 if [[ $OVERALL_EXIT -eq 0 ]]; then
-  bold "✓ No hard stubs found."
+  bold "✓ No hard stubs in $FILE_COUNT file(s)."
   if $STRICT && [[ $SOFT_HITS -gt 0 ]]; then
     s="$([[ $SOFT_HITS -ne 1 ]] && echo 's' || echo '')"
     log "  ($SOFT_HITS soft marker${s} noted — run with --output to capture in a report)"

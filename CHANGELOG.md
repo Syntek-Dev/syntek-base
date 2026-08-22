@@ -1,12 +1,26 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.0.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.0.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.0.1] - 22/08/2026
+
+### Fixed
+
+- **A scope that was never opened stopped reading as a scope that came back clean.** Thirteen scripts under `code/src/scripts/audits/` and `code/src/scripts/development/sync-trees.sh` shared one defect in three shapes, all of them the failure `code/docs/GATE-REPORTING.md` exists to name. **`--path` is now normalised before it is tested and validated at top level, before a single file is collected** — `.`, a `./` prefix, an absolute path (what tab-completion produces) and an interior `..` all pass a bare `-e` test and none of them is the form the scope is then applied in. Measured on 22/08/2026 across all twenty-four scripts: a path that does not exist was already `2` everywhere, but an out-of-repository `--path` was answered with `2` by fourteen and with a **scan of it** by the other ten — `copy-slop.sh --path /etc` printed "No machine-authored prose tell in user-facing copy" over three system files. The repository root now means the unscoped run rather than a 4,582-file walk, and a path resolving outside the repository exits `2`.
+- **Validation at top level rather than inside a collector, and that is a mechanism rather than a style.** A `die` inside a process substitution kills only the subshell; the run then continues to its success line over a scope it never read. The scripts that audit a whole-repository fact no subdirectory can narrow reject the flag outright instead, which is the same answer by a different route.
+- **`--path` narrows a scan and never widens one.** `copy-emdash.sh` and `copy-slop.sh` collect `*.py` and `*.html` under the flag exactly as they do unscoped. A collector that took any extension made a marketing-copy gate into a way of pointing that gate at the guides which define the rule — `copy-emdash.sh` reddened `code/docs` that way until 22/08/2026, eleven findings in `GATE-REPORTING.md` alone, where the em dash is house style.
+- **Every run names the population it read before it gives its verdict.** `doc-references.sh` reports files scanned, files exempt by rule, backticked tokens checked and how many of those were tested as repo paths; `cloc.sh` carries a file count so "all files within limits" cannot be confused with "no file was measured"; and an empty population is named for what it is — the absent copy surface unscoped is a different statement from the caller's own empty `--path`, and only the first is a claim about this project.
+- **`sync-trees.sh` tracks its by-hand set at the point of classification** rather than recovering it afterwards by matching on the wording of a message, which silently dropped any class whose phrasing did not match; a nested-tree omission now survives a `--write` run exactly as a not-on-disk one does; and an empty scope exits `0` with a note saying so, while a `--path` typo exits `2`.
+- **A flag whose value was missing took `${2:-}` and then `shift 2` on one argument**, which under `set -e` ended `doc-references.sh` at exit `1` with nothing printed — the code that means "citations do not resolve", for a mistake in the command line. A bad argument is `2` and says which one.
+- **`code/src/scripts/audits/CONTEXT.md` and `CLAUDE.md` carry the registers this leaves**: which scripts self-guard, which take `--path` and in what form, and the report filename per script — eighteen of twenty-four are `<script>-report.<FORMAT>` and five are not, so the name is read from the register rather than derived from a pattern that was wrong for five of them.
 
 ---
 

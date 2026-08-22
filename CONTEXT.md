@@ -172,7 +172,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **7.0.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.0.1** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root
