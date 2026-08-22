@@ -1,6 +1,6 @@
 # Template Gaps — syntek-base's own open items
 
-**Last Updated**: 17/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 22/08/2026 | **Maintained By**: Syntek Studio
 
 Open items belonging to **`syntek-base` itself** — the template repository, not any project
 generated from it.
@@ -199,4 +199,28 @@ either way:
 
 ---
 
-_No uncharted entries._
+## 22/08/2026 — `main` has never received this branch, and no register tracks that
+
+**Type:** Active gap
+
+**Summary:** `main` sits at `a1e0f68` / `v3.2.2` while `pm/base-health-map` is at `6.0.0` —
+**86 commits ahead, 0 behind**, with three MAJORs stacked on it. It is recorded here because it
+currently has no home at all. The `v6.0.0` sitting routed it **out** of `MAP-BASE-HEALTH.md` and
+into the root `GAPS.md` as that handoff's one orphaned item; that entry was then deleted at
+`e3407cf` on instruction, deliberately **without** a `✅ CLOSED` mark, because it is not closed.
+Four consecutive handoffs have carried it since, and a handoff is a session artefact, not a
+register. Recover the deleted prose with `git show 5d3c22f:GAPS.md`.
+
+**Blocked by / Action:** This branch's own pull request, and nothing else. **It is not a
+reconciliation, and the word was doing real damage** — `git merge-base --is-ancestor main HEAD`
+succeeds, so **no commit on `main` is absent from here** and the merge is a fast-forward rather
+than a two-way merge. The standing instruction across four handoffs not to absorb `main` into
+this branch is therefore not a deferral of work; there is no work to defer, and re-reading it as
+one is what kept the item alive. **Retired by the PR merging**, which is itself gated on
+`MAP-BASE-HEALTH.md`'s frontier being empty.
+
+**Do not chart it.** It has a named owner and a dated retirement, which is what separates a task
+from a decision, and `MAP-BASE-HEALTH.md` is under a standing instruction to stop growing — a
+node opened here would be resolved by the merge before any sitting reached it. **It must be
+deleted when that merge lands**, because this file carrying anything but standing limitations is
+one of the three conditions that map's Destination is measured against.
