@@ -100,7 +100,7 @@ reason differs in each:
 
 | Group                       | Entries                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **The template's own docs** | `copier.yml` · `LICENSE` · `SECURITY.md` · `CONTRIBUTING.md` · `README.md` · `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` — **the guide tree itself ships, bar that one file** <!-- doc-references: template-only -->                                                                                                                                                                                                        |
+| **The template's own docs** | `copier.yml` · `LICENSE` · `SECURITY.md` · `CONTRIBUTING.md` · `README.md` — **the whole guide tree ships** <!-- doc-references: template-only -->                                                                                                                                                                                                                                                                           |
 | **Template-only CI**        | `.github/CODEOWNERS` · `.github/ISSUE_TEMPLATE` · `.github/PULL_REQUEST_TEMPLATE.md` · `.github/scripts` · `.github/workflows/audit-template.yml` <!-- doc-references: template-only -->                                                                                                                                                                                                                                     |
 | **Seeded state**            | `VERSION` · `VERSION-HISTORY.md` · `CHANGELOG.md` · `RELEASES.md` · `.claude/MEMORY.md` · `.copier/migrations`, each re-supplied from `.copier/` (see below) · `uv.lock`, **regenerated** by the `uv lock` task rather than seeded <!-- doc-references: template-only -->                                                                                                                                                    |
 | **The artefact trees**      | everything under `handoffs/`, `research/`, `learning/` and `project-management/src/` bar the `CONTEXT.md`/`CLAUDE.md` pairs, the `*TEMPLATE*` files and **fifteen further named paths** — the six GDPR documents, the brand-guide and component build scripts, the shared wireframe stylesheet, the two `US000` test sheets and the incident index — plus `questionnaires/.gitignore` <!-- doc-references: template-only --> |
@@ -109,9 +109,8 @@ reason differs in each:
 
 Five notes:
 
-- **The guide tree you are reading ships, and that is why the checks below exclude it.** Only
-  `TEMPLATE-GAPS.md` — syntek-base's own open items — is held back. Everything else here is
-  rendered like any ordinary file, so the guides that quote token or delimiter syntax wrap it in
+- **The guide tree you are reading ships in full, and that is why the checks below exclude it.**
+  Nothing here is held back — every file is rendered like any ordinary file, so the guides that quote token or delimiter syntax wrap it in
   `raw` blocks and the literal text survives into your project. The token sweep under _Verifying a
   generation_ therefore has to skip `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md`: the tokens it
   would find there are documentation, not a failed render. **`copier.yml` is excluded**, so a
@@ -140,7 +139,7 @@ Five notes:
 ## 4 — Write
 
 The rendered tree lands in your destination directory, including a staging directory `.copier/`
-holding the seven seed files a task then moves into place and removes.
+holding the nine seed files a task then moves into place and removes.
 
 ## 5 — Record answers
 
@@ -156,12 +155,12 @@ confirmation) because these execute on your machine.
 
 | #   | Task                                       | Why                                                                                                 |
 | --- | ------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| 1   | empty `.copier/` into place, then `rmdir`  | Seeds the seven files below, since the repo-root originals belong to the template.                  |
+| 1   | empty `.copier/` into place, then `rmdir`  | Seeds the nine files below, since the repo-root originals belong to the template.                   |
 | 2   | strip the `uv.lock` rule from `.gitignore` | The template ignores the lock; a generated project **must** commit it.                              |
 | 3   | `uv lock` (non-fatal)                      | Creates the lockfile every Dockerfile needs. Prints a warning instead of failing if `uv` is absent. |
 | 4   | `git init --initial-branch=main`           | Starts history. Skipped on `copier update`.                                                         |
 
-Task 1 moves seven files:
+Task 1 moves nine files:
 
 ```text
 .copier/README.md              →  README.md
@@ -170,6 +169,8 @@ Task 1 moves seven files:
 .copier/CHANGELOG.md           →  CHANGELOG.md                (empty)
 .copier/RELEASES.md            →  RELEASES.md                 (empty)
 .copier/MEMORY.md              →  .claude/MEMORY.md           (headings and rules, no entries)
+.copier/GAPS.md                →  GAPS.md                     (format block, no entries)
+.copier/DEFERRED.md            →  DEFERRED.md                 (writing rules, no rows)
 .copier/MAP-SCALE-PLANNING.md  →  project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md
 ```
 

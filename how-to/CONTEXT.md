@@ -35,7 +35,7 @@ how-to/
 │   ├── PLATFORM-PROVIDERS.md    ← infra register: seam kind, alternates, substrate verdicts
 │   ├── PROJECT-PATHS.md         ← path register: what a shipped doc may promise, and what creates it
 │   ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (ships, and is rendered)
-│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 guides (ships, bar TEMPLATE-GAPS.md)
+│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 guides, all of which ship
 │   ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 │   ├── SCALE-ARCHITECTURE/      ← OVERVIEW · LOAD-PROFILES · READINESS · SIZING-ENVELOPE · TOPOLOGY
 │   └── SERVER-ARCHITECTURE/     ← OVERVIEW · COMPUTE-ALLOCATION · EDGE-REQUIREMENTS · NIXOS-HANDOFF

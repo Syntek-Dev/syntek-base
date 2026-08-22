@@ -220,10 +220,12 @@ pre-commit:
           bash .github/scripts/check-template-tokens.sh --self-test
           bash .github/scripts/shipped-readme.sh --self-test
           bash .github/scripts/shipped-memory.sh --self-test
+          bash .github/scripts/shipped-registers.sh --self-test
         fi
         bash .github/scripts/check-template-tokens.sh
         bash .github/scripts/shipped-readme.sh
         bash .github/scripts/shipped-memory.sh
+        bash .github/scripts/shipped-registers.sh
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.

@@ -7,9 +7,9 @@ received, change it safely, and pull later template improvements back in.
 
 > **These files ship.** Your generated project receives this whole directory, because the
 > questions it answers — what am I looking at, which folder do I write in, how do I pull
-> upstream fixes — are asked long after generation, not before it. The one exception is
-> `TEMPLATE-GAPS.md`, which `copier.yml` excludes: it is syntek-base's own open-items
-> register, and means nothing in your project.
+> upstream fixes — are asked long after generation, not before it. There is no exception: one
+> file here, `TEMPLATE-GAPS.md`, was excluded until 22/08/2026, when syntek-base's own open
+> items were folded into its root `GAPS.md` instead.
 >
 > **Consequence for anyone editing here.** These files are rendered by Copier like every
 > other file in the tree, so a literal token or block delimiter in the prose is **live
@@ -48,16 +48,11 @@ how-to/src/TEMPLATE-GUIDE/
 ├── 15-TROUBLESHOOTING.md    ← what breaks, and what to do about it
 │
 │   ── Reference, no reading order ──
-├── GUIDE-TO-SKILLS.md       ← every skill, what it is for, and how to reach it
-│
-│   ── Maintaining the template itself (NOT shipped) ──
-└── TEMPLATE-GAPS.md         ← syntek-base's OWN open items (the root GAPS.md ships, so it stays empty)
+└── GUIDE-TO-SKILLS.md       ← every skill, what it is for, and how to reach it
 ```
 
-**Two files are unnumbered, for opposite reasons.** `GUIDE-TO-SKILLS.md` is a lookup table you
-dip into at any point, so it sits outside a reading order rather than at a position in one.
-`TEMPLATE-GAPS.md` is a working register for someone **maintaining** the template, not using it —
-and it is the one file here that does not ship.
+**One file is unnumbered.** `GUIDE-TO-SKILLS.md` is a lookup table you dip into at any point, so
+it sits outside a reading order rather than at a position in one.
 
 ## Reading order
 

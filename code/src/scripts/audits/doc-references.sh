@@ -54,24 +54,27 @@
 #                 the one most needing the check, and it is not tracked yet.
 #
 # Exempt:         history (CHANGELOG/RELEASES/VERSION-HISTORY) records what was true then;
-#                 how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md must be able to name a broken
-#                 citation in order to log it; handoffs/ and .copier/ are staging.
+#                 handoffs/ and .copier/ are staging.
 #
-#                 CORRECTED 18/08/2026: this line used to read "TEMPLATE-GUIDE/ is
-#                 copier-excluded AND must be able to name a broken citation". The first
-#                 half is FALSE and has been since f5fef31 (14/08, v3.2.0) -- that tree
-#                 SHIPS. Only /how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md is in copier.yml
-#                 `_exclude` (:86), and the comment at copier.yml:75-81 says so in terms.
+#                 NOT exempt, deliberately: the root GAPS.md and DEFERRED.md. They are
+#                 copier-excluded as of 22/08/2026, so this repository's copies hold real
+#                 entries — but a generated project receives a SEEDED file at the same path,
+#                 and an exemption keyed on the path cannot tell the two apart. Exempting
+#                 them here would switch this audit off over every downstream register.
 #
-#                 NARROWED 21/08/2026, MAP-BASE-HEALTH N-031: the arm now names
-#                 TEMPLATE-GAPS.md alone, so the seven shipping guides beside it are scanned
-#                 like any other shipped file. Measured before it was narrowed, in a
-#                 `git archive HEAD` scratch clone with the arm patched out: the whole tree
-#                 yields FOUR findings and NONE is a broken citation -- two correct
-#                 past-tense mentions of the deleted .claude/agents/, one teaching example
-#                 (US001), and one invented filename a reader is told to create. All four
-#                 were repaired in the same change rather than suppressed, which is what
-#                 made the narrowing safe. Regenerate the population with:
+#                 HISTORY, kept because it records how the exemption shrank to nothing.
+#                 It once read "TEMPLATE-GUIDE/ is copier-excluded AND must be able to name
+#                 a broken citation"; the first half was FALSE from f5fef31 (14/08, v3.2.0)
+#                 -- that tree ships. It was CORRECTED 18/08 to name one file, NARROWED
+#                 21/08 (MAP-BASE-HEALTH N-031) so the guides beside it were scanned like
+#                 any other shipped file, and RETIRED 22/08 when that file was folded into
+#                 the root GAPS.md. Each step was measured before it was taken: the
+#                 narrowing was proven in a `git archive HEAD` scratch clone with the arm
+#                 patched out, where the whole tree yielded FOUR findings and NONE was a
+#                 broken citation -- two correct past-tense mentions of the deleted
+#                 .claude/agents/, one teaching example, and one invented filename a reader
+#                 is told to create. All four were repaired rather than suppressed, which is
+#                 what made the narrowing safe. Regenerate the population with:
 #                   git archive HEAD | tar -x -C "$SCRATCH" && cd "$SCRATCH" && git init -q .
 #                   git add -A && git commit -qm base && bash code/src/scripts/audits/doc-references.sh
 #
@@ -228,10 +231,14 @@ candidates() {
 is_exempt() {
   case "$1" in
     CHANGELOG.md|RELEASES.md|VERSION-HISTORY.md)  return 0 ;;
-    # NARROWED 21/08/2026 (MAP-BASE-HEALTH N-031) from `how-to/src/TEMPLATE-GUIDE/*`. That tree ships as of
-    # f5fef31; only this one file is copier-excluded, and only this one file exists to log a
-    # broken citation. The seven guides beside it are ordinary shipped files and are scanned.
-    how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md)   return 0 ;;
+    # RETIRED 22/08/2026. This arm named how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md, which no
+    # longer exists — its contents were folded into the root GAPS.md. The arm is NOT re-pointed
+    # at GAPS.md, and that was measured rather than assumed: exempting GAPS.md blinds this audit
+    # over every generated project's own register, because the seeded downstream file sits at the
+    # same path. A planted broken citation in a generated project's GAPS.md went unreported while
+    # the identical one in DEFERRED.md was caught. The cost is real and is accepted here: the
+    # register can no longer quote a broken citation in order to log one, and must describe it
+    # instead of reproducing it.
     handoffs/*|.copier/*)                         return 0 ;;
     # The artefact trees. This rule polices what a SHIPPED file may cite, and none of
     # these ship — copier.yml `_exclude` empties every one of them at generation. A map

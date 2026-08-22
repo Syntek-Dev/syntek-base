@@ -1,9 +1,50 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.0.3 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.1.0 — 22/08/2026
+
+**Status:** Minor — two files in your project change how they are delivered. You still receive
+both, still blank, and nothing you have written in them is touched. Nothing in your project
+behaves differently.
+
+### Two notebooks that were being kept blank by hand
+
+Your project comes with two running registers: `GAPS.md`, for open problems and blockers, and
+`DEFERRED.md`, for work a finished piece of work explicitly handed to a later one. You write in
+them; they fill up over time.
+
+The template also needs registers of exactly that kind for its **own** open problems. Until now it
+could not use these two, because whatever they contained was copied into every project generated
+from the template. So the rule was: leave them empty here, and keep the template's own notes
+somewhere else.
+
+That rule was a habit, not a mechanism, and it had already been broken in a published release.
+Version 6.0.0 shipped a `GAPS.md` carrying 47 lines of the template's own internal note — which
+arrived in new projects as though it were their problem, and in existing projects as a clash to
+resolve by hand.
+
+### What changes for you
+
+Both files are now delivered the same way your project's memory file has always been delivered:
+the template does not own them, and a blank one is placed in your project when it is created.
+
+- **A new project** gets both files with their headings and their writing rules and no entries —
+  exactly as before, and now guaranteed by a check rather than by someone remembering.
+- **An existing project taking this update** keeps whatever it has written in them, untouched. The
+  update no longer tries to merge them, which also means one fewer thing that can clash.
+
+The template's own notes have moved into its copy of `GAPS.md`, where they belong, and the
+separate file that used to hold them is gone. It never shipped, so nothing you had disappears.
+
+One small addition worth knowing about: `GAPS.md` now has a **standing limitations** section, for
+things that are permanently true and accepted rather than problems waiting to be fixed. Entries
+there are read, not worked on, and the planning steps know to leave them alone.
 
 ---
 

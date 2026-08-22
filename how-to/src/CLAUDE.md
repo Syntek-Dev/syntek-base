@@ -37,8 +37,7 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
   instructional limit.** Write them for humans, in full. The`CONTEXT.md`/`CLAUDE.md` pairs here
   and in each sub-directory still keep within it.
 - **`TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/` ship, and are therefore rendered.** `copier.yml`
-  `_exclude`s exactly one file in this tree — `TEMPLATE-GUIDE/TEMPLATE-GAPS.md` — so everything
-  else lands in a generated project and Copier runs it through Jinja like any other file. A
+  `_exclude`s nothing in this tree, so every file here lands in a generated project and Copier runs it through Jinja like any other file. A
   literal token or block delimiter written into their prose is **live template code**: it renders
   to nothing, or kills generation outright. Wrap any region that must show the syntax in a Jinja
   `raw` block, and generate into `/tmp` before committing. Per-file detail, including which four
@@ -62,6 +61,6 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
   > **This file is rendered by Copier.** Writing a token's delimiters literally in prose here
   > makes Jinja try to parse them, and generation fails with `TemplateSyntaxError`. If you must
   > show the syntax, wrap the example in a `raw` block — or describe it in words, as above.
-  > **There is nowhere in this tree that is free of this.** `TEMPLATE-GUIDE/` is rendered too;
-  > the one file `copier.yml` excludes is `TEMPLATE-GUIDE/TEMPLATE-GAPS.md`, and it is a
-  > maintainer's register rather than a place to write examples.
+  > **There is nowhere in this tree that is free of this.** `TEMPLATE-GUIDE/` is rendered too,
+  > and since 22/08/2026 `copier.yml` excludes nothing here at all — so every file in this tree
+  > is live template code without exception.

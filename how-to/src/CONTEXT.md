@@ -21,25 +21,24 @@ how-to/src/
 ├── PROJECT-PATHS.md         ← the register: every path a shipped doc promises, and what creates it
 ├── STORE-LISTING.md         ← MOBILE-ONLY — the register: this project's App Store / Play listing values
 ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (ships, and is rendered)
-├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (ships, bar TEMPLATE-GAPS.md)
+├── TEMPLATE-GUIDE/          ← full guides for using syntek-base as a template (all of which ship)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── 01-OVERVIEW.md · 02-STACK.md · 03-PREREQUISITES.md
 │   ├── 04-QUICKSTART.md · 05-ANSWERS.md · 06-GENERATION.md
 │   ├── 07-REPO-TOUR.md · 08-CLAUDE-CODE.md
 │   ├── 09-PROJECT-MANAGEMENT.md · 10-FIRST-FEATURE.md
 │   ├── 11-CUSTOMISING.md · 12-EXTENDING.md
-│   ├── 13-DEPLOYMENT.md · 14-UPDATING.md · 15-TROUBLESHOOTING.md
-│   └── TEMPLATE-GAPS.md     ← syntek-base's own open items (the root GAPS.md ships, so it stays empty)
+│   └── 13-DEPLOYMENT.md · 14-UPDATING.md · 15-TROUBLESHOOTING.md
 ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 ├── SCALE-ARCHITECTURE/      ← how the app scales: load profiles, readiness audit, sizing envelope
 └── SERVER-ARCHITECTURE/     ← what the server/edge must provide; feeds the NixOS deploy repo
 ```
 
-> **These files ship.** `copier.yml` excludes exactly one file in this tree —
-> `TEMPLATE-GUIDE/TEMPLATE-GAPS.md`, syntek-base's own open-items register. `TEMPLATE-TOKENS.md`
-> and the rest of `TEMPLATE-GUIDE/` land in a generated project, because most of what those
-> guides answer is asked long after generation: what am I looking at, which skill does this job,
-> how do I pull upstream fixes.
+> **Every file in this tree ships.** `copier.yml` excludes nothing here — it did exclude one,
+> `TEMPLATE-GUIDE/TEMPLATE-GAPS.md`, until that register was folded into the root `GAPS.md` on
+> 22/08/2026. `TEMPLATE-TOKENS.md` and all of `TEMPLATE-GUIDE/` land in a generated project,
+> because most of what those guides answer is asked long after generation: what am I looking at,
+> which skill does this job, how do I pull upstream fixes.
 >
 > The consequence for anyone editing them — they are rendered by Copier, so a literal token in
 > the prose is live template code — is `CLAUDE.md` → _Guardrails_.

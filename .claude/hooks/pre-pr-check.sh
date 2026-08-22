@@ -182,7 +182,7 @@ if [[ "$TEMPLATE_MODE" == "true" ]]; then
   printf '  Running:  all eight application checks, plus the audit suite, which\n'
   printf '            is what actually governs a template.\n'
   printf '  Note:     a green run here covers this template and the two apps it\n'
-  printf '            ships — not a generated project. TEMPLATE-GAPS.md, SL-1.\n'
+  printf '            ships — not a generated project. GAPS.md, SL-1.\n'
 fi
 printf '\n'
 

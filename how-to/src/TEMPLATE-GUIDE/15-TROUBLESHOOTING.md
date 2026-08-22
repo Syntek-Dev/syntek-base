@@ -329,7 +329,7 @@ against a throwaway copy and refuses to apply when it finds anything.
 1. `TEMPLATE-GUIDE/` — the guide for the area you are in
 2. `how-to/docs/DEVELOPMENT.md` and `CLI-TOOLING.md` — environment and commands
 3. `GAPS.md` in your own project — it may be a known gap you recorded
-4. `TEMPLATE-GAPS.md` in the template repository — it may be a known gap in `syntek-base`
+4. `GAPS.md` in the template repository — it may be a known gap in `syntek-base`
    itself. It does not ship, deliberately, because the root `GAPS.md` does.
 5. [Open an issue](https://github.com/Syntek-Dev/syntek-base/issues) with the bug template
 

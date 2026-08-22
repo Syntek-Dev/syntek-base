@@ -61,11 +61,21 @@ _exclude:
   #
   # Excluding it rather than shipping a stub is what keeps the file usable HERE. Section 2.1
   # hardcodes `.claude/MEMORY.md` as read-second and that line ships, so the file must
-  # exist in both repos and can never be retired — which rules out the GAPS.md pattern
-  # (a shipped stub plus a differently-named store this repo actually writes to).
+  # exist in both repos and can never be retired: it is excluded AND seeded, never absent.
   # Seed-once matters more here than anywhere: a project's accumulated memory must never
   # be handed back the template's blank canvas by `copier update`.
   - /.claude/MEMORY.md
+  # The two standing registers are accumulators on the same argument, and until 22/08/2026
+  # they took the weaker treatment: they shipped, and were kept empty by hand. That
+  # discipline was prose-only and it had already failed inside a published tag —
+  # `git show v6.0.0:GAPS.md` is 47 lines carrying syntek-base's own unreconciled-`main`
+  # entry, which a real `copier copy` handed to a generated project as its own active gap
+  # and a real `copier update` delivered as a merge conflict. An accumulator kept empty by
+  # discipline is an accumulator that leaks on the day someone writes to it, which is the
+  # day it starts being useful. Excluded and seeded blank, like MEMORY.md, so syntek-base
+  # can write to its own registers freely.
+  - /GAPS.md
+  - /DEFERRED.md
   # Update migrations are read from the template clone, never rendered into a
   # project — a generated project has no use for the migrations that produced it.
   - /.copier/migrations
@@ -80,10 +90,10 @@ _exclude:
   # that quote token or delimiter syntax wrap it in `raw` blocks. See that folder's
   # CLAUDE.md before editing one.
   #
-  # TEMPLATE-GAPS.md is the exception — syntek-base's own open items, meaningless in a
-  # generated project. Same test as the root GAPS.md, which ships and therefore stays an
-  # empty stub.
-  - /how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
+  # TEMPLATE-GAPS.md was the exception — syntek-base's own open items, meaningless in a
+  # generated project. It was folded into the root `GAPS.md` and deleted on 22/08/2026, once
+  # that register became excluded-and-seeded above and could therefore hold real content.
+  # Its exclusion entry is retired with it: one register, one exclusion, one seed.
   # ── The artefact trees: tracked HERE, never shipped ──────────────────────────────────────
   #
   # syntek-base commits its own handoffs, feature maps, research notes and lessons (17/08/2026)
@@ -782,9 +792,12 @@ _tasks:
   # present and every row reading TBD. Seed-once matters here too: once /scale-planning
   # has filled it in, an update must never hand the project its blank stub back.
   #
-  # MEMORY.md is the third case and the strictest, because it is the only one an AGENT
-  # writes to unprompted: it must arrive with its headings and its writing rules and no
-  # entries at all. `.github/scripts/shipped-memory.sh` holds it to that.
+  # MEMORY.md, GAPS.md and DEFERRED.md are the strictest case, because they are the ones an
+  # AGENT writes to unprompted: each must arrive with its headings and its writing rules and
+  # no entries at all. A seed cut from a polluted root is a one-way door — it ships that
+  # content permanently and no update can correct it — so emptiness is gated rather than
+  # trusted: `.github/scripts/shipped-memory.sh` for the first,
+  # `.github/scripts/shipped-registers.sh` for the other two.
   - command: >-
       mv .copier/README.md README.md &&
       mv .copier/VERSION VERSION &&
@@ -793,6 +806,8 @@ _tasks:
       mv .copier/RELEASES.md RELEASES.md &&
       mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md &&
       mv .copier/MEMORY.md .claude/MEMORY.md &&
+      mv .copier/GAPS.md GAPS.md &&
+      mv .copier/DEFERRED.md DEFERRED.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 

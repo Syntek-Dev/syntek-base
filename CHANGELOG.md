@@ -1,12 +1,32 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.0.3 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.1.0] - 22/08/2026
+
+### Added
+
+- **`.copier/GAPS.md` and `.copier/DEFERRED.md`** — the blank seeds a generated project starts from, moved into place by the `_tasks` entry that already seeds `.claude/MEMORY.md`, the version files and the scale-planning map. Seven files became nine.
+- **`.github/scripts/shipped-registers.sh`** — the gate holding both seeds empty, with a `--self-test` on the pattern of `shipped-memory.sh`. Wired into the `template-integrity` pre-commit leg and `audit-template.yml`. A seed cut from a polluted root is a one-way door: it ships that content permanently and no update can correct it, so emptiness is gated rather than trusted.
+
+### Changed
+
+- **`GAPS.md` and `DEFERRED.md` are `copier.yml` `_exclude`d.** Until now they shipped and were kept empty **by hand** — a discipline rather than a mechanism, and it had already failed inside a published tag: `git show v6.0.0:GAPS.md` is 47 lines carrying this repository's own unreconciled-`main` entry, which a real `copier copy` handed to a generated project as its own active gap and a real `copier update` delivered as a merge conflict. An accumulator kept empty by discipline is an accumulator that leaks on the day someone writes to it, which is the day it starts being useful.
+- **The root `GAPS.md` now holds `syntek-base`'s own open items**, including a `## Standing limitations` section for accepted properties that are read rather than triaged — closed as _accepted_ rather than _fixed_, and exempt from the discovery gate's closes/blocks/unrelated verdict. `project-management/workflows/01-feature-map/STEPS.md` and `.claude/skills/wayfinder/SKILL.md` both say so.
+- **`check-template-tokens.sh` exempts `GAPS.md` and `DEFERRED.md`**, whose contents are now this repository's own prose rather than template text.
+- **`doc-references.sh` retires its `TEMPLATE-GAPS.md` exemption and does not re-point it at `GAPS.md`** — measured rather than assumed. A generated project receives a **seeded** file at the same path, and an exemption keyed on the path cannot tell the two apart, so exempting it would switch the audit off over every downstream register.
+
+### Removed
+
+- **`how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`** — folded into the root `GAPS.md` now that register can hold real content, and its `_exclude` entry retired with it: one register, one exclusion, one seed. It was itself `_exclude`d, so no generated project ever received it and none loses anything. `copier.yml`, `how-to/src/CLAUDE.md`, `how-to/src/CONTEXT.md`, `how-to/CONTEXT.md`, `how-to/REFERENCES.md`, `code/docs/FORWARD-VOICE.md`, `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`, `.claude/hooks/pre-pr-check.sh` and four `TEMPLATE-GUIDE/` files are repointed in the same change. **`how-to/src/` now contains nothing `copier.yml` excludes** — every file in that tree ships, without exception.
 
 ---
 

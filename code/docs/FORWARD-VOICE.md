@@ -35,10 +35,10 @@ right and merely unprovable here.
 The tree here and the tree downstream diverge in both directions, and the direction decides the
 mechanism. Neither is a suppression of the other's check.
 
-| Direction | Shape                                                       | Example                                                    | Mechanism                                       |
-| --------- | ----------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------- |
-| **A**     | **Absent here, present downstream** — the project builds it | `code/src/django/components/`                              | Register: `how-to/src/PROJECT-PATHS.md`         |
-| **B**     | **Present here, absent downstream** — copier excludes it    | `copier.yml`, `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md` | Per-line token: `doc-references: template-only` |
+| Direction | Shape                                                       | Example                       | Mechanism                                       |
+| --------- | ----------------------------------------------------------- | ----------------------------- | ----------------------------------------------- |
+| **A**     | **Absent here, present downstream** — the project builds it | `code/src/django/components/` | Register: `how-to/src/PROJECT-PATHS.md`         |
+| **B**     | **Present here, absent downstream** — copier excludes it    | `copier.yml`, `LICENSE`       | Per-line token: `doc-references: template-only` |
 
 **Direction A is a promise, Direction B is a disclaimer.** A guide naming
 `code/src/django/components/` is telling a developer where their components will go, and it is

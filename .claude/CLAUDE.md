@@ -245,6 +245,11 @@ Three files hold state between sessions, and each owns its own rules — read th
 Never cross them: memory is not a gap, and a gap is not a memory. Ephemeral task state stays in
 the conversation.
 
+**All three are excluded and seeded**, so each holds this project's own state and a generated
+project starts from a blank one — `copier.yml` `_exclude` plus the `_tasks` move from `.copier/`.
+Write to them freely; nothing you record here travels. Gates: `.github/scripts/shipped-memory.sh`
+and `.github/scripts/shipped-registers.sh`.
+
 **Promotion — this file owns it.** When a `GAPS.md` entry is resolved, mark it `✅ CLOSED <date>`,
 promote any permanent decision to the doc below, then remove the closed entry on the next tidy
 pass:

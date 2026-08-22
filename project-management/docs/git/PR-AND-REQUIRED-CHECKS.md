@@ -109,7 +109,9 @@ case for requiring a guarded job: the claim being protected is about the guard, 
 **The backend suites are no longer an instance of this, and the change is recent.** They guarded
 to success here while `uv.lock` was absent; the lock was committed on 16/08/2026 and they now
 execute against the two shipped apps. What a green run here does and does not prove is
-`TEMPLATE-GAPS.md` SL-1 — a narrower claim than "not applicable", and a different one. <!-- doc-references: template-only -->
+the root `GAPS.md` SL-1 — a narrower claim than "not applicable", and a different one. **That
+entry is syntek-base's own**: `GAPS.md` is excluded and seeded blank, so a generated project has
+the file but not the limitation, which is correct — its suite proves its own code.
 
 ### Changing the set
 

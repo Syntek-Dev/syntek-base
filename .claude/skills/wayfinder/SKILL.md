@@ -54,8 +54,9 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 Run when the next feature is not obvious, or on a cadence — after a release, or at the start of a
 planning cycle — to see what the register has accumulated.
 
-1. **Read the whole register.** `GAPS.md` (every open entry, ignoring `✅ CLOSED` rows) and
-   `DEFERRED.md` (every row whose target story has not shipped). Read `project-management/src/`
+1. **Read the whole register.** `GAPS.md` (every open entry, ignoring `✅ CLOSED` rows and any
+   `## Standing limitations` section — an accepted property is not an open entry and can never
+   close) and `DEFERRED.md` (every row whose target story has not shipped). Read `project-management/src/`
    for the `IMPLEMENTATION/` and `20-FINDINGS/` records behind them — a gap's one-line summary is
    rarely the whole story. _Done when every open entry is in view with its origin._
 2. **Cluster into candidate features.** Group entries that share a cause, a surface, or a

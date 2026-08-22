@@ -73,7 +73,7 @@ points for that procedure.
 | `how-to/src/PROJECT-PATHS.md`      | The path register — every path a shipped document promises, what creates it, and when (rule: `code/docs/FORWARD-VOICE.md`)                                                                               |
 | `how-to/src/STORE-LISTING.md`      | **Mobile-only.** The store-listing register — this project's App Store and Play values against their limits (rule: `code/docs/discoverability/APP-STORE.md`, which alone carries the verification dates) |
 | `how-to/src/TEMPLATE-TOKENS.md`    | The token contract `copier.yml` implements — ships, and is rendered                                                                                                                                      |
-| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen guides on using the template — ships, bar `TEMPLATE-GAPS.md`                                                                                                                                     |
+| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen guides on using the template — all of which ship                                                                                                                                                 |
 | `how-to/src/NIXOS-SETUP.md`        | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/                                                                                                                                               |
 
 ### Cross-layer references

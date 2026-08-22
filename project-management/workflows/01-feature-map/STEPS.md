@@ -84,7 +84,10 @@ where it diverged from the plan**. Map against that, not against intentions.
 
 > **Model:** fable
 
-Every open entry in `GAPS.md` and `DEFERRED.md` gets exactly one verdict:
+Every open entry in `GAPS.md` and `DEFERRED.md` gets exactly one verdict — **except a standing
+limitation**, which takes none of the three. `GAPS.md`'s `## Standing limitations` section holds
+accepted properties, closed as _accepted_ rather than _fixed_; they are read, never triaged, and
+never retired by a feature:
 
 | Verdict       | Meaning                                                 | Where it goes                              |
 | ------------- | ------------------------------------------------------- | ------------------------------------------ |

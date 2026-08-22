@@ -88,6 +88,12 @@ jobs:
       - name: A generated project must receive an empty project-memory store
         run: bash .github/scripts/shipped-memory.sh
 
+      - name: Prove the detector (self-test against polluted register seeds)
+        run: bash .github/scripts/shipped-registers.sh --self-test
+
+      - name: A generated project must receive empty standing registers
+        run: bash .github/scripts/shipped-registers.sh
+
   # POSITION, where [1/4] checks SHAPE. A token is inert in a comment and fatal in any
   # position a real parser validates, and the two cannot be told apart by reading text:
   # pnpm accepts <%PROJECT_SLUG%> in package.json's `name` — both manifests still carry
@@ -194,7 +200,7 @@ jobs:
                      .github/CODEOWNERS .github/ISSUE_TEMPLATE \
                      .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
                      .github/workflows/audit-template.yml \
-                     how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md .copier; do
+                     .copier; do
               if [ -e "$f" ]; then
                 echo "::error::INCLUDE_MOBILE=$mobile — $f leaked into the generated project"
                 status=1
@@ -226,6 +232,7 @@ jobs:
             cd "$RUNNER_TEMP/gen-$mobile"
             for f in README.md uv.lock .copier-answers.yml pyproject.toml \
                      VERSION VERSION-HISTORY.md CHANGELOG.md RELEASES.md \
+                     GAPS.md DEFERRED.md \
                      how-to/src/CONTRIBUTING.md .github/workflows/claude.yml \
                      how-to/src/TEMPLATE-TOKENS.md \
                      how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md \

@@ -26,16 +26,16 @@ Copier re-renders the old template version with your answers, diffs it against t
 and applies that diff to your working tree — so your own changes survive, and only genuine
 overlaps become conflicts.
 
-### Seven files an update can never touch
+### Nine files an update can never touch
 
-`README.md`, `VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, `.claude/MEMORY.md`
-and the scale-planning map are **excluded from the template and re-seeded** from a staging
-directory by a `_tasks` entry — and `_tasks` run on `copy` and never on `update`.
+`README.md`, `VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, `.claude/MEMORY.md`,
+`GAPS.md`, `DEFERRED.md` and the scale-planning map are **excluded from the template and
+re-seeded** from a staging directory by a `_tasks` entry — and `_tasks` run on `copy` and never on `update`.
 
 That is the whole mechanism, and it is deliberate: these are the files that **accumulate**. An
 update must never hand your project the template's release history, or replace two years of
-project memory with a blank canvas. Everything else in the tree is fair game for the merge; these
-seven are not reachable by it at all.
+project memory or accumulated gaps with a blank canvas. Everything else in the tree is fair game
+for the merge; these nine are not reachable by it at all.
 
 The corollary is that a **template improvement to any of them never reaches you either.** If a
 later release improves the shipped `MEMORY.md` headings, you copy the change across by hand or
