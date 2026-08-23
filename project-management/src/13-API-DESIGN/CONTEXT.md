@@ -40,8 +40,8 @@ permission matrix, error strategy, breaking changes, peer review, and cross-refe
 
 ## Relationship to other artefacts
 
-- Written **after** `src/04-DATABASE/` schema is agreed and **before** `src/15-SPRINT-PLANS/`
-- Feeds `workflows/19-api-code/` during implementation; verified in `workflows/22-pr-and-review/`
+- Written **after** `src/04-DATABASE/` schema is agreed and **before** `src/16-SPRINT-PLANS/`
+- Feeds `workflows/20-api-code/` during implementation; verified in `workflows/23-pr-and-review/`
 
 ## Cross-references
 

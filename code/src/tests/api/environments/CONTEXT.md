@@ -18,7 +18,7 @@ environments/
 ├── docker.bru        # Bruno env config (native .bru format) — Docker test stack
 ├── docker.json       # Docker test stack (http://django-test:8000) — CI default
 ├── local.bru         # Bruno env config (native .bru format) — local dev
-├── local.json        # Local dev (http://localhost:8000) — Bruno desktop app
+├── local.json        # Dev stack via nginx on :81 — Bruno desktop app
 ├── production.bru    # Bruno env config (native .bru format) — production
 ├── production.json   # Production environment variables
 ├── staging.bru       # Bruno env config (native .bru format) — staging

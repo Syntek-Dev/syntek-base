@@ -1,0 +1,39 @@
+{# Fixture template for static-analysis.sh --self-test. Never rendered. #} {# The same five shapes
+as broken/templates/page.html, done the way the guides ask. #} {# It must trip NOTHING: a rule that
+fires here is a false positive, and the #} {# self-test fails on it just as loudly as on a missed
+finding. #}
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <title>Fixture</title>
+  </head>
+  <body>
+    {# Auto-escaping left on, which is the XSS control rather than a formatting default #}
+    <p>{{ profile_bio }}</p>
+
+    {# Markup built with format_html() in the view, where each argument is still escaped #}
+    <p>{{ profile_bio_fragment }}</p>
+
+    {# Alpine reads its data from json_script, never from an interpolated attribute #} {{
+    user_name|json_script:"user-name-data" }}
+    <div x-data="{ name: JSON.parse(document.getElementById('user-name-data').textContent) }">
+      <span x-text="name"></span>
+    </div>
+
+    {# Rendered through x-text, which writes text rather than parsing markup #}
+    <div x-text="rendered_comment"></div>
+
+    {# The five Alpine directives that do NOT take a JavaScript expression, each carrying a server
+    value on purpose. Django escapes them and nothing evaluates them, so every one of these is
+    correct, and a rule matching every attribute except a named few has to stay silent on all five —
+    otherwise its wider coverage was bought with false positives. A finding here is a bug in the
+    rule, and the self-test fails on it as loudly as on a missed finding. #}
+    <span x-ref="{{ ref_name }}"></span>
+    <div x-transition:enter="{{ enter_classes }}"></div>
+    <template x-teleport="{{ modal_target }}"></template>
+    <div x-cloak x-ignore></div>
+
+    {# External script, so nothing is interpolated into a script body #}
+    <script src="{% static 'js/page.js' %}" defer></script>
+  </body>
+</html>

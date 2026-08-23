@@ -15,8 +15,8 @@ built (`IMPLEMENTATION/`), with rendered PNGs in `DIAGRAMS/`.
 ## How to work here
 
 - **Routing:** never author here free-hand. Stage 1 comes from `workflows/05-user-flow-design/`,
-  stage 2 from `workflows/17-consolidate-design-work/`, stage 3 from
-  `workflows/21-implementation-documentation/`.
+  stage 2 from `workflows/18-consolidate-design-work/`, stage 3 from
+  `workflows/22-implementation-documentation/`.
 - **Model:** Fable for mapping and for consolidation — journey design and gap-finding are
   substantive; Opus for mechanical touches (a rename, re-exporting a diagram, a stub edit).
 - **Concrete steps:** pick the stage → copy that folder's template → write the narrative
@@ -50,7 +50,7 @@ built (`IMPLEMENTATION/`), with rendered PNGs in `DIAGRAMS/`.
 - **Hand-written:** every flow narrative, consolidation, and record, from its stage template.
 - **Templates:** `USER-FLOW-IDEA-US000-TEMPLATE.md`, `USER-FLOW-CONSOLIDATED-000-TEMPLATE.md`,
   `USER-FLOW-IMPL-US000-TEMPLATE.md` — the copy sources; do not delete or repurpose.
-- **Generated (never hand-edit):** the PNGs under `DIAGRAMS/` — exported from Mermaid/Figma.
+- **Generated (never hand-edit):** the PNGs under `DIAGRAMS/` — exported from Mermaid.
 - `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md` · `USER-FLOW-CONSOLIDATED-<AREA>.md` ·
   `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; diagrams `flow-<area>-<screen>.png`;
   stories `US###`; dates DD/MM/YYYY.

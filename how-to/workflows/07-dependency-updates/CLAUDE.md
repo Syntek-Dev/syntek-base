@@ -14,7 +14,7 @@ resolving the advisories the nightly sweep reports.
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Execution
   → `cicd` (Opus); a load-bearing choice is grilled and recorded as an ADR via
-  `project-management/workflows/14-decisions/` (Fable).
+  `project-management/workflows/15-decisions/` (Fable).
 - **Model:** Opus for the change and verification; Fable for the ADR.
 - **Concrete steps:** justify → edit manifest and refresh lockfile → reinstall and rebuild
   → run the full gate → commit manifest and lockfile together.
@@ -30,13 +30,14 @@ resolving the advisories the nightly sweep reports.
 - **Pin advisories via `overrides`; never loosen a range** to make an audit pass.
 - **Toolchain pins are a matched set** — `.nvmrc`, `.python-version`, `package.json`, and
   workflow `env:` blocks move together, or CI fails alone.
-- **In this template `uv.lock` is absent by design** and must not be committed here;
-  Copier generates it at generation time.
+- **In this template `uv.lock` is committed** (16/08/2026) and is refreshed here like any
+  other lockfile. It pins `syntek-base`, so `copier.yml` excludes it and a generated project <!-- doc-references: template-only -->
+  locks its own at generation.
 - Editing these workflow `.md` files: keep each **≤ 300 code lines**.
 
 ## Output & naming
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`, `CONTEXT.md` — the workflow itself.
 - **Produced by following it:** manifest and lockfile changes, committed together in a
-  commit of their own; optionally an ADR under `project-management/src/14-DECISIONS/`.
+  commit of their own; optionally an ADR under `project-management/src/15-DECISIONS/`.
 - Numeric `NN-` folder prefix; documentation `SCREAMING-SNAKE-CASE.md`.

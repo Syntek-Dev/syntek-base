@@ -16,7 +16,7 @@ a story's API surface from design into implemented, permission-checked endpoints
 
 - **Routing:** never write here free-hand — `PLANNING/` designs come from
   `workflows/13-api-design/` (after `src/04-DATABASE/` schema is agreed, before
-  `src/15-SPRINT-PLANS/`); `IMPLEMENTATION/` verifications from `workflows/22-pr-and-review/`.
+  `src/16-SPRINT-PLANS/`); `IMPLEMENTATION/` verifications from `workflows/23-pr-and-review/`.
   The contract is written against `code/docs/API-DESIGN.md` (Django Ninja conventions); use
   the `planner` skill for the heavier design work.
 - **Model:** Fable for the design documents (they define the shared interface); Opus only
@@ -24,7 +24,7 @@ a story's API surface from design into implemented, permission-checked endpoints
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to
   `API-<PLAN|IMPL>-US###-<DESCRIPTOR>.md` → complete the 10-step contract (or verify it
   against the shipped endpoints) → cross-link the `US###` and the paired design/verification
-  → satisfy the workflow `CHECKLIST.md`. The design feeds `workflows/19-api-code/`.
+  → satisfy the workflow `CHECKLIST.md`. The design feeds `workflows/20-api-code/`.
 - **Definition of done:** contract complete and named to convention; a permission matrix
   present for every endpoint; consistent with `code/docs/API-DESIGN.md`; British English.
 

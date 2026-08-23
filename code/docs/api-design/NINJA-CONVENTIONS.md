@@ -70,11 +70,20 @@ class OrderOut(OutSchema):  # adding a field later stays backwards-compatible
 document, which tightens the contract for any generated client. Nothing generates one today
 (`./API-DOCS.md`), so this is a property to know about rather than a migration to plan.
 
-### Every backend module must have an `api.py`
+### Every backend module with an HTTP surface has an `api.py`
 
-Every `apps/<name>/` module exports an `api.py` at the package root — the single assembly point for
-that module's HTTP surface. It defines a `Router`, its endpoints, and the request/response schemas
-(or imports them from `schemas.py` when the file grows).
+An `apps/<name>/` module that serves HTTP exports an `api.py` at the package root — the single
+assembly point for that module's HTTP surface.
+
+> **Qualified 23/08/2026.** This read _"every `apps/<name>/` module
+> exports an `api.py`"_, in unqualified present tense, while **no `api.py` exists anywhere in the
+> tree** and `find code/src/django -name api.py` is empty. Both shipped apps decline it and are
+> right to: `apps.core` has no HTTP surface at all, and `apps.health` serves plain Django views at
+> the root by design. `new-django-app.sh` therefore does **not** emit one — an empty router in an
+> app with no endpoints is a file this convention would then have to defend — and the first
+> endpoint in an app writes it. What the scaffold does emit is `services/`, `schemas/` and
+> `tests/`, which is the rest of the layout `../../src/django/apps/CONTEXT.md` names. It defines a `Router`, its endpoints, and the request/response schemas
+> (or imports them from `schemas.py` when the file grows).
 
 **Required contents of `api.py`:**
 
@@ -331,5 +340,3 @@ the endpoint type hints and `Schema` models, so the schema always tracks the cod
 - Publish versioned API documentation separately from the live docs page.
 
 _Part of the `code/docs/` documentation family. See [`../API-DESIGN.md`](../API-DESIGN.md) for the full index._
-</content>
-</invoke>

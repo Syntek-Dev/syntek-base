@@ -72,8 +72,9 @@ Place every interaction by class, not by habit (full doctrine: `code/docs/RENDER
 ## Guardrails
 
 - **Token-first CSS.** Component and page CSS consume `var(--token)` only — never a raw hex,
-  px or rem literal. New values enter through the `/admin/design-tokens` editor or a migration,
-  and the var must resolve in the token layer. Verify: `audits/css-tokens.sh`.
+  px or rem literal. A missing value is added to the token layer, never written as a literal,
+  and the var must resolve there — how the token layer is defined and where values enter is
+  `code/docs/DESIGN-TOKENS.md`. Verify: `audits/css-tokens.sh`.
 - **Gradients are tokens, never inline.** No raw `linear-`/`radial-`/`conic-gradient(…)` in
   component or page CSS — a generic inline ramp (blue→purple above all) is the AI-look tell.
   A functional gradient (shimmer, mask) stays inline only with a `gradient-allow` annotation.
@@ -128,15 +129,20 @@ change with no behaviour change.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/20-frontend-code/` — the frontend build phase
+- `project-management/workflows/21-frontend-code/` — the frontend build phase
 - `project-management/workflows/07-component-designs/` — the component designs consumed here
 - `project-management/workflows/08-wireframes/` — the wireframes consumed here
-- `code/workflows/01-new-feature/` — the full-stack feature procedure
+- `code/workflows/01-implement-story/` — the full-stack feature procedure
 - `code/workflows/02-tdd-cycle/` — template, component and HTMX-partial tests
 
 ## Cross-references
 
 - `code/docs/RENDERING.md` — where each interaction runs; the doctrine above in full
+- `code/docs/data-structures/TYPES-BROWSER.md` — both sides of an HTMX exchange are domain types:
+  a view-model out (never a context dict assembled inline in the handler), a request type in, and
+  swap targets, event names and `HX-*` values as shared constants. Also the `Alpine.data`
+  registration threshold — past one property or any method, the component leaves `x-data`. It
+  **supersedes** the inline `x-data` and bare `"itemSaved"` examples in `code/docs/rendering/`
 - `code/docs/DESIGN-TOKENS.md` — the token catalogue and the `var(--token)`-only contract
 - `code/docs/FRONTEND-CODING-PRINCIPLES.md` — component placement, grounding in the live code,
   the legal footer as data, and the single-component-system rule
@@ -145,4 +151,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/ACCESSIBILITY.md` · `code/docs/RESPONSIVE-DESIGN.md` — the two standards floors
 - `how-to/src/BRAND-VOICE.md` — the voice every user-facing string is written in
 - `code/docs/URL-STRATEGY.md` — `/admin/` is this project's admin, never Django contrib's
-- `code/src/django/apps/marketing/CONTEXT.md` · `code/src/django/components/CONTEXT.md`
+- `code/docs/architecture/FRONTEND-PATTERNS.md` — where a page's modules sit inside a Django app
+- `project-management/docs/RESPONSIVE-DESIGN.md` — a redirect stub; the content is the `code/docs/` one above

@@ -116,3 +116,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/DESIGN-TOKENS.md` — the token layer a new stylesheet consumes
 - `how-to/docs/DEVELOPMENT.md` — the dev environment the scripts drive
 - `code/src/scripts/CONTEXT.md` — the scripts, and the conventions they share
+- `how-to/docs/CLI-TOOLING.md` — the command surface a new script joins
+- `how-to/docs/TOOLING-GUIDE.md` — the human index of what to type, and which skill answers it

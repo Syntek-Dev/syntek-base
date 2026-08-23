@@ -33,7 +33,7 @@ other dependency declared but unwired.
 ## Guardrails
 
 - **Anything re-added to `INSTALLED_APPS` or `MIDDLEWARE` is a deliberate choice** — the
-  baseline carries `django.contrib.*` plus `apps.core`, and Django's default middleware plus
+  baseline carries `django.contrib.*` plus `apps.core` and `apps.health`, and Django's default middleware plus
   `RequestIDMiddleware`. Nothing third-party is registered. Add a dependency when the feature
   needs it, not in anticipation.
 - **`AUTH_USER_MODEL` is Django's `auth.User`.** Swapping to a custom model after the

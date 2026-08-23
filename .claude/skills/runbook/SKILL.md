@@ -84,7 +84,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/workflows/01-first-time-setup/` · `how-to/workflows/03-daily-development/` ·
   `how-to/workflows/08-debugging/` — the procedures most often documented against
 - `code/workflows/07-review/` — when the guide documents code-level standards as well
-- `project-management/workflows/21-implementation-documentation/` — owns implementation
+- `project-management/workflows/22-implementation-documentation/` — owns implementation
   records; a guide is not one
 
 ## Cross-references
@@ -93,3 +93,5 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/docs/SKILL-AUTHORING.md` — the sibling standard, for skills rather than guides
 - `.claude/skills/global-workflow/` — British English, Markdown style, commit conventions
 - `code/src/scripts/CONTEXT.md` — the scripts a guide is allowed to cite
+- `how-to/docs/INCIDENT-PRACTICE.md` — the worked example of a guide a human executes under pressure
+- `how-to/docs/HEALTH-PROBES.md` — a runbook written to this standard and proven by executing it; its Failure modes section is what execute-to-verify produces

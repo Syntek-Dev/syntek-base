@@ -6,7 +6,7 @@
 # immediately unless a source story or a generated client file is staged.
 #
 # Behaviour when triggered:
-#   1. Regenerate every US###-CLIENT.md from the source stories in 01-STORIES/.
+#   1. Regenerate every US###-CLIENT.md from the source stories in 02-STORIES/.
 #   2. Re-stage the regenerated files.
 # Any hand-edit to a generated file is therefore overwritten by canonical output
 # before it can be committed — the source story is the only way to change them.
@@ -22,7 +22,7 @@ staged="$(git diff --cached --name-only --diff-filter=ACM || true)"
 
 # Trigger only when a source story or a generated client file is part of the commit.
 relevant="$(printf '%s\n' "$staged" | grep -E \
-  '^project-management/(src/01-STORIES/US[0-9]+\.md|export/clickup/US[0-9]+-CLIENT\.md)$' || true)"
+  '^project-management/(src/02-STORIES/US[0-9]+\.md|export/clickup/US[0-9]+-CLIENT\.md)$' || true)"
 
 [[ -z "$relevant" ]] && exit 0
 
@@ -32,4 +32,4 @@ bash "$GEN" >/dev/null
 cd "$ROOT"
 git add -- project-management/export/clickup/*-CLIENT.md 2>/dev/null || true
 
-echo "clickup: regenerated client exports from source stories (generated files are read-only — edit 01-STORIES/ to change them)"
+echo "clickup: regenerated client exports from source stories (generated files are read-only — edit 02-STORIES/ to change them)"

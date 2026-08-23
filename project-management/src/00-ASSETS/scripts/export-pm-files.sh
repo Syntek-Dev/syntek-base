@@ -4,16 +4,16 @@
 # Usage: bash export-pm-files.sh [--type TYPE] [OUTPUT_NAME] [--help]
 #
 #   --type TYPE  Document type to export. Omit to export ALL types at once.
-#                  stories      User stories (US*.md) — 01-STORIES, numeric sort
-#                  sprints      Sprint summaries — 02-SPRINTS, numeric sort
-#                  database     Schema, ERDs, migrations — 03-DATABASE
-#                  user-flow    User flow diagrams & docs — 04-USER-FLOW
-#                  gdpr         GDPR compliance docs — 08-GDPR
-#                  security     Threat models, audits, assessments — 09-SECURITY
-#                  qa           QA reports and test plans — 10-QA
-#                  seo          SEO reports and planning — 11-SEO
-#                  api-design   API design specs — 12-API-DESIGN
-#                  sprint-plans Sprint planning docs — 14-SPRINT-PLANS
+#                  stories      User stories (US*.md) — 02-STORIES, numeric sort
+#                  sprints      Sprint summaries — 03-SPRINTS, numeric sort
+#                  database     Schema, ERDs, migrations — 04-DATABASE
+#                  user-flow    User flow diagrams & docs — 05-USER-FLOW
+#                  gdpr         GDPR compliance docs — 09-GDPR
+#                  security     Threat models, audits, assessments — 10-SECURITY
+#                  qa           QA reports and test plans — 11-QA
+#                  seo          SEO reports and planning — 12-SEO
+#                  api-design   API design specs — 13-API-DESIGN
+#                  sprint-plans Sprint planning docs — 16-SPRINT-PLANS
 #
 #   OUTPUT_NAME  Optional filename (with or without .pdf extension).
 #                Saved into project-management/export/.
@@ -65,16 +65,16 @@ while [[ $# -gt 0 ]]; do
       echo ""
       echo "  --type TYPE  Document type to export"
       printf "    %-14s %s\n" \
-        "stories"      "User stories (US*.md) — 01-STORIES, numeric sort" \
-        "sprints"      "Sprint summaries — 02-SPRINTS, numeric sort" \
-        "database"     "Schema, ERDs, migrations — 03-DATABASE" \
-        "user-flow"    "User flow diagrams & docs — 04-USER-FLOW" \
-        "gdpr"         "GDPR compliance docs — 08-GDPR" \
-        "security"     "Threat models, audits, assessments — 09-SECURITY" \
-        "qa"           "QA reports and test plans — 10-QA" \
-        "seo"          "SEO reports and planning — 11-SEO" \
-        "api-design"   "API design specs — 12-API-DESIGN" \
-        "sprint-plans"    "Sprint planning docs — 14-SPRINT-PLANS" \
+        "stories"      "User stories (US*.md) — 02-STORIES, numeric sort" \
+        "sprints"      "Sprint summaries — 03-SPRINTS, numeric sort" \
+        "database"     "Schema, ERDs, migrations — 04-DATABASE" \
+        "user-flow"    "User flow diagrams & docs — 05-USER-FLOW" \
+        "gdpr"         "GDPR compliance docs — 09-GDPR" \
+        "security"     "Threat models, audits, assessments — 10-SECURITY" \
+        "qa"           "QA reports and test plans — 11-QA" \
+        "seo"          "SEO reports and planning — 12-SEO" \
+        "api-design"   "API design specs — 13-API-DESIGN" \
+        "sprint-plans"    "Sprint planning docs — 16-SPRINT-PLANS" \
         "client-approval" "Stories + user flows stripped to client-readable content"
       echo ""
       echo "  OUTPUT_NAME  Saved into project-management/export/."
@@ -142,70 +142,70 @@ fi
 
 case "$DOC_TYPE" in
   stories)
-    SRC_DIR="$PM_SRC/01-STORIES"
+    SRC_DIR="$PM_SRC/02-STORIES"
     SORT_TYPE="numeric-us"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="USER-STORIES"
     DOC_TITLE="<%PROJECT_NAME%> — User Stories"
     ;;
   sprints)
-    SRC_DIR="$PM_SRC/02-SPRINTS"
+    SRC_DIR="$PM_SRC/03-SPRINTS"
     SORT_TYPE="numeric-sprint"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SPRINTS"
     DOC_TITLE="<%PROJECT_NAME%> — Sprints"
     ;;
   database)
-    SRC_DIR="$PM_SRC/03-DATABASE"
+    SRC_DIR="$PM_SRC/04-DATABASE"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="DATABASE"
     DOC_TITLE="<%PROJECT_NAME%> — Database"
     ;;
   user-flow)
-    SRC_DIR="$PM_SRC/04-USER-FLOW"
+    SRC_DIR="$PM_SRC/05-USER-FLOW"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="USER-FLOWS"
     DOC_TITLE="<%PROJECT_NAME%> — User Flows"
     ;;
   gdpr)
-    SRC_DIR="$PM_SRC/08-GDPR"
+    SRC_DIR="$PM_SRC/09-GDPR"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="GDPR"
     DOC_TITLE="<%PROJECT_NAME%> — GDPR"
     ;;
   security)
-    SRC_DIR="$PM_SRC/09-SECURITY"
+    SRC_DIR="$PM_SRC/10-SECURITY"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SECURITY"
     DOC_TITLE="<%PROJECT_NAME%> — Security"
     ;;
   qa)
-    SRC_DIR="$PM_SRC/10-QA"
+    SRC_DIR="$PM_SRC/11-QA"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="QA"
     DOC_TITLE="<%PROJECT_NAME%> — QA"
     ;;
   seo)
-    SRC_DIR="$PM_SRC/11-SEO"
+    SRC_DIR="$PM_SRC/12-SEO"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SEO"
     DOC_TITLE="<%PROJECT_NAME%> — SEO"
     ;;
   api-design)
-    SRC_DIR="$PM_SRC/12-API-DESIGN"
+    SRC_DIR="$PM_SRC/13-API-DESIGN"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="API-DESIGN"
     DOC_TITLE="<%PROJECT_NAME%> — API Design"
     ;;
   sprint-plans)
-    SRC_DIR="$PM_SRC/14-SPRINT-PLANS"
+    SRC_DIR="$PM_SRC/16-SPRINT-PLANS"
     SORT_TYPE="alpha"
     EXCLUDE_NAMES="CONTEXT.md"
     DEFAULT_NAME="SPRINT-PLANS"
@@ -244,8 +244,8 @@ done
 # ── Preflight ─────────────────────────────────────────────────────────────────
 
 if [[ "$DOC_TYPE" == "client-approval" ]]; then
-  _s=$(find "$PM_SRC/01-STORIES" -name "US[0-9]*.md" 2>/dev/null | wc -l)
-  _f=$(find "$PM_SRC/04-USER-FLOW" -name "USER-FLOW-*.md" 2>/dev/null | wc -l)
+  _s=$(find "$PM_SRC/02-STORIES" -name "US[0-9]*.md" 2>/dev/null | wc -l)
+  _f=$(find "$PM_SRC/05-USER-FLOW" -name "USER-FLOW-*.md" 2>/dev/null | wc -l)
   file_count=$((_s + _f))
 else
   file_count=$(find "$SRC_DIR" -name "*.md" ! -name "CONTEXT.md" 2>/dev/null | wc -l)
@@ -255,7 +255,7 @@ fi
 bold "Preflight checks …"
 log "Type    : $DOC_TYPE"
 if [[ "$DOC_TYPE" == "client-approval" ]]; then
-  log "Source  : 01-STORIES + 04-USER-FLOW"
+  log "Source  : 02-STORIES + 05-USER-FLOW"
 else
   log "Source  : $SRC_DIR"
 fi
@@ -542,13 +542,13 @@ elif sort_type == 'numeric-sprint':
 elif sort_type == 'client-approval':
     stories = sorted(
         [f for f in all_files
-         if '01-STORIES' in str(f)
+         if '02-STORIES' in str(f)
          and re.search(r'US(\d+)', f.name)
          and int(re.search(r'US(\d+)', f.name).group(1)) > 0],
         key=lambda f: int(re.search(r'US(\d+)', f.name).group(1))
     )
     flows = sorted(
-        [f for f in all_files if '04-USER-FLOW' in str(f)],
+        [f for f in all_files if '05-USER-FLOW' in str(f)],
         key=lambda f: f.name.lower()
     )
     md_files = stories + flows
@@ -567,7 +567,7 @@ for md_file in md_files:
         raw = fh.read()
     raw = re.sub(r'<!--.*?-->', '', raw, flags=re.DOTALL)
     if sort_type == 'client-approval':
-        if '01-STORIES' in str(md_file):
+        if '02-STORIES' in str(md_file):
             raw = extract_story_for_client(raw)
         else:
             raw = extract_flow_for_client(raw)

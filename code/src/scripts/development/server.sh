@@ -30,6 +30,7 @@ server.sh — Manage the development Docker Compose stack
 
 Usage:
   server.sh up       Start all services (or a single service)
+  server.sh stop     Stop services without removing them (or a single service)
   server.sh down     Stop and remove containers
   server.sh restart  Restart all services (or a single service)
   server.sh build    Build or rebuild service images
@@ -45,8 +46,13 @@ Options (down):
   --volumes          Also remove named volumes (wipes database data)
   --clean-hosts [N]  Remove /etc/hosts entries for story N (defaults to current us### branch)
 
-Options (restart, build):
+Options (stop, restart, build):
   --service SERVICE  Target a single service
+
+`stop` is what `down` is not: it leaves the containers and the network in place, so a single
+dependency can be taken away and given back. That is the only way to rehearse a degraded or
+down readiness probe through this script — `restart` returns the service faster than any
+probe interval, so the outage is never observed (how-to/docs/HEALTH-PROBES.md).
 
 Exit codes:  0 = success   1 = command failed   2 = script error
 EOF
@@ -59,7 +65,7 @@ COMMAND="${1:-}"
 shift || true
 
 case "$COMMAND" in
-  up|down|restart|build|status) ;;
+  up|stop|down|restart|build|status) ;;
   --help|-h) usage; exit 0 ;;
   "")        die "No command given. Use --help for usage." ;;
   *)         die "Unknown command '$COMMAND'. Use --help for usage." ;;
@@ -96,6 +102,8 @@ cd "$PROJECT_ROOT"
 # Auto-detect worktree: if branch is us###/*, apply matching compose override.
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 
 # Base docker compose command with env file — all subcommands use this array.
 DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
@@ -108,13 +116,18 @@ DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
 # Runs only when the full stack is started (no --service flag).
 _sync_db_password() {
   [[ -n "$SERVICE" ]] && return 0
-  # shellcheck source=/dev/null
-  set -a; source "$ENV_FILE"; set +a
-  local db_user="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
-  [[ -z "${POSTGRES_PASSWORD:-}" ]] && return 0
+  # Parsed, not sourced. `set -a; source` handed the file to bash, which aborts on the
+  # first value carrying a shell metacharacter — under `set -euo pipefail` that killed
+  # `server.sh up` at exit 2 with the stack already running, so this re-sync never ran and
+  # the URL banner below never printed. See _lib/env-file.sh.
+  local db_user db_password
+  db_user="$(env_value POSTGRES_USER "$ENV_FILE")"
+  db_password="$(env_value POSTGRES_PASSWORD "$ENV_FILE")"
+  [[ -z "$db_user" ]] && db_user="<%PROJECT_SLUG%>"
+  [[ -z "$db_password" ]] && return 0
   # Password is piped to psql stdin — never appears in the process list.
   printf 'ALTER USER "%s" WITH PASSWORD '"'"'%s'"'"';\n' \
-    "$db_user" "$POSTGRES_PASSWORD" \
+    "$db_user" "$db_password" \
     | "${DC[@]}" exec -T db psql -U "$db_user" -d postgres > /dev/null 2>&1 \
     || log "  ⚠  Could not sync DB password (DB not ready — safe to ignore on first build)."
 }
@@ -141,9 +154,13 @@ case "$COMMAND" in
     # registers Django's admin at /control/ and nothing else; the marketing, portal,
     # and API prefixes appear here as the apps that serve them are built.
     if [[ -n "$OVERRIDE_DEV_FILE" ]]; then
-      # Worktree stacks isolate by host IP (127.0.0.<story>) — see
-      # docker-compose.us<NNN>.dev.yml for the port that override publishes.
-      _host="dev-us${WORKTREE_US_NUM}.<%PROJECT_SLUG%>.localhost"
+      # Worktree stacks isolate by host IP (127.0.0.<story>) AND by port: the per-story
+      # override publishes "127.0.0.NNN:3080:80" (test: 3081), so the port belongs in the
+      # URL exactly as it does for the main stack below. It was omitted until 23/08/2026,
+      # which made this line print an unreachable address — nothing serves port 80 on that
+      # IP — while `.claude/CLAUDE.md` Section 7 names this script as the one place a URL
+      # may be read from rather than remembered.
+      _host="dev-us${WORKTREE_US_NUM}.<%PROJECT_SLUG%>.localhost:3080"
     else
       # Host 81, not 80 — a local router (e.g. DDEV) commonly holds 127.0.0.1:80.
       _host="dev.<%PROJECT_SLUG%>.localhost:81"
@@ -172,6 +189,20 @@ case "$COMMAND" in
       fi
       unset _hosts_num
     fi
+    ;;
+
+  stop)
+    bold "▸ server.sh stop"
+    log ""
+    if [[ -n "$SERVICE" ]]; then
+      "${DC[@]}" stop "$SERVICE"
+    else
+      "${DC[@]}" stop
+    fi
+    log ""
+    bold "✓ Stopped${SERVICE:+ $SERVICE}."
+    log "  Containers and network are intact — bring it back with:"
+    log "    bash code/src/scripts/development/server.sh up${SERVICE:+ --service $SERVICE}"
     ;;
 
   restart)

@@ -37,8 +37,18 @@ worktree the scripts resolve a _different_ Compose project — that is the point
 
 ```bash
 bash code/src/scripts/development/server.sh status
-bash code/src/scripts/database/shell.sh --command "SELECT current_database();"
+bash code/src/scripts/database/shell.sh --psql
 ```
+
+`shell.sh --psql` prints `▸ shell.sh — psql (<user> @ <database>)` before it hands you the
+session — read that line, then `\q`. **It takes no query flag**, but it is not interactive-only:
+`echo 'SELECT current_database();' | bash code/src/scripts/database/shell.sh --psql` pipes the
+statement in, prints the answer and exits 0 — the same check without a session to leave.
+
+You do not have to rely on it. Every script that can destroy data names its target first:
+`backup.sh` banners `▸ backup.sh — <database> → <path>`, and `restore.sh` and `reset.sh` both
+print `⚠ This will PERMANENTLY DELETE all data in '<database>'` **above** their confirmation
+prompt. Read the name in that prompt; it is the last check before the operation.
 
 If the stack is not running, start it (`server.sh up`) — every script below runs inside the
 container and will fail fast otherwise.
@@ -92,7 +102,12 @@ bash code/src/scripts/database/seed-dev.sh
 ```bash
 bash code/src/scripts/database/manageusers.sh create-superuser
 bash code/src/scripts/database/manageusers.sh create-staff --email <e> --username <u>
+bash code/src/scripts/database/manageusers.sh promote --email <e> [--superuser]
 ```
+
+`create-superuser` is interactive by design. `create-staff` prompts for the password unless
+`--password` is passed; `promote` grants staff to an existing user, and `--superuser` grants
+both.
 
 Answer the confirmation prompt by hand. **Do not reach for `--yes`** — it exists so CI can
 run unattended, and using it interactively removes the one check standing between a typo
@@ -108,8 +123,8 @@ Never assume the operation did what it said:
 
 ```bash
 bash code/src/scripts/database/migrate.sh check          # no unapplied migrations
-bash code/src/scripts/database/verify-db-security.sh     # config + log_statement
-bash code/src/scripts/database/shell.sh                  # spot-check the data
+bash code/src/scripts/database/verify-db-security.sh     # Django system check + log_statement
+bash code/src/scripts/database/shell.sh --psql           # spot-check the data
 ```
 
 After a restore or reset, run the test suite before trusting the environment:
@@ -130,3 +145,20 @@ After a restore or reset, run the test suite before trusting the environment:
   tidy-up: follow `project-management/docs/SECURITY-GUIDE.md`.
 - If the operation revealed a schema problem rather than a data problem, stop here and
   enter `code/workflows/03-database-migration/`.
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
+
+---
+
+## Completion
+
+Run through `CHECKLIST.md` before marking this workflow complete.

@@ -22,7 +22,9 @@ set).
 
 > **Read `project-management/docs/VERSIONING-GUIDE.md` first, every time.** It is canonical for
 > the increment rules, the public-API declaration those rules rest on, the full file list, and
-> the two-tier strategy. This skill executes it and **decides**; it does not restate it.
+> the two-tier strategy. This skill **decides** the increment and **executes** that file list —
+> the order below is the guide's list made executable, not a second copy of it, so a file added
+> there is added here in the same change.
 
 **You stage. You never commit and never tag** — that is `git`'s.
 
@@ -50,7 +52,7 @@ before classifying anything as breaking; a bump made without it is a guess weari
 
 **A commit carrying a breaking change is MAJOR whatever its type** — a `fix!:` that removes a
 field is a MAJOR, and `feat` alone never implies MINOR. The signalling convention is
-`project-management/docs/GIT-GUIDE.md`'s.
+`project-management/docs/git/COMMITS.md`'s.
 
 **Then ask whether a sub-package moved.** Each deployable carries its own independent semver and
 is bumped **only when its own code changed**. Never move a sub-package as a side-effect of a
@@ -82,9 +84,16 @@ summary>` in Conventional-Commit style. The developer-facing log.
    populated after a release.
 4. **`RELEASES.md`** — a `## vX.Y.Z — DD/MM/YYYY` block in plain user-facing language: what it
    means for someone using this, not what changed internally.
-5. **Headers** — refresh `**Version**` and `**Last Updated**` on the `.md` files the change
+5. **`README.md`** — the version badge and the footer line.
+6. **`CONTEXT.md`** — the version in the repo-state line.
+7. **Headers** — refresh `**Version**` and `**Last Updated**` on the `.md` files the change
    touched. Never expand a file past the 300-line limit while editing its header.
-6. **Stage** — then hand to `git`.
+8. **Stage** — then hand to `git`.
+
+**Steps 1 to 6 are the guide's root file list, in execution order.** The list was short by two,
+and the omission is not theoretical: `README.md`'s badge sat eight releases behind while every
+other root file was current. **Never a sub-package manifest on a root bump** — `pyproject.toml` and
+`code/src/mobile/package.json` carry independent versions and move only when their own code does.
 
 **Mobile carries its version in two files** — `package.json` (`version`) and `app.json`
 (`expo.version`) — which must hold the identical string and move in the same edit. **Bumping
@@ -131,12 +140,12 @@ still owed, and `review` where the version set should be independently checked.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/23-release/` — the release procedure that calls this
+- `project-management/workflows/24-release/` — the release procedure that calls this
 
 ## Cross-references
 
 - `project-management/docs/VERSIONING-GUIDE.md` — **canonical**: the rules, the public-API
   declaration, the file list, the two-tier strategy, pre-release and precedence
-- `project-management/docs/GIT-GUIDE.md` — how a breaking change is signalled in the commit
+- `project-management/docs/git/COMMITS.md` — how a breaking change is signalled in the commit
 - `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — the documentation standards alongside
 - `.claude/plugins/git-tool.py` · `.claude/plugins/project-tool.py` — read-only state

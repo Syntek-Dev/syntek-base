@@ -133,7 +133,8 @@ This repository holds documentation to the same standard as code:
 pnpm lint:md                                        # markdownlint across every .md
 bash code/src/scripts/syntax/lint.sh                # ruff + markdownlint
 bash code/src/scripts/syntax/format.sh              # prettier + ruff format (dry run; --fix to apply)
-bash .github/scripts/check-template-tokens.sh       # token integrity — run after any Markdown format
+bash .github/scripts/check-template-tokens.sh       # token SHAPE — run after any Markdown format
+bash .github/scripts/check-template-parsers.sh      # token POSITION — every manifest must still parse
 ```
 
 > **Why that last check matters.** Token names contain underscores, and Prettier's Markdown
@@ -145,6 +146,15 @@ bash .github/scripts/check-template-tokens.sh       # token integrity — run af
 > The script also catches tokens that are not registered questions in `copier.yml` (they render
 > to nothing) and unclosed `<%` delimiters (they kill generation outright). CI runs it on every
 > pull request.
+>
+> **The second script is the other half, and it is not a text check.** A token is inert in a
+> comment and fatal in any position a parser validates as a name — the delimiters `<`, `%` and
+> `>` are not legal in one. Those two cases look identical to a grep, and are not even
+> consistent between tools: pnpm accepts `<%PROJECT_SLUG%>` in `package.json`'s `name` while uv
+> rejects it in `pyproject.toml`'s. So rather than guess, `check-template-parsers.sh` runs each
+> toolchain's own parser — `uv`, `cargo`, `pnpm`, `docker compose` — and requires every manifest
+> to load **in the template**. A file that only parses after generation takes its gates down
+> with it, and nobody looks there. Rule: `how-to/src/TEMPLATE-TOKENS.md`.
 
 All developer operations go through the scripts in `code/src/scripts/` — never raw `python`,
 `pytest`, `pnpm`, `uv` or `docker`.
@@ -202,27 +212,52 @@ existing project has to be carried across the break rather than left on the old 
 
 ## What CI will run against you
 
-`main` is protected. A pull request is required, and these checks must pass before it can merge:
+`main` is protected. A pull request is required, and a set of status checks must pass before it
+can merge. **That set's membership lives in branch protection and is not copied here** — a list
+written twice drifts once, and this one had drifted. Read the live set with the `gh api` block in
+`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → _Changing the set_, which also holds
+the criteria a job must meet to join it.
 
-| Check                       | What it enforces                                                                                                                               |
-| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `[1/8] Line Count`          | no source file over 800 lines                                                                                                                  |
-| `[2/8] Lockfile Alignment`  | `uv.lock` and `pnpm-lock.yaml` match their manifests                                                                                           |
-| `[3/8] Format`              | ruff format + Prettier                                                                                                                         |
-| `[4/8] Lint`                | ruff + ESLint                                                                                                                                  |
-| `[5/8] Stub Audit`          | no `NotImplementedError`, `TODO`, `FIXME`, `HACK`                                                                                              |
-| `[6/8] Type-check`          | basedpyright                                                                                                                                   |
-| `[7/8] Tests`               | pytest                                                                                                                                         |
-| `[8/8] Security`            | static security audit                                                                                                                          |
-| `TruffleHog — Secrets Scan` | no credentials committed                                                                                                                       |
-| `[1/2] Template Tokens`     | no mangled, unregistered or unclosed tokens                                                                                                    |
-| `[2/2] Template Generation` | a project actually generates from your branch, with zero surviving tokens, no template-only file leaking, and `${{ }}` / `[[ ]]` syntax intact |
+Broadly, expect: the `[n/8]` gates in `claude.yml` (line count, lockfile alignment, format, lint,
+stubs, types, tests, security), the secrets scan, the language and Markdown syntax workflows, and
+the template-integrity jobs that generate a whole project from your branch.
 
 Conversations on the PR must be resolved before merge. Force-pushes and branch deletion on `main`
 are blocked.
 
-Other workflows (Markdown lint, CSS token audits, e2e tests) run only when relevant paths change,
-so they are advisory rather than blocking — but a failure in one is still a failure. Fix it.
+Path-filtered audits — the CSS token and slop family, e2e tests — run only when their own inputs
+change and cannot block a merge. An **unfiltered** audit is a different case and may well be
+required, so do not read "audit" as "advisory" — check the live set. Either way a failure is a
+failure. Fix it.
+
+---
+
+## Standing upstream obligations
+
+This template pins upstream technologies on behalf of every project generated from it, so some
+tracking is **the template's job, not the generated project's**. These obligations bind whoever
+maintains this repository. They are recorded here, and not in the template's own documentation
+tree, because this file is copier-excluded and never reaches a generated project — an obligation
+that shipped downstream would be describing work its reader does not own.
+
+| Upstream     | Obligation                                                           | Trigger                           |
+| ------------ | -------------------------------------------------------------------- | --------------------------------- |
+| **Expo SDK** | Follow every SDK release and cut a versioned template release for it | **Every SDK release, on release** |
+
+**Expo, in full.** Expo ships roughly three SDK releases a year. The template tracks each one and
+cuts a release for it **immediately** — not after waiting for the ecosystem to catch up. Waiting
+would be a per-technology judgement about readiness, and this template pins around twenty upstream
+technologies; a rule that needs a judgement call per release is a rule nobody applies. Downstream
+projects are protected by the other half of the split rather than by the delay: they adopt on
+their own trigger, the first build that ships to a store, and
+[`code/src/mobile/CLAUDE.md`](code/src/mobile/CLAUDE.md) owns that half.
+
+> **This table is a floor, not the register.** Expo is one of about twenty pinned upstream
+> technologies, and it is the only one with a stated trigger. Nothing here watches upstream
+> **releases** for any of the others — `.github/workflows/audit-deps.yml` is a CVE sweep, not a
+> release watcher. The general mechanism is being designed separately; until it exists, this table
+> gains a row per obligation that has actually been decided, and gains nothing by listing the ones
+> that have not.
 
 ---
 

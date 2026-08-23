@@ -3,16 +3,21 @@ name: Claude Code
 # Claude AI assistant: triggered by @claude mentions in issues, PRs, and reviews.
 # CI quality gate: mirrors the 8 checks in .claude/hooks/pre-pr-check.sh.
 #   Checks [1/8]–[6/8] and [8/8] run natively (no Docker needed).
-#   Check [7/8] drives docker-compose.test.yml, exactly as test.yml does. The
-#   compose file is the ONE definition of the test db and cache.
-#   Coverage thresholds match the hooks: 75% pytest floor always, 80% CI floor on
-#   staging/main (same logic as _apply_coverage_floor in check-tests.sh).
+#   Check [7/8] calls code/src/scripts/tests/backend-coverage.sh, exactly as test.yml
+#   does; that script drives docker-compose.test.yml, which is the ONE definition of
+#   the test db and cache.
+#   Coverage thresholds match the hooks: 75% always, 80% from `testing` upward (that is, a
+#   PR whose base is dev, staging or main), 90% on the identity app flat — AUTH_APP,
+#   defaulting to `users`, never a hardcoded directory. Owned by
+#   code/docs/testing/COVERAGE.md; mirrored here, in test.yml, and in check-tests.sh.
 #
 # LOCKFILE GUARD — read this before touching any `uv` step below.
-# uv.lock is ABSENT BY DESIGN in the base template: it would pin the root project under
-# the literal project-slug token, so Copier generates it at generation time and removes
-# the ignore rule (see the root CONTEXT.md). Every `uv sync --frozen` here therefore
-# cannot resolve in THIS repository, which made six of these eight gates fail on every
+# uv.lock is COMMITTED as of 16/08/2026, so `uv sync --frozen` now resolves in THIS
+# repository and every `[ -f uv.lock ]` guard below takes its present branch. The guards
+# stay: this workflow SHIPS, and they are what makes one file correct on both sides of the
+# template boundary. They are no longer load-bearing here.
+# Until then the lock was absent by design — it would have pinned the root project under
+# the literal project-slug token — and that made six of these eight gates fail on every
 # single push and pull request raised against the template.
 #
 # The fix is the same one test.yml/test-api.yml/test-e2e.yml already carry: a
@@ -44,7 +49,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/staging' }}
 
 env:
-  UV_VERSION: "0.12.4"
+  UV_VERSION: "0.12.5"
   NODE_VERSION: "24"
   PYTHON_VERSION: "3.14"
 
@@ -101,12 +106,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -159,12 +165,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -186,24 +193,23 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This leg said "Running
+      # Prettier only" on every template run, so the Python half of [3/8] had never
+      # executed here. Root working directory: `ruff format` is configured from the root
+      # manifest and covers the whole tree, which is what syntax-python.yml already does.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. Running Prettier only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. Both halves still run."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+      - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff format --check
-        if: steps.detect.outputs.present == 'true'
         run: uv run ruff format --check .
-        working-directory: code/src/django
       - name: Prettier — --check
         run: pnpm exec prettier --check .
 
@@ -219,12 +225,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -246,24 +253,24 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This leg said "Running
+      # ESLint only" on every template run, so [4/8]'s Python half had never executed
+      # here even while syntax-python.yml ran the same check through uvx. Root working
+      # directory, matching that workflow: `ruff check .` from code/src/django would
+      # narrow the gate to one subtree.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. Running ESLint only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. Both halves still run."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+      - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
       - name: Python — ruff check
-        if: steps.detect.outputs.present == 'true'
         run: uv run ruff check .
-        working-directory: code/src/django
       - name: JS — eslint
         run: pnpm exec eslint .
 
@@ -290,12 +297,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -317,30 +325,34 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file. This gate is Python-only, so
-      # everything below is conditional and the job reports success with nothing to run.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026, with syntax-python.yml and lefthook.yml. The LOCKFILE GUARD
+      # note at the top of this file no longer applies to THIS gate: pyproject.toml's
+      # `name` is now the house constant `syntek-base`, branded at generation, so uv
+      # parses the manifest here and the type-check is a real gate on both sides.
+      #
+      # The lock decides the sync mode, not whether the gate runs. Root working directory
+      # rather than code/src/django: the manifest is at the repo root, which is where the
+      # unguarded run was actually verified.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. There is no Python environment to type-check."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. The gate still runs."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
-      - if: steps.detect.outputs.present == 'true'
-        run: pnpm install --frozen-lockfile
+      - run: uv sync ${{ steps.sync.outputs.flag }}
+      - run: pnpm install --frozen-lockfile
       - name: Python — basedpyright
-        if: steps.detect.outputs.present == 'true'
         run: uv run basedpyright
 
   # ── [7/8] Tests ──────────────────────────────────────────────────────────────
   # Mirrors check-tests.sh + _apply_coverage_floor. Coverage thresholds:
-  #   - 75% pytest --cov-fail-under floor (always, matches backend-coverage.sh)
-  #   - 80% CI floor on staging/main (matches _apply_coverage_floor in check-tests.sh)
+  #   - 75% line and branch, on every branch (matches backend-coverage.sh)
+  #   - 80% when the PR's base is dev, staging or main (matches _apply_coverage_floor)
+  #   - 90% on the identity app (AUTH_APP, default `users`) — flat, it does not tier
+  # code/docs/testing/COVERAGE.md owns all three; change the guide before changing these.
   #
   # NO `services:` BLOCK — and it must stay that way. This job used to declare
   # GitHub service containers for db and cache, duplicating the pair already
@@ -369,8 +381,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env:
-      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
     steps:
       - uses: actions/checkout@v7
       # See the LOCKFILE GUARD note at the top of this file. This gate is Python-only, so
@@ -396,61 +406,83 @@ jobs:
           cp code/src/docker/.env.test.example code/src/docker/.env.test
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
-      - name: Build django-test image
+      # The promotion tier, computed exactly as test.yml computes it and pre-pr-check.sh
+      # sets it: a PR into dev, staging or main promotes work already merged once, and
+      # clears the higher floor. code/docs/testing/COVERAGE.md owns both numbers.
+      - name: Determine coverage threshold
         if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE build django-test
-
-      # `--wait` holds until both healthchecks report healthy, so no hand-rolled
-      # readiness loop is needed and a sick container fails here rather than midway
-      # through pytest. The healthchecks are the compose file's own.
-      - name: Start db and cache
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE up -d --wait db cache
-
-      # pytest runs INSIDE django-test, on the compose network, reaching the database
-      # at `db:5432` — the address the compose file already gives it. Nothing is
-      # published to the host and no DATABASE_URL is restated here.
-      - name: Backend — pytest
-        if: steps.detect.outputs.present == 'true'
+        id: threshold
         run: |
-          mkdir -p reports
-          if [[ "$GITHUB_REF" == "refs/heads/staging" || "$GITHUB_REF" == "refs/heads/main" || \
-                "$GITHUB_BASE_REF" == "staging" || "$GITHUB_BASE_REF" == "main" ]]; then
-            docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
-              -v "${{ github.workspace }}/reports:/workspace/reports" \
-              django-test pytest \
-                --cov=apps --cov-branch --cov-fail-under=75 \
-                --cov-report="html:/workspace/reports/html" \
-                --cov-report="xml:/workspace/reports/coverage.xml" \
-                --cov-report=term-missing \
-                --junit-xml="/workspace/reports/results.xml"
-          else
-            docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
-              -v "${{ github.workspace }}/reports:/workspace/reports" \
-              django-test pytest --junit-xml="/workspace/reports/results.xml"
-          fi
+          BRANCH="${{ github.base_ref || github.ref_name }}"
+          case "$BRANCH" in
+            dev | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
+            *) echo "value=75" >> "$GITHUB_OUTPUT" ;;
+          esac
 
-      - name: Enforce 80% coverage floor (staging/main)
-        if: |
-          steps.detect.outputs.present == 'true' &&
-          (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main' ||
-           github.base_ref == 'staging' || github.base_ref == 'main')
+      # One gate, called from both sides — the same move test.yml made, arriving here
+      # second. This step used to build the image, start the stack and hand-roll its own
+      # pytest and coverage invocations, which made this workflow a SECOND copy of the
+      # gate, and it was the copy that rotted twice over:
+      #
+      #   1. Its auth leg ran `coverage report --include='apps/users/*' --fail-under=90`.
+      #      `users` is the DEFAULT answer to the IDENTITY_APP token, not a guaranteed
+      #      directory — this workflow ships, so a project answering `accounts` got a CI
+      #      job enforcing a floor on a path that does not exist. Against this repository,
+      #      which has no apps at all, it measured nothing and reported success on every
+      #      run. backend-coverage.sh reads AUTH_APP (default `users`), skips loudly while
+      #      the app is absent, and fails closed once it is present but unmeasured.
+      #   2. It was a raw pytest invocation, which .claude/CLAUDE.md Section 6 bans in
+      #      favour of the scripts under code/src/scripts/.
+      #
+      # backend-coverage.sh now owns the two phases, the floor, the image build, the stack
+      # and the teardown. Coverage runs on EVERY branch: it used to run only when
+      # promoting, so a feature branch reported a green [7/8] having measured no coverage
+      # at all — the always-floor asserted by a step that never looked for it.
+      #
+      # NO --output, and the constraint is the MOUNT rather than the path shape. An earlier
+      # revision passed a bare `reports`, which backend-coverage.sh compares as a STRING
+      # against `$PROJECT_ROOT` and refuses (exit 2). Making it absolute cleared that guard
+      # and hit the real one: the script reaches the container with `docker compose exec`,
+      # and docker-compose.test.yml gives django-test exactly ONE writable bind mount —
+      # ../scripts/tests/reports:/workspace/code/src/scripts/tests/reports. `--output
+      # $GITHUB_WORKSPACE/reports` becomes /workspace/reports inside the image layer, so
+      # pytest writes the XML into a container path nothing on the host can read: `mkdir -p`
+      # leaves an empty reports/ on the runner and the floor step below fails on a file that
+      # was never going to arrive. The script's DEFAULT output is the one directory inside
+      # that mount, so passing nothing is what lands the artefacts. The three host-side
+      # consumers below read it there. Measured 20/08/2026.
+      - name: Backend — pytest with coverage (two phases)
+        if: steps.detect.outputs.present == 'true'
+        env:
+          COV_FLOOR: ${{ steps.threshold.outputs.value }}
+        run: bash code/src/scripts/tests/backend-coverage.sh
+
+      # The auth floor above does not tier. This step re-asserts the line floor from the
+      # written artefact rather than from pytest's exit code alone, which is what makes a
+      # missing report a failure instead of a silent pass.
+      - name: Enforce the coverage floor
+        if: steps.detect.outputs.present == 'true'
+        env:
+          THRESHOLD: ${{ steps.threshold.outputs.value }}
         run: |
           python3 - <<'EOF'
-          import xml.etree.ElementTree as ET, json, sys
-          THRESHOLD = 80
+          import os
+          import sys
+          import xml.etree.ElementTree as ET
+
+          threshold = int(os.environ['THRESHOLD'])
           failed = []
           try:
-              root = ET.parse('reports/coverage.xml').getroot()
+              root = ET.parse('code/src/scripts/tests/reports/backend-coverage/coverage.xml').getroot()
               pct = int(float(root.get('line-rate', 0)) * 100)
               print(f'Backend:  {pct}%')
-              if pct < THRESHOLD:
-                  failed.append(f'backend {pct}% (requires {THRESHOLD}%)')
+              if pct < threshold:
+                  failed.append(f'backend {pct}% (requires {threshold}%)')
           except Exception as e:
               print(f'Backend coverage report missing: {e}')
               failed.append('backend coverage report missing')
           if failed:
-              print(f'\n80% floor not met: {", ".join(failed)}')
+              print(f'\n{threshold}% floor not met: {", ".join(failed)}')
               sys.exit(1)
           print('Coverage floor met.')
           EOF
@@ -461,7 +493,7 @@ jobs:
         with:
           name: coverage-reports-${{ github.run_id }}
           path: |
-            reports/
+            code/src/scripts/tests/reports/backend-coverage/
           if-no-files-found: ignore
 
       - name: Backend — post coverage comment
@@ -472,17 +504,20 @@ jobs:
           (github.base_ref == 'staging' || github.base_ref == 'main')
         uses: MishaKav/pytest-coverage-comment@v1.11.0
         with:
-          pytest-xml-coverage-path: reports/coverage.xml
+          pytest-xml-coverage-path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           title: Backend Coverage
 
-      # `-v` too: the db uses a tmpfs, but the compose project outlives the job on a
-      # self-hosted runner if it is not torn down.
-      - name: Tear down
-        if: always() && steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE down -v
+      # No tear-down step: backend-coverage.sh traps EXIT and brings the stack down with
+      # its volumes on every path, success or failure. A second `down -v` here would be a
+      # third place that knows how this stack is composed — the duplication this job was
+      # just collapsed to remove.
 
   # ── [8/8] Security ───────────────────────────────────────────────────────────
-  # Mirrors check-security.sh: ruff --select S (Python) + pnpm audit --audit-level low (JS).
+  # The CI half of check-security.sh, and deliberately WIDER than it: that script scopes
+  # ruff to `code/src/django/` because the django container mounts that tree alone, while
+  # this runs the whole repository and so also covers the PM asset builders (whose S603
+  # per-file-ignores in pyproject.toml would otherwise be dead letters). Same rules, larger
+  # population — not a mirror, and saying "mirrors" hid the scope gap that made this job red.
   # Uses Ruff's built-in flake8-bandit (S) rules — no separate bandit install needed.
   security:
     name: "[8/8] Security"
@@ -494,12 +529,13 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          # THE reason this workflow was red on main from 03/08/2026: in
-          # syntek-base there is never anything to cache. uv.lock is absent by
-          # design, so `uv sync --frozen` is skipped, uv installs nothing, and
-          # the cache directory is never created — then the action's POST step
-          # fails saving it ("Cache path … does not exist on disk") and the job
-          # reports failure with every real step green.
+          # THE reason this workflow was red on main from 03/08/2026: syntek-base
+          # had nothing to cache. uv.lock was absent, so `uv sync --frozen` was
+          # skipped, uv installed nothing, and the cache directory was never
+          # created — then the action's POST step failed saving it ("Cache path …
+          # does not exist on disk") and the job reported failure with every real
+          # step green. The lock is committed since 16/08/2026, so the cache now
+          # populates here too; the input stays for the reason below.
           #
           # `ignore-nothing-to-cache` rather than `enable-cache: false`, because
           # this workflow SHIPS: a generated project HAS a uv.lock, does populate
@@ -521,28 +557,36 @@ jobs:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
-      # See the LOCKFILE GUARD note at the top of this file. `pnpm audit` is unguarded and
-      # keeps scanning the template's own JS dependency tree.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026 — see the note in the typecheck job. This is the CI half of it:
+      # the local `audits/security.sh` runs both legs and this gate ran the JS one only,
+      # so the PR gate was quieter than the script a developer runs beside it. Both legs
+      # now execute on both sides. Verified green the day it was unguarded — ruff --select
+      # S clean, pip-audit "No known vulnerabilities found".
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — base template. Auditing the JS dependency tree only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock — base template; resolving fresh. Both trees still audited."
           fi
-      - if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+      - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
+      # `--extend-exclude`, not `--exclude`: the latter REPLACES the root config's
+      # exclude list (`.claude`, `.venv`) rather than adding to it.
+      #
+      # The fixture trees under audits/fixtures/ each carry their own ruff.toml with
+      # `[lint] select = []`, because they are deliberately vulnerable inputs to
+      # static-analysis.sh --self-test and dict-discipline.sh --self-test — broken/ is
+      # REQUIRED to trip every rule id or the self-test fails. A CLI `--select` overrides
+      # that config rather than merging with it, so this step re-enabled S on the one tree
+      # that had explicitly opted out, and reported 7 findings that are all working as
+      # designed. Excluding by path is the only way to say "respect their opt-out" while
+      # keeping `--select S` for everything else.
       - name: Python — ruff security (flake8-bandit rules)
-        if: steps.detect.outputs.present == 'true'
-        run: uv run ruff check --select S .
-        working-directory: code/src/django
+        run: uv run ruff check --select S . --extend-exclude 'code/src/scripts/audits/fixtures'
       - name: JS — pnpm audit
         run: pnpm audit --audit-level low
       - name: Python — pip-audit (CVE scan)
-        if: steps.detect.outputs.present == 'true'
         run: uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes)
-        working-directory: code/src/django

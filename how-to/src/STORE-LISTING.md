@@ -92,7 +92,7 @@ They are different fields and can hold different strings. If they differ, record
   rule this register answers, and the only place the limits carry a verification date
 - [`BRAND-VOICE.md`](BRAND-VOICE.md) Section 5 — store-listing copy is the marketing register under hard
   constraints, owned by `stack-react-native`
-- `project-management/workflows/23-release/` — the release procedure that prompts for the What's
+- `project-management/workflows/24-release/` — the release procedure that prompts for the What's
   New row. It fires on a **mobile package bump**, not on every release: a root-only bump reaches
   no store, so most releases never touch this file
 - [`PLATFORM-PROVIDERS.md`](PLATFORM-PROVIDERS.md) · [`INVARIANTS.md`](INVARIANTS.md) — the other

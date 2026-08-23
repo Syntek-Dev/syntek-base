@@ -17,7 +17,7 @@ project-management/src/10-SECURITY/ASSESSMENTS/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a record during `project-management/workflows/21-implementation-documentation/` (or the
+Write a record during `project-management/workflows/22-implementation-documentation/` (or the
 `workflows/10-security-checks/` review step) once a story's code has shipped and the
 code-level audit in `../../AUDITS/IMPLEMENTATION/` is complete. Copy
 `ASSESSMENT-IMPL-US000-TEMPLATE.md`, open the story's baseline in
@@ -39,7 +39,7 @@ code-level audit in `../../AUDITS/IMPLEMENTATION/` is complete. Copy
 - `../CONTEXT.md` — the ASSESSMENTS overview and framework tables
 - `../../AUDITS/IMPLEMENTATION/` · `../../VULNERABILITIES/IMPLEMENTATION/` — the code audit
   consumed and any new CRITICAL/HIGH escalated
-- `project-management/workflows/21-implementation-documentation/` — where these records are written
+- `project-management/workflows/22-implementation-documentation/` — where these records are written
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
 
 **Last Updated**: <%DATE%>

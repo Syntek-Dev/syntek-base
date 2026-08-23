@@ -31,8 +31,8 @@ state, threading and accessibility conventions of the desktop crate.
 - **Keep the two exclusions prominent** — embedded systems, and redistributing anything exposing
   Slint's APIs. The second is the reason desktop UI is not in the shared package layer; losing it
   loses the rationale for a whole architectural boundary.
-- **Do not present accessibility as optional or as scanned.** AccessKit is why two advisories are
-  accepted; verification is manual, with a screen reader.
+- **Do not present accessibility as optional or as scanned.** An advisory reached only through
+  AccessKit is never answered by dropping it; verification is manual, with a screen reader.
 - Commands cite `code/src/scripts/**/*.sh` — never raw `cargo` or `slint-viewer`.
 
 ## Output & naming

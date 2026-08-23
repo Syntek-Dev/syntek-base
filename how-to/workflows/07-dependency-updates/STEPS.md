@@ -41,7 +41,7 @@ Three checks, in order, before touching a manifest:
    advisory surface. A dozen lines of your own code often beats a package that brings forty.
 
 For anything load-bearing, record the decision as an ADR
-(`project-management/workflows/14-decisions/`).
+(`project-management/workflows/15-decisions/`).
 
 ---
 
@@ -73,9 +73,9 @@ For an advisory fix, pin the patched version in `pnpm-workspace.yaml` `overrides
 range — the repo already carries narrow overrides for exactly this, and they are scoped
 deliberately.
 
-> In **this template** `uv.lock` is absent by design, so the Python lock step produces a
-> file you must not commit here. Manifest and register changes still apply; the lock lands
-> in a generated project.
+> In **this template** `uv.lock` is committed (16/08/2026), so the Python lock step behaves
+> as it does in a generated project: re-resolve it, verify it, and commit it alongside the
+> manifest change. It is `_exclude`d from generation, so it never reaches your project.
 
 ---
 
@@ -85,8 +85,13 @@ deliberately.
 
 ```bash
 bash code/src/scripts/development/install.sh
-bash code/src/scripts/development/server.sh rebuild
+bash code/src/scripts/development/server.sh up --build
 ```
+
+`server.sh` has no `rebuild` command — its verbs are `up`, `down`, `restart`, `build` and
+`status`, and `up --build` is the one that rebuilds the images **and** brings the stack back on
+them. Note also that `development/install.sh` refreshes lockfiles only; it is not the root
+`install.sh`, which is what seeds `.env.*` and generates dev secrets at first-time setup.
 
 An upgrade is not real until the image builds. Every Dockerfile uses `uv sync --frozen`,
 so a stale lockfile fails the build rather than quietly resolving something else — which is
@@ -109,8 +114,13 @@ bash code/src/scripts/development/pnpm-update.sh --pin X.Y.Z
 ```bash
 bash code/src/scripts/audits/security.sh
 bash code/src/scripts/tests/all.sh --coverage
-bash .claude/hooks/pre-pr-check.sh
+echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh
 ```
+
+**The pipe on the third line is required.** `pre-pr-check.sh` is a `PreToolUse` hook that reads
+its payload from stdin and exits 0 unless it names `gh pr create` — run bare it either blocks
+forever or exits 0 having checked nothing. Workflow `06-quality-gates` Step 5 carries the full
+explanation.
 
 A dependency change is exactly the kind that passes unit tests and breaks a build, a type
 signature, or a runtime import. Run the whole gate (workflow `06-quality-gates`), not just
@@ -135,3 +145,20 @@ together — `.nvmrc`, `.python-version`, `package.json`, and the `env:` blocks 
   `project-management/docs/VERSIONING-GUIDE.md`.
 - **Removed the last consumer of a package?** Remove the package too, and put it back in
   the "deliberately NOT declared" register with the trigger that would bring it back.
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
+
+---
+
+## Completion
+
+Run through `CHECKLIST.md` before marking this workflow complete.

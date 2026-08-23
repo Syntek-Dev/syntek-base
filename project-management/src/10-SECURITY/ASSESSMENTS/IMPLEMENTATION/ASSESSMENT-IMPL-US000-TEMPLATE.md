@@ -33,18 +33,18 @@ _List every file that carries a control this assessment verifies._
 Re-evaluate each category against the shipped code. Status ∈ PASS / PARTIAL / DEFERRED /
 N/A. Point at the evidence.
 
-| ID  | Category                                   | Status         | Evidence / Notes                           |
-| --- | ------------------------------------------ | -------------- | ------------------------------------------ |
-| A01 | Broken Access Control                      | [EXAMPLE] PASS | {Policy check + IDOR ownership — evidence} |
-| A02 | Cryptographic Failures                     | {status}       | {evidence}                                 |
-| A03 | Injection                                  | {status}       | {evidence}                                 |
-| A04 | Insecure Design                            | {status}       | {evidence}                                 |
-| A05 | Security Misconfiguration                  | {status}       | {evidence}                                 |
-| A06 | Vulnerable and Outdated Components         | {status}       | {evidence}                                 |
-| A07 | Identification and Authentication Failures | {status}       | {evidence}                                 |
-| A08 | Software and Data Integrity Failures       | {status}       | {evidence}                                 |
-| A09 | Security Logging and Monitoring Failures   | {status}       | {evidence}                                 |
-| A10 | Server-Side Request Forgery                | {status}       | {evidence}                                 |
+| ID       | Category                              | Status         | Evidence / Notes                           |
+| -------- | ------------------------------------- | -------------- | ------------------------------------------ |
+| A01:2025 | Broken Access Control (incl. SSRF)    | [EXAMPLE] PASS | {Policy check + IDOR ownership — evidence} |
+| A02:2025 | Security Misconfiguration             | {status}       | {evidence}                                 |
+| A03:2025 | Software Supply Chain Failures        | {status}       | {evidence}                                 |
+| A04:2025 | Cryptographic Failures                | {status}       | {evidence}                                 |
+| A05:2025 | Injection                             | {status}       | {evidence}                                 |
+| A06:2025 | Insecure Design                       | {status}       | {evidence}                                 |
+| A07:2025 | Authentication Failures               | {status}       | {evidence}                                 |
+| A08:2025 | Software and Data Integrity Failures  | {status}       | {evidence}                                 |
+| A09:2025 | Security Logging & Alerting Failures  | {status}       | {evidence}                                 |
+| A10:2025 | Mishandling of Exceptional Conditions | {status}       | {evidence}                                 |
 
 _Every row needs a status and evidence (file · symbol). A DEFERRED row must name what
 blocks it and where it is tracked._
@@ -114,5 +114,5 @@ posture targets from the baseline, and that no CRITICAL/HIGH was introduced.}
 - `../../VULNERABILITIES/IMPLEMENTATION/` — any newly found CRITICAL/HIGH escalated here
 - `../../../02-STORIES/` — the source story
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
-- `project-management/workflows/21-implementation-documentation/` — where this record is written
+- `project-management/workflows/22-implementation-documentation/` — where this record is written
 - `code/docs/SECURITY.md` — the enforcement side these claims must stay consistent with

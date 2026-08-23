@@ -118,6 +118,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/DOCUMENTATION-PAIRING.md` — **the owning guide.** Read before generating either file
+- `code/docs/DOCUMENTATION-LENGTH.md` — the 300-line limit every file scaffolded here is born
+  under, and the ratchet that treats a file **born** at 270 as growth
 - `.claude/CLAUDE.md` Section 5 — the naming conventions for documents, directories and workflows
 - `.claude/CLAUDE.md` Section 8 — the same pairing rule in one bullet, and the length limits
 - `project-management/src/CONTEXT.md` — why the artefact folder numbers are frozen

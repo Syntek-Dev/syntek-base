@@ -255,7 +255,9 @@ adding an explicit `raise` on top would be a second enforcement point for the sa
   <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:'j M Y' }}</time>
   <div>{{ post.body|safe }}</div>
 
-  <!-- Local, rapid: share menu toggles with no round-trip -->
+  <!-- Local, rapid: share menu toggles with no round-trip. One boolean, no methods, so the
+       literal stays inline; anything larger is Alpine.data('name', …) in a static .js file
+       (../data-structures/TYPES-BROWSER.md). -->
   <div x-data="{ open: false }">
     <button @click="open = !open" :aria-expanded="open">Share</button>
     <ul x-show="open" x-cloak>
@@ -324,7 +326,10 @@ def item_edit(request, pk):
     if request.method == "POST" and form.is_valid():
         form.save()
         response = render(request, "admin/_edit_form.html", {"form": form, "item": item})
-        response["HX-Trigger"] = "itemSaved"  # drives the toast; no markup needed for it
+        # Shared constants, never inline literals — a rename is then one edit, and the
+        # listening component cannot drift from the emitter
+        # (../data-structures/TYPES-BROWSER.md).
+        response[HtmxHeader.TRIGGER] = HtmxEvent.ITEM_SAVED  # drives the toast
         return response
 
     # Invalid: 200 with the re-rendered form, so the swap has something to put back
@@ -335,4 +340,3 @@ One template serves the first render, the success swap, and the error swap — s
 cannot drift apart.
 
 _Part of the `code/docs/` documentation family. See [`../RENDERING.md`](../RENDERING.md) for the full index._
-</content>

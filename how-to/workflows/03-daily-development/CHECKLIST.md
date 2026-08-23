@@ -19,9 +19,9 @@ model: opus
 - [ ] On a feature branch, not on `testing`, `dev`, `staging`, or `main` · _opus_
 - [ ] Branch is up to date with `testing` · _opus_
 - [ ] All containers healthy before starting work · _opus_
-- [ ] Backend linter passes before committing · _opus_
-- [ ] Frontend linter and type-check pass before committing · _opus_
-- [ ] Backend and frontend test suites pass before pushing · _opus_
+- [ ] `syntax/lint.sh` passes — it aggregates every surface, not just Python · _opus_
+- [ ] `syntax/check.sh` passes — basedpyright clean, no new `Any` · _opus_
+- [ ] `tests/backend.sh` green before pushing; `tests/all.sh --api` too where a contract moved · _opus_
 
 ---
 

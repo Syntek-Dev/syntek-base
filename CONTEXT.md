@@ -74,21 +74,21 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── REFERENCES.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR, QA)
 │   ├── export/                      ← ClickUp sync artefacts and task map
-│   ├── src/                         ← live PM artefacts (00-ASSETS … 22-INCIDENTS)
-│   └── workflows/                   ← step-by-step PM workflows (01–23)
+│   ├── src/                         ← live PM artefacts (00-ASSETS … 23-INCIDENTS)
+│   └── workflows/                   ← step-by-step PM workflows (01–24)
 ├── handoffs/                        ← session handoff documents (auto-compaction replacement)
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
 ├── .copier/                         ← seed-once staging: the README, version state, blank
-│                                      project memory and scale-planning map a generated
-│                                      project starts from; moved into place and removed
-│                                      at generation
+│                                      project memory, blank standing registers and
+│                                      scale-planning map a generated project starts from;
+│                                      moved into place and removed at generation
 ├── .zed/                            ← Zed editor settings
 ├── CONTEXT.md                       ← this file
 ├── REFERENCES.md                    ← curated index of internal docs and external resources
 ├── README.md                        ← the public front door — what this template is and how to use it
-├── DESIGN.md                        ← design entry point (standards, constraints, Figma)
+├── DESIGN.md                        ← design entry point (standards, constraints, design workflows)
 ├── GAPS.md                          ← active gaps, blockers, sprint dependencies
 ├── DEFERRED.md                      ← deferred-work register
 ├── CHANGELOG.md                     ← what changed in each release, newest first
@@ -106,25 +106,30 @@ consumes this API; none of them changes the rule above for the web.
 ├── lefthook.yml                     ← pre-commit hook runner config
 ├── package.json                     ← root workspace package (pnpm)
 ├── pnpm-lock.yaml                   ← the resolved JS tooling graph — committed, never hand-edited
+├── uv.lock                          ← the resolved Python graph — committed, copier-excluded (see below)
 ├── pnpm-workspace.yaml              ← the pnpm workspace globs and audit ignore list
 ├── pyproject.toml                   ← Python tooling config and the django package manifest
 ├── eslint.config.mjs                ← ESLint config for the repo tooling (no client-side build)
 ├── .dockerignore                    ← what never enters a Docker build context
 ├── .editorconfig                    ← baseline editor settings shared across contributors
+├── .gitattributes                   ← LF everywhere; the binary list — a CRLF checkout breaks the scripts
 ├── .gitignore                       ← what git never tracks
 ├── .markdownlint-cli2.jsonc         ← Markdown lint config
 ├── .mcp.json                        ← project MCP servers (code-review-graph, context7, mermaid)
 ├── .npmrc                           ← pnpm registry and install behaviour
 ├── .nvmrc                           ← Node.js version pin
+├── .opengrep-version                ← Opengrep engine pin (audits/static-analysis.sh + its CI job)
 ├── .prettierignore                  ← what Prettier never formats
 ├── .prettierrc                      ← Prettier formatting rules
 └── .python-version                  ← Python version pin
 ```
 
-Note: `uv.lock` is **absent by design** in the base template — it would pin the root project
-under the literal `<%PROJECT_SLUG%>` name. Copier generates it and removes the ignore rule at
-generation time, because a generated project must commit it (every Dockerfile builds with
-`uv sync --frozen`).
+Note: `uv.lock` **is committed here** (16/08/2026), so the Django image builds in this
+repository and its Python gates and suites run against a real dependency set. It pins
+`syntek-base` itself, so `copier.yml` lists it in `_exclude` and it never travels: a generated <!-- doc-references: template-only -->
+project would otherwise inherit a lock naming the template, fail `uv sync --frozen`, and hit a
+conflict in a lockfile on every `copier update`. Your project's own lock is written by the
+`uv lock` post-task at generation and committed with the initial commit.
 
 ## Layer Map
 
@@ -167,7 +172,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **3.2.2** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.2.3** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

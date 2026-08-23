@@ -14,6 +14,9 @@ criteria before any design or code begins; every feature starts here.
 
 - **Routing:** run `STEPS.md` against `CHECKLIST.md`; load `story`
   for the drafting. Story creation is pre-code — no hard safety gates apply.
+- **Input:** the resolved map's **Slices** row (`src/01-FEATURE-MAPS/MAP-<FEATURE>.md`) — its
+  title and flag manifest. Stories are cut from the map, never invented from a conversation
+  (`docs/planning/STORIES.md`).
 - **Charting a big epic first:** when the input is a large, ambiguous epic rather than
   one story, chart its decision frontier with `.claude/skills/wayfinder/SKILL.md` (a
   decision map resolved across sessions) before decomposing it into `US###` stories.

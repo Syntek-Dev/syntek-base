@@ -10,15 +10,15 @@ model: opus
 British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Field-level PII encryption: Fernet fields, AES-256-GCM service-layer pattern
 
-**Applies to:** `code/src/django/apps/` **Reference implementation:**
-`code/src/django/apps/users/`
+**Applies to:** `code/src/django/apps/`
 
-> **What this codebase actually uses:** PII `EncryptedField`s in `apps.core.encryption`
-> (`EncryptedCharField` / `EncryptedEmailField` / `EncryptedTextField`) are **Fernet**. The
+> **Status: declared, not wired.** No encryption module ships at baseline; nothing under
+> `code/src/django/apps/` implements any of this, and everything below is the shape the first
+> PII-handling story builds. PII `EncryptedField`s (`EncryptedCharField` / `EncryptedEmailField` /
+> `EncryptedTextField`, in an `apps.core.encryption` module a story adds) are **Fernet**; the
 > AES-256-GCM `encrypt_field(...)` examples below are the **portable service-layer pattern** for a
-> new module; AES-256-GCM is wired in production only for MFA secrets
-> (`apps/users/services/mfa_encryption.py`). Email lookup tokens are a keyed HMAC-SHA3-256 blind
-> index — see [`LOOKUP-TOKENS.md`](LOOKUP-TOKENS.md).
+> new module, and AES-256-GCM is reserved for MFA secrets. Email lookup tokens are a keyed
+> HMAC-SHA3-256 blind index — see [`LOOKUP-TOKENS.md`](LOOKUP-TOKENS.md).
 
 ---
 

@@ -15,7 +15,7 @@ code/workflows/
 ├── CONTEXT.md               ← this file
 │
 │   ── Build (01–06) ──
-├── 01-new-feature/          ← add a new full-stack feature (backend + frontend)
+├── 01-implement-story/      ← implement one US### story: backend + frontend, end to end
 ├── 02-tdd-cycle/            ← TDD: Red → Green → Refactor (the method the others use)
 ├── 03-database-migration/   ← create and run a new Django database migration
 ├── 04-api-design/           ← design and implement a new Django Ninja API surface
@@ -46,7 +46,7 @@ before marking complete), and `CLAUDE.md` (operating rules).
 
 | Workflow                 | Purpose                                                              |
 | ------------------------ | -------------------------------------------------------------------- |
-| `01-new-feature/`        | Add a new full-stack feature (backend + frontend)                    |
+| `01-implement-story/`    | Implement one `US###` story end to end (backend + frontend)          |
 | `02-tdd-cycle/`          | Test-driven development cycle — the method `01`/`03`–`06` build by   |
 | `03-database-migration/` | The data layer — new models, altered fields, any schema change       |
 | `04-api-design/`         | The JSON layer at `/api/` — Django Ninja routers, Schemas, endpoints |
@@ -107,7 +107,7 @@ PM workflow, which PM phase enters it, and who owns each fact — is in
 Two rules follow from it:
 
 - **A code workflow is never entered directly from a PM design gate.** A story reaches here only
-  through the PM build phases (`18-backend-code`, `19-api-code`, `20-frontend-code`), which are
+  through the PM build phases (`19-backend-code`, `20-api-code`, `21-frontend-code`), which are
   themselves gated on PM `01`–`15` being complete.
-- **Records, findings, docs, and the graph refresh belong to PM `21-implementation-documentation`.**
+- **Records, findings, docs, and the graph refresh belong to PM `22-implementation-documentation`.**
   Code workflows hand off to it; they never restate its formats or destinations.

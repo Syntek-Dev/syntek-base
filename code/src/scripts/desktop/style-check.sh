@@ -5,9 +5,9 @@
 #                  From Slint 1.16 the default style is Microsoft Fluent on EVERY
 #                  platform, so an app that configures nothing ships a stock vendor
 #                  look on macOS and Linux as well as Windows. That is the desktop
-#                  expression of generic design, and the one clause this surface has
-#                  (code/docs/visual-design/DESKTOP.md, "Desktop slop is stock
-#                  Fluent", marked [gate: fail]).
+#                  expression of generic design, and the one clause this surface has:
+#                  desktop slop is stock Fluent, and it fails a build rather than
+#                  merely warning.
 #
 #                  This is a BUILD-CONFIG check, not a source scan. The style is
 #                  fixed at compile time, so exactly one question is asked: does a
@@ -28,7 +28,7 @@
 #   [gate: warn]  .slint markup imports std-widgets and references
 #                 neither Palette nor StyleMetrics                  → printed, exit 0
 #
-#   The warn tier is advisory BY DESIGN. The guide allows std-widgets as structural
+#   The warn tier is advisory BY DESIGN. std-widgets is legitimate as structural
 #   scaffolding beneath components that do drive Palette and StyleMetrics, and no
 #   script can tell that apart from std-widgets carrying the brand unaided.
 #
@@ -38,9 +38,9 @@
 #
 # NO-OP WHEN ABSENT. The desktop surface is opt-in, so a project generated without
 # crates/desktop exits 0 with a note rather than failing. That is what lets this run
-# unconditionally. It deliberately does NOT source _common.sh: that helper hard-fails
-# when the crate is missing and requires cargo, whereas this reads three files and
-# needs no toolchain at all.
+# unconditionally. It deliberately does NOT source the helper the other desktop scripts
+# share: that helper hard-fails when the crate is missing and requires cargo, whereas
+# this reads three files and needs no toolchain at all.
 #
 # Usage: style-check.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                       [--path PATH] [--help]

@@ -33,7 +33,7 @@
 #                       9. Every token actually used in a shipped file is documented.
 #
 #                     Three against the tree's NESTED entries — the level checks 1–3
-#                     never reach, and where the 09/08/2026 sweep found its drift:
+#                     never reach, and where the drift was actually found:
 #                      10. Every shipping .github/workflows/*.yml appears.
 #                      11. Every shipping code/docs/*.md appears.
 #                      12. Every shipping code/src/*/ appears.
@@ -47,10 +47,19 @@
 #
 # SELF-TEST. --self-test deletes one required row per tree check from a copy of the
 #            README and asserts each check catches its own, then proves in_tree's
-#            boundary rule directly. Unlike the fixture pairs under audits/, the
-#            known-positives are DERIVED from the real README: a checked-in README
-#            fixture would carry 28 CI workflows and 32 guides and go stale within
-#            the week — the exact drift these checks exist to catch.
+#            boundary rule directly. Unlike the checked-in fixture pairs the other
+#            audits use, the known-positives are DERIVED from the real README: a
+#            checked-in README fixture would carry 28 CI workflows and 32 guides and
+#            go stale within the week — the exact drift these checks exist to catch.
+#
+#            THE TWO REGISTER CHECKS TAKE A DIFFERENT MUTATION, and it is the sharper
+#            one. Deleting a row fails a containment test and a row-aware test alike, so
+#            it cannot tell them apart; REPLACING the row with prose that still names the
+#            entry fails only the second. Checks 4 and 5 passed that mutation once — the
+#            register lost its entry and the gate stayed green. Each register probe picks
+#            a row naming exactly one entry, because the skills register groups siblings
+#            and mutating a grouped row would produce three findings where the probe
+#            asserts one.
 #
 # Requirements: git, grep, awk. No network.
 #
@@ -123,7 +132,23 @@ is_excluded() {
   local p="${1#./}"
   while read -r e; do [[ -z "$e" ]] && continue; [[ "$p" == "$e" || "$p" == "$e"/* ]] && return 0; done <<< "$EXCLUDED_FIXED"
   while read -r e; do [[ -z "$e" ]] && continue; [[ "$p" == "$e" || "$p" == "$e"/* ]] && return 0; done <<< "$EXCLUDED_GATED"
+  is_generated "$p" && return 0
   return 1
+}
+
+# Two ways a path fails to ship, and copier's `_exclude` only knows the first. The second is
+# a GENERATED artefact: gitignored, absent from a fresh clone, written by a tool at run time.
+# `code/docs/MACHINE-SPEC.md` is the case that found this — install.sh writes it, .gitignore
+# ignores it, and the checks below globbed the working directory, so a machine that had run
+# install.sh failed an audit a fresh clone passed. Whether the audit is red became a property
+# of the developer's disk rather than of the repository.
+#
+# git is asked rather than a second ignore list being maintained here: `.gitignore` is the
+# definition of "not in the repository", and a copy of it would drift the first time either
+# moved. Outside a work tree, `check-ignore` fails and everything is treated as shipping,
+# which is the safe direction — an over-reported finding is visible, a missed one is not.
+is_generated() {
+  git check-ignore -q -- "$1" 2>/dev/null
 }
 
 # A name must appear as a tree ROW, not merely somewhere in the tree text. Two ways a
@@ -148,6 +173,48 @@ in_tree() { # $1 = a tree blob, $2 = the entry name as the tree writes it
         if (c == "" || c == " " || c == "/") { hit = 1; exit }
       } }
     END { exit !hit }' <<< "$1"
+}
+
+# The same rule for a REGISTER, which is a Markdown table rather than a tree.
+#
+# in_tree keys on the `── ` connector every tree row carries. A register row has no such
+# connector: it is `| \`name\` | description |`, so the boundary is the first CELL. Checks
+# 4 and 5 used a bare section-scoped `grep -qF` instead, and that accepts a mention
+# anywhere in the section — including one in prose. Proven by deleting the
+# `conflict-markers.sh` table row and replacing it with the sentence "The
+# \`conflict-markers.sh\` script is mentioned here in prose only": the register loses its
+# entry, and the check exits 0. The script's own header had reasoned half of this hazard
+# out already — backticks distinguish a name from prose — but nothing distinguished a row
+# from a sentence.
+#
+# First cell only, because that is where a register states its subject; a name appearing
+# in a neighbouring row's DESCRIPTION is a cross-reference, not a registration.
+in_row() { # $1 = a register blob, $2 = the entry name (backticks added here)
+  awk -v n="\`$2\`" '
+    /^[[:space:]]*\|/ {
+      s = $0
+      sub(/^[[:space:]]*\|/, "", s)
+      i = index(s, "|")
+      if (i > 0) s = substr(s, 1, i - 1)
+      if (index(s, n) > 0) { hit = 1; exit }
+    }
+    END { exit !hit }' <<< "$1"
+}
+
+# How many backticked names share the first cell of the row carrying this one. Only the
+# self-test needs it: the skills register groups siblings on one row
+# (`implement-story` · `bugfix` · `refactor`), so replacing that row with prose would produce
+# three findings where the probe asserts one.
+row_name_count() { # $1 = a register blob, $2 = the entry name
+  awk -v n="\`$2\`" '
+    /^[[:space:]]*\|/ {
+      s = $0
+      sub(/^[[:space:]]*\|/, "", s)
+      i = index(s, "|")
+      if (i > 0) s = substr(s, 1, i - 1)
+      if (index(s, n) > 0) { print gsub(/`/, "`", s) / 2; exit }
+    }
+    END { }' <<< "$1"
 }
 
 # How many rows carry this name, anywhere in the tree. Only the self-test needs it:
@@ -213,17 +280,19 @@ done
 # ── 4. Audit scripts ──────────────────────────────────────────────────────────
 for s in code/src/scripts/audits/*.sh; do
   n=$(basename "$s"); is_excluded "$s" && continue
-  grep -qF "\`$n\`" <<< "$AUDIT_REG" || finding "Audit-script register omits: $n"
+  in_row "$AUDIT_REG" "$n" || finding "Audit-script register omits: $n"
 done
 
 # ── 5. Skills ─────────────────────────────────────────────────────────────────
 for d in .claude/skills/*/; do
   n=$(basename "$d"); is_excluded "${d%/}" && continue
   # cloudinary-* are covered by a single wildcard row
-  [[ "$n" == cloudinary-* ]] && { grep -qF '`cloudinary-*`' <<< "$SKILLS_REG" || finding "Skills register omits the cloudinary-* row"; continue; }
-  # Backticked, as the register writes it — a bare name matches incidental prose
-  # ("authoring an interactive bash wizard") and would pass a missing row.
-  grep -qF "\`$n\`" <<< "$SKILLS_REG" || finding "Skills register omits: $n"
+  [[ "$n" == cloudinary-* ]] && { in_row "$SKILLS_REG" 'cloudinary-*' || finding "Skills register omits the cloudinary-* row"; continue; }
+  # in_row, not a bare grep: backticks already distinguished a name from prose
+  # ("authoring an interactive bash wizard"), but nothing distinguished a register ROW
+  # from a sentence in the same section, so a row could be replaced by a mention of
+  # itself and the check stayed green.
+  in_row "$SKILLS_REG" "$n" || finding "Skills register omits: $n"
 done
 
 # ── 6/7. Links ────────────────────────────────────────────────────────────────
@@ -276,9 +345,9 @@ done
 # ── Self-test ─────────────────────────────────────────────────────────────────
 #
 # The known-negative is the real README; the known-positives are generated FROM it,
-# one row deleted per tree check. That is the one difference from the fixture pairs
-# under audits/: a checked-in README fixture would have to carry 28 CI workflows and
-# 32 guides and would rot the week after it was written — the exact staleness these
+# one row deleted per tree check. That is the one difference from the checked-in fixture
+# pairs the other audits use: a checked-in README fixture would have to carry 28 CI workflows
+# and 32 guides and would rot the week after it was written — the exact staleness these
 # checks exist to catch. Deriving the positives keeps the proof honest for free.
 #
 # Targets are chosen from the same globs the checks iterate, never hardcoded, and only
@@ -388,13 +457,49 @@ self_test() {
     fi
   done
 
+  # ── Part 5: the two REGISTER checks, where a row is not a tree row ──────────
+  #
+  # Part 4 deletes a row; these replace one with prose about itself. That is the sharper
+  # mutation and the only one that separates a row-aware check from a containment test:
+  # a deleted row fails both, a prose-ified row fails only the first. Checks 4 and 5 used
+  # to pass it, and the register lost an entry with nothing reporting it.
+  local reg_target reg_probe reg_num reg_want
+  for reg_probe in \
+    "4|$(first_in_register "$AUDIT_REG" code/src/scripts/audits/*.sh)|Audit-script register omits" \
+    "5|$(first_in_register "$SKILLS_REG" .claude/skills/*/)|Skills register omits"
+  do
+    reg_num="${reg_probe%%|*}"; rest="${reg_probe#*|}"
+    reg_target="${rest%%|*}"; reg_want="${rest#*|}"
+
+    if [[ -z "$reg_target" ]]; then
+      ST_FAILS=$((ST_FAILS + 1))
+      printf '\033[31m  ✗ check %s: no solo register row to mutate — the proof cannot run\033[0m\n' "$reg_num"
+      continue
+    fi
+
+    prose_row "$REAL_README" "$reg_target" > "$tmp"
+    README="$tmp"
+    run_readme_checks
+    README="$REAL_README"
+    ST_PROBES=$((ST_PROBES + 1))
+
+    if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$reg_want"* ]] && [[ "${FINDINGS[0]}" == *"$reg_target"* ]]; then
+      log "  ✓ check $reg_num fires when the row becomes prose about itself — $reg_target"
+    else
+      ST_FAILS=$((ST_FAILS + 1))
+      out=$(printf '%s; ' "${FINDINGS[@]:-(none)}")
+      printf '\033[31m  ✗ check %s: prose-ifying %s produced %d finding(s): %s\033[0m\n' \
+        "$reg_num" "$reg_target" "${#FINDINGS[@]}" "$out"
+    fi
+  done
+
   # run_readme_checks was last called against a mutated copy; leave the globals holding
   # the real tree so nothing downstream inherits a deliberately broken one.
   run_readme_checks
 
   log ""
   if [[ "$ST_FAILS" -eq 0 ]]; then
-    bold "✓ Self-test passed — $ST_PROBES probes: the boundary rule, the block scoping, and all six tree checks."
+    bold "✓ Self-test passed — $ST_PROBES probes: the boundary rules, the block scoping, all six tree checks, and both register checks."
     log ""
     return 0
   fi
@@ -431,6 +536,44 @@ drop_row() { # $1 = a README path, $2 = the entry name
         if (c == "" || c == " " || c == "/") { gone = 1; next }
       } }
     { print }' "$1"
+}
+
+# Replace the REGISTER row carrying this name with a prose sentence that still mentions
+# it, backticks and all. The registration is gone, every naive containment test still
+# passes, and only a row-aware check notices. Deletion would not prove that — a deleted
+# row fails a bare containment test too.
+prose_row() { # $1 = a README path, $2 = the entry name
+  awk -v n="$2" '
+    !gone && /^[[:space:]]*\|/ {
+      s = $0
+      sub(/^[[:space:]]*\|/, "", s)
+      i = index(s, "|")
+      if (i > 0) s = substr(s, 1, i - 1)
+      if (index(s, "`" n "`") > 0) {
+        gone = 1
+        printf "The `%s` entry is described here in prose rather than as a row.\n", n
+        next
+      }
+    }
+    { print }' "$1"
+}
+
+# Pick a name the register must carry, on a row that names it ALONE. The skills register
+# groups siblings on one row, and mutating one of those would produce three findings
+# where the probe asserts one — a proof that fails for a reason it did not mean to test.
+first_in_register() { # $1 = the register blob, $2… = candidate paths
+  local blob="$1"; shift
+  local p n
+  for p in "$@"; do
+    n=$(basename "${p%/}")
+    [[ "$n" == cloudinary-* ]] && continue
+    is_excluded "${p%/}" && continue
+    in_row "$blob" "$n" || continue
+    [[ "$(row_name_count "$blob" "$n")" == "1" ]] || continue
+    printf '%s' "$n"
+    return 0
+  done
+  return 1
 }
 
 # Self-test assertions. Counters are global because the helpers are called from inside

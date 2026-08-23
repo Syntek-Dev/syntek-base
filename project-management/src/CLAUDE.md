@@ -10,8 +10,8 @@ above) → this file → the target numbered folder's `CONTEXT.md`/`CLAUDE.md`.
 
 The live PM artefact store — every story, sprint, spec, decision, and plan that gates a
 feature into code, plus the post-implementation records, filed under numbered `NN-…/`
-folders that run in three tiers: specify (02–13), decide & plan (14–16), record (17–21) —
-plus `22-INCIDENTS`, the one record that is not anchored to a story.
+folders that run in three tiers: specify (02–14), decide & plan (15–17), record (18–22) —
+plus `23-INCIDENTS`, the one record that is not anchored to a story.
 
 ## How to work here
 
@@ -35,26 +35,28 @@ plus `22-INCIDENTS`, the one record that is not anchored to a story.
 - **Documentation only — never code, secrets, or `.env` content lands here.** GDPR,
   security, and IDOR obligations are _specified_ in these artefacts and _enforced_ in
   `code/`; keep them consistent with `code/docs/SECURITY.md`.
-- **Respect the tiers** — `00-ASSETS` is pre-workflow reference; `02–13` specify; `14–16`
-  decide (ADRs) then plan sprints then plan stories, all before code; `17–21` record
-  tests, reviews, findings, bugs, and refactoring after code. The **story plan (16) is the master
-  the developer codes from**; it references its sprint plan (15) and the decisions (14).
+- **Respect the tiers** — `00-ASSETS` is pre-workflow reference; `02–14` specify; `15–17`
+  decide (ADRs) then plan sprints then plan stories, all before code; `18–22` record
+  tests, reviews, findings, bugs, and refactoring after code. The **story plan (17) is the master
+  the developer codes from**; it references its sprint plan (16) and the decisions (15).
   Do not invent a new top-level folder without a matching workflow — **with one shipped
-  exception, `22-INCIDENTS`, and the reason generalises**: an incident is _unplanned_, so it has
+  exception, `23-INCIDENTS`, and the reason generalises**: an incident is _unplanned_, so it has
   no gate to pass through, and its procedure is a guide plus the `/incident` skill
   (`how-to/docs/INCIDENT-PRACTICE.md`). A folder may go workflow-less only when the work that
   fills it cannot be scheduled; everything schedulable still needs its gate.
-- **`USER-STORY-IDEAS/` is frozen once workflow `17` runs.** In folders `04–08` the per-story
+- **`USER-STORY-IDEAS/` is frozen once workflow `18` runs.** In folders `04–08` the per-story
   design is the audit trail of what each story asked for — never rewritten. Corrections go to
   `CONSOLIDATED-IDEAS/`, which is also **what gets built**: an artefact traced back to a
-  stage-1 design instead of the consolidated one reintroduces the drift `17` removed.
+  stage-1 design instead of the consolidated one reintroduces the drift `18` removed.
 - **The `NN-` numbers here are frozen — append only.** These folders hold artefacts a developer
   wrote, which the template has never seen. Renumbering one is a schema migration Copier cannot
   perform: on update it moves its own scaffolding to the new path and leaves every
   developer-created file behind, with no conflict and no error. A new artefact folder takes the
   next free number at the end, even where that breaks the workflow↔`src` mirroring — that
-  mirroring is a convenience, the developer's work is not. Enforced by
-  `code/src/scripts/audits/template-orphans.sh`.
+  mirroring is a convenience, the developer's work is not. **One exception:** a release may
+  renumber if it ships a migration in the same commit that moves the developer's files
+  (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could <!-- doc-references: template-only -->
+  be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
 - **Every new directory needs a `CONTEXT.md` and a `CLAUDE.md`.**
 - Instructional `.md` under `src/` (the `CONTEXT.md`/`CLAUDE.md` files) stay ≤ 300 code
   lines; the artefacts and templates themselves are exempt.

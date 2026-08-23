@@ -9,8 +9,9 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The API integration and contract test root — the Bruno collection under `api/` that runs
 against a **live** Django Ninja backend, plus `template-test.bru`, the annotated request template
-kept deliberately outside `api/` so the CLI never executes it. The collection holds
-configuration and environments only until the project has endpoints to assert against.
+kept deliberately outside `api/` so the CLI never executes it. At baseline the collection holds
+configuration, environments, and one folder — `api/health/`, the liveness and readiness contract,
+which is root-mounted rather than under `/api/` and therefore runnable before any endpoint exists.
 
 ## How to work here
 
@@ -21,7 +22,8 @@ configuration and environments only until the project has endpoints to assert ag
 - **Model:** Opus for authoring assertions and contract coverage and renames
   or running the script.
 - **Concrete steps:** copy `template-test.bru` into the right `api/<folder>/` and rename →
-  verify every endpoint against the live OpenAPI schema at `http://localhost:8000/api/docs`
+  verify every endpoint against the live OpenAPI schema at
+  `http://dev.<%PROJECT_SLUG%>.localhost:81/api/docs`
   → select the correct environment (`local`/`docker`/`staging`/`production`) → run
   `code/src/scripts/tests/api.sh`.
 - **Definition of done:** requests pass against the docker test stack; schema-verified;

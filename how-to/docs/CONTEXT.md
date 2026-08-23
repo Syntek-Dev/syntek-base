@@ -20,6 +20,7 @@ how-to/docs/
 ├── DEVELOPMENT.md           ← first-time setup, Docker Compose commands, env vars, troubleshooting
 ├── FEATURE-DEPLOY.md        ← feature deploy-coordination: edge CSP, body-size, secrets, beat, cache bust
 ├── GIT-WORKTREES.md         ← parallel development with git worktrees, Docker isolation, URLs
+├── HEALTH-PROBES.md         ← diagnosing a red /health/ready/ or a restart-looping container
 ├── INCIDENT-PRACTICE.md     ← running a live incident: declare, hand over, stand down, write up
 ├── OPERATOR-DOC-CRAFT.md    ← the standing conventions behind every guide a human executes
 ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/ (index)
@@ -34,6 +35,7 @@ how-to/docs/
 | `CELERY-FIRST-RUN.md`   | First-run review before enabling the Celery worker/beat per environment                                                                  |
 | `FEATURE-DEPLOY.md`     | Feature deploy-coordination: edge CSP, body size, secrets, beat, cache bust                                                              |
 | `GIT-WORKTREES.md`      | Parallel feature development with git worktrees and Docker isolation                                                                     |
+| `HEALTH-PROBES.md`      | Diagnosing a red probe — the two probes and what each touches, the three status words, the memo that can hide an outage                  |
 | `INCIDENT-PRACTICE.md`  | Running a live incident — declare, shift handover, stand down, postmortem                                                                |
 | `OPERATOR-DOC-CRAFT.md` | The reader, the two homes and their two length standards, the runbook spine, command discipline, execute-to-verify, the scope boundaries |
 | `AI-DICTIONARY.md`      | Plain-English glossary of AI-coding terms (index over ai-dictionary/)                                                                    |

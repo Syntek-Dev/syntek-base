@@ -13,13 +13,45 @@
 # consulted, copied, adapted or paraphrased (see the audits CLAUDE.md licence note).
 
 rules:
+  # WHY A DENY-LIST AND NOT A LIST OF DIRECTIVES.
+  #
+  # This clause used to name the eleven Alpine attributes somebody thought of on the day:
+  # x-data, x-init, x-html, x-model, x-effect, x-text, x-show, x-if, x-on:, x-bind: and
+  # the @ / : shorthands. `x-for` was not among them, so `x-for="item in {{ items }}"` —
+  # the identical injection, in an attribute Alpine evaluates identically — reported
+  # clean. Nor were `x-modelable`, `x-id`, or `x-bind` written WITHOUT its colon.
+  #
+  # The list was not merely incomplete, it was the wrong shape: a hand-written census of
+  # a framework's attribute surface goes stale by design, once per upstream release and
+  # once per plugin, and it goes stale SILENTLY because the rule keeps passing. The set
+  # that grows is the JavaScript-evaluating one; the set that does not is the handful of
+  # directives taking a plain string, a selector or no value at all. So the rule now names
+  # that small, closed set and matches everything else.
+  #
+  # NOT JavaScript, and therefore excluded (alpinejs.dev, verified 16/08/2026):
+  #   x-ref         a plain name, read back through $refs
+  #   x-teleport    a CSS selector
+  #   x-transition  a class list (x-transition:enter=...) or bare modifiers
+  #   x-cloak       no value
+  #   x-ignore      no value
+  # Everything else — including x-trap from the Focus plugin, which this project's own
+  # code/docs/accessibility/INTERACTION.md puts in the stack — takes an expression.
+  #
+  # The \b before x- is load-bearing: without it `hx-headers='{"x-csrftoken": "{{ ... }}"}'`
+  # would match, and that exact line ships in stack-htmx-templates/SKILL.md.
+  #
+  # The \s before the [@:] shorthands is load-bearing for the opposite reason, and it was
+  # measured rather than reasoned: `:[A-Za-z0-9_.-]+` on its own matches the `:enter` tail
+  # of `x-transition:enter="{{ classes }}"`, so the shorthand alternative silently undid
+  # the deny-list entry two lines above it. A shorthand has to START an attribute.
+  #
   - id: django-template-var-in-alpine-expression
     languages: [generic]
     severity: ERROR
     paths:
       include:
         - "*.html"
-    pattern-regex: '(?:x-data|x-init|x-html|x-model|x-effect|x-text|x-show|x-if|x-on:[A-Za-z0-9_.:-]+|x-bind:[A-Za-z0-9_.:-]+|@[A-Za-z0-9_.:-]+|:[A-Za-z0-9_.-]+)\s*=\s*"[^"]*\{\{'
+    pattern-regex: '(?:\bx-(?!ref\b|cloak\b|ignore\b|teleport\b|transition\b)[A-Za-z0-9_-]+(?::[A-Za-z0-9_.:-]+)?|\s[@:][A-Za-z0-9_.:-]+)\s*=\s*(?:"[^"]*|''[^'']*)\{\{'
     message: >-
       A Django template variable is interpolated into an Alpine expression. Alpine
       evaluates that attribute as JavaScript, so Django's HTML escaping does not protect
@@ -31,7 +63,14 @@ rules:
     metadata:
       doctrine: "Django auto-escaping is the XSS defence; never route a value round it."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
+      limitation: >-
+        Matches an attribute value opened with a single or a double quote. An unquoted
+        attribute value cannot contain a usable Alpine expression, so nothing is lost
+        there — but a plugin whose directive takes a plain STRING rather than an
+        expression (x-mask="99/99/9999" is the known case) would be a false positive if
+        it were ever adopted. Add it to the deny-list at that point, never widen the
+        match.
       authored: in-house
 
   - id: django-template-var-in-inline-script
@@ -52,7 +91,7 @@ rules:
     metadata:
       doctrine: "No inline script, and no server value interpolated into JavaScript."
       guide: code/docs/FRONTEND-CODING-PRINCIPLES.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       limitation: >-
         Matches only where the opening `<script>` tag and the `{{` share a line or are
         separated by plain text on the same run. A variable several lines into a long
@@ -76,7 +115,7 @@ rules:
     metadata:
       doctrine: "A partial is an XSS surface exactly like a full page."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house
 
   - id: django-autoescape-disabled-in-python
@@ -99,5 +138,5 @@ rules:
     metadata:
       doctrine: "Auto-escaping is a control, not a default to be tuned."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house

@@ -14,7 +14,8 @@ project-management/docs/
 ├── CONTEXT.md                 ← this file
 ├── GDPR-GUIDE.md              ← GDPR compliance — lawful basis, retention, data rights
 │   └── gdpr/                  ← data-rights/ compliance/
-├── GIT-GUIDE.md               ← branch strategy, commit format, PR flow, PR gates
+├── GIT-GUIDE.md               ← thin index over git/ (branches, commits, PRs, migration gates)
+│   └── git/                   ← BRANCHES-AND-WORKTREES.md · COMMITS.md · PR-AND-REQUIRED-CHECKS.md · MIGRATION-GATES.md
 ├── QA-GUIDE.md                ← QA approach — test scenarios, QA-US###.md format, story feedback
 ├── RESPONSIVE-DESIGN.md       ← redirect stub → see code/docs/RESPONSIVE-DESIGN.md
 ├── SECURITY-GUIDE.md          ← STRIDE threat modelling, severity levels, security documentation
@@ -26,7 +27,7 @@ project-management/docs/
 
 | Guide                  | Scope                                                                         |
 | ---------------------- | ----------------------------------------------------------------------------- |
-| `GIT-GUIDE.md`         | Branch strategy, commit format, PR flow, PR gates                             |
+| `GIT-GUIDE.md`         | Branches, commits, PR flow, migration gates (index over `git/`)               |
 | `VERSIONING-GUIDE.md`  | Two-tier semver, independent sub-package tracks, files to update on a bump    |
 | `SEO-CHECKLIST.md`     | **What must be true per page** — the method is `code/docs/DISCOVERABILITY.md` |
 | `GDPR-GUIDE.md`        | GDPR compliance guide — lawful basis, retention, data rights                  |

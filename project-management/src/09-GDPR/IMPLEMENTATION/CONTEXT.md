@@ -16,7 +16,7 @@ project-management/src/09-GDPR/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a record during `project-management/workflows/21-implementation-documentation/` for any story
+Write a record during `project-management/workflows/22-implementation-documentation/` for any story
 that processes personal data. Copy `GDPR-IMPL-US000-TEMPLATE.md`, open the story's plan
 in `../PLANNING/GDPR-PLAN-US###-*.md`, and document how each planned requirement was met.
 
@@ -34,6 +34,6 @@ in `../PLANNING/GDPR-PLAN-US###-*.md`, and document how each planned requirement
 - `GDPR-IMPL-US000-TEMPLATE.md` — the per-story record template
 - `../PLANNING/` — the pre-implementation plans these records answer
 - `../CONTEXT.md` — the GDPR folder overview and the six live registers
-- `project-management/workflows/21-implementation-documentation/` — where these records are written
+- `project-management/workflows/22-implementation-documentation/` — where these records are written
 
 **Last Updated**: <%DATE%>

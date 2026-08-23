@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -52,7 +52,7 @@ you add a directory, you add both — CI and the documentation gate both check.
 
 ```text
 code/
-├── docs/            ← 33 guides plus 20 sub-directories: architecture, security,
+├── docs/            ← 37 guides plus 20 sub-directories: architecture, security,
 │                      testing, rendering, RLS, tokens, discoverability, visual design
 ├── src/
 │   ├── django/      ← the application
@@ -67,7 +67,7 @@ code/
 An oversized guide splits into a sub-directory beside it and the entry point becomes a thin index
 — that is what the twenty sub-directories are, not a second category of document.
 
-**`code/src/scripts/` is the interface to everything** — around seventy shell scripts, grouped by
+**`code/src/scripts/` is the interface to everything** — around eighty shell scripts, grouped by
 what they do:
 
 | Group                            | Examples                                                                                                                                               |
@@ -76,7 +76,7 @@ what they do:
 | `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                         |
 | `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`                                                                      |
 | `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                     |
-| `audits/`                        | 21 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
+| `audits/`                        | 24 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
 | `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                       |
 | `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                      |
 | `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                 |
@@ -104,27 +104,28 @@ The heaviest layer, and the one that makes the process real.
 project-management/src/
 ├── 00-ASSETS/                    ← logos, export scripts — reference, not a stage
 │   ── discover, once per feature (01) ──
-├── 01-FEATURE/                   ← the wayfinder decision maps
-│   ── specify (02–13) ──
+├── 01-FEATURE-MAPS/              ← the wayfinder decision maps
+│   ── specify (02–14) ──
 ├── 02-STORIES/ 03-SPRINTS/ 04-DATABASE/ 05-USER-FLOW/ 06-BRAND-GUIDE/
 ├── 07-COMPONENTS/ 08-WIREFRAMES/ 09-GDPR/ 10-SECURITY/ 11-QA/ 12-SEO/ 13-API-DESIGN/
-│   ── decide & plan (14–16) ──
-├── 14-DECISIONS/ 15-SPRINT-PLANS/ 16-STORY-PLANS/
-│   ── record, per story (17–21) ──
-├── 17-TESTS/ 18-REVIEWS/ 19-FINDINGS/ 20-BUGS/ 21-REFACTORING/
-│   ── record, not per story (22) ──
-└── 22-INCIDENTS/
+├── 14-LOGGING/
+│   ── decide & plan (15–17) ──
+├── 15-DECISIONS/ 16-SPRINT-PLANS/ 17-STORY-PLANS/
+│   ── record, per story (18–22) ──
+├── 18-TESTS/ 19-REVIEWS/ 20-FINDINGS/ 21-BUGS/ 22-REFACTORING/
+│   ── record, not per story (23) ──
+└── 23-INCIDENTS/
 ```
 
-The numbered `src/` folders mirror the numbered `workflows/` up to `16`. **`16-STORY-PLANS/` is
+The numbered `src/` folders mirror the numbered `workflows/` up to `17`. **`17-STORY-PLANS/` is
 what a developer actually codes from** — it references the sprint plan, the decisions, and every
-02–13 specification.
+02–14 specification.
 
 **These numbers are frozen — append only, never renumber.** They hold artefacts you wrote, and
 Copier tracks only what it generated, so renumbering one strands your work silently on the next
 update (`14-UPDATING.md`).
 
-**`22-INCIDENTS/` is the exception to both patterns**, and knowing why saves you looking for
+**`23-INCIDENTS/` is the exception to both patterns**, and knowing why saves you looking for
 things that do not exist: it has no matching workflow, because an incident is unplanned and
 cannot be gated, and it is not anchored to a `US###`, because an incident is not caused by or
 owned by a story. It is a **PII-free** register — the substance of an incident lives in your
@@ -155,9 +156,10 @@ Not a layer — four working areas at the root, each written by one skill and re
 | `questionnaires/` | `/to-questionnaire` | Outbound discovery questionnaires                     |
 | `learning/`       | `/teach`            | A throwaway sandbox — the one place `/teach` writes   |
 
-In a **generated project** all four are tracked, because there they are the work. In `syntek-base`
-itself each carries a `.gitignore` that is excluded from generation, so the template can exercise
-its own scaffolding without shipping the test artefacts.
+In a **generated project** all four are tracked, because there they are the work — and they arrive
+empty, holding nothing but their `CONTEXT.md` and `CLAUDE.md`. `syntek-base` tracks its own too,
+so they sync across devices; `copier.yml` `_exclude` is what empties them at generation, since a <!-- doc-references: template-only -->
+note answering a question about the template means nothing in a project built from it.
 
 ## Root files
 
@@ -165,7 +167,7 @@ its own scaffolding without shipping the test artefacts.
 | ----------------------------------------------------- | ------------------------------------------------------------------- |
 | `CONTEXT.md`                                          | Project overview, full directory tree, layer map                    |
 | `REFERENCES.md`                                       | Curated index of every internal guide and external resource         |
-| `DESIGN.md`                                           | Design entry point — standards, constraints, Figma                  |
+| `DESIGN.md`                                           | Design entry point — standards, constraints, design workflows       |
 | `GAPS.md`                                             | Active gaps, blockers, sprint dependencies                          |
 | `DEFERRED.md`                                         | Work explicitly deferred to a named future story                    |
 | `VERSION`                                             | The single source of truth — a new project starts at `0.1.0`        |
@@ -185,7 +187,7 @@ its own scaffolding without shipping the test artefacts.
 | How to do a task properly           | The matching `workflows/NN-…/STEPS.md`       |
 | What a directory is for             | Its `CONTEXT.md`                             |
 | What I am allowed to do here        | Its `CLAUDE.md`                              |
-| Why a decision was made             | `project-management/src/14-DECISIONS/`       |
+| Why a decision was made             | `project-management/src/15-DECISIONS/`       |
 | What is currently broken or blocked | `GAPS.md`                                    |
 
 Or ask Claude — the structure exists so it can answer accurately.

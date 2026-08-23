@@ -63,12 +63,12 @@ model: opus
 
 Workflow 21 writes these; this checklist only confirms they exist before the PR. The record
 formats, templates, and destinations live in
-`project-management/workflows/21-implementation-documentation/` — never restate them here.
+`project-management/workflows/22-implementation-documentation/` — never restate them here.
 
-- [ ] `project-management/workflows/21-implementation-documentation/` run to completion for this story · _opus_
+- [ ] `project-management/workflows/22-implementation-documentation/` run to completion for this story · _opus_
 - [ ] Its `CHECKLIST.md` fully satisfied — every applicable IMPLEMENTATION record written from template and linked to `US###` · _opus_
 - [ ] No spec left with a `PLANNING/` artefact but no `IMPLEMENTATION/` record · _opus_
-- [ ] Findings record written to `project-management/src/19-FINDINGS/` (even if nothing was found) · _opus_
+- [ ] Findings record written to `project-management/src/20-FINDINGS/` (even if nothing was found) · _opus_
 - [ ] `/GAPS.md` and `/DEFERRED.md` updated from those findings · _opus_
 - [ ] Touched `CONTEXT.md`/`CLAUDE.md` complete and the code-review-graph refreshed — hard gate before commit (`.claude/CLAUDE.md` Section 6) · _opus_
 

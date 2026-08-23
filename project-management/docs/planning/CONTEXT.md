@@ -19,8 +19,8 @@ project-management/docs/planning/
 | File         | Owns                                                                         | Serves                                     |
 | ------------ | ---------------------------------------------------------------------------- | ------------------------------------------ |
 | `CADENCE.md` | The per-story loop, the fill trigger, `SPRINT_CAPACITY_SP`/`SPRINT_GRACE_SP` | Every workflow `01`–`17`                   |
-| `STORIES.md` | Connextra format, statuses, Fibonacci estimation, the story plan             | `src/02-STORIES/` · `src/16-STORY-PLANS/`  |
-| `SPRINTS.md` | MoSCoW, exec-order vs sprint-number, the four phases, the sprint plan        | `src/03-SPRINTS/` · `src/15-SPRINT-PLANS/` |
+| `STORIES.md` | Connextra format, statuses, Fibonacci estimation, the story plan             | `src/02-STORIES/` · `src/17-STORY-PLANS/`  |
+| `SPRINTS.md` | MoSCoW, exec-order vs sprint-number, the four phases, the sprint plan        | `src/03-SPRINTS/` · `src/16-SPRINT-PLANS/` |
 
 **The capacity figure is stated once**, in `CADENCE.md`. `SPRINTS.md` points at it rather than
 repeating it — two copies of a tunable number is how they drift apart.
@@ -37,6 +37,6 @@ Same pattern as `../GDPR-GUIDE.md` over `../gdpr/`: a thin index, sub-documents 
 
 - `../PLANNING-GUIDE.md` — the index
 - `project-management/workflows/CONTEXT.md` — the workflow index and cadence diagram
-- `project-management/workflows/01-feature/` — the map the loop is cut from
+- `project-management/workflows/01-feature-map/` — the map the loop is cut from
 
 **Last Updated**: <%DATE%>

@@ -12,9 +12,9 @@
 
 ## 1 — Tokens consumed
 
-| Token | In `apps.design_tokens` | Resolves in token CSS | Matches consolidated value | Evidence |
-| ----- | ----------------------- | --------------------- | -------------------------- | -------- |
-|       |                         |                       |                            |          |
+| Token | In the token layer | Resolves in token CSS | Matches consolidated value | Evidence |
+| ----- | ------------------ | --------------------- | -------------------------- | -------- |
+|       |                    |                       |                            |          |
 
 ---
 
@@ -28,7 +28,7 @@ bash code/src/scripts/audits/css-tokens.sh
 | -------------- | -------------------------------------------- |
 | Result         | Clean / Failures                             |
 | Failures found | [PLACEHOLDER — paste the offending lines]    |
-| Routed to      | [PLACEHOLDER — `../../20-BUGS/` if literals] |
+| Routed to      | [PLACEHOLDER — `../../21-BUGS/` if literals] |
 
 - [ ] Audit run and its **actual output** recorded above
 - [ ] No raw colour, spacing, or size literal in this story's component CSS
@@ -42,8 +42,8 @@ bash code/src/scripts/audits/css-tokens.sh
 | ----- | --------- | ------------------------------------- | ------------- | --------- |
 | D-001 |           |                                       |               |           |
 
-**Routing:** consolidation missed a needed token → `../../19-FINDINGS/` · build invented one →
-`../../20-BUGS/` · accepted trade-off → note here with a reason.
+**Routing:** consolidation missed a needed token → `../../20-FINDINGS/` · build invented one →
+`../../21-BUGS/` · accepted trade-off → note here with a reason.
 
 - [ ] No unexplained deviation remains
 

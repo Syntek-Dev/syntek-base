@@ -16,7 +16,7 @@ mounting, auth, tools, tests, and hardening.
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Tools →
   `backend` + `stack-fastmcp` (Opus); auth and the threat model → `security`; tests →
   `test-writer`. Read `CONTEXT.md` first. **Entered from
-  `project-management/workflows/19-api-code/`**, never directly from a design gate. Hard
+  `project-management/workflows/20-api-code/`**, never directly from a design gate. Hard
   gates before Step 1: `code/docs/mcp-server/TOOL-DESIGN.md` and
   `code/docs/mcp-server/AUTH-AND-THREATS.md`.
 - **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`), and its
@@ -56,6 +56,6 @@ mounting, auth, tools, tests, and hardening.
 - **Produced by following it:** `config/mcp.py`, the `config/asgi.py` composition,
   `apps/<app>/mcp_tools.py`, the verifier under `apps/core/`, and their tests. The
   implementation record is written by
-  `project-management/workflows/21-implementation-documentation/`, not here.
+  `project-management/workflows/22-implementation-documentation/`, not here.
 - Numeric `NN-` folder prefix; documentation `SCREAMING-SNAKE-CASE.md`; tool modules
   `mcp_tools.py` beside the app's `api.py`.

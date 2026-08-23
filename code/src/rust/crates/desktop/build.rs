@@ -18,9 +18,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // different default at the cost of a deprecated one. It is the structural substrate
     // only: the project's own look is composed over it from the Palette and StyleMetrics
     // globals in ui/app.slint.
-    //
-    // Rule and rationale: code/docs/visual-design/DESKTOP.md. Gate:
-    // code/src/scripts/desktop/style-check.sh.
     let config = slint_build::CompilerConfiguration::new().with_style("fluent".into());
     slint_build::compile_with_config("ui/app.slint", config)?;
     Ok(())

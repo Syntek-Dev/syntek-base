@@ -108,7 +108,7 @@ Only `.env.*.example` templates are tracked.
 Cut a release.
 ```
 
-`project-management/workflows/23-release/` via the `release` skill: version bump,
+`project-management/workflows/24-release/` via the `release` skill: version bump,
 `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`, tag, deploy. Versioning is single-track
 semver — rules in `project-management/docs/VERSIONING-GUIDE.md`.
 

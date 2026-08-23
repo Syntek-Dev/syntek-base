@@ -17,9 +17,9 @@ model: opus
 ## Gate
 
 - [ ] The work meets one of the two grounds — a guarantee Python cannot make, or a **measured**
-      hot path (else use `18-backend-code` and the `backend` skill) · _opus_
+      hot path (else use `19-backend-code` and the `backend` skill) · _opus_
 - [ ] The design was grilled and confirmed before any code was written · _opus_
-- [ ] Entered from `project-management/workflows/18-backend-code/`, not from a design gate
+- [ ] Entered from `project-management/workflows/19-backend-code/`, not from a design gate
 
 ## Boundary
 
@@ -78,4 +78,4 @@ model: opus
 
 - [ ] `target/` and every built `.so`/`.pyd`/`.dylib` excluded from the commit
 - [ ] `code/src/rust/CONTEXT.md` updated if the tree changed
-- [ ] Handed to `21-implementation-documentation` for the record, docs closeout and graph refresh
+- [ ] Handed to `22-implementation-documentation` for the record, docs closeout and graph refresh

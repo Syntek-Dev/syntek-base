@@ -1,6 +1,6 @@
 # project-management/src/07-COMPONENTS/CONSOLIDATED-IDEAS
 
-**Stage 2** — the decided component set. Written by `workflows/17-consolidate-design-work/` once
+**Stage 2** — the decided component set. Written by `workflows/18-consolidate-design-work/` once
 every story has been planned, merging the per-story needs in `../USER-STORY-IDEAS/` into one set
 of components with variants, and re-running `../component-build/components.py`.
 
@@ -40,7 +40,7 @@ interaction, and its announced role. WCAG 2.2 AA is not a later pass
 
 ## When to write one
 
-- During `workflows/17-consolidate-design-work/`, after every story has cleared `16-story-plans`
+- During `workflows/18-consolidate-design-work/`, after every story has cleared `17-story-plans`
 - Alongside `../../06-BRAND-GUIDE/CONSOLIDATED-IDEAS/` — they share a palette
 
 ## Cross-references

@@ -17,25 +17,28 @@ Four axes, in the order they bite: **invocation** (how it is reached), **informa
 
 ## 1. Invocation — how the skill is reached
 
-Two ways in that the description controls, trading two different costs — and a third, at the end
-of this section, that it cannot reach. The runtime's opt-out key is declined here
-(`FRONTMATTER.md`), so for the first two the **description wording is the whole lever**.
+**Every skill is typeable as `/name`, and no frontmatter key grants or withholds that.** What the
+description controls is whether the skill **also fires unaided** — two phrasings, trading two
+different costs, and a third route at the end of this section the description cannot reach. The
+runtime's opt-out key is declined here (`FRONTMATTER.md`), so the **description wording is the
+whole lever**.
 
 - **Model-auto-loaded.** A description opening with a leading word and a rich "**Load when…**"
   trigger list lets the agent fire the skill on its own, and lets other skills reach it. The
-  price is **context load**: the description sits in the window every turn, spending tokens and
-  attention. Use this when the agent must reach the skill unaided. The stack skills and
-  `grilling` are model-auto-loaded — `grilling`'s description names every design surface and the
-  `/grill-*` triggers, so it fires reliably.
+  price is **context load**: every description is resident every turn, so a rich trigger list
+  spends tokens and attention a thin one does not. Use this when the agent must reach the skill
+  unaided. The stack skills and `grilling` are model-auto-loaded — `grilling`'s description names
+  every design surface and the `/grill-*` triggers, so it fires reliably.
 - **User-typed `/name`.** A description phrased around explicit invocation ("Invoke by typing
-  `/grill-me`…") keeps the skill primarily human-reached: the human is the index that must
-  remember it exists. That is **cognitive load** — not a cost to minimise but the price of human
-  agency; spend it where human judgement should gate the skill. `grill-me` and `grill-with-docs`
-  are the worked example: two thin entry points, each typed by hand.
+  `/grill-me`…") keeps the skill **human-gated** — still typeable, but no longer firing on its
+  own, so the human is the index that must remember it exists. That is **cognitive load** — not a
+  cost to minimise but the price of human agency; spend it where human judgement should gate the
+  skill. `grill-me` and `grill-with-docs` are the worked example: two thin entry points, each
+  typed by hand.
 
 **Context load vs cognitive load** is the trade. Pick model-auto-loading only when the agent (or
-another skill) must reach the skill itself; otherwise phrase for `/name` invocation and pay no
-standing context cost.
+another skill) must reach the skill itself; otherwise phrase for `/name` invocation and keep the
+description thin. Neither choice affects whether `/name` can be typed.
 
 **Writing the description.** It does two jobs — state what the skill is, and list the branches
 that trigger it — and every word is standing context load, so it earns harder pruning than the
@@ -51,6 +54,15 @@ at **83.3% strict against 97.6% loose**: the right entry is nearly always _prese
 The information was there and the wording was blunt, so the gap is a **description defect, not a
 structural one**, and no amount of merging or splitting fixes it. Re-run the same shape against
 the roster you have; the numbers above are this project's at that date, not a constant.
+
+**The roster is a shared budget, and it is spent per skill rather than per author.** Every
+`description` is written to be discriminating on its own, and lengthening one is always locally
+correct; what nobody measures is the roster. Measured 13/08/2026: **65 entries cost more than
+the 85 they replaced**, because two decisions in different sessions moved one quantity and
+neither re-measured. There is no ratchet here and deliberately so — a per-change token
+measurement is not available the way a line count is — so the discipline is the one this
+paragraph states: **when you lengthen a description, say what the roster now costs**, not only
+what your entry now says (the fog-of-war argument, settled 23/08/2026).
 
 So a new or edited description **names the near-neighbours it must be distinguishable from, and
 says how a reader tells them apart**, in the change that lands it. Live clusters to sharpen

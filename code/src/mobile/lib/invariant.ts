@@ -1,9 +1,9 @@
 /**
  * The mobile surface's programmer-error type, and the exhaustiveness guard built on it.
  *
- * The name matches the backend's `InvariantViolation` deliberately: the register in
- * how-to/src/INVARIANTS.md has one `On breach` column for every surface, and it only reads
- * the same on both if the type does. Rule: code/docs/NEGATIVE-SPACE.md.
+ * The name matches the backend's `InvariantViolation` deliberately: the project's invariant
+ * register carries one `On breach` column covering every surface, and it only reads the same
+ * on both if the type does.
  */
 
 /**

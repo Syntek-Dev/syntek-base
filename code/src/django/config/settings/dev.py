@@ -11,12 +11,22 @@ DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]
 
+# The browser reaches the dev stack through nginx on host port 81, never Django's
+# container port 8000 — which is unpublished, so an origin naming it can never match.
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "http://dev.<%PROJECT_SLUG%>.localhost:81",
+    "http://127.0.0.1:81",
+    "http://localhost:81",
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# MAILERS, not EMAIL_BACKEND: Django 6.1 deprecates the whole EMAIL_* family with a
+# RemovedInDjango70Warning, and the two forms are mutually exclusive — defining MAILERS
+# alongside any deprecated EMAIL_* setting raises ImproperlyConfigured rather than
+# preferring one (django/conf/__init__.py). "default" is the alias Django looks for
+# (django/core/mail/handler.py).
+MAILERS = {
+    "default": {"BACKEND": "django.core.mail.backends.console.EmailBackend"},
+}
 
 # A variable the view never passed renders as an empty string by default, so a typo looks
 # like absent data. This makes it visible instead. Deliberately absent from staging and

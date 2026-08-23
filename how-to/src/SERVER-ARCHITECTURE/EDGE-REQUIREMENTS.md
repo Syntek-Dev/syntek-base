@@ -2,7 +2,7 @@
 
 **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%ORG_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
@@ -30,8 +30,11 @@ frontend upstream to size or route.
 
 - **Source:** `pyproject.toml` — "Security headers (CSP included) are set at the edge
   in the Nix server repo — NEVER in this repo — so django-csp is deliberately absent."
-  Reaffirmed in `code/src/django/templates/base.html` (header comment; HTMX configured
-  without inline JS, CSP-clean). Deploy side: `deploy:` the Nginx module (CSP baseline +
+  Reaffirmed in `code/docs/FRONTEND-CODING-PRINCIPLES.md` — the **CSP-clean** rule under
+  _Templates & django-components_: no inline `<script>` or `<style>`, HTMX configured
+  through a `<meta>` tag, per-page JS a static file. That guide is where the rule lives;
+  the base template a project writes is built to it, and is cited nowhere here because it
+  holds no row in `how-to/src/PROJECT-PATHS.md`. Deploy side: `deploy:` the Nginx module (CSP baseline +
   per-app `cspDirectives` merge; `add_header Content-Security-Policy … always`).
 - **Current status:** _TBD — reconcile against this project's live code._ Design
   intent: the app ships **no** CSP or security-header middleware; dev/test run without
@@ -171,10 +174,8 @@ frontend upstream to size or route.
   contract (job `<%ORG_SLUG%>-backend` → `127.0.0.1:8000` `/metrics/`) is stated here.
   **No Prometheus config file ships in this repo** — there is no
   `code/src/docker/prometheus/prometheus.yml`, so the build-side statement of the job is
-  prose, in two places: `HEALTH-CONTRACT.md` Section 2 and `code/docs/logging/OBSERVABILITY.md`
-  (its "Prometheus scrape config" block). **Both spell the job `<%ORG_SLUG%>-web`** where
-  this contract says `<%ORG_SLUG%>-backend`; the spellings are unreconciled. `GAPS.md`
-  carries no entry for the Gatus or metrics deploy — the obligation is stated below.
+  prose. `GAPS.md` carries no entry for the Gatus or metrics deploy — the obligation is
+  stated below.
 - **Current status:** _TBD — set per deployment._ App side ships the endpoints; deploy
   side supplies the Gatus module, the Prometheus `extraScrapeConfigs` for the single app
   job, and the **host-level wiring** — the actual scrape entries, the
@@ -186,6 +187,12 @@ frontend upstream to size or route.
   `extraScrapeConfigs` app job (→ `127.0.0.1:8000` `/metrics/`), and the `/metrics/`
   `allow 127.0.0.1; deny all` restriction on the vhost. There is exactly **one** scrape
   job — the single Django app process — no second frontend job.
+- **Order, because the app does not serve `/metrics/` yet.** `django_prometheus` is a declared
+  dependency that is not in `INSTALLED_APPS`, so the path 404s today. The scrape job is
+  provisioned **first** and is itself the trigger that wires the app side — recorded at
+  `code/docs/logging/OBSERVABILITY.md` → _Deferred, with a trigger_. Provision it expecting a
+  404 until that lands; do not defer the job waiting for the endpoint, or each side waits for
+  the other.
 
 ## 9. Cloudinary token-based auth for signed media URLs
 

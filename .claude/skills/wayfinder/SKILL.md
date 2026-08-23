@@ -24,7 +24,7 @@ nodes** to grilling to settle. Wayfinder is the cartographer; grilling is the pe
 wayfinder when the work spans several stories and cannot be resolved in one grilling pass; reach
 straight for `/grill-with-docs` when it is a single surface.
 
-**The map is a markdown artefact** — `project-management/src/01-FEATURE/MAP-<FEATURE>.md`. It is a
+**The map is a markdown artefact** — `project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md`. It is a
 low-resolution index, never a storage vault: detail lives in the ADR, plan, or story each entry
 links to. The decisions it graduates land in their existing homes (ADRs, plans, stories,
 `GAPS.md`, `DEFERRED.md`); the stories it spawns sync to ClickUp through the existing
@@ -44,7 +44,7 @@ Wayfinder runs in one of three modes per session: **SUGGEST** (optional, before 
 feature — mine the register for candidates), **CHART** (one session — read the register, pin the
 destination, map the frontier, write the map) or **RESOLVE** (later sessions — settle the next
 frontier node, graduate it, redraw the frontier). A charted epic reads as one
-`project-management/src/01-FEATURE/MAP-<FEATURE>.md` whose resolved nodes fan out into the ADRs
+`project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` whose resolved nodes fan out into the ADRs
 they became, the stories they were sliced into, and any cross-story blocker left in `GAPS.md`.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
@@ -54,9 +54,10 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 Run when the next feature is not obvious, or on a cadence — after a release, or at the start of a
 planning cycle — to see what the register has accumulated.
 
-1. **Read the whole register.** `GAPS.md` (every open entry, ignoring `✅ CLOSED` rows) and
-   `DEFERRED.md` (every row whose target story has not shipped). Read `project-management/src/`
-   for the `IMPLEMENTATION/` and `19-FINDINGS/` records behind them — a gap's one-line summary is
+1. **Read the whole register.** `GAPS.md` (every open entry, ignoring `✅ CLOSED` rows and any
+   `## Standing limitations` section — an accepted property is not an open entry and can never
+   close) and `DEFERRED.md` (every row whose target story has not shipped). Read `project-management/src/`
+   for the `IMPLEMENTATION/` and `20-FINDINGS/` records behind them — a gap's one-line summary is
    rarely the whole story. _Done when every open entry is in view with its origin._
 2. **Cluster into candidate features.** Group entries that share a cause, a surface, or a
    dependency: five deferrals all waiting on the same missing table are **one** feature, not five.
@@ -89,10 +90,11 @@ mode — no map, and no edit to the register.
 4. **Wire the blocking edges.** In a second pass, write each node's blockers as prose links to the
    nodes it depends on, so the takeable edge — the unblocked nodes — is visible at a glance.
    _Done when every Frontier node names its blockers (or "none") and at least one node is unblocked._
-5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE/` with the
-   sections below; tag each Frontier node with its type (research / tracer / grilling / task), and
-   record the triaged register entries under **Register claimed**. Add the map to the index in
-   `src/01-FEATURE/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
+5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with the
+   sections below; tag each Frontier node with its type (research / tracer / grilling / task),
+   record the triaged register entries under **Register claimed**, and list the buildable slices
+   under **Slices**, each with its flag manifest (`N/A` omitted). Add the map to the index in
+   `src/01-FEATURE-MAPS/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
    low-resolution route rather than a storage vault._
 6. **Fire the research nodes, then stop.** Dispatch any research nodes (facts, not decisions) in
    parallel now — they need no human. Charting is one session: do **not** settle grilling, tracer,
@@ -147,6 +149,7 @@ mode — no map, and no edit to the register.
 ## Notes                 domain, skills to load, standing preferences, the umbrella PLAN/ADRs
 ## Register claimed      GAPS.md / DEFERRED.md entries this feature closes or is blocked by
 ## Resolved decisions    settled — each links to the ADR-### / STORY-PLAN-US### / US### it became
+## Slices                the buildable slices, each with its flag manifest — the base for stories
 ## Frontier              open decisions in dependency order; blocking edges as prose links
 ## Fog of war            in-scope but not yet sharp enough to be a node
 ## Out of scope          consciously ruled out, plus why
@@ -157,7 +160,7 @@ mode — no map, and no edit to the register.
 Wayfinder **claims** a register entry: it records on the map that this feature will retire it, so
 the intent survives into the stories cut from the map. It never edits `GAPS.md` or `DEFERRED.md`
 to mark anything done. **Closing belongs to
-`project-management/workflows/21-implementation-documentation/`**, which owns register routing and
+`project-management/workflows/22-implementation-documentation/`**, which owns register routing and
 marks an entry `✅ CLOSED <date>` (or removes the `DEFERRED.md` row) against shipped code. A claim
 is a promise; a close is evidence. Crossing that line puts a gap in the closed state with nothing
 built behind it.
@@ -174,13 +177,13 @@ built behind it.
 
 ### Graduation table (RESOLVE step 4)
 
-| A settled decision that is…                                                   | Graduates to…                                                                                                             |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| architectural, hard to reverse, a genuine trade-off (the three-test ADR gate) | a new `ADR-###-<TITLE>.md` in `…/14-DECISIONS/`, taking the next free number                                              |
-| a buildable slice of the epic                                                 | a story + plan — `…/02-STORIES/US###.md` + `…/16-STORY-PLANS/STORY-PLAN-US###-*.md` (copy `STORY-PLAN-US000-TEMPLATE.md`) |
-| an active blocker or cross-repo dependency                                    | a `GAPS.md` entry                                                                                                         |
-| deferred to a named future story                                              | a `DEFERRED.md` row, targeting the future `US###`                                                                         |
-| terminology (one canonical word per concept)                                  | the glossary of the nearest `CONTEXT.md` (reference: `code/docs/data-structures/DOMAIN-MODELLING.md`)                     |
+| A settled decision that is…                                                   | Graduates to…                                                                                                      |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| architectural, hard to reverse, a genuine trade-off (the three-test ADR gate) | a new `ADR-###-<TITLE>.md` in `…/15-DECISIONS/`, taking the next free number                                       |
+| a buildable slice of the epic                                                 | a **Slices** row with its flag manifest — never a written story; `02-story-creation` cuts `US###.md` from that row |
+| an active blocker or cross-repo dependency                                    | a `GAPS.md` entry                                                                                                  |
+| deferred to a named future story                                              | a `DEFERRED.md` row, targeting the future `US###`                                                                  |
+| terminology (one canonical word per concept)                                  | the glossary of the nearest `CONTEXT.md` (reference: `code/docs/data-structures/DOMAIN-MODELLING.md`)              |
 
 The ADR three-test gate and the glossary-into-`CONTEXT.md` move are exactly `grill-with-docs` —
 that skill owns which artefact a resolved decision lands in; wayfinder only decides that it lands.
@@ -201,7 +204,9 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
 
 - **Resolving during a chart session** — charting draws the frontier; it settles nothing.
 - **Storing decision detail in the map** — the map is a low-resolution index; detail lives in the
-  ADR, plan, or story it links to.
+  ADR, plan, or story it links to. A **Slices** row is a manifest of which gates run, not their design.
+- **Writing a story from the map** — a slice graduates to a row, never to `US###.md`;
+  `02-story-creation` owns the story and allocates its number.
 - **Asking what the repo can answer** — look facts up before putting a question to <%DEVELOPER_NAME%>.
 - **Grilling the whole epic in one sitting** — that is what the frontier is for; each node gets its
   own grilling.
@@ -210,7 +215,7 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
 - **Treating the register as write-only** — a feature charted without reading `GAPS.md` and
   `DEFERRED.md` re-decides what a past story already deferred, and leaves the debt it happens to
   retire unrecorded and therefore unclosed.
-- **Closing a register entry from here** — wayfinder claims; `21-implementation-documentation`
+- **Closing a register entry from here** — wayfinder claims; `22-implementation-documentation`
   closes, against shipped code.
 - **Suggesting a feature that is one story** — a single small gap is a story, not a feature; route
   it to `02-story-creation` rather than inflating it into a map.
@@ -228,14 +233,14 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/grill-with-docs/SKILL.md` — how a grilling node records its decision (the
   three-test ADR gate + glossary-into-`CONTEXT.md`).
 - `.claude/skills/grill-me/SKILL.md` — the stateless twin, for thinking a node through without recording.
-- `project-management/src/01-FEATURE/CONTEXT.md` — the map index, where a new map is registered.
-- `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
+- `project-management/src/01-FEATURE-MAPS/CONTEXT.md` — the map index, where a new map is registered.
+- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
   slice graduates into.
-- `project-management/src/14-DECISIONS/` — ADR home; take the next free `ADR-###`.
+- `project-management/src/15-DECISIONS/` — ADR home; take the next free `ADR-###`.
 - `project-management/src/02-STORIES/US###.md` — the story a slice becomes; synced to ClickUp by `.github/workflows/clickup-sync.yml`.
 - `GAPS.md` · `DEFERRED.md` — read at both ends: the standing register that SUGGEST mines for
   candidate features and CHART triages, and where blockers and named-future-story deferrals
-  graduate. Closed by `project-management/workflows/21-implementation-documentation/`, never here.
+  graduate. Closed by `project-management/workflows/22-implementation-documentation/`, never here.
 - `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook used to map the frontier.
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the domain-modelling reference for terminology nodes.
 - `.claude/plugins/*.py` — the read-only helpers for looking project facts up.

@@ -1,5 +1,5 @@
 {% load core %}{# ============================================================================
-  The 500 page — a programmer error, per code/docs/NEGATIVE-SPACE.md.
+  The 500 page — what a programmer error looks like to the person who hit it.
 
   THREE THINGS THIS FILE MUST NOT DO, each for a reason that is not obvious:
 
@@ -15,9 +15,9 @@
      delivery is as likely to be broken as anything else. Plain semantic HTML always renders.
 
   3. It must not say what went wrong. The body is generic; the internals go to the log and
-     the error tracker (code/docs/NEGATIVE-SPACE.md Section The error taxonomy).
+     the error tracker, because a detail string here is a disclosure to whoever triggered it.
 
-  THE COPY BELOW IS A PLACEHOLDER, exactly like the worked row in how-to/src/INVARIANTS.md.
+  THE COPY BELOW IS A PLACEHOLDER, shipped to be replaced rather than to be used.
   Rewrite it at first-time setup against how-to/src/BRAND-VOICE.md Section 3 — the template may not
   invent a voice (Section 2, "Use the voice — do not invent it"). Replace the `lang` attribute at
   the same time if this project is not en-GB.

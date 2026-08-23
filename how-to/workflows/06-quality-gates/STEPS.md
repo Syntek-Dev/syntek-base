@@ -36,8 +36,12 @@ bash code/src/scripts/syntax/format.sh
 bash code/src/scripts/syntax/lint.sh
 ```
 
-`format.sh` rewrites; `lint.sh` reports. Fix lint findings properly rather than suppressing
-them — a `noqa` needs a reason beside it, and a reviewer will ask.
+**Both of those report; neither writes.** `format.sh` defaults to a dry-run check — pass `--fix`
+to actually reformat. Reading "all files are correctly formatted" from a bare run and assuming
+the tree was rewritten is how a formatting failure reaches CI.
+
+Fix lint findings properly rather than suppressing them — a `noqa` needs a reason beside it, and
+a reviewer will ask.
 
 ---
 
@@ -49,9 +53,10 @@ them — a `noqa` needs a reason beside it, and a reviewer will ask.
 bash code/src/scripts/syntax/check.sh
 ```
 
-basedpyright runs in strict mode. A new `Any`, a silenced error, or a widened type to make
-the checker quiet is a change to the codebase's guarantees, not a fix — treat it as a
-reviewable decision.
+basedpyright runs in **`standard`** mode — `pyproject.toml:166` and
+`code/src/django/pyrightconfig.json:7` both set it, and neither says `strict`. A new `Any`, a
+silenced error, or a widened type to make the checker quiet is still a change to the codebase's
+guarantees, not a fix — treat it as a reviewable decision.
 
 ---
 
@@ -72,7 +77,13 @@ bash code/src/scripts/audits/seam-contract.sh # server-contract Source provenanc
 bash code/src/scripts/audits/negative-space.sh # the invariant register agrees with the code
 bash code/src/scripts/audits/negative-space.sh --self-test # ...and the detector still works
 bash code/src/scripts/audits/docs-pairing.sh  # CONTEXT.md orients, CLAUDE.md instructs
+bash code/src/scripts/audits/doc-references.sh # every citation resolves in every project
+bash code/src/scripts/audits/doctrine-drift.sh # one rule, one home — catch the second copy
 bash code/src/scripts/audits/skill-conformance.sh # skill frontmatter + routing section
+bash code/src/scripts/audits/routing-skills.sh # every skill named in frontmatter exists
+bash code/src/scripts/audits/dict-discipline.sh # a dict used as a record where a type belongs
+bash code/src/scripts/audits/conflict-markers.sh # no unresolved merge marker anywhere
+bash code/src/scripts/audits/template-orphans.sh # artefacts stranded by a template update
 bash code/src/scripts/audits/static-analysis.sh # template XSS + cross-file taint (needs opengrep)
 bash code/src/scripts/audits/css-slop.sh      # AI-slop, CSS half
 bash code/src/scripts/audits/template-slop.sh # AI-slop, markup half
@@ -100,12 +111,12 @@ something; treat each as a question to answer.
 bash code/src/scripts/tests/all.sh --coverage
 ```
 
-Floors: 75% line and branch, 90% auth. Depth and failure routing are workflow
-`05-testing-and-coverage`.
+The floors and the promotion tier are `code/docs/testing/COVERAGE.md`. Depth and failure
+routing are workflow `05-testing-and-coverage`.
 
-**Check the branch you are targeting.** CI applies an **80%** floor on `staging` and
-`main` — above what the runner enforces — so a change that is green locally can still fail
-promotion. If you are heading for either, confirm you clear 80% before pushing.
+**Check the branch you are targeting.** The floor rises on the promotion branches, so a change
+that is green on a feature branch can still fail promotion. If you are heading for one, confirm
+you clear the higher number before pushing.
 
 ---
 
@@ -114,15 +125,41 @@ promotion. If you are heading for either, confirm you clear 80% before pushing.
 > **Model:** opus
 
 ```bash
-bash .claude/hooks/pre-pr-check.sh
+echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh
 ```
 
-This is the same eight-gate sequence CI runs, in the same order. Green here should mean
-green there — and when it does not, the mirroring itself is the bug: fix the script or the
-workflow so they agree, rather than pushing repeatedly to discover what CI wants.
+**That pipe is required, and the script is unusable without it.** `pre-pr-check.sh` is a
+Claude Code `PreToolUse` hook before it is anything else: it reads a JSON payload from stdin
+(`:30`) and exits 0 immediately unless the payload's command matches `gh pr create` (`:35`).
+Run bare, it has two modes and **neither runs a single gate** — with a terminal on stdin it
+blocks forever inside `cat`, and with stdin closed it exits **0** having checked nothing. A
+silent exit 0 from this command is the false green it exists to prevent, so treat any run that
+prints nothing as a failed invocation rather than a clean tree.
 
-In **this template repository** several gates report success with nothing to run, because
-`uv.lock` is absent by design. That is expected here and not a sign of a broken gate; in a
-generated project every gate executes.
+This is the same eight-gate sequence CI runs, in the same order, plus `audits` as a ninth in
+this template. Green here should mean green there — and when it does not, the mirroring itself
+is the bug: fix the script or the workflow so they agree, rather than pushing repeatedly to
+discover what CI wants.
 
-Only then raise the PR — `project-management/workflows/22-pr-and-review/`.
+In **this template repository** the hook runs a ninth gate, `audits`, and is otherwise the
+same: `uv.lock` is committed here (16/08/2026), so the django image builds and every gate has
+a subject. A gate reporting nothing to run is a defect here, not the expected state.
+
+Only then raise the PR — `project-management/workflows/23-pr-and-review/`.
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
+
+---
+
+## Completion
+
+Run through `CHECKLIST.md` before marking this workflow complete.

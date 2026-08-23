@@ -21,7 +21,7 @@ Use this workflow when building or changing the **native desktop application** a
 API, or a release build.
 
 Use it only when the work belongs on the desktop **surface**. A feature that should be a web page
-belongs in `01-new-feature`; a native primitive with no UI belongs in `12-rust-extension`.
+belongs in `01-implement-story`; a native primitive with no UI belongs in `12-rust-extension`.
 
 **Desktop-only.** This workflow exists only in a project generated with `INCLUDE_DESKTOP`, which is
 itself only offered when `INCLUDE_RUST` is true.
@@ -54,11 +54,11 @@ itself only offered when `INCLUDE_RUST` is true.
 ### Related reading
 
 - `code/docs/RUST.md` — the workspace this crate belongs to
-- `code/docs/rust/SUPPLY-CHAIN.md` — why two AccessKit advisories are accepted
+- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy and how an advisory may be suppressed
 - `code/src/scripts/desktop/CONTEXT.md` — the desktop scripts and the attribution gate
 - `code/workflows/12-rust-extension/` — when the window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here
-- `project-management/workflows/20-frontend-code/` — **this workflow is entered from there**
-- `project-management/workflows/21-implementation-documentation/` — writes the implementation
+- `project-management/workflows/21-frontend-code/` — **this workflow is entered from there**
+- `project-management/workflows/22-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

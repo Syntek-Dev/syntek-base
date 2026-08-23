@@ -14,7 +14,7 @@ Single-track semver: `MAJOR.MINOR.PATCH`.
 declared public API that makes MAJOR decidable at all, the increment table, `0.y.z` and `1.0.0`,
 the pre-release and build-metadata grammar, precedence, the deprecation policy, and how to recover
 from a wrong release. How a commit _signals_ a breaking change — the `!` shorthand and the
-`BREAKING CHANGE:` footer — is in `project-management/docs/GIT-GUIDE.md`.
+`BREAKING CHANGE:` footer — is in `project-management/docs/git/COMMITS.md`.
 
 This section previously carried its own copy of the increment table. It was removed rather than
 corrected: a summary that restates an authoritative table is a drift site, not a convenience, and
@@ -25,9 +25,11 @@ the two copies had already diverged on what MAJOR means.
 Before every commit:
 
 1. Determine the increment (MAJOR / MINOR / PATCH).
-2. Update the version files (`VERSION`, `VERSION-HISTORY.md`, and any header
-   `**Version**:` lines the change touches).
-3. Update `CHANGELOG.md` — changelog-first, before staging.
+2. Write `CHANGELOG.md` **first** — it is the evidence for the increment, not a summary of it.
+3. Update the version files. **Which files that is belongs to `VERSIONING-GUIDE.md`** and is
+   deliberately not listed here — the copy that used to sit on this line named three of six, and
+   the one omission nothing else caught, `README.md`, stayed stale for eight releases. Same
+   reason the increment table above was deleted rather than corrected.
 4. Stage the version and changelog files with the change.
 
 To bump mechanically, delegate to the `release` skill (via the Agent tool) or
@@ -45,12 +47,8 @@ string that contradicts `VERSION`.
 | **Location**  | Alongside the layer they document (`code/docs/`, `project-management/docs/`, …)           |
 | **Length**    | Instructional `.md` ≤ **300 code lines** — gate: `audits/docs-length.sh`, never `cloc.sh` |
 
-**Instructional-file limit:** every `.md` that instructs Claude Code —
-`**/docs/*.md`, `**/workflows/**/*.md`, `.claude/**/*.md`, and all `CONTEXT.md`
-files — must not exceed 300 code lines. Oversized files split into focused
-sub-documents; the entry point becomes a thin index that cross-references them.
-This limit does **not** apply to root-level files (`README.md`, `CHANGELOG.md`,
-`GAPS.md`, …) or `**/src/*.md` human operational guides.
+**Instructional-file limit** — the scope, the exemptions, the 270-line ratchet and the dated
+allowance are all in `code/docs/DOCUMENTATION-LENGTH.md`, which owns the rule. Not restated here.
 
 ### Markdown style
 
@@ -67,6 +65,23 @@ This limit does **not** apply to root-level files (`README.md`, `CHANGELOG.md`,
 - **Horizontal rules** — `---` between major sections.
 - **British English** — follow the localisation table in [SKILL.md](SKILL.md).
 - **Line length** — keep under ~120 characters where practical.
+
+### Writing conventions
+
+- **Never use the section sign (U+00A7).** Write `Section 3.2`, or just `3.2` where the context
+  already says it is a section. Its doubled form, for a range, is banned too — write
+  `Sections 4 to 7`.
+- It is the scholarly and legal shorthand for "section", absorbed from RFCs, specs, statutes and
+  standards documents. The usage is correct and denser than this project wants: these files are
+  read under time pressure by people who are not lawyers.
+- **The rule is deliberately written without the character**, so that zero occurrences is an
+  invariant anything can check — `grep -rIP '\xc2\xa7' .` returning nothing is the pass condition.
+  Nothing runs it yet; it is a stated invariant, not a gate.
+- **Prefer plain ASCII punctuation** in anything an agent writes. The em dash is the deliberate
+  exception — it is house style throughout the prose here, and `audits/copy-emdash.sh` bans it
+  only in **public marketing copy**, never in documentation.
+- If that codepoint ever shows up as mojibake, mid-word, or somewhere "section" makes no sense,
+  that is a UTF-8/Latin-1 encoding fault rather than a writing-style one — fix it as corruption.
 
 A table of contents helps long human-facing docs, but thin instructional files
 under the 300-line limit generally do not need one — prefer a short section map.
@@ -108,31 +123,23 @@ the story it came from — belongs in the developer documentation, which is free
 carry all of it: `code/docs/*`, `CONTEXT.md`, `CHANGELOG.md`,
 `VERSION-HISTORY.md`, and the PM artefacts. A code file never repeats it.
 
-**Scope:** application source that ships in a deployable — `.py`, `.html`, `.css`,
-`.js`, `.ts`, `.tsx`, `.rs`, `.slint`. Two exemptions, both because the reference
-_is_ the content: **declarative configuration** (`deny.toml`, `pyproject.toml`,
-`.gitignore`, CI YAML), where a policy exception needs the trail that justifies
-it; and the **dev scripts** under `code/src/scripts/`, operator tooling under the
-`runbook` discipline that often names the very rule or document it enforces.
+**Scope and its exemptions are the owner's**, and this file names neither — it said
+"two exemptions" including a blanket one for the dev scripts under
+`code/src/scripts/` until 23/08/2026, where the owner grants one and binds every
+`*.sh` in the repository. That was not a rival reading to weigh: it was a second
+copy of a rule, drifted, which is the defect this section exists to prevent. What
+replaced it is narrower than either text — a file whose **job is to enforce a
+documented rule** may **name** that document, never restate it — and it lives in
+the owner alone.
 
-### When to write one
+### When to write one, how long, and the self-containment rule
 
-Only when the reason is non-obvious and cannot be expressed in code:
+**Owned by `code/docs/coding-principles/STYLE-AND-PROCESS.md` Section _Comments and
+Documentation_** — when a comment is worth writing, that a comment is **one line** about why
+_that line_ is there, that a docstring runs **as long as its why needs** about why the _unit_
+exists, and that neither may point out of the code file. Read it there.
 
-- A constraint the code must satisfy but cannot state (a protocol quirk, a driver
-  or browser bug, an ordering nothing else enforces).
-- An invariant holding across a distance the reader cannot see locally.
-- A deliberate trade-off, and what it rejected.
-- A workaround, and the condition under which it can be removed.
-
-If deleting the comment would not confuse the next reader, do not write it.
-
-### No outside references
-
-A comment never points out of the code file. **Never** cite a story (`US###`),
-sprint, ADR, plan, bug record, ticket or issue number, PR, commit hash,
-`code/docs/*` path, URL, person, or date. The reason travels _in_ the comment — a
-reader who cannot open the reference still has to understand why.
+The example, because it is the rule's whole point rather than a restatement of it:
 
 ```python
 # WRONG — points outward, ages badly, says nothing on its own
@@ -143,17 +150,6 @@ DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
 # A guessable admin path attracts credential-stuffing traffic, so the prefix is
 # configurable and a deployment can move it without a code change.
 DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
-```
-
-### Docstrings
-
-One short line, stating **why** the module, function, or component exists. The
-typed signature already carries the parameters, the return, and (with the raising
-path) the exceptions, so no `Args:` / `Returns:` / `Raises:` block restates them.
-
-```python
-def constant_time_eq(left: bytes, right: bytes) -> bool:
-    """Compare without leaking the matching prefix length through timing."""
 ```
 
 ### The one exception — published interface text

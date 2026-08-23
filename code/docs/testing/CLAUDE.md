@@ -27,12 +27,13 @@ client-side runner.
 
 - **300-line instructional limit** — these are `**/docs/*.md`; split and demote the
   parent to an index if a file exceeds it.
-- **Coverage floors are a single source of truth** — 75% line and branch, 90% for
-  `apps/users`. There is no separate frontend floor. Do not restate a different
-  number here; if the floor changes, update `code/CONTEXT.md` in the same pass —
-  and, on a mobile project, `code/src/mobile/jest.config.js` too. **One standard,
-  enforced once per runtime:** `coverage.py` and Jest share no accumulator, so the
-  same numbers live in two places and must move together.
+- **`COVERAGE.md` is the single source of truth for the floors** — the numbers, the
+  promotion tier, and the fact that there is no separate frontend floor all live there and
+  nowhere else. Never restate a number in this folder. When a floor moves it moves in
+  `COVERAGE.md` first, then in `code/src/mobile/jest.config.js` on a mobile project.
+  **One standard, enforced once per runtime:** `coverage.py` and Jest share no accumulator,
+  so the same floors live in two places and must move together — the promotion tier is
+  Python-side only and is the one thing that does not.
 - Never document invoking test runners directly — always via the shell scripts.
 
 ## Output & naming

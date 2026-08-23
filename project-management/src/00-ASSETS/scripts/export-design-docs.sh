@@ -25,8 +25,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 
-DESIGN_DIR="$PROJECT_ROOT/project-management/src/05-BRAND-GUIDE/DESIGN"
-COMP_DESIGN_DIR="$PROJECT_ROOT/project-management/src/06-COMPONENTS/DESIGN"
+DESIGN_DIR="$PROJECT_ROOT/project-management/src/06-BRAND-GUIDE/CONSOLIDATED-IDEAS"
+COMP_DESIGN_DIR="$PROJECT_ROOT/project-management/src/07-COMPONENTS/CONSOLIDATED-IDEAS"
 OUTPUT_DIR="$PROJECT_ROOT/project-management/export"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

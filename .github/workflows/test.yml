@@ -1,10 +1,12 @@
 # Every test suite, both surfaces. Renamed from test-backend.yml when the optional mobile
 # surface arrived: a stack-neutral name is what lets one workflow hold both job sets.
 #
-# BRANCH PROTECTION: `jest-expo + coverage` and `Bundle export` are required status checks.
-# `pytest + coverage` is NOT yet required — see the lockfile guard on that job. It can only
-# join the required set once it reports success in this repository, which the guard now
-# makes possible.
+# ELIGIBLE FOR THE REQUIRED SET — every job below. They are unfiltered, carry no job-level
+# guard, and run on every pull request, which is criterion 1 of
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → What earns a place in the required
+# set. Membership is a branch-protection decision, not a file change, and this file ships: the
+# mobile jobs do not exist at all in a project generated without that surface. Read the live set
+# with the `gh api` block in that guide's `Changing the set`.
 name: test
 
 # No path filter, deliberately — the same reasoning as the lint workflows. These jobs are
@@ -39,13 +41,14 @@ jobs:
       # the mobile directory: the job reports SUCCESS where there is nothing to run, rather
       # than failing or skipping.
       #
-      # uv.lock is ABSENT BY DESIGN in the base template — it would pin the root project
-      # under the literal project-slug token, so Copier generates it at generation time
-      # (see the root CONTEXT.md). Every Dockerfile here builds with `COPY pyproject.toml
-      # uv.lock ./`, so the image build cannot succeed in the template repository itself.
-      # Without this guard the job fails on every single pull request raised against the
-      # template, which is exactly what happened before it was added — and it made the
-      # check unusable as a required status check.
+      # uv.lock is COMMITTED as of 16/08/2026, so this guard now takes its present branch
+      # and the suite runs here. It stays because this workflow SHIPS and the guard is what
+      # makes one file correct on both sides of the template boundary.
+      # Until then the lock was absent by design — it would have pinned the root project
+      # under the literal project-slug token — and every Dockerfile builds with
+      # `COPY pyproject.toml uv.lock ./`, so the image could not be built in the template
+      # at all. Without the guard the job failed on every pull request raised against the
+      # template, which made the check unusable as a required status check.
       - name: Detect the backend lockfile
         id: detect
         run: |
@@ -64,74 +67,68 @@ jobs:
           cp code/src/docker/.env.test.example code/src/docker/.env.test
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
-      - name: Build django-test image
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE build django-test
-
-      - name: Start db and cache
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE up -d db cache
-
-      - name: Wait for database
-        if: steps.detect.outputs.present == 'true'
-        run: |
-          for i in $(seq 1 30); do
-            docker compose -f $COMPOSE_FILE exec db \
-              pg_isready -U <%PROJECT_SLUG%> -d <%PROJECT_SLUG%>_test && break
-            echo "Waiting for db... ($i/30)"
-            sleep 2
-          done
-
+      # The promotion tier, keyed off the PR's BASE branch: a PR into dev, staging or main
+      # is promoting work that has already been merged once. The local half reaches the same
+      # answer from the other side, keying off the branch you are ON (pre-pr-check.sh, where
+      # `testing` and above is the promotion tier — a PR from `testing` has base `dev`).
+      # Both numbers are owned by code/docs/testing/COVERAGE.md; change the guide first.
       - name: Determine coverage threshold
         if: steps.detect.outputs.present == 'true'
         id: threshold
         run: |
           BRANCH="${{ github.base_ref || github.ref_name }}"
-          if [[ "$BRANCH" == "main" || "$BRANCH" == "staging" ]]; then
-            echo "value=80" >> "$GITHUB_OUTPUT"
-          else
-            echo "value=75" >> "$GITHUB_OUTPUT"
-          fi
+          case "$BRANCH" in
+            dev | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
+            *) echo "value=75" >> "$GITHUB_OUTPUT" ;;
+          esac
 
+      # One gate, called from both sides. This step used to hand-roll `docker compose run`
+      # with its own pytest and coverage invocations, which made CI a SECOND copy of the
+      # gate — and it was the copy that rotted. Its auth leg hardcoded the identity app,
+      # `--include='apps/users/*' --fail-under=90`, which was wrong in two directions at
+      # once: `users` is only the DEFAULT answer to the IDENTITY_APP question, so a project
+      # answering `accounts` got a floor enforced on a directory it does not have, and this
+      # repository has no apps at all, so the leg measured nothing and reported success on
+      # every run. backend-coverage.sh owns the two phases, the floor, the image build, the
+      # teardown, and an auth gate that reads AUTH_APP (default `users`), prints its
+      # denominator and fails closed when the app is present but unmeasured. It also
+      # satisfies the script-first rule this step broke.
+      #
+      # NO --output, and the constraint is the MOUNT rather than the path shape. A bare
+      # `reports` is refused outright — backend-coverage.sh compares the argument as a
+      # STRING against `$PROJECT_ROOT` and exits 2. Making it absolute clears that guard and
+      # hits the real one: the script reaches the container with `docker compose exec`, and
+      # docker-compose.test.yml gives django-test exactly ONE writable bind mount —
+      # ../scripts/tests/reports:/workspace/code/src/scripts/tests/reports. An --output
+      # outside it writes the XML into the image layer, where nothing on the runner can read
+      # it. The script's DEFAULT is the one directory inside that mount, so passing nothing
+      # is what lands the artefacts, and the two steps below read it there. Same call as
+      # claude.yml [7/8] — one gate, invoked identically from both sides. Measured
+      # 20/08/2026.
       - name: Run pytest with coverage (two phases)
         if: steps.detect.outputs.present == 'true'
-        run: |
-          mkdir -p reports
-          docker compose -f $COMPOSE_FILE --env-file code/src/docker/.env.test run --rm \
-            -v "${{ github.workspace }}/reports:/workspace/reports" \
-            django-test bash -c "
-              pytest -m unit \
-                --cov=apps \
-                --cov-branch \
-                --cov-report= &&
-              pytest -m integration \
-                --cov=apps \
-                --cov-branch \
-                --cov-append \
-                --cov-fail-under=${{ steps.threshold.outputs.value }} \
-                --cov-report=xml:/workspace/reports/coverage.xml \
-                --cov-report=term-missing &&
-              coverage report --include='apps/users/*' --fail-under=90
-            "
+        env:
+          COV_FLOOR: ${{ steps.threshold.outputs.value }}
+        run: bash code/src/scripts/tests/backend-coverage.sh
 
       - name: Upload coverage report
         if: always() && steps.detect.outputs.present == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: backend-coverage
-          path: reports/coverage.xml
+          path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           retention-days: 30
 
       - name: Post coverage comment
         if: always() && steps.detect.outputs.present == 'true' && github.event_name == 'pull_request'
         uses: MishaKav/pytest-coverage-comment@v1.11.0
         with:
-          pytest-xml-coverage-path: reports/coverage.xml
+          pytest-xml-coverage-path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           title: Backend Coverage
 
-      - name: Tear down
-        if: always() && steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE down -v
+      # No tear-down step: backend-coverage.sh traps EXIT and brings the stack down with its
+      # volumes on every path, success or failure. A second `down -v` here would be a third
+      # place that knows how this stack is composed.
 
   # ── Mobile surface ──────────────────────────────────────────────────────────
   # Guarded at STEP level, not job level: the job runs and reports SUCCESS on a web-only

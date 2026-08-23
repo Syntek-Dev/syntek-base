@@ -24,7 +24,7 @@ touchpoints **this story** introduces — using what earlier stories already map
 extending your fragment to cover ground they own.
 
 Where your slice hands off to, or picks up from, another story's, **note the seam** rather than
-absorbing it. Those notes are what `17-consolidate-design-work` stitches from, and a seam
+absorbing it. Those notes are what `18-consolidate-design-work` stitches from, and a seam
 flagged at design time is far cheaper than a discontinuity found during consolidation.
 
 Every decision node still resolves **both** outcomes within your slice — a fragment with a
@@ -32,12 +32,12 @@ dangling failure path is incomplete, not deferred.
 
 ## Frozen at consolidation
 
-Once `17-consolidate-design-work` runs, every file here is frozen. The whole journeys live in
+Once `18-consolidate-design-work` runs, every file here is frozen. The whole journeys live in
 `../CONSOLIDATED-IDEAS/`.
 
 ## When to write one
 
-- During a story's pass through `workflows/05-user-flow-design/`, before it reaches `14-decisions`
+- During a story's pass through `workflows/05-user-flow-design/`, before it reaches `15-decisions`
 - A story that introduces no user-facing journey needs no file here
 
 ## Cross-references

@@ -32,7 +32,7 @@ rules:
     metadata:
       doctrine: "Never pipe user input through |safe."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house
 
   - id: django-mark-safe-non-constant
@@ -56,7 +56,7 @@ rules:
     metadata:
       doctrine: "Never mark_safe a value that is not a constant."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house
 
   - id: django-mark-safe-interpolated-string
@@ -79,5 +79,5 @@ rules:
     metadata:
       doctrine: "Never mark_safe an interpolated string; use format_html()."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house

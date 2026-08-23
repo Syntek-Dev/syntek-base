@@ -1,16 +1,43 @@
 # Prerequisites
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 What must be on your machine before generating a project, and how to verify it.
+
+---
+
+## Supported platforms
+
+Every development operation runs through a `code/src/scripts/**/*.sh` script, so the shell is
+part of the contract rather than a preference.
+
+| Platform    | Supported         | What you use                                                                                                                                                              |
+| ----------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Linux**   | Natively          | Docker Engine and the Compose v2 plugin, with your user in the `docker` group. Your normal shell.                                                                         |
+| **macOS**   | Natively          | Docker Desktop, or Colima if you prefer no GUI. bash or zsh, Apple silicon or Intel.                                                                                      |
+| **Windows** | **Through WSL 2** | Docker Desktop on the **WSL 2 backend**, the repository cloned **inside** the WSL 2 filesystem (`~/projects/…`, never `/mnt/c/…`), and every command run from that shell. |
+
+**On Windows, WSL 2 is required, not a fallback**, and the two halves of that are separate
+requirements — the backend, and where the files live:
+
+- **PowerShell, `cmd.exe` and Git Bash are not supported.** Git Bash gives you a bash, but MSYS
+  path translation rewrites the arguments these scripts pass to `docker compose`, so commands
+  that look correct fail with paths nobody wrote.
+- **Clone into the WSL 2 filesystem, not `/mnt/c/…`.** A repository on the Windows filesystem puts
+  every bind mount across the filesystem boundary, which is slow enough to make the dev loop
+  unpleasant on its own — and it is the configuration most Windows developers land in by default.
+
+Docker Desktop already installs WSL 2 to run its own engine, so none of this asks for a component
+you would not have. Install it from a WSL 2 terminal exactly as the Linux instructions below
+describe, and treat the distribution as the machine from then on.
 
 ---
 
 ## The short version
 
 ```bash
-docker --version && docker compose version   # 27+ / v2+
-node --version && pnpm --version             # 24+ / 11.1.2+
+docker --version && docker compose version   # 24+ / v2+
+node --version && pnpm --version             # 24+ / 11.22.0+
 python3 --version && uv --version            # 3.14+ / 0.11+
 git --version && openssl version
 ```
@@ -24,13 +51,18 @@ Copier itself needs no installation — `uvx` fetches and runs it on demand.
 | Tool               | Minimum     | Needed for                                                               |
 | ------------------ | ----------- | ------------------------------------------------------------------------ |
 | **git**            | any recent  | Version control; Copier reads the template over git.                     |
-| **Docker Engine**  | 27+         | Every application service. Nothing runs on the host directly.            |
+| **Docker Engine**  | 24+         | Every application service. Nothing runs on the host directly.            |
 | **Docker Compose** | v2 (plugin) | Orchestrating the dev, test, staging and prod stacks.                    |
 | **uv**             | 0.11+       | Python dependencies and the lockfile; also provides `uvx` to run Copier. |
 | **Python**         | 3.14+       | Root tooling (ruff, basedpyright) and uv's interpreter resolution.       |
 | **Node.js**        | 24+         | Repo tooling and git hooks. Not an application dependency.               |
-| **pnpm**           | 11.1.2+     | Root workspace packages — Prettier, ESLint, markdownlint, Lefthook.      |
+| **pnpm**           | 11.22.0+    | Root workspace packages — Prettier, ESLint, markdownlint, Lefthook.      |
 | **openssl**        | any recent  | `install.sh` uses it to generate development secrets.                    |
+
+**Those floors are the ones `install.sh` actually checks** — it is the executable copy of this
+table, and it refuses rather than warning. The pnpm figure is not a round number on purpose:
+`package.json` sets `packageManager: pnpm@11.22.0` and an `engines` floor to match, so an older
+pnpm fails the install rather than resolving a different tree quietly.
 
 `.python-version` pins `3.14`, `.nvmrc` pins `24`, and `package.json` pins pnpm exactly through
 `packageManager` — so a version manager plus `corepack` will land you on the right ones without
@@ -84,10 +116,9 @@ sudo usermod -aG docker "$USER"   # log out and back in
 the test stack runs Postgres, Valkey, Nginx and the app together (and a Celery worker too, once
 that is wired — it is a declared dependency with no Compose service at baseline).
 
-**Windows** — Docker Desktop with the WSL 2 backend, and do all your work **inside** the WSL 2
-filesystem (`~/projects/…`, not `/mnt/c/…`). Bind-mount performance across the Windows filesystem
-boundary is poor enough to make the dev loop unpleasant. Every command in these guides assumes
-bash or zsh.
+**Windows** — Docker Desktop with the WSL 2 backend, then run the Linux instructions above from
+inside the distribution. The full contract, including where the repository must live, is
+_Supported platforms_ at the top of this guide.
 
 ---
 
@@ -105,9 +136,10 @@ scripts assume a rootless-capable `docker compose`.
 
 ## Hostnames
 
-A generated project serves itself at `dev.<project-slug>.localhost` rather than
-`localhost:8000`. On most Linux distributions and macOS, `*.localhost` resolves to `127.0.0.1`
-automatically.
+A generated project serves itself at `dev.<project-slug>.localhost:81` rather than
+`localhost:8000`. The port is **81** because a local router often holds `127.0.0.1:80`, and `:8000`
+is the Django container's internal port, never published. On most Linux distributions and macOS,
+`*.localhost` resolves to `127.0.0.1` automatically.
 
 If it does not, `install.sh` offers to add the `/etc/hosts` entries for you (it will ask for
 sudo). For git worktrees, `code/src/scripts/development/hosts-story-add.sh` manages per-story
@@ -133,7 +165,6 @@ hostnames.
 | **Bruno**                   | Running the committed API collections through a GUI.                                                                                                                                                    |
 | **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                  |
 | **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                   |
-| **Figma MCP server**        | Design reads and writes, and Code Connect. Machine-global, and your own to install.                                                                                                                     |
 
 The three MCP servers the project actually depends on — `code-review-graph`, `context7` and
 `mcp-mermaid` — need **no installation**. They are declared in the shipped `.mcp.json` and

@@ -55,9 +55,9 @@ if ! cargo build -p desktop --release; then
 fi
 
 # Cargo builds `desktop`, because a crate name is an identifier and cannot carry a
-# template token (see crates/desktop/Cargo.toml). The branding happens here instead, where
-# the name is only ever a filename: `cp`, not `mv`, so a re-run is idempotent and
-# `cargo run -p desktop` still finds the artefact it expects.
+# template token. The branding happens here instead, where the name is only ever a
+# filename: `cp`, not `mv`, so a re-run is idempotent and `cargo run -p desktop` still
+# finds the artefact it expects.
 BUILT="$RUST_DIR/target/release/desktop"
 BRANDED="$RUST_DIR/target/release/<%PROJECT_SLUG%>-desktop"
 

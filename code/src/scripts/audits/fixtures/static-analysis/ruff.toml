@@ -1,0 +1,22 @@
+# Ruff configuration for the static-analysis.sh --self-test fixtures.
+#
+# These files are DELIBERATELY VULNERABLE. They exist to be caught by the Opengrep
+# rules in code/src/scripts/audits/rules/, and `broken/` is required to trip every
+# rule id or the self-test fails. Ruff's flake8-bandit set (S) would flag the same
+# code — correctly — and turn `ruff check .` red for fixtures that are working as
+# designed.
+#
+# Ruff resolves the closest config in a file's ancestry, so this file governs
+# everything beneath it and nothing else. The root pyproject.toml is deliberately NOT
+# extended: these files are never imported, never packaged, and never executed.
+#
+# Silencing happens HERE, in a config scoped to a fixture tree, rather than as `# noqa`
+# comments in the fixtures themselves — the audits CLAUDE.md holds that a comment
+# suppressing a finding is itself a finding, and a fixture peppered with noqa is also
+# a fixture whose shape no longer matches the code it stands in for.
+#
+# The formatter is NOT disabled. `ruff format --check .` still covers these files, so
+# they stay readable and stay in the repository's own style.
+
+[lint]
+select = []

@@ -17,5 +17,5 @@ code/docs/design-tokens/
 
 ## Cross-references
 
-- `code/docs/DESIGN-TOKENS.md` — the index these sub-documents belong to
-  Live app: `code/src/django/apps/design_tokens/CONTEXT.md`
+- `code/docs/DESIGN-TOKENS.md` — the index these sub-documents belong to, and the status of
+  what they specify

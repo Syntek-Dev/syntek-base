@@ -74,7 +74,7 @@ code/
 └── workflows/                       ← step-by-step coding workflows, by family below
     ├── CONTEXT.md
     │   ── Build (01–06) ──
-    ├── 01-new-feature/              ← full-stack feature development
+    ├── 01-implement-story/          ← one US### story, backend and frontend
     ├── 02-tdd-cycle/                ← Red → Green → Refactor
     ├── 03-database-migration/       ← Django model and migration workflow
     ├── 04-api-design/               ← Django Ninja API design (/api/)
@@ -131,7 +131,7 @@ Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 | `docs/RESPONSIVE-DESIGN.md`     | Before building any frontend component or layout                                                                               |
 | `docs/ARCHITECTURE-PATTERNS.md` | Before designing a new Django app or page route                                                                                |
 | `docs/DATABASE.md`              | **Before any model, migration, or query** — the pre-flight rules                                                               |
-| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change                                                                                         |
+| `docs/DATA-STRUCTURES.md`       | Before adding a model or schema change — and its `TYPES-*` family before any function signature that takes or returns a record |
 | `docs/LOGGING.md`               | Before adding logging, error tracking, or metrics                                                                              |
 | `docs/RENDERING.md`             | Before choosing server vs HTMX vs Alpine for an interaction                                                                    |
 | `docs/PERFORMANCE.md`           | Before optimising a query or page                                                                                              |

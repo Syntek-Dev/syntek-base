@@ -38,24 +38,59 @@ Everything else — the what, the how, the history, the story it came from, the 
 lives in the developer documentation (`code/docs/*`, `CONTEXT.md`, `CHANGELOG.md`, the PM
 artefacts), which is free to carry all of it. A code file never repeats it.
 
-**Scope:** application source that ships in a deployable — `.py`, `.html`, `.css`, `.js`, `.ts`,
-`.tsx`, `.rs`, `.slint`. Two exemptions, both because the reference _is_ the content: declarative
-configuration (`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML) — where a policy exception
-needs the trail that justifies it; and `code/src/scripts/**/*.sh`, operator tooling that often
-names the rule or document it enforces.
+**Scope:** every file this repository executes — application source in a deployable (`.py`,
+`.html`, `.css`, `.js`, `.ts`, `.tsx`, `.rs`, `.slint`) **and every script file (`*.sh`), wherever
+in the repository it sits.** A script is held to the same standard as any other language: its
+comments carry the why. What a script may additionally do is **route** — see the enforcement
+pointer below, which is a narrow permission and not a second standard.
 
-- **Write a comment only for a non-obvious reason** — a constraint the code cannot state, an
-  invariant holding across a distance, a deliberate trade-off, or a workaround plus the condition
-  for removing it. If deleting the comment would not confuse the next reader, delete it.
-- **No outside references.** Never cite a story (`US###`), sprint, ADR, plan, bug record, ticket,
-  issue, PR, commit, `code/docs/*` path, URL, person, or date. The reason belongs in the comment
-  itself — a reader who cannot open the reference still has to understand why.
+One exemption, because there the reference _is_ the content: declarative configuration
+(`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML), where a policy exception needs the trail
+that justifies it. A `run:` block inside CI YAML is a script and takes the rule.
+
+**A docstring and a comment answer different questions, and that is what sets their length.**
+The docstring says why the **unit** exists — the module, class, function, method or component as
+a whole. A comment says why **this line** is here, inside the unit that contains it. One is about
+a thing; the other is about a position in it.
+
+- **A comment is one line.** Write one only for a non-obvious reason — a constraint the code
+  cannot state, an invariant holding across a distance, a deliberate trade-off, or a workaround
+  plus the condition for removing it. If deleting it would not confuse the next reader, delete it.
+- **A docstring runs as long as its why needs**, and no longer. It is mandatory on all public
+  APIs. No `Args:` / `Returns:` / `Raises:` blocks — the typed signature already carries them, and
+  restating a signature is the _what_ under another name. Every Django view and django-component
+  opens with one; a template's `{# #}` is a **comment** and takes the one-line rule above.
+- **Self-contained — no outside references, in either.** Never cite a story (`US###`), sprint,
+  ADR, plan, bug record, ticket, issue, PR, commit, **a repository path**, URL, person, or date.
+  A file in scope must be understandable without opening anything else: state the reason in full,
+  here, or do not state it. A pointer is not a reason, and it rots at a different rate from the
+  code it sits in. **This bullet said "anything under `code/src/`" until 23/08/2026**, which was
+  narrower than the Scope paragraph above it and left every `*.sh` outside that tree unaddressed
+  by the rule that names them.
+- **Exception — the enforcement pointer, and the test is who owns the fact.** A file whose **job
+  is to enforce a documented rule** may name the document that owns it. That is **routing**, and
+  it is the opposite of the duplication this standard exists to prevent: the alternative — "state
+  the reason in full, here" — puts a second copy of the rule inside the enforcement, which is the
+  drift this repository charts as split doctrine. **Restating the rule's content is still banned**;
+  what is permitted is the name of its owner, and enough of the reason to know why the check
+  exists at all.
+  - **The discriminator:** the file's subject is the rule. An audit under `code/src/scripts/`, a
+    pre-PR hook, a template-integrity check — each exists **because** a guide says something, and
+    the guide is a fact about the file rather than an outside reference. A service module, a view
+    or a component does not enforce a guide, it implements a feature; there a pointer is still a
+    substitute for a reason and is still banned.
+  - **It does not travel upward.** A comment on a line of application code may not name a guide
+    because the enclosing file happens to be a script's neighbour, and an enforcing file may not
+    name a story, a sprint, a commit or a person under cover of this exception. The permission is
+    to name **the owning document**, nothing else.
+- **Exception — the setup instruction.** A note on **placeholder content the project replaces at
+  first-time setup** may name the document that governs the replacement. Both halves are
+  required: the subject is shipped placeholder copy rather than code, and the path named is what
+  the replacement is written against. The test is who loses what when it is deleted — an
+  **operator** loses an instruction, never a **reader** a reason. A pointer that explains why
+  code does what it does is the banned shape however it is worded.
 - **No `TODO` / `FIXME` in committed code.** Deferred work goes to `DEFERRED.md` or `GAPS.md`,
   which are read and triaged.
-- **Docstrings** are mandatory on all public APIs and are **one line stating why the thing
-  exists** — no `Args:` / `Returns:` / `Raises:` blocks, because the typed signature already
-  carries them. Every Django view and django-component opens with one; templates carry a one-line
-  `{# #}` comment on the same terms.
 - **Exception — published interface text.** A Django Ninja endpoint docstring and `summary` (both
   render on the OpenAPI page) and a FastMCP tool docstring (the prompt a model reads when choosing
   a tool) are interface documentation, not comments: they state the full what. See
@@ -150,11 +185,13 @@ Before submitting code for review or marking a task complete, verify:
 - [ ] No commented-out code was left in the diff
 - [ ] Every comment and docstring in the diff carries a **why** — none restates a name, a type,
       or the line below it
-- [ ] No comment points outside the code file — no `US###`, sprint, ADR, ticket, PR, commit,
-      documentation path, URL, person, or date
+- [ ] Neither a comment nor a docstring points outside the code file — no `US###`, sprint, ADR,
+      ticket, PR, commit, repository path, URL, person, or date. The one exception is a setup
+      instruction on placeholder copy, naming the document the replacement is written against
 - [ ] No `TODO` / `FIXME` was introduced — deferred work is recorded in `DEFERRED.md` or `GAPS.md`
-- [ ] Docstrings are one line, with no `Args:` / `Returns:` / `Raises:` block (except a published
-      Ninja endpoint or FastMCP tool docstring, which states the full what)
+- [ ] Every comment is one line; every docstring states why its unit exists, with no `Args:` /
+      `Returns:` / `Raises:` block (except a published Ninja endpoint or FastMCP tool docstring,
+      which states the full what)
 - [ ] All imports are at the top of the file — no imports inside functions, methods, or classes
       unless a documented justified exception applies
 - [ ] Conditional chains of three or more branches encoding a named business rule are extracted to

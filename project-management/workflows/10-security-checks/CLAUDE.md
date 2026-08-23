@@ -35,7 +35,7 @@ wireframes with STRIDE, OWASP Top 10, and NIST CSF 2.0, and record findings in
   Obligations are _specified_ here and _enforced_ in `code/`.
 - **No finding may be left unmapped:** STRIDE category, OWASP A01–A10, and NIST CSF
   function are all required per finding.
-- Threat modelling gates sprint planning — proceed to `workflows/15-sprint-plans/`
+- Threat modelling gates sprint planning — proceed to `workflows/16-sprint-plans/`
   only once blocking findings are cleared and QA (`workflows/11-qa-checks`) is next.
 - Instructional `.md` files ≤ 300 code lines.
 

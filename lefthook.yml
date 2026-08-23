@@ -21,12 +21,15 @@ pre-commit:
       run: pnpm exec prettier --check {staged_files}
 
     # `uvx --from` rather than `uv run`, for the same reason as .github/workflows/
-    # syntax-python.yml: `uv run` resolves the project first, and in syntek-base
-    # pyproject.toml's `name` is still an unrendered token that uv rejects while
-    # PARSING. These two legs were therefore dead in this repository — silently, because
-    # they only fire when a .py file is staged, which is rare here. `uvx` installs into a
-    # throwaway environment and reads no manifest, so ruff runs on the template and on a
-    # generated project alike. The constraint is the one pyproject.toml declares.
+    # syntax-python.yml — but the ORIGINAL reason has expired and the choice has not.
+    # It used to be forced: `uv run` resolves the project first, pyproject.toml's `name`
+    # was an unrendered token uv rejected while PARSING, and these two legs were therefore
+    # dead in this repository — silently, because they only fire when a .py file is staged,
+    # which is rare here. The name is now the house constant `syntek-base` and uv parses it.
+    # `uvx` STAYS on its own merits: ruff's rules are self-contained, so a pre-commit lint
+    # costs one pinned tool in a throwaway environment rather than the project's whole
+    # resolved dependency set, and it behaves identically on the template and on a generated
+    # project. The constraint is the one pyproject.toml declares.
     ruff-lint:
       glob: "*.py"
       run: uvx --from "$(grep -oE '\"ruff[^\"]*\"' pyproject.toml | head -1 | tr -d '\"')" ruff check --force-exclude {staged_files}
@@ -35,18 +38,17 @@ pre-commit:
       glob: "*.py"
       run: uvx --from "$(grep -oE '\"ruff[^\"]*\"' pyproject.toml | head -1 | tr -d '\"')" ruff format --force-exclude --check {staged_files}
 
-    # basedpyright keeps `uv run`: unlike ruff it needs the resolved dependency set, and
-    # with no uv.lock every import would be unresolved — a meaningless pass, not a weaker
-    # one. Guarded on the lockfile so it stays a real gate in a generated project and a
-    # stated skip here, matching the workflow of the same name.
+    # basedpyright keeps `uv run`: unlike ruff it needs the resolved dependency set, so it
+    # reads the manifest rather than routing around it. That used to make it unrunnable
+    # here — pyproject.toml's `name` was a token uv rejected while parsing — and the leg
+    # was guarded on uv.lock into a stated skip.
+    #
+    # UNGUARDED 15/08/2026. The name is now the house constant `syntek-base`, branded at
+    # generation, so `uv sync` resolves in the template too and this is a real gate on
+    # both sides. Verified green the day it was unguarded: 0 errors, 0 warnings, 0 notes.
     basedpyright:
       glob: "*.py"
-      run: |
-        if [ -f uv.lock ]; then
-          uv run basedpyright
-        else
-          echo "No uv.lock — base template, not a generated project. Skipping basedpyright."
-        fi
+      run: uv run basedpyright
 
     markdownlint:
       glob: "*.md"
@@ -86,24 +88,50 @@ pre-commit:
     # as above rather than a cross-file one: the audit decides its own scope, and a guide
     # split into a sub-folder must be re-measured as a set, not per staged file. cloc reads
     # ~700 small files in well under a second.
+    # The ratchet measures from HEAD here: immediate local feedback on the change in hand.
+    # CI measures from the merge-base instead, which is the half that stops growth creeping
+    # past one commit at a time. Same script, same flag, different ref.
+    #
+    # The flag is conditional because a repository's FIRST commit has no HEAD, and a
+    # generated project's initial commit would otherwise die on a missing baseline.
     docs-length:
       glob: "*.md"
-      run: bash code/src/scripts/audits/docs-length.sh
+      run: |
+        if git rev-parse --verify -q HEAD >/dev/null; then
+          bash code/src/scripts/audits/docs-length.sh --since HEAD
+        else
+          bash code/src/scripts/audits/docs-length.sh
+        fi
 
     # The human half of the template-docs read-only rule; the Claude half is the
     # PreToolUse hook .claude/hooks/template-docs-readonly.sh. Both stand down in
     # syntek-base itself, where these files ARE the product — the discriminator is
-    # copier.yml, which is _exclude'd and so exists only here (same trick as the
-    # `[ -f uv.lock ]` leg above).
+    # copier.yml, which is _exclude'd and so exists only here. (This used to say "the same
+    # trick as the `[ -f uv.lock ]` leg above". There is no such leg any more: it was
+    # unguarded on 15/08/2026, and uv.lock has been committed since 16/08/2026.)
     #
     # The .copier-answers.yml exemption is what keeps `copier update` usable: an update
     # legitimately rewrites these guides and always restages the answers file alongside
     # them, so that combination is allowed through. A hand edit never looks like that.
-    # Deliberately UNGLOBBED, and self-gating instead. A brace-expansion glob
-    # (`how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}`) silently matched nothing here —
-    # lefthook does not expand braces — so the job never ran and the guard was decorative.
-    # A guard that fails open is worse than none, because it is believed. Selecting the
-    # paths inside the run block removes the glob dialect from the trust chain entirely.
+    # Deliberately UNGLOBBED, and self-gating instead. The original guard globbed
+    # `how-to/src/{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}` and covered only half of what it
+    # named, so staging a TEMPLATE-GUIDE/ file went unguarded. A guard that fails open is
+    # worse than none, because it is believed.
+    #
+    # THE REASON RECORDED AT THE TIME WAS WRONG, and it is corrected here because this is the
+    # sentence an author meets before writing a `glob:` above. a05b1c7 and the 3.2.1 log
+    # entries said "lefthook does not expand braces". It does — the four brace-bearing `glob:`
+    # legs above (eslint, eslint-mobile, prettier, and the `*{CONTEXT,CLAUDE}.md` pair check)
+    # cannot fire without brace expansion, and a `/` inside a group works too. Located by name,
+    # not by line: every line anchor this repository has written into prose has drifted. Measured on the pinned binary (2.1.10) by driving one pattern four ways: what
+    # silently mis-compiles is a MULTI-ALTERNATIVE group whose wildcard-bearing alternative is
+    # not LAST. `{TEMPLATE-GUIDE/**,TEMPLATE-TOKENS.md}` matches only the second; the identical
+    # pair SWAPPED matches both. A glob that changes meaning when you reorder its alternatives
+    # is the fail-open shape this job was rewritten to escape.
+    #
+    # The measured rule condemns none of the four live globs above — none puts a wildcard and a
+    # `/` in the same brace group. What it condemns is trusting the dialect: selecting the
+    # paths inside the run block removes it from the trust chain entirely.
     template-docs-readonly:
       run: |
         if [ -f copier.yml ]; then exit 0; fi
@@ -119,6 +147,85 @@ pre-commit:
         echo "Project-specific notes belong in .claude/MEMORY.md, code/docs/, or GAPS.md."
         echo "To restore them:  git restore --staged --worktree <path>"
         exit 1
+
+    # The cheap half of .github/workflows/audit-template.yml, pulled forward to the commit.
+    # That workflow runs on every branch now, so a pull request is no longer the first
+    # signal — but the window BETWEEN commits still had none, and that is where the damage
+    # happened. On 16/08/2026 a bare copier variable opener written into a printf format
+    # string in code/src/scripts/audits/conflict-markers.sh broke `copier copy` outright.
+    # TWO NUMBERS, AND THEY MEASURE DIFFERENT THINGS — the branch ran seventeen commits
+    # without a pull request, and the break was live for five of them, from the commit that
+    # introduced it to the commit before its fix. The seventeen is the size of the blind
+    # window; the five is what actually shipped broken through it. check-template-tokens.sh
+    # had been exiting 1 and naming the exact line the whole time. It takes 2.2 seconds.
+    # Nothing local ran it.
+    #
+    # ONLY THE CHEAP HALF. audit-template.yml has four jobs and two of them belong to CI
+    # alone: [3/4] Template Generation runs a full `copier copy` twice over, and [4/4]
+    # Parser Probes drives uv, cargo, pnpm and docker compose. Both need a network and a
+    # toolchain, and neither survives contact with a pre-commit hook. [1/4] Template Tokens
+    # and [2/4] Shipped Documentation are pure text over the working tree — those ride here.
+    #
+    # `set -e` IS LOAD-BEARING, not decoration. lefthook reports the exit status of the run
+    # block, which without it is the status of the LAST command alone: five failures
+    # followed by one pass would report a pass. A gate that reports success without having
+    # looked is the precise fault this leg exists to catch elsewhere, and it would be
+    # worthless carrying that fault itself.
+    #
+    # THE SELF-TESTS RUN WHEN A DETECTOR IS STAGED, AND WHEN THEY RUN THEY RUN FIRST. Why
+    # they exist at all is the reason audit-template.yml gives in its own comment, and it
+    # holds verbatim here: every check in these scripts is a presence test, so the ordinary
+    # run is green whether the matching rules still discriminate or not. The token script's
+    # check 3 once policed a delimiter that does not exist and reported 1974 well-formed
+    # tokens while a bare opener was breaking every generation. Each self-test mutates a
+    # copy of its own input and asserts the check fires on it, which is what makes the
+    # ordinary run worth believing — so it has to come before that run, never after.
+    #
+    # Why they do not run every time is the other half of the same sentence: a detector
+    # stops discriminating only when somebody EDITS it, so re-proving an untouched script
+    # on every commit is the cost without the reason. The discriminator is therefore the
+    # staged set — `git diff --cached --name-only` matched against `.github/scripts/*.sh`.
+    # Touch a detector and all three self-tests run, ahead of the plain checks, exactly as
+    # they did unconditionally before; the trigger is that a detector moved, not which one,
+    # because these three share one token contract and one shipped-docs surface.
+    #
+    # UNGLOBBED AND SELF-GATING. `.github/scripts/` and audit-template.yml are both copier
+    # _exclude'd, but THIS FILE ships — so in a generated project the leg would attempt three
+    # invocations of scripts that are not there (three, not six: with `.github/scripts/`
+    # excluded downstream, no `.sh` under it can ever be staged, so the self-test branch is
+    # unreachable there). The discriminator is copier.yml, itself _exclude'd and so
+    # present only in syntek-base: the template-docs-readonly leg above, run the other way
+    # round. Unglobbed for the same reason as docs-pairing and docs-length — these are
+    # whole-tree checks over the token contract, the shipped README and the memory seed,
+    # and a per-staged-file run cannot see any of them.
+    #
+    # COST, measured on 16/08/2026 rather than estimated, and now in two shapes. An
+    # ordinary commit runs the three plain checks alone: ~3.9 seconds (3.99 / 3.97 / 3.93
+    # over three consecutive runs), inside the ~6 second budget. A commit that edits a
+    # detector runs all six: ~10.8 seconds (10.82 / 10.83 / 10.69). Nearly the whole
+    # difference is one command — shipped-readme.sh --self-test at 6.75s. Its 26 probes do
+    # NOT each re-run the check: instrumented, it drives the full check 8 times and settles
+    # the other 18 with in-memory assertions — and that is the cost the condition
+    # exists to stop charging for nothing. Both shapes are carried on the asymmetry
+    # audit-template.yml argues: a template-integrity defect is invisible until somebody
+    # generates, and whoever generates is not whoever broke it. pre-commit is
+    # `parallel: true`, so this leg is still the critical path either way, but on an
+    # ordinary commit it now clears docs-pairing (2.73s) by about a second rather than
+    # eight.
+    template-integrity:
+      run: |
+        set -e
+        [ -f copier.yml ] || exit 0
+        if git diff --cached --name-only | grep -q '^\.github/scripts/.*\.sh$'; then
+          bash .github/scripts/check-template-tokens.sh --self-test
+          bash .github/scripts/shipped-readme.sh --self-test
+          bash .github/scripts/shipped-memory.sh --self-test
+          bash .github/scripts/shipped-registers.sh --self-test
+        fi
+        bash .github/scripts/check-template-tokens.sh
+        bash .github/scripts/shipped-readme.sh
+        bash .github/scripts/shipped-memory.sh
+        bash .github/scripts/shipped-registers.sh
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.

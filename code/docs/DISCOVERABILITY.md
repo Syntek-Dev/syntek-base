@@ -70,10 +70,10 @@ project by design.
 | [`discoverability/CONTENT-STRUCTURE.md`](discoverability/CONTENT-STRUCTURE.md) | The page **body**: answer-first openings, question-shaped headings, self-contained answer blocks — and why there is no separate answer-engine discipline |
 | [`discoverability/APP-STORE.md`](discoverability/APP-STORE.md)                 | **Mobile-only.** The App Store and Play listing: the text fields, their limits, and why Apple's keyword budget is counted in bytes                       |
 
-> **These guides are prescriptive, not descriptive.** `apps/marketing/seo.py`,
-> `apps/marketing/jsonld.py` and `apps/core/views/seo.py` are the shape a project builds, not
-> files that already exist — `code/src/django/apps/` ships empty. Read a path here as "where this
-> goes", never as "where this is".
+> **These guides are prescriptive, not descriptive.** The modules they name — the SEO head helper,
+> the JSON-LD builders, the root-surface views — are the shape a project builds, not files that
+> already exist: `code/src/django/apps/` ships `core/` and `health/`, and neither serves a page
+> meant to be found. Read a path here as "where this goes", never as "where this is".
 
 ---
 
@@ -105,9 +105,10 @@ are not, to `CONTENT-STRUCTURE.md` and `APP-STORE.md`, where almost nothing is.
 Two consequences, and the second is the one that bites:
 
 - **No audit in `code/src/scripts/audits/` covers this family**, and none is planned. The rules
-  above are properties of **rendered pages**, and `code/src/django/apps/` ships empty — a script
-  written today would report success having examined nothing, which is worse than no script,
-  because a green result is believed.
+  above are properties of **rendered pages**, and nothing here renders one — `code/src/django/apps/`
+  ships `core/` and `health/`, whose only routes are the machine-read liveness and readiness
+  probes. A script written today would report success having examined nothing, which is worse than
+  no script, because a green result is believed.
 - **A clean pipeline says nothing about whether this guide was honoured.** The gate that exists,
   `project-management/workflows/12-seo-checks/`, runs **before any code**, so it reviews a plan
   rather than a page. Discoverability is a **review concern**, and the review is a person's.

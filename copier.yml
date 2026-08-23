@@ -35,6 +35,13 @@ _exclude:
   - /.github/scripts # template-integrity checks — meaningless once rendered
   - /.github/workflows/audit-template.yml
   - /README.md # the project's README ships from .copier/README.md (see _tasks)
+  # syntek-base commits its OWN uv.lock (16/08/2026) so its Python gates and suites can
+  # run against a real dependency set. That lock pins `syntek-base`, so it must not travel:
+  # a generated project would inherit a lock naming the template, `uv sync --frozen` would
+  # fail with "Missing workspace member", and — worse — every `copier update` would leave
+  # conflict markers in a lockfile, a file class that must never be hand-merged. Excluded
+  # here, regenerated below by the `uv lock` task under the project's own slug.
+  - /uv.lock
   # Root version state belongs to syntek-base, not to your project. A generated
   # project starts at 0.1.0 with an empty history, seeded from .copier/ by _tasks —
   # otherwise every new project would claim the template's version number and
@@ -54,11 +61,21 @@ _exclude:
   #
   # Excluding it rather than shipping a stub is what keeps the file usable HERE. Section 2.1
   # hardcodes `.claude/MEMORY.md` as read-second and that line ships, so the file must
-  # exist in both repos and can never be retired — which rules out the GAPS.md pattern
-  # (a shipped stub plus a differently-named store this repo actually writes to).
+  # exist in both repos and can never be retired: it is excluded AND seeded, never absent.
   # Seed-once matters more here than anywhere: a project's accumulated memory must never
   # be handed back the template's blank canvas by `copier update`.
   - /.claude/MEMORY.md
+  # The two standing registers are accumulators on the same argument, and until 22/08/2026
+  # they took the weaker treatment: they shipped, and were kept empty by hand. That
+  # discipline was prose-only and it had already failed inside a published tag —
+  # `git show v6.0.0:GAPS.md` is 47 lines carrying syntek-base's own unreconciled-`main`
+  # entry, which a real `copier copy` handed to a generated project as its own active gap
+  # and a real `copier update` delivered as a merge conflict. An accumulator kept empty by
+  # discipline is an accumulator that leaks on the day someone writes to it, which is the
+  # day it starts being useful. Excluded and seeded blank, like MEMORY.md, so syntek-base
+  # can write to its own registers freely.
+  - /GAPS.md
+  - /DEFERRED.md
   # Update migrations are read from the template clone, never rendered into a
   # project — a generated project has no use for the migrations that produced it.
   - /.copier/migrations
@@ -73,26 +90,79 @@ _exclude:
   # that quote token or delimiter syntax wrap it in `raw` blocks. See that folder's
   # CLAUDE.md before editing one.
   #
-  # TEMPLATE-GAPS.md is the exception — syntek-base's own open items, meaningless in a
-  # generated project. Same test as the root GAPS.md, which ships and therefore stays an
-  # empty stub.
-  - /how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
-  # The nested .gitignore files that must NOT travel with the template. Git honours a
-  # .gitignore in any directory, which is how syntek-base can ignore the artefacts it writes
-  # while TESTING its own scaffolding — handoffs, feature maps, stories, sprints, ADRs, plans,
-  # research notes, questionnaires, lessons — while a generated project tracks every one of
-  # them, because there they are the work rather than a test of it. Each folder's CONTEXT.md
-  # describes the generated project's behaviour and is therefore correct as shipped; these
-  # files are the syntek-base-only override, and excluding them here is what keeps the
-  # override repo-local. The root .gitignore stays shipped and updatable by `copier update`.
+  # TEMPLATE-GAPS.md was the exception — syntek-base's own open items, meaningless in a
+  # generated project. It was folded into the root `GAPS.md` and deleted on 22/08/2026, once
+  # that register became excluded-and-seeded above and could therefore hold real content.
+  # Its exclusion entry is retired with it: one register, one exclusion, one seed.
+  # ── The artefact trees: tracked HERE, never shipped ──────────────────────────────────────
   #
-  # project-management/src/.gitignore is an allowlist covering the whole tree, so it also
-  # covers 01-FEATURE — which is why that folder no longer carries a .gitignore of its own.
-  - /handoffs/.gitignore
-  - /project-management/src/.gitignore
-  - /research/.gitignore
+  # syntek-base commits its own handoffs, feature maps, research notes and lessons (17/08/2026)
+  # so they sync across <%DEVELOPER_NAME%>'s devices. They are still meaningless in a generated
+  # project — a note answering a question about the TEMPLATE, a map of the template's own
+  # decision frontier — so the exclusion moved here, from the nested .gitignore files that
+  # previously held it. Each folder's CONTEXT.md describes the generated project's behaviour
+  # (where these artefacts ARE the work and stay tracked) and is correct as shipped.
+  #
+  # THIS BLOCK IS NOW THE ONLY GUARD. Previously the artefacts were untracked, so Copier could
+  # not see them even with a hole in this list: its dirty-HEAD path runs `git add -A`, which
+  # honours .gitignore. That backstop is gone. A missing negation below silently ships this
+  # repository's internal notes into every generated project — hence the ALLOWLIST shape and
+  # the .github/scripts/shipped-artefacts.sh gate that proves it on every push.
+  #
+  # An allowlist because the failure modes are asymmetric: a denylist of artefact patterns
+  # fails by shipping a local file, an allowlist fails by not shipping a new template file —
+  # which the first generation reveals. It also needs no edit when a numbered folder is added.
+  #
+  # A DIRECTORY EXCLUSION DOES NOT PRUNE ITS CONTENTS. Copier walks with a flat recursive
+  # scantree and `continue`s on one entry at a time, and _render_file does
+  # `parent.mkdir(parents=True)` — so a file whose parent directory was excluded still renders.
+  # Every pattern below therefore matches files recursively (`/**`), never a bare directory.
+  # Directories need no re-inclusion: they are created implicitly by the files that survive.
+  #
+  # questionnaires/ is NOT here — it keeps its nested .gitignore, because a returned
+  # questionnaire holds a named outsider's answers and this repository is public.
   - /questionnaires/.gitignore
-  - /learning/.gitignore
+  - /research/**
+  - "!/research/CONTEXT.md"
+  - "!/research/CLAUDE.md"
+  - /handoffs/**
+  - "!/handoffs/CONTEXT.md"
+  - "!/handoffs/CLAUDE.md"
+  - /learning/**
+  - "!/learning/CONTEXT.md"
+  - "!/learning/CLAUDE.md"
+  # project-management/src/ — the same allowlist the nested .gitignore carried, verbatim in
+  # intent: every folder ships its documentation pair and its templates, nothing else.
+  - /project-management/src/**
+  # The documentation pair every directory in this tree ships (docs-pairing.sh enforces it).
+  # `a/**/b` matches `a/b` too, so this covers the tree root as well as every folder under it.
+  - "!/project-management/src/**/CONTEXT.md"
+  - "!/project-management/src/**/CLAUDE.md"
+  # Every per-story template — the shape a real artefact is written from. Matches at any depth,
+  # which covers the three-stage folders (04–08) and the PLANNING/IMPLEMENTATION pairs (09–13).
+  - "!/project-management/src/**/*TEMPLATE*"
+  # Named shipped content: real template files that carry no TEMPLATE in the name.
+  - "!/project-management/src/00-ASSETS/scripts/*.sh"
+  # The brand-guide and component-guide build sources (Python → LaTeX). The rendered PDFs are
+  # build output and are deliberately NOT re-included — a generated project builds its own.
+  - "!/project-management/src/06-BRAND-GUIDE/guide-build/*.py"
+  - "!/project-management/src/06-BRAND-GUIDE/guide-build/*.tex"
+  - "!/project-management/src/07-COMPONENTS/component-build/*.py"
+  - "!/project-management/src/07-COMPONENTS/component-build/*.tex"
+  # The stylesheet every wireframe links.
+  - "!/project-management/src/08-WIREFRAMES/SHARED/wireframe.css"
+  # The six GDPR register skeletons — filled in per project, but shipped as empty registers.
+  - "!/project-management/src/09-GDPR/BREACH-NOTIFICATION.md"
+  - "!/project-management/src/09-GDPR/CONSENT-LAWFUL-BASIS.md"
+  - "!/project-management/src/09-GDPR/DATA-INVENTORY.md"
+  - "!/project-management/src/09-GDPR/DATA-SUBJECT-RIGHTS.md"
+  - "!/project-management/src/09-GDPR/RETENTION-DELETION.md"
+  - "!/project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md"
+  # The two test records are templates named for the story they are copied to, not for their role.
+  - "!/project-management/src/18-TESTS/US000-MANUAL-TESTING.md"
+  - "!/project-management/src/18-TESTS/US000-TEST-STATUS.md"
+  # The incident register's index — the one file in 23-INCIDENTS that is not an incident.
+  - "!/project-management/src/23-INCIDENTS/INCIDENT-INDEX.md"
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
   # SINGLE conditionalisation mechanism — no file ever has templated contents. When the
   # answer is false these paths are never rendered at all, so a Jinja error inside a mobile
@@ -121,6 +191,13 @@ _exclude:
   # is wholly about a surface that is absent here, so it goes with the tree exactly as RUST.md
   # and DESKTOP.md do. Its index rows are likewise allowed to dangle, flagged mobile-only.
   - "<: if not INCLUDE_MOBILE :>/code/docs/MOBILE-CODING-PRINCIPLES.md<: endif :>"
+  # The surface members of the types-over-dictionaries family go the same way. Each is wholly
+  # about one surface's spelling of the standard and routes to that surface's stack skill in its
+  # frontmatter, so leaving one behind names a skill the project does not have —
+  # `audits/routing-skills.sh` reports exactly that. The standard itself
+  # (TYPES-OVER-DICTIONARIES.md), its exceptions and the Python and browser members are ungated:
+  # every project has those surfaces.
+  - "<: if not INCLUDE_MOBILE :>/code/docs/data-structures/TYPES-TYPESCRIPT.md<: endif :>"
   # First gated path under how-to/ — every entry above this point is code/ or .claude/. The rule
   # is the same one, not a new one: STORE-LISTING.md is a per-project ANSWER SHEET (the pattern of
   # INVARIANTS.md and PLATFORM-PROVIDERS.md) for a surface that may not exist, and an answer sheet
@@ -143,6 +220,9 @@ _exclude:
   - "<: if not INCLUDE_RUST :>/code/docs/RUST.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/rust<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/encryption/RUST-CRYPTO.md<: endif :>"
+  # The Rust member of the types-over-dictionaries family — same reasoning as the TypeScript one
+  # above: it routes to `stack-rust`, which is excluded below.
+  - "<: if not INCLUDE_RUST :>/code/docs/data-structures/TYPES-RUST.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/workflows/12-rust-extension<: endif :>"
   - "<: if not INCLUDE_RUST :>/.github/workflows/syntax-rust.yml<: endif :>"
   # Governance goes with the tree, exactly as for mobile and for the same description-match
@@ -358,10 +438,10 @@ INCIDENT_TRACKER:
   help: >-
     Where the substance of an incident is held — log excerpts, identifiers, and any
     postmortem touching personal data. The interface is ACCESS CONTROL: the in-repo
-    register at project-management/src/22-INCIDENTS/ is PII-free by rule and ships, so
+    register at project-management/src/23-INCIDENTS/ is PII-free by rule and ships, so
     anything sensitive needs a home with permissions. ClickUp, Linear, Jira, a bespoke
     admin area — or leave the default, and keep that substance outside the repository.
-  default: None — record in 22-INCIDENTS/ only
+  default: None — record in 23-INCIDENTS/ only
 
 # ── Locale, licence and people ───────────────────────────────────────────────
 
@@ -443,15 +523,18 @@ LEGAL_APP:
   help: App owning cookie consent and legal pages
   default: legal
 
-CORE_APP:
-  type: str
-  help: App owning shared primitives such as encryption
-  default: core
+# CORE_APP was retired on 15/08/2026. Unlike its five siblings above, which name apps a
+# story has yet to create, `apps/core/` ALREADY SHIPS — as a literal directory, with
+# `name = "apps.core"` in its apps.py, `apps.core` in INSTALLED_APPS, literal imports
+# throughout, and a dozen guides naming it. The question could therefore never be
+# honoured: answering anything but `core` produced a project whose docs disagreed with
+# its own code. A token whose referent is hardcoded everywhere else is not a choice, it
+# is a claim that a choice exists. See how-to/src/TEMPLATE-TOKENS.md.
 
 # ── Planning cadence ─────────────────────────────────────────────────────────
 # The sprint point ceiling that triggers the sprint-planning pass. Stories are
-# planned one at a time through workflows 01–13; when the open sprint's accepted
-# story points reach SPRINT_CAPACITY_SP, workflows 14 and 15 run for that sprint
+# planned one at a time through workflows 02–14; when the open sprint's accepted
+# story points reach SPRINT_CAPACITY_SP, workflows 16 and 17 run for that sprint
 # before the next story is planned. The grace value is the hard ceiling a sprint
 # may reach to avoid splitting a story badly — never a routine target.
 # Rules: project-management/docs/PLANNING-GUIDE.md (planning/CADENCE.md).
@@ -460,7 +543,7 @@ SPRINT_CAPACITY_SP:
   type: int
   help: >-
     Story points that fill a sprint and trigger the sprint-planning pass
-    (workflows 14 + 15). Tune to your team's measured velocity after two sprints.
+    (workflows 16 + 17). Tune to your team's measured velocity after two sprints.
   default: 11
 
 SPRINT_GRACE_SP:
@@ -581,6 +664,16 @@ DATE:
 # a project has no use for the migrations that produced it.
 
 _migrations:
+  # v7.0.0 opens src/14 for the new 14-LOGGING artefact folder, shifting 14-DECISIONS and
+  # everything after it up by one. That is the SECOND deliberate exercise of the exception to
+  # the frozen-numbering rule in project-management/src/CONTEXT.md — a release may renumber
+  # that tree only if it ships the rescue migration in the same commit. Same failure mode as
+  # v2.0.0 below, same cure, and listed first because migrations run in declaration order and
+  # this one must not be reached before the v2.0.0 pass has settled an older project's tree.
+  - version: v7.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.0.0-renumber-src.sh"
+    when: "<% _stage == 'after' %>"
+
   - version: v2.0.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v2.0.0-renumber-src.sh"
     when: "<% _stage == 'after' %>"
@@ -594,6 +687,83 @@ _migrations:
   # and a machine doing it would emit a skill that fails its own gate.
   - version: v3.0.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v3.0.0-self-authored-agents.sh"
+    when: "<% _stage == 'after' %>"
+
+  # v4.0.0 moves `pyproject.toml`'s [project] name off the project-slug token and onto the
+  # house constant `syntek-base`, restored to the project's own slug by a _task. _tasks run
+  # on `copy` and never on `update`, so an update rewrites a live project's manifest to the
+  # TEMPLATE's name — cleanly, with no conflict, and reporting success. That breaks `uv
+  # sync --frozen` against the project's committed lock on the next container build.
+  # This one ACTS rather than advising: it is a one-line restore with exactly one correct
+  # value, read back out of .copier-answers.yml, and leaving it to a human means leaving a
+  # broken build behind a success message.
+  - version: v4.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v4.0.0-manifest-name.sh"
+    when: "<% _stage == 'after' %>"
+
+  # The SAME advisory, keyed a second time at v4.0.0, because that is the release the split
+  # actually shipped in: `git show v4.0.0:project-management/docs/GIT-GUIDE.md | wc -l` is 52,
+  # the post-split index, and all six sub-documents are already in that tree. The v5.0.0 key
+  # below is where somebody NOTICED — eight version commits back-filled onto one frozen tree,
+  # which is the retroactive-tagging failure the v6.0.0 entry names. This entry is its remedy.
+  #
+  # BOTH KEYS STAY, and the trigger rule is why: copier fires a migration when
+  # old_version < key <= new_version. Re-keying v5.0.0 -> v4.0.0 would have closed the
+  # v4.0.0..v4.1.1 window and simultaneously BROKEN the project already sitting inside it,
+  # whose next update to >= v5.0.0 is the only thing that reaches it today — 4.1.1 < 4.0.0 is
+  # false, so a lone v4.0.0 key would never fire for it. Two keys cover both populations and
+  # one cannot, whichever single version it names.
+  #
+  # The cost is a duplicate report on one path: an update from below v4.0.0 to >= v5.0.0
+  # crosses both keys and prints the advisory twice. Accepted rather than guarded — the script
+  # only reads and always exits 0, so the second run costs one repeated list, and a `when:`
+  # narrow enough to suppress it would be a third thing to keep true.
+  - version: v4.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v5.0.0-git-guide-split.sh"
+    when: "<% _stage == 'after' %>"
+
+  # v5.0.0 splits project-management/docs/GIT-GUIDE.md into a thin index over four
+  # sub-documents under project-management/docs/git/. Both files are template-owned, so
+  # copier replaces them wholesale and the template's own 31 citations travel down with
+  # the update. What it cannot reach is a citation the PROJECT wrote at a section of the
+  # old single-file guide — and that one does not break loudly, because the path still
+  # resolves against the surviving index while the section moved a level down, and
+  # doc-references.sh only asks whether a cited path resolves. Advisory: the right
+  # destination depends on which section was meant, so it reports each with file and line
+  # and maps the subjects, rather than guessing between four files and being confidently
+  # wrong in a sentence that reads as deliberate.
+  - version: v5.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v5.0.0-git-guide-split.sh"
+    when: "<% _stage == 'after' %>"
+
+  # v6.0.0 renames the four surfaces where "feature" meant two different sizes — an epic
+  # charted on a map, and one buildable story: `.claude/skills/feature/` ->
+  # `implement-story/`, `code/workflows/01-new-feature/` -> `01-implement-story/`,
+  # `project-management/workflows/01-feature/` -> `01-feature-map/`, and
+  # `project-management/src/01-FEATURE/` -> `01-FEATURE-MAPS/`. Copier moves the scaffolding
+  # it owns and deletes the old path, so anything the DEVELOPER wrote in those folders is
+  # left in a husk nothing routes to — the v2.0.0 silent-orphan failure again.
+  #
+  # This one ACTS on two things and only reports on the third. It moves stranded files,
+  # guarded per tree by the marker the template owns there (CONTEXT.md, or SKILL.md for the
+  # skills tree) so a directory copier has not renamed yet is never touched; and it repoints
+  # path and `skills:` citations with negative-lookahead rules — `01-FEATURE(?!-MAPS)` —
+  # which makes a second run a no-op by construction rather than by a flag. It only REPORTS
+  # backticked `feature` prose, because that word is sometimes the old skill and sometimes
+  # plain English and only the author of the sentence knows which; those findings can never
+  # affect the exit code.
+  #
+  # The stranding is measured, not assumed: a live v5.5.0 -> v6.0.0 update leaves
+  # MAP-SCALE-PLANNING.md alone in `src/01-FEATURE/` and `audits/template-orphans.sh` exits
+  # 1. That file arrives through a _task, and _tasks run on copy and never on update, so the
+  # orphan is guaranteed in every project rather than only in ones that wrote something.
+  #
+  # Keyed v6.0.0 because that is the release the directories MOVED in — same commit as the
+  # four renames — not the release somebody noticed. This repository has mis-keyed a
+  # migration by tagging a batch retroactively, which strands every project that updated in
+  # between; the script header says the same, for the next reader.
+  - version: v6.0.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v6.0.0-rename-feature-surfaces.sh"
     when: "<% _stage == 'after' %>"
 
   # .copier/ is a staging directory, not project content. _tasks empty it and remove
@@ -621,27 +791,46 @@ _tasks:
   # present and every row reading TBD. Seed-once matters here too: once /scale-planning
   # has filled it in, an update must never hand the project its blank stub back.
   #
-  # MEMORY.md is the third case and the strictest, because it is the only one an AGENT
-  # writes to unprompted: it must arrive with its headings and its writing rules and no
-  # entries at all. `.github/scripts/shipped-memory.sh` holds it to that.
+  # MEMORY.md, GAPS.md and DEFERRED.md are the strictest case, because they are the ones an
+  # AGENT writes to unprompted: each must arrive with its headings and its writing rules and
+  # no entries at all. A seed cut from a polluted root is a one-way door — it ships that
+  # content permanently and no update can correct it — so emptiness is gated rather than
+  # trusted: `.github/scripts/shipped-memory.sh` for the first,
+  # `.github/scripts/shipped-registers.sh` for the other two.
   - command: >-
       mv .copier/README.md README.md &&
       mv .copier/VERSION VERSION &&
       mv .copier/VERSION-HISTORY.md VERSION-HISTORY.md &&
       mv .copier/CHANGELOG.md CHANGELOG.md &&
       mv .copier/RELEASES.md RELEASES.md &&
-      mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md &&
+      mv .copier/MAP-SCALE-PLANNING.md project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md &&
       mv .copier/MEMORY.md .claude/MEMORY.md &&
+      mv .copier/GAPS.md GAPS.md &&
+      mv .copier/DEFERRED.md DEFERRED.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 
-  # The template gitignores uv.lock so a wrongly-named lock can never be committed
-  # during template development. A generated project is the opposite case: it MUST
-  # commit the lock, because every Dockerfile builds with `uv sync --frozen`.
+  # NO .gitignore SURGERY FOR uv.lock ANY MORE (16/08/2026). This slot held a perl task
+  # that stripped a `uv.lock` rule from .gitignore at generation, because the template
+  # ignored its own lock and a generated project must commit one. The template now commits
+  # its lock too — so there is no rule to strip, and `/uv.lock` in _exclude above stops the
+  # template's copy travelling. The generated project's own lock is written by the `uv lock`
+  # task below, after the manifest is branded, and is committed by the initial commit.
+  #
+  # Brand the manifest. `pyproject.toml` carries the house constant `syntek-base` rather
+  # than a token, because uv validates [project] name as a package name and rejects the
+  # delimiters outright — a token there made the whole repository unlockable, and took
+  # basedpyright, pip-audit and every test suite down with it. The name is therefore
+  # restored HERE, and this task MUST stay ahead of `uv lock` below so the lock is written
+  # under the project's own slug rather than the template's.
+  #
+  # Anchored to the exact literal rather than `^name = `: [project] is not the only table
+  # in this file that could ever carry a name key, and a loose pattern would rewrite the
+  # first one it met.
   - command: >-
       perl -0777 -i -pe
-      's/^# Python lockfile — BASE TEMPLATE ONLY\.\n(?:#.*\n)*uv\.lock\n\n//m'
-      .gitignore
+      's/^name = "syntek-base"$/name = "<%PROJECT_SLUG%>"/m'
+      pyproject.toml
     when: "<% _copier_operation == 'copy' %>"
 
   # Generate the lock the Dockerfiles need. Non-fatal: the guide tells you to run

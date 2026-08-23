@@ -12,6 +12,22 @@ British English (en_GB) **Timezone:** <%TIMEZONE%>
 
 ---
 
+## This file names the defects; the standard states the rule
+
+Each pattern below is a shape to recognise in a diff and the refactor that removes it. **What
+makes a dictionary wrong in the first place, when it is right, and what a reviewer is obliged to
+check** are the types-over-dictionaries family's, and are not restated here:
+
+- [`TYPES-OVER-DICTIONARIES.md`](TYPES-OVER-DICTIONARIES.md) — the principle, parse-at-the-boundary, the enum test, the PR checklist
+- [`TYPES-EXCEPTIONS.md`](TYPES-EXCEPTIONS.md) — the seven legitimate uses and the `DICT-OK:` escape hatch
+- `TYPES-PYTHON.md` · `TYPES-TYPESCRIPT.md` · `TYPES-RUST.md` · `TYPES-BROWSER.md` — the per-surface spelling
+
+The first four patterns below — God Dictionary, Stringly Typed, Primitive Obsession, Nested
+Dicts — are that standard's failure modes seen from the other end. Reach for this file when you
+have code in front of you, and for the standard when you are deciding what to write.
+
+---
+
 ## The God Dictionary / God Array
 
 A single dictionary or object that accumulates every piece of state for a feature, passed around

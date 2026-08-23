@@ -16,10 +16,11 @@ that a decision builds on. It is the reading tier beneath a decision: the note i
 deliverable, and the `ADR` or `PLAN` that consumes it links back.
 
 **Boundary with `context7`.** For one library, SDK, or framework's own API — signatures,
-config, a version migration — the `context7` MCP is the first and only stop
-(`resolve-library-id` → `query-docs`). Reach for research when the question needs **synthesis
-across primary sources** that no single doc answers: weighing two libraries for an ADR,
-grounding a decision, or establishing how X behaves per the spec.
+config, a version migration — `context7` is the stop (`resolve-library-id` → `query-docs`), once
+the internal `**/docs/` have come up short: they rank ahead of it, and of web search behind it
+(`.claude/CLAUDE.md` Section 3.2 → _How to look something up_). Reach for research when the question needs
+**synthesis across primary sources** that no single doc answers: weighing two libraries for an
+ADR, grounding a decision, or establishing how X behaves per the spec.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 
@@ -44,7 +45,7 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
    convention already in `research/`; yours is the first note if it is empty. _Completion:_ the
    note exists at that path and every claim carries a citation.
 5. **Wire the note to its decision.** The consuming `ADR-###` (take the next free number in
-   `…/14-DECISIONS/`) or `STORY-PLAN-US###` links back to the note by path. When the research
+   `…/15-DECISIONS/`) or `STORY-PLAN-US###` links back to the note by path. When the research
    grounds a data-model decision, hand the outcome to `grill-with-docs` — its
    glossary-into-nearest-`CONTEXT.md` and three-test ADR gate record it (reference:
    `code/docs/data-structures/DOMAIN-MODELLING.md`).
@@ -94,7 +95,7 @@ in `.claude/MEMORY.md`, not a note.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/14-decisions/` — ADR groundwork
+- `project-management/workflows/15-decisions/` — ADR groundwork
 - `project-management/workflows/13-api-design/` — grounding a contract decision
 - `project-management/workflows/04-database-schema/` — grounding a schema or stack choice
 
@@ -104,8 +105,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   - the three-test ADR gate).
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the reference when a note feeds a data model.
 - `research/` — the committed, synced home for research notes (`<TOPIC>.md`).
-- `project-management/src/14-DECISIONS/` — the ADRs a note feeds; take the next free `ADR-###`.
-- `project-management/src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the story-plan template
+- `project-management/src/15-DECISIONS/` — the ADRs a note feeds; take the next free `ADR-###`.
+- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the story-plan template
   a note may feed.
 - `project-management/src/02-STORIES/US###.md` — a story a note may inform.
 - `GAPS.md` · `DEFERRED.md` — open blockers, and items deferred to a named future story.

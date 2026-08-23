@@ -17,7 +17,7 @@ project-management/src/10-SECURITY/AUDITS/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a record during `project-management/workflows/21-implementation-documentation/` (or on completing
+Write a record during `project-management/workflows/22-implementation-documentation/` (or on completing
 `workflows/10-security-checks/` verification) for any story that shipped a security
 surface. Copy `AUDIT-IMPL-US000-TEMPLATE.md`, open the story's plan in
 `../PLANNING/AUDIT-PLAN-US###-*.md`, and document the audit outcome.
@@ -38,7 +38,7 @@ surface. Copy `AUDIT-IMPL-US000-TEMPLATE.md`, open the story's plan in
 - `../PLANNING/` — the pre-implementation plans these records answer
 - `../CONTEXT.md` — the AUDITS overview, frameworks, and checklist
 - `../../ASSESSMENTS/IMPLEMENTATION/` · `../../VULNERABILITIES/IMPLEMENTATION/` — the assessment this feeds and the escalation target
-- `project-management/workflows/21-implementation-documentation/` — where these records are written
+- `project-management/workflows/22-implementation-documentation/` — where these records are written
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF reference tables
 - `code/docs/SECURITY.md` — the coding-layer security controls these audits verify
 

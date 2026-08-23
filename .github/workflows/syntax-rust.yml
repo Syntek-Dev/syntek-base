@@ -5,8 +5,8 @@
 # directory check appears here, unlike the mobile jobs in test.yml.
 #
 # Path filters are safe on this workflow because it is NOT a required status check — see
-# project-management/docs/GIT-GUIDE.md on why a path-filtered required check can block a
-# merge forever.
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md on why a path-filtered required
+# check can block a merge forever.
 name: Syntax — Rust
 
 on:
@@ -80,8 +80,15 @@ jobs:
 
       # The supply-chain gate. A crate shares its address space with Django, so this is
       # a gate and not a report — see code/docs/rust/SUPPLY-CHAIN.md.
+      # Pinned, for the reason the gate exists at all. `--locked` pins cargo-deny's own
+      # dependencies and says nothing about cargo-deny's version, so an unpinned install
+      # meant the supply-chain gate was a different tool on every run — and an advisory
+      # set that changes underneath you is the one thing a supply-chain gate must not be.
+      # The pin lives beside the toolchain pin, in code/src/rust/.cargo-deny-version.
       - name: Install cargo-deny
-        run: cargo install --locked cargo-deny
+        run: |
+          version="$(tr -d '[:space:]' < code/src/rust/.cargo-deny-version)"
+          cargo install --locked --version "$version" cargo-deny
 
       - name: Audit the dependency tree
         run: bash code/src/scripts/rust/audit.sh

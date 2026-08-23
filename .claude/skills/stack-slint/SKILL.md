@@ -188,8 +188,10 @@ WCAG 2.2 AA is a web standard and does not transfer verbatim, but its intent doe
 reachable, labelled, not colour-only. **There is no `axe-core` equivalent** — verification is
 manual with a screen reader, so never report desktop a11y as "scanned clean".
 
-AccessKit is also why `deny.toml` accepts two `quick-xml` advisories: they are reached only through
-the AT-SPI stack, and dropping accessibility is not the mitigation.
+AccessKit also sets the standing answer when an advisory arrives **through** it: an advisory
+reached only via the AT-SPI stack is not answered by dropping accessibility. `deny.toml` carried
+two `quick-xml` suppressions on exactly that reasoning until 16/08/2026, when an MSRV bump took
+the chain out of the graph; the list is empty now and its comment keeps the worked precedent.
 
 ---
 
@@ -244,9 +246,9 @@ caller said to.
 - `code/workflows/13-desktop-app/` — the procedure for this surface
 - `code/workflows/12-rust-extension/` — when a window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through
-- `project-management/workflows/20-frontend-code/` — the build phase this is entered from
+- `project-management/workflows/21-frontend-code/` — the build phase this is entered from
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/07-dependency-updates/` — the cadence a Slint bump follows
 
 ## Cross-references
@@ -255,7 +257,7 @@ caller said to.
 - `code/docs/VISUAL-DESIGN.md` — Section 3 the direction and its six axes, Section 4.1 the universal tells,
   Section 5 the motion numbers (read every time)
 - `code/docs/visual-design/DESKTOP.md` — the desktop expression and the stock-Fluent tell
-- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy, including the AccessKit advisories
+- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy and how an advisory may be suppressed
 - `code/src/rust/CLAUDE.md` — the operating rules for the workspace
 - `code/src/scripts/desktop/CONTEXT.md` — why these run on the host, and the attribution gate
 - `how-to/src/BRAND-VOICE.md` — the voice for user-facing copy

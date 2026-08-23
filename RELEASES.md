@@ -1,11 +1,1421 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 3.2.2 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.3 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v7.2.3 — 23/08/2026
+
+**Status:** Patch — a reference table in the story-plan template was describing folder numbers as
+they were two reorganisations ago. Nothing your project does changes; the template you copy from
+is now accurate.
+
+### A map of where things go, that had stopped matching where things go
+
+The story-plan template carries a table calling itself the authoritative list of which write-up
+belongs in which folder, followed by a short paragraph of notes about the numbering.
+
+Every number in that paragraph was wrong. It named the wrong range of folders, said the records
+were written at a stage that no longer exists under that number, claimed the folder numbers and
+the planning-step numbers stop matching much earlier than they do — and its worked example of
+"do not assume these two line up" picked a pair that now lines up exactly.
+
+Most of it was already wrong before the last release, which is the awkward part: the previous
+update swept folder **names** through the whole repository and left bare **numbers** untouched,
+so the names in that paragraph moved forward and the digits beside them did not. The result
+disagreed with itself within a single sentence, and disagreed with a correct sentence 270 lines
+higher in the same file.
+
+The paragraph is rewritten against measurement rather than patched digit by digit.
+
+### Two attributions, and one missing pair of rows
+
+Two rows said which planning step produces a record using numbers that no longer point anywhere.
+Each is now answered from the folder that actually owns that record rather than from the habits
+of the rows around it — and those two answers turn out to be genuinely different, which is why
+copying the pattern would have been wrong.
+
+The logging step added in 7.0.0 also had no rows here at all, so a table describing itself as
+authoritative was silent about one of the fourteen things it covers. Both are added.
+
+---
+
+## v7.2.2 — 22/08/2026
+
+**Status:** Patch — two Claude Code preferences are now set in the settings file your project
+inherits. Nothing else changes.
+
+### Two session defaults, written down
+
+The settings file that ships with your project already pins which model Claude uses and how much
+reasoning effort it spends. Two more preferences join them:
+
+- **Concise output.** Claude's replies lead with the answer and skip the preamble and the closing
+  recap. This is the same standard the project instructions already describe at length; setting it
+  here simply means the tool is configured to match the rule rather than relying on the rule alone.
+- **Prompt suggestions off.** The follow-up prompts Claude Code offers at the end of a turn are
+  disabled.
+
+Both are preferences about presentation. No skill, workflow or check behaves differently, and you
+can change either in your own copy without consequence.
+
+---
+
+## v7.2.1 — 22/08/2026
+
+**Status:** Patch — bookkeeping for the planning notes this repository keeps about itself. No file
+your project uses changes.
+
+### The working notes catch up with the work
+
+This template keeps decision maps — running documents that list the open questions behind a large
+piece of work, and record how each one was settled. They are the template's own notes, and they
+are excluded from every generated project.
+
+This update writes up the sittings behind the last few releases: the questions that were settled,
+what was measured to settle them, and the recount of what remains open.
+
+One entry is worth describing, because it is a habit rather than an event. A map recorded two
+findings as routed elsewhere; both had in fact been fixed some days earlier. They are struck
+through rather than deleted, so that the original finding and its closure stay readable side by
+side — and the closure was confirmed by reading the current files, not by trusting the message on
+the commit that claimed it. The remaining seven findings on that map are left untouched and
+explicitly marked as **not re-checked**, because a finding nobody looked at must never be recorded
+as a finding that came back clean.
+
+---
+
+## v7.2.0 — 22/08/2026
+
+**Status:** Minor — the design steps stop depending on a hosted design tool. Every design artefact
+now lives in your repository. If you were using Figma alongside this template, nothing stops you;
+it is simply no longer what the instructions assume.
+
+### Designs that live in the repository
+
+Three of the planning steps here produce design work: brand guides, component designs and
+wireframes. Their instructions used to assume a hosted design tool, and a fair amount of the
+detail was about that tool rather than about design — how to set resizing rules on a frame, how to
+rebuild a component so existing copies update, which script pattern silently discards its work.
+
+All of it is gone, and what replaces it is the medium each artefact was already in:
+
+- **Wireframes** are self-contained HTML screens committed alongside everything else. No content
+  delivery network, no framework, no web fonts — a screen opens by double-clicking it, and it
+  shows up in a diff like any other file.
+- **The brand guide** is the PDF generated at consolidation. That is the client-facing document.
+- **Component designs** are records in the components folder. Each one names the actual component
+  in the codebase it maps to, or says it is new — so a design can be built without guessing.
+- **User-flow diagrams** are Mermaid, with the images exported from it.
+
+Component responsiveness is now stated as a range rather than as a tool's settings: designed for a
+360 px phone first, then checked at 320 px and at 10240 px, with backgrounds filling and pinned
+elements staying pinned at both ends. A component that only holds at one width is not designed.
+
+### What has not been decided
+
+There is an open question about where the client-facing half of design work should be produced,
+now that the repository holds the internal half outright. It is written down as an open map with
+every question still unanswered, deliberately — it is charted, not settled. Nothing acts on it
+yet, and nothing in your project depends on the answer.
+
+---
+
+## v7.1.0 — 22/08/2026
+
+**Status:** Minor — two files in your project change how they are delivered. You still receive
+both, still blank, and nothing you have written in them is touched. Nothing in your project
+behaves differently.
+
+### Two notebooks that were being kept blank by hand
+
+Your project comes with two running registers: `GAPS.md`, for open problems and blockers, and
+`DEFERRED.md`, for work a finished piece of work explicitly handed to a later one. You write in
+them; they fill up over time.
+
+The template also needs registers of exactly that kind for its **own** open problems. Until now it
+could not use these two, because whatever they contained was copied into every project generated
+from the template. So the rule was: leave them empty here, and keep the template's own notes
+somewhere else.
+
+That rule was a habit, not a mechanism, and it had already been broken in a published release.
+Version 6.0.0 shipped a `GAPS.md` carrying 47 lines of the template's own internal note — which
+arrived in new projects as though it were their problem, and in existing projects as a clash to
+resolve by hand.
+
+### What changes for you
+
+Both files are now delivered the same way your project's memory file has always been delivered:
+the template does not own them, and a blank one is placed in your project when it is created.
+
+- **A new project** gets both files with their headings and their writing rules and no entries —
+  exactly as before, and now guaranteed by a check rather than by someone remembering.
+- **An existing project taking this update** keeps whatever it has written in them, untouched. The
+  update no longer tries to merge them, which also means one fewer thing that can clash.
+
+The template's own notes have moved into its copy of `GAPS.md`, where they belong, and the
+separate file that used to hold them is gone. It never shipped, so nothing you had disappears.
+
+One small addition worth knowing about: `GAPS.md` now has a **standing limitations** section, for
+things that are permanently true and accepted rather than problems waiting to be fixed. Entries
+there are read, not worked on, and the planning steps know to leave them alone.
+
+---
+
+## v7.0.3 — 22/08/2026
+
+**Status:** Patch — a command this repository told you to run was not running the checks it
+named, and the check runner behind it was reporting on scripts it had never opened.
+
+### A documented command that quietly did nothing
+
+Before a pull request is raised, a script here runs the whole gate: line counts, formatting,
+linting, types, tests, security and every audit. It is wired to fire automatically when a pull
+request is created.
+
+Because of how it is wired, it expects to be handed a small piece of information about what
+triggered it. Run on its own with nothing handed to it, it finishes immediately and reports
+success, having checked nothing whatsoever.
+
+Two places in this repository told you to run it exactly that way. Both are corrected: the
+instruction now shows the form that works, and says outright that the plain form finishes clean
+without looking.
+
+There is also a gap worth knowing: the automatic run happens when a pull request is **created**,
+not when a draft is marked ready. If you open something as a draft and promote it later, nothing
+has re-checked it in between, so running the gate by hand at that point is worth doing.
+
+### The gate was stepping over scripts and not saying so
+
+The runner deliberately skips four checks, each because something else already covers it.
+"Something else already covers it" was written in a comment and never tested. If the thing that
+covered it were deleted, or renamed, or stopped calling it, the runner would have gone on
+skipping and gone on reporting everything clean.
+
+Each exclusion is now verified before it is honoured — the script still exists, its stated owner
+still exists, and that owner still names it — and a stale one stops the run rather than silently
+widening the scope.
+
+The same run now also refuses to call an empty scope a pass. If the folder of checks were missing,
+or held only the scripts being stepped over, the old code found no failures and reported success.
+It now reports that it found nothing to look at, which is a different answer.
+
+Finally, the summary line says how many checks ran, of which kind, and which were not run here by
+name. The single number it replaced could not be squared with the folder it claimed to describe.
+
+---
+
+## v7.0.2 — 22/08/2026
+
+**Status:** Patch — two scripts for working with the database were describing themselves
+inaccurately, and one of them had a mode that could not run on the images this template ships.
+
+### "All security checks passed" was covering two settings
+
+There is a script called `verify-db-security.sh`. Its name suggests it confirms your database is
+secure. It checks two things: that Django's own configuration check passes, and one PostgreSQL
+logging setting. That is the entire list.
+
+It reads no access rules. It does not test whether one customer's data is actually walled off
+from another's, does not look at what any database account is permitted to do, and does not touch
+encryption or the audit trail. A green result from it was being read as a much broader assurance
+than it could possibly give.
+
+The script now states its two checks at the top, states plainly what it does **not** examine, and
+ends with "Both checks passed — Django configuration and `log_statement`. Nothing else was
+examined." What actually proves your data is walled off is the cross-account test suite, and every
+document that cited this script now says so.
+
+### The database shell was quietly connecting as the most powerful account
+
+`shell.sh` opened a session against the development database using the account the database
+container was created with. That account is the cluster's superuser: it can see everything, and
+it steps straight past the rules that separate one customer's data from another's.
+
+That is fine for administration and misleading for checking. Someone opening a shell to confirm
+that a data-separation rule works would have seen every row regardless of whether the rule was
+there at all.
+
+The raw session now needs an explicit `--psql`, and the documentation for it says what it connects
+as and what it bypasses.
+
+The default mode had a separate problem: it asks Django to open the shell, and Django needs a
+command-line program the shipped image does not install. It failed with a Django error advising a
+restart of something that was already running. It now checks for the program first and, if it is
+absent, stops with a short explanation and the one-line change to the image that adds it.
+
+---
+
+## v7.0.1 — 22/08/2026
+
+**Status:** Patch — the checks that guard this repository stopped being able to report a clean
+result over something they had not looked at. Nothing you have written changes, and no folder
+moves.
+
+### A check that examined nothing was reporting the same result as a check that passed
+
+There is a folder of small checking scripts here — line lengths, broken links, documentation
+pairing, marketing copy, and about twenty more. Each can be pointed at part of the repository
+instead of the whole of it, with `--path`.
+
+Three things were wrong with that, and they add up to one fault.
+
+**Pointing a check somewhere that does not exist.** Some checks noticed and stopped. Others took
+the argument, found nothing to look at, and printed the same confident success line they print
+after reading the whole tree. A typo and a genuinely empty folder produced identical output.
+
+**Pointing a check outside the repository.** Ten of the twenty-four accepted `--path /etc` and
+audited it — one of them announced that a system directory contained no machine-written
+marketing prose. That is a true sentence about the wrong subject.
+
+**Pointing a check at a folder it was never meant to read.** Two of the checks exist to police
+public marketing text, where a particular dash is banned. Documentation here uses that dash
+deliberately. Unscoped, the checks read only the marketing folders. Given `--path`, they read
+whatever they were handed — so the ban could be applied to the very guides that write the rule.
+
+All three are closed. A path is resolved to one canonical form before anything is tested, a path
+that does not exist or that lands outside the repository stops the run and says which, and the
+file types a check reads are the same whether it is scoped or not.
+
+### Every run now says what it read
+
+The wider change is that a verdict is printed underneath the count it is a verdict over. A run
+reports how many files it opened, how many it skipped by rule, and how many things it actually
+tested. "Nothing found" over nothing read is now visibly different from "nothing found" over the
+whole repository, which is the only way the first can stop being mistaken for the second.
+
+The same treatment went to the script that keeps the directory listings in the documentation
+honest: an empty scope finishes successfully and says it was empty, while a mistyped one stops.
+
+---
+
+## v7.0.0 — 22/08/2026
+
+**Status:** Major — nineteen folders in your project are renumbered, and taking this update moves
+anything **you** wrote inside them across for you. Nothing your project does at runtime changes,
+and no application code is touched. If you have written stories, decisions, sprint plans or test
+records, read the last section — it is the reason this is a whole-number release.
+
+### What this is for
+
+Every user story already had a table of flags at the top — DB, GDPR, Security, SEO and the rest.
+It looked like it decided which planning steps a story goes through. It did not: nothing filled
+it in, and nothing read it. You could leave every row blank and no step would notice.
+
+It now works the way it looks. **One row per planning step, and a row reading `N/A` means that
+step is skipped for that story.** Fill the table once when you write the story, and you have said
+which of the fourteen planning steps it needs.
+
+### What changed for you
+
+- **The flags table has thirteen rows instead of nine**, one for each planning step, and each row
+  says which step it turns on. Fill it in when you write the story; leave nothing blank.
+- **A new planning step, "logging checks", decides what your feature writes to its log files** —
+  and, more usefully, what must never appear in one. It runs after the API step, because it needs
+  your endpoint list and your list of encrypted fields to be useful.
+- **"Testing" and "QA" were the same thing under two names.** They are now one, split into the
+  two things you actually produce: an automated test record and a manual walk-through.
+- **Your feature map now lists the stories it will become**, each with its flags already filled
+  in. Writing the story becomes copying that row out rather than starting from a blank page.
+- **Steps 14 to 23 are now 15 to 24**, because the new logging step takes number 14.
+
+### If you have already written work in these folders
+
+Take the update as normal. A rescue script runs automatically and moves your files from the old
+folder numbers to the new ones — your decisions, sprint plans, story plans, test records,
+reviews, findings, bug reports, refactoring notes and incident register. It never overwrites: if
+a file of the same name already exists on both sides it stops, lists them, and asks you to
+reconcile those by hand. Nothing is deleted.
+
+Afterwards, `git status` shows you exactly what moved.
+
+### One thing worth knowing
+
+Five of the six export scripts under `00-ASSETS/scripts/` had been pointing at folder names that
+stopped existing several releases ago, so they quietly produced nothing. They work again. If you
+tried a PDF or ClickUp export before and got an empty result, that is why.
+
+---
+
+## v6.0.0 — 20/08/2026
+
+**Status:** Major — four folders in your project are renamed, and taking this update moves
+anything **you** wrote inside them across to the new names for you. Nothing your project does at
+runtime changes, and no code is touched. If you have written notes, maps or a skill of your own
+inside any of the four, read the last two sections — they are the reason this is a whole-number
+release.
+
+### One word was being used for two different sizes of work
+
+This project has a step where you map out a large piece of work and decide the questions it
+raises, and a separate step where you build one small, self-contained item from that map. Both
+were called a "feature". Same word, same repository, sometimes in neighbouring sentences.
+
+That is not merely untidy. The two steps have different sizes, different outputs and different
+starting points, and the instructions Claude reads to choose between them were pointing at
+folders whose names could not tell them apart. Renaming them is the fix, and renaming a folder
+your project has inherited is a break, whatever the reason for it.
+
+| It used to be called                       | It is now called                               |
+| ------------------------------------------ | ---------------------------------------------- |
+| `.claude/skills/feature/`                  | `.claude/skills/implement-story/`              |
+| `code/workflows/01-new-feature/`           | `code/workflows/01-implement-story/`           |
+| `project-management/workflows/01-feature/` | `project-management/workflows/01-feature-map/` |
+| `project-management/src/01-FEATURE/`       | `project-management/src/01-FEATURE-MAPS/`      |
+
+Every mention of the old names inside the template was repointed at the same time — seventy-two
+files. The release history is the deliberate exception: an entry written four whole-number
+releases ago names the folder as it was called then, and rewriting it to say otherwise would be
+tidying a word by falsifying a record.
+
+### Why the update needs to do more than rename the folders
+
+When you take a template update, the update replaces the files the template owns and removes the
+old folder they lived in. Files **you** put there were never the template's, so it cannot move
+them and it will not delete them. They are simply left behind, in a folder that nothing now
+points at.
+
+Nothing goes wrong loudly. There is no clash to resolve and no error to read. The update finishes
+and reports success, and your own work is sitting in a folder with the old name that no
+instruction, index or search path will ever visit again.
+
+So this update carries a step that runs after the rename and does three things:
+
+- **It moves your files** out of each of the four old folders and into the new one, keeping any
+  sub-folders you made. It only does this once the template has actually renamed that folder, so
+  it can never move something out from under you early.
+- **It corrects references you wrote** that name one of the old paths, in any of your own notes
+  or documents. Running it twice changes nothing the second time.
+- **It tells you about one thing rather than changing it.** The word "feature" written in an
+  ordinary sentence is sometimes the old folder name and sometimes just the English word, and only
+  the person who wrote the sentence knows which. Those are listed with the file and line for you
+  to look at. They never cause the update to fail.
+
+### One folder is left behind in every project, whether or not you wrote anything
+
+This is worth stating plainly, because it means the step above is not a precaution for careful
+projects — it applies to yours.
+
+When your project was first generated, the template placed a planning document in the
+`01-FEATURE` folder for you. That placement happens only at generation and never on an update, so
+an update removes the files the template still owns in that folder and leaves that one document
+behind on its own. Every project generated before this release has it. The rescue step is what
+picks it up.
+
+### What was proven before this shipped, and what was not
+
+The rescue was tested two independent ways, because either on its own would have been a check
+reporting a look it never took.
+
+The first is a self-test built into the step itself: twenty-four assertions, each one confirmed to
+go red when the thing it covers is deliberately broken. Three of the original fourteen were
+weak — one was planting its test file somewhere the rescue never looks, and so had been passing
+for the wrong reason.
+
+The second was the real thing: a project generated from the previous release, files of our own
+written into all four folders, then the update taken. That run found a fault the self-test could
+not have caught, and it hit the one document every project has. The rescue moved it correctly and
+then failed to correct a reference inside it, because the list of files to check was being read
+from a place that still described the old location. It is fixed, and running the whole thing
+twice now leaves the project byte-for-byte identical the second time.
+
+**What has not been proven, stated rather than implied: no real project has been carried across
+this break.** There is no live project generated from this template to try it on, so every file
+the rescue moved during testing was one we planted for the purpose. That is an absence of
+specimens, not evidence of safety.
+
+There is a related limit worth knowing. Your project has a check that notices folders left behind
+by an update — but it only looks in one of the four places this release renames. The other three
+have no alarm on them at all, so the rescue is the only thing that will ever find work stranded
+there. That was measured, not assumed: with the rescue removed, all four folders strand and the
+check reports one.
+
+### Smaller things in the same release
+
+**A check that was green or red depending on whether you had run the installer.** One of the
+checks that confirms every document reference points at something real was failing on a fresh copy
+of the project and passing on a machine where the setup script had been run — because the file it
+was looking for is written by that script and deliberately not stored in the project. Whether the
+check passed was a fact about your machine rather than about your project. It now knows the
+difference.
+
+**A setup guide that contradicted itself about its own contents.** One page said a folder of
+guides is not included in your generated project; a hundred lines further down, the same page gave
+you a command to run inside your project that only makes sense if it is. The command was right and
+the sentence was wrong, settled by generating a project and checking, rather than by argument.
+
+**A new writing rule for the project's own documentation** is now listed in the three places
+Claude looks for such rules, having arrived reachable from none of them.
+
+**A required check policed a folder your project may not have.** The test pipeline enforced a 90%
+coverage floor against `apps/users` with the name written in by hand. The setting that names your
+identity app was always meant to be honoured there, so a project that called it anything else got
+a required check pointing at a path it does not contain. It is now honoured where it executes.
+
+**The component library was listed as a dependency and never switched on.** `django-components`
+was installed, and nothing in the settings mentioned it — so the `{% component %}` tag the guides
+tell you to use would not have worked in a new project. It is now configured: both component
+folders are searched, and the tag is available without loading it in every template.
+
+**Where a component belongs is now one rule in one place.** Three documents gave three different
+answers, and one of them disagreed with itself in neighbouring rows of the same table. A component
+used by two or more apps lives in the shared folder, one owned by a single app lives with that
+app, and you move it on the second user.
+
+**Four checks reported a clean run over folders that do not exist.** Two style checks and two
+marketing-copy checks were pointed at paths this project never creates, so each printed a tick
+having examined nothing — and would have done so in every generated project, indefinitely. All
+four now look where the files actually are, and say what they examined rather than only that they
+passed.
+
+**Lint blamed your code for a library missing from your machine.** Where a system library the
+desktop app needs is absent, the build stops before any lint can run, and that was being reported
+as lint failures in your own code. It now reports that it could not run, which is a different
+result from clean.
+
+**Twenty-five guides, and the design index, described an app, a stylesheet and a crypto module
+this project does not contain** — in the present tense, as though you could open them. A folder
+that genuinely ships was concealing the false claims made about its contents, which is why they
+survived every check ever run.
+
+**The templates you copy to start a story carried three placeholder styles between them.** They
+are now one, so a path you are meant to fill in reads the same wherever you meet it.
+
+**A new register records what a document is allowed to promise.** A guide may name a file your
+project does not have yet, provided it also names what creates it; otherwise it is a wish rather
+than a promise, and the check now tells the two apart.
+
+## v5.5.0 — 18/08/2026
+
+**Status:** Minor — the checks that guard your code stop claiming to have looked at things they
+never looked at, and the commands you are told to run before every commit now run. Nothing you
+have written changes. One command option was withdrawn, and it is named below.
+
+### The commands the guide told you to run did not work
+
+This project asks you to run two checks before every commit, and names them in the contributing
+guide as required rather than advisory. Neither accepted the option the guide told you to pass.
+They did not fail quietly — they stopped and complained — so anybody following the instruction
+hit a wall on their first attempt and had to guess what was meant.
+
+The cause was larger than a mistyped word. The checks had no lane for two of the languages in
+the project at all. The tools existed and were being used elsewhere, by the automated pipeline
+and by the commit hook; what was missing was the way in through the command you are pointed at.
+
+There is now one name per language, and the name is the language: **javascript** for the small
+scripts that make web pages interactive, **typescript** for the mobile app, and **rust** for the
+native code. They cannot overlap or reach into each other's territory. Running the checks
+without naming a language covers exactly the parts your project actually has — so the same
+instruction is correct whether you took the mobile and native options at setup or neither.
+Naming a part you do not have stops and tells you so, rather than passing silently.
+
+### A check that could not look was telling you it had looked
+
+This is the release's real subject, and it is worth stating plainly because it is the kind of
+fault that costs you nothing until the day it costs you everything.
+
+Several checks in this project would report a clean result when the tool they depend on was not
+installed, or when they could not reach the files they were meant to read. A green tick that
+means "I found no problems" and a green tick that means "I never looked" are not the same
+message, and only one of them is safe to act on. If you have ever trusted a passing check and
+been surprised later, this is the shape of how that happens.
+
+Every one of them now says which is which. Where a check could not run part of its job, it names
+the part, reports a distinct result rather than success, and records the same thing in the file
+it writes for other tools to read — that last part mattering because the file was the half nobody
+was watching. Where a check genuinely has nothing to examine, because your project does not
+include that part, it says that too and stays green. The rule is written down once, in its own
+document, so the next check written here inherits it.
+
+The same fault ran in the other direction as well, and was fixed with it: two checks reported
+**problems** where there was nothing to examine — a folder with no code of that kind in it, or a
+folder the tool could not reach. A false alarm is as untrue as a false all-clear, and it is worse
+for your attention, because the way to make it stop is to stop reading the output.
+
+### Checks that ignored the folder you pointed them at
+
+Four checks accepted a folder to look in, silently disregarded it, examined the whole project
+instead, and then printed a success message naming the folder they had actually used. One of
+them named the wrong folder in that very message. All four now stop with an error when the
+folder you gave them is not usable, and none of them can report success over ground it did not
+cover.
+
+Alongside that, asking for help on any of the ten mobile and native commands printed an internal
+error instead of the help text — for as long as those commands have existed, and by exactly the
+route every document tells you to invoke them.
+
+### A pipeline step that waited for the database and never checked it
+
+An automated step meant to wait for the database to come up was not testing anything. Because of
+how a placeholder in the setup template interacted with the shell, the test was never run, and
+the step reported success whatever the state of the database. The failure then appeared two
+minutes later somewhere else entirely, looking like a completely different problem. Three such
+waiting steps were rewritten so that a genuine timeout now fails.
+
+### The one thing withdrawn
+
+The code-checking command no longer accepts `css` as a language to check. There is no CSS checker
+configured in this project, so that option could only ever print a note and pass — a clean result
+over something nothing had examined, which is the exact fault this release exists to remove. The
+**formatting** command keeps its `css` option, which does real work on real files.
+
+If you have that option written into a script or a note of your own, remove it. It will now stop
+with an error rather than pretending.
+
+## v5.4.0 — 17/08/2026
+
+**Status:** Minor — mostly a change to how this template keeps its own working notes, which
+you will not see. What reaches you is small and additive: rendered design documents no longer
+get committed by accident, and there is a new rule about quoting other people's writing. A new
+automated check now proves, on every change, that none of the template's private notes can
+arrive in your project.
+
+### The one thing that could have gone wrong, and now cannot
+
+This template writes notes while it is being built — planning maps, research, session handovers,
+practice work. None of it means anything in a project generated from it: a note answering a
+question about the template, a map of the template's own unfinished decisions. Your project has
+always received those folders empty, holding only the files that explain what they are for, and
+it still does.
+
+What changed is how that emptiness is guaranteed. Until now those notes were simply never
+recorded in version control, so there were two independent things standing between them and
+your project — and one of them was doing the work silently, without anyone realising. Recording
+the notes so they follow the maintainer between machines removed that hidden second guard, and
+left the single remaining rule carrying the whole weight.
+
+A rule that quietly does all the work is the kind that fails without anyone noticing. So a check
+now generates a real project on every change and inspects what actually arrived: each of those
+folders must contain nothing but its explanatory files, and every genuine starting template must
+be present. That second half matters as much as the first — a rule written too tightly stops
+sending you a file you needed, and nobody discovers it until they go looking for one.
+
+The check also proves itself. Before it passes judgement, it deliberately breaks a copy of the
+generated project in four different ways and confirms it catches each one. A safeguard nobody
+has watched fail is a safeguard nobody knows works.
+
+### Rendered documents stop being committed by accident
+
+Your project ships two documents it builds for itself: a brand guide and a component sheet, each
+assembled from a script into a finished PDF. The instructions are meant to be kept; the finished
+PDF is meant to be rebuilt, not stored, because a stored copy drifts out of step with the
+instructions that produced it and nobody can tell which is current.
+
+The project now knows to leave those rendered files out of version control, along with the
+scratch files the typesetter leaves behind. Nothing needed removing to make this true — it locks
+in what was already the case, so the first person to run either build does not accidentally
+commit its output.
+
+### A rule about quoting other people's work
+
+Research notes gathered while building are now kept and shared, which means a quotation in a note
+is a quotation published rather than a private jotting. Those are different acts, and they need
+different permissions.
+
+There is now an explicit rule: check the licence before writing a verbatim line. Some sources
+grant no permission to republish at all, and for those the fact is taken and the wording written
+afresh, with the source credited by link. Sources that do grant it are quoted and credited in the
+same change, never later.
+
+That rule replaced something that had been true only by accident — notes were previously
+unpublished, so the question never arose. The record of which outside sources this project has
+read, and what may be done with each, has been rewritten to say so plainly rather than to rely on
+a circumstance that has since changed.
+
+## v5.3.0 — 16/08/2026
+
+**Status:** Minor — you can now ask, in one command, whether the running system is healthy,
+and get an answer in words rather than a status code. A written procedure for diagnosing it
+comes with it, along with a stated list of the operating systems this project supports and
+several corrections to guides that described commands nobody had run.
+
+### Asking whether the system is healthy
+
+Your project already answers two questions for machines: is the application process alive,
+and can it actually reach the things it depends on. Container tooling and status pages use
+them. They were built for that audience and stopped there.
+
+That left the person on the other end of an alert to work out for themselves which of the
+two questions had failed, which is the difference between a restart and an investigation. It
+is the most common wasted hour there is.
+
+There is now a single command that asks both and tells you what the answer means. It comes
+back with one of three words. Everything is working. Something is degraded, meaning the
+cache has gone but the site is still serving correct pages to real people. Or it is down,
+meaning the database cannot be reached and requests cannot be served.
+
+That middle case is the reason the distinction is worth having. A cache outage costs speed,
+not correctness, so treating it as a full failure would turn a public status page red for
+something no visitor could ever notice.
+
+The command deliberately does not fix anything. Diagnosis and repair are different jobs, and
+a tool that quietly does both gets reached for reflexively, before anyone has understood
+what is wrong.
+
+One detail worth knowing: the answer is remembered briefly rather than recalculated on every
+request, so a single reading taken seconds after an alert can still be describing the world
+as it was before the fault. There is an option that watches for long enough to see past
+that, and it is the honest way to read the result.
+
+### A written procedure, and a way to rehearse a failure
+
+A step-by-step guide now sits alongside the command: how to establish which of the two
+questions is actually failing, what each answer points at, how to recover, and what to do
+when both look fine and the status page is still red. It was written by carrying it out, not
+from memory, which is where its list of things that go wrong came from.
+
+Rehearsing a failure needed something the project could not previously do: take one
+dependency away and give it back, without the system springing back so fast that the outage
+is never observable. There is now a way to pause a service while leaving everything else
+standing, which is the only shape that works for this.
+
+Two of the automated test suites also stopped checking that the system was awake by asking
+the administration area, which can be moved to a different address. They ask the health
+question instead, which is fixed and exists precisely so things outside the project can rely
+on it.
+
+### Which operating systems this is supported on
+
+Every operation here runs through a script, so the shell is part of the contract rather than
+a preference. That had never been written down, and the advice that existed implied Windows
+alternatives were merely untried.
+
+They are not supported, and the reason is now stated as two separate requirements, because
+meeting one does not meet the other: one popular Windows shell silently rewrites the file
+paths these scripts pass to the container tooling, so a command that reads perfectly
+correctly fails while naming paths nobody typed; and keeping the project on the Windows side
+of the filesystem makes every file access cross a boundary slow enough to spoil the working
+day, which is where most Windows developers land by default.
+
+Linux and macOS are supported as they are. Windows is supported through its Linux
+compatibility layer, which the standard container software already installs to run its own
+engine, so nothing extra is being asked for.
+
+A related class of failure is now prevented outright rather than described. Windows checkouts
+can rewrite the invisible end-of-line characters in every script, after which they fail with
+an error naming neither the file nor the cause — and inside a container it is worse, because
+the failure is not reported where it happens at all: the image simply will not start. The
+project now pins those characters itself, so no one has to configure anything correctly
+first. Nothing in the repository needed changing to make this true; it locks in what was
+already the case.
+
+### Guides that described commands nobody had run
+
+Five documents told you to do things that were correct when written and had since been
+overtaken. Each still parsed, still named a real command, and only running it revealed the
+drift.
+
+The one that mattered is the pre-release check. Two guides told you to run it directly. It
+is not that kind of tool — it is designed to be triggered automatically and fed information,
+and run by hand it either hangs indefinitely or reports success while checking absolutely
+nothing. A silent pass from the check whose entire purpose is preventing false passes is the
+worst possible outcome, so both guides now show the correct invocation and say plainly that
+a silent run is a failed one.
+
+The rest were smaller and are all corrected: the type checker runs in its standard mode
+rather than its strictest, which matters because the discipline is then yours; the formatting
+command reports rather than rewrites unless told to; two commands were quoted with options
+they have never had; and two claims about the front end described a state the project has not
+reached yet.
+
+### Two things fixed underneath
+
+The email settings were written in a style the web framework replaces in its next version,
+so every run raised a deprecation warning — silently during development, and in the test
+configuration where it was eventually going to become an outright failure. The two styles
+cannot be mixed, so the change is complete rather than gradual. Behaviour is identical in
+both environments.
+
+And the database reset script could try to drop a database with no name at all. The setting
+it read is not present in the usual configuration file, and its fallback was placed on the
+branch that only runs when the file is missing entirely. Every near-identical sibling script
+already had it the right way round, which is exactly why the fault survived. Both now also
+quote the name properly, which is the difference between a bad value failing loudly and one
+quietly meaning something else.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down. There is nothing to decide and nothing to migrate. The
+new health command and its guide arrive ready to use; if you have local settings for email,
+check them against the new form, since the old and new styles cannot both be present.
+
+## v5.2.1 — 16/08/2026
+
+**Status:** Patch — a fault that stopped anyone creating a new project from this template
+at all, two smaller faults in the scripts that run day-to-day work, and a batch of
+explanatory comments that had been describing a situation which no longer existed. Nothing
+you have already written changes.
+
+### Creating a new project had stopped working entirely
+
+This template is a set of files with placeholders in them, filled in at the moment a project
+is created. One of those files carried a comment warning against writing a placeholder a
+particular wrong way, and, to make the warning clear, it spelled the wrong way out. The
+machinery that fills in placeholders read the demonstration as a real instruction, could not
+make sense of it, and stopped. Every attempt to create a project failed, whatever options
+were chosen.
+
+The correction keeps the warning and drops the demonstration.
+
+The larger half is why nothing caught it. There is a check whose entire job is to find this
+exact kind of mistake, and it reported the files as healthy — the third time it has done so
+on a fault that stopped generation, with the first two recorded in its own notes. Its
+patterns could not see past the very character that causes the break. A new clause now looks
+specifically at that character, and the check gained a self-test proving each of its clauses
+catches its own fault and only its own.
+
+### A settings file was being run as though it were a program
+
+Several scripts read the file that holds the local settings by handing it to the shell to
+execute. The container tooling reads the very same file a different way, treating each value
+as plain text. The two disagree the moment a value contains punctuation the shell treats as
+an instruction — and one of them does. The shell gave up part-way through the file, and
+everything below that point was quietly left unset.
+
+Nothing announced this. Starting the stack failed while the stack was in fact already
+running, so the step that keeps the database password in step never ran and the banner
+printing the live address never appeared. Seeding the database created accounts with blank
+credentials. The browser test suite ran with no secret key. The database shell connected
+somewhere other than where it said.
+
+The file is now read as data rather than executed. Where a value refers to another value the
+reader refuses outright and says so, rather than half-guessing — a plausible wrong answer
+handed to a database password is worse than the failure it replaced. It was checked against
+what the container tooling itself produces for thirteen sample values, and the results match
+exactly.
+
+A third, smaller fix: the tool that draws the file-tree diagrams lost the space before the
+note it puts beside a filename, whenever the filename was long. The result read as though
+the file had a typo in it.
+
+### Explanations that had quietly stopped being true
+
+Sixteen files justified a decision by a reason that has since been overtaken twice. No
+behaviour changed anywhere — the only edits outside comments are four printed messages.
+Where a dead reason had been propping up a choice that is still right, the choice was
+re-argued rather than reverted.
+
+One finding is worth stating on its own. A reference in one guide pointed at a note that had
+since been rewritten to say the opposite of what was being claimed. Nothing about it looked
+broken: the note existed, the reference worked, the sentence read as properly sourced, and
+it was the reverse of the truth. A broken reference announces itself; a working one aimed at
+rewritten text does not.
+
+### Who updates the mobile toolkit, and when
+
+The mobile toolkit publishes roughly three releases a year, and this template promised to
+track them. It never said who pulls a new one into a working project, or when — so nobody
+owned it.
+
+That is now split by act rather than by person, because no single owner could hold both
+halves: we cannot know your app store schedule, and you should not have to watch an upstream
+on our behalf. We follow every release and publish a template release for it immediately.
+Your project takes it up when preparing a build that ships to an app store, which is where
+an outdated toolkit actually bites — not on a calendar, and not merely because a release
+exists.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down. There is nothing to decide, nothing to migrate and no
+command to run afterwards. Your own code and documentation are untouched. If you have ever
+tried and failed to create a fresh project from this template, that is fixed here.
+
+## v5.2.0 — 16/08/2026
+
+**Status:** Minor — your application can now answer the two questions the machinery running it
+has always been asking, and the gate that runs before every change was repaired so that it
+actually runs.
+
+### The health check that was never built
+
+Production and staging containers have always been configured to ask the application, every few
+seconds, whether it is well. The address they ask at had never been built, so the answer was
+always no. Every container that has ever gone to production or staging has been reporting
+itself permanently unhealthy — and that is not a cosmetic status. It is what the machinery
+around the application reads to decide whether to restart a copy, and whether to send it any
+visitors.
+
+The written specification for those answers already existed, and was exact. Nothing had
+implemented it. That gap is now closed.
+
+### Two questions, not one
+
+They look like the same question and they are not, and collapsing them is how a small problem
+becomes an outage.
+
+**Am I alive?** is answered without touching the database or the cache at all. If it consulted
+the database, a two-second database hiccup would read as "this copy of the application is
+broken", and every copy would be restarted at once — turning a blip into a real outage.
+Answering it is deliberately cheap and deliberately depends on nothing.
+
+**Am I ready to take visitors?** does consult them. The database is treated as essential; the
+cache is treated as survivable, because the application is written to keep working without it.
+So a cache problem produces a successful answer that says "degraded" in its own words, and only
+a genuinely unavailable essential dependency produces a refusal. Which of those a dependency is
+belongs to the dependency, not to the check — adding another one later is a single line and
+changes no logic.
+
+Two details are there for reasons worth stating. The answer is remembered for fifteen seconds,
+so a fleet of things all asking at once cannot become the load that breaks what they are
+asking about. And the cache check writes a value and reads it back, rather than only writing
+one, because the cache is deliberately configured to swallow its own errors — a failed write
+looks exactly like a successful one, so the round trip is the only honest signal left.
+
+### Tests for the parts everybody inherits
+
+With the application image buildable for the first time, the test suite ran here and came in
+below the level this project requires. Everything that was missing sat in the small set of
+foundations every generated project inherits: error handling, request identification, the
+shared groundwork for command-line tasks, and the checking of data arriving from outside.
+
+Those now have tests, and each one names a real failure with a real cost rather than a line of
+code — an internal fault dressed up as a polite message to the user, a submitted field silently
+thrown away, a visitor turned away because they arrived from a marketing link, one visitor's
+request identifier leaking into the next visitor's request, and a programmer's mistake tidied
+into a neat summary when the operator needed the full detail.
+
+### The gate that skipped the checks that would have found its own bugs
+
+The set of checks run before a change is proposed used to skip three of them in this
+repository, because something they needed could not be built here. That is no longer true, so
+they were switched on — and switching them on immediately found three faults, every one of
+which was live in real generated projects, where nothing had been skipped and nothing was
+masking anything.
+
+The part that talks to the containers was never handed the file holding the settings, so every
+one of those conversations had been failing outright — invisibly, because each one discards its
+own error output. The check for "is the application running" looked for names this project has
+never used, so it always concluded no: in a real project the gate would start everything, wait
+a minute and a half, fail to see it, and refuse to let the change through, every single time.
+And the gate read the settings file as though it were a script, which stopped dead on the first
+line containing a placeholder, leaving everything below it unset and printing a parser error
+across its own output.
+
+Two more, found alongside. One check's result had come to depend on the individual developer's
+disk, because a file created by the installer and never committed made it fail locally while a
+fresh copy passed; it now asks the version control system what is tracked instead of keeping
+its own copy of the rules. And two pipeline jobs were measuring nothing at all: one measured
+coverage of an area this repository does not have, and so passed by measuring an empty set,
+while the other never installed its test dependencies and picked them up by accident — which,
+in a pipeline, turns an out-of-date dependency record into a green result against versions
+nobody chose.
+
+### If you have a project on an earlier version
+
+`copier update` brings down the two health endpoints, their tests, the tests for the shared
+foundations, and the repaired gate. Your containers will start reporting themselves healthy for
+the first time, with no configuration change on your side, because the address they were
+already asking at now exists.
+
+Two files this touches are ones projects routinely edit — the settings and the list of
+addresses your application serves — so the update may ask you to reconcile those. Keep your own
+entries and the new ones; they do not overlap. There is nothing else to do by hand.
+
+## v5.1.0 — 16/08/2026
+
+**Status:** Minor — the template can finally produce an exact record of the outside code it
+depends on, which switches on three checks that had been standing down, and four checks that
+were quietly letting problems past were repaired.
+
+### The record that could not be written
+
+A project keeps an exact list of every outside piece of code it uses and the precise version of
+each, so the same thing gets built on your machine, on a colleague's, and in the pipeline. This
+template could never produce one. Its own description carried a placeholder where its name
+should be, and the tool that writes the list refuses to read a description it cannot parse. The
+placeholder was filled in recently, so the list now exists and is kept alongside everything
+else.
+
+Three checks had been standing down on its absence and now run for real: the application image
+builds, the type checker reports no errors, and the scan for publicly known vulnerabilities
+reports none outstanding. All three had previously been recorded as skipped — which is the
+worst state a check can be in, because it appears in the list, reports a pass, and has looked
+at nothing.
+
+The list names this template rather than your project, so it deliberately never travels. Your
+project writes its own the moment it is created, under its own name. Inheriting the template's
+would fail your first build and leave a collision in that file at every upgrade.
+
+One repair travelled with it. The vulnerability scan used to produce the list as a side effect
+of reading it, which meant a check that only looks at things could quietly create the very file
+five other checks read to decide whether they should run at all. It is now forbidden from
+writing, and stops loudly instead.
+
+### A safety check that only knew the names it had been told
+
+One of the checks looks for places where information from the server is dropped into part of a
+page that the browser then runs as code — the classic way a hostile visitor gets their own code
+onto someone else's screen. It worked from a hand-written list of the places someone knew about
+on the day it was written. Anything not on that list passed, including one of the most common
+constructions there is.
+
+That is the wrong shape, not merely an incomplete list. The set of places that run code grows
+with every upstream release and every add-on; the set that does not is small and stable. The
+check now names the safe handful and treats everything else as suspect, so something nobody has
+invented yet is covered the day it arrives.
+
+Tightening the boundaries also exposed the opposite fault: a piece of markup that was entirely
+correct and entirely safe had been reported as a problem, and nobody had an example on file for
+it. The check now finds six real problems in the deliberately broken examples and reports
+nothing at all in the clean ones.
+
+### Comments that pointed somewhere else
+
+The rule that a comment must explain itself now covers every file this project runs, not only
+its application code. The old exemption was meant to let a script name the rule it enforces; it
+was being used to point at a planning note, a document or a neighbouring file **instead of**
+giving a reason. Scripts are where that rots fastest, because a check outlives the discussion
+that prompted it and the reader is the one who pays.
+
+172 comments across 61 scripts were rewritten to keep the reason and drop the pointer. Nothing
+the scripts do changed, and that was checked three separate ways rather than asserted. Two
+scripts were left exactly as they were, because they print their own opening comments as their
+help text, which makes those lines something a person reads rather than a note to the next
+author.
+
+About a dozen rewrites were wrong the first time, in one consistent way worth recording:
+deleting a pointer is reliable, replacing one is not, and a sentence written to fill the gap is
+where the invented facts came from. Every one was caught by a separate reading pass before this
+release and corrected.
+
+### A register satisfied by a mention
+
+A check confirms that every script and skill this template ships has its own row in the right
+table of the documentation your project receives. It was satisfied by the name appearing
+anywhere in that part of the page — so deleting the table row and writing a sentence about the
+same thing in its place passed cleanly. It now requires the row, and its own self-tests were
+sharpened to tell the two cases apart, which the previous ones structurally could not.
+
+### Smaller repairs
+
+The supply-chain check for the optional native code could only be run from one particular
+directory, so it had never run in the pipeline at all. Two suppressed security warnings were
+removed, both for problems that had left the project entirely. The installer crashed if your
+project name contained a percent sign, and left a fresh copy of the repository looking modified
+before you had touched it.
+
+The minimum compiler version declared for the native code was documented as decoration. It is
+not: the build tool reads it when choosing which versions of everything else it may use. It has
+been raised to match the compiler the project already installs for you.
+
+### If you have a project on an earlier version
+
+`copier update` brings down the repaired checks, the corrected guidance and the rewritten
+comments. Your own dependency record is untouched — the template's is deliberately excluded and
+cannot reach you. If your project includes the optional native code surface, the minimum
+compiler version it declares rises to match the compiler it already installs, so there is
+nothing to do by hand.
+
+## v5.0.0 — 16/08/2026
+
+**Status:** Major — the code-quality checks that used to run only when code changed now run on
+every proposed change, so a change that previously passed without ever being examined can now
+fail. Nothing you have written changes, and nothing behaves differently once your project is
+running.
+
+### Checks that ran only sometimes now run always
+
+Your project has three automatic checks over its code: two on style and formatting, one on
+whether the code's own descriptions of its data are consistent. They were set to run only when
+the change included code, which sounds sensible and quietly is not.
+
+The consequence is that they could never be made compulsory. A rule saying a change must not
+merge until a check passes cannot be applied to a check that sometimes does not arrive at all —
+a documentation-only change would wait forever for a verdict that was never coming. So the three
+existed, ran often, and were a condition of nothing.
+
+They now run on every proposed change, which is what makes them eligible to be required. Turning
+that requirement on is a settings change in your code hosting service that no file in your
+project can make; this release does the half that lives in the files.
+
+### Why that is a breaking change rather than an improvement
+
+If your project contains code that has never been through those checks — and it may well, because
+until now a change that did not touch code was never examined — then the first change you propose
+after taking this update can fail on faults that were already there and are not yours.
+
+Nothing has become worse. Something that was already true has become visible, which is the point,
+but it can arrive at an inconvenient moment and it is why this is a whole-number release rather
+than a quiet one.
+
+The extra time was measured before it was accepted. On a project the size of this template the
+three checks finish in about three seconds between them, on top of the usual setup the pipeline
+does anyway. The alternative was leaving them optional forever.
+
+A second, smaller version of the same shift: how much of your code is exercised by tests is now
+measured on every branch rather than only on the branches heading for release.
+
+### One number, in one place
+
+Your project requires a proportion of its code to be covered by tests, and that requirement is a
+ladder: a floor everywhere, a higher step for work heading towards release, and a higher one
+again for anything touching sign-in. The document that declares itself the single source of truth
+for that number knew only the bottom step, and described it as absolute. Four other documents and
+three parts of the pipeline knew the whole ladder.
+
+Settling it turned up three checks that disagreed with the rule they claimed to enforce. Two ran
+the tests on ordinary branches without measuring coverage at all and set the requirement to zero,
+so the check reported a pass having measured nothing. The third applied the sign-in requirement in
+two of the four places it belonged. All three now do what the rule says, and sign-in is measured
+on its own rather than inside the total, because a project can clear the overall figure while its
+most sensitive area sits below its own floor.
+
+The number now has one home, and the documents that repeated it point at it instead.
+
+### The long git guide is now an index over four shorter ones
+
+The guide covering branches, commits, pull requests and the checks that gate a merge had grown
+past the length this project allows for a document Claude reads before working. It is now a short
+index with four documents beneath it, split by subject.
+
+Every heading keeps its wording exactly, because thirty-one places elsewhere refer to those
+headings by name and each was repointed. Of the two hundred and fifty-eight lines of content,
+seven changed: one paragraph was rewritten deliberately and nothing else was touched.
+
+It also gained the thing that caused the growth — a written list of the eleven checks a change
+should have to pass before it can merge, as a list to work through rather than a description of
+what is already switched on.
+
+The update carries your project across that split without you having to look for anything. Any
+note of your own that pointed at a section of the old single guide is found and listed for you,
+with the file, the line, and which of the four documents that subject moved to. It lists rather
+than rewrites, because only the person who wrote the sentence knows which section they meant, and
+a reference silently repointed at the wrong one is worse than a reference you were asked to check.
+
+### A scanner you can finally run before you push
+
+There is a security scanner in the pipeline that reads your project for patterns an ordinary
+code checker cannot see. On your own machine it is optional by design: if the engine is not
+installed it says so and stands aside, which is honest only because the pipeline carries the
+other half.
+
+What was missing was any way to install that engine locally at all. A new rule for the scanner
+could be written, committed and released without its author ever watching it run.
+
+The instruction standing in for that was worse than nothing: download a program from the
+internet, mark it as runnable, and put it where your machine will find it — while the pipeline's
+own written policy on the same subject said the exact opposite.
+
+There is now a command that does it properly. It reads the pinned version, fetches the right
+build for your machine, checks the publisher's cryptographic signature against the same identity
+the pipeline requires, confirms that what arrived is the version that was asked for, and only
+then makes it runnable. If the signature cannot be checked it stops and tells you what to
+install; there is deliberately no reduced path, because a supply-chain check everyone skips is a
+check nobody has. Every way of failing was tried and watched failing before the way of succeeding
+was believed.
+
+### Two checks that were not looking where they claimed
+
+One check confirms that every document naming a specialist names one that exists. It recognised
+that list only when written on a single line, and the code formatter breaks long lists across
+several — so one guide was skipped in its entirety and its eight names had never been checked,
+while the run reported that every name resolved. The count was the giveaway: honest about what it
+read, silent about what it never opened. A second copy of the same reading rule, in a different
+check, was blind the same way. Both now share one implementation, and the proof written for it
+covers both spellings, because a proof using only the form that already worked demonstrates
+nothing.
+
+Separately, the checks that confirm this template can still produce a working project now run on
+your machine before a commit, not only after a change is proposed. The two cheap ones moved
+forward and the two expensive ones stayed. That gap is what allowed the generation failure fixed
+in the last release to survive seventeen commits with a check naming it the whole time.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down, and the migration described above runs as part of it.
+
+One thing is worth expecting rather than doing: the next change you propose will be examined more
+thoroughly than the last one. If it fails on code you did not touch, that is this release working
+as intended — fix it once and it stays fixed.
+
+## v4.1.1 — 16/08/2026
+
+**Status:** Patch — one fix restores something that had stopped working outright, creating a
+brand new project from this template. The rest correct documentation that had drifted away from
+what the project actually does. Nothing you have already written changes.
+
+### Creating a new project had stopped working
+
+A recently added safeguard looks through your files for the markers left behind when two edits
+collide. To avoid tripping over itself, it assembles those markers a character at a time rather
+than spelling them out — which is correct, because a file that hunts for those markers must not
+contain any.
+
+The way it assembled one of them happened to spell the exact sequence the project generator
+treats as the opening of an instruction. The generator began reading an instruction, never found
+the end of it, and stopped with an error before writing a single file. Anyone starting a new
+project from this template got that error and nothing else.
+
+The same seven characters are now assembled in the other order, which produces an identical
+result and contains nothing the generator reads. The two spellings were compared character by
+character before the change went in rather than reasoned about, and afterwards a real project
+was generated from end to end to confirm it.
+
+Worth saying is why nobody noticed. A check that catches exactly this had been failing, naming
+the file, the line and the remedy, for seventeen consecutive changes. It only runs on the shared
+branches, and the work was on a branch of its own. That gap is what the next release closes.
+
+### The address in the instructions was one no browser could reach
+
+Seventeen places told you where to open your site. The address was not merely out of date — it
+could never have worked, because the number in it belongs to a door that exists only inside a
+container and is deliberately not opened to the outside. The address that does work is the one
+printed when you start the project, and it was already correct in the automated browser tests.
+All seventeen now agree with it.
+
+Two of the seventeen were doing more than misleading. The settings for the API testing tool
+aimed at an unreachable address, so the one configuration described as "point the desktop app at
+your running project" could not reach one. And the development settings listed two trusted
+origins no request could ever match, which is worse than listing none, because it reads as
+coverage.
+
+Six other mentions of the same number were deliberately left alone: they belong to health checks
+that run inside the containers, where it is exactly right.
+
+The sweep found the same stale assumption in other clothes. The first-time setup guide promised a
+separate front-end process, a port for it and a mail interface. None of the three exists. Someone
+who has just been given the right address should not meet the wrong shape of the system two lines
+later.
+
+### One security list, in two different years
+
+Your project checks new work against a published list of the ten most common classes of security
+failure. That list was renumbered by its publisher, and the project was carrying both versions at
+once: the guide that owns the subject used the new numbering, while the assessment forms, the
+security guide, three reading lists and every automated rule still used the old.
+
+The numbers are not the same numbers. The third entry means "injection" on one list and "supply
+chain" on the other, so a finding recorded as "the third one" could not be settled without
+knowing which document the person had open. The assessment forms are the sharp end, because they
+arrive blank for you to fill in.
+
+Everything is now on the current list, and the forms carry the year inside the number itself, so a
+completed one is self-describing a year from now. The re-slotting was worked out afresh rather
+than renamed, because the two lists do not map one to one: one category has been absorbed into
+another, one renamed and moved, and one is new with no predecessor at all.
+
+A separate correction travelled with it. An example in one of the guides showed how to filter a
+list of records by passing the visitor's own search terms straight through to the database. It
+reads as concise. What it means is that the visitor chooses not only the value but the field, so
+somebody could ask for records matching a related person's email address, or read a hidden column
+one letter at a time by asking whether it is greater than each letter in turn. The example now
+uses a fixed list of the filters we meant to offer, and the guide states the same rule for the
+three other places where a name supplied by a visitor would become a database field.
+
+### Credit, and a licence that is not what its badge says
+
+The layered documentation this template is built on came from a published methodology, and the
+credit for it was a name and two links. It now names the paper and the two openly licensed
+repositories beside it, and it repeats the caveat the paper itself makes: its figures come from
+practitioners reporting on their own work, with no controlled comparison behind them.
+
+One of those repositories advertises a permissive licence at its top level, and two folders inside
+it are not covered by it — they are all rights reserved and governed by separate terms. The rule
+here is to check the licence before borrowing anything; this is the case where the top-level
+answer and the files underneath disagree, so it is written down beside the credit rather than left
+to be discovered.
+
+### The description of your project had fallen behind your project
+
+Your project ships with a document describing its own folders, its automatic checks and its
+guides. Four recent additions each brought a check and none added its line, so the description was
+missing two checks, three pipeline jobs and one guide. A check that exists for exactly this had
+been failing and naming all six; nothing was running it. Every line was written from the thing's
+own description rather than guessed, because a plausible but wrong line passes that check and
+fails the only person it is for.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of this down. There is nothing to decide, nothing to migrate and no
+command to run afterwards; your own code and your own notes are untouched.
+
+Two things will look different. The addresses in the setup and debugging guides change to the one
+that works, and the blank security assessment forms change their numbering. If you have a
+part-completed assessment of your own, it keeps the old numbering — worth relabelling by hand so
+it is not misread later.
+
+## v4.1.0 — 15/08/2026
+
+**Status:** Minor — new standards for how your project's code is shaped and documented, four new
+automatic checks that hold them, and two fixes to things that had been quietly getting it wrong.
+Nothing you have written stops working.
+
+### Naming your data instead of describing it
+
+The largest addition is a standard your project has been enforcing sideways for months and never
+actually stated. When a set of information has a fixed shape known in advance — a customer, a
+booking, a set of display settings — it should be given a name and a definition, not carried
+around as an untitled bag of labelled values. The bag works. It also means nobody can tell what
+is supposed to be in it without finding somewhere that reads it, spelling mistakes in the labels
+go unnoticed until something breaks in front of a user, and every tool that could have warned you
+stays silent.
+
+Six new guides cover the principle, the cases where the loose form is genuinely the right answer,
+and how each part of the system spells it. There is an escape hatch for those cases, and using it
+requires writing down the reason — a check refuses one without.
+
+Three of the guides describe parts of the system your project can have but does not yet, and each
+says so at the top rather than pretending to describe something that exists.
+
+The template's own code was corrected to match before the standard shipped, because a rule that
+arrives alongside the very thing it forbids teaches the opposite of what it says.
+
+### When to reach for a familiar structure, and when not to
+
+A second guide answers a question that had only ever been settled by taste: when is it right to
+generalise two similar pieces of code into one? The rule is that you must first name the thing
+you expect to change, and show that it does change. Generalising for tidiness is not a reason,
+and the guide says so plainly — a wrong generalisation costs more than the repetition it
+replaced, because repetition is visible and local while a bad shared structure hides its cost
+behind something everything already depends on.
+
+It also requires a note recording what would have to become true for the generalisation to be
+removed again. That is the only thing that ever lets someone delete it later with confidence.
+
+### Documents that quietly grow forever
+
+Long instruction documents were capped already. What was missing was anything covering the
+approach to the cap: a document just under the limit could be nudged upwards by anyone, and over
+one day three separate pieces of work did exactly that, each spending headroom none of them had
+noticed using.
+
+There is now a ratchet. Below a certain length nothing changes. Above it, a document may not get
+longer without a written reason carrying an expiry date — and the check refuses a reason with no
+date, which is the kind that goes stale unnoticed. It compares against the point your branch
+started from rather than against your last change, because comparing to the last change would
+have permitted the same slow creep one step at a time.
+
+### Every working directory now explains itself
+
+Directories where people work carry two short files: one saying what is there, one saying how to
+work in it. The check for that pairing could only ever notice a directory with one of the two —
+a directory with neither was invisible to it. Seventeen were. The rule now asks who works in a
+directory rather than what created it, with sensible exceptions for generated output, test
+material, and folders already introduced by something else.
+
+### Leftover wreckage from a failed merge
+
+When two changes clash, the tools leave markers in the file showing both versions. Committing one
+by accident is easy and the result is usually nonsense. There is now a check for it — and it was
+built around a surprise: the automatic formatter silently eats one of the three markers and
+rewrites the line above it, so a check looking for that one would have missed the real thing. It
+looks for the two that survive.
+
+### Look here first
+
+A new rule states the order to consult sources in: your project's own guides first, general
+library documentation second, the open web last. It exists for a specific failure — a
+technically correct answer taken from outside, for a question this project had already decided
+differently, for reasons nothing outside could have known.
+
+### Two things that had been getting it wrong
+
+The map of your codebase that gets rebuilt as you work was skipping the files you had just
+written, so it looked perfectly current while being systematically behind. It now updates in the
+right order, and reports only when something actually changed.
+
+Four automatic actions had their time limits written in the wrong unit — thousandths of a second
+where whole seconds were expected. The shortest was set to over an hour and the longest to more
+than ten days, which is why nothing ever appeared to be wrong.
+
+### If you have a project on an earlier version
+
+`copier update` brings all of it down: the new guides, the new checks, and the corrected files.
+Nothing you have written is touched and no decision is needed. The new checks apply from your
+next change onwards rather than to what is already there, so you will not open the update to a
+list of failures.
+
+## v4.0.0 — 15/08/2026
+
+**Status:** Major release — breaking. One of the questions asked when a project is created has
+been retired, and the file naming your project changes shape underneath you. The update carries
+your project across both on its own.
+
+### Read this first if you have a project on 3.x
+
+The file that lists your project's Python dependencies opens by naming the project. That name
+used to be filled in when your project was created. It now holds a fixed stand-in that is
+swapped for your project's own name at the moment the project is generated — and that swap only
+ever happens at generation, never on an update. Left alone, the update would therefore overwrite
+that one line with the stand-in: cleanly, with nothing flagged, and reporting success.
+
+It is not left alone. This release ships a migration that runs as part of the update, reads your
+project's own name back out of the answers file, and puts it back. You do not have to do
+anything, and running it a second time changes nothing.
+
+Why it is worth a paragraph rather than a footnote: had the line been left as the stand-in, the
+damage would not have shown up in the update at all. It would have surfaced later, as a failed
+container build complaining about a mismatch for a package nobody renamed.
+
+### Why a single line was worth a major release
+
+The tool that works out which versions of your dependencies to install reads that name first,
+and it refuses names containing the punctuation the old stand-in used. Not a warning — it
+stopped reading the file entirely, so the exact list of installed versions could never be
+produced.
+
+Four other things need that list before they can do anything: the type checker, the scan for
+known vulnerabilities in your dependencies, the code formatter, and the entire test suite. Each
+of them had been written to step aside politely when the list was unavailable, which is what
+they did, on every single run. All four reported success. They had been doing so for as long as
+the stand-in had been there.
+
+### The retired question
+
+Creating a project asks you to name several parts of the application. One of those parts was
+never actually renameable — it is written out literally in the code, in the settings and in a
+dozen guides — so answering anything other than the default produced a project whose
+documentation disagreed with its own code. A question whose answer is ignored everywhere is not
+a choice, it is a claim that a choice exists.
+
+It is gone. If your saved answers still record it, it is simply ignored from now on. Nothing in
+your project moves and there is nothing to decide.
+
+### Guessing replaced by asking
+
+There was already a check looking for stand-ins left in places they should not be. It could
+never have caught this one, because the same stand-in in the same place is accepted by one
+toolchain and rejected by another — so no list of dangerous places can ever be correct.
+
+The new check hands each file to the tool that actually reads it and requires that tool to open
+it successfully. It catches this fault by definition, including a version of it from last month
+where two characters were read as instructions rather than as part of a name. It also proves
+itself before it runs, by deliberately feeding a broken file in and requiring a refusal.
+
+### Two checks that had been reporting success without checking anything
+
+The deep scan of your own source code depends on a program that is not published anywhere it
+could be installed from, so it was never present — and the check was written to pass quietly
+when it was missing. It now installs a specific version in the pipeline, confirms the download
+is genuinely signed by its publisher before running it, stays optional on your own machine, and
+proves it can still spot a fault before every scan.
+
+The check on third-party Rust dependencies fetched a fresh copy of its own tool each run
+without saying which version. Its verdict could therefore change while your code stayed still —
+a new complaint looked like a regression and a disappearing one looked like a fix. It is now
+pinned, like the other three toolchain versions this project records.
+
+### Two warnings you had been told to ignore
+
+Two known vulnerabilities in a dependency of a dependency had been silenced, with no reason
+recorded for either. A fixed version had been available the entire time; the recorded versions
+were merely out of date, and updating them cleared both. The rule left in their place: silence
+a warning only when there is genuinely nothing to upgrade to, never because upgrading is
+inconvenient.
+
+### If you have a project on an earlier version
+
+`copier update` brings everything down, and the migration described at the top restores your
+project's name on its own — there is no manual step and no command to run afterwards. Your saved
+answers may still list the retired question; leave it, it is ignored. Nothing else needs a
+decision.
+
+Worth one check afterwards, and only one: open the dependency file and confirm the first line
+names your project rather than `syntek-base`. If it does not, the migration could not read your
+answers file, and setting that line by hand and re-locking is all that is needed.
 
 ## v3.2.2 — 14/08/2026
 
@@ -924,7 +2334,7 @@ characters.
 `how-to/src/STORE-LISTING.md` is what **this** project actually says — a value and a used-count
 per field, beside the budget it has to fit. A blank cell is an unanswered question, not a default.
 
-`project-management/workflows/23-release/` makes it a release gate, and a conditional one. The new
+`project-management/workflows/24-release/` makes it a release gate, and a conditional one. The new
 Step 2 fires only when the release moved `code/src/mobile/`; a root-only bump reaches no store, and
 a project without the mobile surface never meets the condition. The What's New row is
 **overwritten, not appended** — this register records what the store says now, and the history
@@ -1115,7 +2525,7 @@ The decision went the other way from writing them. **This project does not use A
 work already lives — the feature map, the story plan, the nearest `CONTEXT.md` glossary, a
 `research/` note.
 
-The trigger was narrow and then generalised. `project-management/src/14-DECISIONS/` is not
+The trigger was narrow and then generalised. `project-management/src/15-DECISIONS/` is not
 copier-excluded, so an ADR written here about the template's own tooling would ship into every
 generated project as a decision that project never made. That alone rules the folder out for
 template work; the wider call retires the machinery rather than leaving it merely unused.
@@ -1225,7 +2635,7 @@ without a single failure to mark the occasion.
 
 It was describing a repository three surfaces out of date: a `code/src/` tree missing
 `improvement-architecture/`, a `.github/workflows/` list naming 11 of 28, a `code/docs/` tree
-missing eight ungated guides, a `src/` tree stopping at `21-REFACTORING`, and a workflow count of
+missing eight ungated guides, a `src/` tree stopping at `22-REFACTORING`, and a workflow count of
 21 when there are 23.
 
 `shipped-readme.sh` now guards it, along with `how-to/src/TEMPLATE-TOKENS.md`. Both are documents
@@ -1370,7 +2780,7 @@ judge whether its own explanation worked.
 
 ### The incident register
 
-`project-management/src/22-INCIDENTS/` is new, and it breaks two conventions on purpose. It is
+`project-management/src/23-INCIDENTS/` is new, and it breaks two conventions on purpose. It is
 **not story-anchored** — an incident does not belong to a `US###` — and it is **PII-free**, because
 an incident record is the document most likely to be read by someone who should never have seen the
 personal data that caused it.
@@ -2077,7 +3487,7 @@ feature in hand: **closes**, **blocks**, or **unrelated**, with the unrelated co
 the triage is provably exhaustive.
 
 **Claiming is not closing.** `01-feature` records on the map that a feature will retire an entry;
-`21-implementation-documentation` marks it closed against shipped code, and is now the only place
+`22-implementation-documentation` marks it closed against shipped code, and is now the only place
 that can. A claim the story did not actually retire stays open, and the reason becomes a finding.
 
 ### Comments say why, and nothing else
@@ -2141,12 +3551,12 @@ conflict flow; the safest route is to update into a scratch directory first and 
 **Planning now runs one story at a time.** Previously the numbered gates read as a batch — write
 every story, then every schema, then every flow. That guaranteed the same cross-cutting questions
 got answered slightly differently at every gate. A story now runs the whole specify tier
-(`02`–`13`) and finishes at `14-decisions` before the next one starts, so story 7 is planned with
+(`02`–`13`) and finishes at `15-decisions` before the next one starts, so story 7 is planned with
 six stories' worth of settled decisions already in hand.
 
 **Sprint planning fires on fill, not per story.** Each finished story is slotted into the open
 sprint record with its points. When it reaches the ceiling — `SPRINT_CAPACITY_SP`, default 11,
-grace 13 — `15-sprint-plans` and `16-story-plans` run for that sprint, then planning resumes. Both
+grace 13 — `16-sprint-plans` and `17-story-plans` run for that sprint, then planning resumes. Both
 figures are new Copier questions and are meant to be retuned against measured velocity after two
 sprints.
 
@@ -2164,7 +3574,7 @@ USER-STORY-IDEAS/  →  CONSOLIDATED-IDEAS/  →  IMPLEMENTATION/
   frozen once 17 runs  ← this is what gets built
 ```
 
-`17-consolidate-design-work` reconciles the accumulated work once every story is planned. It
+`18-consolidate-design-work` reconciles the accumulated work once every story is planned. It
 resolves the schema first, because a fragmented schema gets costlier with every story that ships
 on top of it. Stage 1 is frozen rather than deleted — it is the record of what each story asked
 for, and the evidence when a consolidated decision is later questioned.
@@ -2173,7 +3583,7 @@ for, and the evidence when a consolidated decision is later questioned.
 
 - `12-seo-checks` became a **planning** gate. It sat in the specify tier but required a deployed
   page, which made it impossible to run in its own slot. Auditing the built page and writing the
-  `IMPLEMENTATION/` record moved to `21-implementation-documentation`, which already owned every
+  `IMPLEMENTATION/` record moved to `22-implementation-documentation`, which already owned every
   other implementation record.
 - `SPRINT-PLANNING-GUIDE.md` split into `PLANNING-GUIDE.md` over
   `planning/{CADENCE,STORIES,SPRINTS}.md`. The old name had stopped describing its contents once
@@ -2288,7 +3698,7 @@ reason the default is `false`.
   `SecretBytes` type that wipes itself on drop
 - `code/src/scripts/rust/` — build, test, lint and a `cargo-deny` supply-chain gate
 - `code/docs/RUST.md` plus three sub-documents: the PyO3 boundary, memory hygiene, supply chain
-- `code/workflows/12-rust-extension/`, entered from PM `18-backend-code`
+- `code/workflows/12-rust-extension/`, entered from PM `19-backend-code`
 - A `rust` agent and a `stack-rust` skill, excluded together with the tree
 - `syntax-rust.yml` — clippy at `-D warnings`, the Rust suite, and the dependency audit
 
@@ -2603,7 +4013,7 @@ and the domain-specific example artefacts are cleared so the template ships temp
 
 - **Three tiers, explicitly numbered** — specify (01–12) → decide and plan (13–15) → record (16–20), with the story plan as the code master
 - **Workflows to 21** — API design, decisions, sprint and story plans, three implementation phases, implementation documentation, PR and review, and release
-- **Documentation is a hard gate** — `21-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
+- **Documentation is a hard gate** — `22-implementation-documentation` must be complete, with the code-review-graph refreshed, before a commit is allowed
 - **No project data** — example artefacts and organisation assets are cleared; what ships is the structure and the templates
 
 ---

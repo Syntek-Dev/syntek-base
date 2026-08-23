@@ -15,7 +15,7 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
 
 ## How to work here
 
-- **Routing:** pick the workflow that matches the task (`01` full-stack feature,
+- **Routing:** pick the workflow that matches the task (`01` full-stack story,
   `02` TDD, `03` migration, `04` API, `05` MCP tool surface, `06` GDPR, `07` review,
   `08` security hardening, `09` log-debugging, `10` debug, `11` refactor, `12` Rust
   extension, `13` desktop app). Read its `CONTEXT.md` first; enter `STEPS.md` only when
@@ -46,7 +46,7 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
   encryption; keep those references accurate.
 - Do not add a fourteenth workflow without also registering it in `CONTEXT.md`,
   `code/REFERENCES.md`, and the root `REFERENCES.md` workflow index. A workflow that
-  belongs to an optional surface also needs its `_exclude` entry in `copier.yml` and a
+  belongs to an optional surface also needs its `_exclude` entry in `copier.yml` and a <!-- doc-references: template-only -->
   flagged row in every index, exactly as `12-rust-extension` and `13-desktop-app` have.
 
 ## Output & naming

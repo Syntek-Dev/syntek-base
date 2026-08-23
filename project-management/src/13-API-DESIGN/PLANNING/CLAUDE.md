@@ -16,8 +16,8 @@ code is written.
 - **Routing:** designs are produced by `project-management/workflows/13-api-design/` using
   the `planner` skill, against a story in `../../02-STORIES/` and its agreed schema in
   `../../04-DATABASE/`, written to `code/docs/API-DESIGN.md` (Django Ninja) conventions. The
-  design is fixed **after** the schema is signed off and **before** `../../15-SPRINT-PLANS/`,
-  and it feeds `project-management/workflows/19-api-code/`. Read a story's design before
+  design is fixed **after** the schema is signed off and **before** `../../16-SPRINT-PLANS/`,
+  and it feeds `project-management/workflows/20-api-code/`. Read a story's design before
   implementing it.
 - **Model:** Fable — the contract defines the shared interface; the Schemas, handler
   contracts, and permission matrix are substantive design judgement. Opus only for a

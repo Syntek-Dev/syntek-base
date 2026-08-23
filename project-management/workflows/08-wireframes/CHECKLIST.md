@@ -22,7 +22,7 @@ model: fable
 - [ ] Navigation and routing annotated — no dead ends
 - [ ] Accessibility notes included (focus order, ARIA roles, colour contrast)
 - [ ] Linked to the corresponding user story (`US###.md`)
-- [ ] Screen saved at `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/WF-IDEA-US###-<Screen-Name>.html` — **stage 1.** `CONSOLIDATED-IDEAS/` is workflow `17`'s, and its screens drop the `IDEA` marker and the story number
+- [ ] Screen saved at `project-management/src/08-WIREFRAMES/USER-STORY-IDEAS/WF-IDEA-US###-<Screen-Name>.html` — **stage 1.** `CONSOLIDATED-IDEAS/` is workflow `18`'s, and its screens drop the `IDEA` marker and the story number
 - [ ] Self-contained — opens over `file://` with nothing to fetch; only dependency is `SHARED/wireframe.css`
 - [ ] Composed from `wf-*` classes and `--wf-*` tokens — no raw colour or spacing literals
 - [ ] Laid out **within the committed direction** — every screen checked against the six axes in `code/docs/VISUAL-DESIGN.md` Section 3, not against taste
@@ -58,5 +58,5 @@ model: fable
 
 - [ ] Wireframes reviewed and signed off before frontend development begins
 - [ ] Document committed and pushed
-- [ ] `09-gdpr-compliance/` triggered as the next gate — **not** a code workflow; 02–16 must
+- [ ] `09-gdpr-compliance/` triggered as the next gate — **not** a code workflow; 02–17 must
       complete before any implementation begins

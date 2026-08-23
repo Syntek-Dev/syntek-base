@@ -49,10 +49,10 @@ work, or a review of the same. For the frontend equivalent see `.claude/skills/s
 | **Cache/queue** | Valkey                                         |
 | **Testing**     | pytest, pytest-django                          |
 
-The public UI is **server-rendered HTML** — Django templates + django-components + HTMX +
-Alpine (see `.claude/skills/stack-htmx-templates/`). The **Django Ninja** JSON API (`/api/`,
-auto OpenAPI at `/api/docs`) is the only API surface. `templates/` holds
-the public pages and components alongside internal artefacts (e.g. audit email bodies).
+The public UI is **server-rendered HTML** — Django templates + django-components + HTMX + Alpine
+(see `.claude/skills/stack-htmx-templates/`). The **Django Ninja** JSON API (`/api/`, auto OpenAPI
+at `/api/docs`) is the only API surface. `templates/` holds the 500 page today; the marketing
+pages and the base template arrive with the first story (`code/src/django/templates/CONTEXT.md`).
 
 ---
 
@@ -68,11 +68,11 @@ non-negotiable project rule.
 | Django shell             | `bash code/src/scripts/development/shell.sh`                 |
 | Make migrations          | `bash code/src/scripts/database/migrate.sh make`             |
 | Apply migrations         | `bash code/src/scripts/database/migrate.sh run`              |
-| Database shell (psql)    | `bash code/src/scripts/database/shell.sh`                    |
+| Database shell (psql)    | `bash code/src/scripts/database/shell.sh --psql`             |
 | Seed dev data            | `bash code/src/scripts/database/seed-dev.sh`                 |
 | Run backend tests        | `bash code/src/scripts/tests/backend.sh`                     |
 | Backend coverage         | `bash code/src/scripts/tests/backend-coverage.sh`            |
-| Verify RLS/DB security   | `bash code/src/scripts/database/verify-db-security.sh`       |
+| Check DB security config | `bash code/src/scripts/database/verify-db-security.sh`       |
 | New Django app           | `bash code/src/scripts/development/new-django-app.sh <name>` |
 | Manage users             | `bash code/src/scripts/database/manageusers.sh`              |
 
@@ -256,9 +256,12 @@ differently. Each surface has one owning guide; read it before writing on that s
 
 ## Type hinting
 
-**CRITICAL: all Python code uses strict type hints** — enforced by basedpyright
-(`pyrightconfig.json`). Prefer modern built-in generics (`list[str]`, `X | None`) over the
-legacy `typing` aliases.
+**Annotate every signature** — parameters and return type, on every function and method.
+basedpyright checks them, but in **`standard`** mode, not `strict`: both
+`code/src/django/pyrightconfig.json:7` and `pyproject.toml:166` set `typeCheckingMode =
+"standard"`, so the checker will not flag an unannotated parameter or an implicit `Any` for
+you. The discipline is the author's; the tool only catches contradictions. Prefer modern
+built-in generics (`list[str]`, `X | None`) over the legacy `typing` aliases.
 
 ```python
 from django.db.models import QuerySet
@@ -276,9 +279,10 @@ def get_active_users(limit: int | None = None) -> QuerySet[User]:
 
 **Comments and docstrings carry the _why_ only** — the code states the what, and the
 typed signature already carries args, return, and raises, so no
-`Args:`/`Returns:`/`Raises:` block. Every module opens with a one-line docstring on why it
-exists. No pronouns. **Never reference a story (`US###`), sprint, ADR, ticket, PR, commit,
-`code/docs/*` path, person, or date from inside a code file**, and never leave a
+`Args:`/`Returns:`/`Raises:` block. Every module opens with a docstring on why it exists,
+as long as that reason needs; an inline **comment** is one line. No pronouns. **Never
+reference a story (`US###`), sprint, ADR, ticket, PR, commit, `docs/` path, person, or date
+from inside a code file**, and never leave a
 `TODO`/`FIXME` — deferred work belongs in `DEFERRED.md`/`GAPS.md`. The one exception is
 published interface text: a Ninja endpoint docstring and `summary` render on the OpenAPI
 page, and a FastMCP tool docstring is the prompt the model reads, so both state the full
@@ -305,7 +309,7 @@ code/src/django/
 │       ├── policies.py     # named permission checks (OWASP A01)
 │       ├── migrations/
 │       └── tests/          # unit/ + integration/
-├── templates/              # internal-only (e.g. audit email bodies) — not public UI
+├── templates/              # 500.html today; the marketing pages arrive with the first story
 ├── conftest.py             # shared pytest fixtures
 └── manage.py               # invoked only via scripts, never directly
 ```
@@ -354,8 +358,20 @@ Django's ORM. Every state-changing endpoint needs a test that asserts the permis
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/18-backend-code/` — models, services, business logic
-- `project-management/workflows/19-api-code/` — the Django Ninja API layer
+- `project-management/workflows/19-backend-code/` — models, services, business logic
+- `project-management/workflows/20-api-code/` — the Django Ninja API layer
 - `code/workflows/02-tdd-cycle/` — Red → Green → Refactor
 - `code/workflows/04-api-design/` — routers, Schemas, endpoints
 - `code/workflows/03-database-migration/` — schema changes
+
+<!-- docs-length-allow: clause 14 obliges this skill to cite back every top-level guide that names it, and more guides name this one than any other — the growth is those citations. Splitting the Django idioms is a real question about this skill's shape, not a side-effect of the node that added them (expires 01/11/2026) -->
+
+## Cross-references
+
+- `code/docs/BACKEND-CODING-PRINCIPLES.md` — the Django/Python/Celery specifics behind these idioms
+- `code/docs/ARCHITECTURE-PATTERNS.md` — the layered boundaries the service layer sits inside
+- `code/docs/DATA-STRUCTURES.md` — the model and type conventions the ORM layer encodes
+- `code/docs/LOGGING.md` — structured logging, and what must never reach a log line
+- `code/docs/MCP-SERVER.md` — the `/mcp/` surface beside `/api/`, and what it does not inherit
+- `code/docs/EXPORTS.md` · `code/docs/NOTIFICATIONS.md` · `code/docs/OBJECT-STORAGE.md` — declared, not wired: read before a story wires one
+- `project-management/docs/QA-GUIDE.md` · `project-management/docs/SECURITY-GUIDE.md` — what the PM layer gates this code against

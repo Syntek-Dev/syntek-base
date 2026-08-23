@@ -10,7 +10,9 @@ sub-folder's `CONTEXT.md`/`CLAUDE.md`.
 
 The Bruno API test collection for the <%PROJECT_NAME%> Django Ninja API — one `kebab-case/`
 folder of `.bru` requests per domain, all targeting `{{api_url}}/api/` against a live
-backend. **Empty at baseline: the project serves no API yet.**
+backend. **`health/` is the only folder at baseline**, and it is the exception that proves the
+rule above: it targets the root rather than `/api/`, because the project serves no API yet and
+the health probes deliberately do not depend on one.
 
 ## How to work here
 

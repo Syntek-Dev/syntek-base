@@ -30,5 +30,5 @@ rules:
     metadata:
       doctrine: "Auto-escaping stays on; the block form disarms values not yet written."
       guide: code/docs/security/OWASP-AND-CHECKLIST.md
-      owasp: "A03:2021 Injection (cross-site scripting)"
+      owasp: "A05:2025 Injection (cross-site scripting)"
       authored: in-house

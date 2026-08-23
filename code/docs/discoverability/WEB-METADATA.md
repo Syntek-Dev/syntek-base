@@ -65,7 +65,8 @@ def blog_post(request, slug):
 ```
 
 `SITE_URL` defaults to `https://<%PRIMARY_DOMAIN%>` and is overridden per environment. The
-`build_seo()` helper and `_seo_head.html` partial live in `apps/marketing/`.
+`build_seo()` helper and `_seo_head.html` partial belong in `apps/marketing/`, and arrive with
+the first public page.
 
 ---
 

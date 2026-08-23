@@ -8,19 +8,19 @@ this folder's `CONTEXT.md` (stage-2 scope, the resolution log — imported above
 ## Purpose (one line)
 
 Stage-2 unified schema — one `DB-CONSOLIDATED-<DOMAIN>.md` per domain, reconciling the frozen
-per-story designs into the canonical schema that `18-backend-code` builds from.
+per-story designs into the canonical schema that `19-backend-code` builds from.
 
 ## How to work here
 
-- **Routing:** produced only by `workflows/17-consolidate-design-work/` via the `database` skill,
-  after every story has cleared `16-story-plans`. The hard gate `code/docs/DATABASE.md` is read
+- **Routing:** produced only by `workflows/18-consolidate-design-work/` via the `database` skill,
+  after every story has cleared `17-story-plans`. The hard gate `code/docs/DATABASE.md` is read
   before Step 1.
 - **Model:** Fable throughout — reconciling two stories' competing models of the same entity is
   design judgement, not a mechanical merge. Opus only for re-exporting an ERD or a rename.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` design → mark duplicates,
   divergences, orphans, and contradictions → resolve each to one canonical form → record the
   chosen and rejected forms with reasons in the resolution log → escalate anything hard to
-  reverse to `../../14-DECISIONS/` → write the canonical tables, FKs, PII, RLS, indexes, and the
+  reverse to `../../15-DECISIONS/` → write the canonical tables, FKs, PII, RLS, indexes, and the
   lock-safe migration order → re-export `../ERD-DIAGRAMS/erd-<domain>.png`.
 - **Definition of done:** no unresolved duplicate remains; every resolution names the stories on
   both sides; every hard-to-reverse choice cites an ADR; every affected `STORY-PLAN-US###-*.md`

@@ -16,7 +16,13 @@
 # already says of its own blind spot.
 #
 # No path filter. Any file can carry a citation, so scoping this to a subset would recreate
-# the blind spot it exists to close — and it is not a required status check.
+# the blind spot it exists to close.
+#
+# CORRECTED 20/08/2026: this line used to end "— and it is not a required status check", which
+# was the argument for running it broadly at low cost. It is FALSE and was measured against the
+# live API: `Citations resolve` is one of the 20 required contexts on ruleset 20221742, so a red
+# run here does not merely inform, it blocks the merge. The no-path-filter decision stands and
+# its justification is the sentence above; the false half is removed rather than softened.
 name: Audit — Doc References
 
 on:

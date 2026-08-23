@@ -21,7 +21,7 @@ and client patterns — behind the `code/docs/API-DESIGN.md` entry point.
   `AUTH-AND-ERRORS.md`, `AUTH-STRATEGY.md`, `WEBHOOKS.md`, …) → keep
   `API-DESIGN.md` a thin index and update the `CONTEXT.md` file table on any change →
   verify length with `code/src/scripts/audits/docs-length.sh`.
-- **Definition of done:** conventions match the shipped API and `SECURITY.md`;
+- **Definition of done:** conventions match the shipped API and `code/docs/SECURITY.md`;
   each file ≤ 300 lines; cross-references resolve; British English.
 
 ## Guardrails

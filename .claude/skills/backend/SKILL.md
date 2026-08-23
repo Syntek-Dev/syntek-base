@@ -137,23 +137,33 @@ data-subject right is in play. **Suggest, do not chain**, unless the caller said
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/18-backend-code/` — the build phase that drives this work
-- `project-management/workflows/19-api-code/` — the build phase for the Django Ninja layer
+- `project-management/workflows/19-backend-code/` — the build phase that drives this work
+- `project-management/workflows/20-api-code/` — the build phase for the Django Ninja layer
 - `project-management/workflows/04-database-schema/` — the approved schema, a prerequisite
 - `code/workflows/03-database-migration/` — writing and applying the migration
 - `code/workflows/04-api-design/` — expressing the contract as routers and Schemas
 - `code/workflows/05-mcp-server/` — the FastMCP tool surface at `/mcp/`
 - `code/workflows/08-security-hardening/` — permission and RLS hardening
 - `code/workflows/02-tdd-cycle/` — implementing against pre-written failing tests
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/08-debugging/` — when the stack itself is unhealthy, not the code
 
 ## Cross-references
 
 - `code/docs/DATABASE.md` — the data-layer pre-flight rules, read before any model or query
+- `code/docs/data-structures/TYPES-PYTHON.md` — records as frozen dataclasses or Ninja schemas,
+  `StrEnum` for a closed set, and exhaustive `match` closing on `InvariantViolation`; the rule it
+  expresses is `data-structures/TYPES-OVER-DICTIONARIES.md`, whose parse-at-the-boundary clause
+  decides where a payload stops being a dictionary — a service method never receives one
 - `code/docs/ARCHITECTURE-PATTERNS.md` — the service-layer boundary and module structure
 - `code/docs/API-DESIGN.md` — endpoint, Schema and error conventions
 - `code/docs/MCP-SERVER.md` — the `/mcp/` surface, its auth model, and what it does not inherit
 - `code/docs/security/INPUT-AND-API.md` — boundary validation, throttling, upload hardening
 - `code/docs/architecture/CORE-AND-SCALING.md` — the phase-gate and keyset readiness rules
 - `code/docs/PERFORMANCE.md` — query optimisation, caching, response-time targets
+- `code/docs/BACKEND-CODING-PRINCIPLES.md` — the Django/Python/Celery specifics this builds to
+- `code/docs/URL-STRATEGY.md` — the route, slug and endpoint naming a new surface takes
+- `code/docs/PROCESS-MODEL.md` — worker class, event loop, and the ORM's sync boundary
+- `code/docs/TASK-AUTHORING.md` — the enqueue boundary, idempotency and retries for background work
+- `code/docs/MANAGEMENT-COMMANDS.md` — arguments as untrusted input, blast radius, exit codes
+- `code/docs/OBJECT-STORAGE.md` — the S3-API adapter contract and presigned-URL rules

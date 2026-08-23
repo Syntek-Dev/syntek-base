@@ -10,13 +10,13 @@ model: fable
 **Language**: British English (en_GB)
 
 Writing a `US###` (`src/02-STORIES/`) and its implementation plan
-(`src/16-STORY-PLANS/`). Index: [`../PLANNING-GUIDE.md`](../PLANNING-GUIDE.md).
+(`src/17-STORY-PLANS/`). Index: [`../PLANNING-GUIDE.md`](../PLANNING-GUIDE.md).
 
 ---
 
 ## Cutting stories from the map
 
-Stories are cut from the resolved `MAP-<FEATURE>.md` (`src/01-FEATURE/`), not invented from a
+Stories are cut from the resolved `MAP-<FEATURE>.md` (`src/01-FEATURE-MAPS/`), not invented from a
 conversation. A story whose shape is still an open node on the map is premature — settle the node
 first, or the story's acceptance criteria encode a guess.
 
@@ -105,7 +105,7 @@ cross-reference pointing at the old number.
 
 ## The story plan
 
-`STORY-PLAN-US###-<DESCRIPTOR>.md` in `src/16-STORY-PLANS/`, written by `16-story-plans` when the
+`STORY-PLAN-US###-<DESCRIPTOR>.md` in `src/17-STORY-PLANS/`, written by `17-story-plans` when the
 story's sprint fills. **This is the master a developer codes from** — not the story, and not the
 sprint plan.
 
@@ -114,7 +114,7 @@ It records:
 - Technical approach per layer (database, service, API, frontend)
 - A key-decisions table — chosen vs rejected, with rationale and a doc reference
 - A dependency matrix — blocked-by / blocks / can-start-now
-- Phased tasks mapped onto `18-backend-code` → `19-api-code` → `20-frontend-code`
+- Phased tasks mapped onto `19-backend-code` → `20-api-code` → `21-frontend-code`
 - A test strategy per layer, defined before any code
 - GDPR, security, and QA constraints **carried in** from the `02`–`13` specs, not re-derived
 - Deferred items and risks, each against a named future story
@@ -122,7 +122,7 @@ It records:
 **Keep the dependency callout honest.** A plan marked anything other than `Blocked` asserts its
 blockers are cleared, and the parallel-worktree DAG depends on that being true.
 
-**Consolidation can invalidate a plan.** If `17-consolidate-design-work` changes a shape the plan
+**Consolidation can invalidate a plan.** If `18-consolidate-design-work` changes a shape the plan
 assumed, the plan is corrected there — before code, not after.
 
 ---
@@ -132,4 +132,4 @@ assumed, the plan is corrected there — before code, not after.
 - [`CADENCE.md`](CADENCE.md) — when in the loop each of these is written
 - [`SPRINTS.md`](SPRINTS.md) — the sprint the story is slotted into
 - `project-management/docs/QA-GUIDE.md` — the scenario format acceptance criteria must support
-- `src/02-STORIES/US000-TEMPLATE.md` · `src/16-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md`
+- `src/02-STORIES/US000-TEMPLATE.md` · `src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md`

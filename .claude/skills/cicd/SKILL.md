@@ -99,8 +99,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `how-to/workflows/07-dependency-updates/` — adding, upgrading or removing a dependency
 - `how-to/workflows/01-first-time-setup/` — the environment a pipeline has to reproduce
-- `project-management/workflows/23-release/` — the release and deploy procedure it serves
-- `project-management/workflows/22-pr-and-review/` — the PR gates CI enforces
+- `project-management/workflows/24-release/` — the release and deploy procedure it serves
+- `project-management/workflows/23-pr-and-review/` — the PR gates CI enforces
 
 ## Cross-references
 
@@ -109,4 +109,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `how-to/docs/FEATURE-DEPLOY.md` — the manual-approval gate and the non-root rule in context
 - `how-to/src/SERVER-ARCHITECTURE/` — the app→server contract the Compose and deploy must satisfy
 - `code/docs/SECURITY.md` — the CORS, secrets and `DEBUG` gating rules
+- `code/docs/GATE-REPORTING.md` — what a gate may claim it looked at: "could not look" is never reported as "looked, and it was clean", and the absent-tool vs absent-surface line that decides which
+- `code/docs/FORWARD-VOICE.md` — the sibling rule: what a shipped document may claim about a tree it will be read in, the register and the `template-only` token that declare each direction
 - `code/docs/LOGGING.md` — the deploy health signals, and why each names an interface
+- `how-to/docs/CELERY-FIRST-RUN.md` — bringing the worker and beat up the first time

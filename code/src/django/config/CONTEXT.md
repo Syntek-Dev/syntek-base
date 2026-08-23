@@ -25,9 +25,15 @@ config/
 
 ## URL Routes
 
-| Path        | Handler                | Purpose                             |
-| ----------- | ---------------------- | ----------------------------------- |
-| `/control/` | `django.contrib.admin` | Django admin — superuser/staff only |
+| Path             | Handler                | Purpose                                 |
+| ---------------- | ---------------------- | --------------------------------------- |
+| `/health/`       | `apps.health.views`    | Liveness — no dependency checks         |
+| `/health/ready/` | `apps.health.views`    | Readiness — aggregate dependency health |
+| `/control/`      | `django.contrib.admin` | Django admin — superuser/staff only     |
+
+The health routes mount **first and at a fixed prefix** — they are a contract with every
+Dockerfile's `HEALTHCHECK` and the deploy repository's uptime probe, not a preference
+(`code/docs/logging/HEALTH-CONTRACT.md`).
 
 Under `DEBUG`, `staticfiles_urlpatterns()` is appended so the dev server serves
 `/static/` from the finders.
@@ -36,9 +42,9 @@ Under `DEBUG`, `staticfiles_urlpatterns()` is appended so the dev server serves
 > project's own admin surface. The mount point is `DJANGO_ADMIN_PATH` (default
 > `control/`, environment-overridable). See `code/docs/URL-STRATEGY.md`.
 
-There is no health, metrics, API, or SEO route at baseline. Each is added by the feature
-that needs it — and `code/src/docker/docker-compose.dev.yml` currently probes `/` for its
-backend healthcheck, so the first route added should account for that.
+There is no metrics, API, or SEO route at baseline. Each is added by the feature that needs
+it. The health routes are the exception and shipped ahead of any feature, which is why the
+dev and test Compose files and both deployed Dockerfiles all probe `/health/` rather than `/`.
 
 ## Entry Points
 

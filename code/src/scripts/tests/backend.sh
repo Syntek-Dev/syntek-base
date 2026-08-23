@@ -37,10 +37,9 @@ fi
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
 
-# Help is matched in first position only, as in e2e-py.sh: every other argument is
-# passed straight through to pytest, which has a --help of its own. Without this the
-# script would treat `--help` as a pytest arg and build an image before printing
-# anything.
+# Help is matched in first position only: every other argument is passed straight
+# through to pytest, which has a --help of its own. Without this the script would treat
+# `--help` as a pytest arg and build an image before printing anything.
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
   sed -n '3,18p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
   exit 0

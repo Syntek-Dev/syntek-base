@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
 # copy-slop.sh: the PROSE half of the AI-slop audit. Checks the machine-checkable
-#               clauses of how-to/src/BRAND-VOICE.md Section 4 — the copy tells that
-#               VISUAL-DESIGN.md Section 6 marks `[gate: prose]` and hands to this leg —
-#               at the two tiers Section 6 defines:
+#               brand-voice clauses of Section 4 — the copy tells the visual-design
+#               doctrine marks `[gate: prose]` and hands to this leg — at two tiers:
 #                 [gate: fail]  an unambiguous match. Exit 1, blocks
 #                 [gate: warn]  a threshold, a ratio, or a word that is sometimes
 #                               correct English. Reported, exit stays 0
-#               Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
+#               A threshold on vocabulary fails correct work, which is why it warns
+#               rather than blocks: a script does not overrule a writer.
 #
 # Clauses, and the tier each is checked at:
 #
@@ -52,9 +52,10 @@
 #                                         warns and is freely silenced.
 #
 # NOT owned here, deliberately:
-#   - The em dash is copy-emdash.sh's, and stays there. This script never looks at one.
+#   - The em dash belongs to the audit written for it alone, and stays there. This script
+#     never looks at one.
 #   - Bold applied to a whole sentence, though it is a real tell: its input is MARKUP,
-#     so it is template-slop.sh's `bold-whole-sentence` by the input-language split.
+#     so it belongs to the markup half of this family by the input-language split.
 #   - Every [judgement] clause in Section 4, because each needs the MEANING of the surrounding
 #     copy and no grep has that: the tricolon whose third item is filler, the rhetorical
 #     question as a CATEGORY (only the named phrases above are gated), a heading that
@@ -62,28 +63,55 @@
 #     reader just read. A clean run here does not mean those were honoured — it means no
 #     script was ever going to be the thing that checked them.
 #
-# SCOPE, AND THE ONE THING THIS MUST NEVER SCAN. BRAND-VOICE.md Section 4 governs copy a USER
+# SCOPE, AND THE ONE THING THIS MUST NEVER SCAN. The brand voice governs copy a USER
 # READS. It does NOT govern instructional documentation, code comments, commit messages or
-# ADRs, which are engineering prose. Pointing this script at `**/*.md` would fight this
-# repository's own guides and fail on them — so the scan is the same two directories
-# copy-emdash.sh reads, and nothing else:
+# decision records, which are engineering prose. Pointing this script at `**/*.md` would
+# fight this repository's own guides and fail on them — so the scan is the two marketing
+# directories and nothing else:
 #   code/src/django/apps/marketing/pagedata   (*.py  — page copy modules)
-#   code/src/django/apps/marketing/templates  (*.html — marketing templates)
+#   code/src/django/templates/marketing       (*.html — marketing templates)
 # The other registers Section 4 names (product UI, notifications, support articles) have no home
 # in the tree at baseline. When one gets a home, it is added to SCOPES here, not assumed.
+#
+# THE TEMPLATE SCOPE IS templates/marketing/, NOT apps/marketing/templates/. Django's APP_DIRS
+# loader would find either, so both are plausible and only one is what this project builds:
+# `code/src/scripts/development/new-django-view.sh` writes the page template there, and
+# `code/src/django/templates/CONTEXT.md` and `code/docs/FRONTEND-CODING-PRINCIPLES.md` name
+# that same directory. A fourth source is weaker than it looks and is quoted as what it is:
+# `project-management/workflows/21-frontend-code/STEPS.md` puts every template under
+# `code/src/django/templates/`, which corroborates the direction — not under the app —
+# without naming the marketing subdirectory at all.
+#
+# The scope directory is written in plain prose everywhere it appears — the block above and
+# SCOPES below — and never in backticks. It is a path a project builds, and it holds no row
+# in `how-to/src/PROJECT-PATHS.md`, so citing it would be a promise nobody has undertaken
+# (`code/docs/FORWARD-VOICE.md`). The scope was `apps/marketing/templates` until
+# 20/08/2026 — a directory the file collector skips in silence, so this leg would have
+# gone on reporting clean having read nothing even in a fully built project. Rule:
+# `code/docs/GATE-REPORTING.md`.
 #
 # ONLY RENDERED COPY IS READ, never the code around it. In a `.py` module the scan sees
 # string literals and nothing else, so `unlock_account` is not a corporate verb and a `#`
 # comment is not copy. In a template it sees text nodes plus a closed set of user-visible
 # attributes (alt, title, placeholder, aria-label, content), never class names, URLs,
 # `{% tags %}`, `{{ variables }}`, `{# comments #}`, or the contents of pre/code/script/
-# style/verbatim. That narrowing is Section 6's "scope the scan narrowly" rule: seam-contract.sh
-# flagged 34 issues on its first draft, 33 of them false.
+# style/verbatim. That narrowing is the "scope the scan narrowly" rule: a sibling audit in
+# this folder flagged 34 issues on its first draft, 33 of them false.
 #
-# NO-OP WHEN ABSENT. `apps/marketing/` does not exist at template baseline, so the script
-# exits 0 with a note rather than failing, which is what lets it run unconditionally in CI.
-# A --output run still writes a clean, zero-finding report on that path, so a consumer told
-# to collect the report file always finds it.
+# NO-OP WHEN ABSENT, AND IT NAMES WHICH ABSENCE. Neither scope exists at template baseline,
+# so the script exits 0 with a note rather than failing, which is what lets it run
+# unconditionally in CI. A --output run still writes a clean, zero-finding report on that
+# path, so a consumer told to collect the report file always finds it.
+#
+# A zero file count means TWO different things and only the scope separates them. Unscoped it
+# is the absent copy surface, and "this project has not written any user-facing copy yet" is a
+# fact the run established. Under --path it is the caller's own path, and all the run
+# established is that the path holds no file of a type this audit reads — it never opened the
+# copy surface at all. Until 22/08/2026 both printed the project sentence, so `--path` over any
+# directory of documentation returned a confident claim about a population that run had never
+# looked at: GATE-REPORTING.md Section 1 at the smaller scale, in the script that was the model
+# for the same fix in copy-emdash.sh. Both channels branch, the printed lines and SURFACE_NOTE
+# alike, because a CI consumer parses the second and never sees the first.
 #
 # ESCAPE HATCH, and what actually scopes it. Put `slop-allow` in a comment on the offending
 # line or the line above, with a reason:
@@ -100,8 +128,7 @@
 # It applies at BOTH TIERS, and the reason is not the tier — it is whether the finding has a
 # line to annotate. A warning a writer deliberately earned ("a robust seal") is exactly the
 # case an annotation exists for. What cannot be annotated is `exclamation-count`, which is a
-# per-file count and names no line; that, not the tier, is the real boundary
-# (VISUAL-DESIGN.md Section 6).
+# per-file count and names no line; that, not the tier, is the real boundary.
 #
 # Usage: copy-slop.sh [--output FORMAT] [--output-file PATH] [--quiet] [--path PATH]
 #                     [--help]
@@ -116,13 +143,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 
-# Each entry: "<dir>:<glob>" — the same two scopes copy-emdash.sh reads.
+# Each entry: "<dir>:<glob>" — the two marketing copy surfaces, and nothing else.
 SCOPES=(
   "code/src/django/apps/marketing/pagedata:*.py"
-  "code/src/django/apps/marketing/templates:*.html"
+  "code/src/django/templates/marketing:*.html"
 )
 
-# At most one exclamation mark per surface (BRAND-VOICE.md Section 4). One file is the proxy.
+# At most one exclamation mark per surface. One file is this script's proxy for a surface.
 MAX_EXCLAMATIONS=1
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -160,7 +187,13 @@ Options:
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/copy-slop-report.<FORMAT>)
   --quiet              Suppress terminal output (requires --output)
-  --path PATH          Restrict the scan to a file or directory (*.py and *.html only)
+  --path PATH          Restrict the scan to a file or directory (*.py and *.html only).
+                         Normalised to the repo-relative form first, so `.`, a `./`
+                         prefix, an absolute path and an interior `..` all name what
+                         they look like, and the repository root itself means the
+                         unscoped run over the two declared scopes. A path that does
+                         not exist, or one outside the repository, is a bad argument
+                         and exits 2, never a clean run
   --help               Show this help
 
 Two tiers in one run:
@@ -223,6 +256,53 @@ trap 'rm -f "$TMP_FILES" "$TMP_HITS"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
+# ── Scope normalisation ───────────────────────────────────────────────────────
+# --path is normalised BEFORE it is tested, because the collector below walks the
+# filesystem with `find`, which accepts every form of a path as itself — so an -e guard
+# that passes is the only thing between the caller and a scope this audit was never written
+# over. Measured on 22/08/2026, before this block: `--path .` walked the whole repository,
+# reporting "files: 4582" and 1305 [gate: fail] matches, most of them in .venv and none of
+# them marketing copy, and `--path /etc` read 3 files out of a system directory and printed
+# "No machine-authored prose tell in user-facing copy." Both paths exist; neither is
+# user-facing copy. That is the widening the file-type contract closes for extensions,
+# arriving instead through the scope. So the repository root resolves to the unscoped run
+# over SCOPES rather than to the whole tree, a path resolving outside this repository is a
+# bad argument at exit 2, and a `./` prefix, an absolute path (what tab-completion produces)
+# and an interior `..` all name what they look like. Resolution is textual rather than
+# `realpath`: it adds no dependency and needs no path to exist. It does not follow symlinks,
+# so a symlinked route into the tree is refused rather than accepted. The existence test and
+# the collector then read the SAME normalised value. Rule: code/docs/GATE-REPORTING.md.
+normalise_scope() {   # prints the absolute path with . and .. resolved; empty means /
+  local abs seg out=""
+  case "$1" in /*) abs="$1" ;; *) abs="$PROJECT_ROOT/$1" ;; esac
+  while [[ -n "$abs" ]]; do
+    seg="${abs%%/*}"
+    if [[ "$abs" == */* ]]; then abs="${abs#*/}"; else abs=""; fi
+    case "$seg" in
+      ''|.) ;;
+      ..)   out="${out%/*}" ;;
+      *)    out="$out/$seg" ;;
+    esac
+  done
+  printf '%s' "$out"
+}
+
+RAW_PATH=""
+if [[ -n "$TARGET_PATH" ]]; then
+  RAW_PATH="$TARGET_PATH"
+  ABS_PATH="$(normalise_scope "$RAW_PATH")"
+  if [[ "$ABS_PATH" == "$PROJECT_ROOT" ]]; then
+    TARGET_PATH=""                                   # the root: the declared scopes, unscoped
+  elif [[ "$ABS_PATH" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${ABS_PATH#"$PROJECT_ROOT"/}"
+  else
+    die "--path '$RAW_PATH' resolves to '${ABS_PATH:-/}', outside $PROJECT_ROOT"
+  fi
+fi
+READ_AS=""
+[[ "$RAW_PATH" == "$TARGET_PATH" ]] || READ_AS=" (read as '$TARGET_PATH')"
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$RAW_PATH' does not exist$READ_AS"
+
 # ── File collection ───────────────────────────────────────────────────────────
 # With --path the extension still decides how a file is read, because the two parsers
 # are not interchangeable. Anything that is neither *.py nor *.html is skipped rather
@@ -230,7 +310,6 @@ TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 declare -a ROOTS=()
 : > "$TMP_FILES"
 if [[ -n "$TARGET_PATH" ]]; then
-  [[ -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
   ROOTS=("$TARGET_PATH")
   if [[ -d "$TARGET_PATH" ]]; then
     find "$TARGET_PATH" -type f \( -name '*.py' -o -name '*.html' \) -print0 >> "$TMP_FILES" || true
@@ -255,13 +334,24 @@ FILE_COUNT=$(tr -cd '\0' < "$TMP_FILES" | wc -c | tr -d ' ')
 # reports/copy-slop-report.<FORMAT> must always find the file. An absent surface writes
 # a clean, zero-finding report naming the reason rather than exiting 0 with nothing on
 # disk, which under `--quiet --output json` would leave the consumer no signal at all.
+#
+# Every format carries the scope, for the reason in the header: a zero file count means two
+# different things, and a consumer parsing the report never sees the terminal lines that say
+# which of them this run found.
 json_escape() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 
 write_report() {
   [[ -n "$OUTPUT_FORMAT" ]] || return 0
   local status
   if $SURFACE_ABSENT; then
-    status="✓ surface absent, nothing to check"
+    # The status field is machine-read too, so it separates the two empty populations as the
+    # note does. "Surface absent" under --path would be the project-level claim again, in the
+    # one field a consumer reads first.
+    if [[ -n "$TARGET_PATH" ]]; then
+      status="✓ scope empty, no file of a type this audit reads"
+    else
+      status="✓ surface absent, nothing to check"
+    fi
   elif [[ "$FAIL_COUNT" -eq 0 ]]; then
     status="✓ no blocking clause ($WARN_COUNT warning(s))"
   else
@@ -271,6 +361,7 @@ write_report() {
   case "$OUTPUT_FORMAT" in
     txt)
       { printf 'copy-slop audit · %s\n' "$TIMESTAMP"
+        printf 'scope=%s\n' "${TARGET_PATH:-(the declared scopes)}"
         printf 'files=%s fail=%s warn=%s\n' "$FILE_COUNT" "$FAIL_COUNT" "$WARN_COUNT"
         printf 'status: %s\n' "$status"
         [[ -n "$SURFACE_NOTE" ]] && printf '%s\n' "$SURFACE_NOTE"
@@ -280,6 +371,7 @@ write_report() {
       { printf '# Copy Slop Audit Report\n\n'
         printf '| | |\n|---|---|\n'
         printf '| **Generated** | %s |\n' "$TIMESTAMP"
+        printf '| **Scope** | %s |\n' "${TARGET_PATH:-the declared scopes}"
         printf '| **Files scanned** | %s |\n' "$FILE_COUNT"
         printf '| **Blocking (gate: fail)** | %s |\n' "$FAIL_COUNT"
         printf '| **Advisory (gate: warn)** | %s |\n' "$WARN_COUNT"
@@ -294,6 +386,7 @@ write_report() {
       } > "$OUTPUT_FILE" ;;
     json)
       { printf '{\n  "script": "copy-slop",\n  "timestamp": "%s",\n' "$TIMESTAMP"
+        printf '  "scope": "%s",\n' "$(json_escape "${TARGET_PATH:-}")"
         printf '  "surface_present": %s,\n' "$($SURFACE_ABSENT && echo false || echo true)"
         printf '  "files": %s,\n  "fail": %s,\n  "warn": %s,\n' "$FILE_COUNT" "$FAIL_COUNT" "$WARN_COUNT"
         printf '  "surface_note": "%s",\n' "$(json_escape "$SURFACE_NOTE")"
@@ -309,11 +402,19 @@ write_report() {
 # ── No-op when the copy surface is absent ─────────────────────────────────────
 if [[ "$FILE_COUNT" -eq 0 ]]; then
   SURFACE_ABSENT=true
-  SURFACE_NOTE="Surface absent: no marketing copy module or template was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition."
+  # Name WHICH empty population this is — see the header. The project sentence is a claim
+  # about the copy surface and belongs only to the run that looked at it.
   log ""
   bold "▸ copy-slop.sh · $TIMESTAMP"
-  log "  no *.py or *.html under: ${ROOTS[*]}"
-  log "  This project has not written any user-facing copy yet."
+  if [[ -n "$TARGET_PATH" ]]; then
+    SURFACE_NOTE="Scope empty: --path ${ROOTS[*]} holds no *.py or *.html, so no clause could match and this run is clean by definition rather than by inspection. It says nothing about the project's copy surface, which this run did not look at."
+    log "  no *.py or *.html under: ${ROOTS[*]}"
+    log "  --path holds no file of a type this audit reads."
+  else
+    SURFACE_NOTE="Surface absent: no marketing copy module or template was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition."
+    log "  no *.py or *.html under: ${ROOTS[*]}"
+    log "  This project has not written any user-facing copy yet."
+  fi
   log ""
   write_report
   bold "✓ Nothing to check."

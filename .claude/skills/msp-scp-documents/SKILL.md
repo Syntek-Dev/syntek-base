@@ -13,7 +13,7 @@ that every MSP/SCP policy document must follow.
 This is **drafting, not implementation**. The output is Markdown policy text, a **draft
 for professional review** — never presented as final or as legal advice, and it never
 builds routes, runs migrations, or touches source. Publishing a signed-off policy behind a
-marketing legal page is a separate task for the `feature` / `frontend` path.
+marketing legal page is a separate task for the `implement-story` / `frontend` path.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRENCY%>.
 
@@ -65,20 +65,14 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · date format DD/MM/YYYY · currency <%CURRE
   `code/docs/SECURITY.md`, and the shared drafting standards in
   `.claude/skills/global-workflow/SKILL.md` (if present).
 
-## Clarifying questions
+## Before drafting
 
-Every draft opens with a **clarifying-questions step**, its question set specific to the
-document type and drawn from that type's required sections. This skill sets only the
-**method**.
+Open with a grilling pass (`.claude/skills/grilling/SKILL.md`), drawing the questions from the
+required sections of the type being drafted — see the Section Map above for where they live.
 
-Conduct the clarifying questions as a **grilling pass** — load
-`.claude/skills/grilling/SKILL.md`, which owns the round shape, the question format and the
-recommendation rule. The user can also invoke it directly as `/grill-me`.
-
-Use the **stateless** grilling (the `grilling` engine / `/grill-me`), **not**
-`/grill-with-docs` — a policy draft for professional review is not a plan, ADR, or story
-artifact, so nothing is recorded to the repo. Mark anything still unknown at draft time as
-`[AWAITING USER INPUT]`.
+**Stateless — `/grill-me`, never `/grill-with-docs`.** A policy draft goes to professional
+review rather than into the repo as a plan, ADR or story, so the pass records nothing. Mark
+anything still unknown at draft time `[AWAITING USER INPUT]`.
 
 ## How the Sub-Documents Fit Together
 

@@ -12,7 +12,7 @@ model: fable
 
 > **This workflow plans; it does not verify.** It runs inside the per-story specify loop, before
 > any page exists. Auditing the built page, Lighthouse, and the `IMPLEMENTATION/` record belong
-> to `21-implementation-documentation`.
+> to `22-implementation-documentation`.
 
 ---
 
@@ -96,7 +96,7 @@ From the wireframe:
 
 Where SEO intent is declared but unspecified, raise it as `SEO-GAP-n` marked `[OPEN]`. Resolve
 each in this plan, or feed it back into `src/02-STORIES/US###.md` — an open gap must not survive
-into `14-decisions`.
+into `15-decisions`.
 
 ### Step 7 — Close out
 
@@ -105,5 +105,5 @@ into `14-decisions`.
 - Keep the story's `### SEO Acceptance Criteria` consistent with this plan
 - Satisfy `CHECKLIST.md`
 
-Next in the per-story loop: `13-api-design/`, then `14-decisions/`.
-Verification of the built page happens later, in `21-implementation-documentation/`.
+Next in the per-story loop: `13-api-design/`, then `15-decisions/`.
+Verification of the built page happens later, in `22-implementation-documentation/`.

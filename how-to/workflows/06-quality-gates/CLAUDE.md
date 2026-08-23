@@ -19,8 +19,9 @@ clean local run predicts a clean CI run.
 - **Model:** Opus throughout.
 - **Concrete steps:** format → lint → type-check → audits → tests with coverage → the full
   `pre-pr-check.sh` → raise the PR.
-- **Definition of done:** all eight gates green, audits clean, coverage floors met (and the
-  stricter 80% CI floor cleared when targeting `staging` or `main`).
+- **Definition of done:** all eight gates green, audits clean, coverage floors met —
+  including the higher promotion floor when the PR targets a promotion branch
+  (`code/docs/testing/COVERAGE.md`).
 
 ## Guardrails
 
@@ -28,11 +29,12 @@ clean local run predicts a clean CI run.
   is a change to the codebase's guarantees and must be argued, not slipped through.
 - **Local and CI must agree.** When they disagree the mirroring is the bug — fix the script
   or the workflow rather than pushing repeatedly to discover what CI wants.
-- **CI is stricter on the promotion branches** — 80% coverage on `staging` and `main`.
+- **The coverage floor is stricter on the promotion branches.** Never restate the number
+  here — `code/docs/testing/COVERAGE.md` owns it, and a second copy is a second home.
 - **This gate checks form, not judgement.** Green gates do not mean the change is right;
   `code/workflows/07-review/` is where content is reviewed, and it comes first.
-- **In this template several gates skip by design** (no `uv.lock`). Expected here; not a
-  broken gate, and not something to "fix" by unguarding them.
+- **In this template no gate skips for want of a lockfile.** `uv.lock` is committed here, so
+  a gate that reports nothing to run is a defect to chase, never the expected state.
 - Editing these workflow `.md` files: keep each **≤ 300 code lines**.
 
 ## Output & naming

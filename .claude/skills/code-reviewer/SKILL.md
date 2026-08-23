@@ -199,11 +199,17 @@ runtime failure, and `completion` to record the review status.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/07-review/` — the review procedure, its checklist, and the code-smell baseline
-- `project-management/workflows/22-pr-and-review/` — where the review record is filed
+- `project-management/workflows/23-pr-and-review/` — where the review record is filed
 
 ## Cross-references
 
 - `code/docs/CODING-PRINCIPLES.md` — style, error handling, and the length limits
+- `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md` — the domain-objects-over-dictionaries
+  standard, whose _Pull-request review checklist_ is run as part of the Standards axis;
+  `TYPES-EXCEPTIONS.md` decides whether a flagged dictionary is one of the seven legitimate uses
+  before it is reported. The decidable half is `audits/dict-discipline.sh`, so report only what
+  the script cannot see — whether the keys are genuinely dynamic, and whether the dictionary
+  escapes the layer that built it
 - `code/docs/SECURITY.md` · `code/docs/ENCRYPTION-GUIDE.md` — the OWASP and PII rules above
 - `code/docs/ARCHITECTURE-PATTERNS.md` — the service-layer and module boundaries
 - `code/docs/PERFORMANCE.md` · `code/docs/architecture/CORE-AND-SCALING.md` — the two axes above

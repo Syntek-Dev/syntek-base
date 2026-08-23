@@ -26,7 +26,7 @@ refuse to fabricate).
 guarantee. The durable carriers for the planning tier are the two snapshot directories'
 operating rules — `how-to/src/SCALE-ARCHITECTURE/CLAUDE.md` and
 `how-to/src/SERVER-ARCHITECTURE/CLAUDE.md`, which both name Fable for envelope, readiness and
-contract reasoning — and `project-management/workflows/14-decisions/`, whose routing
+contract reasoning — and `project-management/workflows/15-decisions/`, whose routing
 frontmatter is `model: fable`.
 
 Scale planning answers two questions the project has never pinned down: **is the deployment
@@ -37,12 +37,12 @@ application scales and **specify** what the server must provide; you build neith
 
 It runs as a **wayfinder-charted epic** — the frontier is too big for one sitting and it
 spans another repo — with **grilling** settling each decision node. The governing decision is
-recorded in `project-management/src/14-DECISIONS/`; the deep vocabulary (module / interface /
+recorded in `project-management/src/15-DECISIONS/`; the deep vocabulary (module / interface /
 depth / seam) comes from `.claude/skills/codebase-design`.
 
 **Run this before the first feature, not after the tenth.** It is Step 8 of
 `how-to/workflows/01-first-time-setup/`, immediately after the project brief is sharpened, and
-before `project-management/workflows/01-feature/` charts anything. The reason is not the server
+before `project-management/workflows/01-feature-map/` charts anything. The reason is not the server
 sizing — that can wait. It is that this is the pass which forces the questions while they are
 still cheap: how many users, what the read/write mix is, which phase-gate the design must not
 foreclose, and what the server and edge must provide. Answering those after ten features means
@@ -128,7 +128,7 @@ features add new server needs (a new route needs a CSP source; a new upload need
 ### 2. Chart or resolve (wayfinder)
 
 Load `.claude/skills/wayfinder`. The map is
-`project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md`.
+`project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md`.
 
 - **CHART** (one session) — pin the destination, map the frontier breadth-first across both
   tracks (SCALE and SERVER), wire the blocking edges, fire the research nodes, then stop.
@@ -178,7 +178,7 @@ for scalability" = the flips stay flips.
 Follow wayfinder's graduation table:
 
 - **Architectural, hard-to-reverse, real trade-off** → a new ADR (three-test gate; take the next
-  free number in `project-management/src/14-DECISIONS/`).
+  free number in `project-management/src/15-DECISIONS/`).
 - **A buildable slice** → a `US###` story + `STORY-PLAN-US###-*.md` (synced to ClickUp by the
   `clickup-sync` workflow — never write ClickUp directly).
 - **A sizing / readiness / edge fact** → the living `SCALE-ARCHITECTURE` / `SERVER-ARCHITECTURE`
@@ -222,7 +222,7 @@ never written here — that is the `<%DEPLOY_REPO%>` repository, which implement
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/14-decisions/` — where a hard-to-reverse sizing choice is recorded
+- `project-management/workflows/15-decisions/` — where a hard-to-reverse sizing choice is recorded
 
 ## Cross-references
 

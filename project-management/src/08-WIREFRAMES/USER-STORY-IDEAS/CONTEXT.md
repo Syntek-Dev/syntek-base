@@ -40,7 +40,7 @@ has. Where the story needs something the component set does not cover, use the n
 `../../07-COMPONENTS/USER-STORY-IDEAS/`, not invented here.
 
 Screens from different stories will not agree with each other. That is expected;
-`17-consolidate-design-work` rebuilds the whole set on the consolidated components.
+`18-consolidate-design-work` rebuilds the whole set on the consolidated components.
 
 ## Authoring a screen
 
@@ -56,7 +56,7 @@ must not rest intent on hover, scrollbars, or browser chrome — none exists nat
 
 ## Frozen at consolidation
 
-Once `17-consolidate-design-work` runs, every file here is frozen. The screens that get built
+Once `18-consolidate-design-work` runs, every file here is frozen. The screens that get built
 live in `../CONSOLIDATED-IDEAS/`.
 
 ## Cross-references

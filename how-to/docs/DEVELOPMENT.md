@@ -17,15 +17,15 @@ model: opus
 
 ## Overview
 
-| Layer                 | Technology                                                                                                                                     | Container | Dev URL                                           |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------- |
-| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:8000        |
-| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.<%PROJECT_SLUG%>.localhost:8000/admin/ |
-| **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                       |
-| **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                       |
+| Layer                 | Technology                                                                                                                                     | Container | Dev URL                                         |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------- |
+| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:81        |
+| **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.<%PROJECT_SLUG%>.localhost:81/admin/ |
+| **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                     |
+| **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                     |
 
 One app process family (Django ASGI) serves the public site, the `/admin/` surface, and the
-Django Ninja API at `http://dev.<%PROJECT_SLUG%>.localhost:8000/api/`. Django admin is mounted at
+Django Ninja API at `http://dev.<%PROJECT_SLUG%>.localhost:81/api/`. Django admin is mounted at
 `/control/`, never `/admin/`.
 
 ---
@@ -70,8 +70,8 @@ bash code/src/scripts/database/manageusers.sh create-superuser
 bash code/src/scripts/database/manageusers.sh create-staff --email your@email.com --username you
 ```
 
-Verify at http://dev.<%PROJECT_SLUG%>.localhost:8000 and the API at
-http://dev.<%PROJECT_SLUG%>.localhost:8000/api/.
+Verify at http://dev.<%PROJECT_SLUG%>.localhost:81 and the API at
+http://dev.<%PROJECT_SLUG%>.localhost:81/api/.
 
 ---
 
@@ -125,12 +125,18 @@ bash code/src/scripts/syntax/format.sh --file-type python
 bash code/src/scripts/syntax/check.sh --file-type python
 bash code/src/scripts/tests/backend.sh
 
-# CSS
+# Web frontend — CSS, and the Alpine/enhancement JavaScript
 bash code/src/scripts/syntax/format.sh --file-type css
+bash code/src/scripts/syntax/lint.sh --file-type javascript
 
 # Markdown (all .md files must declare code block languages — MD040)
 bash code/src/scripts/syntax/lint.sh --file-type markdown
 ```
+
+**Or run them unscoped and let the scripts decide.** A bare `lint.sh` / `check.sh` covers
+every surface this project actually has — adding `typescript` when `code/src/mobile/` exists
+and `rust` when `code/src/rust/` does. Naming a surface the project lacks exits `2` rather
+than passing quietly. Vocabulary: `code/src/scripts/syntax/CONTEXT.md`.
 
 ---
 
@@ -214,11 +220,11 @@ Nginx container IP(s) (default `[]` = no X-Forwarded-For trust — fail-safe).
 | `development/new-django-view.sh` | Scaffold a new Django-served page (view + template + URL)  |
 | `database/migrate.sh`            | Run Django migrations                                      |
 | `database/reset.sh`              | Reset the database; `--seed` also creates dev accounts     |
-| `database/shell.sh`              | Open a psql shell                                          |
+| `database/shell.sh --psql`       | Open a psql shell (connects as the superuser)              |
 | `database/backup.sh`             | Back up the database                                       |
 | `database/restore.sh`            | Restore a database backup                                  |
 | `database/manageusers.sh`        | Create superusers and manage DB users                      |
-| `database/verify-db-security.sh` | Verify DB security settings (RLS, roles)                   |
+| `database/verify-db-security.sh` | Django system check + PostgreSQL `log_statement` (not RLS) |
 | `tests/backend.sh`               | Run backend tests                                          |
 | `tests/backend-coverage.sh`      | Backend tests with coverage report                         |
 | `tests/api.sh`                   | Run Django Ninja API integration tests                     |
@@ -242,8 +248,8 @@ tool directly.
 ### Container won't start
 
 ```bash
-bash code/src/scripts/development/logs.sh --service backend
-bash code/src/scripts/development/server.sh up --build --service backend
+bash code/src/scripts/development/logs.sh --service django
+bash code/src/scripts/development/server.sh up --build --service django
 ```
 
 ### Database connection errors
@@ -252,7 +258,7 @@ Ensure `POSTGRES_HOST=db` (the Docker Compose service name, not `localhost`). Ch
 health with `server.sh status`. If the `db` container is still initialising:
 
 ```bash
-bash code/src/scripts/development/server.sh restart --service backend
+bash code/src/scripts/development/server.sh restart --service django
 ```
 
 ### Migration errors
@@ -277,11 +283,16 @@ bash code/src/scripts/development/server.sh up --build --service django
 ### Port already in use
 
 ```bash
-sudo lsof -i :8000
+sudo lsof -i :81
 ```
 
-Use a `docker-compose.override.yml` for host-specific port overrides — do not commit to
-`docker-compose.yml`.
+**Check 81, not 8000.** The dev stack publishes nginx on host port **81**, because a local
+router often holds 80; `:8000` is the Django container's internal port and is never published.
+
+The port is hard-coded as `127.0.0.1:81:80` in `code/src/docker/docker-compose.dev.yml`, and
+`server.sh` pins its compose files explicitly — so a `docker-compose.override.yml` is never
+loaded and changing the port is a shared-file decision. Full detail:
+`how-to/docs/CLI-TOOLING.md` → _Port conflicts_.
 
 ### Docker data-root location
 

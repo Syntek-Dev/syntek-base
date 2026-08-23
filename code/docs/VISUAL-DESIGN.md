@@ -47,7 +47,7 @@ are building one.
 ## 2. Implement the design — do not invent it
 
 A page's design is decided **upstream**, at _design-time_ — the PM/design skills run the grilling
-interview and produce the artefacts (via Figma MCP / Claude Design; that flow is rooted in the
+interview and produce the artefacts (that flow is rooted in the
 repo's `DESIGN.md`). Your job is _code-time_: build that intent against the live codebase. Before
 writing any template, component, or stylesheet, load the design artefacts for the screen:
 

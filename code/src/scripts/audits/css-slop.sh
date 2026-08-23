@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 #
 # css-slop.sh: the CSS half of the AI-slop audit. Enforces the machine-checkable
-#              clauses of code/docs/VISUAL-DESIGN.md whose input is a stylesheet.
+#              visual-design clauses whose input is a stylesheet.
 #
-#              Two tiers in one run, the way cloc.sh warns at 750 and fails at 800:
+#              Two tiers in one run, the same warn-then-fail shape the line-count
+#              audit uses:
 #                [gate: fail]  an unambiguous match. Exit 1, blocks
 #                [gate: warn]  a threshold or a ratio. Reported, exit stays 0
-#              Tier scheme and its rationale: VISUAL-DESIGN.md Section 6.
+#              A threshold on composition fails correct work, which is why it warns
+#              rather than blocks: a script does not overrule a designer.
 #
 #              Clauses owned here (fail):
 #                motion-literal-duration  Section 5, a literal duration in transition/
@@ -23,10 +25,10 @@
 #                centred-everything       Section 4.2, reads the ALIGNMENT axis
 #                flat-background          Section 4.2, reads the RHYTHM axis
 #
-#              NOT owned here, deliberately: the inline-gradient tell is
-#              css-gradients.sh's; em dashes are copy-emdash.sh's; the markup
-#              clauses belong to the markup half; [judgement] clauses belong to
-#              the reviewer and no script decides them.
+#              NOT owned here, deliberately: the inline-gradient tell has its own
+#              audit, and so does the em dash; the markup clauses belong to the
+#              markup half of this family; [judgement] clauses belong to the
+#              reviewer and no script decides them.
 #
 # Scopes scanned (*.css only):
 #   code/src/django/static/css   (per-page and cascade CSS)
@@ -76,9 +78,9 @@ REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 # The last two scopes are design-time, not code-time. Wireframes are styled HTML+CSS,
 # so they read as the same input language and belong to this leg rather than a fourth
 # script. Stage 1 (USER-STORY-IDEAS/) is deliberately absent: it is one screen per story
-# and frozen once workflow 17 runs, while Section 4.1's repetition tell and Section 4.2's rhythm clause
-# are properties of a page SET. The consolidated folder is the one place the whole set
-# exists at once, before any code.
+# and frozen once the design-consolidation workflow runs, while Section 4.1's repetition
+# tell and Section 4.2's rhythm clause are properties of a page SET. The consolidated
+# folder is the one place the whole set exists at once, before any code.
 #
 # SHARED/ is listed separately and is NOT a third stage. It holds wireframe.css, the one
 # stylesheet every screen links, so a scope covering only CONSOLIDATED-IDEAS would gate

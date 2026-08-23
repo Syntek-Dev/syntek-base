@@ -9,7 +9,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The code-quality review procedure applied before raising a PR — security, patterns,
 coverage, and coding principles on the _content_ of the change, distinct from the PR
-merge process in `project-management/workflows/22-pr-and-review/`.
+merge process in `project-management/workflows/23-pr-and-review/`.
 
 ## How to work here
 
@@ -23,7 +23,7 @@ merge process in `project-management/workflows/22-pr-and-review/`.
   three hard-gate docs (`security/AUTH-AND-AUTHZ.md`,
   `security/OWASP-AND-CHECKLIST.md`, `testing/COVERAGE.md`) → review against
   OWASP A01–A10, coding principles, and coverage floors → complete `CHECKLIST.md`
-  before handing to workflow 17.
+  before handing to workflow 23 (`23-pr-and-review`).
 - **Definition of done:** every state-changing Django Ninja endpoint authenticated and
   permission-checked via a named Policy class; no IDOR; coverage floors met; no duplicated
   the django-components library components; `CHECKLIST.md` signed off.

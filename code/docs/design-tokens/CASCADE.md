@@ -12,7 +12,7 @@ model: opus
 **Claude Model:** opus — CSS cascade generation, preference axes, delivery pipeline
 
 How `DesignToken` + `DesignTokenValue` rows become a single deterministic CSS file, and how that
-file reaches the browser. The generator is `services/render.py`
+file reaches the browser. The generator **will be** a render module in the token app
 (`render_tokens_css()` pure / `render_current_css()` DB-backed).
 
 ---

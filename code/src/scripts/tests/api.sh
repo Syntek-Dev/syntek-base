@@ -77,10 +77,19 @@ fi
 mkdir -p "$OUTPUT_DIR"
 
 API_BASE_URL="${API_BASE_URL:-http://test.<%PROJECT_SLUG%>.localhost:83}"
-# The path used to prove the stack is answering before Bruno starts. At baseline
-# `/control/` is the only route the URLconf registers; point this at a real liveness
-# route (e.g. /health/) once the project has one.
-API_HEALTH_PATH="${API_HEALTH_PATH:-/control/}"
+
+# In syntek-base itself that default is still an unrendered Copier token, so it names a host
+# that cannot resolve and Bruno rejects the URL outright. Fall back to the published port on
+# loopback, which nginx binds in the test stack, so the template can run its own API suite —
+# in CI as well, where nobody is present to set the override. A generated project renders a
+# real hostname here and never reaches this branch.
+if [[ "$API_BASE_URL" == *PROJECT_SLUG* ]]; then
+  API_BASE_URL="http://localhost:83"
+fi
+# The path used to prove the stack is answering before Bruno starts. This is /health/ rather
+# than the admin because the admin prefix is configurable (DJANGO_ADMIN_PATH) while this one is
+# fixed by contract for exactly this kind of consumer (code/docs/logging/HEALTH-CONTRACT.md).
+API_HEALTH_PATH="${API_HEALTH_PATH:-/health/}"
 
 # Nothing to run is not a pass or a failure — it is the baseline. Bruno's own exit code
 # for an empty run is unhelpful, so decide here, before building an image for nothing.
@@ -140,18 +149,30 @@ fi
 
 # Bruno runs on the HOST via the root pnpm workspace (@usebruno/cli). `-r` (recursive) is
 # required so a folder run descends into nested folders. The CLI honours NEITHER bruno.json's
-# `ignore` list NOR `meta { skip }` — the only exclusion lever is `--exclude-tags`. Two tags
-# are excluded:
-#   manual — requests that can't pass in a normal run (rate-limit needs >60 rapid requests).
-#   wip    — requests blocked on test-data/service infrastructure not present in the test stack
-#            (seeded SEO records, a seeded client + Cloudinary mock, a seeded blog post, and the
-#            not-yet-implemented user(id) endpoint). See BUG-API-SUITE-UNRUN-09-06-2026.md.
+# `ignore` list NOR `meta { skip }` — the only exclusion lever is `--exclude-tags`, so two
+# tags are reserved and excluded here:
+#   manual — a request that cannot pass in a normal run (a rate-limit probe needing >60 rapid
+#            calls, say), so it is run deliberately or not at all.
+#   wip    — a request blocked on test data or a service the test stack does not stand up.
+# NEITHER TAG IS IN USE TODAY. The collection is `health/` alone — two requests, no `tags`
+# block between them — so this flag currently excludes nothing, and a green run is green over
+# everything that exists. The flag stays because the lever has to exist before the first
+# request needs it; what must not happen is a reader inferring from it that something was
+# skipped. The prose here named seeded SEO records, a Cloudinary mock, a blog post and a
+# `user(id)` query until 23/08/2026 — an origin project's request set, described in GraphQL
+# vocabulary, in a template that ships neither.
 # The request template lives outside the collection root so recursion never picks it up.
+# API_BASE_URL is forwarded into the collection as `api_url`, not just used for the pre-flight
+# probe above. Without this the override moves the health check and leaves every request still
+# pointed at the environment file — so `API_BASE_URL=... api.sh` reported a reachable stack and
+# then failed every request against a different host, which is the most confusing shape a
+# failure can take. Bruno's --env-var wins over the selected environment's vars.
 ( cd "$COLLECTION" && \
   BRUNO_VAR_test_password="${BRUNO_VAR_test_password}" \
   BRUNO_VAR_limited_password="${BRUNO_VAR_limited_password}" \
   pnpm exec bru run -r ${FOLDER:+"$FOLDER"} \
     --env "$BRUNO_ENV" \
+    --env-var "api_url=$API_BASE_URL" \
     --exclude-tags manual,wip \
     --reporter-json "$OUTPUT_DIR/results.json" \
     "${PASS_ARGS[@]+"${PASS_ARGS[@]}"}" )

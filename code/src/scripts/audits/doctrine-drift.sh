@@ -26,7 +26,7 @@
 #
 # ── Why only fenced code ──────────────────────────────────────────────────────
 # A rule is STATED in an example and DISCUSSED in prose. "There was a `{ "data": ... }`
-# envelope here until 14/08/2026" is history, and a guide that cannot narrate its own
+# envelope here until it was retired" is history, and a guide that cannot narrate its own
 # changes loses the reasoning that makes the current rule legible. So the scanner reads
 # fenced blocks only. Prose is free; examples are the contract.
 #
@@ -45,9 +45,18 @@ FIXTURES_DIR="$SCRIPT_DIR/fixtures/doctrine-drift"
 # DOCS_DIR roots the OWNER path. SCAN_DIRS is where a second home might appear, and it
 # is deliberately wider than the owner's tree: a rule does not have to be restated in a
 # guide to be forked. A skill body carries the same weight — it is loaded into context and
-# believed exactly as readily — and `skill-conformance.sh` and `routing-skills.sh` both
-# read a skill's frontmatter, neither its prose. Workflow STEPS.md files are here for the
-# same reason: they are executed, so a stale example in one is a rule that has drifted.
+# believed exactly as readily — and the two skill audits both read a skill's frontmatter,
+# neither its prose. Workflow STEPS.md files are here for the same reason: they are
+# executed, so a stale example in one is a rule that has drifted.
+#
+# What this cannot reach, measured 21/08/2026 and written here because it has been
+# mis-derived from SCAN_DIRS twice. An `owned` claim needs THREE things at once, and a rule
+# whose owner sits outside code/docs has none of them: the owner path below is rooted at
+# DOCS_DIR, so `-f "$DOCS_DIR/$owner"` and the `grep -F "$DOCS_DIR/$owner:"` match cannot name
+# it; SCAN_DIRS does not include how-to/src, so the owner's own statement is never scanned;
+# and only fenced code is read, while a specification tree states its rules in prose on
+# purpose. The Prometheus `job_name` drift was exactly that shape — reconciled by hand, not
+# by a claim row. Widening DOCS_DIR is the change that would fix it.
 DOCS_DIR="code/docs"
 SCAN_DIRS=(
   "code/docs"

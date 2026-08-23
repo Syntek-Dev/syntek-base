@@ -12,7 +12,7 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 
 ## How to work here
 
-- **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
+- **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated journey and the shipped views, templates, and routes.
 - **Model:** Opus — recording what was built against an approved journey is a documentation
   closeout. Escalate to `planner` (Fable) only when a deviation needs judging.
@@ -31,7 +31,7 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 - **Mark a step Present only with evidence** — a view, template, or route, never a bare tick.
 - **An unexplained deviation from the consolidated journey is a defect.** Say whether the
   consolidation was wrong or the build was, and route it: consolidation error →
-  `../../19-FINDINGS/`, build error → `../../20-BUGS/`.
+  `../../20-FINDINGS/`, build error → `../../21-BUGS/`.
 - **Record, never fix** — the correction lands in `code/` or a later story.
 - **Never rename or back-date a filed record** — the date is load-bearing for the audit trail.
 - **Documentation only** — never code, secrets, or PII sample data.

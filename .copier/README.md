@@ -149,12 +149,14 @@ Two things to do on a freshly generated project:
 ├── .github/
 │   └── workflows/                       ← CI: syntax, test, and audit checks
 │       ├── audit-cloc.yml               ← fails if any source file exceeds 800 lines
+│       ├── audit-conflict-markers.yml   ← unresolved conflict markers in any text file — no path filter
 │       ├── audit-copy-emdash.yml        ← bans em dashes in public marketing copy
 │       ├── audit-copy-slop.yml          ← the AI-slop family, prose half
 │       ├── audit-css-gradients.yml      ← bans raw inline gradients in component and page CSS
 │       ├── audit-css-slop.yml           ← the AI-slop family, CSS half
 │       ├── audit-css-tokens.yml         ← every var(--x) must resolve in the token layer
 │       ├── audit-deps.yml               ← scheduled CVE sweep (pnpm audit + pip-audit) and lockfile drift
+│       ├── audit-dict-discipline.yml    ← a dictionary used as a record where a named type belongs
 │       ├── audit-doc-references.yml     ← every citation in a shipped file must resolve
 │       ├── audit-docs-length.yml        ← the 300-line instructional-document limit
 │       ├── audit-docs-pairing.yml       ← the CONTEXT.md / CLAUDE.md split
@@ -166,6 +168,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
 │       ├── audit-skill-conformance.yml  ← every skill against the Agent Skills specification
+│       ├── audit-static-analysis.yml    ← the Opengrep leg — Django template XSS and cross-file taint
 │       ├── audit-stubs.yml              ← detects hard stubs and TODO/FIXME/HACK markers
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
@@ -192,10 +195,13 @@ Two things to do on a freshly generated project:
 │   │   ├── DATA-STRUCTURES.md           (+ data-structures/ — FUNDAMENTALS, SCHEMA-DESIGN, DOMAIN-MODELLING, …)
 │   │   ├── DESIGN-TOKENS.md             (+ design-tokens/ — MODEL, CASCADE, EDITOR)
 │   │   ├── DISCOVERABILITY.md           (+ discoverability/ — WEB-METADATA, STRUCTURED-DATA, ROOT-SURFACE, …)
+│   │   ├── DOCUMENTATION-LENGTH.md      ← the 300-line instructional limit and the 270 ratchet
 │   │   ├── DOCUMENTATION-PAIRING.md     ← the CONTEXT.md / CLAUDE.md split and its decision test
 │   │   ├── ENCRYPTION-GUIDE.md          (+ encryption/ — FIELD-ENCRYPTION, LOOKUP-TOKENS)
 │   │   ├── EXPORTS.md                   ← downloadable file exports (declared, not wired)
+│   │   ├── FORWARD-VOICE.md             ← what a shipped doc may claim about the tree it is read in
 │   │   ├── FRONTEND-CODING-PRINCIPLES.md
+│   │   ├── GATE-REPORTING.md            ← what a gate may claim it looked at; absent tool vs absent surface
 │   │   ├── LOGGING.md                   (+ logging/ — DJANGO-LOGGING, FRONTEND-LOGGING, OBSERVABILITY, CLOUDINARY)
 │   │   ├── MANAGEMENT-COMMANDS.md       ← the CLI surface: untrusted arguments, blast radius, exit codes
 │   │   ├── MCP-SERVER.md                (+ mcp-server/ — MOUNTING, TOOL-DESIGN, AUTH-AND-THREATS, TESTING-AND-OPS)
@@ -221,7 +227,7 @@ Two things to do on a freshly generated project:
 │   │   ├── scripts/                     ← audits, database, deployment, development, syntax, tests (+ shared _lib/)
 │   │   └── tests/                       ← Bruno API test collections (one collection per domain)
 │   └── workflows/                       ← 11 coding workflows in three families
-│       ├── 01-new-feature/              ← build
+│       ├── 01-implement-story/          ← build
 │       ├── 02-tdd-cycle/
 │       ├── 03-database-migration/
 │       ├── 04-api-design/
@@ -248,6 +254,7 @@ Two things to do on a freshly generated project:
 │   │   ├── CONTEXT.md
 │   │   ├── CONTRIBUTING.md              ← contributing, testing, and code-quality standards
 │   │   ├── NIXOS-SETUP.md               ← pointer stub → NixOS deploy repo + SERVER-ARCHITECTURE/
+│   │   ├── PROJECT-PATHS.md             ← the path register: what a shipped doc may promise, and what creates it
 │   │   ├── SCALE-ARCHITECTURE/          ← how the app scales (scale-planning snapshot)
 │   │   └── SERVER-ARCHITECTURE/         ← app→server contract (feeds the NixOS deploy repo)
 │   └── workflows/                       ← 9 operational workflows in four families
@@ -267,18 +274,27 @@ Two things to do on a freshly generated project:
 │   │   │   ├── COMPLIANCE.md
 │   │   │   └── DATA-RIGHTS.md
 │   │   ├── GDPR-GUIDE.md                ← GDPR obligations, data flows, and legal bases (index)
-│   │   ├── GIT-GUIDE.md                 ← branch strategy, PR flow, and commit conventions
+│   │   ├── git/                         ← git sub-documents
+│   │   │   ├── BRANCHES-AND-WORKTREES.md
+│   │   │   ├── COMMITS.md
+│   │   │   ├── MIGRATION-GATES.md
+│   │   │   └── PR-AND-REQUIRED-CHECKS.md
+│   │   ├── GIT-GUIDE.md                 ← branch, commit, PR and migration gates (index)
 │   │   ├── QA-GUIDE.md                  ← QA process, test plans, and sign-off criteria
 │   │   ├── RESPONSIVE-DESIGN.md         ← breakpoints, fluid layout, and mobile-first rules
 │   │   ├── SECURITY-GUIDE.md            ← security sprint dependencies and hardening checklist
 │   │   ├── SEO-CHECKLIST.md             ← per-page SEO requirements for marketing pages
-│   │   ├── PLANNING-GUIDE.md     ← sprint format, capacity, and MoSCoW conventions
+│   │   ├── planning/                    ← planning sub-documents
+│   │   │   ├── CADENCE.md
+│   │   │   ├── SPRINTS.md
+│   │   │   └── STORIES.md
+│   │   ├── PLANNING-GUIDE.md            ← sprint format, capacity, and MoSCoW conventions
 │   │   └── VERSIONING-GUIDE.md          ← semver rules, VERSION file, and CHANGELOG format
 │   ├── export/                          ← PDF/ZIP exports for client review + clickup/ (read-only ClickUp story exports)
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
-│   │   ├── 01-FEATURE/                 ← MAP-<FEATURE>.md decision maps (wayfinder)
+│   │   ├── 01-FEATURE-MAPS/             ← MAP-<FEATURE>.md decision maps (wayfinder)
 │   │   ├── 02-STORIES/
 │   │   ├── 03-SPRINTS/
 │   │   ├── 04-DATABASE/
@@ -291,17 +307,18 @@ Two things to do on a freshly generated project:
 │   │   ├── 11-QA/
 │   │   ├── 12-SEO/
 │   │   ├── 13-API-DESIGN/
-│   │   ├── 14-DECISIONS/
-│   │   ├── 15-SPRINT-PLANS/
-│   │   ├── 16-STORY-PLANS/
-│   │   ├── 17-TESTS/
-│   │   ├── 18-REVIEWS/
-│   │   ├── 19-FINDINGS/
-│   │   ├── 20-BUGS/
-│   │   ├── 21-REFACTORING/
-│   │   └── 22-INCIDENTS/               ← the PII-free incident register; no story, no workflow
-│   └── workflows/                       ← 23 step-by-step PM workflows
-│       ├── 01-feature/                 ← chart the feature's decision frontier (wayfinder)
+│   │   ├── 14-LOGGING/
+│   │   ├── 15-DECISIONS/
+│   │   ├── 16-SPRINT-PLANS/
+│   │   ├── 17-STORY-PLANS/
+│   │   ├── 18-TESTS/
+│   │   ├── 19-REVIEWS/
+│   │   ├── 20-FINDINGS/
+│   │   ├── 21-BUGS/
+│   │   ├── 22-REFACTORING/
+│   │   └── 23-INCIDENTS/               ← the PII-free incident register; no story, no workflow
+│   └── workflows/                       ← 24 step-by-step PM workflows
+│       ├── 01-feature-map/              ← chart the feature's decision frontier (wayfinder)
 │       ├── 02-story-creation/
 │       ├── 03-sprint-planning/
 │       ├── 04-database-schema/
@@ -314,16 +331,17 @@ Two things to do on a freshly generated project:
 │       ├── 11-qa-checks/
 │       ├── 12-seo-checks/
 │       ├── 13-api-design/
-│       ├── 14-decisions/               ← ADRs
-│       ├── 15-sprint-plans/
-│       ├── 16-story-plans/             ← the per-story plan a developer codes from
-│       ├── 17-consolidate-design-work/ ← unify per-story design before any code
-│       ├── 18-backend-code/
-│       ├── 19-api-code/
-│       ├── 20-frontend-code/
-│       ├── 21-implementation-documentation/ ← docs closeout + graph refresh
-│       ├── 22-pr-and-review/
-│       └── 23-release/
+│       ├── 14-logging-checks/          ← the story's log surface and its exclusion list
+│       ├── 15-decisions/               ← ADRs
+│       ├── 16-sprint-plans/
+│       ├── 17-story-plans/             ← the per-story plan a developer codes from
+│       ├── 18-consolidate-design-work/ ← unify per-story design before any code
+│       ├── 19-backend-code/
+│       ├── 20-api-code/
+│       ├── 21-frontend-code/
+│       ├── 22-implementation-documentation/ ← docs closeout + graph refresh
+│       ├── 23-pr-and-review/
+│       └── 24-release/
 ├── .agents/                             ← vendored third-party skills (Cloudinary) — see THIRD-PARTY-NOTICES.md
 ├── .zed/                                ← Zed editor settings
 ├── handoffs/                            ← session handoff documents (the auto-compaction replacement)
@@ -378,11 +396,22 @@ local quality checks.
 | **Python**                            | 3.14 (see `.python-version`) | root pyproject tooling (ruff, basedpyright)  |
 | **uv**                                | 0.11+                        | Python environment and dependency management |
 
-**macOS / Linux:** install Docker Desktop or Docker Engine. On Linux, add your user to the
-`docker` group so you can run `docker compose` without `sudo`.
+### Supported platforms
 
-**Windows:** Docker Desktop with WSL 2 backend. All shell commands in this README assume a bash or
-zsh shell (Git Bash or WSL 2 terminal).
+Every development operation runs through a `code/src/scripts/**/*.sh` script, so the shell is
+part of the contract rather than a preference.
+
+| Platform    | Supported         | What you use                                                                                                                                                              |
+| ----------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Linux**   | Natively          | Docker Engine and the Compose v2 plugin, with your user in the `docker` group so `docker compose` needs no `sudo`. Your normal shell.                                     |
+| **macOS**   | Natively          | Docker Desktop, or Colima if you prefer no GUI. bash or zsh, Apple silicon or Intel.                                                                                      |
+| **Windows** | **Through WSL 2** | Docker Desktop on the **WSL 2 backend**, the repository cloned **inside** the WSL 2 filesystem (`~/projects/…`, never `/mnt/c/…`), and every command run from that shell. |
+
+**On Windows, WSL 2 is required, not a fallback.** PowerShell, `cmd.exe` and Git Bash are not
+supported: Git Bash's MSYS path translation rewrites the arguments these scripts pass to
+`docker compose`, and working from `/mnt/c/…` puts every bind mount across the Windows filesystem
+boundary, which is slow enough to make the dev loop unpleasant. Docker Desktop already installs
+WSL 2 to run its own engine, so this asks for no component you would not have.
 
 ---
 
@@ -478,17 +507,17 @@ task, keeping responses fast and token-efficient.
 | **Code**               | `code/`               | Source code, coding standards, tests, quality workflows |
 | **How-To**             | `how-to/`             | Setup guides, daily development commands, debugging     |
 | **Project management** | `project-management/` | User stories, sprints, plans, GDPR, security audits     |
-| **Design**             | `DESIGN.md`           | Design standards, constraints, Figma and UI workflows   |
+| **Design**             | `DESIGN.md`           | Design standards, constraints, and UI workflows         |
 | **Claude config**      | `.claude/`            | Operating manual, skills, hooks, and helper scripts     |
 
 ### Routing — read only the layer you need
 
-| Task type                                                 | Read first                      |
-| --------------------------------------------------------- | ------------------------------- |
-| Writing, reviewing, or testing code                       | `code/CONTEXT.md`               |
-| Stories, sprints, PRs, releases, GDPR, SEO                | `project-management/CONTEXT.md` |
-| Setup, daily dev, CLI usage, debugging                    | `how-to/CONTEXT.md`             |
-| Figma, component design, wireframes, brand, responsive UI | `DESIGN.md`                     |
+| Task type                                          | Read first                      |
+| -------------------------------------------------- | ------------------------------- |
+| Writing, reviewing, or testing code                | `code/CONTEXT.md`               |
+| Stories, sprints, PRs, releases, GDPR, SEO         | `project-management/CONTEXT.md` |
+| Setup, daily dev, CLI usage, debugging             | `how-to/CONTEXT.md`             |
+| Component design, wireframes, brand, responsive UI | `DESIGN.md`                     |
 
 Always-applicable guides: `project-management/docs/GIT-GUIDE.md` ·
 `project-management/docs/VERSIONING-GUIDE.md`
@@ -513,7 +542,7 @@ reference material rather than everything at once.
 | First time in this repository              | `how-to/CONTEXT.md`             |
 | Writing or reviewing code                  | `code/CONTEXT.md`               |
 | Planning, writing stories, or PM work      | `project-management/CONTEXT.md` |
-| Doing design work (Figma, wireframes, UI)  | `DESIGN.md`                     |
+| Doing design work (wireframes, brand, UI)  | `DESIGN.md`                     |
 | Configuring Claude Code, skills, and hooks | `.claude/CLAUDE.md`             |
 
 ---
@@ -572,10 +601,10 @@ Sprint work follows a two-stage process:
 A high-level record capturing the sprint goal and candidate stories. Written at the start of a
 cycle using `project-management/workflows/03-sprint-planning/`.
 
-**Stage 2 — Detailed sprint plan** (`project-management/src/15-SPRINT-PLANS/`, `SPRINT-PLAN-##.md`):
+**Stage 2 — Detailed sprint plan** (`project-management/src/16-SPRINT-PLANS/`, `SPRINT-PLAN-##.md`):
 Written _after_ GDPR, security, and QA checks are complete. Records the definitive story
 assignments, per-phase breakdown (backend → API → frontend → PR), developer constraints from the
-checks, and the sprint definition of done. Use `project-management/workflows/15-sprint-plans/`.
+checks, and the sprint definition of done. Use `project-management/workflows/16-sprint-plans/`.
 
 Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
 `project-management/docs/PLANNING-GUIDE.md` for the full format and conventions.
@@ -615,12 +644,13 @@ erDiagram
     USER ||--|| PROFILE : has
 ```
 
-### Wireframes with Figma
+### Wireframes
 
-UI wireframes are designed in Figma and linked (not embedded) from
-`project-management/src/08-WIREFRAMES/`. Each wireframe entry records the Figma URL, the story it
-belongs to, and the sign-off status. No frontend work begins on a feature until the wireframe is
-signed off — use `project-management/workflows/08-wireframes/`.
+UI wireframes are self-contained HTML screens committed under
+`project-management/src/08-WIREFRAMES/` — no CDN, no framework, no external fonts, so a screen
+opens over `file://` and diffs like any other file. Each records the story it belongs to and its
+sign-off status. No frontend work begins on a feature until the wireframe is signed off — use
+`project-management/workflows/08-wireframes/`.
 
 ### User flow diagrams
 
@@ -634,10 +664,10 @@ begins.
 | QA gap analysis report          | `QA-REPORT-<AREA>.md`            | `project-management/src/11-QA/PLANNING/`       |
 | QA plan (pre-development)       | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/11-QA/PLANNING/`       |
 | QA review (post-implementation) | `QA-IMPL-US###-<DESCRIPTION>.md` | `project-management/src/11-QA/IMPLEMENTATION/` |
-| Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/15-SPRINT-PLANS/`      |
-| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/17-TESTS/`             |
-| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/17-TESTS/`             |
-| Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/20-BUGS/`              |
+| Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/16-SPRINT-PLANS/`      |
+| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/18-TESTS/`             |
+| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/18-TESTS/`             |
+| Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/21-BUGS/`              |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
 tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
@@ -658,12 +688,12 @@ tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to
 | `11-qa-checks/`         | QA planning from wireframes before any code is written       |
 | `12-seo-checks/`        | SEO review and metadata checks before frontend work          |
 | `13-api-design/`        | Designing the Django Ninja API surface                       |
-| `15-sprint-plans/`      | Writing the detailed sprint plan after all pre-sprint checks |
-| `18-backend-code/`      | Implementing Django models, services, and business logic     |
-| `19-api-code/`          | Implementing the Django Ninja API layer                      |
-| `20-frontend-code/`     | Implementing Django templates, components, and HTMX partials |
-| `22-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
-| `23-release/`           | Cutting a release (version bump, changelog, deploy)          |
+| `16-sprint-plans/`      | Writing the detailed sprint plan after all pre-sprint checks |
+| `19-backend-code/`      | Implementing Django models, services, and business logic     |
+| `20-api-code/`          | Implementing the Django Ninja API layer                      |
+| `21-frontend-code/`     | Implementing Django templates, components, and HTMX partials |
+| `23-pr-and-review/`     | Raising a PR and moving it through the promotion chain       |
+| `24-release/`           | Cutting a release (version bump, changelog, deploy)          |
 
 ---
 
@@ -788,7 +818,7 @@ project opted in: **`12-rust-extension/`** (rust-only) and **`13-desktop-app/`**
 
 | Family                 | #   | Workflow                  | Purpose                                                                  |
 | ---------------------- | --- | ------------------------- | ------------------------------------------------------------------------ |
-| **Build**              | 01  | `01-new-feature/`         | Add a full-stack feature (backend + frontend) from story to commit       |
+| **Build**              | 01  | `01-implement-story/`     | Add a full-stack feature (backend + frontend) from story to commit       |
 |                        | 02  | `02-tdd-cycle/`           | Test-driven development — Red → Green → Refactor                         |
 |                        | 03  | `03-database-migration/`  | The data layer — create and run a new Django migration                   |
 |                        | 04  | `04-api-design/`          | The JSON layer at `/api/` — Django Ninja routers, Schemas, endpoints     |
@@ -816,7 +846,7 @@ the commit step. This is a hard gate — do not commit until it is complete:
 For feature workflows, implementation records must also be written before the commit: GDPR,
 security assessment, security audit, threat model, QA, SEO (if public pages), API design (if
 schema changed), code review record, and test records. See
-`code/workflows/01-new-feature/STEPS.md` Step 10 for the full table.
+`code/workflows/01-implement-story/STEPS.md` Step 10 for the full table.
 
 Open issues that cannot be resolved in the current PR go to `/GAPS.md`. Items explicitly
 deferred to a named future story go to `/DEFERRED.md`. Both files must be current before any
@@ -825,21 +855,21 @@ PR is opened.
 ### Typical feature development sequence
 
 ```text
-01-new-feature  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 22-pr-and-review
+01-implement-story  →  02-tdd-cycle  →  04-api-design  →  06-gdpr-enforcement  →  07-review  →  PM: 23-pr-and-review
 ```
 
-- Start with `01-new-feature` to plan the feature scope.
+- Start with `01-implement-story` to plan the feature scope.
 - Work in `02-tdd-cycle` — write failing tests first, then implement.
 - If the feature exposes a new Django Ninja API, follow `04-api-design` in parallel.
 - If the feature touches PII, run `06-gdpr-enforcement` before raising a PR.
 - Before opening the PR, run `07-review` to verify OWASP coverage, coding principles, and
   coverage floors.
-- Hand off to the PM layer with `project-management/workflows/22-pr-and-review/`.
+- Hand off to the PM layer with `project-management/workflows/23-pr-and-review/`.
 
 ### Bug fix sequence
 
 ```text
-how-to/08-debugging  →  10-debug  →  07-review  →  PM: 22-pr-and-review
+how-to/08-debugging  →  10-debug  →  07-review  →  PM: 23-pr-and-review
 ```
 
 Start with the operational debugging workflow to confirm the environment is healthy, then use
@@ -864,7 +894,7 @@ runs `fable`. `sonnet` and `haiku` are never used.
 
 | Skill                                               | Load when                                                                    |
 | --------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `feature` · `bugfix` · `refactor`                   | Build something new · fix something broken · reshape something that works    |
+| `implement-story` · `bugfix` · `refactor`           | Build something new · fix something broken · reshape something that works    |
 | `review` · `security`                               | Check a change before it ships · audit and harden against OWASP and CE       |
 | `pr` · `release`                                    | Raise the pull request · cut the release                                     |
 | `story` · `sprint` · `planner`                      | Write the story · slice the sprint · architect the implementation plan       |
@@ -929,7 +959,6 @@ inspect the local environment for context. They do **not** run dev operations �
 | `context7`          | Machine-global     | Only if installed locally              |
 | `claude-in-chrome`  | Machine-global     | Only if installed locally              |
 | `mcp-mermaid`       | Machine-global     | Only if installed locally              |
-| `figma`             | Machine-global     | Only if installed locally              |
 
 ---
 
@@ -1071,7 +1100,7 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 | `reset.sh`              | Drop and recreate the dev database, then re-migrate (destructive)      |
 | `backup.sh`             | Create a `pg_dump` backup of the dev database                          |
 | `restore.sh`            | Restore the dev database from a backup file (destructive)              |
-| `shell.sh`              | Open Django `dbshell` or a direct `psql` session                       |
+| `shell.sh --psql`       | Open a `psql` session in the db container (connects as the superuser)  |
 | `verify-db-security.sh` | Verify database security config (Django checks + PostgreSQL settings)  |
 
 ```bash
@@ -1084,7 +1113,6 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 ./code/src/scripts/database/reset.sh
 ./code/src/scripts/database/backup.sh
 ./code/src/scripts/database/restore.sh <backup-file>
-./code/src/scripts/database/shell.sh
 ./code/src/scripts/database/shell.sh --psql
 ```
 
@@ -1164,9 +1192,11 @@ table ever falls behind it.
 | ---------------------- | ---------------------------------------------------------------------------------------- |
 | `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown       |
 | `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK)  |
+| `conflict-markers.sh`  | Unresolved git conflict markers in any text file, raw or reformatted by Prettier         |
 | `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens               |
 | `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                         |
 | `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source          |
+| `dict-discipline.sh`   | A dictionary used as a record in domain code, where a named type belongs                 |
 | `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds   |
 | `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                     |
 | `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` Section 4)                    |
@@ -1351,10 +1381,10 @@ following a rule because a `CLAUDE.md` said so.
 
 ### Practitioners
 
-| Who                                                                                                                                                                                                                                      | What it shaped                                                                                                                                                                                                                                    |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Matt Pocock** — [AI Hero](https://www.aihero.dev/) · [mattpocock.com](https://www.mattpocock.com/) · [skills](https://github.com/mattpocock/skills) · [dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) | The engineering process for working _with_ coding agents: context gathering, planning before code, steering, feedback loops, spec-driven workflows, human-in-the-loop review. Two of his repositories are adapted directly — see below            |
-| **Jake Van Clief** — [Clief Notes](https://www.skool.com/cliefnotes/about) · [LinkedIn](https://www.linkedin.com/in/jake-van-clief/)                                                                                                     | File organisation and folder architecture as the substrate for AI work, reusable prompt frameworks, and building durable structure rather than chasing tool releases. The `CONTEXT.md` / `CLAUDE.md` layering you are reading owes this its shape |
+| Who                                                                                                                                                                                                                                                                                                                                                                                                                     | What it shaped                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Matt Pocock** — [AI Hero](https://www.aihero.dev/) · [mattpocock.com](https://www.mattpocock.com/) · [skills](https://github.com/mattpocock/skills) · [dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding)                                                                                                                                                                                | The engineering process for working _with_ coding agents: context gathering, planning before code, steering, feedback loops, spec-driven workflows, human-in-the-loop review. Two of his repositories are adapted directly — see below                                                                                                                                                                                                                                                                                                                                                                                                                |
+| **Jake Van Clief** — [_Interpretable Context Methodology_](https://arxiv.org/abs/2603.16021) with David McDermott (arXiv:2603.16021v2, CC BY 4.0) · [ICM protocol](https://github.com/RinDig/Interpretable-Context-Methodology) · [icm-architect](https://github.com/RinDig/icm-architect) (both MIT) · [Clief Notes](https://www.skool.com/cliefnotes/about) · [LinkedIn](https://www.linkedin.com/in/jake-van-clief/) | File organisation and folder architecture as the substrate for AI work, reusable prompt frameworks, and building durable structure rather than chasing tool releases. The `CONTEXT.md` / `CLAUDE.md` layering you are reading owes this its shape — the paper states it as a five-layer hierarchy in which the stage contract, not the root file, is the control point. **Read as primary sources, never derived into shipped text.** Check the evidence before borrowing the claims: the paper is candid that its figures are practitioner self-report and that **no controlled comparison against monolithic prompting has been run** (Section 4.6) |
 
 ### Design and anti-slop craft
 

@@ -19,6 +19,7 @@ code/src/rust/
 ├── Cargo.toml              ← workspace root; shared pins in [workspace.dependencies]
 ├── rust-toolchain.toml     ← the pinned compiler — rustup reads it automatically
 ├── deny.toml               ← cargo-deny supply-chain policy (advisories, licences, bans)
+├── .cargo-deny-version     ← the gate's own pin — `--locked` pins its deps, not the tool
 ├── clippy.toml             ← doc_markdown ident allow-list (PyO3, CPython, …)
 ├── .gitignore              ← target/ and build artefacts — never committed
 └── crates/                 ← the workspace members — one directory per crate
@@ -32,7 +33,7 @@ code/src/rust/
 ## `nativecore` is a house constant
 
 The crate and its Python module are called `nativecore` in **every** generated project — like
-`apps.marketing`, `apps.seo` and `apps.design_tokens`, the name is deliberately not tokenised, so
+`apps.marketing` and `apps.design_tokens`, the name is deliberately not tokenised, so
 `import nativecore` means the same thing across the estate and a guide can name it literally.
 
 ## Why the build backend lives in the crate, not the root
@@ -67,9 +68,10 @@ When `INCLUDE_DESKTOP` is on, the Slint application lives at `crates/desktop/`. 
 each, drifting apart.
 
 `slint` is pinned in that crate rather than `[workspace.dependencies]` — one member uses it. The
-shared `deny.toml` does carry Slint's licence exceptions and two AccessKit advisory notes
-unconditionally; on a project without the desktop surface they match nothing, which cargo-deny
-reports as an informational note rather than an error.
+shared `deny.toml` does carry Slint's licence exceptions unconditionally; on a project without
+the desktop surface they match nothing, which cargo-deny reports as an informational note rather
+than an error. Its `ignore` list is **empty** — it held two AccessKit-reached advisories until
+16/08/2026, and the comment above it keeps that precedent.
 
 ## Cross-references
 

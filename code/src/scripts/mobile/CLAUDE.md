@@ -34,8 +34,13 @@ test, bundle — each running on the host rather than in Docker.
   absent. That failure is the intended behaviour: these scripts should not exist on a web-only
   project, so reaching them there means something has gone wrong.
 - **Aggregates delegate here; they never reimplement.** If a new operation is added, wire it into
-  `syntax/check.sh` or `tests/all.sh` behind the same directory-existence guard rather than
-  duplicating the logic.
+  `syntax/lint.sh`, `syntax/check.sh` or `tests/all.sh` behind the same directory-existence guard
+  rather than duplicating the logic. The aggregate's token for this surface is **`typescript`**;
+  `javascript` is the web surface and must never be made to reach this tree.
+- **Keep this script the one that CI calls.** The aggregates exist so one command covers every
+  surface; these exist so this surface can be driven alone, with its own flags. If an aggregate
+  needs a narrower slice than a script here exposes, add the flag **here** rather than reaching
+  past it into `pnpm`.
 - **Do not add a mobile step to a root `package.json` script.** Root tooling stays web-only, which
   is what keeps a web-only generation byte-identical.
 - Shell scripts are exempt from the 750-line source limit but stay focused.

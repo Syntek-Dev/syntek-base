@@ -23,6 +23,8 @@ from typing import TYPE_CHECKING, Any
 
 import pytest
 
+from tests.e2e.browser_types import Viewport
+
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
@@ -32,11 +34,14 @@ if TYPE_CHECKING:
 # same default, so the script and the suite point at one place.
 DEFAULT_BASE_URL = "http://dev.<%PROJECT_SLUG%>.localhost:81"
 
-# The viewport matrix a Playwright config would express as "projects".
-VIEWPORTS: dict[str, dict[str, int]] = {
-    "chromium": {"width": 1280, "height": 800},
-    "mobile": {"width": 375, "height": 812},
-    "tablet": {"width": 768, "height": 1024},
+# The viewport matrix a Playwright config would express as "projects". A mapping from a
+# project name to its size is a genuine index — the name is the lookup key a test
+# parametrises over — so the dict is correct here; what is not correct is a bare
+# `{"width": …, "height": …}` as the value, which is a record with known keys.
+VIEWPORTS: dict[str, Viewport] = {
+    "chromium": Viewport(width=1280, height=800),
+    "mobile": Viewport(width=375, height=812),
+    "tablet": Viewport(width=768, height=1024),
 }
 
 
@@ -56,10 +61,12 @@ def browser_context_args(browser_context_args: dict[str, Any], base_url: str) ->
 
     Individual tests narrow this with ``page.set_viewport_size(...)``.
     """
+    # DICT-OK: pytest-playwright's own fixture contract is a kwargs mapping it splats into
+    # `browser.new_context()` — confined to this fixture, which is the seam into that plugin.
     return {
         **browser_context_args,
         "base_url": base_url,
-        "viewport": VIEWPORTS["chromium"],
+        "viewport": VIEWPORTS["chromium"].to_playwright(),
     }
 
 
@@ -76,7 +83,7 @@ def viewport_name(request: pytest.FixtureRequest) -> str:
 @pytest.fixture
 def sized_page(page: Page, viewport_name: str) -> Iterator[Page]:
     """A page pre-sized to the current viewport project."""
-    page.set_viewport_size(VIEWPORTS[viewport_name])
+    page.set_viewport_size(VIEWPORTS[viewport_name].to_playwright())
     yield page
 
 

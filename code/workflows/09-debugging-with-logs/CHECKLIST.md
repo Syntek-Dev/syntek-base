@@ -28,7 +28,7 @@ Complete this checklist before closing a debugging session.
 
 ## Staging / prod incidents (skip for local-only bugs)
 
-- [ ] Bug report filed in `project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md` · _opus_
+- [ ] Bug report filed in `project-management/src/21-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md` · _opus_
 - [ ] Glitchtip issue marked as **resolved** after fix is deployed · _opus_
 - [ ] Error rate in Grafana has returned to pre-incident baseline · _opus_
 - [ ] No new related errors appeared in Glitchtip within 30 minutes of deployment · _opus_

@@ -79,4 +79,4 @@ Any departure from `../PLANNING/VULN-PLAN-US###-<DESCRIPTOR>.md`, with justifica
   categories (post-implementation assessment and verification audit) that reference this
   closure
 - `code/docs/SECURITY.md` — the code-side enforcement these claims must stay consistent with
-- `project-management/workflows/21-implementation-documentation/` — where this record is written
+- `project-management/workflows/22-implementation-documentation/` — where this record is written

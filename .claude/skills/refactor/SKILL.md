@@ -4,7 +4,7 @@ description: >-
   Restructure working code in <%PROJECT_NAME%> without changing what it does — split a file
   past the 750-line limit, lift business logic out of an endpoint into a service, remove
   duplication, deepen a shallow module, rename for clarity. Load when the code is correct but
-  its shape is wrong. Never to add a capability (`feature`), fix a fault (`bugfix`), or write
+  its shape is wrong. Never to add a capability (`implement-story`), fix a fault (`bugfix`), or write
   the tests that make the restructure safe (`test-writer`) — and not the scan that ranks
   candidates before one is chosen (`improve-codebase-architecture`).
 model: opus
@@ -104,7 +104,7 @@ Phases 3 and 5 are separate Agent tool calls to `general-purpose`, naming the sk
    confirms the structure improved and the behaviour did not.
 4. **Documentation** — a hard gate before the commit. Every `CONTEXT.md` affected by a moved,
    renamed or restructured file; a `CONTEXT.md` + `CLAUDE.md` pair in every new directory; a
-   record under `project-management/src/21-REFACTORING/` where the change is material; `GAPS.md`
+   record under `project-management/src/22-REFACTORING/` where the change is material; `GAPS.md`
    for debt surfaced and not addressed. A renamed or deepened module is recorded via the
    `domain-modelling` skill, in the nearest `CONTEXT.md`.
 5. **Commit** — the `git` skill, message `refactor(<scope>): <short description>`.
@@ -127,13 +127,20 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/workflows/11-refactor/` — **the procedure of record for this skill**
 - `code/workflows/02-tdd-cycle/` — the green baseline required before any refactor step
 - `code/workflows/10-debug/` — where a bug surfaced mid-refactor is fixed, first and separately
-- `project-management/workflows/21-implementation-documentation/` — how a refactor is
-  commissioned: findings routed to `project-management/src/21-REFACTORING/`
+- `project-management/workflows/22-implementation-documentation/` — how a refactor is
+  commissioned: findings routed to `project-management/src/22-REFACTORING/`
 
 ## Cross-references
 
 - `code/docs/CODING-PRINCIPLES.md` — the length limits, naming, and the principles applied here
-- `code/docs/coding-principles/PRACTICAL-RULES.md` — decision structuring, DRY, KISS, YAGNI
+- `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md` — the standard a dictionary-to-type
+  conversion is performed against, and its _Migrating existing code_ rule: this binds new and
+  modified code, there is no mass refactor, and a backlog row is discharged **whole** — define
+  the type, convert every read in the same change, delete the dictionary. A half-migrated
+  structure is worse than an unmigrated one, because a reader must know which half they are in
+- `code/docs/coding-principles/PRACTICAL-RULES.md` — _Design Patterns in Refactoring_ (name the
+  axis of change and the pattern before abstracting, or say why plain extraction is enough),
+  decision structuring, DRY, KISS, YAGNI
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` · `code/docs/architecture/FRONTEND-PATTERNS.md`
 - `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the guard clause, and the register
   row that moves with the function it names

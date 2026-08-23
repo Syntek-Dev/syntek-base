@@ -14,6 +14,15 @@ model: fable
 
 > **See** `project-management/REFERENCES.md` → **External — Agile & Project Management** (User Story format) · **Internal — Live Artefacts** (src/02-STORIES/) for supporting references.
 
+## Cut from the map
+
+- [ ] The story comes from a **Slices** row on a resolved `MAP-<FEATURE>.md`, not from a conversation
+- [ ] Every node the map marks **"blocking a story"** is resolved
+- [ ] All 13 FLAGS rows carry a value or a deliberate `N/A` — no row left blank
+- [ ] Each flag value is consistent with the slice manifest, or the divergence was settled in the
+      grilling pass
+- [ ] The allocated `US###` is written back into the map's **Slices** row
+
 ## Execution Checklist
 
 - [ ] Story follows the standard format (role / goal / benefit)

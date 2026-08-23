@@ -29,8 +29,8 @@ nothing here is source.
 - **Every `*.html` here is gitignored** — never commit a report, and never add application code
   here (this folder is not deployable source despite living under `code/src/`).
 - The report is the transient artefact; a decision worth keeping is promoted out — to an ADR
-  (`project-management/src/14-DECISIONS/`) or a refactor note
-  (`project-management/src/21-REFACTORING/`).
+  (`project-management/src/15-DECISIONS/`) or a refactor note
+  (`project-management/src/22-REFACTORING/`).
 - Reports are self-contained (Tailwind + Mermaid via CDN) — do not add build steps or assets here.
 
 ## Output & naming

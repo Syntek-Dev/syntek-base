@@ -16,7 +16,7 @@ project-management/src/12-SEO/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a record during `project-management/workflows/21-implementation-documentation/`, after a story's
+Write a record during `project-management/workflows/22-implementation-documentation/`, after a story's
 code ships and before the story closes. Copy `SEO-IMPL-US000-TEMPLATE.md`, open the
 story's plan in `../PLANNING/SEO-PLAN-US###-*.md`, and verify each planned SEO dimension
 against the running build.
@@ -41,7 +41,7 @@ A story that ships no public URL records `SEO: N/A` in the header with a one-lin
 - `SEO-IMPL-US000-TEMPLATE.md` — the per-story record template
 - `../PLANNING/` — the pre-development plans these records verify
 - `../CONTEXT.md` — the SEO folder overview and the per-story PLANNING/IMPLEMENTATION split
-- `project-management/workflows/21-implementation-documentation/` — where these records are written
+- `project-management/workflows/22-implementation-documentation/` — where these records are written
 - `project-management/docs/SEO-CHECKLIST.md` — the governing SEO standard
 
 **Last Updated**: <%DATE%>

@@ -38,4 +38,3 @@ HTMX / Alpine decision and the common HTMX/Alpine pitfalls with worked examples.
 
 - **Hand-written:** every `.md` in this folder. Nothing is generated.
 - `SCREAMING-SNAKE-CASE.md` filenames; parent guide is `code/docs/RENDERING.md`.
-  </content>

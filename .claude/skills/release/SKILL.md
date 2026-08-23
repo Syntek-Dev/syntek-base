@@ -66,12 +66,12 @@ its tag, not deployed from here.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/23-release/` — **the procedure of record** — bump, changelog, deploy
-- `project-management/workflows/22-pr-and-review/` — the promotion chain that must be green first
+- `project-management/workflows/24-release/` — **the procedure of record** — bump, changelog, deploy
+- `project-management/workflows/23-pr-and-review/` — the promotion chain that must be green first
 - `code/workflows/08-security-hardening/` — the built-code audit a release-blocking finding enters
 
 ## Cross-references
 
 - `project-management/docs/VERSIONING-GUIDE.md` — the semver rules and the files each bump touches
-- `project-management/docs/GIT-GUIDE.md` — the commit format and the breaking-change signal
+- `project-management/docs/git/COMMITS.md` — the commit format and the breaking-change signal
 - `how-to/docs/FEATURE-DEPLOY.md` — what the target environment has to be told about a change

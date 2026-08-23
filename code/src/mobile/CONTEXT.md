@@ -75,6 +75,11 @@ Every operation goes through the scripts — never raw `pnpm`, `expo` or `jest`:
 | Test (and coverage)   | `code/src/scripts/mobile/test.sh`      |
 | Prove it bundles      | `code/src/scripts/mobile/bundle.sh`    |
 
+The syntax aggregates reach this surface too, under the **`typescript`** token —
+`syntax/lint.sh --file-type typescript` and `syntax/check.sh --file-type typescript` delegate to
+the two scripts above, and a bare run of either includes them because this directory exists. Use
+the scripts directly when you want their own flags.
+
 **Metro runs on the host, not in Docker** — the one dev operation that is not containerised,
 because Expo Go runs on a physical device and a device cannot reach a `127.0.0.N` loopback alias.
 Full reasoning: `code/src/scripts/mobile/CONTEXT.md`.

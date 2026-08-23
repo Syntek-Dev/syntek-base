@@ -21,7 +21,7 @@ criteria) plus the `US000-TEMPLATE.md` scaffold.
   intentional, never backfilled) → write role / goal / benefit / acceptance criteria →
   set the authoritative `**Epic:**` line → satisfy the workflow `CHECKLIST.md`.
 - **Definition of done:** story named `US###.md`, carries an `**Epic:**` line, acceptance
-  criteria present; cross-links to `../17-TESTS/US###-*` and `../11-QA/PLANNING/QA-PLAN-US###-*`
+  criteria present; cross-links to `../18-TESTS/US###-*` and `../11-QA/PLANNING/QA-PLAN-US###-*`
   where they exist; British English throughout.
 
 ## Guardrails

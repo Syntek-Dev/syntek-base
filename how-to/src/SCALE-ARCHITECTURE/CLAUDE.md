@@ -18,7 +18,7 @@ and the `<%DEPLOY_REPO%>` deploy repo.
 
 - **Routing:** all substantive work here enters through the `scale-planning` skill
   (`/scale-planning`). Decisions are charted on
-  `project-management/src/01-FEATURE/MAP-SCALE-PLANNING.md` (wayfinder) and settled
+  `project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md` (wayfinder) and settled
   one at a time via `grill-with-docs` — never decided free-hand in a doc edit.
 - **Reconcile before you write:** every run first diffs each document against the
   live sources (`code/src/docker/docker-compose.{staging,prod}.yml`,

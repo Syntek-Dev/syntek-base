@@ -12,13 +12,13 @@ tokens a story consumed exist in the token layer and match `../CONSOLIDATED-IDEA
 
 ## How to work here
 
-- **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
+- **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated set and the shipped CSS.
 - **Model:** Opus — verifying tokens landed is mechanical. Escalate to `frontend` (Fable) only
   where a deviation needs judging.
 - **Concrete steps:** copy `BRAND-IMPL-US000-TEMPLATE.md` →
-  `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → confirm each consumed token exists in
-  `apps.design_tokens` and resolves in the token CSS layer → **run
+  `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → confirm each consumed token exists in the
+  DB-canonical token layer (`code/docs/DESIGN-TOKENS.md`) and resolves in the token CSS → **run
   `bash code/src/scripts/audits/css-tokens.sh` and record the result** → justify any deviation.
 - **Definition of done:** every consumed token verified present and resolving; the token audit
   recorded clean (or its failures routed); deviations justified; British English.
@@ -28,10 +28,10 @@ tokens a story consumed exist in the token layer and match `../CONSOLIDATED-IDEA
 - **Record the audit result, do not assert it.** "Token-first observed" without
   `css-tokens.sh` output is a claim, not evidence.
 - **A raw literal in component CSS is a defect**, not a shortcut — route it to
-  `../../20-BUGS/` and fix it in `code/`.
+  `../../21-BUGS/` and fix it in `code/`.
 - **A token used but absent from the consolidated set is a deviation.** Say whether the
-  consolidation missed it or the build invented it: consolidation gap → `../../19-FINDINGS/`,
-  invented token → `../../20-BUGS/`.
+  consolidation missed it or the build invented it: consolidation gap → `../../20-FINDINGS/`,
+  invented token → `../../21-BUGS/`.
 - **Record, never fix** — corrections land in `code/`, not here.
 - **Never rename or back-date a filed record.**
 - **Documentation only** — no CSS, no secrets.

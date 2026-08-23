@@ -14,6 +14,15 @@ name: Dependency Audit Sweep
 #            (+ minimumReleaseAgeExclude), then `pnpm install --lockfile-only`.
 #   Python → `uv lock --upgrade-package <pkg>` (verify no breaking major bump).
 # Both fixes live in root lock/config and propagate on merge to testing.
+#
+# NOT ELIGIBLE FOR THE REQUIRED SET, and the `on:` block below is the whole reason — this is a
+# property of the file, not of anyone's branch protection. A required check is satisfied only by
+# a run a `pull_request` event starts, and this workflow has no such trigger, so a protection
+# rule naming it would pend "Expected — waiting for status" until someone force-merged. There is
+# no path filter to delete; the only fix would be adding `pull_request:`, which contradicts the
+# reason this file exists (see above). Its reporting twin, "[8/8] Security" in claude.yml, runs
+# the identical two legs on every pull request and is the one that belongs in the set.
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → Changing the set.
 
 on:
   schedule:
@@ -25,7 +34,7 @@ permissions:
   issues: write
 
 env:
-  UV_VERSION: "0.12.4"
+  UV_VERSION: "0.12.5"
   NODE_VERSION: "24"
 
 jobs:
@@ -38,9 +47,14 @@ jobs:
       - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: ${{ env.UV_VERSION }}
-          # Nothing to cache in the template — the uv sync below is guarded on
-          # the lockfile and skipped. Full reasoning at the same input in
-          # claude.yml.
+          # Kept as a defensive no-op, not as a workaround. It was load-bearing while the
+          # template committed no uv.lock: setup-uv found nothing to cache and its POST step
+          # failed saving a directory that was never created, with every check step green.
+          # uv.lock is committed here since 16/08/2026, so the sync below populates the cache
+          # and there is something to save — but this workflow SHIPS, and a generated project
+          # runs it before its own `uv lock` post-task has necessarily produced one. The flag
+          # costs nothing when there is a cache and prevents a green-then-red run when there
+          # is not.
           ignore-nothing-to-cache: true
 
       - uses: pnpm/action-setup@v6
@@ -49,28 +63,27 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # Guarded at STEP level on the lockfile, the same way claude.yml and test.yml are.
-      # uv.lock is ABSENT BY DESIGN in the base template — Copier writes it at generation
-      # time — so `uv sync --frozen` cannot resolve here and this sweep failed on every
-      # nightly run, opening a tracking issue about a Python tree that does not yet exist.
-      # The JS half is unguarded: pnpm-lock.yaml IS committed here, so the template's own
-      # dependency tree keeps getting its nightly CVE scan, which is the point of the job.
-      - name: Detect the backend lockfile
-        id: detect
+      # UNGUARDED 15/08/2026. The Python half of this sweep used to be skipped whenever
+      # uv.lock was absent, which in the base template was then always: pyproject.toml's
+      # `name` was an unrendered token, uv refused to parse the manifest, and the nightly
+      # CVE scan covered the JS tree only. The name is now the house constant `syntek-base`,
+      # branded at generation, so BOTH dependency trees get their nightly scan here.
+      #
+      # The lock decides the sync mode, never whether the audit happens. Root working
+      # directory: the manifest is at the repo root.
+      - name: Choose the sync mode
+        id: sync
         run: |
           if [ -f uv.lock ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-            echo "uv.lock present — auditing both dependency trees."
+            echo "flag=--frozen" >> "$GITHUB_OUTPUT"
+            echo "uv.lock present — auditing from the committed lock."
           else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — this is the base template, not a generated project."
-            echo "Auditing the JS dependency tree only."
+            echo "flag=" >> "$GITHUB_OUTPUT"
+            echo "No uv.lock yet — resolving fresh. Both trees still audited."
           fi
 
       - name: Install backend deps (uv)
-        if: steps.detect.outputs.present == 'true'
-        run: uv sync --frozen
-        working-directory: code/src/django
+        run: uv sync ${{ steps.sync.outputs.flag }}
 
       - name: Install frontend deps (pnpm)
         run: pnpm install --frozen-lockfile
@@ -87,9 +100,7 @@ jobs:
 
       - name: Python — pip-audit (CVE scan)
         id: pip_audit
-        if: steps.detect.outputs.present == 'true'
         continue-on-error: true
-        working-directory: code/src/django
         run: |
           set -o pipefail
           uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes) \

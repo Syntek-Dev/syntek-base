@@ -72,7 +72,7 @@ probe tagging — and it is not restated here.
 
 **Output of this phase:** the confirmed root cause cited to `file:line`, the hypotheses ruled
 out, the recommended fix and who should implement it, plus the bug report at
-`project-management/src/20-BUGS/` from `BUG-US000-TEMPLATE.md` for anything non-trivial.
+`project-management/src/21-BUGS/` from `BUG-US000-TEMPLATE.md` for anything non-trivial.
 **When stuck**, state what has been ruled out and name the logging or repro detail still needed
 — never guess a fix to appear productive.
 
@@ -112,8 +112,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   regression test, apply the minimal fix
 - `code/workflows/09-debugging-with-logs/` — staging and production faults, via the log stack
 - `code/workflows/02-tdd-cycle/` — the regression-test cycle
-- `project-management/workflows/21-implementation-documentation/` — owns the finding and routes
-  it to `project-management/src/20-BUGS/`
+- `project-management/workflows/22-implementation-documentation/` — owns the finding and routes
+  it to `project-management/src/21-BUGS/`
 
 ## Cross-references
 
@@ -123,4 +123,4 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/TESTING.md` — the harness a reproduction is built on
 - `code/docs/CODE-REVIEW-GRAPH.md` — the debug playbook and its tool sequence
 - `code/docs/BACKEND-CODING-PRINCIPLES.md` · `code/docs/FRONTEND-CODING-PRINCIPLES.md`
-- `project-management/src/20-BUGS/BUG-US000-TEMPLATE.md` — the bug report's shape
+- `project-management/src/21-BUGS/BUG-US000-TEMPLATE.md` — the bug report's shape

@@ -1,7 +1,7 @@
 # project-management/src/05-USER-FLOW/IMPLEMENTATION
 
 **Stage 3** — the flow as built. One record per user story, written during
-`workflows/21-implementation-documentation/`, confirming that the shipped routes and screens
+`workflows/22-implementation-documentation/`, confirming that the shipped routes and screens
 follow the consolidated journey in `../CONSOLIDATED-IDEAS/`.
 
 ## Directory Tree
@@ -34,7 +34,7 @@ down what happens when verification bounces or consent is refused — so this re
 - `USER-FLOW-IMPL-US000-TEMPLATE.md` — the per-story record template
 - `../CONSOLIDATED-IDEAS/` — the journey these records verify the build against
 - `../USER-STORY-IDEAS/` — the frozen fragment, for tracing intent
-- `../../19-FINDINGS/` — where a divergence worth carrying forward is recorded
-- `project-management/workflows/21-implementation-documentation/` — where these are written
+- `../../20-FINDINGS/` — where a divergence worth carrying forward is recorded
+- `project-management/workflows/22-implementation-documentation/` — where these are written
 
 **Last Updated**: <%DATE%>

@@ -18,7 +18,7 @@ code/workflows/07-review/
 Use this workflow when performing a code quality review before raising a PR. This
 covers the _content_ of the code — security, patterns, coverage, and coding principles.
 For the PR merge process (branch promotion, approvals, gates) use
-`project-management/workflows/22-pr-and-review/`.
+`project-management/workflows/23-pr-and-review/`.
 
 ## Key concepts
 
@@ -69,10 +69,10 @@ Three recurring bites this review exists to catch, each with a non-obvious failu
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — for API-layer review
 - `code/docs/testing/API-TESTING.md` — verifying Django Ninja test coverage
 - `code/docs/cloudinary/CONTEXT.md` — when reviewing Cloudinary upload, delivery, or transformation code; invoke `/cloudinary-docs` for Python SDK patterns or `/cloudinary-transformations` for URL syntax
-- `project-management/workflows/21-implementation-documentation/` — runs after this review and
+- `project-management/workflows/22-implementation-documentation/` — runs after this review and
   before the PR; it writes the records and refreshes the graph
-- `project-management/workflows/22-pr-and-review/` — the subsequent PR merge workflow. **Split of
+- `project-management/workflows/23-pr-and-review/` — the subsequent PR merge workflow. **Split of
   duties:** this workflow owns the _content_ review (security, patterns, coverage, principles);
-  workflow 21 owns the _process_ (branch promotion, approvals, merge gates) and verifies the
+  workflow 23 owns the _process_ (branch promotion, approvals, merge gates) and verifies the
   records. Neither restates the other's checklist.
 - `code/workflows/08-security-hardening/` — where any security finding this review raises is fixed

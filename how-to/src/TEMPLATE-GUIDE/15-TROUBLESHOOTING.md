@@ -1,6 +1,6 @@
 # Troubleshooting
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 What breaks, why, and what to do. Grouped by when it happens.
 
@@ -12,7 +12,7 @@ What breaks, why, and what to do. Grouped by when it happens.
 
 ### `<%SOMETHING%>` survived in the generated project
 
-A token exists in the tree but not in `copier.yml`. This is a template bug —
+A token exists in the tree but not in `copier.yml`. This is a template bug — <!-- doc-references: template-only -->
 [report it](https://github.com/Syntek-Dev/syntek-base/issues) with the file and token.
 
 Locally, fix by hand:
@@ -36,12 +36,24 @@ Markdown, check:
 bash .github/scripts/check-template-tokens.sh
 ```
 
-It reports mangled tokens, tokens that are not registered questions in `copier.yml` (they render
+It reports mangled tokens, tokens that are not registered questions in `copier.yml` (they render <!-- doc-references: template-only -->
 to nothing), and unclosed `<%` delimiters (they kill generation outright). CI runs it on every
-pull request as **[1/3] Template Tokens**, alongside **[2/3] Shipped Documentation** — which
+pull request as **[1/4] Template Tokens**, alongside **[2/4] Shipped Documentation** — which
 proves the README and the project-memory store a project receives are its own and not the
-template's — and **[3/3] Template Generation**, which generates both render paths and asserts on
-each.
+template's — **[3/4] Template Generation**, which generates both render paths and asserts on
+each, and **[4/4] Parser Probes**.
+
+That last job checks the half a text scan cannot reach. If a manifest suddenly fails to load —
+`uv` refusing the project, `cargo` refusing the workspace, `docker compose config` erroring — run:
+
+```bash
+bash .github/scripts/check-template-parsers.sh
+```
+
+A token has almost certainly landed in a position its parser validates as a **name**, where `<`,
+`%` and `>` are not legal characters. The fix is never to escape it: move the name out of the
+parser's path, keeping a house constant in the file and branding it with a `copier.yml` `_task` <!-- doc-references: template-only -->
+at generation. `pyproject.toml`'s `[project] name` is the worked example.
 
 To avoid the problem in the first place, prefer `**bold**` over `_emphasis_` in any paragraph that
 also contains a token.
@@ -72,7 +84,7 @@ adding to the exclude list.
 
 ### The `.copier/` staging task failed
 
-One of the seven seed files was not copied — usually because an `_exclude` pattern matched it.
+One of the nine seed files was not copied — usually because an `_exclude` pattern matched it.
 Remember `_exclude` uses **gitignore semantics**: an unanchored `README.md` matches at every
 depth. Root-only patterns need a leading slash.
 
@@ -82,7 +94,7 @@ generation, or a `VERSION` that reads the template's number rather than `0.1.0`.
 ### `.copier/` survived a `copier update`
 
 Expected on an old template version, harmless, and self-correcting. `_tasks` run on `copy` only,
-so an update that stages a seed file has nothing to clear it — which is why `copier.yml` carries
+so an update that stages a seed file has nothing to clear it — which is why `copier.yml` carries <!-- doc-references: template-only -->
 an unversioned `rm -rf .copier` migration. Delete the directory; it is staging, not content.
 
 ### Copier generated an old version
@@ -108,11 +120,13 @@ copier copy --trust --defaults /tmp/tmpl /tmp/check
 
 ### Docker build fails on `COPY pyproject.toml uv.lock ./`
 
-`uv.lock` does not exist. It is deliberately not shipped — the template's package name is a token
-until rendered, so no valid lock can exist upstream.
+`uv.lock` does not exist. The template commits its own, but excludes it from generation — it pins
+`syntek-base`, so an inherited copy would fail `uv sync --frozen` and conflict on every update.
+Yours is written by post-generation task 3, which is non-fatal and skips itself when `uv` is
+absent.
 
 ```bash
-uv lock
+bash code/src/scripts/development/install-backend.sh
 git add uv.lock && git commit -m "chore: add lockfile"
 ```
 
@@ -128,11 +142,13 @@ echo "127.0.0.1 dev.<your-slug>.localhost" | sudo tee -a /etc/hosts
 
 ### Port already allocated
 
-A local Postgres (5432), Redis/Valkey (6379) or web server (80) is running. Stop the host service,
-or change the published port in `code/src/docker/docker-compose.dev.yml`.
+A local Postgres (5432), Redis/Valkey (6379) or web server is running. The dev stack publishes
+Nginx on **81**, not 80, precisely because a local router usually holds 80 — so a clash here is
+something else already on 81. Stop the host service, or change the published port in
+`code/src/docker/docker-compose.dev.yml`.
 
 ```bash
-ss -tulpn | grep -E ':(80|5432|6379|8000)'
+ss -tulpn | grep -E ':(81|5432|6379|8000)'
 ```
 
 ### `permission denied` running a script
@@ -317,8 +333,9 @@ against a throwaway copy and refuses to apply when it finds anything.
 1. `TEMPLATE-GUIDE/` — the guide for the area you are in
 2. `how-to/docs/DEVELOPMENT.md` and `CLI-TOOLING.md` — environment and commands
 3. `GAPS.md` in your own project — it may be a known gap you recorded
-4. `TEMPLATE-GAPS.md` in the template repository — it may be a known gap in `syntek-base`
-   itself. It does not ship, deliberately, because the root `GAPS.md` does.
+4. `GAPS.md` in the `syntek-base` repository — it may be a known gap in the template itself. It is
+   a **different file from yours**: `copier.yml` excludes the template's and seeds you a blank one, <!-- doc-references: template-only -->
+   so neither repository can ever read the other's open items
 5. [Open an issue](https://github.com/Syntek-Dev/syntek-base/issues) with the bug template
 
 Security problems go through [private disclosure](https://github.com/Syntek-Dev/syntek-base/security),

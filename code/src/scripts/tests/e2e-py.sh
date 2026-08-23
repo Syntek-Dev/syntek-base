@@ -12,7 +12,7 @@
 #
 # The dev stack serves the site through nginx on host port 81 (not 80 — a local router
 # commonly holds 127.0.0.1:80), which is the default below. Override for another target:
-#   E2E_BASE_URL=http://localhost:8000 bash code/src/scripts/tests/e2e-py.sh
+#   E2E_BASE_URL=http://dev-us042.<%PROJECT_SLUG%>.localhost:3080 bash code/src/scripts/tests/e2e-py.sh
 #
 # Usage: e2e-py.sh [pytest args]
 #
@@ -31,6 +31,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 E2E_DIR="code/src/django/tests/e2e"
+
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 
 E2E_BASE_URL="${E2E_BASE_URL:-http://dev.<%PROJECT_SLUG%>.localhost:81}"
 
@@ -54,21 +57,38 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.test"
 [[ -f "$ENV_FILE" ]] || ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.test.example"
 [[ -f "$ENV_FILE" ]] || die "no .env.test or .env.test.example in code/src/docker/"
 
-set -a
-# shellcheck disable=SC1090
-source "$ENV_FILE"
-set +a
+# Parsed, not sourced: `set -a; source` executes the file, so one value carrying a shell
+# metacharacter aborts it partway and leaves the rest of the settings unset — pytest-django
+# then imports a half-configured settings module (_lib/env-file.sh).
+env_export "$ENV_FILE"
 
-if ! curl -sf -o /dev/null "${E2E_BASE_URL}/control/"; then
+# Probe /health/, not the admin: the admin prefix is configurable (DJANGO_ADMIN_PATH), so a
+# project that moves it breaks this pre-flight, while /health/ is fixed by contract precisely
+# so consumers outside the repo can rely on it (code/docs/logging/HEALTH-CONTRACT.md).
+if ! curl -sf -o /dev/null "${E2E_BASE_URL}/health/"; then
   printf '[e2e-py] Stack not reachable at %s\n' "$E2E_BASE_URL" >&2
-  printf '[e2e-py] Start it first: bash code/src/scripts/development/server.sh up\n' >&2
+  # In syntek-base itself the default URL still carries the unrendered Copier token, so it
+  # cannot resolve however healthy the stack is. Say that, rather than sending the reader to
+  # restart a stack that is already up.
+  if [[ "$E2E_BASE_URL" == *PROJECT_SLUG* ]]; then
+    printf '[e2e-py] That host is an unrendered template token — this is the template, not a\n' >&2
+    printf '[e2e-py] generated project. Point the suite at the live stack instead:\n' >&2
+    printf '[e2e-py]   E2E_BASE_URL=http://localhost:81 bash code/src/scripts/tests/e2e-py.sh\n' >&2
+  else
+    printf '[e2e-py] Start it first: bash code/src/scripts/development/server.sh up\n' >&2
+  fi
   exit 2
 fi
 
 # Chromium only — the suite declares no other browser, and installing all three costs
 # ~400MB for engines nothing runs.
+# --group test is required, not decorative. playwright and pytest are declared in the
+# `test` dependency group, and `[tool.uv]` sets no `default-groups`, so a bare `uv run`
+# syncs `dev` alone and dies with "Failed to spawn: playwright". It works on a developer
+# laptop only because install-backend.sh --sync installs EVERY group — so this failed
+# nowhere a human looked and everywhere CI ran.
 log 'Installing Playwright Chromium if needed…'
-uv run playwright install chromium > /dev/null 2>&1 ||
+uv run --group test playwright install chromium > /dev/null 2>&1 ||
   log 'WARNING: chromium install failed; continuing in case it is already present'
 
 # Default to the whole suite ONLY when the caller named no target of their own —
@@ -93,4 +113,4 @@ fi
 
 log "Running the e2e suite against ${E2E_BASE_URL}…"
 # -m e2e selects the browser suite. `-x` (stop on first failure) comes from addopts.
-E2E_BASE_URL="$E2E_BASE_URL" uv run pytest -m e2e "$@"
+E2E_BASE_URL="$E2E_BASE_URL" uv run --group test pytest -m e2e "$@"

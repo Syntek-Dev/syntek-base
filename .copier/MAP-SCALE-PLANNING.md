@@ -1,6 +1,6 @@
 # MAP-SCALE-PLANNING — Size this system for the growth it is meant to survive
 
-**Charted**: TBD — run `/scale-planning` · **Charted by**: TBD · **Workflow**: `01-feature`
+**Charted**: TBD — run `/scale-planning` · **Charted by**: TBD · **Workflow**: `01-feature-map`
 **Status**: Not started
 **Frontier open**: every node below · **Blocking open**: every node below
 

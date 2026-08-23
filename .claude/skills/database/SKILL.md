@@ -76,7 +76,9 @@ Every user- or tenant-scoped table gets RLS **in the same migration that creates
   variable ship together.** Never write a scope variable no policy reads — it reads as
   isolation while enforcing none. The middleware itself is `backend`'s to build; reference the
   pattern rather than re-specifying it.
-- Run `verify-db-security.sh` afterwards, and flag `test-writer` for cross-user access tests.
+- **`verify-db-security.sh` checks no policy.** It runs the Django system check and reads
+  `log_statement`, and nothing else, so a clean run is no evidence that isolation holds. What
+  proves it is `test-writer`'s cross-user access tests — flag them.
 - The isolation scope column is an **RLS key**. A **distribution key** is a separate, coarser
   decision needed only where sharding is plausible
   (`code/docs/architecture/CORE-AND-SCALING.md`).
@@ -94,7 +96,7 @@ PII goes through the project's Fernet pipeline — never invent a scheme
 
 ## Query and index tuning
 
-Diagnose with `EXPLAIN (ANALYZE, BUFFERS)` through `shell.sh`. Fix N+1s with `select_related`
+Diagnose with `EXPLAIN (ANALYZE, BUFFERS)` through `shell.sh --psql`. Fix N+1s with `select_related`
 / `prefetch_related`; add composite and partial indexes for the query shapes that actually run;
 reach for GIN/GiST/`tsvector` where the access pattern warrants it, and balance every read gain
 against its write cost. **Unbounded scans and offset pagination are a scale-readiness
@@ -106,8 +108,8 @@ finding** — prefer keyset.
 bash code/src/scripts/database/migrate.sh make          # generate from model changes
 bash code/src/scripts/database/migrate.sh run           # apply to the dev database
 bash code/src/scripts/database/migrate.sh show          # inspect migration state
-bash code/src/scripts/database/verify-db-security.sh    # confirm the security config
-bash code/src/scripts/database/shell.sh                 # psql session, read-only inspection
+bash code/src/scripts/database/verify-db-security.sh    # Django check + log_statement only
+bash code/src/scripts/database/shell.sh --psql          # psql session: superuser, bypasses RLS
 bash code/src/scripts/database/seed-dev.sh              # seed dev fixtures
 ```
 
@@ -115,12 +117,13 @@ The test database is a separate one from dev — **never point a test run at the
 
 ## Definition of done
 
-Migration generated, reviewed, and applied cleanly, with `show` confirming state; RLS present
-and `verify-db-security.sh` passing for every scoped table; the migration record written per
-`03-database-migration/STEPS.md`; every affected `CONTEXT.md` updated.
+Migration generated, reviewed, and applied cleanly, with `show` confirming state; RLS present on
+every scoped table and **proven by a cross-user test**, because no script under
+`code/src/scripts/database/` reads a policy; `verify-db-security.sh` clean; the migration record
+written per `03-database-migration/STEPS.md`; every affected `CONTEXT.md` updated.
 
 **Findings are recorded, not fixed in the same pass.** A divergence from `code/docs/DATABASE.md`
-found while doing the work goes to `project-management/src/19-FINDINGS/` through workflow `21`.
+found while doing the work goes to `project-management/src/20-FINDINGS/` through workflow `22`.
 Where an existing migration or model carries no explanation for its shape, **flag the absence
 rather than inventing the reasoning**, and mark anything inferred `TODO(verify)`.
 
@@ -138,9 +141,9 @@ coverage.
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/04-database-schema/` — the schema, designed and signed off first
-- `project-management/workflows/18-backend-code/` — the build phase that drives the migration
+- `project-management/workflows/19-backend-code/` — the build phase that drives the migration
 - `code/workflows/03-database-migration/` — writing and applying it; the procedure of record
-- `project-management/workflows/21-implementation-documentation/` — where findings are filed
+- `project-management/workflows/22-implementation-documentation/` — where findings are filed
 - `how-to/workflows/04-database-operations/` — backup, restore, reset and seed, never schema
 
 ## Cross-references

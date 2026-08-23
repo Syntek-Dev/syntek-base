@@ -23,10 +23,16 @@ DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
 if [[ -f "$ENV_FILE" ]]; then
   DB_NAME="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB=' "$ENV_FILE" | cut -d= -f2- || true)}"
   DB_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
-else
-  DB_NAME="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
-  DB_USER="${POSTGRES_USER:-<%PROJECT_SLUG%>}"
 fi
+
+# The fallback is unconditional, and that is the whole fix: .env.dev carries no
+# POSTGRES_DB line at all — docker-compose.dev.yml fixes the name and .env.dev.example
+# says so — so the grep above yields an empty string on the path where the env file
+# EXISTS. Keeping this inside an `else` made DB_NAME empty in the normal case, and
+# `DROP DATABASE IF EXISTS "";` is the error that produced. backup.sh and restore.sh
+# already resolve it this way; this script was the odd one out.
+DB_NAME="${DB_NAME:-<%PROJECT_SLUG%>_dev}"
+DB_USER="${DB_USER:-<%PROJECT_SLUG%>}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 SEED=false
@@ -99,9 +105,9 @@ fi
 # ── Reset ─────────────────────────────────────────────────────────────────────
 bold "  Dropping database '$DB_NAME'…"
 "${DC[@]}" exec -T db \
-  psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS $DB_NAME;" postgres
+  psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS \"$DB_NAME\";" postgres
 "${DC[@]}" exec -T db \
-  psql -U "$DB_USER" -c "CREATE DATABASE $DB_NAME;" postgres
+  psql -U "$DB_USER" -c "CREATE DATABASE \"$DB_NAME\";" postgres
 log ""
 
 bold "  Running migrations…"

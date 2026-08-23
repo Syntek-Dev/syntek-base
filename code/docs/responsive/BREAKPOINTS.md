@@ -54,8 +54,9 @@ Design mobile-first and scale up. Wireframes should always start from a mobile v
 └───────┴───────────┴──────────────────────────────────────────────────┘
 ```
 
-> **Reference-only tokens.** The `--bp-*` breakpoint tokens (in `shared/src/css/tokens/`) and the
-> matching `breakpoint` category in the `design_tokens` DB are **reference rows only**
+> **Reference-only tokens.** The `--bp-*` breakpoint tokens in the CSS token layer
+> (`code/docs/DESIGN-TOKENS.md`) and the matching `breakpoint` category in the
+> `design_tokens` DB are **reference rows only**
 > (`is_reference_only=True`) — they are documentation, never emitted to a CSS rule. CSS custom
 > properties **cannot** sit inside `@media` query conditions, so the pixel values above must be
 > baked literally into each `@media` condition. This is the one design-token category that the

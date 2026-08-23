@@ -18,9 +18,9 @@ extension points and known drift.
 
 ## The editor — `/admin/design-tokens`
 
-A three-pane editor in the custom `/admin/` admin area — server-rendered Django templates with
-django-components, each pane an HTMX-swapped fragment, saved through ABAC-gated (`tokens.edit`)
-Django views:
+The editor **will be** a three-pane surface in the custom `/admin/` admin area — server-rendered
+Django templates with django-components, each pane an HTMX-swapped fragment, saved through
+ABAC-gated (`tokens.edit`) Django views. The three panes:
 
 | Pane                         | Purpose                                                           |
 | ---------------------------- | ----------------------------------------------------------------- |
@@ -28,8 +28,8 @@ Django views:
 | **Values / Variants editor** | Edit the BASE value and add/remove preference-variant overrides   |
 | **Accessibility tab**        | WCAG contrast checks for the selected colour token across themes  |
 
-Edits go through the Django Ninja endpoints in [CASCADE.md](CASCADE.md) — every save is
-permission-gated, value-kind-validated, audited, and queues a post-commit CSS regeneration.
+Edits **will go** through the Django Ninja endpoints in [CASCADE.md](CASCADE.md) — every save
+permission-gated, value-kind-validated, audited, and queueing a post-commit CSS regeneration.
 Reference-only and non-editable tokens are read-only in the UI and rejected server-side.
 
 ---
@@ -39,11 +39,12 @@ Reference-only and non-editable tokens are read-only in the UI and rejected serv
 The token-first law (see [../DESIGN-TOKENS.md](../DESIGN-TOKENS.md)) is enforced by one script, not
 by convention:
 
-- `code/src/scripts/audits/css-tokens.sh` + the `audit-css-tokens.yml` CI workflow scan all three
-  CSS scopes and **fail the build** if any component `var(--x)` does not resolve to a token defined
-  in the styling layer (`shared/src/css/tokens/*.css` + `surfaces.css`) — which is the DB seed
-  source. A phantom custom property is silently dropped by Lightning CSS, so this guard is the
-  regression gate that keeps the cascade honest.
+- `code/src/scripts/audits/css-tokens.sh` + the `audit-css-tokens.yml` CI workflow scan the CSS
+  scopes and **fail the build** if any component `var(--x)` does not resolve to a token defined in
+  the styling layer (`surfaces.css` among those stylesheets) — which becomes the DB seed source. A
+  phantom custom property is silently dropped by Lightning CSS, so this guard is the regression
+  gate that keeps the cascade honest. The script's own header names the scopes it walks, one of
+  them a per-app glob expanded at run time.
 
 Run it before raising a PR:
 
@@ -61,19 +62,19 @@ add a token first" by inspection.
 
 ## Extension points (not yet built)
 
-Two features are wired at the data/endpoint layer but have no UI yet:
+Two extension points, neither built:
 
-| Item                    | State                                                                                                                                  |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| **Live iframe preview** | The `preview` dry-run endpoint and the `/assets/tokens.css` view already exist; only the iframe UI + live-rebind in the editor remain. |
-| **Usage index**         | A static-analysis pass mapping which components/blocks reference each `--token`, to surface "used in N places" per token.              |
+| Item                    | State                                                                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Live iframe preview** | The `preview` dry-run endpoint and the `/assets/tokens.css` view are specified in [CASCADE.md](CASCADE.md); once they ship, only the iframe UI and live-rebind remain. |
+| **Usage index**         | A static-analysis pass mapping which components/blocks reference each `--token`, to surface "used in N places" per token.                                              |
 
 ---
 
 ## Known drift — modelled by the `theme_selector` axis
 
 A set of surface keys differ between `[data-theme="dark"]` and `@media (prefers-color-scheme: dark)`
-in `shared/src/css/tokens/surfaces.css` (the `--badge-*`, `--btn-secondary-*`, and `--btn-soft-*`
+in the token layer's `surfaces.css` (the `--badge-*`, `--btn-secondary-*`, and `--btn-soft-*`
 variants). A byte-for-byte seed could only import keys identical across both selectors, so these
 drifting keys need per-selector variant support.
 
@@ -89,4 +90,3 @@ paths can no longer hand-drift. See [CASCADE.md](CASCADE.md) for the routing mod
 - `code/docs/DESIGN-TOKENS.md` — entry point + the token-first law
 - `design-tokens/MODEL.md` — the two models and their fields
 - `design-tokens/CASCADE.md` — render order, axes, delivery, endpoint flow
-- `code/src/django/apps/design_tokens/CONTEXT.md` — live app, audit actions, permission key

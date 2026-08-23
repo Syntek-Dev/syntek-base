@@ -30,7 +30,8 @@ then plan scale and architecture. Skip them on an onboarding; do not skip them o
 
 - The project runs entirely inside Docker — no local Python or Node installations needed
 - Environment files are not committed — copy from `.env.*.example` files
-- The backend container runs Django on port 8000; frontend on port 3000
+- One deployable, not two: Django serves the pages and the API. Nginx publishes it on host
+  port **81** (`http://dev.<%PROJECT_SLUG%>.localhost:81`); 8000 is the container's internal port
 - **The description comes before the voice, the voice before the plan, and the plan before the
   feature.** The brief in `CONTEXT.md` says what is being built and for whom; `BRAND-VOICE.md`
   says how the project speaks to that named reader; `/scale-planning` says at what size and
@@ -53,4 +54,4 @@ None — setup is sequential; follow STEPS.md in order.
 - `code/docs/VISUAL-DESIGN.md` Section 3 — the visual direction Step 9 settles; the visual half of Step 8's doctrine
 - `.claude/skills/scale-planning/SKILL.md` — the Step 10 procedure
 - `how-to/src/SCALE-ARCHITECTURE/` · `how-to/src/SERVER-ARCHITECTURE/` — the two snapshots Step 10 fills
-- `project-management/workflows/01-feature/` — what runs next, once 7 to 10 are done
+- `project-management/workflows/01-feature-map/` — what runs next, once 7 to 10 are done

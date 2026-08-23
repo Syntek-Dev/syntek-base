@@ -1,5 +1,5 @@
 # check-stubs.sh — stub audit (local only; grep on host-mounted source files).
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: SCRIPTS, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_stubs() {

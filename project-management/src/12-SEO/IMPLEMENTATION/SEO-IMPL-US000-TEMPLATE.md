@@ -107,5 +107,5 @@ valid entry.
 - `../PLANNING/SEO-PLAN-US###-<DESCRIPTOR>.md` — the pre-development plan verified here
 - `../../02-STORIES/US###.md` — the story and its `### SEO Acceptance Criteria`
 - `project-management/docs/SEO-CHECKLIST.md` — the governing SEO standard
-- `project-management/workflows/21-implementation-documentation/` — where this record is written
+- `project-management/workflows/22-implementation-documentation/` — where this record is written
 - `code/docs/RENDERING.md` — the code-side metadata / JSON-LD / sitemap implementation

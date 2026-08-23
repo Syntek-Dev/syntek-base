@@ -55,14 +55,14 @@ skimmed guide is a guide that does not change behaviour. Operator guides for hum
 ### 3. The PM layer specifies; the code layer builds
 
 Work does not start in an editor — and it does not start with a story either. It starts with a
-**feature map**: `project-management/workflows/01-feature/` charts the feature's open decisions
-into `project-management/src/01-FEATURE/MAP-<FEATURE>.md` before a single story exists. Stories
+**feature map**: `project-management/workflows/01-feature-map/` charts the feature's open decisions
+into `project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` before a single story exists. Stories
 are then _cut from_ the resolved map, move through the design and compliance gates (schema, user
 flow, GDPR, security, QA, SEO, API contract), become a decision record and a plan, and only then
 reach implementation.
 
 ```text
-chart (01)  →  specify (02–13)  →  decide & plan (14–16)  →  consolidate (17)  →  implement (18–20)  →  record & ship (21–23)
+chart (01)  →  specify (02–14)  →  decide & plan (15–17)  →  consolidate (18)  →  implement (19–21)  →  record & ship (22–24)
 ```
 
 **Charting is what the `wayfinder` skill is for.** `/wayfinder chart <feature>` draws the
@@ -80,10 +80,10 @@ fog of war may stay open, because a feature that must be fully known before any 
 is a feature that never starts.
 
 Specify through plan then runs **one story at a time** — a story goes all the way to
-`14-decisions` before the next one starts, so each story is planned against everything the
-previous ones established. When the open sprint fills, `15-sprint-plans` and `16-story-plans` run
+`15-decisions` before the next one starts, so each story is planned against everything the
+previous ones established. When the open sprint fills, `16-sprint-plans` and `17-story-plans` run
 for that sprint before planning resumes. Once every story is planned,
-`17-consolidate-design-work` unifies the per-story design and schema work into one coherent
+`18-consolidate-design-work` unifies the per-story design and schema work into one coherent
 whole, and only then does implementation begin.
 
 A code workflow is never entered directly from a design gate. If that sounds heavy for a
@@ -93,7 +93,7 @@ process is not the only option.
 ### 4. Work routes to a skill; skills dispatch rather than freelance
 
 Everything Claude does here is a **skill**, selected by matching your request against its
-description. A task skill — `feature`, `bugfix`, `review`, `security`, `refactor`, `story`, `pr`,
+description. A task skill — `implement-story`, `bugfix`, `review`, `security`, `refactor`, `story`, `pr`,
 `release` — routes to the matching workflow and pulls in the scoped skills each phase needs:
 `backend`, `frontend`, `database`, `test-writer`, `qa-tester` and the rest, each loading only
 what its remit requires.

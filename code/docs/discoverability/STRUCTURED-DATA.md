@@ -18,8 +18,8 @@ typed model fields, never hand-written, and never assembled in the browser.
 ## The pattern
 
 All public pages eligible for Google Rich Results render a `<script type="application/ld+json">`
-tag built by typed helpers in `apps/marketing/jsonld.py`. **Never hand-write JSON-LD strings in a
-template.**
+tag built by typed JSON-LD helpers in the marketing app, which arrive with the first story that
+needs one. **Never hand-write JSON-LD strings in a template.**
 
 ### Rules
 

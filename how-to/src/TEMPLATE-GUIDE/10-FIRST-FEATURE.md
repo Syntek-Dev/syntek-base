@@ -1,6 +1,6 @@
 # Your First Feature — Idea to Merged PR
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 A walk through the whole process once, so the numbered workflows stop being abstract. Assumes a
 generated project with the stack running (`04-QUICKSTART.md`), and that you have read
@@ -11,23 +11,24 @@ generated project with the stack running (`04-QUICKSTART.md`), and that you have
 ## The shape
 
 ```text
-chart (01)  →  specify (02–13)  →  decide & plan (14–16)  →  consolidate (17)  →  implement (18–20)  →  record & ship (21–23)
+chart (01)  →  specify (02–14)  →  decide & plan (15–17)  →  consolidate (18)  →  implement (19–21)  →  record & ship (22–24)
 ```
 
 Three properties make this work, and all three are easy to get wrong:
 
-- **Work starts with a feature, not a story.** `01-feature` charts the decision frontier and
+- **Work starts with a feature, not a story.** `01-feature-map` charts the decision frontier and
   settles it. Stories are then _cut from_ the resolved map, which is why they stop rediscovering
   the same cross-cutting questions.
 - **Specify is a per-story loop, not a batch.** One story goes all the way from `02` to
-  `14-decisions` before the next begins, so each is planned against everything the previous ones
+  `15-decisions` before the next begins, so each is planned against everything the previous ones
   settled.
 - **Sprint planning fires on fill, not per story.** Each finished story is slotted into the open
-  sprint record; when it reaches the point ceiling, `15` and `16` run for that sprint's stories,
-  then planning resumes.
+  sprint record; when it reaches the point ceiling, `16-sprint-plans` and `17-story-plans` run for
+  that sprint's stories, then planning resumes.
 
 The rule underneath it all: **a code workflow is never entered directly from a design gate.**
-Implementation is reached only through the PM build phases, themselves gated on `17`.
+Implementation is reached only through the PM build phases `19`–`21`, themselves gated on
+`18-consolidate-design-work` having run.
 
 If that is too much for what you are doing — a spike, a proof of concept, a question you want
 answered in an hour — use `/prototype` instead. It exists so the process is not the only option.
@@ -104,8 +105,8 @@ Do it after ten features and you are not planning; you are auditing choices alre
 /wayfinder chart <feature>
 ```
 
-Produces `project-management/src/01-FEATURE/MAP-<FEATURE>.md` via
-`project-management/workflows/01-feature/` — the open decisions in dependency order, each tagged
+Produces `project-management/src/01-FEATURE-MAPS/MAP-<FEATURE>.md` via
+`project-management/workflows/01-feature-map/` — the open decisions in dependency order, each tagged
 research / tracer / grilling / task.
 
 Charting is **one session and settles nothing** beyond research nodes. You then run
@@ -141,11 +142,11 @@ an estimate, and a status.
 `project-management/workflows/03-sprint-planning/` → `src/03-SPRINTS/SPRINT-01.md`.
 
 A running ledger, not a plan: the sprint goal, and each story added with its points as it clears
-`14-decisions`. When the total reaches the capacity ceiling the sprint is **full**, and that is
-what triggers `15-sprint-plans`.
+`15-decisions`. When the total reaches the capacity ceiling the sprint is **full**, and that is
+what triggers `16-sprint-plans`.
 
 For your first story the sprint will not be full — so you carry straight on to the design gates,
-and come back to `15`/`16` later.
+and come back to `16`/`17` later.
 
 ## 3. Work the design gates
 
@@ -164,19 +165,19 @@ Only the ones your story actually touches:
 | SEO             | `12-seo-checks/`        | New public pages                                      |
 | API design      | `13-api-design/`        | New or changed Ninja endpoints                        |
 
-Each writes its artefact under the matching numbered `src/` folder, tied to `US001`.
+Each writes its artefact under the matching numbered `src/` folder, tied to US001.
 
 These run on **Fable** — the reasoning tier. Specification is where thinking is cheapest.
 
 ## 4. Decide and plan
 
-**ADRs** (`14-decisions/`) capture choices with consequences, so they are not re-litigated in
+**ADRs** (`15-decisions/`) capture choices with consequences, so they are not re-litigated in
 review six weeks later.
 
-**Sprint plan** (`15-sprint-plans/`) — the definitive assignments and per-phase breakdown, written
+**Sprint plan** (`16-sprint-plans/`) — the definitive assignments and per-phase breakdown, written
 _after_ the gates because they constrain it.
 
-**Story plan** (`16-story-plans/`) — `STORY-PLAN-US001-*.md`. **This is what you code from.** It
+**Story plan** (`17-story-plans/`) — `STORY-PLAN-US001-*.md`. **This is what you code from.** It
 references the sprint plan, the decisions, and every specification above it.
 
 ## 5. Branch
@@ -192,14 +193,17 @@ documentation. Full rules in `project-management/docs/GIT-GUIDE.md`.
 
 Three PM phases drive the code workflows:
 
-| Phase               | Drives                                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `18-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project                     |
-| `19-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
-| `20-frontend-code/` | `01-new-feature/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                           |
+| Phase               | Drives                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `19-backend-code/`  | `code/workflows/01-implement-story/` **entered here**, plus `02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project |
+| `20-api-code/`      | The same `01` pass continues — `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` for an agent-facing surface      |
+| `21-frontend-code/` | The same `01` pass closes here — `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                                      |
 
-The canonical map of which PM workflow pairs with which code workflow is the cross-layer table
-in the root `REFERENCES.md` — neither layer restates it.
+**`01-implement-story` wraps all three; it does not sit under one of them.** Its own procedure runs
+plan → red tests → models and migration → services → endpoints → frontend as one sequence, so it is
+entered once at `19` and closed at `21`, never re-run per phase. The canonical map of which PM
+workflow pairs with which code workflow is the cross-layer table in the root `REFERENCES.md` —
+neither layer restates it.
 
 Test-first throughout — Red, Green, Refactor:
 
@@ -232,13 +236,13 @@ For anything touching auth, permissions or personal data, also load the `securit
 
 ## 8. Document — the hard gate
 
-**Nothing commits until this is done.** `project-management/workflows/21-implementation-documentation/`
+**Nothing commits until this is done.** `project-management/workflows/22-implementation-documentation/`
 owns it:
 
 - update the directory tree in every affected `CONTEXT.md`
 - create `CONTEXT.md` + `CLAUDE.md` in every new directory
 - write the implementation records — GDPR, security, QA, SEO, API, review, tests
-- route findings: `19-FINDINGS/`, bugs to `20-BUGS/`, refactors to `21-REFACTORING/`
+- route findings: `20-FINDINGS/`, bugs to `21-BUGS/`, refactors to `22-REFACTORING/`
 - update `GAPS.md` and `DEFERRED.md`
 - refresh the code-review-graph
 
@@ -248,7 +252,7 @@ owns it:
 Raise a PR for this branch.
 ```
 
-`project-management/workflows/22-pr-and-review/`. The `pre-pr-check.sh` hook fires before
+`project-management/workflows/23-pr-and-review/`. The `pre-pr-check.sh` hook fires before
 `gh pr create` and runs eight gates — format, lint, typecheck, tests, security, stubs, cloc,
 lockfiles. It blocks the PR rather than letting CI find it later.
 

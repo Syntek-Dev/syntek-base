@@ -23,7 +23,7 @@ benefit, and acceptance criteria (Gherkin and/or sectioned checklists). The full
 scaffold — flags, client summary, MoSCoW, story points, dependencies, and the
 per-discipline acceptance criteria and tasks — lives in `US000-TEMPLATE.md`.
 
-Related artefacts: `../17-TESTS/US###-TEST-STATUS.md` · `../11-QA/PLANNING/QA-PLAN-US###-*.md`.
+Related artefacts: `../18-TESTS/US###-TEST-STATUS.md` · `../11-QA/PLANNING/QA-PLAN-US###-*.md`.
 
 ## Authoring a new story
 

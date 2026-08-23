@@ -10,7 +10,7 @@ model: fable
 **Language**: British English (en_GB)
 
 Opening a `SPRINT-##` record (`src/03-SPRINTS/`) and writing its plan
-(`src/15-SPRINT-PLANS/`). Index: [`../PLANNING-GUIDE.md`](../PLANNING-GUIDE.md).
+(`src/16-SPRINT-PLANS/`). Index: [`../PLANNING-GUIDE.md`](../PLANNING-GUIDE.md).
 
 ---
 
@@ -18,11 +18,27 @@ Opening a `SPRINT-##` record (`src/03-SPRINTS/`) and writing its plan
 
 | Artefact                                         | Written by           | When                                       | Holds                                               |
 | ------------------------------------------------ | -------------------- | ------------------------------------------ | --------------------------------------------------- |
-| `src/03-SPRINTS/SPRINT-##.md`                    | `03-sprint-planning` | Opened early; filled as stories clear `14` | Goal, timeline, capacity, story table, dependencies |
-| `src/15-SPRINT-PLANS/{exec}-SPRINT-PLAN-{##}.md` | `15-sprint-plans`    | The moment the sprint fills                | Phase breakdown, constraints, definition of done    |
+| `src/03-SPRINTS/SPRINT-##.md`                    | `03-sprint-planning` | Opened early; filled as stories clear `15` | Goal, timeline, capacity, story table, dependencies |
+| `src/16-SPRINT-PLANS/{exec}-SPRINT-PLAN-{##}.md` | `16-sprint-plans`    | The moment the sprint fills                | Phase breakdown, constraints, definition of done    |
 
 The **record** is the running ledger — it accumulates stories with their points, and it is what
 tells you the sprint is full. The **plan** is written once, against a settled story set.
+
+---
+
+## The sprint's flags are a union
+
+`SPRINT-##.md` carries the same 13-row FLAGS table as a story, and its values are the **union of
+its member stories'** — computed from the Story Summary, never authored independently. A sprint
+whose `GDPR` row reads `N/A` while a member story's reads `Yes` is a mistake in one of the two.
+
+**One narrowing is permitted**, and only one: a story split across sprints (Part A / Part B,
+which the Story Summary already records in the Title column) contributes only the half this
+sprint delivers. Anything else that narrows the union is drift.
+
+The union is what makes the sprint-level acceptance criteria answerable — "all rate limits
+specified in the story summary" needs the union to know what "all" means. Row meanings and each
+flag's gate: `src/02-STORIES/US000-TEMPLATE.md`.
 
 ---
 
@@ -67,15 +83,15 @@ Each sprint follows the same four-phase sequence. Stories map to phases by the l
 
 | Phase | Workflow           | What is built                                                 |
 | ----- | ------------------ | ------------------------------------------------------------- |
-| **1** | `18-backend-code`  | Django models, services, business logic, migrations           |
-| **2** | `19-api-code`      | Django Ninja routers, endpoints, and request/response Schemas |
-| **3** | `20-frontend-code` | Django views + templates, django-components (HTMX + Alpine)   |
-| **4** | `22-pr-and-review` | PR, code review, QA sign-off, merge to `testing`              |
+| **1** | `19-backend-code`  | Django models, services, business logic, migrations           |
+| **2** | `20-api-code`      | Django Ninja routers, endpoints, and request/response Schemas |
+| **3** | `21-frontend-code` | Django views + templates, django-components (HTMX + Alpine)   |
+| **4** | `23-pr-and-review` | PR, code review, QA sign-off, merge to `testing`              |
 
 Tests are written **alongside** each phase, not after. A story may touch only some phases — a
 purely backend change skips Phase 3 — and the plan records which each story needs.
 
-`21-implementation-documentation` runs between Phase 3 and Phase 4: it writes the implementation
+`22-implementation-documentation` runs between Phase 3 and Phase 4: it writes the implementation
 records and refreshes the graph, and it is a merge gate.
 
 ---
@@ -90,7 +106,7 @@ records and refreshes the graph, and it is a merge gate.
 - **Definition of done**
 
 **No per-story implementation depth.** Models, endpoints, components, and field-level
-GDPR/security belong in the story plan (`src/16-STORY-PLANS/`). The sprint plan carries only
+GDPR/security belong in the story plan (`src/17-STORY-PLANS/`). The sprint plan carries only
 sprint-wide summaries and the index — duplicating the detail guarantees the two drift.
 
 ---
@@ -107,5 +123,5 @@ in the notes rather than padding it.
 
 - [`CADENCE.md`](CADENCE.md) — the fill trigger and the point ceiling
 - [`STORIES.md`](STORIES.md) — the stories a sprint is built from
-- `src/03-SPRINTS/SPRINT-00-TEMPLATE.md` · `src/15-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`
+- `src/03-SPRINTS/SPRINT-00-TEMPLATE.md` · `src/16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`
 - `project-management/docs/VERSIONING-GUIDE.md` — when the sprint includes a release

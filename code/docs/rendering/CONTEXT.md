@@ -16,4 +16,3 @@ code/docs/rendering/
 ## Cross-references
 
 - `code/docs/RENDERING.md` — the index these sub-documents belong to
-  </content>

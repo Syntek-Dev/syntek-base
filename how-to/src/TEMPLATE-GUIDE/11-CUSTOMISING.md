@@ -1,6 +1,6 @@
 # Customising — What Is Yours to Change
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 It is your project. You can change anything. This is about which changes are cheap, which are
 load-bearing, and which will hurt on the next `copier update`.
@@ -15,13 +15,22 @@ load-bearing, and which will hurt on the next `copier update`.
 | **Load-bearing** | Something else depends on it. Changeable, but change the dependants too. |
 | **House rules**  | Deliberate constraints. Changing them is fine — just do it knowingly.    |
 
+**Two files are in none of those categories, because they are not yours to edit at all.**
+`how-to/src/TEMPLATE-GUIDE/` and `how-to/src/TEMPLATE-TOKENS.md` describe **the template**, not
+your project — editing one changes nothing about how your project works and guarantees a conflict
+on the next `copier update`, because upstream owns the same lines. `.claude/hooks/template-docs-readonly.sh`
+blocks writes to them, and it stands down inside `syntek-base` itself, where they are the product
+being maintained. Everything else in the tree is yours.
+
 ---
 
 ## Yours — change freely
 
 - **Everything under `code/src/django/apps/`.** The app skeleton is a starting point.
 - **`project-management/src/`** — your stories, sprints, ADRs, threat models, QA plans.
-- **Design tokens.** Values are DB-canonical in `apps/design_tokens`; edit through the
+- **Design tokens.** Values are DB-canonical in the design-token app — which no workflow
+  creates, so `how-to/src/PROJECT-PATHS.md` deliberately refuses it a row; the standard is
+  `code/docs/DESIGN-TOKENS.md`. Once it exists, edit through the
   `/admin/design-tokens` editor or a migration.
 - **Brand assets** in `project-management/src/00-ASSETS/` and the generated brand-guide PDF.
 - **`.claude/MEMORY.md`** — project memory is meant to accumulate. It arrives with its headings
@@ -32,7 +41,8 @@ load-bearing, and which will hurt on the next `copier update`.
 - **`handoffs/`, `research/`, `questionnaires/`, `learning/`** — the four scratch directories.
 - **`VERSION` and the three version logs** — yours from `0.1.0`; the template's history never
   ships. Move them with the `version` skill rather than by hand.
-- **Dependencies**, within the licence constraints in `how-to/src/CONTEXT.md`.
+- **Dependencies**, within the licence constraints in `how-to/src/CLAUDE.md` → _Guardrails_ and
+  the _Licensing_ section of `how-to/src/CONTRIBUTING.md`.
 
 ## Load-bearing — change with their dependants
 
@@ -62,19 +72,25 @@ documentation. Adding scripts is cheap; renaming is not.
 
 ### CI workflows
 
-A web-only project ships 28 workflows, 20 of them path-filtered. If you move source out of the
+A web-only project ships 32 workflows, 22 of them path-filtered (24 carry a filter in the
+template; two of those are among the three excluded). If you move source out of the
 paths they watch, they silently stop running — and a job that never runs is indistinguishable
 from one that passes. Check `.github/workflows/*.yml` `paths:` after any structural move.
 
-Three of the template's 31 do not reach your project: `audit-template.yml` is template-integrity
+Three of the template's 35 do not reach your project: `audit-template.yml` is template-integrity
 only, and `syntax-rust.yml` and `audit-style-check.yml` travel with the surfaces they test. A
 workflow shipped without the script it runs is a permanently-red job, which a generated baseline
 must never carry.
 
+**Mobile is the counter-example, and it is deliberate.** `audit-mobile-tokens.yml` is not excluded,
+because its job is guarded at **step** level instead — the rule is _a CI job travels with the script
+it runs_, and a shared job satisfies that by skipping, not by being deleted (`12-EXTENDING.md` →
+_An optional subtree_, point 6).
+
 ### The opt-in mechanism
 
 Optional content — the mobile, Rust and desktop surfaces — is gated by **one mechanism and one
-only**: a templated `_exclude` entry in `copier.yml`.
+only**: a templated `_exclude` entry in `copier.yml`. <!-- doc-references: template-only -->
 
 <: raw :>
 
@@ -111,7 +127,7 @@ extend the CI matrix that generates **both** boolean values so the negative case
 
 ### Binaries and `_templates_suffix`
 
-`copier.yml` sets `_templates_suffix: ""`, which means **every file in the tree passes through
+`copier.yml` sets `_templates_suffix: ""`, which means **every file in the tree passes through <!-- doc-references: template-only -->
 Jinja** — there is no `.jinja` opt-in marker. The consequence is easy to trip over: **binaries
 cannot be rendered**, which is why `*.pdf` is excluded and why the mobile app uses Expo's
 Continuous Native Generation rather than committed `ios/` and `android/` directories
@@ -141,7 +157,7 @@ workspace silently. Nothing warns you.
 | British English prose            | `.claude/CLAUDE.md`             | Sweep existing docs or you get a mix                           |
 | Grilling before substantial work | `.claude/CLAUDE.md` Section 10  | Claude stops interviewing and starts building on first reading |
 | Token-first CSS                  | `code/docs/DESIGN-TOKENS.md`    | `audits/css-tokens.sh` will fail until you change it too       |
-| Docker-only operations           | `.claude/CLAUDE.md` Section 1   | Every script assumes containers                                |
+| Docker-only operations           | `.claude/CLAUDE.md` Section 6   | Every script assumes containers                                |
 
 ## The non-negotiables
 
@@ -163,7 +179,7 @@ security posture:
 The template argues against this in several places, and those arguments are in `02-STACK.md`. If you
 still want to:
 
-1. Write an ADR in `project-management/src/14-DECISIONS/` — the reasoning outlives the decision.
+1. Write an ADR in `project-management/src/15-DECISIONS/` — the reasoning outlives the decision.
 2. Update `how-to/src/TEMPLATE-TOKENS.md` under _What stays fixed_.
 3. Sweep the documentation that asserts the old choice. There is more of it than you expect —
    `code/docs/RENDERING.md`, `ARCHITECTURE-PATTERNS.md`, the stack skills, and the skill
@@ -186,8 +202,8 @@ The more you edit files the template also maintains, the more `copier update` co
 Two tactics:
 
 - **Append rather than rewrite.** Adding a section to a guide conflicts less than restructuring it.
-- **Put project-specific rules in project-specific files.** A new `code/docs/OUR-CONVENTIONS.md`
-  never conflicts; edits to `code/docs/CODING-PRINCIPLES.md` do.
+- **Put project-specific rules in project-specific files.** A new guide of your own under
+  `code/docs/` never conflicts; edits to `code/docs/CODING-PRINCIPLES.md` do.
 
 **One thing that is not about conflicts at all: never renumber a
 `project-management/src/NN-…/` folder.** Those hold your artefacts, and Copier only tracks files

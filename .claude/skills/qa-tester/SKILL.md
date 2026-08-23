@@ -128,7 +128,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/11-qa-checks/` — the design-stage QA plan these findings test
 - `code/workflows/07-review/` — the review pass these findings feed
-- `project-management/workflows/21-implementation-documentation/` — where `QA-IMPL-US###` lands
+- `project-management/workflows/22-implementation-documentation/` — where `QA-IMPL-US###` lands
 
 ## Cross-references
 

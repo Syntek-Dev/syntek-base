@@ -11,15 +11,15 @@
 # A project that authored ITS OWN agent is the case this exists for. That file was never
 # a template file, so Copier has no knowledge of it and leaves it exactly where it was —
 # in a directory nothing routes to any more. No conflict, no error, update reports
-# success. It is the same silent-orphan failure documented in 14-UPDATING.md, running in
+# success. It is the same silent-orphan failure a renumbering causes, running in
 # reverse: there the scaffolding moved and your files stayed, here the scaffolding was
 # deleted and your files stayed.
 #
 # ADVISORY ONLY. It never moves, rewrites or deletes an agent definition, and it always
 # exits 0 so it cannot fail an update. Relocating an agent is a rewrite, not a rename —
-# a skill needs `name` and `description` frontmatter and must pass
-# `audits/skill-conformance.sh` — so a machine that moved the file would produce a skill
-# that fails its own gate and call it a migration. That judgement stays with a human.
+# a skill needs `name` and `description` frontmatter and must pass the skill-conformance
+# audit — so a machine that moved the file would produce a skill that fails its own gate
+# and call it a migration. That judgement stays with a human.
 #
 # Runs automatically as a copier `_migrations` entry when an update crosses v3.0.0.
 # Safe to run by hand afterwards; it is idempotent and read-only bar one empty-directory

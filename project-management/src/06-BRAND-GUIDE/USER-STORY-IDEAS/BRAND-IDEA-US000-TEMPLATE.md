@@ -32,7 +32,7 @@ consolidation cannot decide the ask.
 |                |       |          |                  |                       |
 
 > This records an **ask**, not a decision. Whether it joins the palette is settled in
-> `../CONSOLIDATED-IDEAS/` by `17-consolidate-design-work`, weighed against every other story's
+> `../CONSOLIDATED-IDEAS/` by `18-consolidate-design-work`, weighed against every other story's
 > asks.
 
 ---

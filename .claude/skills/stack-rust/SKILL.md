@@ -195,7 +195,9 @@ panicking path reachable from Python; `CONTEXT.md` updated if structure changed;
 - Never commit `target/` or a built `.so`/`.pyd`/`.dylib` — binaries break Copier generation for
   every downstream project.
 - The toolchain `channel` and `rust-version` are **not** a matched set — the first is the compiler
-  everyone builds with, the second the MSRV our source needs (`code/docs/rust/SUPPLY-CHAIN.md`).
+  everyone builds with, the second a **resolution input**: under `resolver = "3"` cargo picks the
+  newest dependency compatible with the floor, so a floor left behind the channel holds the whole
+  graph back (`code/docs/rust/SUPPLY-CHAIN.md`). It is not merely a promise about our own source.
 - Source files ≤ 750 lines (800 grace).
 
 ## Handoff
@@ -211,13 +213,17 @@ that calls it, and `cicd` where the image's Rust stage or a toolchain pin moves.
 
 - `code/workflows/12-rust-extension/` — the procedure for this surface
 - `code/workflows/02-tdd-cycle/` · `08-security-hardening/` — both suites, then the audit
-- `project-management/workflows/18-backend-code/` — the build phase this is entered from
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `project-management/workflows/19-backend-code/` — the build phase this is entered from
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/07-dependency-updates/` — the cadence a crate or toolchain bump follows
 
 ## Cross-references
 
 - `code/docs/RUST.md` and its `rust/` sub-docs — the guide behind this skill
+- `code/docs/data-structures/TYPES-RUST.md` — newtypes for identifiers and units, enums carrying
+  data per variant so illegal states cannot be constructed, and the wire/domain seam: a
+  `#[serde(deny_unknown_fields)]` DTO converted through `TryFrom`, with the domain type deriving
+  no serde at all. `serde` is not a workspace dependency, so adding it is a supply-chain event
 - `code/docs/encryption/RUST-CRYPTO.md` — how native crypto relates to the Fernet pipeline
 - `code/src/rust/CLAUDE.md` — the operating rules for the tree itself
 - `code/src/scripts/rust/CONTEXT.md` — why these scripts run on the host

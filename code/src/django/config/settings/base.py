@@ -2,9 +2,9 @@
 
 This is the project baseline: Django's own defaults plus the infrastructure wiring
 the repository already provides (PostgreSQL via ``dj-database-url``, Valkey via
-``django-valkey``). The only registered application is ``apps.core``, which owns no
-models and exists to hold the primitives every domain app imports — ``apps/`` is
-otherwise awaiting its first domain module.
+``django-valkey``, server-rendered UI via ``django-components``). The only local
+applications registered are ``apps.core`` and ``apps.health``; neither owns a model,
+and ``apps/`` is otherwise awaiting its first domain module.
 
 ``DEBUG`` is deliberately absent: each environment module reads it from the
 environment so the value always comes from the matching ``.env.<environment>``
@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+from django_components import ComponentsSettings
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -31,9 +32,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third-party. django-components is the project's only component system; registering
+    # it installs the `{% component %}` tag library and the autodiscovery pass that
+    # imports each component module at AppConfig.ready(). Where those modules are looked
+    # for is COMPONENTS, below.
+    "django_components",
     # Local. `core` owns no models — it is registered so `apps.core` is a real app
     # rather than a bare package, and so app-loading order is explicit once it has any.
     "apps.core",
+    # `health` owns no models either. Registered because its probes and views are app
+    # code, and because an unregistered package cannot carry an AppConfig.
+    "apps.health",
 ]
 
 MIDDLEWARE = [
@@ -57,8 +66,30 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
+        # APP_DIRS is absent rather than False: Django refuses a backend that sets both it
+        # and an explicit `loaders` list, and django-components must be a loader for a
+        # component's HTML to be findable at all. `app_directories.Loader` below is exactly
+        # what APP_DIRS = True installs, so naming the loaders costs nothing.
         "OPTIONS": {
+            # Cached in every environment, where Django would otherwise do it for itself
+            # only when DEBUG is False. Safe in dev because the container runs Uvicorn with
+            # --reload watching *.html, so a template edit restarts the process rather than
+            # relying on the loader's cache being reset. See
+            # code/src/docker/django/entrypoint.dev.sh.
+            "loaders": [
+                (
+                    "django.template.loaders.cached.Loader",
+                    [
+                        "django.template.loaders.filesystem.Loader",
+                        "django.template.loaders.app_directories.Loader",
+                        "django_components.template_loader.Loader",
+                    ],
+                ),
+            ],
+            # `{% component %}` without a `{% load component_tags %}` at the head of every
+            # template that renders one. The alternative is a line of ceremony per page,
+            # forgotten once and then diagnosed as a missing component.
+            "builtins": ["django_components.templatetags.component_tags"],
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -68,6 +99,24 @@ TEMPLATES = [
         },
     },
 ]
+
+# The two places a django-component may live, which are django-components' own defaults
+# made explicit. `dirs` is the top-level root, for a component more than one app renders;
+# `app_dirs` is the folder name searched inside every installed app, for a component that
+# app owns. Which of the two any given component belongs in is decided by ownership: a
+# component rendered by more than one app is a top-level one, and a component only its own
+# app renders lives in that app.
+#
+# Explicit because the default here is not what it looks like: django-components falls back
+# to STATICFILES_DIRS whenever COMPONENTS.dirs is unset and STATICFILES_DIRS is not, so
+# omitting this would silently make BASE_DIR / "static" the top-level component root.
+#
+# Neither directory exists yet and neither has to. An app-level folder is skipped unless it
+# is on disk; a top-level dir is only ever globbed, and must be an absolute path.
+COMPONENTS = ComponentsSettings(
+    dirs=[BASE_DIR / "components"],
+    app_dirs=["components"],
+)
 
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
@@ -117,6 +166,11 @@ SESSION_COOKIE_SAMESITE = "Lax"
 # so a deployment can move it again without a code change.
 DJANGO_ADMIN_PATH = os.environ.get("DJANGO_ADMIN_PATH", "control/")
 
+# How long /health/ready/ may serve a memoised verdict. Short by design: it exists so an
+# external prober cannot stampede PostgreSQL and Valkey, not to make the endpoint cheap.
+# Raising it past a probe interval means the status page reports the previous interval.
+HEALTH_CACHE_TTL_SECONDS = int(os.environ.get("HEALTH_CACHE_TTL_SECONDS", "15"))
+
 LANGUAGE_CODE = "en-gb"
 TIME_ZONE = "Europe/London"
 USE_I18N = True
@@ -125,6 +179,14 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Django's own two finders, named so a third can join them. A component's CSS and JS sit
+# beside the component rather than under static/, and neither default finder looks there.
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django_components.finders.ComponentsFileSystemFinder",
+]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"

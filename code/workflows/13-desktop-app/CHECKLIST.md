@@ -16,10 +16,10 @@ model: opus
 
 ## Gate
 
-- [ ] The work belongs on the **desktop surface** — not a web page (`01-new-feature`) and not a
+- [ ] The work belongs on the **desktop surface** — not a web page (`01-implement-story`) and not a
       headless native primitive (`12-rust-extension`) · _opus_
 - [ ] The screen was grilled against its wireframe and confirmed before markup was written
-- [ ] Entered from `project-management/workflows/20-frontend-code/`, not from a design gate
+- [ ] Entered from `project-management/workflows/21-frontend-code/`, not from a design gate
 
 ## Licence — the hard gate
 
@@ -70,4 +70,4 @@ model: opus
 - [ ] Built to the wireframe; brand voice followed in user-facing copy
 - [ ] `target/` and every built binary excluded from the commit
 - [ ] `code/src/rust/CONTEXT.md` updated if the tree changed
-- [ ] Handed to `21-implementation-documentation` for the record, docs closeout and graph refresh
+- [ ] Handed to `22-implementation-documentation` for the record, docs closeout and graph refresh

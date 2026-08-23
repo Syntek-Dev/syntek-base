@@ -2,7 +2,7 @@
 
 The brand guidelines, in **three stages** over one cumulative deliverable. Each story records
 the tokens it needs (`USER-STORY-IDEAS/`); once every story is planned,
-`17-consolidate-design-work` reconciles them into one token set (`CONSOLIDATED-IDEAS/`) and
+`18-consolidate-design-work` reconciles them into one token set (`CONSOLIDATED-IDEAS/`) and
 re-runs the generator; after the code ships, each story records what actually landed in the
 token layer (`IMPLEMENTATION/`).
 
@@ -19,11 +19,11 @@ project-management/src/06-BRAND-GUIDE/
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── BRAND-IDEA-US000-TEMPLATE.md
 │   └── BRAND-IDEA-US###-<DESCRIPTOR>.md
-├── CONSOLIDATED-IDEAS/      ← stage 2: the unified token set (workflow 17)
+├── CONSOLIDATED-IDEAS/      ← stage 2: the unified token set (workflow 18)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── BRAND-CONSOLIDATED-000-TEMPLATE.md
 │   └── BRAND-CONSOLIDATED-<DOMAIN>.md
-├── IMPLEMENTATION/          ← stage 3: tokens as shipped, per story (workflow 21)
+├── IMPLEMENTATION/          ← stage 3: tokens as shipped, per story (workflow 22)
 │   ├── CONTEXT.md · CLAUDE.md
 │   ├── BRAND-IMPL-US000-TEMPLATE.md
 │   └── BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -51,8 +51,8 @@ signal worth acting on.
 | Stage                 | Written by  | Scope     | Naming                                        |
 | --------------------- | ----------- | --------- | --------------------------------------------- |
 | `USER-STORY-IDEAS/`   | workflow 06 | one story | `BRAND-IDEA-US###-<DESCRIPTOR>.md`            |
-| `CONSOLIDATED-IDEAS/` | workflow 17 | a domain  | `BRAND-CONSOLIDATED-<DOMAIN>.md`              |
-| `IMPLEMENTATION/`     | workflow 21 | one story | `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
+| `CONSOLIDATED-IDEAS/` | workflow 18 | a domain  | `BRAND-CONSOLIDATED-<DOMAIN>.md`              |
+| `IMPLEMENTATION/`     | workflow 22 | one story | `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` |
 
 `<DOMAIN>` ∈ `COLOUR`, `TYPOGRAPHY`, `SPACING`, `LOGO`, `VOICE` — or the whole set in one
 document on a small project. **Stage 1 is frozen once stage 2 runs.**
@@ -66,6 +66,6 @@ document on a small project. **Stage 1 is frozen once stage 2 runs.**
 - `code/docs/DESIGN-TOKENS.md` — the code-side, DB-canonical token system
 - `code/docs/ACCESSIBILITY.md` — contrast and legibility the palette must satisfy
 - `project-management/workflows/06-brand-guides/` — produces stage 1
-- `project-management/workflows/17-consolidate-design-work/` — produces stage 2
+- `project-management/workflows/18-consolidate-design-work/` — produces stage 2
 
 **Last Updated**: <%DATE%>

@@ -22,13 +22,13 @@ candidate stories, and initial scope. Run it after stories exist and before desi
 
 > **Note:** This workflow produces a high-level sprint record (`SPRINT-##.md`).
 > The detailed sprint plan (story assignments, phase breakdown, GDPR/security/QA constraints)
-> is written later via `workflows/15-sprint-plans/`, after all pre-sprint checks are complete.
+> is written later via `workflows/16-sprint-plans/`, after all pre-sprint checks are complete.
 
 ## Key concepts
 
 - Sprint records are saved as `SPRINT-##.md` in `project-management/src/03-SPRINTS/`
 - Use MoSCoW prioritisation (Must / Should / Could / Won't) to identify candidate stories
-- This record captures intent; the definitive plan comes from `workflows/15-sprint-plans/`
+- This record captures intent; the definitive plan comes from `workflows/16-sprint-plans/`
 
 ## Cross-references
 
@@ -40,8 +40,8 @@ candidate stories, and initial scope. Run it after stories exist and before desi
 
 - `project-management/src/02-STORIES/` — story backlog
 - `project-management/src/03-SPRINTS/` — sprint records
-- `project-management/src/15-SPRINT-PLANS/` — detailed sprint plans (written after checks)
-- `project-management/workflows/15-sprint-plans/` — detailed planning workflow
+- `project-management/src/16-SPRINT-PLANS/` — detailed sprint plans (written after checks)
+- `project-management/workflows/16-sprint-plans/` — detailed planning workflow
 - `project-management/src/09-GDPR/` — check GDPR obligations for candidate stories
 - `project-management/src/10-SECURITY/` — check open security findings
 - `project-management/src/11-QA/` — confirm QA docs exist

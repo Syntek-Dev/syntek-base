@@ -12,7 +12,7 @@ migration evidence, that a story's shipped schema matches `../CONSOLIDATED-IDEAS
 
 ## How to work here
 
-- **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
+- **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill, consulting `database` where a deviation needs judging, against the consolidated
   schema and the story's shipped migrations.
 - **Model:** Opus — this records what was built against an already-approved schema; it is a
@@ -22,7 +22,7 @@ migration evidence, that a story's shipped schema matches `../CONSOLIDATED-IDEAS
   `DB-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → list the migrations that shipped → mark each
   consolidated table and column Present / Changed / Missing with the migration file as evidence
   → confirm constraints, indexes, PII encryption, and RLS policy present → justify every
-  deviation → route anything worth carrying forward to `../../19-FINDINGS/`.
+  deviation → route anything worth carrying forward to `../../20-FINDINGS/`.
 - **Definition of done:** every consolidated element for this story has a status and evidence;
   deviations justified; the `US###`, consolidated-doc link, and date present; British English;
   DD/MM/YYYY.
@@ -34,7 +34,7 @@ migration evidence, that a story's shipped schema matches `../CONSOLIDATED-IDEAS
 - **An unexplained deviation from the consolidated schema is a defect.** State whether the
   consolidation was wrong or the build was, and route it: a consolidation error is a finding, a
   build error is a bug.
-- **Record, never fix.** The correction lands in `code/`, a `../../20-BUGS/` report, or the next
+- **Record, never fix.** The correction lands in `code/`, a `../../21-BUGS/` report, or the next
   story — not in this document.
 - **Never rename or back-date a filed record** — the date is load-bearing for the audit trail;
   supersede with a new record if needed.

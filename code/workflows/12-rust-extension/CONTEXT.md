@@ -23,7 +23,7 @@ a new dependency.
 Use it only when the work meets one of the two grounds in `code/docs/RUST.md`: **a guarantee
 Python cannot make** (constant-time comparison, wiping key material), or **work Python is
 genuinely bad at** (a hot path, with a measurement behind the claim). If neither holds, the work
-belongs in the service layer — use `project-management/workflows/18-backend-code/` and the
+belongs in the service layer — use `project-management/workflows/19-backend-code/` and the
 `backend` skill.
 
 **Rust-only.** This workflow exists only in a project generated with `INCLUDE_RUST`.
@@ -62,6 +62,6 @@ belongs in the service layer — use `project-management/workflows/18-backend-co
 - `code/src/scripts/rust/CONTEXT.md` — the scripts every operation runs through
 - `code/workflows/02-tdd-cycle/` — the Red → Green → Refactor cycle both suites are built through
 - `code/workflows/08-security-hardening/` — the audit any crypto crate must pass
-- `project-management/workflows/18-backend-code/` — **this workflow is entered from there**
-- `project-management/workflows/21-implementation-documentation/` — writes the implementation
+- `project-management/workflows/19-backend-code/` — **this workflow is entered from there**
+- `project-management/workflows/22-implementation-documentation/` — writes the implementation
   record and refreshes the graph; do not write it here

@@ -19,7 +19,11 @@ CACHES = {
     "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+# See dev.py for why this is MAILERS rather than EMAIL_BACKEND. locmem keeps sent mail in
+# django.core.mail.outbox for assertions instead of delivering it.
+MAILERS = {
+    "default": {"BACKEND": "django.core.mail.backends.locmem.EmailBackend"},
+}
 
 # Matches dev, so a template assertion fails on a variable the view never passed rather than
 # quietly comparing two empty strings. Kept out of staging and production, where a non-empty

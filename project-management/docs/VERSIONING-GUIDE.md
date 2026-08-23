@@ -78,7 +78,7 @@ the store release itself — which is part of why its track is independent.
 
 The same rules apply at both the root project level and sub-package level. How a commit _signals_
 a breaking change — the `!` shorthand and the `BREAKING CHANGE:` footer — belongs to the commit
-format: `project-management/docs/GIT-GUIDE.md`.
+format: `project-management/docs/git/COMMITS.md`.
 
 ---
 

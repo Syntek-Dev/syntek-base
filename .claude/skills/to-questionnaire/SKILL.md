@@ -118,8 +118,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 are the procedure of record — do not restate them at length here.
 
 - `project-management/workflows/09-gdpr-compliance/` — where lawful basis and retention answers land
-- `project-management/workflows/01-feature/` — when the blocked decision is a node on a feature map
-- `project-management/workflows/14-decisions/` — when the answer settles an ADR
+- `project-management/workflows/01-feature-map/` — when the blocked decision is a node on a feature map
+- `project-management/workflows/15-decisions/` — when the answer settles an ADR
 
 ## Cross-references
 

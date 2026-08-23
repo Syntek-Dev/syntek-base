@@ -1,7 +1,7 @@
 # project-management/src/07-COMPONENTS/IMPLEMENTATION
 
 **Stage 3** — components as shipped. One record per user story, written during
-`workflows/21-implementation-documentation/`, confirming that the components the story used
+`workflows/22-implementation-documentation/`, confirming that the components the story used
 exist in `code/src/django/components/` and match `../CONSOLIDATED-IDEAS/`.
 
 ## Directory Tree
@@ -37,6 +37,6 @@ template.
 - `../USER-STORY-IDEAS/` — the frozen need, for tracing intent
 - `code/src/django/components/` — where the implementations live
 - `code/docs/ACCESSIBILITY.md` — the WCAG 2.2 AA obligations verified here
-- `../../19-FINDINGS/` — where a divergence worth carrying forward is recorded
+- `../../20-FINDINGS/` — where a divergence worth carrying forward is recorded
 
 **Last Updated**: <%DATE%>

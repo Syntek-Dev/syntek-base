@@ -13,10 +13,11 @@
 # Expo Go runs on a physical device, and a device cannot reach a 127.0.0.N loopback
 # alias — Metro must be reachable on the LAN, which containerising fights rather than
 # helps. "The stack" is therefore Docker plus this one host process, and Node and pnpm
-# are explicit host prerequisites (TEMPLATE-GUIDE/03-PREREQUISITES.md).
+# are explicit host prerequisites.
 #
-# The Django API still runs in Docker via development/server.sh. Once the API exists, a
-# device will not reach it on 127.0.0.N either — it needs the host's LAN address.
+# The Django API still runs in Docker, started by its own dev-stack script. Once the API
+# exists, a device will not reach it on 127.0.0.N either — it needs the host's LAN
+# address.
 #
 # Exit codes:  0 = success   1 = Metro failed to start   2 = script error
 #
@@ -36,7 +37,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --help | -h)
-      sed -n '3,11p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      sed -n '3,11p' "$SCRIPT_SELF" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *) die "Unknown option '$1'. Use --help for usage." ;;

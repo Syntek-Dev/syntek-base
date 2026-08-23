@@ -19,7 +19,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 | Step | Section                                                                                    |
 | ---- | ------------------------------------------------------------------------------------------ |
 | 1–3  | **Guides in code/docs/** → CODING-PRINCIPLES.md, SECURITY.md, TESTING.md                   |
-| 1–2  | **External — Security & Standards** → OWASP Top 10 (2021), OWASP REST Security Cheat Sheet |
+| 1–2  | **External — Security & Standards** → OWASP Top 10 (2025), OWASP REST Security Cheat Sheet |
 | 1–3  | **External — Code Quality** → Ruff, ESLint, Prettier, basedpyright                         |
 
 ---

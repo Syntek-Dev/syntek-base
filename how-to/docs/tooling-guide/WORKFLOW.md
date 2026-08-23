@@ -18,7 +18,7 @@ phase (`.claude/skills/CONTEXT.md` says which skill owns what). How a skill is r
 it runs: [`COMMANDS.md`](COMMANDS.md). The `git` skill commits after each unit of work so version
 control stays granular.
 
-For an end-to-end run, reach for the skill whose remit is the **whole arc** — `feature`, `bugfix`,
+For an end-to-end run, reach for the skill whose remit is the **whole arc** — `implement-story`, `bugfix`,
 `release` — and let it sequence the scoped skills below rather than driving each by hand.
 
 ### Phase 1: Project Initialisation

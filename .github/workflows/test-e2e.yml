@@ -34,10 +34,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # See the equivalent guard in test.yml. uv.lock is absent by design in the base
-      # template, and every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, so the
-      # dev stack cannot start here. Report success rather than failing on every pull
-      # request raised against the template itself.
+      # See the equivalent guard in test.yml. uv.lock is COMMITTED as of 16/08/2026, so this
+      # guard takes its present branch and the browser suite runs here. It stays because
+      # this workflow SHIPS: every Dockerfile builds with `COPY pyproject.toml uv.lock ./`,
+      # and a generated project has no lock of its own until the `uv lock` copier task has
+      # written one, so the dev stack cannot start in that window. The guard is what keeps
+      # one file correct on both sides of the template boundary — report success there
+      # rather than failing on a pull request with nothing to test.
       - name: Detect the backend lockfile
         id: detect
         run: |
@@ -46,18 +49,39 @@ jobs:
             echo "uv.lock present — running the browser suite."
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — this is the base template. The dev stack cannot build."
+            echo "No uv.lock yet — the dev stack cannot build."
           fi
 
       - name: Install uv
         if: steps.detect.outputs.present == 'true'
         uses: astral-sh/setup-uv@v10.0.1
 
+      # e2e-py.sh runs playwright and pytest on the RUNNER, not in a container, so the host
+      # needs the `test` group installed. The job never had this step: it installed uv and
+      # jumped straight to the script, leaving `uv run --group test` to build the environment
+      # implicitly on first use.
+      #
+      # `--locked` rather than a bare sync, because uv's default is to re-lock silently when
+      # the manifest and the lockfile disagree. In CI that turns a stale uv.lock into a green
+      # run against dependency versions nobody committed. --locked asserts instead: if the
+      # lockfile needs updating, the job fails and says so.
+      - name: Install the test group
+        if: steps.detect.outputs.present == 'true'
+        run: uv sync --locked --group test
+
+      # The `||` fallback is load-bearing, not defensive. `.env.dev.example` already ships a
+      # working `SECRET_KEY=change_me`, and compose reads an env file last-assignment-wins —
+      # so appending an UNSET secret writes `SECRET_KEY=` and OVERRIDES the working default
+      # with an empty string. `${SECRET_KEY:?...}` in docker-compose.dev.yml rejects empty as
+      # well as unset, so the step that exists to supply the key was the step destroying it,
+      # and the stack could not start on any fork or any repo without the secret configured.
+      # Same shape as this repo's API_TEST_PW fallback in test-api.yml. The value is inert:
+      # a throwaway for an ephemeral container torn down at job end, never a deployed key.
       - name: Create .env.dev
         if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.dev.example code/src/docker/.env.dev
-          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.dev
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY || 'ci-ephemeral-not-for-production-0000000000' }}" >> code/src/docker/.env.dev
 
       # e2e-py.sh talks to the dev stack over HTTP on host port 81. It refuses to run
       # if the stack is unreachable, so bring it up first and let the compose
@@ -66,11 +90,15 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: bash code/src/scripts/development/server.sh up --build
 
+      # /health/ rather than /control/: the liveness route is a fixed contract, while the
+      # admin sits behind the configurable DJANGO_ADMIN_PATH and only ever proved the stack
+      # was up by the accident of its 302. nginx proxies it through the `location /`
+      # catch-all in dev.conf, so it is reachable on host port 81 like anything else.
       - name: Wait for the stack
         if: steps.detect.outputs.present == 'true'
         run: |
           for _ in $(seq 1 60); do
-            if curl -sf -o /dev/null http://localhost:81/control/; then
+            if curl -sf -o /dev/null http://localhost:81/health/; then
               echo "stack is up"; exit 0
             fi
             sleep 2

@@ -36,9 +36,12 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
 - **These are `**/src/\*.md`operator guides — the sanctioned exception to the 300-line
   instructional limit.** Write them for humans, in full. The`CONTEXT.md`/`CLAUDE.md` pairs here
   and in each sub-directory still keep within it.
-- **`TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/` are excluded from generation.** They describe the
-  template rather than the project, may quote token syntax freely, and must never be relied on by
-  a file that _is_ rendered — a generated project does not have them.
+- **`TEMPLATE-TOKENS.md` and `TEMPLATE-GUIDE/` ship, and are therefore rendered.** `copier.yml` <!-- doc-references: template-only -->
+  `_exclude`s nothing in this tree, so every file here lands in a generated project and Copier runs it through Jinja like any other file. A
+  literal token or block delimiter written into their prose is **live template code**: it renders
+  to nothing, or kills generation outright. Wrap any region that must show the syntax in a Jinja
+  `raw` block, and generate into `/tmp` before committing. Per-file detail, including which four
+  guides are wrapped today: `TEMPLATE-GUIDE/CLAUDE.md`.
 - **Never commit secrets or real credentials** — dev accounts live in the gitignored
   `code/src/docker/.env.dev`; reference `.env.*.example` templates only.
 - **Licence compatibility:** this project is licensed <%LICENCE%>. Do not introduce dependencies
@@ -57,5 +60,7 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
 
   > **This file is rendered by Copier.** Writing a token's delimiters literally in prose here
   > makes Jinja try to parse them, and generation fails with `TemplateSyntaxError`. If you must
-  > show the syntax, wrap the example in a `raw` block — or describe it in words, as above. The
-  > place to quote token syntax freely is `TEMPLATE-GUIDE/`, which is excluded from rendering.
+  > show the syntax, wrap the example in a `raw` block — or describe it in words, as above.
+  > **There is nowhere in this tree that is free of this.** `TEMPLATE-GUIDE/` is rendered too,
+  > and since 22/08/2026 `copier.yml` excludes nothing here at all — so every file in this tree <!-- doc-references: template-only -->
+  > is live template code without exception.

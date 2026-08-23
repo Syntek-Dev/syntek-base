@@ -1,4 +1,4 @@
-# Template Tokens — the Contract `copier.yml` Implements
+# Template Tokens — the Contract `copier.yml` Implements <!-- doc-references: template-only -->
 
 **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%>
 
@@ -12,8 +12,8 @@ deployment-specific values are written as `<%…%>` tokens and rendered by
 project's live code.
 
 This file is the single source of token truth: what every token means, what to substitute, and
-what deliberately stays fixed. `copier.yml` at the repo root is the executable form of this
-contract — if the two ever disagree, `copier.yml` wins and this file is the bug.
+what deliberately stays fixed. `copier.yml` at the repo root is the executable form of this <!-- doc-references: template-only -->
+contract — if the two ever disagree, `copier.yml` wins and this file is the bug. <!-- doc-references: template-only -->
 
 > **Reading this to generate a project?** You want `TEMPLATE-GUIDE/04-QUICKSTART.md`. This file is
 > the reference behind it.
@@ -33,8 +33,8 @@ alternative:
 
 | Syntax                          | Where it lives                          | What the delimiters would do         |
 | ------------------------------- | --------------------------------------- | ------------------------------------ |
-| `${{ github.* }}`               | 9 GitHub Actions workflow files         | blanked, leaving a bare `$`          |
-| `{% … %}` / `{{ field.label }}` | Django template examples in 29 docs     | parsed as Jinja, or silently blanked |
+| `${{ github.* }}`               | 13 of the 35 CI workflow files          | blanked, leaving a bare `$`          |
+| `{% … %}` / `{{ field.label }}` | Django template examples in 42 docs     | parsed as Jinja, or silently blanked |
 | `{{api_url}}`                   | Bruno `.bru` request files              | silently blanked                     |
 | `[[ "$x" == "y" ]]`             | bash test syntax throughout the scripts | ruled out `[[ ]]` as the alternative |
 
@@ -46,7 +46,7 @@ The delimiters below were chosen by scanning every tracked file and verifying ze
 | Block    | `<:`  | `:>`   |
 | Comment  | `<~`  | `~>`   |
 
-They are set in `copier.yml` under `_envops`. If you ever add content to the template containing
+They are set in `copier.yml` under `_envops`. If you ever add content to the template containing <!-- doc-references: template-only -->
 one of these six sequences literally, wrap it in a Jinja **`raw` block** — the block delimiters
 around the word `raw` before it, and the same around `endraw` after it. Everything between is
 emitted verbatim.
@@ -60,10 +60,12 @@ describes the markers rather than showing them.
 
 ## The tokens
 
-Thirty-eight tokens carry every project-specific value. **Thirty-four are always asked**; the
+Thirty-seven tokens carry every project-specific value. **Thirty-three are always asked**; the
 remaining four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile
 surface is included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only
 when the desktop surface is. Example values are illustrative — replace them.
+
+Thirty-eight until 15/08/2026, when `CORE_APP` was retired — see the note under _Django apps_.
 
 ### Identity
 
@@ -115,6 +117,11 @@ this column exists to prevent, and it has happened once already. The rule is exc
 where a product needs qualifying, that detail belongs in the question's `help:` text, never in
 its default.
 
+**Four are prose-shaped; two of those also render into the `code/docs/` guides** for their
+capability — `<%OBJECT_STORE%>` and `<%ERROR_TRACKING%>`. The other two reach
+`PLATFORM-PROVIDERS.md` only. Shape is the constraint on where a token may be written; reach is
+which files it lands in, and they are not the same claim.
+
 **The interface each one sits behind** — this is what makes a different answer safe:
 
 | Concern        | The seam the code is written against                          |
@@ -140,7 +147,7 @@ verdicts is `code/docs/architecture/PROVIDER-NEUTRALITY.md`.
 ### Process dependencies
 
 A dependency the **people** operating the project rely on, which no application code touches.
-Listed separately from the six above rather than folded in with them, because under the substrate
+Listed separately from the seven above rather than folded in with them, because under the substrate
 test it is **neither seam kind** — swapping it changes where a human types, not what the code
 does — and filing it as a protocol or adapter seam would cheapen both terms.
 
@@ -149,9 +156,9 @@ does — and filing it as a protocol or adapter seam would cheapen both terms.
 | `<%INCIDENT_TRACKER%>` | Where the substance of an incident is held | `ClickUp`     | free text |
 
 **The interface is access control**, and that is the whole point. The in-repo register at
-`project-management/src/22-INCIDENTS/` is **PII-free by rule** and ships, so log excerpts,
+`project-management/src/23-INCIDENTS/` is **PII-free by rule** and ships, so log excerpts,
 identifiers and any postmortem touching personal data need a home with permissions. The default is
-`None — record in 22-INCIDENTS/ only`, and it is a first-class answer: a project without a tracker
+`None — record in 23-INCIDENTS/ only`, and it is a first-class answer: a project without a tracker
 keeps that substance **outside the repository** rather than relaxing the rule to fit a report in.
 The practice is `how-to/docs/INCIDENT-PRACTICE.md`.
 
@@ -184,22 +191,51 @@ content) keeps its default, and the doc rows that mention it can be deleted afte
 | `<%CONTENT_APP%>`       | App owning user-authored content                 | `content`       | `snake_case` |
 | `<%NOTIFICATIONS_APP%>` | App owning notifications and their delivery      | `notifications` | `snake_case` |
 | `<%LEGAL_APP%>`         | App owning cookie consent and legal pages        | `legal`         | `snake_case` |
-| `<%CORE_APP%>`          | App owning shared primitives (e.g. encryption)   | `core`          | `snake_case` |
 
-`apps.marketing`, `apps.seo`, and `apps.design_tokens` are **house constants**, not tokens — they
-are the same in every project and stay literal.
+`apps.marketing`, `apps.seo` and `apps.design_tokens` are **house constants**, not tokens — they
+are the same in every project and stay literal. So are the two apps that ship as real directories,
+`apps.core` and `apps.health`, both registered in `config/settings/base.py`.
+
+**`<%CORE_APP%>` was retired on 15/08/2026, and the reason is the general rule.** The five tokens
+above name apps **a story has yet to create**: no directory in the template _is_ `apps/users/`, so
+answering `IDENTITY_APP=accounts` contradicts no shipped code. `apps/core/` is the opposite case —
+it **already ships**, as a literal directory, with `name = "apps.core"` in its `apps.py`,
+`apps.core` in `INSTALLED_APPS`, literal imports throughout, and a dozen guides naming it.
+Answering `CORE_APP=shared` produced a project whose documentation disagreed with its own code.
+**A token whose referent is hardcoded everywhere else is not a choice; it is a claim that a choice
+exists.**
+
+**What that argument does not claim is that `users` never appears literally.** It appears around
+thirty times across the tree — in worked examples, log-query snippets, a coverage-floor row and
+several dated historical notes — and those stay literal on purpose: a `grep "apps.accounts"`
+example teaches a reader nothing a `grep "apps.users"` one does not, and rewriting history to name
+an app the defect never named would make the record false. **The line the token has to hold is
+executable.** Anything that _runs_ against the identity app reads the answer rather than the
+default, or the token is decoration:
+
+| Site                                                          | How it reads the answer                                             |
+| ------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `code/src/scripts/tests/backend-coverage.sh`                  | `AUTH_APP="${AUTH_APP:-users}"`, and skips while that app is absent |
+| `.github/workflows/claude.yml` · `.github/workflows/test.yml` | Both call that script rather than a hardcoded `--include` glob      |
+
+Both CI jobs hardcoded `apps/users/*` until 20/08/2026, and both ship — so a project answering
+`accounts` was handed a gate enforcing a 90% floor on a directory it does not have, while this
+repository, which has no apps at all, saw the same leg measure nothing and report success on every
+run. **A prose example naming the default is a reading aid; a gate naming it is a broken gate**, and
+keeping the two apart is what keeps this token a real choice rather than the claim `<%CORE_APP%>`
+was retired for making.
 
 ### Planning cadence
 
 The story-point ceiling that drives the planning loop. Stories are planned one at a time through
-workflows `01`–`13`; when the open sprint's accepted points reach `<%SPRINT_CAPACITY_SP%>`,
-workflows `14` and `15` run for that sprint before the next story is planned. The grace value is
+workflows `02`–`14`; when the open sprint's accepted points reach `<%SPRINT_CAPACITY_SP%>`,
+workflows `16` and `17` run for that sprint before the next story is planned. The grace value is
 a hard ceiling for the case where the next story would otherwise split badly — not a routine
 target. Full rules: `project-management/docs/PLANNING-GUIDE.md`.
 
 | Token                    | Meaning                                                  | Example value | Format           |
 | ------------------------ | -------------------------------------------------------- | ------------- | ---------------- |
-| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `14`+`15` pass | `11`          | `int`            |
+| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `16`+`17` pass | `11`          | `int`            |
 | `<%SPRINT_GRACE_SP%>`    | Hard ceiling a sprint may stretch to                     | `13`          | `int` > capacity |
 
 Both default to the house values (11 / 13). Tune them to your team's **measured** velocity after
@@ -209,8 +245,9 @@ does not match reality makes every sprint either starve or overrun.
 ### Mobile frontend (optional)
 
 The opt-in React Native + TypeScript app at `code/src/mobile/`. `<%INCLUDE_MOBILE%>` gates the
-whole feature: when it is false, the mobile tree and `code/src/scripts/mobile/` are excluded by a
-templated `_exclude` entry, and the two tokens below are never asked. A web-only generation is
+whole feature: when it is false, **ten templated `_exclude` entries** drop the mobile tree, its
+scripts, workflows and CI jobs, the four mobile `code/docs` guides, `how-to/src/STORE-LISTING.md`
+and the `stack-react-native` skill — and the two tokens below are never asked. A web-only generation is
 identical to one produced before the mobile option existed.
 
 | Token                  | Meaning                                   | Example value | Format         |
@@ -272,7 +309,8 @@ Slint's own APIs**, which is why desktop UI is never moved into a shared package
 | `<%DATE%>` | The doc's _Last Updated_ / baseline date, set per project | `22/07/2026`  | `DD/MM/YYYY` |
 
 > **`<%DATE%>` is answered, not computed.** It is stored in `.copier-answers.yml` and reused on
-> every `copier update`, so an update never churns 280 doc headers to today's date.
+> every `copier update`, so an update never churns the 338 doc headers carrying it to today's
+> date.
 
 ---
 
@@ -289,6 +327,7 @@ Copier derives these from earlier answers — press Enter to accept:
 | `<%DEPLOY_REPO%>`      | `<%PROJECT_SLUG%>-nixos-client-deployment`       |
 | `<%MOBILE_APP_NAME%>`  | `<%PROJECT_NAME%>`                               |
 | `<%MOBILE_BUNDLE_ID%>` | `<%PRIMARY_DOMAIN%>` label-reversed, `-` removed |
+| `<%DESKTOP_APP_NAME%>` | `<%PROJECT_NAME%>`                               |
 
 ---
 
@@ -327,18 +366,39 @@ all**, so every gate that depends on parsing it — a compiler, a linter, a test
 while looking perfectly correct in a generated project. The gate then proves nothing until after
 generation, which is the one place nobody looks.
 
-| Position                                             | Validated? | Tokenise?               |
-| ---------------------------------------------------- | ---------- | ----------------------- |
-| Comment, description, author, licence field          | no         | yes                     |
-| String literal (Python, Rust, Slint, JSON, YAML)     | no         | yes                     |
-| Hostname, database name, path segment, env-var value | at runtime | yes                     |
-| **Crate / package / module / class / function name** | at compile | **no — house constant** |
-| **A name a schema constrains** (e.g. a k8s `name:`)  | on apply   | **no — house constant** |
+| Position                                                 | Validated? | Tokenise?               |
+| -------------------------------------------------------- | ---------- | ----------------------- |
+| Comment, description, author, licence field              | no         | yes                     |
+| String literal (Python, Rust, Slint, JSON, YAML)         | no         | yes                     |
+| Hostname, database name, path segment, env-var value     | at runtime | yes                     |
+| **Crate / package / module / class / function name**     | at compile | **no — house constant** |
+| **A name a schema constrains** (e.g. a k8s `name:`)      | on apply   | **no — house constant** |
+| **A shell word** (a Compose `--health-cmd`, any `sh -c`) | at run     | **no — house constant** |
 
-Where the branded name is genuinely wanted, produce it **after** the tool has run, where it is a
-filename rather than a grammar. `code/src/rust/crates/desktop/` is the worked example: the crate
-is the house constant `desktop`, and `code/src/scripts/desktop/package.sh` copies the built
-artefact to `<%PROJECT_SLUG%>-desktop`. Same deliverable, no token in the compiler's path.
+**The last row is a different failure, and it is worth separating.** Everywhere above, the
+delimiters are _illegal_ — a parser rejects them. In a shell word they are **legal and active**:
+`<` and `>` are redirects, so the command does not fail to parse, it runs and does something else
+entirely. That was `70fc963`, where a Compose health probe silently became a redirection. A rule
+written only about identifiers would never have caught it.
+
+**Two remedies, and which one applies depends on whether the name is wanted at all.**
+
+- **Never branded — house constant, permanently.** `code/src/rust/crates/desktop/` is the worked
+  example: the crate is the constant `desktop`, and `code/src/scripts/desktop/package.sh` copies
+  the built artefact to `<%PROJECT_SLUG%>-desktop` afterwards, where the name is a filename rather
+  than a grammar. Same deliverable, no token in the compiler's path.
+- **Branded late — house constant here, rewritten at generation.** `pyproject.toml`'s
+  `[project] name` is the worked example: it carries `syntek-base` so `uv` can parse the manifest
+  in this repository, and a `copier.yml` `_task` rewrites it to `<%PROJECT_SLUG%>` **before** <!-- doc-references: template-only -->
+  `uv lock` runs. Use this shape where the generated project genuinely needs its own name; note
+  the cost, which is that `copier update` never runs `_tasks`.
+
+**The rule has a gate, and did not until 15/08/2026.** `.github/scripts/check-template-parsers.sh` <!-- doc-references: template-only -->
+runs each toolchain's own parser — `uv lock --dry-run`, `cargo metadata`, `pnpm ls`,
+`docker compose config` — and requires every manifest to load in the template. It does **not**
+check positions, and that is deliberate: `pnpm` accepts `<%PROJECT_SLUG%>` in `package.json`'s
+`name` while `uv` rejects the identical token in `pyproject.toml`'s, so the same syntactic position
+is fine for one tool and fatal for another. Asking the parser is the only answer that stays true.
 
 This is the same class as `<%LICENCE%>`, which is not a valid SPDX expression either — handled
 there by exempting the crate in `code/src/rust/deny.toml` (`private.ignore`) rather than by
@@ -401,18 +461,21 @@ concrete content from that project's live code. Specific ADRs are referenced by 
 uvx copier copy gh:Syntek-Dev/syntek-base my-project
 ```
 
-Copier prompts for each token above, renders the tree, then runs its `_tasks`: move the project
-README into place, un-ignore `uv.lock`, generate the lock, and `git init`. Full detail — including
-what to do when `uv` is not installed — is in `TEMPLATE-GUIDE/06-GENERATION.md`.
+Copier prompts for each token above, renders the tree, then runs its four `_tasks`: move the nine
+seeded files into place, brand `pyproject.toml` with your slug, generate the lock, and `git init`.
+Full detail — including what to do when `uv` is not installed — is in
+`TEMPLATE-GUIDE/06-GENERATION.md`.
 
 Afterwards, run `/scale-planning` to regenerate the two snapshots against the new project's live
 code.
 
-> **No `uv.lock` ships with the template.** A lock pins the root project by name, and that name is
-> the literal `<%PROJECT_SLUG%>` until Copier renders it — not a valid PEP 508 name — so no lock
-> can be generated against the unrendered template, and a shipped one would only carry the
-> previous project's name. Every Dockerfile does `COPY pyproject.toml uv.lock ./`, so **the Docker
-> build fails until the project has been generated (or `uv lock` run by hand).** Commit the
-> generated lock — `pnpm-lock.yaml`, which records no root package name, ships as normal.
+> **The template commits a `uv.lock`, and excludes it from generation.** `pyproject.toml` carries
+> the house constant `name = "syntek-base"` rather than a token — `uv` validates `[project] name`
+> as a package name and rejects the delimiters — so the template _can_ lock, and does, which is
+> what makes its own image build. It is excluded because it pins `syntek-base`: an inherited copy
+> would fail `uv sync --frozen` and conflict in a lockfile on every `copier update`. Every
+> Dockerfile does `COPY pyproject.toml uv.lock ./`, so **the Docker build fails until your own
+> lock exists.** Commit it — `pnpm-lock.yaml`, which records no root package name, ships as
+> normal.
 
 <: endraw :>

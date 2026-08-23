@@ -1,0 +1,35 @@
+# Ruff configuration for the dict-discipline.sh --self-test fixtures.
+#
+# The files under broken/ are DELIBERATELY WRONG. They exist to be caught by this
+# script's clauses, and broken/ is required to trip every clause id or the self-test
+# fails. Ruff flags the same code — correctly — and turns `ruff check .` red for
+# fixtures that are working as designed. `typing.Dict` is the live example: it is
+# clause P3's entire target, and ruff's UP035/UP006 want it rewritten to `dict`,
+# which would delete the thing being detected.
+#
+# Ruff resolves the closest config in a file's ancestry, so this file governs
+# everything beneath it and nothing else. The root pyproject.toml is deliberately NOT
+# extended: these files are never imported, never packaged, and never executed.
+#
+# Silencing happens HERE, in a config scoped to a fixture tree, rather than as `# noqa`
+# comments in the fixtures themselves — the audits CLAUDE.md holds that a comment
+# suppressing a finding is itself a finding, and a fixture peppered with noqa is also
+# a fixture whose shape no longer matches the code it stands in for. It would also be
+# self-defeating twice over here, since a `# noqa` on the same line as a violation is
+# indistinguishable to a reader from the `DICT-OK:` marker this script parses.
+#
+# clean/ is covered by the same silence even though it would pass. Scoping the config
+# to broken/ alone would imply the two directories are held to different standards,
+# when what actually differs is only whether the detector should fire.
+#
+# The formatter is NOT disabled. `ruff format --check .` still covers these files, so
+# they stay readable and stay in the repository's own style — the same reason Prettier
+# still formats the TypeScript fixture beside them. `line-length` is restated for that
+# reason and not by habit: a scoped config replaces the root rather than extending it,
+# so omitting it would silently format this tree at ruff's default 88 while the rest of
+# the repository stays at 100, and "the repository's own style" above would be false.
+
+line-length = 100
+
+[lint]
+select = []

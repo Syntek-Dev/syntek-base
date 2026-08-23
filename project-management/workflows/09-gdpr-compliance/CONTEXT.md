@@ -18,6 +18,12 @@ project-management/workflows/09-gdpr-compliance/
 
 ## When to use this
 
+**Entry condition: the story's `GDPR` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story touches personal data. A story whose
+`GDPR` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow when:
 
 - A new feature collects, processes, or stores personal data
@@ -37,7 +43,7 @@ Use this workflow when:
   field encryption, consent gating, anonymising deletion, DSAR support. It names this review as
   a hard prerequisite and will not start until it is complete. Obligations are specified here
   and enforced there — keep the two consistent.
-- `project-management/workflows/21-implementation-documentation/` — writes the
+- `project-management/workflows/22-implementation-documentation/` — writes the
   `GDPR-IMPL-US###-*.md` record that closes this workflow's `PLANNING/` artefact.
 
 ### Related reading

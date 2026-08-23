@@ -242,4 +242,3 @@ and history. Self-hostable on your own server.
 | `curl`/HTTPie | REST/JSON | n/a                | Quick one-off request checks       |
 
 _Part of the `code/docs/` documentation family. See [`../API-DESIGN.md`](../API-DESIGN.md) for the full index._
-</content>

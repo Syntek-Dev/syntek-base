@@ -1,6 +1,6 @@
 # Quickstart — Generate to Running Stack
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 The short path from nothing to a project serving pages. Assumes `03-PREREQUISITES.md` is satisfied.
 
@@ -13,21 +13,25 @@ uvx copier copy gh:Syntek-Dev/syntek-base my-project
 cd my-project
 ```
 
-Copier asks thirty-four questions, plus four more between the optional surfaces if you opt into
+Copier asks thirty-three questions, plus four more between the optional surfaces if you opt into
 them. Most have either a sensible default or a value derived from an earlier answer — pressing
 Enter through the infrastructure and locale sections is a reasonable first pass. If you want to
 think about them properly, read `05-ANSWERS.md` first.
 
 You will be asked to trust the template, because generation runs post-tasks. Those tasks are the
-four at the bottom of `copier.yml` and nothing else: move the seeded files (README, version state,
-blank project memory, the scale-planning map) into place, un-ignore `uv.lock`, generate the lock,
-and `git init`. Read them if you like — that is why they are short.
+four at the bottom of `copier.yml` and nothing else: move the nine seeded files (README, version <!-- doc-references: template-only -->
+state, blank project memory, the two blank registers, the scale-planning map) into place, brand
+`pyproject.toml` with your slug, generate `uv.lock`, and `git init`. Read them if you like — that is why they are short.
 
-To skip the interview entirely and take every default:
+To skip the interview and take every default. **Six questions have no default**, so `--defaults`
+alone is not enough — each needs its own `--data`, and `PROJECT_DESCRIPTION` must clear its
+forty-character floor and contain no double quotes, or Copier re-prompts and the run stops being
+unattended:
 
 ```bash
 uvx copier copy --trust --defaults \
   --data PROJECT_NAME="My Project" \
+  --data PROJECT_DESCRIPTION="A client portal where customers track orders and raise tickets, replacing email and a spreadsheet." \
   --data ORG_NAME="My Org" \
   --data DEVELOPER_NAME="Your Name" \
   --data DEVELOPER_EMAIL="you@example.com" \
@@ -123,11 +127,23 @@ bash code/src/scripts/database/manageusers.sh create-superuser
 
 ## 7. Open it
 
-| URL                                            | What                               |
-| ---------------------------------------------- | ---------------------------------- |
-| `http://dev.<project-slug>.localhost`          | The public site                    |
-| `http://dev.<project-slug>.localhost/api/docs` | OpenAPI docs (dev only)            |
-| `http://dev.<project-slug>.localhost/control/` | Django admin — note: not `/admin/` |
+**`server.sh up` printed the live URL — use that one rather than typing one from memory.** The
+host port is **81**, not 80, because a local router (DDEV and friends) commonly holds
+`127.0.0.1:80`.
+
+| URL                                                    | What                                 |
+| ------------------------------------------------------ | ------------------------------------ |
+| `http://dev.<project-slug>.localhost:81/control/`      | Django admin — note: not `/admin/`   |
+| `http://dev.<project-slug>.localhost:81/health/`       | Liveness probe — `200 ok`            |
+| `http://dev.<project-slug>.localhost:81/health/ready/` | Readiness probe — database and cache |
+
+**Those are the only three routes at baseline**, because `config/urls.py` registers the health app
+and the admin and nothing else. There is no home page and no `/api/docs` yet: the marketing, portal
+and API prefixes appear as the stories that serve them are built, and `server.sh up` prints
+whatever the URLconf actually registers. A `404` at `/` is the correct answer today, not a broken
+install.
+
+A worktree stack answers on its own `dev-us<NNN>.` host instead — `how-to/docs/GIT-WORKTREES.md`.
 
 ---
 
@@ -170,13 +186,14 @@ what every scope decision is measured against. A one-liner typed at a prompt is 
 **2. Settle the voice.**
 
 ```text
-Fill in how-to/src/BRAND-VOICE.md Section 3 and Section 5 with me.
+Fill in how-to/src/BRAND-VOICE.md Section 3 with me.
 ```
 
 Tone, person, formality, the reader, the signature, the never-this line, and the
-say-this-not-that vocabulary. The reader comes straight from the brief, which is why it runs
-second. Every skill that writes a user-facing string loads this file first, and
-`code/src/scripts/audits/copy-emdash.sh` already enforces part of Section 4.
+say-this-not-that vocabulary. **Section 3 is the only section carrying placeholders** — the rest
+of the file is the portable core and is adopted unchanged. The reader comes straight from the
+brief, which is why it runs second. Every skill that writes a user-facing string loads this file
+first, and `code/src/scripts/audits/copy-emdash.sh` already enforces part of Section 4.
 
 **3. Settle the visual direction.**
 
@@ -212,13 +229,13 @@ required to say so before it plans anything.
 
 ## Common first-run problems
 
-| Symptom                                          | Cause and fix                                                                 |
-| ------------------------------------------------ | ----------------------------------------------------------------------------- |
-| `COPY pyproject.toml uv.lock` fails during build | `uv lock` never ran. Run it at the project root, then rebuild.                |
-| `dev.<slug>.localhost` does not resolve          | Add the `/etc/hosts` entry — `bash install.sh` offers this.                   |
-| Port 5432 or 6379 already in use                 | A local Postgres or Redis is running. Stop it, or change the published port.  |
-| `permission denied` on a script                  | `bash install.sh` sets the executable bits; run it, or `chmod +x` the script. |
-| Docker asks for `sudo`                           | Add yourself to the `docker` group and log back in.                           |
+| Symptom                                          | Cause and fix                                                                                          |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `COPY pyproject.toml uv.lock` fails during build | The lock task found no `uv`. Run `bash code/src/scripts/development/install-backend.sh`, then rebuild. |
+| `dev.<slug>.localhost` does not resolve          | Add the `/etc/hosts` entry — `bash install.sh` offers this.                                            |
+| Port 5432 or 6379 already in use                 | A local Postgres or Redis is running. Stop it, or change the published port.                           |
+| `permission denied` on a script                  | `bash install.sh` sets the executable bits; run it, or `chmod +x` the script.                          |
+| Docker asks for `sudo`                           | Add yourself to the `docker` group and log back in.                                                    |
 
 More: `15-TROUBLESHOOTING.md`.
 

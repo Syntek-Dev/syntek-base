@@ -37,7 +37,7 @@ bash code/src/scripts/development/server.sh up
 bash code/src/scripts/development/server.sh up --build
 
 # Start a single service
-bash code/src/scripts/development/server.sh up --service backend
+bash code/src/scripts/development/server.sh up --service django
 
 # Stop all services
 bash code/src/scripts/development/server.sh down
@@ -46,16 +46,17 @@ bash code/src/scripts/development/server.sh down
 bash code/src/scripts/development/server.sh down --volumes
 
 # Restart a single service
-bash code/src/scripts/development/server.sh restart --service backend
+bash code/src/scripts/development/server.sh restart --service django
 
 # Stream all service logs
 bash code/src/scripts/development/logs.sh --follow
 
 # Stream logs for a single service
-bash code/src/scripts/development/logs.sh --service backend --follow
+bash code/src/scripts/development/logs.sh --service django --follow
 ```
 
-The site is served by Django — with the stack up, visit `http://localhost:8000`.
+The site is served by Django — with the stack up, visit
+`http://dev.<%PROJECT_SLUG%>.localhost:81` (the URL `server.sh up` prints).
 
 ---
 
@@ -160,6 +161,17 @@ bash code/src/scripts/tests/e2e-py.sh
 bash code/src/scripts/tests/e2e-py.sh --headed   # watch it drive the browser
 ```
 
+### JavaScript lint
+
+The web surface's own JavaScript — the Alpine and progressive-enhancement scripts under
+`code/src/django/static/js/`. `typescript` is a different token for a different surface.
+
+```bash
+# ESLint, root config, host
+bash code/src/scripts/syntax/lint.sh --file-type javascript
+bash code/src/scripts/syntax/lint.sh --fix --file-type javascript
+```
+
 ### CSS lint, format, and the token guards
 
 ```bash
@@ -215,8 +227,18 @@ bash code/src/scripts/syntax/check.sh --file-type python
 bash code/src/scripts/tests/backend-coverage.sh
 bash code/src/scripts/tests/api.sh
 bash code/src/scripts/syntax/lint.sh --file-type markdown
+bash code/src/scripts/syntax/lint.sh --file-type javascript
 bash code/src/scripts/syntax/format.sh --file-type css
 bash code/src/scripts/audits/css-tokens.sh
+```
+
+**On a project with the mobile or Rust surface, prefer the unscoped pair** — it adds
+`typescript` and `rust` when those directories exist and leaves them out when they do not,
+so one command is right everywhere:
+
+```bash
+bash code/src/scripts/syntax/lint.sh
+bash code/src/scripts/syntax/check.sh
 ```
 
 To run the full suite (backend + API) in one go:
@@ -245,6 +267,11 @@ bash code/src/scripts/tests/all.sh --api
 | Backend type-check           | `bash code/src/scripts/syntax/check.sh --file-type python`        |
 | Backend format               | `bash code/src/scripts/syntax/format.sh --fix --file-type python` |
 | Markdown lint                | `bash code/src/scripts/syntax/lint.sh --file-type markdown`       |
+| JavaScript lint (web)        | `bash code/src/scripts/syntax/lint.sh --file-type javascript`     |
+| TypeScript lint (mobile)     | `bash code/src/scripts/syntax/lint.sh --file-type typescript`     |
+| TypeScript type-check        | `bash code/src/scripts/syntax/check.sh --file-type typescript`    |
+| Rust lint / type-check       | `bash code/src/scripts/syntax/lint.sh --file-type rust`           |
+| Every surface at once        | `bash code/src/scripts/syntax/lint.sh` (unscoped)                 |
 | CSS format                   | `bash code/src/scripts/syntax/format.sh --fix --file-type css`    |
 | CSS token guard              | `bash code/src/scripts/audits/css-tokens.sh`                      |
 | CSS gradient guard           | `bash code/src/scripts/audits/css-gradients.sh`                   |
@@ -260,10 +287,10 @@ bash code/src/scripts/tests/all.sh --api
 bash code/src/scripts/development/server.sh status
 
 # Start the specific service
-bash code/src/scripts/development/server.sh up --service backend
+bash code/src/scripts/development/server.sh up --service django
 
 # Inspect exit logs
-bash code/src/scripts/development/logs.sh --service backend
+bash code/src/scripts/development/logs.sh --service django
 ```
 
 ### pnpm lockfile mismatch
@@ -301,17 +328,28 @@ Always review the merged migration file before committing.
 ### Port conflicts
 
 ```bash
-lsof -i :8000
+lsof -i :81
 ```
 
-Override ports temporarily with a `docker-compose.override.yml` — do not commit host-specific
-port overrides to the main `docker-compose.yml`.
+**Check 81, not 8000.** The dev stack publishes nginx on host port **81** — a local router
+often holds 80 — and `:8000` is the Django container's internal port, never published. The
+live URL is whatever `server.sh up` prints.
+
+**There is no `docker-compose.override.yml` slot here.** `server.sh` pins its files explicitly
+(`-f code/src/docker/docker-compose.dev.yml`), so Compose's implicit-override convention never
+applies — a file of that name is gitignored and silently ignored. The one override Compose does
+receive is the worktree file `docker-compose.us###.dev.yml`, added by
+`code/src/scripts/_lib/worktree-detect.sh` when the branch is `us###/*`.
+
+The published port is hard-coded as `127.0.0.1:81:80` on the `nginx` service. If 81 is genuinely
+taken on your host, that is a shared-file change and a decision for the team — not a local edit,
+because the worktree hostnames and every quoted URL are derived from it.
 
 ### Rebuilding after dependency changes
 
 When `pyproject.toml` or `pnpm-lock.yaml` changes after pulling from main:
 
 ```bash
-bash code/src/scripts/development/server.sh build --service backend
+bash code/src/scripts/development/server.sh build --service django
 bash code/src/scripts/development/server.sh up
 ```

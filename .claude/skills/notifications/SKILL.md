@@ -95,7 +95,7 @@ deployment pipelines, and `doc-writer` to record the types and their triggers.
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `code/workflows/01-new-feature/` — building a new notification surface
+- `code/workflows/01-implement-story/` — building a new notification surface
 - `code/workflows/10-debug/` — a send that is broken rather than missing
 - `project-management/workflows/09-gdpr-compliance/` — the consent and PII rules for content
 

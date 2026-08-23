@@ -42,7 +42,15 @@ the shipped template documentation read-only in a generated project.
 - No secrets in scripts or PR comments — tokens come from the environment only.
 - `pre-compact-handoff.sh` **blocks** auto-compaction (exit 2) and only warns on a manual
   `/compact` — do not weaken this; silent compaction is the thing it exists to prevent.
-- `context-threshold-handoff.sh` **always exits 0** — it sits on every prompt submission, so
+- **A check that could not run reports `unmeasured`, never a pass.** `_dual_result` takes a
+  per-leg state and `CHECK_PASS` carries `unmeasured` beside `true`/`false`; the pre-PR gate
+  reports it in its own tier and **does not block on it**, because a missing host tool is
+  ordinary on a developer's machine and a gate that blocks the maintainer is a gate that gets
+  switched off. An `unmeasured` host leg is never paired into a `MISMATCH` verdict — a
+  mismatch asserts two results and there is only one. Rule: `code/docs/GATE-REPORTING.md`.
+- `context-threshold-handoff.sh` is **exempt from that rule, and the exemption is the reason
+  below rather than an oversight** — it produces no verdict, so it claims nothing and cannot
+  claim something false. It **always exits 0** — it sits on every prompt submission, so
   a miscounted token must never block <%DEVELOPER_NAME%> from typing. Every failure path
   (no `jq`, no transcript, unparseable payload) exits silently rather than guessing.
 - **Count the main chain only** — usage records flagged `isSidechain` are subagent windows;
@@ -50,7 +58,11 @@ the shipped template documentation read-only in a generated project.
 - **Verify a threshold change by replaying a real transcript** with `CLAUDE_CONTEXT_WINDOW`
   set to force each tier — the tiers are unreachable in a fresh session, so an unverified
   edit ships untested.
-- **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is
+- **`graph-update.sh` always exits 0, and never stages.** It runs on every Edit, Write and Bash,
+  so a failure must not interrupt the session. It reports untracked files rather than adding
+  them: a hook that ran `git add` would silently stage work nobody chose to commit. Keep its
+  extension list in step with `code-review-graph status` → Languages, or the count under-reports.
+- **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is <!-- doc-references: template-only -->
   what keeps these guides editable here, where they are the product. Never drop it, and keep
   the hook paired with the `template-docs-readonly` job in `lefthook.yml`; a guard on one write
   path only is no guard at all.

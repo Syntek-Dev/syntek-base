@@ -35,7 +35,7 @@ Then work through `project-management/docs/SEO-CHECKLIST.md` before the page shi
 Workflows are numbered directories in a layer's `workflows/`, each containing four files:
 
 ```text
-project-management/workflows/24-your-workflow/
+project-management/workflows/25-your-workflow/
 ├── CONTEXT.md      ← when to use it, prerequisites, key concepts
 ├── CLAUDE.md       ← operating rules
 ├── STEPS.md        ← the ordered procedure
@@ -46,7 +46,7 @@ project-management/workflows/24-your-workflow/
 
 ```yaml
 ---
-workflow: 24-your-workflow
+workflow: 25-your-workflow
 phase: implementation
 skills: [backend, stack-django, global-workflow]
 model: opus
@@ -88,7 +88,7 @@ So a new artefact folder takes the next free number **at the end**, even where t
 workflow↔`src` mirroring. The mirroring is a convenience; somebody's work is not.
 
 If a release genuinely must move such a directory, it ships a migration in the same commit —
-`copier.yml` → `_migrations`, with the script in `.copier/migrations/`. Verify it with
+`copier.yml` → `_migrations`, with the script in `.copier/migrations/`. Verify it with <!-- doc-references: template-only -->
 `code/src/scripts/audits/template-orphans.sh`.
 
 Then register the workflow in its `CONTEXT.md` and the root `REFERENCES.md`, and — if it pairs
@@ -120,7 +120,7 @@ agent: general-purpose
 background: false
 ```
 
-It forks unless its input is the conversation itself — `feature` and `bugfix` run inline and
+It forks unless its input is the conversation itself — `implement-story` and `bugfix` run inline and
 dispatch each phase, because the request, its scope and its trade-offs only exist in the thread.
 Which one yours is, and why the fork target is fixed:
 `how-to/docs/skill-authoring/FORK-DECISION.md`.
@@ -230,7 +230,7 @@ a plain Ninja endpoint is already callable by anything that speaks HTTP. Guide:
 If a piece should ship only when the user opts in, gate it the way the mobile surface is gated —
 **a templated `_exclude` entry, and nothing else** (`11-CUSTOMISING.md` has the full reasoning).
 
-1. Add the boolean question to `copier.yml`, defaulting to **false**, so an existing project
+1. Add the boolean question to `copier.yml`, defaulting to **false**, so an existing project <!-- doc-references: template-only -->
    pulling `copier update` gets no surprise.
 2. Add one `_exclude` entry per top-level path the feature owns. Keep the count low — a single
    directory per concern removes cleanly; a `feature-*` glob scattered across four directories
@@ -264,7 +264,7 @@ decision, not the template's**:
    upgrade path; committing them means you now own native maintenance — and, if you still
    generate from this template, an exclusion entry for every binary they contain
    (`11-CUSTOMISING.md` → _Binaries_).
-3. Record it as an ADR in `project-management/src/14-DECISIONS/`. It changes your upgrade story.
+3. Record it as an ADR in `project-management/src/15-DECISIONS/`. It changes your upgrade story.
 
 iOS development builds need macOS or a paid cloud build service; neither is assumed here.
 
@@ -288,4 +288,4 @@ Points 1–7 are the documentation hard gate, and it is checked before commit �
 ## Next
 
 - What not to change → `11-CUSTOMISING.md`
-- Contributing it back to the template → the root `CONTRIBUTING.md`
+- Contributing it back to the template → the root `CONTRIBUTING.md` <!-- doc-references: template-only -->

@@ -90,7 +90,7 @@ Container query units for property values that should scale with the container:
 Define reusable `ch`-based container size values as CSS custom properties:
 
 ```css
-/* code/src/django/static/css/global.css */
+/* the global stylesheet */
 :root {
   --container-xs: 20ch;
   --container-sm: 40ch;

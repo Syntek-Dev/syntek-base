@@ -28,6 +28,14 @@ kept safe, how secret material is handled, and the supply-chain gate every depen
 | [`rust/MEMORY-HYGIENE.md`](rust/MEMORY-HYGIENE.md) | Why Python cannot erase a secret, zeroize-on-drop, never rendering secrets, the honest limits (copies, swap, `mlock`), constant-time comparison |
 | [`rust/SUPPLY-CHAIN.md`](rust/SUPPLY-CHAIN.md)     | `deny.toml` policy, why a crate is more dangerous than a Python package, adding a dependency, toolchain pinning, advisory suppression           |
 
+**Data modelling on this surface** lives with the cross-surface standard rather than here:
+[`data-structures/TYPES-RUST.md`](data-structures/TYPES-RUST.md) — newtypes for identifiers and
+units, enums carrying data per variant so illegal states cannot be constructed, and the
+wire/domain seam where a `#[derive(Deserialize)]` DTO becomes a domain type through `TryFrom`.
+`serde` is not a workspace dependency at baseline, so that seam is a standard rather than a
+description — and adding the crate is a supply-chain event gated by
+[`rust/SUPPLY-CHAIN.md`](rust/SUPPLY-CHAIN.md).
+
 ## The gate: does this need to be Rust?
 
 Answer this before writing a line. Rust earns its place on exactly two grounds:

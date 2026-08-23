@@ -1,15 +1,15 @@
 /**
  * Which of the three error classes a failure belongs to, on a device.
  *
- * The classes are code/docs/NEGATIVE-SPACE.md's and are identical on every surface. What
- * differs here is which one is *ordinary*: on a server an environment error is unusual, on a
- * phone it is the common case — a train tunnel is not a defect. Reporting every failed
- * request is how a mobile error tracker becomes noise, and a noisy tracker is a muted one.
+ * The three classes are identical on every surface. What differs here is which one is
+ * *ordinary*: on a server an environment error is unusual, on a phone it is the common case —
+ * a train tunnel is not a defect. Reporting every failed request is how a mobile error tracker
+ * becomes noise, and a noisy tracker is a muted one.
  *
  * This module is the classifier only. The screen that renders the result is deliberately not
- * built (code/docs/MOBILE-CODING-PRINCIPLES.md Section 5): it needs the token module and the
- * project's brand voice, neither of which exists at baseline. The classification does not,
- * which is why the half that can be proved here ships and the half that cannot does not.
+ * built: it needs the token module and the project's brand voice, neither of which exists at
+ * baseline. The classification needs neither, which is why the half that can be proved here
+ * ships and the half that cannot does not.
  */
 
 import { InvariantViolation } from "./invariant";

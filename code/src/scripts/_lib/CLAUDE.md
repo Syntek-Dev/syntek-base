@@ -7,9 +7,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-The internal bash helper library — shared utilities (currently
-`worktree-detect.sh` for git-worktree detection) that other scripts **source**, never
-invoke directly.
+The internal bash helper library — shared utilities that other scripts **source**, never
+invoke directly. Full inventory: `CONTEXT.md`.
 
 ## How to work here
 
@@ -27,6 +26,10 @@ invoke directly.
   a `main`-style script to `_lib/`.
 - Changing a helper touches every script that sources it — check callers before
   altering a function signature or return convention.
+- **A pattern with two enforcers belongs here, not copied into both.** `conflict-markers.sh`
+  exists because the two detectors for one defect class had drifted apart, and the weaker copy
+  was the one running where it mattered. Adding a third caller means sourcing it, never
+  reproducing the regex.
 - Secrets via environment only.
 
 ## Output & naming

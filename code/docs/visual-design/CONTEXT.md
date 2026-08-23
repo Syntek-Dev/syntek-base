@@ -17,7 +17,7 @@ code/docs/visual-design/
 └── DESKTOP.md ← **Desktop-only.** Slint — the stock-Fluent tell and the deliberate style choice
 ```
 
-`MOBILE.md` and `DESKTOP.md` are `_exclude`-gated on their surface answers in `copier.yml`, matching
+`MOBILE.md` and `DESKTOP.md` are `_exclude`-gated on their surface answers in `copier.yml`, matching <!-- doc-references: template-only -->
 every other mobile, rust and desktop document in `code/docs/`. The rows above stay listed
 unconditionally and flagged — a dangling index row is the established pattern here, because the
 alternative is templated file contents.

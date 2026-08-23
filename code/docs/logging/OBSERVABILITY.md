@@ -226,7 +226,7 @@ Provisioned by the deploy repo, never in this one. The reference form:
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: <%ORG_SLUG%>-web
+  - job_name: <%ORG_SLUG%>-backend
     static_configs:
       - targets: ["127.0.0.1:8000"]
     metrics_path: /metrics/

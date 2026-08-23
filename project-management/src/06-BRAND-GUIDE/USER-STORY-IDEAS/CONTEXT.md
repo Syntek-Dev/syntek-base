@@ -24,7 +24,7 @@ that says so in three lines is doing its job.
 
 The value is in the exceptions. When a story genuinely needs a colour, weight, or spacing step
 that does not exist, this is where that ask is captured **without** anyone yet deciding whether
-it should join the palette. That decision belongs to `17-consolidate-design-work`, looking at
+it should join the palette. That decision belongs to `18-consolidate-design-work`, looking at
 every story's asks together — because the fourth grey only looks unreasonable next to the other
 three.
 
@@ -33,12 +33,12 @@ consolidation.
 
 ## Frozen at consolidation
 
-Once `17-consolidate-design-work` runs, every file here is frozen. The decided token set lives
+Once `18-consolidate-design-work` runs, every file here is frozen. The decided token set lives
 in `../CONSOLIDATED-IDEAS/`.
 
 ## When to write one
 
-- During a story's pass through `workflows/06-brand-guides/`, before it reaches `14-decisions`
+- During a story's pass through `workflows/06-brand-guides/`, before it reaches `15-decisions`
 - Every story that renders UI writes one, even if it is entirely "reused existing"
 
 ## Cross-references

@@ -26,4 +26,19 @@ and templates follow naturally.
 | [`data-structures/ANTI-PATTERNS.md`](data-structures/ANTI-PATTERNS.md)         | All 10 anti-patterns: God Dictionary, Stringly Typed, Primitive Obsession, Parallel Collections, Nested Dicts, Mega-Model, Implicit Schema, CSV Columns, Boolean Blindness, Overloaded Status     |
 | [`data-structures/REFACTORING.md`](data-structures/REFACTORING.md)             | Recognising the signals, Refactoring strategies, Rules and Principles                                                                                                                             |
 
+## The types-over-dictionaries family
+
+The **mandatory standard**, split by surface. `ANTI-PATTERNS.md` above names what is wrong; this
+family states the rule, the exceptions and the escape hatch, and how each language expresses it.
+The decidable half is gated by `code/src/scripts/audits/dict-discipline.sh`.
+
+| Document                                                                                   | Covers                                                                                                              |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| [`data-structures/TYPES-OVER-DICTIONARIES.md`](data-structures/TYPES-OVER-DICTIONARIES.md) | **Start here.** The principle, parse-at-the-boundary, the enum test, the migration backlog, the PR review checklist |
+| [`data-structures/TYPES-EXCEPTIONS.md`](data-structures/TYPES-EXCEPTIONS.md)               | When a dictionary **is** right — the seven uses, the confinement policy, and the `DICT-OK:` escape hatch            |
+| [`data-structures/TYPES-PYTHON.md`](data-structures/TYPES-PYTHON.md)                       | Frozen dataclasses, `NewType`, `TypedDict` as transitional, `StrEnum`, exhaustive `match` under basedpyright        |
+| [`data-structures/TYPES-TYPESCRIPT.md`](data-structures/TYPES-TYPESCRIPT.md)               | **Mobile-only.** Discriminated unions, `as const` over `enum`, exhaustiveness through `unreachable()`               |
+| [`data-structures/TYPES-RUST.md`](data-structures/TYPES-RUST.md)                           | **Rust-only.** Newtypes, enums carrying data per variant, and the serde wire/domain seam via `TryFrom`              |
+| [`data-structures/TYPES-BROWSER.md`](data-structures/TYPES-BROWSER.md)                     | `Alpine.data` component contracts, frozen constants, and the HTMX request DTO / response view-model pair            |
+
 _Part of the `code/docs/` documentation family._

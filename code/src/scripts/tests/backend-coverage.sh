@@ -11,8 +11,9 @@
 #   Phase 1 — unit tests        (-m unit)        coverage collected, no report emitted
 #   Phase 2 — integration tests (-m integration) coverage appended, reports emitted
 #
-# Coverage is accumulated across both phases before the final threshold check
-# (--cov-fail-under=75). Enforces the 75% line and branch coverage floor.
+# Coverage is accumulated across both phases before the final threshold check. The floor is
+# 75% line and branch; export COV_FLOOR to raise it (CI uses 80 on dev/staging/main). It
+# refuses anything below 75, so the override is a tier selector and not a get-out.
 #
 # A final auth-coverage gate then derives apps/<AUTH_APP> line coverage from the emitted
 # Cobertura coverage.xml and enforces a ≥90% floor (auth code holds a higher bar).
@@ -55,7 +56,15 @@ if [[ -d "$APPS_DIR" ]] && \
    find "$APPS_DIR" -name '*.py' ! -name '__init__.py' -print -quit 2>/dev/null | read -r _; then
   HAS_APP_CODE=true
 fi
-COV_FLOOR=75
+# 75 locally; CI raises it to 80 on the promotion branches by exporting COV_FLOOR. Both
+# numbers are owned by code/docs/testing/COVERAGE.md — an override here is a caller
+# choosing a documented tier, never a caller inventing one. Lowering it below 75 is not a
+# tier, so it is refused rather than honoured.
+COV_FLOOR="${COV_FLOOR:-75}"
+if [[ ! "$COV_FLOOR" =~ ^[0-9]+$ ]] || (( COV_FLOOR < 75 )); then
+  printf 'backend-coverage.sh error: COV_FLOOR must be an integer >= 75 (got %s)\n' "$COV_FLOOR" >&2
+  exit 2
+fi
 $HAS_APP_CODE || COV_FLOOR=0
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
@@ -97,7 +106,9 @@ printf '[backend-coverage] Starting test stack…\n'
 _teardown() { "${DC_TEST[@]}" down --volumes 2>/dev/null || true; }
 trap _teardown EXIT
 
-if ! $HAS_APP_CODE; then
+if $HAS_APP_CODE; then
+  printf '[backend-coverage] Coverage floor for this run: %s%%.\n' "$COV_FLOOR"
+else
   printf '[backend-coverage] NOTE: code/src/django/apps/ contains no modules yet — the 75%%\n'
   printf '[backend-coverage]       coverage floor and the auth gate are inert until it does.\n'
 fi
@@ -124,8 +135,8 @@ run_phase "Phase 1/2" unit \
   --cov-fail-under=0 \
   --junit-xml="$CONTAINER_OUTPUT/results-unit.xml"
 
-# NOTE: CI raises this to 80% on main/staging branches.
-# If your branch targets main/staging, aim for ≥80% before pushing.
+# CI raises the floor to 80% on the promotion branches via COV_FLOOR; locally it is 75.
+# If your branch targets dev, staging or main, aim for >=80% before pushing.
 printf '[backend-coverage] Phase 2/2: integration tests (coverage accumulated + reported)…\n'
 run_phase "Phase 2/2" integration \
   --cov=apps \
@@ -149,11 +160,11 @@ printf '[backend-coverage] Auth coverage check: apps/%s/ line coverage must meet
 # A standalone `coverage report` exec cannot resolve the `.coverage` data file against
 # `[tool.coverage.run] source = ["apps"]` from the container WORKDIR (/workspace) — the `apps`
 # package actually lives at code/src/django/apps, so coverage maps nothing and fails closed with
-# "No data" regardless of the real number (GAP-BACKEND-COVERAGE-AUTH-GATE). Instead we derive the
-# apps/users aggregate LINE coverage directly from the Cobertura coverage.xml Phase 2 just wrote:
-# paths there are recorded as code/src/django/apps/users/…, and the pyproject `omit` (migrations,
-# tests, __init__) is already honoured in the XML. Fails closed if the XML is missing/unparseable
-# or if no apps/users lines are present.
+# "No data" regardless of the real number. Instead we derive the apps/users aggregate LINE
+# coverage directly from the Cobertura coverage.xml Phase 2 just wrote: paths there are recorded
+# as code/src/django/apps/users/…, and the pyproject `omit` (migrations, tests, __init__) is
+# already honoured in the XML. Fails closed if the XML is missing/unparseable or if no apps/users
+# lines are present.
 "${DC_TEST[@]}" exec -T django-test \
   python - "$CONTAINER_OUTPUT/coverage.xml" "$AUTH_APP" <<'PY'
 import sys

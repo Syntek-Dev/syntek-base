@@ -27,7 +27,7 @@ part belongs where, and how each side points at the others so neither drifts.
 The middle layer exists because the deploy repository needs **one document to implement
 against**, rather than requirements scattered across guides, ADRs and config files. The
 canonical statement of the split is already in the tree
-([`SECURITY.md`](../SECURITY.md)): _"this doc keeps owning the 'why', SERVER-ARCHITECTURE owns
+([`code/docs/SECURITY.md`](../SECURITY.md)): _"this doc keeps owning the 'why', SERVER-ARCHITECTURE owns
 'what the server provides'."_
 
 **`SCALE-ARCHITECTURE/` is not on this chain.** It is reasoning about how the application scales

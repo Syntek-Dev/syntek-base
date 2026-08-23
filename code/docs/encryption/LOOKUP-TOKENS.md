@@ -10,6 +10,10 @@ model: opus
 British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus — Keyed HMAC blind-index lookup tokens for encrypted fields
 
+**Status: declared, not wired.** No crypto helper ships at baseline — `apps/core/` holds no
+encryption module, and no other app defines one. Everything below is the construction the first
+story storing an encrypted unique field builds.
+
 ---
 
 ## Unique Fields — Lookup Tokens
@@ -29,12 +33,11 @@ A _bare_ `sha3_256(email)` digest is **precomputable**: an attacker with the dat
 key can confirm a guessed email by hashing it. Keying the digest with a secret
 (`LEGAL['FIELD_HMAC_KEY']`, env-only) makes the token non-precomputable.
 
-Every email lookup token across every app that stores an encrypted email (e.g. `users`,
-`marketing`, `legal`) is derived from the **single shared helper**
-`apps.core.crypto.make_email_token`, so the construction (key + `strip().lower()` + `sha3_256`)
-is byte-identical everywhere. This is the load-bearing invariant that lets cross-app GDPR erasure
-and SAR export resolve every row by the identical token. Recomputing an existing column requires a
-hand-authored `RunPython` data migration in each affected app that reads the decrypted email
+Every email lookup token, in every app that stores an encrypted email, is derived from **one
+shared helper** — `make_email_token`, in the core app — so the construction (key +
+`strip().lower()` + `sha3_256`) is byte-identical everywhere. This is the load-bearing invariant
+that lets cross-app GDPR erasure and SAR export resolve every row by the identical token.
+Recomputing an existing column requires a hand-authored `RunPython` data migration in each affected app that reads the decrypted email
 through the field descriptor and routes it through the shared helper.
 
 ### Token column naming
@@ -91,14 +94,14 @@ class MyModel(models.Model):
 
 ### Token generation
 
-Email tokens are generated from the **single shared helper** `apps.core.crypto.make_email_token`.
-Do **not** reimplement the construction per module — import the shared helper so the key,
-normalisation and algorithm stay byte-identical across every app. The key comes from
-`settings.LEGAL['FIELD_HMAC_KEY']` (env-only). `apps.legal.services.lookup_tokens.make_email_token`
-re-exports the shared helper for its historical import path.
+Email tokens are generated from the **single shared helper** `make_email_token`. Do **not**
+reimplement the construction per module — import the shared helper so the key, normalisation and
+algorithm stay byte-identical across every app. The key comes from
+`settings.LEGAL['FIELD_HMAC_KEY']` (env-only). A re-export from another app's own module is
+permitted only to preserve an import path that already exists; never as a second definition.
 
 ```python
-# code/src/django/apps/core/crypto.py
+# the shared crypto helper
 import hashlib
 import hmac
 
@@ -120,7 +123,7 @@ def make_email_token(email: str) -> str:
 ```
 
 For a **new** non-email unique field (e.g. phone), add a sibling helper alongside the email one in
-`apps/core/crypto.py` rather than a per-module file, keeping a single source of truth.
+the same module rather than a per-module file, keeping a single source of truth.
 
 ### DB lookups — always use the token column
 

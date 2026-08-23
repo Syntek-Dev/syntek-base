@@ -72,7 +72,10 @@ class Money:
 ## Enumerations and Status Fields
 
 Use explicit enumerations for any field with a fixed set of valid values. Never use raw strings or
-magic numbers.
+magic numbers. **The test for whether a set qualifies** — closed, known at design time, and
+behaviour branches on it — plus its counter-cases and the rule for persisting an enum value, is
+[`TYPES-OVER-DICTIONARIES.md`](TYPES-OVER-DICTIONARIES.md) Section _The enum test_. This section
+is the Django spelling of a decision made there.
 
 ```python
 class BookingStatus(models.TextChoices):
@@ -219,5 +222,10 @@ project.
 
 Where the same computed value is needed by both a template and a Ninja endpoint, put it on the
 model or the service and let the `Schema` resolve it (above) — one definition, two consumers.
+
+The other half of that rule is what the view **passes** to the template. A context dictionary
+assembled inline in the handler has the same defect one level up: the template's required fields
+are discoverable only by reading every branch that builds it. The view-model that replaces it, and
+the HTMX request DTO facing it, are [`TYPES-BROWSER.md`](TYPES-BROWSER.md).
 
 _Part of the `code/docs/` documentation family. See [`../DATA-STRUCTURES.md`](../DATA-STRUCTURES.md) for the full index._

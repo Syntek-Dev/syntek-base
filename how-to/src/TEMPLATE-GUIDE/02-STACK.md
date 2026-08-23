@@ -101,7 +101,7 @@ before mobile existed — no orphaned tooling, CI jobs, scripts or doc rows.
 
 Three constraints decided this, and none of them is a preference.
 
-1. **Copier renders every file.** `copier.yml` sets `_templates_suffix: ""`, so the entire tree
+1. **Copier renders every file.** `copier.yml` sets `_templates_suffix: ""`, so the entire tree <!-- doc-references: template-only -->
    passes through Jinja — which is also why `*.pdf` is excluded, since **binaries cannot be
    rendered**. A bare React Native scaffold commits binaries as a matter of course: the Gradle
    wrapper JAR, launcher icon PNGs, iOS asset catalogues. Each would need an explicit exclusion
@@ -133,11 +133,16 @@ forfeits the regeneration-based upgrade path that is the main reason to adopt Ex
    SDK-only library limit binds you until you graduate to a development build.
 4. **expo-router with one route** — a routing convention only.
 
-**The standing cost, stated plainly:** the template takes on tracking Expo's SDK cadence, roughly
-three releases a year, each potentially breaking for projects downstream. These are not routine
-bumps — SDK 55 required the New Architecture and removed `newArchEnabled`. You are accepting a
-framework dependency neither you nor this template controls. If that is unacceptable, answer no
-and add React Native yourself; nothing else in the repository assumes mobile exists.
+**The standing cost, stated plainly:** Expo ships roughly three SDK releases a year, each
+potentially breaking for projects downstream — SDK 55 required the New Architecture and removed
+`newArchEnabled`. You are accepting a framework dependency neither you nor this template controls.
+If that is unacceptable, answer no and add React Native yourself; nothing else in the repository
+assumes mobile exists.
+
+**Who carries that cost is split, and the rule is not here.** The template follows every SDK
+release and cuts a template release for it; your project adopts one when it prepares a store
+build. Both halves, and what to check before adopting, are owned by
+[`code/src/mobile/CLAUDE.md`](../../../code/src/mobile/CLAUDE.md).
 
 ## Data, media and identity
 

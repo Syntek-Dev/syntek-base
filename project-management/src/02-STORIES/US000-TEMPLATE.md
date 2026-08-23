@@ -3,28 +3,43 @@
 **Epic:** [Epic Name — e.g. Authentication & Access Control / Core Features / Public Pages]
 **Status:** Open
 
-<!-- FLAGS
-     DB        — shortlist of models created / modified, or N/A
-     User Flow — Yes or N/A
-     Backend   — Yes or N/A
-     API       — shortlist of Ninja endpoints introduced, or N/A
-     Frontend  — Public / Admin / Both / N/A  (all server-rendered Django templates)
-     GDPR      — Yes (complete GDPR section below) or N/A
-     Security  — shortlist of concerns (e.g. rate-limit, audit-log, XSS-escape, IDOR), or N/A
-     SEO       — shortlist of affected pages / routes (e.g. /blog, /about), or N/A
-     Testing   — shortlist of test types required (e.g. unit, integration, E2E, manual), or N/A -->
+<!-- FLAGS — one row per gate, and the flag is that gate's entry condition.
+     A flag reading N/A means the gate is skipped for this story; every other value means it runs.
+     The value is a MANIFEST, not the design: the gate owns the design, may add to this list, and
+     the story is updated to match when the gate closes.
 
-| Flag      | Value                                                |
-| --------- | ---------------------------------------------------- |
-| DB        | `ModelA`, `ModelB`                                   |
-| User Flow | Yes                                                  |
-| Backend   | Yes                                                  |
-| API       | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a` |
-| Frontend  | Both                                                 |
-| GDPR      | Yes                                                  |
-| Security  | rate-limit, audit-log, XSS-escape                    |
-| SEO       | /blog, /about                                        |
-| Testing   | unit, integration, E2E                               |
+     DB         — models created / modified            → 04-database-schema
+     User Flow  — Yes or N/A                           → 05-user-flow-design
+     Brand      — tokens introduced / consumed         → 06-brand-guides
+     Components — components introduced / reused       → 07-component-designs
+     Wireframes — screens or routes needing a screen   → 08-wireframes
+     GDPR       — Yes (personal data) or N/A           → 09-gdpr-compliance
+     Security   — concerns (rate-limit, audit-log, …)  → 10-security-checks
+     QA         — test types — scenario classes        → 11-qa-checks
+     SEO        — affected public pages / routes       → 12-seo-checks
+     API        — Ninja endpoints introduced           → 13-api-design
+     Logging    — events logged                        → 14-logging-checks
+     Backend    — Yes or N/A                           → 19-backend-code
+     Frontend   — Public / Admin / Both / N/A          → 21-frontend-code
+
+     Logging has no derived condition: it is its own gate. Every value is filled from the
+     feature map's slice row (src/01-FEATURE-MAPS/) at 02-story-creation. -->
+
+| Flag       | Value                                                          |
+| ---------- | -------------------------------------------------------------- |
+| DB         | `ModelA`, `ModelB`                                             |
+| User Flow  | Yes                                                            |
+| Brand      | `--color-accent`, `--space-lg`                                 |
+| Components | `Button`, `Card`                                               |
+| Wireframes | /dashboard, /settings                                          |
+| GDPR       | Yes                                                            |
+| Security   | rate-limit, audit-log, XSS-escape                              |
+| QA         | unit, integration, E2E, manual — happy-path, permission-denied |
+| SEO        | /blog, /about                                                  |
+| API        | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a`           |
+| Logging    | login-success, login-failure, permission-denied                |
+| Backend    | Yes                                                            |
+| Frontend   | Both                                                           |
 
 ---
 
@@ -231,8 +246,9 @@ Then the state changes in the browser with no server round-trip
 
 ### Logging Acceptance Criteria
 
-<!-- Always applicable when Backend or Frontend ≠ N/A.
-     Log IDs — never log values. Never log [enc] fields. -->
+<!-- Remove this section when the Logging flag is N/A.
+     Planned by 14-logging-checks → src/14-LOGGING/PLANNING/; proven by
+     src/14-LOGGING/IMPLEMENTATION/. Log IDs — never log values. Never log [enc] fields. -->
 
 - [ ] All server-side log calls use `logging.getLogger("apps.[app-name]")` (Django) — no bare `print()` on any server path, and no stray `console.log()` in committed JavaScript
 - [ ] `[key operation]` logs entry at `DEBUG` with safe fields: `[entity]_id`, `action` — no PII, no `[enc]` field values
@@ -246,7 +262,7 @@ Then the state changes in the browser with no server round-trip
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the Django template `<head>` (the SEO app `build_seo` helper)
+- [ ] All new public-facing pages have a `<title>` and `<meta name="description">` set via the Django template `<head>`, through the `build_seo()` helper the first public page brings with it (`code/docs/discoverability/WEB-METADATA.md`)
 - [ ] `og:title`, `og:description`, and `og:image` are set for all new public pages
 - [ ] Canonical URL is set correctly — no duplicate content risk
 - [ ] JSON-LD structured data is included where applicable (e.g. `Article`, `BreadcrumbList`, `Organization`)
@@ -257,16 +273,25 @@ Then the state changes in the browser with no server round-trip
 - [ ] All images on the page have descriptive `alt` text; no image is served without `alt`
 - [ ] Heading hierarchy is correct: one `<h1>` per page; `<h2>` / `<h3>` used in logical order
 
-### Testing Acceptance Criteria
+### QA Acceptance Criteria — Automated
 
-<!-- Remove this section when Testing flag is N/A. -->
+<!-- Remove this section when the QA flag is N/A.
+     Closed by `../18-TESTS/US###-TEST-STATUS.md`. -->
 
 - [ ] Coverage is at or above 75 % line and branch for all modules (at or above 90 % for auth-related paths) after this story — one floor: template, django-component, and HTMX-partial tests are pytest tests and count towards it
 - [ ] Unit tests cover the success path, validation error, and permission error for `[service_function]`
 - [ ] Unit tests cover constraint enforcement and signal idempotence for `[ModelName]`
 - [ ] Integration tests cover the success path, 401, and 403 for all endpoints introduced by this story
 - [ ] E2E tests cover the primary user flow, the permission-denied path, and at least one form validation error
+
+### QA Acceptance Criteria — Manual
+
+<!-- Remove this section when the QA flag names no manual type.
+     Closed by `../18-TESTS/US###-MANUAL-TESTING.md`. -->
+
 - [ ] Manual checks cover any UI behaviour not reachable by automation (e.g. [drag-and-drop, colour picker])
+- [ ] Every scenario class named in the QA flag has a walk-through with a stated expected result
+- [ ] A tester other than the author has signed the walk-through off
 
 ---
 
@@ -278,7 +303,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when DB flag is N/A. -->
 
-- [ ] Create Django model `[ModelName]` in `code/src/django/apps/[app]/models.py`
+- [ ] Create Django model `[ModelName]` in `code/src/django/apps/<app>/models.py`
 - [ ] Add fields: [field list with types and constraints]
 - [ ] Add unique constraint on `([field_a, field_b])`
 - [ ] Add index on `[field_c]` for `[query pattern]`
@@ -298,7 +323,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when Backend flag is N/A. -->
 
-- [ ] Implement service method `[name]` in `code/src/django/apps/[app]/services.py` wrapped in `transaction.atomic()`
+- [ ] Implement service method `[name]` in `code/src/django/apps/<app>/services.py` wrapped in `transaction.atomic()`
 - [ ] Verify caller ownership of user-supplied `[id field]` before querying (IDOR prevention)
 - [ ] Implement `post_save` signal for `[Model]` using `get_or_create` (idempotent)
 - [ ] Create Celery task `[task_name]` with schedule `[cron expression]`
@@ -320,8 +345,8 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Pages and components -->
 
-- [ ] Scaffold the public page via `bash code/src/scripts/development/new-django-view.sh [route_path]` — a Django view + template + `urls.py` entry in `apps.marketing`
-- [ ] Build `[ComponentName]` as a django-component in `code/src/django/components/[name]/` (HTMX + Alpine, token-driven CSS)
+- [ ] Scaffold the public page via `bash code/src/scripts/development/new-django-view.sh <route_path>` — a Django view + template + `urls.py` entry in `apps.marketing`
+- [ ] Build `[ComponentName]` as a django-component in the root its ownership assigns it — `code/docs/FRONTEND-CODING-PRINCIPLES.md` Section _Component & Code Placement_ (HTMX + Alpine, token-driven CSS)
 - [ ] Wire server-side rendering / HTMX interactions — no client-side API fetch anywhere
 - [ ] Implement form validation (required fields, character limits, live counters)
 - [ ] Implement permission-based control visibility (hidden / disabled with tooltip)
@@ -341,7 +366,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when GDPR flag is N/A. -->
 
-- [ ] Add `EncryptedField` (Fernet AES-256-GCM) to `[field_name]` in `[app]/models.py`
+- [ ] Add `EncryptedField` (Fernet AES-256-GCM) to `[field_name]` in `<app>/models.py`
 - [ ] Add HMAC-SHA3-256 companion field `[hmac_token]` for erasure lookup without decryption
 - [ ] Implement `[app].gdpr_erase([identifier])` — nulls `[field list]`, retains row
 - [ ] Wire `[app].gdpr_erase()` into the US### erasure orchestrator
@@ -362,10 +387,10 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 ### Logging Tasks
 
-<!-- Always applicable when Backend or Frontend ≠ N/A.
-     Reference: code/docs/LOGGING.md -->
+<!-- Remove this section when the Logging flag is N/A.
+     Reference: code/docs/LOGGING.md · the plan in src/14-LOGGING/PLANNING/ -->
 
-- [ ] Backend: use `logging.getLogger("apps.[app-name]")` for all log calls in `[app]/services.py` and `[app]/api.py` (Ninja endpoints)
+- [ ] Backend: use `logging.getLogger("apps.[app-name]")` for all log calls in `<app>/services.py` and `<app>/api.py` (Ninja endpoints)
 - [ ] Backend: add `DEBUG` log at entry of `[service_method]` with `[entity]_id` and `action` only
 - [ ] Backend: add `INFO` log on success of `[service_method]` with `[entity]_id` and `duration_ms`
 - [ ] Backend: add `WARNING` log on permission-denied in `[endpoint]` — include `actor_id`, `action`; never include token or PII
@@ -378,7 +403,7 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 <!-- Remove this section when SEO flag is N/A. -->
 
-- [ ] Set `<title>` and `<meta name="description">` via the Django template `<head>` (SEO app `build_seo` helper) for `[page / route]`
+- [ ] Set `<title>` and `<meta name="description">` via the Django template `<head>` for `[page / route]` — through the `build_seo()` helper (`code/docs/discoverability/WEB-METADATA.md`)
 - [ ] Set `og:title`, `og:description`, `og:image` for `[page / route]`
 - [ ] Set canonical URL for `[page / route]`
 - [ ] Add JSON-LD structured data (`[schema type]`) to `[page / route]`
@@ -390,9 +415,9 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] Verify heading hierarchy: one `<h1>` per page; `<h2>` / `<h3>` in logical order
 - [ ] Run the `seo` skill to confirm all SEO checks pass
 
-### Testing Tasks
+### QA Tasks — Automated
 
-<!-- Remove this section when Testing flag is N/A. -->
+<!-- Remove this section when the QA flag is N/A. -->
 
 <!-- Unit tests -->
 
@@ -424,7 +449,9 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 - [ ] `[ComponentName]` — permission-gated controls are absent for insufficient permission
 - [ ] `[partial]` — returned on `HX-Request` with no page chrome; full page returned otherwise
 
-<!-- Manual checks -->
+### QA Tasks — Manual
+
+<!-- Remove this section when the QA flag names no manual type. -->
 
 - [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop reorder, colour picker render]
 - [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
@@ -445,6 +472,7 @@ All must pass.
 - [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass
 - [ ] No secrets, debug flags, or hardcoded IDs introduced
 - [ ] GDPR section reviewed and all GDPR tasks checked off (if GDPR: Yes)
+- [ ] Logging plan satisfied and the exclusion check run (if Logging: not N/A)
 - [ ] Security acceptance criteria signed off (if Security: not N/A)
 - [ ] SEO acceptance criteria signed off and Lighthouse run recorded (if SEO: not N/A)
 

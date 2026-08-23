@@ -16,9 +16,14 @@ version = "0.1.0"
 edition = "2024"
 license = "<%LICENCE%>"
 authors = ["<%DEVELOPER_NAME%> <<%DEVELOPER_EMAIL%>>"]
-# rust-version is the edition-2024 floor for OUR code. The toolchain everyone actually
-# compiles with is pinned in rust-toolchain.toml — that pin is the operative version.
-rust-version = "1.85"
+# rust-version is a RESOLUTION INPUT, not only a promise to a consumer. `resolver = "3"`
+# above is MSRV-aware: cargo picks the newest dependency version compatible with this
+# number, so a floor left behind the pinned channel silently holds the whole graph back.
+# Measured 16/08/2026 — at 1.85 an update reported "Locking 57 packages to latest Rust 1.85
+# compatible versions" and DOWNGRADED zbus 5.18 → 5.14, zvariant, zbus_names and
+# zvariant_utils, all of which now require 1.87. The toolchain in rust-toolchain.toml is
+# still the compiler everyone builds with; this is what they are allowed to resolve against.
+rust-version = "1.92"
 
 [workspace.dependencies]
 pyo3 = { version = "0.29", features = ["extension-module", "abi3-py314"] }

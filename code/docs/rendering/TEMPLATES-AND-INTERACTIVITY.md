@@ -65,9 +65,10 @@ def services(request):
 ```
 
 Reusable UI is a **django-component**, not a template partial copied around. SEO `<head>` content
-is built by `apps/marketing/seo.build_seo` and rendered through the `_seo_head.html` partial, so it
-arrives in the initial HTML for crawlers. New public pages are scaffolded with
-`bash code/src/scripts/development/new-django-view.sh <route_path>`, never hand-created.
+**will be** built by `build_seo()` and rendered through the `_seo_head.html` partial
+(`code/docs/discoverability/WEB-METADATA.md`), so it arrives in the initial HTML for crawlers. New
+public pages are scaffolded with `bash code/src/scripts/development/new-django-view.sh <route_path>`,
+never hand-created.
 
 ---
 
@@ -118,6 +119,8 @@ real `<a href>` links so the page works with JS disabled.
 Rapid, fine-grained UI that should never touch the network lives in Alpine, driven by HTML
 attributes (CSP-clean — no inline `<script>`). Sync to the server on commit, not per-keystroke.
 
+A single boolean toggle with no methods is small enough to inline:
+
 ```html
 <div x-data="{ open: false }">
   <button @click="open = !open" :aria-expanded="open">Menu</button>
@@ -128,9 +131,19 @@ attributes (CSP-clean — no inline `<script>`). Sync to the server on commit, n
 </div>
 ```
 
+**Past that, the component is registered rather than inlined.** More than one property, or any
+method, and the object literal in `x-data` becomes an untyped state bag whose shape only the
+markup knows — so it moves to `Alpine.data('name', () => ({ … }))` in a static `.js` file, and
+`x-data` names it. The threshold, the store rule for shared state, and the frozen-constant
+replacement for magic status strings are
+[`../data-structures/TYPES-BROWSER.md`](../data-structures/TYPES-BROWSER.md).
+
 ---
 
-## Where each surface lives
+## Where each surface will live
+
+**The rows decide where an interaction runs, not what is on disk.** `cache_marketing` and
+`build_seo()` arrive with the stories that need them.
 
 | Data / interaction                    | Runs where               | How                                                        |
 | ------------------------------------- | ------------------------ | ---------------------------------------------------------- |
@@ -142,4 +155,3 @@ attributes (CSP-clean — no inline `<script>`). Sync to the server on commit, n
 | SEO-critical page content             | Server (Django template) | `build_seo` + `_seo_head.html` in the initial HTML         |
 
 _Part of the `code/docs/` documentation family. See [`../RENDERING.md`](../RENDERING.md) for the full index._
-</content>

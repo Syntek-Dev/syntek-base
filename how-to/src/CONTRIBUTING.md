@@ -26,10 +26,10 @@ client bundle.
 
 ### Branching
 
-| Prefix               | For                                        | Example                 |
-| -------------------- | ------------------------------------------ | ----------------------- |
-| `us###/<short-desc>` | work scoped to a user story                | `us015/homepage-layout` |
-| `pm/<short-desc>`    | project management, process, documentation | `pm/wireframes-figma`   |
+| Prefix               | For                                        | Example                  |
+| -------------------- | ------------------------------------------ | ------------------------ |
+| `us###/<short-desc>` | work scoped to a user story                | `us015/homepage-layout`  |
+| `pm/<short-desc>`    | project management, process, documentation | `pm/wireframes-checkout` |
 
 Full branch and promotion rules: `project-management/docs/GIT-GUIDE.md`.
 
@@ -75,7 +75,7 @@ bash code/src/scripts/database/manageusers.sh create-staff --email you@example.c
 
 ## Licensing
 
-This project is licensed **<%LICENCE%>**, held by <%ORG_NAME%>. The `LICENSE` file at the
+This project is licensed **<%LICENCE%>**, held by <%ORG_NAME%>. The `LICENSE` file at the <!-- doc-references: template-only -->
 repository root is authoritative; this section is a summary.
 
 Do not add a third-party dependency whose licence is incompatible with that choice. Where
@@ -119,7 +119,9 @@ bash code/src/scripts/tests/api.sh                         # Bruno HTTP-layer te
 ```
 
 pytest is configured in `pyproject.toml` (`[tool.pytest.ini_options]`): it stops on first failure
-(`-x`) and uses `config.settings.local` as the settings module.
+(`-x`), runs quiet with `--strict-markers`, and uses `config.settings.test` as the settings module.
+Three markers are registered — `unit`, `integration` and `e2e`; the browser suite is never picked
+up by an ordinary run and has its own script (`code/src/scripts/tests/e2e-py.sh`).
 
 ### Coverage floors
 
@@ -176,8 +178,10 @@ Configuration lives in `pyproject.toml` (`[tool.ruff]`, `[tool.basedpyright]`). 
 | `css-tokens`    | Every `var(--token)` resolves in the token layer |
 | `css-gradients` | No inline gradients outside the tokens           |
 
-There is no TypeScript and no client bundle, so there is nothing for a JS type-checker to check.
-Configuration: `.prettierrc` (`printWidth: 100`) and `.markdownlint-cli2.jsonc`, both at the root.
+**The web surface has no TypeScript and no client bundle**, so there is nothing there for a JS
+type-checker to check. A project that took the mobile surface has its own typecheck, self-contained
+in that workspace (`code/src/scripts/mobile/typecheck.sh`). Configuration: `.prettierrc`
+(`printWidth: 100`) and `.markdownlint-cli2.jsonc`, both at the root.
 
 ---
 
@@ -212,4 +216,4 @@ tests, security, stubs, cloc, lockfiles — blocking the PR rather than letting 
 The **documentation hard gate** must also be satisfied: directory trees updated, new directories
 carrying both `CONTEXT.md` and `CLAUDE.md`, implementation records written, `GAPS.md` and
 `DEFERRED.md` current, and the code-review-graph refreshed. See
-`project-management/workflows/21-implementation-documentation/`.
+`project-management/workflows/22-implementation-documentation/`.

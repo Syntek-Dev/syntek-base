@@ -2,8 +2,8 @@
 #
 # security.sh — Dependency security audit: pnpm audit (JS/TS) + pip-audit / uv audit (Python).
 #
-#   Mirrors the CI "[8/8] Security" gate (.github/workflows/claude.yml) so a clean local
-#   run predicts a clean CI run. The gate runs, per ecosystem:
+#   Mirrors the CI "[8/8] Security" gate so a clean local run predicts a clean CI run.
+#   The gate runs, per ecosystem:
 #     JS/TS:  pnpm audit --audit-level low      (honours audit.ignore in
 #                                                 pnpm-workspace.yaml — read natively by pnpm 11)
 #     Python: uv run pip-audit                  (CVE scan of the locked backend deps)
@@ -138,7 +138,13 @@ audit_py() {
   else
     bold "▶ Python — pip-audit (mode: $MODE)"
     # Export the locked deps to a requirements file, then scan it — matches the CI gate.
-    local cmd='uv export --format requirements-txt --no-hashes > "$req" && uv run pip-audit --requirement "$req"; rc=$?; rm -f "$req"; exit $rc'
+    #
+    # --frozen is load-bearing, not tidiness. Without it `uv export` UPDATES uv.lock as a
+    # side effect, so an audit that only reads would silently create the lockfile on a tree
+    # that has none — and every `[ -f uv.lock ]` guard in the repository reads that file to
+    # decide whether a gate runs. A read-only-looking script must never be able to arm five
+    # CI gates by accident; with --frozen it fails loudly instead.
+    local cmd='uv export --frozen --format requirements-txt --no-hashes > "$req" && uv run pip-audit --requirement "$req"; rc=$?; rm -f "$req"; exit $rc'
     if [[ "$MODE" == "docker" ]]; then
       run "${DC[@]}" exec -T django sh -c \
         "cd /workspace/code/src/django && req=\$(mktemp) && $cmd" || return 1

@@ -49,6 +49,7 @@ Every route resolves to the django upstream. `/static/` is served from disk by N
 | ----------- | ---------------------------------- |
 | `/static/`  | Nginx, from the staticfiles volume |
 | `/media/`   | `django`                           |
+| `/health/`  | `django` — liveness and readiness  |
 | `/control/` | `django` — Django's built-in admin |
 | `/`         | `django` — catch-all               |
 
@@ -80,9 +81,13 @@ docker/
 
 ## Health check
 
-The stacks probe `/control/` — the only route the baseline serves. It answers `302` to the
-admin login, which proves the process is up and the URLconf loaded. **Repoint the
-healthchecks at a dedicated liveness route once one exists.**
+The stacks probe `/health/` — the dedicated liveness route, which answers `200 ok` and
+touches no dependency, so the probe reports on the process rather than on PostgreSQL.
+
+It was `/control/` until `apps.health` landed: the admin's `302` proved the same thing by
+accident, and only while the admin remained the one route the baseline served.
+`Dockerfile.prod` and `Dockerfile.staging` had already been written against `/health/`, so
+every production and staging container shipped permanently unhealthy until it existed.
 
 ## Network subnet scheme
 

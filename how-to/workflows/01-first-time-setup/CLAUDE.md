@@ -8,8 +8,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 ## Purpose (one line)
 
 The workflow for standing the project up on a fresh machine or onboarding a teammate
-— clone, copy environment files, and start the Dockerised backend (8000) and
-frontend (3000).
+— clone, copy environment files, and start the Dockerised stack, which nginx publishes
+on host port 81.
 
 ## How to work here
 

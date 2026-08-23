@@ -1,6 +1,6 @@
 # Updating — Pulling Template Changes into a Live Project
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 A project generated with Copier stays connected to the template. When `syntek-base` gains a fix,
 you can pull it into a project that has been diverging for months.
@@ -26,16 +26,16 @@ Copier re-renders the old template version with your answers, diffs it against t
 and applies that diff to your working tree — so your own changes survive, and only genuine
 overlaps become conflicts.
 
-### Seven files an update can never touch
+### Nine files an update can never touch
 
-`README.md`, `VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, `.claude/MEMORY.md`
-and the scale-planning map are **excluded from the template and re-seeded** from a staging
-directory by a `_tasks` entry — and `_tasks` run on `copy` and never on `update`.
+`README.md`, `VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, `.claude/MEMORY.md`,
+`GAPS.md`, `DEFERRED.md` and the scale-planning map are **excluded from the template and
+re-seeded** from a staging directory by a `_tasks` entry — and `_tasks` run on `copy` and never on `update`.
 
 That is the whole mechanism, and it is deliberate: these are the files that **accumulate**. An
 update must never hand your project the template's release history, or replace two years of
-project memory with a blank canvas. Everything else in the tree is fair game for the merge; these
-seven are not reachable by it at all.
+project memory or accumulated gaps with a blank canvas. Everything else in the tree is fair game
+for the merge; these nine are not reachable by it at all.
 
 The corollary is that a **template improvement to any of them never reaches you either.** If a
 later release improves the shipped `MEMORY.md` headings, you copy the change across by hand or
@@ -62,7 +62,7 @@ bash code/src/scripts/development/template-update.sh --apply
 Useful variants:
 
 ```bash
-template-update.sh --ref v3.1.1                 # preview a specific tag
+template-update.sh --ref v7.2.3                 # preview a specific tag
 template-update.sh -- --data KEY=value          # answer a new question with no default
 template-update.sh --keep-scratch               # leave the copy on disk to poke at
 ```
@@ -74,7 +74,7 @@ Underneath, it is ordinary Copier, and you can drive that directly if you prefer
 
 ```bash
 copier update --defaults                 # keep every previous answer, no prompts
-copier update --vcs-ref=v3.1.1           # update to a specific tag rather than the latest
+copier update --vcs-ref=v7.2.3           # update to a specific tag rather than the latest
 copier update --pretend                  # dry run — show what would change
 copier update --conflict inline          # write conflicts as inline markers rather than .rej
 ```
@@ -129,7 +129,7 @@ re-run the audit until it is clean.
 
 ### The same failure in reverse — v3.0.0 and agents you wrote yourself
 
-**v3.0.0 deletes `.claude/agents/` in full.** Its 54 agent definitions — plus the directory's own
+**v3.0.0 deletes .claude/agents/ in full.** Its 54 agent definitions — plus the directory's own
 `CONTEXT.md` and `CLAUDE.md` — were rewritten as skills under `.claude/skills/`, and not one for
 one: several folded together. For a project that never wrote its own agent the update is clean,
 because Copier removes what it generated and there is nothing to decide.
@@ -217,6 +217,8 @@ One limit worth knowing: a guard can only protect the updates that come after it
 
 Conflicts appear as normal git conflict markers in the affected files:
 
+<!-- conflict-markers: ignore — a worked example of what a conflict looks like, not a real one -->
+
 ```text
 <<<<<<< before updating
 your version
@@ -262,7 +264,7 @@ bash code/src/scripts/tests/backend.sh
 If `pyproject.toml` changed, re-lock and rebuild:
 
 ```bash
-uv lock
+bash code/src/scripts/development/install-backend.sh
 bash code/src/scripts/development/server.sh build
 ```
 
@@ -295,7 +297,7 @@ restores it. To keep it gone, add it to `_exclude` in a fork, or delete it again
 update and accept the friction.
 
 **`DATE` is stable on purpose.** It is an answered value, not a computed one, so an update does
-not rewrite roughly 380 `**Last Updated**` headers to today. If you _want_ to re-stamp them,
+not rewrite roughly 350 `**Last Updated**` headers to today. If you _want_ to re-stamp them,
 change `DATE` in `.copier-answers.yml` and update.
 
 **Renames look like delete-plus-add.** If the template moves a file you had edited, the merge

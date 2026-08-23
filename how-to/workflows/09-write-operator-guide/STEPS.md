@@ -118,3 +118,20 @@ Fix what you find, in the guide rather than in your shell:
   workflow `06-quality-gates`.
 - Update `**Last Updated**` on every `CONTEXT.md` you touched, and refresh the
   code-review-graph so the docs and the graph stay in lockstep.
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
+
+---
+
+## Completion
+
+Run through `CHECKLIST.md` before marking this workflow complete.

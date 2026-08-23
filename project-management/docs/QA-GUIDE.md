@@ -43,7 +43,7 @@ This guide supports the `workflows/11-qa-checks` workflow.
 QA checks run once per sprint cycle, after security checks and before sprint plans are written:
 
 ```text
-10-security-checks  →  11-qa-checks  →  13-api-design  →  14-decisions  →  15-sprint-plans  →  16-story-plans  →  18-backend-code
+10-security-checks  →  11-qa-checks  →  13-api-design  →  15-decisions  →  16-sprint-plans  →  17-story-plans  →  19-backend-code
 ```
 
 QA checks are also the point where missing acceptance criteria in `src/02-STORIES/` are
@@ -215,4 +215,4 @@ Before closing the QA checks workflow:
 - [ ] All acceptance criteria gaps identified and fed back into `US###.md`
 - [ ] No stories with unresolved `AC-GAP` entries remain
 - [ ] Developer notes on testability requirements added where needed
-- [ ] Ready to proceed to `workflows/13-api-design` (or `workflows/15-sprint-plans` if API design is already complete)
+- [ ] Ready to proceed to `workflows/13-api-design` (or `workflows/16-sprint-plans` if API design is already complete)

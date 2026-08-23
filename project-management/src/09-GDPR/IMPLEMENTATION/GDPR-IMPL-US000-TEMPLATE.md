@@ -69,4 +69,4 @@ valid entry.
 - `../DATA-INVENTORY.md` · `../RETENTION-DELETION.md` · `../THIRD-PARTY-PROCESSORS.md` —
   registers updated as a result of this story
 - `code/docs/SECURITY.md` — the enforcement side these claims must stay consistent with
-- `project-management/workflows/21-implementation-documentation/` — where this record is written
+- `project-management/workflows/22-implementation-documentation/` — where this record is written

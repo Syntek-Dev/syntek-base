@@ -1,5 +1,21 @@
 [project]
-name = "<%PROJECT_SLUG%>"
+# HOUSE CONSTANT IN THE TEMPLATE, branded at generation — never a token here.
+#
+# uv validates this field as a package name, and `<`, `%` and `>` are not legal in one:
+# `uv lock` failed outright with "Not a valid package or extra name", which is why this
+# repository shipped no uv.lock, could not `uv sync`, and therefore ran no type-check, no
+# dependency audit and no test suite against itself. One unparseable line cost every
+# Python gate the template had.
+#
+# The branded name is restored by a copier _task that rewrites this line at generation,
+# BEFORE `uv lock` runs, so a generated project locks under its own slug. The cost of that
+# mechanism, stated where it bites: `copier update` never runs _tasks, so if this literal
+# is ever changed the diff will reach an existing project and rename its package. Change
+# it only with that in mind.
+#
+# Cheap because `[tool.uv] package = false` below — this is a virtual project. Nothing
+# builds or publishes a distribution, so the name is metadata uv reads and nothing else.
+name = "syntek-base"
 version = "0.1.0"
 description = "<%PROJECT_DESCRIPTION%>"
 requires-python = ">=3.14"

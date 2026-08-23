@@ -12,7 +12,8 @@
 #
 # The token-first law's "name resolves" clause is free here: an unresolved token import
 # does not compile, so this script enforces half of it. The no-raw-literals clause is
-# checked by audits/mobile-tokens.sh.
+# covered by the separate mobile design-token audit, because no type-checker can see a
+# raw literal that happens to be the right type.
 #
 # Exit codes:  0 = clean   1 = type errors   2 = script error
 #
@@ -24,7 +25,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --watch) TSC_ARGS+=(--watch); shift ;;
     --help | -h)
-      sed -n '3,8p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      sed -n '3,8p' "$SCRIPT_SELF" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *) die "Unknown option '$1'. Use --help for usage." ;;

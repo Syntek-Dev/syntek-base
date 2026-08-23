@@ -26,7 +26,7 @@ every project generated from this template. **This file is the answer sheet, and
 without a row — or a row whose key nothing raises — fails rather than being noticed later.
 
 **A `service-guard` row names one function.** A second call site enforcing the same invariant is a
-finding for `project-management/src/19-FINDINGS/`, not a judgement call.
+finding for `project-management/src/20-FINDINGS/`, not a judgement call.
 
 **`programmer error` is the default.** A breach reaching a user as a friendly message means the
 invariant was never enforced — it was described. The exceptions are constraints a user can
@@ -120,4 +120,6 @@ point is load-bearing enough that being wrong about it would be expensive.
 
 - [`code/docs/NEGATIVE-SPACE.md`](../../code/docs/NEGATIVE-SPACE.md) — the rule this file answers
 - [`code/docs/DATABASE.md`](../../code/docs/DATABASE.md) — read before any model or migration
-- [`how-to/src/PLATFORM-PROVIDERS.md`](PLATFORM-PROVIDERS.md) — the other per-project answer sheet
+- The other per-project answer sheets, same rule-elsewhere/answer-here split:
+  [`PLATFORM-PROVIDERS.md`](PLATFORM-PROVIDERS.md) · [`PROJECT-PATHS.md`](PROJECT-PATHS.md) ·
+  [`STORE-LISTING.md`](STORE-LISTING.md) (mobile-only)

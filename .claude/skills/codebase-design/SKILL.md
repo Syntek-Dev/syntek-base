@@ -105,7 +105,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/workflows/11-refactor/` — reasoning about module depth before restructuring
 - `code/workflows/07-review/` — the review lens on seams and boundaries
-- `project-management/workflows/14-decisions/` — the vocabulary an ADR's options are argued in
+- `project-management/workflows/15-decisions/` — the vocabulary an ADR's options are argued in
 
 ## Cross-references
 

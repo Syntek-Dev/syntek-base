@@ -29,8 +29,9 @@ The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e
 ## Guardrails
 
 - **Coverage floors are enforced, not advisory** — `--cov-fail-under=75` (backend);
-  auth code (`apps/users`) holds a 90% manual floor. Never lower a floor to make a
-  run pass.
+  auth code holds a 90% floor. **Never name that app literally** — `backend-coverage.sh`
+  reads `AUTH_APP` (default `users`), so a project answering `IDENTITY_APP=accounts` is
+  gated on the app it actually has. Never lower a floor to make a run pass.
 - **Exit-code contract:** `0` pass, `1` failures/coverage below floor, `2` script
   error — CI's three test workflows depend on it; never mask a failure.
 - **Mutation testing (`mutmut.sh`) is local-only** — deliberately out of CI; do not

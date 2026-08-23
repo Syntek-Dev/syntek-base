@@ -29,32 +29,41 @@ predict a clean CI run.
 - **Local and CI are deliberately mirrored.** `audits/security.sh` states outright that it
   mirrors the CI `[8/8] Security` gate so a clean local run predicts a clean CI run. When
   they disagree, that is a bug in the mirroring — fix it rather than routing around it.
-- **CI is stricter in one place:** an **80%** coverage floor applies on `staging` and
-  `main`, above the 75% the runner enforces. A change that passes locally can still fail
-  the promotion.
-- **The audits are separate from the eight gates**, and each has its own path-filtered CI
-  workflow: `cloc`, `stubs`, `css-tokens`, `css-gradients`, `copy-emdash`, `mobile-tokens`,
-  `security`, `seam-contract`, `negative-space`, `docs-pairing`, `docs-length`, `skill-conformance`, and the AI-slop
-  family — `css-slop`, `template-slop`,
-  `copy-slop`, `render-slop`, plus `style-check` on a desktop project. They are cheap; run them —
+- **The coverage floor rises on the promotion branches**, so a change that is green on a
+  feature branch can still fail promotion. The numbers and the branches they key off are
+  `code/docs/testing/COVERAGE.md` → _The promotion tier_, which owns them.
+- **The audits are separate from the eight gates**, and each has its own CI workflow — 26 of
+  them. Grouped by what they read: **source** — `cloc`, `stubs`, `dict-discipline`,
+  `static-analysis`, `security`; **docs and routing** — `docs-pairing`, `docs-length`,
+  `doc-references`, `doctrine-drift`, `skill-conformance`, `routing-skills`; **design and copy** —
+  `css-tokens`, `css-gradients`, `copy-emdash`, `mobile-tokens`, plus `style-check` on a desktop
+  project; **contracts and invariants** — `seam-contract`, `negative-space`; **the tree itself** —
+  `conflict-markers`, `template-orphans`, `dependency-drift`; and the AI-slop family —
+  `css-slop`, `template-slop`, `copy-slop`, `render-slop`. They are cheap; run them —
   `render-slop` is the one exception to cheap, because it drives a browser, and it self-guards to
   a note when Chromium is absent.
-- **An audit is never a required status check, and that is why it may be path-filtered.**
+- **A path-filtered audit is never a required status check, and that is why it may be filtered.**
   A required check must report on every pull request; a path-filtered one does not run when a PR
-  touches none of its paths, so it never reports and the merge waits forever
-  (`project-management/docs/GIT-GUIDE.md` → Required status checks and path filters).
-- **`static-analysis` is the one audit with no CI workflow yet.** It needs the Opengrep engine
-  installed in the runner, and until that is wired it would report a green job having scanned
-  nothing — which is worse than no job. Locally it behaves the same way: **without `opengrep` on
-  PATH it skips**, so a clean run of it is not evidence its rules pass.
+  touches none of its paths, so it never reports and the merge waits forever. An **unfiltered**
+  audit is the other case entirely — six of the 26 carry no filter, and any of those may be
+  required (`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → What earns a place in the
+  required set).
+- **`static-analysis` is a gate in CI and optional on a laptop, and the asymmetry is deliberate.**
+  `audit-static-analysis.yml` installs the pinned Opengrep engine, verifies its Sigstore
+  signature, and runs `--self-test` before the scan — so the rules are enforced where the code
+  ships. Locally the script **skips without `opengrep` on PATH** and exits 0 with a note, so a
+  clean local run is not evidence its rules pass. Install it with
+  `bash code/src/scripts/development/install-opengrep.sh` if you want the local half to mean
+  something.
 - **Two tiers, one exit code.** The slop family, `cloc` and `docs-length` report `[gate: fail]` and
   `[gate: warn]` in a single run, and only a fail changes the exit code. That is deliberate: a
   threshold on composition or vocabulary fails correct work, so the script reports and a person
   decides (`code/docs/VISUAL-DESIGN.md` Section 6). **Exit 0 with warnings is not a clean run** — it is
   a run with unanswered questions in it.
-- **In this template, some gates report success with nothing to run.** `uv.lock` is absent
-  by design, so the Python half of several CI jobs is guarded and skips. In a generated
-  project they all execute.
+- **In this template every gate has a subject.** `uv.lock` is committed here (16/08/2026), so
+  the Python half of each job resolves a real dependency set and runs, exactly as in a
+  generated project. The pre-PR hook adds a ninth, template-only gate — `audits`
+  (`.claude/hooks/CONTEXT.md`). A gate reporting nothing to run is now a defect to chase.
 
 ## Cross-references
 
@@ -69,4 +78,4 @@ predict a clean CI run.
 - `code/src/scripts/syntax/CONTEXT.md` — lint, format, and type-check runners
 - `how-to/workflows/05-testing-and-coverage/` — the tests gate, in depth
 - `code/workflows/07-review/` — content review, which precedes this process gate
-- `project-management/workflows/22-pr-and-review/` — the PR itself, once gates are green
+- `project-management/workflows/23-pr-and-review/` — the PR itself, once gates are green

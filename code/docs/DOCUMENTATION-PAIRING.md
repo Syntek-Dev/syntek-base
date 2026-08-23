@@ -115,10 +115,14 @@ Three headings that look like rules and are not, so they stay:
   routes elsewhere, which is orientation. It is not a prohibition on conduct.
 - **`## Dependencies`** — what the things in this directory need in order to work, as above.
 
-`## Key concepts` is the common trap. Domain facts belong there — _"OWASP A01–A10 are the
-security baseline"_, _"the coverage floor is 75% line and branch, 90% auth"_. The moment a bullet
-acquires _must_ or _never_ it is a guardrail, and a guardrail stated twice in two wordings is the
-drift this standard exists to prevent.
+`## Key concepts` is the common trap, and the trap is subtler than fact-versus-rule. Domain facts
+belong there — but **a fact that already has an owner is a restatement whatever its grammar**, so
+the test is Section 6's rather than the grammatical one it looks like. _"The three tiers run
+specify → decide → record"_ is `project-management/src/`'s own fact and belongs in its
+`CONTEXT.md`; the **coverage floor** belongs to `code/docs/testing/COVERAGE.md`, so naming its
+numbers anywhere else is the Section 6 _Bad_ case wearing a `## Key concepts` heading. The moment
+a bullet acquires _must_ or _never_ it is a guardrail besides, and a guardrail stated twice in two
+wordings is the drift this standard exists to prevent.
 
 ## 6. Route, do not restate
 
@@ -129,27 +133,68 @@ thirty-nine of them will be missed.
 
 - **Good** — _"coverage floors met (`code/docs/testing/COVERAGE.md`)"_.
 - **Bad** — _"coverage floors met: 75% line and branch, 90% auth"_ in a file that does not own
-  the number.
+  the numbers.
+
+**That pair is not hypothetical, and the bad half decayed while sitting in this guide.** On
+16/08/2026 the coverage floor gained a promotion tier, so the bad version is now **incomplete as
+well as duplicated** — and nothing about it reads as stale, which is exactly why a reader would
+have believed it. The good version needed no edit, because a citation does not go out of date when
+the thing it cites changes. That is the whole argument for this section, and it happened here.
 
 Restate only where the rule has **no other owner** and this directory is where it is decided.
 That is the test for whether a `CLAUDE.md` bullet is carrying its own weight.
 
-## 7. The two exceptions to the pairing
+## 7. Which directories are bound
 
-- **The repository root.** `/CLAUDE.md` is gitignored — `code-review-graph install` generates one
-  there. `.claude/CLAUDE.md` is the root's operating-rules counterpart to the root `CONTEXT.md`.
-- **Generated-output directories.** The `reports/` folders under `code/src/scripts/**` carry a
-  `CONTEXT.md` and no `CLAUDE.md`: their only operating rule is _generated, never hand-edit_, and
-  the `CONTEXT.md` already says so. A `CLAUDE.md` there would hold one sentence.
+**A directory carries the pair when a human or an agent works in it.** That is the whole test,
+and it follows from what the pair is for — orientation for someone about to make a decision
+there. Where nothing is decided, there is nothing to orient.
 
-Every other directory carrying a `CONTEXT.md` carries a `CLAUDE.md`, and every `CLAUDE.md` has a
-`CONTEXT.md` beside it.
+Five classes fall outside it. The first three share a reason: their contents are **remade rather
+than authored**, so a pair would describe something nobody wrote, and would be regenerated away
+or left describing a previous shape.
+
+- **Generated output** — `reports/` under `code/src/scripts/**`, coverage output, `.expo/`,
+  `node_modules/`. The `reports/` folders carry a `CONTEXT.md` and no `CLAUDE.md`: their only
+  operating rule is _generated, never hand-edit_, and the `CONTEXT.md` already says it.
+- **Synthetic fixtures** — `code/src/scripts/audits/fixtures/**`, the deliberately-broken and
+  deliberately-clean sample trees the audits run against, including replicas of real guides. A
+  pair added there becomes **live input to the audit reading it**, which is worse than an
+  undocumented directory.
+- **The repository root** — `/CLAUDE.md` is gitignored, because `code-review-graph install`
+  generates one there. `.claude/CLAUDE.md` is the root's operating-rules counterpart.
+
+The other two are oriented already, by something that is not a `CONTEXT.md`:
+
+- **A skill folder** — `.claude/skills/<name>/` and the vendored `.agents/` trees. A skill's own
+  `SKILL.md` and its `description` frontmatter _are_ its orientation, and the folder above them
+  carries the pair plus the roster. A third file there would restate the `SKILL.md`.
+- **A single-purpose leaf** — a directory whose whole tracked content is **one file** and which
+  holds no tracked sub-directory: `crates/*/src/`, `crates/desktop/ui/`, `django/static/js/`. Its
+  parent carries the pair and annotates the row, so the leaf has no internal organisation left to
+  explain. Add a second file and the exemption lapses — at two, there is a relationship between
+  them, and a relationship is exactly what orientation is for.
+
+Everything else a person or an agent edits is bound, **on every surface** — `code/src/django/`,
+`code/src/mobile/` and the Rust crates alike. A rule scoped to one surface is a rule the next
+surface silently escapes; that is how the mobile and Rust source trees went unpaired while the
+Django tree was fully covered.
+
+Every directory carrying a `CONTEXT.md` carries a `CLAUDE.md`, every `CLAUDE.md` has a
+`CONTEXT.md` beside it, and a bound directory carrying **neither** is the third failure — the one
+a file-driven check cannot see, which is why the audit enumerates directories rather than files.
+
+**That enumeration is scoped to `code/src/**`,** where "a directory someone works in" has a
+decidable meaning. Elsewhere the same principle holds but is not mechanised: the exempt classes
+outnumber the bound ones outside the source tree, and a check whose exemption list is longer than
+its findings is one nobody trusts.
 
 ## 8. How it is enforced
 
 | Check                                                                | Tool                                            | Tier |
 | -------------------------------------------------------------------- | ----------------------------------------------- | ---- |
-| Pairing present both ways; the two exceptions honoured               | `audits/docs-pairing.sh`                        | fail |
+| Pairing present both ways; the exempt classes honoured               | `audits/docs-pairing.sh`                        | fail |
+| A bound directory carrying **neither** file (Section 7)              | `audits/docs-pairing.sh`                        | fail |
 | `CLAUDE.md` opens with `@./CONTEXT.md`, has `Read order:` + four H2s | `audits/docs-pairing.sh`                        | fail |
 | No directory tree inside a `CLAUDE.md`                               | `audits/docs-pairing.sh`                        | fail |
 | `CONTEXT.md` has a `## Directory Tree` fence                         | `audits/docs-pairing.sh`                        | fail |
@@ -164,7 +209,7 @@ name as unwritten.
 
 ## Governing procedures (route here — do not restate at length)
 
-- `project-management/workflows/21-implementation-documentation/` — the closeout that updates
+- `project-management/workflows/22-implementation-documentation/` — the closeout that updates
   every touched `CONTEXT.md`/`CLAUDE.md` pair and refreshes the graph
 - `how-to/workflows/09-write-operator-guide/` — the operator-doc counterpart for `how-to/`
 

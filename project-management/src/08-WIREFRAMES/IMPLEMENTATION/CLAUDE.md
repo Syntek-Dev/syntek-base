@@ -12,7 +12,7 @@ shipped Django templates honour the consolidated screens in `../CONSOLIDATED-IDE
 
 ## How to work here
 
-- **Routing:** written during `workflows/21-implementation-documentation/` by the `doc-writer`
+- **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated screens and the shipped templates.
 - **Model:** Opus — verifying a page matches an approved layout is a documentation closeout.
   Escalate to `frontend` (Fable) where a deviation needs judging.
@@ -33,7 +33,7 @@ shipped Django templates honour the consolidated screens in `../CONSOLIDATED-IDE
 - **Accessibility is verified here, not assumed** — heading order, focus order, skip link, and
   contrast against the live page (`code/docs/ACCESSIBILITY.md`).
 - **A screen built but absent from the consolidated set is a deviation.** Consolidation gap →
-  `../../19-FINDINGS/`; unplanned screen → `../../20-BUGS/` or a new `US###`.
+  `../../20-FINDINGS/`; unplanned screen → `../../21-BUGS/` or a new `US###`.
 - **Record, never fix** — corrections land in `code/`.
 - **Never rename or back-date a filed record.**
 - **Documentation only** — no template code, no secrets.

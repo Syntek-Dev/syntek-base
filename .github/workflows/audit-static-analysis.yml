@@ -1,0 +1,131 @@
+# Static analysis — the Opengrep leg. Closes the two gaps the rest of the tooling
+# leaves: Django TEMPLATE issues (ruff cannot read a .html file, so `|safe`,
+# `{% autoescape off %}` and a variable interpolated into an Alpine expression are
+# unscanned) and cross-file taint (a per-file linter flags a bare eval(); it cannot see
+# that the argument came off request.GET two modules away).
+#
+# THIS JOB IS THE HALF THAT MAKES THE SCRIPT A GATE. audits/static-analysis.sh is
+# deliberately optional on a laptop — engine absent, note printed, exit 0. Before this
+# workflow existed that was the ONLY way it ever ran, so the rule had never once been
+# enforced: "an audit that cannot run where it ships is one nobody ever sees fail"
+# (code/src/scripts/audits/CONTEXT.md).
+#
+# Path-filtered, therefore NOT a required status check — the choice each workflow makes
+# once, per project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → Required status
+# checks and path filters. It qualifies as advisory on both counts of that guide's
+# promotion test: its
+# scope is one directory rather than the repository, and its engine is a 46 MB download
+# rather than a tool the runner already has.
+#
+# THE ENGINE IS PINNED AND ITS SIGNATURE VERIFIED. Opengrep is not on PyPI, not on npm
+# (the `opengrep` package there is an unrelated placeholder stuck at 1.0.0 with no
+# binary), has no official Action and no published container — so it arrives the one way
+# left, as a release binary. That makes it the first downloaded binary in this
+# repository's toolchain, which is why it does not arrive unverified: upstream signs
+# every asset with Sigstore, and cosign checks that signature against the exact workflow
+# identity that produced it before the binary is ever executed.
+#
+# THREE STEPS, and the first two are the load-bearing ones. Version assertion catches a
+# moved tag; --self-test asserts the rules still separate a known-positive fixture from
+# a known-negative one. The scan that follows finds nothing in a baseline project, so
+# without the self-test this job would be green having measured nothing.
+name: Audit — Static Analysis
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/**"
+      - "code/src/scripts/audits/static-analysis.sh"
+      - "code/src/scripts/audits/rules/**"
+      - "code/src/scripts/audits/fixtures/static-analysis/**"
+      - ".opengrep-version"
+      - ".github/workflows/audit-static-analysis.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "code/src/django/**"
+      - "code/src/scripts/audits/static-analysis.sh"
+      - "code/src/scripts/audits/rules/**"
+      - "code/src/scripts/audits/fixtures/static-analysis/**"
+      - ".opengrep-version"
+      - ".github/workflows/audit-static-analysis.yml"
+  workflow_dispatch:
+
+jobs:
+  static-analysis:
+    name: Static analysis audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v4.1.2
+
+      # The pin is read, never restated. .opengrep-version is this repository's fourth
+      # toolchain pin, beside .nvmrc, .python-version and rust-toolchain.toml.
+      - name: Read the pinned engine version
+        id: pin
+        run: echo "version=$(tr -d '[:space:]' < .opengrep-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Download the pinned engine and its signing material
+        env:
+          VERSION: ${{ steps.pin.outputs.version }}
+        run: |
+          base="https://github.com/opengrep/opengrep/releases/download/v${VERSION}"
+          asset="opengrep_manylinux_x86"
+          curl -fsSL -o opengrep       "${base}/${asset}"
+          curl -fsSL -o opengrep.cert  "${base}/${asset}.cert"
+          curl -fsSL -o opengrep.sig   "${base}/${asset}.sig"
+
+      # The certificate ships base64-wrapped; cosign wants the PEM.
+      #
+      # The identity is pinned exactly rather than by regex, because it is the whole
+      # point of the check: only the opengrep release workflow, running on GitHub's
+      # OIDC issuer, may have produced this binary. If upstream renames or moves that
+      # workflow this step fails loudly on the next version bump — which is the correct
+      # outcome, and better than a regex loose enough to keep passing through it.
+      - name: Verify the engine signature
+        run: |
+          base64 -d opengrep.cert > opengrep.pem
+          cosign verify-blob \
+            --certificate opengrep.pem \
+            --signature opengrep.sig \
+            --certificate-identity 'https://github.com/opengrep/opengrep/.github/workflows/rolling-release.yml@refs/heads/main' \
+            --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+            opengrep
+
+      - name: Install the engine
+        run: |
+          chmod +x opengrep
+          sudo mv opengrep /usr/local/bin/opengrep
+
+      # A release tag can be moved. The signature proves who built the binary, not which
+      # version it is, so the pin is asserted against what actually landed on PATH.
+      - name: Assert the installed engine matches the pin
+        env:
+          VERSION: ${{ steps.pin.outputs.version }}
+        run: |
+          installed="$(opengrep --version | tr -d '[:space:]')"
+          if [ "$installed" != "$VERSION" ]; then
+            echo "::error::.opengrep-version pins ${VERSION}, but the installed engine reports ${installed}"
+            exit 1
+          fi
+          echo "Engine ${installed} matches the pin."
+
+      # Runs BEFORE the scan, and its failure is the only way this job goes red in a
+      # project with no application code yet. Exits 2 rather than 0 when the engine is
+      # missing, so a broken install step cannot turn the proof into a rubber stamp.
+      - name: Prove the rules (self-test against the fixture pair)
+        run: bash code/src/scripts/audits/static-analysis.sh --self-test
+
+      - name: Run static analysis audit
+        run: bash code/src/scripts/audits/static-analysis.sh --output md
+
+      - name: Upload static analysis report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: static-analysis-report
+          path: code/src/scripts/audits/reports/static-analysis-report.md
+          if-no-files-found: ignore

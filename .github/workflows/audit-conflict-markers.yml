@@ -1,0 +1,54 @@
+# Unresolved conflict-marker guard — the CI half of code/src/scripts/audits/conflict-markers.sh.
+#
+# A committed conflict marker passed every gate this repository had for two releases:
+# .claude/skills/stack-fastmcp/SKILL.md carried an unresolved stash conflict from 3bd49e8, and
+# Prettier had reformatted the markers into valid Markdown — the open marker indented into a list
+# continuation, the close into a nested blockquote, the middle marker consumed entirely as a
+# setext heading underline. So it linted clean, formatted clean, and an anchored grep found
+# nothing. It surfaced only because someone happened to edit that section.
+#
+# NO PATH FILTER, DELIBERATELY. Most audits scan a named surface, so filtering to that surface
+# is honest; six of the 26 audit workflows are unfiltered and this is one of them. A conflict
+# marker can land in ANY text file, so a path list is a list of the places it would still be
+# missed. It is also cheap: ~2s for the whole tree.
+#
+# ELIGIBLE FOR THE REQUIRED SET — and eligibility is the most a workflow file can honestly
+# claim, because membership is a repository setting and this file ships. It satisfies criterion
+# 1 of project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → What earns a place in the
+# required set: it executes on every pull request, carries no guard, and can fail here. Whether
+# it joins is a branch-protection decision, not a file change; read the live set with the
+# `gh api` block in that guide's `Changing the set`. The check name branch protection matches is
+# the job name below, exactly.
+name: Audit — Conflict Markers
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+jobs:
+  conflict-markers:
+    name: Unresolved conflict-marker audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # The detector is proven before it is trusted: it must fire on all four real forms
+      # (raw open, indented open, raw close, blockquote close) and stay silent on the
+      # separators and REPL prompts that look like them. Same contract as render-slop and
+      # static-analysis — a gate nobody has watched fail is a gate nobody should believe.
+      - name: Self-test the detector
+        run: bash code/src/scripts/audits/conflict-markers.sh --self-test
+
+      - name: Run conflict-marker audit
+        run: bash code/src/scripts/audits/conflict-markers.sh --output md
+
+      - name: Upload conflict-marker report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: conflict-markers-report
+          path: code/src/scripts/audits/reports/conflict-markers-report.md
+          if-no-files-found: ignore

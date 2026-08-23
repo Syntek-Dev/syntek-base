@@ -28,6 +28,7 @@ model: opus
 - [ ] All functions have a single, clear purpose · _opus_
 - [ ] No file exceeds 750 lines · _opus_
 - [ ] Business logic is in service classes, not resolvers; named access rules use Policy classes, variant algorithms use Strategy classes · _opus_
+- [ ] Every abstraction introduced names its axis of change and its pattern, or states why plain extraction was enough (`code/docs/coding-principles/PRACTICAL-RULES.md` — _Design Patterns in Refactoring_) · _opus_
 - [ ] No inline imports without a documented reason · _opus_
 - [ ] All tests still pass after refactoring · _opus_
 - [ ] Coverage not reduced · _opus_
@@ -35,7 +36,7 @@ model: opus
 
 ### CSS refactoring (apply when CSS files are in scope)
 
-- [ ] No hardcoded typography, colour, spacing, or shadow values — all use `var(--token-*)` from `shared/src/css/tokens/` · _opus_
+- [ ] No hardcoded typography, colour, spacing, or shadow values — every one resolves to a token defined in the token layer (`code/docs/DESIGN-TOKENS.md` names it) · _opus_
 - [ ] No declaration block repeated in 4+ distinct files — extracted to a shared utility class in `utility.css` or a section layer file · _opus_
 - [ ] Logical properties used throughout — `margin-block-end`, `padding-inline`, `border-block-start` etc.; no `margin-bottom`, `padding-left`, `border-top` · _opus_
 - [ ] No per-component `outline: none; box-shadow: var(--shadow-focus)` focus ring — the global rule in `base/reset.css` handles all focus states · _opus_
@@ -55,5 +56,5 @@ model: opus
 ## Definition of Done
 
 - [ ] Behaviour is identical to before the refactor — verified by passing tests
-- [ ] Refactoring notes saved to `project-management/src/21-REFACTORING/` if the change is significant
+- [ ] Refactoring notes saved to `project-management/src/22-REFACTORING/` if the change is significant
 - [ ] Committed and pushed

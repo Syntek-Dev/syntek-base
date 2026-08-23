@@ -65,6 +65,13 @@ Every runbook has these sections, in this order. Omit one only when you can say 
 - **Quote real output.** Paste what the command actually printed, not what you expect it to.
 - **Flag destructive commands in the line above them**, and say what is lost.
 - **Never include a secret, token, or real credential** — reference `.env.*.example` only.
+- **A `CHECKLIST.md` box names a command; `STEPS.md` owns how to run it.** The checklist is read
+  after the work, to confirm it was done accurately — so a box may carry the **bare name**
+  (`pre-pr-check.sh` green end to end) or the **exact form its `STEPS.md` twin instructs**, and
+  nothing in between. A third, shortened variant is the failure: it reads as runnable, differs
+  from what was actually meant to run, and a correction sweep that fixes `STEPS.md` never opens
+  the checklist beside it. That is how one gate came to be documented correctly in `STEPS.md` and
+  falsely in the box that gates it.
 
 ## Execute to verify
 
@@ -93,7 +100,7 @@ often skipped.
 - **Code standards, docstrings, and every `CONTEXT.md`/`CLAUDE.md` outside `how-to/`** belong to
   the developer-docs remit, not this one.
 - **End-user help for the product** is a different audience and a different register.
-- **Implementation records** belong to `project-management/workflows/21-implementation-documentation/`.
+- **Implementation records** belong to `project-management/workflows/22-implementation-documentation/`.
 - **Skills are a different standard** — `how-to/docs/SKILL-AUTHORING.md`.
 
 ## Indexing is part of writing

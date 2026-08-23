@@ -120,6 +120,11 @@ Never invoke `pnpm`, `expo`, `tsc` or `jest` directly:
 | Test            | `code/src/scripts/mobile/test.sh`      |
 | Bundle          | `code/src/scripts/mobile/bundle.sh`    |
 
+The syntax aggregates delegate here under the **`typescript`** token
+(`syntax/lint.sh --file-type typescript`, `syntax/check.sh --file-type typescript`). Use the
+scripts above when you need their own flags; `javascript` is the **web** surface and never
+reaches this tree.
+
 **Metro runs on the host, not in Docker** — the one dev operation that is not containerised. Expo
 Go runs on a physical device, and a device cannot reach a `127.0.0.N` loopback alias, so Metro
 must be on the LAN. Its port joins the story's existing reserved block (`8081 + story number`).
@@ -242,8 +247,9 @@ the React Native techniques; built to the screen's wireframe; no em dash in user
   Adding a TypeScript dependency to the repository root breaks the one-mechanism opt-in rule.
 - **No PII in device storage.** Nothing sensitive in AsyncStorage or an unencrypted store; use
   the platform secure store for credentials and clear form state after submission.
-- **The Expo SDK bump is a template release**, propagated by `copier update` — not a routine
-  dependency bump. The mobile app is its own semver track (`code/src/mobile/CONTEXT.md`).
+- **Expo SDK tracking is owned by `code/src/mobile/CLAUDE.md`** — who produces a bump, when this
+  project adopts one, and why `-r` must never reach the dependency sweep. Read it before touching
+  the pin. The mobile app is its own semver track (`code/src/mobile/CONTEXT.md`).
 - Source files ≤ 750 lines (800 grace).
 
 ## Handoff
@@ -259,16 +265,20 @@ and `gdpr-mechanics` where a nutrition label or Data Safety declaration is in pl
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/20-frontend-code/` — the build phase; its mobile-flagged steps
+- `project-management/workflows/21-frontend-code/` — the build phase; its mobile-flagged steps
 - `project-management/workflows/08-wireframes/` — the screen designs consumed here
-- `code/workflows/01-new-feature/` · `02-tdd-cycle/` — the feature and TDD procedures
-- `project-management/workflows/21-implementation-documentation/` — the closeout before commit
+- `code/workflows/01-implement-story/` · `02-tdd-cycle/` — the feature and TDD procedures
+- `project-management/workflows/22-implementation-documentation/` — the closeout before commit
 - `how-to/workflows/03-daily-development/` — starting a session; Metro is the one host process
 - `code/src/mobile/CLAUDE.md` — the operating rules for the tree itself
 
 ## Cross-references
 
 - `code/docs/MOBILE-CODING-PRINCIPLES.md` — the TypeScript flags, exhaustiveness, error taxonomy
+- `code/docs/data-structures/TYPES-TYPESCRIPT.md` — records as interfaces, a literal union over an
+  `as const` object rather than TypeScript's `enum`, discriminated unions in place of a struct of
+  optional fields, and the parse function at the `fetch` seam. Branded IDs stay **declined** —
+  that decision is `MOBILE-CODING-PRINCIPLES.md` Section 3's, and this guide only records its trigger
 - `code/docs/DESIGN-TOKENS.md` — the token-first contract, read every time
 - `code/docs/VISUAL-DESIGN.md` — Section 3 the project's **direction** and its six axes, Section 4.1 the
   universal tells, Section 5 the motion numbers (read every time)

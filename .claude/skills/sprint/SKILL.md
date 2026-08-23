@@ -21,7 +21,7 @@ sprint goal, and a fork that cannot ask would invent one.
 
 **Model.** `model: fable` above applies to the turn that loads this skill and is not a
 guarantee. The durable carrier for the planning tier is the `model: fable` routing frontmatter
-on `project-management/workflows/03-sprint-planning/` and `15-sprint-plans/`.
+on `project-management/workflows/03-sprint-planning/` and `16-sprint-plans/`.
 
 ---
 
@@ -53,8 +53,8 @@ nobody agreed.
 any disagreement. Applied here:
 
 - **The ceiling is a trigger, not a target.** Stories are planned one at a time; each that
-  clears `14-decisions` is slotted into the open `SPRINT-##.md` with its points. At
-  `<%SPRINT_CAPACITY_SP%>` SP planning pauses and `15-sprint-plans` + `16-story-plans` run for
+  clears `15-decisions` is slotted into the open `SPRINT-##.md` with its points. At
+  `<%SPRINT_CAPACITY_SP%>` SP planning pauses and `16-sprint-plans` + `17-story-plans` run for
   that sprint before the next story is picked up.
 - **Grace is `<%SPRINT_GRACE_SP%>` SP**, for the one case where the next story would otherwise
   split badly. A sprint habitually running to grace means the ceiling is wrong — never split a
@@ -83,7 +83,7 @@ the old form last. The old form survives until the contract slice, so CI stays g
 2. Build the dependency order and assign stories within the ceiling and the MoSCoW mix.
 3. Write the sprint record from `project-management/src/03-SPRINTS/SPRINT-00-TEMPLATE.md`, and
    the detailed plan — when one is asked for — from
-   `project-management/src/15-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`.
+   `project-management/src/16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`.
 4. Record any new velocity or planning insight in `.claude/MEMORY.md`; log blockers and sprint
    dependencies in `GAPS.md`, never in `MEMORY.md`.
 
@@ -100,8 +100,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/03-sprint-planning/` — **the procedure of record** for the
   high-level `SPRINT-##.md`
-- `project-management/workflows/15-sprint-plans/` — the detailed sprint plan
-- `project-management/workflows/16-story-plans/` — the per-story plans a planned sprint unlocks
+- `project-management/workflows/16-sprint-plans/` — the detailed sprint plan
+- `project-management/workflows/17-story-plans/` — the per-story plans a planned sprint unlocks
 
 ## Cross-references
 

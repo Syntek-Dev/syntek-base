@@ -1,35 +1,32 @@
 #!/usr/bin/env bash
 #
-# render-slop.sh: the RENDERED half of the AI-slop audit. Enforces the one clause of
-#                 code/docs/VISUAL-DESIGN.md Section 4.1 that no static scan can decide,
-#                 because deciding it needs a viewport.
+# render-slop.sh: the RENDERED half of the AI-slop audit. Enforces the one visual-design
+#                 clause that no static scan can decide, because deciding it needs a
+#                 viewport.
 #
 #                 Clauses owned here (both warn):
-#                   repeated-device     Section 4.1, one device repeated DOWN a page —
-#                                       a row of >= 3 siblings whose widths and
-#                                       heights agree within 4%
-#                   repeated-signature  Section 4.1, the same device repeated ACROSS the
-#                                       screen set — one row signature recurring on
-#                                       >= 3 screens
+#                   repeated-device     one device repeated DOWN a page — a row of >= 3
+#                                       siblings whose widths and heights agree within 4%
+#                   repeated-signature  the same device repeated ACROSS the screen set —
+#                                       one row signature recurring on >= 3 screens
 #
-#                 Neither can fail a run. Section 6 says why: a taxonomy index legitimately
-#                 stamps a row on every section, so a threshold on composition would
-#                 fail correct work. That is not a guess — a synthetic taxonomy page
-#                 false-positived on exactly this detector during the N-016 spike.
+#                 Neither can fail a run: a taxonomy index legitimately stamps a row on
+#                 every section, so a threshold on composition would fail correct work.
+#                 That is not a guess — a synthetic taxonomy page false-positived on
+#                 exactly this detector while the thresholds were being measured.
 #
 # WHY A BROWSER, when the rest of the family is find + awk. The same .wf-grid markup
 # is a one-, two- or three-column device depending on width: wireframe.css turns it to
 # three columns at 64rem and nowhere below. CSS TEXT HAS NO VIEWPORT, so no static
 # scan can know which one a screen actually renders. At 375px and 768px every screen
 # reads clean, including one that is a three-up at desktop. 1280px is where the tell
-# exists, and it is the same desktop viewport the browser e2e suite already declares
-# (code/src/django/tests/e2e/conftest.py).
+# exists, and it is the same desktop viewport the browser e2e suite already declares.
 #
 # Scope scanned (*.html only):
 #   project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS
 #
 # DESIGN-TIME ONLY, and stage 1 is deliberately absent. USER-STORY-IDEAS/ holds one
-# screen per story and is frozen once workflow 17 runs; a page-SET clause has nothing
+# screen per story and is frozen once workflow 18 runs; a page-SET clause has nothing
 # to say about a single screen, and a gate there would invite edits to an audit trail
 # the PM layer says is never rewritten. The consolidated folder is the one place the
 # whole set exists at once, and it exists before any code.
@@ -50,7 +47,7 @@
 #   <!-- slop-allow: repeated-device — a directory page; every card is the same object -->
 #
 # repeated-signature is decided across the SET, so an annotation in ANY ONE member
-# screen silences it. That is Section 6's "anywhere in the file" extended one step to
+# screen silences it. That is the doctrine's "anywhere in the file" extended one step to
 # "anywhere in the set" — the smallest true generalisation, and the honest cost is
 # that the silence is invisible to someone reading the other screens.
 #
@@ -75,17 +72,17 @@ REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 FIXTURES_DIR="code/src/scripts/audits/fixtures/render-slop"
 
 # One scope, and it is design-time. The code-time surface is deliberately absent: a
-# rendered check over Django pages needs the whole dev stack at
-# dev.<%PROJECT_SLUG%>.localhost:81, and it would re-decide at code time what the
-# consolidated set already settled before any code was written.
+# rendered check over Django pages needs the whole dev stack running, and it would
+# re-decide at code time what the consolidated set already settled before any code was
+# written.
 SCOPES=(
   "project-management/src/08-WIREFRAMES/CONSOLIDATED-IDEAS"
 )
 
 DOCTRINE="code/docs/VISUAL-DESIGN.md"
 
-# Thresholds. Every one of these was measured by the N-016 spike against a known
-# positive and a known negative, not chosen by taste.
+# Thresholds. Every one of these was measured against a known positive and a known
+# negative, not chosen by taste.
 VIEWPORT_W=1280            # the tell exists here and nowhere narrower
 VIEWPORT_H=800             # matches the e2e suite's `chromium` viewport project
 TOLERANCE_PCT=4            # % width AND height agreement before a row is stamped
@@ -266,7 +263,7 @@ write_report() {
 # ── No-op when the surface is absent ──────────────────────────────────────────
 if [[ "$FILE_COUNT" -eq 0 ]]; then
   SURFACE_ABSENT=true
-  SURFACE_NOTE="Surface absent: no consolidated wireframe was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition. The base template ships none — screens arrive from workflow 08 and are consolidated by workflow 17."
+  SURFACE_NOTE="Surface absent: no consolidated wireframe was found under ${ROOTS[*]}, so no clause could match and this run is clean by definition. The base template ships none — screens arrive from workflow 08 and are consolidated by workflow 18."
   log ""
   bold "▸ render-slop.sh · $TIMESTAMP"
   log "  no *.html under: ${ROOTS[*]}"
@@ -287,11 +284,12 @@ log ""
 
 # ── The detector ──────────────────────────────────────────────────────────────
 # Python because Playwright is a Python library here; a heredoc because that is how
-# static-analysis.sh already embeds Python. `--no-project --with` rather than a bare
-# `uv run`: pyproject.toml names the root package <%PROJECT_SLUG%>, which is not a
-# valid package name, so a bare `uv run` fails in the base template itself — and a
-# gate that cannot run where it ships is the one failure this fixture pair exists to
-# prevent.
+# the sibling static-analysis audit already embeds Python. `--no-project --with`
+# rather than a bare `uv run`: the flags build an ephemeral environment holding just
+# this detector's own dependency, so the audit runs on a host that has never synced
+# the project's dev group and never mutates the project environment it is auditing.
+# That was originally a workaround — the root package name was an unrendered token
+# uv refused to parse — and it outlived the defect on its own merits.
 tr '\0' '\n' < "$TMP_FILES" > "$TMP_LIST"
 
 set +e
@@ -311,9 +309,8 @@ try:
 except Exception:
     sys.exit(3)
 
-# Measure sibling geometry in the page, never a screenshot. The house rule in
-# code/src/django/tests/e2e/CLAUDE.md: a screenshot diff fails on any rendering
-# difference and tells you nothing about the cause.
+# Measure sibling geometry in the page, never a screenshot. The house rule: a screenshot
+# diff fails on any rendering difference and tells you nothing about the cause.
 SCRIPT = """
 (tolerance) => {
   const CHROME = 'header, nav, footer, [role="banner"], [role="navigation"], [role="contentinfo"]';
@@ -387,15 +384,16 @@ set -e
 
 # ── No-op when there is no browser ────────────────────────────────────────────
 # Exit 3 from the detector means Playwright or its Chromium is not installed. That is
-# not a finding — it is an absent tool, and static-analysis.sh sets the precedent:
+# not a finding — it is an absent tool, and the static-analysis audit sets the precedent:
 # report success with a note rather than failing a run that measured nothing.
 if [[ "$DETECTOR_RC" -eq 3 ]]; then
   # ...but NOT under --self-test, which exists to prove the detector runs. A self-test
   # that passes without a browser has measured nothing and reported green, which is the
-  # failure `docs-length.sh` was written to close in its own domain: it exits 2 without
-  # `cloc` rather than claiming a clean run it never performed. Same call here, and it
-  # matters more in CI than locally — a runner whose `playwright install` step failed
-  # would otherwise turn the one job that proves this gate into a rubber stamp.
+  # failure the instructional-length audit was written to close in its own domain: it
+  # exits 2 without `cloc` rather than claiming a clean run it never performed. Same
+  # call here, and it matters more in CI than locally — a runner whose
+  # `playwright install` step failed would otherwise turn the one job that proves this
+  # gate into a rubber stamp.
   $SELF_TEST && die "--self-test needs Chromium, and it is not installed. Install it with \`uv run --no-project --with playwright playwright install chromium\`. Refusing to report a passing self-test that rendered nothing."
   SURFACE_ABSENT=true
   BROWSER_NOTE="Browser absent: Playwright's Chromium is not installed, so nothing was rendered. Install it with \`uv run --no-project --with playwright playwright install chromium\`. This run reports success rather than failing, the same way static-analysis.sh does without its engine — but it has measured nothing."
@@ -416,7 +414,7 @@ fi
 printf '%s\n' "$DETECTOR_OUT" > "$TMP_HITS"
 
 # ── The escape hatch, file-scoped for both clauses ─────────────────────────────
-# A rendered finding has no line, so neither clause takes a line annotation. Section 6's
+# A rendered finding has no line, so neither clause takes a line annotation. The doctrine's
 # ratio rule already says "anywhere in the file, naming the clause"; repeated-signature
 # extends that one step to "anywhere in the set", because the finding has no single
 # file to annotate in the first place.
@@ -455,7 +453,7 @@ WARN_BODY=$(awk -F'\t' '{ printf "%-52s %-20s %s\n", $1, $4, $5 }' "$TMP_HITS")
 # ── Self-test ─────────────────────────────────────────────────────────────────
 # The whole point of the fixture pair: watch the detector separate a known positive
 # from a known negative. A gate nobody has seen fail on purpose is a gate whose green
-# result means nothing (audits/CONTEXT.md → Markdown: two limits, two scripts).
+# result means nothing.
 if $SELF_TEST; then
   POSITIVE_HITS=$(awk -F'\t' '$1 ~ /positive/ && $4 == "repeated-device"' "$TMP_HITS" | grep -c . || true)
   NEGATIVE_HITS=$(awk -F'\t' '$1 ~ /negative/' "$TMP_HITS" | grep -c . || true)

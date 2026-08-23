@@ -1,0 +1,33 @@
+meta {
+  name: Liveness (Process Up)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{api_url}}/health/
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Body is the literal ok", function() {
+    expect(String(res.getBody()).trim()).to.equal("ok");
+  });
+
+  test("Served as plain text", function() {
+    expect(res.getHeader("content-type")).to.contain("text/plain");
+  });
+
+  test("Never cached", function() {
+    expect(res.getHeader("cache-control")).to.contain("no-cache");
+  });
+
+  test("Response time < 500ms", function() {
+    expect(res.getResponseTime()).to.be.below(500);
+  });
+}

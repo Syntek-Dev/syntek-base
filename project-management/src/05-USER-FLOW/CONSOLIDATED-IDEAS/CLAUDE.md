@@ -12,8 +12,8 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
 
 ## How to work here
 
-- **Routing:** produced only by `workflows/17-consolidate-design-work/`, after every story has
-  cleared `16-story-plans`.
+- **Routing:** produced only by `workflows/18-consolidate-design-work/`, after every story has
+  cleared `17-story-plans`.
 - **Model:** Fable throughout — finding the journey nobody owns is design judgement, not a
   merge. Opus only for re-exporting a diagram or a rename.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` fragment for the area → sequence

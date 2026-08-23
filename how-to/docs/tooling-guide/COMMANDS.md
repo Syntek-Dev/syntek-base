@@ -20,8 +20,19 @@ runs, and what happens when it needs a context of its own.
 | Route                 | What triggers it                                                                                      | Notes                                                                                                        |
 | --------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **Description match** | You describe the work; the runtime selects the skill whose `description` matches it                   | The description **is** the trigger — which is why it is written as a when-to-load sentence, not as a summary |
-| **Slash command**     | You type `/name` — `/handoff`, `/incident`, `/research`, `/teach <topic>`, `/grill-me`                | Only the skills that define one; the roster's when-to-load column shows which                                |
+| **Slash command**     | You type `/name` — `/handoff`, `/incident`, `/research`, `/teach <topic>`, `/grill-me`                | **Every skill answers to its own name**; the thirteen phrased for it are the ones meant to be typed          |
 | **Named explicitly**  | You name the skill in the request, or another skill names it in its `## Governing procedures` section | The route a procedure uses to reach the conventions it depends on                                            |
+
+**No key grants a slash command, and none withholds one.** Nothing in a `SKILL.md` declares one:
+every name on the roster is typeable, `/backend` and `/version` as surely as `/handoff`. What the
+thirteen carry is a description phrased around it — "Invoke by typing `/handoff`" — and that
+wording changes one thing only: whether the skill **also fires unaided**. Typing is always
+available; auto-firing is what the description decides
+(`how-to/docs/skill-authoring/CRAFT.md` Section 1).
+
+`.claude/commands/` does not exist here — it held seven commands until they were superseded by the <!-- doc-references: ignore — quoted in order to record its absence -->
+runners under `code/src/scripts/`. **A slash command in this project is a skill name, never a
+file**, so there is no per-skill opt-in to add and none to forget.
 
 Selection is settled by the descriptions, not by the request: where two skills cover one remit,
 **one fires**, and nothing reports that the other was ever in contention. That is why one remit

@@ -7,7 +7,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-Rendered user-flow diagram images — PNG exports (from Mermaid or Figma) of the flow
+Rendered user-flow diagram images — PNG exports (from Mermaid) of the flow
 narratives in the parent `05-USER-FLOW/` folder.
 
 ## How to work here
@@ -23,7 +23,7 @@ narratives in the parent `05-USER-FLOW/` folder.
 ## Guardrails
 
 - **Generated assets only** — no hand-editing pixels; a diagram is only ever
-  re-exported from its Mermaid/Figma source.
+  re-exported from its Mermaid source.
 - Keep every PNG in lock-step with its parent narrative — a diagram that drifts from
   `USER-FLOW-<AREA>.md` is a defect.
 - No PII or secrets rendered into an image; flows are illustrative, not real data.

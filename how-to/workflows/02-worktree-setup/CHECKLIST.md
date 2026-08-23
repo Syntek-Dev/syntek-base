@@ -37,5 +37,6 @@ model: opus
 ## Definition of Done
 
 - [ ] `bash code/src/scripts/development/server.sh up` inside each worktree prints the worktree-specific URL (e.g. `http://dev-us003.<%PROJECT_SLUG%>.localhost`) · _opus_
-- [ ] `docker ps` shows isolated container sets — `<%PROJECT_SLUG%>-dev-us###-*-1` — with no name collisions between worktrees · _opus_
-- [ ] Both story plan files (`STORY-PLAN-US###-*.md`) are present in `project-management/src/16-STORY-PLANS/` · _opus_
+- [ ] `bash code/src/scripts/development/server.sh status` run **inside each worktree** lists that worktree's own containers as `<%PROJECT_SLUG%>-dev-us###-*-1` · _opus_
+- [ ] No container name appears in two of those lists — compared by hand, because `server.sh status` is `docker compose ps` scoped to a single compose project · _opus_
+- [ ] Both story plan files (`STORY-PLAN-US###-*.md`) are present in `project-management/src/17-STORY-PLANS/` · _opus_

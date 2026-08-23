@@ -58,7 +58,7 @@ share the name, and one middleware does not earn a package.
 `middleware`, `observability`, `db.get_or_cache`, `conf.get_setting`, `validators`, and
 `models`. **None of them exist yet**, and that is deliberate: a module lands here when the
 decision that governs it lands, not in anticipation. The register of what is still owed is
-`how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`.
+`GAPS.md`.
 
 ## Cross-references
 

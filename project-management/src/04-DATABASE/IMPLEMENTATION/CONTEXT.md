@@ -1,7 +1,7 @@
 # project-management/src/04-DATABASE/IMPLEMENTATION
 
 **Stage 3** — what actually shipped. One record per user story, written during
-`workflows/21-implementation-documentation/`, confirming with code evidence that the story's
+`workflows/22-implementation-documentation/`, confirming with code evidence that the story's
 migrations match the consolidated schema in `../CONSOLIDATED-IDEAS/`.
 
 ## Directory Tree
@@ -37,8 +37,8 @@ footnote.
 - `../CONSOLIDATED-IDEAS/` — the schema these records verify the build against
 - `../USER-STORY-IDEAS/` — the frozen stage-1 design, for tracing intent
 - `../CONTEXT.md` — the folder overview and the three stages
-- `../../19-FINDINGS/` — where a divergence worth carrying forward is recorded
+- `../../20-FINDINGS/` — where a divergence worth carrying forward is recorded
 - `code/docs/DATABASE.md` — the rules the shipped schema must satisfy
-- `project-management/workflows/21-implementation-documentation/` — where these are written
+- `project-management/workflows/22-implementation-documentation/` — where these are written
 
 **Last Updated**: <%DATE%>

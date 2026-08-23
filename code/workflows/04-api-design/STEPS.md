@@ -36,7 +36,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 interview <%DEVELOPER_NAME%> — each endpoint (operation), request and response
 Schema, the named Policy guarding every state-changing endpoint (OWASP A01), ownership
 checks (no IDOR), error shapes, and idempotency. Record hard-to-reverse calls as an ADR in
-`project-management/src/14-DECISIONS/`.
+`project-management/src/15-DECISIONS/`.
 
 Then document the intended Schema models and endpoints before writing any code.
 Save the design to `project-management/src/13-API-DESIGN/PLANNING/`.

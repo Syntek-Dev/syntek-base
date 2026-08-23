@@ -16,7 +16,7 @@ project-management/src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/
 
 ## When to create a file here
 
-Write a closure during `project-management/workflows/21-implementation-documentation/` once the
+Write a closure during `project-management/workflows/22-implementation-documentation/` once the
 remediation story ships. Copy `VULN-IMPL-US000-TEMPLATE.md`, open the finding in
 `../PLANNING/VULN-PLAN-US###-*.md`, and document how each planned control was met.
 
@@ -38,6 +38,6 @@ remediation story ships. Copy `VULN-IMPL-US000-TEMPLATE.md`, open the finding in
 - `../../ASSESSMENTS/IMPLEMENTATION/` · `../../AUDITS/IMPLEMENTATION/` — the sibling
   categories that reference these closures
 - `code/docs/SECURITY.md` — the code-side enforcement these closures track
-- `project-management/workflows/21-implementation-documentation/` — where these closures are written
+- `project-management/workflows/22-implementation-documentation/` — where these closures are written
 
 **Last Updated**: <%DATE%>

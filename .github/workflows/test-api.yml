@@ -33,9 +33,10 @@ jobs:
       pull-requests: write
 
     env:
-      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
-      BRUNO_ENV: ${{ github.event.inputs.env || 'docker' }}
-      COLLECTION: /workspace/code/src/tests/api
+      # COMPOSE_FILE, BRUNO_ENV and COLLECTION are gone with the hand-rolled steps: api.sh
+      # owns the compose file, defaults to the `host` environment a runner can actually reach,
+      # and resolves the collection from its own location. COLLECTION was `/workspace/...` — a
+      # path inside the container, left over from when Bruno ran in one.
       # Seeded into the fixture users AND sent by Bruno at login — must be identical, or
       # adminLogin returns "Email or password incorrect". Fall back to the non-secret test
       # defaults (also used by docker-compose.test.yml) when the secrets are not configured.
@@ -46,10 +47,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # See the equivalent guard in test.yml. uv.lock is absent by design in the base
-      # template, and every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, so the
-      # django-test image cannot build here. Report success rather than failing on every
-      # pull request raised against the template itself.
+      # See the equivalent guard in test.yml. uv.lock is COMMITTED as of 16/08/2026, so this
+      # guard takes its present branch and the API suite runs here. It stays because this
+      # workflow SHIPS: every Dockerfile builds with `COPY pyproject.toml uv.lock ./`, and a
+      # generated project has no lock of its own until the `uv lock` copier task has written
+      # one, so the django-test image cannot build in that window. The guard is what keeps
+      # one file correct on both sides of the template boundary — report success there
+      # rather than failing on a pull request with nothing to test.
       - name: Detect the backend lockfile
         id: detect
         run: |
@@ -58,71 +62,72 @@ jobs:
             echo "uv.lock present — running the API suite."
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "No uv.lock — this is the base template. The image cannot build."
+            echo "No uv.lock yet — the django-test image cannot build."
           fi
+
+      # See the note in test-e2e.yml: `.env.test.example` ships a working SECRET_KEY, compose
+      # reads an env file last-assignment-wins, so appending an unset secret empties it and
+      # `${SECRET_KEY:?...}` then refuses to start the stack. The fallback keeps the step
+      # additive when the secret is absent, which is its only job.
+      # The suite is `pnpm exec bru run`, and @usebruno/cli is a devDependency in the root
+      # package.json — so this job needs Node, pnpm AND an install. It had none of the three
+      # and died at `pnpm: command not found`, after standing up the whole Docker stack. The
+      # path filter is what hid it: this workflow only runs when code/src/tests/api/**,
+      # code/src/django/** or the test compose file changes, so it had not fired since the
+      # steps that need pnpm were written. Guarded on the same detect step as everything
+      # else, so a project without a lockfile still reports rather than skipping.
+      - uses: pnpm/action-setup@v6
+        if: steps.detect.outputs.present == 'true'
+
+      - uses: actions/setup-node@v7
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install the Bruno CLI
+        if: steps.detect.outputs.present == 'true'
+        run: pnpm install --frozen-lockfile
 
       - name: Create .env.test
         if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.test.example code/src/docker/.env.test
-          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY || 'ci-ephemeral-not-for-production-0000000000' }}" >> code/src/docker/.env.test
 
-      - name: Build images
+      # ONE STEP, because code/src/scripts/tests/api.sh already is this procedure — and
+      # `.claude/CLAUDE.md` makes it non-negotiable that dev operations run through the
+      # scripts rather than being re-typed into a workflow. What stood here was a hand-rolled
+      # second copy that had drifted from the script in every way that matters, and each
+      # divergence was its own red run:
+      #
+      #   * it started `db cache django-test` and NOT nginx, then pointed Bruno at the
+      #     `docker` environment — whose api_url is `http://django-test:8000`, a compose
+      #     service name resolvable only from inside the network. Bruno runs on the RUNNER,
+      #     so it failed `getaddrinfo EAI_AGAIN django-test`. api.sh starts nginx (published
+      #     on 127.0.0.1:83) and defaults to `--env host`, which is what a host runner needs.
+      #   * `host`'s own api_url is `http://test.<%PROJECT_SLUG%>.localhost:83`, still an
+      #     unrendered Copier token in syntek-base — so api.sh detects that and falls back to
+      #     `http://localhost:83`, explicitly "in CI as well, where nobody is present to set
+      #     the override". The workflow had no such branch and could not have had one.
+      #   * two hand-rolled 30x2s wait loops instead of `up --wait`, which reads the compose
+      #     healthchecks that are already defined.
+      #   * a stale NOTE claiming the fixture-user seed command was gone. api.sh probes for
+      #     it and seeds when present, which is the behaviour the note said was missing.
+      #   * no teardown. api.sh traps EXIT and brings the stack down with its volumes.
+      #
+      # api.sh exits 0 on an empty collection, 1 on test failures, 2 on script error, so the
+      # job's own pass/fail is unchanged. `--output` must sit inside the project root.
+      - name: Run the Bruno API suite
         if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE build django-test
-
-      - name: Start db and cache
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE up -d db cache
-
-      - name: Wait for database
-        if: steps.detect.outputs.present == 'true'
+        env:
+          BRUNO_VAR_test_password: ${{ env.API_TEST_PW }}
+          BRUNO_VAR_limited_password: ${{ env.API_LIMITED_PW }}
         run: |
-          for i in $(seq 1 30); do
-            docker compose -f $COMPOSE_FILE exec db \
-              pg_isready -U <%PROJECT_SLUG%> -d <%PROJECT_SLUG%>_test && break
-            echo "Waiting for db... ($i/30)"
-            sleep 2
-          done
-
-      - name: Start backend
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE up -d django-test
-
-      - name: Wait for backend
-        if: steps.detect.outputs.present == 'true'
-        run: |
-          for i in $(seq 1 30); do
-            docker compose -f $COMPOSE_FILE exec django-test \
-              curl -sf http://localhost:8000/control/ && break
-            echo "Waiting for backend... ($i/30)"
-            sleep 2
-          done
-
-      # NOTE: the API test users were seeded by a management command that the Django
-      # baseline no longer carries. Reinstate a seed step alongside the first
-      # authenticated endpoint, or the authenticated requests will fail at login.
-
-      - name: Run Bruno API tests
-        if: steps.detect.outputs.present == 'true'
-        run: |
-          mkdir -p reports/api
-          FOLDER="${{ github.event.inputs.folder }}"
-          RUN_PATH="${FOLDER:-.}"
-          # `-r` is required: without it, an explicit path (".") runs only the .bru files in
-          # that directory, not subfolders — which is why the suite previously reported a single
-          # request. The CLI honours neither bruno.json `ignore` nor `meta { skip }`; exclusion
-          # is by tag. `manual` = can't pass in a normal run (rate-limit). `wip` = blocked on
-          # test infra not present here (seeded SEO/client/blog data, Cloudinary mock, the
-          # unimplemented user(id) query). See BUG-API-SUITE-UNRUN-09-06-2026.md. The request
-          # template lives outside the collection root so recursion never executes it.
-          BRUNO_VAR_test_password="$API_TEST_PW" \
-          BRUNO_VAR_limited_password="$API_LIMITED_PW" \
-          pnpm exec bru run -r "$RUN_PATH" \
-            --cwd code/src/tests/api \
-            --env "$BRUNO_ENV" \
-            --exclude-tags manual,wip \
-            --reporter-json reports/api/results.json
+          bash code/src/scripts/tests/api.sh \
+            --output "$GITHUB_WORKSPACE/reports/api" \
+            ${{ github.event.inputs.env && format('--env {0}', github.event.inputs.env) || '' }} \
+            ${{ github.event.inputs.folder && format('--folder {0}', github.event.inputs.folder) || '' }}
 
       - name: Upload test results
         if: always() && steps.detect.outputs.present == 'true'
@@ -177,6 +182,6 @@ jobs:
           header: api-tests
           path: reports/api/comment.md
 
-      - name: Tear down
-        if: always() && steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE down -v
+      # No tear-down step, for the reason claude.yml's backend-coverage job gives verbatim:
+      # api.sh traps EXIT and brings the stack down with its volumes on every path, and a
+      # second `down -v` here would be another place that knows how this stack is composed.

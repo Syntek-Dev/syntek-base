@@ -3,7 +3,7 @@
 # Prettier: repo-wide (Markdown, CSS, JSON, YAML, JS), scoped by .prettierignore. It runs in
 #   the host Node toolchain, so this leg is host-only and is folded identically into both
 #   legs (no container to drift against).
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, DEV_COMPOSE, _dual_result, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_format() {

@@ -48,3 +48,14 @@ model: opus
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
 - [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+
+---
+
+## Definition of Done
+
+- [ ] `pre-pr-check.sh` green end to end against the rebuilt image, not the stale one · _opus_
+- [ ] Manifest and lockfile committed together in their own commit, and the version bumped · _opus_
+- [ ] The advisory that prompted this is genuinely resolved, verified by a fresh
+      `audits/security.sh` — not merely quieter · _opus_
+- [ ] The "deliberately NOT declared" register in `pyproject.toml` still tells the truth after
+      this change — a line removed for a dependency added, a line restored for one removed · _opus_

@@ -17,6 +17,12 @@ project-management/workflows/06-brand-guides/
 
 ## When to use this
 
+**Entry condition: the story's `Brand` flag is not `N/A`.** The flag is set at
+`02-story-creation` from the feature map's slice row, and it means the story introduces or consumes a design token. A story whose
+`Brand` flag reads `N/A` skips this gate, and every downstream checklist reads the flag
+rather than demanding this gate's artefact unconditionally
+(`project-management/docs/planning/CADENCE.md`).
+
 Use this workflow when establishing or updating the visual brand identity — colour palette,
 typography, spacing, and tone. Brand decisions must be agreed before component design begins.
 
@@ -32,12 +38,12 @@ Brand decisions flow through four stages:
    └── BRAND-COLOURS.md, BRAND-TYPOGRAPHY.md, BRAND-SPACING.md, BRAND-LOGOS.md
        Document the finalised values: hex codes, typeface names, spacing scale, logo variants
 
-3. Client presentation — Brand Guide (Figma)
-   └── Visual reference file; clients invited as guests to view and comment
-       Pages: Cover · Brand Colours · Brand Typography · Brand Spacing · Brand Logos · Brand Icons
+3. Client presentation — guide-build/brand-guide.pdf
+   └── The cumulative deliverable, generated from brand_guide.py at consolidation
+       Sections: Colours · Typography · Spacing · Logos · Icons
 
-4. Implementation — Component Library (Figma) + Django design token system
-   └── Foundations and Typography pages built from the decision records
+4. Implementation — src/07-COMPONENTS/ + Django design token system
+   └── The component set built from the decision records
        Tokens fed into the design-token admin area → CSS variables → frontend stylesheet
 ```
 
@@ -47,9 +53,9 @@ Brand decisions flow through four stages:
   (colours, typography, spacing stored via the design-token admin area → CSS custom properties → frontend stylesheet)
 - Breakpoints are build-time only and are not DB-driven
 - A brand guide change that alters existing tokens requires a token migration plan
-- The Brand Guide Figma file is client-facing — keep it clean and presentation-ready
+- `guide-build/brand-guide.pdf` is client-facing — keep it clean and presentation-ready
 - The markdown files in `src/06-BRAND-GUIDE/` are the internal specification Claude reads
-  when building the Figma Component Library
+  when building the component set in `src/07-COMPONENTS/`
 
 ## Cross-references
 
@@ -65,5 +71,4 @@ None — brand guide work is a design phase; no code safety gates apply.
 - `code/docs/DESIGN-TOKENS.md` — DB-driven token system that brand decisions feed into
 - `project-management/src/06-BRAND-GUIDE/` — finalised brand decision records (markdown)
 - `project-management/workflows/07-component-designs/` — follow this after brand guides are agreed
-- `code/src/django/apps/design_tokens/` — design token models live here
-- `code/src/django/` — CSS custom properties from the token system are consumed in the token-driven vanilla CSS of the Django templates and django-components
+- `code/src/django/` — CSS custom properties from the token system will be consumed in the token-driven vanilla CSS of the Django templates and django-components

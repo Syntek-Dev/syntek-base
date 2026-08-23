@@ -1,6 +1,6 @@
 # USER-FLOW-CONSOLIDATED-[AREA] — End-to-End Journey
 
-**Date**: DD/MM/YYYY · **Consolidated by**: [name] · **Workflow**: `17-consolidate-design-work`
+**Date**: DD/MM/YYYY · **Consolidated by**: [name] · **Workflow**: `18-consolidate-design-work`
 **Fragments stitched**: `USER-FLOW-IDEA-US###-*.md`, `USER-FLOW-IDEA-US###-*.md`, …
 
 > Copy to `USER-FLOW-CONSOLIDATED-<AREA>.md`. Replace every `[PLACEHOLDER]`, delete the

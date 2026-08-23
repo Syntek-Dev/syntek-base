@@ -11,9 +11,9 @@ model: opus
 **Language:** British English (en_GB)
 **Claude Model:** opus — Token schema design, category/value-kind modelling
 
-The `design_tokens` app owns two models. Together they describe one CSS variable: its canonical
-`:root` value and any preference-variant overrides. App detail lives in
-`code/src/django/apps/design_tokens/CONTEXT.md`.
+The `design_tokens` app **will own** two models. Together they describe one CSS variable: its
+canonical `:root` value and any preference-variant overrides. Nothing here is built —
+`code/docs/DESIGN-TOKENS.md` carries the status; this file is the schema it is built to.
 
 ---
 
@@ -114,12 +114,12 @@ How these axes become CSS rules is in [CASCADE.md](CASCADE.md).
 
 ## Seeding
 
-An initial migration adds the schema; a data migration seeds all 9 categories from the embedded
-literals in `services/token_seed.py` (parsed from `shared/src/css/tokens/*.css` — no filesystem
-reads at migration time). Dark-mode surface overrides are seeded as `theme_selector="base"`
-`DesignTokenValue` rows where the value is byte-for-byte identical in both `[data-theme="dark"]`
-and `@media (prefers-color-scheme: dark)`; the surface keys that drift between the two selectors are
-seeded per-selector as `data_theme` + `media` row pairs (see [CASCADE.md](CASCADE.md),
+An initial migration adds the schema; a data migration seeds all 9 categories from literals
+embedded in the seed module — parsed from the CSS token layer when the migration is written, so
+nothing reads the filesystem at migration time. Dark-mode surface overrides are seeded as
+`theme_selector="base"` `DesignTokenValue` rows where the value is byte-for-byte identical in
+both `[data-theme="dark"]` and `@media (prefers-color-scheme: dark)`; the surface keys that drift
+between the two selectors are seeded per-selector as `data_theme` + `media` row pairs (see [CASCADE.md](CASCADE.md),
 [EDITOR.md](EDITOR.md)).
 
 ---
@@ -130,4 +130,3 @@ seeded per-selector as `data_theme` + `media` row pairs (see [CASCADE.md](CASCAD
 - `design-tokens/CASCADE.md` — preference axes, render order, delivery
 - `design-tokens/EDITOR.md` — editor, governance, extension points
 - `design-tokens/MOBILE.md` — the six colour forms, gamut mapping, and the mobile emitter
-- `code/src/django/apps/design_tokens/CONTEXT.md` — live models, Ninja endpoints, tasks

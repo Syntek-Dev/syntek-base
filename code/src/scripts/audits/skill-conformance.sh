@@ -13,7 +13,7 @@
 #                        Both halves are checked, and reported apart — a spec breach and a
 #                        house-rule breach are different problems.
 #
-#                        Thirteen [gate: fail] clauses, no warn tier. Clause numbers are
+#                        Fourteen [gate: fail] clauses, no warn tier. Clause numbers are
 #                        appended, never renumbered — they appear in reports:
 #                          spec   1. frontmatter opens at byte 0 and is terminated
 #                          spec   2. `name` and `description` are both present
@@ -31,11 +31,14 @@
 #                          house 12. `metadata:` carries `skills` and nothing else, and
 #                                    every name in it resolves to a skill directory
 #                          house 13. no agent definition exists — .claude/agents/ is retired
+#                          house 14. every top-level guide naming this skill in its routing
+#                                    frontmatter is cited back by it — by path, or by a
+#                                    directory glob covering it
 #
 #                        The tier is the point, not a label. A key nothing defines is a
 #                        format problem; declining a key the runtime does document is a
-#                        CHOICE, and the reader has to be able to tell which they may argue
-#                        with (how-to/docs/skill-authoring/FRONTMATTER.md → Three claims).
+#                        CHOICE, and the reader has to be able to tell which of the two
+#                        they may argue with.
 #
 #                        Clause 12 is the reason `metadata` is admitted at all. It is the
 #                        spec's own extension point for "additional properties not defined by
@@ -59,22 +62,27 @@
 #                        may assume.
 #
 #                        Vendored skills (a symlinked folder — the cloudinary set, refreshed
-#                        from upstream via skills-lock.json) are held to the SPEC half only:
+#                        the skills lockfile) are held to the SPEC half only:
 #                        the published six, with no extension admitted. Hand-editing one to
 #                        satisfy a house rule is undone by the next refresh, so clauses 7-11
 #                        do not apply to them.
 #
-#                        Length is NOT checked here — docs-length.sh owns the 300-line cap
-#                        across all of .claude/**, and one rule with two enforcers drifts.
-#
-#                        Rule: how-to/docs/SKILL-AUTHORING.md
-#                        Spec: https://agentskills.io/specification
+#                        Length is NOT checked here — the instructional-length audit owns
+#                        the 300-line cap across all of .claude/**, and one rule with two
+#                        enforcers drifts.
 #
 # Scope scanned:  .claude/skills/*/SKILL.md
 #                 The four code-review-graph cards (.claude/skills/*.md) are flat files, not
 #                 folder-skills, and are auto-generated — they are not skills under the spec.
 #                 Clause 13 additionally asserts a NEGATIVE over .claude/agents/**/*.md, which
 #                 is the one path here expected to hold nothing at all.
+#
+#                 --path is normalised to a repo-relative path before anything is tested or
+#                 collected; `.` and `./` are the unscoped run, and a path outside the
+#                 repository exits 2. It skips clause 13, which is repository-level — and the
+#                 verdict then DROPS the "no agent tier" claim and names the skipped clause,
+#                 because a success line may only assert the legs that ran
+#                 (code/docs/GATE-REPORTING.md Section 1).
 #
 # Usage: skill-conformance.sh [--output FORMAT] [--output-file PATH] [--quiet]
 #                             [--path PATH] [--help]
@@ -86,6 +94,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
+
+# Clause 14 reads a guide's routing `skills:` key, and so does the outbound routing audit,
+# asking the opposite question of it — and the two used to carry separate parsers that
+# disagreed about which files even have the key. One reader, one home.
+# shellcheck source=../_lib/frontmatter-skills.sh
+source "$SCRIPT_DIR/../_lib/frontmatter-skills.sh"
 
 SCOPE_DIR=".claude/skills"
 DESC_MAX=1024
@@ -132,7 +146,9 @@ House clauses (how-to/docs/skill-authoring/FRONTMATTER.md):
  12. `metadata:` is a block map whose only child key is `skills`, and every
      space-separated name in it resolves to .claude/skills/<name>/
  13. No agent definition exists under .claude/agents/ — the tier is retired, and
-     every definition it held is a skill reached by description match
+     every definition it held is a skill reached by description match. Repository-level,
+     so an unscoped run only: under --path it is skipped, named as skipped, and left
+     out of the verdict rather than asserted
 
 Vendored skills (symlinked folders, refreshed from upstream) are held to clauses 1-6 only,
 and to the published six alone — no extension is admitted on one.
@@ -143,7 +159,10 @@ Options:
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/audits/reports/skill-conformance-report.<FORMAT>)
   --quiet              Suppress terminal output — requires --output
-  --path PATH          Restrict the check to one skill folder or SKILL.md
+  --path PATH          Restrict the check to one skill folder or SKILL.md inside this
+                       repository. Absolute, './'-prefixed and '..'-bearing forms are all
+                       accepted and normalised to a repo-relative path; '.' is the unscoped
+                       run; a path outside the repository exits 2. Clause 13 does not run
   --help               Show this help
 
 Exit codes:  0 = clean   1 = violation(s) found   2 = script error
@@ -183,6 +202,84 @@ trap 'rm -f "$TMP_HITS"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
+# --path arrives from a shell, in every shape a shell produces: an absolute path from
+# tab-completion, a `./` prefix, `.` itself, a `..` segment from a copied path. The existence
+# test, the collector, clause 14's scope and the scope each verdict names must all apply the
+# SAME string, or the guard passes on one value while the scan reads another and the run
+# reports clean over a population nothing opened. `--path .` did exactly that: it matched the
+# repository root, found no SKILL.md directly beneath it, and reported "no skills found" with
+# .claude/skills/ sitting inside the scope it had just named (GATE-REPORTING.md Section 5).
+# Normalised ONCE, here; $TARGET_PATH is repo-relative from this point on.
+#
+# LEXICAL, never realpath, and here that is not a style preference: a vendored skill folder IS
+# a symlink — `is_vendored` tests for exactly that — so resolving the scope hands the collector
+# the target, `-L` goes false, and a vendored skill is promoted to first-party and held to
+# house clauses it is exempt from. Measured: `--path .claude/skills/cloudinary-docs` reports
+# 1 vendored and 0 violations; `--path .agents/skills/cloudinary-docs`, the same file at the
+# path realpath would produce, reports 1 first-party and 4.
+normalise_scope() {
+  local raw="${1%/}" abs seg out=""
+  [[ -n "$raw" ]] || return 0
+  if [[ "$raw" == /* ]]; then abs="$raw"; else abs="$PROJECT_ROOT/$raw"; fi
+  local IFS='/'
+  for seg in $abs; do
+    case "$seg" in
+      ''|.) ;;
+      ..)   out="${out%/*}" ;;
+      *)    out="$out/$seg" ;;
+    esac
+  done
+  printf '%s' "$out"
+}
+
+TARGET_PATH_RAW="$TARGET_PATH"
+if [[ -n "$TARGET_PATH" ]]; then
+  SCOPE_ABS="$(normalise_scope "$TARGET_PATH")"
+  if [[ "$SCOPE_ABS" == "$PROJECT_ROOT" ]]; then
+    # `.` and `./` name the whole repository, which IS the unscoped run — and the unscoped
+    # run is the only one that can check clause 13, so this is not a cosmetic equivalence.
+    TARGET_PATH=""
+  elif [[ "$SCOPE_ABS" == "$PROJECT_ROOT"/* ]]; then
+    TARGET_PATH="${SCOPE_ABS#"$PROJECT_ROOT"/}"
+  else
+    # An out-of-tree scope is a bad argument, never an empty surface: this audit answers for
+    # THIS repository's skills, and `--path /etc` used to report "no skills found" over it at
+    # exit 0. A path reaching the tree through a symlinked alias lands here too — give it
+    # relative to the repository root, which is the form every line of output then names.
+    die "--path '$TARGET_PATH_RAW' resolves to '$SCOPE_ABS', outside $PROJECT_ROOT — pass a path inside the repository, relative to its root"
+  fi
+fi
+
+# Validated HERE, at top level, against the same normalised value, and before ANY collection —
+# clause 13's find below is already a collection. It used to live inside collect_skills(),
+# which runs in a process substitution, so `die`'s `exit 2` killed only the subshell and the
+# script carried on. Rule: code/docs/GATE-REPORTING.md.
+# Both forms are named: the reader typed one and the collector will open the other, and a
+# message giving only the second reads as though the script invented a path.
+[[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] ||
+  die "--path '$TARGET_PATH_RAW' does not exist (resolved to '$TARGET_PATH' from the repository root)"
+
+# THE SCOPE EVERY LINE BELOW NAMES, and it is not $SCOPE_DIR. Under --path the operator asked
+# about somewhere else, and a verdict that names the default tree is a claim about a population
+# this run never opened: `--path learning` printed "✓ No skills found under .claude/skills/ —
+# nothing to check." at exit 0, which is true of neither directory as a statement about this run.
+# $SCOPE_DIR stays what it always was — the default scope, and the tree clauses 12 and 14 resolve
+# a declared skill NAME against, which is a repository fact and not a function of --path.
+EXAMINED_SCOPE="${TARGET_PATH:-$SCOPE_DIR}"
+
+# A trailing slash is itself a claim — that the scope is a directory — and --path takes a
+# single SKILL.md as readily as a folder. Appended unconditionally it turned
+# `--path code/CONTEXT.md` into a line naming `code/CONTEXT.md/`, which does not exist. The
+# sibling seam-contract.sh had the same defect fixed in the same change and this one did not.
+EXAMINED_LABEL="$EXAMINED_SCOPE"
+if [[ -d "$EXAMINED_SCOPE" ]]; then EXAMINED_LABEL="$EXAMINED_SCOPE/"; fi
+
+# Named only when the operator narrowed the run. The unscoped run's scope is the one this
+# script is named for and already prints in the line that needs it, so it says nothing extra
+# and its output is unchanged.
+SCOPE_SUFFIX=""
+[[ -z "$TARGET_PATH" ]] || SCOPE_SUFFIX=" in $EXAMINED_LABEL"
+
 log ""
 bold "▸ skill-conformance.sh — $TIMESTAMP"
 
@@ -213,21 +310,41 @@ if [[ -z "$TARGET_PATH" && -d "$AGENTS_DIR" ]]; then
   done < <(find "$AGENTS_DIR" -type f -name '*.md' 2>/dev/null | sort)
 fi
 
+# WHAT THIS RUN MAY CLAIM. The success line used to end "…, no agent tier" on every path,
+# the scoped ones the gate above had just skipped included — so a `--path` run reported a
+# clean result for the only clause that could have found a re-introduced agents folder, with
+# the folder sitting there. That is "could not look" reported as "looked, and it was clean"
+# (code/docs/GATE-REPORTING.md Section 1), and adding " in <scope>/" made the sentence read as
+# scope-bounded when three of its four claims are per-skill and this one is not. So the claim
+# is ASSEMBLED from the legs that ran, and the skipped one is named out loud rather than
+# dropped: a skip leaving no trace in the output is indistinguishable from a pass.
+AGENT_TIER_CLAIM=", no agent tier"
+SKIPPED_CLAUSES=""
+SKIPPED_NOTE=""
+if [[ -n "$TARGET_PATH" ]]; then
+  AGENT_TIER_CLAIM=""
+  SKIPPED_CLAUSES="house 13"
+  SKIPPED_NOTE="[house 13] the retired agent tier — $AGENTS_DIR/ is a repository-level fact no --path scope can speak for; run unscoped to check it"
+  log "  not checked under --path: $SKIPPED_NOTE"
+fi
+
 # Self-guarding: a project may legitimately carry no skills of its own. An absent surface
 # reports success with a note, so this runs unconditionally in CI with no step-level guard.
 # A clause-13 hit is not swallowed by it — that check has already run and is repo-level.
 if [[ -z "$TARGET_PATH" && ! -d "$SCOPE_DIR" && ! -s "$TMP_HITS" ]]; then
-  bold "✓ No $SCOPE_DIR/ — nothing to check."
+  bold "✓ No $EXAMINED_SCOPE/ — nothing to check."
   log ""
   exit 0
 fi
 
 # Enumerate skill folders. A skill is a DIRECTORY holding SKILL.md; the flat *.md cards
 # beside them are code-review-graph output and are not skills under the spec.
+# --path is validated ABOVE, before clause 13 collects anything, and NOT inside this function.
+# The guard used to live here — reading `$t` rather than `$TARGET_PATH`, which is why a grep on
+# the guard string missed this member entirely.
 collect_skills() {
   if [[ -n "$TARGET_PATH" ]]; then
     local t="${TARGET_PATH%/}"
-    [[ -e "$t" ]] || die "--path '$t' does not exist"
     if [[ -f "$t" ]]; then printf '%s\0' "$(dirname "$t")"
     elif [[ -f "$t/SKILL.md" ]]; then printf '%s\0' "$t"
     else find "$t" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0 2>/dev/null | sort -z; fi
@@ -240,8 +357,8 @@ collect_skills() {
 # second vendored set needs no edit here.
 #
 # Symlink is the whole test, deliberately. A vendored skill is exempt from the house rules
-# because editing it is futile — the next `skills-lock.json` refresh overwrites the file.
-# That is true of a symlink into `.agents/` and false of a copy, which is authored content
+# because editing it is futile — the next lockfile refresh overwrites the file. That is
+# true of a symlink into the vendored tree and false of a copy, which is authored content
 # living here under someone else's name and is held to every clause.
 is_vendored() { [[ -L "${1%/}" ]]; }
 
@@ -318,21 +435,20 @@ EXT_KEYS=" context agent background model "
 # `effort` is here rather than absent for exactly that reason. Unlisted, a skill authoring it
 # reported `[spec 6] … and Claude Code documents no such key` — and the second half of that
 # sentence was false in the gate's own output, which is the tier confusion this script's
-# header exists to prevent. Declined on the merits: settings.json already sets effortLevel
-# project-wide, so a per-skill key either restates it or contradicts .claude/CLAUDE.md Section 4;
-# and it answers HOW HARD THE MODEL THINKS, a property of the caller's session, where the
-# four admitted keys answer WHERE THE RUN HAPPENS, a property of the skill.
+# header exists to prevent. Declined on the merits: this project already sets the effort
+# level once, project-wide, so a per-skill key either restates that or contradicts it; and
+# it answers HOW HARD THE MODEL THINKS, a property of the caller's session, where the four
+# admitted keys answer WHERE THE RUN HAPPENS, a property of the skill.
 DECLINED_EXT_KEYS=" disable-model-invocation effort "
 
 # What a first-party skill may actually author: the two required spec fields, `metadata` for
 # the dependency register clause 12 governs, and the four admitted runtime keys. Everything
-# else is declined by choice — the reasons are in
-# how-to/docs/skill-authoring/FRONTMATTER.md → What is declined, and why.
+# else is declined by choice, not because the runtime would reject it.
 HOUSE_KEYS=" name description metadata context agent background model "
 
 # The only fork targets this project admits. The runtime also accepts a custom subagent from
-# .claude/agents/; that door is closed here by choice, with a reopening test recorded in
-# how-to/docs/skill-authoring/FORK-DECISION.md → The custom-agent door. Clause 13 closes the
+# .claude/agents/; that door is closed here by choice, and reopens only on evidence that a
+# named skill needs a durable capability no built-in target provides. Clause 13 closes the
 # other side of it — this clause refuses the NAME, that one refuses the folder it would live in.
 FORK_AGENTS=" Explore Plan general-purpose "
 
@@ -503,8 +619,67 @@ while IFS= read -r -d '' dir; do
   fi
 done < <(collect_skills)
 
+# Clause 14 — routing frontmatter's reciprocal half, and the only clause here driven from
+# OUTSIDE the skills tree.
+#
+# A guide's routing `skills: [...]` is read by whoever opens the GUIDE. But a skill fires on
+# DESCRIPTION MATCH, so the dominant path runs the other way: an agent reaches the skill
+# first, and the guide only if the skill names it. Nothing checked that direction. A guide
+# could name a skill for a year while the skill never mentioned the guide, and the doctrine
+# simply never arrived — silence again, the same failure mode the outbound routing audit was
+# written for, one direction round.
+#
+# This deliberately does not live in that audit. Route a skill finding by what it is ABOUT:
+# the finding here is that a SKILL is missing something, so it belongs to the skill audit and
+# reports against SKILL.md. The outbound half — does the named skill exist — stays where it
+# is, and neither duplicates the other's clause.
+#
+# SCOPE IS TOP-LEVEL GUIDES ONLY — code/docs/*.md, project-management/docs/*.md,
+# how-to/docs/*.md. A sub-document is reached through its index and the index is what a skill
+# cites; requiring each by name would make every skill enumerate a tree that churns whenever a
+# guide is split, which is route-don't-restate inverted.
+#
+# A DIRECTORY GLOB DISCHARGES THE OBLIGATION. A skill that routes to `code/docs/*` has already
+# said where to look and is doing route-don't-restate correctly. Demanding the literal path as
+# well would make this gate punish the better pattern and force an enumeration that rots on the
+# next guide added — global-workflow names eleven guides it has no reason to know individually,
+# and one glob answers all of them.
+#
+# Under --path scoped to ONE skill folder, only that skill's inbound guides are checked: the run
+# cannot speak for a skill it was not asked to look at.
+CLAUSE14_SCOPE=""
+if [[ -n "$TARGET_PATH" ]]; then
+  c14_t="${TARGET_PATH%/}"
+  if [[ -f "$c14_t/SKILL.md" ]]; then CLAUSE14_SCOPE="$(basename "$c14_t")"
+  elif [[ "$c14_t" != "$SCOPE_DIR" ]]; then CLAUSE14_SCOPE="!none"; fi
+fi
+
+c14_in_scope() {
+  case "$CLAUSE14_SCOPE" in
+    "") return 0 ;;
+    "!none") return 1 ;;
+    *) [[ "$1" == "$CLAUSE14_SCOPE" ]] ;;
+  esac
+}
+
+for guide in code/docs/*.md project-management/docs/*.md how-to/docs/*.md; do
+  [[ -f "$guide" ]] || continue
+  named="$(frontmatter_skills "$guide" | cut -f2)"
+  [[ -n "$named" ]] || continue
+  guide_dir="$(dirname "$guide")"
+  for sk in $named; do
+    [[ -n "$sk" ]] || continue
+    [[ -d "$SCOPE_DIR/$sk" ]] || continue
+    c14_in_scope "$sk" || continue
+    grep -rqF -- "$guide" "$SCOPE_DIR/$sk/" 2>/dev/null && continue
+    grep -rqF -- "$guide_dir/*" "$SCOPE_DIR/$sk/" 2>/dev/null && continue
+    printf '%s/%s/SKILL.md: [house 14] `%s` names this skill in its routing frontmatter and the skill never cites it back — an agent arriving by description match never learns the guide exists; cite the path, or `%s/*` where the whole tree applies\n' \
+      "$SCOPE_DIR" "$sk" "$guide" "$guide_dir" >> "$TMP_HITS"
+  done
+done
+
 if [[ "$SKILL_COUNT" -eq 0 && ! -s "$TMP_HITS" ]]; then
-  bold "✓ No skills found under $SCOPE_DIR/ — nothing to check."
+  bold "✓ No skills found under $EXAMINED_LABEL — nothing to check."
   log ""
   [[ -n "$OUTPUT_FORMAT" ]] || exit 0
 fi
@@ -513,7 +688,7 @@ HIT_COUNT=$(wc -l < "$TMP_HITS" | tr -d ' ')
 BODY="$(cat "$TMP_HITS")"
 FIRST_PARTY=$((SKILL_COUNT - VENDORED_COUNT))
 
-log "  $SKILL_COUNT skill(s) — $FIRST_PARTY first-party, $VENDORED_COUNT vendored (spec clauses only)"
+log "  $SKILL_COUNT skill(s)$SCOPE_SUFFIX — $FIRST_PARTY first-party, $VENDORED_COUNT vendored (spec clauses only)"
 log ""
 
 if [[ "$HIT_COUNT" -gt 0 && $QUIET == false ]]; then
@@ -528,6 +703,8 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
   case "$OUTPUT_FORMAT" in
     txt)
       { printf 'skill-conformance audit — %s\n' "$TIMESTAMP"
+        printf 'scope=%s\n' "$EXAMINED_SCOPE"
+        printf 'not_checked=%s\n' "${SKIPPED_CLAUSES:-none}"
         printf 'skills=%s first_party=%s vendored=%s violations=%s\n\n' \
           "$SKILL_COUNT" "$FIRST_PARTY" "$VENDORED_COUNT" "$HIT_COUNT"
         printf '%s\n' "${BODY:-No violations.}"; } > "$OUTPUT_FILE" ;;
@@ -535,8 +712,10 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
       { printf '# Skill Conformance Audit\n\n'
         printf '| | |\n|---|---|\n'
         printf '| **Generated** | %s |\n' "$TIMESTAMP"
+        printf '| **Scope examined** | `%s` |\n' "$EXAMINED_LABEL"
         printf '| **Skills** | %s (%s first-party, %s vendored) |\n' \
           "$SKILL_COUNT" "$FIRST_PARTY" "$VENDORED_COUNT"
+        printf '| **Not checked** | %s |\n' "${SKIPPED_NOTE:-none — every clause ran}"
         printf '| **Violations** | %s |\n' "$HIT_COUNT"
         printf '| **Status** | %s |\n\n' "$STATUS"
         if [[ "$HIT_COUNT" -gt 0 ]]; then printf '```text\n%s\n```\n' "$BODY"
@@ -545,6 +724,9 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
       } > "$OUTPUT_FILE" ;;
     json)
       { printf '{\n  "script": "skill-conformance",\n  "timestamp": "%s",\n' "$TIMESTAMP"
+        printf '  "scope": "%s",\n' "$EXAMINED_SCOPE"
+        printf '  "clauses_not_run": [%s],\n' \
+          "$([[ -z "$SKIPPED_CLAUSES" ]] || printf '"%s"' "$SKIPPED_CLAUSES")"
         printf '  "skills": %s,\n  "first_party": %s,\n  "vendored": %s,\n' \
           "$SKILL_COUNT" "$FIRST_PARTY" "$VENDORED_COUNT"
         printf '  "violations": %s,\n' "$HIT_COUNT"
@@ -556,11 +738,11 @@ if [[ -n "$OUTPUT_FORMAT" ]]; then
 fi
 
 if [[ "$HIT_COUNT" -eq 0 ]]; then
-  bold "✓ Every skill conforms — spec fields valid, field set held, fork targets built-in, no agent tier."
+  bold "✓ Every skill$SCOPE_SUFFIX conforms — spec fields valid, field set held, fork targets built-in$AGENT_TIER_CLAIM."
   log ""
   exit 0
 else
-  bold "✗ $HIT_COUNT conformance violation(s) — see how-to/docs/SKILL-AUTHORING.md."
+  bold "✗ $HIT_COUNT conformance violation(s)$SCOPE_SUFFIX — see how-to/docs/SKILL-AUTHORING.md."
   log ""
   exit 1
 fi

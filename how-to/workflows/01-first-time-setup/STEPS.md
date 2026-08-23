@@ -101,10 +101,12 @@ Accounts are idempotent — safe to re-run after any future reset.
 
 Open:
 
-- Public site: http://localhost:8000/
-- API docs (OpenAPI): http://localhost:8000/api/docs
-- Django Admin: http://localhost:8000/control/ (non-obvious path — never `/admin/`, which is reserved for the <%PROJECT_NAME%> Admin surface; see `code/docs/URL-STRATEGY.md`)
-- Mail (dev): http://localhost:1080
+`server.sh up` prints these; host port **81**, because a local router often holds 80.
+
+- Public site: http://dev.<%PROJECT_SLUG%>.localhost:81/
+- API docs (OpenAPI): http://dev.<%PROJECT_SLUG%>.localhost:81/api/docs
+- Django Admin: http://dev.<%PROJECT_SLUG%>.localhost:81/control/ (non-obvious path — never `/admin/`, which is reserved for the <%PROJECT_NAME%> Admin surface; see `code/docs/URL-STRATEGY.md`)
+- Mail (dev): no web UI — the console email backend prints to the Django container's logs
 
 > **Model:** opus · **MCP:** claude-in-chrome (rendered verification)
 
@@ -143,8 +145,10 @@ _Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not
 > **Model:** fable
 
 Open `how-to/src/BRAND-VOICE.md` and fill Section 3 (tone, person, formality, reader, signature, the
-never-this line, and the say-this-not-that vocabulary) plus the placeholders in Section 5. The reader
-comes straight from the brief you just wrote — which is why this runs after Step 7 and not before.
+never-this line, and the say-this-not-that vocabulary). **Section 3 is the only section carrying
+placeholders**; everything else in that file is the portable core and is adopted unchanged. The
+reader comes straight from the brief you just wrote — which is why this runs after Step 7 and not
+before.
 
 **Do this before the other prerequisite documents, not after.** Every user-facing word the project
 ever ships is written in this voice, and so is much of the brand work that follows in
@@ -214,7 +218,7 @@ one you are building is what stops the first feature carrying machinery it will 
 _Done when both snapshots carry real figures rather than `TBD` markers, and the scaling
 phase-gate the project is designing under is named._
 
-Next: `project-management/workflows/01-feature/` — chart the first feature against both.
+Next: `project-management/workflows/01-feature-map/` — chart the first feature against both.
 
 ---
 

@@ -48,17 +48,17 @@ The full workflow for creating worktrees: `how-to/workflows/02-worktree-setup/`
 
 ## Naming Convention
 
-| Slot                 | Main dev                          | Worktree pattern                           |
-| -------------------- | --------------------------------- | ------------------------------------------ |
-| Branch               | `us###/desc`                      | `us###/desc`                               |
-| Worktree path        | _(main repo)_                     | `../<%PROJECT_SLUG%>-usXXX`                |
-| Dev Docker project   | `<%PROJECT_SLUG%>-dev`            | `<%PROJECT_SLUG%>-dev-usXXX`               |
-| Test Docker project  | `<%PROJECT_SLUG%>-test`           | `<%PROJECT_SLUG%>-test-usXXX`              |
-| Dev container names  | `<%PROJECT_SLUG%>-dev-*-1`        | `<%PROJECT_SLUG%>-dev-usXXX-*-1`           |
-| Test container names | `<%PROJECT_SLUG%>-test-*-1`       | `<%PROJECT_SLUG%>-test-usXXX-*-1`          |
-| Dev URL              | `dev.<%PROJECT_SLUG%>.localhost`  | `dev-usXXX.<%PROJECT_SLUG%>.localhost`     |
-| Test URL             | `test.<%PROJECT_SLUG%>.localhost` | `test-usXXX.<%PROJECT_SLUG%>.localhost:81` |
-| Nginx loopback IP    | `127.0.0.1`                       | `127.0.0.X` (X = story number)             |
+| Slot                 | Main dev                            | Worktree pattern                             |
+| -------------------- | ----------------------------------- | -------------------------------------------- |
+| Branch               | `us###/desc`                        | `us###/desc`                                 |
+| Worktree path        | _(main repo)_                       | `../<%PROJECT_SLUG%>-usXXX`                  |
+| Dev Docker project   | `<%PROJECT_SLUG%>-dev`              | `<%PROJECT_SLUG%>-dev-usXXX`                 |
+| Test Docker project  | `<%PROJECT_SLUG%>-test`             | `<%PROJECT_SLUG%>-test-usXXX`                |
+| Dev container names  | `<%PROJECT_SLUG%>-dev-*-1`          | `<%PROJECT_SLUG%>-dev-usXXX-*-1`             |
+| Test container names | `<%PROJECT_SLUG%>-test-*-1`         | `<%PROJECT_SLUG%>-test-usXXX-*-1`            |
+| Dev URL              | `dev.<%PROJECT_SLUG%>.localhost:81` | `dev-usXXX.<%PROJECT_SLUG%>.localhost:3080`  |
+| Test URL             | `test.<%PROJECT_SLUG%>.localhost`   | `test-usXXX.<%PROJECT_SLUG%>.localhost:3081` |
+| Nginx loopback IP    | `127.0.0.1`                         | `127.0.0.X` (X = story number)               |
 
 **Loopback IP rule:** the final octet equals the story number (usXXX → `.XXX`). The entire
 `127.0.0.0/8` block routes to the loopback interface on Linux — no additional configuration
@@ -136,10 +136,8 @@ The printed output will confirm the worktree-specific URLs:
 
 ```text
 ✓ Stack is up.
-  Site:           http://dev-usXXX.<%PROJECT_SLUG%>.localhost
-  API (Ninja):    http://dev-usXXX.<%PROJECT_SLUG%>.localhost/api/
-  Admin surface:  http://dev-usXXX.<%PROJECT_SLUG%>.localhost/admin/
-  Django Admin:   http://dev-usXXX.<%PROJECT_SLUG%>.localhost/control/
+  Site:           http://dev-usXXX.<%PROJECT_SLUG%>.localhost:3080/
+  Django Admin:   http://dev-usXXX.<%PROJECT_SLUG%>.localhost:3080/control/   (superuser/staff only)
 ```
 
 The `/api/` surface is the Django Ninja router; the admin surface (`/admin/`) is

@@ -56,7 +56,7 @@ Follow `code/workflows/12-rust-extension/`. The short form:
 1. **Justify it against the gate.** Which of the two grounds does it serve? A convenience crate
    that saves twenty lines is not a justification.
 2. **Look at it.** Downloads and recent releases are weak signals; a named maintainer, a public
-   repository, a populated `SECURITY.md`, and a shallow dependency tree are stronger ones.
+   repository, a populated `SECURITY.md`, and a shallow dependency tree are stronger ones. <!-- doc-references: ignore -->
 3. **Prefer the smaller tree.** Between two crates that do the job, take the one with fewer
    transitive dependencies. Depth is the risk multiplier.
 4. **Pin it in `[workspace.dependencies]`**, never per-crate — a shared pin means a patch is
@@ -87,13 +87,40 @@ a mistake corrected at 3.1.0. They answer different questions:
 | File                  | Field          | Answers                                                          |
 | --------------------- | -------------- | ---------------------------------------------------------------- |
 | `rust-toolchain.toml` | `channel`      | Which compiler everyone actually builds with                     |
-| `Cargo.toml`          | `rust-version` | The MSRV floor **our source** needs — 1.85, the edition-2024 one |
+| `Cargo.toml`          | `rust-version` | Which dependency versions cargo may **resolve** — the MSRV floor |
 
 A channel bump is still a template release rather than a routine dependency change: it can alter
-lint behaviour across every crate at once, because new clippy lints arrive denied. But dragging
-the MSRV up with it narrows what can compile these crates and buys nothing, since the toolchain
-is pinned anyway. **Move `rust-version` only when the code here starts needing a newer language
-or standard-library feature.**
+lint behaviour across every crate at once, because new clippy lints arrive denied.
+
+**The MSRV is a resolution input, and this guide said otherwise until 16/08/2026.** It read
+_"dragging the MSRV up buys nothing, since the toolchain is pinned anyway"_ — true when
+`rust-version` was only a promise to whoever compiles your source, and false under
+`resolver = "3"`, which is MSRV-aware. Cargo picks the newest dependency version compatible with
+the floor, so a floor left behind the channel holds the entire graph back while the pin says
+nothing is wrong. Measured: at `rust-version = "1.85"` an update logged _"Locking 57 packages to
+latest Rust 1.85 compatible versions"_ and **downgraded** `zbus` 5.18 → 5.14 along with
+`zvariant`, `zbus_names` and `zvariant_utils`, each of which requires 1.87.
+
+**Move `rust-version` when the graph needs it, not only when our own source does** — and say
+which crate forced it, because that is the evidence the next reader needs.
+
+### The gate's own version is pinned too
+
+`code/src/rust/.cargo-deny-version` pins cargo-deny itself, read by both
+`code/src/scripts/rust/audit.sh` and the CI job so there is one source of truth.
+
+`cargo install --locked cargo-deny` was the previous form, and `--locked` is the part that
+misleads: it pins cargo-deny's **own dependency tree**, not cargo-deny. The installed version
+therefore floated, so the gate was a different tool on every run — and since a cargo-deny release
+can add checks, change a default or alter how an advisory is graded, that is the one thing a
+supply-chain gate must not be. A gate whose verdict moves without the code moving cannot be
+trusted in either direction: a new failure looks like a regression, and a disappearing failure
+looks like a fix.
+
+Bumping it is a deliberate change, reviewed like a channel bump, because the same release can
+turn a clean tree red. The pin joins the repository's other three — `.nvmrc`,
+`.python-version`, and `rust-toolchain.toml` above — and the pattern behind all four is recorded
+in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → Toolchain pins.
 
 ## Suppressing an advisory
 
@@ -115,7 +142,7 @@ dependency you must replace or remove.
 ## Cross-references
 
 - [`PYO3-BOUNDARY.md`](PYO3-BOUNDARY.md) — the boundary a compromised crate would sit behind
-- `code/docs/SECURITY.md` — the OWASP controls, including A06 vulnerable components
+- `code/docs/SECURITY.md` — the OWASP controls, including `A03:2025` software supply chain failures
 - `code/workflows/08-security-hardening/` — the audit any crypto crate must pass
 - `how-to/workflows/07-dependency-updates/` — the cadence bumps follow
 

@@ -34,8 +34,8 @@ _Done when the operation, both endpoints, and the full conflicted-file list are 
 
 For each conflicting file, find why each side changed it — the commit message, the PR, the
 `US###` it belongs to, and the story plan or ADR behind that. This repository makes it cheap:
-`project-management/src/16-STORY-PLANS/` holds what the branch set out to do, and
-`src/14-DECISIONS/` holds the decisions it must not re-litigate.
+`project-management/src/17-STORY-PLANS/` holds what the branch set out to do, and
+`src/15-DECISIONS/` holds the decisions it must not re-litigate.
 
 Use the `code-review-graph` MCP for structural impact before Grep/Read.
 
@@ -51,7 +51,7 @@ getting one wrong is silent damage rather than a failed build:
 | **Migrations** (`apps/*/migrations/`)                             | Never merge two migration files. Both survive; the later one is renumbered and its `dependencies` repointed so the graph stays linear. A merged migration file is a corrupted history.     |
 | **`uv.lock` · `pnpm-lock.yaml`**                                  | Never hand-merge. Take either side whole, then regenerate through the project scripts and commit the regenerated file.                                                                     |
 | **`VERSION` · `CHANGELOG.md` · `VERSION-HISTORY.md`**             | Resolution is a version decision, not a text one — `project-management/docs/VERSIONING-GUIDE.md` and the `version` skill own it. Never split the difference.                               |
-| **`project-management/src/NN-…/`**                                | Numbering is frozen and `USER-STORY-IDEAS/` is frozen once workflow `17` has run. A conflict there is an audit trail, not a draft — keep both records; reconcile in `CONSOLIDATED-IDEAS/`. |
+| **`project-management/src/NN-…/`**                                | Numbering is frozen and `USER-STORY-IDEAS/` is frozen once workflow `18` has run. A conflict there is an audit trail, not a draft — keep both records; reconcile in `CONSOLIDATED-IDEAS/`. |
 | **Design-token CSS** (`static/css/tokens/`)                       | Values are DB-canonical (`apps/design_tokens`). Resolve to what the token layer says, never to a literal from either branch (`code/docs/DESIGN-TOKENS.md`).                                |
 | **`.env*`**                                                       | Never resolve secrets from a diff. Reconcile the `.env.*.example` template and let <%DEVELOPER_NAME%> re-enter real values.                                                                |
 | **Generated files** — `reports/`, the four graph cards, `export/` | Do not resolve. Take either side and regenerate.                                                                                                                                           |
@@ -99,7 +99,7 @@ project's side for anything carrying real work. See
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These
 are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/22-pr-and-review/` — branch promotion and merge gates
+- `project-management/workflows/23-pr-and-review/` — branch promotion and merge gates
 - `how-to/workflows/06-quality-gates/` — the gates a resolution must pass
 - `how-to/workflows/02-worktree-setup/` — parallel branches, where these conflicts originate
 - `code/workflows/03-database-migration/` — when the conflict is a migration graph

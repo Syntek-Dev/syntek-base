@@ -38,8 +38,10 @@ and needs neither.
 - **Markdown carries everything** — the what, the who, the how, the when, the where, and the
   history.
 - **A comment or docstring inside a code file carries the _why_ only.** The code states the
-  what; a docstring is one line; and **nothing points outward** — no story, sprint, ticket, PR,
-  commit, `code/docs/*` path, person, date, `TODO` or `FIXME`.
+  what; a **comment is one line** about why that line is there, a **docstring runs as long as
+  its why needs** about why the unit exists; and **nothing points outward** — no story, sprint,
+  ticket, PR, commit, `docs/` path, person, date, `TODO` or `FIXME`. Lengths and the full ban
+  list: `code/docs/coding-principles/STYLE-AND-PROCESS.md`.
 
 **A docstring pass that adds an `Args:` block or a documentation cross-reference is a
 regression**, not an improvement: the typed signature already carries the arguments, and the
@@ -107,14 +109,18 @@ rather than describing, `scaffold` where a whole new structure is needed, and `g
 
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
-- `project-management/workflows/21-implementation-documentation/` — the closeout: the records,
+- `project-management/workflows/22-implementation-documentation/` — the closeout: the records,
   the findings, the `CONTEXT.md`/`CLAUDE.md` updates, and the graph refresh
 - `code/workflows/07-review/` — documentation is a hard gate before review hands to the PR
 
 ## Cross-references
 
 - `code/docs/DOCUMENTATION-PAIRING.md` — **the owning guide** for the pair
+- `code/docs/DOCUMENTATION-LENGTH.md` — its sibling, sizing what that one shapes: the 300-line
+  limit, the 270 ratchet, and the dated allowance that answers it
 - `code/docs/CODING-PRINCIPLES.md` — the style and error-handling rules a docstring reflects
 - `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` — Section 4, the comment and docstring rule
 - `.claude/CLAUDE.md` Section 5 · Section 8 — the naming conventions and the length limits
 - `code/docs/CODE-REVIEW-GRAPH.md` — the refresh that ships alongside a documentation change
+- `how-to/docs/SKILL-AUTHORING.md` — the standard for the one documentation class this does not own
+- `how-to/docs/AI-DICTIONARY.md` — the glossary a term is checked against before it is coined again

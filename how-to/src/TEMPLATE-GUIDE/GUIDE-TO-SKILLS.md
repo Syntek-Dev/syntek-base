@@ -1,10 +1,14 @@
 # Guide to Skills — What Each One Does and How to Reach It
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
-Sixty-four skills is a lot to meet at once. You do not have to. **Describe the work in plain
-English and the right one loads itself** — that is the design, and for most of a working day it is
-the whole story.
+There are more skills here than anyone should meet at once. You do not have to. **Describe the work
+in plain English and the right one loads itself** — that is the design, and for most of a working
+day it is the whole story.
+
+**No total is quoted anywhere, deliberately.** It moves on every change, and two correct projects
+hold different numbers once the optional surfaces are in play — so a figure written into prose is
+wrong within a release. `.claude/skills/CONTEXT.md` is the roster; count it there if you need to.
 
 This page is for the other moments: when you want to know what exists, force a specific choice, or
 find the command for something you only half remember.
@@ -17,11 +21,15 @@ find the command for something you only half remember.
 
 ## Three ways to reach a skill
 
-| Way                      | When                                        | Example                             |
-| ------------------------ | ------------------------------------------- | ----------------------------------- |
-| **Describe the work**    | Almost always. Skills fire on a description | "Something's broken in checkout"    |
-| **Type a slash command** | The thirteen that define one (marked below) | `/handoff`                          |
-| **Name it**              | To force a choice, or override a bad match  | "Use the `refactor` skill for this" |
+| Way                      | When                                                                | Example                             |
+| ------------------------ | ------------------------------------------------------------------- | ----------------------------------- |
+| **Describe the work**    | Almost always. Skills fire on a description                         | "Something's broken in checkout"    |
+| **Type a slash command** | Any skill. The thirteen marked below are the ones meant to be typed | `/handoff`                          |
+| **Name it**              | To force a choice, or override a bad match                          | "Use the `refactor` skill for this" |
+
+**Every skill answers to `/name`** — `/backend` works as surely as `/handoff`, and there is no
+per-skill opt-in that some have and others lack. The thirteen marked below are the ones _designed_
+to be typed: they wait for you rather than firing on their own.
 
 Naming a skill is an override, not the normal path. If you find yourself doing it constantly,
 the description match is failing and that is worth reporting.
@@ -30,26 +38,26 @@ the description match is failing and that is worth reporting.
 
 ## Start here — the six that cover most days
 
-| Skill     | Reach for it when                                                         |
-| --------- | ------------------------------------------------------------------------- |
-| `feature` | A new capability, end to end — plan, tests, backend, frontend, docs, ship |
-| `bugfix`  | Something is broken. Reproduce, root-cause, regression-test, fix          |
-| `review`  | A change needs checking before you propose it                             |
-| `story`   | A requirement has to become a testable `US###`                            |
-| `pr`      | A finished branch is ready to propose                                     |
-| `release` | A tested branch is ready to ship                                          |
+| Skill             | Reach for it when                                                         |
+| ----------------- | ------------------------------------------------------------------------- |
+| `implement-story` | A new capability, end to end — plan, tests, backend, frontend, docs, ship |
+| `bugfix`          | Something is broken. Reproduce, root-cause, regression-test, fix          |
+| `review`          | A change needs checking before you propose it                             |
+| `story`           | A requirement has to become a testable `US###`                            |
+| `pr`              | A finished branch is ready to propose                                     |
+| `release`         | A tested branch is ready to ship                                          |
 
-Each **sequences the others itself.** `feature` dispatches `planner`, `test-writer`, `database`,
+Each **sequences the others itself.** `implement-story` dispatches `planner`, `test-writer`, `database`,
 `backend`, `frontend`, `code-reviewer`, `qa-tester` and `git` across eleven phases, each as its
 own fresh dispatch — so reach for the skill whose remit is the **whole arc**, not the individual
 layers.
 
-**One thing comes before `feature`, and it is the easiest to skip.** `feature` starts from a
+**One thing comes before `implement-story`, and it is the easiest to skip.** `implement-story` starts from a
 story plan; it does not chart. Anything bigger than a single session is charted with
 `/wayfinder` **first**, and the stories are cut from the resolved map. The two never call each
 other — they meet at an artefact: wayfinder graduates a buildable slice into
-`16-STORY-PLANS/`, and that plan is exactly what `feature` picks up. Reach straight for
-`feature` only when you could already write the story yourself.
+`17-STORY-PLANS/`, and that plan is exactly what `implement-story` picks up. Reach straight for
+`implement-story` only when you could already write the story yourself.
 
 ---
 

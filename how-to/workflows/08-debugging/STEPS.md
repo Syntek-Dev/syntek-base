@@ -32,19 +32,23 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 # All logs
 bash code/src/scripts/development/logs.sh --follow
 
-# Backend only
-bash code/src/scripts/development/logs.sh --service backend --follow
+# The Django app only — pages and API are the same container
+bash code/src/scripts/development/logs.sh --service django --follow
 
-# Frontend only
-bash code/src/scripts/development/logs.sh --service frontend --follow
+# The reverse proxy, when a request never reaches Django
+bash code/src/scripts/development/logs.sh --service nginx --follow
 ```
+
+The dev stack runs four services — `db`, `cache`, `django`, `nginx`. **There is no separate
+frontend service**: the rendered pages and the API are one deployable, so a template or
+component fault appears in the `django` logs.
 
 > **Model:** opus
 
 ### Step 2 — Isolate the Problem
 
 If the error is in a Django Ninja endpoint, test the operation directly in the OpenAPI docs:
-http://localhost:8000/api/docs
+http://dev.<%PROJECT_SLUG%>.localhost:81/api/docs
 
 If it is a frontend issue, open browser DevTools → Network → find the failing request.
 
@@ -66,10 +70,11 @@ from apps.<app>.models import <Model>
 ### Step 4 — Run the Failing Test in Verbose Mode
 
 ```bash
-# Backend
+# One test, verbose, with stdout shown
 bash code/src/scripts/tests/backend.sh tests/<module>/<test_file>.py::test_name -v -s
 
-# Frontend
+# A page or component fault — the Playwright suite renders it
+bash code/src/scripts/tests/e2e-py.sh
 ```
 
 > **Model:** opus
@@ -89,7 +94,7 @@ separately.
 ### Step 6 — Document and Fix
 
 If the bug warrants a bug report:
-Save to `project-management/src/20-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
+Save to `project-management/src/21-BUGS/BUG-<DESCRIPTOR>-DD-MM-YYYY.md`.
 
 > **Model:** opus
 

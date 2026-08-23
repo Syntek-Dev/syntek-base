@@ -15,8 +15,8 @@ code/src/scripts/database/
 ├── reset.sh                 ← drop and recreate the dev database + migrate
 ├── restore.sh               ← restore the dev database from a backup file
 ├── seed-dev.sh              ← idempotently seed dev users, then any SEED_COMMANDS
-├── shell.sh                 ← Django dbshell or direct psql session
-├── verify-db-security.sh    ← verify database security settings and permissions
+├── shell.sh                 ← DB shell — Django dbshell by default, psql with --psql
+├── verify-db-security.sh    ← Django system check + PostgreSQL log_statement
 └── reports/                 ← backup files and generated reports (gitignored)
     ├── CONTEXT.md
     ├── .gitignore
@@ -32,9 +32,9 @@ code/src/scripts/database/
 | `seed-dev.sh`           | Idempotently seed dev users (superuser + staff), then each command in `SEED_COMMANDS` |
 | `backup.sh`             | `pg_dump` to a timestamped file in `reports/` (custom or plain format)                |
 | `restore.sh`            | Drop + recreate dev DB and restore from a backup file                                 |
-| `shell.sh`              | Django `dbshell` (default) or raw `psql` in the db container                          |
+| `shell.sh`              | DB shell — Django `dbshell` by default, raw `psql` in the db container with `--psql`  |
 | `manageusers.sh`        | Create, update, or delete Django users via `manage.py`                                |
-| `verify-db-security.sh` | Verify database security settings and role permissions                                |
+| `verify-db-security.sh` | Django system check + PostgreSQL `log_statement` — no RLS or role-permission check    |
 
 ## Quick Reference
 
@@ -66,10 +66,7 @@ bash code/src/scripts/database/backup.sh
 # Restore from a backup file
 bash code/src/scripts/database/restore.sh code/src/scripts/database/reports/backup-2026-04-18T10-00-00Z.dump
 
-# Django dbshell
-bash code/src/scripts/database/shell.sh
-
-# Direct psql
+# Open a psql session against the dev database
 bash code/src/scripts/database/shell.sh --psql
 ```
 
@@ -83,6 +80,16 @@ bash code/src/scripts/database/shell.sh --psql
 
 These are read from `code/src/docker/.env.dev`; the defaults match
 `docker-compose.dev.yml`. Set them there if your local config differs.
+
+`POSTGRES_USER` is the cluster's **bootstrap superuser** — the db image creates it with
+`initdb --username="$POSTGRES_USER"` — so a `shell.sh --psql` session holds `rolsuper` and
+`rolbypassrls`, and nothing sets a read-only default. It is not a scoped session and what it
+sees is not what an application user sees.
+
+`shell.sh` without `--psql` runs Django's `dbshell`, which execs a `psql` binary the shipped
+django image does not carry (`Dockerfile.dev` installs `libpq-dev`, the client library, not
+`postgresql-client`, the binary). The script probes for it and exits `2` naming the cause; add
+`postgresql-client` to that image if the project wants the mode.
 
 ## Compose file
 

@@ -2,7 +2,7 @@
 # Python: ruff --select S (flake8-bandit rules)   JS/TS: pnpm audit --audit-level low
 # Passes NO ignore flags: pnpm reads `audit.ignore` from pnpm-workspace.yaml itself, and
 # there is no CLI flag to pass (see the block below for the false green that cost).
-# Source: .claude/hooks/pre-pr-check.sh
+# Sourced by the pre-PR gate runner, never executed directly.
 # Uses: PROJECT_ROOT, DEV_COMPOSE, _dual_result, CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT
 
 _check_security() {
@@ -15,19 +15,24 @@ _check_security() {
   # EXITS 0 without auditing anything. Because pnpm-workspace.yaml has always
   # carried ignore entries, the flags were always present, so this leg reported
   # a pass on every run it has ever made — a false green, not a weak check.
-  # Measured 13/08/2026: the flagged invocation exits 0 while the plain one
-  # reports 36 advisories (19 high, 17 moderate).
+  # Measured: the flagged invocation exits 0 while the plain one reports 36
+  # advisories (19 high, 17 moderate).
   #
   # pnpm reads the ignore list from pnpm-workspace.yaml itself (`audit.ignore`),
-  # which is why audits/security.sh — which passes no flags — has been reporting
-  # correctly all along. Pass nothing and let the config do its job.
-  # Primary source: https://pnpm.io/cli/audit
+  # which is why the repository's own security audit — which passes no flags —
+  # has been reporting correctly all along. Pass nothing and let the config do
+  # its job; that is pnpm's own documented behaviour.
   # ── Local Python (ruff flake8-bandit rules) ────────────────────────────────
-  # `uv run` resolves the project before running anything, which a TEMPLATE
-  # cannot satisfy: pyproject.toml's `name` is an unrendered token and uv.lock is
-  # absent by design. The rules themselves are perfectly runnable — only the
-  # launcher is not — so template mode calls ruff directly, exactly as
-  # check-format.sh already does. The check still RUNS; it is not skipped.
+  # Template mode calls ruff directly; a generated project goes through `uv run`.
+  # The reason for the split has expired, and the split has not. It used to be
+  # forced: `uv run` resolves the project before running anything, and a TEMPLATE
+  # could not satisfy that — pyproject.toml's `name` was an unrendered token uv
+  # refused to parse, so no uv.lock could exist either. `7cd385d` fixed the name
+  # and that premise died when uv.lock was committed; `uv run` launches on both
+  # sides now. The direct call stays because the rules never needed the project:
+  # ruff's flake8-bandit set is self-contained, this is the HOST half of a dual
+  # check and every host half here uses the raw tool by design, and the Docker leg
+  # below still exercises `uv run` in the container. The check RUNS either way.
   if [[ "${TEMPLATE_MODE:-false}" == "true" ]]; then
     local_py=$(cd "$PROJECT_ROOT" && \
       ruff check --select S code/src/django/ 2>&1) || local_exit=1

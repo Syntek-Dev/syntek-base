@@ -1,6 +1,6 @@
 # project-management/src/06-BRAND-GUIDE/CONSOLIDATED-IDEAS
 
-**Stage 2** — the decided token set. Written by `workflows/17-consolidate-design-work/` once
+**Stage 2** — the decided token set. Written by `workflows/18-consolidate-design-work/` once
 every story has been planned, weighing all the per-story asks in `../USER-STORY-IDEAS/` together
 and settling the palette, type scale, spacing, logo rules, and voice that actually ship.
 
@@ -42,7 +42,7 @@ the value, do not note it as a known issue.
 
 ## When to write one
 
-- During `workflows/17-consolidate-design-work/`, after every story has cleared `16-story-plans`
+- During `workflows/18-consolidate-design-work/`, after every story has cleared `17-story-plans`
 - Never mid-cycle — regenerating the PDF twice in a cycle means the first run decided nothing
 
 ## Cross-references

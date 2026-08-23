@@ -23,6 +23,9 @@ how-to/
 │   ├── DEVELOPMENT.md           ← first-time setup, Compose commands, env vars
 │   ├── FEATURE-DEPLOY.md        ← deploying a feature branch
 │   ├── GIT-WORKTREES.md         ← parallel development with worktrees and Docker isolation
+│   ├── HEALTH-PROBES.md         ← diagnosing a red /health/ready/ or a restart-looping container
+│   ├── INCIDENT-PRACTICE.md     ← running a live incident: declare, hand over, stand down, write up
+│   ├── OPERATOR-DOC-CRAFT.md    ← the standing conventions behind every guide a human executes
 │   ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/ (index)
 │   │   └── skill-authoring/     ← 4 sub-documents + CONTEXT.md · CLAUDE.md
 │   └── TOOLING-GUIDE.md         ← Internal skills reference (index)
@@ -33,8 +36,11 @@ how-to/
 │   ├── CONTRIBUTING.md          ← contributing, testing, and code-quality standards
 │   ├── INVARIANTS.md            ← invariant register: the one enforcement point for each
 │   ├── PLATFORM-PROVIDERS.md    ← infra register: seam kind, alternates, substrate verdicts
-│   ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (template-only)
-│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 guides (template-only)
+│   ├── PROJECT-PATHS.md         ← path register: what a shipped doc may promise, and what creates it
+│   ├── STORE-LISTING.md         ← MOBILE-ONLY — store-listing register: App Store / Play values
+│   ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (ships, and is rendered)
+│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 numbered guides plus
+│   │                              GUIDE-TO-SKILLS.md, all of which ship
 │   ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 │   ├── SCALE-ARCHITECTURE/      ← OVERVIEW · LOAD-PROFILES · READINESS · SIZING-ENVELOPE · TOPOLOGY
 │   └── SERVER-ARCHITECTURE/     ← OVERVIEW · COMPUTE-ALLOCATION · EDGE-REQUIREMENTS · NIXOS-HANDOFF
@@ -80,17 +86,21 @@ Every directory with a `CONTEXT.md` also has a `CLAUDE.md`.
 
 ## Key docs
 
-| Guide                      | When to read                                                                                     |
-| -------------------------- | ------------------------------------------------------------------------------------------------ |
-| `docs/DEVELOPMENT.md`      | Environment setup, commands, troubleshooting                                                     |
-| `docs/CLI-TOOLING.md`      | Looking for the command that does a thing                                                        |
-| `docs/GIT-WORKTREES.md`    | Parallel feature development with isolated stacks                                                |
-| `docs/CELERY-FIRST-RUN.md` | Before wiring Celery, or first starting the worker/beat in any environment                       |
-| `docs/FEATURE-DEPLOY.md`   | Deploying a feature branch                                                                       |
-| `docs/TOOLING-GUIDE.md`    | Internal skills reference                                                                        |
-| `docs/AI-DICTIONARY.md`    | Looking up an AI-coding term                                                                     |
-| `docs/SKILL-AUTHORING.md`  | Before writing or editing a skill in `.claude/skills/`                                           |
-| `src/CONTRIBUTING.md`      | Branching, commits, testing, code quality, the pre-PR gates                                      |
-| `src/TEMPLATE-GUIDE/`      | Generating a project from the template, or updating one                                          |
-| `src/SCALE-ARCHITECTURE/`  | Sizing the deployment and proving it scales (`/scale-planning`)                                  |
-| `src/NIXOS-SETUP.md`       | Pointer stub — provisioning lives in the deploy repo; the contract in `src/SERVER-ARCHITECTURE/` |
+| Guide                                    | When to read                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `docs/DEVELOPMENT.md`                    | Environment setup, commands, troubleshooting                                                     |
+| `docs/CLI-TOOLING.md`                    | Looking for the command that does a thing                                                        |
+| `docs/GIT-WORKTREES.md`                  | Parallel feature development with isolated stacks                                                |
+| `docs/CELERY-FIRST-RUN.md`               | Before wiring Celery, or first starting the worker/beat in any environment                       |
+| `docs/FEATURE-DEPLOY.md`                 | Deploying a feature branch                                                                       |
+| `docs/HEALTH-PROBES.md`                  | A red `/health/ready/`, or a container stuck in a restart loop                                   |
+| `docs/INCIDENT-PRACTICE.md`              | Something is broken in staging or production and the response needs running                      |
+| `docs/OPERATOR-DOC-CRAFT.md`             | Before writing or restructuring any guide under `how-to/`                                        |
+| `docs/TOOLING-GUIDE.md`                  | Internal skills reference                                                                        |
+| `docs/AI-DICTIONARY.md`                  | Looking up an AI-coding term                                                                     |
+| `docs/SKILL-AUTHORING.md`                | Before writing or editing a skill in `.claude/skills/`                                           |
+| `src/CONTRIBUTING.md`                    | Branching, commits, testing, code quality, the pre-PR gates                                      |
+| `src/TEMPLATE-GUIDE/03-PREREQUISITES.md` | Which platforms are supported and what each one needs — Windows is WSL 2 only                    |
+| `src/TEMPLATE-GUIDE/`                    | Generating a project from the template, or updating one                                          |
+| `src/SCALE-ARCHITECTURE/`                | Sizing the deployment and proving it scales (`/scale-planning`)                                  |
+| `src/NIXOS-SETUP.md`                     | Pointer stub — provisioning lives in the deploy repo; the contract in `src/SERVER-ARCHITECTURE/` |

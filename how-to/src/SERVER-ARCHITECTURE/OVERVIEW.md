@@ -2,7 +2,7 @@
 
 **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%> (via `/scale-planning`)
 
-> **Template skeleton.** Part of the <%PROJECT_NAME%> base template. The structure, framing rules,
+> **Template skeleton.** Part of the <%ORG_NAME%> base template. The structure, framing rules,
 > glossary, and contract discipline below are reusable as-is; every concrete value (process
 > inventory, load figures, citations) is a placeholder to be **regenerated from this project's
 > live code on the first `/scale-planning` run**. Do not treat the placeholder values as real.
@@ -60,9 +60,9 @@ already ships one app↔deploy contract of exactly this kind:
 > A second precedent used to be named alongside it —
 > `code/src/docker/prometheus/prometheus.yml`. **That file does not exist**: no
 > Prometheus config ships in this repo. The scrape-target contract is prose, in
-> `HEALTH-CONTRACT.md` Section 2 and `code/docs/logging/OBSERVABILITY.md`. No file in this
-> directory cites the dead path any more; one stale citation survives outside it, in
-> `.claude/skills/scale-planning/SKILL.md`.
+> `HEALTH-CONTRACT.md` Section 2 and `code/docs/logging/OBSERVABILITY.md`. Nothing cites the dead
+> path any more: `.claude/skills/scale-planning/SKILL.md` mentions Prometheus only to record that
+> no config ships here.
 
 Every document here keeps that discipline: **this repo specifies; the deploy repo
 implements.** Nothing in this directory is executable configuration.

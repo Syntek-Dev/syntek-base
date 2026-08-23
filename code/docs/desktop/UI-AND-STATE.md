@@ -169,9 +169,10 @@ intent does: reachable by keyboard, labelled, and not colour-only.
 Be honest in reports: there is no `axe-core` equivalent here, so desktop accessibility is verified
 by hand with a screen reader, never "scanned clean".
 
-AccessKit is also the reason `deny.toml` accepts two `quick-xml` advisories: they are reached only
-through the AT-SPI stack. **Dropping accessibility is not the mitigation** — see
-`code/docs/rust/SUPPLY-CHAIN.md`.
+AccessKit also fixes the answer when an advisory arrives through it: reached only via the AT-SPI
+stack, it is never answered by dropping accessibility. **`deny.toml` carried two `quick-xml`
+suppressions on that reasoning until 16/08/2026**, when an MSRV bump took the chain out of the
+graph — the list is empty now, and the policy is `code/docs/rust/SUPPLY-CHAIN.md`.
 
 ## Cross-references
 

@@ -104,7 +104,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `project-management/workflows/09-gdpr-compliance/` — the compliance review, **completed first**
 - `code/workflows/06-gdpr-enforcement/` — enforcing it in code; the procedure of record
-- `project-management/workflows/21-implementation-documentation/` — where `GDPR-IMPL-US###` lands
+- `project-management/workflows/22-implementation-documentation/` — where `GDPR-IMPL-US###` lands
 
 ## Cross-references
 
