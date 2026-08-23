@@ -39,7 +39,7 @@
 # redirects, so the command parses cleanly and then does something else. A probe whose test
 # is parse-SUCCESS can never fire there. Measured 18/08/2026 — a compose file carrying the
 # token inside a CMD-SHELL healthcheck passes `docker compose config` at exit 0. That is the
-# `70fc963` case and the `test-api.yml:86` case (MAP-BASE-HEALTH N-053), and neither would
+# `70fc963` case and the `test-api.yml:86` case, and neither would
 # have been caught here. The remedy for that row is doctrine, not a gate: a shell word never
 # carries a token — see the position table in how-to/src/TEMPLATE-TOKENS.md.
 #

@@ -24,7 +24,7 @@
 # THE SELF-TEST RUNS FIRST, and it is the step that makes the scan mean anything. The
 # ordinary run is green on a correct tree and was green on a broken one too: the parser
 # required a `skills:` array's opening bracket on the key's own line, so a Prettier-wrapped
-# array was skipped whole and never reported (MAP-BASE-HEALTH N-030). A count of everything
+# array was skipped whole and never reported. A count of everything
 # it did read is not evidence about what it did not. The fixtures carry each array form
 # twice, broken and clean, so a reader that understands one form and skips the other fails
 # here rather than passing the scan below.

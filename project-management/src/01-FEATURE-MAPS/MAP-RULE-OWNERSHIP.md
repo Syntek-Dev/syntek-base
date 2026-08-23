@@ -1,8 +1,8 @@
 # MAP-RULE-OWNERSHIP — one rule, one home, and a guard that keeps it there
 
 **Charted**: 21/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Charted at**: `9a69a9b` · **Re-verified at**: `c09a189` (23/08/2026) — **all ten original
-nodes still hold; seven added from two further reviews**
+**Charted at**: `9a69a9b` · **Re-verified at**: `a4d3ca9` (23/08/2026) — **all seventeen nodes
+still hold; a fifth review corrected the evidence under three of them and added no new node**
 **Status**: Charting
 **Frontier open**: 17 · **Blocking open**: 0 · **Resolved**: 1
 
@@ -17,6 +17,14 @@ nodes still hold; seven added from two further reviews**
 > work, six audits CI runs that the operator's gate list omitted, four files missing from the
 > layer's own tree. Those are shipped and are **not** nodes. What it left undecided is **N-018**,
 > and the shape rule it installed is **N-015**. The `code/` pass charted **N-012**–**N-017**.
+>
+> **A fifth pass, 23/08/2026, over `project-management/` — it added no node and corrected three.**
+> `architecture-review-20260823-142445.html` re-measured the layer the other four had only passed
+> through. Its seven candidate claims were then put to **seven independent hostile verifiers**, and
+> **six came back refuted or materially corrected** — including two the review had rated `Strong`.
+> What survives is folded into **N-002**, **N-004**, **N-015** and the fog entry below; nothing it
+> found is new frontier. **The pass is recorded for the correction, not the discovery** — its own
+> first draft of these numbers was wrong in six places, and the map would have inherited them.
 >
 > **No index row in `CONTEXT.md`** — see N-010. A `MAP-<FEATURE>` row is a per-project instance
 > citation in a file that ships, which is the defect `audits/doc-references.sh` exists to prevent.
@@ -35,15 +43,15 @@ catches them.
 
 ## Notes
 
-| Field                      | Value                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain                     | Repository documentation governance — the three-role split (`.claude/CLAUDE.md` global rules · per-folder `CLAUDE.md` local rules · `CONTEXT.md` orientation) and the audits that hold it up                                                                                                                                                                                                 |
-| Skills to load             | `doc-writer` · `scaffold` · `domain-modelling` · `codebase-design` · `grill-with-docs`                                                                                                                                                                                                                                                                                                       |
-| Standing preferences       | **Route, don't restate** (`code/docs/DOCUMENTATION-PAIRING.md` §6) · a gate is **derived from a stated rule, never from taste** (`code/src/scripts/audits/CLAUDE.md`) · **no gate may disagree with the settled rule** (Sam, MAP-BASE-HEALTH N-028)                                                                                                                                          |
-| Umbrella ADRs              | None — `15-DECISIONS/` holds only `ADR-000-TEMPLATE.md`. N-003 and N-004 are the two likeliest to earn the first                                                                                                                                                                                                                                                                             |
-| Relationship to other maps | Deliberately **not** folded into `MAP-BASE-HEALTH`, whose frontier is down to two nodes after sitting 7 (`c09a189`) and which holds **no** node touching workflow shape, the observability tokens, or `09-debugging-with-logs`. These seventeen share one cause and one remedy. The split has a measured cost — `MAP-ABSENCE` routed eight findings to `BASE-HEALTH` and nobody adopted them |
-| Defect classes             | Reuses `GAPS.md`'s five: **A** token blast radius · **B** false green · **C** inheritance leak · **D** split doctrine · **E** declared, not built. Sixteen of seventeen nodes are class **D** — that is the map's whole thesis. **N-012** is the one class **A**                                                                                                                             |
-| Register entries triaged   | **0 closes · 0 blocks · 0 unrelated** — re-triaged 23/08/2026 against a restructured `GAPS.md` (see below)                                                                                                                                                                                                                                                                                   |
+| Field                      | Value                                                                                                                                                                                                                                                                                                                                          |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                     | Repository documentation governance — the three-role split (`.claude/CLAUDE.md` global rules · per-folder `CLAUDE.md` local rules · `CONTEXT.md` orientation) and the audits that hold it up                                                                                                                                                   |
+| Skills to load             | `doc-writer` · `scaffold` · `domain-modelling` · `codebase-design` · `grill-with-docs`                                                                                                                                                                                                                                                         |
+| Standing preferences       | **Route, don't restate** (`code/docs/DOCUMENTATION-PAIRING.md` §6) · a gate is **derived from a stated rule, never from taste** (`code/src/scripts/audits/CLAUDE.md`) · **no gate may disagree with the settled rule** (Sam, 23/08/2026)                                                                                                       |
+| Umbrella ADRs              | None — `15-DECISIONS/` holds only `ADR-000-TEMPLATE.md`. N-003 and N-004 are the two likeliest to earn the first                                                                                                                                                                                                                               |
+| Relationship to other maps | Deliberately **not** folded into the template-health map that has since been deleted, which held **no** node touching workflow shape, the observability tokens, or `09-debugging-with-logs`. These seventeen share one cause and one remedy. The split had a measured cost — `MAP-ABSENCE` routed eight findings there and nobody adopted them |
+| Defect classes             | Reuses `GAPS.md`'s five: **A** token blast radius · **B** false green · **C** inheritance leak · **D** split doctrine · **E** declared, not built. Sixteen of seventeen nodes are class **D** — that is the map's whole thesis. **N-012** is the one class **A**                                                                               |
+| Register entries triaged   | **0 closes · 0 blocks · 0 unrelated** — re-triaged 23/08/2026 against a restructured `GAPS.md` (see below)                                                                                                                                                                                                                                     |
 
 **What the reviews did _not_ find, recorded so it is not re-measured.** The three-role split
 holds: no `CLAUDE.md` contradicts `.claude/CLAUDE.md` on scope or authority; no `CONTEXT.md`
@@ -65,6 +73,28 @@ Slint 1.17. On the `how-to/` side: every `code/src/scripts/**` citation resolves
 pins match `.nvmrc` / `.python-version` / `package.json`, `docs/CONTEXT.md` and `src/CONTEXT.md`
 matched their directories, and the three forward-voice deploy scripts are correctly written as
 planned. **In both layers only the layer-root `CONTEXT.md` had drifted** — which is N-016.
+
+**Added 23/08/2026, and it narrows a claim this map has twice stated loosely.** "The gates are
+green" has meant _the gates this map runs_ — four of them. **Twenty audits accept `--path`**
+(twenty-one parse it; `negative-space.sh:182` parses it only to `die`). Pointed at
+`project-management`, **fifteen exit 0 and five exit 1** — `copy-emdash.sh` (45 em dashes, chiefly
+`src/07-COMPONENTS/component-build/components.py`), `css-gradients.sh` and `css-tokens.sh` (both
+`src/08-WIREFRAMES/SHARED/wireframe.css`), `seam-contract.sh` (168 unattributed `## N.` sections
+across 128 files) and `template-orphans.sh` (2 files under `export/`). **Every one of the five is a
+false positive**, checked individually: `--wf-sp-2` is _defined_ at `wireframe.css:53` and reported
+phantom only because `--path` moves the reference scan while the definition lookup stays pinned to
+`code/src/django/`; `export/` and both its files are declared at `project-management/CONTEXT.md:28`
+and `:88-89`, which `template-orphans.sh` cannot see because it reads `src/CONTEXT.md`'s numbering
+alone; `seam-contract.sh` applies the **server contract's** `**Source:**` rule to PM templates.
+**No PM defect is behind any of the five.** This is the standing preference inverted — _no gate may
+disagree with the settled rule_ — five times, and it is **routed away, not charted here** (see
+_Out of scope_): gate scoping is not this map's cause and would not be fixed by this map's
+remedy.
+
+**`how-to/workflows/` was never measured until this pass, and it is the uniform one.** All nine
+carry `## Update context files` and `## Completion`; the numbered-step variant appears **zero**
+times. The layer that _states_ the contract obeys it perfectly; the layer it _names as the
+reference_ has four realisations of one clause (N-015).
 
 ---
 
@@ -154,6 +184,20 @@ in the story gate.
 | **C** | N-004 · N-008                 | **Mutual dependence** — the guard's design decides whether N-008 needs a trigger of its own or gets one for free                                                                                                   | after B  |
 | **D** | N-009 · N-010                 | **Shared subject** — the same folder, the same two shipped files, the same question about what may cite what                                                                                                       | now      |
 
+> **Batch A gains a rider, 23/08/2026 — a defect to fix in the sitting, not a node.**
+> `project-management/workflows/02-story-creation/CHECKLIST.md:49` is **corrupt**: two checklist
+> items fused and both truncated, carrying an unbalanced backtick. It is the **file's last line
+> (49 of 49)**, so the `## Definition of Done` section is itself truncated, and it is the only
+> unpaired-backtick line among the **326 Markdown files** under `project-management/` (seven more
+> sit in `.sh` and `.tex` and are unrelated). **It has shipped since `c2886e8` (01/08/2026)** —
+> `git blame` attributes it there, at the pre-rename path `01-story-creation/CHECKLIST.md:41` — and
+> has survived **four** later commits that touched the file (`13de9b9`, `3bd49e8`, `35eeb12`,
+> `b2a1d21`) and **every gate**. Fragment one restores from
+> `code/workflows/01-implement-story/CHECKLIST.md:37` (_"the rest walked manually"_); **fragment two
+> exists nowhere in the repository or in any of its 294 commits** and must be **re-authored, not
+> restored** — the one decision in the rider. Cited under **N-004** as this map's **first class B
+> (false green)** evidence: an unreadable acceptance criterion no gate could see.
+
 **Order by what unblocks the most:** E (one folder, three defects, no dependants) → A (mechanical,
 no dependants) → B (feeds C's claims table) → F (needs A's N-016 pattern settled first) →
 C (supplies N-008's trigger) → D (independent; takeable any time).
@@ -170,10 +214,22 @@ C (supplies N-008's trigger) → D (independent; takeable any time).
   and `shell.sh` already exist; the raw form skips `worktree-detect.sh` and `--env-file`, so it
   attaches to the **wrong stack in a worktree**. The sibling `how-to/workflows/08-debugging/STEPS.md:33-39`
   supplies the correct idiom verbatim. 44 of 45 workflows comply.
-- **N-002** · `REFERENCES.md:200` and `project-management/workflows/CONTEXT.md:172` say implementation is
-  gated on PM `02`–`18`; `code/workflows/CONTEXT.md:111` says `01`–`15`. Both restating files carry
-  _"Do not restate it here"_ two lines above. The dropped `18-consolidate-design-work` is the gate the
-  PM layer's next bullet calls **hard**.
+- **N-002** · **Re-measured at `a4d3ca9`; the node is bigger than it was written, and its own
+  citation had drifted.** Three files state the implementation entry gate and **all three differ**:
+  `REFERENCES.md:201` says the build phases are `18`–`20` _"gated on `02`–`17`"_;
+  `project-management/workflows/CONTEXT.md:174` says _"once `02`–`18` are complete"_;
+  `code/workflows/CONTEXT.md:111` says `01`–`15`. The map previously cited `:200` and `:172` and
+  recorded the first two as **agreeing** on `02`–`18` — they do not, and the line numbers were off
+  by one and two. Both restating files still carry _"Do not restate it here"_ two lines above.
+  **And the same file drops the same workflow a second way.** `REFERENCES.md`'s cross-layer section
+  (`:195-238`) holds **three** enumerating structures. The pairing table (`:204-216`) names 9 PM
+  workflows and the _PM-only_ list (`:222-224`) names 13 — disjoint, covering **22 of 24**.
+  **`01-feature-map` and `18-consolidate-design-work` are in neither**; `01` is recovered only by
+  the third table at `:232`, and `18` by nothing. `18` is the sole workflow of the 24 **never named
+  in full anywhere in the section** — though the section refers to it as `18` four times, once
+  _inside_ the pairing table (`:206`, _"entered via `18`"_). **Not an independent second defect:**
+  `:201` classifies `18` as an implementation entry point rather than a design gate, which is
+  precisely why it has no pairing row. One cause, three surfaces, one edit pass.
 - **N-007** · `code/docs/DOCUMENTATION-LENGTH.md:35`, `docs-length.sh:28,114` and
   `audits/CONTEXT.md:165` all write `**/src/*.md` (one level); `is_instructional()` at
   `docs-length.sh:301-322` exempts the whole tree at any depth. The spec is **stricter than the
@@ -195,23 +251,34 @@ C (supplies N-008's trigger) → D (independent; takeable any time).
   puts squarely on `fable`. **No precedence rule exists.**
 - **N-004** · `doctrine-drift.sh` holds **3 claims**, all JSON envelope keys, matched against **fenced
   code only**, over 5 trees. Its design note at `:27-31` defends fenced-only — _"examples are the
-  contract"_ — and MAP-BASE-HEALTH N-036 records it **refusing a job** on exactly that ground
+  contract"_ — and it was recorded **refusing a job** on exactly that ground
   (_"0 of 7 homes reachable on two axes"_). N-002's two restatements sit **inside** its scan dirs and
   it still cannot see them, because they are prose. Reopening the invariant is the decision.
+  **A second conditional row, added 23/08/2026, mirroring the source-length row that waits on
+  N-003:** _workflow terminal-section shape_ — **waits on N-015**, which must first pick a canonical
+  spelling for a guard to have anything to assert. Measured at `a4d3ca9`: nothing anywhere enforces
+  workflow file shape. `git grep -E 'Definition of Done|Update context files|## Completion' --
+code/src/scripts .claude/hooks .github lefthook.yml` returns **zero hits**, and **nothing asserts
+  the two files exist at all** — the _four-file shape_ of `how-to/workflows/CLAUDE.md:36-37` has no
+  gate either. Four audits name `STEPS.md` (`copy-emdash.sh:22`, `copy-slop.sh:81`,
+  `docs-length.sh:109`, `doctrine-drift.sh:49`) and every one uses it as **scope or commentary**,
+  never as a shape assertion; only `docs-length.sh:109` names `CHECKLIST.md`, and only to bind it to
+  300 lines. **This node also now carries the map's first class B evidence** — see the corruption
+  rider under _Out of scope_, one unreadable checklist line that passed every gate for 22 days.
 - **N-008** · Narrowed per Q3. `code/docs/testing/COVERAGE.md` gained an **80% promotion tier** on
-  16/08/2026; twelve files still say only _75 / 90_. **Whether they stay is settled** — Sam, `12973ef`,
-  MAP-BASE-HEALTH N-028: _"incomplete rather than false"_. What is open is only **what would ever
+  16/08/2026; twelve files still say only _75 / 90_. **Whether they stay is settled** — Sam,
+  `12973ef`: _"incomplete rather than false"_. What is open is only **what would ever
   raise them again**, and N-004 is the candidate answer.
 - **N-009** · See N-011 above. Four exemption arms, nine shipped files, one legitimate citation
-  today. **Precedented, not speculative:** commit `5d7d264` (21/08/2026, **N-031 on
-  MAP-BASE-HEALTH**) narrowed the arm three lines above these — `how-to/src/TEMPLATE-GUIDE/*` down
+  today. **Precedented, not speculative:** commit `5d7d264` (21/08/2026)
+  narrowed the arm three lines above these — `how-to/src/TEMPLATE-GUIDE/*` down
   to `TEMPLATE-GAPS.md` alone — on the identical reasoning, _"that tree ships as of `f5fef31`; only
   this one file is copier-excluded"_. The principle is accepted and was applied to one arm the same
   day; the four arms below it still carry _"none of these ship"_ unamended. Narrowing there exposed
   four findings and **not one was a broken citation**, which is what made it safe — the same
   measurement is what N-009 needs before it moves.
-  **The predicate now exists, 23/08/2026 — recorded here by `MAP-BASE-HEALTH` sitting 6, which
-  built it and deliberately did not settle this node.** That sitting added Check 3 to the same
+  **The predicate now exists, 23/08/2026 — built by a sitting on another map, which
+  deliberately did not settle this node.** That sitting added Check 3 to the same
   script: `is_template_only()` derives ships / does-not-ship from `copier.yml`'s `_exclude` —
   anchored entries in, negations and `_tasks` seeds and the regenerated `uv.lock` out, surface-
   gated entries excluded by decision — and answers **40 paths**. So N-009's four arms now have a
@@ -265,11 +332,53 @@ C (supplies N-008's trigger) → D (independent; takeable any time).
   `13`) — 9 of 46. Across all 46 the terminal section takes **four spellings**: `Definition of Done`
   ×38, `Close-out` ×3, `Closeout` ×2, `Sign-off` ×2 — and **`code/05-mcp-server` has none at all**,
   ending at `## Context`, so nothing in it ever declares the work finished. On the other half,
-  39 of 46 `STEPS.md` close with `## Completion`. Two tensions the node must settle, not just
-  count: the rule **binds three layers from a layer-local `CLAUDE.md`**, and its
-  `## Update context files` clause, applied to `code/`, **collides with PM `22`'s ownership of
-  closeout** — `0 of 13` code `STEPS.md` carry it, and per N-014 that absence is _correct_. So the
-  contract cannot simply be adopted; one clause of it is wrong for one layer.
+  39 of 46 `STEPS.md` close with `## Completion`.
+  **Re-measured at `a4d3ca9` by the fifth pass. One tension survives, one collapses, and one
+  premise was wrong.**
+  1. **Survives — the rule binds three layers from a layer-local `CLAUDE.md`.** Confirmed and
+     sharpened: `git grep 'Definition of Done' -- '*/workflows/CLAUDE.md' '*/workflows/*/CLAUDE.md'
+'.claude/CLAUDE.md'` returns **only** `how-to/workflows/CLAUDE.md:42-43`. One home, three
+     layers bound, **zero guard** (N-004). And the layer that states it is the only one that obeys
+     it — `how-to/` is **9 of 9** on both halves; the layer it names as _the reference shape_ is not.
+  2. **Collapses — the `## Update context files` clause was never wrong for `code/`.** The old
+     premise, _"`0 of 13` code `STEPS.md` carry it, and per N-014 that absence is correct"_, is true
+     of the **heading string** and false of the **clause**. Zero carry the heading in any case; but
+     **8 of 13** carry a numbered `Step N — Update Context and Documentation`
+     (`03:75`, `04:108`, `06:92`, `07:82`, `08:54`, `09:209`, `10:93`, `11:81`) whose **items 1-4
+     are byte-identical** to the contract's own list — `diff` against
+     `how-to/workflows/03-daily-development/STEPS.md:105-108` is **empty** — under a _stricter_
+     lead-in, _"**Hard gate — complete before committing.**"_ The remaining five are not silent
+     either: `01:230,233` and `02:193,196` impose the same hard gate and delegate to PM `22`;
+     `05:143` updates `config/CONTEXT.md` directly; `12:143-145` and `13:124-125` hand closeout to
+     PM `22` **explicitly**. **13 of 13 carry a closeout obligation.** So the decision is not
+     _should `code/` adopt this clause_ but **which of the existing spellings is canonical** — and
+     the eight are themselves three bodies, not one (4-item ×4; 5-item ×3, adding the
+     code-review-graph refresh at `07:90`, `10:101`, `11:89`; and `09` reading _"before closing this
+     workflow"_).
+  3. **Wrong premise corrected — PM has four realisations of the clause, and one file has two.**
+     `## Update context files` ×15; a numbered step ×5 (`19:124`, `20:119`, `21:245`, `24:96`,
+     `22:138`); a differently-titled `Step 7 — Verify Documentation Closeout` ×1 (`23:126`); a bare
+     bullet inside a generic close-out step ×1 (`18:153`). Only **3 of 24** carry none —
+     `01-feature-map`, `12-seo-checks`, `14-logging-checks`. The buckets are **not a partition**:
+     `22-implementation-documentation` carries the clause **twice in one file** (`STEPS.md:138` and
+     `:170`, near-identical 4-item bodies) — the workflow `REFERENCES.md` names as closeout's **sole
+     owner**, restating it against itself. That is this map's thesis in a single file.
+  4. **The three PM checklists without `## Definition of Done` have not lost the function — they
+     relocated it.** `01-feature-map`, `14-logging-checks` and `18-consolidate-design-work` each
+     carry the terminal assertion as a **line-13 preamble**: _"Every box must be ticked before
+     `02-story-creation/` may begin."_ / _"…before `15-decisions/` may close this story's loop."_ /
+     _"…before `19-backend-code/` may begin."_ Exactly **3 of 24** PM checklists carry that sentence
+     and they are **exactly** the 3 lacking the heading — mutually exclusive, which is a relocation,
+     not an omission. A first reading of this pass called the function _absent_; it is not, and the
+     node is smaller than that reading made it.
+  5. **`code/05-mcp-server` is the one place the function is genuinely missing**, and on both
+     halves: its `CHECKLIST.md` ends at `## Context` with no terminal section, and its `STEPS.md` is
+     **the only one of all 46** that never cites its own `` `CHECKLIST.md` `` — 45 do, 41 in the
+     standard _"Run through `CHECKLIST.md` before marking this workflow complete."_ **The
+     case-sensitivity is load-bearing:** `grep -i checklist` matches all 46, because `05:134` says
+     _"the checklist in `code/docs/mcp-server/AUTH-AND-THREATS.md`"_ — a different document. Use
+     ``grep -L '`CHECKLIST.md`'``. Mitigated but not repaired: all 46 workflow `CLAUDE.md` files
+     do cite their checklist, so the read order still reaches it.
 - **N-016** · `code/CONTEXT.md`'s tree omits **11** top-level guides — `DISCOVERABILITY`,
   `DOCUMENTATION-LENGTH`, `DOCUMENTATION-PAIRING`, `EXPORTS`, `FORWARD-VOICE`, `GATE-REPORTING`,
   `MOBILE-CODING-PRINCIPLES`, `NOTIFICATIONS`, `OBJECT-STORAGE`, `PROCESS-MODEL`,
@@ -335,26 +444,28 @@ C (supplies N-008's trigger) → D (independent; takeable any time).
 
 ## Out of scope
 
-| Ruled out                                                  | Why                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Restructuring `code/src/scripts/audits/CONTEXT.md`         | **Fails the deletion test** — splitting moves complexity into a third file rather than concentrating it; the inventory is genuinely one table, and its dated allowance (expires 01/12/2026) already supplies a trigger                                                                                                                                                                                     |
-| Reopening **whether** the coverage-floor restatements stay | Settled at `12973ef` (MAP-BASE-HEALTH N-028). N-008 charts only the missing revisit trigger, not the decision                                                                                                                                                                                                                                                                                              |
-| Changing the 750/800 or 300/270 thresholds themselves      | The numbers are not in question anywhere in this map — only **where they are written** and **whether anything guards them**                                                                                                                                                                                                                                                                                |
-| `main` reconciliation (`GAPS.md` 20/08/2026)               | Unrelated to rule ownership; the entry routes itself to `23-pr-and-review`                                                                                                                                                                                                                                                                                                                                 |
-| Folding these nodes into `MAP-BASE-HEALTH`                 | Q2. One cause, one remedy, its own frontier — kept out of a 446KB catch-all at N-059                                                                                                                                                                                                                                                                                                                       |
-| Adding the `CONTEXT.md` index row for this map             | Q4. It would ship a citation to a map no generated project holds. Charted as N-010 instead of obeyed                                                                                                                                                                                                                                                                                                       |
-| The 14 defects the `how-to/` pass **fixed** on 23/08/2026  | Shipped in `c024338` and re-verified live at `c09a189`: the dead `--service backend` / `--service frontend` flags, `lsof -i :8000`, the phantom `docker-compose.override.yml`, six audits absent from the operator's gate list, four files absent from `how-to/CONTEXT.md`, the `24-` numbering collision, the drifted skill count. **Done, not deferred** — listed so a later pass does not re-chart them |
-| The 41 broken relative links in `code/docs/cloudinary/`    | Vendored third-party reference docs whose links target Cloudinary's own site. Not this repository's rules, and `doc-references.sh` already exempts the tree                                                                                                                                                                                                                                                |
-| The domain-grouped checklist headings                      | `Before` / `During` / `After`, `Justification` / `Change` / `Verification` / `Record` and the rest are deliberate and repository-wide — PM `01`, `12`, `14`, `18` and code `05`, `12`, `13` all do it, and the groupings carry real information. **N-015 is the terminal section only**, never the groupings above it                                                                                      |
+| Ruled out                                                    | Why                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Restructuring `code/src/scripts/audits/CONTEXT.md`           | **Fails the deletion test** — splitting moves complexity into a third file rather than concentrating it; the inventory is genuinely one table, and its dated allowance (expires 01/12/2026) already supplies a trigger                                                                                                                                                                                                                                                                                                                                                              |
+| Reopening **whether** the coverage-floor restatements stay   | Settled at `12973ef`. N-008 charts only the missing revisit trigger, not the decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Changing the 750/800 or 300/270 thresholds themselves        | The numbers are not in question anywhere in this map — only **where they are written** and **whether anything guards them**                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `main` reconciliation (`GAPS.md` 20/08/2026)                 | Unrelated to rule ownership; the entry routes itself to `23-pr-and-review`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Folding these nodes into the template-health map             | Q2. One cause, one remedy, its own frontier — kept out of a 446KB catch-all                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Adding the `CONTEXT.md` index row for this map               | Q4. It would ship a citation to a map no generated project holds. Charted as N-010 instead of obeyed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| The 14 defects the `how-to/` pass **fixed** on 23/08/2026    | Shipped in `c024338` and re-verified live at `c09a189`: the dead `--service backend` / `--service frontend` flags, `lsof -i :8000`, the phantom `docker-compose.override.yml`, six audits absent from the operator's gate list, four files absent from `how-to/CONTEXT.md`, the `24-` numbering collision, the drifted skill count. **Done, not deferred** — listed so a later pass does not re-chart them                                                                                                                                                                          |
+| The 41 broken relative links in `code/docs/cloudinary/`      | Vendored third-party reference docs whose links target Cloudinary's own site. Not this repository's rules, and `doc-references.sh` already exempts the tree                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| The five audits that exit `1` on `--path project-management` | **Routed away, not charted here.** `copy-emdash.sh`, `css-gradients.sh`, `css-tokens.sh`, `seam-contract.sh`, `template-orphans.sh` — **all five verified false positives** (see _Notes_). The cause is **gate scoping**, not a rule with two homes, so it shares neither this map's cause nor its remedy. Recorded only because it narrows this map's own repeated claim that _"the gates are green"_                                                                                                                                                                              |
+| The domain-grouped checklist headings                        | `Before` / `During` / `After`, `Justification` / `Change` / `Verification` / `Record` and the rest are deliberate and repository-wide — PM `01`, `12`, `14`, `18` and code `05`, `12`, `13` all do it, and the groupings carry real information. **N-015 is the terminal section only**, never the groupings above it. **Qualified 23/08/2026:** the seven files with no `## Completion` are **exactly** these seven, so the groupings and the missing terminal are one population, not two — the ruling holds as a statement of intent but cannot be applied as a clean separation |
 
 ---
 
 ## Session log
 
-| Date       | Node settled                       | Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Frontier redrawn |
-| ---------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| 21/08/2026 | N-011 (research) · re-verification | **Charted: 10 open nodes in 4 batches, 1 research node fired and settled same-day.** Two architecture reviews produced nine findings; charting produced a tenth. N-011 widened N-009 from one file to **four exemption arms / nine shipped files**, and bounded it honestly — exposure is **one citation and it is legitimate**, so the defect is latent, not live. Register triaged exhaustively at one entry: **0 closes, 0 blocks, 1 unrelated**. Q4 answered _don't add the index row_, which made the instruction itself node **N-010**. Nothing else settled — CHART draws the frontier. **Then the base moved under the session and every node was re-measured.** Two commits landed from parallel sessions between the first measurement and the write (`5d7d264`, `5d3c22f`); **all ten nodes still hold at `5d3c22f`**. Two premises did move: the single `GAPS.md` entry was deleted (staged, verdict unchanged), and `5d3c22f` repaired the one dangling citation the reviews had reported, so `doc-references.sh` is now **clean**. **N-009 came out stronger** — `5d7d264` narrowed a sibling arm of the very function it names, on the very same reasoning, leaving the four arms below it unamended. The standing lesson applied to itself: _re-verify what a parallel session hands you_ | [x]              |
-| 23/08/2026 | _(none — a charting pass)_         | **Two further reviews; seven nodes added, nothing settled.** The `how-to/` pass (`…091427Z.html`) **fixed 14 defects** rather than charting them and left one decision, now **N-018**; the rule it installed at `how-to/workflows/CLAUDE.md:38-44` became **N-015**. The `code/` pass (`…135337Z.html`) charted **N-012**–**N-017**. Sixteen of seventeen open nodes are class **D** split doctrine; **N-012** is this map's first class **A**. **N-001 moved A → E** — a frontier redraw, not a re-typing: the `code/` pass found two more defects in the same four-file folder, and a batch justified by _shared evidence_ should follow the evidence. **The blocked item from the `how-to/` report is unblocked** — see below, including the recommendation that was not taken. Registers re-triaged against a `GAPS.md` restructured underneath the map: **0 · 0 · 0 over zero triable entries**, verdict unmoved. Every claim re-derived at `c09a189`; **all ten original nodes still hold**                                                                                                                                                                                                                                                                                                         | [x]              |
+| Date       | Node settled                       | Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Frontier redrawn |
+| ---------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| 21/08/2026 | N-011 (research) · re-verification | **Charted: 10 open nodes in 4 batches, 1 research node fired and settled same-day.** Two architecture reviews produced nine findings; charting produced a tenth. N-011 widened N-009 from one file to **four exemption arms / nine shipped files**, and bounded it honestly — exposure is **one citation and it is legitimate**, so the defect is latent, not live. Register triaged exhaustively at one entry: **0 closes, 0 blocks, 1 unrelated**. Q4 answered _don't add the index row_, which made the instruction itself node **N-010**. Nothing else settled — CHART draws the frontier. **Then the base moved under the session and every node was re-measured.** Two commits landed from parallel sessions between the first measurement and the write (`5d7d264`, `5d3c22f`); **all ten nodes still hold at `5d3c22f`**. Two premises did move: the single `GAPS.md` entry was deleted (staged, verdict unchanged), and `5d3c22f` repaired the one dangling citation the reviews had reported, so `doc-references.sh` is now **clean**. **N-009 came out stronger** — `5d7d264` narrowed a sibling arm of the very function it names, on the very same reasoning, leaving the four arms below it unamended. The standing lesson applied to itself: _re-verify what a parallel session hands you_                                                                                                                                                                                                                                                                                                                                 | [x]              |
+| 23/08/2026 | _(none — a charting pass)_         | **Two further reviews; seven nodes added, nothing settled.** The `how-to/` pass (`…091427Z.html`) **fixed 14 defects** rather than charting them and left one decision, now **N-018**; the rule it installed at `how-to/workflows/CLAUDE.md:38-44` became **N-015**. The `code/` pass (`…135337Z.html`) charted **N-012**–**N-017**. Sixteen of seventeen open nodes are class **D** split doctrine; **N-012** is this map's first class **A**. **N-001 moved A → E** — a frontier redraw, not a re-typing: the `code/` pass found two more defects in the same four-file folder, and a batch justified by _shared evidence_ should follow the evidence. **The blocked item from the `how-to/` report is unblocked** — see below, including the recommendation that was not taken. Registers re-triaged against a `GAPS.md` restructured underneath the map: **0 · 0 · 0 over zero triable entries**, verdict unmoved. Every claim re-derived at `c09a189`; **all ten original nodes still hold**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | [x]              |
+| 23/08/2026 | _(none — a verification pass)_     | **A fifth review, over `project-management/`; no node added, three corrected.** `architecture-review-20260823-142445.html` re-measured the layer the other four had only passed through. **The pass's value was the refutation, not the discovery.** Its seven claims went to seven independent hostile verifiers and **six came back refuted or materially corrected** — including two the report had rated `Strong`. Killed: _"`18` is named nowhere in `REFERENCES.md`'s canonical map"_ (it appears four times, once **inside** the pairing table at `:206`) and _"three CHECKLISTs never declare the work finished"_ (the terminal assertion is **relocated to a line-13 preamble** in exactly those three). Corrected: N-015's `0 of 13` premise — true of the heading, false of the clause, **8 of 13** carrying items 1-4 **byte-identical** to the contract's own list; N-002's own citation, **stale at `:200`/`:172`** and understating a three-way disagreement as a two-way one; and the map's standing _"the gates are green"_, which meant **four** of the **twenty** audits that take `--path` — five others exit `1` on this tree, **all five false positives**. One defect found and **not charted**: the `02-story-creation` corruption, a Batch A rider and this map's first class **B** evidence. **Node-count invariant unmoved: 17 open + 1 resolved = 18.** The standing lesson applied to itself for the third sitting running — _re-verify what a parallel session hands you_, where this time the parallel sessions were the map's own verifiers, and the first draft of these numbers was wrong in six places | [x]              |
 
 ### The blocked item, and what it cost to unblock it
 
@@ -376,8 +487,8 @@ sections.
 **The recommendation was not followed, and that is the part worth recording.** `c024338` is a
 **70-file** commit holding both changesets — the Check 3 rewrite (+246 lines to
 `doc-references.sh`, two new fixtures) _and_ the 24-file `how-to/` accuracy pass — plus edits to
-`GAPS.md`, `MAP-BASE-HEALTH.md` and this map. Nothing was lost and the gate is green, so **there is
-no node here**: re-splitting a landed commit buys nothing. What it cost is reviewability — a
+`GAPS.md`, the template-health map and this one. Nothing was lost and the gate is green, so
+**there is no node here**: re-splitting a landed commit buys nothing. What it cost is reviewability — a
 documentation-accuracy pass now sits inside a gate change, and neither half reverts without the
 other. **N-012's evidence survived only because it was re-derived from the tree** rather than read
 out of a report. Two sittings, two parallel-session collisions, one lesson: **this map's claims are
@@ -401,5 +512,7 @@ intended first slice**, displacing Batch A: three defects in one four-file folde
 sitting on the board and the only one where re-reading the same files twice is the alternative.
 A follows immediately.
 
-**Node-count invariant: 17 open + 1 resolved = 18 = N-018.** Per batch: A 4 · B 4 · C 2 · D 2 ·
+**Node-count invariant: 17 open + 1 resolved = 18 = N-018** — **re-confirmed at `a4d3ca9`**; the
+fifth pass corrected evidence under N-002, N-004 and N-015, answered the N-015 fog entry, and added
+**no** node. Per batch: A 4 · B 4 · C 2 · D 2 ·
 E 3 · F 2. Per class: **D** 16 · **A** 1.

@@ -213,6 +213,6 @@ tooling; plugin references were rewritten to internal paths.
 - **Task skill** — an executable procedure (`implement-story`, `backend`, `release`). Forks unless its
   input is the conversation itself; its own frontmatter says which.
 
-_Avoid:_ **orchestrator**, **specialist**, **document writer** — retired category names (MAP-BASE-HEALTH N-012),
+_Avoid:_ **orchestrator**, **specialist**, **document writer** — retired category names,
 and nothing replaces them: there is no tier above or below a skill. Dispatch and the independence
 rule live in `.claude/CLAUDE.md` Section 2.3.

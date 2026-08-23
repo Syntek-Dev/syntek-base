@@ -62,7 +62,7 @@ the 85 they replaced**, because two decisions in different sessions moved one qu
 neither re-measured. There is no ratchet here and deliberately so — a per-change token
 measurement is not available the way a line count is — so the discipline is the one this
 paragraph states: **when you lengthen a description, say what the roster now costs**, not only
-what your entry now says (MAP-BASE-HEALTH, fog of war, 23/08/2026).
+what your entry now says (the fog-of-war argument, settled 23/08/2026).
 
 So a new or edited description **names the near-neighbours it must be distinguishable from, and
 says how a reader tells them apart**, in the change that lands it. Live clusters to sharpen

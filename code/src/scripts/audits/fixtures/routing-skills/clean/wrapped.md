@@ -20,7 +20,7 @@ Fixture for routing-skills.sh --self-test. Never read as documentation.
 
 Every name here resolves, so this file must produce no finding — and the self-test asserts
 it produced eight checked names rather than none, because a parser that skips the file
-whole also produces no finding. That silence was MAP-BASE-HEALTH N-030: the audit reported a confident
+whole also produces no finding. That silence was the defect: the audit reported a confident
 count across every other file and never opened this form at all.
 
 **The wrapping is load-bearing and is not a style choice.** Written on one line these eight

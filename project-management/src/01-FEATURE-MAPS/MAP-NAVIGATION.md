@@ -125,7 +125,7 @@ went to a grilling.** Every number below was taken on 16/08/2026 against `HEAD` 
 | **`CONTEXT`/`CLAUDE`** | 409 files (209 + 200)                    | What one directory holds, and how to work in it           | Any relation **between** directories; each describes only itself        |
 | **`doc-references`**   | 817 files carrying a citation            | Does this citation **resolve**, here and downstream       | Who cites **me** — there is no reverse edge, and the graph is discarded |
 | **`docs-pairing`**     | Every directory                          | Is the pair present, and is each file the right kind      | Whether the content is true, or reachable from anywhere                 |
-| **`doctrine-drift`**   | Fenced-code claims table                 | Is this rule stated in a **second** place                 | Anchorless prose — measured and recorded on `MAP-BASE-HEALTH` N-016     |
+| **`doctrine-drift`**   | Fenced-code claims table                 | Is this rule stated in a **second** place                 | Anchorless prose — measured and recorded elsewhere                      |
 | **`routing-skills`**   | 243 files carrying `skills:`             | Does the named skill **exist**                            | Whether a guide is reachable **from** any skill (the reverse direction) |
 | **`docs-length`**      | Every instructional file                 | Is it under 300 lines, and is it growing in the warn band | Nothing about content, meaning or relationships                         |
 
@@ -234,8 +234,8 @@ install`; any new directory otherwise needs a `CONTEXT.md` + `CLAUDE.md`; and a 
 - **N-008**: every audit here is bash, `.claude/plugins/*.py` are **read-only by rule and never run
   dev operations**, and the standing non-negotiable is that all dev operations run through
   `code/src/scripts/**/*.sh`. A Python generator would be the first exception and needs to earn it.
-- **N-009** inherits a standing lesson from `MAP-BASE-HEALTH`: **a checklist item nobody runs is
-  false green.** If the map can rot silently, it will.
+- **N-009** inherits a standing lesson from the template-health work: **a checklist item nobody
+  runs is false green.** If the map can rot silently, it will.
 - **N-012 is not a feasibility question — the precedent already exists.** The `syntax` skill fronts
   `code/src/scripts/syntax/{check,format,lint}.sh`, and twelve skills invoke scripts today, so
   "a skill can call the generator" is settled before the node opens. Three things are not:
@@ -268,7 +268,7 @@ In scope, not yet sharp enough to state as a decision.
   of a rule. The effects index may be that audit's output rather than a new artefact.
 - **Whether this absorbs, replaces, or duplicates `REFERENCES.md`.** It is already a curated index
   of every guide, hand-maintained and ungated — the closest existing thing to the proposal.
-- **Whether a generated map would have caught anything real.** `MAP-BASE-HEALTH`'s 16/08
+- **Whether a generated map would have caught anything real.** The 16/08 template-health
   verification found three live problems from outside itself. If a `map/` layer would have caught
   none of them, its value claim is weaker than the 461-file number suggests.
 - **How generated map files interact with the doc gates** — `docs-length.sh` counts instructional
@@ -287,7 +287,7 @@ In scope, not yet sharp enough to state as a decision.
 | Reopening the `CONTEXT.md` / `CLAUDE.md` pairing doctrine | Settled, owned by `code/docs/DOCUMENTATION-PAIRING.md`, gated by `audits/docs-pairing.sh`                                                                                                                                          |
 | Copying any text from either ICM repository               | Facts and method only; the protocol repo's bundled Anthropic files are not MIT (`THIRD-PARTY-NOTICES.md`)                                                                                                                          |
 | Retiring or replacing the code-review-graph               | It answers the code half well; this epic is about the markdown half                                                                                                                                                                |
-| A generated project's own map maintenance                 | Different owner, same reason `MAP-BASE-HEALTH` excludes a generated project's `GAPS.md`                                                                                                                                            |
+| A generated project's own map maintenance                 | Different owner, same reason the template-health map excluded a generated project's `GAPS.md`                                                                                                                                      |
 | Adding an index row to `src/01-FEATURE-MAPS/CONTEXT.md`   | **Every map here is git-tracked but copier-excluded** — `copier.yml`'s `_exclude` empties `project-management/src/**`, so a row would name a file no generated project has; `doc-references.sh` forbids the citation independently |
 
 ---

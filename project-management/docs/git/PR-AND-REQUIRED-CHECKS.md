@@ -98,7 +98,7 @@ the same mechanism: a ratchet needs a measured per-change number and a baseline 
 "how long a contributor will wait for the set" is neither. What it gets instead is this
 sentence and the count in the table below — **state the size the set will be, not only the name
 being added**, so the number is in front of whoever approves it. Written 23/08/2026 in place of
-building a second ratchet (MAP-BASE-HEALTH, fog of war).
+building a second ratchet, on the fog-of-war argument.
 
 The second is not a new idea here, only a newly stated one: `jest-expo + coverage` is the
 standing example, with `test.yml` recording the reason — _"a skipped job and a

@@ -26,8 +26,8 @@ rather than taste; a dictionary in domain code without a `DICT-OK:` reason fails
 the four `dict[str, dict[str, …]]` records in the shipped e2e suite are named types that every
 generated project starts from.
 
-**What this is not.** Not a rewrite of `data-structures/ANTI-PATTERNS.md`, which
-`MAP-NEGATIVE-SPACE` put on its Keep list and which already carries eleven patterns. This epic
+**What this is not.** Not a rewrite of `data-structures/ANTI-PATTERNS.md`, which an earlier map
+put on its Keep list and which already carries eleven patterns. This epic
 **cites and routes to it**; the new material is the half that file does not have — the exceptions
 catalogue, the escape hatch, the boundary-parsing rule, and every surface except Python.
 
@@ -47,7 +47,7 @@ catalogue, the escape hatch, the boundary-parsing rule, and every surface except
 
 Charted explicitly, because each is a place a naive pass would contradict shipped doctrine.
 
-1. **`ANTI-PATTERNS.md` is on `MAP-NEGATIVE-SPACE`'s "Keep — do not touch" list.** Its eleven
+1. **`ANTI-PATTERNS.md` is on an earlier map's "Keep — do not touch" list.** Its eleven
    patterns already cover God Dictionary, Stringly Typed, Primitive Obsession, Nested Dicts,
    Implicit Schema, Boolean Blindness and Overloaded Status. **Route to it; never restate it.**
 2. **`NEGATIVE-SPACE.md` Section _What counts as an invariant_ declares "no god dictionaries" and
@@ -131,7 +131,7 @@ each node graduated into is listed in _Resolved decisions_ above and shipped in 
 In scope, not yet sharp enough to state as a decision.
 
 - **`ServiceError.code` as a `StrEnum`.** The four codes are a closed set and would be a textbook
-  conversion — but `MAP-BASE-HEALTH` N-015 settled their spelling four days ago and tied them to
+  conversion — but their spelling was settled four days ago and tied to
   the invariant register key. Converting a just-settled cross-cutting surface in the same week is
   how a decision gets re-litigated. **Listed in the migration backlog instead**, which is the
   honest place for it.
@@ -145,10 +145,10 @@ In scope, not yet sharp enough to state as a decision.
 
 | Ruled out                                            | Why                                                                                                     |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Rewriting or extending `ANTI-PATTERNS.md`'s patterns | On `MAP-NEGATIVE-SPACE`'s Keep list; eleven patterns already cover the Python anti-pattern half         |
+| Rewriting or extending `ANTI-PATTERNS.md`'s patterns | On an earlier map's Keep list; eleven patterns already cover the Python anti-pattern half               |
 | Reversing the branded-ID decline                     | `MOBILE-CODING-PRINCIPLES.md` Section 3 settled it with a stated trigger; this epic records the trigger |
 | A mass refactor of existing code                     | The standard binds new and modified code; existing offenders become a prioritised backlog               |
-| Converting `ServiceError.code` to a `StrEnum`        | Settled by `MAP-BASE-HEALTH` N-015 on 14/08/2026 — backlogged, not reopened                             |
+| Converting `ServiceError.code` to a `StrEnum`        | Settled on 14/08/2026 — backlogged, not reopened                                                        |
 | A `desktop` (Slint) surface guide                    | Slint's `.slint` model is its own type system; `desktop/UI-AND-STATE.md` owns it                        |
 
 ---

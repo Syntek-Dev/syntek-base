@@ -14,8 +14,8 @@
 # WHY THIS IS KEYED v6.0.0, AND WHY THAT IS WORTH SAYING. A migration must be keyed to the
 # release that MOVED the directory, not to the release in which somebody noticed the damage.
 # Key it late and every project that updated in between crosses the break without ever
-# crossing the cure. MAP-BASE-HEALTH N-047 records that this repository has mis-keyed a
-# migration before, by tagging a batch of them retroactively. The break here lands in
+# crossing the cure. This repository has mis-keyed a migration before, by tagging a batch
+# of them retroactively. The break here lands in
 # v6.0.0 — the four `git mv`s and this script are in the same commit — so v6.0.0 is the
 # correct key, and it is correct for that reason rather than by coincidence. Read the
 # v5.0.0 entry with more suspicion than this one.

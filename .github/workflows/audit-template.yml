@@ -7,7 +7,7 @@ name: Audit — Template Integrity
 # push trigger names no branches. The list used to be the four chain branches, so a
 # feature branch got nothing at all until somebody opened a pull request.
 #
-# WHAT THAT COST, measured rather than argued (MAP-BASE-HEALTH N-032/N-033). A `<%`
+# WHAT THAT COST, measured rather than argued. A `<%`
 # written into a printf format string in audits/conflict-markers.sh on 15/08/2026 broke
 # `copier copy` outright — the template could not generate a project at all. TWO NUMBERS,
 # AND THEY MEASURE DIFFERENT THINGS: pm/base-health-map ran seventeen commits with no pull
@@ -102,7 +102,6 @@ jobs:
   # toolchain rather than guessing — every manifest must parse HERE, before generation,
   # or its gates prove nothing until after it. The uv half is kept live by the script's
   # own --self-test rather than by the tree. Full reasoning in the script header.
-  # MAP-BASE-HEALTH N-024.
   parsers:
     name: "[4/4] Parser Probes"
     runs-on: ubuntu-latest

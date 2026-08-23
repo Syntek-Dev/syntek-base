@@ -56,7 +56,7 @@ FIXTURES_DIR="$SCRIPT_DIR/fixtures/doctrine-drift"
 # it; SCAN_DIRS does not include how-to/src, so the owner's own statement is never scanned;
 # and only fenced code is read, while a specification tree states its rules in prose on
 # purpose. The Prometheus `job_name` drift was exactly that shape — reconciled by hand, not
-# by a claim row (MAP-BASE-HEALTH N-048). Widening DOCS_DIR is the change that would fix it.
+# by a claim row. Widening DOCS_DIR is the change that would fix it.
 DOCS_DIR="code/docs"
 SCAN_DIRS=(
   "code/docs"

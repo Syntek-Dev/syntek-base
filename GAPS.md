@@ -25,36 +25,35 @@ properties, not open entries, and can take none of the three verdicts.
 
 ---
 
-## The active items live on a map, not here
+## The active items were charted off this file
 
-**Charted 13/08/2026.** The twenty-two actionable entries this file used to carry were charted
-into `project-management/src/01-FEATURE-MAPS/MAP-BASE-HEALTH.md` — twenty-three decision nodes in <!-- doc-references: template-only -->
-five batches — and removed from here, so there is one working copy rather than two that drift.
+**Charted 13/08/2026.** The twenty-two actionable entries this file used to carry became
+twenty-three decision nodes in five batches on a feature map, and were removed from here so
+there was one working copy rather than two that drift. **That map has since been deleted** —
+what survives of it is the standing limitations below, the release record in `CHANGELOG.md`,
+and git history. The full prose of every entry it replaced is recoverable with:
 
-> **That map is committed but never ships.** Since 17/08/2026 the feature maps are tracked, so
-> they sync across devices — a fresh clone **does** have `MAP-BASE-HEALTH.md`. It still never
-> reaches a generated project: `copier.yml` `_exclude` empties every artefact tree at generation, <!-- doc-references: template-only -->
-> gated by `.github/scripts/shipped-artefacts.sh`. The full prose of every entry it replaced is <!-- doc-references: template-only -->
-> recoverable with:
->
-> ```bash
-> git show e16b499:how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
-> ```
->
-> The name is load-bearing: a map called `MAP-TEMPLATE-*.md` matches the allowlist's
-> `!*TEMPLATE*` negation, becomes tracked, and ships into every generated project — which is the
-> defect this file exists to prevent.
+```bash
+git show e16b499:how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
+```
 
-The five batches on that map are named as reusable **defect classes**, so a later map inherits
-the taxonomy rather than inventing a grouping: **A** token blast radius · **B** false green ·
-**C** inheritance leak · **D** split doctrine · **E** declared, not built.
+> **A feature map is committed but never ships.** Since 17/08/2026 the feature maps are tracked,
+> so they sync across devices; none of them reaches a generated project, because `copier.yml` <!-- doc-references: template-only -->
+> `_exclude` empties every artefact tree at generation, gated by
+> `.github/scripts/shipped-artefacts.sh`. The name is load-bearing: a map called <!-- doc-references: template-only -->
+> `MAP-TEMPLATE-*.md` matches the allowlist's `!*TEMPLATE*` negation, becomes tracked, and ships
+> into every generated project — which is the defect this file exists to prevent.
+
+The five batches were named as reusable **defect classes**, so a later map inherits the taxonomy
+rather than inventing a grouping: **A** token blast radius · **B** false green · **C**
+inheritance leak · **D** split doctrine · **E** declared, not built.
 
 ---
 
 ## Standing limitations
 
 **Read these; do not try to finish them.** Each is an accepted property of developing a template
-rather than a task, so neither belongs on the map. A new one is added here only when a gap is
+rather than a task, so neither belongs on a map. A new one is added here only when a gap is
 closed as _accepted_ rather than _fixed_.
 
 ### SL-1 — A green suite here proves the template's own code, not your project's
@@ -103,14 +102,13 @@ project environment for a tool that does not need it.
 
 ### SL-2 — The template ships no deployment scripts, because it ships no deployment
 
-**Added 21/08/2026, closing `MAP-BASE-HEALTH.md` N-020 as _accepted_ rather than _fixed_.**
+**Added 21/08/2026, closing a charted node as _accepted_ rather than _fixed_.**
 `code/src/scripts/deployment/` holds its documentation pair and a `reports/` folder and no
 scripts. `deploy.sh`, `rollback.sh` and `health-check.sh` are named as planned in six sites
-across five files, and all six agree — that consistency is the only thing asserted, and it is
-what N-044 settled.
+across five files, and all six agree — that consistency is the only thing asserted.
 
 **Why it is accepted and not scheduled.** All three wait on the same absent thing, and the
-map's own rule is that _a task is an unwritten artefact with a **named owner**_:
+charting rule is that _a task is an unwritten artefact with a **named owner**_:
 
 | Script            | What it waits on                                                                                                     |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -119,8 +117,8 @@ map's own rule is that _a task is an unwritten artefact with a **named owner**_:
 | `health-check.sh` | Nothing to check the health **of** — it is the caller of a deploy that does not run                                  |
 
 A three-way split was proposed on 16/08/2026 on the premise that `health-check.sh` _"now needs
-only an owner (N-044)"_. **N-044 settled by finding that nothing in this repository creates
-these three scripts** — the blocker was confirmed, not cleared — so the split's premise is
+only an owner"_. **That was settled by finding that nothing in this repository creates these
+three scripts** — the blocker was confirmed, not cleared — so the split's premise is
 spent and it is refused here. `how-to/src/PROJECT-PATHS.md` correctly carries no entry for any
 of them: `code/docs/FORWARD-VOICE.md` Section 3 admits a path to that register only with the
 thing that creates it, and an entry that cannot name its creator is a wish.
@@ -132,13 +130,13 @@ for all three: it gives `deploy.sh` its subject and `health-check.sh` its caller
 already builds: `test-api.yml:75` runs `docker compose … build django-test`. What none does is
 push — no `docker push`, no `docker/login-action`, no `build-push-action`, and no `ghcr.io`
 reference anywhere in `.github/workflows/`. A trigger worded _builds an image_ would read as
-already met and reopen this entry against a test image that never leaves the runner. The map
-recorded the same slip in the other direction on 16/08/2026, when a `grep 'docker build'` could
-not match `docker compose … build`; one grep dialect is not a population.
+already met and reopen this entry against a test image that never leaves the runner. The same
+slip was recorded in the other direction on 16/08/2026, when a `grep 'docker build'` could not
+match `docker compose … build`; one grep dialect is not a population.
 
 ### SL-3 — Three of the four security runbooks have no subject a template can rehearse against
 
-**Added 23/08/2026, closing `MAP-BASE-HEALTH.md` N-021 as _accepted_ rather than _fixed_.**
+**Added 23/08/2026, closing a charted node as _accepted_ rather than _fixed_.**
 `code/docs/security/MONITORING-AND-INCIDENT.md` names four security-specific recoveries as
 unwritten: account compromise via `admin_db`, audit-log tampering, emergency key rotation, and
 Valkey cache compromise. The node's own gate was that **each is performed once against
@@ -175,9 +173,9 @@ order in which it can be rehearsed.
 
 ---
 
-## N-035 — settled and built, 16/08/2026
+## The 16/08/2026 sitting — settled and built
 
-The node that closed both entries above. Fifteen decisions were taken across three grilling
+The sitting that closed both entries above. Fifteen decisions were taken across three grilling
 rounds and carried out in one sitting; they are recorded here because a decision that lives
 only in a session transcript is not a decision anyone can act on later.
 
@@ -192,12 +190,12 @@ only in a session transcript is not a decision anyone can act on later.
 | Q7  | Cover the template to 75%: the health app plus the four uncovered `core` modules            | 100% over 162 statements                                                                 |
 | Q8  | The 90% auth leg is re-pointed and prints its denominator                                   | `backend-coverage.sh` owns it; `test.yml` now calls it                                   |
 | Q9  | Explicit `--group test` at test call sites; `test-e2e.yml` gains the `uv sync` it never had | `e2e-py.sh`, `test-e2e.yml` (`uv sync --locked`)                                         |
-| Q10 | Dependency pruning is charted as its own node, not settled here                             | still open — `MAP-BASE-HEALTH.md`                                                        |
+| Q10 | Dependency pruning is charted as its own node, not settled here                             | still open — charted separately                                                          |
 | Q11 | One sitting, all of it, on this branch; the PR to `main` is gated on it being green         | this branch                                                                              |
 | Q12 | Toolchain and all three lockfiles to latest first, then lock                                | uv 0.12.5, pnpm 11.22.0, `Cargo.lock`                                                    |
 | Q13 | `uv.lock` added to copier `_exclude` — never travels, no `copier update` conflict           | `copier.yml` `_exclude` + the `uv lock` post-task <!-- doc-references: template-only --> |
 | Q14 | Both standing limitations deleted; one true limitation replaces them                        | SL-1 above                                                                               |
-| Q15 | Forced N-036 subset only, then re-chart N-036 against the remeasured file list              | done; N-036 still open                                                                   |
+| Q15 | Forced the charted subset only, then re-chart it against the remeasured file list           | done; still open                                                                         |
 
 **`uv run` re-locks silently by default.** `--locked` asserts the lockfile is unchanged and
 exits non-zero if it is not; `--frozen` uses it as-is without checking. In CI the first is
@@ -229,9 +227,9 @@ in a **generated project** — so the template was shipping them:
 
 ## Format
 
-New items are recorded here first, in the format below, then charted onto
-`MAP-BASE-HEALTH.md` at the next pass. The blank seed at `.copier/GAPS.md` carries the same
-format, so an entry reads identically in a generated project:
+New items are recorded here first, in the format below, then charted onto a feature map at the
+next pass. The blank seed at `.copier/GAPS.md` carries the same format, so an entry reads
+identically in a generated project:
 
 ```text
 ## DD/MM/YYYY — <title>
@@ -249,9 +247,10 @@ format, so an entry reads identically in a generated project:
 
 **Summary:** `main` sits at `a1e0f68` / `v3.2.2` while `pm/base-health-map` is at `6.0.0` —
 **86 commits ahead, 0 behind**, with three MAJORs stacked on it. It is recorded here because it
-currently has no home at all. The `v6.0.0` sitting routed it **out** of `MAP-BASE-HEALTH.md` and
-into the root `GAPS.md` as that handoff's one orphaned item; that entry was then deleted at
-`e3407cf` on instruction, deliberately **without** a `✅ CLOSED` mark, because it is not closed.
+currently has no home at all. The `v6.0.0` sitting routed it **out** of the feature map it was
+charted on and into the root `GAPS.md` as that handoff's one orphaned item; that entry was then
+deleted at `e3407cf` on instruction, deliberately **without** a `✅ CLOSED` mark, because it is
+not closed.
 Four consecutive handoffs have carried it since, and a handoff is a session artefact, not a
 register. Recover the deleted prose with `git show 5d3c22f:GAPS.md`.
 
@@ -260,11 +259,9 @@ reconciliation, and the word was doing real damage** — `git merge-base --is-an
 succeeds, so **no commit on `main` is absent from here** and the merge is a fast-forward rather
 than a two-way merge. The standing instruction across four handoffs not to absorb `main` into
 this branch is therefore not a deferral of work; there is no work to defer, and re-reading it as
-one is what kept the item alive. **Retired by the PR merging**, which is itself gated on
-`MAP-BASE-HEALTH.md`'s frontier being empty.
+one is what kept the item alive. **Retired by the PR merging.**
 
 **Do not chart it.** It has a named owner and a dated retirement, which is what separates a task
-from a decision, and `MAP-BASE-HEALTH.md` is under a standing instruction to stop growing — a
-node opened here would be resolved by the merge before any sitting reached it. **It must be
-deleted when that merge lands**, because this file carrying anything but standing limitations is
-one of the three conditions that map's Destination is measured against.
+from a decision — a node opened for it would be resolved by the merge before any sitting reached
+it. **It must be deleted when that merge lands**, because this file carrying anything but
+standing limitations is a defect in its own right.

@@ -32,7 +32,7 @@
 #                 ships was green whenever the writer forgot the marker: the token was applied
 #                 by hand and checked by a reviewer, and a green run meant "no path is missing
 #                 HERE", never "every citation survives generation". It now means both.
-#                 MAP-BASE-HEALTH N-060; rule: `code/docs/FORWARD-VOICE.md` Sections 2 and 4.
+#                 Rule: `code/docs/FORWARD-VOICE.md` Sections 2 and 4.
 #
 #                 THE SET IS PARSED, NEVER LISTED, so a new exclusion needs no edit here. Three
 #                 classes go into `_exclude` and exactly one comes out:
@@ -116,8 +116,8 @@
 #                 It once read "TEMPLATE-GUIDE/ is copier-excluded AND must be able to name
 #                 a broken citation"; the first half was FALSE from f5fef31 (14/08, v3.2.0)
 #                 -- that tree ships. It was CORRECTED 18/08 to name one file, NARROWED
-#                 21/08 (MAP-BASE-HEALTH N-031) so the guides beside it were scanned like
-#                 any other shipped file, and RETIRED 22/08 when that file was folded into
+#                 21/08 so the guides beside it were scanned like any other shipped
+#                 file, and RETIRED 22/08 when that file was folded into
 #                 the root GAPS.md. Each step was measured before it was taken: the
 #                 narrowing was proven in a `git archive HEAD` scratch clone with the arm
 #                 patched out, where the whole tree yielded FOUR findings and NONE was a
@@ -709,7 +709,7 @@ scan_files() { # $1 = newline-separated file list
         # rather than of the repository: exit 0 here, exit 1 in a clean clone. Measured
         # 18/08/2026, blast radius exactly one citing site over the whole repo
         # (.github/scripts/shipped-readme.sh:141, the comment explaining this very hazard
-        # for a different script). MAP-BASE-HEALTH N-042.
+        # for a different script).
         code/docs/MACHINE-SPEC.md) continue ;;
         code/docs/*|code/workflows/*|code/src/scripts/*|code/CONTEXT.md|code/CLAUDE.md|code/REFERENCES.md) ;;
         code/src/django/*) ;;

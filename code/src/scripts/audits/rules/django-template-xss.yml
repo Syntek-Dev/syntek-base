@@ -45,7 +45,6 @@ rules:
   # of `x-transition:enter="{{ classes }}"`, so the shorthand alternative silently undid
   # the deny-list entry two lines above it. A shorthand has to START an attribute.
   #
-  # MAP-BASE-HEALTH N-034.
   - id: django-template-var-in-alpine-expression
     languages: [generic]
     severity: ERROR

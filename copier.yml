@@ -705,8 +705,7 @@ _migrations:
   # actually shipped in: `git show v4.0.0:project-management/docs/GIT-GUIDE.md | wc -l` is 52,
   # the post-split index, and all six sub-documents are already in that tree. The v5.0.0 key
   # below is where somebody NOTICED — eight version commits back-filled onto one frozen tree,
-  # which is the retroactive-tagging failure the v6.0.0 entry names and MAP-BASE-HEALTH N-047
-  # charts. This entry is that node's remedy.
+  # which is the retroactive-tagging failure the v6.0.0 entry names. This entry is its remedy.
   #
   # BOTH KEYS STAY, and the trigger rule is why: copier fires a migration when
   # old_version < key <= new_version. Re-keying v5.0.0 -> v4.0.0 would have closed the
@@ -760,9 +759,9 @@ _migrations:
   # orphan is guaranteed in every project rather than only in ones that wrote something.
   #
   # Keyed v6.0.0 because that is the release the directories MOVED in — same commit as the
-  # four renames — not the release somebody noticed. MAP-BASE-HEALTH N-047 records this
-  # repository mis-keying a migration by tagging a batch retroactively, which strands every
-  # project that updated in between; the script header says the same, for the next reader.
+  # four renames — not the release somebody noticed. This repository has mis-keyed a
+  # migration by tagging a batch retroactively, which strands every project that updated in
+  # between; the script header says the same, for the next reader.
   - version: v6.0.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v6.0.0-rename-feature-surfaces.sh"
     when: "<% _stage == 'after' %>"

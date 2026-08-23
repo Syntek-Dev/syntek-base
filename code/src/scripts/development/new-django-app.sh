@@ -55,7 +55,7 @@ mkdir -p "${APP_DIR}/models"
 touch "${APP_DIR}/models/__init__.py"
 
 # The rest of this project's app layout, which `startapp` knows nothing about. Added
-# 23/08/2026 (MAP-BASE-HEALTH N-026): the script emitted `models/` alone while the app
+# 23/08/2026: the script emitted `models/` alone while the app
 # CLAUDE.md it writes told the developer to put business logic in `services` — a directory
 # it did not create. `apps/CONTEXT.md` names the layout (`services`, `schemas`, `tests`) and
 # both shipped apps carry it, so the scaffold now produces what the documentation instructs

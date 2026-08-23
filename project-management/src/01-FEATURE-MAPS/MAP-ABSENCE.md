@@ -99,8 +99,8 @@ was mis-scoped — stop and re-grill.**
 ## Register claimed
 
 Both shipped registers are **empty stubs by design**, and `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`
-has carried standing limitations only since 13/08/2026, its dated entries having moved to
-`MAP-BASE-HEALTH`. **Nothing closes and nothing blocks.**
+has carried standing limitations only since 13/08/2026, its dated entries having moved onto a
+feature map. **Nothing closes and nothing blocks.**
 
 | Register      | Entry               | Verdict   | Retired by |
 | ------------- | ------------------- | --------- | ---------- |
@@ -109,11 +109,11 @@ has carried standing limitations only since 13/08/2026, its dated entries having
 
 **This is a claim, not a close.** Nothing here edits either register.
 
-**Two live maps constrain this one without sharing an edge.** `MAP-DOMAIN-OBJECTS` (Resolving,
-frontier 0) owns the type-shape half, above. `MAP-BASE-HEALTH` (Charting, 10 open, 0 blocking)
-owns the template's own defects, and its **N-027 ratchet** — shipped this morning — is the single
-hardest constraint on where this epic can write. Its **N-030** (`routing-skills.sh` cannot see a
-multi-line `skills:` array) will silently swallow this guide's routing frontmatter on arrival.
+**One live map constrains this one without sharing an edge**, and two shipped defects constrain
+it from outside any map. `MAP-DOMAIN-OBJECTS` (Resolving, frontier 0) owns the type-shape half,
+above. The **`docs-length.sh` 270-line ratchet** — shipped this morning — is the single hardest
+constraint on where this epic can write, and `routing-skills.sh`'s blindness to a multi-line
+`skills:` array will silently swallow this guide's routing frontmatter on arrival.
 
 ---
 
@@ -396,8 +396,8 @@ and now measures 265. **`ABSENCE.md` must be born under 270.**
 `.prettierrc` sets `printWidth: 100` and `lefthook.yml:17` makes `prettier --check` mandatory, so
 any array over 100 characters is **forced** into the wrapped form the audit cannot see.
 `NEGATIVE-SPACE.md`'s eight routing names have never been validated. The repo's format gate and
-its routing gate are in direct conflict and the format gate wins silently.
-(`MAP-BASE-HEALTH` N-030 owns the fix.)
+its routing gate are in direct conflict and the format gate wins silently. The fix is not this
+map's to make.
 
 **The gating shape to copy.** `NEGATIVE-SPACE.md` is **not** copier-gated despite covering mobile;
 it ships everywhere, marks the optional part inline as `_(mobile-only)_`, and links to a guide
@@ -473,16 +473,16 @@ In scope, not yet sharp enough to state as a decision.
 
 ## Out of scope
 
-| Ruled out                                         | Why                                                                                                                               |
-| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Restating any `TYPES-*` H2                        | `doctrine-drift.sh` exists because a rule in two guides is a fork, not redundancy                                                 |
-| Vendoring Alpine or HTMX, or building `base.html` | Confirmed deferred (5B). Needs a template baseline that does not exist — the blocker N-009/N-014 of `MAP-NEGATIVE-SPACE` both hit |
-| Reversing the branded-ID decline                  | `MOBILE-CODING-PRINCIPLES.md` Section 3 settled it with a stated trigger; `MAP-DOMAIN-OBJECTS` already declined to reopen it      |
-| Flipping basedpyright to `strict`                 | Measured to buy **zero** optional enforcement — all six `reportOptional*` rules are `error` at standard                           |
-| Adopting `clippy::option_if_let_else`             | Mechanises the opposite of the brief's combinator rule                                                                            |
-| A mass refactor of existing code                  | There is almost none: 352 cloc of Python with zero optional constructs, 230 lines of Rust with one                                |
-| Editing the four code-review-graph task cards     | Auto-generated; regenerated on `code-review-graph install`                                                                        |
-| Rewriting `ANTI-PATTERNS.md`                      | On `MAP-NEGATIVE-SPACE`'s Keep list, and `MAP-DOMAIN-OBJECTS` re-declined it today                                                |
+| Ruled out                                         | Why                                                                                                                          |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Restating any `TYPES-*` H2                        | `doctrine-drift.sh` exists because a rule in two guides is a fork, not redundancy                                            |
+| Vendoring Alpine or HTMX, or building `base.html` | Confirmed deferred (5B). Needs a template baseline that does not exist — the same blocker two earlier nodes both hit         |
+| Reversing the branded-ID decline                  | `MOBILE-CODING-PRINCIPLES.md` Section 3 settled it with a stated trigger; `MAP-DOMAIN-OBJECTS` already declined to reopen it |
+| Flipping basedpyright to `strict`                 | Measured to buy **zero** optional enforcement — all six `reportOptional*` rules are `error` at standard                      |
+| Adopting `clippy::option_if_let_else`             | Mechanises the opposite of the brief's combinator rule                                                                       |
+| A mass refactor of existing code                  | There is almost none: 352 cloc of Python with zero optional constructs, 230 lines of Rust with one                           |
+| Editing the four code-review-graph task cards     | Auto-generated; regenerated on `code-review-graph install`                                                                   |
+| Rewriting `ANTI-PATTERNS.md`                      | Placed on an earlier map's Keep list, and `MAP-DOMAIN-OBJECTS` re-declined it today                                          |
 
 ---
 
@@ -493,17 +493,17 @@ not lost, and routed rather than adopted. **Nothing here was actioned by this ma
 have since been fixed where they were routed, and are struck below rather than deleted, so the
 finding and its close stay legible together.
 
-| Finding                                                                                                                                            | Route                                                          |
-| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| `check-template-tokens.sh` RED — unclosed delimiter at `audits/conflict-markers.sh:104`; **`copier copy` is broken on this branch**                | `MAP-BASE-HEALTH` — new node                                   |
-| `shipped-readme.sh` RED — 3 registration findings (`conflict-markers.sh`, two CI workflows)                                                        | `MAP-BASE-HEALTH` — new node                                   |
-| Eight shipped docs carry leaked `</content>` / `</invoke>` tool-call artefacts, committed at `35eeb12`; the entire `rendering/` family is affected | `MAP-BASE-HEALTH` — new node <!-- conflict-markers: ignore --> |
-| `x-for` missing from `audits/rules/django-template-xss.yml:22` — a live template-injection gap                                                     | `MAP-BASE-HEALTH` — new node                                   |
-| ~~`stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)~~ **CLOSED 16/08/2026 at `f4a988b`**             | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there**               |
-| ~~`stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`~~ **CLOSED 16/08/2026 at `f4a988b`**                                  | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there**               |
-| `DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11                                                                                  | `MAP-DOMAIN-OBJECTS` (same folder, same session)               |
-| `doc-references.sh` structurally cannot resolve any path under `code/src/django/`                                                                  | `MAP-BASE-HEALTH` — new node                                   |
-| `07-review/STEPS.md` Step 1 names `code-reviewer` in its heading and `review` in its dispatch line                                                 | `MAP-BASE-HEALTH` — new node                                   |
+| Finding                                                                                                                                            | Route                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `check-template-tokens.sh` RED — unclosed delimiter at `audits/conflict-markers.sh:104`; **`copier copy` is broken on this branch**                | **Unrouted** — destination map deleted                                   |
+| `shipped-readme.sh` RED — 3 registration findings (`conflict-markers.sh`, two CI workflows)                                                        | **Unrouted** — destination map deleted                                   |
+| Eight shipped docs carry leaked `</content>` / `</invoke>` tool-call artefacts, committed at `35eeb12`; the entire `rendering/` family is affected | **Unrouted** — destination map deleted <!-- conflict-markers: ignore --> |
+| `x-for` missing from `audits/rules/django-template-xss.yml:22` — a live template-injection gap                                                     | **Unrouted** — destination map deleted                                   |
+| ~~`stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)~~ **CLOSED 16/08/2026 at `f4a988b`**             | ~~new node~~ **fixed**                                                   |
+| ~~`stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`~~ **CLOSED 16/08/2026 at `f4a988b`**                                  | ~~new node~~ **fixed**                                                   |
+| `DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11                                                                                  | `MAP-DOMAIN-OBJECTS` (same folder, same session)                         |
+| `doc-references.sh` structurally cannot resolve any path under `code/src/django/`                                                                  | **Unrouted** — destination map deleted                                   |
+| `07-review/STEPS.md` Step 1 names `code-reviewer` in its heading and `review` in its dispatch line                                                 | **Unrouted** — destination map deleted                                   |
 
 **The two struck rows were closed by `f4a988b` (16/08/2026), and this re-reads the close off the
 working tree rather than off the commit message.** The commit on its own settles nothing here: it
@@ -518,10 +518,9 @@ baseline. `stack-django/SKILL.md:260` reads **`standard`**, not `strict`, citing
 citations moved twice, not once:** `f4a988b` rewrote both htmx claims in place at `:33` and
 `:169`, and `3b87426` (20/08/2026) then rewrote the Alpine row a second time and pushed the
 testing bullet down nineteen lines — so a line number lifted from either commit is wrong about
-the tree this map is read in. `MAP-BASE-HEALTH` asserts the same three as its **N-037** claims,
-fixed there by **N-010** — named for the reference, not relied on for the fact.
+the tree this map is read in.
 
-**The other seven rows are unchecked here and remain open as charted.** They were not re-measured
+**The other seven rows are unchecked here and remain unrouted.** They were not re-measured
 in this pass, so an absent strike means nothing was looked at, never that the finding was found to
 be clean (`code/docs/GATE-REPORTING.md`).
 

@@ -4,10 +4,10 @@
 **Status**: **Seeded, not charted** — the frontier below is deliberately empty
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 0
 
-> **Seeded, not charted, and the distinction is the point.** This file exists because N-022 on
-> `MAP-BASE-HEALTH` measured a class it could not settle, and losing that measurement to a session
-> boundary was the alternative. **Nothing here is a decision.** The frontier is empty because
-> charting it is a `/wayfinder` CHART sitting that has not happened — do not read the empty table
+> **Seeded, not charted, and the distinction is the point.** This file exists because the
+> template-health work measured a class it could not settle, and losing that measurement to a
+> session boundary was the alternative. **Nothing here is a decision.** The frontier is empty
+> because charting it is a `/wayfinder` CHART sitting that has not happened — do not read the empty table
 > as "no open decisions". Precedent for a seeded map: `MAP-SCALE-PLANNING.md`, seeded at generation
 > with every row `TBD`.
 >
@@ -15,8 +15,7 @@
 > `copier.yml` `_exclude` empties the artefact trees at generation — deliberately: these are
 > **the template's** upstream pins, and a generated project inherits its own set rather than this
 > one. **No row is added to `01-FEATURE-MAPS/CONTEXT.md`'s Map index** — that file ships, and a shipped
-> file may cite layering-system artefacts only, never a per-project instance (the same rule
-> `MAP-BASE-HEALTH` records against itself).
+> file may cite layering-system artefacts only, never a per-project instance.
 
 ---
 
@@ -42,8 +41,8 @@ than somebody happening to look. Today exactly one of roughly twenty does.
 
 ## What is already measured
 
-The two members below arrived from `MAP-BASE-HEALTH` with their evidence, and are recorded here so
-a CHART sitting starts from measurement rather than from scratch. **They are not nodes.**
+The two members below arrived from the template-health work with their evidence, and are recorded
+here so a CHART sitting starts from measurement rather than from scratch. **They are not nodes.**
 
 | Member                      | Measured state                                                                                                                                               |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -96,16 +95,16 @@ In scope, not yet sharp enough to state as a decision. **Leaving something here 
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Security advisories                          | Already covered — `audit-deps.yml` sweeps CVEs daily and `rust/audit.sh` gates the Rust tree. This map is about **releases**, which is a different signal |
 | A generated project's own dependency updates | `how-to/workflows/07-dependency-updates/` and `code/src/scripts/dependencies/update.sh` own that                                                          |
-| The Expo trigger itself                      | Settled by N-022 on `MAP-BASE-HEALTH`, 16/08/2026. It enters here as a **worked example**, not a question                                                 |
+| The Expo trigger itself                      | Settled 16/08/2026 by the template-health work. It enters here as a **worked example**, not a question                                                    |
 | Authoring an ADR for any of it               | This template authors no ADRs (`../15-DECISIONS/CLAUDE.md`)                                                                                               |
 
 ---
 
 ## Session log
 
-| Date       | Node settled     | Outcome                                                                                                                                                                                            | Frontier redrawn |
-| ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| 16/08/2026 | _none — seeding_ | Seeded out of N-022's grilling on `MAP-BASE-HEALTH`, on Sam's call that the general case is its own map rather than a node on that one. Two members and the measured gap recorded; **not charted** | [ ]              |
+| Date       | Node settled     | Outcome                                                                                                                                                                                   | Frontier redrawn |
+| ---------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| 16/08/2026 | _none — seeding_ | Seeded out of the template-health grilling, on Sam's call that the general case is its own map rather than a node on that one. Two members and the measured gap recorded; **not charted** | [ ]              |
 
 ---
 

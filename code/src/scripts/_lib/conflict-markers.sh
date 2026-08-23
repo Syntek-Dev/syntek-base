@@ -35,8 +35,8 @@
 # Open (raw or mangled), raw close, mangled close. Deliberately unanchored.
 CONFLICT_MARKER_RE='(<{7})|(>{7})|((> ){6,}>)'
 
-# TRANSCRIPT RESIDUE — the second class this gate holds, added 23/08/2026 (MAP-BASE-HEALTH
-# N-039). Not a conflict marker, and it is here rather than in an audit of its own because it
+# TRANSCRIPT RESIDUE — the second class this gate holds, added 23/08/2026. Not a conflict
+# marker, and it is here rather than in an audit of its own because it
 # is the same SHAPE: a literal string that must never survive into a tracked file, in any file
 # type. That is the reason the marker gate is its own audit rather than a clause inside a
 # language-scoped one, and it is equally true of a leaked tool-call tag.

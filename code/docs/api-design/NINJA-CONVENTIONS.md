@@ -75,7 +75,7 @@ document, which tightens the contract for any generated client. Nothing generate
 An `apps/<name>/` module that serves HTTP exports an `api.py` at the package root — the single
 assembly point for that module's HTTP surface.
 
-> **Qualified 23/08/2026 (MAP-BASE-HEALTH N-026).** This read _"every `apps/<name>/` module
+> **Qualified 23/08/2026.** This read _"every `apps/<name>/` module
 > exports an `api.py`"_, in unqualified present tense, while **no `api.py` exists anywhere in the
 > tree** and `find code/src/django -name api.py` is empty. Both shipped apps decline it and are
 > right to: `apps.core` has no HTTP surface at all, and `apps.health` serves plain Django views at
