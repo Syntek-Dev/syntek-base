@@ -513,7 +513,11 @@ jobs:
       # just collapsed to remove.
 
   # ── [8/8] Security ───────────────────────────────────────────────────────────
-  # Mirrors check-security.sh: ruff --select S (Python) + pnpm audit --audit-level low (JS).
+  # The CI half of check-security.sh, and deliberately WIDER than it: that script scopes
+  # ruff to `code/src/django/` because the django container mounts that tree alone, while
+  # this runs the whole repository and so also covers the PM asset builders (whose S603
+  # per-file-ignores in pyproject.toml would otherwise be dead letters). Same rules, larger
+  # population — not a mirror, and saying "mirrors" hid the scope gap that made this job red.
   # Uses Ruff's built-in flake8-bandit (S) rules — no separate bandit install needed.
   security:
     name: "[8/8] Security"
@@ -569,8 +573,19 @@ jobs:
           fi
       - run: uv sync ${{ steps.sync.outputs.flag }}
       - run: pnpm install --frozen-lockfile
+      # `--extend-exclude`, not `--exclude`: the latter REPLACES the root config's
+      # exclude list (`.claude`, `.venv`) rather than adding to it.
+      #
+      # The fixture trees under audits/fixtures/ each carry their own ruff.toml with
+      # `[lint] select = []`, because they are deliberately vulnerable inputs to
+      # static-analysis.sh --self-test and dict-discipline.sh --self-test — broken/ is
+      # REQUIRED to trip every rule id or the self-test fails. A CLI `--select` overrides
+      # that config rather than merging with it, so this step re-enabled S on the one tree
+      # that had explicitly opted out, and reported 7 findings that are all working as
+      # designed. Excluding by path is the only way to say "respect their opt-out" while
+      # keeping `--select S` for everything else.
       - name: Python — ruff security (flake8-bandit rules)
-        run: uv run ruff check --select S .
+        run: uv run ruff check --select S . --extend-exclude 'code/src/scripts/audits/fixtures'
       - name: JS — pnpm audit
         run: pnpm audit --audit-level low
       - name: Python — pip-audit (CVE scan)

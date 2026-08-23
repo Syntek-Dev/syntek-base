@@ -64,11 +64,35 @@ jobs:
             echo "No uv.lock yet — the django-test image cannot build."
           fi
 
+      # See the note in test-e2e.yml: `.env.test.example` ships a working SECRET_KEY, compose
+      # reads an env file last-assignment-wins, so appending an unset secret empties it and
+      # `${SECRET_KEY:?...}` then refuses to start the stack. The fallback keeps the step
+      # additive when the secret is absent, which is its only job.
+      # The suite is `pnpm exec bru run`, and @usebruno/cli is a devDependency in the root
+      # package.json — so this job needs Node, pnpm AND an install. It had none of the three
+      # and died at `pnpm: command not found`, after standing up the whole Docker stack. The
+      # path filter is what hid it: this workflow only runs when code/src/tests/api/**,
+      # code/src/django/** or the test compose file changes, so it had not fired since the
+      # steps that need pnpm were written. Guarded on the same detect step as everything
+      # else, so a project without a lockfile still reports rather than skipping.
+      - uses: pnpm/action-setup@v6
+        if: steps.detect.outputs.present == 'true'
+
+      - uses: actions/setup-node@v7
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install the Bruno CLI
+        if: steps.detect.outputs.present == 'true'
+        run: pnpm install --frozen-lockfile
+
       - name: Create .env.test
         if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.test.example code/src/docker/.env.test
-          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY || 'ci-ephemeral-not-for-production-0000000000' }}" >> code/src/docker/.env.test
 
       - name: Build images
         if: steps.detect.outputs.present == 'true'

@@ -69,11 +69,19 @@ jobs:
         if: steps.detect.outputs.present == 'true'
         run: uv sync --locked --group test
 
+      # The `||` fallback is load-bearing, not defensive. `.env.dev.example` already ships a
+      # working `SECRET_KEY=change_me`, and compose reads an env file last-assignment-wins —
+      # so appending an UNSET secret writes `SECRET_KEY=` and OVERRIDES the working default
+      # with an empty string. `${SECRET_KEY:?...}` in docker-compose.dev.yml rejects empty as
+      # well as unset, so the step that exists to supply the key was the step destroying it,
+      # and the stack could not start on any fork or any repo without the secret configured.
+      # Same shape as this repo's API_TEST_PW fallback in test-api.yml. The value is inert:
+      # a throwaway for an ephemeral container torn down at job end, never a deployed key.
       - name: Create .env.dev
         if: steps.detect.outputs.present == 'true'
         run: |
           cp code/src/docker/.env.dev.example code/src/docker/.env.dev
-          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.dev
+          echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY || 'ci-ephemeral-not-for-production-0000000000' }}" >> code/src/docker/.env.dev
 
       # e2e-py.sh talks to the dev stack over HTTP on host port 81. It refuses to run
       # if the stack is unreachable, so bring it up first and let the compose
