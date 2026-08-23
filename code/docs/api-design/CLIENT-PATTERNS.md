@@ -44,9 +44,7 @@ _FILTERS = {"category": "category__slug", "year": "published_at__year"}
 
 def _filters_from(request) -> dict[str, str]:
     return {
-        _FILTERS[name]: value
-        for name, value in request.GET.items()
-        if name in _FILTERS and value
+        _FILTERS[name]: value for name, value in request.GET.items() if name in _FILTERS and value
     }
 
 
