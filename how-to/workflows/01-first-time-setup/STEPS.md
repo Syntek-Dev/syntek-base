@@ -145,8 +145,10 @@ _Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not
 > **Model:** fable
 
 Open `how-to/src/BRAND-VOICE.md` and fill Section 3 (tone, person, formality, reader, signature, the
-never-this line, and the say-this-not-that vocabulary) plus the placeholders in Section 5. The reader
-comes straight from the brief you just wrote — which is why this runs after Step 7 and not before.
+never-this line, and the say-this-not-that vocabulary). **Section 3 is the only section carrying
+placeholders**; everything else in that file is the portable core and is adopted unchanged. The
+reader comes straight from the brief you just wrote — which is why this runs after Step 7 and not
+before.
 
 **Do this before the other prerequisite documents, not after.** Every user-facing word the project
 ever ships is written in this voice, and so is much of the brand work that follows in

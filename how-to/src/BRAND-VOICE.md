@@ -10,10 +10,11 @@ project brief and the two architecture snapshots — and it comes **early** in t
 other prerequisite documents are themselves written in this voice. A voice decided after ten
 features is a voice retrofitted onto copy nobody will go back and rewrite.
 
-> **This guide ships as a template.** Section 1 and Section 4 are the **portable core** — adopt them
-> unchanged. Section 3 and Section 5 carry placeholders to fill with this project's own voice. The _shape_
-> is portable; the _content_ is per-project. Same split as `code/docs/VISUAL-DESIGN.md`, which is
-> this guide's visual half.
+> **This guide ships as a template.** Sections 1, 2 and 4 to 7 are the **portable core** — adopt
+> them unchanged. **Section 3 is the only one carrying placeholders**, and it is the only one you
+> fill: the axis table and the say-this-not-that vocabulary beneath it. The _shape_ is portable;
+> the _content_ is per-project. Same split as `code/docs/VISUAL-DESIGN.md`, which is this guide's
+> visual half.
 
 ---
 
@@ -234,8 +235,9 @@ them, and getting it wrong is the most common copy defect in a shipped feature.
 ## Adopting this guide
 
 Section 1 (the mandate) and Section 4 (the banned tells) are the **portable core** — adopt them unchanged.
-Fill Section 3 (tone, person, formality, reader, signature, vocabulary) and the placeholders in Section 5
-with this project's own voice during first-time setup. Revisit Section 3 when the brand work in
+**Section 3 is the whole of what you fill** (tone, person, formality, reader, signature, the
+never-this line, and the vocabulary table) during first-time setup. Section 5's four registers are
+portable and carry no placeholders. Revisit Section 3 when the brand work in
 `project-management/src/06-BRAND-GUIDE/` produces a fuller answer; the two must not contradict.
 
 ## Cross-references

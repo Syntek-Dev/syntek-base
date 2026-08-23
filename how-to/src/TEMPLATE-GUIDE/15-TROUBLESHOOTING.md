@@ -140,11 +140,13 @@ echo "127.0.0.1 dev.<your-slug>.localhost" | sudo tee -a /etc/hosts
 
 ### Port already allocated
 
-A local Postgres (5432), Redis/Valkey (6379) or web server (80) is running. Stop the host service,
-or change the published port in `code/src/docker/docker-compose.dev.yml`.
+A local Postgres (5432), Redis/Valkey (6379) or web server is running. The dev stack publishes
+Nginx on **81**, not 80, precisely because a local router usually holds 80 — so a clash here is
+something else already on 81. Stop the host service, or change the published port in
+`code/src/docker/docker-compose.dev.yml`.
 
 ```bash
-ss -tulpn | grep -E ':(80|5432|6379|8000)'
+ss -tulpn | grep -E ':(81|5432|6379|8000)'
 ```
 
 ### `permission denied` running a script

@@ -11,7 +11,7 @@ keeps a helper from being mistaken for a runnable script in a directory listing.
 code/src/scripts/_lib/
 ├── CLAUDE.md              ← operating rules
 ├── CONTEXT.md             ← this file
-├── conflict-markers.sh    ← the one conflict-marker pattern, shared by its audit and template-update
+├── conflict-markers.sh    ← conflict-marker + tool-call-residue patterns, shared by audit and update
 ├── env-file.sh            ← read a compose env file without executing it — env_value, env_export
 ├── frontmatter-skills.sh  ← the one reader for a routing `skills:` list, shared by the two skill audits
 ├── wizard.sh              ← interactive-wizard helpers — staged prompts, secret entry, .env upserts
@@ -20,13 +20,13 @@ code/src/scripts/_lib/
 
 ## Files
 
-| File                    | Purpose                                                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `worktree-detect.sh`    | Git worktree detection and setup utilities                                                                                      |
-| `wizard.sh`             | Interactive-wizard helpers — staged prompts, secret entry, `.env` upserts (`.claude/skills/wizard/`)                            |
-| `conflict-markers.sh`   | The pattern for an unresolved git conflict marker, raw and Prettier-mangled, plus the scan honouring `conflict-markers: ignore` |
-| `frontmatter-skills.sh` | The reader for a routing `skills:` list — all three YAML forms, emitting the key's line number with each name                   |
-| `env-file.sh`           | `env_value KEY FILE` and `env_export FILE` — a compose env file read as data, never executed as a script                        |
+| File                    | Purpose                                                                                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `worktree-detect.sh`    | Git worktree detection and setup utilities                                                                                                                         |
+| `wizard.sh`             | Interactive-wizard helpers — staged prompts, secret entry, `.env` upserts (`.claude/skills/wizard/`)                                                               |
+| `conflict-markers.sh`   | Two patterns over one scan — an unresolved git conflict marker (raw and Prettier-mangled) and leaked tool-call residue — both honouring `conflict-markers: ignore` |
+| `frontmatter-skills.sh` | The reader for a routing `skills:` list — all three YAML forms, emitting the key's line number with each name                                                      |
+| `env-file.sh`           | `env_value KEY FILE` and `env_export FILE` — a compose env file read as data, never executed as a script                                                           |
 
 **`env-file.sh` was extracted after the same disagreement, in the other direction.** Four
 scripts read the same `.env` files with `set -a; source`, which hands the file to bash — and

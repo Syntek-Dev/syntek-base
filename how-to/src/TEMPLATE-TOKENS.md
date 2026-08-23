@@ -222,14 +222,14 @@ was retired for making.
 ### Planning cadence
 
 The story-point ceiling that drives the planning loop. Stories are planned one at a time through
-workflows `01`–`13`; when the open sprint's accepted points reach `<%SPRINT_CAPACITY_SP%>`,
-workflows `15` and `16` run for that sprint before the next story is planned. The grace value is
+workflows `02`–`14`; when the open sprint's accepted points reach `<%SPRINT_CAPACITY_SP%>`,
+workflows `16` and `17` run for that sprint before the next story is planned. The grace value is
 a hard ceiling for the case where the next story would otherwise split badly — not a routine
 target. Full rules: `project-management/docs/PLANNING-GUIDE.md`.
 
 | Token                    | Meaning                                                  | Example value | Format           |
 | ------------------------ | -------------------------------------------------------- | ------------- | ---------------- |
-| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `15`+`16` pass | `11`          | `int`            |
+| `<%SPRINT_CAPACITY_SP%>` | Points that fill a sprint and trigger the `16`+`17` pass | `11`          | `int`            |
 | `<%SPRINT_GRACE_SP%>`    | Hard ceiling a sprint may stretch to                     | `13`          | `int` > capacity |
 
 Both default to the house values (11 / 13). Tune them to your team's **measured** velocity after

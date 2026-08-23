@@ -123,11 +123,23 @@ bash code/src/scripts/database/manageusers.sh create-superuser
 
 ## 7. Open it
 
-| URL                                            | What                               |
-| ---------------------------------------------- | ---------------------------------- |
-| `http://dev.<project-slug>.localhost`          | The public site                    |
-| `http://dev.<project-slug>.localhost/api/docs` | OpenAPI docs (dev only)            |
-| `http://dev.<project-slug>.localhost/control/` | Django admin — note: not `/admin/` |
+**`server.sh up` printed the live URL — use that one rather than typing one from memory.** The
+host port is **81**, not 80, because a local router (DDEV and friends) commonly holds
+`127.0.0.1:80`.
+
+| URL                                                    | What                                 |
+| ------------------------------------------------------ | ------------------------------------ |
+| `http://dev.<project-slug>.localhost:81/control/`      | Django admin — note: not `/admin/`   |
+| `http://dev.<project-slug>.localhost:81/health/`       | Liveness probe — `200 ok`            |
+| `http://dev.<project-slug>.localhost:81/health/ready/` | Readiness probe — database and cache |
+
+**Those are the only three routes at baseline**, because `config/urls.py` registers the health app
+and the admin and nothing else. There is no home page and no `/api/docs` yet: the marketing, portal
+and API prefixes appear as the stories that serve them are built, and `server.sh up` prints
+whatever the URLconf actually registers. A `404` at `/` is the correct answer today, not a broken
+install.
+
+A worktree stack answers on its own `dev-us<NNN>.` host instead — `how-to/docs/GIT-WORKTREES.md`.
 
 ---
 
@@ -170,13 +182,14 @@ what every scope decision is measured against. A one-liner typed at a prompt is 
 **2. Settle the voice.**
 
 ```text
-Fill in how-to/src/BRAND-VOICE.md Section 3 and Section 5 with me.
+Fill in how-to/src/BRAND-VOICE.md Section 3 with me.
 ```
 
 Tone, person, formality, the reader, the signature, the never-this line, and the
-say-this-not-that vocabulary. The reader comes straight from the brief, which is why it runs
-second. Every skill that writes a user-facing string loads this file first, and
-`code/src/scripts/audits/copy-emdash.sh` already enforces part of Section 4.
+say-this-not-that vocabulary. **Section 3 is the only section carrying placeholders** — the rest
+of the file is the portable core and is adopted unchanged. The reader comes straight from the
+brief, which is why it runs second. Every skill that writes a user-facing string loads this file
+first, and `code/src/scripts/audits/copy-emdash.sh` already enforces part of Section 4.
 
 **3. Settle the visual direction.**
 

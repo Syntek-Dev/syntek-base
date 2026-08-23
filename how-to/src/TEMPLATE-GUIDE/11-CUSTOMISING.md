@@ -32,7 +32,8 @@ load-bearing, and which will hurt on the next `copier update`.
 - **`handoffs/`, `research/`, `questionnaires/`, `learning/`** — the four scratch directories.
 - **`VERSION` and the three version logs** — yours from `0.1.0`; the template's history never
   ships. Move them with the `version` skill rather than by hand.
-- **Dependencies**, within the licence constraints in `how-to/src/CONTEXT.md`.
+- **Dependencies**, within the licence constraints in `how-to/src/CLAUDE.md` → _Guardrails_ and
+  the _Licensing_ section of `how-to/src/CONTRIBUTING.md`.
 
 ## Load-bearing — change with their dependants
 
@@ -141,7 +142,7 @@ workspace silently. Nothing warns you.
 | British English prose            | `.claude/CLAUDE.md`             | Sweep existing docs or you get a mix                           |
 | Grilling before substantial work | `.claude/CLAUDE.md` Section 10  | Claude stops interviewing and starts building on first reading |
 | Token-first CSS                  | `code/docs/DESIGN-TOKENS.md`    | `audits/css-tokens.sh` will fail until you change it too       |
-| Docker-only operations           | `.claude/CLAUDE.md` Section 1   | Every script assumes containers                                |
+| Docker-only operations           | `.claude/CLAUDE.md` Section 6   | Every script assumes containers                                |
 
 ## The non-negotiables
 

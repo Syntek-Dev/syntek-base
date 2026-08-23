@@ -2,7 +2,7 @@
 
 **Last Updated**: 14/08/2026
 
-Twenty-three numbered folders is a lot to meet at once. This explains what each is for, which ones
+Twenty-four numbered folders is a lot to meet at once. This explains what each is for, which ones
 you will actually touch, and the two patterns that govern them — so the layer reads as a system
 rather than a filing cabinet.
 
@@ -42,14 +42,15 @@ against what was really built is mapped against reality.
 03-SPRINTS     │
 04-DATABASE    │
 05-USER-FLOW   │
-06-BRAND-GUIDE ├─ specify: one story at a time, 02 → 13, then 14
-07-COMPONENTS  │
+06-BRAND-GUIDE │
+07-COMPONENTS  ├─ specify: one story at a time, 02 → 14
 08-WIREFRAMES  │
 09-GDPR        │
 10-SECURITY    │
 11-QA          │
 12-SEO         │
-13-API-DESIGN  ┘
+13-API-DESIGN  │
+14-LOGGING     ┘
 15-DECISIONS   ← ADRs; end of the per-story loop
 16-SPRINT-PLANS┐
 17-STORY-PLANS ┘ ← fire when the sprint fills
@@ -69,19 +70,24 @@ owned by a story. It is also **PII-free by rule**: the row says an incident happ
 ended, while log excerpts, identifiers and any postmortem touching personal data go to the
 tracker you named at generation time. Do not go looking for `workflows/23-incidents/`.
 
-**Workflow numbers mirror `src/` numbers through `16`.** `workflows/04-database-schema` writes
-`src/04-DATABASE`. After `16` they diverge: `18-consolidate-design-work` writes into the design
-folders, and `18`–`23` have no `src/` folder of their own.
+**Workflow numbers mirror `src/` numbers through `17`.** `workflows/04-database-schema` writes
+`src/04-DATABASE`, and that holds all the way to `workflows/17-story-plans` → `src/17-STORY-PLANS`.
+**After `17` the two sequences stop lining up**, and reading them as though they still do is the
+usual way to look for a folder that does not exist: `workflows/18-consolidate-design-work` writes
+into the design folders `04`–`08` rather than into a `src/18`, and `src/18-TESTS` … `src/22-REFACTORING`
+are written by the build and record phases (`19`–`22`) rather than by the workflow sharing each
+number. `src/23-INCIDENTS` has no workflow at all, and `workflows/23-pr-and-review` and
+`24-release` have no `src/` folder.
 
 ---
 
 ## The cadence, in one paragraph
 
-Chart the feature (`01`). Then take **one story** all the way from `02` to `14` before starting
+Chart the feature (`01`). Then take **one story** all the way from `02` to `15` before starting
 the next — so each story is planned against everything the previous ones settled. Each finished
 story is slotted into the open sprint record with its points; when that hits the capacity ceiling,
-`15` and `16` run for that sprint and then planning resumes. Once every story is planned, `17`
-unifies the design work. Only then does code start.
+`16-sprint-plans` and `17-story-plans` run for that sprint and then planning resumes. Once every
+story is planned, `18-consolidate-design-work` unifies the design work. Only then does code start.
 
 Full rules: `project-management/docs/PLANNING-GUIDE.md`.
 
@@ -148,9 +154,11 @@ shortcut.
 | `11-QA`           | Always                                                    |
 | `12-SEO`          | It adds a public URL — otherwise `SEO: N/A` with a reason |
 | `13-API-DESIGN`   | It adds or changes Django Ninja surface                   |
+| `14-LOGGING`      | It emits anything worth an operator seeing                |
 | `15-DECISIONS`    | A choice is hard to reverse                               |
-| `15`, `16`        | When the sprint fills                                     |
-| `17`–`21`         | After the code ships                                      |
+| `16`, `17`        | When the sprint fills                                     |
+| `18`–`22`         | After the code ships                                      |
+| `23-INCIDENTS`    | Something broke in staging or production — never a story  |
 
 ---
 

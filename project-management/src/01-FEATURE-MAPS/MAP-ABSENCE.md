@@ -493,17 +493,17 @@ not lost, and routed rather than adopted. **Nothing here was actioned by this ma
 have since been fixed where they were routed, and are struck below rather than deleted, so the
 finding and its close stay legible together.
 
-| Finding                                                                                                                                            | Route                                            |
-| -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `check-template-tokens.sh` RED — unclosed delimiter at `audits/conflict-markers.sh:104`; **`copier copy` is broken on this branch**                | `MAP-BASE-HEALTH` — new node                     |
-| `shipped-readme.sh` RED — 3 registration findings (`conflict-markers.sh`, two CI workflows)                                                        | `MAP-BASE-HEALTH` — new node                     |
-| Eight shipped docs carry leaked `</content>` / `</invoke>` tool-call artefacts, committed at `35eeb12`; the entire `rendering/` family is affected | `MAP-BASE-HEALTH` — new node                     |
-| `x-for` missing from `audits/rules/django-template-xss.yml:22` — a live template-injection gap                                                     | `MAP-BASE-HEALTH` — new node                     |
-| ~~`stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)~~ **CLOSED 16/08/2026 at `f4a988b`**             | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there** |
-| ~~`stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`~~ **CLOSED 16/08/2026 at `f4a988b`**                                  | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there** |
-| `DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11                                                                                  | `MAP-DOMAIN-OBJECTS` (same folder, same session) |
-| `doc-references.sh` structurally cannot resolve any path under `code/src/django/`                                                                  | `MAP-BASE-HEALTH` — new node                     |
-| `07-review/STEPS.md` Step 1 names `code-reviewer` in its heading and `review` in its dispatch line                                                 | `MAP-BASE-HEALTH` — new node                     |
+| Finding                                                                                                                                            | Route                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `check-template-tokens.sh` RED — unclosed delimiter at `audits/conflict-markers.sh:104`; **`copier copy` is broken on this branch**                | `MAP-BASE-HEALTH` — new node                                   |
+| `shipped-readme.sh` RED — 3 registration findings (`conflict-markers.sh`, two CI workflows)                                                        | `MAP-BASE-HEALTH` — new node                                   |
+| Eight shipped docs carry leaked `</content>` / `</invoke>` tool-call artefacts, committed at `35eeb12`; the entire `rendering/` family is affected | `MAP-BASE-HEALTH` — new node <!-- conflict-markers: ignore --> |
+| `x-for` missing from `audits/rules/django-template-xss.yml:22` — a live template-injection gap                                                     | `MAP-BASE-HEALTH` — new node                                   |
+| ~~`stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)~~ **CLOSED 16/08/2026 at `f4a988b`**             | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there**               |
+| ~~`stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`~~ **CLOSED 16/08/2026 at `f4a988b`**                                  | `MAP-BASE-HEALTH` — ~~new node~~ **fixed there**               |
+| `DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11                                                                                  | `MAP-DOMAIN-OBJECTS` (same folder, same session)               |
+| `doc-references.sh` structurally cannot resolve any path under `code/src/django/`                                                                  | `MAP-BASE-HEALTH` — new node                                   |
+| `07-review/STEPS.md` Step 1 names `code-reviewer` in its heading and `review` in its dispatch line                                                 | `MAP-BASE-HEALTH` — new node                                   |
 
 **The two struck rows were closed by `f4a988b` (16/08/2026), and this re-reads the close off the
 working tree rather than off the commit message.** The commit on its own settles nothing here: it

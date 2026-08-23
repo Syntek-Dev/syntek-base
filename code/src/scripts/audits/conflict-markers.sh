@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# conflict-markers.sh — Ban unresolved git conflict markers anywhere in the tree.
+# conflict-markers.sh — Ban unresolved git conflict markers, and leaked tool-call residue,
+#                       anywhere in the tree.
 #
 #                       A committed conflict marker passed every gate this repository had for
 #                       two releases: a documentation file carried an unresolved stash
@@ -49,7 +50,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-conflict-markers.sh — Ban unresolved git conflict markers anywhere in the tree
+conflict-markers.sh — Ban conflict markers and leaked tool-call residue, tree-wide
 
 Usage:
   conflict-markers.sh                Scan tracked + untracked-but-not-ignored files
@@ -170,6 +171,35 @@ GOOD
     && log "  ✓ an UNexempted fence is still scanned" \
     || { printf '\033[31m  ✗ unexempted fence was skipped — blind spot\033[0m\n'; fails=1; }
 
+  # ── The residue class, proven in both directions ─────────────────────────────
+  # Specimens are ASSEMBLED, never written: a literal tag here would make this file a member
+  # of the class it is testing for, and the gate would redden on its own self-test.
+  LT='<'
+  printf '%s\n' "prose" "  ${LT}/content>" "${LT}invoke name=\"Bash\">" "${LT}/parameter>" >"$tmp/residue.md"
+  [[ "$(residue_markers_scan "$tmp/residue.md" | wc -l | tr -d ' ')" -eq 3 ]] \
+    && log "  ✓ residue fires on a closing tag, an opening tag and a parameter" \
+    || { printf '\033[31m  ✗ residue class not detected\033[0m\n'; fails=1; }
+
+  # The discriminator that keeps it usable: ordinary markup is not residue. Without this the
+  # clause would fire on every HTML example in the guides.
+  printf '%s\n' "a ${LT}div> and a ${LT}/span> and ${LT}content-type>" >"$tmp/markup.md"
+  [[ "$(residue_markers_scan "$tmp/markup.md" | wc -l | tr -d ' ')" -eq 0 ]] \
+    && log "  ✓ silent on ordinary markup" \
+    || { printf '\033[31m  ✗ residue fired on ordinary markup — false positive\033[0m\n'; fails=1; }
+
+  # A map quoting the tag in order to describe the defect is the one legitimate carrier, and
+  # it takes the same directive the conflict class uses. Two such lines exist in this tree.
+  printf '%s\n' "${LT}/content> ${LT}!-- conflict-markers: ignore --" >"$tmp/residue-marked.md"
+  [[ "$(residue_markers_scan "$tmp/residue-marked.md" | wc -l | tr -d ' ')" -eq 0 ]] \
+    && log "  ✓ residue honours the shared suppression directive" \
+    || { printf '\033[31m  ✗ residue ignored the directive\033[0m\n'; fails=1; }
+
+  # The two classes must not bleed: each detector sees its own class and nothing else.
+  [[ "$(conflict_markers_scan "$tmp/residue.md" | wc -l | tr -d ' ')" -eq 0 \
+     && "$(residue_markers_scan "$tmp/plain.md" | wc -l | tr -d ' ')" -eq 0 ]] \
+    && log "  ✓ the two classes do not bleed into each other" \
+    || { printf '\033[31m  ✗ a detector matched the other class\033[0m\n'; fails=1; }
+
   [[ "$fails" -eq 0 ]] && { bold "✓ self-test passed"; exit 0; }
   printf '\033[31m✗ self-test FAILED\033[0m\n'; exit 1
 fi
@@ -187,7 +217,8 @@ if [[ -n "$OUTPUT_FORMAT" && -z "$OUTPUT_FILE" ]]; then
 fi
 
 TMP_HITS=$(mktemp)
-trap 'rm -f "$TMP_HITS"' EXIT
+TMP_RESIDUE=$(mktemp)
+trap 'rm -f "$TMP_HITS" "$TMP_RESIDUE"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
@@ -212,39 +243,56 @@ FILE_COUNT=0
 [[ -z "$TARGET_PATH" || -e "$TARGET_PATH" ]] || die "--path '$TARGET_PATH' does not exist"
 
 : > "$TMP_HITS"
+: > "$TMP_RESIDUE"
 while IFS= read -r file; do
   [[ -f "$file" ]] || continue
   grep -Iq . "$file" 2>/dev/null || continue   # skip binaries
   FILE_COUNT=$((FILE_COUNT + 1))
   conflict_markers_scan "$file" | sed "s#^#${file}:#" >> "$TMP_HITS"
+  residue_markers_scan  "$file" | sed "s#^#${file}:#" >> "$TMP_RESIDUE"
 done < <(candidates)
 
 HIT_COUNT=$(grep -c . < "$TMP_HITS" | tr -d ' ' || true)
+RESIDUE_COUNT=$(grep -c . < "$TMP_RESIDUE" | tr -d ' ' || true)
 BODY="$(cat "$TMP_HITS")"
+RESIDUE_BODY="$(cat "$TMP_RESIDUE")"
 
-log "  scanned $FILE_COUNT text file(s) for unresolved conflict markers"
+# One population, two classes named separately, because they take different remedies: a
+# conflict marker is RESOLVED, residue is DELETED. A reader told "markers" would go looking
+# for a merge that never happened.
+log "  scanned $FILE_COUNT text file(s) for conflict markers and tool-call residue"
 log ""
 
-if [[ "$HIT_COUNT" -gt 0 ]]; then
-  if [[ $QUIET == false ]]; then
-    printf '\033[31m  ✗ %d unresolved conflict marker%s — resolve, or annotate a deliberate example with `conflict-markers: ignore`\033[0m\n' \
-      "$HIT_COUNT" "$([[ "$HIT_COUNT" -ne 1 ]] && echo s)"
-    printf '%s\n' "$BODY" | sed 's/^/    /'
-    printf '\n'
-  fi
-else
-  bold "✓ No unresolved conflict markers in $FILE_COUNT text file(s)."
+TOTAL_COUNT=$((HIT_COUNT + RESIDUE_COUNT))
+
+if [[ "$HIT_COUNT" -gt 0 && $QUIET == false ]]; then
+  printf '\033[31m  ✗ %d unresolved conflict marker%s — resolve, or annotate a deliberate example with `conflict-markers: ignore`\033[0m\n' \
+    "$HIT_COUNT" "$([[ "$HIT_COUNT" -ne 1 ]] && echo s)"
+  printf '%s\n' "$BODY" | sed 's/^/    /'
+  printf '\n'
+fi
+
+if [[ "$RESIDUE_COUNT" -gt 0 && $QUIET == false ]]; then
+  printf '\033[31m  ✗ %d leaked tool-call tag%s — DELETE the line; it is transcript residue, not content\033[0m\n' \
+    "$RESIDUE_COUNT" "$([[ "$RESIDUE_COUNT" -ne 1 ]] && echo s)"
+  printf '%s\n' "$RESIDUE_BODY" | sed 's/^/    /'
+  printf '\n'
+fi
+
+if [[ "$TOTAL_COUNT" -eq 0 ]]; then
+  bold "✓ No conflict markers and no tool-call residue in $FILE_COUNT text file(s)."
 fi
 
 if [[ -n "$OUTPUT_FORMAT" ]]; then
   case "$OUTPUT_FORMAT" in
-    md)   { printf '# conflict-markers report\n\n- Generated: %s\n- Files scanned: %s\n- Markers found: %s\n\n' \
-              "$TIMESTAMP" "$FILE_COUNT" "$HIT_COUNT"
-            [[ "$HIT_COUNT" -gt 0 ]] && printf '```text\n%s\n```\n' "$BODY"; } > "$OUTPUT_FILE" ;;
-    txt)  { printf 'conflict-markers report\nGenerated: %s\nFiles scanned: %s\nMarkers found: %s\n\n' \
-              "$TIMESTAMP" "$FILE_COUNT" "$HIT_COUNT"
-            printf '%s\n' "$BODY"; } > "$OUTPUT_FILE" ;;
-    json) printf '%s' "$BODY" | python3 -c "
+    md)   { printf '# conflict-markers report\n\n- Generated: %s\n- Files scanned: %s\n- Markers found: %s\n- Tool-call residue found: %s\n\n' \
+              "$TIMESTAMP" "$FILE_COUNT" "$HIT_COUNT" "$RESIDUE_COUNT"
+            [[ "$HIT_COUNT" -gt 0 ]] && printf '```text\n%s\n```\n' "$BODY"
+            [[ "$RESIDUE_COUNT" -gt 0 ]] && printf '```text\n%s\n```\n' "$RESIDUE_BODY"; } > "$OUTPUT_FILE" ;;
+    txt)  { printf 'conflict-markers report\nGenerated: %s\nFiles scanned: %s\nMarkers found: %s\nTool-call residue found: %s\n\n' \
+              "$TIMESTAMP" "$FILE_COUNT" "$HIT_COUNT" "$RESIDUE_COUNT"
+            printf '%s\n%s\n' "$BODY" "$RESIDUE_BODY"; } > "$OUTPUT_FILE" ;;
+    json) printf '%s\n%s' "$BODY" "$RESIDUE_BODY" | python3 -c "
 import sys, json
 hits = []
 for line in sys.stdin.read().splitlines():
@@ -254,10 +302,11 @@ for line in sys.stdin.read().splitlines():
     lineno, _, text = rest.partition(':')
     hits.append({'file': path, 'line': int(lineno) if lineno.isdigit() else None, 'text': text})
 print(json.dumps({'generated': '$TIMESTAMP', 'files_scanned': $FILE_COUNT,
-                  'markers_found': $HIT_COUNT, 'hits': hits}, indent=2))
+                  'markers_found': $HIT_COUNT, 'residue_found': $RESIDUE_COUNT,
+                  'hits': hits}, indent=2))
 " > "$OUTPUT_FILE" ;;
   esac
   log "  report: $OUTPUT_FILE"
 fi
 
-[[ "$HIT_COUNT" -eq 0 ]] || exit 1
+[[ "$TOTAL_COUNT" -eq 0 ]] || exit 1

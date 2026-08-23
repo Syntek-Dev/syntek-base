@@ -35,17 +35,40 @@
 # Open (raw or mangled), raw close, mangled close. Deliberately unanchored.
 CONFLICT_MARKER_RE='(<{7})|(>{7})|((> ){6,}>)'
 
+# TRANSCRIPT RESIDUE — the second class this gate holds, added 23/08/2026 (MAP-BASE-HEALTH
+# N-039). Not a conflict marker, and it is here rather than in an audit of its own because it
+# is the same SHAPE: a literal string that must never survive into a tracked file, in any file
+# type. That is the reason the marker gate is its own audit rather than a clause inside a
+# language-scoped one, and it is equally true of a leaked tool-call tag.
+#
+# The class: a model's tool-call envelope, written into a document by the session that authored
+# it. Ten such tags sat in eight shipped guides for a fortnight and through 49 releases, and
+# nothing looked — `template-slop.sh` and `copy-slop.sh` do not know the vocabulary, and
+# `doc-references.sh` cannot see it because it is not a citation.
+#
+# ASSEMBLED FROM PARTS, exactly as the audit's own self-test assembles its specimens: written
+# literally, this pattern would match the line it is written on and redden the gate on its own
+# source. The names are the envelope's, not a guess — and the population was measured at ZERO
+# before this shipped, so the clause was true before it was enforceable.
+_LT='<'
+RESIDUE_MARKER_RE="${_LT}"'/?(antml:)?(invoke|function_calls|function_results|parameter|content)([[:space:]/>]|$)'
+
 # Suppression, following the house convention the other suppressible audits share: the
 # directive is honoured on the line itself, on the line directly above it, or — because an HTML
 # comment inside a fenced block would render as literal text to the reader — on the opening
 # fence of the block the marker sits in.
 CONFLICT_IGNORE_RE='conflict-markers:[[:space:]]*ignore'
 
-# conflict_markers_scan FILE
-#   Emits "<lineno>:<line>" for every unsuppressed marker. Returns 0 always; the caller counts.
-conflict_markers_scan() {
-  local file="$1"
-  awk -v marker="$CONFLICT_MARKER_RE" -v ignore="$CONFLICT_IGNORE_RE" '
+# conflict_markers_scan FILE   ·   residue_markers_scan FILE
+#   Emit "<lineno>:<line>" for every unsuppressed match. Return 0 always; the caller counts.
+#   Both delegate to ONE implementation: two detectors that disagree is how the defect in the
+#   header above survived two releases, and that argument does not weaken for a second class.
+conflict_markers_scan() { _marker_scan "$1" "$CONFLICT_MARKER_RE"; }
+residue_markers_scan()  { _marker_scan "$1" "$RESIDUE_MARKER_RE"; }
+
+_marker_scan() {
+  local file="$1" marker_re="$2"
+  awk -v marker="$marker_re" -v ignore="$CONFLICT_IGNORE_RE" '
     # Look upward for the directive, stepping over blank lines. Prettier puts a blank line
     # between an HTML comment and a fence, so "the line directly above" is not a rule a
     # formatted document can keep; "the nearest line with content above" is.

@@ -23,11 +23,12 @@ Three properties make this work, and all three are easy to get wrong:
   `15-decisions` before the next begins, so each is planned against everything the previous ones
   settled.
 - **Sprint planning fires on fill, not per story.** Each finished story is slotted into the open
-  sprint record; when it reaches the point ceiling, `15` and `16` run for that sprint's stories,
-  then planning resumes.
+  sprint record; when it reaches the point ceiling, `16-sprint-plans` and `17-story-plans` run for
+  that sprint's stories, then planning resumes.
 
 The rule underneath it all: **a code workflow is never entered directly from a design gate.**
-Implementation is reached only through the PM build phases, themselves gated on `17`.
+Implementation is reached only through the PM build phases `19`–`21`, themselves gated on
+`18-consolidate-design-work` having run.
 
 If that is too much for what you are doing — a spike, a proof of concept, a question you want
 answered in an hour — use `/prototype` instead. It exists so the process is not the only option.
@@ -145,7 +146,7 @@ A running ledger, not a plan: the sprint goal, and each story added with its poi
 what triggers `16-sprint-plans`.
 
 For your first story the sprint will not be full — so you carry straight on to the design gates,
-and come back to `15`/`16` later.
+and come back to `16`/`17` later.
 
 ## 3. Work the design gates
 
@@ -192,14 +193,17 @@ documentation. Full rules in `project-management/docs/GIT-GUIDE.md`.
 
 Three PM phases drive the code workflows:
 
-| Phase               | Drives                                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `19-backend-code/`  | `code/workflows/02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project                     |
-| `20-api-code/`      | `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` when an agent-facing surface is needed |
-| `21-frontend-code/` | `01-implement-story/`, `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                       |
+| Phase               | Drives                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `19-backend-code/`  | `code/workflows/01-implement-story/` **entered here**, plus `02-tdd-cycle/`, `03-database-migration/`, and `12-rust-extension/` on a Rust project |
+| `20-api-code/`      | The same `01` pass continues — `04-api-design/`, `02-tdd-cycle/`, `08-security-hardening/`, and `05-mcp-server/` for an agent-facing surface      |
+| `21-frontend-code/` | The same `01` pass closes here — `02-tdd-cycle/`, and `13-desktop-app/` on a desktop project                                                      |
 
-The canonical map of which PM workflow pairs with which code workflow is the cross-layer table
-in the root `REFERENCES.md` — neither layer restates it.
+**`01-implement-story` wraps all three; it does not sit under one of them.** Its own procedure runs
+plan → red tests → models and migration → services → endpoints → frontend as one sequence, so it is
+entered once at `19` and closed at `21`, never re-run per phase. The canonical map of which PM
+workflow pairs with which code workflow is the cross-layer table in the root `REFERENCES.md` —
+neither layer restates it.
 
 Test-first throughout — Red, Green, Refactor:
 

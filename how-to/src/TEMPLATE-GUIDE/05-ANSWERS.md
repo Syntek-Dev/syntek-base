@@ -212,7 +212,7 @@ team has a measured velocity.
 
 | Question             | Default | Means                                                    |
 | -------------------- | ------- | -------------------------------------------------------- |
-| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `15`+`16` pass |
+| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `16`+`17` pass |
 | `SPRINT_GRACE_SP`    | `13`    | Hard ceiling, for when the next story would split badly  |
 
 These drive the cadence in `project-management/docs/PLANNING-GUIDE.md`: you plan one story
