@@ -1,6 +1,6 @@
 # TEMPLATE-GUIDE — Using syntek-base as a Template
 
-**Last Updated**: 14/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 23/08/2026 | **Maintained By**: Syntek Studio
 
 Everything a developer needs to generate a project from `syntek-base`, understand what they
 received, change it safely, and pull later template improvements back in.
@@ -35,7 +35,7 @@ how-to/src/TEMPLATE-GUIDE/
 ├── 06-GENERATION.md         ← what Copier does to the tree, step by step
 │
 │   ── Living with it ──
-├── 07-REPO-TOUR.md          ← the three layers and how to navigate them
+├── 07-REPO-TOUR.md          ← the four layers and how to navigate them
 ├── 08-CLAUDE-CODE.md        ← skills, hooks, MCP servers, settings
 ├── 09-PROJECT-MANAGEMENT.md ← how to use project-management/src/ — tiers, patterns, which folder when
 ├── 10-FIRST-FEATURE.md      ← one feature end to end: chart → specify → build → ship
@@ -64,7 +64,7 @@ Nobody should read all sixteen. Pick the entry point that matches where you are:
 | Ready to generate your first project         | `03-PREREQUISITES.md` → `04-QUICKSTART.md` |
 | Sitting at the prompt, unsure what to answer | `05-ANSWERS.md`                            |
 | Staring at a generated project, lost         | `07-REPO-TOUR.md` → `08-CLAUDE-CODE.md`    |
-| Facing 23 numbered PM folders                | `09-PROJECT-MANAGEMENT.md`                 |
+| Facing 24 numbered PM folders                | `09-PROJECT-MANAGEMENT.md`                 |
 | About to build the first feature             | `10-FIRST-FEATURE.md`                      |
 | Wondering which skill does a job             | `GUIDE-TO-SKILLS.md`                       |
 | Wanting to change what the template gave you | `11-CUSTOMISING.md` → `12-EXTENDING.md`    |

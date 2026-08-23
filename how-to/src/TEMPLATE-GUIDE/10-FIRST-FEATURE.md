@@ -1,6 +1,6 @@
 # Your First Feature — Idea to Merged PR
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 A walk through the whole process once, so the numbered workflows stop being abstract. Assumes a
 generated project with the stack running (`04-QUICKSTART.md`), and that you have read

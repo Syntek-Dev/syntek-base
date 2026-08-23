@@ -33,8 +33,8 @@ alternative:
 
 | Syntax                          | Where it lives                          | What the delimiters would do         |
 | ------------------------------- | --------------------------------------- | ------------------------------------ |
-| `${{ github.* }}`               | 9 GitHub Actions workflow files         | blanked, leaving a bare `$`          |
-| `{% … %}` / `{{ field.label }}` | Django template examples in 29 docs     | parsed as Jinja, or silently blanked |
+| `${{ github.* }}`               | 13 of the 35 CI workflow files          | blanked, leaving a bare `$`          |
+| `{% … %}` / `{{ field.label }}` | Django template examples in 42 docs     | parsed as Jinja, or silently blanked |
 | `{{api_url}}`                   | Bruno `.bru` request files              | silently blanked                     |
 | `[[ "$x" == "y" ]]`             | bash test syntax throughout the scripts | ruled out `[[ ]]` as the alternative |
 
@@ -117,6 +117,11 @@ this column exists to prevent, and it has happened once already. The rule is exc
 where a product needs qualifying, that detail belongs in the question's `help:` text, never in
 its default.
 
+**Four are prose-shaped; two of those also render into the `code/docs/` guides** for their
+capability — `<%OBJECT_STORE%>` and `<%ERROR_TRACKING%>`. The other two reach
+`PLATFORM-PROVIDERS.md` only. Shape is the constraint on where a token may be written; reach is
+which files it lands in, and they are not the same claim.
+
 **The interface each one sits behind** — this is what makes a different answer safe:
 
 | Concern        | The seam the code is written against                          |
@@ -142,7 +147,7 @@ verdicts is `code/docs/architecture/PROVIDER-NEUTRALITY.md`.
 ### Process dependencies
 
 A dependency the **people** operating the project rely on, which no application code touches.
-Listed separately from the six above rather than folded in with them, because under the substrate
+Listed separately from the seven above rather than folded in with them, because under the substrate
 test it is **neither seam kind** — swapping it changes where a human types, not what the code
 does — and filing it as a protocol or adapter seam would cheapen both terms.
 
@@ -187,8 +192,9 @@ content) keeps its default, and the doc rows that mention it can be deleted afte
 | `<%NOTIFICATIONS_APP%>` | App owning notifications and their delivery      | `notifications` | `snake_case` |
 | `<%LEGAL_APP%>`         | App owning cookie consent and legal pages        | `legal`         | `snake_case` |
 
-`apps.marketing`, `apps.design_tokens` and **`apps.core`** are **house constants**, not tokens —
-they are the same in every project and stay literal.
+`apps.marketing`, `apps.seo` and `apps.design_tokens` are **house constants**, not tokens — they
+are the same in every project and stay literal. So are the two apps that ship as real directories,
+`apps.core` and `apps.health`, both registered in `config/settings/base.py`.
 
 **`<%CORE_APP%>` was retired on 15/08/2026, and the reason is the general rule.** The five tokens
 above name apps **a story has yet to create**: no directory in the template _is_ `apps/users/`, so
@@ -239,8 +245,9 @@ does not match reality makes every sprint either starve or overrun.
 ### Mobile frontend (optional)
 
 The opt-in React Native + TypeScript app at `code/src/mobile/`. `<%INCLUDE_MOBILE%>` gates the
-whole feature: when it is false, the mobile tree and `code/src/scripts/mobile/` are excluded by a
-templated `_exclude` entry, and the two tokens below are never asked. A web-only generation is
+whole feature: when it is false, **ten templated `_exclude` entries** drop the mobile tree, its
+scripts, workflows and CI jobs, the four mobile `code/docs` guides, `how-to/src/STORE-LISTING.md`
+and the `stack-react-native` skill — and the two tokens below are never asked. A web-only generation is
 identical to one produced before the mobile option existed.
 
 | Token                  | Meaning                                   | Example value | Format         |
@@ -302,7 +309,8 @@ Slint's own APIs**, which is why desktop UI is never moved into a shared package
 | `<%DATE%>` | The doc's _Last Updated_ / baseline date, set per project | `22/07/2026`  | `DD/MM/YYYY` |
 
 > **`<%DATE%>` is answered, not computed.** It is stored in `.copier-answers.yml` and reused on
-> every `copier update`, so an update never churns 280 doc headers to today's date.
+> every `copier update`, so an update never churns the 338 doc headers carrying it to today's
+> date.
 
 ---
 
@@ -319,6 +327,7 @@ Copier derives these from earlier answers — press Enter to accept:
 | `<%DEPLOY_REPO%>`      | `<%PROJECT_SLUG%>-nixos-client-deployment`       |
 | `<%MOBILE_APP_NAME%>`  | `<%PROJECT_NAME%>`                               |
 | `<%MOBILE_BUNDLE_ID%>` | `<%PRIMARY_DOMAIN%>` label-reversed, `-` removed |
+| `<%DESKTOP_APP_NAME%>` | `<%PROJECT_NAME%>`                               |
 
 ---
 
@@ -452,18 +461,21 @@ concrete content from that project's live code. Specific ADRs are referenced by 
 uvx copier copy gh:Syntek-Dev/syntek-base my-project
 ```
 
-Copier prompts for each token above, renders the tree, then runs its `_tasks`: move the project
-README into place, un-ignore `uv.lock`, generate the lock, and `git init`. Full detail — including
-what to do when `uv` is not installed — is in `TEMPLATE-GUIDE/06-GENERATION.md`.
+Copier prompts for each token above, renders the tree, then runs its four `_tasks`: move the nine
+seeded files into place, brand `pyproject.toml` with your slug, generate the lock, and `git init`.
+Full detail — including what to do when `uv` is not installed — is in
+`TEMPLATE-GUIDE/06-GENERATION.md`.
 
 Afterwards, run `/scale-planning` to regenerate the two snapshots against the new project's live
 code.
 
-> **No `uv.lock` ships with the template.** A lock pins the root project by name, and that name is
-> the literal `<%PROJECT_SLUG%>` until Copier renders it — not a valid PEP 508 name — so no lock
-> can be generated against the unrendered template, and a shipped one would only carry the
-> previous project's name. Every Dockerfile does `COPY pyproject.toml uv.lock ./`, so **the Docker
-> build fails until the project has been generated (or `uv lock` run by hand).** Commit the
-> generated lock — `pnpm-lock.yaml`, which records no root package name, ships as normal.
+> **The template commits a `uv.lock`, and excludes it from generation.** `pyproject.toml` carries
+> the house constant `name = "syntek-base"` rather than a token — `uv` validates `[project] name`
+> as a package name and rejects the delimiters — so the template _can_ lock, and does, which is
+> what makes its own image build. It is excluded because it pins `syntek-base`: an inherited copy
+> would fail `uv sync --frozen` and conflict in a lockfile on every `copier update`. Every
+> Dockerfile does `COPY pyproject.toml uv.lock ./`, so **the Docker build fails until your own
+> lock exists.** Commit it — `pnpm-lock.yaml`, which records no root package name, ships as
+> normal.
 
 <: endraw :>

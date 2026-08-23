@@ -46,18 +46,19 @@ how-to/src/
 
 ## What is here
 
-| Document / folder       | Read it when                                                                      |
-| ----------------------- | --------------------------------------------------------------------------------- |
-| `BRAND-VOICE.md`        | Writing any user-facing copy — and settling the voice at first-time setup         |
-| `CONTRIBUTING.md`       | Contributing to this codebase — branching, commits, testing, code quality, gates  |
-| `INVARIANTS.md`         | Adding a constraint or a guard — recording the one place an invariant is enforced |
-| `PLATFORM-PROVIDERS.md` | Choosing or swapping an infrastructure provider, or classifying a new dependency  |
-| `PROJECT-PATHS.md`      | Citing a path this repository does not hold — recording what creates it, and when |
-| `TEMPLATE-GUIDE/`       | Generating a project from syntek-base, or maintaining the template                |
-| `TEMPLATE-TOKENS.md`    | You need the token vocabulary and what each one reaches                           |
-| `NIXOS-SETUP.md`        | Looking for host provisioning — it points at the deploy repository                |
-| `SCALE-ARCHITECTURE/`   | Sizing the deployment, or checking scaling readiness                              |
-| `SERVER-ARCHITECTURE/`  | Specifying what the server and edge must provide                                  |
+| Document / folder       | Read it when                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------ |
+| `BRAND-VOICE.md`        | Writing any user-facing copy — and settling the voice at first-time setup            |
+| `CONTRIBUTING.md`       | Contributing to this codebase — branching, commits, testing, code quality, gates     |
+| `INVARIANTS.md`         | Adding a constraint or a guard — recording the one place an invariant is enforced    |
+| `PLATFORM-PROVIDERS.md` | Choosing or swapping an infrastructure provider, or classifying a new dependency     |
+| `PROJECT-PATHS.md`      | Citing a path this repository does not hold — recording what creates it, and when    |
+| `STORE-LISTING.md`      | **Mobile-only.** Checking this project's App Store / Play listing against its limits |
+| `TEMPLATE-GUIDE/`       | Generating a project from syntek-base, or maintaining the template                   |
+| `TEMPLATE-TOKENS.md`    | You need the token vocabulary and what each one reaches                              |
+| `NIXOS-SETUP.md`        | Looking for host provisioning — it points at the deploy repository                   |
+| `SCALE-ARCHITECTURE/`   | Sizing the deployment, or checking scaling readiness                                 |
+| `SERVER-ARCHITECTURE/`  | Specifying what the server and edge must provide                                     |
 
 ## The two snapshots
 

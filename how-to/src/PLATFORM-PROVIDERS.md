@@ -88,12 +88,18 @@ implementation** before neutrality may be claimed.
 
 | Concern            | Interface                                       | This project           | Alternates                                    |
 | ------------------ | ----------------------------------------------- | ---------------------- | --------------------------------------------- |
-| **Git write-back** | A provider-agnostic **Contents API** adapter    | GitHub                 | GitLab · Forgejo                              |
+| **Git write-back** | A provider-agnostic **Contents API** adapter    | GitHub _(designed)_    | GitLab · Forgejo — **specified, not written** |
 | **Product events** | This project's **own ingestion API and schema** | <%ANALYTICS_PROVIDER%> | Any collector behind the schema, or own store |
 
-`services/git_writeback.py` is the worked example of a real adapter seam: one interface, three
-named providers, and a no-op when unconfigured so local and CI runs never attempt a write
-([`code/docs/design-tokens/CASCADE.md`](../../code/docs/design-tokens/CASCADE.md)).
+**Git write-back is a designed seam with nothing behind it yet, and the row says so rather than
+implying otherwise.** `services/git_writeback.py` is specified in
+[`code/docs/design-tokens/CASCADE.md`](../../code/docs/design-tokens/CASCADE.md) — one interface,
+three named providers, and a no-op when unconfigured so local and CI runs never attempt a write —
+but **no such module exists in this repository**, so the Alternates column is a design intent and
+not evidence. Under this file's own bar an adapter seam may not claim neutrality until a real
+second implementation exists; until the first one is written, read this row the way the Traces row
+above is read: the seam is settled, the implementations are not. Promoting it is a definition-of-done
+item for the story that builds the module, not a tidy-up here.
 
 Product analytics has no wire standard, which is exactly why the seam is placed at **this
 project's own event schema** rather than at a vendor SDK — the provider sits behind our contract,

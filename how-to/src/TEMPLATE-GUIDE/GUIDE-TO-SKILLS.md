@@ -1,10 +1,14 @@
 # Guide to Skills — What Each One Does and How to Reach It
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
-Sixty-one skills is a lot to meet at once. You do not have to. **Describe the work in plain
-English and the right one loads itself** — that is the design, and for most of a working day it is
-the whole story.
+There are more skills here than anyone should meet at once. You do not have to. **Describe the work
+in plain English and the right one loads itself** — that is the design, and for most of a working
+day it is the whole story.
+
+**No total is quoted anywhere, deliberately.** It moves on every change, and two correct projects
+hold different numbers once the optional surfaces are in play — so a figure written into prose is
+wrong within a release. `.claude/skills/CONTEXT.md` is the roster; count it there if you need to.
 
 This page is for the other moments: when you want to know what exists, force a specific choice, or
 find the command for something you only half remember.

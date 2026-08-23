@@ -1,6 +1,6 @@
 # Quickstart — Generate to Running Stack
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 The short path from nothing to a project serving pages. Assumes `03-PREREQUISITES.md` is satisfied.
 
@@ -13,21 +13,25 @@ uvx copier copy gh:Syntek-Dev/syntek-base my-project
 cd my-project
 ```
 
-Copier asks thirty-four questions, plus four more between the optional surfaces if you opt into
+Copier asks thirty-three questions, plus four more between the optional surfaces if you opt into
 them. Most have either a sensible default or a value derived from an earlier answer — pressing
 Enter through the infrastructure and locale sections is a reasonable first pass. If you want to
 think about them properly, read `05-ANSWERS.md` first.
 
 You will be asked to trust the template, because generation runs post-tasks. Those tasks are the
-four at the bottom of `copier.yml` and nothing else: move the seeded files (README, version state, <!-- doc-references: template-only -->
-blank project memory, the scale-planning map) into place, un-ignore `uv.lock`, generate the lock,
-and `git init`. Read them if you like — that is why they are short.
+four at the bottom of `copier.yml` and nothing else: move the nine seeded files (README, version <!-- doc-references: template-only -->
+state, blank project memory, the two blank registers, the scale-planning map) into place, brand
+`pyproject.toml` with your slug, generate `uv.lock`, and `git init`. Read them if you like — that is why they are short.
 
-To skip the interview entirely and take every default:
+To skip the interview and take every default. **Six questions have no default**, so `--defaults`
+alone is not enough — each needs its own `--data`, and `PROJECT_DESCRIPTION` must clear its
+forty-character floor and contain no double quotes, or Copier re-prompts and the run stops being
+unattended:
 
 ```bash
 uvx copier copy --trust --defaults \
   --data PROJECT_NAME="My Project" \
+  --data PROJECT_DESCRIPTION="A client portal where customers track orders and raise tickets, replacing email and a spreadsheet." \
   --data ORG_NAME="My Org" \
   --data DEVELOPER_NAME="Your Name" \
   --data DEVELOPER_EMAIL="you@example.com" \
@@ -225,13 +229,13 @@ required to say so before it plans anything.
 
 ## Common first-run problems
 
-| Symptom                                          | Cause and fix                                                                 |
-| ------------------------------------------------ | ----------------------------------------------------------------------------- |
-| `COPY pyproject.toml uv.lock` fails during build | `uv lock` never ran. Run it at the project root, then rebuild.                |
-| `dev.<slug>.localhost` does not resolve          | Add the `/etc/hosts` entry — `bash install.sh` offers this.                   |
-| Port 5432 or 6379 already in use                 | A local Postgres or Redis is running. Stop it, or change the published port.  |
-| `permission denied` on a script                  | `bash install.sh` sets the executable bits; run it, or `chmod +x` the script. |
-| Docker asks for `sudo`                           | Add yourself to the `docker` group and log back in.                           |
+| Symptom                                          | Cause and fix                                                                                          |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `COPY pyproject.toml uv.lock` fails during build | The lock task found no `uv`. Run `bash code/src/scripts/development/install-backend.sh`, then rebuild. |
+| `dev.<slug>.localhost` does not resolve          | Add the `/etc/hosts` entry — `bash install.sh` offers this.                                            |
+| Port 5432 or 6379 already in use                 | A local Postgres or Redis is running. Stop it, or change the published port.                           |
+| `permission denied` on a script                  | `bash install.sh` sets the executable bits; run it, or `chmod +x` the script.                          |
+| Docker asks for `sudo`                           | Add yourself to the `docker` group and log back in.                                                    |
 
 More: `15-TROUBLESHOOTING.md`.
 

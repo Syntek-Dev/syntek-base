@@ -1,6 +1,6 @@
 # The PM Layer — Using `project-management/src/`
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 Twenty-four numbered folders is a lot to meet at once. This explains what each is for, which ones
 you will actually touch, and the two patterns that govern them — so the layer reads as a system
@@ -122,7 +122,7 @@ Two rules people get wrong:
 - **Build from `CONSOLIDATED-IDEAS/`.** A migration written from a stage-1 design reintroduces
   exactly the fragmentation consolidation removed.
 
-### Two-stage — `09-GDPR` … `13-API-DESIGN`
+### Two-stage — `11-QA`, `12-SEO`, `13-API-DESIGN`, `14-LOGGING`
 
 ```text
 PLANNING/  →  IMPLEMENTATION/
@@ -164,7 +164,9 @@ shortcut.
 
 ## Templates, everywhere
 
-Every folder ships a `US000`/`000` template. **Copy it; never start from a blank file.** The
+Almost every folder ships a `US000`/`000` template — `00-ASSETS/` is the exception, and in the
+staged folders (`04`–`08`, `10`) the template sits inside the stage sub-folder rather than at the
+folder root. **Copy it; never start from a blank file.** The
 templates carry the sections that later gates check for — a hand-rolled artefact passes review and
 then fails at the gate that needed the section you did not know about.
 

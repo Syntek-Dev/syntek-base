@@ -120,4 +120,6 @@ point is load-bearing enough that being wrong about it would be expensive.
 
 - [`code/docs/NEGATIVE-SPACE.md`](../../code/docs/NEGATIVE-SPACE.md) — the rule this file answers
 - [`code/docs/DATABASE.md`](../../code/docs/DATABASE.md) — read before any model or migration
-- [`how-to/src/PLATFORM-PROVIDERS.md`](PLATFORM-PROVIDERS.md) — the other per-project answer sheet
+- The other per-project answer sheets, same rule-elsewhere/answer-here split:
+  [`PLATFORM-PROVIDERS.md`](PLATFORM-PROVIDERS.md) · [`PROJECT-PATHS.md`](PROJECT-PATHS.md) ·
+  [`STORE-LISTING.md`](STORE-LISTING.md) (mobile-only)

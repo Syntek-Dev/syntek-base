@@ -533,8 +533,8 @@ LEGAL_APP:
 
 # ── Planning cadence ─────────────────────────────────────────────────────────
 # The sprint point ceiling that triggers the sprint-planning pass. Stories are
-# planned one at a time through workflows 01–14; when the open sprint's accepted
-# story points reach SPRINT_CAPACITY_SP, workflows 15 and 16 run for that sprint
+# planned one at a time through workflows 02–14; when the open sprint's accepted
+# story points reach SPRINT_CAPACITY_SP, workflows 16 and 17 run for that sprint
 # before the next story is planned. The grace value is the hard ceiling a sprint
 # may reach to avoid splitting a story badly — never a routine target.
 # Rules: project-management/docs/PLANNING-GUIDE.md (planning/CADENCE.md).
@@ -543,7 +543,7 @@ SPRINT_CAPACITY_SP:
   type: int
   help: >-
     Story points that fill a sprint and trigger the sprint-planning pass
-    (workflows 15 + 16). Tune to your team's measured velocity after two sprints.
+    (workflows 16 + 17). Tune to your team's measured velocity after two sprints.
   default: 11
 
 SPRINT_GRACE_SP:

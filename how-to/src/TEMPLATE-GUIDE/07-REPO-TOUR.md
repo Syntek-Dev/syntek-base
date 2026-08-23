@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 17/08/2026
+**Last Updated**: 23/08/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -52,7 +52,7 @@ you add a directory, you add both — CI and the documentation gate both check.
 
 ```text
 code/
-├── docs/            ← 33 guides plus 20 sub-directories: architecture, security,
+├── docs/            ← 37 guides plus 20 sub-directories: architecture, security,
 │                      testing, rendering, RLS, tokens, discoverability, visual design
 ├── src/
 │   ├── django/      ← the application
@@ -67,7 +67,7 @@ code/
 An oversized guide splits into a sub-directory beside it and the entry point becomes a thin index
 — that is what the twenty sub-directories are, not a second category of document.
 
-**`code/src/scripts/` is the interface to everything** — around seventy shell scripts, grouped by
+**`code/src/scripts/` is the interface to everything** — around eighty shell scripts, grouped by
 what they do:
 
 | Group                            | Examples                                                                                                                                               |
@@ -76,7 +76,7 @@ what they do:
 | `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                         |
 | `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`                                                                      |
 | `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                     |
-| `audits/`                        | 21 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
+| `audits/`                        | 24 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
 | `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                       |
 | `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                      |
 | `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                 |

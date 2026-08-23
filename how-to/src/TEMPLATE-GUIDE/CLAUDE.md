@@ -14,9 +14,13 @@ and troubleshooting.
 
 ## How to work here
 
-- **Routing:** documentation edits → `global-workflow` skill, `doc-writer` skill. A change
-  to what the template _does_ (a new token, a changed `_task`, a moved file) must land in
-  `copier.yml` first and be reflected here second — never the reverse. <!-- doc-references: template-only -->
+- **Routing:** these are operator guides, so they route to the **`runbook`** skill
+  (`.claude/skills/runbook/`), procedure of record `how-to/workflows/09-write-operator-guide/`,
+  with `global-workflow` for the shared conventions. **Not `doc-writer`**, whose remit is
+  `code/docs/*` — a different audience and a different length standard, and the parent
+  `how-to/src/CLAUDE.md` says so too. A change to what the template _does_ (a new token, a changed
+  `_task`, a moved file) must land in `copier.yml` first and be reflected here second <!-- doc-references: template-only -->
+  — never the reverse.
 - **Model:** Opus for authoring and restructuring these guides and for mechanical touches
   (link fixes, command corrections, tree updates).
 - **Concrete steps:** edit the guide → verify every command by running it → update this

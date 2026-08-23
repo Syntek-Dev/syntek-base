@@ -1,10 +1,10 @@
 # Answering the Questions
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
-Copier asks **thirty-four questions** on a web-only project. The optional surfaces add four more
+Copier asks **thirty-three questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
-desktop app name — thirty-eight if you take all three. Most have a good default. A few are
+desktop app name — thirty-seven if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is <!-- doc-references: template-only -->
@@ -28,7 +28,7 @@ server.
 Keep it short, lowercase, hyphenated, and unambiguous. `acme-portal`, not
 `acme-portal-web-application-v2`.
 
-**Changing it later** means a rename across ~260 occurrences plus database renames, Docker volume
+**Changing it later** means a rename across ~290 occurrences plus database renames, Docker volume
 recreation and new hosts entries. Doable, but a bad afternoon.
 
 ### `ORG_SLUG`
@@ -46,11 +46,11 @@ Bare apex domain, no scheme, no path: `acme.com`. Derives your default from-addr
 `<project-slug>.com`, which is a guess — correct it.
 
 If you do not know the domain yet, put your best guess in; it is a small, well-contained change
-later (58 occurrences, all in documentation and config).
+later (61 occurrences, all in documentation and config).
 
 ### `DATE`
 
-`DD/MM/YYYY`. Stamped into the `**Last Updated**` header of roughly 380 files as the project's
+`DD/MM/YYYY`. Stamped into the `**Last Updated**` header of 338 files as the project's
 baseline.
 
 It is **answered, not computed**, deliberately: it is stored in `.copier-answers.yml` and reused
@@ -177,7 +177,7 @@ file — the template does not create one for you.
 
 ## Django apps
 
-Six questions naming apps by role. **The defaults are almost always right** — press Enter unless
+Five questions naming apps by role. **The defaults are almost always right** — press Enter unless
 your project genuinely calls the thing something else.
 
 | Question            | Default         | Owns                                  |
@@ -193,10 +193,11 @@ project has no user-authored content, keep the `content` default and delete the 
 that mention it afterwards.
 
 Every app above is one **a story has yet to create**, which is what makes the name yours to choose.
-`apps/core/` is not on the list because it already ships literal — it is a house constant, and was
-never really configurable even while a `CORE_APP` question existed to suggest otherwise.
+`apps/core/` and `apps/health/` are not on the list because they already ship literal — house
+constants, and `core` was never really configurable even while a `CORE_APP` question existed to
+suggest otherwise.
 
-**None of these directories exists at baseline.** `apps/` ships with `core` alone; the six answers
+**None of these directories exists at baseline.** `apps/` ships `core` and `health` only; the five answers
 name apps the documentation refers to, and each one is created when a story first needs it — with
 `bash code/src/scripts/development/new-django-app.sh <app_name>`, never `manage.py startapp`,
 which skips the per-model-file structure and the `CONTEXT.md`/`CLAUDE.md` pair.
@@ -234,6 +235,14 @@ all when `INCLUDE_RUST` is true, because Slint is Rust; each `true` also unlocks
 | `INCLUDE_MOBILE`  | The project ships a React Native app. Adds Node, pnpm and the Expo toolchain                            |
 | `INCLUDE_RUST`    | **This repository compiles Rust.** Adds `rustup` as a prerequisite for `uv sync` and a Rust image stage |
 | `INCLUDE_DESKTOP` | The project ships a **native desktop app** (Slint). Only offered when `INCLUDE_RUST` is true            |
+
+The three name questions each `true` unlocks:
+
+| Question           | Default        | Answer it                                                                                                 |
+| ------------------ | -------------- | --------------------------------------------------------------------------------------------------------- |
+| `MOBILE_APP_NAME`  | `PROJECT_NAME` | The label under the app icon on a device. Keep it short — iOS truncates past about 12 characters          |
+| `MOBILE_BUNDLE_ID` | derived        | Reverse-domain, validated. **Immutable once published** to either store — get it right now                |
+| `DESKTOP_APP_NAME` | `PROJECT_NAME` | The window title and executable name. The default is right unless the desktop build is branded separately |
 
 `INCLUDE_RUST` gates **authoring, not consuming** — the distinction that decides the answer. A
 project that merely depends on a prebuilt PyO3 wheel installs it like any other dependency and

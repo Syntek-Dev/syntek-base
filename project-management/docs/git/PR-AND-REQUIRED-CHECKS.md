@@ -90,6 +90,16 @@ stated. Two things qualify a job, and the second is easy to miss:
    guard still works. Break the guard and the job errors instead of reporting, which a required
    check catches and an advisory one does not.
 
+**Each addition is cheap and the total is what costs — so name the total when you add one.**
+Every promotion is argued on its own merits, and every one of them is right; what nobody argues
+is the twenty-first, because no single change is where the cost lands. This is the same shape
+`code/docs/DOCUMENTATION-LENGTH.md` gives the line budget, and it deliberately does **not** get
+the same mechanism: a ratchet needs a measured per-change number and a baseline to diff, and
+"how long a contributor will wait for the set" is neither. What it gets instead is this
+sentence and the count in the table below — **state the size the set will be, not only the name
+being added**, so the number is in front of whoever approves it. Written 23/08/2026 in place of
+building a second ratchet (MAP-BASE-HEALTH, fog of war).
+
 The second is not a new idea here, only a newly stated one: `jest-expo + coverage` is the
 standing example, with `test.yml` recording the reason — _"a skipped job and a
 passing job look different to branch protection, and 'never ran' is not the same claim as

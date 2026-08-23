@@ -1,6 +1,6 @@
 # Troubleshooting
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 What breaks, why, and what to do. Grouped by when it happens.
 
@@ -84,7 +84,7 @@ adding to the exclude list.
 
 ### The `.copier/` staging task failed
 
-One of the seven seed files was not copied — usually because an `_exclude` pattern matched it.
+One of the nine seed files was not copied — usually because an `_exclude` pattern matched it.
 Remember `_exclude` uses **gitignore semantics**: an unanchored `README.md` matches at every
 depth. Root-only patterns need a leading slash.
 
@@ -120,11 +120,13 @@ copier copy --trust --defaults /tmp/tmpl /tmp/check
 
 ### Docker build fails on `COPY pyproject.toml uv.lock ./`
 
-`uv.lock` does not exist. It is deliberately not shipped — the template's package name is a token
-until rendered, so no valid lock can exist upstream.
+`uv.lock` does not exist. The template commits its own, but excludes it from generation — it pins
+`syntek-base`, so an inherited copy would fail `uv sync --frozen` and conflict on every update.
+Yours is written by post-generation task 3, which is non-fatal and skips itself when `uv` is
+absent.
 
 ```bash
-uv lock
+bash code/src/scripts/development/install-backend.sh
 git add uv.lock && git commit -m "chore: add lockfile"
 ```
 
@@ -331,8 +333,9 @@ against a throwaway copy and refuses to apply when it finds anything.
 1. `TEMPLATE-GUIDE/` — the guide for the area you are in
 2. `how-to/docs/DEVELOPMENT.md` and `CLI-TOOLING.md` — environment and commands
 3. `GAPS.md` in your own project — it may be a known gap you recorded
-4. `GAPS.md` in the template repository — it may be a known gap in `syntek-base`
-   itself. It does not ship, deliberately, because the root `GAPS.md` does.
+4. `GAPS.md` in the `syntek-base` repository — it may be a known gap in the template itself. It is
+   a **different file from yours**: `copier.yml` excludes the template's and seeds you a blank one, <!-- doc-references: template-only -->
+   so neither repository can ever read the other's open items
 5. [Open an issue](https://github.com/Syntek-Dev/syntek-base/issues) with the bug template
 
 Security problems go through [private disclosure](https://github.com/Syntek-Dev/syntek-base/security),

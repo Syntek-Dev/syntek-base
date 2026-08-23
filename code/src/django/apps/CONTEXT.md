@@ -60,9 +60,13 @@ the package, its `apps.py`, and its registration in one step, which is why it ex
 than `manage.py startapp` — Django's own command knows nothing about this project's layout.
 
 An app is a Python package registered in `INSTALLED_APPS` as `"apps.<name>"`. Inside it,
-business logic sits in `services.py` (or a `services/` package) and request/response schema
-models in `schemas.py` (or a `schemas/` package), so the views and endpoints above them stay
-thin enough for a second adapter to sit beside the first.
+business logic sits in a `services/` package and request/response schema models in `schemas/`,
+so the views and endpoints above them stay thin enough for a second adapter to sit beside the
+first. **The scaffolder emits both, plus `models/` and `tests/`, each with its documentation
+pair** — corrected 23/08/2026, when it emitted `models/` alone while the app `CLAUDE.md` it
+wrote told the developer to put business logic in `services`. It does **not** emit an `api.py`:
+that convention binds an app with an HTTP surface, and the first endpoint writes it
+(`code/docs/api-design/NINJA-CONVENTIONS.md`).
 
 **Schemas subclass the bases in `apps.core.schemas`, never `ninja.Schema`** — request bodies
 `Schema`, responses `OutSchema` or `ninja.ModelSchema`, `Query(...)` containers

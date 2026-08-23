@@ -109,7 +109,7 @@ The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE
 | [GENERATION.md](how-to/src/TEMPLATE-GUIDE/06-GENERATION.md)                 | You want to know exactly what Copier does to the tree                |
 | [ANSWERS.md](how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md)                       | Deciding how to answer the Copier questions                          |
 | [UPDATING.md](how-to/src/TEMPLATE-GUIDE/14-UPDATING.md)                     | Pulling later template improvements into a live project              |
-| [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)                   | Finding your way around the three layers                             |
+| [REPO-TOUR.md](how-to/src/TEMPLATE-GUIDE/07-REPO-TOUR.md)                   | Finding your way around the four layers                              |
 | [STACK.md](how-to/src/TEMPLATE-GUIDE/02-STACK.md)                           | You want to know why each piece was chosen                           |
 | [CUSTOMISING.md](how-to/src/TEMPLATE-GUIDE/11-CUSTOMISING.md)               | Working out what is yours to change and what is load-bearing         |
 | [CLAUDE-CODE.md](how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md)               | Understanding the skill and hook configuration                       |
@@ -118,6 +118,7 @@ The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE
 | [FIRST-FEATURE.md](how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md)           | Walking a feature from idea to merged PR                             |
 | [DEPLOYMENT.md](how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md)                 | Taking it to a server                                                |
 | [TROUBLESHOOTING.md](how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md)       | Something went wrong                                                 |
+| [GUIDE-TO-SKILLS.md](how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md)          | Working out which skill does a job, and what to type                 |
 
 Reference material behind the guides:
 [`TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md) (the token contract) and

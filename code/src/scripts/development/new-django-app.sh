@@ -54,6 +54,22 @@ rm -f "${APP_DIR}/models.py"
 mkdir -p "${APP_DIR}/models"
 touch "${APP_DIR}/models/__init__.py"
 
+# The rest of this project's app layout, which `startapp` knows nothing about. Added
+# 23/08/2026 (MAP-BASE-HEALTH N-026): the script emitted `models/` alone while the app
+# CLAUDE.md it writes told the developer to put business logic in `services` — a directory
+# it did not create. `apps/CONTEXT.md` names the layout (`services`, `schemas`, `tests`) and
+# both shipped apps carry it, so the scaffold now produces what the documentation instructs
+# rather than Django's default minus two files.
+#
+# `api.py` is deliberately NOT emitted. The convention in
+# `code/docs/api-design/NINJA-CONVENTIONS.md` binds an app that HAS an HTTP surface, and an
+# empty router in an app with no endpoints is a file the convention would then have to
+# defend — `apps/health` has already declined it in practice. The first endpoint writes it.
+for pkg in services schemas tests; do
+  mkdir -p "${APP_DIR}/${pkg}"
+  touch "${APP_DIR}/${pkg}/__init__.py"
+done
+
 # Fix apps.py: startapp writes just "<app_name>"; we need "apps.<app_name>"
 sed -i "s/name = '${APP_NAME}'/name = 'apps.${APP_NAME}'/" "${APP_DIR}/apps.py"
 
@@ -67,12 +83,13 @@ TODO: Describe the purpose and responsibilities of the \`${APP_NAME}\` app.
 
 \`\`\`text
 apps/${APP_NAME}/
-├── __init__.py
-├── apps.py
-├── migrations/
-│   └── __init__.py
-└── models/
-    └── __init__.py
+├── __init__.py      ← package marker
+├── apps.py          ← the AppConfig, registered as apps.${APP_NAME}
+├── migrations/      ← generated schema history; never hand-edited
+├── models/          ← one model per module, re-exported from __init__.py
+├── schemas/         ← request and response schemas, subclassing apps.core.schemas
+├── services/        ← the business logic; views and endpoints stay thin above it
+└── tests/           ← the app's suite, run through code/src/scripts/tests/*.sh
 \`\`\`
 
 ## Cross-references
@@ -84,13 +101,15 @@ CTXEOF
 cat > "${APP_DIR}/migrations/CONTEXT.md" <<CTXEOF
 # code/src/django/apps/${APP_NAME} — migrations
 
-Auto-generated Django migration files for the \`${APP_NAME}\` app.
+Auto-generated Django migration files for the \`${APP_NAME}\` app — the schema's audit
+trail, written by \`migrate.sh make\` and read rather than edited.
 
-## Rules
+## Directory Tree
 
-- Never edit migration files by hand — use \`code/src/scripts/database/migrate.sh make\`.
-- Never delete or modify applied migrations — squash if needed, never rewrite history.
-- Always run \`code/src/scripts/database/migrate.sh check\` in CI.
+\`\`\`text
+apps/${APP_NAME}/migrations/
+└── __init__.py      ← package marker; generated NNNN_*.py land beside it
+\`\`\`
 
 ## Cross-references
 
@@ -107,15 +126,10 @@ Model definitions for the \`${APP_NAME}\` app.
 
 \`\`\`text
 apps/${APP_NAME}/models/
-└── __init__.py
+└── __init__.py      ← re-exports every model defined beside it, one per module
 \`\`\`
 
-## Rules
-
-- Export all models from \`__init__.py\` — one model per file.
-- Invariants belong in the database: FKs with explicit delete behaviour, \`NOT NULL\`,
-  \`UNIQUE\`, and \`CHECK\` on every bounded column (\`code/docs/DATABASE.md\`).
-- Encrypt PII at the field level before storing it (\`code/docs/ENCRYPTION-GUIDE.md\`).
+TODO: add a row per model as it lands, and delete this line once one has.
 
 ## Cross-references
 
@@ -239,6 +253,81 @@ The persistent domain model for \`${APP_NAME}\` — one model per module, re-exp
 - **Hand-written:** every \`.py\` here.
 - Modules \`snake_case.py\` named for the model they define; models \`PascalCase\`.
 CLAUDEEOF
+
+# The three packages the project's layout requires, each with the pair every directory under
+# code/src/ carries. Written short on purpose: an empty package's pair states the contract it
+# is waiting to hold, and the app's first real change fills it in.
+for pkg in services schemas tests; do
+  case "$pkg" in
+    services) purpose="The business logic for \`${APP_NAME}\` — one module per cohesive operation set."
+              rules="- **The endpoint and the view stay thin.** Orchestration, invariants and writes live here,
+  so a second adapter (\`/mcp/\`, a management command) can sit beside the first.
+- **Every method doing two or more writes uses \`transaction.atomic()\`.**
+- Raise the taxonomy's exceptions (\`apps.core.services.errors\`); never return an error shape." ;;
+    schemas)  purpose="The request and response schemas for \`${APP_NAME}\`'s HTTP surface."
+              rules="- **Subclass the bases in \`apps.core.schemas\`, never \`ninja.Schema\`** — request bodies
+  \`Schema\`, responses \`OutSchema\`, \`Query(...)\` containers \`QuerySchema\`. Ruff \`TID251\`
+  fails the build on a direct import.
+- A success response **is** its \`OutSchema\`; there is no envelope around it." ;;
+    tests)    purpose="The test suite for \`${APP_NAME}\`, run through \`code/src/scripts/tests/*.sh\`."
+              rules="- **Never invoke \`pytest\` directly** — every run goes through the scripts.
+- A test asserts behaviour at a boundary, not the implementation behind it.
+- The coverage floor is owned by \`code/docs/testing/COVERAGE.md\`; do not restate a number here." ;;
+  esac
+
+  cat > "${APP_DIR}/${pkg}/CONTEXT.md" <<CTXEOF
+# code/src/django/apps/${APP_NAME} — ${pkg}
+
+${purpose}
+
+## Directory Tree
+
+\`\`\`text
+apps/${APP_NAME}/${pkg}/
+└── __init__.py      ← package marker; modules land beside it
+\`\`\`
+
+TODO: describe each module as it lands, and delete this line once one has.
+
+## Cross-references
+
+- \`code/src/django/apps/${APP_NAME}/CONTEXT.md\` — app overview
+- \`code/src/django/apps/CONTEXT.md\` — the app registry and this layout
+CTXEOF
+
+  cat > "${APP_DIR}/${pkg}/CLAUDE.md" <<CLAUDEEOF
+@./CONTEXT.md
+
+# CLAUDE.md — apps/${APP_NAME}/${pkg}/
+
+Read order: \`.claude/CLAUDE.md\` → \`.claude/MEMORY.md\` → this folder's \`CONTEXT.md\`
+(imported above) → this file.
+
+## Purpose (one line)
+
+${purpose}
+
+## How to work here
+
+- **Routing:** \`backend\` agent (Opus) with the \`stack-django\` skill; start from the
+  matching \`code/workflows/NN-…/\` procedure.
+- **Model:** Opus.
+- **Concrete steps:** add \`<name>.py\` → export it from \`__init__.py\` where the package
+  is imported as a unit → update this folder's \`CONTEXT.md\` in the same change.
+- **Definition of done:** the module is covered, the pair describes it, and nothing above
+  it reaches past this layer.
+
+## Guardrails
+
+${rules}
+- Files **≤ 750 lines (800 grace)**; split into modules beyond that.
+
+## Output & naming
+
+- **Hand-written:** every \`.py\` here.
+- Modules \`snake_case.py\`; documentation \`SCREAMING-SNAKE-CASE.md\`.
+CLAUDEEOF
+done
 
 echo ""
 echo "Done. apps/${APP_NAME}/ scaffolded."

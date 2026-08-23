@@ -1,6 +1,6 @@
 # Prerequisites
 
-**Last Updated**: 16/08/2026
+**Last Updated**: 23/08/2026
 
 What must be on your machine before generating a project, and how to verify it.
 

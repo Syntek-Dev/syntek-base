@@ -1,6 +1,6 @@
 # The Claude Code Setup
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 What ships in `.claude/`, how it routes work, and what to expect from it. This is the part of the
 template with the least equivalent elsewhere, so it is worth understanding before you fight it.
@@ -172,8 +172,8 @@ Two modes, deliberately never in the same session:
 
 - **CHART** (once) — pin the destination and what is consciously out of scope, explore breadth-first
   to surface every knowable open decision, wire the blocking edges so the unblocked ones are
-  visible, write `MAP-<EPIC>.md` into the plans folder, fire the research nodes, and **stop**.
-  Charting settles nothing; that is the discipline.
+  visible, write `MAP-<EPIC>.md` into `project-management/src/01-FEATURE-MAPS/`, fire the research
+  nodes, and **stop**. Charting settles nothing; that is the discipline.
 - **RESOLVE** (each later session) — load the map, take the next unblocked node, settle it by its
   type, **graduate** the outcome into its real artefact, then redraw the frontier.
 
@@ -206,19 +206,30 @@ Silent compaction loses decisions; a written handoff does not.
 
 ## Hooks
 
+Six scripts in `.claude/hooks/`, wired to five Claude Code events in `settings.json`:
+
 | Hook                           | Fires                                                                                                                        |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
 | `pre-pr-check.sh`              | Before `gh pr create` — 8 gates: cloc, lockfiles, format, lint, stubs, typecheck, tests, security. Blocks the PR on failure. |
+| `template-docs-readonly.sh`    | Before any `Edit`/`Write` — makes `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md` read-only **in your project**, never here       |
 | `post-pr-comment.sh`           | Posts gate results as a PR comment                                                                                           |
+| `graph-update.sh`              | After every `Edit`/`Write`/`Bash` — keeps the code-review-graph in step with the tree                                        |
 | `context-threshold-handoff.sh` | Every prompt — measures context use and advises at 50%, insists at 75%                                                       |
-| `pre-compact-handoff.sh`       | Intercepts compaction                                                                                                        |
+| `pre-compact-handoff.sh`       | Intercepts compaction, on both the `auto` and `manual` matchers                                                              |
 
 `context-threshold-handoff.sh` assumes a **1M-token window**. On a smaller plan, set
 `CLAUDE_CONTEXT_WINDOW` in your environment or it fires from the opening prompt.
 
-Two more hooks are registered directly in `settings.json` rather than as scripts:
-`code-review-graph update --skip-flows` after every `Edit`/`Write`/`Bash`, and
-`code-review-graph status` at session start.
+One hook is a bare command rather than a script: `code-review-graph status` at `SessionStart`.
+
+## Ultracode and dynamic workflows
+
+`settings.json` also ships `ultracode: true`, `effortLevel: xhigh` and `enableWorkflows: true`, so
+substantial work is orchestrated with the **Workflow tool**. That supplies the fan-out, the
+adversarial verification and the synthesis — **not the procedure**. The steps, gates and order come
+from the numbered `**/workflows/NN-…/` folder that matches the task, and a phase invented where an
+internal workflow already covers it is a second, unreviewed copy of a gate
+(`.claude/CLAUDE.md` Section 2.7).
 
 ## Helper plugins
 

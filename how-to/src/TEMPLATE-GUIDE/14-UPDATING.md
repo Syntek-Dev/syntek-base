@@ -1,6 +1,6 @@
 # Updating — Pulling Template Changes into a Live Project
 
-**Last Updated**: 14/08/2026
+**Last Updated**: 23/08/2026
 
 A project generated with Copier stays connected to the template. When `syntek-base` gains a fix,
 you can pull it into a project that has been diverging for months.
@@ -62,7 +62,7 @@ bash code/src/scripts/development/template-update.sh --apply
 Useful variants:
 
 ```bash
-template-update.sh --ref v3.1.1                 # preview a specific tag
+template-update.sh --ref v7.2.3                 # preview a specific tag
 template-update.sh -- --data KEY=value          # answer a new question with no default
 template-update.sh --keep-scratch               # leave the copy on disk to poke at
 ```
@@ -74,7 +74,7 @@ Underneath, it is ordinary Copier, and you can drive that directly if you prefer
 
 ```bash
 copier update --defaults                 # keep every previous answer, no prompts
-copier update --vcs-ref=v3.1.1           # update to a specific tag rather than the latest
+copier update --vcs-ref=v7.2.3           # update to a specific tag rather than the latest
 copier update --pretend                  # dry run — show what would change
 copier update --conflict inline          # write conflicts as inline markers rather than .rej
 ```
@@ -264,7 +264,7 @@ bash code/src/scripts/tests/backend.sh
 If `pyproject.toml` changed, re-lock and rebuild:
 
 ```bash
-uv lock
+bash code/src/scripts/development/install-backend.sh
 bash code/src/scripts/development/server.sh build
 ```
 
@@ -297,7 +297,7 @@ restores it. To keep it gone, add it to `_exclude` in a fork, or delete it again
 update and accept the friction.
 
 **`DATE` is stable on purpose.** It is an answered value, not a computed one, so an update does
-not rewrite roughly 380 `**Last Updated**` headers to today. If you _want_ to re-stamp them,
+not rewrite roughly 350 `**Last Updated**` headers to today. If you _want_ to re-stamp them,
 change `DATE` in `.copier-answers.yml` and update.
 
 **Renames look like delete-plus-add.** If the template moves a file you had edited, the merge

@@ -136,6 +136,43 @@ already met and reopen this entry against a test image that never leaves the run
 recorded the same slip in the other direction on 16/08/2026, when a `grep 'docker build'` could
 not match `docker compose … build`; one grep dialect is not a population.
 
+### SL-3 — Three of the four security runbooks have no subject a template can rehearse against
+
+**Added 23/08/2026, closing `MAP-BASE-HEALTH.md` N-021 as _accepted_ rather than _fixed_.**
+`code/docs/security/MONITORING-AND-INCIDENT.md` names four security-specific recoveries as
+unwritten: account compromise via `admin_db`, audit-log tampering, emergency key rotation, and
+Valkey cache compromise. The node's own gate was that **each is performed once against
+non-production before it is written down**, and three of them have nothing to perform against.
+
+**Measured 23/08/2026, in this repository:**
+
+| Runbook                           | Subject here                                                                                            |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Account compromise via `admin_db` | **Absent** — `config/settings/base.py` declares a single `default` alias; there is no second connection |
+| Audit-log tampering               | **Absent** — no audit model, no migration, and the string `audit` in no `.py` under `code/src/django/`  |
+| Emergency key rotation            | **Absent** — `apps.core.encryption` does not exist and `cryptography` is declared but imported nowhere  |
+| Valkey cache compromise           | **Present** — `CACHES` is wired at `base.py:140`, with a `cache` service in the dev and test stacks     |
+
+**Why accepted and not scheduled.** All three absent subjects are things a **generated project
+builds**, not things this template withholds. A runbook written here would be written against an
+imagined implementation — the concrete shell commands for revoking a token in a connection that
+does not exist — which is `Batch E` by its own definition: a shipped document routing to
+something that is not there. It would also be unrehearsable, failing the node's own criterion in
+the same breath.
+
+**The fourth was not split off, and that is deliberate.** Valkey has a subject and its runbook
+could be written. It is held with the other three because `MONITORING-AND-INCIDENT.md` names the
+four in one paragraph as one gap: shipping one of four would leave that paragraph three-quarters
+true, which reads worse than a paragraph that is honestly none. The practice they sit under —
+declare, hand over, stand down, postmortem — **does** ship, at
+`how-to/docs/INCIDENT-PRACTICE.md`, and that file says in terms that it is the general practice
+and not these four runbooks.
+
+**Reopens when** an application layer gives any of the three a subject: a second database
+connection, an audit model, or a field-encryption module. Each reopens only its own row — the
+first project to build one writes that runbook against the thing it built, which is the only
+order in which it can be rehearsed.
+
 ---
 
 ## N-035 — settled and built, 16/08/2026
