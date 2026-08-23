@@ -211,8 +211,28 @@ EXCL_FIND=(
   -path "*/.git/*" -o
   -path "*/staticfiles/*" -o
   -path "*/static/vendor/*" -o
-  -path "*/rust/target/*"
+  -path "*/rust/target/*" -o
+  -path "*/improvement-architecture/*" -o
+  -path "*/scripts/reports/*" -o
+  -path "*/scripts/*/reports/*"
 )
+
+# ADDED 23/08/2026: the three GENERATED-REPORT trees. This audit walks the filesystem and
+# has never read .gitignore, so a gitignored artefact was measured as if it were source —
+# and because .html is counted (see below), the worst offenders were the HTML reports this
+# repository's own tooling writes. A 1128-line `improve-codebase-architecture` report was
+# failing gate [1/8] outright; `scripts/tests/reports/` was 65 lines from doing the same on
+# the next coverage run. A gate that a tool breaks by running is a gate that gets ignored.
+#
+# SCOPED, NOT NAMED `*/reports/*`. That broader glob is the obvious version and it is wrong:
+# `reports` is a plausible Django app name in a project that took the `reporting` skill, and
+# pruning `apps/reports/` would silently stop counting real source. Anchoring both patterns
+# under `scripts/` matches where the generated folders actually live — the same set
+# `CONTEXT.md` exempts from the documentation pairing rule — and reaches nothing else.
+#
+# NOT FIXED BY READING .gitignore, deliberately. "Untracked" and "not source" are different
+# claims: a file a developer has not staged yet is still source, and a gate that stopped
+# seeing it would go quiet exactly when a new oversized module appears.
 
 # The 750/800 limit is on source files, and in this stack the frontend IS .html and
 # .css — Django templates, django-component templates, and token CSS. Leaving them out
@@ -283,7 +303,17 @@ CLOC_OUTPUT=""
 if $CLOC_AVAILABLE; then
   # `target` is the Cargo build tree — thousands of generated files that would dominate
   # the language breakdown and tell you nothing about the code anyone wrote.
-  CLOC_EXCLUDE_DIRS="node_modules,.venv,__pycache__,migrations,.next,generated,dist,staticfiles,vendor,target"
+  #
+  # `improvement-architecture` joins it 23/08/2026 for the same reason the per-file scan
+  # prunes it above: a single architecture-review report is ~1000 lines of generated HTML,
+  # which lands in the breakdown as if someone had written a very large template.
+  #
+  # `reports` is NOT added, and cannot be. `--exclude-dir` matches on the directory's BASE
+  # NAME, not a path, so excluding it here would also drop a project's `apps/reports/` —
+  # the exact confusion the per-file globs above are anchored under `scripts/` to avoid.
+  # The residual overcount is confined to this informational breakdown; the gate itself,
+  # which is the per-file scan, is unaffected.
+  CLOC_EXCLUDE_DIRS="node_modules,.venv,__pycache__,migrations,.next,generated,dist,staticfiles,vendor,target,improvement-architecture"
 
   CLOC_OUTPUT=$(
     cloc "$SCAN_ROOT" \
