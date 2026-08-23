@@ -39,7 +39,7 @@ consumes this API; none of them changes the rule above for the web.
 │   └── skills/                      ← internalised stack, workflow, and document skills
 ├── .agents/                         ← vendored third-party skills (Cloudinary)
 ├── .github/                         ← CI workflows and the template-integrity scripts
-│   └── workflows/                   ← CI: syntax, tests, audits, Claude gate, ClickUp sync
+│   └── workflows/                   ← CI: syntax, tests, audits, Claude gate, ClickUp sync (opt-in)
 ├── code/                            ← source code, coding standards, coding workflows
 │   ├── CONTEXT.md                   ← code layer entry point
 │   ├── CLAUDE.md
@@ -73,7 +73,7 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── CLAUDE.md
 │   ├── REFERENCES.md
 │   ├── docs/                        ← PM reference guides (git, versioning, SEO, GDPR, QA)
-│   ├── export/                      ← ClickUp sync artefacts and task map
+│   ├── export/                      ← client deliverables + ClickUp sync artefacts (opt-in)
 │   ├── src/                         ← live PM artefacts (00-ASSETS … 23-INCIDENTS)
 │   └── workflows/                   ← step-by-step PM workflows (01–24)
 ├── handoffs/                        ← session handoff documents (auto-compaction replacement)
@@ -172,7 +172,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **7.2.3** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.3.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

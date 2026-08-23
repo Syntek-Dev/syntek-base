@@ -1,9 +1,71 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.2.3 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.3.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.3.0 — 23/08/2026
+
+**Status:** Minor — two of the automated checks gain something new they can catch, the command that
+creates a new part of the application now creates all of it, and a set of checks that had been
+failing for reasons unrelated to the work being checked is working again. Nothing you have already
+built behaves differently.
+
+### A check that now looks at what actually reaches your project
+
+This repository is a starting point you copy from, and some of its files are deliberately left
+behind when you copy. Until now nothing verified that the guides you keep only point at files you
+also keep — so a guide could arrive in your project referring to something that was never copied
+across, and reading like solid evidence while pointing nowhere.
+
+There is now a check for exactly that. Every reference in every guide is tested against the list of
+what gets left behind, and anything that would dangle has to be marked as deliberate. Eighty-three
+places needed attention, and all of them were dealt with before the check went live, so its first
+run is green rather than a wall of complaints. Six of them turned out to be pointing at the wrong
+file entirely — a reference meant for the security guide was quietly resolving to a licence
+document — and those now point where they were always meant to.
+
+### Leftover working notes no longer reach published guides
+
+When a document is written in a conversation with an assistant, fragments of that conversation's
+own plumbing can end up pasted into the file. Ten had been sitting in eight published guides for a
+fortnight without anything noticing them. The existing check for leftover merge markers now catches
+this second kind of debris as well, and every guide was cleaned before the check shipped.
+
+### Creating a new part of the application now creates all of it
+
+The command that sets up a new section of the application was leaving out three of the folders its
+own instructions then told you to use — so the first thing you did after running it was create by
+hand what it should have made for you. It now makes them, together with their documentation, and
+that documentation passes the project's own quality checks for the first time. One folder is still
+deliberately not created: it only belongs to a section that serves web requests, and creating an
+empty one everywhere would mean defending a file nobody asked for.
+
+### The automated checks are working again
+
+Several checks that run on every change had been failing for reasons that had nothing to do with
+the change being checked:
+
+- Two were wiping out a setting they existed to provide, so the test environment could not start at
+  all — here, on a copy of this repository, or in a project generated from it.
+- One counted machine-generated reports as if they were code somebody had written, so simply
+  producing a report could fail a size limit.
+- One checked the formatting of files that are never saved to the repository and are not allowed to
+  be edited by hand.
+- The API tests were aimed at an address that only exists inside the container network, and were
+  passing an option to a tool that has never had one by that name.
+
+All are fixed. The API test job now calls the script that already knew how to run these tests,
+which makes it sixty lines shorter and one fewer thing to keep in step.
+
+### Housekeeping
+
+Two planning maps finished their work and have been removed. Everything they had established was
+first written into the files that needed it, in those files' own words, so nothing was lost — the
+standard being applied is that no document should point at something you cannot open.
 
 ---
 
