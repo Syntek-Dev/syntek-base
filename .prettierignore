@@ -31,6 +31,12 @@ pnpm-lock.yaml
 code/src/scripts/**/reports/
 code/src/scripts/reports/
 
+# /improve-codebase-architecture report output — the same class as the reports/ folders above,
+# and the one instance that was never added. The directory's own .gitignore holds `*.html`, so
+# no report is tracked, none can reach a diff, and CLAUDE.md forbids hand-editing one; Prettier
+# checked them anyway, and the format gate failed on files nobody wrote and nobody may fix.
+code/src/improvement-architecture/*.html
+
 # Cargo build output — thousands of generated .json/.rs files, gitignored and machine-
 # specific. Rust source itself is formatted by `cargo fmt` via scripts/rust/lint.sh;
 # Prettier has no business in either.
