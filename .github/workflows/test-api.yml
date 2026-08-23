@@ -33,9 +33,10 @@ jobs:
       pull-requests: write
 
     env:
-      COMPOSE_FILE: code/src/docker/docker-compose.test.yml
-      BRUNO_ENV: ${{ github.event.inputs.env || 'docker' }}
-      COLLECTION: /workspace/code/src/tests/api
+      # COMPOSE_FILE, BRUNO_ENV and COLLECTION are gone with the hand-rolled steps: api.sh
+      # owns the compose file, defaults to the `host` environment a runner can actually reach,
+      # and resolves the collection from its own location. COLLECTION was `/workspace/...` — a
+      # path inside the container, left over from when Bruno ran in one.
       # Seeded into the fixture users AND sent by Bruno at login — must be identical, or
       # adminLogin returns "Email or password incorrect". Fall back to the non-secret test
       # defaults (also used by docker-compose.test.yml) when the secrets are not configured.
@@ -94,104 +95,39 @@ jobs:
           cp code/src/docker/.env.test.example code/src/docker/.env.test
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY || 'ci-ephemeral-not-for-production-0000000000' }}" >> code/src/docker/.env.test
 
-      - name: Build images
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE build django-test
-
-      - name: Start db and cache
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE up -d db cache
-
-      # WHY BOTH WAIT LOOPS LOOK LIKE THIS. Three constraints, each of which was breached
-      # here at once, and each of which fails SILENTLY when breached.
+      # ONE STEP, because code/src/scripts/tests/api.sh already is this procedure — and
+      # `.claude/CLAUDE.md` makes it non-negotiable that dev operations run through the
+      # scripts rather than being re-typed into a workflow. What stood here was a hand-rolled
+      # second copy that had drifted from the script in every way that matters, and each
+      # divergence was its own red run:
       #
-      # 1. THE PROBE EXPANDS INSIDE THE CONTAINER — `sh -c` plus single quotes. A copier
-      #    token is not a name in a shell word: its delimiters are legal and ACTIVE, so
-      #    `-U` followed by one is a redirection, the runner goes looking for a file, the
-      #    probe never executes and the loop cannot tell. Expanding on the runner instead
-      #    is the same trap one step further on — this job's `env:` sets no POSTGRES_USER,
-      #    so a double-quoted "$POSTGRES_USER" would pass an empty string and fail open.
-      #    Single quotes keep the expansion container-side, which is exactly what
-      #    docker-compose.test.yml's healthcheck achieves with `$$`.
+      #   * it started `db cache django-test` and NOT nginx, then pointed Bruno at the
+      #     `docker` environment — whose api_url is `http://django-test:8000`, a compose
+      #     service name resolvable only from inside the network. Bruno runs on the RUNNER,
+      #     so it failed `getaddrinfo EAI_AGAIN django-test`. api.sh starts nginx (published
+      #     on 127.0.0.1:83) and defaults to `--env host`, which is what a host runner needs.
+      #   * `host`'s own api_url is `http://test.<%PROJECT_SLUG%>.localhost:83`, still an
+      #     unrendered Copier token in syntek-base — so api.sh detects that and falls back to
+      #     `http://localhost:83`, explicitly "in CI as well, where nobody is present to set
+      #     the override". The workflow had no such branch and could not have had one.
+      #   * two hand-rolled 30x2s wait loops instead of `up --wait`, which reads the compose
+      #     healthchecks that are already defined.
+      #   * a stale NOTE claiming the fixture-user seed command was gone. api.sh probes for
+      #     it and seeds when present, which is the behaviour the note said was missing.
+      #   * no teardown. api.sh traps EXIT and brings the stack down with its volumes.
       #
-      # 2. THE LOOP MUST END `exit 1`. `for ... && break ... done` with no failure path
-      #    exits 0 whether or not the service came up, so the fault surfaces at the first
-      #    step that CAN fail — two minutes later, in another file, as somebody else's bug.
-      #    test-e2e.yml carries the same shape written correctly.
-      #
-      # 3. `exec -T`. Every other `docker compose exec` in this repository has it; these
-      #    two were the only ones without.
-      - name: Wait for database
+      # api.sh exits 0 on an empty collection, 1 on test failures, 2 on script error, so the
+      # job's own pass/fail is unchanged. `--output` must sit inside the project root.
+      - name: Run the Bruno API suite
         if: steps.detect.outputs.present == 'true'
+        env:
+          BRUNO_VAR_test_password: ${{ env.API_TEST_PW }}
+          BRUNO_VAR_limited_password: ${{ env.API_LIMITED_PW }}
         run: |
-          for i in $(seq 1 30); do
-            if docker compose -f $COMPOSE_FILE exec -T db \
-              sh -c 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"'; then
-              echo "db is up"; exit 0
-            fi
-            echo "Waiting for db... ($i/30)"
-            sleep 2
-          done
-          echo "db did not come up in 60s" >&2
-          docker compose -f $COMPOSE_FILE logs db || true
-          exit 1
-
-      - name: Start backend
-        if: steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE up -d django-test
-
-      # /health/ is the dedicated liveness route (apps.health), and the one this stack's own
-      # healthcheck probes. /control/ is Django's admin behind the CONFIGURABLE
-      # DJANGO_ADMIN_PATH: its 302 proved liveness by accident, and a deployment that moves
-      # the prefix breaks the probe for a reason nobody would look for here.
-      - name: Wait for backend
-        if: steps.detect.outputs.present == 'true'
-        run: |
-          for i in $(seq 1 30); do
-            if docker compose -f $COMPOSE_FILE exec -T django-test \
-              curl -sf -o /dev/null http://localhost:8000/health/; then
-              echo "backend is up"; exit 0
-            fi
-            echo "Waiting for backend... ($i/30)"
-            sleep 2
-          done
-          echo "backend did not come up in 60s" >&2
-          docker compose -f $COMPOSE_FILE logs django-test || true
-          exit 1
-
-      # NOTE: the API test users were seeded by a management command that the Django
-      # baseline no longer carries. Reinstate a seed step alongside the first
-      # authenticated endpoint, or the authenticated requests will fail at login.
-
-      # `working-directory` rather than `--cwd`: the flag does not exist in @usebruno/cli v4
-      # (`bru run --help` lists no such option) and the CLI exits 1 on "Unknown argument: cwd",
-      # so the step failed after the whole Docker stack was already up. bru resolves the
-      # collection from the working directory — the one holding bruno.json — which is what
-      # `--cwd` was reaching for. Report paths are absolute via $GITHUB_WORKSPACE so the
-      # artefact upload and the PR-comment steps, which run at the repository root, still find
-      # them; a relative path would now land inside the collection.
-      - name: Run Bruno API tests
-        if: steps.detect.outputs.present == 'true'
-        working-directory: code/src/tests/api
-        run: |
-          mkdir -p "$GITHUB_WORKSPACE/reports/api"
-          FOLDER="${{ github.event.inputs.folder }}"
-          RUN_PATH="${FOLDER:-.}"
-          # `-r` is required: without it, an explicit path (".") runs only the .bru files in
-          # that directory, not subfolders — which is why the suite previously reported a single
-          # request. The CLI honours neither bruno.json `ignore` nor `meta { skip }`; exclusion
-          # is by tag. `manual` = cannot pass in a normal run (a rate-limit probe). `wip` =
-          # blocked on test data or a service this stack does not stand up. NEITHER TAG IS IN
-          # USE: the collection is `health/` alone and carries no `tags` block, so this flag
-          # excludes nothing today — it is the lever, reserved before the first request needs
-          # it, and never evidence that something was skipped. The request template lives
-          # outside the collection root so recursion never executes it.
-          BRUNO_VAR_test_password="$API_TEST_PW" \
-          BRUNO_VAR_limited_password="$API_LIMITED_PW" \
-          pnpm exec bru run -r "$RUN_PATH" \
-            --env "$BRUNO_ENV" \
-            --exclude-tags manual,wip \
-            --reporter-json "$GITHUB_WORKSPACE/reports/api/results.json"
+          bash code/src/scripts/tests/api.sh \
+            --output "$GITHUB_WORKSPACE/reports/api" \
+            ${{ github.event.inputs.env && format('--env {0}', github.event.inputs.env) || '' }} \
+            ${{ github.event.inputs.folder && format('--folder {0}', github.event.inputs.folder) || '' }}
 
       - name: Upload test results
         if: always() && steps.detect.outputs.present == 'true'
@@ -246,6 +182,6 @@ jobs:
           header: api-tests
           path: reports/api/comment.md
 
-      - name: Tear down
-        if: always() && steps.detect.outputs.present == 'true'
-        run: docker compose -f $COMPOSE_FILE down -v
+      # No tear-down step, for the reason claude.yml's backend-coverage job gives verbatim:
+      # api.sh traps EXIT and brings the stack down with its volumes on every path, and a
+      # second `down -v` here would be another place that knows how this stack is composed.
