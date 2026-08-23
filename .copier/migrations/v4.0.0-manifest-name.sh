@@ -11,8 +11,9 @@
 # file carries the house constant `syntek-base`, and a copier `_task` rewrites that literal
 # to the project's slug at generation.
 #
-# WHY THAT BREAKS AN EXISTING PROJECT. `_tasks` run on `copy` and never on `update`. Your
-# project's manifest holds your slug, put there by the old token render. Copier updates by
+# WHY THAT BROKE AN EXISTING PROJECT. The branding `_task` was gated to `copy`, so it did not
+# run on an update. Your project's manifest holds your slug, put there by the old token
+# render. Copier updates by
 # applying the difference between the OLD template render and the NEW one — and that
 # difference is "your slug becomes syntek-base". It applies cleanly, raises no conflict,
 # and the update reports success with your manifest now claiming to be the template.
@@ -29,6 +30,12 @@
 # Anchored to the exact literal `name = "syntek-base"` rather than `^name = `, because
 # [project] is not the only table in this file that could carry a name key and a loose
 # pattern would rewrite the first one it met.
+#
+# NOW A BACKSTOP (23/08/2026). The branding task in copier.yml is ungated and runs on update
+# too, ahead of `uv lock`, so on a current template the manifest is already correct by the
+# time this fires and it exits at the grep below. It stays because it is the only cure for a
+# project whose update ran under a template that still gated that task — and because being a
+# no-op costs one grep.
 #
 # Runs automatically as a copier `_migrations` entry when an update crosses v4.0.0. Safe to
 # run by hand afterwards: it is idempotent, and a manifest already naming this project is

@@ -12,11 +12,11 @@
 # DRY RUN unless CLICKUP_SYNC_APPLY=1 AND CLICKUP_API_TOKEN + a target list are set.
 #
 # Target list: CLICKUP_LIST_ID is tried first; if that id is unreachable, the script
-# falls back to the 'List' list (or the first list) under CLICKUP_FOLDER_ID.
+# falls back to a list named 'List' (or the first list) under CLICKUP_FOLDER_ID.
 #
 # Env:
 #   CLICKUP_API_TOKEN        personal/OAuth token             (required to apply)
-#   CLICKUP_LIST_ID  target ClickUp List id (List) (preferred target)
+#   CLICKUP_LIST_ID          target ClickUp List id           (preferred target)
 #   CLICKUP_FOLDER_ID        folder to resolve the list from  (fallback if the list id fails)
 #   CLICKUP_STATUS_MAP       JSON {repo status -> CU status}  (optional; default identity —
 #                            the source stories already use ClickUp's status vocabulary)
@@ -127,7 +127,7 @@ def api(method, path, payload=None):
         fail(f"ClickUp {method} {path} -> {e.code}: {e.body}")
 
 def resolve_list_id():
-    """Target List id: CLICKUP_LIST_ID if reachable, else the 'List' list (or the
+    """Target List id: CLICKUP_LIST_ID if reachable, else a list named 'List' (or the
     first list) under CLICKUP_FOLDER_ID. Returns (list_id, human-readable target description)."""
     if env_list_id:
         try:

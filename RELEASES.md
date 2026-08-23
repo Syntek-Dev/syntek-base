@@ -1,9 +1,69 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.4.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.4.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.4.1 — 23/08/2026
+
+**Status:** Patch — pulling template changes into a project that was several versions behind could
+stop halfway and leave it in a state it reported as a failure. It no longer can. If an update has
+already failed on you, the last section says how to finish it.
+
+### An update that stopped halfway, and stopped at the worst possible moment
+
+Pulling a template update into a project that had fallen a long way behind runs a short series of
+repair steps, one after another. Three of them carry your stories, decisions and sprint records into
+folders that were renumbered or renamed in an earlier release — and if a file of that name was
+already sitting at the destination, the step stopped and reported a failure instead of carrying on.
+
+Stopping sounds like the careful choice. It was not. Everything after the stopped step never ran,
+and one of those later steps is the one that puts your project's own name back into its package
+file. What was left behind was a project that had taken half the update, was describing itself as
+the template rather than as itself, and had already written its dependency lock under that wrong
+name — announced as a failure, at the one point in the process where you cannot simply try again.
+
+All three steps now always run to the end. A file they cannot move is still never overwritten and
+still printed by name, along with the command that lists everything left at an old path; it just no
+longer takes the rest of the update down with it. One of the three sat second-to-last in the run,
+just ahead of the step that clears away the temporary files an update leaves behind — so a
+collision there meant that tidying never happened either.
+
+### Your project's name, put back before anything reads it
+
+The step that writes your own name into your package file only ever ran when a project was first
+created, never on an update. The repair for that arrived too late — after the dependency lock had
+already been built under the template's name, which is precisely the breakage the repair exists to
+prevent.
+
+It now runs on every update, before the lock is built, so the name is right before anything reads
+it. On a project that has already been through this it does nothing at all, and the old repair
+stays in place for anyone whose last update ran under an earlier template.
+
+### The minimum Copier version is now 9.6.0
+
+A handful of files are yours from the moment the project exists and are never touched again: your
+README, your changelog, version history and release notes, your project memory, and the standing
+registers. The switch that protects them is a piece of Copier syntax that did not exist before
+Copier 9.6.0 — and on an older Copier it does not complain. It quietly reads as "never", so a
+brand-new project would be created with those files simply absent.
+
+The stated minimum is now the version that can actually read that switch, so an older Copier is
+turned away at the start rather than handing you a project with holes in it.
+
+### If an update has already failed on you
+
+Run it again. Nothing was overwritten, so the update is safe to repeat, and this time it will reach
+the end. Then check what, if anything, was left at an old path:
+
+```bash
+bash code/src/scripts/audits/template-orphans.sh
+```
+
+Anything it lists needs moving by hand to the folder named beside it.
 
 ---
 

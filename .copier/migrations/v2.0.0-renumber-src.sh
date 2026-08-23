@@ -14,7 +14,18 @@
 #
 # Working directory is the project being updated.
 #
-# Exit codes:  0 = nothing to do, or moved cleanly   1 = collisions left for a human
+# COLLISIONS NEVER FAIL THE UPDATE (23/08/2026). This exited 1 on a collision until a real
+# v2.3.1 -> v7.4.0 update hit one, and the cost was measured rather than argued: Copier had
+# left two of its OWN files at the old path, the move found them already present at the new
+# one, and the non-zero exit aborted every migration declared after this — including
+# v4.0.0-manifest-name.sh, so the project was left claiming the template's package name with
+# a lockfile already resolved under it, half-upgraded and reporting failure at the one point
+# where nothing can be retried. A half-upgraded project is worse than a collision this prints
+# instructions for; that is the rule v4.0.0-manifest-name.sh already states in its own header.
+# Nothing is overwritten either way, and `audits/template-orphans.sh` is the backstop that
+# reports whatever is left behind at the old path.
+#
+# Exit codes:  0 = always
 #
 set -euo pipefail
 
@@ -98,9 +109,10 @@ printf '\n  %d file(s) moved into the v2.0.0 numbering.\n' "$MOVED"
 if [[ $COLLIDED -gt 0 ]]; then
   printf '\n  %d file(s) could NOT be moved — a file of the same name already exists:\n\n' "$COLLIDED"
   for c in "${COLLISIONS[@]}"; do printf '    %s\n' "$c"; done
-  printf '\n  Nothing was overwritten. Reconcile these by hand, then re-run:\n'
+  printf '\n  Nothing was overwritten and the update was NOT interrupted. Reconcile these\n'
+  printf '  by hand, then re-run:\n'
   printf '    bash code/src/scripts/audits/template-orphans.sh\n\n'
-  exit 1
+  exit 0
 fi
 
 printf '  Review with `git status`, then commit.\n\n'

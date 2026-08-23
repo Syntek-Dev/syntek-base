@@ -30,7 +30,10 @@ overlaps become conflicts.
 
 `README.md`, `VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, `.claude/MEMORY.md`,
 `GAPS.md`, `DEFERRED.md` and the scale-planning map are **excluded from the template and
-re-seeded** from a staging directory by a `_tasks` entry — and `_tasks` run on `copy` and never on `update`.
+re-seeded** from a staging directory by a `_tasks` entry that is gated
+`when: _copier_operation == 'copy'`. The gate is what makes them unreachable — **`_tasks`
+themselves run on update too**, so an ungated one (the manifest branding) fires on every update
+by design.
 
 That is the whole mechanism, and it is deliberate: these are the files that **accumulate**. An
 update must never hand your project the template's release history, or replace two years of

@@ -12,9 +12,9 @@ name: Sync stories to ClickUp
 #
 # Required repo secrets (to apply):
 #   CLICKUP_API_TOKEN        personal/OAuth token
-#   CLICKUP_LIST_ID  preferred target ClickUp List id (the List)
+#   CLICKUP_LIST_ID          preferred target ClickUp List id
 # Fallback / optional:
-#   CLICKUP_FOLDER_ID   if the List id is unreachable, the 'List' list is resolved under it
+#   CLICKUP_FOLDER_ID   if the List id is unreachable, a list named 'List' is resolved under it
 #   CLICKUP_TEAM_ID, CLICKUP_SPACE_ID   context, passed through (unused by the upsert)
 #   CLICKUP_STATUS_MAP  JSON: repo status -> ClickUp status name. Default identity — the source
 #                       stories already use ClickUp's status vocabulary.

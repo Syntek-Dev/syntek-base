@@ -135,8 +135,10 @@ Five notes:
 - **Version state and project memory are excluded and then re-seeded**, rather than shipped
   directly. A project must start at `0.1.0` with an empty changelog and an empty
   `.claude/MEMORY.md`, not inherit the template's release history and internal notes — and
-  because `_tasks` run on `copy` and never on `update`, seeding them this way is what stops a
-  later `copier update` handing your project the template's changelog or a blank memory file.
+  because the task that seeds them is gated `when: _copier_operation == 'copy'`, a later
+  `copier update` cannot hand your project the template's changelog or a blank memory file.
+  The gate is the mechanism, not Copier's own behaviour: **`_tasks` run on update too** unless
+  a task says otherwise, which is why the manifest-branding task deliberately has no gate.
 
 ## 4 — Write
 
@@ -196,15 +198,15 @@ wrote.** Copier tracks only what it generated, so a renumbered directory takes i
 the new path and strands every hand-written artefact, with no conflict and no error
 (`14-UPDATING.md`).
 
-| Version   | What it does                                                                                                                                                                 |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v7.0.0`  | Renumbers `project-management/src/` again to open `14-LOGGING`, shifting `14-DECISIONS` and everything after it up by one. **Acts.**                                         |
-| `v2.0.0`  | The first such renumber, carrying your stories, ADRs and sprint records with it. **Acts.**                                                                                   |
-| `v3.0.0`  | Reports any agent definition you wrote yourself in the now-deleted agents directory. **Advisory.**                                                                           |
-| `v4.0.0`  | Restores `pyproject.toml`'s `[project] name` to your slug after an update rewrote it to the template's. **Acts** — the alternative is a broken build.                        |
-| `v5.0.0`  | Reports citations you wrote at a section of the old single-file `GIT-GUIDE.md`, now split into `docs/git/`. **Advisory.** Keyed at both `v4.0.0` and `v5.0.0`, deliberately. |
-| `v6.0.0`  | Reports work stranded by the `feature` → `implement-story` / `feature-map` renames. **Advisory.**                                                                            |
-| _(every)_ | `rm -rf .copier` — the staging directory is not project content, and `_tasks` do not run on an update to clear it.                                                           |
+| Version   | What it does                                                                                                                                                                                                         |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v7.0.0`  | Renumbers `project-management/src/` again to open `14-LOGGING`, shifting `14-DECISIONS` and everything after it up by one. **Acts**, and never overwrites — a name present on both sides is reported and left alone. |
+| `v2.0.0`  | The first such renumber, carrying your stories, ADRs and sprint records with it. **Acts**, on the same terms.                                                                                                        |
+| `v3.0.0`  | Reports any agent definition you wrote yourself in the now-deleted agents directory. **Advisory.**                                                                                                                   |
+| `v4.0.0`  | Restores `pyproject.toml`'s `[project] name` to your slug after an update rewrote it to the template's. **Acts** — the alternative is a broken build.                                                                |
+| `v5.0.0`  | Reports citations you wrote at a section of the old single-file `GIT-GUIDE.md`, now split into `docs/git/`. **Advisory.** Keyed at both `v4.0.0` and `v5.0.0`, deliberately.                                         |
+| `v6.0.0`  | Reports work stranded by the `feature` → `implement-story` / `feature-map` renames. **Advisory.**                                                                                                                    |
+| _(every)_ | `rm -rf .copier` — the staging directory is not project content, and `_tasks` do not run on an update to clear it.                                                                                                   |
 
 **Order is declaration order, not version order**, which is why `v7.0.0` is declared first: it must <!-- doc-references: template-only -->
 not run before the `v2.0.0` pass has settled an older project's tree.

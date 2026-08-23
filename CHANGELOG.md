@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.4.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.4.1 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [7.4.1] - 23/08/2026
+
+### Fixed
+
+- **A `copier update` crossing an acting migration aborted mid-run on a name collision, and left the project half-upgraded.** All three migrations that move files — `v2.0.0-renumber-src.sh`, `v7.0.0-renumber-src.sh` and `v6.0.0-rename-feature-surfaces.sh` — exited 1 whenever a move found a file of that name already at the destination. A real v2.3.1 -> v7.4.0 update hit one — Copier had left two of its OWN files at the old path — and the non-zero exit killed every migration declared after it, `v4.0.0-manifest-name.sh` among them. What was left was a project claiming the template's package name in `pyproject.toml`, with `uv.lock` already resolved under that name, reporting failure at the one point in the update where nothing can simply be re-run. A half-upgraded project is worse than a collision the script prints instructions for — the rule `v4.0.0-manifest-name.sh` already stated in its own header, now applied to the two scripts that ignored it. All three exit `0` always; nothing is overwritten either way, the colliding paths are still listed by name, and `audits/template-orphans.sh` remains the backstop that reports whatever stayed at the old path. `v6.0.0`'s reach was the widest of the three despite being the last found: it is declared second-to-last, immediately ahead of the unversioned `rm -rf .copier` entry, so its exit code decided whether the staging directory was cleaned up at all. Its `--self-test` keeps `exit 1`, which is never reached on a real update.
+- **The manifest-branding `_task` was gated to `copy`, which put it on the wrong side of `uv lock`.** An update crossing v4.0.0 rendered the house constant `syntek-base` into `pyproject.toml`, `uv lock` resolved the entire graph under that name, and only then did `.copier/migrations/v4.0.0-manifest-name.sh` restore the project's slug — leaving a correct manifest beside a lockfile pinning the template, which is the exact `uv sync --frozen` failure that migration exists to prevent. The task is now ungated and runs on `update` as well as `copy`, ahead of `uv lock`, so the manifest is right before anything reads it. Safe to repeat: the pattern is anchored to the template's own literal, which a project already branded no longer carries, so every later update is a no-op. The migration stays as the backstop for a project whose update ran under a template that still gated the task.
+- **`_min_copier_version` raised `9.0.0` → `9.6.0`, because every seed-once gate is written against a variable that did not exist before it.** The `_tasks` entry seeding `README.md`, the four root version files, `MAP-SCALE-PLANNING.md` and the three blank accumulators carries a `when:` gate on `_copier_operation == 'copy'`, and `_copier_operation` first shipped in Copier 9.6.0. On anything older the expression is undefined rather than false, so the gate does not hold open — it holds shut, and a fresh generation silently skips the seeding entirely, producing a project with no README, no changelog and no version state. A floor that admits a Copier which cannot read the file's own safety mechanism is not a floor.
+
+- **The 7.4.0 `Backlog` -> `List` rename left its collateral in five comment lines.** The rename is deliberate and the lookup is correct — `sync-clickup.sh` resolves a folder list named `List`, which is what the board is called — but the substitution ran through the surrounding prose too, leaving `CLICKUP_LIST_ID` unpadded in two aligned env-var tables, a doubled `(List) (preferred target)`, and three sentences reading "the 'List' list". Alignment restored, the doubling dropped, and the three sentences reworded to "a list named 'List'". Comments only; no behaviour and no variable name changes.
+
+### Changed
+
+- **The `_tasks` mechanism is described accurately in the seven places that had it backwards.** `copier.yml` (five times — the `_exclude` rationale, the `v4.0.0` and `v6.0.0` migration rationales, the `rm -rf .copier` entry and the `_tasks` header), `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` and `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md` all asserted that `_tasks` run on `copy` and never on `update`. They run on both; the explicit `when:` gate is the seed-once mechanism, not anything Copier does on its own — which is precisely why the ungated branding task above fires on every update by design. `_tasks` now opens with a note that order matters and that the absence of a gate is a decision, and `06-GENERATION.md`'s migration table says of the two acting renumbers that a name present on both sides is reported and left alone rather than implying a failed run.
 
 ## [7.4.0] - 23/08/2026
 

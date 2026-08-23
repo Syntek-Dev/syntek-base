@@ -61,10 +61,16 @@
 #
 # Usage:  v6.0.0-rename-feature-surfaces.sh [--self-test] [--help]
 #
-# Exit codes:  0 = nothing to do, or applied cleanly. Advisory findings NEVER fail the run:
-#                  a migration that fails an update leaves the project half-upgraded, which
-#                  is worse than a list of sentences to read.
-#              1 = collisions left for a human. Nothing was overwritten.
+# Exit codes:  0 = nothing to do, or applied cleanly. NOTHING about the project's own state
+#                  fails the run — not an advisory finding, and since 7.4.1 not a collision
+#                  either: a migration that fails an update aborts every migration declared
+#                  after it and leaves the project half-upgraded, which is worse than a list
+#                  of sentences to read. This one is declared second-to-last, immediately
+#                  ahead of the unversioned `rm -rf .copier` entry, so its exit code decided
+#                  whether the staging directory was ever cleaned up. Collisions are still
+#                  reported in full and nothing is overwritten;
+#                  `audits/template-orphans.sh` is the backstop.
+#              1 = --self-test failed. Never reached on a real update.
 #              2 = script error
 #
 set -euo pipefail
@@ -82,7 +88,7 @@ Usage:
   v6.0.0-rename-feature-surfaces.sh --self-test  Prove the rescue, the rewrite and its
                                                  idempotence against a scratch tree, then exit
 
-Exit codes:  0 = clean   1 = collisions left for a human   2 = script error
+Exit codes:  0 = clean, or collisions reported   1 = --self-test failed   2 = script error
 EOF
 }
 
@@ -480,9 +486,9 @@ report_prose
 if [[ $COLLIDED -gt 0 ]]; then
   printf '\n  %d file(s) could NOT be moved — a file of the same name already exists:\n\n' "$COLLIDED"
   for c in "${COLLISIONS[@]}"; do printf '    %s\n' "$c"; done
-  printf '\n  Nothing was overwritten. Reconcile these by hand, then re-run:\n'
+  printf '\n  Nothing was overwritten and the update was NOT interrupted. Reconcile these\n'
+  printf '  by hand, then re-run:\n'
   printf '    bash code/src/scripts/audits/template-orphans.sh\n\n'
-  exit 1
 fi
 
 if [[ $MOVED -gt 0 || $REWROTE -gt 0 ]]; then

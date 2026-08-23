@@ -4,7 +4,13 @@
 #
 # Full guide: how-to/src/TEMPLATE-GUIDE/. Token reference: how-to/src/TEMPLATE-TOKENS.md.
 
-_min_copier_version: "9.0.0"
+# 9.6.0, not 9.0.0 (23/08/2026). The seed-once gates below are written
+# `when: "<% _copier_operation == 'copy' %>"`, and that variable did not exist until Copier
+# 9.6.0. On anything older the expression is undefined rather than false, so the gate does not
+# hold open — it holds SHUT, and a fresh generation silently skips the task that seeds
+# README.md, the four version files, the scale-planning map and the three blank accumulators.
+# A floor that admits a Copier which cannot read the file's own safety mechanism is not a floor.
+_min_copier_version: "9.6.0"
 
 # Every file is a template — tokens are not confined to a suffixed subset.
 _templates_suffix: ""
@@ -47,9 +53,11 @@ _exclude:
   # otherwise every new project would claim the template's version number and
   # inherit twenty entries of the template's own development as its changelog.
   #
-  # Shipping via .copier/ also makes them seed-once: _tasks run on `copy` and never
-  # on `update`, so `copier update` can never overwrite a project's release history
-  # with the template's. That is the same mechanism README.md already relies on.
+  # Shipping via .copier/ also makes them seed-once — but the mechanism is the explicit
+  # `when: "<% _copier_operation == 'copy' %>"` on that task, NOT anything Copier does on its
+  # own. Copier runs _tasks on copy AND on update; only the gate stops `copier update`
+  # overwriting a project's release history with the template's. That is the same mechanism
+  # README.md already relies on, and the reason the version floor above is 9.6.0.
   - /VERSION
   - /VERSION-HISTORY.md
   - /CHANGELOG.md
@@ -737,13 +745,17 @@ _migrations:
     when: "<% _stage == 'after' %>"
 
   # v4.0.0 moves `pyproject.toml`'s [project] name off the project-slug token and onto the
-  # house constant `syntek-base`, restored to the project's own slug by a _task. _tasks run
-  # on `copy` and never on `update`, so an update rewrites a live project's manifest to the
-  # TEMPLATE's name — cleanly, with no conflict, and reporting success. That breaks `uv
-  # sync --frozen` against the project's committed lock on the next container build.
-  # This one ACTS rather than advising: it is a one-line restore with exactly one correct
-  # value, read back out of .copier-answers.yml, and leaving it to a human means leaving a
-  # broken build behind a success message.
+  # house constant `syntek-base`, restored to the project's own slug by a _task. That task
+  # was GATED to `copy`, so an update rewrote a live project's manifest to the TEMPLATE's
+  # name — cleanly, with no conflict, and reporting success — breaking `uv sync --frozen`
+  # against the project's committed lock on the next container build. This one ACTS rather
+  # than advising: it is a one-line restore with exactly one correct value, read back out of
+  # .copier-answers.yml, and leaving it to a human means leaving a broken build behind a
+  # success message.
+  #
+  # The task is ungated as of 7.4.1 and now runs on update too, ahead of `uv lock`, so on a
+  # current template this fires against an already-correct manifest and exits at its first
+  # grep. It stays for the project whose update ran under a template that still gated it.
   - version: v4.0.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v4.0.0-manifest-name.sh"
     when: "<% _stage == 'after' %>"
@@ -802,8 +814,8 @@ _migrations:
   #
   # The stranding is measured, not assumed: a live v5.5.0 -> v6.0.0 update leaves
   # MAP-SCALE-PLANNING.md alone in `src/01-FEATURE/` and `audits/template-orphans.sh` exits
-  # 1. That file arrives through a _task, and _tasks run on copy and never on update, so the
-  # orphan is guaranteed in every project rather than only in ones that wrote something.
+  # 1. That file arrives through a _task GATED to copy, so it is never re-seeded on an update
+  # and the orphan is guaranteed in every project rather than only in ones that wrote something.
   #
   # Keyed v6.0.0 because that is the release the directories MOVED in — same commit as the
   # four renames — not the release somebody noticed. This repository has mis-keyed a
@@ -813,9 +825,9 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v6.0.0-rename-feature-surfaces.sh"
     when: "<% _stage == 'after' %>"
 
-  # .copier/ is a staging directory, not project content. _tasks empty it and remove
-  # it — but _tasks run on `copy` only, so on an `update` the staged seeds land in the
-  # project and simply sit there, looking like version files a developer might edit.
+  # .copier/ is a staging directory, not project content. The _task that empties it and
+  # removes it is gated to `copy`, so on an `update` the staged seeds land in the project
+  # and simply sit there, looking like version files a developer might edit.
   #
   # Deliberately NOT version-scoped: it must hold for every future release that stages
   # a file this way, not just the one that introduced the problem. `rm -rf` on a
@@ -827,10 +839,15 @@ _migrations:
 # ── Post-generation ──────────────────────────────────────────────────────────
 
 _tasks:
+  # ORDER MATTERS IN THIS LIST: Copier runs _tasks top to bottom, on `copy` AND on `update`.
+  # A task that must not touch a live project therefore carries an explicit
+  # `when: "<% _copier_operation == 'copy' %>"` — that gate is the seed-once mechanism, and
+  # the absence of one means the task runs on every update. Both shapes are used below.
+  #
   # The project's README and its root version state ship from .copier/, because the
   # repo-root originals belong to syntek-base and are excluded above. Moving them
-  # here — on `copy` only — is what makes them seed-once: `copier update` never runs
-  # _tasks, so it can never overwrite a project's changelog with the template's.
+  # here — gated to `copy` — is what makes them seed-once, so an update can never
+  # overwrite a project's changelog with the template's.
   #
   # MAP-SCALE-PLANNING.md rides the same mechanism for a different reason. Six shipped
   # guides route to it, and a citation that resolves to nothing is the defect class
@@ -874,11 +891,21 @@ _tasks:
   # Anchored to the exact literal rather than `^name = `: [project] is not the only table
   # in this file that could ever carry a name key, and a loose pattern would rewrite the
   # first one it met.
+  #
+  # UNGATED ON PURPOSE (23/08/2026) — it runs on `update` as well as `copy`. It was gated to
+  # `copy`, which put it on the wrong side of `uv lock`: an update that crosses v4.0.0 renders
+  # the house constant into the manifest, `uv lock` resolves the whole graph under the name
+  # `syntek-base`, and only then does .copier/migrations/v4.0.0-manifest-name.sh restore the
+  # slug — leaving a correct manifest beside a lockfile pinning the template, which is the
+  # exact `uv sync --frozen` failure that migration exists to prevent. Ungated, the manifest
+  # is right before anything reads it. Safe to repeat: the pattern matches the template's own
+  # literal, which a project that has already been branded no longer carries, so on every
+  # later update this is a no-op. The migration stays as the backstop for a project whose
+  # update ran under an older template.
   - command: >-
       perl -0777 -i -pe
       's/^name = "syntek-base"$/name = "<%PROJECT_SLUG%>"/m'
       pyproject.toml
-    when: "<% _copier_operation == 'copy' %>"
 
   # Generate the lock the Dockerfiles need. Non-fatal: the guide tells you to run
   # `uv lock` by hand if uv is not installed yet.
