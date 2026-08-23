@@ -28,6 +28,9 @@ from source.
 The `scripts/` are shell helpers for batch-exporting artefacts — do not run them
 directly; use the project shell-script conventions in `code/src/scripts/`.
 
+The three `*-clickup.sh` scripts are **clickup-only** — present only in a project generated
+with `INCLUDE_CLICKUP`. The four export scripts beside them ship unconditionally.
+
 Do not commit large unoptimised binaries.
 
 **Last Updated**: <%DATE%>

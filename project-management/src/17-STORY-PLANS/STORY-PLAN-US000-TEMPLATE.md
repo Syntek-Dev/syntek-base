@@ -667,7 +667,7 @@ or a generated client file is staged, so the export can never drift from the sou
 > GitHub workflow on push/PR. You normally only run the **export** script and let CI sync; to preview
 > the push locally use `bash project-management/src/00-ASSETS/scripts/sync-clickup.sh US### --dry-run`
 > (it writes to ClickUp only when `CLICKUP_SYNC_APPLY=1` + `CLICKUP_API_TOKEN` +
-> `CLICKUP_BACKLOG_LIST_ID` are set — CI-only).
+> `CLICKUP_LIST_ID` are set — CI-only).
 
 ---
 

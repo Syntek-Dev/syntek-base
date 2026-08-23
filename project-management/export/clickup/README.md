@@ -2,6 +2,10 @@
 
 Client-friendly, ClickUp-ready exports — **one `US###-CLIENT.md` per user story**.
 
+> **Clickup-only.** This folder, the three `*-clickup.sh` scripts and the `clickup-sync`
+> workflow are present only in a project generated with `INCLUDE_CLICKUP`. ClickUp is the only
+> board this template can write to — see `copier.yml`, section _ClickUp sync (optional)_. <!-- doc-references: template-only -->
+
 > **Generated output — read-only. Do not hand-edit.** These files are produced from the
 > source stories in `project-management/src/02-STORIES/`. Change the source story, then
 > regenerate — never edit a `US###-CLIENT.md` directly (`README.md` is the only editable file here).
@@ -46,16 +50,19 @@ ClickUp on push/PR to `main`, `staging`, `dev`, and `testing` (and on manual dis
 story — task status mirrors the story status; the Status/MoSCoW/SP table, Client Summary, and
 User Story become the task description.
 
-Re-runs are idempotent: a durable `story -> task id` map at
+Re-runs are idempotent: a durable `story -> task id` map at <!-- doc-references: template-only -->
 `project-management/export/clickup-task-map.json` (one level up, outside this folder) prevents
-duplicate tasks and is committed back by the workflow.
+duplicate tasks and is committed back by the workflow. **A new project starts without that
+file** — it is copier-excluded unconditionally, because it names task ids in the template's own
+workspace and inheriting it would make your first sync overwrite someone else's board. The first
+applying run creates it.
 
 Required repo secrets to apply (otherwise the workflow runs a harmless **dry run**):
 
 - `CLICKUP_API_TOKEN` — personal/OAuth token
-- `CLICKUP_BACKLOG_LIST_ID` — preferred target List id (the Backlog list)
+- `CLICKUP_LIST_ID` — preferred target List id
 - `CLICKUP_FOLDER_ID` — fallback: if the list id is unreachable, the script resolves the
-  `Backlog` list (or the first list) under this folder
+  `List` list (or the first list) under this folder
 
 Optional: `CLICKUP_STATUS_MAP` (JSON `{repo status -> ClickUp status}`; defaults to identity
 since the source stories already use ClickUp's status vocabulary). `CLICKUP_TEAM_ID` and

@@ -1,6 +1,6 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.3.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.4.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
@@ -9,6 +9,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [7.4.0] - 23/08/2026
+
+### Added
+
+- **The ClickUp sync becomes opt-in, behind the new `INCLUDE_CLICKUP` question.** It had shipped unconditionally to every generated project since it was written: the CI workflow, the three `*-clickup.sh` scripts, the generated `export/clickup/` tree and a `pm-tool-sync` skill announcing ClickUp as "already wired" — on a project tracking work in Jira or Linear, a dead workflow and a skill that misdescribes the repository. There is no adapter behind any of it; the workflow, the export format and the upsert speak the ClickUp API directly, so the honest shape is an include and not a `PM_TOOL` menu naming boards nothing can reach. **The default is `true`**, alone among the optional flags, because the three surface flags add a deployable that did not previously exist whereas this one is already in every project — defaulting it `false` would delete a working workflow on the next `copier update`. The trio leaves as **one unit**: any one of the three scripts shipped without the others leaves the lefthook `clickup-export` hook or the CI job calling a file that is not there, so `lefthook.yml` — which cannot be conditionalised, no file here having templated contents — self-guards on the script existing. The tool-agnostic half is deliberately **not** gated: `.claude/skills/pm-tool-sync/` and `.claude/plugins/pm-tool.py`, which already detects Linear, Jira, GitHub Projects, Monday, Asana, Trello, Notion, Azure DevOps and Shortcut alongside ClickUp, ship whatever the answer, and the skill now says a non-ClickUp sync is built there rather than switched on. The gate is five `_exclude` entries — the workflow, the three scripts, and `export/clickup/**` — and it leaves `shipped-artefacts.sh`'s `00-ASSETS/scripts/*.sh` glob still matching the three PDF/zip exporters beside them, so the shipped-file allowlist holds whichever way the question is answered.
+- **`clickup-task-map.json` is excluded unconditionally, and deliberately takes no `.copier/` seed.** The map ties this repository's `US###` to task ids in **syntek-base's own** ClickUp workspace; shipped, a generated project's first sync would read `US001` out of it and `PUT` to a task belonging to the template, silently overwriting the template's board instead of creating the project's own. The damage is identical in a project that _did_ take the sync, so the exclusion sits outside the `INCLUDE_CLICKUP` gate rather than behind it. **The asymmetry with `GAPS.md` and `DEFERRED.md` is intended, not an oversight:** those two were made excluded-**and**-seeded in 7.1.0, arriving blank from `.copier/`, because a project needs the file to exist before anything writes to it. This one needs no seed — `sync-clickup.sh` treats an absent map as an empty one and writes it on first apply — so a blank seed would add a file nothing reads and one more thing to keep in step.
+- **`INCLUDE_CLICKUP` is documented as the template's thirty-fourth always-asked question** (thirty-eight with the four conditional surface tokens), in `how-to/src/TEMPLATE-TOKENS.md`, `05-ANSWERS.md`, `06-GENERATION.md` and `04-QUICKSTART.md`, with the clickup-only boundary marked at each surface it reaches: `.copier/README.md`, `project-management/CONTEXT.md`, the `00-ASSETS` and `00-ASSETS/scripts` pairs, and `export/clickup/README.md`.
+
+### Changed
+
+- **The ClickUp target-list repo secret is renamed `CLICKUP_BACKLOG_LIST_ID` to `CLICKUP_LIST_ID`**, through the workflow, `sync-clickup.sh`, the `00-ASSETS` documentation pair and the story-plan template. **A project already running the sync must rename the secret in its own repository settings** — GitHub secrets live outside the tree, so no `copier update` can carry the change across, and an unrenamed secret leaves the job silently degrading to a dry run rather than failing loudly.
 
 ## [7.3.0] - 23/08/2026
 

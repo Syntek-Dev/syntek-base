@@ -1,11 +1,51 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.3.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.4.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
 
 ---
+
+## v7.4.0 — 23/08/2026
+
+**Status:** Minor — a new question at generation time, answered for you if you do nothing. Nothing
+you have already built behaves differently, and no existing project loses anything on its next
+update. One thing to do by hand if you already push stories to ClickUp: see the last section.
+
+### The ClickUp sync is now something you choose
+
+This template was built around ClickUp, and until now every project generated from it received the
+ClickUp wiring whether or not the team used ClickUp: a job that could never do anything, a handful
+of scripts, and a note in the tooling claiming the integration was already set up. On a team
+running Jira or Linear that is not neutral — it is a piece of the repository describing itself
+wrongly.
+
+Generation now asks. Say yes and nothing changes; say no and the workflow, the scripts and the
+generated export folder are simply not created. **The default is yes**, so an existing project sees
+no difference when it next pulls template updates.
+
+ClickUp is the only board this template can actually write to — there is no adapter underneath, and
+pretending otherwise by offering a menu of tool names would only produce options that do not work.
+So answering no means writing your own sync, and you are not starting from scratch: the
+tool-agnostic half arrives either way, including a helper that already recognises Jira, Linear,
+GitHub Projects, Monday, Asana, Trello, Notion, Azure DevOps and Shortcut, and a skill that will
+walk you through the mapping. Either way your stories and sprints stay where they already are —
+written down in the repository, which remains the thing that is true; the board only ever mirrors it.
+
+### A new project no longer inherits the template's task list
+
+The file matching your stories to their ClickUp tasks is no longer copied across when you generate.
+It used to be, and it named tasks belonging to this template's own board — so a brand-new project's
+very first sync could have written over them. It is now left out of every generated project,
+whichever way you answer the question, and a new project's first sync creates its own.
+
+### If you already sync to ClickUp, rename one secret
+
+The repository secret naming the ClickUp list to write into has been renamed from
+`CLICKUP_BACKLOG_LIST_ID` to `CLICKUP_LIST_ID`. Secrets are stored in GitHub rather than in your
+repository, so an update cannot rename it for you. Until you do, the sync keeps running but stops
+short of writing anything — it reports what it would have done and leaves the board untouched.
 
 ## v7.3.0 — 23/08/2026
 

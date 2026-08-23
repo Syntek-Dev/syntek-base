@@ -17,9 +17,16 @@ metadata:
 **Task skill, inline** (axis 2 — the tool, the workspace and the credentials come from the
 person who owns the account, and a fork cannot be handed a token it was not given).
 
-The live tool is **ClickUp** (`.github/workflows/clickup-sync.yml`,
-`.claude/plugins/pm-tool.py`); Linear, Jira, GitHub Projects, Monday, Asana, Trello, Notion,
-Azure DevOps and Shortcut are supported on request.
+**ClickUp is the only board this template can write to, and it is opt-in.** The wiring —
+`.github/workflows/clickup-sync.yml` and the three `*-clickup.sh` scripts — is present only in a
+project generated with `INCLUDE_CLICKUP`, and it speaks the ClickUp API directly. There is no
+adapter seam behind it, so do not describe one.
+
+**This skill ships either way, and so does `.claude/plugins/pm-tool.py`** — which already detects
+Linear, Jira, GitHub Projects, Monday, Asana, Trello, Notion, Azure DevOps and Shortcut. On any
+tool other than ClickUp the sync is **built here, from the mapping below**, not switched on: the
+detect pass and the grilling round settle the target, then the workflow and its script are
+written for it. Say that plainly rather than implying an integration already exists.
 
 ---
 
@@ -35,13 +42,13 @@ disk, and asking for a value that is already configured wastes the round.
 Then open a grilling pass — the round shape and the question format belong to the `grilling`
 skill (`.claude/CLAUDE.md` Section 10). What must be settled:
 
-| Needed                | Because it decides     | Default here                  |
-| --------------------- | ---------------------- | ----------------------------- |
-| The tool              | The integration target | ClickUp, already wired        |
-| API credentials       | Authentication         | Environment variables         |
-| Workspace and project | Where artefacts land   | The workspace, space and list |
-| Status mapping        | Sync accuracy          | The baseline below            |
-| Assignment rules      | Whether to auto-assign | Ask; off by default           |
+| Needed                | Because it decides     | Default here                                              |
+| --------------------- | ---------------------- | --------------------------------------------------------- |
+| The tool              | The integration target | ClickUp where `INCLUDE_CLICKUP` is on; otherwise build it |
+| API credentials       | Authentication         | Environment variables                                     |
+| Workspace and project | Where artefacts land   | The workspace, space and list                             |
+| Status mapping        | Sync accuracy          | The baseline below                                        |
+| Assignment rules      | Whether to auto-assign | Ask; off by default                                       |
 
 **Never invent a credential.** Guide the person to mint it and record only its variable name.
 

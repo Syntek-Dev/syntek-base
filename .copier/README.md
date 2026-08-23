@@ -173,7 +173,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
-│       ├── clickup-sync.yml             ← pushes ClickUp story exports to ClickUp (push/PR)
+│       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
 │       ├── syntax-js-ts.yml
 │       ├── syntax-markdown.yml
 │       ├── syntax-python.yml
@@ -587,11 +587,18 @@ The exports are **generated and read-only — never hand-edit them.** Enforcemen
 `0444`. `README.md` is the only editable file in that folder — see
 `project-management/export/clickup/README.md` for detail.
 
-**Push to ClickUp:** the `clickup-sync` GitHub workflow (`.github/workflows/clickup-sync.yml`)
-runs `sync-clickup.sh` on push/PR to `main`, `staging`, `dev`, and `testing`, upserting one
-ClickUp task per story. A durable `story → task id` map
-(`project-management/export/clickup-task-map.json`) keeps it idempotent. It runs as a **dry run**
-until the `CLICKUP_API_TOKEN` and `CLICKUP_BACKLOG_LIST_ID` repo secrets are set.
+**Push to ClickUp — clickup-only.** The `clickup-sync` GitHub workflow
+(`.github/workflows/clickup-sync.yml`) runs `sync-clickup.sh` on push/PR to `main`, `staging`,
+`dev`, and `testing`, upserting one ClickUp task per story. A durable `story → task id` map
+(`project-management/export/clickup-task-map.json`) keeps it idempotent — the map starts absent
+and the first applying run creates it. It runs as a **dry run** until the `CLICKUP_API_TOKEN` and
+`CLICKUP_LIST_ID` repo secrets are set.
+
+This whole sync — the workflow, the three scripts and the generated `export/clickup/` tree — is
+present only if this project was generated with `INCLUDE_CLICKUP`. ClickUp is the only board the
+template can write to; on any other tool the sync is yours to write, starting from the
+`pm-tool-sync` skill and `.claude/plugins/pm-tool.py`, which ship either way. The repository is
+the source of truth regardless: the board mirrors `02-STORIES/`, never the reverse.
 
 ### Sprint planning
 

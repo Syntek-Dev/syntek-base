@@ -15,11 +15,13 @@ delivery, plus the ClickUp generate/guard/sync trio (`export-clickup-stories.sh`
 
 - **Routing:** export tooling, not product code. These scripts are driven by lefthook
   (`precommit-clickup.sh`) and the `clickup-sync` GitHub workflow (`sync-clickup.sh`);
-  run PDF/zip exports before client-delivery milestones or release cuts.
+  run PDF/zip exports before client-delivery milestones or release cuts. The ClickUp trio is
+  **clickup-only** — excluded as one unit when `INCLUDE_CLICKUP` is false, because a lefthook
+  hook or a CI job left pointing at a missing script fails on every commit.
 - **Model:** Opus for running or minor script edits and reworking the
   export pipeline logic.
 - **Concrete steps:** to preview a sync, run `sync-clickup.sh --dry-run`; a real
-  upsert needs `CLICKUP_API_TOKEN` + `CLICKUP_BACKLOG_LIST_ID` + `CLICKUP_SYNC_APPLY=1`
+  upsert needs `CLICKUP_API_TOKEN` + `CLICKUP_LIST_ID` + `CLICKUP_SYNC_APPLY=1`
   in the environment. All output lands in `project-management/export/`.
 - **Definition of done:** generated ClickUp Markdown regenerated and re-staged where a
   source story changed; export output written to `project-management/export/`.

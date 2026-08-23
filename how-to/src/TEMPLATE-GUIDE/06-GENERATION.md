@@ -41,7 +41,7 @@ copier copy --vcs-ref=HEAD   gh:Syntek-Dev/syntek-base my-project   # tip of the
 
 ## 2 — Questions
 
-Thirty-seven, defined in `copier.yml` — thirty-three always asked, four conditional on the <!-- doc-references: template-only -->
+Thirty-eight, defined in `copier.yml` — thirty-four always asked, four conditional on the <!-- doc-references: template-only -->
 optional surfaces (`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` on `INCLUDE_MOBILE`,
 `INCLUDE_DESKTOP` on `INCLUDE_RUST`, `DESKTOP_APP_NAME` on `INCLUDE_DESKTOP`). Three behaviours
 worth knowing:
@@ -50,7 +50,7 @@ worth knowing:
   `ENV_PREFIX` from `ORG_SLUG`, `PRIMARY_DOMAIN` and `DEPLOY_REPO` from `PROJECT_SLUG`,
   `MOBILE_BUNDLE_ID` from `PRIMARY_DOMAIN` reversed, and both `MOBILE_APP_NAME` and
   `DESKTOP_APP_NAME` from `PROJECT_NAME`.
-- **Validators** — twelve of the thirty-seven carry one: slugs must be kebab-case,
+- **Validators** — twelve of the thirty-eight carry one: slugs must be kebab-case,
   `PRIMARY_DOMAIN` a bare hostname, `ENV_PREFIX` upper-snake, `LOCALE` five characters around an
   underscore, `TIMEZONE` an IANA `Area/City`, `CURRENCY` three upper letters, `DATE` `DD/MM/YYYY`,
   email must contain `@`, `SPRINT_GRACE_SP` must exceed `SPRINT_CAPACITY_SP`, `MOBILE_BUNDLE_ID`

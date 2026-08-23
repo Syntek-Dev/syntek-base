@@ -76,6 +76,14 @@ _exclude:
   # can write to its own registers freely.
   - /GAPS.md
   - /DEFERRED.md
+  # The ClickUp task-id map is an accumulator on the same argument, and the sharpest-edged
+  # of the three: it maps THIS repository's US### to task ids in syntek-base's own ClickUp
+  # workspace. Shipped, a generated project's first sync reads US001 out of it and PUTs to a
+  # task belonging to the template — silently overwriting the template's board instead of
+  # creating the project's own. Excluded UNCONDITIONALLY rather than with INCLUDE_CLICKUP
+  # below, because the damage is identical in a project that DID take the sync, and it needs
+  # no seed: sync-clickup.sh treats an absent map as an empty one and writes it on first apply.
+  - /project-management/export/clickup-task-map.json
   # Update migrations are read from the template clone, never rendered into a
   # project — a generated project has no use for the migrations that produced it.
   - /.copier/migrations
@@ -248,6 +256,25 @@ _exclude:
   # header. A workflow shipped without its script is a permanently-red job on every
   # web-only project, which is the one thing a generated baseline must never carry.
   - "<: if not INCLUDE_DESKTOP :>/.github/workflows/audit-style-check.yml<: endif :>"
+  # Optional ClickUp sync, gated by INCLUDE_CLICKUP. Unlike the three flags above this one
+  # gates an INTEGRATION rather than a deployable, and it defaults TRUE — the sync has
+  # shipped in every generation to date, so defaulting false would delete a working workflow
+  # out of every existing project on its next `copier update`.
+  #
+  # The generate/guard/sync trio goes as one unit. Shipping any of the three without the
+  # others leaves a lefthook hook or a CI job pointing at a script that is not there — the
+  # failure the audit-style-check.yml note above describes, in the PM layer instead of the
+  # desktop one. lefthook.yml cannot be conditionalised, since no file has templated
+  # contents, so its clickup-export hook self-guards on the script being present.
+  #
+  # The tool-agnostic half ships UNCONDITIONALLY and is deliberately NOT listed here:
+  # .claude/skills/pm-tool-sync/ and .claude/plugins/pm-tool.py (which already detects ten
+  # tools) are what a project on Jira or Linear starts from when it writes its own sync.
+  - "<: if not INCLUDE_CLICKUP :>/.github/workflows/clickup-sync.yml<: endif :>"
+  - "<: if not INCLUDE_CLICKUP :>/project-management/src/00-ASSETS/scripts/export-clickup-stories.sh<: endif :>"
+  - "<: if not INCLUDE_CLICKUP :>/project-management/src/00-ASSETS/scripts/precommit-clickup.sh<: endif :>"
+  - "<: if not INCLUDE_CLICKUP :>/project-management/src/00-ASSETS/scripts/sync-clickup.sh<: endif :>"
+  - "<: if not INCLUDE_CLICKUP :>/project-management/export/clickup/**<: endif :>"
   # Binaries cannot be rendered when _templates_suffix is "". Both are generated
   # artefacts — a new project rebuilds them from the sources beside them.
   - "*.pdf"
@@ -556,6 +583,26 @@ SPRINT_GRACE_SP:
     <: if SPRINT_GRACE_SP <= SPRINT_CAPACITY_SP :>
     The grace ceiling must be greater than SPRINT_CAPACITY_SP.
     <: endif :>
+
+# ── ClickUp sync (optional) ───────────────────────────────────────────
+# syntek-base manages its own stories and sprints in ClickUp, and the sync it ships is
+# ClickUp-specific end to end: the CI workflow, the export format and the three scripts under
+# project-management/src/00-ASSETS/scripts/ all speak that one API. There is no adapter seam
+# here and calling it one would fail the substrate test in
+# code/docs/architecture/PROVIDER-NEUTRALITY.md.
+#
+# So it is a straight include. Take the ClickUp sync, or answer false and write your own for
+# Jira, Linear, GitHub Projects or whatever the team actually uses. Nothing else in the PM
+# layer depends on it — the stories and sprints are markdown in this repository, which stays
+# the source of truth either way, and the tool-agnostic half of the wiring ships regardless.
+
+INCLUDE_CLICKUP:
+  type: bool
+  help: >-
+    Include the ClickUp story sync (CI workflow + the three export scripts). ClickUp is
+    the only board this template can write to — answer false and bring your own sync for
+    Jira, Linear or GitHub Projects.
+  default: true
 
 # ── Mobile frontend (optional) ───────────────────────────────────────────────
 # Opt-in React Native + TypeScript app (Expo, Continuous Native Generation) at

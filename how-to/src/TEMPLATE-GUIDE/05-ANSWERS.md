@@ -2,9 +2,9 @@
 
 **Last Updated**: 23/08/2026
 
-Copier asks **thirty-three questions** on a web-only project. The optional surfaces add four more
+Copier asks **thirty-four questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
-desktop app name — thirty-seven if you take all three. Most have a good default. A few are
+desktop app name — thirty-eight if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is <!-- doc-references: template-only -->
@@ -258,6 +258,29 @@ use Slint. The generated app does that with an `AboutSlint` widget, and the pack
 refuses to build a release without it. The tier does **not** cover embedded systems (an appliance
 screen, a POS terminal, a car dashboard), nor redistributing anything that exposes Slint's own
 APIs. If either applies to you, budget for a paid Commercial licence before you start.
+
+## The ClickUp sync
+
+| Question          | Default | Answer `false` when                                                                                      |
+| ----------------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| `INCLUDE_CLICKUP` | `true`  | Your team tracks work anywhere other than ClickUp — Jira, Linear, GitHub Projects, Monday, a spreadsheet |
+
+The one optional question that defaults to **`true`**, because unlike the three surfaces above it
+does not add a toolchain — it has shipped in every generation to date, and flipping the default
+would delete a working workflow out of every existing project on its next `copier update`.
+
+**This template was built to use ClickUp, and ClickUp is the only board it can write to.** The CI
+workflow, the export format and the upsert all speak that one API. Answer `false` and you write
+your own sync for whatever your team actually uses — that is the honest trade, not a gap.
+
+You would not be starting from nothing. `.claude/skills/pm-tool-sync/` and
+`.claude/plugins/pm-tool.py` — which already detects ClickUp, Linear, Jira, GitHub Projects,
+Monday, Asana, Trello, Notion, Azure DevOps and Shortcut — are the tool-agnostic half and ship
+**whatever you answer**. Point the skill at your tool and it will grill you through the mapping.
+
+Answering `false` costs you the sync and nothing else. Your stories, sprints, plans and the
+workflows that produce them are markdown in the repository, which stays the source of truth
+either way — the board is a mirror of it, never the other direction.
 
 ---
 

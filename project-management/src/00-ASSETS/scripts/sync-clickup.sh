@@ -11,12 +11,12 @@
 #
 # DRY RUN unless CLICKUP_SYNC_APPLY=1 AND CLICKUP_API_TOKEN + a target list are set.
 #
-# Target list: CLICKUP_BACKLOG_LIST_ID is tried first; if that id is unreachable, the script
-# falls back to the 'Backlog' list (or the first list) under CLICKUP_FOLDER_ID.
+# Target list: CLICKUP_LIST_ID is tried first; if that id is unreachable, the script
+# falls back to the 'List' list (or the first list) under CLICKUP_FOLDER_ID.
 #
 # Env:
 #   CLICKUP_API_TOKEN        personal/OAuth token             (required to apply)
-#   CLICKUP_BACKLOG_LIST_ID  target ClickUp List id (Backlog) (preferred target)
+#   CLICKUP_LIST_ID  target ClickUp List id (List) (preferred target)
 #   CLICKUP_FOLDER_ID        folder to resolve the list from  (fallback if the list id fails)
 #   CLICKUP_STATUS_MAP       JSON {repo status -> CU status}  (optional; default identity —
 #                            the source stories already use ClickUp's status vocabulary)
@@ -46,7 +46,7 @@ while [[ $# -gt 0 ]]; do
       bold "sync-clickup.sh"
       echo ""
       echo "  Upsert the generated ClickUp client exports into ClickUp (idempotent)."
-      echo "  DRY RUN unless CLICKUP_SYNC_APPLY=1 and CLICKUP_API_TOKEN + CLICKUP_BACKLOG_LIST_ID are set."
+      echo "  DRY RUN unless CLICKUP_SYNC_APPLY=1 and CLICKUP_API_TOKEN + CLICKUP_LIST_ID are set."
       echo ""
       echo "  Usage: bash sync-clickup.sh [US###] [--dry-run]"
       echo "    US###       sync only this story (default: all)"
@@ -73,7 +73,7 @@ map_file   = Path(sys.argv[2])
 only       = sys.argv[3].strip()
 
 token           = os.environ.get("CLICKUP_API_TOKEN", "").strip()
-backlog_list_id = os.environ.get("CLICKUP_BACKLOG_LIST_ID", "").strip()
+env_list_id     = os.environ.get("CLICKUP_LIST_ID", "").strip()
 folder_id       = os.environ.get("CLICKUP_FOLDER_ID", "").strip()
 apply           = os.environ.get("CLICKUP_SYNC_APPLY", "").strip() == "1"
 
@@ -127,33 +127,33 @@ def api(method, path, payload=None):
         fail(f"ClickUp {method} {path} -> {e.code}: {e.body}")
 
 def resolve_list_id():
-    """Target List id: CLICKUP_BACKLOG_LIST_ID if reachable, else the 'Backlog' list (or the
+    """Target List id: CLICKUP_LIST_ID if reachable, else the 'List' list (or the
     first list) under CLICKUP_FOLDER_ID. Returns (list_id, human-readable target description)."""
-    if backlog_list_id:
+    if env_list_id:
         try:
-            request("GET", f"/list/{backlog_list_id}")
-            return backlog_list_id, f"list {backlog_list_id}"
+            request("GET", f"/list/{env_list_id}")
+            return env_list_id, f"list {env_list_id}"
         except ApiError as e:
-            print(f"  backlog list {backlog_list_id} unusable ({e.code}) — falling back to folder {folder_id or '(unset)'}")
+            print(f"  list {env_list_id} unusable ({e.code}) — falling back to folder {folder_id or '(unset)'}")
     if folder_id:
         try:
             lists = request("GET", f"/folder/{folder_id}/list").get("lists", [])
         except ApiError as e:
             fail(f"folder {folder_id} list lookup -> {e.code}: {e.body}")
-        chosen = next((l for l in lists if str(l.get("name", "")).strip().lower() == "backlog"), None)
+        chosen = next((l for l in lists if str(l.get("name", "")).strip().lower() == "list"), None)
         if chosen is None and lists:
             chosen = lists[0]
         if chosen:
             return chosen["id"], f"folder {folder_id} -> list '{chosen.get('name')}' ({chosen['id']})"
         fail(f"folder {folder_id} contains no lists")
-    fail("no target list — set CLICKUP_BACKLOG_LIST_ID or CLICKUP_FOLDER_ID")
+    fail("no target list — set CLICKUP_LIST_ID or CLICKUP_FOLDER_ID")
 
 # Applying needs a token and at least one way to target a list; else announce a dry run.
 if apply and not token:
     print("WARNING: CLICKUP_SYNC_APPLY=1 but CLICKUP_API_TOKEN missing — running DRY RUN.")
     apply = False
-if apply and not (backlog_list_id or folder_id):
-    print("WARNING: CLICKUP_SYNC_APPLY=1 but neither CLICKUP_BACKLOG_LIST_ID nor CLICKUP_FOLDER_ID set — running DRY RUN.")
+if apply and not (env_list_id or folder_id):
+    print("WARNING: CLICKUP_SYNC_APPLY=1 but neither CLICKUP_LIST_ID nor CLICKUP_FOLDER_ID set — running DRY RUN.")
     apply = False
 
 def us_num(p):
@@ -175,8 +175,8 @@ if map_file.exists():
     except json.JSONDecodeError:
         fail(f"{map_file} is not valid JSON", 2)
 
-# Resolve the target list (backlog id first, folder fallback) only when actually applying.
-target_desc = backlog_list_id or (f"folder {folder_id}" if folder_id else "(unset)")
+# Resolve the target list (list id first, folder fallback) only when actually applying.
+target_desc = env_list_id or (f"folder {folder_id}" if folder_id else "(unset)")
 list_id = ""
 if apply:
     list_id, target_desc = resolve_list_id()

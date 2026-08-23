@@ -60,12 +60,13 @@ describes the markers rather than showing them.
 
 ## The tokens
 
-Thirty-seven tokens carry every project-specific value. **Thirty-three are always asked**; the
+Thirty-eight tokens carry every project-specific value. **Thirty-four are always asked**; the
 remaining four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile
 surface is included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only
 when the desktop surface is. Example values are illustrative — replace them.
 
-Thirty-eight until 15/08/2026, when `CORE_APP` was retired — see the note under _Django apps_.
+The count has read thirty-eight twice. It fell to thirty-seven on 15/08/2026 when `CORE_APP` was
+retired — see the note under _Django apps_ — and returned on 23/08/2026 with `INCLUDE_CLICKUP`.
 
 ### Identity
 
@@ -241,6 +242,32 @@ target. Full rules: `project-management/docs/PLANNING-GUIDE.md`.
 Both default to the house values (11 / 13). Tune them to your team's **measured** velocity after
 two sprints rather than guessing up front — the cadence works at any ceiling, and a number that
 does not match reality makes every sprint either starve or overrun.
+
+### ClickUp sync (optional)
+
+The board the planning loop pushes to. `<%INCLUDE_CLICKUP%>` gates the CI workflow
+(`.github/workflows/clickup-sync.yml`), the three scripts that feed it
+(`export-clickup-stories.sh`, `precommit-clickup.sh`, `sync-clickup.sh`) and the generated
+`project-management/export/clickup/` tree — all four by templated `_exclude` entries.
+
+| Token                 | Meaning                                    | Example value | Format |
+| --------------------- | ------------------------------------------ | ------------- | ------ |
+| `<%INCLUDE_CLICKUP%>` | Generate the ClickUp story sync and its CI | `true`        | `bool` |
+
+**The only optional token that defaults to `true`.** The three surface flags add a deployable
+that did not previously exist, so `false` is the conservative answer; this one has shipped in
+every generation to date, and defaulting it `false` would delete a working workflow out of every
+existing project on its next `copier update`.
+
+**ClickUp is the only board this template can write to.** The workflow, the export format and
+the upsert all speak that one API — there is no adapter seam, and claiming one would fail the
+substrate test in `code/docs/architecture/PROVIDER-NEUTRALITY.md`. A project on Jira, Linear,
+GitHub Projects or anything else answers `false` and writes its own sync. It is not starting from
+nothing: `.claude/skills/pm-tool-sync/` and `.claude/plugins/pm-tool.py` — which already detects
+ten tools — are the tool-agnostic half and ship **unconditionally**, gated by nothing.
+
+Answering `false` costs the sync and nothing else. Stories, sprints and the workflows that
+produce them are markdown in the repository, which stays the source of truth either way.
 
 ### Mobile frontend (optional)
 

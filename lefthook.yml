@@ -229,5 +229,13 @@ pre-commit:
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.
+    #
+    # The existence guard is the INCLUDE_CLICKUP gate reaching this file. No file in this
+    # template has templated contents — a copier.yml `_exclude` entry is the single
+    # conditionalisation mechanism — so a project that answered false keeps this hook and
+    # loses the script it calls. The guard is what makes that a no-op instead of a commit
+    # that fails on every commit.
     clickup-export:
-      run: bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh
+      run: |
+        [ -f project-management/src/00-ASSETS/scripts/precommit-clickup.sh ] || exit 0
+        bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh

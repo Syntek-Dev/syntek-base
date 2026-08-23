@@ -25,7 +25,7 @@ project-management/
 │   ├── planning/                ← planning sub-documents (CADENCE.md, STORIES.md, SPRINTS.md)
 │   ├── PLANNING-GUIDE.md        ← MoSCoW prioritisation and sprint format conventions
 │   └── VERSIONING-GUIDE.md      ← root-only semver, files to update on every bump
-├── export/                  ← ClickUp sync artefacts + PDF/zip exports for client delivery
+├── export/                  ← PDF/zip exports for client delivery + ClickUp artefacts (opt-in)
 ├── src/                     ← live PM artefacts, in three tiers (see below)
 │   ├── 00-ASSETS/               ← logos, brand assets, export scripts (pre-workflow ref)
 │   │
@@ -85,8 +85,9 @@ workflow folder also has `STEPS.md` + `CHECKLIST.md`.
 ## Contents
 
 - `docs/` — reference guides for PM, GDPR, SEO, security, QA, versioning, responsive design
-- `export/` — ClickUp sync artefacts (`clickup/`, `clickup-task-map.json`), plus PDF and zip
-  exports of PM artefacts for client delivery
+- `export/` — PDF and zip exports of PM artefacts for client delivery, plus the ClickUp sync
+  artefacts (`clickup/`, `clickup-task-map.json`). The ClickUp half is **clickup-only** — present
+  only in a project generated with `INCLUDE_CLICKUP`, and the task map starts absent even there
 - `src/` — all live PM artefacts, in three tiers (specify → decide & plan → record)
 - `workflows/` — step-by-step guides for PM tasks
 

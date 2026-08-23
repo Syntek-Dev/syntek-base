@@ -34,7 +34,8 @@ for client delivery.
 - **Do not run the `scripts/*.sh` helpers directly** — they are driven by lefthook
   (`precommit-clickup.sh`) and the `clickup-sync` CI workflow (`sync-clickup.sh`); local
   previews use `--dry-run`. ClickUp sync needs `CLICKUP_API_TOKEN` etc. as **environment
-  secrets**, never committed.
+  secrets**, never committed. The ClickUp trio is **clickup-only** (`INCLUDE_CLICKUP`); on any
+  other board the sync is written from scratch through the `pm-tool-sync` skill.
 - **Do not commit large unoptimised binaries** — keep raster exports lean.
 - `export/clickup/` is generated and written read-only (0444) — regenerate, never
   hand-edit.
