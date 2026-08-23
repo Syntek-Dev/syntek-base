@@ -68,9 +68,10 @@ When `INCLUDE_DESKTOP` is on, the Slint application lives at `crates/desktop/`. 
 each, drifting apart.
 
 `slint` is pinned in that crate rather than `[workspace.dependencies]` — one member uses it. The
-shared `deny.toml` does carry Slint's licence exceptions and two AccessKit advisory notes
-unconditionally; on a project without the desktop surface they match nothing, which cargo-deny
-reports as an informational note rather than an error.
+shared `deny.toml` does carry Slint's licence exceptions unconditionally; on a project without
+the desktop surface they match nothing, which cargo-deny reports as an informational note rather
+than an error. Its `ignore` list is **empty** — it held two AccessKit-reached advisories until
+16/08/2026, and the comment above it keeps that precedent.
 
 ## Cross-references
 

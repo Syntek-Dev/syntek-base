@@ -41,7 +41,8 @@ artefacts), which is free to carry all of it. A code file never repeats it.
 **Scope:** every file this repository executes — application source in a deployable (`.py`,
 `.html`, `.css`, `.js`, `.ts`, `.tsx`, `.rs`, `.slint`) **and every script file (`*.sh`), wherever
 in the repository it sits.** A script is held to the same standard as any other language: its
-comments carry the why, and nothing in one points outside the file.
+comments carry the why. What a script may additionally do is **route** — see the enforcement
+pointer below, which is a narrow permission and not a second standard.
 
 One exemption, because there the reference _is_ the content: declarative configuration
 (`deny.toml`, `pyproject.toml`, `.gitignore`, CI YAML), where a policy exception needs the trail
@@ -61,9 +62,27 @@ a thing; the other is about a position in it.
   opens with one; a template's `{# #}` is a **comment** and takes the one-line rule above.
 - **Self-contained — no outside references, in either.** Never cite a story (`US###`), sprint,
   ADR, plan, bug record, ticket, issue, PR, commit, **a repository path**, URL, person, or date.
-  Anything under `code/src/` must be understandable without opening anything else: state the
-  reason in full, here, or do not state it. A pointer is not a reason, and it rots at a
-  different rate from the code it sits in.
+  A file in scope must be understandable without opening anything else: state the reason in full,
+  here, or do not state it. A pointer is not a reason, and it rots at a different rate from the
+  code it sits in. **This bullet said "anything under `code/src/`" until 23/08/2026**, which was
+  narrower than the Scope paragraph above it and left every `*.sh` outside that tree unaddressed
+  by the rule that names them.
+- **Exception — the enforcement pointer, and the test is who owns the fact.** A file whose **job
+  is to enforce a documented rule** may name the document that owns it. That is **routing**, and
+  it is the opposite of the duplication this standard exists to prevent: the alternative — "state
+  the reason in full, here" — puts a second copy of the rule inside the enforcement, which is the
+  drift this repository charts as split doctrine. **Restating the rule's content is still banned**;
+  what is permitted is the name of its owner, and enough of the reason to know why the check
+  exists at all.
+  - **The discriminator:** the file's subject is the rule. An audit under `code/src/scripts/`, a
+    pre-PR hook, a template-integrity check — each exists **because** a guide says something, and
+    the guide is a fact about the file rather than an outside reference. A service module, a view
+    or a component does not enforce a guide, it implements a feature; there a pointer is still a
+    substitute for a reason and is still banned.
+  - **It does not travel upward.** A comment on a line of application code may not name a guide
+    because the enclosing file happens to be a script's neighbour, and an enforcing file may not
+    name a story, a sprint, a commit or a person under cover of this exception. The permission is
+    to name **the owning document**, nothing else.
 - **Exception — the setup instruction.** A note on **placeholder content the project replaces at
   first-time setup** may name the document that governs the replacement. Both halves are
   required: the subject is shipped placeholder copy rather than code, and the path named is what

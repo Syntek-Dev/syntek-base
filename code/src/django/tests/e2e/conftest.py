@@ -38,7 +38,6 @@ DEFAULT_BASE_URL = "http://dev.<%PROJECT_SLUG%>.localhost:81"
 # project name to its size is a genuine index — the name is the lookup key a test
 # parametrises over — so the dict is correct here; what is not correct is a bare
 # `{"width": …, "height": …}` as the value, which is a record with known keys.
-# See code/docs/data-structures/TYPES-EXCEPTIONS.md.
 VIEWPORTS: dict[str, Viewport] = {
     "chromium": Viewport(width=1280, height=800),
     "mobile": Viewport(width=375, height=812),

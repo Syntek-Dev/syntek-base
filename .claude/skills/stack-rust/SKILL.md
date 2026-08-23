@@ -195,7 +195,9 @@ panicking path reachable from Python; `CONTEXT.md` updated if structure changed;
 - Never commit `target/` or a built `.so`/`.pyd`/`.dylib` — binaries break Copier generation for
   every downstream project.
 - The toolchain `channel` and `rust-version` are **not** a matched set — the first is the compiler
-  everyone builds with, the second the MSRV our source needs (`code/docs/rust/SUPPLY-CHAIN.md`).
+  everyone builds with, the second a **resolution input**: under `resolver = "3"` cargo picks the
+  newest dependency compatible with the floor, so a floor left behind the channel holds the whole
+  graph back (`code/docs/rust/SUPPLY-CHAIN.md`). It is not merely a promise about our own source.
 - Source files ≤ 750 lines (800 grace).
 
 ## Handoff

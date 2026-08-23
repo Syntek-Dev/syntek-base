@@ -54,7 +54,7 @@ itself only offered when `INCLUDE_RUST` is true.
 ### Related reading
 
 - `code/docs/RUST.md` — the workspace this crate belongs to
-- `code/docs/rust/SUPPLY-CHAIN.md` — why two AccessKit advisories are accepted
+- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy and how an advisory may be suppressed
 - `code/src/scripts/desktop/CONTEXT.md` — the desktop scripts and the attribution gate
 - `code/workflows/12-rust-extension/` — when the window needs a native primitive behind it
 - `code/workflows/02-tdd-cycle/` — the cycle tests are written through

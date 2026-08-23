@@ -125,14 +125,15 @@ Detail: [`desktop/UI-AND-STATE.md`](desktop/UI-AND-STATE.md).
   that reimplements a rule is a second source of truth that will drift.
 - **No credentials in plaintext on disk.** Use the platform secure store; treat the app as a
   hostile environment, because the user controls the machine.
-- **Accessibility is not optional.** Slint ships AccessKit; keep it. It is also the reason two
-  advisories are accepted in `deny.toml` — removing the accessibility stack is not the mitigation.
+- **Accessibility is not optional.** Slint ships AccessKit; keep it. It also fixes the answer
+  when an advisory arrives through it: removing the accessibility stack is not a mitigation.
+  `deny.toml` carried two suppressions on that reasoning until 16/08/2026; the list is empty now.
 - **Never commit `target/`** or a built binary.
 
 ## Cross-references
 
 - `code/docs/RUST.md` — the workspace this crate belongs to, and its three rules
-- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy, including the AccessKit advisories
+- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy and how an advisory may be suppressed
 - `code/src/rust/CLAUDE.md` — the operating rules for the tree
 - `code/workflows/13-desktop-app/` — the procedure for building on it
 - `.claude/skills/stack-slint/SKILL.md` — the idioms condensed for an agent

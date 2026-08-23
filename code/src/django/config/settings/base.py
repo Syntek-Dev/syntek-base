@@ -103,8 +103,9 @@ TEMPLATES = [
 # The two places a django-component may live, which are django-components' own defaults
 # made explicit. `dirs` is the top-level root, for a component more than one app renders;
 # `app_dirs` is the folder name searched inside every installed app, for a component that
-# app owns. Which of the two any given component belongs in is decided by ownership, and
-# code/docs/FRONTEND-CODING-PRINCIPLES.md is the one place that rule is stated.
+# app owns. Which of the two any given component belongs in is decided by ownership: a
+# component rendered by more than one app is a top-level one, and a component only its own
+# app renders lives in that app.
 #
 # Explicit because the default here is not what it looks like: django-components falls back
 # to STATICFILES_DIRS whenever COMPONENTS.dirs is unset and STATICFILES_DIRS is not, so

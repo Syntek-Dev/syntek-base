@@ -123,12 +123,14 @@ the story it came from — belongs in the developer documentation, which is free
 carry all of it: `code/docs/*`, `CONTEXT.md`, `CHANGELOG.md`,
 `VERSION-HISTORY.md`, and the PM artefacts. A code file never repeats it.
 
-**Scope:** application source that ships in a deployable — `.py`, `.html`, `.css`,
-`.js`, `.ts`, `.tsx`, `.rs`, `.slint`. Two exemptions, both because the reference
-_is_ the content: **declarative configuration** (`deny.toml`, `pyproject.toml`,
-`.gitignore`, CI YAML), where a policy exception needs the trail that justifies
-it; and the **dev scripts** under `code/src/scripts/`, operator tooling under the
-`runbook` discipline that often names the very rule or document it enforces.
+**Scope and its exemptions are the owner's**, and this file names neither — it said
+"two exemptions" including a blanket one for the dev scripts under
+`code/src/scripts/` until 23/08/2026, where the owner grants one and binds every
+`*.sh` in the repository. That was not a rival reading to weigh: it was a second
+copy of a rule, drifted, which is the defect this section exists to prevent. What
+replaced it is narrower than either text — a file whose **job is to enforce a
+documented rule** may **name** that document, never restate it — and it lives in
+the owner alone.
 
 ### When to write one, how long, and the self-containment rule
 

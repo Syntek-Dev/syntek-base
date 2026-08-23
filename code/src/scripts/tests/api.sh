@@ -149,12 +149,18 @@ fi
 
 # Bruno runs on the HOST via the root pnpm workspace (@usebruno/cli). `-r` (recursive) is
 # required so a folder run descends into nested folders. The CLI honours NEITHER bruno.json's
-# `ignore` list NOR `meta { skip }` — the only exclusion lever is `--exclude-tags`. Two tags
-# are excluded:
-#   manual — requests that can't pass in a normal run (rate-limit needs >60 rapid requests).
-#   wip    — requests blocked on test-data/service infrastructure not present in the test stack
-#            (seeded SEO records, a seeded client + Cloudinary mock, a seeded blog post, and the
-#            not-yet-implemented user(id) endpoint).
+# `ignore` list NOR `meta { skip }` — the only exclusion lever is `--exclude-tags`, so two
+# tags are reserved and excluded here:
+#   manual — a request that cannot pass in a normal run (a rate-limit probe needing >60 rapid
+#            calls, say), so it is run deliberately or not at all.
+#   wip    — a request blocked on test data or a service the test stack does not stand up.
+# NEITHER TAG IS IN USE TODAY. The collection is `health/` alone — two requests, no `tags`
+# block between them — so this flag currently excludes nothing, and a green run is green over
+# everything that exists. The flag stays because the lever has to exist before the first
+# request needs it; what must not happen is a reader inferring from it that something was
+# skipped. The prose here named seeded SEO records, a Cloudinary mock, a blog post and a
+# `user(id)` query until 23/08/2026 — an origin project's request set, described in GraphQL
+# vocabulary, in a template that ships neither.
 # The request template lives outside the collection root so recursion never picks it up.
 # API_BASE_URL is forwarded into the collection as `api_url`, not just used for the pre-flight
 # probe above. Without this the override moves the health check and leaves every request still

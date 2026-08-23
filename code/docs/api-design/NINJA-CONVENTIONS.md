@@ -331,5 +331,3 @@ the endpoint type hints and `Schema` models, so the schema always tracks the cod
 - Publish versioned API documentation separately from the live docs page.
 
 _Part of the `code/docs/` documentation family. See [`../API-DESIGN.md`](../API-DESIGN.md) for the full index._
-</content>
-</invoke>

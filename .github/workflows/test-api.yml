@@ -148,10 +148,12 @@ jobs:
           # `-r` is required: without it, an explicit path (".") runs only the .bru files in
           # that directory, not subfolders — which is why the suite previously reported a single
           # request. The CLI honours neither bruno.json `ignore` nor `meta { skip }`; exclusion
-          # is by tag. `manual` = can't pass in a normal run (rate-limit). `wip` = blocked on
-          # test infra not present here (seeded SEO/client/blog data, Cloudinary mock, the
-          # unimplemented user(id) query). See BUG-API-SUITE-UNRUN-09-06-2026.md. The request
-          # template lives outside the collection root so recursion never executes it.
+          # is by tag. `manual` = cannot pass in a normal run (a rate-limit probe). `wip` =
+          # blocked on test data or a service this stack does not stand up. NEITHER TAG IS IN
+          # USE: the collection is `health/` alone and carries no `tags` block, so this flag
+          # excludes nothing today — it is the lever, reserved before the first request needs
+          # it, and never evidence that something was skipped. The request template lives
+          # outside the collection root so recursion never executes it.
           BRUNO_VAR_test_password="$API_TEST_PW" \
           BRUNO_VAR_limited_password="$API_LIMITED_PW" \
           pnpm exec bru run -r "$RUN_PATH" \

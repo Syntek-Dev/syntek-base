@@ -31,6 +31,6 @@ that disclosure, and `code/src/scripts/desktop/package.sh` refuses a release bui
 
 - `code/docs/DESKTOP.md` — the index these belong to
 - `code/src/rust/CONTEXT.md` — the workspace the desktop crate is a member of
-- `code/docs/rust/SUPPLY-CHAIN.md` — why two AccessKit advisories are accepted
+- `code/docs/rust/SUPPLY-CHAIN.md` — the audit policy and how an advisory may be suppressed
 
 **Last Updated**: <%DATE%>

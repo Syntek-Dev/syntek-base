@@ -1,23 +1,24 @@
 ##
-## Bruno Test Template — GraphQL
+## Bruno Test Template — Django Ninja REST
 ##
-## Copy this file into the appropriate folder under api/ and rename it.
-## Folder structure:
-##   api/auth/         → authentication mutations
-##   api/users/        → user queries
-##   api/content/      → content queries
-##   api/performance/  → response time assertions
+## Copy this file into the request's folder under api/ and rename it kebab-case.
 ##
-## Remove comment blocks and unused sections before committing.
+## `health/` is the only folder at baseline: the Django project serves no API yet.
+## Domain folders appear beside it one per domain (`auth/`, `users/`, …) as endpoints
+## ship, each carrying its own CONTEXT.md + CLAUDE.md pair — see api/CONTEXT.md for
+## the procedure, which owns it. Nothing here restates that.
+##
+## Remove the comment blocks and every unused section before committing. This file
+## itself is never run: it sits OUTSIDE api/, so the CLI never collects it.
 ##
 
 meta {
   ##
-  ## name:  Short, descriptive test name (shown in CI build log).
+  ## name:  Short, descriptive test name (shown in the CI build log).
   ##        Convention: "<Action> (<Context>)" e.g. "Login (Valid Credentials)"
-  ## type:  Always "http" for GraphQL requests.
+  ## type:  Always "http".
   ## seq:   Execution order within this folder (1, 2, 3...).
-  ##        Tests run alphabetically by folder, then by seq within the folder.
+  ##        Folders run alphabetically, requests by seq within the folder.
   ##
   name: <Your Test Name Here>
   type: http
@@ -25,39 +26,32 @@ meta {
 }
 
 ##
-## All GraphQL requests POST to the /graphql/ endpoint.
-## auth: use "bearer" for authenticated queries/mutations, "none" for public ones.
+## The verb block is named for the method: get, post, put, patch or delete.
+## Every request targets {{api_url}}/api/ bar the health probes, which are plain
+## Django views at the root. auth: "bearer" for authenticated calls, "none" for public.
 ##
 post {
-  url: {{api_url}}/graphql/
-  body: graphql
+  url: {{api_url}}/api/<your-resource>/
+  body: json
   auth: bearer
 }
 
 auth:bearer {
   ##
-  ## {{auth_token}} is populated by auth/login.bru (seq 1) via bru.setVar.
-  ## Ensure auth/login.bru runs before any requests that require authentication.
+  ## {{auth_token}} is set by the login request via bru.setVar, so that request must
+  ## run first. The environments declare api_url, timeout_ms and slow_threshold_ms;
+  ## anything else you reference has to be set by an earlier request or added there —
+  ## an undeclared variable fails at resolution, before the request is ever sent.
   ##
   token: {{auth_token}}
 }
 
 ##
-## GRAPHQL BODY
-## Write the query or mutation here. Variables go in body:graphql:vars.
+## REQUEST BODY — the endpoint's InSchema, as JSON. Delete this block for GET.
 ##
-body:graphql {
-  query YourOperationName($id: ID!) {
-    yourField(id: $id) {
-      id
-      name
-    }
-  }
-}
-
-body:graphql:vars {
+body:json {
   {
-    "id": "{{some_variable}}"
+    "field": "value"
   }
 }
 
@@ -65,32 +59,43 @@ body:graphql:vars {
 ## ASSERTIONS (tests block)
 ## Bruno uses Chai.js assertion syntax: https://www.chaijs.com/api/bdd/
 ##
-## Standard assertions to include:
-##   1. HTTP status code (GraphQL always returns 200 even on errors)
-##   2. No GraphQL errors in response body
-##   3. Required fields present in data
-##   4. Response time threshold
+## REST returns a real status code, so assert the one the endpoint contracts for —
+## never a blanket 200. A success response IS its OutSchema: there is no {"data": …}
+## wrapper. An error response is always the envelope owned by
+## code/docs/api-design/AUTH-AND-ERRORS.md — {"error": {"code", "message", "details"}} —
+## and error.code is lowercase snake_case.
 ##
-## Thresholds:
-##   - Standard queries:        < 500ms
-##   - Complex/paginated:       < 2000ms
-##   - Expensive operations:    < 5000ms  ({{slow_threshold_ms}})
+## Thresholds, from the environment rather than hardcoded:
+##   - Standard reads:      < 500ms
+##   - Complex/paginated:   < 2000ms
+##   - Expensive:           {{slow_threshold_ms}}
 ##
 tests {
-  test("Status is 200", function() {
-    expect(res.getStatus()).to.equal(200);
+  test("Status is the contracted one", function() {
+    expect(res.getStatus()).to.equal(201);
   });
 
-  test("No GraphQL errors", function() {
-    expect(res.body).to.not.have.property("errors");
+  test("Body is the OutSchema, unwrapped", function() {
+    expect(res.getBody()).to.have.property("id");
+    expect(res.getBody()).to.not.have.property("data");
   });
 
-  test("Response contains data", function() {
-    expect(res.body).to.have.property("data");
-    expect(res.body.data).to.not.be.null;
+  test("X-Request-ID is present on every response", function() {
+    expect(res.getHeader("x-request-id")).to.be.a("string");
   });
 
   test("Response time < 500ms", function() {
     expect(res.getResponseTime()).to.be.below(500);
   });
 }
+
+##
+## The failure path is a test, not an afterthought — an endpoint that cannot be made to
+## fail correctly has not been tested. Put it in its own .bru file beside this one:
+##
+##   test("Rejection carries the error envelope", function() {
+##     expect(res.getStatus()).to.equal(422);
+##     expect(res.getBody().error).to.have.all.keys("code", "message", "details");
+##     expect(res.getBody().error.code).to.match(/^[a-z0-9_]+$/);
+##   });
+##
