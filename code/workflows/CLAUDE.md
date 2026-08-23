@@ -46,7 +46,7 @@ folder of `CONTEXT.md` (when to use), `STEPS.md` (ordered execution), and
   encryption; keep those references accurate.
 - Do not add a fourteenth workflow without also registering it in `CONTEXT.md`,
   `code/REFERENCES.md`, and the root `REFERENCES.md` workflow index. A workflow that
-  belongs to an optional surface also needs its `_exclude` entry in `copier.yml` and a
+  belongs to an optional surface also needs its `_exclude` entry in `copier.yml` and a <!-- doc-references: template-only -->
   flagged row in every index, exactly as `12-rust-extension` and `13-desktop-app` have.
 
 ## Output & naming

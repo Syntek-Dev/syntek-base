@@ -139,7 +139,7 @@ standard exists to remove. That test is what admits the four keys above and excl
 they place a run, this one grants a power.
 
 **`compatibility`**, even though it looks made for the surface-gated skills. `stack-react-native`,
-`stack-rust` and `stack-slint` are gated by `copier.yml` `_exclude`, so on a project without that
+`stack-rust` and `stack-slint` are gated by `copier.yml` `_exclude`, so on a project without that <!-- doc-references: template-only -->
 surface the file is **absent**, not present-and-incompatible. The field would restate a decision
 the file's own absence already makes.
 

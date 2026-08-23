@@ -158,7 +158,7 @@ Not a layer — four working areas at the root, each written by one skill and re
 
 In a **generated project** all four are tracked, because there they are the work — and they arrive
 empty, holding nothing but their `CONTEXT.md` and `CLAUDE.md`. `syntek-base` tracks its own too,
-so they sync across devices; `copier.yml` `_exclude` is what empties them at generation, since a
+so they sync across devices; `copier.yml` `_exclude` is what empties them at generation, since a <!-- doc-references: template-only -->
 note answering a question about the template means nothing in a project built from it.
 
 ## Root files

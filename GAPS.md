@@ -10,10 +10,10 @@ template repository, not any project generated from it.
 > stub and the template's items lived in a separate register under the template guide, because
 > whatever this file contained was rendered into every generated project. Keeping it empty was
 > a discipline rather than a mechanism, and it had already failed inside a published tag:
-> `git show v6.0.0:GAPS.md` is 47 lines carrying the `main` entry below. `copier.yml` now
+> `git show v6.0.0:GAPS.md` is 47 lines carrying the `main` entry below. `copier.yml` now <!-- doc-references: template-only -->
 > **excludes** this file and seeds a blank one from `.copier/GAPS.md` instead — the same
 > arrangement `.claude/MEMORY.md` has always had — so syntek-base can write to its own register
-> freely. `.github/scripts/shipped-registers.sh` holds the seed empty.
+> freely. `.github/scripts/shipped-registers.sh` holds the seed empty. <!-- doc-references: template-only -->
 
 **Read at the discovery gate.** `project-management/workflows/01-feature-map/` reads this file
 and `DEFERRED.md` before charting a feature — to **suggest** candidate features from what has
@@ -28,13 +28,13 @@ properties, not open entries, and can take none of the three verdicts.
 ## The active items live on a map, not here
 
 **Charted 13/08/2026.** The twenty-two actionable entries this file used to carry were charted
-into `project-management/src/01-FEATURE-MAPS/MAP-BASE-HEALTH.md` — twenty-three decision nodes in
+into `project-management/src/01-FEATURE-MAPS/MAP-BASE-HEALTH.md` — twenty-three decision nodes in <!-- doc-references: template-only -->
 five batches — and removed from here, so there is one working copy rather than two that drift.
 
 > **That map is committed but never ships.** Since 17/08/2026 the feature maps are tracked, so
 > they sync across devices — a fresh clone **does** have `MAP-BASE-HEALTH.md`. It still never
-> reaches a generated project: `copier.yml` `_exclude` empties every artefact tree at generation,
-> gated by `.github/scripts/shipped-artefacts.sh`. The full prose of every entry it replaced is
+> reaches a generated project: `copier.yml` `_exclude` empties every artefact tree at generation, <!-- doc-references: template-only -->
+> gated by `.github/scripts/shipped-artefacts.sh`. The full prose of every entry it replaced is <!-- doc-references: template-only -->
 > recoverable with:
 >
 > ```bash
@@ -144,23 +144,23 @@ The node that closed both entries above. Fifteen decisions were taken across thr
 rounds and carried out in one sitting; they are recorded here because a decision that lives
 only in a session transcript is not a decision anyone can act on later.
 
-| #   | Decision                                                                                    | Where it landed                                        |
-| --- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Q1  | Commit `uv.lock`, gated on a proven compose healthcheck and a real `/health/` first         | `uv.lock`, root `CONTEXT.md`                           |
-| Q2  | Settle the three non-lock blockers here rather than folding them in silently                | this table, Q4/Q8/Q9                                   |
-| Q3  | Fix the live false green; chart `claude.yml`'s unevidenced "Verified green" separately      | `test.yml`, `pre-pr-check.sh`                          |
-| Q4  | `audits/security.sh` gains `--frozen` so it can never manufacture the lockfile              | `code/src/scripts/audits/security.sh`                  |
-| Q5  | New **`apps.health`**, scaffolded via `new-django-app.sh` — not folded into `apps.core`     | `code/src/django/apps/health/`                         |
-| Q6  | Liveness + readiness over the dependencies that exist; API and pages arm as they land       | `apps/health/checks.py` — `Component` has two members  |
-| Q7  | Cover the template to 75%: the health app plus the four uncovered `core` modules            | 100% over 162 statements                               |
-| Q8  | The 90% auth leg is re-pointed and prints its denominator                                   | `backend-coverage.sh` owns it; `test.yml` now calls it |
-| Q9  | Explicit `--group test` at test call sites; `test-e2e.yml` gains the `uv sync` it never had | `e2e-py.sh`, `test-e2e.yml` (`uv sync --locked`)       |
-| Q10 | Dependency pruning is charted as its own node, not settled here                             | still open — `MAP-BASE-HEALTH.md`                      |
-| Q11 | One sitting, all of it, on this branch; the PR to `main` is gated on it being green         | this branch                                            |
-| Q12 | Toolchain and all three lockfiles to latest first, then lock                                | uv 0.12.5, pnpm 11.22.0, `Cargo.lock`                  |
-| Q13 | `uv.lock` added to copier `_exclude` — never travels, no `copier update` conflict           | `copier.yml` `_exclude` + the `uv lock` post-task      |
-| Q14 | Both standing limitations deleted; one true limitation replaces them                        | SL-1 above                                             |
-| Q15 | Forced N-036 subset only, then re-chart N-036 against the remeasured file list              | done; N-036 still open                                 |
+| #   | Decision                                                                                    | Where it landed                                                                          |
+| --- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Q1  | Commit `uv.lock`, gated on a proven compose healthcheck and a real `/health/` first         | `uv.lock`, root `CONTEXT.md`                                                             |
+| Q2  | Settle the three non-lock blockers here rather than folding them in silently                | this table, Q4/Q8/Q9                                                                     |
+| Q3  | Fix the live false green; chart `claude.yml`'s unevidenced "Verified green" separately      | `test.yml`, `pre-pr-check.sh`                                                            |
+| Q4  | `audits/security.sh` gains `--frozen` so it can never manufacture the lockfile              | `code/src/scripts/audits/security.sh`                                                    |
+| Q5  | New **`apps.health`**, scaffolded via `new-django-app.sh` — not folded into `apps.core`     | `code/src/django/apps/health/`                                                           |
+| Q6  | Liveness + readiness over the dependencies that exist; API and pages arm as they land       | `apps/health/checks.py` — `Component` has two members                                    |
+| Q7  | Cover the template to 75%: the health app plus the four uncovered `core` modules            | 100% over 162 statements                                                                 |
+| Q8  | The 90% auth leg is re-pointed and prints its denominator                                   | `backend-coverage.sh` owns it; `test.yml` now calls it                                   |
+| Q9  | Explicit `--group test` at test call sites; `test-e2e.yml` gains the `uv sync` it never had | `e2e-py.sh`, `test-e2e.yml` (`uv sync --locked`)                                         |
+| Q10 | Dependency pruning is charted as its own node, not settled here                             | still open — `MAP-BASE-HEALTH.md`                                                        |
+| Q11 | One sitting, all of it, on this branch; the PR to `main` is gated on it being green         | this branch                                                                              |
+| Q12 | Toolchain and all three lockfiles to latest first, then lock                                | uv 0.12.5, pnpm 11.22.0, `Cargo.lock`                                                    |
+| Q13 | `uv.lock` added to copier `_exclude` — never travels, no `copier update` conflict           | `copier.yml` `_exclude` + the `uv lock` post-task <!-- doc-references: template-only --> |
+| Q14 | Both standing limitations deleted; one true limitation replaces them                        | SL-1 above                                                                               |
+| Q15 | Forced N-036 subset only, then re-chart N-036 against the remeasured file list              | done; N-036 still open                                                                   |
 
 **`uv run` re-locks silently by default.** `--locked` asserts the lockfile is unchanged and
 exits non-zero if it is not; `--frozen` uses it as-is without checking. In CI the first is

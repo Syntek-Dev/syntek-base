@@ -90,7 +90,7 @@ behaviour and guarantees a conflict the next `copier update`, because upstream o
 
 It is the Claude half of a pair; the human half is the `template-docs-readonly` pre-commit job in
 `lefthook.yml`. Both stand down in syntek-base itself, where those files are the product being
-maintained — the discriminator is `copier.yml`, which is `_exclude`d and so exists only here. The
+maintained — the discriminator is `copier.yml`, which is `_exclude`d and so exists only here. The <!-- doc-references: template-only -->
 hook's own header carries the rest of the reasoning, including why a `permissions.deny` entry or
 `chmod 444` could not express the same split.
 
@@ -118,7 +118,7 @@ non-blocking warning in `pre-pr-check.sh`, which is where missing it costs the m
 project generated from it, and the gate is not the same in both. **The difference is an
 addition rather than a subtraction** (16/08/2026).
 
-The signal is `copier.yml` at the repository root. `copier.yml` lists itself in its own
+The signal is `copier.yml` at the repository root. `copier.yml` lists itself in its own <!-- doc-references: template-only -->
 `_exclude`, so a **generated project never carries it** — its presence is exact, not a
 heuristic.
 
@@ -163,7 +163,7 @@ That leaves an exclusion list two silent failure modes — an entry matching no 
 owner that has been deleted or has stopped invoking it — and `check-audits.sh` checks both
 before either loop runs, failing the gate rather than stepping over a scan nobody is running
 (`code/docs/GATE-REPORTING.md`). The integrity owner is a CI job rather than a lib check, so the
-guard opens `.github/workflows/audit-template.yml` and requires it to still name the script.
+guard opens `.github/workflows/audit-template.yml` and requires it to still name the script. <!-- doc-references: template-only -->
 
 **A scope that ran nothing is a finding, not a pass.** A glob over a missing directory, or over
 one holding only excluded scripts, yields no iterations and no failures — reaching the verdict a

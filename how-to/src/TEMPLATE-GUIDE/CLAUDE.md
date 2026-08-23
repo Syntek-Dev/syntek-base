@@ -16,14 +16,14 @@ and troubleshooting.
 
 - **Routing:** documentation edits → `global-workflow` skill, `doc-writer` skill. A change
   to what the template _does_ (a new token, a changed `_task`, a moved file) must land in
-  `copier.yml` first and be reflected here second — never the reverse.
+  `copier.yml` first and be reflected here second — never the reverse. <!-- doc-references: template-only -->
 - **Model:** Opus for authoring and restructuring these guides and for mechanical touches
   (link fixes, command corrections, tree updates).
 - **Concrete steps:** edit the guide → verify every command by running it → update this
   folder's `CONTEXT.md` tree and reading-order table if you add or remove a file → update
   the pointer table in the root `README.md`, which indexes all fifteen numbered guides plus
   `GUIDE-TO-SKILLS.md`. Every file in this folder is indexed there, and every one ships —
-  `copier.yml` has excluded nothing here since 22/08/2026.
+  `copier.yml` has excluded nothing here since 22/08/2026. <!-- doc-references: template-only -->
 - **Counts are claims, and they rot.** Any number written here — questions, workflows, CI
   jobs, folders, scripts — must be re-counted on disk in the same pass that touches the
   sentence around it. A stale count is the failure mode this directory is most prone to,
@@ -44,12 +44,12 @@ and troubleshooting.
 - **Never document a flow you have not run.** These guides are the first thing a new user
   trusts; a wrong command here costs more than a wrong command anywhere else in the repo.
   Generate into `/tmp` and check.
-- **`copier.yml` is the source of truth for behaviour**, `../TEMPLATE-TOKENS.md` for the
+- **`copier.yml` is the source of truth for behaviour**, `../TEMPLATE-TOKENS.md` for the <!-- doc-references: template-only -->
   token vocabulary. This directory explains and sequences them — it does not redefine them.
   Where a fact belongs to one of those two, link rather than restate.
 - **The template's own open items go in the root `GAPS.md`.** Until 22/08/2026 they lived here
   in a `TEMPLATE-GAPS.md`, because `GAPS.md` shipped and was kept empty by hand — a discipline
-  that had already failed inside a published tag. `copier.yml` now excludes `GAPS.md` and
+  that had already failed inside a published tag. `copier.yml` now excludes `GAPS.md` and <!-- doc-references: template-only -->
   `DEFERRED.md` and seeds blank ones, so both hold syntek-base's own state safely. The test
   itself is unchanged and applies to any register: **check `_exclude` before writing
   repo-specific state into a tracked file**, and if it is not excluded, do not write it there.

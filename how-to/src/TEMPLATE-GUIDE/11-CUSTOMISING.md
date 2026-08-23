@@ -74,7 +74,7 @@ must never carry.
 ### The opt-in mechanism
 
 Optional content — the mobile, Rust and desktop surfaces — is gated by **one mechanism and one
-only**: a templated `_exclude` entry in `copier.yml`.
+only**: a templated `_exclude` entry in `copier.yml`. <!-- doc-references: template-only -->
 
 <: raw :>
 
@@ -111,7 +111,7 @@ extend the CI matrix that generates **both** boolean values so the negative case
 
 ### Binaries and `_templates_suffix`
 
-`copier.yml` sets `_templates_suffix: ""`, which means **every file in the tree passes through
+`copier.yml` sets `_templates_suffix: ""`, which means **every file in the tree passes through <!-- doc-references: template-only -->
 Jinja** — there is no `.jinja` opt-in marker. The consequence is easy to trip over: **binaries
 cannot be rendered**, which is why `*.pdf` is excluded and why the mobile app uses Expo's
 Continuous Native Generation rather than committed `ios/` and `android/` directories

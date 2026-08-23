@@ -108,7 +108,7 @@ workflow↔`src` mirroring. The mirroring is a convenience; the developer's work
 
 **The one exception, and its price.** A release may renumber this tree **only if it ships a
 migration in the same commit** that moves the developer's files across — the shape of
-`.copier/migrations/v2.0.0-renumber-src.sh`: idempotent, refusing to overwrite, and skipping any
+`.copier/migrations/v2.0.0-renumber-src.sh`: idempotent, refusing to overwrite, and skipping any <!-- doc-references: template-only -->
 folder that still carries a `CONTEXT.md`. Exercised twice: **v2.0.0** to open `01` for the
 feature map, and **v7.0.0** to open `14` for `14-LOGGING`. Both were taken deliberately, against
 a template with no live projects at risk, and neither makes the rule advisory — a migration is

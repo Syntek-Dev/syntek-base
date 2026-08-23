@@ -121,7 +121,7 @@ The full guide set lives in **[`how-to/src/TEMPLATE-GUIDE/`](how-to/src/TEMPLATE
 
 Reference material behind the guides:
 [`TEMPLATE-TOKENS.md`](how-to/src/TEMPLATE-TOKENS.md) (the token contract) and
-[`copier.yml`](copier.yml) (its executable form).
+[`copier.yml`](copier.yml) (its executable form). <!-- doc-references: template-only -->
 
 ## Updating a generated project
 

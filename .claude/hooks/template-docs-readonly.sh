@@ -20,7 +20,7 @@
 #     mechanism that keeps them current. Read-only to a human, writable to the updater, is
 #     exactly the split a hook expresses and a file mode cannot.
 #
-# THE DISCRIMINATOR. `copier.yml` is `_exclude`d, so it exists in syntek-base and in NO
+# THE DISCRIMINATOR. `copier.yml` is `_exclude`d, so it exists in syntek-base and in NO  # doc-references: template-only
 # generated project. Its presence means "this IS the template" and the hook stands down. The
 # pre-commit half of this guard tells the two repositories apart on the same principle.
 #

@@ -77,7 +77,13 @@ bash code/src/scripts/audits/seam-contract.sh # server-contract Source provenanc
 bash code/src/scripts/audits/negative-space.sh # the invariant register agrees with the code
 bash code/src/scripts/audits/negative-space.sh --self-test # ...and the detector still works
 bash code/src/scripts/audits/docs-pairing.sh  # CONTEXT.md orients, CLAUDE.md instructs
+bash code/src/scripts/audits/doc-references.sh # every citation resolves in every project
+bash code/src/scripts/audits/doctrine-drift.sh # one rule, one home — catch the second copy
 bash code/src/scripts/audits/skill-conformance.sh # skill frontmatter + routing section
+bash code/src/scripts/audits/routing-skills.sh # every skill named in frontmatter exists
+bash code/src/scripts/audits/dict-discipline.sh # a dict used as a record where a type belongs
+bash code/src/scripts/audits/conflict-markers.sh # no unresolved merge marker anywhere
+bash code/src/scripts/audits/template-orphans.sh # artefacts stranded by a template update
 bash code/src/scripts/audits/static-analysis.sh # template XSS + cross-file taint (needs opengrep)
 bash code/src/scripts/audits/css-slop.sh      # AI-slop, CSS half
 bash code/src/scripts/audits/template-slop.sh # AI-slop, markup half
@@ -140,3 +146,20 @@ same: `uv.lock` is committed here (16/08/2026), so the django image builds and e
 a subject. A gate reporting nothing to run is a defect here, not the expected state.
 
 Only then raise the PR — `project-management/workflows/23-pr-and-review/`.
+
+---
+
+## Update context files
+
+If this workflow created new files, directories, or established new constraints:
+
+1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
+2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
+3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
+4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
+
+---
+
+## Completion
+
+Run through `CHECKLIST.md` before marking this workflow complete.

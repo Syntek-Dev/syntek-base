@@ -2,7 +2,7 @@
 
 **Last Updated**: 14/08/2026
 
-Sixty-four skills is a lot to meet at once. You do not have to. **Describe the work in plain
+Sixty-one skills is a lot to meet at once. You do not have to. **Describe the work in plain
 English and the right one loads itself** — that is the design, and for most of a working day it is
 the whole story.
 

@@ -63,7 +63,7 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
   cannot move those on update — it relocates its own scaffolding and silently strands the
   developer's files in a folder nothing references. `src/` numbers are **frozen, append only**;
   when the mirroring breaks, the mirroring gives way (`CONTEXT.md` → _…but `src/` numbers are
-  frozen_). The sole exception is a release that ships a `.copier/migrations/` script moving the
+  frozen_). The sole exception is a release that ships a `.copier/migrations/` script moving the <!-- doc-references: template-only -->
   files across in the same commit — v2.0.0 and v7.0.0, deliberately, not as a routine.
 - British English throughout; dates DD/MM/YYYY.
 

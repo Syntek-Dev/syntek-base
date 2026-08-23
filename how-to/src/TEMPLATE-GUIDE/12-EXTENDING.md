@@ -35,7 +35,7 @@ Then work through `project-management/docs/SEO-CHECKLIST.md` before the page shi
 Workflows are numbered directories in a layer's `workflows/`, each containing four files:
 
 ```text
-project-management/workflows/24-your-workflow/
+project-management/workflows/25-your-workflow/
 ├── CONTEXT.md      ← when to use it, prerequisites, key concepts
 ├── CLAUDE.md       ← operating rules
 ├── STEPS.md        ← the ordered procedure
@@ -46,7 +46,7 @@ project-management/workflows/24-your-workflow/
 
 ```yaml
 ---
-workflow: 24-your-workflow
+workflow: 25-your-workflow
 phase: implementation
 skills: [backend, stack-django, global-workflow]
 model: opus
@@ -230,7 +230,7 @@ a plain Ninja endpoint is already callable by anything that speaks HTTP. Guide:
 If a piece should ship only when the user opts in, gate it the way the mobile surface is gated —
 **a templated `_exclude` entry, and nothing else** (`11-CUSTOMISING.md` has the full reasoning).
 
-1. Add the boolean question to `copier.yml`, defaulting to **false**, so an existing project
+1. Add the boolean question to `copier.yml`, defaulting to **false**, so an existing project <!-- doc-references: template-only -->
    pulling `copier update` gets no surprise.
 2. Add one `_exclude` entry per top-level path the feature owns. Keep the count low — a single
    directory per concern removes cleanly; a `feature-*` glob scattered across four directories
@@ -288,4 +288,4 @@ Points 1–7 are the documentation hard gate, and it is checked before commit �
 ## Next
 
 - What not to change → `11-CUSTOMISING.md`
-- Contributing it back to the template → the root `CONTRIBUTING.md`
+- Contributing it back to the template → the root `CONTRIBUTING.md` <!-- doc-references: template-only -->

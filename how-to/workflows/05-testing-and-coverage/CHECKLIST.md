@@ -46,3 +46,13 @@ model: opus
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
 - [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+
+---
+
+## Definition of Done
+
+- [ ] The suites the change warranted are green, every one run through `code/src/scripts/tests/*.sh` · _opus_
+- [ ] All three floors met — 75% line, 75% branch, 90% auth — with no floor moved to get there · _opus_
+- [ ] Every failure is either fixed or routed to a named workflow; none left as "flaky" · _opus_
+- [ ] The coverage number is trusted, because the assertions behind it were read: independent
+      source of truth, public interface, both sides of each branch · _opus_

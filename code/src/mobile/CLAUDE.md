@@ -39,7 +39,7 @@ Ninja API, never a client-side build for the Django-served pages.
   per-project addition with a matching exclusion entry.
 - **The Expo SDK is pinned, and tracking it is split by act.** The **template produces** the
   bump — it follows every Expo SDK release and cuts a versioned template release for it, an
-  obligation recorded in the repository root's `CONTRIBUTING.md` and binding on whoever maintains
+  obligation recorded in the repository root's `CONTRIBUTING.md` and binding on whoever maintains <!-- doc-references: template-only -->
   the template, not on you. **This project adopts** it, and the trigger is **the first build that
   ships to a store**: pull the SDK when you are preparing a store build, not on a schedule and not
   because a release exists. That is the same trigger shape the error tracker uses

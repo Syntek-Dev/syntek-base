@@ -19,7 +19,7 @@ Enter through the infrastructure and locale sections is a reasonable first pass.
 think about them properly, read `05-ANSWERS.md` first.
 
 You will be asked to trust the template, because generation runs post-tasks. Those tasks are the
-four at the bottom of `copier.yml` and nothing else: move the seeded files (README, version state,
+four at the bottom of `copier.yml` and nothing else: move the seeded files (README, version state, <!-- doc-references: template-only -->
 blank project memory, the scale-planning map) into place, un-ignore `uv.lock`, generate the lock,
 and `git init`. Read them if you like — that is why they are short.
 

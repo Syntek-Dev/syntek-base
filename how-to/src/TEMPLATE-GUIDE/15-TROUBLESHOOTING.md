@@ -12,7 +12,7 @@ What breaks, why, and what to do. Grouped by when it happens.
 
 ### `<%SOMETHING%>` survived in the generated project
 
-A token exists in the tree but not in `copier.yml`. This is a template bug —
+A token exists in the tree but not in `copier.yml`. This is a template bug — <!-- doc-references: template-only -->
 [report it](https://github.com/Syntek-Dev/syntek-base/issues) with the file and token.
 
 Locally, fix by hand:
@@ -36,7 +36,7 @@ Markdown, check:
 bash .github/scripts/check-template-tokens.sh
 ```
 
-It reports mangled tokens, tokens that are not registered questions in `copier.yml` (they render
+It reports mangled tokens, tokens that are not registered questions in `copier.yml` (they render <!-- doc-references: template-only -->
 to nothing), and unclosed `<%` delimiters (they kill generation outright). CI runs it on every
 pull request as **[1/4] Template Tokens**, alongside **[2/4] Shipped Documentation** — which
 proves the README and the project-memory store a project receives are its own and not the
@@ -52,7 +52,7 @@ bash .github/scripts/check-template-parsers.sh
 
 A token has almost certainly landed in a position its parser validates as a **name**, where `<`,
 `%` and `>` are not legal characters. The fix is never to escape it: move the name out of the
-parser's path, keeping a house constant in the file and branding it with a `copier.yml` `_task`
+parser's path, keeping a house constant in the file and branding it with a `copier.yml` `_task` <!-- doc-references: template-only -->
 at generation. `pyproject.toml`'s `[project] name` is the worked example.
 
 To avoid the problem in the first place, prefer `**bold**` over `_emphasis_` in any paragraph that
@@ -94,7 +94,7 @@ generation, or a `VERSION` that reads the template's number rather than `0.1.0`.
 ### `.copier/` survived a `copier update`
 
 Expected on an old template version, harmless, and self-correcting. `_tasks` run on `copy` only,
-so an update that stages a seed file has nothing to clear it — which is why `copier.yml` carries
+so an update that stages a seed file has nothing to clear it — which is why `copier.yml` carries <!-- doc-references: template-only -->
 an unversioned `rm -rf .copier` migration. Delete the directory; it is staging, not content.
 
 ### Copier generated an old version

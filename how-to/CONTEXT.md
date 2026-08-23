@@ -23,6 +23,9 @@ how-to/
 │   ├── DEVELOPMENT.md           ← first-time setup, Compose commands, env vars
 │   ├── FEATURE-DEPLOY.md        ← deploying a feature branch
 │   ├── GIT-WORKTREES.md         ← parallel development with worktrees and Docker isolation
+│   ├── HEALTH-PROBES.md         ← diagnosing a red /health/ready/ or a restart-looping container
+│   ├── INCIDENT-PRACTICE.md     ← running a live incident: declare, hand over, stand down, write up
+│   ├── OPERATOR-DOC-CRAFT.md    ← the standing conventions behind every guide a human executes
 │   ├── SKILL-AUTHORING.md       ← how to write predictable skills under .claude/skills/ (index)
 │   │   └── skill-authoring/     ← 4 sub-documents + CONTEXT.md · CLAUDE.md
 │   └── TOOLING-GUIDE.md         ← Internal skills reference (index)
@@ -34,8 +37,10 @@ how-to/
 │   ├── INVARIANTS.md            ← invariant register: the one enforcement point for each
 │   ├── PLATFORM-PROVIDERS.md    ← infra register: seam kind, alternates, substrate verdicts
 │   ├── PROJECT-PATHS.md         ← path register: what a shipped doc may promise, and what creates it
+│   ├── STORE-LISTING.md         ← MOBILE-ONLY — store-listing register: App Store / Play values
 │   ├── TEMPLATE-TOKENS.md       ← the token contract copier.yml implements (ships, and is rendered)
-│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 guides, all of which ship
+│   ├── TEMPLATE-GUIDE/          ← using syntek-base as a template — 15 numbered guides plus
+│   │                              GUIDE-TO-SKILLS.md, all of which ship
 │   ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 │   ├── SCALE-ARCHITECTURE/      ← OVERVIEW · LOAD-PROFILES · READINESS · SIZING-ENVELOPE · TOPOLOGY
 │   └── SERVER-ARCHITECTURE/     ← OVERVIEW · COMPUTE-ALLOCATION · EDGE-REQUIREMENTS · NIXOS-HANDOFF
@@ -88,6 +93,9 @@ Every directory with a `CONTEXT.md` also has a `CLAUDE.md`.
 | `docs/GIT-WORKTREES.md`                  | Parallel feature development with isolated stacks                                                |
 | `docs/CELERY-FIRST-RUN.md`               | Before wiring Celery, or first starting the worker/beat in any environment                       |
 | `docs/FEATURE-DEPLOY.md`                 | Deploying a feature branch                                                                       |
+| `docs/HEALTH-PROBES.md`                  | A red `/health/ready/`, or a container stuck in a restart loop                                   |
+| `docs/INCIDENT-PRACTICE.md`              | Something is broken in staging or production and the response needs running                      |
+| `docs/OPERATOR-DOC-CRAFT.md`             | Before writing or restructuring any guide under `how-to/`                                        |
 | `docs/TOOLING-GUIDE.md`                  | Internal skills reference                                                                        |
 | `docs/AI-DICTIONARY.md`                  | Looking up an AI-coding term                                                                     |
 | `docs/SKILL-AUTHORING.md`                | Before writing or editing a skill in `.claude/skills/`                                           |

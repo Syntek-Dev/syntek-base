@@ -189,7 +189,7 @@ cosmetic or functional depends on the token; either way the deploy must bust the
 - **Admin action:** run the design-token regeneration admin action — it calls
   `invalidate_tokens_css()`; the next request re-renders the CSS.
 - **Dev:** restart the backend —
-  `bash code/src/scripts/development/server.sh restart --service backend`.
+  `bash code/src/scripts/development/server.sh restart --service django`.
 
 Confirm afterwards that `/assets/tokens.css` contains the newly seeded token variables.
 

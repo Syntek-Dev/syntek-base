@@ -3,7 +3,7 @@
 **Last Updated**: 17/08/2026
 
 A precise account of what happens between running `copier copy` and having a project. Read this
-when something went wrong, when you are reviewing a change to `copier.yml`, or when you simply
+when something went wrong, when you are reviewing a change to `copier.yml`, or when you simply <!-- doc-references: template-only -->
 want to know what ran on your machine.
 
 ---
@@ -20,7 +20,7 @@ want to know what ran on your machine.
 ```
 
 `copier update` runs a different tail: no `_tasks` at all, and instead the `_migrations` at the
-bottom of `copier.yml` — see _Migrations_ below.
+bottom of `copier.yml` — see _Migrations_ below. <!-- doc-references: template-only -->
 
 ## 1 — Fetch
 
@@ -41,7 +41,7 @@ copier copy --vcs-ref=HEAD   gh:Syntek-Dev/syntek-base my-project   # tip of the
 
 ## 2 — Questions
 
-Thirty-eight, defined in `copier.yml` — thirty-four always asked, four conditional on the
+Thirty-eight, defined in `copier.yml` — thirty-four always asked, four conditional on the <!-- doc-references: template-only -->
 optional surfaces (`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` on `INCLUDE_MOBILE`,
 `INCLUDE_DESKTOP` on `INCLUDE_RUST`, `DESKTOP_APP_NAME` on `INCLUDE_DESKTOP`). Three behaviours
 worth knowing:
@@ -60,7 +60,7 @@ worth knowing:
 
 ## 3 — Render
 
-**Every file is a template.** `copier.yml` sets `_templates_suffix: ""`, so there is no `.jinja`
+**Every file is a template.** `copier.yml` sets `_templates_suffix: ""`, so there is no `.jinja` <!-- doc-references: template-only -->
 suffix convention — the whole tree goes through Jinja2 and files containing no tokens pass through
 byte-identical.
 
@@ -113,11 +113,11 @@ Five notes:
   Nothing here is held back — every file is rendered like any ordinary file, so the guides that quote token or delimiter syntax wrap it in
   `raw` blocks and the literal text survives into your project. The token sweep under _Verifying a
   generation_ therefore has to skip `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md`: the tokens it
-  would find there are documentation, not a failed render. **`copier.yml` is excluded**, so a
+  would find there are documentation, not a failed render. **`copier.yml` is excluded**, so a <!-- doc-references: template-only -->
   sentence in any shipped file that cites it resolves in the template and dangles in your project.
 
 - **Patterns are gitignore-style**, so they are root-anchored with a leading slash where they must
-  be. Without it, `README.md` would also match `.copier/README.md` and `CONTRIBUTING.md` would
+  be. Without it, `README.md` would also match `.copier/README.md` and `CONTRIBUTING.md` would <!-- doc-references: template-only -->
   swallow `how-to/src/CONTRIBUTING.md`, which your project needs.
 - **The artefact trees are an allowlist, and a directory pattern is not enough.** `syntek-base`
   commits its own handoffs, feature maps, research notes and lessons so they sync across the
@@ -150,7 +150,7 @@ from the template and upstream fixes have to be applied by hand. See `14-UPDATIN
 
 ## 6 — Post-generation tasks
 
-Four, all visible at the bottom of `copier.yml`. Copier requires `--trust` (or an interactive
+Four, all visible at the bottom of `copier.yml`. Copier requires `--trust` (or an interactive <!-- doc-references: template-only -->
 confirmation) because these execute on your machine.
 
 | #   | Task                                       | Why                                                                                                 |

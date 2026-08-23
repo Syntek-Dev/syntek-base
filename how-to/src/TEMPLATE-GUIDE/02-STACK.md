@@ -101,7 +101,7 @@ before mobile existed — no orphaned tooling, CI jobs, scripts or doc rows.
 
 Three constraints decided this, and none of them is a preference.
 
-1. **Copier renders every file.** `copier.yml` sets `_templates_suffix: ""`, so the entire tree
+1. **Copier renders every file.** `copier.yml` sets `_templates_suffix: ""`, so the entire tree <!-- doc-references: template-only -->
    passes through Jinja — which is also why `*.pdf` is excluded, since **binaries cannot be
    rendered**. A bare React Native scaffold commits binaries as a matter of course: the Gradle
    wrapper JAR, launcher icon PNGs, iOS asset catalogues. Each would need an explicit exclusion

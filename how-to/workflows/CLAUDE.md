@@ -35,6 +35,13 @@ four-file shape every one of them keeps is under **Guardrails** below.
   commit; do not reorder around them.
 - **≤ 300 code lines** per file; every workflow keeps its four-file shape
   (`CONTEXT.md` · `CLAUDE.md` · `STEPS.md` · `CHECKLIST.md`).
+- **The two files do different jobs, and neither substitutes for the other.** `STEPS.md` is
+  the **execution** half — ordered, imperative, one `### Step N — …` per move — and it closes
+  with `## Update context files` then `## Completion`, which hands over to the checklist.
+  `CHECKLIST.md` is the **verification** half — it asks whether each step actually produced
+  what it claimed, and closes with `## Context` then `## Definition of Done`. A `CHECKLIST.md`
+  with no Definition of Done never declares the work finished; a `STEPS.md` with no Completion
+  never sends anyone to check. The reference shape is `project-management/workflows/**`.
 
 ## Output & naming
 

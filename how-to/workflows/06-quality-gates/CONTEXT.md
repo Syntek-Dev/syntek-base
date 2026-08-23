@@ -32,11 +32,14 @@ predict a clean CI run.
 - **The coverage floor rises on the promotion branches**, so a change that is green on a
   feature branch can still fail promotion. The numbers and the branches they key off are
   `code/docs/testing/COVERAGE.md` → _The promotion tier_, which owns them.
-- **The audits are separate from the eight gates**, and each has its own path-filtered CI
-  workflow: `cloc`, `stubs`, `css-tokens`, `css-gradients`, `copy-emdash`, `mobile-tokens`,
-  `security`, `seam-contract`, `negative-space`, `docs-pairing`, `docs-length`, `skill-conformance`, and the AI-slop
-  family — `css-slop`, `template-slop`,
-  `copy-slop`, `render-slop`, plus `style-check` on a desktop project. They are cheap; run them —
+- **The audits are separate from the eight gates**, and each has its own CI workflow — 26 of
+  them. Grouped by what they read: **source** — `cloc`, `stubs`, `dict-discipline`,
+  `static-analysis`, `security`; **docs and routing** — `docs-pairing`, `docs-length`,
+  `doc-references`, `doctrine-drift`, `skill-conformance`, `routing-skills`; **design and copy** —
+  `css-tokens`, `css-gradients`, `copy-emdash`, `mobile-tokens`, plus `style-check` on a desktop
+  project; **contracts and invariants** — `seam-contract`, `negative-space`; **the tree itself** —
+  `conflict-markers`, `template-orphans`, `dependency-drift`; and the AI-slop family —
+  `css-slop`, `template-slop`, `copy-slop`, `render-slop`. They are cheap; run them —
   `render-slop` is the one exception to cheap, because it drives a browser, and it self-guards to
   a note when Chromium is absent.
 - **A path-filtered audit is never a required status check, and that is why it may be filtered.**
@@ -45,10 +48,13 @@ predict a clean CI run.
   audit is the other case entirely — six of the 26 carry no filter, and any of those may be
   required (`project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` → What earns a place in the
   required set).
-- **`static-analysis` is the one audit with no CI workflow yet.** It needs the Opengrep engine
-  installed in the runner, and until that is wired it would report a green job having scanned
-  nothing — which is worse than no job. Locally it behaves the same way: **without `opengrep` on
-  PATH it skips**, so a clean run of it is not evidence its rules pass.
+- **`static-analysis` is a gate in CI and optional on a laptop, and the asymmetry is deliberate.**
+  `audit-static-analysis.yml` installs the pinned Opengrep engine, verifies its Sigstore
+  signature, and runs `--self-test` before the scan — so the rules are enforced where the code
+  ships. Locally the script **skips without `opengrep` on PATH** and exits 0 with a note, so a
+  clean local run is not evidence its rules pass. Install it with
+  `bash code/src/scripts/development/install-opengrep.sh` if you want the local half to mean
+  something.
 - **Two tiers, one exit code.** The slop family, `cloc` and `docs-length` report `[gate: fail]` and
   `[gate: warn]` in a single run, and only a fail changes the exit code. That is deliberate: a
   threshold on composition or vocabulary fails correct work, so the script reports and a person

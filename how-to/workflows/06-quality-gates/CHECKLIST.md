@@ -35,8 +35,14 @@ model: opus
 - [ ] `negative-space.sh` — the invariant register and the code agree, both surfaces · _opus_
 - [ ] `negative-space.sh --self-test` — the detector still separates its fixtures · _opus_
 - [ ] `skill-conformance.sh` — every skill's frontmatter and routing section conform · _opus_
+- [ ] `routing-skills.sh` — every skill named in routing frontmatter exists · _opus_
 - [ ] `docs-pairing.sh` — no operating rule left in a `CONTEXT.md`, every pair correctly shaped · _opus_
 - [ ] `docs-length.sh` — no instructional `.md` over 300 code lines · _opus_
+- [ ] `doc-references.sh` — every citation resolves in every project, not just this one · _opus_
+- [ ] `doctrine-drift.sh` — no rule restated in a second home · _opus_
+- [ ] `dict-discipline.sh` — no dictionary used as a record where a named type belongs · _opus_
+- [ ] `conflict-markers.sh` — no unresolved merge marker anywhere in the tree · _opus_
+- [ ] `template-orphans.sh` — nothing stranded by a template update · _opus_
 - [ ] `static-analysis.sh` — no template XSS or cross-file taint (skips without opengrep) · _opus_
 - [ ] `css-slop.sh` · `template-slop.sh` · `copy-slop.sh` · `render-slop.sh` — the AI-slop family:
       one per input language, plus one that must render its input before the clause exists · _opus_
@@ -60,3 +66,16 @@ model: opus
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
 - [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+
+---
+
+## Definition of Done
+
+- [ ] `pre-pr-check.sh` run through the piped form and observed to **print its gate output** —
+      a run that printed nothing is a failed invocation, not a clean tree · _opus_
+- [ ] All eight gates green, and every standalone audit above either clean or its `[gate: warn]`
+      findings answered in writing · _opus_
+- [ ] Coverage floors met, including the higher promotion floor if the PR targets one · _opus_
+- [ ] Nothing suppressed to get here — no new `noqa` without a reason, no widened type, no
+      lowered floor · _opus_
+- [ ] Local and CI agree; any disagreement was fixed in the mirroring, not pushed around · _opus_

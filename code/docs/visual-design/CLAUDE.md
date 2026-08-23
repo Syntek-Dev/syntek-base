@@ -19,7 +19,7 @@ the `code/docs/VISUAL-DESIGN.md` entry point, which keeps the cross-surface core
 - **Model:** Opus for substantive guidance and for typos or re-indexing.
 - **Concrete steps:** edit the relevant surface sub-doc → keep `VISUAL-DESIGN.md` the index and
   update the `CONTEXT.md` file table if a file is added, renamed, or removed → add the matching
-  `_exclude` entry to `copier.yml` for any new surface file → check length with
+  `_exclude` entry to `copier.yml` for any new surface file → check length with <!-- doc-references: template-only -->
   `code/src/scripts/audits/docs-length.sh`.
 - **Definition of done:** every clause is traceable to a Section 3 axis or is explicitly
   direction-independent; each file ≤ 300 lines; cross-references resolve; British English.

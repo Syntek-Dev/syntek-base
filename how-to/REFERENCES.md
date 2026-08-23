@@ -10,24 +10,24 @@ Internal and external references for setup, daily development, and debugging.
 
 ### Context files
 
-| File                                                  | Purpose                                                        |
-| ----------------------------------------------------- | -------------------------------------------------------------- |
-| `how-to/CONTEXT.md`                                   | Layer entry point — when to read and what lives here           |
-| `how-to/docs/CONTEXT.md`                              | Operational reference guides index                             |
-| `how-to/src/CONTEXT.md`                               | Operator-guide index — contributing, template, snapshots       |
-| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`                | Using syntek-base as a template — index over 15 guides         |
-| `how-to/src/SCALE-ARCHITECTURE/CONTEXT.md`            | How the app scales — load profiles, readiness, sizing envelope |
-| `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md`           | What the server/edge must provide; feeds the NixOS deploy repo |
-| `how-to/workflows/CONTEXT.md`                         | Workflow index — nine workflows in four families               |
-| `how-to/workflows/01-first-time-setup/CONTEXT.md`     | First-time setup prerequisites and key concepts                |
-| `how-to/workflows/02-worktree-setup/CONTEXT.md`       | Worktree setup prerequisites and key concepts                  |
-| `how-to/workflows/03-daily-development/CONTEXT.md`    | Daily development session prerequisites                        |
-| `how-to/workflows/04-database-operations/CONTEXT.md`  | Backup, restore, reset, seed, users — state, never schema      |
-| `how-to/workflows/05-testing-and-coverage/CONTEXT.md` | Running the suites and reading coverage against the floors     |
-| `how-to/workflows/06-quality-gates/CONTEXT.md`        | The eight pre-PR gates and the standalone audits               |
-| `how-to/workflows/07-dependency-updates/CONTEXT.md`   | Adding, upgrading, removing a dependency; clearing advisories  |
-| `how-to/workflows/08-debugging/CONTEXT.md`            | Debugging prerequisites and key concepts                       |
-| `how-to/workflows/09-write-operator-guide/CONTEXT.md` | Authoring operator documentation — the two homes and the spine |
+| File                                                  | Purpose                                                                |
+| ----------------------------------------------------- | ---------------------------------------------------------------------- |
+| `how-to/CONTEXT.md`                                   | Layer entry point — when to read and what lives here                   |
+| `how-to/docs/CONTEXT.md`                              | Operational reference guides index                                     |
+| `how-to/src/CONTEXT.md`                               | Operator-guide index — contributing, template, snapshots               |
+| `how-to/src/TEMPLATE-GUIDE/CONTEXT.md`                | Using syntek-base as a template — 15 numbered guides + GUIDE-TO-SKILLS |
+| `how-to/src/SCALE-ARCHITECTURE/CONTEXT.md`            | How the app scales — load profiles, readiness, sizing envelope         |
+| `how-to/src/SERVER-ARCHITECTURE/CONTEXT.md`           | What the server/edge must provide; feeds the NixOS deploy repo         |
+| `how-to/workflows/CONTEXT.md`                         | Workflow index — nine workflows in four families                       |
+| `how-to/workflows/01-first-time-setup/CONTEXT.md`     | First-time setup prerequisites and key concepts                        |
+| `how-to/workflows/02-worktree-setup/CONTEXT.md`       | Worktree setup prerequisites and key concepts                          |
+| `how-to/workflows/03-daily-development/CONTEXT.md`    | Daily development session prerequisites                                |
+| `how-to/workflows/04-database-operations/CONTEXT.md`  | Backup, restore, reset, seed, users — state, never schema              |
+| `how-to/workflows/05-testing-and-coverage/CONTEXT.md` | Running the suites and reading coverage against the floors             |
+| `how-to/workflows/06-quality-gates/CONTEXT.md`        | The eight pre-PR gates and the standalone audits                       |
+| `how-to/workflows/07-dependency-updates/CONTEXT.md`   | Adding, upgrading, removing a dependency; clearing advisories          |
+| `how-to/workflows/08-debugging/CONTEXT.md`            | Debugging prerequisites and key concepts                               |
+| `how-to/workflows/09-write-operator-guide/CONTEXT.md` | Authoring operator documentation — the two homes and the spine         |
 
 ### Steps and checklists
 
@@ -72,8 +72,8 @@ points for that procedure.
 | `how-to/src/PLATFORM-PROVIDERS.md` | The infrastructure register — seam kind, alternates, substrate verdicts                                                                                                                                  |
 | `how-to/src/PROJECT-PATHS.md`      | The path register — every path a shipped document promises, what creates it, and when (rule: `code/docs/FORWARD-VOICE.md`)                                                                               |
 | `how-to/src/STORE-LISTING.md`      | **Mobile-only.** The store-listing register — this project's App Store and Play values against their limits (rule: `code/docs/discoverability/APP-STORE.md`, which alone carries the verification dates) |
-| `how-to/src/TEMPLATE-TOKENS.md`    | The token contract `copier.yml` implements — ships, and is rendered                                                                                                                                      |
-| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen guides on using the template — all of which ship                                                                                                                                                 |
+| `how-to/src/TEMPLATE-TOKENS.md`    | The token contract `copier.yml` implements — ships, and is rendered <!-- doc-references: template-only -->                                                                                               |
+| `how-to/src/TEMPLATE-GUIDE/`       | Fifteen numbered guides plus the unnumbered `GUIDE-TO-SKILLS.md` — all of which ship                                                                                                                     |
 | `how-to/src/NIXOS-SETUP.md`        | Pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/                                                                                                                                               |
 
 ### Cross-layer references

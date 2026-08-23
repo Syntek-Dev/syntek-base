@@ -21,7 +21,7 @@ has been run.
 - **Model:** Opus for the security/quality review and mechanical touches
   (version-header bumps, status flips).
 - **Concrete steps:** confirm tests green and linters clean → review against
-  `code/docs/CODING-PRINCIPLES.md`, `SECURITY.md`, and
+  `code/docs/CODING-PRINCIPLES.md`, `code/docs/SECURITY.md`, and
   `security/OWASP-AND-CHECKLIST.md` → verify coverage floors
   (`testing/COVERAGE.md`: 75% line and branch / 90% auth — one floor) → verify the GDPR,
   security, QA, SEO, and API **implementation** records (written in

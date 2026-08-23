@@ -29,7 +29,7 @@ Python (`uv`), JavaScript (`pnpm`), or the toolchain pins themselves — and whe
 - **The lockfile is the artefact.** Every Dockerfile builds with `uv sync --frozen`, so an
   un-refreshed lockfile fails the build rather than silently resolving something else.
 - **`uv.lock` is committed in this template** (16/08/2026), so a dependency change is locked
-  and verified here exactly as in a generated project. It pins `syntek-base`, so `copier.yml`
+  and verified here exactly as in a generated project. It pins `syntek-base`, so `copier.yml` <!-- doc-references: template-only -->
   excludes it and a generated project locks its own at generation.
 - **Two audit surfaces, both continuous.** `audits/security.sh` mirrors the CI `[8/8]`
   gate; the nightly `Dependency Audit Sweep` opens a tracking issue when an advisory lands

@@ -1,4 +1,4 @@
-# Template Tokens — the Contract `copier.yml` Implements
+# Template Tokens — the Contract `copier.yml` Implements <!-- doc-references: template-only -->
 
 **Last Updated**: <%DATE%> | **Maintained By**: <%ORG_NAME%>
 
@@ -12,8 +12,8 @@ deployment-specific values are written as `<%…%>` tokens and rendered by
 project's live code.
 
 This file is the single source of token truth: what every token means, what to substitute, and
-what deliberately stays fixed. `copier.yml` at the repo root is the executable form of this
-contract — if the two ever disagree, `copier.yml` wins and this file is the bug.
+what deliberately stays fixed. `copier.yml` at the repo root is the executable form of this <!-- doc-references: template-only -->
+contract — if the two ever disagree, `copier.yml` wins and this file is the bug. <!-- doc-references: template-only -->
 
 > **Reading this to generate a project?** You want `TEMPLATE-GUIDE/04-QUICKSTART.md`. This file is
 > the reference behind it.
@@ -46,7 +46,7 @@ The delimiters below were chosen by scanning every tracked file and verifying ze
 | Block    | `<:`  | `:>`   |
 | Comment  | `<~`  | `~>`   |
 
-They are set in `copier.yml` under `_envops`. If you ever add content to the template containing
+They are set in `copier.yml` under `_envops`. If you ever add content to the template containing <!-- doc-references: template-only -->
 one of these six sequences literally, wrap it in a Jinja **`raw` block** — the block delimiters
 around the word `raw` before it, and the same around `endraw` after it. Everything between is
 emitted verbatim.
@@ -380,7 +380,7 @@ written only about identifiers would never have caught it.
   than a grammar. Same deliverable, no token in the compiler's path.
 - **Branded late — house constant here, rewritten at generation.** `pyproject.toml`'s
   `[project] name` is the worked example: it carries `syntek-base` so `uv` can parse the manifest
-  in this repository, and a `copier.yml` `_task` rewrites it to `<%PROJECT_SLUG%>` **before**
+  in this repository, and a `copier.yml` `_task` rewrites it to `<%PROJECT_SLUG%>` **before** <!-- doc-references: template-only -->
   `uv lock` runs. Use this shape where the generated project genuinely needs its own name; note
   the cost, which is that `copier update` never runs `_tasks`.
 

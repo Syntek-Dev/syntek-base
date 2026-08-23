@@ -56,7 +56,7 @@ Follow `code/workflows/12-rust-extension/`. The short form:
 1. **Justify it against the gate.** Which of the two grounds does it serve? A convenience crate
    that saves twenty lines is not a justification.
 2. **Look at it.** Downloads and recent releases are weak signals; a named maintainer, a public
-   repository, a populated `SECURITY.md`, and a shallow dependency tree are stronger ones.
+   repository, a populated `SECURITY.md`, and a shallow dependency tree are stronger ones. <!-- doc-references: ignore -->
 3. **Prefer the smaller tree.** Between two crates that do the job, take the one with fewer
    transitive dependencies. Depth is the risk multiplier.
 4. **Pin it in `[workspace.dependencies]`**, never per-crate — a shared pin means a patch is

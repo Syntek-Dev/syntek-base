@@ -42,7 +42,7 @@ mechanism. Neither is a suppression of the other's check.
 
 **Direction A is a promise, Direction B is a disclaimer.** A guide naming
 `code/src/django/components/` is telling a developer where their components will go, and it is
-right; a guide naming `copier.yml` is talking about the template itself, which its reader does
+right; a guide naming `copier.yml` is talking about the template itself, which its reader does <!-- doc-references: template-only -->
 not have. The first is checked by naming what creates the path. The second cannot be checked
 here at all, and says so on the line.
 
@@ -84,7 +84,9 @@ The template contract lives in `copier.yml`. <!-- doc-references: template-only 
 ```
 
 Accepted on the line itself or the line directly above it — the annotation convention every
-sibling audit already uses.
+sibling audit already uses. **`doc-references.sh` Check 3 enforces this as of 23/08/2026**: an
+excluded path cited by a shipping file without one of the two markers is a finding, so the
+declaration is no longer a convention a reviewer has to remember.
 
 **It is not a synonym for `doc-references: ignore`.** Both suppress a finding; they record
 different judgements, and both are greppable so the distinction survives:
@@ -103,11 +105,23 @@ Per `code/docs/GATE-REPORTING.md`, a check must not be read as having examined w
 see. `doc-references.sh` enforces this guide **partially**, and the gaps are not defects to be
 discovered later:
 
-- **It does not derive Direction B.** Nothing reads `copier.yml`'s `_exclude` list and compares
-  it against citations, so an excluded path cited **without** the token is green today. The
-  token is applied by a writer and checked by a reviewer; the automatic half is charted, not
-  built. Until it exists, a green run means "no path is missing here", never "every citation
-  survives generation".
+- **It derives Direction B, for unconditional exclusions only.** Check 3 parses
+  `copier.yml`'s `_exclude`, subtracts the negations, the `_tasks` seeds and the regenerated <!-- doc-references: template-only -->
+  `uv.lock`, then fires when a shipping file cites one of the forty paths left without either
+  marker. A green run now means **both** "no path is missing here" and "every citation
+  survives generation". The set is parsed rather than listed, so a new exclusion needs no edit
+  to the script — and the run prints its size, because a parse that found nothing would
+  otherwise report clean.
+- **It does not reach the surface-gated exclusions, and that is a decision.** A path behind
+  `INCLUDE_MOBILE`, `INCLUDE_RUST` or `INCLUDE_DESKTOP` is absent only from a project that
+  declined that surface, so `template-only` would be **false** in every project that took it.
+  Those citations — the `RUST.md`, `DESKTOP.md` and `MOBILE.md` index rows, and the two stack
+  skills — keep the prose `rust-only` / `mobile-only` flag their guides already carry. That
+  half stays reviewer's judgement, and it is the only part of Direction B a green run does not
+  cover.
+- **It cannot see whether a marker is _true_.** The token declares that a path does not survive
+  generation; nothing proves the writer read `_exclude` before writing it. A marker on a path <!-- doc-references: template-only -->
+  that ships is a lie this gate will believe, exactly as `ignore` always has been.
 - **It cannot tell whether a path that resolves is the _right_ one.** Unchanged from the
   script's own header, and the reason `Cannot tell` is written there.
 - **It cannot judge a register row.** That a creator resolves does not mean it creates that
@@ -152,13 +166,14 @@ believed on its own.
 
 ## 7. Where each half lives
 
-| Fact                                            | Owner                                       |
-| ----------------------------------------------- | ------------------------------------------- |
-| The rule, the two directions, the token grammar | This file                                   |
-| This project's registered paths and creators    | `how-to/src/PROJECT-PATHS.md`               |
-| The clauses, exemptions and the `--self-test`   | `code/src/scripts/audits/doc-references.sh` |
-| What a gate may claim it looked at              | `code/docs/GATE-REPORTING.md`               |
-| The `CONTEXT.md` / `CLAUDE.md` split            | `code/docs/DOCUMENTATION-PAIRING.md`        |
+| Fact                                            | Owner                                                                                       |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| The rule, the two directions, the token grammar | This file                                                                                   |
+| This project's registered paths and creators    | `how-to/src/PROJECT-PATHS.md`                                                               |
+| The clauses, exemptions and the `--self-test`   | `code/src/scripts/audits/doc-references.sh`                                                 |
+| Which paths are excluded, and conditionally     | `copier.yml` → `_exclude`, parsed and never restated <!-- doc-references: template-only --> |
+| What a gate may claim it looked at              | `code/docs/GATE-REPORTING.md`                                                               |
+| The `CONTEXT.md` / `CLAUDE.md` split            | `code/docs/DOCUMENTATION-PAIRING.md`                                                        |
 
 ## Cross-references
 

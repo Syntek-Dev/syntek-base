@@ -7,7 +7,7 @@ between them: two for mobile, one to offer the desktop surface once Rust is on, 
 desktop app name — thirty-eight if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
-The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is
+The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is <!-- doc-references: template-only -->
 the advice.
 
 ---
@@ -165,7 +165,7 @@ that substance out of the repository entirely.
 
 `syntek-base` is MIT, which places no obligation on what you generate from it. The default is
 `Proprietary — all rights reserved` because most projects generated from this template are client
-work. If you are open-sourcing yours, put the SPDX identifier here and add the matching `LICENSE`
+work. If you are open-sourcing yours, put the SPDX identifier here and add the matching `LICENSE` <!-- doc-references: template-only -->
 file — the template does not create one for you.
 
 ## People

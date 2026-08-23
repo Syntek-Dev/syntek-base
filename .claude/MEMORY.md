@@ -16,7 +16,7 @@ remove stale entries rather than appending contradictions.
 > second and believe it — so the template's memory arriving as a project's own is read as
 > authoritative. Write repo-specific state here freely; it never ships. Doctrine that every
 > project needs is not memory and belongs in the `docs/` guide that owns it.
-> Gate: `.github/scripts/shipped-memory.sh`.
+> Gate: `.github/scripts/shipped-memory.sh`. <!-- doc-references: template-only -->
 
 ---
 

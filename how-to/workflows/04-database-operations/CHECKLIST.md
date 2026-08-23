@@ -43,3 +43,15 @@ model: opus
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
 - [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
+
+---
+
+## Definition of Done
+
+- [ ] The database holds the state the operation was run to produce, and that was checked by
+      querying it — not inferred from the script exiting 0 · _opus_
+- [ ] `migrate.sh check` and `verify-db-security.sh` both clean against that state · _opus_
+- [ ] Backend suite green, so the environment is trustworthy for the next piece of work · _opus_
+- [ ] No dump left on disk that nobody has decided to keep, and none in the index · _opus_
+- [ ] Schema was not touched — anything that turned out to need one is now an entry into
+      `code/workflows/03-database-migration/`, not a hand-applied DDL statement · _opus_

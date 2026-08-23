@@ -55,7 +55,7 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   next free number at the end, even where that breaks the workflow↔`src` mirroring — that
   mirroring is a convenience, the developer's work is not. **One exception:** a release may
   renumber if it ships a migration in the same commit that moves the developer's files
-  (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could
+  (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could <!-- doc-references: template-only -->
   be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
 - **Every new directory needs a `CONTEXT.md` and a `CLAUDE.md`.**
 - Instructional `.md` under `src/` (the `CONTEXT.md`/`CLAUDE.md` files) stay ≤ 300 code

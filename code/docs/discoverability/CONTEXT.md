@@ -24,7 +24,7 @@ written into.
 
 The first four are artefacts of the **Django deployable**; `APP-STORE.md` is an artefact of the
 **mobile deployable** and is copier-gated to it, so on a web-only project the row above is
-present and the file is not. That dangle is deliberate and repo-wide — see `copier.yml`
+present and the file is not. That dangle is deliberate and repo-wide — see `copier.yml` <!-- doc-references: template-only -->
 `_exclude`.
 
 ## Why this exists as its own family

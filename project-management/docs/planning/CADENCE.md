@@ -109,7 +109,7 @@ the rule lives; those are the local facts.
 | **Capacity** | `<%SPRINT_CAPACITY_SP%>` SP | The sprint is full. Stop planning stories; plan the sprint |
 | **Grace**    | `<%SPRINT_GRACE_SP%>` SP    | Hard ceiling, for when the next story would split badly    |
 
-Set at generation time (`SPRINT_CAPACITY_SP` / `SPRINT_GRACE_SP` in `copier.yml`) and editable
+Set at generation time (`SPRINT_CAPACITY_SP` / `SPRINT_GRACE_SP` in `copier.yml`) and editable <!-- doc-references: template-only -->
 here afterwards — **this table is the canonical statement of both**.
 
 **Reading the ceiling:**

@@ -94,7 +94,7 @@ rather than hand-rolling it:
 - **Lazy load below the fold:** `<img loading="lazy" />`.
 - **Prevent layout shift (CLS):** set explicit `width`/`height` attributes (or CSS `aspect-ratio`).
 - **EXIF stripped on upload:** Cloudinary removes metadata on upload — both a privacy and a size
-  win. See `SECURITY.md` — File Upload Security.
+  win. See `code/docs/SECURITY.md` — File Upload Security.
 - **Icons:** use inline SVG served as static assets — not Cloudinary.
 - **Delivery URLs are built server-side** in the view or template. There is no client-side
   Cloudinary SDK (`code/docs/cloudinary/CONTEXT.md`).

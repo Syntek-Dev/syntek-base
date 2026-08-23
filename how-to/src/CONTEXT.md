@@ -28,13 +28,14 @@ how-to/src/
 │   ├── 07-REPO-TOUR.md · 08-CLAUDE-CODE.md
 │   ├── 09-PROJECT-MANAGEMENT.md · 10-FIRST-FEATURE.md
 │   ├── 11-CUSTOMISING.md · 12-EXTENDING.md
-│   └── 13-DEPLOYMENT.md · 14-UPDATING.md · 15-TROUBLESHOOTING.md
+│   ├── 13-DEPLOYMENT.md · 14-UPDATING.md · 15-TROUBLESHOOTING.md
+│   └── GUIDE-TO-SKILLS.md   ← unnumbered: which skill to reach for, and what to type
 ├── NIXOS-SETUP.md           ← pointer stub → deploy repo runbooks + SERVER-ARCHITECTURE/
 ├── SCALE-ARCHITECTURE/      ← how the app scales: load profiles, readiness audit, sizing envelope
 └── SERVER-ARCHITECTURE/     ← what the server/edge must provide; feeds the NixOS deploy repo
 ```
 
-> **Every file in this tree ships.** `copier.yml` excludes nothing here — it did exclude one,
+> **Every file in this tree ships.** `copier.yml` excludes nothing here — it did exclude one, <!-- doc-references: template-only -->
 > `TEMPLATE-GUIDE/TEMPLATE-GAPS.md`, until that register was folded into the root `GAPS.md` on
 > 22/08/2026. `TEMPLATE-TOKENS.md` and all of `TEMPLATE-GUIDE/` land in a generated project,
 > because most of what those guides answer is asked long after generation: what am I looking at,

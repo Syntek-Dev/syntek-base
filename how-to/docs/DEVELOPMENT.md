@@ -248,8 +248,8 @@ tool directly.
 ### Container won't start
 
 ```bash
-bash code/src/scripts/development/logs.sh --service backend
-bash code/src/scripts/development/server.sh up --build --service backend
+bash code/src/scripts/development/logs.sh --service django
+bash code/src/scripts/development/server.sh up --build --service django
 ```
 
 ### Database connection errors
@@ -258,7 +258,7 @@ Ensure `POSTGRES_HOST=db` (the Docker Compose service name, not `localhost`). Ch
 health with `server.sh status`. If the `db` container is still initialising:
 
 ```bash
-bash code/src/scripts/development/server.sh restart --service backend
+bash code/src/scripts/development/server.sh restart --service django
 ```
 
 ### Migration errors
@@ -283,11 +283,16 @@ bash code/src/scripts/development/server.sh up --build --service django
 ### Port already in use
 
 ```bash
-sudo lsof -i :8000
+sudo lsof -i :81
 ```
 
-Use a `docker-compose.override.yml` for host-specific port overrides — do not commit to
-`docker-compose.yml`.
+**Check 81, not 8000.** The dev stack publishes nginx on host port **81**, because a local
+router often holds 80; `:8000` is the Django container's internal port and is never published.
+
+The port is hard-coded as `127.0.0.1:81:80` in `code/src/docker/docker-compose.dev.yml`, and
+`server.sh` pins its compose files explicitly — so a `docker-compose.override.yml` is never
+loaded and changing the port is a shared-file decision. Full detail:
+`how-to/docs/CLI-TOOLING.md` → _Port conflicts_.
 
 ### Docker data-root location
 

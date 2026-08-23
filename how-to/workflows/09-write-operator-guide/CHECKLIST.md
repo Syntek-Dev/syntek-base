@@ -58,3 +58,16 @@ model: opus
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
 - [ ] Every new directory created during this workflow has a `CONTEXT.md` and a `CLAUDE.md` inside it
 - [ ] The code-review-graph refreshed alongside the docs (`code-review-graph update`)
+
+---
+
+## Definition of Done
+
+- [ ] The guide was **executed start to finish** on an environment matching its own stated
+      prerequisites, and every quoted output is what the command actually printed · _opus_
+- [ ] A reader with the stated prerequisites and no other context can follow it without
+      guessing at a placeholder or inferring a missing step · _opus_
+- [ ] Discoverable from both directions: listed in its folder `CONTEXT.md` tree and in
+      `how-to/REFERENCES.md`, and the workflows that should route to it now do · _opus_
+- [ ] `docs-length.sh`, markdownlint and Prettier clean; the code-review-graph refreshed
+      alongside the docs · _opus_

@@ -169,6 +169,16 @@ table) → C (supplies N-008's trigger) → D (independent; takeable any time).
   day; the four arms below it still carry _"none of these ship"_ unamended. Narrowing there exposed
   four findings and **not one was a broken citation**, which is what made it safe — the same
   measurement is what N-009 needs before it moves.
+  **The predicate now exists, 23/08/2026 — recorded here by `MAP-BASE-HEALTH` sitting 6, which
+  built it and deliberately did not settle this node.** That sitting added Check 3 to the same
+  script: `is_template_only()` derives ships / does-not-ship from `copier.yml`'s `_exclude` —
+  anchored entries in, negations and `_tasks` seeds and the regenerated `uv.lock` out, surface-
+  gated entries excluded by decision — and answers **40 paths**. So N-009's four arms now have a
+  correct-by-construction predicate sitting three screens below them in the same file, and the
+  node shrinks from _design a rule for what ships_ to **decide whether `is_exempt()` should call
+  the one that is already there**. The nine shipped files and the single legitimate citation are
+  re-confirmed at HEAD by that sitting; nothing else about this node changed, and no arm was
+  touched.
 - **N-010** · `01-FEATURE-MAPS/CLAUDE.md` makes the index row **definition-of-done**; `CONTEXT.md`
   ships and `MAP-*.md` does not, so the row is a per-project instance citation in a shipped file.
   Nine maps have declined it and the index still reads _"None charted yet"_. The instruction and the

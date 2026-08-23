@@ -126,7 +126,7 @@ consumes this API; none of them changes the rule above for the web.
 
 Note: `uv.lock` **is committed here** (16/08/2026), so the Django image builds in this
 repository and its Python gates and suites run against a real dependency set. It pins
-`syntek-base` itself, so `copier.yml` lists it in `_exclude` and it never travels: a generated
+`syntek-base` itself, so `copier.yml` lists it in `_exclude` and it never travels: a generated <!-- doc-references: template-only -->
 project would otherwise inherit a lock naming the template, fail `uv sync --frozen`, and hit a
 conflict in a lockfile on every `copier update`. Your project's own lock is written by the
 `uv lock` post-task at generation and committed with the initial commit.

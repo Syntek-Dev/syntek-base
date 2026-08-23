@@ -29,7 +29,7 @@ state/routing, and service-layer/middleware design — behind the
 
 - **300-line instructional limit** per file — split rather than overflow.
 - **`AUTH-CONTRACT.md` is load-bearing:** it defines how permission checks and
-  ownership are enforced across apps — keep it consistent with `SECURITY.md` and
+  ownership are enforced across apps — keep it consistent with `code/docs/SECURITY.md` and
   `API-DESIGN.md`; never document a pattern that skips the permission check on a
   state-changing Django Ninja endpoint.
 - Business logic belongs in services, not Ninja endpoints or views — the guide must keep saying so.

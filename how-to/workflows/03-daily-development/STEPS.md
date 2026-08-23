@@ -74,11 +74,16 @@ bash code/src/scripts/syntax/check.sh
 
 ### Step 6 — Run the Test Suite Before Pushing
 
-Per `project-management/docs/git/COMMITS.md` ("Before Every Push"), the backend and
-frontend suites must pass locally before you commit and push:
+Per `project-management/docs/git/COMMITS.md` → _Before Every Push_, the suite must pass
+locally before you commit and push. **One suite covers both halves** — this is a Django-only
+monolith, so services, endpoints, templates and HTMX partials are all exercised by the same
+pytest run:
 
 ```bash
 bash code/src/scripts/tests/backend.sh
+
+# Add the Bruno API integration tests when the change touched a contract
+bash code/src/scripts/tests/all.sh --api
 ```
 
 > **Model:** opus

@@ -74,16 +74,16 @@ Nobody should read all sixteen. Pick the entry point that matches where you are:
 
 ## Related reference
 
-| Document                            | Purpose                                                           |
-| ----------------------------------- | ----------------------------------------------------------------- |
-| `../TEMPLATE-TOKENS.md`             | The token contract — every token, format, and derived form        |
-| `../../../copier.yml`               | The executable form of that contract                              |
-| `../CONTRIBUTING.md`                | Code-quality standards _inside_ a generated project               |
-| `../../../CONTRIBUTING.md`          | How to contribute changes to the template itself                  |
-| `../BRAND-VOICE.md`                 | The voice a generated project settles at first-time setup, Step 8 |
-| `../PLATFORM-PROVIDERS.md`          | The infra register the platform-provider answers render into      |
-| `../SCALE-ARCHITECTURE/CONTEXT.md`  | How the app scales — regenerated per project                      |
-| `../SERVER-ARCHITECTURE/CONTEXT.md` | What the server must provide — feeds the NixOS deploy repo        |
+| Document                            | Purpose                                                                                 |
+| ----------------------------------- | --------------------------------------------------------------------------------------- |
+| `../TEMPLATE-TOKENS.md`             | The token contract — every token, format, and derived form                              |
+| `../../../copier.yml`               | The executable form of that contract <!-- doc-references: template-only -->             |
+| `../CONTRIBUTING.md`                | Code-quality standards _inside_ a generated project                                     |
+| `../../../CONTRIBUTING.md`          | How to contribute changes to the template itself <!-- doc-references: template-only --> |
+| `../BRAND-VOICE.md`                 | The voice a generated project settles at first-time setup, Step 8                       |
+| `../PLATFORM-PROVIDERS.md`          | The infra register the platform-provider answers render into                            |
+| `../SCALE-ARCHITECTURE/CONTEXT.md`  | How the app scales — regenerated per project                                            |
+| `../SERVER-ARCHITECTURE/CONTEXT.md` | What the server must provide — feeds the NixOS deploy repo                              |
 
 ## Do not use for
 

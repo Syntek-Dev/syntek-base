@@ -37,7 +37,7 @@ bash code/src/scripts/development/server.sh up
 bash code/src/scripts/development/server.sh up --build
 
 # Start a single service
-bash code/src/scripts/development/server.sh up --service backend
+bash code/src/scripts/development/server.sh up --service django
 
 # Stop all services
 bash code/src/scripts/development/server.sh down
@@ -46,13 +46,13 @@ bash code/src/scripts/development/server.sh down
 bash code/src/scripts/development/server.sh down --volumes
 
 # Restart a single service
-bash code/src/scripts/development/server.sh restart --service backend
+bash code/src/scripts/development/server.sh restart --service django
 
 # Stream all service logs
 bash code/src/scripts/development/logs.sh --follow
 
 # Stream logs for a single service
-bash code/src/scripts/development/logs.sh --service backend --follow
+bash code/src/scripts/development/logs.sh --service django --follow
 ```
 
 The site is served by Django — with the stack up, visit
@@ -287,10 +287,10 @@ bash code/src/scripts/tests/all.sh --api
 bash code/src/scripts/development/server.sh status
 
 # Start the specific service
-bash code/src/scripts/development/server.sh up --service backend
+bash code/src/scripts/development/server.sh up --service django
 
 # Inspect exit logs
-bash code/src/scripts/development/logs.sh --service backend
+bash code/src/scripts/development/logs.sh --service django
 ```
 
 ### pnpm lockfile mismatch
@@ -328,17 +328,28 @@ Always review the merged migration file before committing.
 ### Port conflicts
 
 ```bash
-lsof -i :8000
+lsof -i :81
 ```
 
-Override ports temporarily with a `docker-compose.override.yml` — do not commit host-specific
-port overrides to the main `docker-compose.yml`.
+**Check 81, not 8000.** The dev stack publishes nginx on host port **81** — a local router
+often holds 80 — and `:8000` is the Django container's internal port, never published. The
+live URL is whatever `server.sh up` prints.
+
+**There is no `docker-compose.override.yml` slot here.** `server.sh` pins its files explicitly
+(`-f code/src/docker/docker-compose.dev.yml`), so Compose's implicit-override convention never
+applies — a file of that name is gitignored and silently ignored. The one override Compose does
+receive is the worktree file `docker-compose.us###.dev.yml`, added by
+`code/src/scripts/_lib/worktree-detect.sh` when the branch is `us###/*`.
+
+The published port is hard-coded as `127.0.0.1:81:80` on the `nginx` service. If 81 is genuinely
+taken on your host, that is a shared-file change and a decision for the team — not a local edit,
+because the worktree hostnames and every quoted URL are derived from it.
 
 ### Rebuilding after dependency changes
 
 When `pyproject.toml` or `pnpm-lock.yaml` changes after pulling from main:
 
 ```bash
-bash code/src/scripts/development/server.sh build --service backend
+bash code/src/scripts/development/server.sh build --service django
 bash code/src/scripts/development/server.sh up
 ```

@@ -75,7 +75,7 @@ bash code/src/scripts/database/manageusers.sh create-staff --email you@example.c
 
 ## Licensing
 
-This project is licensed **<%LICENCE%>**, held by <%ORG_NAME%>. The `LICENSE` file at the
+This project is licensed **<%LICENCE%>**, held by <%ORG_NAME%>. The `LICENSE` file at the <!-- doc-references: template-only -->
 repository root is authoritative; this section is a summary.
 
 Do not add a third-party dependency whose licence is incompatible with that choice. Where

@@ -18,7 +18,7 @@ policy templates, and RLS testing and audit.
   Opus for mechanical touches.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/RLS-GUIDE.md` a thin
   index → policy templates must be correct SQL that applies cleanly via a Django
-  migration run through `code/src/scripts/database/migrate.sh`. Cross-link `SECURITY.md`
+  migration run through `code/src/scripts/database/migrate.sh`. Cross-link `code/docs/SECURITY.md`
   where IDOR and permission concerns overlap.
 - **Definition of done:** templates match the RLS actually enforced in the DB; testing
   guidance covers the bypass cases; each file ≤ 300 code lines; British English.

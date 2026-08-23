@@ -62,7 +62,7 @@ the shipped template documentation read-only in a generated project.
   so a failure must not interrupt the session. It reports untracked files rather than adding
   them: a hook that ran `git add` would silently stage work nobody chose to commit. Keep its
   extension list in step with `code-review-graph status` → Languages, or the count under-reports.
-- **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is
+- **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is <!-- doc-references: template-only -->
   what keeps these guides editable here, where they are the product. Never drop it, and keep
   the hook paired with the `template-docs-readonly` job in `lefthook.yml`; a guard on one write
   path only is no guard at all.
