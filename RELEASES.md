@@ -1,9 +1,45 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.2.2 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.3 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.2.3 — 23/08/2026
+
+**Status:** Patch — a reference table in the story-plan template was describing folder numbers as
+they were two reorganisations ago. Nothing your project does changes; the template you copy from
+is now accurate.
+
+### A map of where things go, that had stopped matching where things go
+
+The story-plan template carries a table calling itself the authoritative list of which write-up
+belongs in which folder, followed by a short paragraph of notes about the numbering.
+
+Every number in that paragraph was wrong. It named the wrong range of folders, said the records
+were written at a stage that no longer exists under that number, claimed the folder numbers and
+the planning-step numbers stop matching much earlier than they do — and its worked example of
+"do not assume these two line up" picked a pair that now lines up exactly.
+
+Most of it was already wrong before the last release, which is the awkward part: the previous
+update swept folder **names** through the whole repository and left bare **numbers** untouched,
+so the names in that paragraph moved forward and the digits beside them did not. The result
+disagreed with itself within a single sentence, and disagreed with a correct sentence 270 lines
+higher in the same file.
+
+The paragraph is rewritten against measurement rather than patched digit by digit.
+
+### Two attributions, and one missing pair of rows
+
+Two rows said which planning step produces a record using numbers that no longer point anywhere.
+Each is now answered from the folder that actually owns that record rather than from the habits
+of the rows around it — and those two answers turn out to be genuinely different, which is why
+copying the pattern would have been wrong.
+
+The logging step added in 7.0.0 also had no rows here at all, so a table describing itself as
+authoritative was silent about one of the fourteen things it covers. Both are added.
 
 ---
 

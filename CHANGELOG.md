@@ -1,12 +1,22 @@
 # Changelog
 
-**Last Updated**: <%DATE%> **Version**: 7.2.2 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.2.3 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [7.2.3] - 23/08/2026
+
+### Fixed
+
+- **The story-plan template's write-up map described a numbering scheme two renumbers old.** `STORY-PLAN-US000-TEMPLATE.md`'s _Folder gotchas_ block is cited as "the authoritative which-write-up-goes-in-which-folder map", and every numeric claim in it was false: `IMPLEMENTATION/` records were said to live under numbers `08`–`12` (they are `09`–`14`), written during "workflows 14–18" (delivery is `19`–`21`, recorded at `22`), with `src/` aligning to workflow numbers "only up to `12`" (it aligns through `17`) and diverging "from `src/15-DECISIONS`" (divergence starts at `src/18-TESTS`). Its worked example had **inverted**: "do not assume `src/16-SPRINT-PLANS`=WF14" names a pair that now aligns exactly. The block was reached by `7.0.0`'s **name-anchored** sweep — `14-DECISIONS`→`15-DECISIONS`, `15-SPRINT-PLANS`→`16-SPRINT-PLANS`, `18-backend-code`→`19-backend-code` all moved — while the bare digits beside them did not, so the paragraph contradicted itself inside one sentence, and contradicted the corrected cadence line 270 lines above it in the same file.
+- **Two `Produced by` cells carried bare numbers with no live referent**, and each is now resolved against the folder that owns the record rather than against the pattern of its neighbours. The security row's `` `17` write-back`` becomes `22-implementation-documentation`, which is what all twelve `src/**/IMPLEMENTATION/CONTEXT.md` files that name a workflow say. The test-record row's `` `14/15/16` code workflows`` becomes "`19`–`21` build phases, finalised at `23-pr-and-review`", which is `src/18-TESTS/CONTEXT.md`'s own wording.
+- **The logging surface `7.0.0` added had no row in that map.** `src/14-LOGGING/` ships `LOGGING-PLAN-US###-*.md` and `LOGGING-IMPL-US###-*.md`, and a table calling itself authoritative listed neither — the same defect class as a feature map present in the folder with no row in its index. Both rows are added, attributed to `14-logging-checks` and `22-implementation-documentation` per `src/14-LOGGING/CONTEXT.md`.
 
 ---
 
