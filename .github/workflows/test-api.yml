@@ -163,10 +163,18 @@ jobs:
       # baseline no longer carries. Reinstate a seed step alongside the first
       # authenticated endpoint, or the authenticated requests will fail at login.
 
+      # `working-directory` rather than `--cwd`: the flag does not exist in @usebruno/cli v4
+      # (`bru run --help` lists no such option) and the CLI exits 1 on "Unknown argument: cwd",
+      # so the step failed after the whole Docker stack was already up. bru resolves the
+      # collection from the working directory — the one holding bruno.json — which is what
+      # `--cwd` was reaching for. Report paths are absolute via $GITHUB_WORKSPACE so the
+      # artefact upload and the PR-comment steps, which run at the repository root, still find
+      # them; a relative path would now land inside the collection.
       - name: Run Bruno API tests
         if: steps.detect.outputs.present == 'true'
+        working-directory: code/src/tests/api
         run: |
-          mkdir -p reports/api
+          mkdir -p "$GITHUB_WORKSPACE/reports/api"
           FOLDER="${{ github.event.inputs.folder }}"
           RUN_PATH="${FOLDER:-.}"
           # `-r` is required: without it, an explicit path (".") runs only the .bru files in
@@ -181,10 +189,9 @@ jobs:
           BRUNO_VAR_test_password="$API_TEST_PW" \
           BRUNO_VAR_limited_password="$API_LIMITED_PW" \
           pnpm exec bru run -r "$RUN_PATH" \
-            --cwd code/src/tests/api \
             --env "$BRUNO_ENV" \
             --exclude-tags manual,wip \
-            --reporter-json reports/api/results.json
+            --reporter-json "$GITHUB_WORKSPACE/reports/api/results.json"
 
       - name: Upload test results
         if: always() && steps.detect.outputs.present == 'true'
