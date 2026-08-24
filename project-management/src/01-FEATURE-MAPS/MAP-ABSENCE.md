@@ -19,8 +19,8 @@ count in this map is a working-tree measurement, not a HEAD measurement, and the
 
 **This epic was charted into ground that was being built on at the same moment.** Between 11:18
 and 11:25 on 15/08/2026, while this map's research nodes were running, a concurrent session
-resolved **`MAP-DOMAIN-OBJECTS`** and wrote **six new guides** into `code/docs/data-structures/`,
-none of them yet committed:
+settled the **domain-objects-over-dictionaries** epic and wrote **six new guides** into
+`code/docs/data-structures/`, none of them yet committed:
 
 | File                         | cloc | Carries, verbatim                                                                            |
 | ---------------------------- | ---- | -------------------------------------------------------------------------------------------- |
@@ -109,9 +109,10 @@ feature map. **Nothing closes and nothing blocks.**
 
 **This is a claim, not a close.** Nothing here edits either register.
 
-**One live map constrains this one without sharing an edge**, and two shipped defects constrain
-it from outside any map. `MAP-DOMAIN-OBJECTS` (Resolving, frontier 0) owns the type-shape half,
-above. The **`docs-length.sh` 270-line ratchet** — shipped this morning — is the single hardest
+**One shipped guide family constrains this one without sharing an edge**, and two shipped defects
+constrain it from outside any map. The **`TYPES-*` family** owns the type-shape half, above — six
+guides and `audits/dict-discipline.sh`, all settled and shipped at `b404307`. The
+**`docs-length.sh` 270-line ratchet** — shipped this morning — is the single hardest
 constraint on where this epic can write, and `routing-skills.sh`'s blindness to a multi-line
 `skills:` array will silently swallow this guide's routing frontmatter on arrival.
 
@@ -414,6 +415,25 @@ line.** Not this epic's to fix — see _Graduated outside this map_.
 
 ---
 
+## Slices
+
+**None, and none is possible from this map.** The gate below already states it: _"This is a
+template-development map, so there are no stories to cut."_ The deliverable is
+`code/docs/ABSENCE.md`, its per-surface clauses in the guides that already own each surface, and
+the mechanical legs at N-016 — a lint rule, two `doctrine-drift.sh` rows, a `clippy.toml` key and
+a ruff code. None of that is a feature a user story would describe.
+
+| Slice | Story | Title             | Flags |
+| ----- | ----- | ----------------- | ----- |
+| —     | —     | _(no slices cut)_ | —     |
+
+**All thirteen gate flags read `N/A`**, so the manifest is empty by construction rather than
+unwritten: nothing on this map creates a model, an endpoint, a screen or a personal-data path.
+Recorded rather than omitted, because an absent Slices section is indistinguishable from one
+nobody filled in — which is precisely the ambiguity this map exists to remove.
+
+---
+
 ## Frontier
 
 Open decisions in dependency order. **N-008 is the only blocking node**: until the boundary with
@@ -473,16 +493,16 @@ In scope, not yet sharp enough to state as a decision.
 
 ## Out of scope
 
-| Ruled out                                         | Why                                                                                                                          |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Restating any `TYPES-*` H2                        | `doctrine-drift.sh` exists because a rule in two guides is a fork, not redundancy                                            |
-| Vendoring Alpine or HTMX, or building `base.html` | Confirmed deferred (5B). Needs a template baseline that does not exist — the same blocker two earlier nodes both hit         |
-| Reversing the branded-ID decline                  | `MOBILE-CODING-PRINCIPLES.md` Section 3 settled it with a stated trigger; `MAP-DOMAIN-OBJECTS` already declined to reopen it |
-| Flipping basedpyright to `strict`                 | Measured to buy **zero** optional enforcement — all six `reportOptional*` rules are `error` at standard                      |
-| Adopting `clippy::option_if_let_else`             | Mechanises the opposite of the brief's combinator rule                                                                       |
-| A mass refactor of existing code                  | There is almost none: 352 cloc of Python with zero optional constructs, 230 lines of Rust with one                           |
-| Editing the four code-review-graph task cards     | Auto-generated; regenerated on `code-review-graph install`                                                                   |
-| Rewriting `ANTI-PATTERNS.md`                      | Placed on an earlier map's Keep list, and `MAP-DOMAIN-OBJECTS` re-declined it today                                          |
+| Ruled out                                         | Why                                                                                                                           |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Restating any `TYPES-*` H2                        | `doctrine-drift.sh` exists because a rule in two guides is a fork, not redundancy                                             |
+| Vendoring Alpine or HTMX, or building `base.html` | Confirmed deferred (5B). Needs a template baseline that does not exist — the same blocker two earlier nodes both hit          |
+| Reversing the branded-ID decline                  | `MOBILE-CODING-PRINCIPLES.md` Section 3 settled it with a stated trigger, and `TYPES-TYPESCRIPT.md:255` records it unreversed |
+| Flipping basedpyright to `strict`                 | Measured to buy **zero** optional enforcement — all six `reportOptional*` rules are `error` at standard                       |
+| Adopting `clippy::option_if_let_else`             | Mechanises the opposite of the brief's combinator rule                                                                        |
+| A mass refactor of existing code                  | There is almost none: 352 cloc of Python with zero optional constructs, 230 lines of Rust with one                            |
+| Editing the four code-review-graph task cards     | Auto-generated; regenerated on `code-review-graph install`                                                                    |
+| Rewriting `ANTI-PATTERNS.md`                      | Placed on an earlier map's Keep list, and declined again on 15/08/2026 — its 11 patterns stand, cited and never restated      |
 
 ---
 
@@ -501,7 +521,7 @@ finding and its close stay legible together.
 | `x-for` missing from `audits/rules/django-template-xss.yml:22` — a live template-injection gap                                                     | **Unrouted** — destination map deleted                                   |
 | ~~`stack-htmx-templates/SKILL.md` — false vendoring claim (:33) and false "51-route" claim (:169)~~ **CLOSED 16/08/2026 at `f4a988b`**             | ~~new node~~ **fixed**                                                   |
 | ~~`stack-django/SKILL.md:259` claims basedpyright `strict`; it is `standard`~~ **CLOSED 16/08/2026 at `f4a988b`**                                  | ~~new node~~ **fixed**                                                   |
-| `DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11                                                                                  | `MAP-DOMAIN-OBJECTS` (same folder, same session)                         |
+| ~~`DATA-STRUCTURES.md:26` says "All 10 anti-patterns"; there are 11~~ **CLOSED 24/08/2026** — count corrected and the eleventh named               | ~~routed, never adopted~~ **fixed**                                      |
 | `doc-references.sh` structurally cannot resolve any path under `code/src/django/`                                                                  | **Unrouted** — destination map deleted                                   |
 | `07-review/STEPS.md` Step 1 names `code-reviewer` in its heading and `review` in its dispatch line                                                 | **Unrouted** — destination map deleted                                   |
 
@@ -520,8 +540,18 @@ citations moved twice, not once:** `f4a988b` rewrote both htmx claims in place a
 testing bullet down nineteen lines — so a line number lifted from either commit is wrong about
 the tree this map is read in.
 
-**The other seven rows are unchecked here and remain unrouted.** They were not re-measured
-in this pass, so an absent strike means nothing was looked at, never that the finding was found to
+**The third struck row was closed on 24/08/2026, twenty-three days after it was written.** The
+anti-pattern count was routed to the domain-objects map on 15/08/2026 and never adopted there; it
+was re-measured when that map was deleted, found **still wrong**, and fixed in the same pass —
+`DATA-STRUCTURES.md:26` now reads **11** and names _ID-or-Instance Parameter_
+(`ANTI-PATTERNS.md:270`), the pattern its enumeration had dropped. **The delay is the finding.**
+The count went stale at `82c8135` (14/08/2026), which added the eleventh pattern without touching
+the index; `b404307` edited **both** files the next day and did not close it; and nothing could
+have caught it in between, because `doctrine-drift.sh` reads fenced code only and this was a bare
+number in a prose table. That is the split's measured cost, paid in full and now legible.
+
+**The remaining six rows are unchecked here and remain unrouted.** They were not re-measured in
+this pass, so an absent strike means nothing was looked at, never that the finding was found to
 be clean (`code/docs/GATE-REPORTING.md`).
 
 ---
@@ -543,6 +573,7 @@ be clean (`code/docs/GATE-REPORTING.md`).
 - [x] Every node typed and blocker-wired
 - [ ] **Every node marked "blocks the map" is resolved** — N-008 is open
 - [x] Every resolved node links to the artefact it became
+- [x] **Every slice has a flag manifest** — no slices; the absence is stated, not left blank
 - [x] Index row in `CONTEXT.md` current
 
 **This is a template-development map, so there are no stories to cut.** The equivalent gate is

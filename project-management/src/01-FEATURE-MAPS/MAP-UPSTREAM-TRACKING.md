@@ -68,6 +68,68 @@ here so a CHART sitting starts from measurement rather than from scratch. **They
 
 ---
 
+## Register claimed
+
+**Nothing claimed, because nothing has been triaged — this map has not been charted.** The Notes
+table's `0` records that, not an exhaustive triage that happened to come back empty. A CHART
+sitting runs the triage against the live registers rather than inheriting this row.
+
+**This is a claim, not a close.** Nothing here edits either register.
+
+| Register    | Entry                         | Verdict | Retired by |
+| ----------- | ----------------------------- | ------- | ---------- |
+| GAPS.md     | _(not triaged — not charted)_ | —       | —          |
+| DEFERRED.md | _(not triaged — not charted)_ | —       | —          |
+
+---
+
+## Resolved decisions
+
+**None.** The two members recorded under _What is already measured_ are **evidence, not nodes**:
+the Expo trigger was settled by the template-health work at N-022 and enters here as a worked
+example, and the AccessKit / `quick-xml` suppressions are an unwatched pin, which is the problem
+rather than a decision about it.
+
+| Node | Decision | Type | Settled | Became |
+| ---- | -------- | ---- | ------- | ------ |
+| —    | —        | —    | —       | —      |
+
+---
+
+## Slices
+
+**None, and none can be cut** — a slice comes from a resolved frontier, and this map has none. The
+deliverable is a watcher mechanism, a pin register and a named owner per technology; whether that
+is one mechanism or one per ecosystem is the first thing a CHART sitting must decide rather than
+assume, and it changes what a slice would even contain.
+
+| Slice | Story | Title                      | Flags |
+| ----- | ----- | -------------------------- | ----- |
+| —     | —     | _(none — map not charted)_ | —     |
+
+**All thirteen gate flags are expected to read `N/A`.** A watcher is CI plumbing, a register is a
+markdown file and an owner is a name in it — no model, no endpoint, no screen, no personal-data
+path. Written as an expectation, not a manifest.
+
+---
+
+## Frontier
+
+**Deliberately empty — and that is the header's point, restated where the table actually is.**
+Read this as _"not charted"_, never as _"no open decisions"_.
+
+The measured gap above is the argument for charting it: roughly twenty pinned upstreams across
+five ecosystems, and **exactly one** with a decided trigger.
+
+| Node | Decision | Type | Blocked by | Blocking a story? |
+| ---- | -------- | ---- | ---------- | ----------------- |
+| —    | —        | —    | —          | —                 |
+
+**Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
+`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+
+---
+
 ## Fog of war
 
 In scope, not yet sharp enough to state as a decision. **Leaving something here is honest.**
@@ -116,8 +178,10 @@ CHART sitting has its checklist rather than reconstructing one.
 - [ ] Destination and out-of-scope bounds confirmed
 - [ ] The pin inventory enumerated — every pinned upstream in the repository, with where it is pinned
 - [ ] Every open `GAPS.md` / `DEFERRED.md` entry triaged
+- [ ] Every claimed entry names what will retire it; **neither register file edited here**
 - [ ] Every knowable decision is a node or in fog of war
 - [ ] Every node typed and blocker-wired
 - [ ] **Every node marked "blocking a story" is resolved**
 - [ ] Every resolved node links to the artefact it became
+- [ ] **Every slice has a flag manifest** — no slices; the map is not charted
 - [ ] ~~Index row in `CONTEXT.md` current~~ — **deliberately not applicable**, see the header

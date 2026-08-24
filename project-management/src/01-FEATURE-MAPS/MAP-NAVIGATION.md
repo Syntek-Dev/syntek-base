@@ -183,6 +183,26 @@ Key totals across the 312: `model` 283 · `skills` 243 · `type` 153 · `workflo
 
 ---
 
+## Slices
+
+**None yet, and whether any exist is itself this epic's open question.** N-004 is the gate: if it
+refuses, the outcome is a written refusal and the map closes having cut nothing — which the
+Destination names as an acceptable outcome rather than a failure. If it accepts, the slices follow
+from N-005 (what the repeating unit is) and N-006 (the generated / hand-edited boundary), both
+blocking and both unresolved.
+
+| Slice | Story | Title                          | Flags |
+| ----- | ----- | ------------------------------ | ----- |
+| —     | —     | _(undecided — gated on N-004)_ | —     |
+
+**Even on acceptance, all thirteen flags are expected to read `N/A`.** The candidate deliverable is
+a `map/` markdown layer with its generator, gate and mandate at workflow `22` — or, per N-001's
+strongest finding, an output mode on `doc-references.sh` that keeps the edge set it already
+computes and discards. Neither is a model, an endpoint, a screen or a personal-data path. Written
+as an expectation, not a manifest.
+
+---
+
 ## Frontier
 
 Open decisions in dependency order. Blocked-by names other nodes, so the takeable edge is visible.
@@ -317,6 +337,7 @@ In scope, not yet sharp enough to state as a decision.
       is no ADR, plan or story for it to graduate into until N-004 rules. **If N-004 refuses, both
       censuses die with this map** — which is the cost of the refusal, and is named here so it is
       chosen rather than discovered
+- [ ] **Every slice has a flag manifest** — no slices; gated on N-004, which may legitimately refuse
 - [x] **Index row deliberately not added** — see _Out of scope_; the shipped index correctly reads
       "None charted yet", because no map reaches a generated project — every one is committed
       here and excluded by `copier.yml` at generation

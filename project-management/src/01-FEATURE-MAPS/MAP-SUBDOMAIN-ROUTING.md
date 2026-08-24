@@ -129,6 +129,77 @@ by construction rather than by promise.
 
 ---
 
+## Register claimed
+
+**Nothing claimed, because nothing has been triaged — this map has not been charted.** Root
+`GAPS.md` and `DEFERRED.md` were both read at seeding on 16/08/2026 and both were empty, which is
+what the Notes table's `0` records.
+
+**A CHART sitting re-runs the triage against the live registers rather than inheriting this row.**
+`GAPS.md` has changed shape since: `c024338` restructured it around a _Standing limitations_
+section whose entries its own preamble exempts from triage, so the count and the verdicts both
+have to be taken again rather than carried forward.
+
+**This is a claim, not a close.** Nothing here edits either register.
+
+| Register    | Entry                         | Verdict | Retired by |
+| ----------- | ----------------------------- | ------- | ---------- |
+| GAPS.md     | _(not triaged — not charted)_ | —       | —          |
+| DEFERRED.md | _(not triaged — not charted)_ | —       | —          |
+
+---
+
+## Resolved decisions
+
+**None.** Seeding settles nothing, and the recommendation table above is explicitly _"put to Sam
+16/08/2026, **none confirmed**"_. Nothing under _What is already measured_ is a resolution either
+— those are facts decided by other documents, entering here as constraints a CHART sitting starts
+from.
+
+| Node | Decision | Type | Settled | Became |
+| ---- | -------- | ---- | ------- | ------ |
+| —    | —        | —    | —       | —      |
+
+---
+
+## Slices
+
+**None, and none can be cut** — a slice comes from a resolved frontier, and this map has no
+frontier yet. What the deliverable even is remains open: the Destination names _"doctrine plus one
+routing mechanism"_ and says outright that whether any application code beyond a host→URLconf seam
+is touched is itself undecided.
+
+| Slice | Story | Title                      | Flags |
+| ----- | ----- | -------------------------- | ----- |
+| —     | —     | _(none — map not charted)_ | —     |
+
+**This is the one map here on which a flag might genuinely fire**, so the empty manifest is a
+consequence of the map being uncharted rather than of the work being documentation. If a CHART
+sitting routes a surface to its own host, `Security` (cookie scope, host validation, the `__Host-`
+prefix) and `SEO` (robots and canonical are per-host resources, per `ROOT-SURFACE.md` Section 1)
+both have real entries to make. Written as a possibility, not a manifest.
+
+---
+
+## Frontier
+
+**Deliberately empty — and that is the header's point, restated where the table actually is.**
+Read this as _"not charted"_, never as _"no open decisions"_.
+
+The evidence above already names the likeliest first node: `code/docs/URL-STRATEGY.md:147-153`
+recommends a shared `SESSION_COOKIE_DOMAIN = ".<%PRIMARY_DOMAIN%>"` and the 16/08 recommendation
+argues the exact opposite. That is a live contradiction between a shipped guide and an unconfirmed
+proposal, and every other node's answer moves with it.
+
+| Node | Decision | Type | Blocked by | Blocking a story? |
+| ---- | -------- | ---- | ---------- | ----------------- |
+| —    | —        | —    | —          | —                 |
+
+**Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
+`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+
+---
+
 ## Fog of war
 
 In scope, not yet sharp enough to state as a decision. **Leaving something here is honest.**
@@ -181,8 +252,10 @@ CHART sitting has its checklist rather than reconstructing one.
 - [ ] The host inventory enumerated — every hostname the project will answer on, and who serves it
 - [ ] The cookie-scope decision settled, because every other node's answer moves with it
 - [ ] Every open `GAPS.md` / `DEFERRED.md` entry triaged — closes / blocks / unrelated
+- [ ] Every claimed entry names what will retire it; **neither register file edited here**
 - [ ] Every knowable decision is a node or in fog of war
 - [ ] Every node typed and blocker-wired
 - [ ] **Every node marked "blocking a story" is resolved**
 - [ ] Every resolved node links to the artefact it became
+- [ ] **Every slice has a flag manifest** — no slices; the map is not charted
 - [ ] ~~Index row in `CONTEXT.md` current~~ — **deliberately not applicable**, see the header

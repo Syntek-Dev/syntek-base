@@ -80,6 +80,25 @@ sitting.
 
 ---
 
+## Slices
+
+**None yet, and the frontier says why.** Seven nodes are marked blocking a story — N-001, N-004,
+N-005, N-009, N-012, N-014 and N-018 — and **N-005 is the one that decides the shape of every
+slice**: until canonicity is settled per artefact class, a slice cannot say which side it builds.
+Slices are cut here once those seven resolve, never before.
+
+| Slice | Story | Title                   | Flags |
+| ----- | ----- | ----------------------- | ----- |
+| —     | —     | _(blocked — see N-005)_ | —     |
+
+**What the manifest is expected to look like when it exists, written as an expectation and not as
+a manifest.** This map's deliverables are workflow steps, `DESIGN.md`, a brief and the slop
+audits, so the code-shaped flags — `DB`, `API`, `Backend`, `GDPR`, `Logging` — should read `N/A`
+throughout. `Wireframes` and `Components` are the two that may genuinely fire, because N-005 and
+N-008 decide what `08-WIREFRAMES/` and `07-COMPONENTS/` produce and in which medium.
+
+---
+
 ## Frontier
 
 Open decisions in dependency order. **Blocked-by is prose links to other nodes.** Unblocked and
@@ -193,6 +212,7 @@ In scope, not yet sharp enough to state as a decision.
 - [x] Every node typed and blocker-wired
 - [ ] **Every node marked "blocking a story" is resolved** — 7 open
 - [ ] Every resolved node links to the artefact it became
+- [ ] **Every slice has a flag manifest** — no slices yet; blocked on N-005
 - [x] No index row in `CONTEXT.md` — this map does not ship
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**

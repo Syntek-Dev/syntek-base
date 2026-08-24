@@ -160,6 +160,37 @@ add. That is why Q4 was answered _don't add it_ and why N-009 and N-010 are one 
 
 ---
 
+## Slices
+
+The buildable slices this feature cuts into. **This map's six batches are its slices** — the gate
+below already names Batch E _"the intended first slice"_, so the identification is the map's own
+and is recorded here rather than imposed. The `Story` column reads `—` until `02-story-creation`
+allocates a number; wayfinder never reserves one, because a slice later merged or dropped would
+burn it and `US###` gaps are permanent.
+
+| Slice | Story | Title                                                       | Flags |
+| ----- | ----- | ----------------------------------------------------------- | ----- |
+| S-01  | —     | Batch E — three defects in `09-debugging-with-logs/`        | none  |
+| S-02  | —     | Batch A — five restatements that drifted from their owner   | none  |
+| S-03  | —     | Batch B — where a rule lives, and what is canonical         | none  |
+| S-04  | —     | Batch F — the workflow terminal-section contract            | none  |
+| S-05  | —     | Batch C — the guard, and the coverage-floor revisit trigger | none  |
+| S-06  | —     | Batch D — what a shipped file may cite                      | none  |
+
+**Every flag reads `N/A`, so the manifest is empty by construction rather than unwritten.** All
+thirteen gates in `../02-STORIES/US000-TEMPLATE.md` are code-shaped — `DB`, `User Flow`, `Brand`,
+`Components`, `Wireframes`, `GDPR`, `Security`, `QA`, `SEO`, `API`, `Logging`, `Backend`,
+`Frontend` — and every slice above edits documentation, workflow prose and audit scope. Nothing
+here creates a model, an endpoint, a screen or a personal-data path. Stated explicitly because an
+empty `Flags` cell is otherwise indistinguishable from a manifest nobody wrote, which is this
+map's own thesis applied to itself.
+
+**A batch is a sitting; a slice is what a story is cut from.** They coincide here because each
+batch's justification is _shared evidence, one reading_ — the same property that makes it one
+story. That is a property of this map, not a general rule.
+
+---
+
 ## Frontier
 
 | Node  | Decision                                                                                     | Type     | Class | Blocked by                                    | Batch | Blocking a story? |
@@ -570,6 +601,7 @@ measurements taken at a named commit, never quotations from a report.**
 - [x] Every node typed and blocker-wired
 - [x] **Every node marked "blocking a story" is resolved** — none is so marked (see Frontier)
 - [x] Every resolved node links to the artefact it became
+- [x] **Every slice has a flag manifest** — six slices, every flag `N/A` and stated as such
 - [ ] Index row in `CONTEXT.md` current — **deliberately not added; charted as N-010**
 
 **Stories may be cut in `workflows/02-story-creation/` now** — no node gates them. **Batch E is the

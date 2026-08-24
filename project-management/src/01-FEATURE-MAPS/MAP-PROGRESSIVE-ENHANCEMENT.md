@@ -275,6 +275,28 @@ and `docs-length-allow: <reason> (expires DD/MM/YYYY)`.
 
 ---
 
+## Slices
+
+**None, and the Frontier already says why in its own words:** _"there are no stories, because the
+deliverable is doctrine."_ What this epic ships is `code/docs/PROGRESSIVE-ENHANCEMENT.md` and its
+sub-docs, the demotion of `RENDERING.md`, `audits/progressive-enhancement.sh` with its CI
+workflow, the no-JS test lane and the e2e engine matrix — guides, a gate and a test surface.
+
+| Slice | Story | Title             | Flags |
+| ----- | ----- | ----------------- | ----- |
+| —     | —     | _(no slices cut)_ | —     |
+
+**The batches below the Frontier are sittings, not slices**, and the distinction is load-bearing
+here: a batch groups nodes that share evidence so one reading serves all of them, where a slice is
+a buildable unit a story is cut from. Batch **D** (N-014, N-015, N-020) is the closest thing to a
+deliverable on this map, and it is still one authoring pass.
+
+**All thirteen gate flags read `N/A`** — no model, no endpoint, no screen, no personal-data path.
+The Destination pins this from the other side: _"No application code, no dependency change, no
+build configuration is touched."_
+
+---
+
 ## Frontier
 
 Open decisions in dependency order. **Blocking** here means "no guide text may be written
@@ -432,6 +454,7 @@ the guide.
       non-blocking: it re-tests a _reason_, not a dependency
 - [ ] Every resolved node links to the artefact it became — the six charted decisions pending,
       each naming the node that writes it; N-007 is evidence and names what it feeds
+- [x] **Every slice has a flag manifest** — no slices; doctrine, not stories
 - [x] No index row added to `CONTEXT.md` — ~~map is untracked~~ **corrected 21/08/2026: the map
       IS tracked** (committed 17/08/2026, then excluded by `copier.yml` rather than by a nested
       `.gitignore`). The conclusion is unchanged and the header banner already states it correctly
