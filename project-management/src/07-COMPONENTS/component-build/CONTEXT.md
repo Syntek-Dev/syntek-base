@@ -19,7 +19,7 @@ project-management/src/07-COMPONENTS/component-build/
 ├── section-navigation.tex ← SOURCE partial — navigation
 ├── section-avfeedback.tex ← SOURCE partial — avatars and feedback states
 ├── components.tex        ← GENERATED — do not hand-edit
-└── components.pdf        ← GENERATED — the deliverable component sheet
+└── components.pdf        ← GENERATED — the deliverable component sheet (gitignored)
 ```
 
 ## How it works

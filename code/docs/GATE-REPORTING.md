@@ -33,7 +33,7 @@ following a checklist.
 | The **tool** is absent        | Full, and unexamined    | **Never clean.** Report "not run"     |
 | The **surface** is absent     | Legitimately empty      | **Clean is correct.** Note the reason |
 | The tool ran and found no hit | Non-empty, examined     | Clean                                 |
-| The population is zero        | Empty for another cause | See _§5, the boundary_                |
+| The population is zero        | Empty for another cause | See _Section 5, the boundary_         |
 
 `mobile-tokens.sh` on a web-only project has nothing to check and is right to exit `0` with a
 note — that is `audits/CLAUDE.md`'s self-guarding rule, and it is the second row, not a breach of
@@ -79,7 +79,7 @@ mismatch asserts two results, and there is only one.
 ### Audits under `code/src/scripts/audits/`
 
 Unchanged, and that is the point — `audits/CLAUDE.md`'s _"a self-guarding audit must exit `0`,
-not fail, when its surface is absent"_ is §2's second row and stays exactly as written. What the
+not fail, when its surface is absent"_ is Section 2's second row and stays exactly as written. What the
 rule adds there is the note: an audit that exits `0` over an absent surface **says so in its
 output**, so the zero is legible as "nothing of this kind here" rather than "nothing wrong here".
 
@@ -87,7 +87,7 @@ output**, so the zero is legible as "nothing of this kind here" rather than "not
 
 - **Not a ban on skipping.** Skipping is often correct. The ban is on skipping _silently_, or on
   a skip reaching the same verdict as a pass.
-- **Not a demand that every gate fail closed.** §3 deliberately gives the scripts a non-zero code
+- **Not a demand that every gate fail closed.** Section 3 deliberately gives the scripts a non-zero code
   and the hook libraries a non-blocking state, because their readers differ.
 - **Not applicable to advisory hooks that produce no verdict.**
   `.claude/hooks/context-threshold-handoff.sh` always exits `0` by design — it fires on every
@@ -103,7 +103,7 @@ reporting one, and it is tracked separately.
 
 The two are told apart by a single question: **could this run have found a member?**
 
-- **No, because the tool was missing** → this guide, §1.
+- **No, because the tool was missing** → this guide, Section 1.
 - **No, because the search was wrong** → a scoping fault. Fix the search, then this guide applies
   to whatever it then could not do.
 - **Yes, and it found none** → clean, and correctly so.

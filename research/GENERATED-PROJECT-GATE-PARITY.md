@@ -323,13 +323,240 @@ then re-run independently before being recorded here.
 
 ---
 
+## Addendum II — the rendered poles, measured 27/08/2026
+
+**The methodological correction first.** Everything above, and the four resolve batches that
+read it, reasoned from _reconstructed_ trees, because copier was recorded as unavailable. It was
+not: it is absent from `PATH` but reachable through `uvx`, which is how CI has always run it. On
+27/08/2026 both answer-set poles were rendered for real with
+`uvx copier copy --trust --defaults --vcs-ref=HEAD`, the same invocation as
+`.github/workflows/audit-template.yml:154`, widened to all four surface flags.
+
+Two conclusions above were wrong in ways only a render could show, and both are corrected below.
+**Render before reconstructing.**
+
+### What was rendered
+
+| Pole  | Answers                                         | Files | Symlinks |
+| ----- | ----------------------------------------------- | ----- | -------- |
+| `off` | `INCLUDE_CLICKUP/MOBILE/RUST/DESKTOP` all false | 1165  | 0        |
+| `on`  | all four true                                   | 1270  | 0        |
+
+The all-on pole is the template's **first ever** rust + desktop render — 59 tracked files that
+had never been through generation. `copier` refuses to render at all without `--trust`, because
+`copier.yml:841` declares `_tasks`: without it the run exits **4** and writes nothing, so there
+is no such thing as a partial, task-free generation of this template.
+
+Standing caveat on every figure here: the render used `--vcs-ref=HEAD` against a **dirty**
+working tree, so it inherited three uncommitted `CONTEXT.md` fixes and dropped seven force-added
+files under `code/src/scripts/tests/reports/`. Three of the on-pole `doc-references` findings are
+that probe artefact rather than a template defect. **A parity gate must render from one clean
+committed ref.**
+
+### The gate table
+
+Findings as counts; seconds as off/on. Failure kind distinguishes a real defect in the rendered
+project from a gate that cannot read a rendered tree — that distinction is the whole epic.
+
+| Gate                           | off             | on                | secs         | Failure kind                                                           |
+| ------------------------------ | --------------- | ----------------- | ------------ | ---------------------------------------------------------------------- |
+| `doc-references.sh`            | **70**          | **6**             | 109-134      | mixed — mostly real shipped-doc defects, plus Check 3 inert downstream |
+| `skill-conformance.sh`         | **12**          | **12**            | 1.2-1.4      | **blind** — `is_vendored()` is a `-L` test; false after dereference    |
+| `docs-length.sh`               | **6**           | **6**             | 0.6          | **blind** — the exemption is an `.agents/*` path prefix                |
+| `routing-skills.sh`            | 0 (vacuous)     | **22, all false** | 6.6-7.6      | **blind** — absent `copier.yml` swallowed                              |
+| `sync-trees.sh --check`        | **9**           | **6**             | 1.2-1.5      | **real** — would block the first commit                                |
+| the other 20 audits            | pass            | pass              | ~33-40 total | n/a — 5 are structurally null on a fresh project                       |
+| 9 self-tests                   | **2 fail**      | **1 fail**        | 9.0-9.6      | blind — `doc-references` fails **both** poles                          |
+| `prettier --check`             | **52**          | **53**            | 13-15        | mixed — ~37 render-created, 15 vendored, 1 is `N-012`                  |
+| `markdownlint-cli2`            | **222** in 32   | **223** in 33     | 4.3-5.5      | real, render-created — token width breaks table alignment              |
+| `ruff format --check` @0.14.11 | pass "69 files" | pass              | 0.02         | **false green** — the host sees 69 of 837                              |
+| `ruff format --check` @0.16.4  | **2** of 837    | **2** of 888      | 0.04         | real, render-created                                                   |
+
+**Audit family totals: 4 gates non-zero and 88 findings off-pole, 5 and 46 on-pole.**
+
+Not measured at all, and therefore **unknown rather than clean**: `eslint`, `ruff check` (lint),
+`basedpyright`, `tsc`, `cargo`, the whole `tests/` family, and every Docker-dependent leg.
+
+### The runtime budget
+
+| Body of work                        | Per pole                    | Both poles |
+| ----------------------------------- | --------------------------- | ---------- |
+| Full 24-audit family                | 151-166s                    | ~5.5 min   |
+| — of which `doc-references.sh`      | 109-134s (74-78%)           | ~4 min     |
+| 9 self-tests                        | 9.0-9.6s                    | ~19s       |
+| The three render-sensitive commands | 18-21s (prettier is 70-78%) | ~40s       |
+| Generation itself                   | ~24s incl. `uv lock`        | ~48s       |
+
+A render-sensitive-only job is ~2 minutes; the full family on both poles is a **6-8 minute job**,
+against the 41 seconds `audit-template.yml` costs today. Hard constraint: the sweep **mutates the
+tree** — `security.sh` writes a 540 MB `.venv` into whatever it audits — so the job must run in a
+throwaway copy per invocation and must never assert on file counts afterwards.
+
+### N-005 — the format pass converges
+
+The map recorded "51 Prettier failures, 204 markdownlint errors and 2 ruff failures to zero",
+measured on a `cee3bbc` reconstruction. The real numbers are **52/222/2 off-pole** and
+**53/223/2 on-pole** — and the pass does take them to **0/0/0**, in one round, on both poles,
+with `prettier --check` then exiting 0.
+
+Three things this settles:
+
+- **`prettier --write` alone clears every markdownlint finding** (222 → 0: 198 MD060 plus 24
+  MD012). markdownlint needs no fix pass of its own.
+- **It is idempotent.** A second pass rewrites nothing.
+- **A reconstruction said otherwise and was wrong.** Measured on the template's _dirty working
+  tree_, the same pass appears to leave markdownlint red and to create MD004 findings. The
+  counter-example is `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`, which
+  `copier.yml` excludes and which therefore never ships. On a clean template archive the pass is a
+  no-op (0 findings before and after); on a rendered pole it converges. **`N-005` is a siting
+  question, not a feasibility question.**
+
+Four teeth on the convergence, all measured: `.copier-answers.yml` re-reddens on every
+`copier update` unless `N-012` resolves (it now does, to ignore); the pass forks the 15 vendored
+`cloudinary-*` files from their `.agents/` twins without a `.prettierignore` entry; a naked
+`_task` running `pnpm exec prettier` silently installs 565 packages and rewrites the committed
+`pnpm-lock.yaml`; and the pass **must invoke a ≥0.16 ruff**, or it silently skips every `.md` and
+appears to succeed while CI stays red.
+
+### N-012 — "format it" is impossible, not merely awkward
+
+The rendered `.copier-answers.yml` fails `prettier --check` because
+`jinja2_ansible_filters.to_nice_yaml` defaults `indent=4` for folded-scalar continuation lines
+where Prettier wants 2. A hand fix can never survive: copier overwrites the answers file
+unconditionally (`_main.py:512`) and excludes it from the update patch (`:1548-1553`), with no
+`_skip_if_exists` to pre-empt it. Reproduced end to end — render at v7.4.0, format, update to
+v7.4.1, and the four-space indent is back.
+
+### The widened matrix is assertion-safe
+
+All 12 of `audit-template.yml`'s generated-tree assertion steps pass on the all-off/all-on pair.
+The cross-pole diff is **one** differing file (`.copier-answers.yml`), **zero** off-only files and
+105 on-only (mobile 41, rust 35, desktop 24, clickup 5) — so the single-mechanism rule holds at
+the widest pair the template can produce. Two leaks it does not cover are charted as map nodes
+`N-021` (the ClickUp opt-in leaves an empty directory) and `N-022` (`pnpm-lock.yaml` names the
+mobile importer on a web-only project).
+
+---
+
+## Addendum III — the citation cluster, measured 28/08/2026
+
+Grounds map nodes `N-014`, `N-023`, `N-008` and `N-031`, and the four corrections applied to
+`MAP-GATE-PARITY.md` in place. Every claim below was re-verified against `7a82095` on 28/08/2026,
+independently of the session that first measured them.
+
+### `doc-references.sh` has no fence handling at all
+
+The map inferred that the script "structurally cannot see a fenced tree block". The stronger and
+correct statement: the file contains **zero** fence constructs of any kind, so fencing is not what
+hides a token from it. It tests **backticked tokens only**, and is therefore blind to an
+unbackticked token anywhere in a document — in a fence, in a table cell, or in running prose.
+
+That is why `N-014` settles to **backtick and annotate** rather than to a marker: backticking is
+what makes the five root `CONTEXT.md` rows visible to the gate at all, and the annotation is what
+makes the verdict correct once they are.
+
+### The third citation class does have a verdict — it misses by one character
+
+`doc-references.sh:704` carries the generated-output arm:
+
+```sh
+*/reports/*|*/coverage/*|*/staticfiles/*|.claude/worktrees/*|.claude/worktrees) continue ;;
+```
+
+It covers 12 of 162 sites. It does not cover the shipped `code/src/scripts/tests/reports/`
+citations, because `:637` normalises the token first:
+
+```sh
+stripped="${stripped%/}"
+```
+
+`…/tests/reports/` becomes `…/tests/reports`, which `*/reports/*` cannot match — the glob needs a
+component after `reports/`. `.claude/worktrees` is listed twice for exactly this reason, once
+globbed and once bare; `reports` has no bare alternative. That asymmetry is the whole defect, and
+it is `N-023`'s residue once `N-031` dissolves the `tests/reports` instance.
+
+### The nine `[ -f copier.yml ]` sites are two idioms with opposite control flow
+
+The map cited nine guarded sites as one precedent for the discriminator idiom `N-008` writes. They
+divide cleanly, and the division matters:
+
+| Group                   | Sites                                                                                                                                                                                    | Shape                                                                                                                                                                   |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ships** (4)           | `.claude/hooks/pre-pr-check.sh:80` · `.claude/hooks/template-docs-readonly.sh:35` · `lefthook.yml:137` · `lefthook.yml:218`                                                              | **Stand down** — `exit 0`, or set `TEMPLATE_MODE` and carry on. The file is absent downstream by design, and absence is a legitimate state                              |
+| **Copier-excluded** (5) | `.github/scripts/shipped-artefacts.sh:142` · `shipped-memory.sh:102` · `shipped-readme.sh:115` · `shipped-registers.sh:118` · `.copier/migrations/v6.0.0-rename-feature-surfaces.sh:451` | **Assert input** — `[[ -f "$COPIER" ]] \|\| die "missing $COPIER"`. The script never runs downstream at all (`copier.yml:41`, `:97`), so absence is a broken invocation |
+
+A rule quoting all nine as one precedent would teach a shipping script to `die` where it should
+stand down, or an excluded script to pass silently where it should fail loudly — misapplied on
+first use, in either direction.
+
+### `N-031` — the parent-directory trap, and why four files sit inert
+
+Root `.gitignore:50` excludes `code/src/scripts/tests/reports/` in **directory form**. Git does not
+descend into an excluded directory, so the nested `.gitignore` inside it is never read, and no
+root-level `!` negation can re-include anything beneath it. The observable consequence:
+`git status --short code/src/scripts/tests/reports/` prints **nothing** — not "untracked", nothing —
+while the directory holds an untracked `.gitignore` and `.gitkeep` on disk.
+
+Seven files are force-added past that rule. **Four of them already are the proposed pattern**
+(`backend/.gitignore` + `.gitkeep`, `backend-coverage/.gitignore` + `.gitkeep`), sitting inert
+because the parent is excluded in directory form.
+
+The untracked `tests/reports/.gitignore` on disk is **not** the fix and must not be adopted: it is
+a list of directory names (`backend/`, `api/`, …) that admits nothing back, repeating the
+directory-form error one level down.
+
+The working shape is the one five siblings already ship, plus two lines they do not need:
+
+```gitignore
+*
+!*/
+!.gitignore
+!.gitkeep
+!CONTEXT.md
+!CLAUDE.md
+```
+
+- **`!*/` is load-bearing here and absent from the five flat siblings.** `tests/reports/` is the
+  only `reports/` directory with children; without `!*/` git never descends into `backend/` or
+  `backend-coverage/`, and 4 of the 7 files stay untracked.
+- **`!CLAUDE.md` is Sam's call (28/08/2026)**, and it is what opens `N-032` — see below.
+- Precedent for the whole shape, `!*/` and `!CLAUDE.md` included: `questionnaires/.gitignore:13-20`.
+  The five `reports/` siblings carry the narrower `*` / `!.gitignore` / `!.gitkeep` / `!CONTEXT.md`.
+- **`.gitkeep` is strictly redundant** — `code/src/scripts/reports/` holds its folder on a tracked
+  `.gitignore` alone — and is kept deliberately, for symmetry with the six siblings.
+
+The root rule moves to the **glob** form (`code/src/scripts/tests/reports/*`) rather than being
+deleted, so the directory's generated contents stay ignored if the nested file is ever lost.
+
+### One handoff figure corrected: the `api/` row is an off-pole finding
+
+The batch reported `sync-trees --check` moving 9 → 10 because `tests/reports/CONTEXT.md:16` lists
+`api/`, "which is not on disk". **In this repository `api/` is on disk**, so the finding is a
+property of a **generated** tree, where nothing has yet run `api.sh`. The annotation is still
+required — and `--write` cannot supply it — but it is downstream parity work, not a defect here.
+The word must be `gitignored`: the `GATED` regex at `sync-trees.sh:183-185` accepts it, and the
+row's current wording, "created on demand", matches nothing in that alternation.
+
+### What this addendum does not settle
+
+The on-pole re-baseline was **not** re-run at this commit. `/tmp/gate-parity-renders/{off,on}` were
+polluted by a `security.sh` `.venv` (~540 MB), so the "leaves one red on-pole, and it is
+`coverage/`" figure is carried from the batch's own render rather than re-measured. Any number
+entering a story's acceptance criteria wants a fresh render from one clean committed ref — which
+also resets `S-08`'s baseline.
+
+---
+
 ## Feeds
 
 `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md` — nodes `N-001`, `N-002` and `N-003`
-are resolved by the addendum above; `N-004` to `N-008` and `N-011` build on it.
+are resolved by the first addendum; `N-005`, `N-007`, `N-011` and `N-012` by **Addendum II**,
+which also grounds the eleven nodes `N-020` to `N-030` charted from the poles; and `N-014`,
+`N-023`, `N-008` and `N-031` by **Addendum III**, which also grounds `N-032` and the four
+corrections applied to the map in place.
 
 The ADR is still pending: the decision this note grounds is the scope question the handoff opens
 with — what a gate authored in the template may assume about the tree it runs in. That is map node
 `N-008`; wire this note to its `ADR-###` when `/grill-with-docs` settles it.
 
-**Written:** 24/08/2026 · **Addendum:** 24/08/2026
+**Written:** 24/08/2026 · **Addendum:** 24/08/2026 · **Addendum II:** 27/08/2026 · **Addendum III:** 28/08/2026

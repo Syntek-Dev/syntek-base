@@ -75,10 +75,10 @@ The allowlist. Anything not here needs a reason in Section 4 or it does not go i
 Every field marked `[enc]` in this story's schema design, plus every PII attribute from its GDPR
 plan. **Name the field and the surface**, so the check in `../IMPLEMENTATION/` is runnable.
 
-| Field                       | Source                    | Excluded from                            |
-| --------------------------- | ------------------------- | ---------------------------------------- |
-| [EXAMPLE] `{email}` `[enc]` | `DB-IDEA-US###-…` §Tables | All log channels, and Sentry breadcrumbs |
-| [EXAMPLE] `{full_name}`     | `GDPR-PLAN-US###-…`       | All log channels                         |
+| Field                       | Source                           | Excluded from                            |
+| --------------------------- | -------------------------------- | ---------------------------------------- |
+| [EXAMPLE] `{email}` `[enc]` | `DB-IDEA-US###-…` Tables section | All log channels, and Sentry breadcrumbs |
+| [EXAMPLE] `{full_name}`     | `GDPR-PLAN-US###-…`              | All log channels                         |
 
 **Stack traces count.** An exception whose `str()` interpolates a personal value leaks it at
 `ERROR`. Where that is possible, say which exception and how it is caught and re-raised.

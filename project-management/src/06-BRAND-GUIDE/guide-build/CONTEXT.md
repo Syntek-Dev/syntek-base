@@ -11,7 +11,7 @@ project-management/src/06-BRAND-GUIDE/guide-build/
 ├── CLAUDE.md           ← operating rules for this folder
 ├── brand_guide.py      ← SOURCE OF TRUTH — brand tokens + rules, and the LaTeX renderer
 ├── brand-guide.tex     ← GENERATED — do not hand-edit
-└── brand-guide.pdf     ← GENERATED — the deliverable brand guide
+└── brand-guide.pdf     ← GENERATED — the deliverable brand guide (gitignored)
 ```
 
 ## How it works

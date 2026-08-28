@@ -30,6 +30,12 @@ apps/core/
 │   ├── core.py       ← {% request_id %} — the identifier, readable without a context
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
+├── tests/             ← the suite: each primitive in isolation, then the command base
+│   ├── unit/test_errors.py       ← the ServiceError tree and its taxonomy
+│   ├── unit/test_middleware.py   ← RequestIDMiddleware and current_request_id()
+│   ├── unit/test_schemas.py      ← the Ninja Schema bases
+│   ├── unit/test_templatetags.py ← {% request_id %}, rendered
+│   └── test_management_base.py   ← ManagementCommand and its exit codes
 ├── CONTEXT.md        ← this file
 └── CLAUDE.md         ← operating rules
 ```
