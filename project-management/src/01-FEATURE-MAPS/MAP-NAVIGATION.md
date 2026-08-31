@@ -1,8 +1,8 @@
 # MAP-NAVIGATION — Can this repository describe itself to a cold agent?
 
 **Charted**: 16/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Resolving** — the two census nodes settled 16/08/2026
-**Frontier open**: 10 · **Blocking open**: 3 · **Fog of war open**: 5
+**Status**: **`S-02` and `S-03` cuttable; the fog is empty.** N-009 settled 31/08/2026 and N-014 — a lookup — is the last node
+**Frontier open**: 1 · **Blocking open**: 0 · **Fog of war open**: 0
 
 > **Template-development artefact.** This map charts work on `syntek-base` itself, not on a
 > project generated from it. It is **committed here**, so it syncs across devices, and it is
@@ -22,21 +22,31 @@ it, where it lives, whether it ships to generated projects, and what fails when 
 surface with its generator, its gate, and its mandate wired in. Both are acceptable outcomes; an
 unresolved "we should probably do this" is not.
 
-**What this is not.** Not an adoption of ICM. The method was assessed on 16/08/2026 and three ideas
-were named as worth taking; **none was adopted**, and this epic decides only the first question ICM
-would ask, in this repository's terms.
+**What this is not — amended 31/08/2026 at N-004.** Not a **verbatim** adoption of ICM. The method
+was assessed on 16/08/2026 (`research/INTERPRETABLE-CONTEXT-METHODOLOGY.md`) and three ideas were
+named as worth taking; none was adopted **then**. N-004 has since ruled that this epic **derives an
+adapted skill from it** — the walk test above all — with this repository's enforcement behind it,
+which is precisely what ICM lacks. The original bound was guarding against adopting a methodology
+wholesale; that guard stands, and "adapted, not copied" is now the destination rather than a
+refusal.
+
+**Attribution is owed and is not contingent on how far we diverge (Sam, 31/08/2026).** The
+inspiration for the skill and the setup is credited whether the result resembles ICM or not, and
+credited **in the same change as each rule taken**, per `.claude/CLAUDE.md` Section 6 — the
+`README.md` _Influences and attribution_ row and its `.copier/README.md` twin. Attribution written
+retrospectively decays; written alongside, it stays true.
 
 ---
 
 ## Notes
 
-| Field                    | Value                                                                                                    |
-| ------------------------ | -------------------------------------------------------------------------------------------------------- |
-| Domain                   | The template's own navigability — `.claude/`, root orientation files, `code/src/scripts/`, workflow `22` |
-| Skills to load           | `doc-writer`, `scaffold`, `codebase-design`, `domain-modelling`, `grill-with-docs`                       |
-| Standing preferences     | Refusal is a legitimate destination; the deletion test comes before the design; tracer before commitment |
-| Umbrella ADRs            | None — this repository does not write ADRs (Sam, 16/08/2026)                                             |
-| Register entries triaged | 0 closes · 0 blocks · 0 unrelated — **both registers hold zero open entries**                            |
+| Field                    | Value                                                                                                                                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | The template's own navigability — `.claude/`, root orientation files, `code/src/scripts/`, workflow `22`                                                                                            |
+| Skills to load           | `doc-writer`, `scaffold`, `codebase-design`, `domain-modelling`, `grill-with-docs`                                                                                                                  |
+| Standing preferences     | Refusal is a legitimate destination; the deletion test comes before the design; tracer before commitment. **Added 31/08/2026:** attribution is owed for inspiration however far the result diverges |
+| Umbrella ADRs            | None — this repository does not write ADRs (Sam, 16/08/2026)                                                                                                                                        |
+| Register entries triaged | **Re-triaged 31/08/2026: 0 closes · 0 blocks · 4 unrelated.** The charted row read "both registers hold zero open entries", which was true then and is not now                                      |
 
 ### The premise is already half-built, and that changes the question
 
@@ -90,32 +100,66 @@ one.
 "Regenerated via Python scripts **and** human edits" collides head-on with an invariant this
 project already holds: **a generated index is never hand-edited** — a file map built by script
 cannot drift, a hand-curated one always does. Any design that lets both write to the same file
-inherits the failure mode of every stale index in this tree. **N-006 is that collision**, and it is
-the sharpest node on the map.
+inherits the failure mode of every stale index in this tree. **N-006 was that collision**, and it
+was the sharpest node on the map.
+
+> **N-006 is moot as of 31/08/2026, and the reason is worth keeping.** The collision only ever
+> existed because the proposal put two writers on one file. N-004 refused the `map/` layer, so no
+> such file is created: `doc-references.sh`'s output is generated, nothing hand-edits it, and the
+> skill's own text is hand-written and generated by nobody. **The contradiction was not resolved —
+> it was avoided, by declining the design that contained it.** That is the strongest argument for
+> the shape N-004 chose, and it is recorded here rather than in the node's disposition because
+> this paragraph is what a later reader will find first.
 
 ---
 
 ## Register claimed
 
-`GAPS.md` and `DEFERRED.md` were both read at charting. **Both hold zero open entries** — nothing to
-claim, nothing blocking. The triage is exhaustive by being empty.
+**Re-triaged 31/08/2026 at N-004, because the charted triage has expired.** Both registers held
+zero open entries on 16/08; `GAPS.md` has since gained four. **All four are unrelated, and none of
+the four is unrelated by default** — each is either owned elsewhere or carries an explicit
+instruction not to chart it.
 
-| Register    | Entry               | Verdict | Retired by |
-| ----------- | ------------------- | ------- | ---------- |
-| GAPS.md     | _no active entries_ | —       | —          |
-| DEFERRED.md | _no open rows_      | —       | —          |
+| Register    | Entry                                                           | Verdict       | Why                                                                                                                                                      |
+| ----------- | --------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GAPS.md     | 22/08 — `main` has never received this branch                   | **unrelated** | Carries its own instruction, _"Do not chart it"_: a named owner and a dated retirement make it a task, not a decision                                    |
+| GAPS.md     | 31/08 — the deployment posture binds Claude, no script reads it | **unrelated** | A destructive-script guard; touches no documentation surface                                                                                             |
+| GAPS.md     | 31/08 — a seed that never arrives is silent                     | **unrelated** | Explicitly _"Do not fold it into the index work"_; a shipped-artefact gate defect, and `MAP-REGISTER-INDEXES.md` N-003 cites it                          |
+| GAPS.md     | 31/08 — the Plans Index is gated in eight places, never existed | **unrelated** | **Genuinely a navigability defect**, and **already claimed** by `MAP-REGISTER-INDEXES.md` slices `S-01`/`S-02`. Claimed twice is worse than claimed once |
+| DEFERRED.md | _no open rows_                                                  | —             | —                                                                                                                                                        |
+
+**The fourth is the one to watch.** An index that eight sites cite and nobody ever wrote is exactly
+what this epic is about, and it is deliberately **not** claimed here — another map claimed it
+first, and a register entry retired by two maps is retired by neither.
 
 ---
 
 ## Resolved decisions
 
-| Node  | Decision                                      | Type     | Settled    | Became                                                                                                           |
-| ----- | --------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------- |
-| N-001 | Formal coverage census of the seven surfaces  | research | 16/08/2026 | The two tables below — _What each surface answers_ and _What none of them answers_. No artefact outside this map |
-| N-002 | Frontmatter census — what a generator keys on | research | 16/08/2026 | The table _What a generator could key on today_ below, plus the citation-density measurement                     |
+| Node  | Decision                                                     | Type     | Settled    | Became                                                                                                                                                                                                               |
+| ----- | ------------------------------------------------------------ | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| N-001 | Formal coverage census of the seven surfaces                 | research | 16/08/2026 | The two tables below — _What each surface answers_ and _What none of them answers_. No artefact outside this map                                                                                                     |
+| N-002 | Frontmatter census — what a generator keys on                | research | 16/08/2026 | The table _What a generator could key on today_ below, plus the citation-density measurement                                                                                                                         |
+| N-003 | **Can `code-review-graph` index markdown?**                  | research | 31/08/2026 | The section _N-003 — yes mechanically, no usefully_ below. **A built graph, measured, then deleted.** No artefact outside this map                                                                                   |
+| N-004 | **The gate: does a third surface earn its place?**           | grilling | 31/08/2026 | **Accepted, narrowly** — the section _N-004 — the gate accepts, and refuses the thing it was charted to build_ below · slices `S-01`, `S-02`, `S-03`                                                                 |
+| N-006 | The generated / hand-edited boundary                         | grilling | 31/08/2026 | **Moot — closed by N-004, not answered.** The collision needed one file with two writers; no such file is now created. See the note under _The contradiction the proposal contains_                                  |
+| N-005 | What the adapted skill maps — the durable noun               | grilling | 31/08/2026 | **Owner and enforcement point, at guide granularity** — the section _Batch A_ below · slice `S-02`                                                                                                                   |
+| N-011 | Which assessed ICM takes belong to this epic                 | grilling | 31/08/2026 | **The walk test and the reverse walk** — slice `S-02`; the other two stand apart, see _Out of scope_                                                                                                                 |
+| N-012 | Is the walk test fronted by a skill, and does it earn a 65th | grilling | 31/08/2026 | **Yes — a 65th skill** · slice `S-02`                                                                                                                                                                                |
+| N-007 | Where it lives, and whether it ships to generated projects   | grilling | 31/08/2026 | **Moot — closed by N-004.** It asked where the `map/` layer lives; there is no `map/` layer. Its four charted constraints survive and now bind slice `S-02`                                                          |
+| N-009 | **The mandate and what fails when it rots**                  | grilling | 31/08/2026 | **A deterministic preconditions audit, advisory then required — the walk itself never gates.** The section _N-009 — the gate is deterministic and the walk is not_ below · slice `S-03`                              |
+| N-010 | **Tracer: run the first walk test cold**                     | tracer   | 31/08/2026 | **FAIL, on the token ceiling — no question broke.** The section _N-010 — the walk fails on reconnaissance, not on navigation_ below · evidence in `../00-ASSETS/WALK-TESTS/` · opens N-009 and confirms slice `S-03` |
+| N-008 | The generator's language and home                            | grilling | 31/08/2026 | **Moot — closed by N-004.** The deliverable is an output mode on an existing **bash** audit, so "a Python generator would be the first exception" never arises                                                       |
 
-**Both are `research` — looked up, no human — so they are discharged by measurement and neither
-went to a grilling.** Every number below was taken on 16/08/2026 against `HEAD` = `c6cea78`.
+**Three nodes closed as moot, and that is a disposition rather than an answer.** N-006, N-007 and
+N-008 were all downstream of a `map/` layer existing. N-004 declined to build one, so each was
+**avoided rather than resolved** — recorded this way deliberately, because a later reader finding
+them marked "settled" would reasonably expect an answer to exist, and none does. If the `map/`
+layer is ever reproposed, all three reopen unchanged.
+
+**All three are `research` — looked up, no human — so they are discharged by measurement and none
+went to a grilling.** N-001 and N-002 were taken on 16/08/2026 against `HEAD` = `c6cea78`; N-003 on
+31/08/2026 against `HEAD` = `e84e84c`, `code-review-graph` **2.3.8**.
 
 ### N-001 — what each surface answers, and what it cannot
 
@@ -181,25 +225,383 @@ Key totals across the 312: `model` 283 · `skills` 243 · `type` 153 · `workflo
   misses the structural half entirely, while a **citation-keyed** one covers 94% today with no
   authoring change at all. Those are the two designs, and the census says they are not close.
 
+### N-003 — yes mechanically, no usefully
+
+**The highest-leverage node, settled by building the thing.** A throwaway repository was created
+holding this project's **929 tracked `.md` files and nothing else**, given a
+`.code-review-graph/languages.toml`, and built. The graph was measured, then the repository was
+deleted. What follows is that measurement, not a reading of the source.
+
+**The mechanism exists and needs no fork.** `code-review-graph` 2.3.8 ships a documented
+**bring-your-own-language** loader: a `[languages.<name>]` table in
+`.code-review-graph/languages.toml` naming any grammar bundled in `tree_sitter_language_pack`,
+plus the tree-sitter node types for functions, classes, imports and calls. Three preconditions
+all hold: **`.md` is not among the 60-odd built-in extensions**, so no built-in is being
+overridden (which the loader forbids); the pack bundles **173 grammars including both `markdown`
+and `markdown_inline`**; and the cap is 20 custom languages, against the 1 this needs.
+
+**And the build succeeds.** 929 files parsed, **2,534 nodes, 1,605 edges**, zero errors.
+
+**But every edge is the wrong edge.**
+
+| Measured                                             | Result                                                                  |
+| ---------------------------------------------------- | ----------------------------------------------------------------------- |
+| Edges built                                          | **1,605 — all of kind `CONTAINS`**                                      |
+| Document → document edges                            | **0**                                                                   |
+| Citation nodes that join to a file node in the graph | **0 of 1,258**                                                          |
+| Node kinds                                           | 929 `File` + 1,258 `Class` — every cited path is a _child of its citer_ |
+
+A cited path is captured as a **name-only child of the file that cites it**, never as a link to
+the file it names. `references/signed-uploads.md` is stored verbatim and is **never resolved
+against the citing file's directory**, so it never meets the real node; a URL and a repo path are
+captured indistinguishably. The edge set is therefore forward-only and self-contained — which is
+the exact opposite of what this epic needs, because **three of N-001's four surviving questions
+are reverse-edge questions**.
+
+**Two structural reasons it cannot be tuned into the right answer:**
+
+1. **One grammar per language — and the two halves of markdown are two grammars.** The
+   `grammar` key takes a single value. The **block** grammar (`markdown`) yields `section`,
+   `atx_heading` and `paragraph`, but every inline span is an opaque `inline` node and it
+   contains **zero link nodes of any type**. The **inline** grammar (`markdown_inline`) yields
+   `inline_link` and `link_destination`, but no headings and no sections. Structure or links,
+   never both — and the inline grammar run whole-file is off-label, because it is designed to be
+   driven by the block parser over the ranges the block parser found.
+2. **The extractor keys on tree-sitter _named fields_, and markdown has none.** Custom-language
+   imports probe `module`/`name`/`path`/`source`; calls probe `function`/`callee`/`expr`/`name`.
+   Every one of `inline_link`'s six children is **unnamed**, so the import path falls through to
+   recording the raw text and the call path returns nothing.
+
+**It also reaches the smaller half of the corpus.** Only `[text](path)` links are visible.
+N-001 measured **8,516 backticked path citations against 1,138 links** — so even a perfect link
+extractor sees **11.8%** of the citations, and the 88% written as `` `code/docs/DATABASE.md` ``
+parse as `code_span`, which is indistinguishable at the grammar level from a backticked keyword
+like `DEBUG=False`.
+
+**What this does to the frontier.** N-003 was charted as the node that might close the epic —
+_"a yes may close the epic as a configuration change"_. **The yes is real and it closes nothing**,
+because the configuration that makes markdown parse does not make it _resolve_. So:
+
+- **N-004 loses its cheapest escape** and is now unblocked with the full question intact.
+- **N-001's strongest finding is strengthened, not replaced.** `doc-references.sh` performs
+  precisely the step the graph will not: it resolves a relative citation **sibling-first against
+  the citing file's directory** (`code/src/scripts/audits/doc-references.sh` lines 590–646) and
+  covers backticked citations as well as links. It already computes the correct edge set and
+  discards it; the graph, configured perfectly, computes the wrong one and keeps it.
+- **The option this rules out for good is "point the existing graph at `.md` and be done".**
+  Recorded so it is never re-proposed as the cheap answer.
+
+### N-004 — the gate accepts, and refuses the thing it was charted to build
+
+**Settled with Sam over two grilling rounds, 31/08/2026.** The deletion test is passed — N-001's
+four questions survive — so refusal is not available. **But the `map/` layer is refused anyway**,
+and the epic's deliverable is not the one the Destination proposed.
+
+**Why the `map/` layer loses.** It is a third hand-and-machine markdown surface with a generator, a
+gate and a mandate. `research/INTERPRETABLE-CONTEXT-METHODOLOGY.md` measured both ICM repositories
+and found the same thing in each: **stage contracts stay clean because they are loaded every run,
+and every catalog file has rotted, because nothing regenerates or checks a catalog**. A `map/`
+layer is a catalog. Building one here would be adopting the half of ICM its own authors' repos
+disprove, while already owning the half they lack.
+
+**What the epic delivers instead — three things, in dependency order:**
+
+|       | Deliverable                                                                                                                                 | Slice  | Gated on                                                                                     |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------- |
+| **A** | An **output mode on `doc-references.sh`** keeping the edge set it already resolves and discards                                             | `S-01` | Nothing. **Ships regardless** — the walk test scopes only what it emits and what consumes it |
+| **B** | An **adapted ICM-derived skill** — the walk test, its pass condition, its independent reader — with this repository's enforcement behind it | `S-02` | Nothing for the skill itself                                                                 |
+| **C** | The **standing walk-test gate** and its mandate                                                                                             | `S-03` | **The first walk test failing.** If the repository walks clean, `S-03` is never cut          |
+
+**The walk test, as adapted.** ICM's own is **self-graded**, which the research note names as its
+defect; `.claude/CLAUDE.md` Section 2.3 already forbids exactly that — _no skill reviews its own
+work_ — and supplies the fix, a dispatched `general-purpose` subagent. So:
+
+- **The first run is a fresh session Sam drives**, not a subagent. It is evidence for a decision
+  not yet taken, and a subagent reporting that it navigated successfully is the self-grading
+  failure wearing a different hat.
+- **Every later run is the dispatched subagent**, per Section 2.3. Repeatability beats fidelity
+  once the finding exists.
+- **The pass condition is both halves.** ICM's budget is the **cost ceiling** — the entry file plus
+  at most two reads, 2,000 to 8,000 tokens. N-001's four questions are the **content**: _who cites
+  this_ · _what moves if I change this rule_ · _is this reachable_ · _which directory owns this
+  concept_. And **"could not look" counts as a fail**, per `code/docs/GATE-REPORTING.md` — without
+  that clause a reader that gets stuck and reports nothing passes.
+
+**Two facts looked up during the round that changed the answer, and are not otherwise recorded
+here:**
+
+1. **`MAP-REGISTER-INDEXES.md` moved the ground under N-002 on 30–31/08/2026.** 62 PM artefacts
+   gain frontmatter carrying `Sources` · `Workflows` · `Linked Files` — **186 declared pointer
+   lists** — and its slice `S-04` already extends `doc-references.sh` to read frontmatter path
+   values as a **fourth token source**. That is ICM's Inputs table arriving by another route, and
+   it makes deliverable **A** cheaper than it was when the option was first named. The 409
+   `CONTEXT`/`CLAUDE` pairs still take **no** frontmatter, explicitly — so N-002's finding that a
+   frontmatter-keyed generator misses the structural half survives intact.
+2. **`icm-architect` has moved since the note was written.** 8 commits against 7, and **1 open pull
+   request against 4** — three resolved, including the reference-integrity gate the note rated
+   stronger than `main`. **The note's maintenance-risk finding must be re-read before `S-02`
+   derives from the repository**, not taken on file.
+
+**The scope boundary, decided rather than assumed.** Two maps are now editing one script. **This
+epic owns the output mode; `MAP-REGISTER-INDEXES.md` `S-04` keeps its fourth token source.** They
+are different changes — reading a new token source is not retaining what is read — and folding one
+map's deliverable into another map's slice is how a slice stops being traceable to the node that
+justified it.
+
+### Batch A — what the skill maps, what it takes from ICM, and whether it is a 65th
+
+**N-005, N-011 and N-012 settled together on 31/08/2026**, because all three are `S-02`'s content
+and deciding any one alone would have forced a revisit of the other two.
+
+**Three upstream facts found before the round, and they change the derivation.**
+
+| Found                                                                                                                                                                  | Consequence                                                                                                   |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **All three pull requests the research note rated stronger than `main` were closed unmerged** — the reference-integrity gate, the reverse walk test, the join contract | We derive from **ideas, never from a dependency**. Upstream declined its own best contributions               |
+| **The reverse-walk PR is a field report against a 500-file workspace**: walking from the root outward **passes while external consumers pointing in break silently**   | The walk test has a known, third-party-verified blind spot. Ours carries the reverse direction or inherits it |
+| **`doctrine-drift.sh` holds three claims**, all about the API error envelope, and reads **fenced code only** by design                                                 | "Rules with one owner" is machine-readable for almost nothing today. This is what moved N-005                 |
+
+**N-005 — the noun is the owner, not the rule.** Sam chose rules over documents, then chose
+**guide granularity over rule granularity**: the durable noun is _"this guide owns this concern,
+and it is enforced here"_. Rule **text** is deliberately not the noun.
+
+- **It needs no prose extraction.** `doctrine-drift.sh` refuses to identify rule-shaped prose and
+  says so in its own header — _"Prose is free; examples are the contract"_ — so a rule-text noun set
+  would need machinery this repository has explicitly declined to build.
+- **It answers _which directory owns this concept_ directly**, which is one of N-001's four.
+- **`REFERENCES.md` is already half of it**, hand-maintained and ungated. That is the starting
+  material and also the warning: the half that exists has no gate.
+- **The option refused, and why it is recorded**: a hand-registered prose-rule register was on the
+  table and was rejected on this repository's own evidence — **a register nobody fills is false
+  green**, and `doctrine-drift.sh` sitting at three rows is that evidence, not a hypothetical.
+
+**N-011 — two takes in, two takes out, and a fourth that post-dates the note.** The walk test and
+the **reverse walk** ride `S-02`. **Docs over outputs** and **selective section routing** stand
+apart: each is a separate rule with a separate gate and its own attribution row, and one story
+carrying three unrelated doctrines is how a slice stops being reviewable.
+
+> **They are recorded in _Out of scope_ rather than in `DEFERRED.md`, and the reason is the
+> register's own rule.** `DEFERRED.md` takes a row when **an implementation doc** defers something
+> from a **completed story** to a named **`US###`**. No story exists, none has shipped, and
+> wayfinder never reserves a number — so a row written now would target nothing. **The row is owed
+> when `02-story-creation` allocates the number**, and until then the deferral lives here.
+
+**N-012 — yes, a 65th skill.** It dispatches the cold reader, adjudicates the result against the
+pass condition, and reports **which question failed** rather than a count. Two alternatives were
+weighed and rejected: a mode of `review`, which sequences passes over **a diff** where this walks
+**the tree** with no change in hand; and a script plus a workflow step, which is dead because the
+workflow-step mandate is `S-03` and `S-03` may never be cut — leaving the skill as the only home.
+
+**`S-02` ships the walker plus a seed, not the walker alone.** A skill with nothing to walk is the
+"declared, not built" defect class `GAPS.md` already tracks twice; a complete noun set is a
+different story's work. The seed is sized by one test: **enough for N-010's first walk to mean
+something.**
+
+### N-013 — the noun lives on the guide, not in a register
+
+**Promoted out of fog of war and settled the same day.** It had sat as _"whether this absorbs,
+replaces, or duplicates `REFERENCES.md`"_ since charting; N-005 sharpened it into a decision by
+naming `REFERENCES.md` as "already half of it".
+
+**What the lookup found, and why it did not settle the question the obvious way.**
+
+- **`REFERENCES.md` is four files** — root 296 lines, `code/` 163, `how-to/` 128,
+  `project-management/` 150 — and **its completeness is gated by nothing.** `doc-references.sh`
+  checks the citations inside it resolve; `docs-pairing.sh` checks a neighbouring `CLAUDE.md`
+  imports it. A guide can exist and appear in none of them, silently.
+- **The register pattern already exists and is gated in both directions.**
+  `how-to/src/INVARIANTS.md` carries **Enforcement point** — _"one, never 'the service layer'"_ —
+  and **Stated in** — _"the guide that already owns the underlying rule"_. That is N-005's noun
+  almost verbatim, and `audits/negative-space.sh` fails both a guard with no row **and** a row
+  nothing raises. `PROJECT-PATHS.md`, `PLATFORM-PROVIDERS.md` and `DEPLOYMENT-POSTURE.md` repeat it.
+- **But that pattern's split does not fit this register.** In every instance the **rule** lives in
+  `code/docs/` and is identical in every generated project, while the **register** lives in
+  `how-to/src/` and is _"the answer sheet, and it is yours"_. This noun set describes **the
+  template's own guides**, which are the same everywhere — so the proven home is the wrong home.
+
+**Settled: the noun goes on the guide, as frontmatter.** An `owns:` / `enforced-by:` key beside the
+`type: guide` · `skills:` · `model:` keys 153 guides already carry.
+
+- **There is no second copy, so there is nothing to drift.** Every alternative creates a second
+  place where _who owns this concern_ is written, and this map has spent four sittings establishing
+  that a second copy is a fork, not redundancy.
+- **The gate precedent exists**: `routing-skills.sh` already parses guide frontmatter and fails on
+  a named skill that does not exist.
+- **No aggregator is needed, and that is a consequence rather than an omission.** A distributed
+  noun set has no table view — but the walk test does not need one, because a cold reader that
+  opens a guide sees its `owns:` key in the first lines it reads. A table would be a third surface,
+  which N-004 already refused.
+- **The coverage this buys, stated plainly**: the 153 routed guides, and **not** the 409
+  `CONTEXT.md`/`CLAUDE.md` pairs, which carry no frontmatter by rule, nor the nine reference dumps
+  N-002 recorded as deliberately unrouted. **The pairs are the structural half of the estate and
+  this noun set does not reach them** — that is a known limit going into N-010, not a surprise
+  coming out of it.
+- **No collision with `MAP-REGISTER-INDEXES.md` `S-04`.** That change puts artefact frontmatter on
+  62 files under `project-management/src/`; this one puts a routing key on docs guides. Different
+  populations, different keys.
+
+**The seed is scoped by the four questions' blast radius** — exactly the guides a cold reader needs
+to answer _who cites this_ · _what moves if I change this rule_ · _is this reachable_ · _which
+directory owns this concept_, and no others. **This is the only scoping that makes the seed
+falsifiable by the walk test it exists to serve**: if N-010 still fails on a seed built precisely
+for it, the noun set is the wrong noun set — and that is worth learning before `S-02` ships.
+
+---
+
+### N-010 — the walk fails on reconnaissance, not on navigation
+
+**Run 31/08/2026. Verdict FAIL against this map's own pass condition, which is a conjunction: the
+2,000-to-8,000-token band was missed by roughly ten times.** Every other clause passed — N-001's
+four questions answered, both directions walked, two reads of the three allowed, one spare
+unspent, and nothing reported as "could not look". **The navigational half of this epic's founding
+worry did not materialise.**
+
+Raw evidence — prompt, the walker's verbatim report, the ground-truth transcript, and the verified
+result — is `../00-ASSETS/WALK-TESTS/`, a folder created for it. The walker traced **the 300-line
+instructional file limit** from a standing start.
+
+**Coldness had to be manufactured, and that is the first finding.** `.claude/CLAUDE.md` auto-loads
+the root `CONTEXT.md` and `REFERENCES.md` through its `@` imports, which between them carry the
+annotated tree and the full doc index — so **any session started inside this repository already
+holds most of what questions 1 and 4 cost reads to discover**. The budget this node fixed cannot be
+honoured by a session the project's own entry path configured. The walk therefore ran as a separate
+process from outside the tree with the chain suppressed, no MCP servers, and read-only tools.
+
+**Two front-door observations — and N-009 corrected what they mean.** Both were first written
+here as defects wanting a `GAPS.md` row. **Neither is one**, and the correction is kept rather than
+overwritten, because the first reading is the one a later reader arrives at unaided.
+
+| Observation                                                                                                          | What it actually is                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **The root `CLAUDE.md` does not exist** — the cold reader went for it first and got an error                         | **Not a defect.** It is deliberately ignored alongside `/AGENTS.md`, `/GEMINI.md`, `/.cursorrules` and `/.windsurfrules` on a stated rationale (`.gitignore`, restated in `code/docs/DOCUMENTATION-PAIRING.md`), and an in-repo Claude Code session auto-loads `.claude/CLAUDE.md` regardless. **The decision is real and undiscoverable from the root** — that is the finding, and stating it is what `NAVIGABILITY.md` is for |
+| **`node_modules/` drowns the front door** — 64,640 files; a filename glob returns 100 vendored READMEs and truncates | **A reader-strategy defect, not a tree defect.** `README.md` and `CONTEXT.md` are present and tracked. Fixed in the walk skill's prompt by scoping reconnaissance — slice `S-02`                                                                                                                                                                                                                                                |
+
+**No `GAPS.md` row is owed from this node**, and the register is untouched — this map claims, it
+never edits it.
+
+**The result that the pass condition cannot see.** The walker's headline finding — that
+`code/docs/CONTEXT.md` never cites the rule, "the pairing convention failing on the guide that
+polices its sibling convention" — **is false.** That file cites it twice, and the walker's own grep
+returned both lines. It did not see them among 57 hits and asserted the negative anyway, **inside
+budget, with every other claim it made checking out.**
+
+This is the self-grading defect N-010 was fenced against, wearing the other face. The ruling
+guarded against _a walker reporting its own success_; what appeared was **a walker reporting a
+defect that is not there**, and no read budget or token ceiling detects it. **A walk test without
+independent verification of its findings produces results at the accuracy the walker happens to
+have** — which is the single most important thing this run establishes, and it binds `S-02`.
+
+**The counter-test is discharged, and the test is not too weak.** Of the four control defects, the
+walk demonstrably exercised the **circular-attribution** class — it traced a deferral chain and
+confirmed the third party genuinely carried the rule — and came within its one unspent read of the
+**stale script header**, having located the script and both call sites without opening it. The
+remaining two were untouched. **Not all four were missed**, which is what the fog item asked.
+
+**Method variance, recorded because it bears on what this result is worth.** The ruling reserved
+the first walk for a session Sam drives rather than one a resolving session launches; it was
+launched by the resolving session. The mitigation is that **nothing rests on the walker's
+self-report** — the transcript is captured, and every load-bearing claim was checked against the
+tree, which is how the false finding surfaced at all. A self-reported run would have recorded it as
+a genuine defect.
+
+**What it routes to.** The failure is **not navigational**, so it is not an argument for the layer
+N-004 refused. Two things failed, and neither is answered by more documentation: the **approach to
+the root**, paid before the first read, and **verification**. Both belong to `S-03`, whose seed is
+therefore _not_ "the failing question" the charting anticipated — no question broke — but the
+reconnaissance cost and the mandatory verification pass. N-009 opens on that basis.
+
+---
+
+### N-009 — the gate is deterministic and the walk is not
+
+**Settled 31/08/2026 in one grilling pass, nine questions over three rounds.** The node opened when
+N-010 failed and it closes the map's last question: what mandates the walk test, and what fails
+when it rots.
+
+**The shape, and the constraint that forced it.** All 26 CI audits and all 14 lefthook gates are
+deterministic bash with `--path`, `--self-test` and exit codes `0/1/2`, and the audits charter
+requires an audit be **derived from a stated rule in a `docs/` guide, never from taste**. A walk
+test is an LLM run: non-deterministic, credentialled, and priced per run. `claude.yml` already
+carries `anthropics/claude-code-action@v1`, but as an **@mention assistant, never a judging gate** —
+there is no precedent here for an LLM verdict gating a merge, and N-010 is the argument against
+creating one.
+
+| Element                     | Settled                                                                                                                                                                                         |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Form**                    | A **deterministic preconditions audit** in `audits/`, plus the walk as an **on-demand skill**. No LLM verdict ever gates a merge                                                                |
+| **Derives from**            | A new **`code/docs/NAVIGABILITY.md`** — the entry surface, the walk test, the pass condition, and what the audit asserts                                                                        |
+| **Asserts**                 | Entry-file presence and reachability only — `README.md` and `CONTEXT.md` — and that the AI-rule filenames are **deliberately absent**, so a reader stops guessing                               |
+| **Trigger**                 | A diff touching the navigational surface. **Not a story, and not workflow `22`**                                                                                                                |
+| **Status**                  | **Advisory and path-filtered now, promoted to required by deleting the path filter in the same change** — `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` forbids a workflow being both |
+| **What fails when it rots** | The entry surface regressing — a tracked root orientation file removed, renamed, or made unreachable                                                                                            |
+
+**Verified-or-nothing lives in `S-02`'s skill, not in the gate.** N-010's sharpest result was a
+walker stating a confident falsehood **inside budget**, so a finding is a candidate until checked
+against the tree. `S-02`'s acceptance already reads _"dispatches a cold reader **and adjudicates
+it**"_, and putting the rule there keeps it true when the walk is run by hand with no gate present.
+Majority-vote across several walkers was rejected: it costs N times as much and correlated models
+agree on the same wrong answer.
+
+**The audit catches nothing today, and that was chosen rather than missed.** By the assertion above
+it tests files that are already present and passing, so its value is **regression-only**. This is
+recorded because it is the strongest argument anyone will later make against `S-03` existing, and
+the map should show it was weighed. The alternative — asserting the `node_modules` drowning — was
+declined because its verdict would depend on whether someone had run `pnpm install`, and a check
+that means different things in CI and on a developer machine is the flake that gets a gate ignored.
+
 ---
 
 ## Slices
 
-**None yet, and whether any exist is itself this epic's open question.** N-004 is the gate: if it
-refuses, the outcome is a written refusal and the map closes having cut nothing — which the
-Destination names as an acceptable outcome rather than a failure. If it accepts, the slices follow
-from N-005 (what the repeating unit is) and N-006 (the generated / hand-edited boundary), both
-blocking and both unresolved.
+**Cut 31/08/2026 at Step 8a, on N-004 accepting and the last blocking node closing.** Per the
+standing preference on the sibling maps, `02-story-creation` does not run until the frontier is
+empty, so every `Story` cell reads `—`.
 
-| Slice | Story | Title                          | Flags |
-| ----- | ----- | ------------------------------ | ----- |
-| —     | —     | _(undecided — gated on N-004)_ | —     |
+**Node state:** `✅` resolved · `○` open · `⛔` open **and** blocking.
 
-**Even on acceptance, all thirteen flags are expected to read `N/A`.** The candidate deliverable is
-a `map/` markdown layer with its generator, gate and mandate at workflow `22` — or, per N-001's
-strongest finding, an output mode on `doc-references.sh` that keeps the edge set it already
-computes and discards. Neither is a model, an endpoint, a screen or a personal-data path. Written
-as an expectation, not a manifest.
+| Slice  | Story | Title                                                | Nodes                                                | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Flags                                                                                                                                                                                                                                |
+| ------ | ----- | ---------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `S-01` | —     | The citation edge set stops being thrown away        | N-004 ✅ · N-010 ✅ · N-014 ○                        | `doc-references.sh` emits the citations that **resolve**, not only the ones that fail; the emit carries the **reverse** direction, so _who cites this file_ is answerable without re-parsing; a violating run still fails exactly as today; the emit is byte-stable across two runs on an unchanged tree                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | QA: unit (`doc-references.sh --self-test`, fixture pair **plus a file with inbound citations and no outbound ones, asserted reachable in the emit**), integration (`audit-doc-references.yml`), manual — emit diffed across two runs |
+| `S-02` | —     | The walk test, adapted — and the attribution it owes | N-004 ✅ · N-005 ✅ · N-011 ✅ · N-012 ✅ · N-013 ✅ | A **65th skill** dispatches a cold reader and adjudicates it, reporting **which question failed** rather than a count; the pass condition is entry file plus ≤2 reads, 2k–8k tokens, N-001's four questions, **"could not look" a fail**; the walk runs **both directions**, so a file nothing points into is caught; a **seed** noun set exists as an `owns:` / `enforced-by:` **frontmatter key on the guides themselves** — no register file — scoped to the guides in the four questions' blast radius and no others; the `README.md` _Influences_ row and its `.copier/README.md` twin credit ICM **in this same change** **Every finding the walker reports is a candidate until checked against the tree** — the skill adjudicates, and an unverified finding is reported as unverified rather than as a defect (N-009); the walker's **reconnaissance is scoped in the prompt**, so a root carrying a large ignored directory cannot spend the token budget before the first read (N-010) | QA: unit (`skill-conformance.sh`, `routing-skills.sh`), manual — the pass condition read back as falsifiable, the reverse direction proved on a real inbound-only file, and the licence position re-checked before deriving          |
+| `S-03` | —     | The standing gate, and what fails when it rots       | N-009 ✅ · N-010 ✅                                  | **Unconditional as of 31/08/2026 — the first walk failed and the condition fired.** A **deterministic** `audits/` check asserts the root entry surface is present and reachable and that the AI-rule filenames are deliberately absent; it derives from a new `code/docs/NAVIGABILITY.md`, which states the entry surface, the walk test and the pass condition; it is **path-filtered and advisory on landing**, and is promoted to a required check only by deleting that path filter in the same change; **no LLM verdict gates a merge**; the gate self-tests against fixtures at both poles                                                                                                                                                                                                                                                                                                                                                                                                  | QA: unit (gate self-test, fixtures both poles), integration (CI job, and the `--path` contract proved across the five forms every audit answers)                                                                                     |
+
+**`S-02` and `S-03` are cuttable as of 31/08/2026; `S-01` waits on one node.** `S-02` got there at
+Batch A, `S-03` when N-009 settled the same evening. **`S-01` picked up N-014** — the fog item that
+graduated on N-010's evidence — because that node decides whether the emit feeds a prose effects
+index, and answering it after the slice is cut would re-open the emit format.
+
+**`S-01` is the only unconditional slice, and it is the one to cut first once N-010 clears.** Its justification does
+not depend on any navigability finding: roughly 9,650 citations are resolved and discarded on every
+audit run, and that is waste on its own terms. **N-010 appears in its Nodes because the tracer
+scopes the emit format and its consumer** — not whether the slice exists.
+
+**`S-02`'s acceptance is deliberately about the mechanism, not the content.** What the adapted
+skill _says_ is N-005, N-011 and N-012's business, settled before the story is cut; that the skill
+can dispatch a cold reader against a falsifiable condition is what the story must make true.
+
+**`S-03` is unconditional now, and its content is not what charting expected.** It was to be built
+from _the question that broke_; **no question broke**. It is built instead from what did fail — the
+**approach to the root**, and **verification**. N-009 split those two deliberately: the root half is
+deterministic and belongs to this gate, the verification half is a judgement and belongs to `S-02`'s
+skill, where it holds even with no gate present.
+
+**This gate catches nothing on the day it lands, and that is on the record as a choice.** It asserts
+an entry surface that is already present and passing, so its value is regression-only. The
+alternative — asserting the reconnaissance drowning — was declined at N-009 because its verdict
+would depend on whether `pnpm install` had been run, and a check meaning different things in CI and
+on a developer machine is the flake that gets a gate switched off.
+
+**Twelve of the thirteen flags read `N/A` and are omitted.** Every flag in
+`../02-STORIES/US000-TEMPLATE.md` is application-shaped — `DB`, `API`, `GDPR`, `SEO`, `Brand`,
+`Components`, `Wireframes`, `User Flow`, `Security`, `Logging`, `Backend`, `Frontend` — and this
+epic ships a bash audit, a skill and documentation. **That is the honest manifest, not a thin one.**
+
+**Every open node belongs to a slice**, so no node is work without a route to a story. One node is
+open — **N-014, to `S-01`**. N-010 discharged both of its own jobs on 31/08/2026, scoping `S-01`'s
+emit and deciding that `S-03` exists; N-009 settled `S-03`'s shape the same day.
+
+**A slice is not a story.** Nothing here is written into `../02-STORIES/`; `02-story-creation` cuts
+the story from the row and allocates the `US###`. No number is reserved.
 
 ---
 
@@ -207,140 +609,147 @@ as an expectation, not a manifest.
 
 Open decisions in dependency order. Blocked-by names other nodes, so the takeable edge is visible.
 
-| Node  | Decision                                                                | Type     | Blocked by   | Blocking a story? |
-| ----- | ----------------------------------------------------------------------- | -------- | ------------ | ----------------- |
-| N-003 | **Can `code-review-graph` index markdown?** A yes may close the epic    | research | none         | no                |
-| N-004 | **The gate: does a third surface earn its place?** The deletion test    | grilling | N-003        | **yes**           |
-| N-005 | What the repeating unit is — the nouns are rules, not types             | grilling | N-004        | **yes**           |
-| N-006 | **The generated / hand-edited boundary** — the contradiction above      | grilling | N-005        | **yes**           |
-| N-007 | Where it lives, and whether it ships to generated projects              | grilling | N-004        | no                |
-| N-008 | The generator's language and home — Python breaks a standing rule       | grilling | N-006        | no                |
-| N-009 | The mandate at `21` and what fails when it rots — audit or checklist    | grilling | N-006, N-007 | no                |
-| N-010 | Tracer: map `.claude/skills/` only, then walk it cold                   | tracer   | N-005        | no                |
-| N-011 | Whether the three assessed ICM takes belong to this epic or stand apart | grilling | N-004        | no                |
-| N-012 | Is the generator fronted by a **skill**, and what is it responsible for | grilling | N-008        | no                |
+| Node  | Decision                                                                                       | Type     | Blocked by | Blocking a story? |
+| ----- | ---------------------------------------------------------------------------------------------- | -------- | ---------- | ----------------- |
+| N-014 | **Is a prose change-impact index worth having** — or does `doctrine-drift.sh` already cover it | research | none       | no                |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+`grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
+named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
+blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
+
+**One node left, and it is takeable.** N-004 was the last node ever marked blocking; Batch A closed
+the three that shaped `S-02`; N-010 failed on 31/08/2026 and opened N-009, which settled the same
+day. **N-014 is what replaced it** — graduated out of fog by N-010's evidence rather than charted,
+and the map closes when it is settled.
 
 ### What each node has to settle
 
-- **N-003 is the highest-leverage node on the map, and it is now the only thing blocking the
-  gate.** If the graph can be pointed at markdown, the third surface may be unnecessary and the
-  epic closes as a configuration change. Settle it before designing anything. **N-001 sharpened
-  what a "yes" has to mean**: the graph indexes 188 of 188 source files, so its coverage of what it
-  claims is total — the question is purely whether markdown can join, not whether it would be
-  indexed well.
-- **N-004 is the gate, and the census has already moved it.** Apply the deletion test: name a
-  question a cold agent cannot answer today from the entry file plus two reads. N-001 found four
-  that survive — _who cites this_ · _what moves if I change this rule_ · _is this reachable_ ·
-  _which directory owns this concept_ — so the deletion test is **not** answered by refusal on
-  coverage grounds alone. But it also found that three of the four are reverse-edge questions over
-  an edge set `doc-references.sh` already computes and discards, so **the cheapest answer that
-  satisfies all four may be an output mode on an existing audit rather than a `map/` layer.** The
-  gate must weigh that option explicitly; it did not exist when the map was charted. The guardrail
-  still stands — a structure built for something done twice is scaffolding, not architecture.
-- **N-005** must not be answered by analogy. ICM's System-map form assumes nouns are code types
-  with a `path:line`. Here the durable nouns are **rules, their one enforcement point, and the
-  guide that owns them** — which is closer to what `doctrine-drift.sh` already models than to any
-  object card.
-- **N-006** decides which parts are machine-owned, which are hand-owned, and how they cannot
-  overwrite one another. Split files with one owner each is the obvious candidate; a single file
-  with both writers is the thing to refuse.
-- **N-007** carries four constraints found at charting: the repository root is **exempt from the
-  pairing rule**; `/CLAUDE.md` is **already gitignored and generated** by `code-review-graph
-install`; any new directory otherwise needs a `CONTEXT.md` + `CLAUDE.md`; and a generated project
-  starts near-empty, so a `map/` shipped at generation is empty scaffolding.
-- **N-008**: every audit here is bash, `.claude/plugins/*.py` are **read-only by rule and never run
-  dev operations**, and the standing non-negotiable is that all dev operations run through
-  `code/src/scripts/**/*.sh`. A Python generator would be the first exception and needs to earn it.
-- **N-009** inherits a standing lesson from the template-health work: **a checklist item nobody
-  runs is false green.** If the map can rot silently, it will.
-- **N-012 is not a feasibility question — the precedent already exists.** The `syntax` skill fronts
-  `code/src/scripts/syntax/{check,format,lint}.sh`, and twelve skills invoke scripts today, so
-  "a skill can call the generator" is settled before the node opens. Three things are not:
+- **N-010 is the takeable edge, and it is the last thing standing between this map and its
+  stories.** It was charted as _"map `.claude/skills/` only, then walk it cold"_; N-004 removed the
+  map half, so **the walk is the whole node**. Run in a **fresh session Sam drives** — not a
+  subagent, because the first run is evidence for a decision not yet taken and a subagent
+  reporting its own success is ICM's self-grading defect wearing a different hat. The pass
+  condition is fixed and is **not this node's to choose**: entry file plus at most two reads,
+  2,000 to 8,000 tokens, N-001's four questions, and **"could not look" is a fail**
+  (`code/docs/GATE-REPORTING.md`). **Batch A added a second obligation**: the walk runs in **both
+  directions**, because a third party field-reported that an outward-only walk passes while
+  external consumers pointing in break silently.
 
-  1. **What a skill adds that the workflow step does not.** A skill fires on **description match**,
-     which is probabilistic; a gate must fire **every time**. Step 6 invokes `code-review-graph
-update` as a numbered step, not through a skill, and that is the shape a mandate takes here.
-     The likely answer is **both, with different jobs** — the workflow step is the mandate, the
-     skill is the entry point for regenerating outside a story. The node must state which is
-     authoritative when they disagree.
-  2. **Whether it runs the verification too, or only the generator.** A skill that regenerates and
-     then walks the result cold is worth a 65th skill; one that shells out to a script a human
-     could type is a description-matched alias for a filename.
-  3. **Whether a 65th skill earns its place at all.** There are **64**, the roster
-     (`.claude/skills/CONTEXT.md`) is the only when-to-load table, and every skill is gated by
-     `skill-conformance.sh` and `routing-skills.sh`. Adding one has a standing cost.
+  **Two outcomes, both useful, and the map does not prefer one.** A pass scopes `S-01`'s emit to
+  what a reader actually wanted and leaves `S-03` uncut. A failure names the questions that broke,
+  which is `S-03`'s reason to exist and sharpens `S-02`'s seed. **The honest counter-test is in fog
+  of war** — a clean pass on a tree that demonstrably had three findable defects means the test is
+  too weak, not that the repository is navigable.
 
-  **One constraint that does not bite, recorded so it is not re-litigated:** `.claude/CLAUDE.md`
-  Section 2.3's "a skill never self-edits" does not block this — the skill would write `map/`, not
-  its own definition.
+- **N-014 is the last node, and it was never charted.** It graduated out of fog on 31/08/2026 when
+  N-010 supplied the evidence the fog item had been waiting for: the walker answered _"what moves if
+  I change this rule"_ by **SEARCH, not POINTER**, and found the number `300` restated in at least
+  eight places that would all go stale together. **It is `research`, not grilling** — the question is
+  whether `doctrine-drift.sh` already finds the second copy of a rule, or whether `S-01`'s citation
+  emit is the raw material for something `doctrine-drift.sh` cannot produce. A lookup may settle it
+  outright. **It is taken before `S-01` is cut**, because deciding it afterwards re-opens the emit
+  format that slice ships.
 
 ---
 
 ## Fog of war
 
-In scope, not yet sharp enough to state as a decision.
+**Empty as of 31/08/2026.** All five charted items are discharged — two cleared at N-004 when the
+`map/` layer was declined, one graduated to **N-013** and was settled the same day, and the last
+two closed on the walk test running.
 
-- **Whether change-impact is meaningful for prose.** "If you change this rule, what else moves" is
-  the strongest idea in the System-map form, but `doctrine-drift.sh` already finds the second copy
-  of a rule. The effects index may be that audit's output rather than a new artefact.
-- **Whether this absorbs, replaces, or duplicates `REFERENCES.md`.** It is already a curated index
-  of every guide, hand-maintained and ungated — the closest existing thing to the proposal.
-- **Whether a generated map would have caught anything real.** The 16/08 template-health
-  verification found three live problems from outside itself. If a `map/` layer would have caught
-  none of them, its value claim is weaker than the 461-file number suggests.
-- **How generated map files interact with the doc gates** — `docs-length.sh` counts instructional
-  markdown, `docs-pairing.sh` demands a pair per directory. A generated tree may need an exemption,
-  and exemptions are how gates stop biting.
-- **Whether the unit of work that triggers regeneration is a story at all.** Workflow `21` is
-  per-story; much of this repository's own change arrives as doctrine work that no story describes.
+| Fog item                                                                | Discharged                                                                                                                                                                          |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _How generated map files interact with the doc gates_                   | **Cleared 31/08/2026 at N-004.** No generated tree, so no exemption to grant — which matters, because **exemptions are how gates stop biting** and this epic no longer asks for one |
+| _Whether this absorbs or duplicates `REFERENCES.md`_                    | **Graduated to N-013** once N-005 named that file as "already half of it", and settled in the sitting that promoted it                                                              |
+| _Whether the unit of work that triggers regeneration is a story at all_ | **Answered at N-009: no.** The trigger is a diff touching the navigational surface. Workflow `22` is per-story, and a per-story trigger would have caught neither N-010 finding     |
+| _Whether a walk test would have caught anything real_                   | **Cleared by N-010 running.** One control class exercised outright, a second one unspent read away, two untouched. **Not all four were missed, so the test is not too weak**        |
+| _Whether change-impact is meaningful for prose_                         | **Graduated to N-014**, on evidence N-010 produced rather than on a fresh argument. It is the frontier                                                                              |
+
+**A fog item is discharged three ways, and only one of them is an answer.** Two were _cleared_ —
+the question stopped existing when N-004 refused the layer. One was _answered_. Two _graduated_ to
+nodes. Recorded this way deliberately: a later reader finding all five marked "resolved" would
+expect five answers, and there is one.
 
 ---
 
 ## Out of scope
 
-| Ruled out                                                 | Why                                                                                                                                                                                                                                |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Adopting ICM's six forms, or the `icm-architect` skill    | Assessed 16/08/2026: enforcement is absent upstream, and this repository's equivalents are stricter and gated                                                                                                                      |
-| Reopening the `CONTEXT.md` / `CLAUDE.md` pairing doctrine | Settled, owned by `code/docs/DOCUMENTATION-PAIRING.md`, gated by `audits/docs-pairing.sh`                                                                                                                                          |
-| Copying any text from either ICM repository               | Facts and method only; the protocol repo's bundled Anthropic files are not MIT (`THIRD-PARTY-NOTICES.md`)                                                                                                                          |
-| Retiring or replacing the code-review-graph               | It answers the code half well; this epic is about the markdown half                                                                                                                                                                |
-| A generated project's own map maintenance                 | Different owner, same reason the template-health map excluded a generated project's `GAPS.md`                                                                                                                                      |
-| Adding an index row to `src/01-FEATURE-MAPS/CONTEXT.md`   | **Every map here is git-tracked but copier-excluded** — `copier.yml`'s `_exclude` empties `project-management/src/**`, so a row would name a file no generated project has; `doc-references.sh` forbids the citation independently |
+| Ruled out                                                                                     | Why                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Adopting ICM's six forms, or the `icm-architect` skill **verbatim**                           | Assessed 16/08/2026: enforcement is absent upstream, and this repository's equivalents are stricter and gated. **Narrowed 31/08/2026 at N-004** — an **adapted** derivation is now in scope and is slice `S-02`; a verbatim adoption is not, and the six forms in particular are taxonomy inflation the note already measured                                                                                                                               |
+| **Docs over outputs** and **selective section routing** — two of the three assessed ICM takes | **Ruled out of this epic 31/08/2026 at N-011, not abandoned.** Each is a separate rule with its own gate and its own attribution row, and one story carrying three unrelated doctrines stops being reviewable. **No `DEFERRED.md` row is written**: that register takes a row when an implementation doc defers from a **completed story** to a named `US###`, and none of the three exists — the row is owed when `02-story-creation` allocates the number |
+| Deriving from `icm-architect` as a **dependency** rather than as ideas                        | The three pull requests the research note rated stronger than `main` were all **closed unmerged** upstream — including the reverse walk this epic is taking. Take the idea, credit it, own the implementation                                                                                                                                                                                                                                               |
+| **A `map/` layer of markdown files** — the epic's own founding proposal                       | **Ruled out 31/08/2026 by N-004.** A third hand-and-machine surface is a catalog, and both ICM repositories demonstrate that catalogs rot while stage contracts stay clean. Recorded here because the Destination still describes it as the thing being decided                                                                                                                                                                                             |
+| Reopening the `CONTEXT.md` / `CLAUDE.md` pairing doctrine                                     | Settled, owned by `code/docs/DOCUMENTATION-PAIRING.md`, gated by `audits/docs-pairing.sh`                                                                                                                                                                                                                                                                                                                                                                   |
+| Copying any text from either ICM repository                                                   | Facts and method only; the protocol repo's bundled Anthropic files are not MIT (`THIRD-PARTY-NOTICES.md`)                                                                                                                                                                                                                                                                                                                                                   |
+| Retiring or replacing the code-review-graph                                                   | It answers the code half well; this epic is about the markdown half                                                                                                                                                                                                                                                                                                                                                                                         |
+| A generated project's own map maintenance                                                     | Different owner, same reason the template-health map excluded a generated project's `GAPS.md`                                                                                                                                                                                                                                                                                                                                                               |
+| Adding an index row to `src/01-FEATURE-MAPS/CONTEXT.md`                                       | **Every map here is git-tracked but copier-excluded** — `copier.yml`'s `_exclude` empties `project-management/src/**`, so a row would name a file no generated project has; `doc-references.sh` forbids the citation independently                                                                                                                                                                                                                          |
 
 ---
 
 ## Session log
 
-| Date       | Node settled  | Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Frontier redrawn |
-| ---------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| 16/08/2026 | none          | Charted 11 nodes; premise narrowed from "add maintenance" to "third surface?"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | [x]              |
-| 16/08/2026 | none          | **Amended, not resolved** — N-012 added at Sam's request: is the generator fronted by a skill. Feasibility looked up and closed before charting (the `syntax` skill is the precedent); the trade-off left open                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | [x]              |
-| 16/08/2026 | N-001 · N-002 | **Both census nodes discharged by measurement, and they moved the epic in opposite directions.** N-001 corrected two of the map's own numbers — "roughly 175" source files is **188**, exactly the graph's file count, so the graph covers **188 of 188** and 0 of 870 markdown; and the headline "~461 uncovered" is arithmetically right but rhetorically wrong, decomposing into 64 skills + 90 workflow files + 307 others, the first two gated harder than the pairs. **Four questions survive the deletion test** (who cites this · what moves if I change this rule · is this reachable · which directory owns this concept), so refusal on coverage grounds alone is not available to N-004. **But the strongest finding cuts the other way**: the edge set a `map/` would draw already exists in prose — **817 of 870 files (93.9%)** carry a path-shaped `.md` citation, 8,516 backticked plus 1,138 links naming 1,036 distinct targets — and `doc-references.sh` **parses every one and keeps none**, because `record()` fires only on failure and the report reads `Violations: 0`. So N-004 gained an option it did not have at charting: keep what is already computed. N-002 found frontmatter **total on three classes and absent from the rest** — 64/64 skills, 90/90 workflow files, 153/162 guides, and **0 of 409 pairs** — so a frontmatter-keyed generator reaches 36% of the estate and misses the structural half, against 94% for a citation-keyed one. The pairs' one machine-readable edge is the `@` import, and it is **100% predictable**: 200/200 import `@./CONTEXT.md`. The nine guides lacking frontmatter are the Cloudinary dumps and the `ai-dictionary/` sub-documents — reference material, **not drift**, recorded so nobody charts them | [x]              |
+| Date       | Node settled                                             | Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Frontier redrawn |
+| ---------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- |
+| 16/08/2026 | none                                                     | Charted 11 nodes; premise narrowed from "add maintenance" to "third surface?"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | [x]              |
+| 16/08/2026 | none                                                     | **Amended, not resolved** — N-012 added at Sam's request: is the generator fronted by a skill. Feasibility looked up and closed before charting (the `syntax` skill is the precedent); the trade-off left open                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | [x]              |
+| 16/08/2026 | N-001 · N-002                                            | **Both census nodes discharged by measurement, and they moved the epic in opposite directions.** N-001 corrected two of the map's own numbers — "roughly 175" source files is **188**, exactly the graph's file count, so the graph covers **188 of 188** and 0 of 870 markdown; and the headline "~461 uncovered" is arithmetically right but rhetorically wrong, decomposing into 64 skills + 90 workflow files + 307 others, the first two gated harder than the pairs. **Four questions survive the deletion test** (who cites this · what moves if I change this rule · is this reachable · which directory owns this concept), so refusal on coverage grounds alone is not available to N-004. **But the strongest finding cuts the other way**: the edge set a `map/` would draw already exists in prose — **817 of 870 files (93.9%)** carry a path-shaped `.md` citation, 8,516 backticked plus 1,138 links naming 1,036 distinct targets — and `doc-references.sh` **parses every one and keeps none**, because `record()` fires only on failure and the report reads `Violations: 0`. So N-004 gained an option it did not have at charting: keep what is already computed. N-002 found frontmatter **total on three classes and absent from the rest** — 64/64 skills, 90/90 workflow files, 153/162 guides, and **0 of 409 pairs** — so a frontmatter-keyed generator reaches 36% of the estate and misses the structural half, against 94% for a citation-keyed one. The pairs' one machine-readable edge is the `@` import, and it is **100% predictable**: 200/200 import `@./CONTEXT.md`. The nine guides lacking frontmatter are the Cloudinary dumps and the `ai-dictionary/` sub-documents — reference material, **not drift**, recorded so nobody charts them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | [x]              |
+| 31/08/2026 | N-003                                                    | **Settled by building it, then deleting it.** A throwaway repository holding this project's 929 tracked `.md` files was given a `.code-review-graph/languages.toml` and built: **929 files, 2,534 nodes, 1,605 edges, zero errors**. So the answer to the charted question is **yes** — `code-review-graph` 2.3.8 ships a bring-your-own-language loader, `.md` is not a built-in extension, and `tree_sitter_language_pack` bundles both `markdown` and `markdown_inline` among 173 grammars. **And the yes closes nothing**, because every one of the 1,605 edges is `CONTAINS` and **0 of 1,258 citation nodes join to a file node**: a cited path is stored as a name-only child of its citer and is never resolved against the citing file's directory. Two structural reasons it cannot be tuned — **one grammar per language**, and the two halves of markdown are two grammars (block has zero link nodes; inline has zero headings); and the extractor keys on tree-sitter **named fields**, of which `inline_link`'s six children have **none**. It also sees only `[text](path)`, which is **11.8%** of the corpus against 8,516 backticked citations. **Net effect on the frontier: N-004 loses its cheapest escape and becomes takeable with the full question intact**, and N-001's `doc-references.sh` option is strengthened — that audit already resolves citations sibling-first against the citing directory, which is precisely the step the graph will not do. The option now dead for good: _point the existing graph at `.md` and be done_                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | [x]              |
+| 31/08/2026 | **N-004** · N-006, N-007, N-008 moot · **slices cut**    | **The gate accepted, and refused the thing the map was chartered to build.** The deletion test is passed — N-001's four questions survive — so refusal was unavailable; but the `map/` layer is **ruled out** anyway, because it is a catalog and `research/INTERPRETABLE-CONTEXT-METHODOLOGY.md` measured both ICM repositories finding **stage contracts clean and every catalog rotted**. The epic instead delivers three things: an **output mode on `doc-references.sh`** keeping the edge set it already resolves and discards (`S-01`, unconditional); an **adapted ICM-derived skill** carrying the walk test, its pass condition and its independent reader (`S-02`); and a **standing gate that exists only if the first walk test fails** (`S-03`). The walk test is adapted rather than copied on exactly the axis ICM is weakest: theirs is **self-graded**, and `.claude/CLAUDE.md` Section 2.3 both forbids that and supplies the fix — first run a fresh session Sam drives, every later run a dispatched `general-purpose` subagent. Pass condition is **both halves**: ICM's budget as the cost ceiling (entry file + ≤2 reads, 2k–8k tokens) and N-001's four questions as the content, with **"could not look" a fail** per `code/docs/GATE-REPORTING.md`. **Two lookups changed the answer mid-round.** `MAP-REGISTER-INDEXES.md` settled 62 PM artefacts gaining `Sources`/`Workflows`/`Linked Files` frontmatter — 186 declared pointer lists — and its `S-04` already opens `doc-references.sh` for a fourth token source, which made `S-01` cheaper than when the option was named; the scope boundary was then decided rather than assumed, **this epic owning the output mode and `S-04` keeping its token source**. And `icm-architect` has moved to 8 commits and 1 open PR from 7 and 4, so the note's maintenance judgement is stale and **must be re-read before `S-02` derives**. **Sam amended the Destination** — "not an adoption of ICM" becomes "not a **verbatim** adoption" — and set a standing preference: **attribution is owed for the inspiration however far the result diverges**, in the same change as each rule taken. Register re-triaged 16/08's empty result to **4 open, all unrelated**, one of them a genuine navigability defect already claimed by another map | [x]              |
+| 31/08/2026 | **N-005 · N-011 · N-012** (Batch A)                      | **The three nodes that shape `S-02`, settled in one sitting, and `S-02` is now cuttable.** **N-005** moved on a measurement: `doctrine-drift.sh` holds **three claims**, all about the API error envelope, and reads **fenced code only** by design — so "rules with one owner" is machine-readable for almost nothing. Sam chose rules over documents and then **guide granularity over rule granularity**: the durable noun is _this guide owns this concern, enforced here_, with rule text deliberately excluded, because a prose-rule register is machinery `doctrine-drift.sh` explicitly refuses to build and a register nobody fills is false green. **N-011** took the walk test **and a fourth idea the research note never had**: a third-party field report against a 500-file workspace found that an outward-only walk **passes while external consumers pointing in break silently**, so the reverse walk is now `S-02`'s obligation. Docs-over-outputs and selective section routing stand apart — and are recorded in _Out of scope_ rather than `DEFERRED.md`, because that register needs a completed story and a named `US###` and neither exists. **N-012** answered **yes, a 65th skill**: it dispatches the cold reader, adjudicates, and reports **which question failed** rather than a count. `review` was rejected because it sequences passes over a diff where this walks the tree with no change in hand; a script-plus-workflow-step was rejected because that mandate is `S-03`, which may never be cut. **`S-02` ships the walker plus a seed**, sized so N-010's first walk means something. **Upstream health re-checked and it is worse than the note recorded** — not 4 open PRs but 3 closed unmerged, so this epic derives from ideas and owns every line it writes. `S-01`'s QA gained a failing case: a file with inbound citations and no outbound ones, asserted reachable in the emit                                                                                                                                                                                                                                                                                                                                                                                        | [x]              |
+| 31/08/2026 | **N-013** — promoted from fog and settled in one sitting | **The noun set has no home, because it has no file.** The fog item _whether this absorbs, replaces or duplicates `REFERENCES.md`_ became a node once N-005 named that file as "already half of it". The lookup made the obvious answer unavailable: **`REFERENCES.md` is four files** (296 + 163 + 128 + 150 lines) and **its completeness is gated by nothing** — a guide can exist and appear in none of them, silently. The proven alternative, `how-to/src/INVARIANTS.md`, matches N-005's noun almost verbatim — **Enforcement point** _"one, never 'the service layer'"_ and **Stated in** _"the guide that already owns the underlying rule"_ — and `negative-space.sh` gates it **bidirectionally**. But that pattern's split does not fit: its **rule** is universal and its **register** is _"the answer sheet, and it is yours"_, whereas this noun set describes the **template's own guides**, identical everywhere. **Settled: an `owns:` / `enforced-by:` frontmatter key on the guides themselves**, beside the `type: guide` keys 153 already carry — no register, therefore no second copy, therefore nothing to fork. `routing-skills.sh` is the gate precedent; no aggregator is needed because a cold reader opening a guide sees the key in its first lines, and a table would be the third surface N-004 refused. **The limit is recorded rather than discovered**: this reaches the 153 routed guides and **not the 409 `CONTEXT`/`CLAUDE` pairs**, which carry no frontmatter by rule — the structural half of the estate is outside the noun set going into N-010. Seed scoped to **the four questions' blast radius**, the only scoping that lets the walk test falsify the noun set it was built to serve                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | [x]              |
+
+| 31/08/2026 | **N-010** — the first cold walk, run | **FAIL on the token ceiling, and no question broke.** Coldness had to be manufactured from outside the tree, because `.claude/CLAUDE.md`'s `@` imports hand any in-repo session the tree and the doc index before its first read. The four questions and both directions were answered in two reads of three; the 8,000-token band was missed by roughly ten times, all of it on reconnaissance against a root where **the `CLAUDE.md` does not exist** and `node_modules` truncates the glob that would find `README.md`. **The walker also stated one confident falsehood inside budget** — a citation gap that is not there — which no clause of the pass condition can detect and which binds `S-02`. Counter-test discharged: one control class exercised, a second one read away. **N-009 opens; `S-03` exists.** Evidence: `../00-ASSETS/WALK-TESTS/` |
+
+| 31/08/2026 | **N-009** · fog emptied · **N-014** graduated | **The gate is deterministic and the walk is not.** Nine questions over three rounds settled the mandate: an `audits/` preconditions check deriving from a new `code/docs/NAVIGABILITY.md`, triggered on a navigational-surface diff — **not on a story**, which answers the fog item outright — **path-filtered and advisory on landing, promoted to required only by deleting that filter**, because `PR-AND-REQUIRED-CHECKS.md` forbids a workflow being both. **No LLM verdict gates a merge**; verified-or-nothing lives in `S-02`'s skill. **Two N-010 findings were corrected, not carried**: the absent root `CLAUDE.md` is a deliberate, documented ignore rather than a defect — the finding is that the decision is undiscoverable from the root — and the `node_modules` drowning is a reader-strategy defect fixed in the skill's prompt. **No `GAPS.md` row is owed after all.** The last fog item became **N-014** on N-010's evidence |
 
 ---
 
 ## Gate to stories
 
-- [ ] **Destination and out-of-scope bounds confirmed** — not yet; Sam has not confirmed
-- [x] Every open `GAPS.md` / `DEFERRED.md` entry triaged — both registers empty
+- [x] **Destination and out-of-scope bounds confirmed** — Sam confirmed 31/08/2026, and **amended
+      them in the same sitting**: "not an adoption of ICM" became "not a **verbatim** adoption",
+      and the `map/` layer moved from the thing being decided to _Out of scope_
+- [x] Every open `GAPS.md` / `DEFERRED.md` entry triaged — **re-triaged 31/08/2026**; the charted
+      "both registers empty" expired, and the four new entries are all unrelated
 - [x] Neither register file edited here
-- [x] Every knowable decision is a node or in fog of war
-- [x] Every node typed and blocker-wired; **N-003 is the only unblocked node left**, and the only
-      thing standing between the map and its gate at N-004
-- [ ] Every node marked "blocking a story" is resolved — **N-004, N-005, N-006 open**
-- [x] Every resolved node links to the artefact it became — **N-001 and N-002 became tables in
-      this map and nothing outside it.** Deliberate, and the exception the folder's "every resolved
-      node graduates" rule allows for: a census is evidence for a decision not yet taken, and there
-      is no ADR, plan or story for it to graduate into until N-004 rules. **If N-004 refuses, both
-      censuses die with this map** — which is the cost of the refusal, and is named here so it is
-      chosen rather than discovered
-- [ ] **Every slice has a flag manifest** — no slices; gated on N-004, which may legitimately refuse
-- [x] **Index row deliberately not added** — see _Out of scope_; the shipped index correctly reads
-      "None charted yet", because no map reaches a generated project — every one is committed
-      here and excluded by `copier.yml` at generation
+- [x] Every knowable decision is a node or in fog of war — **fog re-read 31/08/2026** and one item
+      graduated to N-013 rather than being left to be decided at the keyboard
+- [x] Every node typed and blocker-wired; **N-014 is the takeable edge and the only one.** It is
+      `research`, so the next sitting looks it up rather than asking; the map closes when it lands
+- [x] **Every node marked "blocking a story" is resolved** — N-004 was the last, and N-005 and
+      N-006 no longer carry the flag: N-006 is moot, and N-005 was re-scoped to sharpen `S-02`'s
+      content rather than to gate its existence
+- [x] Every resolved node links to the artefact it became — N-001, N-002 and N-003 are sections in
+      this map, and **N-004 links to the three slices it produced**. The censuses now have a route
+      to shipped text through `S-01` and `S-02`, which is what the 31/08/2026 slice correction
+      required. **N-006, N-007 and N-008 link to nothing, correctly** — they are marked moot, not
+      settled, because no answer to them exists
+- [x] **Every slice has a flag manifest** — three slices; twelve of the thirteen flags read `N/A`
+      and are omitted, which is the honest manifest for a bash audit, a skill and documentation
+- [x] **Every open node belongs to a slice** — one open node, **N-014, to `S-01`**. N-005, N-011,
+      N-012 and N-013 resolved into `S-02`; N-010 into `S-01` and `S-03`; N-009 into `S-03`. **`S-02`
+      and `S-03` are cuttable; `S-01` waits on N-014**
+- [ ] **Index row still not added** — the shipped `CONTEXT.md` index reads "None charted yet" and
+      **this is now a defect rather than a decision.** `MAP-REGISTER-INDEXES.md` `S-01`/`S-02`
+      settled it 31/08/2026: the table leaves `CONTEXT.md` for a seeded `MAP-INDEX.md`, and this
+      map is one of the ten that gets backfilled. Unticked deliberately, because it is owed and
+      owned elsewhere
 
-**This map may produce no stories at all.** If N-004 refuses, the outcome is a written decision and
-the epic closes — which is why refusal is named in the Destination rather than treated as failure.
+**This map produces three slices, and all three will be cut.** `S-03` was conditional on the first
+walk test failing; it failed on 31/08/2026, so the epic ships three things. **The branch was
+recorded before the evidence, not after** — which is the point of writing a conditional slice down
+rather than deciding at the keyboard once the result is known.
+
+**The fog is empty and one node stands.** N-014 is the only thing between this map and
+`02-story-creation`, and it is a lookup rather than a decision — so the map is one research sitting
+from complete, having settled thirteen nodes and refused the surface it was chartered to build.
+
+**One row is owed elsewhere and is not written yet.** N-011 deferred docs-over-outputs and
+selective section routing out of this epic. They are recorded in _Out of scope_, and a
+`DEFERRED.md` row targeting their future `US###` lands when `02-story-creation` allocates one —
+that register takes a row from an implementation doc against a completed story, and this map is
+neither.
