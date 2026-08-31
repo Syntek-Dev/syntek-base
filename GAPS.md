@@ -287,3 +287,60 @@ the destructive scripts above `development` without an explicit override flag �
 posture-reads-once, refuse-loudly pattern the audits already use. It wants charting with the wider
 question of whether a generated project's scripts should read the answers file at all, which is a
 new coupling and not obviously right.
+
+---
+
+## 31/08/2026 — a seed that never arrives is silent; only the negated files are checked
+
+**Type:** Active gap
+
+**Summary:** `.github/scripts/shipped-artefacts.sh` has two halves by design — check 3 catches an <!-- doc-references: template-only -->
+allowlist that is **too loose** (a private artefact leaked), check 4 catches one that is **too
+tight** (a template file never shipped). Its own header argues at length that the two failures
+point opposite ways and that neither covers the other. Check 4 loops `NAMED_SHIPPED` and asserts
+each file is present. **It does not loop `SEEDED`.** A path re-supplied from `.copier/` by the
+seed-once `_tasks` entry is therefore permitted if it arrives and unreported if it does not, so
+the too-tight half of the argument is unimplemented for every seeded file. This is defect class
+**B, false green**: a clean run currently means "no seed leaked", never "every seed landed".
+
+The exposure is one file today — `project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md`,
+which six shipped guides route to, and whose absence would restore exactly the dangling-citation
+defect it was seeded to cure. Found while resolving `MAP-REGISTER-INDEXES.md` Batch A, which
+raises the count to eight: that map settled that seven register indexes ship by the same
+mechanism.
+
+**Blocked by / Action:** Nothing blocks it. The shape is a `SEEDED` presence loop beside the
+existing `NAMED_SHIPPED` one, plus a `--self-test` probe that deletes a seeded file and asserts
+the finding — the script already holds both patterns, so this is symmetry rather than new
+machinery. **Do not fold it into the index work.** It is a live defect in a shipped-artefact gate
+and is true with or without those seven files; `MAP-REGISTER-INDEXES.md` N-003 cites it as an
+input when it designs the index gate, and must not be its owner.
+
+---
+
+## 31/08/2026 — the Plans Index is gated in eight places and has never existed
+
+**Type:** Active gap
+
+**Summary:** `project-management/src/17-STORY-PLANS/CONTEXT.md` carries four H2s — Directory Tree,
+Where it sits, What each plan records, Authoring a new plan. **There is no Plans Index.** Eight
+sites name it as a real destination and one of them is a tick-box:
+`project-management/workflows/17-story-plans/CHECKLIST.md:82`, that workflow's `STEPS.md:131`,
+`CONTEXT.md:47` and `CLAUDE.md:23` and `:30`, `project-management/src/17-STORY-PLANS/CLAUDE.md:6`
+and `:26`, and four times inside `STORY-PLAN-US000-TEMPLATE.md` (`:16`, `:625`, `:646`, `:773` —
+the last a definition-of-done box). **The template ships**, so a generated project's first story
+plan meets a gate pointing at a heading nobody has ever written. Defect class **E, declared not
+built**.
+
+**It is the second of two, and the pair is the evidence.** `01-FEATURE-MAPS/CONTEXT.md` has the
+opposite failure — an index that exists and has drifted across ten maps, with the refusal recorded
+rather than accidental. Two of the seven registers that warrant an index already carry a written
+same-change duty; **neither has a working index, and neither has a gate.** That is the measured
+case behind `MAP-REGISTER-INDEXES.md` Q37, _the gate is the load-bearing half_.
+
+**Blocked by / Action:** Nothing blocks it. `MAP-REGISTER-INDEXES.md` **claims** this entry: its
+slice `S-01` creates `17-STORY-PLANS/STORY-PLAN-INDEX.md`, which is the file all eight citations
+should have named, and repoints them in the same change. **Retired when `S-01` ships** — not
+before, and not by editing the eight citations to point at a section still absent. Do not fix it
+by adding a `## Plans Index` table to the shipped `CONTEXT.md`: that reintroduces the per-project
+instance citation in a shipped file which N-001 settled by relocation on 31/08/2026.
