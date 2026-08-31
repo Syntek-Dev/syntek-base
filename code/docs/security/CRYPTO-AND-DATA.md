@@ -124,6 +124,38 @@ and XSS payloads. Store data in the most restrictive location appropriate.
 - Set `Secure` on all cookies. There is no valid reason for a cookie to be sent over HTTP in
   production.
 
+### Libraries that write to client storage by default
+
+**The rules above are absolute, and two libraries in this stack break them silently unless
+configured.** A rule nothing enforces is a false green, so each carries its enforcement point here.
+
+**HTMX writes rendered DOM to `localStorage`.** Its history cache stores full page snapshots —
+ten by default — so any page rendering personal data persists that PII to disk, in the one place
+the table above says it may never go. The user takes no action and sees nothing.
+
+- **The base template carries `<meta name="htmx-config" content='{"historyCacheSize": 0}'>`.**
+  This is structural, not per-page: history navigation still works, the URL is simply re-requested
+  from the server. **Enforcement: a test asserts the meta renders**, because there is one place to
+  get it wrong and a grep would police a population of one.
+- The per-page alternative, `hx-history="false"`, is **not** the policy. It requires every author
+  to correctly classify every page as personal-data-rendering, forever, and the failure is silent
+  and one-directional.
+
+**Alpine's `$persist` defaults to `localStorage`** and carries the identical exposure, but is
+opt-in per component rather than on by default.
+
+- **`$persist` may never hold personal data**, exactly as the table states.
+- **Reach for it only where client-side state genuinely beats server-side.** State the server can
+  hold, the server holds. This is the technology ladder applied to storage: persistence is not a
+  free choice, it is a rung you must justify climbing to.
+- Where the state is non-sensitive but should not outlive the tab,
+  `$persist.using(sessionStorage)` is the documented alternative. **`sessionStorage` is not a PII
+  escape hatch** — it is a shorter lifetime, not a security boundary, and the table bans PII from
+  it too.
+
+**Neither storage protects against XSS.** Both are readable by any script on the page; the only
+difference between them is residency.
+
 ---
 
 ## Data Classification

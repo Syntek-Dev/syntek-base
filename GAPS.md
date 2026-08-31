@@ -344,3 +344,36 @@ should have named, and repoints them in the same change. **Retired when `S-01` s
 before, and not by editing the eight citations to point at a section still absent. Do not fix it
 by adding a `## Plans Index` table to the shipped `CONTEXT.md`: that reintroduces the per-project
 instance citation in a shipped file which N-001 settled by relocation on 31/08/2026.
+
+---
+
+## 31/08/2026 — the PE gate's markup half cannot see structure, and the prefix set cannot be measured
+
+Two deferrals from `MAP-PROGRESSIVE-ENHANCEMENT.md`'s final resolve sitting (batches C and E,
+31/08/2026). **Neither is a `DEFERRED.md` row**, though N-021's reads like one: that file's own
+rule targets a named future `US###` and is written from an implementation doc, and no story has
+been cut from this map yet. A row targeting "the first story that writes real CSS" would be a
+target no sprint planner can look up.
+
+**1 — A line-oriented PE gate cannot decide the clauses that matter most.** N-013 settled the PE
+markup gate as `awk`/grep only, because no HTML or Django-template AST
+exists in this repository and Opengrep's template rules are `generic` + `pattern-regex`. That
+decides the presence clauses (`hx-boost`, `x-cloak` without its rule, `historyCacheSize: 0`) and
+**cannot** decide the structural ones: a `<form>` with no `action`, an `hx-*` attribute with no
+server-side fallback route, an interaction placed on the wrong rung. A tag-accumulating scanner
+would be the repo's first, against zero templates.
+
+**Blocked by / Action:** Nothing blocks it; it is deliberately not built. Revisit when
+`code/src/django/templates/` holds real pages — the gate's own header must say what it does not
+check, so a green run is never read as structural proof (`code/docs/GATE-REPORTING.md`).
+
+**2 — N-021's prefix set cannot be re-measured inside this epic's bounds.** The measurement is
+**9 properties and 5 values** (not the "nine" the map said in three places), recorded nowhere but the feature map that
+measured it. `autoprefixer` is absent from `node_modules/` and has zero
+occurrences in `pnpm-lock.yaml`, and the epic declines it twice as a **tool** — it was only ever a
+measuring instrument. The only tracked `.css` file in the repo is a PM wireframe artefact, which
+carries the repo's single vendor prefix (`-webkit-text-size-adjust`).
+
+**Blocked by / Action:** Blocked on real CSS existing. `S-02` ships the `@eslint/css` half — which
+**is** the support policy — and explicitly omits the prefixes. Retire this half when the first
+story writing component CSS re-measures the set and states where it lives.
