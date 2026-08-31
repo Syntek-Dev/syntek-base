@@ -1,16 +1,18 @@
-# ADR-000: [Decision Title]
+# ADR-US000: [Decision Title]
 
-<!-- Filename: ADR-###-<TITLE>.md — 3-digit zero-padded index, TITLE in SCREAMING-SNAKE-CASE
-     (e.g. ADR-001-OPAQUE-SESSION-TOKENS.md). Take the next free index; never reuse a
+<!-- Filename: ADR-US###-<DECISION>-DD-MM-YYYY.md — the driving story, the decision in
+     SCREAMING-SNAKE-CASE, and the date it was made (e.g.
+     ADR-US014-OPAQUE-SESSION-TOKENS-31-08-2026.md). Flat: no per-story subdirectory.
+     There is no ADR-### index; it was retired 31/08/2026. Never reuse a
      retired number. One ADR = one decision. Once Accepted, an ADR is immutable —
      supersede it with a new ADR rather than editing the decision in place. -->
 
 **Status:** Proposed <!-- Proposed | Accepted | Superseded | Deprecated -->
 **Date:** DD/MM/YYYY
 **Deciders:** [name(s) who own this decision]
-**Supersedes:** — <!-- ADR-### this record replaces, or — -->
-**Superseded by:** — <!-- ADR-### that later replaced this record, or — -->
-**Related:** [US###, ADR-###, or —] <!-- stories that drove or consume the decision -->
+**Supersedes:** — <!-- full filename of the ADR this record replaces, or — -->
+**Superseded by:** — <!-- full filename of the ADR that later replaced this, or — -->
+**Related:** [US###, or —] <!-- the story that drove or consumes the decision -->
 
 ---
 

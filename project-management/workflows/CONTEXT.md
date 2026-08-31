@@ -149,7 +149,7 @@ Every folder carries `CONTEXT.md`, `CLAUDE.md`, `STEPS.md` and `CHECKLIST.md`.
 | `12-seo-checks/`                   | Verify SEO on any public-facing page the story adds              |
 | `13-api-design/`                   | Design the Django Ninja API contract for the story               |
 | `14-logging-checks/`               | Set the story's log surface and what must never reach a log line |
-| `15-decisions/`                    | Author an ADR — the last gate in the per-story loop              |
+| `15-decisions/`                    | Confirm the story's ADRs hold and don't clash — the loop's last  |
 | `16-sprint-plans/`                 | On sprint fill: the detailed sprint plan                         |
 | `17-story-plans/`                  | On sprint fill: the per-story implementation plan (code master)  |
 | `18-consolidate-design-work/`      | Unify the per-story design and schema work into one system       |

@@ -55,6 +55,6 @@ plans that gate a feature into code, and the post-implementation records, plus t
 - **Generated:** PDFs and zip archives under `export/` (client delivery) — never
   hand-edit; regenerate from source.
 - Numbered `src/` folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed
-  patterns — `US###.md`, `SPRINT-##.md`, `ADR-###-<TITLE>.md`, `##-SPRINT-PLAN-##.md`,
+  patterns — `US###.md`, `SPRINT-##.md`, `ADR-US###-<DECISION>-DD-MM-YYYY.md`, `##-SPRINT-PLAN-##.md`,
   `STORY-PLAN-US###-*.md`, `<TYPE>-PLAN-US###-*.md` / `<TYPE>-IMPL-US###-*.md`,
   `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.

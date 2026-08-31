@@ -1,4 +1,4 @@
-# Workflow 14 — Decisions (ADRs)
+# Workflow 15 — Decisions (ADRs)
 
 **Last Updated**: <%DATE%>
 
@@ -17,46 +17,53 @@ project-management/workflows/15-decisions/
 
 ## Purpose
 
-Capture a significant architectural or design decision as an immutable Architecture
-Decision Record (ADR) — context, options considered, the decision, and its
-consequences — in the decide & plan tier, before sprint and story planning lock the
-decision into an execution schedule.
+**The coherence gate on a story's decision record.** Confirm every ADR this story raised
+still holds true and that none clashes with another, author the records the loop surfaced
+but nobody wrote, and hand the settled set to sprint and story planning.
+
+**An ADR is written where the trade-off appears, not here.** Steps `04`–`14` each author
+their own — a schema shape or RLS scope at `04-database-schema`, a session strategy at
+`10-security-checks`, a contract shape at `13-api-design`. By the time the loop reaches this
+gate most of the story's ADRs already exist, and the job is to check them against each other
+rather than to write them from scratch. **This is the last gate in the per-story loop.**
 
 ## When to run
 
-- Whenever a choice is hard to reverse — a schema shape, an auth/session strategy, a
-  module boundary, a stack pattern, or anything a later ADR would need to explicitly
-  supersede
-- After the relevant specify-tier spec (`04-database-schema`, `10-security-checks`,
-  `13-api-design`, or any other 02–14 workflow) has surfaced the trade-off
-- Before `workflows/16-sprint-plans/` and `workflows/17-story-plans/` — both cite the
-  ADR as a constraint on the plan they produce
-- Whenever an accepted decision needs to change course — raise a **new** ADR that
-  supersedes the old one; never edit an Accepted record in place
+- **Once per story**, after `14-logging-checks` and before `16-sprint-plans` /
+  `17-story-plans` — both cite the settled ADR set as a constraint on the plan they produce
+- When a decision surfaced mid-loop was never recorded — this gate writes it
+- When two of the story's ADRs disagree — raise a **new** ADR superseding the loser; never
+  edit an Accepted record in place
+- Whenever an accepted decision needs to change course, for the same reason
 
 ## Inputs
 
-- The driving user story (`src/02-STORIES/US###.md`) or the spec that surfaced the
-  trade-off (`src/04-DATABASE/`, `src/10-SECURITY/`, `src/13-API-DESIGN/`, etc.)
+- The driving user story (`src/02-STORIES/US###.md`) — **mandatory**; a trade-off must
+  come from somewhere real, which is why a wayfinder map reaches an ADR only through the
+  slice that becomes a story
+- **Every ADR already written for this story** by steps `04`–`14`
+- The specs that surfaced them (`src/04-DATABASE/`, `src/10-SECURITY/`, `src/13-API-DESIGN/`, etc.)
 - Any grilling or `.claude/skills/research/SKILL.md` primary-source-cited note that
-  grounds the decision
-- The ADR this record supersedes, if any
+  grounds a decision
 
 ## Outputs
 
-- `src/15-DECISIONS/ADR-###-<TITLE>.md` — one immutable record per decision
+- `src/15-DECISIONS/ADR-US###-<DECISION>-DD-MM-YYYY.md` — one immutable record per
+  decision, flat, named for the driving story and the date it was made
+- A confirmed, internally consistent ADR set for the story — the gate's actual product
 
 ## Key decisions
 
-1. Whether the choice is significant enough to warrant an ADR, or is a call the
+1. Whether every hard-to-reverse choice this story made is recorded, or one is missing
+2. Whether any two of the story's ADRs contradict each other — and which loses
+3. Whether a choice is significant enough to warrant an ADR, or is a call the
    implementer should just make
-2. The next free, monotonic `ADR-###` index
-3. Status — `Proposed` while under discussion, `Accepted` once signed off
-4. The options considered, each with its trade-offs (including "do nothing")
-5. The decision itself, and the deciding factor that beat the alternatives
-6. Consequences — what improves, what the project accepts as a trade-off, and any
+4. Status — `Proposed` while under discussion, `Accepted` once signed off
+5. The options considered, each with its trade-offs (including "do nothing")
+6. The decision itself, and the deciding factor that beat the alternatives
+7. Consequences — what improves, what the project accepts as a trade-off, and any
    follow-on enforcement work `code/` must carry out
-7. Supersession — which prior ADR this replaces, if any, cross-linked both ways
+8. Supersession — which prior ADR this replaces, if any, cross-linked both ways
 
 ## Related workflows
 
@@ -73,14 +80,14 @@ decision into an execution schedule.
 ### Governing documents
 
 - `project-management/src/15-DECISIONS/CLAUDE.md` — ADR authoring rules: immutability,
-  monotonic indices, documentation-only scope
-- `project-management/src/15-DECISIONS/ADR-000-TEMPLATE.md` — the five-section scaffold
+  the naming convention, the driving-`US###` rule, documentation-only scope
+- `project-management/src/15-DECISIONS/ADR-US000-TEMPLATE.md` — the five-section scaffold
   every ADR must fill
 
 ### Related reading
 
-- `project-management/src/15-DECISIONS/` — the existing ADR register; scan it for the
-  next free index and for any record this decision might supersede
+- `project-management/src/15-DECISIONS/` — the existing ADR register; `ls` it by `US###`
+  prefix for this story's set, and for any record a decision might supersede
 - `code/docs/ARCHITECTURE-PATTERNS.md` — layered architecture and module-boundary
   conventions a decision must stay consistent with
 - `.claude/skills/codebase-design/SKILL.md` — the deep-module vocabulary (module,
