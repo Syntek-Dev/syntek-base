@@ -87,9 +87,14 @@ N-005, N-009, N-012, N-014 and N-018 — and **N-005 is the one that decides the
 slice**: until canonicity is settled per artefact class, a slice cannot say which side it builds.
 Slices are cut here once those seven resolve, never before.
 
-| Slice | Story | Title                   | Flags |
-| ----- | ----- | ----------------------- | ----- |
-| —     | —     | _(blocked — see N-005)_ | —     |
+| Slice | Story | Title                   | Nodes | Acceptance | Flags |
+| ----- | ----- | ----------------------- | ----- | ---------- | ----- |
+| —     | —     | _(blocked — see N-005)_ | TBD   | TBD        | —     |
+
+**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
+type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
+RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
+slice_ is unverified here.
 
 **What the manifest is expected to look like when it exists, written as an expectation and not as
 a manifest.** This map's deliverables are workflow steps, `DESIGN.md`, a brief and the slop
@@ -163,7 +168,9 @@ takeable today: **N-001, N-002, N-005, N-018**.
 | N-023 | Whether `/design` earns a row in `03-PREREQUISITES.md` and `08-CLAUDE-CODE.md`, and in **Optional** or as a requirement — a month after Figma's rows came out    | grilling | N-003, N-004 | no                |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+`grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
+named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
+blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
 ---
 

@@ -70,10 +70,18 @@ gate closes.
 section stays an index. The full 13-flag roster and each flag's gate:
 `../02-STORIES/US000-TEMPLATE.md`.
 
-| Slice | Story   | Title         | Flags                                                                     |
-| ----- | ------- | ------------- | ------------------------------------------------------------------------- |
-| S-01  | `US###` | [EXAMPLE] {…} | [EXAMPLE] DB: `ModelA` · API: `POST /model-a` · GDPR: yes · QA: unit, E2E |
-| S-02  | —       | [PLACEHOLDER] | [PLACEHOLDER]                                                             |
+| Slice | Story   | Title         | Nodes                        | Acceptance                                                                       | Flags                                                                     |
+| ----- | ------- | ------------- | ---------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| S-01  | `US###` | [EXAMPLE] {…} | [EXAMPLE] N-003 ✅ · N-005 ○ | [EXAMPLE] every `ModelA` row carries a scope column and the policy that reads it | [EXAMPLE] DB: `ModelA` · API: `POST /model-a` · GDPR: yes · QA: unit, E2E |
+| S-02  | —       | [PLACEHOLDER] | [PLACEHOLDER]                | [PLACEHOLDER]                                                                    | [PLACEHOLDER]                                                             |
+
+**Node state:** `✅` resolved · `○` open · `⛔` open **and** blocking. A slice is cuttable only
+when every node it names is `✅`, and **no open node may belong to no slice** — an unlisted node
+is work with no route to a story.
+
+**Acceptance is what must be TRUE; Flags is which gates RUN.** They never restate each other, and
+neither is an outline — the steps that produce the acceptance are the
+`project-management/workflows/**` chain the story runs.
 
 **The `Story` column is back-filled by `02-story-creation`**, which allocates the next free
 `US###` when it writes the story. A slice with no story yet reads `—`; wayfinder never reserves
@@ -95,12 +103,17 @@ edge is visible at a glance. At least one node must be unblocked, or the wiring 
 | N-003 | [PLACEHOLDER] | grilling | none       | yes               |
 | N-004 | [PLACEHOLDER] | research | N-003      | no                |
 | N-005 | [PLACEHOLDER] | tracer   | none       | no                |
+| N-006 | [PLACEHOLDER] | build    | N-003      | no                |
 
-**Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+**Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity — and a mode:
+any node may be probed with `/prototype` before it resolves) · `grilling` (one
+`/grill-with-docs` surface) · `build` (the work a slice's story carries — named here, never done
+here; it resolves when its deliverable and acceptance reach its slice row). **Manual unblocking
+work is not a node** — provisioning, running a script or seeding data is a `GAPS.md` blocker.
 
 **Blocking a story?** — `yes` means no story may be written until it is settled. Only these gate
-`02-story-creation`; the rest may stay open.
+`02-story-creation`; the rest may stay open. **A `build` node is always `no`** — it cannot block a
+story, because it _is_ the story's work.
 
 ---
 

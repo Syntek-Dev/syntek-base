@@ -59,7 +59,8 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] Everything in scope but not yet sharp is in **fog of war**, not forced into a node
 - [ ] Every frontier node names its blockers, or "none"
 - [ ] At least one node is unblocked — a frontier with no takeable edge is mis-wired
-- [ ] Every node tagged research / tracer / grilling / task
+- [ ] Every node tagged research / tracer / grilling / build
+- [ ] No node is manual unblocking work — that is a `GAPS.md` blocker, not a node
 - [ ] `MAP-<FEATURE>.md` created from the template and added to the `src/01-FEATURE-MAPS/` index
 - [ ] Research nodes dispatched
 - [ ] **Nothing else settled in the charting session**
@@ -73,7 +74,8 @@ Every box must be ticked before `02-story-creation/` may begin.
 
 - [ ] Every **blocking** node is resolved — fog and non-blocking nodes may remain open
 - [ ] Nodes were taken in **batches**, and each batch's reason for grouping was stated in one line
-- [ ] Each node was settled by its type (grilling / research / tracer / task)
+- [ ] Each node was settled by its type (grilling / research / tracer / build)
+- [ ] **No build node was performed** — each was specified onto its slice row and left there
 - [ ] Every resolved node **graduated** to its real home — ADR, `GAPS.md`, `DEFERRED.md`, or a
       glossary term
 - [ ] No answer lives only on the map
@@ -86,7 +88,11 @@ Every box must be ticked before `02-story-creation/` may begin.
 
 - [ ] The map reads as a low-resolution route, not a storage vault
 - [ ] Every claimed register entry names the node or story that will retire it
+- [ ] **Every slice carries all six columns** — `Slice | Story | Title | Nodes | Acceptance |
+Flags`
 - [ ] **Every slice has a flag manifest** — each gate it needs, `N/A` omitted, first-pass values set
+- [ ] **Every slice states its acceptance** — what must be **true**, never how it is produced
+- [ ] **Every open node belongs to a slice**, and no slice names a node that does not exist
 - [ ] No slice reserves a `US###` — the `Story` column reads `—` until `02-story-creation` fills it
 - [ ] No story has been written — that is `02-story-creation`
 - [ ] `src/01-FEATURE-MAPS/CONTEXT.md` index current

@@ -423,9 +423,14 @@ template-development map, so there are no stories to cut."_ The deliverable is
 the mechanical legs at N-016 — a lint rule, two `doctrine-drift.sh` rows, a `clippy.toml` key and
 a ruff code. None of that is a feature a user story would describe.
 
-| Slice | Story | Title             | Flags |
-| ----- | ----- | ----------------- | ----- |
-| —     | —     | _(no slices cut)_ | —     |
+| Slice | Story | Title             | Nodes | Acceptance | Flags |
+| ----- | ----- | ----------------- | ----- | ---------- | ----- |
+| —     | —     | _(no slices cut)_ | TBD   | TBD        | —     |
+
+**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
+type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
+RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
+slice_ is unverified here.
 
 **All thirteen gate flags read `N/A`**, so the manifest is empty by construction rather than
 unwritten: nothing on this map creates a model, an endpoint, a screen or a personal-data path.
@@ -449,12 +454,14 @@ Open decisions in dependency order. **N-008 is the only blocking node**: until t
 | N-013 | The Rust remainder, the `avoid-breaking-exported-api` refund, and the two missing `NEGATIVE-SPACE.md` rows        | grilling | N-008, N-009   | no              |
 | N-014 | The mobile TS remainder — and whether `error-classes.ts`'s null/undefined collapse is blessed or changed          | grilling | N-008, N-009   | no              |
 | N-015 | What the gate can decide, at which tier — `[gate: fail]` / `[warn]` / `[judgement]`                               | grilling | N-010 to N-014 | no              |
-| N-016 | The mechanical legs: `no-non-null-assertion`, `doctrine-drift.sh` rows, `avoid-breaking-exported-api`, `PGH003`   | task     | N-015          | no              |
-| N-017 | The consumer wiring — `code-reviewer` dimension, the **refactor setup**, and the `REFACTORING.md` cross-reference | task     | N-009          | no              |
-| N-018 | Attribution: the `README.md` _Influences_ row and licence check, in the same change                               | task     | N-009          | no              |
+| N-016 | The mechanical legs: `no-non-null-assertion`, `doctrine-drift.sh` rows, `avoid-breaking-exported-api`, `PGH003`   | build    | N-015          | no              |
+| N-017 | The consumer wiring — `code-reviewer` dimension, the **refactor setup**, and the `REFACTORING.md` cross-reference | build    | N-009          | no              |
+| N-018 | Attribution: the `README.md` _Influences_ row and licence check, in the same change                               | build    | N-009          | no              |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+`grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
+named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
+blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
 **Two nodes are takeable now**: **N-008**, which everything waits on, and **N-012**, which is
 independent because the version pin is decided by django-htmx's constraint and the CSRF

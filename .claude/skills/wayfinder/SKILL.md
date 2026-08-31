@@ -91,14 +91,15 @@ mode — no map, and no edit to the register.
    nodes it depends on, so the takeable edge — the unblocked nodes — is visible at a glance.
    _Done when every Frontier node names its blockers (or "none") and at least one node is unblocked._
 5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with the
-   sections below; tag each Frontier node with its type (research / tracer / grilling / task),
+   sections below; tag each Frontier node with its type (research / tracer / grilling / build),
    record the triaged register entries under **Register claimed**, and list the buildable slices
-   under **Slices**, each with its flag manifest (`N/A` omitted). Add the map to the index in
+   under **Slices**, each naming its nodes, its acceptance and its flag manifest (`N/A` omitted).
+   Add the map to the index in
    `src/01-FEATURE-MAPS/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
    low-resolution route rather than a storage vault._
 6. **Fire the research nodes, then stop.** Dispatch any research nodes (facts, not decisions) in
    parallel now — they need no human. Charting is one session: do **not** settle grilling, tracer,
-   or task nodes here. _Done when the research nodes are dispatched and the session ends with the
+   or build nodes here. _Done when the research nodes are dispatched and the session ends with the
    frontier drawn but unresolved._
 
 ## Steps — RESOLVE (each later session)
@@ -127,8 +128,10 @@ mode — no map, and no edit to the register.
    skill's frontier rounds are exactly this shape one level down, so a batch of related nodes
    becomes the first round rather than N sequential interviews. **Research** nodes are looked up
    (dispatch them in parallel); a **tracer** builds a rough spike to raise fidelity on a foggy area;
-   a **task** does the manual unblocking work. Mixed-type batches run their research legs first, so
-   the grilling round opens with the facts already in hand.
+   a **build** node is **specified, never performed** — write its deliverable and its acceptance
+   into its slice row. Mixed-type batches run their research legs first, so the grilling round
+   opens with the facts already in hand. **Any node of any type may first be probed with
+   `/prototype`** where a rough spike would sharpen it — that is a technique, not a re-typing.
    _Done when every node in the batch has a decision, made and confirmed._
 4. **Graduate each outcome.** Record every settled decision in its real home via the graduation
    table — an ADR, a story-plus-plan, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term —
@@ -148,8 +151,8 @@ mode — no map, and no edit to the register.
 ## Destination           one or two lines: the spec / change the epic reaches
 ## Notes                 domain, skills to load, standing preferences, the umbrella PLAN/ADRs
 ## Register claimed      GAPS.md / DEFERRED.md entries this feature closes or is blocked by
-## Resolved decisions    settled — each links to the ADR-### / STORY-PLAN-US### / US### it became
-## Slices                the buildable slices, each with its flag manifest — the base for stories
+## Resolved decisions    settled — each links to the ADR / STORY-PLAN-US### / US### it became
+## Slices                the buildable slices — nodes, acceptance, flags — the base for stories
 ## Frontier              open decisions in dependency order; blocking edges as prose links
 ## Fog of war            in-scope but not yet sharp enough to be a node
 ## Out of scope          consciously ruled out, plus why
@@ -170,20 +173,28 @@ built behind it.
 - **Research** (agent works alone) — surface facts from the codebase, docs, or APIs; looked up,
   never asked.
 - **Tracer** — a rough prototype or spike that raises fidelity on a foggy area before it can be
-  decided.
+  decided. Also a **mode**: any node may be probed with `/prototype` before it resolves without
+  being re-typed, which is how a map tests a node's shape before a story is written against it.
 - **Grilling** (human in the loop) — a decision settled by a single `/grill-with-docs` surface.
-- **Task** (human in the loop or alone) — manual unblocking work: provision infra, run a migration
-  script, seed data.
+- **Build** — the work a slice's story carries: **named here, never done here**. It resolves when
+  its **deliverable and acceptance** are written into its slice row, and no further — the full
+  outline belongs to the `project-management/workflows/**` chain the story runs. A build node can
+  never be **Blocking a story?** `yes`, because it _is_ the story.
+
+**There is no node for manual unblocking work.** Provisioning infrastructure, running a script or
+seeding data is a **`GAPS.md` blocker**, which already owns blockers — not a decision the map
+settles. The `task` type this replaced was defined that way and used that way in none of its
+instances; every one was deliverable work miscast as unblocking.
 
 ### Graduation table (RESOLVE step 4)
 
-| A settled decision that is…                                                   | Graduates to…                                                                                                      |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| architectural, hard to reverse, a genuine trade-off (the three-test ADR gate) | a new `ADR-###-<TITLE>.md` in `…/15-DECISIONS/`, taking the next free number                                       |
-| a buildable slice of the epic                                                 | a **Slices** row with its flag manifest — never a written story; `02-story-creation` cuts `US###.md` from that row |
-| an active blocker or cross-repo dependency                                    | a `GAPS.md` entry                                                                                                  |
-| deferred to a named future story                                              | a `DEFERRED.md` row, targeting the future `US###`                                                                  |
-| terminology (one canonical word per concept)                                  | the glossary of the nearest `CONTEXT.md` (reference: `code/docs/data-structures/DOMAIN-MODELLING.md`)              |
+| A settled decision that is…                                                   | Graduates to…                                                                                                                  |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| architectural, hard to reverse, a genuine trade-off (the three-test ADR gate) | a **Slices** row whose story authors `ADR-US###-<DECISION>-DD-MM-YYYY.md` at PM step `04`–`14`; a map never authors one direct |
+| a buildable slice of the epic                                                 | a **Slices** row — nodes, acceptance, flags; never a written story. `02-story-creation` cuts `US###.md` from that row          |
+| an active blocker or cross-repo dependency                                    | a `GAPS.md` entry                                                                                                              |
+| deferred to a named future story                                              | a `DEFERRED.md` row, targeting the future `US###`                                                                              |
+| terminology (one canonical word per concept)                                  | the glossary of the nearest `CONTEXT.md` (reference: `code/docs/data-structures/DOMAIN-MODELLING.md`)                          |
 
 The ADR three-test gate and the glossary-into-`CONTEXT.md` move are exactly `grill-with-docs` —
 that skill owns which artefact a resolved decision lands in; wayfinder only decides that it lands.
@@ -204,7 +215,11 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
 
 - **Resolving during a chart session** — charting draws the frontier; it settles nothing.
 - **Storing decision detail in the map** — the map is a low-resolution index; detail lives in the
-  ADR, plan, or story it links to. A **Slices** row is a manifest of which gates run, not their design.
+  ADR, plan, or story it links to. **Acceptance** says what must be true; **Flags** says which
+  gates run. Neither is the design, and a build node's outline belongs to the story, not the row.
+- **Performing a build node** — a build node is specified onto its slice and left there. Writing
+  the guide, building the gate or wiring the index _is the story's work_; doing it during a resolve
+  sitting skips `02-story-creation`, its plan, and every gate the workflow chain applies.
 - **Writing a story from the map** — a slice graduates to a row, never to `US###.md`;
   `02-story-creation` owns the story and allocates its number.
 - **Asking what the repo can answer** — look facts up before putting a question to <%DEVELOPER_NAME%>.
@@ -236,7 +251,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/src/01-FEATURE-MAPS/CONTEXT.md` — the map index, where a new map is registered.
 - `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
   slice graduates into.
-- `project-management/src/15-DECISIONS/` — ADR home; take the next free `ADR-###`.
+- `project-management/src/15-DECISIONS/` — ADR home; `ADR-US###-<DECISION>-DD-MM-YYYY.md`, flat, and always driven by a `US###`.
 - `project-management/src/02-STORIES/US###.md` — the story a slice becomes; synced to ClickUp by `.github/workflows/clickup-sync.yml`.
 - `GAPS.md` · `DEFERRED.md` — read at both ends: the standing register that SUGGEST mines for
   candidate features and CHART triages, and where blockers and named-future-story deferrals

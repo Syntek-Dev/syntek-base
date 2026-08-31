@@ -16,8 +16,10 @@ re-asking the same questions.
 
 - **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable), loading
   `.claude/skills/wayfinder/SKILL.md`. Grilling nodes open `grill-with-docs`; research nodes use
-  `research`; tracer nodes use `prototype`. The hard gate — the wayfinder skill itself — must be
-  read before Step 1.
+  `research`; tracer nodes use `prototype`, which **any** node may also be probed with before it
+  resolves. **Build nodes are specified onto their slice row and never performed here** — the work
+  belongs to the story `02-story-creation` cuts. The hard gate — the wayfinder skill itself — must
+  be read before Step 1.
 - **Model:** Fable throughout — mapping a decision frontier and settling trade-offs is the
   reasoning tier the whole implementation builds on. Opus only for mechanical touches: a link
   fix, moving a resolved row, a date bump.

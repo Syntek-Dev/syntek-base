@@ -139,14 +139,19 @@ decides doctrine with nothing to reconcile against.
 
 The buildable slices this feature cuts into — **the base the stories are written from**.
 
-| Slice | Story   | Title                                                                | Flags                                                                                   |
-| ----- | ------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| S-01  | `US###` | The owning guide, and every pointer repaired to reach it             | QA: manual — docs-length, docs-pairing, doc-references                                  |
-| S-02  | `US###` | Retry doctrine: ownership, `Retry-After`, budgets, breaker, timeouts | Security: outbound timeouts · QA: manual                                                |
-| S-03  | `US###` | Idempotency doctrine: keys, stale writes, DB aborts, double-submit   | API: `Idempotency-Key` contract · Security: replay · QA: manual                         |
-| S-04  | `US###` | The example-repair sweep across the five contradicting guides        | QA: manual                                                                              |
-| S-05  | `US###` | The gate, its CI job and its lefthook registration                   | QA: unit — gate self-test, fixture pair                                                 |
-| S-06  | `US###` | The live-code fixes the doctrine already required                    | Backend: Yes · Security: cache timeouts · QA: unit, integration — health probe, timeout |
+| Slice | Story   | Title                                                                | Nodes | Acceptance | Flags                                                                                   |
+| ----- | ------- | -------------------------------------------------------------------- | ----- | ---------- | --------------------------------------------------------------------------------------- |
+| S-01  | `US###` | The owning guide, and every pointer repaired to reach it             | TBD   | TBD        | QA: manual — docs-length, docs-pairing, doc-references                                  |
+| S-02  | `US###` | Retry doctrine: ownership, `Retry-After`, budgets, breaker, timeouts | TBD   | TBD        | Security: outbound timeouts · QA: manual                                                |
+| S-03  | `US###` | Idempotency doctrine: keys, stale writes, DB aborts, double-submit   | TBD   | TBD        | API: `Idempotency-Key` contract · Security: replay · QA: manual                         |
+| S-04  | `US###` | The example-repair sweep across the five contradicting guides        | TBD   | TBD        | QA: manual                                                                              |
+| S-05  | `US###` | The gate, its CI job and its lefthook registration                   | TBD   | TBD        | QA: unit — gate self-test, fixture pair                                                 |
+| S-06  | `US###` | The live-code fixes the doctrine already required                    | TBD   | TBD        | Backend: Yes · Security: cache timeouts · QA: unit, integration — health probe, timeout |
+
+**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
+type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
+RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
+slice_ is unverified here.
 
 **The `Story` column is back-filled by `02-story-creation`.** No number is reserved here.
 
@@ -176,12 +181,14 @@ Open decisions in dependency order. **Four nodes are unblocked**: `N-006`, `N-01
 | N-018 | Valkey DB 0 versus DB 1 — correct `TOPOLOGY.md`, or introduce `CACHE_URL` and move the cache | grilling | none                 | no                |
 | N-019 | Which rules are mechanically checkable at all — a spike over the available signals           | tracer   | none                 | no                |
 | N-020 | The gate's name, scope, failure mode and where it registers                                  | grilling | `N-019` + rule nodes | no                |
-| N-021 | Repair the four bad examples: two `.delay()` sites, two retry-everything handlers            | task     | `N-007`, `N-008`     | no                |
-| N-022 | Jitter the two health TTLs — already required by a written rule, nothing to decide           | task     | none                 | no                |
-| N-023 | Valkey `SOCKET_TIMEOUT` / `SOCKET_CONNECT_TIMEOUT` and the ClickUp `urlopen` timeout         | task     | `N-012`              | no                |
+| N-021 | Repair the four bad examples: two `.delay()` sites, two retry-everything handlers            | build    | `N-007`, `N-008`     | no                |
+| N-022 | Jitter the two health TTLs — already required by a written rule, nothing to decide           | build    | none                 | no                |
+| N-023 | Valkey `SOCKET_TIMEOUT` / `SOCKET_CONNECT_TIMEOUT` and the ClickUp `urlopen` timeout         | build    | `N-012`              | no                |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+`grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
+named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
+blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
 **Suggested first batch — `N-006` + `N-007`.** Shared subject: both are one question about where
 task-retry doctrine lives and what happens to the copy that contradicts it. Deciding them apart

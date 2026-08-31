@@ -181,9 +181,14 @@ not, a security boundary.** Neither side is available to cite.
 frontier. What the deliverable even is remains open — **N-019** decides the artefact's shape and
 whether the template ships it filled, empty, or at all.
 
-| Slice | Story | Title                             | Flags |
-| ----- | ----- | --------------------------------- | ----- |
-| —     | —     | _(blocked — see N-019 and N-014)_ | —     |
+| Slice | Story | Title                             | Nodes | Acceptance | Flags |
+| ----- | ----- | --------------------------------- | ----- | ---------- | ----- |
+| —     | —     | _(blocked — see N-019 and N-014)_ | TBD   | TBD        | —     |
+
+**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
+type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
+RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
+slice_ is unverified here.
 
 **This is the one map in this folder where a flag might genuinely fire**, and that is unchanged by
 charting. If a surface is routed to its own host, `Security` (cookie scope, host validation, the
@@ -247,14 +252,16 @@ precedent, because the deliverable is doctrine.
 
 ### F — Corrections found while charting
 
-| Node  | Decision                                                                                                                                                                                                                          | Type | Blocked by | Blocking? |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ---------- | --------- |
-| N-024 | **`dev-us###.conf`: honour or retract.** `17-STORY-PLANS/CONTEXT.md:55` and `STORY-PLAN-US000-TEMPLATE.md:703` both name it as a real path; `nginx/CONTEXT.md:28-29` states _"there are no per-story Nginx variants to generate"_ | task | none       | no        |
-| N-025 | Give `URL-STRATEGY.md` the **declared-not-wired banner** its own content requires, on the `MCP-SERVER.md:13-17` precedent — four of its six prefixes do not exist, and 70 files defer to it                                       | task | none       | no        |
-| N-026 | Does `SITE_URL` become a real setting in the same change as the host decision, or stay a guide-only name — it is defined in **no settings module**                                                                                | task | N-021      | no        |
+| Node  | Decision                                                                                                                                                                                                                          | Type  | Blocked by | Blocking? |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------- | --------- |
+| N-024 | **`dev-us###.conf`: honour or retract.** `17-STORY-PLANS/CONTEXT.md:55` and `STORY-PLAN-US000-TEMPLATE.md:703` both name it as a real path; `nginx/CONTEXT.md:28-29` states _"there are no per-story Nginx variants to generate"_ | build | none       | no        |
+| N-025 | Give `URL-STRATEGY.md` the **declared-not-wired banner** its own content requires, on the `MCP-SERVER.md:13-17` precedent — four of its six prefixes do not exist, and 70 files defer to it                                       | build | none       | no        |
+| N-026 | Does `SITE_URL` become a real setting in the same change as the host decision, or stay a guide-only name — it is defined in **no settings module**                                                                                | build | N-021      | no        |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+`grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
+named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
+blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
 ### Suggested first batch
 

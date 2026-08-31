@@ -215,9 +215,14 @@ different decisions, which breaches `01-FEATURE-MAPS/CONTEXT.md:58-59`.
 frontier. Whether the deliverable is one mechanism or one per ecosystem is **N-009**, and it changes
 what a slice would even contain.
 
-| Slice | Story | Title                             | Flags |
-| ----- | ----- | --------------------------------- | ----- |
-| —     | —     | _(blocked — see N-005 and N-009)_ | —     |
+| Slice | Story | Title                             | Nodes | Acceptance | Flags |
+| ----- | ----- | --------------------------------- | ----- | ---------- | ----- |
+| —     | —     | _(blocked — see N-005 and N-009)_ | TBD   | TBD        | —     |
+
+**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
+type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
+RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
+slice_ is unverified here.
 
 **All thirteen gate flags are expected to read `N/A`** — a watcher is CI plumbing, a register is a
 markdown file, an owner is a name in it. No model, no endpoint, no screen, no personal-data path.
@@ -269,13 +274,15 @@ prose rather than a feature.
 
 ### D — Corrections found while charting
 
-| Node  | Decision                                                                                                                                                                                                                                      | Type | Blocked by | Blocking? |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ---------- | --------- |
-| N-021 | **The Rust advisory gap.** The Out-of-scope row is corrected here; **the fix is routed out, not adopted** (Sam, `Q6→2`). The fix is a `cargo-deny` leg in `audit-deps.yml`; the destination is a `GAPS.md` entry, **not written by this map** | task | none       | no        |
-| N-022 | Does a Renovate GitHub App earn a row in `how-to/src/PLATFORM-PROVIDERS.md`, and under which seam kind — a CI bot with write access fits none of the four cleanly                                                                             | task | N-009      | no        |
+| Node  | Decision                                                                                                                                                                                                                                      | Type  | Blocked by | Blocking? |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------- | --------- |
+| N-021 | **The Rust advisory gap.** The Out-of-scope row is corrected here; **the fix is routed out, not adopted** (Sam, `Q6→2`). The fix is a `cargo-deny` leg in `audit-deps.yml`; the destination is a `GAPS.md` entry, **not written by this map** | build | none       | no        |
+| N-022 | Does a Renovate GitHub App earn a row in `how-to/src/PLATFORM-PROVIDERS.md`, and under which seam kind — a CI bot with write access fits none of the four cleanly                                                                             | build | N-009      | no        |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
-`grilling` (one `/grill-with-docs` surface) · `task` (manual unblocking work)
+`grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
+named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
+blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
 ### Suggested first batch
 

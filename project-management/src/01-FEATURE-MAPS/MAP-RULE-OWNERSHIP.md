@@ -160,23 +160,23 @@ unrelated. `DEFERRED.md` still holds no rows.
 | Node  | Decision                                                                                     | Type     | Settled    | Became                                                                                                                                                                                                                       |
 | ----- | -------------------------------------------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | N-011 | Does the false _"does not ship"_ premise repeat across `doc-references.sh` exemptions?       | research | 21/08/2026 | The evidence under **N-009** — a measurement, not a decision; no external artefact                                                                                                                                           |
-| N-001 | Where does `09` reach the dev and staging stacks, now the raw form cannot work at all?       | task     | 27/08/2026 | Slice **S-01** — the script seam, the service name, the log path, and Step 7 cut to verification                                                                                                                             |
-| N-012 | Which of the three vendor names is a token, and what does the one that cannot be do?         | task     | 27/08/2026 | Slice **S-01** — 29 of 43 tokenised, 14 `Grafana` kept literal under a reference-stack marker                                                                                                                                |
-| N-013 | Where is `09` cut, given Step 7's tools are its own?                                         | task     | 27/08/2026 | Slice **S-01** — cut at the fix, not at the root cause; Step 7 survives                                                                                                                                                      |
-| N-002 | Which build-phase range is canonical, and do the two restatements survive?                   | task     | 27/08/2026 | Slice **S-02** — `19`–`21` gated on `02`–`18`; six numbers fixed, both restatements **deleted**                                                                                                                              |
-| N-007 | The exemption cannot be written as the glob all four sites write                             | task     | 27/08/2026 | Slice **S-02** — a two-part glob replaces `**/src/*.md` in all four                                                                                                                                                          |
-| N-016 | Fix the omissions, and does a decaying rule earn a gate?                                     | task     | 27/08/2026 | Slice **S-02** — eight fixed; the gate question routed to **N-004** as its fourth conditional row                                                                                                                            |
-| N-017 | Four stale literals — replace them, or remove what goes stale?                               | task     | 27/08/2026 | Slice **S-02** — three replaced; the file count becomes a **command**, not a figure                                                                                                                                          |
-| N-019 | Six shipped homes, and the only full account sits in a file that does not ship               | task     | 27/08/2026 | Slice **S-02** — owner `06-GENERATION.md:140-141`; `copier.yml:842-845` keeps a guard comment                                                                                                                                |
+| N-001 | Where does `09` reach the dev and staging stacks, now the raw form cannot work at all?       | build    | 27/08/2026 | Slice **S-01** — the script seam, the service name, the log path, and Step 7 cut to verification                                                                                                                             |
+| N-012 | Which of the three vendor names is a token, and what does the one that cannot be do?         | build    | 27/08/2026 | Slice **S-01** — 29 of 43 tokenised, 14 `Grafana` kept literal under a reference-stack marker                                                                                                                                |
+| N-013 | Where is `09` cut, given Step 7's tools are its own?                                         | build    | 27/08/2026 | Slice **S-01** — cut at the fix, not at the root cause; Step 7 survives                                                                                                                                                      |
+| N-002 | Which build-phase range is canonical, and do the two restatements survive?                   | build    | 27/08/2026 | Slice **S-02** — `19`–`21` gated on `02`–`18`; six numbers fixed, both restatements **deleted**                                                                                                                              |
+| N-007 | The exemption cannot be written as the glob all four sites write                             | build    | 27/08/2026 | Slice **S-02** — a two-part glob replaces `**/src/*.md` in all four                                                                                                                                                          |
+| N-016 | Fix the omissions, and does a decaying rule earn a gate?                                     | build    | 27/08/2026 | Slice **S-02** — eight fixed; the gate question routed to **N-004** as its fourth conditional row                                                                                                                            |
+| N-017 | Four stale literals — replace them, or remove what goes stale?                               | build    | 27/08/2026 | Slice **S-02** — three replaced; the file count becomes a **command**, not a figure                                                                                                                                          |
+| N-019 | Six shipped homes, and the only full account sits in a file that does not ship               | build    | 27/08/2026 | Slice **S-02** — owner `06-GENERATION.md:140-141`; `copier.yml:842-845` keeps a guard comment                                                                                                                                |
 | N-003 | Where does the 750/800 source limit live, when four claimants name a silent file?            | grilling | 27/08/2026 | Slice **S-03** — home is `coding-principles/PRACTICAL-RULES.md`; four claimants repoint                                                                                                                                      |
 | N-005 | `phase:` — define the vocabulary, or delete the key?                                         | grilling | 27/08/2026 | Slice **S-03** — **deleted** from 93 files and from the `.claude/CLAUDE.md:85` schema                                                                                                                                        |
 | N-006 | Which of the four model-tier answers is canonical, and what governs a step?                  | grilling | 27/08/2026 | Slice **S-03** — frontmatter canonical; range list deleted; 17 of 40 step markers removed                                                                                                                                    |
 | N-018 | `CLI-TOOLING.md` promises three scopes and satisfies none                                    | grilling | 27/08/2026 | Slice **S-03** — becomes an **index** over ten families plus a derived eight-command set                                                                                                                                     |
 | N-015 | The `STEPS`/`CHECKLIST` contract has an owner, but its named reference does not satisfy it   | grilling | 27/08/2026 | Slice **S-04** — owner becomes `how-to/docs/WORKFLOW-SHAPE.md`, cited by seven; guard is a new `audits/workflow-shape.sh`                                                                                                    |
 | N-014 | The `## Context` closing block is a second copy of PM `22`, and 30 of 34 understate the rule | grilling | 27/08/2026 | Slice **S-04** — deleted in `code/` (9 files); 29 survivors + 22 `STEPS.md` blocks take one canonical line                                                                                                                   |
-| N-020 | The staging/prod logging pipeline is promised by two shipped docs and built by neither       | task     | 27/08/2026 | Slice **S-07** — a hand-written formatter + `request_id` filter in `apps/core/observability.py`; no dependency                                                                                                               |
+| N-020 | The staging/prod logging pipeline is promised by two shipped docs and built by neither       | build    | 27/08/2026 | Slice **S-07** — a hand-written formatter + `request_id` filter in `apps/core/observability.py`; no dependency                                                                                                               |
 | N-022 | The retrieval procedure has no owner, and the doctrine it rests on is stated in no file      | grilling | 27/08/2026 | Slice **S-08** — line at the **connection**; rule owned by `.claude/CLAUDE.md` Section 6; access owned by the `<%DEPLOY_REPO%>` runbooks                                                                                     |
-| N-021 | _"Humans collect the logs"_ is stated nowhere and enforced by nothing                        | task     | 27/08/2026 | Slice **S-08** — `deny` for the bare verbs + a `PreToolUse` hook for the wrapped forms; ships verbatim; **no log excerpt enters the repo**                                                                                   |
+| N-021 | _"Humans collect the logs"_ is stated nowhere and enforced by nothing                        | build    | 27/08/2026 | Slice **S-08** — `deny` for the bare verbs + a `PreToolUse` hook for the wrapped forms; ships verbatim; **no log excerpt enters the repo**                                                                                   |
 | N-004 | Widen `doctrine-drift.sh` — prose matching, an owner column, a wider scan scope              | grilling | 27/08/2026 | Slice **S-05** — a dead claim fixed first, then a per-claim `scope` field, a citation exemption and per-claim scan roots; four rows land                                                                                     |
 | N-008 | The coverage-floor restatements have no revisit trigger                                      | grilling | 27/08/2026 | Slice **S-05** — a dated allowance in `COVERAGE.md`, read by `docs-length.sh`; the guard cannot supply a trigger and does not                                                                                                |
 | N-009 | `doc-references.sh` exempts nine **shipped** files on a premise `copier.yml` falsifies       | grilling | 28/08/2026 | Slice **S-06** — one fall-through arm for `*/CONTEXT.md`, `*/CLAUDE.md`, `*TEMPLATE*` mirroring `copier.yml:116-133`; 982 files read, 1 genuine finding (`research/CLAUDE.md:26` → `LICENSE`)                                |
@@ -1043,17 +1043,22 @@ and is recorded here rather than imposed. The `Story` column reads `—` until `
 allocates a number; wayfinder never reserves one, because a slice later merged or dropped would
 burn it and `US###` gaps are permanent.
 
-| Slice | Story | Title                                                                                                 | Flags                        |
-| ----- | ----- | ----------------------------------------------------------------------------------------------------- | ---------------------------- |
-| S-01  | —     | Batch E — the `09` script seam, its vendor names, the fix cut                                         | none                         |
-| S-02  | —     | Batch A — five restatements that drifted from their owner                                             | none                         |
-| S-03  | —     | Batch B — where a rule lives, and what is canonical                                                   | none                         |
-| S-04  | —     | Batch F — the workflow shape, its terminal contract, and the `## Context` block                       | none                         |
-| S-05  | —     | Batch C — the guard's dead claim, its widening, and the coverage-floor revisit trigger                | none                         |
-| S-06  | —     | Batch D — what a shipped file may cite                                                                | none                         |
-| S-07  | —     | Batch G1 — the structured-logging pipeline and the `request_id` filter                                | **GDPR · Backend · Logging** |
-| S-08  | —     | Batch G2 — the retrieval procedure, its doctrine, and the two-layer block on Claude reaching a server | **GDPR**                     |
-| S-09  | —     | Batch H — what a wayfinder session may write, and the template every PM artefact is written from      | none                         |
+| Slice | Story | Title                                                                                                 | Nodes | Acceptance | Flags                        |
+| ----- | ----- | ----------------------------------------------------------------------------------------------------- | ----- | ---------- | ---------------------------- |
+| S-01  | —     | Batch E — the `09` script seam, its vendor names, the fix cut                                         | TBD   | TBD        | none                         |
+| S-02  | —     | Batch A — five restatements that drifted from their owner                                             | TBD   | TBD        | none                         |
+| S-03  | —     | Batch B — where a rule lives, and what is canonical                                                   | TBD   | TBD        | none                         |
+| S-04  | —     | Batch F — the workflow shape, its terminal contract, and the `## Context` block                       | TBD   | TBD        | none                         |
+| S-05  | —     | Batch C — the guard's dead claim, its widening, and the coverage-floor revisit trigger                | TBD   | TBD        | none                         |
+| S-06  | —     | Batch D — what a shipped file may cite                                                                | TBD   | TBD        | none                         |
+| S-07  | —     | Batch G1 — the structured-logging pipeline and the `request_id` filter                                | TBD   | TBD        | **GDPR · Backend · Logging** |
+| S-08  | —     | Batch G2 — the retrieval procedure, its doctrine, and the two-layer block on Claude reaching a server | TBD   | TBD        | **GDPR**                     |
+| S-09  | —     | Batch H — what a wayfinder session may write, and the template every PM artefact is written from      | TBD   | TBD        | none                         |
+
+**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
+type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
+RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
+slice_ is unverified here.
 
 **Seven slices read `N/A` and two do not, which is the whole reason S-07 and S-08 are separate slices.**
 All thirteen gates in `../02-STORIES/US000-TEMPLATE.md` are code-shaped — `DB`, `User Flow`,
@@ -1086,7 +1091,8 @@ story. That is a property of this map, not a general rule.
 | —    | **Empty — every node on this map is settled.** | —    | —     | —          | —     | —                 |
 
 **Types:** `research` (looked up, no human) · `tracer` (spike) · `grilling` (one `/grill-with-docs`
-surface) · `task` (manual unblocking work)
+surface) · `build` (the work a slice's story carries — named here, never done here). **Manual
+unblocking work is not a node** — it is a `GAPS.md` blocker. Renamed from `task` on 31/08/2026.
 
 **Nothing is marked blocking-a-story, and that is deliberate.** Q1 settled the order as _runtime
 first, then the guard_. Marking N-004 blocking would gate the Batch A fixes behind a gate-design
@@ -1143,7 +1149,7 @@ in the story gate.
 > `Model:` marker (from N-006).
 
 > **N-001 moved from Batch A to Batch E on 23/08/2026** — a frontier redraw, not a re-typing. It
-> is unchanged and still `task`; the `code/` pass simply found two more defects in the same
+> is unchanged and still a build node (`task` at the time); the `code/` pass simply found two more defects in the same
 > four-file folder, and a batch whose whole justification is _shared evidence_ should follow the
 > evidence. Batch A keeps its rationale and gains two nodes that fit it better.
 

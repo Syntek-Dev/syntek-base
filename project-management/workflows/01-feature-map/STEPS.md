@@ -139,8 +139,9 @@ _Done when every frontier node names its blockers (or "none") and at least one i
 
 Copy `src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md`. Tag each frontier node with its
 type: **research** (looked up, no human), **tracer** (spike to raise fidelity), **grilling**
-(one `/grill-with-docs` surface), **task** (manual unblocking work). Fill **Register claimed**
-from the Step 2 triage. Add the map to the index in `src/01-FEATURE-MAPS/CONTEXT.md`.
+(one `/grill-with-docs` surface), **build** (the work a slice's story carries — named here, never
+done here). Manual unblocking work is not a node: it is a `GAPS.md` blocker. Fill **Register
+claimed** from the Step 2 triage. Add the map to the index in `src/01-FEATURE-MAPS/CONTEXT.md`.
 
 _Done when the map exists, is indexed, carries its claimed register entries, and reads as a route
 rather than a vault._
@@ -149,7 +150,7 @@ rather than a vault._
 
 > **Model:** fable
 
-Dispatch research nodes now — they need no human. **Do not settle grilling, tracer, or task
+Dispatch research nodes now — they need no human. **Do not settle grilling, tracer, or build
 nodes in this session.** Charting ends with the frontier drawn and unresolved.
 
 ---
@@ -168,8 +169,10 @@ Per session:
    dependence, or shared evidence. Split where a node has open blockers, is a different type, or
    would push the batch past one honest sitting. Confirm every member is takeable.
 3. **Settle the batch by type** — grilling nodes go to `/grill-with-docs` as **one pass**;
-   research → look it up (dispatch in parallel); tracer → `/prototype`; task → do the unblocking
-   work. A mixed batch runs its research legs first.
+   research → look it up (dispatch in parallel); tracer → `/prototype`; **build → specify, never
+   perform**: write its deliverable and its acceptance into its slice row and stop there. A mixed
+   batch runs its research legs first. **Any node may first be probed with `/prototype`** where a
+   spike would sharpen it — a technique available to every type, not a re-typing.
 4. **Graduate the outcome** to its real home via the graduation table — an ADR in
    `src/15-DECISIONS/`, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term. Never leave
    the answer only on the map.
@@ -185,14 +188,27 @@ _Repeat until no **blocking** node remains open._
 > **Model:** fable
 
 Once no blocking node remains, fill the map's **Slices** section: one row per buildable slice of
-user-visible value, with its **flag manifest** — every gate the story will need, `N/A` omitted,
-carrying first-pass values (`DB: ModelA · API: POST /model-a · GDPR: yes`). The 13-flag roster is
-`src/02-STORIES/US000-TEMPLATE.md`.
+user-visible value, in the six canonical columns
+`Slice | Story | Title | Nodes | Acceptance | Flags`.
+
+- **Nodes** — every node the slice carries, with its state (`✅` resolved · `○` open · `⛔` open
+  and blocking). A slice is cuttable only when all of its nodes are `✅`, and **no open node may
+  belong to no slice**.
+- **Acceptance** — what must be **true** for the slice to be done, aggregated from its build
+  nodes. Not an outline: the steps that produce it are the `project-management/workflows/**` chain
+  the story runs.
+- **Flags** — every **gate** the story will need, `N/A` omitted, carrying first-pass values
+  (`DB: ModelA · API: POST /model-a · GDPR: yes`). The 13-flag roster is
+  `src/02-STORIES/US000-TEMPLATE.md`.
+
+Acceptance and Flags are not the same column and never restate each other: **Acceptance is what
+must be true, Flags is which gates run.**
 
 This is the base `02-story-creation` writes each story from. Leave the `Story` column `—`; that
 gate allocates the number and back-fills it.
 
-_Done when every slice has a manifest and no slice has a reserved `US###`._
+_Done when every slice names its nodes, its acceptance and its flags, every open node belongs to a
+slice, and no slice has a reserved `US###`._
 
 ### Step 9 — Close out
 
