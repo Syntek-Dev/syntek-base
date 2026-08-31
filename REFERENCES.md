@@ -83,23 +83,24 @@ rule navigates; it does not restate it.
 
 ### How-to guides (`how-to/docs/`)
 
-| Document                                                               | Purpose                                                                                                                               |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| [how-to/src/BRAND-VOICE.md](how-to/src/BRAND-VOICE.md)                 | Brand voice — tone, the four registers, banned machine-authored tells (settled at first-time setup)                                   |
-| [how-to/src/INVARIANTS.md](how-to/src/INVARIANTS.md)                   | This project's invariant register — one named enforcement point each (rule: `code/docs/NEGATIVE-SPACE.md`)                            |
-| [how-to/src/PROJECT-PATHS.md](how-to/src/PROJECT-PATHS.md)             | This project's path register — what a shipped document may promise, and what creates it (rule: `code/docs/FORWARD-VOICE.md`)          |
-| [how-to/src/STORE-LISTING.md](how-to/src/STORE-LISTING.md)             | **Mobile-only.** This project's App Store / Play listing values against their limits (rule: `code/docs/discoverability/APP-STORE.md`) |
-| [how-to/docs/CELERY-FIRST-RUN.md](how-to/docs/CELERY-FIRST-RUN.md)     | Getting the Celery worker and beat running the first time                                                                             |
-| [how-to/docs/CLI-TOOLING.md](how-to/docs/CLI-TOOLING.md)               | CLI tools reference: scripts, commands, shortcuts                                                                                     |
-| [how-to/docs/DEVELOPMENT.md](how-to/docs/DEVELOPMENT.md)               | Day-to-day development setup and workflow                                                                                             |
-| [how-to/docs/FEATURE-DEPLOY.md](how-to/docs/FEATURE-DEPLOY.md)         | Deploying a feature branch                                                                                                            |
-| [how-to/docs/HEALTH-PROBES.md](how-to/docs/HEALTH-PROBES.md)           | Diagnosing a red `/health/ready/` or a restart-looping container — the operator's half of the health contract                         |
-| [how-to/docs/INCIDENT-PRACTICE.md](how-to/docs/INCIDENT-PRACTICE.md)   | Running a live incident — declare, shift handover, stand down, blameless postmortem                                                   |
-| [how-to/docs/OPERATOR-DOC-CRAFT.md](how-to/docs/OPERATOR-DOC-CRAFT.md) | The conventions behind a guide a human executes — the reader, the two homes and their length standards, the spine, execute-to-verify  |
-| [how-to/docs/GIT-WORKTREES.md](how-to/docs/GIT-WORKTREES.md)           | Git worktree creation and management                                                                                                  |
-| [how-to/docs/TOOLING-GUIDE.md](how-to/docs/TOOLING-GUIDE.md)           | Internal skills reference (index)                                                                                                     |
-| [how-to/docs/AI-DICTIONARY.md](how-to/docs/AI-DICTIONARY.md)           | Plain-English glossary of AI-coding terms (index)                                                                                     |
-| [how-to/docs/SKILL-AUTHORING.md](how-to/docs/SKILL-AUTHORING.md)       | How to write predictable Claude Code skills (index over `how-to/docs/skill-authoring/`)                                               |
+| Document                                                               | Purpose                                                                                                                                    |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [how-to/src/BRAND-VOICE.md](how-to/src/BRAND-VOICE.md)                 | Brand voice — tone, the four registers, banned machine-authored tells (settled at first-time setup)                                        |
+| [how-to/src/DEPLOYMENT-POSTURE.md](how-to/src/DEPLOYMENT-POSTURE.md)   | This project's deployment posture register — which surfaces are live, and the recovery path for each (rule: `.claude/CLAUDE.md` Section 0) |
+| [how-to/src/INVARIANTS.md](how-to/src/INVARIANTS.md)                   | This project's invariant register — one named enforcement point each (rule: `code/docs/NEGATIVE-SPACE.md`)                                 |
+| [how-to/src/PROJECT-PATHS.md](how-to/src/PROJECT-PATHS.md)             | This project's path register — what a shipped document may promise, and what creates it (rule: `code/docs/FORWARD-VOICE.md`)               |
+| [how-to/src/STORE-LISTING.md](how-to/src/STORE-LISTING.md)             | **Mobile-only.** This project's App Store / Play listing values against their limits (rule: `code/docs/discoverability/APP-STORE.md`)      |
+| [how-to/docs/CELERY-FIRST-RUN.md](how-to/docs/CELERY-FIRST-RUN.md)     | Getting the Celery worker and beat running the first time                                                                                  |
+| [how-to/docs/CLI-TOOLING.md](how-to/docs/CLI-TOOLING.md)               | CLI tools reference: scripts, commands, shortcuts                                                                                          |
+| [how-to/docs/DEVELOPMENT.md](how-to/docs/DEVELOPMENT.md)               | Day-to-day development setup and workflow                                                                                                  |
+| [how-to/docs/FEATURE-DEPLOY.md](how-to/docs/FEATURE-DEPLOY.md)         | Deploying a feature branch                                                                                                                 |
+| [how-to/docs/HEALTH-PROBES.md](how-to/docs/HEALTH-PROBES.md)           | Diagnosing a red `/health/ready/` or a restart-looping container — the operator's half of the health contract                              |
+| [how-to/docs/INCIDENT-PRACTICE.md](how-to/docs/INCIDENT-PRACTICE.md)   | Running a live incident — declare, shift handover, stand down, blameless postmortem                                                        |
+| [how-to/docs/OPERATOR-DOC-CRAFT.md](how-to/docs/OPERATOR-DOC-CRAFT.md) | The conventions behind a guide a human executes — the reader, the two homes and their length standards, the spine, execute-to-verify       |
+| [how-to/docs/GIT-WORKTREES.md](how-to/docs/GIT-WORKTREES.md)           | Git worktree creation and management                                                                                                       |
+| [how-to/docs/TOOLING-GUIDE.md](how-to/docs/TOOLING-GUIDE.md)           | Internal skills reference (index)                                                                                                          |
+| [how-to/docs/AI-DICTIONARY.md](how-to/docs/AI-DICTIONARY.md)           | Plain-English glossary of AI-coding terms (index)                                                                                          |
+| [how-to/docs/SKILL-AUTHORING.md](how-to/docs/SKILL-AUTHORING.md)       | How to write predictable Claude Code skills (index over `how-to/docs/skill-authoring/`)                                                    |
 
 ### Project-management guides (`project-management/docs/`)
 

@@ -16,6 +16,7 @@ how-to/src/
 ├── CLAUDE.md                ← operating rules for this folder
 ├── BRAND-VOICE.md           ← how the project writes: tone, four registers, banned machine tells
 ├── CONTRIBUTING.md          ← contributing, testing, and code-quality standards for this project
+├── DEPLOYMENT-POSTURE.md    ← the register: which surfaces are live, and what a mistake destroys
 ├── INVARIANTS.md            ← the register: every invariant, its one enforcement point, its breach
 ├── PLATFORM-PROVIDERS.md    ← the register: every infra dependency, its seam kind, its alternates
 ├── PROJECT-PATHS.md         ← the register: every path a shipped doc promises, and what creates it
@@ -50,6 +51,7 @@ how-to/src/
 | ----------------------- | ------------------------------------------------------------------------------------ |
 | `BRAND-VOICE.md`        | Writing any user-facing copy — and settling the voice at first-time setup            |
 | `CONTRIBUTING.md`       | Contributing to this codebase — branching, commits, testing, code quality, gates     |
+| `DEPLOYMENT-POSTURE.md` | Anything touching a deployed surface — migrations, destructive commands, downtime    |
 | `INVARIANTS.md`         | Adding a constraint or a guard — recording the one place an invariant is enforced    |
 | `PLATFORM-PROVIDERS.md` | Choosing or swapping an infrastructure provider, or classifying a new dependency     |
 | `PROJECT-PATHS.md`      | Citing a path this repository does not hold — recording what creates it, and when    |

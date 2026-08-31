@@ -365,6 +365,50 @@ SERVER_TIER:
   help: Provisioned host tier and its spec — set it later if the host is not chosen yet
   default: TBD — set on provisioning
 
+# ── Deployment posture ───────────────────────────────────────────────────────
+#
+# Whether real users and real data are behind this project RIGHT NOW. It is the
+# trigger for .claude/CLAUDE.md Section 0, which sharpens the Section 6 rules on
+# migrations, destructive commands and downtime once a surface is live.
+#
+# HELD AS AN ANSWER ON PURPOSE, and it is the DATE argument in a different shape.
+# .claude/CLAUDE.md and how-to/src/DEPLOYMENT-POSTURE.md both ship and are both
+# re-rendered by `copier update`. Recorded here, the project's own posture is rendered
+# back out of .copier-answers.yml on every update and survives untouched.
+#
+# A posture hand-written into a rendered file is NOT thrown away — Copier's three-way
+# merge keeps local edits — which is the trap rather than the safeguard. It survives
+# while this answer still says something else, so the two disagree permanently and
+# nothing reports it, and the first upstream edit to that paragraph turns the drift into
+# a merge conflict in the authoritative rules file. Verified 31/08/2026 against
+# copier 9.x: hand-edit kept, answer unchanged, no warning.
+#
+# ONE ANSWER, NOT ONE PER SURFACE. It records the HIGHEST posture any surface has
+# reached, because the rules it triggers guard the shared database and the shared API:
+# a live web deployable constrains a migration whatever the desktop build is doing.
+# Per-surface detail — which surface, which environment, its URL, the date it first
+# shipped, its rollback path — is hand-maintained in the rows of
+# how-to/src/DEPLOYMENT-POSTURE.md, the register this answer heads.
+#
+# AT GENERATION THE ANSWER IS ALWAYS `development`, and the question is asked anyway so
+# the concept exists in .copier-answers.yml from day one and a later gate can read it.
+# Changing it is a deliberate act on a branch: edit the answer, run `copier update`,
+# commit the re-render. That flow is how-to/src/TEMPLATE-GUIDE/14-UPDATING.md, beside
+# DATE, which moves the same way and for the same reason.
+
+DEPLOYMENT_POSTURE:
+  type: str
+  help: >-
+    Is anything live? `development` until a surface is deployed; `staging` once a deployed
+    environment exists holding seeded or copied data; `production` the moment real users have
+    real data anywhere. Change it later by editing the answer in .copier-answers.yml and
+    running `copier update` — never by hand in a rendered file.
+  choices:
+    - development
+    - staging
+    - production
+  default: development
+
 ENV_PREFIX:
   type: str
   help: Uppercase env-var and server-namespace prefix

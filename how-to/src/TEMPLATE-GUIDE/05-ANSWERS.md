@@ -100,11 +100,12 @@ feature is charted is exactly the point.
 
 ## Infrastructure
 
-| Question      | Guidance                                                                                                                                                                                  |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DEPLOY_REPO` | The forked NixOS deploy repository for this project. Default `<slug>-nixos-client-deployment` is usually right.                                                                           |
-| `SERVER_TIER` | Host tier and spec. `TBD — set on provisioning` is a fine answer until you have provisioned. Free text.                                                                                   |
-| `ENV_PREFIX`  | `UPPER_SNAKE`. Prefixes Valkey environment variables and the server namespace. Defaults from `ORG_SLUG` — check it, because "Acme Ltd" produces `ACME_LTD` when you probably want `ACME`. |
+| Question             | Guidance                                                                                                                                                                                                                         |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEPLOY_REPO`        | The forked NixOS deploy repository for this project. Default `<slug>-nixos-client-deployment` is usually right.                                                                                                                  |
+| `SERVER_TIER`        | Host tier and spec. `TBD — set on provisioning` is a fine answer until you have provisioned. Free text.                                                                                                                          |
+| `ENV_PREFIX`         | `UPPER_SNAKE`. Prefixes Valkey environment variables and the server namespace. Defaults from `ORG_SLUG` — check it, because "Acme Ltd" produces `ACME_LTD` when you probably want `ACME`.                                        |
+| `DEPLOYMENT_POSTURE` | Is anything live? Answer `development` at generation — it always is. It becomes `staging` or `production` later, and it is an answer rather than a hand-edit so that `copier update` restores it instead of conflicting with it. |
 
 ## Platform providers
 
@@ -288,16 +289,17 @@ either way — the board is a mirror of it, never the other direction.
 
 Everything is recoverable; the cost varies.
 
-| Answer                                | Fixing it later                                                                                                       |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `DATE`, `SERVER_TIER`, licence        | Trivial — edit in place, or edit `.copier-answers.yml` and re-run `copier update`.                                    |
-| The seven platform providers          | Trivial — each records a choice behind an interface; edit the answer and the register row.                            |
-| `INCLUDE_MOBILE` · `RUST` · `DESKTOP` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand. |
-| `DEVELOPER_*`, app names              | Easy — a scoped find-and-replace.                                                                                     |
-| `PRIMARY_DOMAIN`, `ENV_PREFIX`        | Moderate — dozens of occurrences, all in docs and config.                                                             |
-| `ORG_SLUG`                            | Moderate — also touches the server namespace and cache prefix.                                                        |
-| `MOBILE_BUNDLE_ID`                    | Painful once published — the bundle ID is permanent on both stores.                                                   |
-| `PROJECT_SLUG`                        | Painful — databases, volumes, hostnames, secret filenames.                                                            |
+| Answer                                | Fixing it later                                                                                                                                     |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATE`, `SERVER_TIER`, licence        | Trivial — edit in place, or edit `.copier-answers.yml` and re-run `copier update`.                                                                  |
+| `DEPLOYMENT_POSTURE`                  | Trivial, and expected — it is designed to be changed. Edit `.copier-answers.yml`, run `copier update`, update the register rows in the same commit. |
+| The seven platform providers          | Trivial — each records a choice behind an interface; edit the answer and the register row.                                                          |
+| `INCLUDE_MOBILE` · `RUST` · `DESKTOP` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand.                               |
+| `DEVELOPER_*`, app names              | Easy — a scoped find-and-replace.                                                                                                                   |
+| `PRIMARY_DOMAIN`, `ENV_PREFIX`        | Moderate — dozens of occurrences, all in docs and config.                                                                                           |
+| `ORG_SLUG`                            | Moderate — also touches the server namespace and cache prefix.                                                                                      |
+| `MOBILE_BUNDLE_ID`                    | Painful once published — the bundle ID is permanent on both stores.                                                                                 |
+| `PROJECT_SLUG`                        | Painful — databases, volumes, hostnames, secret filenames.                                                                                          |
 
 If you realise within minutes, the cheapest fix is to delete the directory and generate again.
 

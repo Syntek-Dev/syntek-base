@@ -222,6 +222,26 @@ Next: `project-management/workflows/01-feature-map/` — chart the first feature
 
 ---
 
+### Step 11 — Confirm the deployment posture, and know what raises it
+
+> **Model:** opus
+
+A fresh project is `development`: nothing is deployed, the data is disposable, and
+`code/src/scripts/database/reset.sh` is a legitimate thing to run. Confirm that is still true —
+`.claude/CLAUDE.md` Section 0 states the posture, and `how-to/src/DEPLOYMENT-POSTURE.md` holds the
+per-surface rows behind it.
+
+**Nothing to settle here, and that is the point.** Unlike Steps 7 to 10, this one is a fact rather
+than a decision — the work is knowing where it lives before the day it changes. The moment any
+surface first serves a real user, the posture is raised **before** that deploy, not after, and the
+procedure is `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md` → _Changing the deployment posture_: it is a
+`.copier-answers.yml` answer and a `copier update`, never a hand-edit.
+
+_Done when Section 0 reads `development`, the register's row set matches reality, and the person
+running this workflow can say what they would change on the day the project first ships._
+
+---
+
 ## Update context files
 
 If this workflow created new files, directories, or established new constraints:

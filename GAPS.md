@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 22/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 31/08/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -265,3 +265,25 @@ one is what kept the item alive. **Retired by the PR merging.**
 from a decision — a node opened for it would be resolved by the merge before any sitting reached
 it. **It must be deleted when that merge lands**, because this file carrying anything but
 standing limitations is a defect in its own right.
+
+---
+
+## 31/08/2026 — the deployment posture binds Claude, but no script reads it
+
+**Type:** Active gap
+
+**Summary:** `DEPLOYMENT_POSTURE` (added 31/08/2026) renders into `.claude/CLAUDE.md` Section 0 and
+`how-to/src/DEPLOYMENT-POSTURE.md`, and Section 0's rules — expand-then-contract migrations, no
+in-place rewrite without a tested recovery path, no destructive command against a live environment
+— bind the **model**. Nothing binds the **scripts**.
+`code/src/scripts/database/reset.sh` will drop a production database as readily as a dev one if a
+human runs it, and `migrate.sh` does not ask what the posture is. This is defect class **E,
+declared not built**: the doctrine is real and the enforcement point is absent, which is the
+combination `code/docs/NEGATIVE-SPACE.md` exists to refuse.
+
+**Blocked by / Action:** Nothing blocks it. The shape is a shared guard in
+`code/src/scripts/_lib/` that reads `DEPLOYMENT_POSTURE` out of `.copier-answers.yml` and refuses
+the destructive scripts above `development` without an explicit override flag — the same
+posture-reads-once, refuse-loudly pattern the audits already use. It wants charting with the wider
+question of whether a generated project's scripts should read the answers file at all, which is a
+new coupling and not obviously right.

@@ -9,6 +9,45 @@
 
 ---
 
+## 0. Deployment Posture
+
+**This project's posture is `<%DEPLOYMENT_POSTURE%>`.** Read this before any migration, deploy,
+destructive command or security decision — it says whether real users and real data sit behind
+this repository right now.
+
+| Posture       | What is true                                                                        | What it obliges                                                                                      |
+| ------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `development` | Nothing deployed beyond a developer machine; the data is disposable                 | Section 6 as written. A destructive reset is a legitimate option                                     |
+| `staging`     | A deployed environment exists; its data is seeded or copied, its users are the team | Data loss costs a reseed, not an incident — so rehearse the production procedure here, in full       |
+| `production`  | Real users and real data on at least one surface                                    | Section 6 at its strictest, plus every rule below. Nothing irreversible without an explicit go-ahead |
+
+**Per-surface detail is `how-to/src/DEPLOYMENT-POSTURE.md`** — which surface, which environment,
+its URL, the date it first shipped, its rollback path. The value above is the **highest** posture
+any surface has reached, because these rules guard the shared database and the shared API: a live
+web deployable constrains a migration whatever the desktop build is doing.
+
+**Beyond `development` these sharpen Section 6; they never replace it:**
+
+- **Migrations are expand-then-contract, always.** Add nullable, backfill, constrain — and drop the
+  old column in a **later** release. Never a destructive migration and a deploy in one change. Each
+  states its lock, its duration against the live row count, and its reversal.
+- **Nothing is dropped or rewritten in place without a named recovery path** — the backup, its age,
+  and who has tested restoring it. "There are backups" is not a recovery path.
+- **A security finding on a live surface is an incident, not a backlog row** — the `incident` skill,
+  never a `GAPS.md` entry.
+- **Downtime is <%DEVELOPER_NAME%>'s decision, never one a task implies.** Name any step that stops
+  a request being served before running it, and wait.
+- **Never against a live environment:** a raw `manage.py` shell, manual DDL, a force-push to a
+  deployed branch, or a fixture load. Section 6's script-first rule is absolute here.
+
+**Changing it is a deliberate act, not an edit.** The value is rendered from `.copier-answers.yml`;
+edit the answer there on a branch and run `copier update`
+(`how-to/src/TEMPLATE-GUIDE/14-UPDATING.md`). Hand-editing a rendered posture does not fail loudly
+— Copier's three-way merge keeps it — it leaves the answer and the rendered text disagreeing for
+good, and turns the next upstream edit to this section into a merge conflict.
+
+---
+
 ## 1. Identity
 
 **Developer:** <%DEVELOPER_NAME%> — Full Stack Software Developer at <%ORG_NAME%>. Senior

@@ -289,6 +289,41 @@ breaks.
 
 ---
 
+## Changing the deployment posture
+
+`DEPLOYMENT_POSTURE` is the one answer you are **expected** to change during a project's life. It
+records whether real users and real data are behind the project, and it is what switches
+`.claude/CLAUDE.md` Section 0 from "a destructive reset is a legitimate option" to
+"nothing irreversible without an explicit go-ahead".
+
+It is an answer rather than a file you edit for the same reason `DATE` is. Section 0 and
+`how-to/src/DEPLOYMENT-POSTURE.md` both ship and are both re-rendered by every update.
+
+A posture typed straight into one of them **will not** be thrown away — Copier's three-way merge
+keeps local edits, and that is the problem. It survives silently while `.copier-answers.yml` still
+says something else, so the two disagree for good and nothing reports it; and the first upstream
+change to that paragraph turns the drift into a merge conflict in the authoritative rules file, on
+whatever day you happen to be updating.
+
+The move, when a surface first goes live:
+
+```bash
+git switch -c chore/posture-production
+# edit .copier-answers.yml:  DEPLOYMENT_POSTURE: production
+copier update --defaults
+git diff                        # review: Section 0 and the register should both now read production
+```
+
+Then, in the same commit, fill in the row for that surface in
+`how-to/src/DEPLOYMENT-POSTURE.md` — its environment, its URL, the date it went live, the data it
+holds, and its tested recovery path. **The posture and its evidence move together**; a posture
+raised without a recovery path is the claim that matters least and the one most likely to be wrong.
+
+`--defaults` is right here: you have already made the only change you intended, and it stops the
+update re-asking thirty other questions you would only press Enter through. Raise the posture
+**before** the first deploy, not after — the rules exist to shape the deploy, not to describe it
+afterwards.
+
 ## Things that will bite
 
 **Do not edit `.copier-answers.yml` casually.** Changing an answer there makes the next update

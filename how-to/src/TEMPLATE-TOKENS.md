@@ -86,12 +86,25 @@ because of those two manifests; the 40-character floor exists because a tagline 
 
 ### Infrastructure
 
-| Token                | Meaning                                             | Example value                                  | Format                  |
-| -------------------- | --------------------------------------------------- | ---------------------------------------------- | ----------------------- |
-| `<%PRIMARY_DOMAIN%>` | The project's apex domain                           | `acme.com`                                     | bare domain (no scheme) |
-| `<%DEPLOY_REPO%>`    | The forked NixOS deploy repo for this project       | `acme-nixos-client-deployment`                 | repo name               |
-| `<%SERVER_TIER%>`    | The provisioned host tier (+ its CPU/RAM/disk spec) | `Hetzner AX42-U` (8c/16t Zen 4 · 64 GB · NVMe) | free text               |
-| `<%ENV_PREFIX%>`     | Uppercase env-var / server namespace prefix         | `ACME`                                         | `UPPER_SNAKE`           |
+| Token                    | Meaning                                             | Example value                                  | Format                  |
+| ------------------------ | --------------------------------------------------- | ---------------------------------------------- | ----------------------- |
+| `<%PRIMARY_DOMAIN%>`     | The project's apex domain                           | `acme.com`                                     | bare domain (no scheme) |
+| `<%DEPLOY_REPO%>`        | The forked NixOS deploy repo for this project       | `acme-nixos-client-deployment`                 | repo name               |
+| `<%SERVER_TIER%>`        | The provisioned host tier (+ its CPU/RAM/disk spec) | `Hetzner AX42-U` (8c/16t Zen 4 · 64 GB · NVMe) | free text               |
+| `<%DEPLOYMENT_POSTURE%>` | Whether anything is live — the Section 0 trigger    | `development`                                  | choice of three         |
+| `<%ENV_PREFIX%>`         | Uppercase env-var / server namespace prefix         | `ACME`                                         | `UPPER_SNAKE`           |
+
+`<%DEPLOYMENT_POSTURE%>` is the one token here expected to change during a project's life, and
+it is an answer for exactly that reason. It reaches `.claude/CLAUDE.md` Section 0 and
+`how-to/src/DEPLOYMENT-POSTURE.md`, both of which ship and are both re-rendered on update, so
+recording it here is what carries a project's own posture across one untouched. Change it in
+`.copier-answers.yml` and run `copier update`, the way `<%DATE%>` moves.
+
+A posture hand-written into a rendered file is **not** reverted — Copier's three-way merge keeps
+local edits — so it survives while the answer still says something else, silently and for good,
+and the first upstream edit to that paragraph surfaces the drift as a merge conflict. Its three
+values are `development`, `staging` and `production`, and it records the highest any surface has
+reached.
 
 ### Platform providers
 

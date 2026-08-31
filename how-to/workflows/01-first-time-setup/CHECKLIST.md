@@ -47,6 +47,17 @@ downstream are measured against, and each depends on the one before it.
 
 ---
 
+## Deployment posture
+
+Not one of the four above — a fact to confirm, not a decision to settle.
+
+- [ ] `.claude/CLAUDE.md` Section 0 reads `development`, and nothing is in fact deployed · _opus_
+- [ ] `how-to/src/DEPLOYMENT-POSTURE.md` exists and its rows match reality · _opus_
+- [ ] The procedure for raising it — `.copier-answers.yml` then `copier update`, never a hand-edit —
+      has been read in `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md` · _opus_
+
+---
+
 ## Context
 
 - [ ] Directory trees in relevant `CONTEXT.md` files reflect any new files or folders created during this workflow
