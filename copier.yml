@@ -283,6 +283,15 @@ _exclude:
   - "<: if not INCLUDE_CLICKUP :>/project-management/src/00-ASSETS/scripts/precommit-clickup.sh<: endif :>"
   - "<: if not INCLUDE_CLICKUP :>/project-management/src/00-ASSETS/scripts/sync-clickup.sh<: endif :>"
   - "<: if not INCLUDE_CLICKUP :>/project-management/export/clickup/**<: endif :>"
+  # A walk-test RUN is syntek-base's own experimental record — which cold reader traced which
+  # rule, what it got wrong, and what the transcript proves. That is the same argument the
+  # MEMORY.md exclusion above makes: "which internal epic found what" is meaningless in a
+  # generated project, and actively misleading in a folder whose whole point is evidence.
+  #
+  # The FOLDER and its CONTEXT.md/CLAUDE.md pair are deliberately NOT excluded. The walk test
+  # is a reusable practice, not a one-off, so a generated project inherits an empty folder that
+  # already knows how a run is filed and verified — and never inherits a result it did not run.
+  - /project-management/src/00-ASSETS/WALK-TESTS/WALK-*
   # Binaries cannot be rendered when _templates_suffix is "". Both are generated
   # artefacts — a new project rebuilds them from the sources beside them.
   - "*.pdf"

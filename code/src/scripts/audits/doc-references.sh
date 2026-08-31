@@ -304,6 +304,18 @@ is_exempt() {
     # citations visible in one commit. The exemption is stated here instead.
     research/*|learning/*)                        return 0 ;;
     project-management/src/01-FEATURE-MAPS/*)          return 0 ;;
+    # A walk-test RUN, on the same argument as the maps above: copier excludes every WALK-* file,
+    # so none of them ships. Three of the four are also CAPTURED rather than authored -- the
+    # prompt a cold reader was given, its verbatim answer, and the transcript. The report is
+    # evidence of what a stranger cited INCLUDING WHAT IT CITED WRONGLY, and the first run's
+    # value is precisely that it named a per-project map and a line-suffixed path no shipped file
+    # may name. Editing it to satisfy this gate would destroy the record the folder holds. The
+    # fourth, the result, is authored here and cites the map whose node it settles -- the same
+    # citation 01-FEATURE-MAPS is exempted for, one file further out.
+    #
+    # Scoped to WALK-* deliberately. The folder's own CONTEXT.md and CLAUDE.md DO ship and stay
+    # policed -- the exemption covers the evidence, never the documentation over it.
+    project-management/src/00-ASSETS/WALK-TESTS/WALK-*) return 0 ;;
     code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
     .agents/*)                                    return 0 ;;  # vendored third-party skills
     # This audit's own fixtures, exempted as docs-pairing.sh exempts the same tree and for

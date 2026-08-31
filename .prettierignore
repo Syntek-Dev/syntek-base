@@ -58,6 +58,14 @@ code/src/django/components/
 # Golden-fixture test data — exact-match expected output; must not be reformatted
 code/src/django/apps/content/tests/fixtures/
 
+# Cold walk-test evidence — a captured prompt, a walker's verbatim answer, and the transcript
+# of every tool call it made. Reformatting them edits the record the folder exists to hold, and
+# the first run's value is partly in HOW the walker wrote what it got wrong. The authored result
+# file beside them is deliberately not ignored.
+project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md
+project-management/src/00-ASSETS/WALK-TESTS/*-REPORT.md
+project-management/src/00-ASSETS/WALK-TESTS/*-TRANSCRIPT.jsonl
+
 # Misc
 .git/
 coverage/

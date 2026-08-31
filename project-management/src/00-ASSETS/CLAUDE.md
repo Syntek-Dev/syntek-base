@@ -8,16 +8,17 @@ sub-folder's `CONTEXT.md`/`CLAUDE.md`.
 
 ## Purpose (one line)
 
-Pre-workflow static assets and export tooling for the PM layer — a brand-logo slot
-(`LOGOS/`) and the `scripts/` shell helpers that batch-export PM and design artefacts
-for client delivery.
+Pre-workflow static assets, export tooling and experimental evidence for the PM layer — a
+brand-logo slot (`LOGOS/`), the `scripts/` shell helpers that batch-export PM and design
+artefacts for client delivery, and the `WALK-TESTS/` record of cold navigability walks.
 
 ## How to work here
 
-- **Routing:** static-asset and export-tooling folder, not code. Logo assets live in
+- **Routing:** static-asset, export-tooling and evidence folder, not code. Logo assets live in
   `LOGOS/` (vector source of truth → re-export rasters). Export runs are operational —
   trigger through the project shell-script conventions in `code/src/scripts/`, never by
-  invoking the `scripts/*.sh` here directly.
+  invoking the `scripts/*.sh` here directly. Walk-test evidence is filed and verified under
+  `WALK-TESTS/`, which owns its own rules — read its pair before adding a run.
 - **Model:** Opus for the mechanical work here (re-exporting, running a script, moving a
   file) and for reworking the export pipeline itself.
 - **Concrete steps:** for a logo change, edit the SVG source and re-export its rasters;
@@ -37,6 +38,8 @@ for client delivery.
   secrets**, never committed. The ClickUp trio is **clickup-only** (`INCLUDE_CLICKUP`); on any
   other board the sync is written from scratch through the `pm-tool-sync` skill.
 - **Do not commit large unoptimised binaries** — keep raster exports lean.
+- **A walk-test transcript is a record, never edited** — corrections go in the run's result
+  file, attributed. `WALK-TESTS/CLAUDE.md` carries the rest.
 - `export/clickup/` is generated and written read-only (0444) — regenerate, never
   hand-edit.
 

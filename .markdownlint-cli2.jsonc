@@ -18,6 +18,8 @@
     "!code/docs/MACHINE-SPEC.md",
     "!code/src/scripts/**/reports/**",
     "!code/src/rust/target/**",
+    "!project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md",
+    "!project-management/src/00-ASSETS/WALK-TESTS/*-REPORT.md",
   ],
   // Always-applied ignores (honoured even when files are passed as CLI args, e.g. by
   // lefthook). Generated ClickUp client exports, the host-specific machine spec, and the
@@ -28,6 +30,10 @@
     "code/docs/MACHINE-SPEC.md",
     "code/src/scripts/**/reports/**",
     "code/src/rust/target/**",
+    // Captured walk-test evidence: a prompt handed to a cold reader and its verbatim answer.
+    // The walker's own heading levels are part of the record — linting them would rewrite it.
+    "project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md",
+    "project-management/src/00-ASSETS/WALK-TESTS/*-REPORT.md",
   ],
   "config": {
     "default": true,
