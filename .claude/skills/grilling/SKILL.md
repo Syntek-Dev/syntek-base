@@ -136,6 +136,8 @@ remits, so grilling and the skill stay in step:
 - Grilling trivia. Escalate only decisions with real scope or architectural consequence;
   make reasonable calls on minor details and note them as you go.
 - Essay-length options. The format is a scan, not a briefing (`.claude/CLAUDE.md` Section 1).
+- **Auditing a definition by re-reading its wording** — count its instances first. A type or term
+  that fits none of its own real uses is wrong however well the definition reads.
 
 ## Where the answers go
 

@@ -163,7 +163,11 @@ nodes in this session.** Charting ends with the frontier drawn and unresolved.
 
 Per session:
 
-1. **Load the map** — destination and current frontier in view.
+1. **Load the map, then re-measure what it asserts** — destination and current frontier in
+   view. Re-check every load-bearing external claim the batch will lean on: line citations,
+   counts and costs, `Blocked by` rows, and any stated register or file state. Claims drift while
+   a map sits and a drifted one still reads plausibly, so a re-read never catches it.
+   **Not optional** — the failure is silent by construction.
 2. **Take the next batch, not the next node** — start from <%DEVELOPER_NAME%>'s pick or the
    unblocked frontier, and gather the nodes that belong together: shared subject, mutual
    dependence, or shared evidence. Split where a node has open blockers, is a different type, or
@@ -175,7 +179,8 @@ Per session:
    spike would sharpen it — a technique available to every type, not a re-typing.
 4. **Graduate the outcome** to its real home via the graduation table — an ADR in
    `src/15-DECISIONS/`, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term. Never leave
-   the answer only on the map.
+   the answer only on the map. A `DEFERRED.md` row needs a `US###` this workflow cannot supply,
+   so a deferral surfaced here — before `02-story-creation` cuts a story — goes to `GAPS.md`.
 5. **Redraw the frontier** — move the whole batch to resolved, sharpen any fog the outcome
    clarified into new nodes, re-wire the blocking edges.
 6. **Re-triage the register if the outcome moved it** — a settled node that retires a further

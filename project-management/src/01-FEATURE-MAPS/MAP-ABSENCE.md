@@ -1,8 +1,9 @@
 # MAP-ABSENCE — Absence is not one thing
 
 **Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Charting** — frontier drawn, nothing settled beyond the research nodes
-**Frontier open**: 11 · **Blocking open**: 1 (N-008) · **Fog of war open**: 4
+**Status**: **Fully charted** — all 18 nodes settled across four sittings (charting 15/08/2026,
+three resolve batches + the tier pass 31/08/2026); all six slices cuttable
+**Frontier open**: 0 · **Blocking open**: 0 · **Fog of war open**: 0
 **Measured at**: 15/08/2026 11:26, against `pm/base-health-map` at `7cd385d` **plus 10 uncommitted
 working-tree changes under `code/docs/data-structures/`** — see _The collision_ below. Every line
 count in this map is a working-tree measurement, not a HEAD measurement, and the two differ today.
@@ -40,12 +41,12 @@ this repository has a shelf life measured in hours while parallel sessions are r
 **Consequence for the destination.** Three of the brief's four _governing_ rules are now law and
 must be **cited, never restated**:
 
-| Brief's governing rule                            | Now owned by                                                              |
-| ------------------------------------------------- | ------------------------------------------------------------------------- |
-| Normalize at the boundary                         | `TYPES-OVER-DICTIONARIES.md` _Parse at the boundary_ + `REFACTORING.md` 9 |
-| Prefer making it unrepresentable / split the type | `TYPES-RUST.md` + `TYPES-TYPESCRIPT.md`, both as H2s                      |
-| Several kinds of absence are an enum              | `ANTI-PATTERNS.md` _Boolean Blindness_ (pre-existing, on a Keep list)     |
-| **Never overload one absence with two meanings**  | **partially** — `rls/MIDDLEWARE-AND-NINJA.md:270` states it for one case  |
+| Brief's governing rule                            | Now owned by                                                                                                                     |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Normalize at the boundary                         | `TYPES-OVER-DICTIONARIES.md` _Parse at the boundary_ + `REFACTORING.md` 9                                                        |
+| Prefer making it unrepresentable / split the type | `TYPES-RUST.md` + `TYPES-TYPESCRIPT.md`, both as H2s                                                                             |
+| Several kinds of absence are an enum              | **nobody — overclaim, found 31/08/2026**: that section has zero absence vocabulary, so `ABSENCE.md` **states** this rule (N-008) |
+| **Never overload one absence with two meanings**  | **partially** — `rls/MIDDLEWARE-AND-NINJA.md:270` states it for one case                                                         |
 
 **What survives is narrower and sharper than the brief, and it is still substantial**: the
 six-way absence taxonomy itself, the whole of Python `None`, the whole of the HTMX two-axis
@@ -60,7 +61,9 @@ this template ships.** One owning guide, `code/docs/ABSENCE.md`, states the six 
 miss · not-yet · empty · failure · not-supplied · not-applicable — and the cross-language crib
 that maps each onto Python, Rust, Alpine, HTMX and mobile TypeScript. Per-surface clauses land in
 the guide that already owns that surface. The `TYPES-*` family owns _what shape a value has_;
-this owns _what its absence means_, and the two cross-reference at exactly one row.
+this owns _what its absence means_. The boundary, clause by clause, was settled 31/08/2026 —
+see the batch verdict under _Resolved decisions_ (the split is not clean: Rust absence is cited,
+the absence-enum rule is stated, and the gate and doc surfaces belong to sibling guides).
 
 **Done looks like:** a developer choosing between `return None`, `return []` and `raise` can name
 which of the six they mean and read the answer off one table; an HTMX view returning "nothing"
@@ -82,7 +85,7 @@ Not the mass conversion of existing code, of which there is almost none.
 | Skills to load           | `grill-with-docs` · `doc-writer` · `stack-django` · `stack-htmx-templates` · `stack-rust` · `stack-react-native` · `code-reviewer` · `refactor`                                                                                                                |
 | Standing preferences     | Cite `TYPES-*`, never restate it · additive first · every clause declares its deletion class · a new guide is born under 270 cloc · surfaces gated by copier `_exclude` only                                                                                   |
 | Umbrella ADRs            | **None.** Fifteenth consecutive decline on the settled precedent: `15-DECISIONS/` is user-story-focused, so architecture doctrine goes to `code/docs/` and its per-project half to `how-to/src/`                                                               |
-| Register entries triaged | **0 closes · 0 blocks · 0 unrelated** — root `GAPS.md` and `DEFERRED.md` are empty stubs by design, and `TEMPLATE-GAPS.md` carries standing limitations only since 13/08/2026                                                                                  |
+| Register entries triaged | Re-triaged 31/08/2026: **0 closes · 0 blocks · 6 unrelated** — `GAPS.md` now carries 3 standing limitations, 3 dated entries and 3 loose items, none touching absence; `DEFERRED.md` still empty; `TEMPLATE-GAPS.md` no longer exists (deleted 22/08/2026)     |
 | Scope confirmed by Sam   | 15/08/2026 — five surfaces (four briefed + mobile TS) · new top-level guide · sibling of `NEGATIVE-SPACE.md` · doctrine + existing mechanical legs · HTMX pin in scope, vendoring deferred · `code-reviewer` **and the refactor setup** gain routed dimensions |
 | Research                 | All seven nodes settled at charting (N-001 to N-007), each adversarially refuted by an independent verifier. **Six of seven had absence claims overturned.** Verdicts below                                                                                    |
 
@@ -98,16 +101,19 @@ was mis-scoped — stop and re-grill.**
 
 ## Register claimed
 
-Both shipped registers are **empty stubs by design**, and `how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md`
-has carried standing limitations only since 13/08/2026, its dated entries having moved onto a
-feature map. **Nothing closes and nothing blocks.**
+Triaged empty at charting; **re-triaged 31/08/2026** against a `GAPS.md` that is no longer a
+stub — 3 standing limitations (SL-1..SL-3, read never triaged), 3 dated entries (posture ·
+seed-silence · PE-gate) and 3 loose items, every one **unrelated** to absence. `DEFERRED.md`
+remains empty. **Nothing closes and nothing blocks.**
 
-| Register      | Entry               | Verdict   | Retired by |
-| ------------- | ------------------- | --------- | ---------- |
-| `GAPS.md`     | _(no open entries)_ | unrelated | —          |
-| `DEFERRED.md` | _(no open entries)_ | unrelated | —          |
+| Register      | Entry                                 | Verdict   | Retired by |
+| ------------- | ------------------------------------- | --------- | ---------- |
+| `GAPS.md`     | 6 open entries (re-triage 31/08/2026) | unrelated | —          |
+| `DEFERRED.md` | _(no open entries)_                   | unrelated | —          |
 
-**This is a claim, not a close.** Nothing here edits either register.
+**This is a claim, not a close.** One entry was **appended** this sitting, never closed:
+_31/08/2026 — htmx is pinned at major 2, and the v4 migration waits on two named triggers_ —
+the N-012 outcome, recorded per RESOLVE step 6.
 
 **One shipped guide family constrains this one without sharing an edge**, and two shipped defects
 constrain it from outside any map. The **`TYPES-*` family** owns the type-shape half, above — six
@@ -123,15 +129,192 @@ constraint on where this epic can write, and `routing-skills.sh`'s blindness to 
 Each research node was run by one agent and then attacked by an independent verifier instructed
 to refute it. **The verdicts below are the post-refutation position**, not the researcher's.
 
-| Node  | Decision                                                           | Type     | Settled    | Became                                 |
-| ----- | ------------------------------------------------------------------ | -------- | ---------- | -------------------------------------- |
-| N-001 | Python: what is already law, what is absent, what can be gated     | research | 15/08/2026 | The verdict below — feeds N-010        |
-| N-002 | Rust: the lint tables, the modelling half, the disarmament         | research | 15/08/2026 | The verdict below — feeds N-013        |
-| N-003 | Alpine: the doctrine, the vendoring claim, the tier collision      | research | 15/08/2026 | The verdict below — feeds N-009        |
-| N-004 | HTMX: both axes, the shipped handler, the version landscape        | research | 15/08/2026 | The verdict below — feeds N-011, N-012 |
-| N-005 | Mobile TS: the flags, the null-vs-undefined precedent, the gates   | research | 15/08/2026 | The verdict below — feeds N-014        |
-| N-006 | The refactor and review consumers — where a rule actually attaches | research | 15/08/2026 | The verdict below — feeds N-017        |
-| N-007 | New-guide viability: the registration checklist and the ratchet    | research | 15/08/2026 | The verdict below — binds all          |
+| Node  | Decision                                                           | Type     | Settled    | Became                                       |
+| ----- | ------------------------------------------------------------------ | -------- | ---------- | -------------------------------------------- |
+| N-001 | Python: what is already law, what is absent, what can be gated     | research | 15/08/2026 | The verdict below — feeds N-010              |
+| N-002 | Rust: the lint tables, the modelling half, the disarmament         | research | 15/08/2026 | The verdict below — feeds N-013              |
+| N-003 | Alpine: the doctrine, the vendoring claim, the tier collision      | research | 15/08/2026 | The verdict below — feeds N-009              |
+| N-004 | HTMX: both axes, the shipped handler, the version landscape        | research | 15/08/2026 | The verdict below — feeds N-011, N-012       |
+| N-005 | Mobile TS: the flags, the null-vs-undefined precedent, the gates   | research | 15/08/2026 | The verdict below — feeds N-014              |
+| N-006 | The refactor and review consumers — where a rule actually attaches | research | 15/08/2026 | The verdict below — feeds N-017              |
+| N-007 | New-guide viability: the registration checklist and the ratchet    | research | 15/08/2026 | The verdict below — binds all                |
+| N-008 | The collision boundary — what `ABSENCE.md` owns, clause by clause  | grilling | 31/08/2026 | The 31/08 batch verdict — binds N-010..N-014 |
+| N-009 | The taxonomy and crib — new top-level guide, runtime rows, < 270   | grilling | 31/08/2026 | Slice S-01                                   |
+| N-012 | The HTMX version pin — **2**                                       | grilling | 31/08/2026 | Slice S-03 + the `GAPS.md` htmx-4 watch      |
+| N-017 | Consumer wiring — specified, never performed                       | build    | 31/08/2026 | Slice S-06 acceptance                        |
+| N-018 | Attribution in the same change — specified, never performed        | build    | 31/08/2026 | Slice S-01 acceptance                        |
+| N-010 | The Python `None` leg — miss = 404, ban scoped, propagation stated | grilling | 31/08/2026 | The second batch verdict — slice S-02        |
+| N-011 | The HTMX two-axis contract — 204 no-op, 4xx joins the listener     | grilling | 31/08/2026 | The second batch verdict — slice S-03        |
+| N-013 | The Rust remainder — the refund flipped, the stricture documented  | grilling | 31/08/2026 | The third batch verdict — slice S-04         |
+| N-014 | The mobile TS remainder — collapse blessed, the decline reversed   | grilling | 31/08/2026 | The third batch verdict — slice S-04         |
+| N-015 | The tier assignment — four tiers, markers name their gates         | grilling | 31/08/2026 | The tier-pass verdict — binds every clause   |
+| N-016 | The mechanical legs — specified, never performed                   | build    | 31/08/2026 | Slice S-05 acceptance                        |
+
+### The 31/08/2026 batch verdict — N-008 + N-009 as one pass, N-012 beside them
+
+**Grouping:** the crib's row set _is_ the ownership claim, so boundary and taxonomy were one
+question; N-012 ran beside them on its own evidence. Before the pass, all six research legs were
+re-measured by 12 agents (6 researchers, 6 adversarial refuters) — 16 days of drift had
+falsified enough to reshape two of the four questions put to Sam.
+
+**N-008 — the boundary, clause by clause (Sam, 31/08/2026):**
+
+| Clause                                                | Verdict                                                                                                                                                |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Rust absence (`Option`/`Result`, no sentinels)        | **Owned** — `TYPES-RUST.md:156` is an absence-meaning H2, not a shape rule. Cite, never restate; N-013 shrinks to the lint remainder                   |
+| Parse at the boundary · unrepresentable states        | Owned as charted — cite. Any `REFACTORING.md` citation must name the _Rules and Principles_ list; the file numbers two lists                           |
+| Several kinds of absence are an enum                  | **Owned by nobody** — the charted row was an overclaim. `ABSENCE.md` states it, citing _Boolean Blindness_ and `REFACTORING.md` strategy 5 as adjacent |
+| Never overload one absence                            | Stated in `ABSENCE.md`; `rls/MIDDLEWARE-AND-NINJA.md:270` cited as the one shipped instance                                                            |
+| Gate-surface absence (tool-absent vs surface-absent)  | **`GATE-REPORTING.md`** (born 18/08) owns it — a **sibling** named in _What this is not_, not a crib row                                               |
+| Doc-surface absence (absent here, present downstream) | **`FORWARD-VOICE.md`** (born 18/08) owns it — same sibling treatment                                                                                   |
+
+The crib covers **runtime surfaces only**: Python · Rust · Alpine · HTMX · mobile TS.
+
+**N-009 (Sam, 31/08/2026):** a new top-level `code/docs/ABSENCE.md`, born under 270, six kinds
+as charted. Registration is cheaper than N-007 measured: `routing-skills.sh` reads wrapped
+arrays now, clause 14 is discharged by existing `code/docs/*` globs, and `code/CONTEXT.md` rows
+are unenforced (the three guides born since charting carry none). The boundary-vocabulary fog
+item settled with it: `codebase-design/SKILL.md`'s ban on _boundary_ is **scoped to
+architectural contexts** — the banning file breaks its own ban four times and 20 headings across
+16 files use the word, so the ban was the defect, not the `TYPES-*` headings. The amendment
+lands in S-01's story, in the same change as the guide.
+
+**N-012 (Sam, 31/08/2026): pin htmx major 2.** `{% htmx_script %}` defaults to 2 and has zero
+call sites — the pin is doctrine nothing loads yet. htmx 4.0.0 went GA on 28/08/2026, but
+django-htmx 1.29.0 still vendors 4.0.0-beta6; v4 renames every event (~11 shipped surfaces plus
+`negative-space.sh`'s handler clause encode the v2 grammar), and its compat extension does not
+re-trigger `htmx:sendError`/`htmx:responseError`, which `observability.js` listens for. The
+migration triggers live in the `GAPS.md` watch entry. **The charted independence claim was
+false**: v4 swaps 4xx by default, so the pin decides what N-011's 4xx band means — N-011 opens
+inheriting pin = 2, under which the charted dead-click evidence stands.
+
+**Re-measured corrections the open nodes inherit** (each claim independently refuted before
+recording): `apps/health` ships two views since 16/08 (N-011's request-side fog is part-stale);
+`stack-django`'s docstring ban is violated by its own exemplar at :139-151 and by 66 blocks in
+`.claude/plugins/` (N-010); `error-classes.ts:47` already branches differently on `null` vs
+`undefined` — the collapse is in the test, not the code (N-014); `allow-unwrap-in-tests` binds
+six real tests in `nativecore` (N-013); the tier vocabulary is **four** tiers — `[gate: prose]`
+exists and _a warn tier is earned, not assumed_ (N-015); `CLIENT-PATTERNS.md` citations drifted
+:102→:118, :115→:134, :143→:159.
+
+### The 31/08/2026 second batch verdict — N-010 + N-011 as one pass
+
+**Grouping:** the two halves of the always-shipping Django deployable, both opened against the
+morning's refuted re-measurement; three targeted lookups closed the round's evidence
+(`error-classes.ts` classify semantics · the PITFALLS doctrine table · htmx 2's native 204
+no-swap at `htmx-2.js:265`).
+
+**N-010 (Sam, 31/08/2026):**
+
+- **Miss = 404.** A single-object GET that finds nothing raises `ServiceNotFoundError` into the
+  shipped 404 mapping; `response=T | None` is banned for single-object reads and `| None` stays
+  fields-only per `NINJA-CONVENTIONS.md:27`. The guide's own read exemplar is fixed in S-02 and
+  becomes the worked example.
+- **The docstring ban stands, scoped to app code** (`code/src/django/`) — the 66 violating
+  blocks are `.claude/plugins/` tooling outside ruff's reach; the ban's own violating exemplar
+  at :139-151 is fixed. Doctrine: the annotation carries the shape, **one prose docstring
+  sentence names the kind of absence** — never a `Returns:` block.
+- **Propagation is a stated rule, judgement-enforced**: absence is resolved where it enters —
+  schema, form or service boundary — and interior code takes `T`, not `T | None`. Enforcement is
+  the `code-reviewer` `[judgement]` dimension S-06 specifies; N-001 measured that no tool can
+  carry reach or intent.
+- **The four carve-outs are blessed** as named exceptions with their kinds: bind-on-POST
+  `Form(request.POST or None)` (two sites), the ARIA tri-state `bool | None`, and
+  `getattr(user, "is_authenticated", False)` at the RLS edge.
+
+**N-011 (Sam, 31/08/2026):**
+
+- **No-op success = 204** — htmx 2 no-swaps it natively (`htmx-2.js:265`); nothing to wire. The
+  204/mobile fog item dissolved on evidence: `error-classes.ts` classifies a 2xx carried **by an
+  error object** as programmer error — receiving a 204 is not that. Different assertions, no
+  disagreement.
+- **The non-form 4xx dead click closes in the one global listener**: 4xx joins 5xx on the
+  `#error-region` path — a rendered partial at the real status, worded per `NEGATIVE-SPACE.md`'s
+  user-error row. The PITFALLS doctrine table gains its 4xx row and the six 5xx-only artefacts
+  move together. **The form rule stands** — user error is 200 with the re-rendered form — and
+  S-03 adds one surface-scoping sentence so `REST-CONVENTIONS.md:102` (API: never 200 with an
+  error body) and PITFALLS (pages: form re-render is 200) stop colliding.
+- **The request axis is stated now, gated later**: absent key = unchecked checkbox, cross-citing
+  `REST-CONVENTIONS.md` :75 and :185; the fixture-provable gate waits for real forms, the
+  position `negative-space.sh:44` already documents.
+- Mechanical corrections routed to S-03: `CLIENT-PATTERNS:159`'s `hx-on:` + ghost `showToast`
+  replaced by the global listener; the zero-results clause written explicitly as **200 + the
+  empty-state partial** so it cannot read as the visual-component sense.
+
+**N-012 amended, not reversed (Sam, 31/08/2026): django-htmx is dropped.** The pin stays major
+**2**; the mechanism changes from `{% htmx_script %}` to a **self-vendored bundle**, exactly the
+shipped Alpine convention (self-hosted, never a CDN, vendored by the first page that uses it).
+Grounds: the package is declared and entirely unwired, all six guides hand-roll its headers, and
+self-vendoring ends the inheritance of its bundle cadence (it ships 4.0.0-beta6 today). Removing
+`django-htmx` from `pyproject.toml` is an S-03 mechanical leg; the `GAPS.md` watch entry's
+trigger is re-worded to "the repo vendors the 4.x GA".
+
+### The 31/08/2026 third batch verdict — N-013 + N-014 as one pass
+
+**Grouping:** the copier-gated optional surfaces, each a remainder after N-008 shrank it. Every
+load-bearing claim re-measured at the sitting: `clippy.toml` carries only `doc-valid-idents`,
+`NEGATIVE-SPACE.md` is 252 cloc with six surface rows and no Rust or desktop row, the test
+collapse sits at `error-classes.test.ts:57-58`, and `strict` is absent from the audited
+`TS_FLAGS`.
+
+**N-013 (Sam, 31/08/2026):**
+
+- **`avoid-breaking-exported-api = false`** — one `clippy.toml` line restores `option_option`,
+  `ref_option` and `struct_excessive_bools` on `pub` items; both crates set `publish = false`,
+  so the default was protecting a promise nobody made. S-04 leg.
+- **The test-unwrap stricture is kept and documented** — `unwrap`/`expect` stay denied
+  everywhere including tests (green across six real tests); one sentence in the Rust clause and
+  the NEGATIVE-SPACE row says so, because an undocumented stricture decays exactly as an
+  undocumented laxity does.
+- The two **`NEGATIVE-SPACE.md` per-surface rows** (Rust, desktop) land in S-04 — additive,
+  252 + 2 rows fits the 270 ratchet; each points at the owning guide.
+
+**N-014 (Sam, 31/08/2026):**
+
+- **The null/undefined collapse is blessed** — `httpStatus()` normalises both into "no usable
+  status" at the error boundary; two syntactic absences, one meaning, is parse-at-the-boundary
+  applied, not overloading. One sentence in the mobile clause names why.
+- **`noPropertyAccessFromIndexSignature` is adopted, reversing the shipped decline** — the
+  decline's stated reason ("a style preference") was measured wrong: with
+  `noUncheckedIndexedAccess` on, dot access makes an expected-miss lookup read like a guaranteed
+  property. Baseline green (no index signatures in the seven files). S-04: flag set `true`,
+  joins `TS_FLAGS`, and the decline row gains its dated reversal.
+- Calls recorded with the batch: **`strict` joins `negative-space.sh`'s `TS_FLAGS`** (a
+  foundation no gate checks is a rule enforced by nothing); `no-non-null-assertion` stays an
+  N-016 leg; the ABSENCE.md Rust row stays a citation per N-008; `redundant_clone` stays out of
+  scope.
+
+### The 31/08/2026 tier-pass verdict — N-015, with N-016 resolving by specification
+
+**Re-measured at the sitting:** the tier vocabulary is marker-driven — `[gate: fail]` /
+`[gate: warn]` / `[judgement]` / `[gate: prose]`, scripts implement against the markers; a warn
+tier never flips the exit code and is **earned** (presence tests are fail-tier); the drift table
+is three TAB rows where adding a row is the whole cost; ruff `select` has no `PGH`.
+
+**N-015 (Sam, 31/08/2026) — every clause carries its tier inline, and the marker names its
+gate:**
+
+- **`[gate: fail]`** — the live enforcement (E711 · B006 · UP045 · `reportOptional*` · the
+  clippy denies and the flipped pedantic trio · `no-non-null-assertion` · `TS_FLAGS`), plus two
+  **new** members: an `owned` doctrine-drift row pinning the 4xx predicate's statement shape to
+  `rendering/PITFALLS-AND-EXAMPLES.md` (six artefacts restating one predicate is the fork the
+  table guards), and a `negative-space.sh` clause `@router\.get\(.*\|\s*None` over `apps/**`
+  (a presence test, so fail-tier by the earned rule; baseline green once S-02 fixes the doc
+  exemplar). Where a gate's workflow is path-filtered, the marker says so — GATE-REPORTING
+  honesty.
+- **`[judgement]`** — the docstring absence-sentence and propagation reach; the S-06 reviewer
+  dimension, no script decides either.
+- **`[gate: prose]`** — the carve-outs, the stricture and collapse sentences, 204 and the four
+  nothings, the surface-scoping sentence, the request axis; nothing executable until templates
+  and forms exist.
+- **No clause takes `[gate: warn]`** — every candidate is a presence or correlation test, the
+  `skill-conformance.sh` precedent; inventing a soft tier to look lenient is how a gate stops
+  meaning anything.
+
+**N-016 resolved by specification** — S-05's legs are the ESLint `no-non-null-assertion` rule,
+`PGH` joining ruff `select` (for PGH003), the drift row, and the Ninja-GET clause; the clippy
+key and the `TS_FLAGS` additions already belong to S-04. Each leg lands green on the baseline,
+and every gated clause's marker names its gate.
 
 ### N-001 verdict — Python is the hole in a pattern this repo has already built twice
 
@@ -417,84 +600,53 @@ line.** Not this epic's to fix — see _Graduated outside this map_.
 
 ## Slices
 
-**None, and none is possible from this map.** The gate below already states it: _"This is a
-template-development map, so there are no stories to cut."_ The deliverable is
-`code/docs/ABSENCE.md`, its per-surface clauses in the guides that already own each surface, and
-the mechanical legs at N-016 — a lint rule, two `doctrine-drift.sh` rows, a `clippy.toml` key and
-a ruff code. None of that is a feature a user story would describe.
+**Cut 31/08/2026, reversing the charted "none is possible".** Sam's direction: wayfinder maps
+slices ready for stories, template work included — the charted position confused the artefact
+(no end-user feature) with the unit (a story-sized deliverable). `02-story-creation` cuts from
+these rows as from any map; the `Story` column stays `—` until that gate allocates numbers.
 
-| Slice | Story | Title             | Nodes | Acceptance | Flags |
-| ----- | ----- | ----------------- | ----- | ---------- | ----- |
-| —     | —     | _(no slices cut)_ | TBD   | TBD        | —     |
+| Slice | Story | Title                                   | Nodes                          | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Flags |
+| ----- | ----- | --------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| S-01  | —     | The guide — `ABSENCE.md` born under 270 | N-008 ✅ · N-009 ✅ · N-018 ✅ | Six kinds stated once with the runtime crib (Python · Rust · Alpine · HTMX · mobile TS); Rust row cites `TYPES-RUST.md:156`; absence-enum rule stated, not cited; GATE-REPORTING, FORWARD-VOICE and NEGATIVE-SPACE named siblings in _What this is not_; `codebase-design`'s boundary ban scoped in the same change; registered (header · frontmatter · both `REFERENCES.md` · `code/docs/CONTEXT.md`); any derived source gains its _Influences_ row + licence check in the same commit; < 270 cloc at birth                                                                                                                                                                                                             | —     |
+| S-02  | —     | The Python `None` clause                | N-010 ✅                       | Miss on a single-object GET raises `ServiceNotFoundError` → 404; `response=T \| None` banned for reads, `\| None` fields-only; the guide's read exemplar fixed as the worked example; docstring ban scoped to `code/src/django/` and its violating exemplar fixed; one prose sentence names the kind of absence; propagation rule stated (resolved where it enters, interior code takes `T`) with the four carve-outs blessed as named exceptions                                                                                                                                                                                                                                                                         | —     |
+| S-03  | —     | The HTMX contract, on pin 2             | N-011 ✅ · N-012 ✅            | Pin **2**, self-vendored like Alpine — `django-htmx` removed from `pyproject.toml` as a mechanical leg; no-op success = **204** (htmx 2 no-swaps natively); non-form 4xx joins the one global listener's `#error-region` path with a rendered partial at the real status; form errors stay 200 re-render, one surface-scoping sentence reconciling `REST-CONVENTIONS.md:102`; the doctrine table gains its 4xx row and the six 5xx-only artefacts move together; `hx-on:` + ghost `showToast` replaced by the global listener; zero results = 200 + the empty-state partial, stated as status + partial; request axis stated (absent key = unchecked checkbox, citing `REST-CONVENTIONS` :75/:185), fixture gate deferred | —     |
+| S-04  | —     | The optional-surface remainders         | N-013 ✅ · N-014 ✅            | `avoid-breaking-exported-api = false` in `clippy.toml`; test-unwrap stricture documented in the Rust clause; the two `NEGATIVE-SPACE.md` rows (Rust, desktop) added, each pointing at its owning guide; null/undefined collapse blessed with its naming sentence in the mobile clause; `noPropertyAccessFromIndexSignature` set `true`, joins `TS_FLAGS`, decline row carries its dated reversal; `strict` joins `TS_FLAGS`; audits self-skip where the surface is copier-gated out                                                                                                                                                                                                                                       | —     |
+| S-05  | —     | Tiers and the mechanical legs           | N-015 ✅ · N-016 ✅            | Every clause in `ABSENCE.md` and the per-surface clauses carries its inline tier marker, and each `[gate: fail]` marker names its gate (path-filtered workflows named as such); no clause takes `[gate: warn]`; the four legs land green on baseline — ESLint `no-non-null-assertion` at error, `PGH` in ruff `select`, the `owned` drift row pinning the 4xx predicate to PITFALLS, the `negative-space.sh` `@router.get` `\| None` clause; `[judgement]` clauses route to S-06's dimension and no script decides one                                                                                                                                                                                                    | —     |
+| S-06  | —     | Consumer wiring                         | N-017 ✅                       | `code-reviewer` gains the routed dimension in its compliant shape (rule doc + gate named, only reach-and-meaningfulness marked `[judgement]`); `refactor` skill and `11-refactor` cite `data-structures/REFACTORING.md`, naming the _Rules and Principles_ list; depends on S-01 shipping first                                                                                                                                                                                                                                                                                                                                                                                                                           | —     |
 
-**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
-type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
-RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
-slice_ is unverified here.
-
-**All thirteen gate flags read `N/A`**, so the manifest is empty by construction rather than
-unwritten: nothing on this map creates a model, an endpoint, a screen or a personal-data path.
-Recorded rather than omitted, because an absent Slices section is indistinguishable from one
-nobody filled in — which is precisely the ambiguity this map exists to remove.
+**All thirteen gate flags still read `N/A`** — nothing here creates a model, an endpoint, a
+screen or a personal-data path — so every manifest is empty by construction; recorded rather
+than omitted. N-017 and N-018 are **specified, never performed**: their build work belongs to
+their slices' stories.
 
 ---
 
 ## Frontier
 
-Open decisions in dependency order. **N-008 is the only blocking node**: until the boundary with
-`TYPES-*` is drawn, every other node risks writing a fork.
-
-| Node  | Decision                                                                                                          | Type     | Blocked by     | Blocks the map? |
-| ----- | ----------------------------------------------------------------------------------------------------------------- | -------- | -------------- | --------------- |
-| N-008 | **The collision boundary** — what `ABSENCE.md` owns now `TYPES-*` ships, clause by clause                         | grilling | none           | **yes**         |
-| N-009 | The six-kind taxonomy and the cross-language crib — shape, home, and whether it fits under 270                    | grilling | N-008          | no              |
-| N-010 | The Python `None` leg — the four carve-outs, the docstring collision, the Ninja `\| None` defect                  | grilling | N-008, N-009   | no              |
-| N-011 | The HTMX two-axis contract — four nothings, absent keys, the 4xx band                                             | grilling | N-008, N-009   | no              |
-| N-012 | **The HTMX version pin** — 2 or 4, and what it does to the CSRF doctrine in three files                           | grilling | none           | no              |
-| N-013 | The Rust remainder, the `avoid-breaking-exported-api` refund, and the two missing `NEGATIVE-SPACE.md` rows        | grilling | N-008, N-009   | no              |
-| N-014 | The mobile TS remainder — and whether `error-classes.ts`'s null/undefined collapse is blessed or changed          | grilling | N-008, N-009   | no              |
-| N-015 | What the gate can decide, at which tier — `[gate: fail]` / `[warn]` / `[judgement]`                               | grilling | N-010 to N-014 | no              |
-| N-016 | The mechanical legs: `no-non-null-assertion`, `doctrine-drift.sh` rows, `avoid-breaking-exported-api`, `PGH003`   | build    | N-015          | no              |
-| N-017 | The consumer wiring — `code-reviewer` dimension, the **refactor setup**, and the `REFACTORING.md` cross-reference | build    | N-009          | no              |
-| N-018 | Attribution: the `README.md` _Influences_ row and licence check, in the same change                               | build    | N-009          | no              |
+**Empty — the route is fully charted.** All 18 nodes settled: seven research at charting, ten
+across the 31/08/2026 sittings, N-016 by specification. No decision remains open on this map;
+what remains is the slices' build work, reached through `02-story-creation`.
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
 `grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
 named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
 blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
-**Two nodes are takeable now**: **N-008**, which everything waits on, and **N-012**, which is
-independent because the version pin is decided by django-htmx's constraint and the CSRF
-consequence, not by anything this doctrine says.
-
-### Suggested first batch
-
-**N-008 + N-009 as one grilling pass.** They share a subject — the boundary and the crib are one
-question about one table — and deciding them apart means deciding them twice: the crib's row set
-_is_ the ownership claim. **N-012 runs alone and in parallel**, being a different type of
-question with no shared evidence.
+**Nothing is takeable — nothing is left.** The next act on this map is `02-story-creation`
+cutting stories from S-01..S-06, S-01 first because every per-surface clause cites the guide it
+lands beside.
 
 ---
 
 ## Fog of war
 
-In scope, not yet sharp enough to state as a decision.
-
-- **Whether "normalise at the boundary" can be said at all.** `codebase-design/SKILL.md:46` bans
-  _boundary_ as a substitute for _seam_, and the `TYPES-*` family has just shipped three H2s using
-  it. Either the vocabulary rule gains an explicit I/O-edge sense, or two epics are now in breach.
-  Needs settling once, for both — and this map cannot settle it alone.
-- **Whether `ABSENCE.md` should exist at all, or become a section of `TYPES-OVER-DICTIONARIES.md`.**
-  Scope was confirmed as a new top-level guide _before_ the `TYPES-*` family was visible. N-008
-  must be allowed to reverse it; forcing the confirmed answer through would be exactly the
-  "decided on stale evidence" failure this map's refute stage exists to catch.
-- **What a 204 means when `error-classes.ts:88` already classifies it as a programmer error.**
-  The mobile classifier treats any status `>= 500 || < 400` as "this app misreading it", with a
-  test pinning `classify({status: 204})`. Not a contradiction with using 204 on HTMX, but the two
-  surfaces would then disagree about what a 204 signifies.
-- **Whether the request side can be gated before any view exists.** Zero views, forms or
-  templates ship; an unchecked-checkbox clause is provable only by fixtures, the position
-  `negative-space.sh:44` already documents for seven of its twelve clauses.
+**Empty.** All four charted items graduated on 31/08/2026: the boundary-vocabulary item into
+N-009 (the ban was the defect — it broke itself four times in its own file); the guide-existence
+item into N-008 (the new top-level guide re-confirmed on fresh evidence); the 204/mobile item
+into N-011 — dissolved, not decided (`error-classes.ts` classifies a 2xx carried **by an error
+object** as programmer error, which asserts nothing about receiving a 204); and the
+request-side-gating item into N-011 and N-015 — stated as `[gate: prose]` now, fixture-provable
+later, the position `negative-space.sh:44` documents for seven of its twelve clauses.
 
 ---
 
@@ -565,24 +717,28 @@ be clean (`code/docs/GATE-REPORTING.md`).
 
 ## Session log
 
-| Date       | Node settled   | Outcome                                                                                                                           | Frontier redrawn |
-| ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| 15/08/2026 | N-001 to N-007 | Seven research nodes settled at charting, each adversarially refuted; 33 absence claims overturned; the `TYPES-*` collision found | [x]              |
+| Date       | Node settled                                     | Outcome                                                                                                                                                                                                                                                                                            | Frontier redrawn |
+| ---------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| 15/08/2026 | N-001 to N-007                                   | Seven research nodes settled at charting, each adversarially refuted; 33 absence claims overturned; the `TYPES-*` collision found                                                                                                                                                                  | [x]              |
+| 31/08/2026 | N-008 · N-009 · N-012 (+ N-017, N-018 specified) | Re-measured first (6 legs, 12 agents, each refuted); boundary drawn — Rust cited, enum rule stated, gate/doc surfaces siblinged; new top-level guide confirmed; htmx pinned **2** + `GAPS.md` watch; slices S-01..S-06 cut                                                                         | [x]              |
+| 31/08/2026 | N-010 · N-011 (N-012 amended)                    | Second batch, one pass: miss = 404 and `\| None` fields-only; docstring ban scoped, propagation stated `[judgement]`; no-op = 204; non-form 4xx joins the global listener, form rule stands; **django-htmx dropped** — htmx self-vendored like Alpine; 204 fog dissolved                           | [x]              |
+| 31/08/2026 | N-013 · N-014                                    | Third batch, one pass: `avoid-breaking-exported-api` flipped; test-unwrap stricture kept and documented; two NEGATIVE-SPACE rows land; null/undefined collapse blessed; `noPropertyAccessFromIndexSignature` adopted, reversing the shipped decline; `strict` joins `TS_FLAGS`                     | [x]              |
+| 31/08/2026 | N-015 · N-016                                    | Tier pass: every clause carries its inline marker naming its gate; no clause takes `[gate: warn]` (earned, not assumed); two new fail-tier members — the 4xx-predicate drift row and the `@router.get` `\| None` clause; N-016 specified onto S-05. **Frontier and fog empty — map fully charted** | [x]              |
 
 ---
 
 ## Gate to stories
 
 - [x] Destination and out-of-scope bounds confirmed (Sam, 15/08/2026 — `1B 2A 3A 4B 5B 6A` plus the refactor addition)
-- [x] Every open `GAPS.md` / `DEFERRED.md` entry triaged — both registers are empty
+- [x] Every open `GAPS.md` / `DEFERRED.md` entry triaged — re-triaged 31/08/2026: 6 open entries, all unrelated
 - [x] Every claimed entry names what will retire it; **neither register file edited here**
 - [x] Every knowable decision is a node or in fog of war
 - [x] Every node typed and blocker-wired
-- [ ] **Every node marked "blocks the map" is resolved** — N-008 is open
+- [x] **Every node marked "blocks the map" is resolved** — N-008 settled 31/08/2026
 - [x] Every resolved node links to the artefact it became
-- [x] **Every slice has a flag manifest** — no slices; the absence is stated, not left blank
+- [x] **Every slice has a flag manifest** — S-01..S-06 cut 31/08/2026; every manifest empty by construction (all 13 flags `N/A`)
 - [x] Index row in `CONTEXT.md` current
 
-**This is a template-development map, so there are no stories to cut.** The equivalent gate is
-that **N-008 must settle before any prose is written**, because every other node's output depends
-on where the boundary with `TYPES-*` falls.
+**Template-development map, slices cut 31/08/2026 on Sam's direction** — `02-story-creation`
+is the next gate. N-008 is settled, so per-surface prose may be written by the slices' stories;
+S-01 ships first, because every per-surface clause cites the guide it lands beside.

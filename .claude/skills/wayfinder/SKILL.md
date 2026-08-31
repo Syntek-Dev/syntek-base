@@ -104,9 +104,11 @@ mode — no map, and no edit to the register.
 
 ## Steps — RESOLVE (each later session)
 
-1. **Load the map.** Read `MAP-<FEATURE>.md` for the low-resolution view; pull the linked ADRs,
-   plans, and closed nodes only as you need them. _Done when the Destination and current Frontier
-   are in view._
+1. **Load the map, then re-measure what it asserts.** Read `MAP-<FEATURE>.md` for the
+   low-resolution view; pull the linked ADRs, plans, and closed nodes only as you need them.
+   **Re-check every load-bearing external claim before leaning on it** — a drifted citation still
+   reads plausibly, which is why a re-read never catches one. _Done when the Destination and
+   current Frontier are in view and the batch's claims are re-measured._
 2. **Take the next batch, not the next node.** Start from <%DEVELOPER_NAME%>'s pick, or the unblocked
    Frontier, and gather the nodes that genuinely belong together into **one batch** — settled in a
    single sitting because deciding them apart would mean deciding them twice.
@@ -195,6 +197,9 @@ instances; every one was deliverable work miscast as unblocking.
 | an active blocker or cross-repo dependency                                    | a `GAPS.md` entry                                                                                                              |
 | deferred to a named future story                                              | a `DEFERRED.md` row, targeting the future `US###`                                                                              |
 | terminology (one canonical word per concept)                                  | the glossary of the nearest `CONTEXT.md` (reference: `code/docs/data-structures/DOMAIN-MODELLING.md`)                          |
+
+**A `DEFERRED.md` row needs a `US###` a map cannot supply**, so a deferral surfaced during
+RESOLVE — before `02-story-creation` cuts a story — graduates to `GAPS.md` instead.
 
 The ADR three-test gate and the glossary-into-`CONTEXT.md` move are exactly `grill-with-docs` —
 that skill owns which artefact a resolved decision lands in; wayfinder only decides that it lands.

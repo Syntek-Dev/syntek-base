@@ -19,6 +19,16 @@ Index: [`../GIT-GUIDE.md`](../GIT-GUIDE.md).
 
 Run these commands before every commit — no exceptions.
 
+### Step 0 — Stage by explicit path
+
+**Never `git add -A` or `git add .`.** Name every path you are committing. A tree can be written
+to by more than one session or agent at once — parallel stories in worktrees, a dispatched
+subagent, a second terminal — and a blanket add sweeps someone else's in-flight work into your
+commit, where it clears the gates below as though you had written it.
+
+The same applies in reverse when a gate fails in a file you touched: **check its `ls -la` mtime
+against your own last write before assuming the fault is yours.**
+
 ### Step 1 — Apply what can be applied
 
 ```bash

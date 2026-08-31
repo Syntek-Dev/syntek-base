@@ -271,3 +271,24 @@ carries the repo's single vendor prefix (`-webkit-text-size-adjust`).
 **Blocked by / Action:** Blocked on real CSS existing. `S-02` ships the `@eslint/css` half — which
 **is** the support policy — and explicitly omits the prefixes. Retire this half when the first
 story writing component CSS re-measures the set and states where it lives.
+
+---
+
+## 31/08/2026 — htmx is pinned at major 2, and the v4 migration waits on two named triggers
+
+**Type:** Planned feature
+**Summary:** `MAP-ABSENCE.md` N-012 (31/08/2026) pinned the htmx doctrine to major **2**,
+**self-vendored** like Alpine (self-hosted, never a CDN, vendored by the first page that uses
+it) — django-htmx was dropped the same day (declared, entirely unwired, every guide hand-rolls
+its headers; removal is a `MAP-ABSENCE.md` S-03 leg). No page loads htmx yet, so the pin is
+doctrine nothing loads. htmx 4.0.0 went GA on 28/08/2026, but npm `latest` is still 2.x.
+v4 renames every event to the colon-segmented grammar
+(`htmx:before:swap`), swaps 4xx responses by default, and needs `hx-headers:inherited` for the
+`<body>` CSRF pattern — roughly eleven shipped surfaces plus `negative-space.sh`'s
+`htmx-handler-absent` clause encode the v2 grammar. A silent upgrade would therefore falsify
+shipped doctrine and blind the error handler.
+**Blocked by / Action:** Migrate only when **both** triggers fire: the repo chooses to vendor
+the 4.x GA (npm `latest` has moved and the event-grammar migration is charted), **and** a base
+template exists that actually loads htmx. The migration is then its own charted feature (event
+grammar, swap policy, CSRF inheritance, the gate regex) — never a side-effect of another
+story.

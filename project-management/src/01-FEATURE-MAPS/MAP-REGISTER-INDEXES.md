@@ -328,17 +328,43 @@ empty, so the `Story` column stays `—`.
 **The 13-flag roster is application-shaped and this work is template plumbing**, so most flags are
 `N/A` and omitted. That is the honest manifest, not a thin one.
 
-| Slice | Story | Title                                                 | Nodes | Acceptance | Flags                                                                                                                                                                       |
-| ----- | ----- | ----------------------------------------------------- | ----- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S-01  | —     | Wire seven seeded register indexes                    | TBD   | TBD        | QA: unit (`shipped-artefacts.sh --self-test`), integration (generation smoke, `audit-template.yml`) — seed-lands, seed-blank                                                |
-| S-02  | —     | Backfill `MAP-INDEX.md` from the ten live maps        | TBD   | TBD        | QA: manual — row-per-map, counts match each header                                                                                                                          |
-| S-03  | —     | The index gate, and the duty it enforces              | TBD   | TBD        | QA: unit (`register-indexes.sh --self-test`, `broken/`+`clean/` fixtures), integration (lefthook + `audit-register-indexes.yml`) — missing-row, orphan-row, status-mismatch |
-| S-04  | —     | Artefact frontmatter across `project-management/src/` | TBD   | TBD        | QA: unit (mirror `--check`, `doc-references.sh --self-test`), manual — 62 artefacts, PDF export unaffected                                                                  |
+| Slice | Story | Title                                                    | Nodes | Acceptance | Flags                                                                                                                                                                       |
+| ----- | ----- | -------------------------------------------------------- | ----- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S-01  | —     | Wire seven seeded register indexes                       | TBD   | TBD        | QA: unit (`shipped-artefacts.sh --self-test`), integration (generation smoke, `audit-template.yml`) — seed-lands, seed-blank                                                |
+| S-02  | —     | Backfill `MAP-INDEX.md`, and correct the rows it indexes | TBD   | TBD        | QA: manual — row-per-map, counts match each header, and no `Umbrella ADRs` row still asserts the reversed no-ADR rule                                                       |
+| S-03  | —     | The index gate, and the duty it enforces                 | TBD   | TBD        | QA: unit (`register-indexes.sh --self-test`, `broken/`+`clean/` fixtures), integration (lefthook + `audit-register-indexes.yml`) — missing-row, orphan-row, status-mismatch |
+| S-04  | —     | Artefact frontmatter across `project-management/src/`    | TBD   | TBD        | QA: unit (mirror `--check`, `doc-references.sh --self-test`), manual — 62 artefacts, PDF export unaffected                                                                  |
 
 **The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
 type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
 RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
 slice_ is unverified here.
+
+**S-02 absorbed the superseded-ADR-wording sweep, 31/08/2026.** Each live map's `Umbrella ADRs`
+row still asserts the house rule that `MAP-PROGRESSIVE-ENHANCEMENT` N-026 reversed the same day.
+It is the same population, the same measured read and the same pass as the index backfill, so it
+**widens this slice rather than earning one of its own**. It was carried here out of
+`.claude/MEMORY.md`, where a pending sweep does not belong — that file holds patterns and project
+state, and `.claude/CLAUDE.md` Section 9 routes unfinished work to `GAPS.md` or a map.
+
+Measured 31/08/2026, and **the count is eight, not the ten the memory entry claimed** — itself an
+instance of the re-measure rule now in `STEPS.md` Step 8.1:
+
+| Row                               | State                                                                                                                                                                                                                                                     |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MAP-CLAUDE-DESIGN-HANDOFF.md:35` | **Flatly wrong** — "none is possible; this template authors no ADRs"                                                                                                                                                                                      |
+| `MAP-NAVIGATION.md:48`            | **Flatly wrong** — "this repository does not write ADRs"                                                                                                                                                                                                  |
+| `MAP-SUBDOMAIN-ROUTING.md:48`     | Superseded — cites the 16/08 house rule as live                                                                                                                                                                                                           |
+| `MAP-UPSTREAM-TRACKING.md:44`     | Superseded — same wording                                                                                                                                                                                                                                 |
+| `MAP-RETRY-AND-IDEMPOTENCY.md:36` | Superseded twice — and "ADRs are workflow `15`" is now wrong too, `15` being the coherence gate, not the author                                                                                                                                           |
+| `MAP-GATE-PARITY.md:50`           | Superseded — same wording                                                                                                                                                                                                                                 |
+| `MAP-REGISTER-INDEXES.md:32`      | This map's own row — "whether that rule survives is N-026" is now answered                                                                                                                                                                                |
+| `MAP-ABSENCE.md:84`               | **Borderline, re-measure at the sweep** — its stated reason survives N-026, only its "settled precedent" framing does not; it also had uncommitted concurrent-session edits when this was written, so trust neither the line number nor the wording above |
+
+Already consistent, **not to be touched**: `MAP-PROGRESSIVE-ENHANCEMENT.md:75`,
+`MAP-SCRIPT-GUARDS.md:30`, `MAP-RULE-OWNERSHIP.md:84`. `MAP-000-TEMPLATE.md:25` is a placeholder.
+The replacement wording is `../15-DECISIONS/CLAUDE.md` — an ADR needs a driving `US###`, and a map
+reaches one only through the slice that becomes a story.
 
 **Why two and not one.** The wiring is provable by `shipped-artefacts.sh` alone; the backfill needs
 a measured read of ten maps and is the only half carrying a content-correctness risk. **Why not
