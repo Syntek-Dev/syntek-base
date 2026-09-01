@@ -1,8 +1,8 @@
 # MAP-NAVIGATION — Can this repository describe itself to a cold agent?
 
 **Charted**: 16/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **`S-02` and `S-03` cuttable; the fog is empty.** N-009 settled 31/08/2026 and N-014 — a lookup — is the last node
-**Frontier open**: 1 · **Blocking open**: 0 · **Fog of war open**: 0
+**Status**: **Fully charted — frontier and fog both empty.** N-014 settled 01/09/2026; all three slices are cuttable
+**Frontier open**: 0 · **Blocking open**: 0 · **Fog of war open**: 0 · **Resolved**: 14
 
 > **Template-development artefact.** This map charts work on `syntek-base` itself, not on a
 > project generated from it. It is **committed here**, so it syncs across devices, and it is
@@ -46,7 +46,7 @@ retrospectively decays; written alongside, it stays true.
 | Skills to load           | `doc-writer`, `scaffold`, `codebase-design`, `domain-modelling`, `grill-with-docs`                                                                                                                  |
 | Standing preferences     | Refusal is a legitimate destination; the deletion test comes before the design; tracer before commitment. **Added 31/08/2026:** attribution is owed for inspiration however far the result diverges |
 | Umbrella ADRs            | None — this repository does not write ADRs (Sam, 16/08/2026)                                                                                                                                        |
-| Register entries triaged | **Re-triaged 31/08/2026: 0 closes · 0 blocks · 4 unrelated.** The charted row read "both registers hold zero open entries", which was true then and is not now                                      |
+| Register entries triaged | **Re-triaged 01/09/2026: 0 closes · 0 blocks · 7 unrelated.** The 31/08 triage has expired in both directions — three of its four rows are gone and four entries have arrived since                 |
 
 ### The premise is already half-built, and that changes the question
 
@@ -115,22 +115,27 @@ was the sharpest node on the map.
 
 ## Register claimed
 
-**Re-triaged 31/08/2026 at N-004, because the charted triage has expired.** Both registers held
-zero open entries on 16/08; `GAPS.md` has since gained four. **All four are unrelated, and none of
-the four is unrelated by default** — each is either owned elsewhere or carries an explicit
-instruction not to chart it.
+**Re-triaged 01/09/2026 at N-014, because the 31/08 triage had expired in both directions.**
+Three of its four rows are gone — two claimed away by sibling maps, one retired — and four
+entries have arrived since. **Nothing is claimed and nothing blocks.**
 
-| Register    | Entry                                                           | Verdict       | Why                                                                                                                                                      |
-| ----------- | --------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GAPS.md     | 22/08 — `main` has never received this branch                   | **unrelated** | Carries its own instruction, _"Do not chart it"_: a named owner and a dated retirement make it a task, not a decision                                    |
-| GAPS.md     | 31/08 — the deployment posture binds Claude, no script reads it | **unrelated** | A destructive-script guard; touches no documentation surface                                                                                             |
-| GAPS.md     | 31/08 — a seed that never arrives is silent                     | **unrelated** | Explicitly _"Do not fold it into the index work"_; a shipped-artefact gate defect, and `MAP-REGISTER-INDEXES.md` N-003 cites it                          |
-| GAPS.md     | 31/08 — the Plans Index is gated in eight places, never existed | **unrelated** | **Genuinely a navigability defect**, and **already claimed** by `MAP-REGISTER-INDEXES.md` slices `S-01`/`S-02`. Claimed twice is worse than claimed once |
-| DEFERRED.md | _no open rows_                                                  | —             | —                                                                                                                                                        |
+| Register    | Entry                                                        | Verdict       | Why                                                                                                              |
+| ----------- | ------------------------------------------------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| GAPS.md     | 31/08 — the PE gate's markup half / the prefix set           | **unrelated** | Frontend enforcement tooling; owned by `MAP-PROGRESSIVE-ENHANCEMENT` `S-04`                                      |
+| GAPS.md     | 31/08 — htmx is pinned at major 2, v4 waits on two triggers  | **unrelated** | A frontend dependency pin; `MAP-ABSENCE` `S-03` owns the migration                                               |
+| GAPS.md     | 01/09 — a RUSTSEC advisory against an unchanged `Cargo.lock` | **unrelated** | Supply-chain gate coverage; graduated here by `MAP-UPSTREAM-TRACKING` N-021                                      |
+| GAPS.md     | 01/09 — staging and production have no mail backend          | **unrelated** | A settings blocker; graduated here by `MAP-CAP-POSTURE` N-017                                                    |
+| GAPS.md     | _Still open, found on the way_ — 3 loose items               | **unrelated** | `COVERAGE.md` pytest flags · the `10.0.1.0/24` collision · `pnpm-update.sh`'s header. None touches a doc surface |
+| GAPS.md     | SL-1 · SL-2 · SL-3                                           | **exempt**    | Standing limitations take none of the three verdicts                                                             |
+| DEFERRED.md | _no rows_                                                    | —             | —                                                                                                                |
 
-**The fourth is the one to watch.** An index that eight sites cite and nobody ever wrote is exactly
-what this epic is about, and it is deliberately **not** claimed here — another map claimed it
-first, and a register entry retired by two maps is retired by neither.
+**The two rows this map used to watch have both left it, and neither was taken by this epic.** The
+deployment-posture guard is now `MAP-SCRIPT-GUARDS` `S-01`; the Plans Index — the entry closest to
+this map's own subject — is `MAP-REGISTER-INDEXES` `S-01`. **A register entry retired by two maps
+is retired by neither**, so the decision to leave it alone stands and is now settled rather than
+merely observed.
+
+**This is a claim surface, not a close surface.** Nothing here edits either register.
 
 ---
 
@@ -150,6 +155,8 @@ first, and a register entry retired by two maps is retired by neither.
 | N-009 | **The mandate and what fails when it rots**                  | grilling | 31/08/2026 | **A deterministic preconditions audit, advisory then required — the walk itself never gates.** The section _N-009 — the gate is deterministic and the walk is not_ below · slice `S-03`                              |
 | N-010 | **Tracer: run the first walk test cold**                     | tracer   | 31/08/2026 | **FAIL, on the token ceiling — no question broke.** The section _N-010 — the walk fails on reconnaissance, not on navigation_ below · evidence in `../00-ASSETS/WALK-TESTS/` · opens N-009 and confirms slice `S-03` |
 | N-008 | The generator's language and home                            | grilling | 31/08/2026 | **Moot — closed by N-004.** The deliverable is an output mode on an existing **bash** audit, so "a Python generator would be the first exception" never arises                                                       |
+| N-014 | **Is a prose change-impact index worth having?**             | research | 01/09/2026 | **No — refused on measurement, and the refusal scopes `S-01`'s emit.** The section _N-014 — a restatement is defined by not citing its owner_ below · slice `S-01`                                                   |
+| N-013 | The noun's home — a register file, or the guide itself       | grilling | 31/08/2026 | **On the guide, as `owns:` / `enforced-by:` frontmatter — no register file, so no second copy.** The section _N-013 — the noun lives on the guide, not in a register_ below · slice `S-02`                           |
 
 **Three nodes closed as moot, and that is a disposition rather than an answer.** N-006, N-007 and
 N-008 were all downstream of a `map/` layer existing. N-004 declined to build one, so each was
@@ -551,6 +558,70 @@ that means different things in CI and on a developer machine is the flake that g
 
 ---
 
+---
+
+### N-014 — a restatement is defined by not citing its owner
+
+**Settled 01/09/2026 by measurement at `28fb14b`, and it refuses the index rather than siting it.**
+The node was charted as a two-horse question — does `doctrine-drift.sh` already cover prose
+change-impact, or is `S-01`'s citation emit the raw material for something it cannot produce? **The
+measurement says neither**, and the reason the emit fails is definitional rather than a gap in the
+implementation.
+
+**The population, measured across the three prose rules this repository restates most.** Each was
+counted twice: once for files stating the rule, once for files stating it **and** naming its owner.
+
+| Rule                             | Owner                                  | Files stating it | Cite the owner | Inside `SCAN_DIRS` |
+| -------------------------------- | -------------------------------------- | ---------------- | -------------- | ------------------ |
+| The 300-line instructional limit | `code/docs/DOCUMENTATION-LENGTH.md`    | **134**          | **12 (9%)**    | 67 (50%)           |
+| The 750/800 source-file limit    | `coding-principles/PRACTICAL-RULES.md` | **56**           | **7 (13%)**    | 22 (39%)           |
+| The 75/90 coverage floors        | `code/docs/testing/COVERAGE.md`        | **90**           | **30 (33%)**   | 56 (62%)           |
+| **Total**                        | —                                      | **280**          | **49 (17.5%)** | **145 (52%)**      |
+
+**The citation emit cannot answer the question, and the failure is structural.** A change-impact
+index built on resolved citations reaches **17.5%** of the population. That is not a tuning
+problem: **a restatement is characterised by not citing its owner** — citing it would make the site
+a route rather than a fork — so the emit is blindest exactly where the defect is worst. The rule
+with the largest population has the **lowest** citation reach, which is the correlation running the
+wrong way for any citation-derived index.
+
+**`doctrine-drift.sh` does cover the second copy, and it is a whitelist rather than an index.** It
+answers _is this **named** rule stated outside its owner_, over **three** registered claims, and
+its `SCAN_DIRS` see 52% of the measured population. A change-impact index answers _if I change this
+file, what moves_ — which nobody can register in advance, because registering it requires already
+knowing the answer. **The two are different questions and the script is not a degraded form of the
+index.** `MAP-RULE-OWNERSHIP` N-004 widens it to prose with a per-claim `scope` field and a citation
+exemption; that widening makes the whitelist sharper and does not make it an index.
+
+**The only raw material that would work is one this repository has refused twice, on the record.**
+Prose-rule extraction is refused by `doctrine-drift.sh`'s own header — _"Prose is free; examples are
+the contract"_ — and a hand-registered prose-rule register was refused at **N-005** on this map,
+because _a register nobody fills is false green_. The index needs the machinery both refusals
+declined, so building it would reverse two settled decisions to serve a question two other surfaces
+already answer better.
+
+**What this scopes, and it is the reason the node had to be taken before `S-01` was cut.** The emit
+answers **two** of N-001's four questions, and `S-01` must not claim the third:
+
+| The question (N-001's four)         | The emit                                                           |
+| ----------------------------------- | ------------------------------------------------------------------ |
+| _who cites this_                    | **Yes** — the reverse edge, exactly what `S-01` retains            |
+| _is this reachable at all_          | **Yes** — a file with zero inbound citations is computable         |
+| _which directory owns this concept_ | **Not the emit** — N-013's `owns:` / `enforced-by:` frontmatter    |
+| _what moves if I change this rule_  | **Refused, at 17.5%** — answered for citations, never restatements |
+
+**`S-01`'s emit therefore carries the limit in its own header**, per `code/docs/GATE-REPORTING.md`:
+a reverse-citation index that reports itself as change-impact is a skip reaching the same verdict
+as a pass.
+
+**A correction to this map, and the finding survives it.** The frontier recorded N-010's walker
+finding `300` restated _"in at least eight places"_. The walker's report says exactly that and names
+nine, then caveats itself honestly — its grep _"matched only the two literal strings"_ and was
+capped at 60 results. Measured today: **193 line-sites across 134 files** for that rule alone, a
+24-fold understatement by file count. **The correction strengthens the argument for an index and
+weakens the case for building it from citations** — as the population grows the citation reach
+falls, because the extra sites are the ones that never routed.
+
 ## Slices
 
 **Cut 31/08/2026 at Step 8a, on N-004 accepting and the last blocking node closing.** Per the
@@ -561,19 +632,21 @@ empty, so every `Story` cell reads `—`.
 
 | Slice  | Story | Title                                                | Nodes                                                | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Flags                                                                                                                                                                                                                                |
 | ------ | ----- | ---------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `S-01` | —     | The citation edge set stops being thrown away        | N-004 ✅ · N-010 ✅ · N-014 ○                        | `doc-references.sh` emits the citations that **resolve**, not only the ones that fail; the emit carries the **reverse** direction, so _who cites this file_ is answerable without re-parsing; a violating run still fails exactly as today; the emit is byte-stable across two runs on an unchanged tree                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | QA: unit (`doc-references.sh --self-test`, fixture pair **plus a file with inbound citations and no outbound ones, asserted reachable in the emit**), integration (`audit-doc-references.yml`), manual — emit diffed across two runs |
+| `S-01` | —     | The citation edge set stops being thrown away        | N-004 ✅ · N-010 ✅ · N-014 ✅                       | `doc-references.sh` emits the citations that **resolve**, not only the ones that fail; the emit carries the **reverse** direction, so _who cites this file_ is answerable without re-parsing; a violating run still fails exactly as today; the emit is byte-stable across two runs on an unchanged tree; **the emit's header states what it is not** — it answers _who cites this_ and _is this reachable_, and **never** _what moves if I change this rule_, which N-014 measured at 17.5% reach and refused (`GATE-REPORTING.md`)                                                                                                                                                                                                                                                                                                                                                                                                                                                              | QA: unit (`doc-references.sh --self-test`, fixture pair **plus a file with inbound citations and no outbound ones, asserted reachable in the emit**), integration (`audit-doc-references.yml`), manual — emit diffed across two runs |
 | `S-02` | —     | The walk test, adapted — and the attribution it owes | N-004 ✅ · N-005 ✅ · N-011 ✅ · N-012 ✅ · N-013 ✅ | A **65th skill** dispatches a cold reader and adjudicates it, reporting **which question failed** rather than a count; the pass condition is entry file plus ≤2 reads, 2k–8k tokens, N-001's four questions, **"could not look" a fail**; the walk runs **both directions**, so a file nothing points into is caught; a **seed** noun set exists as an `owns:` / `enforced-by:` **frontmatter key on the guides themselves** — no register file — scoped to the guides in the four questions' blast radius and no others; the `README.md` _Influences_ row and its `.copier/README.md` twin credit ICM **in this same change** **Every finding the walker reports is a candidate until checked against the tree** — the skill adjudicates, and an unverified finding is reported as unverified rather than as a defect (N-009); the walker's **reconnaissance is scoped in the prompt**, so a root carrying a large ignored directory cannot spend the token budget before the first read (N-010) | QA: unit (`skill-conformance.sh`, `routing-skills.sh`), manual — the pass condition read back as falsifiable, the reverse direction proved on a real inbound-only file, and the licence position re-checked before deriving          |
 | `S-03` | —     | The standing gate, and what fails when it rots       | N-009 ✅ · N-010 ✅                                  | **Unconditional as of 31/08/2026 — the first walk failed and the condition fired.** A **deterministic** `audits/` check asserts the root entry surface is present and reachable and that the AI-rule filenames are deliberately absent; it derives from a new `code/docs/NAVIGABILITY.md`, which states the entry surface, the walk test and the pass condition; it is **path-filtered and advisory on landing**, and is promoted to a required check only by deleting that path filter in the same change; **no LLM verdict gates a merge**; the gate self-tests against fixtures at both poles                                                                                                                                                                                                                                                                                                                                                                                                  | QA: unit (gate self-test, fixtures both poles), integration (CI job, and the `--path` contract proved across the five forms every audit answers)                                                                                     |
 
-**`S-02` and `S-03` are cuttable as of 31/08/2026; `S-01` waits on one node.** `S-02` got there at
-Batch A, `S-03` when N-009 settled the same evening. **`S-01` picked up N-014** — the fog item that
-graduated on N-010's evidence — because that node decides whether the emit feeds a prose effects
-index, and answering it after the slice is cut would re-open the emit format.
+**All three slices are cuttable as of 01/09/2026.** `S-02` got there at Batch A, `S-03` when N-009
+settled the same evening, and **`S-01` when N-014 closed** — the node that decided whether the emit
+feeds a prose effects index. It answered **no**, which is why taking it first mattered: settling it
+after the slice was cut would have re-opened the emit format the story ships.
 
-**`S-01` is the only unconditional slice, and it is the one to cut first once N-010 clears.** Its justification does
+**`S-01` is the only unconditional slice, and it is the one to cut first.** Its justification does
 not depend on any navigability finding: roughly 9,650 citations are resolved and discarded on every
-audit run, and that is waste on its own terms. **N-010 appears in its Nodes because the tracer
-scopes the emit format and its consumer** — not whether the slice exists.
+audit run, and that is waste on its own terms. **N-010 and N-014 appear in its Nodes because they
+scope the emit format and its consumer** — not whether the slice exists. N-014 in particular
+subtracts rather than adds: it fixes what the emit may **claim**, which is the cheaper half of an
+interface to get right before it ships.
 
 **`S-02`'s acceptance is deliberately about the mechanism, not the content.** What the adapted
 skill _says_ is N-005, N-011 and N-012's business, settled before the story is cut; that the skill
@@ -596,9 +669,9 @@ on a developer machine is the flake that gets a gate switched off.
 `Components`, `Wireframes`, `User Flow`, `Security`, `Logging`, `Backend`, `Frontend` — and this
 epic ships a bash audit, a skill and documentation. **That is the honest manifest, not a thin one.**
 
-**Every open node belongs to a slice**, so no node is work without a route to a story. One node is
-open — **N-014, to `S-01`**. N-010 discharged both of its own jobs on 31/08/2026, scoping `S-01`'s
-emit and deciding that `S-03` exists; N-009 settled `S-03`'s shape the same day.
+**Every node belongs to a slice and none is open.** N-010 discharged both of its own jobs on
+31/08/2026, scoping `S-01`'s emit and deciding that `S-03` exists; N-009 settled `S-03`'s shape the
+same evening; **N-014 closed `S-01` on 01/09/2026** and with it the map.
 
 **A slice is not a story.** Nothing here is written into `../02-STORIES/`; `02-story-creation` cuts
 the story from the row and allocates the `US###`. No number is reserved.
@@ -607,49 +680,20 @@ the story from the row and allocates the `US###`. No number is reserved.
 
 ## Frontier
 
-Open decisions in dependency order. Blocked-by names other nodes, so the takeable edge is visible.
-
-| Node  | Decision                                                                                       | Type     | Blocked by | Blocking a story? |
-| ----- | ---------------------------------------------------------------------------------------------- | -------- | ---------- | ----------------- |
-| N-014 | **Is a prose change-impact index worth having** — or does `doctrine-drift.sh` already cover it | research | none       | no                |
+**Empty — closed 01/09/2026.** N-004 was the last node ever marked blocking; Batch A closed the
+three that shaped `S-02`; N-010 failed on 31/08/2026 and opened N-009, which settled the same
+evening; **N-014 — the last node, and the only one that graduated out of fog rather than being
+charted — settled on 01/09/2026.** Every node sits `✅` on a slice, and all three slices are
+cuttable.
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
 `grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
 named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
 blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
 
-**One node left, and it is takeable.** N-004 was the last node ever marked blocking; Batch A closed
-the three that shaped `S-02`; N-010 failed on 31/08/2026 and opened N-009, which settled the same
-day. **N-014 is what replaced it** — graduated out of fog by N-010's evidence rather than charted,
-and the map closes when it is settled.
-
-### What each node has to settle
-
-- **N-010 is the takeable edge, and it is the last thing standing between this map and its
-  stories.** It was charted as _"map `.claude/skills/` only, then walk it cold"_; N-004 removed the
-  map half, so **the walk is the whole node**. Run in a **fresh session Sam drives** — not a
-  subagent, because the first run is evidence for a decision not yet taken and a subagent
-  reporting its own success is ICM's self-grading defect wearing a different hat. The pass
-  condition is fixed and is **not this node's to choose**: entry file plus at most two reads,
-  2,000 to 8,000 tokens, N-001's four questions, and **"could not look" is a fail**
-  (`code/docs/GATE-REPORTING.md`). **Batch A added a second obligation**: the walk runs in **both
-  directions**, because a third party field-reported that an outward-only walk passes while
-  external consumers pointing in break silently.
-
-  **Two outcomes, both useful, and the map does not prefer one.** A pass scopes `S-01`'s emit to
-  what a reader actually wanted and leaves `S-03` uncut. A failure names the questions that broke,
-  which is `S-03`'s reason to exist and sharpens `S-02`'s seed. **The honest counter-test is in fog
-  of war** — a clean pass on a tree that demonstrably had three findable defects means the test is
-  too weak, not that the repository is navigable.
-
-- **N-014 is the last node, and it was never charted.** It graduated out of fog on 31/08/2026 when
-  N-010 supplied the evidence the fog item had been waiting for: the walker answered _"what moves if
-  I change this rule"_ by **SEARCH, not POINTER**, and found the number `300` restated in at least
-  eight places that would all go stale together. **It is `research`, not grilling** — the question is
-  whether `doctrine-drift.sh` already finds the second copy of a rule, or whether `S-01`'s citation
-  emit is the raw material for something `doctrine-drift.sh` cannot produce. A lookup may settle it
-  outright. **It is taken before `S-01` is cut**, because deciding it afterwards re-opens the emit
-  format that slice ships.
+**Fourteen nodes have left this edge and none remains on it.** Three were discharged by
+measurement at charting, three were closed **moot** by N-004 rather than answered, one tracer
+failed usefully, and the rest were grilled. **The takeable edge is now `02-story-creation`.**
 
 ---
 
@@ -665,12 +709,16 @@ two closed on the walk test running.
 | _Whether this absorbs or duplicates `REFERENCES.md`_                    | **Graduated to N-013** once N-005 named that file as "already half of it", and settled in the sitting that promoted it                                                              |
 | _Whether the unit of work that triggers regeneration is a story at all_ | **Answered at N-009: no.** The trigger is a diff touching the navigational surface. Workflow `22` is per-story, and a per-story trigger would have caught neither N-010 finding     |
 | _Whether a walk test would have caught anything real_                   | **Cleared by N-010 running.** One control class exercised outright, a second one unspent read away, two untouched. **Not all four were missed, so the test is not too weak**        |
-| _Whether change-impact is meaningful for prose_                         | **Graduated to N-014**, on evidence N-010 produced rather than on a fresh argument. It is the frontier                                                                              |
+| _Whether change-impact is meaningful for prose_                         | **Graduated to N-014**, on evidence N-010 produced rather than on a fresh argument — and **settled 01/09/2026: no**                                                                 |
 
 **A fog item is discharged three ways, and only one of them is an answer.** Two were _cleared_ —
 the question stopped existing when N-004 refused the layer. One was _answered_. Two _graduated_ to
 nodes. Recorded this way deliberately: a later reader finding all five marked "resolved" would
 expect five answers, and there is one.
+
+**Both graduated nodes have since settled** — N-013 on 31/08/2026, N-014 on 01/09/2026 — so every
+item now has an answer somewhere. Only one of them has it **here**, and the distinction is kept
+because it is what tells a later reader where to look.
 
 ---
 
@@ -705,6 +753,7 @@ expect five answers, and there is one.
 | 31/08/2026 | **N-010** — the first cold walk, run | **FAIL on the token ceiling, and no question broke.** Coldness had to be manufactured from outside the tree, because `.claude/CLAUDE.md`'s `@` imports hand any in-repo session the tree and the doc index before its first read. The four questions and both directions were answered in two reads of three; the 8,000-token band was missed by roughly ten times, all of it on reconnaissance against a root where **the `CLAUDE.md` does not exist** and `node_modules` truncates the glob that would find `README.md`. **The walker also stated one confident falsehood inside budget** — a citation gap that is not there — which no clause of the pass condition can detect and which binds `S-02`. Counter-test discharged: one control class exercised, a second one read away. **N-009 opens; `S-03` exists.** Evidence: `../00-ASSETS/WALK-TESTS/` |
 
 | 31/08/2026 | **N-009** · fog emptied · **N-014** graduated | **The gate is deterministic and the walk is not.** Nine questions over three rounds settled the mandate: an `audits/` preconditions check deriving from a new `code/docs/NAVIGABILITY.md`, triggered on a navigational-surface diff — **not on a story**, which answers the fog item outright — **path-filtered and advisory on landing, promoted to required only by deleting that filter**, because `PR-AND-REQUIRED-CHECKS.md` forbids a workflow being both. **No LLM verdict gates a merge**; verified-or-nothing lives in `S-02`'s skill. **Two N-010 findings were corrected, not carried**: the absent root `CLAUDE.md` is a deliberate, documented ignore rather than a defect — the finding is that the decision is undiscoverable from the root — and the `node_modules` drowning is a reader-strategy defect fixed in the skill's prompt. **No `GAPS.md` row is owed after all.** The last fog item became **N-014** on N-010's evidence |
+| 01/09/2026 | **N-014** — the last node | **Refused on measurement, and the refusal scopes the slice it belongs to.** The node asked whether a prose change-impact index is worth having, or whether `S-01`'s citation emit is the raw material for one. **Neither.** Measured across the three most-restated prose rules: **280 files state them and 49 (17.5%) name the owner** — because a restatement is _defined_ by not citing its owner, so a citation-derived index is blindest exactly where the defect is worst, and the rule with the largest population has the **lowest** reach. `doctrine-drift.sh` is a **whitelist** of three registered claims reaching 52% of that population, answering a different question — _is this named rule forked_, not _what moves if I change this file_ — and `MAP-RULE-OWNERSHIP` N-004's prose widening sharpens the whitelist without making it an index. The only raw material that would work is **prose-rule extraction, refused twice on the record** — by `doctrine-drift.sh`'s own header and by N-005 here. **`S-01`'s emit is scoped to two of N-001's four questions** and its header must say so. **One map literal corrected:** N-010's _"at least eight places"_ is **193 line-sites across 134 files** for the 300 rule alone — the walker's own grep was capped and matched two literal strings, and it said so |
 
 ---
 
@@ -713,13 +762,13 @@ expect five answers, and there is one.
 - [x] **Destination and out-of-scope bounds confirmed** — Sam confirmed 31/08/2026, and **amended
       them in the same sitting**: "not an adoption of ICM" became "not a **verbatim** adoption",
       and the `map/` layer moved from the thing being decided to _Out of scope_
-- [x] Every open `GAPS.md` / `DEFERRED.md` entry triaged — **re-triaged 31/08/2026**; the charted
-      "both registers empty" expired, and the four new entries are all unrelated
+- [x] Every open `GAPS.md` / `DEFERRED.md` entry triaged — **re-triaged 01/09/2026**: 0 closes ·
+      0 blocks · 7 unrelated. The 31/08 triage had expired in both directions
 - [x] Neither register file edited here
 - [x] Every knowable decision is a node or in fog of war — **fog re-read 31/08/2026** and one item
       graduated to N-013 rather than being left to be decided at the keyboard
-- [x] Every node typed and blocker-wired; **N-014 is the takeable edge and the only one.** It is
-      `research`, so the next sitting looks it up rather than asking; the map closes when it lands
+- [x] Every node typed and blocker-wired; **the edge is empty.** N-014 was the last, it was
+      `research`, and it was settled by lookup rather than by asking — as its type required
 - [x] **Every node marked "blocking a story" is resolved** — N-004 was the last, and N-005 and
       N-006 no longer carry the flag: N-006 is moot, and N-005 was re-scoped to sharpen `S-02`'s
       content rather than to gate its existence
@@ -730,9 +779,9 @@ expect five answers, and there is one.
       settled, because no answer to them exists
 - [x] **Every slice has a flag manifest** — three slices; twelve of the thirteen flags read `N/A`
       and are omitted, which is the honest manifest for a bash audit, a skill and documentation
-- [x] **Every open node belongs to a slice** — one open node, **N-014, to `S-01`**. N-005, N-011,
-      N-012 and N-013 resolved into `S-02`; N-010 into `S-01` and `S-03`; N-009 into `S-03`. **`S-02`
-      and `S-03` are cuttable; `S-01` waits on N-014**
+- [x] **Every node belongs to a slice and none is open** — N-005, N-011, N-012 and N-013 into
+      `S-02`; N-010 into `S-01` and `S-03`; N-009 into `S-03`; **N-014 into `S-01`**. All three
+      slices are cuttable
 - [ ] **Index row still not added** — the shipped `CONTEXT.md` index reads "None charted yet" and
       **this is now a defect rather than a decision.** `MAP-REGISTER-INDEXES.md` `S-01`/`S-02`
       settled it 31/08/2026: the table leaves `CONTEXT.md` for a seeded `MAP-INDEX.md`, and this
@@ -744,9 +793,12 @@ walk test failing; it failed on 31/08/2026, so the epic ships three things. **Th
 recorded before the evidence, not after** — which is the point of writing a conditional slice down
 rather than deciding at the keyboard once the result is known.
 
-**The fog is empty and one node stands.** N-014 is the only thing between this map and
-`02-story-creation`, and it is a lookup rather than a decision — so the map is one research sitting
-from complete, having settled thirteen nodes and refused the surface it was chartered to build.
+**The frontier and the fog are both empty, and the map is complete.** Fourteen nodes settled, and
+the epic **refused twice** — the `map/` layer it was chartered to build (N-004) and the prose
+change-impact index its last node proposed (N-014). What ships is narrower than the Destination
+imagined and every clause of it is measured: an emit that keeps an edge set already computed, a
+skill that walks the tree against a falsifiable condition, and a deterministic gate over the front
+door. **`02-story-creation` is the next act.**
 
 **One row is owed elsewhere and is not written yet.** N-011 deferred docs-over-outputs and
 selective section routing out of this epic. They are recorded in _Out of scope_, and a
