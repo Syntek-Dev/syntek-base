@@ -4,6 +4,9 @@ Fixture for `doc-references.sh --self-test`. Never read as documentation.
 
 Declared on the line, which is the whole mechanism: `copier.yml` <!-- doc-references: template-only -->
 
+The same path under an anchor, declared the same way — the marker is per line, not per form:
+`copier.yml:41-42` <!-- doc-references: template-only -->
+
 The `ignore` marker records the other judgement and must suppress this check too:
 `.github/scripts/shipped-readme.sh` <!-- doc-references: ignore — quoted, not cited -->
 

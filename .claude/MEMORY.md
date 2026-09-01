@@ -46,7 +46,7 @@ _No entries yet._
 
 `argon2-cffi` and `cryptography` are declared in `pyproject.toml` but deliberately unwired —
 no `PASSWORD_HASHERS` in `base.py`, so runtime hashes with Django's PBKDF2 default (measured
-01/09/2026, `MAP-UPSTREAM-TRACKING` N-017 sitting). Sam: the **syntek-modules authentication
+01/09/2026, `MAP-UPSTREAM-TRACKING.md` N-017 sitting). Sam: the **syntek-modules authentication
 module** owns wiring Argon2 and the crypto setup; projects may choose their own hashing/crypto,
 and the docs recommend the secure default. Not a gap — staging for that module; do not re-raise
 it as one.

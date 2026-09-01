@@ -304,7 +304,7 @@ daily but has **no cargo step**. `cargo deny check advisories` runs only via `sy
 schedule, so an advisory published against an unchanged `Cargo.lock` goes unseen until
 somebody edits a Rust file — the exact continuous-drift failure `audit-deps.yml` was written
 to close for the other two lockfile ecosystems. Re-verified 01/09/2026. Routed here from
-`MAP-UPSTREAM-TRACKING` N-021 (Sam, `Q6→2`, 28/08/2026) — corrected on the map, fix
+`MAP-UPSTREAM-TRACKING.md` N-021 (Sam, `Q6→2`, 28/08/2026) — corrected on the map, fix
 deliberately not adopted there.
 **Blocked by / Action:** Nothing blocks it. Add a cargo-deny advisories leg to
 `audit-deps.yml` (or an advisories-only scheduled entry for the Rust gate), reporting into the
@@ -322,7 +322,7 @@ default SMTP backend against `localhost:25` — unconfigured, undocumented, and 
 discarding every send with no signal. Django 6.1 deprecates the whole `EMAIL_*` family
 (`RemovedInDjango70Warning`) and the two forms are mutually exclusive, so the fix is a
 `MAILERS` entry, never an `EMAIL_BACKEND` one. Measured 01/09/2026 from
-`MAP-CAP-POSTURE` N-017; the map states the posture and deliberately does not fix it, because
+`MAP-CAP-POSTURE.md` N-017; the map states the posture and deliberately does not fix it, because
 the posture is `development` (nothing deployed — `how-to/src/DEPLOYMENT-POSTURE.md`) and
 choosing a relay is a real decision, not a doc repair.
 **Blocked by / Action:** Nothing blocks it. A story picks the staging and production relay

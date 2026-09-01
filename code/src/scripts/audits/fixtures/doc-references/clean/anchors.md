@@ -2,10 +2,13 @@
 
 Fixture for `doc-references.sh --self-test`. Never read as documentation.
 
-Each anchor below names a location inside a file this repository holds, so neither is a
-finding: `code/src/scripts/audits/doc-references.sh:47` in the plain form and
-`code/src/scripts/audits/doc-references.sh:12:34` in the column form. The second is the one
-a single greedy regex gets wrong — it leaves a path ending `:12` and reports that.
+Each anchor below names a location inside a file this repository holds, so none is a
+finding: `code/src/scripts/audits/doc-references.sh:47` in the plain form,
+`code/src/scripts/audits/doc-references.sh:12:34` in the column form, and
+`code/src/scripts/audits/doc-references.sh:22-29` in the range form. The second is the one
+a single greedy regex gets wrong — it leaves a path ending `:12` and reports that. The third
+is the one the peel simply did not have until 01/09/2026, so a citation naming a BLOCK of a
+file that exists was reported as a path that does not.
 
 Two near-misses carry no slash, so the path guard drops them before the peel is reached and
 neither can ever become a finding: the container port `django:8000` and the OWASP category

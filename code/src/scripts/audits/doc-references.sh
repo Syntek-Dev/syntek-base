@@ -17,8 +17,9 @@
 #
 #                     ADDED 20/08/2026: Check 1 peels a trailing LINE ANCHOR before the
 #                     existence test. An anchor names a location INSIDE a file rather than
-#                     another file -- `foo.py:7` cites `foo.py` -- and both the `:N` and the
-#                     `:N:M` column form are peeled. It sits AFTER the path guard, so a port
+#                     another file -- `foo.py:7` cites `foo.py` -- and the `:N` plain form,
+#                     the `:N:M` column form and the `:N-M` RANGE form are peeled. It sits
+#                     AFTER the path guard, so a port
 #                     (`django:8000`) and an OWASP id (`A05:2025`) never reach it: neither
 #                     carries a slash, and that guard already drops them. Check 2 tests the
 #                     RAW token and is deliberately left alone -- hoisting the peel above it
@@ -26,6 +27,32 @@
 #                     decision nobody has made. Known limit of that scoping, stated rather
 #                     than left to be found: a line-anchored INSTANCE citation would still
 #                     false-positive at Check 2. None exists today.
+#
+#                     CORRECTED 01/09/2026: the RANGE form was missing, and the comment above
+#                     said "both" of two forms as though the set were closed. `:N-M` is the
+#                     house form wherever a citation names a BLOCK rather than a line, and it
+#                     reached the existence test unpeeled, so
+#                     `code/src/django/config/settings/dev.py:22-29` was reported as a dangling
+#                     path while the file it names sits in the tree.
+#
+#                     MEASURED, because "common" is the kind of word that turns out to mean
+#                     nothing -- 272 occurrences over 18 tracked files:
+#                       grep -rhoE '`[^`]*:[0-9]+-[0-9]+`' $(git ls-files) | wc -l
+#                     Exactly ONE of them ever reached the existence test, and the other four
+#                     arms are why: an exempt tree
+#                     (`project-management/src/01-FEATURE-MAPS/`, `research/`), no slash so the
+#                     path guard drops it first, a path resolving outside a checkable tree so
+#                     the catch-all drops it, or this audit's own fixtures, exempt outside
+#                     `--self-test`. A form this widespread stayed invisible for twelve days on
+#                     a population of one.
+#
+#                     Check 3 ran its own copy of the same peel, and BOTH copies were missing
+#                     the branch. That is the failure duplication produces, so the peel is now
+#                     one `peel_anchor()` helper called from both -- and Check 3's copy had
+#                     never been fixtured at all, which is why only Check 1's half of the drift
+#                     could ever have been caught. `{broken,clean}/direction-b.md` carry an
+#                     anchored excluded path as of this change, so deleting the branch from
+#                     either caller now reddens the self-test.
 #
 # ADDED 23/08/2026: CHECK 3 — Direction B is derived rather than declared. Until now nothing
 #                 read `copier.yml`'s `_exclude` list, so a path the template holds and never  # doc-references: template-only
@@ -458,6 +485,34 @@ is_template_only() {
 build_template_only
 build_template_only_index
 
+# ONE PEEL, TWO CALL SITES. A line anchor names a location INSIDE a file rather than another
+# file -- `foo.py:7` cites `foo.py` -- and Check 1 and Check 3 each strip one before their own
+# lookup. Written twice until 01/09/2026, which is exactly how the forms drifted: the range
+# branch was missing from BOTH copies, and the self-test could only ever have caught it in one
+# (nothing fixtured Check 3's). Factored here so a fixture over either check proves the form
+# for both.
+#
+# THREE branches, not one regex: `.+` is greedy, so `^(.+):[0-9]+([:-][0-9]+)?$` turns
+# `a/b.py:12:34` into `a/b.py:12` rather than `a/b.py`. Ordered column, range, plain -- `||`
+# short-circuits, so BASH_REMATCH carries the FIRST branch to match and the plain form, which
+# is a prefix of the other two, must come last.
+#
+# Sets `peeled` rather than echoing. This runs once per backticked token -- 29k times on an
+# unscoped run -- and a command substitution forks a subshell each time, which costs more than
+# every other check in this file put together. `scan_files()` declares `peeled` local, so
+# bash's dynamic scoping keeps it out of the global namespace.
+#
+# NEITHER CALL SITE MAY HOIST THIS ABOVE CHECK 2, which reads the RAW token: peeling there
+# would move `base` and the is_seeded lookup with it, and that is a decision nobody has made.
+peel_anchor() { # $1 = token -> sets `peeled`
+  peeled="$1"
+  if [[ "$peeled" =~ ^(.+):[0-9]+:[0-9]+$ ]] \
+     || [[ "$peeled" =~ ^(.+):[0-9]+-[0-9]+$ ]] \
+     || [[ "$peeled" =~ ^(.+):[0-9]+$ ]]; then
+    peeled="${BASH_REMATCH[1]}"
+  fi
+}
+
 # A token with a template placeholder, a numeric pattern, or a glob is not a citation.
 is_pattern() {
   case "$1" in
@@ -510,7 +565,7 @@ scan_files() { # $1 = newline-separated file list
   checked_tokens=0
   path_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
-  local is_marked file_ships file_dir tmpl tmpl_base
+  local is_marked file_ships file_dir tmpl tmpl_base peeled
   local resolved_skip=false
 
   while IFS= read -r file; do
@@ -586,9 +641,9 @@ scan_files() { # $1 = newline-separated file list
       if [ "$file_ships" = true ] && [ "$is_marked" = false ]; then
         tmpl="${token%\\}"
         tmpl="${tmpl%/}"
-        if [[ "$tmpl" =~ ^(.+):[0-9]+:[0-9]+$ ]] || [[ "$tmpl" =~ ^(.+):[0-9]+$ ]]; then
-          tmpl="${BASH_REMATCH[1]}"
-        fi
+        # An anchored citation of an excluded path is still a citation of that path:
+        # `copier.yml:41-42` has to reach the set lookup as `copier.yml`.  # doc-references: template-only
+        peel_anchor "$tmpl"; tmpl="$peeled"
         # The whole cost of this check, and it is one array lookup. Everything below runs
         # only for a token whose last segment names one of the forty.
         tmpl_base="${tmpl##*/}"
@@ -636,16 +691,10 @@ scan_files() { # $1 = newline-separated file list
 
       # Trailing backslashes survive from shell heredocs in the *.sh files.
       stripped="${token%\\}"
-      # A line anchor names a location INSIDE a file, not another file: `foo.py:7` cites
-      # `foo.py`. Peeled here, beside the other two peels and never before the path guard
-      # above -- a port (`django:8000`) and an OWASP id (`A05:2025`) carry no slash, and that
-      # guard is what already drops them. TWO branches, not one: `.+` is greedy, so a single
-      # `^(.+):[0-9]+(:[0-9]+)?$` turns `a/b.py:12:34` into `a/b.py:12` rather than `a/b.py`.
-      # Scoped to Check 1 deliberately -- Check 2 above reads the raw token, and hoisting this
-      # over it would change `base` and the is_seeded lookup as a side effect.
-      if [[ "$stripped" =~ ^(.+):[0-9]+:[0-9]+$ ]] || [[ "$stripped" =~ ^(.+):[0-9]+$ ]]; then
-        stripped="${BASH_REMATCH[1]}"
-      fi
+      # Peeled here, beside the other two peels and never before the path guard above -- a
+      # port (`django:8000`) and an OWASP id (`A05:2025`) carry no slash, and that guard is
+      # what already drops them. Forms and ordering: peel_anchor() above.
+      peel_anchor "$stripped"; stripped="$peeled"
       stripped="${stripped%/}"
 
       # Resolve relatives against the CITING file's directory, not the repo root —
@@ -784,8 +833,8 @@ self_test() {
   log "  known-bad — every line printed below is expected:"
   # The anchor peel must not make a dangling path resolve, and the finding must still quote
   # the citation as the author wrote it: `record` reports the raw token, never the peeled one.
-  st_probe "broken/anchors.md      fires on both anchor forms" \
-    "$FIXTURES_DIR/broken/anchors.md" 2 'NO-SUCH-GUIDE.md:7'
+  st_probe "broken/anchors.md      fires on all three anchor forms" \
+    "$FIXTURES_DIR/broken/anchors.md" 3 'NO-SUCH-GUIDE.md:7'
   # A marker two lines above is not the documented window, and template-only is per line
   # rather than per file. Both halves fail here, which is what keeps the token narrow.
   st_probe "broken/tokens.md       fires past the marker's window" \
@@ -797,14 +846,15 @@ self_test() {
     "$FIXTURES_DIR/broken/django-arm.md" 2 'no_such_app/views.py'
   # Check 3, isolated: every path in that fixture RESOLVES here, so Check 1 passes on all of
   # them and a finding can only have come from the Direction B clause.
-  st_probe "broken/direction-b.md  fires on an undeclared excluded path" \
-    "$FIXTURES_DIR/broken/direction-b.md" 2 'copier.yml'
+  st_probe "broken/direction-b.md  fires on an undeclared excluded path, bare and anchored" \
+    "$FIXTURES_DIR/broken/direction-b.md" 3 'copier.yml:41-42'
 
   log ""
   log "  known-good — nothing below should print a finding:"
-  # Without the peel every line here is a finding, and the `:N:M` form is the one that a
-  # single greedy regex gets wrong: it would leave `…doc-references.sh:12` and report it.
-  st_probe "clean/anchors.md       silent on :N, :N:M, a port and an OWASP id" \
+  # Without the peel every line here is a finding. The `:N:M` form is the one that a single
+  # greedy regex gets wrong -- it would leave `…doc-references.sh:12` and report it -- and
+  # `:N-M` is the one the peel did not reach at all until 01/09/2026.
+  st_probe "clean/anchors.md       silent on :N, :N:M, :N-M, a port and an OWASP id" \
     "$FIXTURES_DIR/clean/anchors.md" 0
   st_probe "clean/tokens.md        silent on template-only, on-line and line-above" \
     "$FIXTURES_DIR/clean/tokens.md" 0
@@ -815,7 +865,7 @@ self_test() {
     "$FIXTURES_DIR/clean/django-arm.md" 0
   # Both markers suppress Check 3, and the three classes that need no marker stay silent:
   # surface-gated, seeded, regenerated, and re-included inside an excluded tree.
-  st_probe "clean/direction-b.md   silent on both markers and the four undeclared classes" \
+  st_probe "clean/direction-b.md   silent on both markers, anchored or bare, and the four classes" \
     "$FIXTURES_DIR/clean/direction-b.md" 0
 
   # The SET is asserted directly, not only through a fixture. A fixture proves the clause
