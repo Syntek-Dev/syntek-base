@@ -147,6 +147,21 @@ resolves to the mobile app when you opted in and to nothing when you did not —
 Cost: any future directory you add under `code/src/` carrying a `package.json` joins the
 workspace silently. Nothing warns you.
 
+### The patch that only applies on one path
+
+`patches/` and the `patchedDependencies` entry pointing at it ship to **every** project, mobile
+or not, because `pnpm-workspace.yaml` is byte-identical on both paths and cannot conditionally
+name a patch. On a web-only project the patched package is simply not in the graph, and pnpm 11
+**errors** on a patch it could not apply (`ERR_PNPM_UNUSED_PATCH`; `ignorePatchFailures` was
+removed in 11.0). `allowUnusedPatches: true` is what turns that error into a warning, so it is
+load-bearing for the web-only render path rather than a convenience — verified both ways on
+01/09/2026 against a scratch project.
+
+The same setting covers the other direction: each key pins an **exact** version, so the day the
+upstream package moves the patch stops matching, the install warns instead of applying a diff
+written against different code, and `pnpm audit` goes loud again if the new version is still
+vulnerable. That is the signal you want. Do not loosen a key to a range to keep it quiet.
+
 ## House rules — change knowingly
 
 | Rule                             | Where                           | If you change it                                               |

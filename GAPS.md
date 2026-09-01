@@ -292,3 +292,42 @@ the 4.x GA (npm `latest` has moved and the event-grammar migration is charted), 
 template exists that actually loads htmx. The migration is then its own charted feature (event
 grammar, swap policy, CSRF inheritance, the gate regex) — never a side-effect of another
 story.
+
+---
+
+## 01/09/2026 — a RUSTSEC advisory against an unchanged `Cargo.lock` is invisible
+
+**Type:** Active gap
+**Summary:** `audit-deps.yml` — the only scheduled workflow of 35 — sweeps JS and Python CVEs
+daily but has **no cargo step**. `cargo deny check advisories` runs only via `syntax-rust.yml`
+→ `rust/audit.sh:51`, and that workflow is path-filtered to `code/src/rust/**` with no
+schedule, so an advisory published against an unchanged `Cargo.lock` goes unseen until
+somebody edits a Rust file — the exact continuous-drift failure `audit-deps.yml` was written
+to close for the other two lockfile ecosystems. Re-verified 01/09/2026. Routed here from
+`MAP-UPSTREAM-TRACKING` N-021 (Sam, `Q6→2`, 28/08/2026) — corrected on the map, fix
+deliberately not adopted there.
+**Blocked by / Action:** Nothing blocks it. Add a cargo-deny advisories leg to
+`audit-deps.yml` (or an advisories-only scheduled entry for the Rust gate), reporting into the
+same aggregated tracking issue the existing legs use.
+
+---
+
+## 01/09/2026 — staging and production have no mail backend, so mail is silently discarded
+
+**Type:** Active gap (blocker — a decision with no story behind it)
+**Summary:** `MAILERS` is defined in `code/src/django/config/settings/dev.py:22-29` (console)
+and `test.py:24-27` (locmem) only. `base.py`, `staging.py` and `production.py` define neither
+`MAILERS` nor any `EMAIL_*` setting, so both deployed environments fall through to Django's
+default SMTP backend against `localhost:25` — unconfigured, undocumented, and failing or
+discarding every send with no signal. Django 6.1 deprecates the whole `EMAIL_*` family
+(`RemovedInDjango70Warning`) and the two forms are mutually exclusive, so the fix is a
+`MAILERS` entry, never an `EMAIL_BACKEND` one. Measured 01/09/2026 from
+`MAP-CAP-POSTURE` N-017; the map states the posture and deliberately does not fix it, because
+the posture is `development` (nothing deployed — `how-to/src/DEPLOYMENT-POSTURE.md`) and
+choosing a relay is a real decision, not a doc repair.
+**Blocked by / Action:** Nothing blocks it. A story picks the staging and production relay
+(provider, credentials as environment variables, connection and read timeouts) and adds the
+`MAILERS` entry to both settings modules. `code/docs/NOTIFICATIONS.md` is still
+declared-not-wired, so this lands with the notification surface rather than ahead of it —
+but the silent fall-through is a defect in its own right and should not wait for a
+notification feature to be scheduled.

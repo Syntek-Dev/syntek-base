@@ -30,12 +30,12 @@ new Router modules, Schema request/response models, or endpoints.
 
 ### Governing documents
 
+- `code/docs/api-design/REST-CONVENTIONS.md` — the HTTP contract itself: which method, what it guarantees, which status it returns, URLs, pagination, versioning. **Governing, not background** — it owns method semantics, so an endpoint designed without it picks its verb by habit
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — Router/`api.py` module rule, Schema models, endpoints, error handling, throttling
 - `code/docs/security/AUTH-AND-AUTHZ.md` — endpoint permission requirements and IDOR prevention
 
 ### Related reading
 
-- `code/docs/api-design/REST-CONVENTIONS.md` — REST URLs, methods, status codes, pagination, versioning
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — value objects, enums, aggregates, Schema/type design
 - `code/docs/performance/DATABASE-PERFORMANCE.md` — N+1 prevention and query optimisation
 - `code/docs/testing/API-TESTING.md` — API tests immediately follow design

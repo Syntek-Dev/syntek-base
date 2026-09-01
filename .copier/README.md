@@ -348,6 +348,7 @@ Two things to do on a freshly generated project:
 ├── questionnaires/                      ← /to-questionnaire — outbound discovery questionnaires
 ├── research/                            ← /research — primary-source-cited notes that feed decisions
 ├── learning/                            ← /teach sandbox — throwaway learning workspace
+├── patches/                             ← pnpm dependency patches — one per advisory whose fix this graph cannot consume (see pnpm-workspace.yaml)
 ├── CHANGELOG.md                         ← human-readable changelog
 ├── CONTEXT.md                           ← project overview and layer map
 ├── DEFERRED.md                          ← items explicitly deferred to future stories (checked at sprint planning)

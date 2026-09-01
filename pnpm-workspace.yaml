@@ -59,10 +59,15 @@ allowBuilds:
 # The rule the deletion sets: an ignore whose advisory HAS a published fix is a
 # suppression, not a decision. Ignore on availability, never on inertia.
 #
-# One of the three remaining entries resolves to nothing — GHSA-jxxr-4gwj-5jf2
-# matches no package here, so 2 is the expected count and not a shortfall. Left
-# in place rather than deleted: an ignore that matches nothing costs nothing,
-# and the advisory can return through a different consumer.
+# One of the four entries resolves to nothing — GHSA-jxxr-4gwj-5jf2 matches no
+# package here, so 3 is the expected count and not a shortfall. Left in place
+# rather than deleted: an ignore that matches nothing costs nothing, and the
+# advisory can return through a different consumer.
+#
+# Read the entries as two kinds, because they are not the same decision. The
+# image-size pair is LEFT VULNERABLE and says so. The decode-uri-component entry
+# is not: the code is fixed, and the line exists only because `pnpm audit` cannot
+# see a patch. Never collapse the two under one heading.
 # Source: https://pnpm.io/cli/audit
 audit:
   ignore:
@@ -77,6 +82,31 @@ audit:
     # ships and delete both lines.
     - GHSA-w3rx-r6r6-pgpr
     - GHSA-5p2g-fcmc-qvqq
+    # decode-uri-component — PATCHED IN PLACE, NOT SUPPRESSED. The one entry here
+    # that does not mean "left vulnerable": patches/decode-uri-component@0.2.2.patch
+    # carries 0.5.0's fix and pnpm applies it on every install. `pnpm audit` keys on
+    # the version the lockfile resolved and a patch does not move it, so the advisory
+    # is reported against code that no longer contains the flaw. Deleting the patch
+    # without deleting this line is the failure mode to guard against — they are one
+    # change, in both directions.
+    #
+    # Why a patch and not an override. The fix ships in 0.5.0 ONLY, and 0.5.0 is
+    # ESM-only. The sole consumer — query-string@7.1.3, reached through expo-router —
+    # is CommonJS. Measured 01/09/2026 on Node 24: `require('decode-uri-component')`
+    # against 0.5.0 returns `{__esModule, default}`, and calling it throws
+    # `TypeError: d is not a function`. 0.2.2 is the newest CommonJS release and every
+    # CommonJS release is vulnerable, so there is no version to float to. Same INTEROP
+    # SHAPE constraint the @jest/reporters>glob override below documents — but with no
+    # compatible version in existence, which is what makes this the one case a patch
+    # earns.
+    #
+    # What it cost unpatched, measured the same day: `'%A0'.repeat(800)`, a 2.4 KB
+    # deep-link query, held the JS thread for 12.8 s — growth ~4.3x per doubling of
+    # input, from the recursive bisection in the fallback decoder. Patched: 0.15 ms,
+    # and 300 KB of the same input in 23 ms. expo-router parses deep-link URLs on
+    # device, so this sat in the MOBILE DELIVERY PATH, not in dev-time tooling like
+    # the image-size pair above.
+    - GHSA-vcc3-ghjq-m6fr
 minimumReleaseAgeExclude:
   - js-yaml@4.1.2
   - markdown-it@14.1.2
@@ -153,3 +183,25 @@ overrides:
 allowedDeprecatedVersions:
   whatwg-encoding: "*"
   node-domexception: "*"
+# Patched dependencies — a LAST RESORT, and the bar is the one the entry above
+# states: an advisory whose fix exists but which THIS graph cannot consume. An
+# advisory with a consumable fix takes an override, never a patch.
+#
+# The key is an EXACT version on purpose. The day expo moves off 0.2.2 the patch
+# stops matching, `allowUnusedPatches` keeps the install quiet, and `pnpm audit`
+# goes loud again on whatever replaced it — which is the signal you want. A range
+# or name-only key would silently re-apply a diff written against different code.
+#
+# `allowUnusedPatches` is load-bearing twice over. It is also what lets this file
+# stay byte-identical on both template render paths: a WEB-ONLY project has no
+# code/src/mobile/, so decode-uri-component is absent from its graph entirely and
+# this patch applies to nothing. pnpm 11 removed `ignorePatchFailures` and now
+# throws on a failed patch, so without this the install would break there.
+# Source: https://pnpm.io/cli/patch
+patchedDependencies:
+  # GHSA-vcc3-ghjq-m6fr. Backports 0.5.0's single-pass O(n) decoder into 0.2.2's
+  # CommonJS shape, keeping the `+` to space step 0.3.0 dropped. Output verified
+  # identical to 0.5.0 over 20,000 randomised inputs plus a curated malformed
+  # corpus, and identical to 0.2.2 on every well-formed input.
+  decode-uri-component@0.2.2: patches/decode-uri-component@0.2.2.patch
+allowUnusedPatches: true

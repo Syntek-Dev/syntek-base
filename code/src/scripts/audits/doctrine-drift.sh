@@ -79,11 +79,18 @@ SCAN_DIRS=(
 # Adding a rule to this table is the whole cost of guarding it. Keep the regex anchored
 # to something a STATEMENT has and a mention does not — a JSON key, a decorator, a
 # setting assignment — never a bare word.
+#
+# NEVER anchor a claim with a bare `^`. The corpus these regexes see is not the document:
+# `fenced_lines` prefixes every line with "path:line:", so `^` matches the start of the
+# PATH, not the start of the code. A `^`-anchored claim silently matches nothing and the
+# run still reports it as a claim with exactly one home — the GATE-REPORTING.md defect of
+# a skip reaching the same verdict as a pass. To anchor to the start of the original line,
+# anchor on the prefix instead: `:[0-9]+:[[:space:]]*`.
 CLAIMS=$(
   cat <<'EOF'
 owned	api-error-envelope	api-design/AUTH-AND-ERRORS.md	"error"[[:space:]]*:[[:space:]]*\{
 banned	api-detail-envelope	-	"detail"[[:space:]]*:
-banned	api-success-data-wrap	-	^[[:space:]]*"data"[[:space:]]*:
+banned	api-success-data-wrap	-	:[0-9]+:[[:space:]]*"data"[[:space:]]*:
 EOF
 )
 
@@ -256,6 +263,19 @@ if $SELF_TEST; then
       printf '\033[31m  ✗ broken/ did not trip %s\033[0m\n' "$clause"
     fi
   done
+
+  # Per-CLAIM, not just per-clause. Two claims sharing a clause name mean the clause
+  # loop above passes while one of them matches nothing — which is how
+  # api-success-data-wrap sat dead behind api-detail-envelope. Every claim must have a
+  # broken fixture that trips it, or the run reports coverage it does not have.
+  while IFS=$'\t' read -r kind id owner ere; do
+    [[ -n "$kind" ]] || continue
+    if ! printf '%s\n' "$BROKEN_BODY" | grep -q -- ": $id — "; then
+      ST_FAIL=1
+      log ""
+      printf '\033[31m  ✗ broken/ did not trip the claim %s — its regex matches nothing\033[0m\n' "$id"
+    fi
+  done <<< "$CLAIMS"
 
   DOCS_DIR="$FIXTURES_DIR/clean"
   SCAN_DIRS=("$FIXTURES_DIR/clean")

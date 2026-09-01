@@ -2,10 +2,10 @@
   "name": "<%PROJECT_SLUG%>",
   "description": "<%PROJECT_DESCRIPTION%>",
   "private": true,
-  "packageManager": "pnpm@11.22.0",
+  "packageManager": "pnpm@11.25.0",
   "engines": {
     "node": ">=24",
-    "pnpm": ">=11.22.0"
+    "pnpm": ">=11.25.0"
   },
   "scripts": {
     "prepare": "[ -d .git ] && lefthook install || true",

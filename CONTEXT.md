@@ -80,6 +80,8 @@ consumes this API; none of them changes the rule above for the web.
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
+├── patches/                         ← pnpm dependency patches — one per advisory whose
+│                                      fix this graph cannot consume; see pnpm-workspace.yaml
 ├── .copier/                         ← seed-once staging: the README, version state, blank
 │                                      project memory, blank standing registers and
 │                                      scale-planning map a generated project starts from;
@@ -107,7 +109,7 @@ consumes this API; none of them changes the rule above for the web.
 ├── package.json                     ← root workspace package (pnpm)
 ├── pnpm-lock.yaml                   ← the resolved JS tooling graph — committed, never hand-edited
 ├── uv.lock                          ← the resolved Python graph — committed, copier-excluded (see below)
-├── pnpm-workspace.yaml              ← the pnpm workspace globs and audit ignore list
+├── pnpm-workspace.yaml              ← pnpm workspace globs, overrides, patches, audit ignores
 ├── pyproject.toml                   ← Python tooling config and the django package manifest
 ├── eslint.config.mjs                ← ESLint config for the repo tooling (no client-side build)
 ├── .dockerignore                    ← what never enters a Docker build context

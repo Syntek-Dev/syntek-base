@@ -1,8 +1,8 @@
 # MAP-SUBDOMAIN-ROUTING — which surface answers on which host
 
 **Seeded**: 16/08/2026 · **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Charting** — frontier drawn, three research nodes discharged by measurement
-**Frontier open**: 23 · **Blocking open**: 6 · **Resolved**: 3
+**Status**: **Frontier resolved** — every decision node settled; slices ready for `02-story-creation` (01/09/2026)
+**Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 26
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and
 > `copier.yml` `_exclude` empties the artefact trees at generation — deliberately: this charts
@@ -32,6 +32,7 @@ pre-answered it would be asserting the thing charting exists to surface. The see
 required a mechanism _"that survives a misconfigured edge"_, which contradicts a shipped guide —
 `code/docs/URL-STRATEGY.md:74-76`, _"No business-logic changes are required — only edge/Nginx host
 routing and the URL-construction helpers change."_ That contradiction is now a node, not a premise.
+Settled 01/09/2026: **edge-only, with a named revisit trigger** — `:74-76` upheld (_The mechanism_, below).
 
 **Done looks like** one artefact naming every host, what serves it, and what follows from it —
 whether or not any application code is touched.
@@ -96,16 +97,39 @@ which is the only thing it was recorded for.
 
 ## Resolved decisions
 
-**Three research nodes, discharged by measurement on 28/08/2026 and adversarially verified.** Each
+**Three research nodes, discharged by measurement on 28/08/2026 and adversarially verified — joined 01/09/2026 by the cookie spine, settled by grilling.** The three censuses each
 became a table in this map and nothing outside it — the exception the folder's _every resolved node
 graduates_ rule allows for a census taken to inform a decision not yet made. **If this map dies,
 they die with it**, which is named here so it is chosen rather than discovered.
 
-| Node  | Decision                                                               | Type     | Settled    | Became                                    |
-| ----- | ---------------------------------------------------------------------- | -------- | ---------- | ----------------------------------------- |
-| N-001 | The host inventory — what already answers, and on what                 | research | 28/08/2026 | _The measured host inventory_ table below |
-| N-002 | Whether the Cloudflare Access premise is supported anywhere in-repo    | research | 28/08/2026 | The finding below; **kills a fog item**   |
-| N-003 | Whether host separation exists in dev or test, and survives a worktree | research | 28/08/2026 | The measurement below; **spawned N-017**  |
+| Node  | Decision                                                                                                                                                                       | Type     | Settled    | Became                                                         |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ---------- | -------------------------------------------------------------- |
+| N-001 | The host inventory — what already answers, and on what                                                                                                                         | research | 28/08/2026 | _The measured host inventory_ table below                      |
+| N-002 | Whether the Cloudflare Access premise is supported anywhere in-repo                                                                                                            | research | 28/08/2026 | The finding below; **kills a fog item**                        |
+| N-003 | Whether host separation exists in dev or test, and survives a worktree                                                                                                         | research | 28/08/2026 | The measurement below; **spawned N-017**                       |
+| N-004 | Cookie-scope rule: **never set** `SESSION_COOKIE_DOMAIN` / `CSRF_COOKIE_DOMAIN`; adopt `__Host-` names                                                                         | grilling | 01/09/2026 | _The cookie spine_ below; build lands on the slice N-019 gates |
+| N-005 | The subdomain cookie-write premise — **confirmed at spec level**, with two named limits                                                                                        | research | 01/09/2026 | _The cookie spine_ below                                       |
+| N-006 | `__Host-` names live **per-environment** — `staging.py`/`production.py`, beside the `SECURE=True` lines they depend on; dev keeps plain names                                  | grilling | 01/09/2026 | _The cookie spine_ below; build lands on the slice N-019 gates |
+| N-007 | CSRF token stays a **cookie**, hardened with `CSRF_COOKIE_HTTPONLY = True` — `CSRF_USE_SESSIONS` rejected                                                                      | grilling | 01/09/2026 | _The cookie spine_ below; build lands on the slice N-019 gates |
+| N-008 | **`CRYPTO-AND-DATA.md`'s Browser Storage Policy owns cookie-scope doctrine** — `:122-123` respecified to host-only + `__Host-`; `URL-STRATEGY.md` defers                       | grilling | 01/09/2026 | _The cookie spine_ below; build lands on the slice N-019 gates |
+| N-019 | Artefact: **`how-to/src/HOSTS.md` register + a `code/docs/` rule section**, shipped **filled** with the five measured host families                                            | grilling | 01/09/2026 | _The artefact shape_ below                                     |
+| N-014 | Mechanism: **edge-only, with a named revisit trigger** — `URL-STRATEGY.md:74-76` upheld                                                                                        | grilling | 01/09/2026 | _The mechanism_ below                                          |
+| N-016 | Dev/test `ALLOWED_HOSTS` become a **leading-dot allowlist**, leaving `["*"]`                                                                                                   | grilling | 01/09/2026 | _The mechanism_ below                                          |
+| N-009 | Surface→host: **apex paths now; hosts are trigger rows** — `admin.`/`portal.` are candidate rows, deliberately undecided                                                       | grilling | 01/09/2026 | _The surface→host rule_ below                                  |
+| N-021 | `SITE_URL` stays a **single apex value**; multi-host canonical folds into trigger-row obligations                                                                              | grilling | 01/09/2026 | _The surface→host rule_ below                                  |
+| N-024 | `dev-us###.conf`: honour or retract — **specified onto slice S-03** with its acceptance                                                                                        | build    | 01/09/2026 | Slice S-03 row                                                 |
+| N-025 | `URL-STRATEGY.md` declared-not-wired banner — **specified onto slice S-04**                                                                                                    | build    | 01/09/2026 | Slice S-04 row                                                 |
+| N-026 | `SITE_URL` becomes a real setting, single apex value — **specified onto slice S-04**                                                                                           | build    | 01/09/2026 | Slice S-04 row                                                 |
+| N-010 | **Two admin surfaces, split** — `admin.` is the custom admin area (CMS, blog editor, CRM); the developer Django admin stays `/control/`, with `control.` its own candidate row | grilling | 01/09/2026 | _The tail_ below; slices S-01/S-04                             |
+| N-011 | **No `api.` host, no candidate row**; the candidate section notes a project may add one for API tooling (Postman or self-hosted)                                               | grilling | 01/09/2026 | _The tail_ below; slice S-01                                   |
+| N-012 | `/mcp/` is **always a path, never a subdomain** — a decided rule                                                                                                               | grilling | 01/09/2026 | _The tail_ below; slice S-01                                   |
+| N-013 | `ALLOWED_HOSTS` lists **Django-terminating hosts only**; `www` leaves the prod example                                                                                         | grilling | 01/09/2026 | _The tail_ below; slice S-04                                   |
+| N-015 | **Closed as mooted by N-014** — edge-only leaves no in-Django host key; register key format is S-01's                                                                          | grilling | 01/09/2026 | _The tail_ below                                               |
+| N-017 | Tracer **discharged into the trigger obligations** — nothing host-routed exists in dev to misroute                                                                             | tracer   | 01/09/2026 | _The tail_ below; S-01 row text                                |
+| N-018 | The dev nginx **catch-all stands, recorded as deliberate**; a second `server{}` arrives with a fired trigger                                                                   | grilling | 01/09/2026 | _The tail_ below; slice S-03                                   |
+| N-020 | The rule **ships with a gate** — `audits/hosts-register.sh`, reconciling both directions                                                                                       | grilling | 01/09/2026 | _The tail_ below; slice S-01                                   |
+| N-022 | Robots is a **per-row obligation**; `ROOT-SURFACE.md` stays path-scoped                                                                                                        | grilling | 01/09/2026 | _The tail_ below; slice S-01                                   |
+| N-023 | **HSTS extends edge entry 1**, mirroring the app backstop values                                                                                                               | grilling | 01/09/2026 | _The tail_ below; slice S-01                                   |
 
 ### N-001 — the measured host inventory
 
@@ -173,106 +197,148 @@ not, a security boundary.** Neither side is available to cite.
 - **`CSRF_TRUSTED_ORIGINS` is already incomplete.** `dev.py:16-20` lists three literals and omits
   every worktree host. Harmless today only because `["*"]` plus same-origin `get_host()` covers it.
 
+### N-004 – N-008 — the cookie spine, settled 01/09/2026
+
+**The rule (N-004, `Q2→1`).** Cookies are host-only: `SESSION_COOKIE_DOMAIN` and
+`CSRF_COOKIE_DOMAIN` are never set, and both cookies take `__Host-` prefixed names.
+`URL-STRATEGY.md:149-153`'s shared-domain mandate is overturned; its rewrite is build work for the
+slice N-019 gates, never this sitting's.
+
+**The CSRF cookie exists (N-007, `Q1→3` — 1 and 3 are security-equivalent; 3 adds doctrine fit).**
+`CSRF_USE_SESSIONS` rejected: source-verified, any anonymous page rendering `{% csrf_token %}`
+forces a persisted session plus `Vary: Cookie` — wrong for a cached marketing surface. The cookie
+ships with `CSRF_COOKIE_HTTPONLY = True`, matching `CRYPTO-AND-DATA.md:108`'s httpOnly
+classification; nothing client-side reads it (measured: zero cookie reads anywhere; the doctrine
+pattern is template-injected `hx-headers`).
+
+**The evidence (N-005).** RFC 6265bis §4.1.2.3/§8.6 and Django's own sessions and CSRF docs confirm
+a subdomain can plant a `Domain=parent` cookie the apex accepts; omitting `Domain` stops it
+_reading_, and only a `__Host-` name stops it _writing_ (storage model, §5.7 step 21). Two limits
+named: protection is per-cookie-name, and browsers without prefix support accept prefixed cookies
+unconditionally. The presign host's "must not add auth" contract (`EDGE-REQUIREMENTS.md:229-230`)
+stands as the collision a wildcard domain would have created.
+
+**Charting drift corrected.** The 16/08 recommendation named only `SESSION_COOKIE_DOMAIN`; the
+"/ `CSRF_COOKIE_DOMAIN`" expansion entered at charting (`b03b6ab`). The settled rule covers both —
+decided here, not inherited.
+
+**The consequences (N-006, `Q3→1` · N-008, `Q4→1`).** The `__Host-` names live **per-environment**
+— `staging.py`/`production.py`, beside the `SECURE=True` lines they depend on; dev keeps plain
+names, because dev serves `http` with `SESSION_COOKIE_SECURE=False` and the storage model rejects
+an insecure `__Host-` cookie. **`CRYPTO-AND-DATA.md`'s Browser Storage Policy is the one owner** of
+cookie-scope doctrine: its `:122-123` "explicit `Path` and `Domain`" line is respecified to
+host-only + `__Host-`, and `URL-STRATEGY.md` defers to it.
+
+**Deliverables held for slices** (named, never done here): the `URL-STRATEGY.md:149-153` rewrite and
+its deferral to the owner; the `CRYPTO-AND-DATA.md:122-123` respecification; the per-environment
+`__Host-` names and `CSRF_COOKIE_HTTPONLY = True` settings.
+
+### N-019 — the artefact shape, settled 01/09/2026 (`Q5→1`)
+
+**A `how-to/src/HOSTS.md` register paired with a rule section in `code/docs/`**, on the pattern
+three shipped pairs already use (`NEGATIVE-SPACE.md` ↔ `INVARIANTS.md`, `FORWARD-VOICE.md` ↔
+`PROJECT-PATHS.md`, the posture rule ↔ `DEPLOYMENT-POSTURE.md`). The template ships the register
+**filled with the five measured host families** — apex, `www`, `staging.`, `status.`, the presign
+host — because those are shipped contracts, not per-project choices; per-project rows arrive as
+surfaces do. Every later node's output now has a home: rule text in the `code/docs/` section,
+per-host rows in `HOSTS.md`. **N-020 stays genuinely open** — a `how-to/src/` register has no
+`seam-contract.sh` coverage, so the gate question is not answered for free. The fog item _whether
+the template should ship a host map at all_ is settled by this shape and struck below.
+
+### N-014 · N-016 — the mechanism, settled 01/09/2026 (`Q6→3` · `Q7→2`)
+
+**Edge-only, with a named revisit trigger (N-014).** Django stays host-agnostic; the edge maps
+hosts to path prefixes, and `ALLOWED_HOSTS` is the app's only host awareness.
+`URL-STRATEGY.md:74-76` is **upheld**, and the seeded "survives a misconfigured edge" requirement
+stays dead. The trigger — **the first surface actually served on a second host revisits in-Django
+reading** — ships as a `HOSTS.md` register row, on the deferred-infrastructure pattern
+`DATABASE.md` already uses.
+
+**Dev and test leave `["*"]` (N-016).** `ALLOWED_HOSTS` becomes a leading-dot allowlist —
+`[".<%PROJECT_SLUG%>.localhost", "localhost", "127.0.0.1"]` — one wildcard entry covering every
+worktree host, so a foreign Host fails loudly. **Named limit:** this does not fix N-003's silent
+worktree misroute — a wrong-stack worktree host still matches the wildcard; that is **N-017**'s
+tracer, now unblocked alongside **N-015**.
+
+### N-009 — the surface→host rule, settled 01/09/2026 (`Q8→1`)
+
+**Apex paths now; hosts are trigger rows.** No surface gets a dedicated host until it actually
+ships one. `HOSTS.md` records `admin.` and `portal.` as **candidate rows with named triggers** —
+deliberately undecided, not contracted-future — and `URL-STRATEGY.md`'s Phase 2 table becomes the
+register's candidate section rather than a plan. The same shape as the mechanism decision: decide
+what is shipped, name the trigger for what is not. N-010–N-013, N-021 and N-022 now resolve
+against _apex + trigger_ rather than against a committed subdomain plan.
+
+**N-021 (`Q9→1`) follows the same shape.** `SITE_URL` stays a single apex value; any candidate
+host that would serve _indexable_ pages names canonical strategy among its trigger obligations
+(`admin.`/`portal.` are `noindex` anyway). N-026 becomes a clean build node with a single value.
+
+### The tail — nine decision nodes, settled 01/09/2026 (`Q11–Q20`)
+
+**The candidate section (N-010–N-013, N-022).** Two admin surfaces, split on Sam's amendment to
+Q11: **`admin.` is the custom admin area** — CMS, blog editor, CRM — and **the developer Django
+admin is a separate surface**, at `/control/` today with `control.` as its own candidate row. No
+`api.` host and no candidate row, but the candidate section **notes** a project may add
+`api.<domain>` for API tooling (Postman or a self-hosted alternative). **`/mcp/` is always a
+path, never a subdomain** — a decided rule, not an open candidate. `ALLOWED_HOSTS` lists only
+hosts that terminate at Django — `www` leaves `.env.prod.example` (and its CSRF origin), and the
+comment is respecified to say _terminates at Django_, so a misconfigured edge fails loudly.
+Robots is a per-row obligation on the same shape as canonical; `ROOT-SURFACE.md` stays
+path-scoped and true.
+
+**The dev edge (N-015, N-017, N-018).** N-015 closed as mooted by edge-only — the register key
+format belongs to S-01. N-017's tracer discharged: nothing host-routed exists in dev to
+misroute, so every candidate row's trigger obligations include _extend `hosts-story-add.sh` and
+the worktree compose override for the new name_. The nginx catch-all stands **as a recorded
+decision** — the undocumented `3c22efe` removal of named blocks gains its rationale, and a
+second `server{}` block arrives only with a fired trigger.
+
+**The contract tail (N-020, N-023).** The rule ships with a gate — `audits/hosts-register.sh`,
+reconciling `ALLOWED_HOSTS` and the register in both directions, on the precedent of the two
+gated sibling registers (`negative-space.sh`, `doc-references.sh`). The HSTS obligation extends
+edge entry 1 (security headers), mirroring the shipped app backstop — max-age one year,
+includeSubDomains, preload — so contract and backstop can never disagree.
+
+**Fog graduated with it:** _whether admin/portal SSO is wanted_ is struck — N-004's host-only
+rule means two logins by construction; any future SSO is its own feature with its own map.
+
 ---
 
 ## Slices
 
-**None, and none can be cut.** Every blocking node is open, and slices come from a resolved
-frontier. What the deliverable even is remains open — **N-019** decides the artefact's shape and
-whether the template ships it filled, empty, or at all.
+**Four slices, cut and confirmed 01/09/2026.** Every open node (13) belongs to exactly one
+slice; the remaining decision nodes settle inside the stories that carry them.
+`02-story-creation` cuts each `US###` from its row. **Build order: S-02 first** — the only
+slice with no open nodes, and S-01's rule section defers to the doctrine S-02 lands.
 
-| Slice | Story | Title                             | Nodes | Acceptance | Flags |
-| ----- | ----- | --------------------------------- | ----- | ---------- | ----- |
-| —     | —     | _(blocked — see N-019 and N-014)_ | TBD   | TBD        | —     |
+| Slice | Story | Title                                                                           | Nodes                                             | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Flags          |
+| ----- | ----- | ------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| S-01  | —     | **The host register and its rule** — `HOSTS.md` + the `code/docs/` rule section | N-013, N-020, N-022, N-023 _(all settled)_        | Register ships filled with the five measured families plus `admin.` (custom admin area), `portal.` and `control.` (developer Django admin) candidate rows with named triggers — each trigger carrying the N-017 worktree obligation — and the `api.` tooling note; the rule section defers cookie scope to `CRYPTO-AND-DATA.md`, states `/mcp/` is always a path, and extends edge entry 1 with the HSTS obligation; every row states its cookie, canonical, robots and edge obligations; `audits/hosts-register.sh` reconciles register and `ALLOWED_HOSTS` both ways | Security · SEO |
+| S-02  | —     | **The cookie doctrine lands**                                                   | — _(all settled)_                                 | `URL-STRATEGY.md:149-153` rewritten to defer to the owner; `CRYPTO-AND-DATA.md:122-123` respecified host-only + `__Host-`; the per-environment `__Host-` names and `CSRF_COOKIE_HTTPONLY = True` ship together                                                                                                                                                                                                                                                                                                                                                         | Security       |
+| S-03  | —     | **Dev/test host hygiene**                                                       | N-015, N-017, N-018, N-024 _(all settled)_        | The leading-dot `ALLOWED_HOSTS` allowlist lands and a foreign Host fails loudly in dev and test; the nginx catch-all is recorded as deliberate (N-018); `dev-us###.conf` is honoured or retracted (N-024); N-015 closed as mooted, N-017 discharged into the trigger obligations                                                                                                                                                                                                                                                                                       | —              |
+| S-04  | —     | **`URL-STRATEGY.md` corrections + `SITE_URL`**                                  | N-010, N-011, N-012, N-025, N-026 _(all settled)_ | The declared-not-wired banner is added; the Phase 2 table is re-cast as the candidate section with the two admin surfaces split — `admin.` the custom admin area, the developer Django admin at `/control/` with `control.` its candidate — the `api.` tooling note and `/mcp/` always-a-path; `SITE_URL` is defined once, a single apex value; `www` leaves `.env.prod.example`'s `ALLOWED_HOSTS` and CSRF origins (N-013)                                                                                                                                            | SEO            |
 
-**The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
-type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
-RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
-slice_ is unverified here.
+**Backfilled 01/09/2026** at the first RESOLVE sitting: the `TBD` cells the 31/08 column change
+left are filled, and the checklist item _every open node belongs to a slice_ is verified — 13
+open nodes, each in exactly one `Nodes` cell.
 
 **This is the one map in this folder where a flag might genuinely fire**, and that is unchanged by
 charting. If a surface is routed to its own host, `Security` (cookie scope, host validation, the
 `__Host-` prefix) and `SEO` (canonical and robots are per-host resources) both have real entries to
-make. Written as a possibility, not a manifest.
+make. The manifests above now carry it: Security on S-01/S-02, SEO on S-01/S-04.
 
 ---
 
 ## Frontier
 
-Open decisions in dependency order. **Blocking** here means _"no artefact text may be written
-against it"_ — this map's analogue of blocking a story, on the `MAP-PROGRESSIVE-ENHANCEMENT`
-precedent, because the deliverable is doctrine.
-
-**Takeable now — six nodes, nothing in flight:** N-004, N-005, N-007, N-014, N-016, N-019.
-
-### A — Cookie scope, the spine
-
-| Node  | Decision                                                                                                                                                                                                                             | Type     | Blocked by   | Blocking? |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------ | --------- |
-| N-004 | **The cookie-scope rule.** Adopt _never set `SESSION_COOKIE_DOMAIN` / `CSRF_COOKIE_DOMAIN`_ and rewrite `URL-STRATEGY.md:149-150`, or keep the shared-domain mandate and drop `__Host-`                                              | grilling | none         | **yes**   |
-| N-005 | **What a client-delegated subdomain may be.** Django's own docs: a subdomain can set cookies for the parent **regardless** of what this app configures. Not setting the domain stops it _reading_; only `__Host-` stops it _writing_ | research | none         | no        |
-| N-006 | Do `__Host-` prefixed cookie names ship, and does the name live in `base.py` or per-environment                                                                                                                                      | grilling | N-004, N-005 | no        |
-| N-007 | **`CSRF_USE_SESSIONS = True`** — a third option nobody has named. It removes the CSRF cookie entirely, so there is no second cookie to scope, name or prefix                                                                         | grilling | none         | no        |
-| N-008 | **Reconcile the three-way doctrine and name one owner** — `URL-STRATEGY.md:149-150` mandates the shared domain, `CRYPTO-AND-DATA.md:122-123` says set an explicit `Path` **and `Domain`**, the 16/08 recommendation says set neither | grilling | N-004        | no        |
-
-### B — Which surfaces get a host
-
-| Node  | Decision                                                                                                                                                                                      | Type     | Blocked by | Blocking? |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | --------- |
-| N-009 | **The surface→host decision, per surface**, taken against N-001's measured inventory rather than the two-host inventory the map recorded                                                      | grilling | N-004      | **yes**   |
-| N-010 | `/control/`'s Phase 2 position — it is **absent from `URL-STRATEGY.md:78-82`'s Phase 2 table entirely**, and the guide does not say whether that is deliberate                                | grilling | N-009      | no        |
-| N-011 | Does `api.` serve the API, serve only the docs, or not exist — a docs-only host makes Swagger's "Try it" cross-origin against a session-authed API                                            | grilling | N-009      | no        |
-| N-012 | Is `mcp.` a host at all, given `/mcp/` never enters Django's request cycle and the mount is already gated on a settings flag                                                                  | grilling | N-009      | no        |
-| N-013 | Does the app's allowlist mirror **every** hostname the edge answers on, or only those terminating at Django — `.env.prod.example:11` already over-claims by one (`www.` never reaches Django) | grilling | N-009      | no        |
-
-### C — The mechanism
-
-| Node  | Decision                                                                                                                                                                                            | Type     | Blocked by   | Blocking? |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------ | --------- |
-| N-014 | **In-Django host reading, or edge-only** — and whether `URL-STRATEGY.md:74-76` (_"No business-logic changes are required"_) is overturned. The Destination deliberately does not pre-answer this    | grilling | none         | **yes**   |
-| N-015 | Exact-string host key or **leftmost-label pattern** — dev derives from `<%PROJECT_SLUG%>`, prod from `<%PRIMARY_DOMAIN%>`, and the worktree mangles the leftmost label rather than prepending one   | grilling | N-014        | no        |
-| N-016 | **Do dev and test stop being `ALLOWED_HOSTS = ["*"]`?** `["*"]` is exactly what makes 253 worktree hostnames work with no configuration, and exactly what makes host enforcement untestable locally | grilling | none         | **yes**   |
-| N-017 | How a host-routed request reaches the correct **worktree** stack, given N-003's measured silent misroute to the main stack                                                                          | tracer   | N-014, N-016 | no        |
-| N-018 | Does the dev stack gain a second nginx `server{}` block, or does the catch-all stand — four shipped docs restate `server_name _`, and named blocks existed and were deliberately removed            | grilling | N-015        | no        |
-
-### D — The artefact and its gate
-
-| Node  | Decision                                                                                                                                                                                                                                   | Type     | Blocked by | Blocking? |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ---------- | --------- |
-| N-019 | **The artefact shape**: a new `how-to/src/HOSTS.md` answer sheet paired with a rule section, a section inside `URL-STRATEGY.md` alone, or an `EDGE-REQUIREMENTS.md` entry — and whether the template ships it **filled, empty, or at all** | grilling | none       | **yes**   |
-| N-020 | Does the host rule **ship with a gate**, or is it the documented exception to that standing preference — `seam-contract.sh` already gates any new numbered `EDGE-REQUIREMENTS.md` section, and nothing else can express it                 | grilling | N-019      | no        |
-
-### E — Canonical, robots and transport
-
-| Node  | Decision                                                                                                                                                                                                                                                                                                                       | Type     | Blocked by | Blocking? |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ---------- | --------- |
-| N-021 | **What `SITE_URL` is when more than one host serves pages.** `WEB-METADATA.md:29-30` makes canonical derive from it and **never** from the request host — so a second host either self-canonicalises to the apex (wrong) or `SITE_URL` becomes host-keyed, which is the banned Host-derived canonical wearing a setting's name | grilling | N-009      | **yes**   |
-| N-022 | What `robots.txt` and the sitemaps say on a non-apex host — `ROOT-SURFACE.md:30-31` excludes the private surfaces **by path** and contains no host language at all                                                                                                                                                             | grilling | N-009      | no        |
-| N-023 | Does the edge contract gain an **HSTS row**, and at what scope — `production.py:24-25` names the edge as HSTS's owner, and `EDGE-REQUIREMENTS.md` has **no HSTS row anywhere**                                                                                                                                                 | grilling | N-005      | no        |
-
-### F — Corrections found while charting
-
-| Node  | Decision                                                                                                                                                                                                                          | Type  | Blocked by | Blocking? |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ---------- | --------- |
-| N-024 | **`dev-us###.conf`: honour or retract.** `17-STORY-PLANS/CONTEXT.md:55` and `STORY-PLAN-US000-TEMPLATE.md:703` both name it as a real path; `nginx/CONTEXT.md:28-29` states _"there are no per-story Nginx variants to generate"_ | build | none       | no        |
-| N-025 | Give `URL-STRATEGY.md` the **declared-not-wired banner** its own content requires, on the `MCP-SERVER.md:13-17` precedent — four of its six prefixes do not exist, and 70 files defer to it                                       | build | none       | no        |
-| N-026 | Does `SITE_URL` become a real setting in the same change as the host decision, or stay a guide-only name — it is defined in **no settings module**                                                                                | build | N-021      | no        |
+**Empty — every decision node settled 01/09/2026.** Sections A–F graduated to _Resolved
+decisions_; the takeable edge is now `02-story-creation`, cutting `US###` from the slice rows,
+S-02 first.
 
 **Types:** `research` (looked up, no human) · `tracer` (spike to raise fidelity) ·
 `grilling` (one `/grill-with-docs` surface) · `build` (the work a slice's story carries —
 named here, never done here). **Manual unblocking work is not a node** — it is a `GAPS.md`
 blocker. Renamed from `task` on 31/08/2026; the old name was never once used as defined.
-
-### Suggested first batch
-
-**N-004 + N-005 + N-007 as one grilling pass.** They are one question about one cookie: what its
-scope is, what a delegated subdomain can do to it regardless, and whether the second cookie should
-exist at all. Deciding them apart means deciding the first one three times.
-
-**N-014 + N-016 run together and in parallel** — both are mechanism questions with shared evidence
-(N-003's measurements) and neither depends on the cookie answer.
-
-**N-019 runs alone and early**, because every other node's output needs somewhere to land.
 
 ---
 
@@ -280,15 +346,10 @@ exist at all. Deciding them apart means deciding the first one three times.
 
 In scope, not yet sharp enough to state as a decision. **Leaving something here is honest.**
 
-- **Whether the template should ship a host map at all.** A template hardcoding `admin.` decides for
-  every generated project; shipping the mechanism plus an empty register is the other shape. N-019
-  touches this but does not exhaust it.
 - **What a client-delegated subdomain actually _is_.** `email.`, `chat.`, `video.` were named as the
   motivating case, but a vendor CNAME, a proxied third-party app and a Django-served surface have
   three different security answers. **The proposal treats them as one class; they are not one.**
   N-005 settles the cookie half only.
-- **Whether admin/portal SSO is wanted at all.** Two logins versus a shared cookie is a product
-  question about who the admin users are, and no admin surface exists.
 - **What the published API surface is made of**, if one is published — a second `NinjaAPI` is
   **banned twice** (`NINJA-CONVENTIONS.md:130`, `AUTH-STRATEGY.md:46-48`), so "publish a filtered
   subset" has no shipped mechanism. Deliberately not a node: `API_DOCS_ENABLED` was ruled **out of
@@ -317,10 +378,19 @@ In scope, not yet sharp enough to state as a decision. **Leaving something here 
 
 ## Session log
 
-| Date       | Node settled          | Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Frontier redrawn |
-| ---------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| 16/08/2026 | _none — seeding_      | Seeded out of a read-only recommendation pass on Sam's five-subdomain proposal, on his call that it is charted **after the other maps are fully done**. Frontier deliberately empty                                                                                                                                                                                                                                                                                                                                                                      | [ ]              |
-| 28/08/2026 | N-001 · N-002 · N-003 | **Charted: 26 nodes, 23 open, 6 blocking, 3 discharged by measurement.** The seeded evidence section was **voided and re-derived** — `34` reproduces under no reading, three citations had drifted, and one fog item's premise (Cloudflare Access) is absent from the repository entirely. N-001 found **five** shipped or contracted host families where the map recorded one, and the object-store presign host's _"must not add auth"_ contract makes the cookie question sharper rather than softer. Bounds confirmed by Sam: `Q1→3`, `Q2→1`, `Q3→3` | [x]              |
+| Date       | Node settled                                                | Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Frontier redrawn |
+| ---------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| 16/08/2026 | _none — seeding_                                            | Seeded out of a read-only recommendation pass on Sam's five-subdomain proposal, on his call that it is charted **after the other maps are fully done**. Frontier deliberately empty                                                                                                                                                                                                                                                                                                                                                                      | [ ]              |
+| 28/08/2026 | N-001 · N-002 · N-003                                       | **Charted: 26 nodes, 23 open, 6 blocking, 3 discharged by measurement.** The seeded evidence section was **voided and re-derived** — `34` reproduces under no reading, three citations had drifted, and one fog item's premise (Cloudflare Access) is absent from the repository entirely. N-001 found **five** shipped or contracted host families where the map recorded one, and the object-store presign host's _"must not add auth"_ contract makes the cookie question sharper rather than softer. Bounds confirmed by Sam: `Q1→3`, `Q2→1`, `Q3→3` | [x]              |
+| 01/09/2026 | N-004 · N-005 · N-007                                       | **The cookie spine settled — first RESOLVE sitting.** Never set `SESSION_COOKIE_DOMAIN`/`CSRF_COOKIE_DOMAIN`; `__Host-` names adopted; the CSRF token stays a cookie with `CSRF_COOKIE_HTTPONLY = True` (`CSRF_USE_SESSIONS` rejected — it forces sessions onto anonymous form pages). N-005 confirmed at spec level with two named limits. Charting drift corrected: the 16/08 rec named only `SESSION_COOKIE_DOMAIN`. Sam: `Q1→3`, `Q2→1`; slices-become-stories confirmed, superseding the no-stories gate line                                       | [x]              |
+| 01/09/2026 | N-006 · N-008                                               | **Round 2, same sitting.** `__Host-` names live per-environment (`staging.py`/`production.py`, beside the `SECURE=True` lines they depend on); dev keeps plain names. `CRYPTO-AND-DATA.md`'s Browser Storage Policy named the sole owner of cookie-scope doctrine — `:122-123` respecified to host-only + `__Host-`, `URL-STRATEGY.md` defers. Sam: `Q3→1`, `Q4→1`                                                                                                                                                                                       | [x]              |
+| 01/09/2026 | N-019                                                       | **Round 3, same sitting.** Artefact settled: `how-to/src/HOSTS.md` register + `code/docs/` rule section, on the shipped rule↔register pattern; ships **filled** with the five measured host families, per-project rows arrive with surfaces. N-020 unblocked and genuinely open (no `seam-contract.sh` coverage in `how-to/src/`). Fog item _ship a host map at all_ graduated into the decision. Sam: `Q5→1`                                                                                                                                            | [x]              |
+| 01/09/2026 | N-014 · N-016                                               | **Round 4, same sitting.** Mechanism: **edge-only with a named revisit trigger** (first surface served on a second host) — `URL-STRATEGY.md:74-76` upheld, the trigger ships as a `HOSTS.md` row. Dev/test `ALLOWED_HOSTS` become the leading-dot allowlist `[".<%PROJECT_SLUG%>.localhost", "localhost", "127.0.0.1"]`; the worktree misroute stays N-017's tracer. N-015 and N-017 unblocked. Sam: `Q6→3`, `Q7→2`                                                                                                                                      | [x]              |
+| 01/09/2026 | N-009                                                       | **Round 5, same sitting.** Surface→host settled: **apex paths now; hosts are trigger rows** — `admin.`/`portal.` become candidate rows with named triggers in `HOSTS.md`, the Phase 2 table becomes the register's candidate section. N-010–N-013, N-021, N-022 unblocked. Sam: `Q8→1`                                                                                                                                                                                                                                                                   | [x]              |
+| 01/09/2026 | N-021                                                       | **Round 6, same sitting — the blocking frontier empties.** `SITE_URL` stays a single apex value; a candidate host serving indexable pages names canonical strategy among its trigger obligations. N-026 unblocked as a clean build node. Sam: `Q9→1`                                                                                                                                                                                                                                                                                                     | [x]              |
+| 01/09/2026 | —                                                           | **Round 7, same sitting — four slices cut and backfilled.** S-01 host register + rule (N-013, N-020, N-022, N-023) · S-02 cookie doctrine (no open nodes, **builds first**) · S-03 dev/test host hygiene (N-015, N-017, N-018, N-024; N-015 flagged possibly mooted by edge-only) · S-04 `URL-STRATEGY.md` corrections + `SITE_URL` (N-010–N-012, N-025, N-026). Every open node assigned; confirmed by Sam                                                                                                                                              | [x]              |
+| 01/09/2026 | N-024 · N-025 · N-026                                       | **Build nodes graduated by slice assignment** — a build node resolves when its deliverable and acceptance sit in a slice row (S-03, S-04, S-04). No further outline here; the stories own it                                                                                                                                                                                                                                                                                                                                                             | [x]              |
+| 01/09/2026 | N-010–N-013 · N-015 · N-017 · N-018 · N-020 · N-022 · N-023 | **Round 8 — the frontier empties.** Two admin surfaces split on Sam's Q11 amendment (`admin.` custom area; developer Django admin at `/control/` with `control.` candidate); no `api.` host but a tooling note; `/mcp/` always a path; `ALLOWED_HOSTS` Django-terminating only, `www` dropped; robots per-row; N-015 mooted; N-017 discharged into triggers; catch-all recorded deliberate; `audits/hosts-register.sh` gate; HSTS extends edge entry 1. SSO fog struck per N-004. Sam: `Q11→amended 1`, `Q12→1`+note, `Q13→1`, `Q14–Q20→1`               | [x]              |
 
 ---
 
@@ -331,14 +401,16 @@ In scope, not yet sharp enough to state as a decision. **Leaving something here 
 - [x] Every claimed entry names what will retire it; **neither register file edited here**
 - [x] Every knowable decision is a node or in fog of war
 - [x] Every node typed and blocker-wired; **six takeable now**
-- [ ] **Every node marked blocking is resolved** — 6 open (N-004, N-009, N-014, N-016, N-019, N-021)
+- [x] **Every node marked blocking is resolved** — the last (N-021) settled 01/09/2026
 - [x] Every resolved node links to the artefact it became — **N-001, N-002 and N-003 became tables
       in this map and nothing outside it.** Deliberate, and named as a cost: if this map dies, the
-      three censuses die with it
-- [ ] **Every slice has a flag manifest** — no slices; blocked on N-019 and N-014
+      three censuses die with it. N-004 – N-008 are recorded in
+      _The cookie spine_, graduating with the slice N-019 gates
+- [x] **Every slice has a flag manifest** — four slices cut and backfilled 01/09/2026; S-03 carries `—`, stated not omitted
 - [x] **No index row in `CONTEXT.md`** — the interim decline `MAP-RULE-OWNERSHIP` N-010 settled on
       28/08/2026; the row arrives with that map's slice S-06
 
-**This is a template-development map, so there are no stories to cut.** The equivalent gate is that
-**N-004, N-014 and N-019 must settle before any artefact text is written** — the rule, the mechanism
-and the home.
+**Slices here become stories** — Sam, 01/09/2026, superseding the earlier no-stories reading;
+`02-story-creation` cuts them once the blocking frontier resolves. The three named gates — the
+rule (N-004), the mechanism (N-014) and the home (N-019) — **all settled 01/09/2026**; artefact
+text is unblocked, and it is build work carried by slices, never a sitting's.

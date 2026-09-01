@@ -145,25 +145,33 @@ successes are not**, and that asymmetry is the rule rather than an oversight —
 
 All collection endpoints must be paginated. Never return unbounded lists.
 
-**Cursor-based pagination** (preferred for large or frequently changing datasets):
+**The parameter names are Django Ninja's, not ours.** Ninja ships two paginators and the
+parameter names come from the class you attach — inventing a third spelling produces an endpoint
+whose documented parameter is a parameter of nothing.
+
+| Paginator               | Parameters         | Notes                                              |
+| ----------------------- | ------------------ | -------------------------------------------------- |
+| `LimitOffsetPagination` | `limit` `offset`   | Ninja's **default** when no class is named         |
+| `PageNumberPagination`  | `page` `page_size` | `page_size` is capped by `NINJA_MAX_PER_PAGE_SIZE` |
 
 ```bash
-GET /api/v1/orders?cursor=eyJpZCI6MTAwfQ&per_page=25
-```
-
-**Offset-based pagination** (simpler, acceptable for small datasets):
-
-```bash
-GET /api/v1/orders?page=2&per_page=25
+GET /api/orders?limit=25&offset=50
+GET /api/orders?page=2&page_size=25
 ```
 
 **Rules:**
 
-- Default `per_page` is 25. Maximum is 100.
+- **Ninja's own default page size is 100**, not 25. Set `NINJA_PAGINATION_PER_PAGE` to change it
+  and `NINJA_MAX_PER_PAGE_SIZE` to cap what a client may ask for. This project sets neither yet,
+  so the shipped default is 100 until it does.
 - Include pagination metadata in the `meta` object.
 - Include navigation links in the `links` object.
-- For cursor-based pagination, the cursor is opaque to the client — do not expose database IDs or
-  offsets in the cursor value.
+
+**Cursor pagination is preferred for large or frequently changing datasets, and Ninja does not
+ship it.** There is no `CursorPagination` class — reaching for one means writing a
+`PaginationBase` subclass, which is a decision for the story that needs it, not a default to
+assume. When it is written, the cursor is opaque to the client: never expose database IDs or
+offsets in the cursor value.
 
 ---
 
