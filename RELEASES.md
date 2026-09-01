@@ -1,9 +1,99 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.4.1 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 7.5.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## v7.5.0 — 01/09/2026
+
+**Status:** Minor — your project can now say out loud whether real people are using it yet, and
+everything that follows from that answer changes how carefully it is treated. A security flaw in
+one of the packages behind the mobile app is fixed rather than waved through. And a long stretch
+of planning work is finished, so several pieces of the template are ready to be built.
+
+### Your project can now say whether it is live
+
+Until now nothing in your project recorded whether anyone was actually using it. A project on
+somebody's laptop and a project serving real customers were treated identically, which meant the
+care taken over a risky change came down to whoever happened to remember.
+
+You are now asked, once, when your project is created: is this on a laptop, on a shared test
+environment, or in front of real people? The answer is written into the project's own rules, and
+from that point on it changes what is allowed. Anything that could lose data has to name where the
+backup is and when someone last proved it could be restored. Anything that would stop the site
+answering has to be raised with you first rather than assumed. A security problem found on a live
+site becomes something handled today rather than a note in a list.
+
+There is a companion page where you record the detail — which parts of the project are live,
+where, since when, and how you would get them back if something went wrong. "There are backups" is
+specifically not accepted as an answer there; the date someone last actually restored one is.
+
+The answer also survives. Pulling a later template update into your project will not quietly
+overwrite it, and that was checked by doing it rather than assumed — a project was created at each
+of the three settings and then updated across a deliberate change to the very sentence carrying the
+answer. It came through unchanged.
+
+**One thing this does not do, and it is written down where it matters.** These rules bind the
+assistant, not the scripts. The command that wipes a database will still wipe a live one if you run
+it. That is stated plainly next to the setting, rather than implying a protection that is not
+there.
+
+### A flaw in the mobile app's foundations, fixed rather than excused
+
+A small package buried underneath the mobile app's link handling had a known weakness: a specially
+crafted link could tie the app up completely. Measured on the real thing, a 2.4 KB link froze it
+for nearly thirteen seconds. Patched, the same link takes a fraction of a millisecond.
+
+The reason this is worth calling out is what was done about it rather than the flaw itself. The
+official fix exists only in a newer version of that package which the mobile framework cannot
+actually use, so the usual answer is to record the problem as accepted and move on. Instead the fix
+itself was taken and applied to the version in use, so the code no longer contains the flaw even
+though automated scanners still name it — they judge by version number, not by content. The note
+explaining exactly that sits beside the entry, so nobody later reads it as a problem someone
+shrugged at.
+
+Projects without a mobile app are unaffected and install exactly as before; that was checked in
+both directions.
+
+### The template can now record its own decisions
+
+A gap that had been closed by accident is now open again. Your project has always had a place to
+record why an architectural decision was made — the sort of note that stops the same argument being
+had twice a year later. The template itself had been forbidden from using it, on a reason that
+turned out, when someone finally checked, not to be true.
+
+It is now allowed, the file naming is simpler, and the step that used to write those records now
+does something more useful: it reads all the records a piece of work produced, checks they still
+agree with each other, and only writes what nobody else wrote. Where two records disagree, a new
+one supersedes the old rather than the old being edited — because an edited record hides that the
+thinking moved, and the next person re-argues it from scratch.
+
+### A great deal of planning finished
+
+Roughly twenty planning sessions closed out eleven areas of open questions, and several parts of
+the template are now ready to be built rather than still being argued about. The recurring lesson
+is worth stating, because it changed how this work is done from here: at almost every point,
+checking a claim beat reasoning about it. Figures that had been carried forward for weeks and read
+perfectly plausibly turned out to be wrong — including one that overstated a cost by double, in
+support of a conclusion it was cited to prove. Every planning session now re-checks its own
+starting facts before it leans on them.
+
+An experiment in the same vein: a fresh assistant that had never seen this repository was asked to
+find its way around, and its whole session was recorded. It answered every question correctly, took
+ten times the expected effort to do it, and stated one thing with complete confidence that was
+simply false — in a way no budget or time limit would ever have caught. That transcript is kept
+alongside the result, and the rule now is that no such result is filed without one.
+
+### Smaller corrections
+
+A quality check that was supposed to catch a particular kind of documentation drift had been
+reporting itself as clean while being incapable of matching anything at all. A page describing how
+lists of results are paged through named settings that do not exist. A guide claimed to cover ten
+items while listing eleven. Several stale planning documents were removed once their work had
+demonstrably shipped, and four entries were cleared out of the outstanding-issues list.
 
 ---
 
