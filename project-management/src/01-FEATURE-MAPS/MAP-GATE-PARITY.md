@@ -12,7 +12,7 @@
 **Manifest-integrity batch resolved at**: `7a82095` (28/08/2026)
 **Gate-visibility batch resolved at**: `7a82095` (28/08/2026)
 **Final batch resolved at**: `7a82095` (28/08/2026)
-**Status**: Frontier closed — fog of war open
+**Status**: **Frontier and fog both closed** — fog dispositioned 01/09/2026 (1 answered, 2 cleared)
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 31 · **Moot**: 2
 
 > Charted from `handoffs/HANDOFF-GENERATED-PROJECT-CI-FAILURES-24-08-2026.md` and the
@@ -85,8 +85,11 @@ without it the pass rewrites the 15 `.claude/skills/cloudinary-*` files and fork
 **No index row in `CONTEXT.md`, deliberately.** `copier.yml` excludes
 `/project-management/src/**` and negates `**/CONTEXT.md`, so the map index **ships**. A row here
 naming a syntek-base map would arrive in every generated project pointing at a file that is not
-there — the Batch C inheritance leak this map exists to close. All eight other maps here are
-unindexed for the same reason. The conflict with the wayfinder gate checklist is in fog of war.
+there — the Batch C inheritance leak this map exists to close. **All twelve other maps here are
+unindexed for the same reason** (re-measured 01/09/2026; "eight" was correct when written and two
+more maps have since been charted). The conflict with the wayfinder gate checklist was fog and is
+**cleared** — `MAP-RULE-OWNERSHIP` N-010 resolved it by relocation, and the three shipped files
+still carrying the old instruction are a `GAPS.md` entry of 01/09/2026, not this map's residue.
 
 ---
 
@@ -94,11 +97,25 @@ unindexed for the same reason. The conflict with the wayfinder gate checklist is
 
 Every open entry triaged. **Nothing here edits `GAPS.md` or `DEFERRED.md`.**
 
-| Register      | Entry                                              | Verdict   | Retired by |
-| ------------- | -------------------------------------------------- | --------- | ---------- |
-| `GAPS.md`     | 22/08/2026 — `main` has never received this branch | unrelated | its own PR |
-| `GAPS.md`     | SL-1, SL-2, SL-3                                   | exempt    | —          |
-| `DEFERRED.md` | _(no rows)_                                        | —         | —          |
+**Re-triaged 01/09/2026** during the fog pass, because the 24/08 triage had expired: the
+`22/08/2026 — main has never received this branch` entry it verdicted is **gone from the register**,
+and six entries have arrived since. **Nothing is claimed and nothing blocks.**
+
+| Register      | Entry                                                             | Verdict       | Retired by                                                                     |
+| ------------- | ----------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------ |
+| `GAPS.md`     | 31/08/2026 — the PE gate's markup half / the prefix set           | **unrelated** | `MAP-PROGRESSIVE-ENHANCEMENT`                                                  |
+| `GAPS.md`     | 31/08/2026 — htmx pinned at major 2                               | **unrelated** | `MAP-ABSENCE` `S-03`                                                           |
+| `GAPS.md`     | 01/09/2026 — a RUSTSEC advisory against an unchanged `Cargo.lock` | **unrelated** | Its own fix; a gate-coverage gap                                               |
+| `GAPS.md`     | 01/09/2026 — staging and production have no mail backend          | **unrelated** | A settings decision, not a gate                                                |
+| `GAPS.md`     | 01/09/2026 — the story `**Status:**` header's two vocabularies    | **unrelated** | Story lifecycle, not the seam                                                  |
+| `GAPS.md`     | 01/09/2026 — the index-row instruction in three shipped files     | **unrelated** | **Written by this map's own fog pass**; owned by `MAP-REGISTER-INDEXES` `S-01` |
+| `GAPS.md`     | _Still open, found on the way_ — 3 loose items                    | **unrelated** | None touches the copier seam                                                   |
+| `GAPS.md`     | SL-1, SL-2, SL-3                                                  | **exempt**    | Standing limitations take no verdict                                           |
+| `DEFERRED.md` | _(no rows)_                                                       | —             | —                                                                              |
+
+**The last row is a creation, not a claim.** This map's fog pass surfaced it and wrote it to
+`GAPS.md`; the work that retires it sits on another map's slice. Creating an entry is not claiming
+one, and this map promises nothing about it.
 
 **This feature closes nothing, and that is itself a finding.** All five defects were carried by
 four consecutive handoffs and never written to `GAPS.md`, whose own Format section says new items
@@ -448,14 +465,14 @@ The buildable slices. **Flags are a manifest, not a design**; this epic touches 
 surface, so DB / API / GDPR / SEO / Brand / Components / Wireframes / User Flow are `N/A`
 throughout and omitted.
 
-| Slice  | Story   | Title                                         | Nodes                                                                                    | Acceptance | Flags                                                                                                                                                               |
-| ------ | ------- | --------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `S-03` | `US###` | The copier-config-reading scripts             | N-006 ✅, N-017 ✅, N-019 ✅, N-027 (moot)                                               | TBD        | Backend: no · QA: audit self-tests (x2), pre-commit probe, generation probe on **both** answer sets, **the `.copier/README.md` lefthook claim re-read as true**     |
-| `S-05` | `US###` | The gate-side rule, and its first use         | N-008 ✅, N-018 ✅, N-016 ✅, N-004 ✅, N-015 ✅, N-010 ✅ (N-009 moot)                  | TBD        | Backend: no · QA: `skill-conformance` self-test, generation probe, `prettier --check`                                                                               |
-| `S-07` | `US###` | Shipped documents that promise absent paths   | N-014 ✅, N-023 ✅, N-031 ✅, N-013 ✅                                                   | TBD        | Backend: no · QA: `doc-references.sh` + a new naming-row self-test probe, `sync-trees.sh` pre-commit probe, `shipped-readme.sh`, a nine-`.gitignore` tracking probe |
-| `S-08` | `US###` | The format pass, and the gate that watches it | N-005 ✅, N-007 ✅, N-011 ✅, N-012 ✅, N-026 ✅, N-022 ✅, N-025 ✅, N-021 ✅, N-030 ✅ | TBD        | Backend: no · QA: both-pole generation probe, the three commands, `timeout-minutes`, byte-identity vs the reference pole · Logging: CI annotations                  |
-| `S-09` | `US###` | The reports tree's documentation pair         | N-032 ✅                                                                                 | TBD        | Backend: no · QA: `docs-pairing.sh` (both gate edits), `sync-trees.sh --check`, generation probe                                                                    |
-| `S-10` | `US###` | Every audit's verdict is legible              | N-024 ✅, N-029 ✅, N-033 ✅, N-020 ✅, N-028 ✅                                         | TBD        | Backend: no · QA: `security.sh` on both poles, the two new `--self-test` steps, `static-analysis.sh --self-test`, a declared-ignore drift probe                     |
+| Slice  | Story   | Title                                         | Nodes                                                                                    | Acceptance                                                                                                                                                                                                                                                                                                                                                             | Flags                                                                                                                                                               |
+| ------ | ------- | --------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `S-03` | `US###` | The copier-config-reading scripts             | N-006 ✅, N-017 ✅, N-019 ✅, N-027 (moot)                                               | TBD                                                                                                                                                                                                                                                                                                                                                                    | Backend: no · QA: audit self-tests (x2), pre-commit probe, generation probe on **both** answer sets, **the `.copier/README.md` lefthook claim re-read as true**     |
+| `S-05` | `US###` | The gate-side rule, and its first use         | N-008 ✅, N-018 ✅, N-016 ✅, N-004 ✅, N-015 ✅, N-010 ✅ (N-009 moot)                  | TBD                                                                                                                                                                                                                                                                                                                                                                    | Backend: no · QA: `skill-conformance` self-test, generation probe, `prettier --check`                                                                               |
+| `S-07` | `US###` | Shipped documents that promise absent paths   | N-014 ✅, N-023 ✅, N-031 ✅, N-013 ✅                                                   | TBD                                                                                                                                                                                                                                                                                                                                                                    | Backend: no · QA: `doc-references.sh` + a new naming-row self-test probe, `sync-trees.sh` pre-commit probe, `shipped-readme.sh`, a nine-`.gitignore` tracking probe |
+| `S-08` | `US###` | The format pass, and the gate that watches it | N-005 ✅, N-007 ✅, N-011 ✅, N-012 ✅, N-026 ✅, N-022 ✅, N-025 ✅, N-021 ✅, N-030 ✅ | **The catch-up leg is the `after` migration, not a second mechanism** (fog, 01/09/2026): a tree generated at a pre-`S-08` ref and then `copier update`d to the `S-08` release comes out formatted with **no manual step and no `install.sh` edit anywhere**, proved by an update-leg probe alongside the both-pole generation probe. Remaining acceptance unbackfilled | Backend: no · QA: both-pole generation probe, the three commands, `timeout-minutes`, byte-identity vs the reference pole · Logging: CI annotations                  |
+| `S-09` | `US###` | The reports tree's documentation pair         | N-032 ✅                                                                                 | TBD                                                                                                                                                                                                                                                                                                                                                                    | Backend: no · QA: `docs-pairing.sh` (both gate edits), `sync-trees.sh --check`, generation probe                                                                    |
+| `S-10` | `US###` | Every audit's verdict is legible              | N-024 ✅, N-029 ✅, N-033 ✅, N-020 ✅, N-028 ✅                                         | TBD                                                                                                                                                                                                                                                                                                                                                                    | Backend: no · QA: `security.sh` on both poles, the two new `--self-test` steps, `static-analysis.sh --self-test`, a declared-ignore drift probe                     |
 
 **The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
 type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
@@ -514,20 +531,42 @@ those say so in their entry below.
 
 ## Fog of war
 
-In scope, not yet sharp enough to state as a decision.
+**Empty — all three items dispositioned 01/09/2026.** One was answered, two were cleared, and
+neither clearance is an answer. Struck rather than deleted, so a later reader sees what was decided
+and on what.
 
-- **A catch-up path for the four projects generated before the format task exists.** Sharpened but
-  not settled: `install.sh` is the only site with a toolchain present **and** the only candidate
-  that never runs on update, so it is now a statable yes/no rather than an open field — but which
-  way it should go is still not a decision.
-- **The wayfinder index-row rule against the shipping negation.** Eight maps sit unindexed by
-  necessity; the skill's gate checklist requires a row. One of the two needs an exception written,
-  and it is not this map's to write.
-- **Windows and symlink-hostile destinations — no longer load-bearing, still unmeasured.**
-  `_render_symlink` calls `dst_abspath.symlink_to()` unguarded with no platform fallback, and a
-  failed render on a fresh `copier copy` deletes the destination. `N-004` settling to _do not
-  preserve_ means copier never writes a symlink into a generated tree, so this stops being a
-  parity risk and becomes a property of the template repository only. Nobody has run it.
+- ~~**A catch-up path for the four projects generated before the format task exists.**~~
+  **Answered 01/09/2026: no — `install.sh` gains no catch-up leg, because the path already exists
+  inside `N-005`'s settled shape.** The unversioned `after` migration runs on **every**
+  `copier update`, so the same update that delivers the format task formats the four live trees,
+  whose toolchains are present at update time; executing that update is already this map's _Out of
+  scope_, on Sam's timing. An `install.sh` leg would be a **second copy of the pass** — the
+  duplicated-mechanism class the single-mechanism preference in **Notes** exists to forbid — and it
+  would fire on every fresh developer setup of an already-formatted project, rewriting a committed
+  tree outside any story. **Graduated to `S-08`'s acceptance as a probe**, because the claim is
+  falsifiable and should be proved rather than asserted.
+- ~~**The wayfinder index-row rule against the shipping negation.**~~ **Cleared 01/09/2026 — the
+  conflict is dead, resolved by relocation, and neither map wrote an exception.**
+  `MAP-RULE-OWNERSHIP` N-010 (28/08/2026) moved the `## Map index` table out of the shipped
+  `CONTEXT.md`, so the index-row instruction and the shipping-citation rule are both obeyed;
+  `MAP-REGISTER-INDEXES` N-001 (31/08/2026) settled the mechanism as an excluded-and-seeded
+  `MAP-INDEX.md`. This map's own sentence — _"it is not this map's to write"_ — was correct and is
+  now discharged. **The residue is named rather than assumed**, because clearing an item on work
+  another map carries is only honest if that work exists: the shipped instruction survives in
+  **three files no slice repairs** — `.claude/skills/wayfinder/SKILL.md:97-98` and `:256`, and
+  `01-FEATURE-MAPS/CLAUDE.md:22-23` and `:26` — and `MAP-REGISTER-INDEXES.md:157` scopes S-01 to
+  `MAP-000-TEMPLATE.md` and the seven `CONTEXT.md` H2s, which does not include them. Recorded as a
+  `GAPS.md` entry (01/09/2026) rather than left inside a struck fog bullet.
+- ~~**Windows and symlink-hostile destinations.**~~ **Cleared 01/09/2026 — the premise is false
+  without needing a run.** Both cited copier behaviours are real, but `_render_symlink` is
+  **reachable only when `preserve_symlinks` is true**, a setting absent from `copier.yml` and
+  settled by `N-004` as never to be set. For this template the unguarded call is **dead code on
+  every platform**, and both rendered poles already carry zero symlinks — this map's own accepted
+  property — so a symlink-hostile destination receives nothing that can fail. What remains is not a
+  destination question at all but git checking out the template's own three `120000` entries on a
+  symlink-incapable host: a **host-support property of syntek-base's own working copy**, which gate
+  parity does not own and which the repo's stated POSIX/LF posture already excludes. It revives only
+  if `_preserve_symlinks` is ever set — the exact thing `N-004` settled against.
 
 ---
 

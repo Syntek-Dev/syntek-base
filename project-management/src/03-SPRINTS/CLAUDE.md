@@ -20,8 +20,8 @@ folder along in `16-SPRINT-PLANS/`.
 - **Model:** Fable for composing or re-balancing a sprint (capacity, MoSCoW, the
   dependency chain); Opus for mechanical touches — a status flip or a version-header bump.
 - **Concrete steps:** copy `SPRINT-00-TEMPLATE.md` → `SPRINT-##.md` (2-digit zero-padded)
-  → fill the fixed format (goal · timeline · capacity · story table · dependencies ·
-  optional notes) → cross-link every `US###`.
+  → fill the fixed format (goal · status · timeline · capacity · story table ·
+  dependencies · optional notes) → cross-link every `US###`.
 - **Definition of done:** file named to convention; capacity within the team ceiling;
   every story links to its `US###`; blocking/unblocking relationships stated; British
   English; DD/MM/YYYY dates.

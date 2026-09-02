@@ -1,7 +1,7 @@
 # MAP-SUBDOMAIN-ROUTING — which surface answers on which host
 
 **Seeded**: 16/08/2026 · **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Frontier resolved** — every decision node settled; slices ready for `02-story-creation` (01/09/2026)
+**Status**: **Frontier resolved and fog dispositioned** — every decision node settled; fog closed 01/09/2026 (1 answered · 1 cleared · 2 stay with triggers); slices ready for `02-story-creation`
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 26
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and
@@ -63,11 +63,17 @@ carry the strong wording and this map does not settle it for them.
 
 **Nothing claimed.** Triaged against the live registers on 28/08/2026, not inherited from seeding.
 
-| Register      | Entry                                              | Verdict       | Retired by                                             |
-| ------------- | -------------------------------------------------- | ------------- | ------------------------------------------------------ |
-| `GAPS.md`     | SL-1, SL-2, SL-3 — _Standing limitations_          | **exempt**    | Never — accepted properties, not entries               |
-| `GAPS.md`     | 22/08/2026 — `main` has never received this branch | **unrelated** | Its own PR merging; the entry says _"Do not chart it"_ |
-| `DEFERRED.md` | _(no rows — 17 lines of preamble)_                 | —             | —                                                      |
+| Register      | Entry                                     | Verdict    | Retired by                               |
+| ------------- | ----------------------------------------- | ---------- | ---------------------------------------- |
+| `GAPS.md`     | SL-1, SL-2, SL-3 — _Standing limitations_ | **exempt** | Never — accepted properties, not entries |
+| `DEFERRED.md` | _(no rows)_                               | —          | —                                        |
+
+**Re-triaged 01/09/2026 during the fog pass.** The `22/08/2026 — main has never received this
+branch` entry the 28/08 triage verdicted is **gone from the register**, and six have arrived since.
+All six are **unrelated**: the PE gate's markup half and prefix set, htmx's v4 pin, the RUSTSEC
+advisory gap, the missing staging/production mail backend, the story `**Status:**` vocabularies, and
+the index-row instruction surviving in three shipped files. **0 closes · 0 blocks · 6 unrelated**,
+plus three loose items that touch no host surface. Nothing here is claimed.
 
 **This is a claim, not a close.** Nothing here edits either register.
 
@@ -345,20 +351,53 @@ blocker. Renamed from `task` on 31/08/2026; the old name was never once used as 
 ## Fog of war
 
 In scope, not yet sharp enough to state as a decision. **Leaving something here is honest.**
+**All four dispositioned 01/09/2026: one answered, one cleared, two stay with named triggers.**
 
-- **What a client-delegated subdomain actually _is_.** `email.`, `chat.`, `video.` were named as the
-  motivating case, but a vendor CNAME, a proxied third-party app and a Django-served surface have
-  three different security answers. **The proposal treats them as one class; they are not one.**
-  N-005 settles the cookie half only.
-- **What the published API surface is made of**, if one is published — a second `NinjaAPI` is
-  **banned twice** (`NINJA-CONVENTIONS.md:130`, `AUTH-STRATEGY.md:46-48`), so "publish a filtered
-  subset" has no shipped mechanism. Deliberately not a node: `API_DOCS_ENABLED` was ruled **out of
-  scope** on 28/08/2026 (`Q3→3`).
-- **Whether an environment host is the same class as a surface host.** `staging.` is in the
-  inventory now, but nothing has argued whether the two obey one rule or two.
-- **Whether host enumeration is a threat this project answers.** `AUTH-AND-AUTHZ.md:93-126` has a
-  full anti-enumeration section and it is **entirely about API responses** — nothing about host,
-  path or subdomain enumeration.
+- **What a client-delegated subdomain actually _is_ — stays.** `email.`, `chat.`, `video.` were
+  named as the motivating case, but a vendor CNAME, a proxied third-party app and a Django-served
+  surface have three different security answers. **The proposal treats them as one class; they are
+  not one.** N-005 settles the cookie half only. **What is missing is any instance of the class to
+  classify**: no doc specifies such a host, no sibling map mentions one, and the three-kind taxonomy
+  is this map's own unsupported assertion — shipping it into `HOSTS.md` now would be a taxonomy
+  decided on zero worked examples. **One correction to that claim, measured 01/09/2026:** the tree
+  is **not** silent on the vendor-CNAME kind — `how-to/docs/FEATURE-DEPLOY.md:64-65` already
+  contemplates a private Cloudinary delivery CNAME as a CSP obligation, so one of the three kinds
+  has an in-tree anchor. **Trigger, restricted to what this repository can witness:** a candidate
+  row for a non-Django-served host is proposed for `HOSTS.md`, **or** a Cloudinary private delivery
+  CNAME is activated — the first vendor-CNAME-class host, which opens the classification with a
+  real host in hand. _(The charted "a generated project asks for one" is **not** a usable trigger
+  and is dropped: nothing reports a downstream project's requests back here, so it would be a
+  promise nobody can keep — the same test this map applied to the deploy repo.)_
+- ~~**What the published API surface is made of.**~~ **Cleared 01/09/2026 — a shipped guide already
+  owns the answer.** `code/docs/api-design/AUTH-STRATEGY.md`'s _Framework responsibility model_
+  (`:44-55`) states what a published API surface is made of: a **second framework for a different
+  consumer** — DRF for a genuine versioned public REST product, or a separately-deployed FastAPI
+  service — and never the same resources re-exposed through a second contract (`:46-48`), with
+  `NINJA-CONVENTIONS.md:130` separately banning a second `NinjaAPI` instance. **The fog item's
+  premise was half-false**: nothing is installed, but the mechanism choice is decided and recorded.
+  With Sam's `Q3→3` ruling that publication is an API decision rather than a host decision, no
+  question remains for this map. The _Out of scope_ row is now the surviving in-map record.
+- ~~**Whether an environment host is the same class as a surface host.**~~ **Answered 01/09/2026:
+  one rule, one class at the register level — and it was already committed rather than newly
+  decided.** N-019 ships `HOSTS.md` filled with the five measured families, `staging.` among them,
+  and `S-01`'s acceptance binds **every** row to its cookie, canonical, robots and edge obligations
+  with **no environment-host carve-out**. An environment host therefore differs in its row
+  **values**, never its row **schema**. **The measured hole worth keeping as evidence:** no
+  host-level robots decision exists anywhere — the tree's only `noindex` is the per-page meta in
+  `code/src/django/templates/500.html:29`, and `ROOT-SURFACE.md`'s robots rules are **path-scoped**
+  and serve identically on every host — so a publicly-tunnelled `staging.` is **index-eligible by
+  silence** until `S-01`'s story states its value. That is already bound by N-022 (_robots is a
+  per-row obligation_) and needs no second acceptance clause.
+- **Whether host enumeration is a threat this project answers — stays.**
+  `AUTH-AND-AUTHZ.md:93-126` has a full anti-enumeration section and it is **entirely about API
+  responses**; re-measured 01/09/2026, every other enumeration mention in the tree is record or ID
+  enumeration. **The repository is silent on both sides**, so answering yes or no now would invent a
+  security posture nobody has modelled — and under N-014's edge-only mechanism the answer would bind
+  the edge contract, which this map only specifies. **Trigger:** `S-01`'s story reaches PM workflow
+  `10-security-checks` — the threat model authored over the host register is the first artefact
+  obliged to take a position, and `S-01` already carries the `Security` flag that routes it there.
+  It fires earlier if any sensitive candidate row (`control.`, `admin.`) ships a host whose mere
+  existence in DNS or CT logs is itself information.
 
 ---
 

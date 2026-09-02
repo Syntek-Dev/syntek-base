@@ -61,7 +61,7 @@ qa-tester [describe the story, its wireframe, and user flow]
 For each story, save a QA document in `project-management/src/11-QA/PLANNING/`:
 
 ```text
-QA-US###-<DESCRIPTION>.md
+QA-PLAN-US###-<DESCRIPTOR>.md
 ```
 
 Each document should include:

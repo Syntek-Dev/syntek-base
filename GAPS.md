@@ -331,3 +331,96 @@ choosing a relay is a real decision, not a doc repair.
 declared-not-wired, so this lands with the notification surface rather than ahead of it —
 but the silent fall-through is a defect in its own right and should not wait for a
 notification feature to be scheduled.
+
+---
+
+## 01/09/2026 — the story `**Status:**` header carries two competing vocabularies
+
+**Type:** Active gap
+**Summary:** One field, two canonical sets, and both self-declare. `.claude/skills/completion/SKILL.md:37-41`
+defines five states for a `US###.md` header (`Pending · Open · Blocked · In Review · Completed`);
+four other surfaces define the **same header** with the eleven-state ClickUp vocabulary —
+`project-management/docs/planning/STORIES.md:79-93`, which states outright "This is the canonical
+set", `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md:9`,
+`.copier/README.md:568-570`, and `project-management/workflows/23-pr-and-review/STEPS.md:73-74`, <!-- doc-references: template-only -->
+which moves a story to `Accepted` / `Accepted Customer` — values the five-state set does not admit,
+so the shipped PR workflow instructs a transition the shipped completion skill forbids. Class **D**,
+split doctrine. Surfaced 01/09/2026 while resolving `MAP-REGISTER-INDEXES.md`'s fog, which parked it
+as "belongs to whoever owns the story lifecycle" and correctly declined to settle another register's
+semantics to make its own index fillable.
+**Blocked by / Action:** Nothing blocks it. A pass decides which vocabulary wins, or writes the
+mapping that reconciles them, and repairs all five surfaces in one change. **Two consumers make the
+repair wider than the five sites:** `STORY-PLAN-US000-TEMPLATE.md:773` requires the status to agree
+across story + plan + Plans Index + sprint, and `MAP-REGISTER-INDEXES.md` N-003's gate will
+string-equal the field in `STORY-INDEX.md` and `STORY-PLAN-INDEX.md`, so a reconciliation lands with
+both indexes and the gate's `broken/`+`clean/` fixtures. The gate is indifferent to _which_ set wins —
+it mirrors verbatim — but not to the cost. Likely charting home is `MAP-RULE-OWNERSHIP.md`, four of
+the five sites sitting inside the surfaces its four architecture passes measured; its frontier is
+closed, so this is recorded here first per the Format section above.
+
+---
+
+## 01/09/2026 — the `CONTEXT.md` index-row instruction survives in three shipped files no slice repairs
+
+**Type:** Active gap
+**Summary:** `MAP-REGISTER-INDEXES.md` N-001 (31/08/2026) relocated the map index out of the shipped
+`CONTEXT.md` into a seeded map-index file of its own, and every map in `01-FEATURE-MAPS/` has declined the index
+row on the record. But the instruction to add it is still shipped in three places:
+`.claude/skills/wayfinder/SKILL.md:97-98` ("Add the map to the index in
+`src/01-FEATURE-MAPS/CONTEXT.md`") with `:256` naming that file "the map index, where a new map is
+registered", and `project-management/src/01-FEATURE-MAPS/CLAUDE.md:22-23` and `:26`, which repeat it
+as a concrete step **and** a definition-of-done. That map's S-01 scopes itself to
+`MAP-000-TEMPLATE.md:8`/`:146` plus the seven `CONTEXT.md` H2s — the wayfinder skill and the folder
+`CLAUDE.md` are in no slice on any map. Meanwhile `01-FEATURE-MAPS/CONTEXT.md:47` reads
+"_None charted yet_" against **12** maps present, under that file's own rule at `:50-52` that a map
+with no row is "an index that has drifted". So the shipped instruction, the shipped
+definition-of-done and the shipped index are all currently false, and the work to make them true is
+unowned. Surfaced 01/09/2026 while resolving `MAP-GATE-PARITY.md`'s fog, whose own entry said the
+exception "is not this map's to write" — correct, and now discharged to nobody.
+**Blocked by / Action:** Nothing blocks it. Either widen `MAP-REGISTER-INDEXES.md` S-01's Acceptance
+to name the three sites, so they are repaired in the same change as the seeded map index ships, or repair
+them independently. This entry retires when the three files stop instructing a row into a shipped
+file.
+
+---
+
+## 02/09/2026 — `doc-references.sh` applies its shipped-file citation rule to a tree that never ships
+
+**Type:** Active gap
+**Summary:** Check 2 of `code/src/scripts/audits/doc-references.sh` (`:673-678`) bans a citation to
+a per-project instance artefact — `US###`, `SPRINT-##`, `ADR-###`, `MAP-*`, `*-PLAN-US###` — on the
+stated reasoning that the reader of a generated project has no such file. It never tests whether
+the **citing** file ships. `copier.yml` <!-- doc-references: template-only --> line 152 excludes `/project-management/src/**` and re-includes
+only `**/CONTEXT.md`, `**/CLAUDE.md` and `**/*TEMPLATE*`, so a story, sprint record, QA plan and
+ADR are all copier-excluded — the rule's premise does not hold for any of them. It has now fired
+twice on correct, resolvable citations: seven findings on the first draft of `project-management/src/02-STORIES/US001.md` (01/09/2026) and
+nine on its QA plan (01/09/2026). The exemption arm at `:333` already carries this reasoning for
+`project-management/src/01-FEATURE-MAPS/*` and for the `WALK-*` evidence files; the rest of
+`src/` has no equivalent.
+
+**Corrected 02/09/2026 — the rule also UNDER-applies, and the original wording here repeated a
+false mechanism.** This entry previously read that the check "records a finding only where the
+token does not resolve (`[ ! -e "$token" ]`), so a full repo-relative path passes and a bare
+filename does not". A full path does not _pass_ that test — it never reaches it. Check 2's regex
+at `:675` is `^`-anchored, so a token beginning `project-management/` matches no alternative and
+the block containing the existence test is never entered; and Check 1's checkable-tree `case` at
+`:762-780` has **no `project-management/src/*` arm**, so the same token falls to `*) continue`
+before its own existence test. **No gate checks a PM `src/` instance citation in either form.**
+Proof in the tree: `project-management/src/02-STORIES/US001.md` cites
+`../18-TESTS/US001-MANUAL-TESTING.md` twice, that file does not exist, and the audit exits 0.
+Two further defects found by the same measurement — the alternation still carries `ADR-[0-9]{3}`,
+the counter retired 31/08/2026, and `QA-US[0-9]{3}` against the live
+`QA-PLAN-US###-<DESCRIPTOR>.md` spelling, so **no ADR or QA-plan filename is checkable in any
+form**. The interim convention is unchanged and now argued honestly in
+`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`, which
+supersedes `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
+for claiming the full path was machine-verified.
+**Blocked by / Action:** `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` <!-- doc-references: template-only --> slice `S-06` owns the first edit to
+`doc-references.sh` and is itself blocked on that map's RESOLVE sitting. The fix is now **four
+changes, not one**: a `project-management/src/*` arm on Check 1's checkable-tree `case`; the
+`ADR-US###` and `QA-PLAN-US###` spellings in Check 2's alternation; a decision on whether Check 2
+should exempt copier-excluded citers outright; and fixtures covering a dead PM citation, which
+today's `broken/` set does not. Either widen `S-06`'s acceptance to carry all four, or take it
+independently once the sitting has settled who owns the file. This entry retires when a
+copier-excluded artefact can cite another by its short name without a finding **and** a dead
+citation to a PM `src/` artefact is caught.

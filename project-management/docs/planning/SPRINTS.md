@@ -18,7 +18,7 @@ Opening a `SPRINT-##` record (`src/03-SPRINTS/`) and writing its plan
 
 | Artefact                                         | Written by           | When                                       | Holds                                               |
 | ------------------------------------------------ | -------------------- | ------------------------------------------ | --------------------------------------------------- |
-| `src/03-SPRINTS/SPRINT-##.md`                    | `03-sprint-planning` | Opened early; filled as stories clear `15` | Goal, timeline, capacity, story table, dependencies |
+| `src/03-SPRINTS/SPRINT-##.md`                    | `03-sprint-planning` | Opened early; filled as stories clear `15` | Goal, status, timeline, capacity, story table, deps |
 | `src/16-SPRINT-PLANS/{exec}-SPRINT-PLAN-{##}.md` | `16-sprint-plans`    | The moment the sprint fills                | Phase breakdown, constraints, definition of done    |
 
 The **record** is the running ledger — it accumulates stories with their points, and it is what

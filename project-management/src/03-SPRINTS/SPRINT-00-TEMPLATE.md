@@ -7,6 +7,11 @@
 
 **Goal:** [One sentence describing the primary outcome this sprint delivers.]
 
+**Status:** Planned
+
+<!-- The sprint status vocabulary and its transitions are owned by
+     `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
+
 **Timeline:** TBD · **Capacity:** [used] / [total] SP
 
 <!-- FLAGS — the UNION of the member stories' flags, one row per gate.

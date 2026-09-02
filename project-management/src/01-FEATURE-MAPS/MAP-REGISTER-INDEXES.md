@@ -3,7 +3,7 @@
 **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `7a82095` — **graduated out of `MAP-RULE-OWNERSHIP.md` N-010, which settled the
 map-folder case and claimed the rest (Q38, 28/08/2026)**
-**Status**: Blockers clear — stories may start
+**Status**: **Blockers clear — stories may start; fog dispositioned 01/09/2026** (2 answered · 1 decided · 1 cleared · 1 stays with a trigger)
 **Frontier open**: 0 · **Blocking open**: 0
 
 > **Written from `MAP-000-TEMPLATE.md`.** Its instruction _"add a row to `CONTEXT.md` → Map index"_
@@ -73,6 +73,15 @@ resolve sittings rather than inherited, so neither was in the triage above.
 
 **Creating an entry is not claiming one.** A claim promises retirement; only the second earns one,
 and it is retired when `S-01` ships, never by this map.
+
+**Re-triaged 01/09/2026 during the fog pass, and both rows above are stale in the register.**
+Commit `637c3c3` (31/08/2026, _"GAPS.md keeps only what waits"_) removed both entries: the
+`SEEDED` one was charted onto `MAP-SCRIPT-GUARDS.md` (its N-005 and slice `S-02`), and the Plans
+Index one was dropped as already claimed here. **The claim survives on this map; the register rows
+do not** — which is the correct state, since a claim is a promise and the work is unshipped. The
+live register holds six dated entries, three loose items and three standing limitations; **0 closes
+· 0 blocks · 6 unrelated**, and this map's fog pass **wrote a seventh** (the story `**Status:**`
+vocabularies) rather than claiming it.
 
 **This is a claim surface, not a close surface.** Nothing here edits either register to mark
 anything done; closing belongs to `workflows/22-implementation-documentation/`, against shipped
@@ -328,17 +337,22 @@ empty, so the `Story` column stays `—`.
 **The 13-flag roster is application-shaped and this work is template plumbing**, so most flags are
 `N/A` and omitted. That is the honest manifest, not a thin one.
 
-| Slice | Story | Title                                                    | Nodes | Acceptance | Flags                                                                                                                                                                       |
-| ----- | ----- | -------------------------------------------------------- | ----- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S-01  | —     | Wire seven seeded register indexes                       | TBD   | TBD        | QA: unit (`shipped-artefacts.sh --self-test`), integration (generation smoke, `audit-template.yml`) — seed-lands, seed-blank                                                |
-| S-02  | —     | Backfill `MAP-INDEX.md`, and correct the rows it indexes | TBD   | TBD        | QA: manual — row-per-map, counts match each header, and no `Umbrella ADRs` row still asserts the reversed no-ADR rule                                                       |
-| S-03  | —     | The index gate, and the duty it enforces                 | TBD   | TBD        | QA: unit (`register-indexes.sh --self-test`, `broken/`+`clean/` fixtures), integration (lefthook + `audit-register-indexes.yml`) — missing-row, orphan-row, status-mismatch |
-| S-04  | —     | Artefact frontmatter across `project-management/src/`    | TBD   | TBD        | QA: unit (mirror `--check`, `doc-references.sh --self-test`), manual — 62 artefacts, PDF export unaffected                                                                  |
+| Slice | Story | Title                                                    | Nodes               | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Flags                                                                                                                                                                       |
+| ----- | ----- | -------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S-01  | —     | Wire seven seeded register indexes                       | TBD                 | TBD                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | QA: unit (`shipped-artefacts.sh --self-test`), integration (generation smoke, `audit-template.yml`) — seed-lands, seed-blank                                                |
+| S-02  | —     | Backfill `MAP-INDEX.md`, and correct the rows it indexes | TBD                 | TBD                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | QA: manual — row-per-map, counts match each header, and no `Umbrella ADRs` row still asserts the reversed no-ADR rule                                                       |
+| S-03  | —     | The index gate, and the duty it enforces                 | N-003 ✅ · N-004 ✅ | **The gate's header states its compatibility surface** (fog, 01/09/2026): the columns it reads are `Instance` and `Status`, and a release changing either **ships a `.copier/migrations/` script in the same commit**, on the v2.0.0/v7.0.0 precedent; additive spine or tail columns need no migration, because no clause reads them. Remaining acceptance unbackfilled                                                                                                                | QA: unit (`register-indexes.sh --self-test`, `broken/`+`clean/` fixtures), integration (lefthook + `audit-register-indexes.yml`) — missing-row, orphan-row, status-mismatch |
+| S-04  | —     | Artefact frontmatter across `project-management/src/`    | TBD                 | **The two derived conditional-key placements are settled** (fog, 01/09/2026) and `S-04` may write them: `01-FEATURE-MAPS` takes **no `Flags:`** (slice flags live per-slice in the body table; a file-level union would be a fourth agreement point) and `23-INCIDENTS` takes **no `Story:`** — the latter reversible on <%DEVELOPER_NAME%>'s word, an optional key being a live alternative on the softer source at `23-INCIDENTS/CONTEXT.md:40-44`. Remaining acceptance unbackfilled | QA: unit (mirror `--check`, `doc-references.sh --self-test`), manual — 62 artefacts, PDF export unaffected                                                                  |
 
 **The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
 type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
 RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
 slice_ is unverified here.
+
+**S-02's population is twelve, not ten — re-measured 01/09/2026.** `MAP-CAP-POSTURE.md` and
+`MAP-SCRIPT-GUARDS.md` were charted after the Batch A sitting, so every "ten maps" literal below
+and in the backfill scope is stale by two; the count is an input to N-003's gate and is corrected
+here rather than left for a third map to find.
 
 **S-02 absorbed the superseded-ADR-wording sweep, 31/08/2026.** Each live map's `Umbrella ADRs`
 row still asserts the house rule that `MAP-PROGRESSIVE-ENHANCEMENT` N-026 reversed the same day.
@@ -415,9 +429,10 @@ retired with the nodes, which is what _index, not vault_ requires.
 
 **The map is not `Complete`, and the distinction is the template's own.** Its four statuses are
 `Charting / Resolving / Blockers clear — stories may start / Complete`, and wayfinder's criterion
-is _"done when Frontier **and** Fog of war are both empty"_. **Five fog items remain** — four
-inherited, one opened by Batch C — so this map sits at **Blockers clear**. Stories may be cut; the
-map stays open.
+is _"done when Frontier **and** Fog of war are both empty"_. ~~**Five fog items remain**~~ **— four
+of the five discharged 01/09/2026 (two answered, one decided outright, one cleared); one stays,
+carrying a corrected two-arm trigger.** So this map still sits at **Blockers clear**, not
+`Complete`, and correctly: one live item is one live item. Stories may be cut; the map stays open.
 
 ### Batches — why each set belongs in one sitting
 
@@ -435,32 +450,79 @@ is that a gate designed before the rule it asserts is a gate designed against a 
 
 ## Fog of war
 
-- **Two status vocabularies that must agree and cannot.** `STORY-PLAN-US000-TEMPLATE.md` runs
-  **eleven** states including `Accepted Customer` and `Rejected Customer`, and requires the status
-  to agree _"across story + plan + Plans Index + sprint"_ — but `completion/SKILL.md:37` gives a
-  `US###.md` only five, none of them those. Found in Batch B and deliberately **not charted here**:
-  it belongs to whoever owns the story lifecycle, and this map would be settling another register's
-  semantics to make its own index fillable. It bites `STORY-INDEX.md` and `STORY-PLAN-INDEX.md`
-  only if the two indexes are ever asserted against each other, which no node proposes.
-- **Whether `01-FEATURE-MAPS` should carry `Flags:` and `23-INCIDENTS` a `Story:`.** Both were
-  **derived, not asked**, when the frontmatter schema was settled — the first because slice flags
-  live in a body table and a file-level union would be a fourth place they must agree, the second
-  because that folder's `CONTEXT.md` states an incident is not owned by a story. Neither reasoning
-  was put to Sam, so neither is a settled decision. `S-04` must not treat them as one.
-- **Whether the moderate six earn an index later, and what evidence would say so.** Q36 settled
-  _the strong seven_ **now**; it did not settle that the answer is permanent. A revisit trigger is
-  the honest shape — `MAP-RULE-OWNERSHIP.md` N-008 built exactly one for the coverage floors — but
-  what the trigger measures is not yet sharp enough to state.
-- **Whether an index is the right artefact at all for a register a script can list.** `ls` answers
-  _what instances exist_; an index answers _what they are and what state they are in_. Where a
-  register's rows would carry nothing but filenames, the index is a cache of the filesystem, and a
-  cache with a gate is worse than no cache. Which of the seven those are is not yet measured.
-- **Whether seed-once is the right trade for an index, and what the escape hatch is.** N-001 chose
-  it knowingly: an index format that gains a column upstream **never reaches** a project generated
-  before the change, because `_tasks` seeding is gated to `copy`. `GAPS.md` and `MEMORY.md` accept
-  the identical property. What is not yet sharp is whether an index — which a gate asserts against,
-  unlike those two — can tolerate a format that drifts per generation, or needs a migration path
-  the other accumulators never needed.
+**Dispositioned 01/09/2026: two answered, one decided outright, one cleared, one stays.**
+
+- ~~**Two status vocabularies that must agree and cannot.**~~ **Answered 01/09/2026 — confirmed,
+  measurably wider than recorded, and graduated off this map.** The eleven-state ClickUp vocabulary
+  defines the story's **own** `**Status:**` header on **four** surfaces — the plan template,
+  `docs/planning/STORIES.md:79-93` (which states outright "This is the canonical set"),
+  `.copier/README.md:568-570`, and `23-pr-and-review/STEPS.md:73-74`, which moves a story to
+  `Accepted` / `Accepted Customer` — while `completion/SKILL.md:37-41` defines the same header as
+  five states. **So the shipped PR workflow instructs a transition the shipped completion skill
+  forbids**; it is not plan-versus-story, as charted, but four surfaces against one over a single
+  contested field. Class **D**. **This map correctly declined to settle another register's
+  semantics**, so it graduates to a `GAPS.md` entry (01/09/2026) — appended, never closed. **The
+  map's own caveat is upheld with one correction:** N-003's gate mirrors the field verbatim and is
+  indifferent to _which_ set wins, but not to the **cost** — once `STORY-INDEX.md` and
+  `STORY-PLAN-INDEX.md` ship, the field is frozen by a script in two places plus its fixtures, so a
+  later reconciliation lands with both indexes and the gate's `broken/`+`clean/` pair.
+- ~~**Whether `01-FEATURE-MAPS` should carry `Flags:` and `23-INCIDENTS` a `Story:`.**~~
+  **Decided 01/09/2026, and deliberately not opened as a node — the reasoning was already complete
+  on both sides and only ratification was missing.** **Neither key applies.**
+  `01-FEATURE-MAPS` takes **no `Flags:`**, because slice flags live per-slice in the body Slices
+  table (the shape `01-feature-map/STEPS.md` Step 8a mandates) and a file-level union would be a
+  **fourth** place they must agree — this map's own defect class. `23-INCIDENTS` takes **no
+  `Story:`**, because an incident is not owned by a story. **One nuance recorded for override, since
+  the source is softer than this map stated:** the categorical form is in
+  `project-management/src/CONTEXT.md`'s naming table, while `23-INCIDENTS/CONTEXT.md:40-44` says
+  only that an incident "frequently has no story behind it at all" and cross-references a
+  story-anchored `21-BUGS` report where one exists — so an **optional** key is a live alternative,
+  and if <%DEVELOPER_NAME%> prefers it, this reverses on his word alone. **Why no node was opened:**
+  a frontier node here would reopen this map's frontier, and under the standing preference — _no
+  story is cut until the frontier is empty_ — that would freeze **all four** slices, not just
+  `S-04`. Five maps have parked their unticked index-row gate boxes on `S-01` shipping, and the
+  deadlock ruling at _Gate to stories_ turns on `S-01` being cuttable. **A question about two
+  optional YAML keys may not freeze five maps.** `S-04` may now write the conditional-key table.
+- **Whether the moderate six earn an index later — stays, with a corrected trigger.** Q36 settled
+  the scope at the strong seven **now**, not permanently, and only <%DEVELOPER_NAME%> reopens it.
+  The precedent this item leans on for a trigger's shape — `MAP-RULE-OWNERSHIP` N-008's dated
+  allowance — is itself **specified into an unbuilt slice** (`COVERAGE.md` carries no allowance
+  marker at HEAD), so there is no shipped mechanism to copy and choosing what the trigger measures
+  is a design decision nobody has taken. **The charted count trigger was measured and does not
+  work as stated**, so it is corrected rather than recorded: populations are `04-DATABASE` 0,
+  `05-USER-FLOW` 0, `09-GDPR` 6, `10-SECURITY` 0, `18-TESTS` 2, `22-REFACTORING` 0 — and
+  **`09-GDPR` must be excluded outright**, because Q35 (a chartered input no node may reopen)
+  already rules its six files register **facts, not instances**, so firing on them would reopen it;
+  and the flat recognition rule **miscounts seeds**, since `18-TESTS`'s two `US000-` templates carry
+  no `TEMPLATE` in the filename. **Trigger, in two arms:** (a) any moderate register **other than
+  `09-GDPR`** reaches **ten** instances, counting a `.md` file that names a real `US###` and
+  excluding `CONTEXT.md`, `CLAUDE.md`, any `US000-` name and any file opening with the
+  `_Template —_` marker; or (b) **a drift incident is recorded** — a session states a moderate
+  register's contents wrongly and the error traces to the absence of an index. **Arm (b) is the
+  observable one**, and the strongest evidence for it is already in hand one folder over.
+- ~~**Whether an index is the right artefact at all for a register a script can list.**~~
+  **Cleared 01/09/2026 by measurement: the set is empty.** Every one of the seven registers'
+  artefacts carries a `Status` the filename cannot encode — stories, sprints (the vocabulary exists
+  at `completion/SKILL.md:42`; the field's absence from `SPRINT-00-TEMPLATE.md` is the known defect
+  `S-01` already repairs), decisions (a status **plus** a supersession chain), story plans, findings,
+  bugs, and maps. With `Status`, `Summary` and `Updated` all non-derivable from a filename, **no
+  index of the seven is a cache of the filesystem**, and the "a cache with a gate is worse than no
+  cache" concern applies to none of them. Q36's scope and N-002's spine stand unchanged; nothing to
+  build, and the measurement lives in the strike.
+- ~~**Whether seed-once is the right trade for an index, and what the escape hatch is.**~~
+  **Answered 01/09/2026: seed-once stands, and the escape hatch already exists — it needed
+  identifying, not inventing.** N-001 chose seed-once knowingly and nothing measured reopens it;
+  copier's `_migrations` with `.copier/migrations/` scripts is the hatch, with six shipped
+  precedents, under this repository's own rule that a structural change to developer-held files
+  ships its migration **in the same commit**. **The sharp half the item was actually asking for:
+  the gate defines the index's compatibility surface.** `register-indexes.sh` travels on
+  `copier update`; the seeded index does not. The gate's three clauses read only the **Instance**
+  link and the **Status** column — so an upstream change to a **gate-read** column must ship a
+  migration in the same release, while additive spine or tail columns need none, because no clause
+  reads them and their per-generation drift is harmless. **That is precisely what distinguishes the
+  index from `GAPS.md` and `MEMORY.md`**, which the item suspected but could not name: those drift
+  freely because nothing asserts against their live format; the index's format is pinned to exactly
+  the columns its gate reads, and only those. Graduates to `S-03`'s acceptance.
 
 ---
 
@@ -510,10 +572,13 @@ is that a gate designed before the rule it asserts is a gate designed against a 
 **Node-count invariant: 0 open + 6 resolved = 6 = N-006.**
 
 **Status is `Blockers clear`, not `Complete`, and the gap is deliberate.** Wayfinder closes a map
-only when **Frontier and Fog of war are both empty**; five fog items remain, one of them opened by
-this sitting. A map stamped `Complete` over live fog is the same defect as an index stamped current
-over a missing row — which is the thing this map exists to stop, and it would be a poor place to
-make an exception.
+only when **Frontier and Fog of war are both empty**; ~~five fog items remain, one of them opened by
+this sitting~~ **one remains after the 01/09/2026 fog pass — whether the moderate six earn an index
+later, which only <%DEVELOPER_NAME%> reopens per Q35/Q36.** A map stamped `Complete` over live fog is
+the same defect as an index stamped current over a missing row — which is the thing this map exists
+to stop, and it would be a poor place to make an exception. **The pass deliberately opened no
+frontier node**, because doing so would have frozen all four slices under the standing preference
+and un-broken the deadlock ruling below that five sibling maps are parked on.
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked** — and per
 Sam's standing preference, **not until the frontier is empty**.

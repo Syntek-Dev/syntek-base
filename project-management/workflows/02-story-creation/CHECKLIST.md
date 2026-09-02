@@ -46,4 +46,5 @@ model: fable
 
 - [ ] Story is clear, unambiguous, and ready to plan
 - [ ] Committed and pushed
-- [ ] Accessibility criteria stated (WCAG 2.2 AA) — markup rules asserted in pytest, the resh` before raising PR (requires dev server running)
+- [ ] Accessibility criteria stated (WCAG 2.2 AA) — markup rules asserted in pytest, the rest
+      walked manually against a running dev server before raising PR

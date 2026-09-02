@@ -32,7 +32,7 @@ Use this workflow after security checks and before sprint planning to:
 ## Key concepts
 
 - QA is planned at design stage — test scenarios are derived from wireframes, not from completed code
-- Each user story gets a `QA-US###-<DESCRIPTION>.md` file in `project-management/src/11-QA/`
+- Each user story gets a `QA-PLAN-US###-<DESCRIPTOR>.md` file in `project-management/src/11-QA/`
 - Edge cases and error states identified here feed directly into story acceptance criteria
 - QA documents created here are later used as the basis for writing automated and manual tests
 

@@ -9,7 +9,7 @@ then `CHECKLIST.md`.
 ## Purpose (one line)
 
 The design-stage QA workflow — derive test scenarios, edge cases, and error states
-from signed-off wireframes and user flows, producing a `QA-US###-*.md` plan per story
+from signed-off wireframes and user flows, producing a `QA-PLAN-US###-*.md` plan per story
 in `src/11-QA/` before any code is written.
 
 ## How to work here
@@ -22,7 +22,7 @@ in `src/11-QA/` before any code is written.
   mechanical touches (status flips, moving a file).
 - **Concrete steps:** read `docs/QA-GUIDE.md` → map scenarios against
   `src/02-STORIES/` and wireframes → cover the security findings from
-  `src/10-SECURITY/` and WCAG 2.2 AA checks → write `QA-US###-<DESCRIPTION>.md` into
+  `src/10-SECURITY/` and WCAG 2.2 AA checks → write `QA-PLAN-US###-<DESCRIPTOR>.md` into
   `src/11-QA/PLANNING/` → feed edge cases back into story acceptance criteria → satisfy
   `CHECKLIST.md`.
 - **Definition of done:** every in-scope story has a QA plan; edge cases and error
@@ -43,6 +43,6 @@ in `src/11-QA/` before any code is written.
 ## Output & naming
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; QA plans under `src/11-QA/PLANNING/`
-  as `QA-US###-<DESCRIPTION>.md`, linked to their `US###`.
+  as `QA-PLAN-US###-<DESCRIPTOR>.md`, linked to their `US###`.
 - Documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.

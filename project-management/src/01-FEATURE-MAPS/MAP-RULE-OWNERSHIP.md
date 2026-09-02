@@ -136,6 +136,7 @@ reference_ has four realisations of one clause (N-015).
 | Register    | Entry                                                                        | Verdict         | Retired by |
 | ----------- | ---------------------------------------------------------------------------- | --------------- | ---------- |
 | GAPS.md     | 20/08/2026 — `main` unreconciled since v3.2.2, v6.0.0 stacks a second MAJOR  | unrelated, gone | —          |
+| GAPS.md     | **Re-triaged 01/09/2026** — 6 dated entries + 3 loose items                  | **unrelated**   | —          |
 | GAPS.md     | SL-1 — a green suite here proves the template's own code, not your project's | **exempt**      | n/a        |
 | DEFERRED.md | _(file holds no rows)_                                                       | —               | —          |
 
@@ -1337,16 +1338,44 @@ files|## Completion' -- code/src/scripts .claude/hooks .github lefthook.yml` doe
 
 - **Orientation carrying operating rules in prose, under legal headings.** `docs-pairing.sh` Section 5 bans
   _headings_, not sentences; the decision test is per-sentence and nothing measures it.
-  `audits/CONTEXT.md` is a 4× outlier on rule-verb density (43 lines against a median of ~2) and is
-  still defensible. **Not sharp enough to be a node** — there is no measurement of how widespread the
-  class is, and its one visible instance is the one case where the prose is probably right.
+  **The class extent was measured 01/09/2026 and the item stays fog — the measurement did not
+  discharge it, and the first attempt to strike it was refuted twice.** Over all **221** tracked
+  `CONTEXT.md` files: median **1** rule-verb line, mean 2.0, **81 files at zero**, p90 5. So the base
+  rate is far too low for a per-sentence gate — that would be a taste threshold failing correct work,
+  which `audits/CLAUDE.md` reserves against. **But the strike was attempted on three false claims and
+  is withdrawn:** (1) _"only three files at ≥ 9"_ is **four** — `audits/CONTEXT.md` 45,
+  `project-management/workflows/CONTEXT.md` 11, `.claude/skills/CONTEXT.md` 11, and
+  **`how-to/src/SERVER-ARCHITECTURE/CONTEXT.md` at exactly 9, never inspected**, whose `:68-69`
+  (_"always the envelope plus the headroom buffer, never the bare measurement"_) and `:89` are
+  operating-rule prose in an orientation file — the class this item names; (2) it is an **idiom, not a
+  one-off** — `_Avoid:_` prohibitions appear **5 times across 2** orientation files, and
+  `project-management/workflows/CONTEXT.md:48-49` reads _"Do not batch: do not write every story, then
+  every schema, then every flow"_, a direct imperative on conduct, which
+  `DOCUMENTATION-PAIRING.md:114-115`'s own test distinguishes from orientation; (3) the claim that the
+  owning guide _"already states both halves"_ misreads Section 8 — its _deliberately not mechanical_
+  row (`:203`, `:206-208`) covers the opening **why** paragraph only, and **no enforcement row
+  addresses the per-sentence test at all**. **What would discharge it:** disposition the fourth file
+  explicitly (move its rules to a paired operating-rules home, or record them defensible), and add the
+  one line to `DOCUMENTATION-PAIRING.md` Section 8 stating that the per-sentence half is reviewer
+  judgement — which is a rule with no stated owner today, and therefore the real defect this item has
+  been circling.
 - ~~**Whether N-005's three-taxonomy problem is one decision or two.**~~ **Moot for `phase:` since
   27/08/2026** — Batch B settled N-005 by **deleting** the key from 93 files and from the
   `.claude/CLAUDE.md` schema, so there is no third taxonomy left to reconcile and the entry's
-  stated dependency is discharged. **A narrower residue survives and is deliberately not promoted**:
+  stated dependency is discharged. ~~**A narrower residue survives and is deliberately not promoted**:
   whether the code and how-to workflow trees' two four-family groupings should agree with each
-  other. **Nothing has measured it**, they group different workflow sets, and difference is not
-  drift — so it stays fog rather than becoming a node this map never checked.
+  other.~~ **Residue cleared 01/09/2026 by measurement — there is no axis on which the two could
+  conflict, so the question stops existing.** The taxonomies partition **disjoint populations**:
+  code's _build (01–06) / verify (07–08) / diagnose & improve (09–11) / build opt-in (12–13)_
+  classifies only `code/workflows`, how-to's _set up (01–02) / run (03–07) / diagnose (08) /
+  author (09)_ only `how-to/workflows` — **no workflow is classed twice.** On their only two points
+  of contact they already agree: the shared meta-rule (a catalogue entered by task type,
+  append-never-renumber) is stated compatibly in both, with how-to explicitly citing code's as its
+  model (_"Like `code/workflows/`"_); and the one shared family word, **diagnose**, carries the same
+  sense in both, with the seam owned and routed in both directions — `how-to/08` is environment-first
+  and states _"Code-logic faults belong in `code/workflows/10-debug/`"_. **They merely differ, and
+  layer-local vocabulary over disjoint sets is not drift.** N-005's deletion verdict is confirmed
+  rather than reopened. **Do not re-chart this.**
 - ~~**Whether the guard from N-004 should also cover `**/CLAUDE.md` under `code/src/`.**~~
   **Answered 27/08/2026 by Batch C (Q26), and the population was larger than the entry recorded**
   — **57** prose restatements across **44** files, of which **16** are `code/src/**/CLAUDE.md`
@@ -1370,6 +1399,17 @@ files|## Completion' -- code/src/scripts .claude/hooks .github lefthook.yml` doe
   there is no drift to fix, and nothing anywhere measures which sections a project owns.
   `code/docs/VISUAL-DESIGN.md`'s two statements are byte-consistent, so the population is **one
   file**. Sharpens into a node only if a third guide states its own split a third way.
+  **Re-measured 01/09/2026: the sharpening condition is still not met** — a repo-wide sweep of
+  `code/docs`, `how-to`, `project-management/docs` and `.claude` for section-split phrasing finds
+  **exactly two** guides carrying one, both still self-consistent; a fifth restatement site
+  (`04-QUICKSTART.md:193-194`) agrees with `BRAND-VOICE.md:13`'s framing rather than adding a third
+  way. **The trigger is made checkable rather than left passive**, because a condition depending on a
+  future author volunteering the observation is one that never fires: the two existing instances were
+  found only because a resolve sitting went looking. **Attach it to the birth path** — one line in
+  `how-to/workflows/09-write-operator-guide/CHECKLIST.md` asking whether a guide shipping as a
+  template with fillable sections states which sections a project owns, and if so, that it is the
+  third such guide and this item reopens. That is the revisit-trigger shape this repository already
+  uses, at negligible cost.
 - ~~**Whether the four terminal spellings in N-015 are drift or vocabulary.**~~ **Cleared
   27/08/2026 by Batch F, from evidence rather than by decision — and the entry's own premise was
   false.** It said `Close-out` sits on _"three discovery ones"_; exactly **one** of the 46

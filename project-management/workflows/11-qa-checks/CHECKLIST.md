@@ -20,7 +20,7 @@ model: fable
 - [ ] Every wireframe reviewed for happy path, error states, and edge cases
 - [ ] Accessibility and responsive behaviour noted for each screen
 - [ ] `qa-tester` skill run for each story
-- [ ] `QA-US###-<DESCRIPTION>.md` created for every story in `project-management/src/11-QA/PLANNING/`
+- [ ] `QA-PLAN-US###-<DESCRIPTOR>.md` created for every story in `project-management/src/11-QA/PLANNING/`
 - [ ] Missing acceptance criteria fed back into the relevant `US###.md` files
 - [ ] No stories with unresolved acceptance criteria gaps remain
 

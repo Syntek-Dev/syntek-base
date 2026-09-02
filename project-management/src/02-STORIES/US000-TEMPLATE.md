@@ -72,6 +72,15 @@ As a [role], I want [capability], so that [benefit].
 - US### ([Story title] — [reason this story depends on it])
 - [External service / middleware / library required]
 
+## Decisions
+
+<!-- The ADRs this story rests on, one bullet each: full repo-relative path, then one line
+     on what it settles. Written by the gate that surfaced the trade-off (04-14), checked
+     for coherence at 15-decisions. Write "None — no decision this story made was hard to
+     reverse." where the set is genuinely empty; a blank section is an unanswered question. -->
+
+- `project-management/src/15-DECISIONS/ADR-US###-<DECISION>-DD-MM-YYYY.md` — [what it settles]
+
 ---
 
 ## Acceptance Criteria

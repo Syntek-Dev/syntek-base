@@ -1,7 +1,7 @@
 # project-management/src/03-SPRINTS
 
-High-level sprint records — one `SPRINT-##.md` per sprint (goal, timeline, capacity,
-story table, dependency notes). The detailed per-sprint execution plans live in
+High-level sprint records — one `SPRINT-##.md` per sprint (goal, status, timeline,
+capacity, story table, dependency notes). The detailed per-sprint execution plans live in
 `16-SPRINT-PLANS/`. `SPRINT-00-TEMPLATE.md` is the template; copy it for every new sprint.
 
 ## Directory Tree
@@ -18,14 +18,14 @@ project-management/src/03-SPRINTS/
 
 ## What each sprint record holds
 
-A high-level record only — goal, timeline, capacity (`used / total SP`), a story table
+A high-level record only — goal, status, timeline, capacity (`used / total SP`), a story table
 (ID · Title · MoSCoW · SP), and dependency notes (what blocks it, what it unblocks). The
 detailed execution plan lives in `16-SPRINT-PLANS/`. Full scaffold: `SPRINT-00-TEMPLATE.md`.
 
 ## Authoring a new sprint
 
-Copy `SPRINT-00-TEMPLATE.md` → `SPRINT-##.md` → fill goal · timeline · capacity · story
-table · dependencies → keep capacity within the team's SP ceiling → honour the dependency
+Copy `SPRINT-00-TEMPLATE.md` → `SPRINT-##.md` → fill goal · status · timeline · capacity ·
+story table · dependencies → keep capacity within the team's SP ceiling → honour the dependency
 chain (sprint numbering is not execution order — never schedule a story ahead of its
 blocker). Detailed planning continues in `16-SPRINT-PLANS/`.
 
