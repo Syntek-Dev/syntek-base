@@ -12,7 +12,8 @@ implementation depth is **not** duplicated here; it lives in the story plan.
 project-management/src/16-SPRINT-PLANS/
 ├── CONTEXT.md                     ← this file
 ├── CLAUDE.md                      ← operating rules for this folder
-└── 00-SPRINT-PLAN-00-TEMPLATE.md  ← the sprint-plan template — copy for each new plan
+├── 00-SPRINT-PLAN-00-TEMPLATE.md  ← the sprint-plan template — copy for each new plan
+└── ##-SPRINT-PLAN-##.md           ← one plan per sprint (e.g. 01-SPRINT-PLAN-01.md)
 ```
 
 This is a base-repo scaffold: the folder ships with the template only. Real sprint plans

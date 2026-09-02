@@ -75,7 +75,25 @@ A register, an index, a roster — the argument is always that this particular f
 naturally accumulates. It is not a defence. A register that outgrows the cap becomes an index over
 sub-registers, like anything else.
 
-## 6. How it is enforced
+## 6. Shrinking by relocation is moving the wall, not removing it
+
+A file over the ratchet has a sibling. `CONTEXT.md` has `CLAUDE.md` beside it, and the cheapest way
+to reach a number is to push text across the gap — the count falls, every gate passes, and the pair
+holds exactly as many lines as before.
+
+**A reduction states what share was paid by deletion and what by relocation, and the receiving file
+is given its own ceiling in the same change.** Without the second half the rule has no teeth: a
+sibling at 165 with a 270 ceiling is an invitation to write 104 more lines into it, and the next
+story arrives at the same wall one file along.
+
+Relocation is legitimate — `DOCUMENTATION-PAIRING.md` decides which half a line belongs in, and a
+rule sitting in the orientation half **should** move. What is not legitimate is relocating for the
+count rather than for the split, which is why the two are recorded separately: an operating rule
+moving to `CLAUDE.md` is the pairing rule being obeyed, and a rationale moving there to buy lines
+is this rule being evaded. `DOCUMENTATION-PAIRING.md` Section 3 names rationale as orientation of
+the highest value, so a why that lands in the operating half is the tell.
+
+## 7. How it is enforced
 
 `code/src/scripts/audits/docs-length.sh` — **never** `cloc.sh`, which passes
 `--exclude-lang=Markdown` and therefore cannot see this rule at all. Several guides once routed the

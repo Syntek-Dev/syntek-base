@@ -1,24 +1,29 @@
 # SPRINT-01
 
-**Last Updated**: 01/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 02/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
 
-**Goal:** Give the doctrine that wave 1 writes into an owning home, starting with cross-surface
-retry and idempotency.
+**Goal:** Wave 1 gets both the homes and the headroom it writes into — an owning guide for
+cross-surface retry and idempotency, and room in the audit register for the gates that follow.
 
 **Status:** Planned
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
-**Timeline:** TBD · **Capacity:** 5 / 11 SP
+**Timeline:** TBD · **Capacity:** 8 / 11 SP
 
-<!-- FLAGS — the union of the member stories' flags. With US001 the only member, the union is
-     US001's own table. Recompute this table on every story admitted, never edit it directly.
+<!-- FLAGS — the union of the member stories' flags. Recompute this table on every story
+     admitted, never edit it directly.
      Recomputed 01/09/2026 when the QA gate added doctrine-drift.sh to US001's QA value
-     (QA-PLAN-US001 AC-GAP-6). -->
+     (QA-PLAN-US001 AC-GAP-6).
+     Recomputed 02/09/2026 on US002's admission and UNCHANGED: US002's thirteen rows are
+     identical to US001's — twelve N/A and the same four-gate manual QA value — so the union
+     over two members is the same table as the union over one. Recorded rather than skipped,
+     because a recomputation that changes nothing and a recomputation nobody ran are
+     indistinguishable in the result. -->
 
 | Flag       | Value                                                                                  |
 | ---------- | -------------------------------------------------------------------------------------- |
@@ -43,36 +48,56 @@ retry and idempotency.
 | ID    | Title                                                                   | MoSCoW    | SP  |
 | ----- | ----------------------------------------------------------------------- | --------- | --- |
 | US001 | Reliability doctrine gets an owning guide, and every pointer reaches it | Must Have | 5   |
+| US002 | The audits register regains the headroom nine new gates need            | Must Have | 3   |
 
-**Total:** 5 SP
+**Total:** 8 SP
 
 ## Dependencies
 
-- US001 has no upstream dependencies — it is wave 0 of the cutting order and waits on nothing.
-- This sprint unblocks slices S-02 and S-03 on the retry-and-idempotency feature map, and the
-  reliability half of slice S-01 on the CAP-posture map. None of the three is yet cut into a
-  story, so none can be admitted to this sprint until it is.
+- **Neither member has an upstream dependency, and neither depends on the other.** Both are
+  wave 0 of the cutting order and wait on nothing, so they may be worked in either order or in
+  parallel.
+- **US001 unblocks** slices `S-02` and `S-03` on the retry-and-idempotency feature map, and the
+  reliability half of slice `S-01` on the CAP-posture map.
+- **US002 unblocks nine audit registrations across eight slices and seven maps** — every story
+  that adds a script under `code/src/scripts/audits/` needs two rows in a register with two
+  lines of headroom. Its full table is in `project-management/src/02-STORIES/US002.md`.
+- None of those downstream slices is yet cut into a story, so none can be admitted here until
+  it is — and per the Notes below, this sprint is closed to further members regardless.
 
 ## Notes
 
-**This sprint is open and under capacity — 5 of 11 SP — and that is its intended state.** The
-record is a running ledger: it is opened as the first story clears the per-story loop and
-accumulates each later story with its points, and it is the accumulated total that tells you the
-sprint is full. Sprint plans (`16-sprint-plans`) and story plans (`17-story-plans`) do not run
-until it is.
+**This sprint is CLOSED at two members and 8 of 11 SP, by decision rather than by fill**
+(02/09/2026). The record is a running ledger — opened as the first story clears the per-story
+loop and accumulating each later story with its points — but a ledger is closed by a call, not
+only by a ceiling. `project-management/docs/planning/CADENCE.md` is explicit that capacity is a
+trigger and not a target: _"A sprint that lands on 10 SP because the next story is a 5 is a
+correct sprint, not an under-filled one."_ Eight is that case.
 
-**Expected to join, in cutting order:** the standalone shrink story for
-`code/src/scripts/audits/CONTEXT.md`, and slice S-01 of the absence feature map — the remaining
-two members of wave 0. Both are cut and planned before they are admitted here; neither is
-promised by this record.
+**US003 — slice `S-01` of the absence feature map — opens SPRINT-02.** It is the third and last
+wave-0 Must, and an earlier revision of this record named it as expected to join here. **That
+expectation is withdrawn.** Admitting it would have taken this sprint to roughly 13 SP, which is
+the grace ceiling rather than the capacity — and grace exists for one situation, a story that
+would split badly, not as a routine allowance. The absence guide is not a story this sprint had
+to have.
+
+**Nothing further is admitted here.** A fourth wave-0 or wave-1 story goes to SPRINT-02 beside
+US003. Sprint plans (`16-sprint-plans`) and story plans (`17-story-plans`) run for this sprint
+once both members have cleared `15-decisions`; US001 has, US002 has not.
 
 ---
 
 ## Acceptance Criteria
 
-Cross-surface retry and idempotency doctrine has exactly one owning home, every rule that moved
-has left its old one, every pointer reaches the new one, and the four documentation gates run
-clean against the result.
+Two independent outcomes, one per member, and the four documentation gates run clean against
+both.
+
+**US001** — cross-surface retry and idempotency doctrine has exactly one owning home, every rule
+that moved has left its old one, and every pointer reaches the new one.
+
+**US002** — `code/src/scripts/audits/CONTEXT.md` ends at or under 230 counted lines with every
+register it owns intact, the lines paid for by deleting restatements of rules owned elsewhere
+rather than by deleting facts.
 
 ### QA Acceptance Criteria — Manual
 
@@ -97,6 +122,13 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
       one hop
 - [ ] US001 — each of the three repointed sites re-read in place, and the sentence still reads true
 - [ ] US001 — a tester other than the author has signed the walk-through off
+- [ ] US002 — the four documentation gates run, and their output recorded in
+      `project-management/src/18-TESTS/US002-MANUAL-TESTING.md`
+- [ ] US002 — a human read-across of the shrunk file against each guide it routes to; every route
+      lands on a section that actually states the rule
+- [ ] US002 — the before/after register inventory balances: every cut line accounted for as
+      restatement removed, content relocated, or fact deliberately deleted with a reason
+- [ ] US002 — a tester other than the author has signed the walk-through off
 - [ ] Cross-browser, responsive and accessibility walk-throughs — **N/A**, this sprint adds no
       page, component or interactive surface
 
