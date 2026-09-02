@@ -137,6 +137,13 @@ overrides:
   # undici 7 → 8, linkify-it 5 → 6 and fast-uri 3 → 4. Fixing a moderate
   # advisory by breaking the build is not a fix. Bound every one.
   axios: ">=1.18.0 <2"
+  # GHSA-c83g-rgw3-j3cx and the normalizeStats prototype-write advisory, both high,
+  # both naming ">=4.28.7". Reached dev-time only, through @usebruno/cli >
+  # @usebruno/converters > jscodeshift > @babel/* — the Bruno API test runner, absent
+  # from every deployed artefact. An override rather than an ignore because a patched
+  # release exists and this graph can consume it: 4.28.8 is the newest 4.x and the
+  # `<5` bound keeps it there, per the forced-resolution rule this block opens with.
+  browserslist: ">=4.28.7 <5"
   fast-uri: ">=3.1.5 <4"
   js-yaml: ">=4.3.1 <5"
   undici: ">=7.29.0 <8"
