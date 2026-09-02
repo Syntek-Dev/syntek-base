@@ -415,6 +415,24 @@ form**. The interim convention is unchanged and now argued honestly in
 `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`, which
 supersedes `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
 for claiming the full path was machine-verified.
+**Third symptom, measured 02/09/2026 — the rule fires INCONSISTENTLY on identical citation
+forms.** `project-management/src/02-STORIES/US001.md` and
+`project-management/src/03-SPRINTS/SPRINT-01.md` both cite PM `src/` artefacts by full
+repo-relative path and scan **clean**. `project-management/src/02-STORIES/US003.md`,
+`project-management/src/03-SPRINTS/SPRINT-02.md` and
+`project-management/src/11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md` cite in the
+byte-identical form and produce twelve
+`[template-only citation]` findings between them. Extracting US001's two Decisions bullets
+verbatim into a probe file made them fire immediately, so the difference is not the citation
+form and not the citing directory. `is_exempt()` (`:311`) covers
+`project-management/src/01-FEATURE-MAPS/*` but no other `src/` tree; the register at
+`how-to/src/PROJECT-PATHS.md` holds three rows, none of them relevant; and the naming-row rule
+does not apply. **The mechanism is not established**, and the fix must not be attempted until it
+is — a repair aimed at the wrong cause would silence the finding rather than correct it. The
+whole-run total on 02/09/2026 was **22 findings**: 10 forward references to a guide US003
+creates, and 12 of this class. Disposition while the gate stays red:
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`.
+
 **Blocked by / Action:** `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` <!-- doc-references: template-only --> slice `S-06` owns the first edit to
 `doc-references.sh` and is itself blocked on that map's RESOLVE sitting. The fix is now **four
 changes, not one**: a `project-management/src/*` arm on Check 1's checkable-tree `case`; the
@@ -422,5 +440,6 @@ changes, not one**: a `project-management/src/*` arm on Check 1's checkable-tree
 should exempt copier-excluded citers outright; and fixtures covering a dead PM citation, which
 today's `broken/` set does not. Either widen `S-06`'s acceptance to carry all four, or take it
 independently once the sitting has settled who owns the file. This entry retires when a
-copier-excluded artefact can cite another by its short name without a finding **and** a dead
-citation to a PM `src/` artefact is caught.
+copier-excluded artefact can cite another by its short name without a finding, a dead
+citation to a PM `src/` artefact is caught, **and** the inconsistency above is explained rather
+than merely no longer firing.
