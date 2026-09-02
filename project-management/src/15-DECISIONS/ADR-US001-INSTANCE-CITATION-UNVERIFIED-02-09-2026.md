@@ -1,6 +1,6 @@
 # ADR-US001: The full-path citation convention stands, but nothing verifies it
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
