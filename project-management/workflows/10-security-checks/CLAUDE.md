@@ -41,7 +41,8 @@ wireframes with STRIDE, OWASP Top 10, and NIST CSF 2.0, and record findings in
 
 ## Output & naming
 
-- **Hand-written:** `STEPS.md`, `CHECKLIST.md`; findings under `src/10-SECURITY/`
-  (`AUDIT-*.md`, `ASSESSMENT-US###`, threat models) linked to their `US###`.
+- **Hand-written:** `STEPS.md`, `CHECKLIST.md`. Nothing else in this folder is generated —
+  the findings live under `project-management/src/10-SECURITY/`, whose own `CLAUDE.md` owns
+  their category, phase sub-folder and filename. Do not restate the pattern here.
 - Documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.

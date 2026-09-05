@@ -77,14 +77,17 @@ security [describe the feature, its user flows, and any identified threats]
 
 ### Step 5 — Document Findings
 
-Save a threat model and assessment file in `project-management/src/10-SECURITY/`:
+This gate writes **two** artefacts, both required, and the threat model first — the assessment
+synthesises it rather than restating it. For any `CRITICAL` or `HIGH` finding it writes a third,
+an individual vulnerability report; where there is none, the absence is recorded with its reason
+rather than left to be inferred (`code/docs/GATE-REPORTING.md`).
 
-- `THREAT-MODEL/THREAT-MODEL-<FEATURE>-DD-MM-YYYY.md`
-- `ASSESSMENTS/ASSESSMENT-<FEATURE>-DD-MM-YYYY.md`
-
-For any `CRITICAL` or `HIGH` finding, also create an individual vulnerability report:
-
-- `VULNERABILITIES/VULN-<DESCRIPTOR>-DD-MM-YYYY.md`
+**The category, the phase sub-folder and the filename are not stated here.** Read
+`project-management/src/10-SECURITY/CLAUDE.md`, which owns them — `.claude/CLAUDE.md` Section 5
+makes each folder's `CLAUDE.md` authoritative for its own tree, and this workflow does not own
+`src/10-SECURITY/`. A pattern copied into this file is a second owner that drifts silently from
+the first; that is not hypothetical here, and the three lines this paragraph replaced had drifted
+on every one of their three tokens.
 
 ### Step 6 — Resolve Blocking Findings
 

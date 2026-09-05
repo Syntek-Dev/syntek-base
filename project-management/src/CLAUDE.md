@@ -16,8 +16,10 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
 ## How to work here
 
 - **Routing:** never write here free-hand — start from the matching
-  `project-management/workflows/NN-…/` procedure (`STEPS.md` + `CHECKLIST.md`), which
-  names the folder, the naming pattern, and the governing `docs/` guide. Heavier
+  `project-management/workflows/NN-…/` procedure (`STEPS.md` + `CHECKLIST.md`), which names the
+  folder and the governing `docs/` guide. **It does not name the filename**, and a procedure that
+  does is stating a rule it does not own: each artefact folder's own `CLAUDE.md` carries the
+  pattern under `## Output & naming`, authoritative for that tree (`.claude/CLAUDE.md` Section 5). Heavier
   artefacts go through the matching skills (`story`, `sprint`, `planner`,
   `gdpr-mechanics`, `security`, `qa-tester`, `seo`).
 - **Model:** Fable for substantive artefacts (stories, decisions/ADRs, sprint & story
