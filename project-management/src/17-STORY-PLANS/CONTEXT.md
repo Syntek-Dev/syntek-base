@@ -32,7 +32,7 @@ for cross-cutting programme plans. Wayfinder feature maps live upstream in
    (ADRs)         (sprint feeds)      (this folder — code master)
 ```
 
-Sprint plans (16) feed the story plans (15); the story plan is what implementation
+Sprint plans (16) feed the story plans (17); the story plan is what implementation
 follows. Both are written **before any code**, after the specify tier (02–14).
 
 ## What each plan records

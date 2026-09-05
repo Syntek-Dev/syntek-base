@@ -26,10 +26,14 @@
      admitted, never edit it directly.
      Computed 02/09/2026 on US003's admission.
      Recomputed 05/09/2026 on US003's DEPARTURE to SPRINT-03 and CHANGED in one row: the QA
-     value narrows to US004's unit half plus the three documentation gates it still runs, because
-     routing-skills and skill-conformance entered this union with US003 alone. A union narrows
-     only when a member leaves, which is exactly this case and not the Part A / Part B narrowing
-     SPRINTS.md permits — the story did not split, it moved.
+     value narrows, because routing-skills and skill-conformance entered this union with US003
+     alone. A union narrows only when a member leaves, which is exactly this case and not the
+     Part A / Part B narrowing SPRINTS.md permits — the story did not split, it moved.
+     AMENDED 05/09/2026, same day: the surviving three documentation gates were briefly carried
+     here on the grounds that US004 "still runs" them, which is an independently-authored value
+     the union rule forbids. US004's own flag was widened instead to name the three gates its
+     Verification Checks actually run — the manifest-may-be-added-to route CADENCE.md provides —
+     so this row is once again the union of its members and nothing more.
      Recomputed 02/09/2026 on US004's admission and CHANGED in one row. Twelve rows stay N/A
      because both stories ship documentation and one bash script between them: no model, no
      endpoint, no screen, no personal-data path, no log line, no public page. The QA row is the
@@ -152,9 +156,15 @@ here on capacity and independence, not on theme.
 admitted regardless of what clears `15-decisions` next.
 
 **Sprint plans (`16-sprint-plans`) and story plans (`17-story-plans`) run for this sprint once
-every member has cleared `15-decisions`.** US004 — now the only member — has cleared
-`02-story-creation` and `03-sprint-planning` only; the rest of its per-story loop is still to run,
-so neither plan can be written yet.
+every member has cleared `15-decisions`.** Both are written:
+`project-management/src/16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`, now at 8 / 11 with US004 alone, and
+`project-management/src/17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`.
+
+<!-- This paragraph read "US004 — now the only member — has cleared 02-story-creation and
+     03-sprint-planning only; the rest of its per-story loop is still to run, so neither plan can
+     be written yet" until 05/09/2026. Both plans were on disk when it was written, and
+     02-SPRINT-PLAN-02.md was edited the same day for US003's departure. Corrected rather than
+     deleted, because the claim is the kind a later reader would otherwise trust. -->
 
 ---
 

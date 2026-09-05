@@ -40,7 +40,7 @@
 | API design         | **N/A** — both read `API: N/A`; no Django Ninja surface                                                                                                                                                                                                                              |
 | Logging            | **N/A** — both read `Logging: N/A`; no log line                                                                                                                                                                                                                                      |
 | Decisions          | `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` <!-- doc-references: template-only --> · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` |
-| **Story plans**    | `../17-STORY-PLANS/` — **not yet written**; `17-story-plans` runs next and both are prerequisites of implementation                                                                                                                                                                  |
+| **Story plans**    | `../17-STORY-PLANS/STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` · `../17-STORY-PLANS/STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — both written 02/09/2026                                                                                                                       |
 
 **Every `N/A` above is a flag reading `N/A` in both stories, not a gate anyone forgot** — the
 distinction `code/docs/GATE-REPORTING.md` requires. Eleven of the thirteen flags are `N/A` in both
@@ -101,7 +101,7 @@ reversed.
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Neither plan exists
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Both plans exist
 yet; `17-story-plans` is the next gate and both plans are prerequisites of implementation.
 
 | Story | Story plan (`../17-STORY-PLANS/`)                                 | Status      |

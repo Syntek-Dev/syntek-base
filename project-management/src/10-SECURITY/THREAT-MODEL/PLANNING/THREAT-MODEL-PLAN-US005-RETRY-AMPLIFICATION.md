@@ -26,7 +26,7 @@ recorded here rather than left as empty cells that would read as "reviewed, noth
 
 - **User flow(s):** none — flag `N/A`. Not a skipped read; the artefact does not exist and is not owed.
 - **Wireframe(s):** none — flag `N/A`. Same.
-- **Read instead:** `project-management/src/02-STORIES/US005.md` (its eight Gherkin scenarios),
+- **Read instead:** `project-management/src/02-STORIES/US005.md` (its nine Gherkin scenarios),
   `project-management/src/15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md`,
   `project-management/src/01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` nodes `N-008`–`N-011`,
   and the guides the boundaries below were derived from — `code/docs/TASK-AUTHORING.md`,

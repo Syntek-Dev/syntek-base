@@ -1,7 +1,7 @@
 # project-management/src/16-SPRINT-PLANS
 
 Sprint plans — one per sprint, written after the design & compliance specs (03–12) and
-the decisions (13) are complete. A sprint plan is **sprint-level orchestration**: it fixes
+the decisions (15) are complete. A sprint plan is **sprint-level orchestration**: it fixes
 the goal, the story set, the MoSCoW priority, and the build sequence, then feeds each story
 to its **story plan** in `../17-STORY-PLANS/` — the master a developer codes from. Per-story
 implementation depth is **not** duplicated here; it lives in the story plan.
@@ -50,7 +50,7 @@ information, not a typo.
    (ADRs)         (this folder)       (code master)
 ```
 
-Sprint plans (16) feed the story plans (15); the story plan is what implementation follows.
+Sprint plans (16) feed the story plans (17); the story plan is what implementation follows.
 Both are written **before any code**, after the specify tier (02–14).
 
 ## When to use

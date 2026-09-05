@@ -6,12 +6,29 @@
 | **Date**       | 05/09/2026                                                                             |
 | **Author**     | Claude Code — `security` skill, Fable tier · reviewed by <%DEVELOPER_NAME%>            |
 | **Sprint**     | SPRINT-03 — retry doctrine gets its single owner                                       |
-| **Status**     | Signed off                                                                             |
+| **Status**     | Signed off · **corrected in place 05/09/2026** — see below                             |
 | **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)               |
 
 > This assessment establishes the security **baseline** for the story before any code is written.
 > It synthesises the story's STRIDE threat model and maps overall posture against OWASP Top 10 and
 > NIST CSF 2.0. No sprint slice may proceed with an unresolved CRITICAL or HIGH finding.
+
+> **Corrected in place, 05/09/2026, at the `17-story-plans` gate.** Two counts here contradicted
+> the threat model they claim to adopt unchanged, and both had propagated into
+> `project-management/src/02-STORIES/US005.md` and the sprint and story plans before they were
+> caught:
+>
+> - **"four HIGHs (TM-01, TM-02, TM-04 and TM-02's early-wiring case)"** counted TM-02 twice. The
+>   threat model's Section 3a marks **three** rows `HIGH`; TM-02's own trigger cell already carries
+>   the early/late split. Corrected to three.
+> - **"across all six STRIDE categories"** — the twelve rows use five letters. Elevation of
+>   privilege is recorded in that model as considered-and-not-applicable, and reporting a
+>   deliberate `N/A` as a covered category is the thing `code/docs/GATE-REPORTING.md` forbids.
+>   Corrected to five of six, keeping the qualifier.
+>
+> Corrected rather than superseded because the findings, severities and constraints are unchanged
+> — only two summary counts of them were wrong. The scenario count at Section 2 was corrected in
+> the same pass.
 
 ---
 
@@ -26,7 +43,7 @@ The present-state figures are not a compliment to the design; they are a fact ab
 Measured 05/09/2026: `code/src/django/` contains no `self.retry`, no `autoretry_for`, no
 `max_retries`, no `retry_backoff`, no `boto3` or `botocore` import and no `sentry_sdk` — **nothing
 outbound retries today, so nothing outbound can amplify today.** Under the design state the same
-twelve rows carry four HIGHs (TM-01, TM-02, TM-04 and TM-02's early-wiring case). The promotion
+twelve rows carry **three** HIGHs — TM-01, TM-02 and TM-04. The promotion
 triggers are in
 `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md`
 Section 3a, and each names the story that will meet it.
@@ -43,7 +60,7 @@ The one finding that is live now, TM-02, is live precisely because the rule ship
 | User flow    | **None — flag `N/A`.** Not a skipped read: the story adds no journey, so no flow artefact is owed. Recorded per `code/docs/GATE-REPORTING.md`                                                                                                                                    |
 | Schema       | **None — flag `N/A`.** No model, no table, no RLS scope, no PII classification. The story ships Markdown                                                                                                                                                                         |
 | Decisions    | `project-management/src/15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` |
-| Read instead | The story's eight Gherkin scenarios, `project-management/src/01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` nodes `N-008`–`N-011`, and the seven guides listed in the threat model's Section 1                                                                                    |
+| Read instead | The story's nine Gherkin scenarios, `project-management/src/01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` nodes `N-008`–`N-011`, and the seven guides listed in the threat model's Section 1                                                                                     |
 | Frameworks   | STRIDE · OWASP Top 10 (2025) · NIST CSF 2.0                                                                                                                                                                                                                                      |
 
 **Two baselines do not reach this story**, and the reason is stated rather than the row left
@@ -59,7 +76,7 @@ does not exist in any branch or commit today — it is US001's deliverable, and 
 ## 3. Threat models referenced
 
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md`
-  — **12 findings across all six STRIDE categories, 5 trust boundaries.** Elevation of privilege is
+  — **12 findings across five of the six STRIDE categories, 5 trust boundaries.** Elevation of privilege is
   recorded as considered-and-not-applicable rather than omitted. This assessment adopts its
   boundaries and severities unchanged, including the present-state / design-state split.
 

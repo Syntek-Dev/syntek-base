@@ -3,7 +3,7 @@
 **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `7a82095` — **graduated out of `MAP-RULE-OWNERSHIP.md` N-010, which settled the
 map-folder case and claimed the rest (Q38, 28/08/2026)**
-**Status**: **Blockers clear — stories may start; fog dispositioned 01/09/2026** (2 answered · 1 decided · 1 cleared · 1 stays with a trigger)
+**Status**: **Blockers clear — stories may start; fog dispositioned 01/09/2026, one item added 05/09/2026 undispositioned** (2 answered · 1 decided · 1 cleared · 1 stays with a trigger · 1 open)
 **Frontier open**: 0 · **Blocking open**: 0
 
 > **Written from `MAP-000-TEMPLATE.md`.** Its instruction _"add a row to `CONTEXT.md` → Map index"_
@@ -450,7 +450,8 @@ is that a gate designed before the rule it asserts is a gate designed against a 
 
 ## Fog of war
 
-**Dispositioned 01/09/2026: two answered, one decided outright, one cleared, one stays.**
+**Dispositioned 01/09/2026: two answered, one decided outright, one cleared, one stays.
+One item added 05/09/2026, undispositioned.**
 
 - ~~**Two status vocabularies that must agree and cannot.**~~ **Answered 01/09/2026 — confirmed,
   measurably wider than recorded, and graduated off this map.** The eleven-state ClickUp vocabulary
@@ -523,6 +524,21 @@ is that a gate designed before the rule it asserts is a gate designed against a 
   index from `GAPS.md` and `MEMORY.md`**, which the item suspected but could not name: those drift
   freely because nothing asserts against their live format; the index's format is pinned to exactly
   the columns its gate reads, and only those. Graduates to `S-03`'s acceptance.
+- **Four `★ always include` sections the shipped plan template mandates and no plan carries.**
+  **Found 05/09/2026, outside a resolve sitting on this map; unclaimed, and neither register
+  edited.** `STORY-PLAN-US000-TEMPLATE.md:17-20` reads _"This is a SUPERSET. Keep the ★-marked
+  core sections always"_, and **fifteen** H2s carry the `★ Always` marker. **Eleven reach all
+  five real plans; four reach none** — `## Execution & Verification via Claude Dynamic Workflows`
+  (`:397`), `## Quality Gates, Scripts & Local↔Docker Alignment` (`:470`), `## Status
+Propagation & ClickUp Sync` (`:633`) and `## Docker & Nginx Infrastructure` (`:693`), absent from
+  US001, US002, US003, US004 and US005 alike, **and no plan says why** — the template's own
+  _"say why in one line"_ escape covers `◇` deletions, not `★` ones. The plans are not
+  thin: each keeps **six** `◇` sections it was free to drop, so the shortfall is exactly the
+  mandatory four. **A written duty with no gate and no instance — class E**, in the same shipped
+  file as the Plans Index above, and sharper than merely adjacent: one of the four Plans Index
+  citations `S-01` must repoint (`:646`) sits **inside** one of the four sections no plan keeps.
+  **Not assigned here.** Whether the repair is the sections or the marker on them is a decision
+  nobody has taken, and this map does not widen a slice from a sitting it did not hold.
 
 ---
 

@@ -1,14 +1,23 @@
 # SPRINT-PLAN-02 — The citation gate stops depending on the git index
 
-**Last Updated**: 02/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-02.md` · **Capacity:** 8 SP Must + 5 SP Should = 13 / 11 · **Stories:** 2
+**Last Updated**: 05/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Source sprint:** `../03-SPRINTS/SPRINT-02.md` · **Capacity:** 8 / 11 · **Stories:** 1
+
+<!-- Read "8 SP Must + 5 SP Should = 13 / 11" and "Stories: 2" until 05/09/2026, when US003 moved
+     to SPRINT-03 before either sprint was worked. This plan no longer needs grace; the reasoning
+     that admitted it is kept under Should rather than deleted, because it is the record of a
+     decision that was taken. ../03-SPRINTS/SPRINT-02.md was corrected the same day. -->
 
 ---
 
 ## Sprint Goal
 
 > The citation gate gives the same verdict on the same sentence whether or not the file is
-> committed, and the absence guide is born behind it.
+> committed.
+
+<!-- The goal carried "and the absence guide is born behind it" until 05/09/2026, when US003 moved
+     to SPRINT-03. A goal naming a deliverable no member carries is drift; ../03-SPRINTS/SPRINT-02.md
+     cut the same clause for the same reason on the same day. -->
 
 ---
 
@@ -16,7 +25,7 @@
 >
 > The template's source-authority clause names `../04-DATABASE/` and `../05-USER-FLOW/` as the
 > single sources of truth for schema and flows. **Neither exists for this sprint and neither is
-> silently dropped:** both stories carry `DB: N/A` and `User Flow: N/A`. The authorities this
+> silently dropped:** US004 carries `DB: N/A` and `User Flow: N/A`. The authorities this
 > sprint defers to are `code/docs/GATE-REPORTING.md` for how a gate's result is reported,
 > `code/docs/FORWARD-VOICE.md` for what a document may promise about a tree it will be read in,
 > and `code/docs/DOCUMENTATION-LENGTH.md` for what a documentation file may weigh. Where a
@@ -24,22 +33,26 @@
 
 ## Sprint Reference Documents
 
-| Area               | Source                                                                                                                                  |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Sprint definition  | `../03-SPRINTS/SPRINT-02.md`                                                                                                            |
-| User stories       | `../02-STORIES/US004.md` · `../02-STORIES/US003.md`                                                                                     |
-| Feature maps       | `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` slice `S-06` · `../01-FEATURE-MAPS/MAP-ABSENCE.md` slice `S-01`                              |
-| Database           | **N/A** — both stories read `DB: N/A`; no model, migration or RLS policy in scope                                                       |
-| User flows         | **N/A** — both read `User Flow: N/A`; no user journey in scope                                                                          |
-| Brand & components | **N/A** — both read `Brand: N/A` and `Components: N/A`; no rendered surface                                                             |
-| Wireframes         | **N/A** — both read `Wireframes: N/A`; no screen                                                                                        |
-| GDPR               | **N/A** — both read `GDPR: N/A`; no personal-data path                                                                                  |
-| Security           | **N/A** — both read `Security: N/A`; no protected action and no new endpoint                                                            |
-| QA                 | `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` · `../11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md` — both **Signed off** |
-| SEO                | **N/A** — both read `SEO: N/A`; no public page                                                                                          |
-| API design         | **N/A** — both read `API: N/A`; no Django Ninja surface                                                                                 |
-| Logging            | **N/A** — both read `Logging: N/A`; no log line                                                                                         |
-| Decisions          | Four ADRs bind this sprint — two authored by US004, two inherited. Listed under _Sprint-wide Constraints_                               |
+| Area               | Source                                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------------------------- |
+| Sprint definition  | `../03-SPRINTS/SPRINT-02.md`                                                                              |
+| User stories       | `../02-STORIES/US004.md`                                                                                  |
+| Feature maps       | `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` slice `S-06`                                                   |
+| Database           | **N/A** — US004 reads `DB: N/A`; no model, migration or RLS policy in scope                               |
+| User flows         | **N/A** — US004 reads `User Flow: N/A`; no user journey in scope                                          |
+| Brand & components | **N/A** — US004 reads `Brand: N/A` and `Components: N/A`; no rendered surface                             |
+| Wireframes         | **N/A** — US004 reads `Wireframes: N/A`; no screen                                                        |
+| GDPR               | **N/A** — US004 reads `GDPR: N/A`; no personal-data path                                                  |
+| Security           | **N/A** — US004 reads `Security: N/A`; no protected action and no new endpoint                            |
+| QA                 | `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` — **Signed off**                             |
+| SEO                | **N/A** — US004 reads `SEO: N/A`; no public page                                                          |
+| API design         | **N/A** — US004 reads `API: N/A`; no Django Ninja surface                                                 |
+| Logging            | **N/A** — US004 reads `Logging: N/A`; no log line                                                         |
+| Decisions          | Four ADRs bind this sprint — two authored by US004, two inherited. Listed under _Sprint-wide Constraints_ |
+
+<!-- 05/09/2026: the User stories and QA rows named US003 and its QA plan until the story moved to
+     SPRINT-03. Both now name US004 alone; the story and its plan are carried by
+     ../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md. -->
 
 ---
 
@@ -55,9 +68,22 @@
 
 ### Should
 
-| ID    | Title                                                                        | Phases touched           | SP  | Story plan                                            | Git branch            |
-| ----- | ---------------------------------------------------------------------------- | ------------------------ | --- | ----------------------------------------------------- | --------------------- |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | Docs only — no code lane | 5   | `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md` | `us003/absence-guide` |
+_None._ **US003 moved to `../03-SPRINTS/SPRINT-03.md` on 05/09/2026**, before either sprint was
+worked, and its `Should` tier travelled with it unchanged into
+`../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`.
+
+**This is a re-plan, not a carry-over**, and the distinction is load-bearing. A carry-over is a
+`Should` a worked sprint failed to reach, and it arrives in the next sprint carrying that failure;
+neither sprint has been worked, so US003 leaves with nothing attached and SPRINT-03 receives a
+stretch tier rather than a debt. **This plan is back inside capacity at 8 / 11 and needs no
+grace** — the 13 SP ceiling went with the story, and the `Must` tier was never the part that
+overshot.
+
+**The reasoning that admitted it is kept below rather than deleted**, on the grounds
+`../03-SPRINTS/SPRINT-02.md` keeps its own Notes: it is the record of a decision that was actually
+taken. **Read it as history.**
+
+**History, from 02/09/2026 — superseded by the move above.**
 
 **Demoted from `Must Have` at this gate on 02/09/2026, and recorded in all three artefacts** —
 the story, `../03-SPRINTS/SPRINT-02.md` and here — rather than tiered at sprint level only, so no
@@ -83,8 +109,16 @@ _None._
 
 - **`MAP-ABSENCE` slices `S-02` to `S-06`** — the Python `None` clause, the HTMX contract, the
   optional-surface remainders, tiers and mechanical legs, and consumer wiring. Every one cites the
-  guide US003 creates, and `S-06` names the dependency in its own acceptance. Not yet cut into
+  guide US003 creates, and `S-06` names the dependency in its own acceptance. **Since 05/09/2026
+  they block on a story in another sprint**, not on a member of this one: US003 is in SPRINT-03,
+  so the five slices sit a sprint further out than this plan first recorded. Not yet cut into
   stories; not `DEFERRED.md` rows.
+- **US003 itself** — this plan's `Should` tier until 05/09/2026, when it moved to
+  `../03-SPRINTS/SPRINT-03.md` before either sprint was worked, so that SPRINT-03 gained the give
+  an all-`Must` plan has none of and this one returned to 8 / 11 without grace. Recorded here as a
+  `Won't` rather than left absent, because a story this plan carried must stay findable from it.
+  Its tier, its ordering constraint and its revision pass all travelled with it —
+  `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` → _Should_.
 - **`MAP-NAVIGATION` slice `S-01`** — the citation edge set stops being discarded. It changes the
   same script US004 edits and must not land first. Blocked by US004, not deferred.
 - **`GAPS.md`'s 01/09/2026 entry** — the three shipped files still instructing the `CONTEXT.md`
@@ -95,19 +129,31 @@ _None._
 
 ---
 
-## Build order — US004 before US003, and SPRINT-01 before both
+## Build order — SPRINT-01 before US004, and US004 before US003 across a sprint boundary
 
-**Within the sprint: US004 first, and the order is not free.** US003's acceptance reads
-`doc-references.sh` as a diff against a recorded baseline, and US004 removes the defect that
-baseline exists for. Building US004 first means US003 is worked against a gate that simply passes,
-and the regime `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` imposes is
-never exercised. Settled at `03-sprint-planning`, 02/09/2026.
+**Within the sprint there is no order left to set — US004 is the whole of it.** The ordering
+constraint this plan settled did not leave with US003: **it became cross-sprint on 05/09/2026.**
+US003's acceptance reads `doc-references.sh` as a diff against a recorded baseline, and US004
+removes the defect that baseline exists for. Building US004 first means US003 is worked against a
+gate that simply passes, and the regime
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` imposes is never exercised.
+Settled at `03-sprint-planning`, 02/09/2026, and unchanged by the move.
 
-**US003 needs a revision pass before it is worked.** Three parts of it are written against a
-defect that will be gone by the time anyone opens it: the Gherkin scenario _"The citation gate is
-read against a recorded baseline, never as a bare pass"_, the QA task recording before/after
-finding counts, and the ADR above. The correction belongs to whoever picks US003 up.
-`../03-SPRINTS/SPRINT-02.md` → _Dependencies_ carries it.
+**It is restated where the story now lives rather than left only here.**
+`../03-SPRINTS/SPRINT-03.md` → _Dependencies_ and `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` →
+_Build order_ both carry it, because a constraint recorded only in the sprint a story has left is
+a constraint nobody reads. It stays in this plan too: the half of it this sprint owes is US004
+landing first.
+
+**US003's revision pass travelled with the story on 05/09/2026.** Three parts of it are written
+against a defect that will be gone by the time anyone opens it: the Gherkin scenario _"The citation
+gate is read against a recorded baseline, never as a bare pass"_, the QA task recording
+before/after finding counts, and the ADR above. The correction belongs to whoever picks US003 up,
+and `../03-SPRINTS/SPRINT-03.md` → _Dependencies_ now carries it.
+
+<!-- That obligation was recorded here against ../03-SPRINTS/SPRINT-02.md -> Dependencies until
+     05/09/2026. It moved to SPRINT-03 with the story rather than to GAPS.md, because it belongs
+     in the record whoever picks US003 up will actually read. -->
 
 **Across sprints: this plan takes execution order `02`, behind `01-SPRINT-PLAN-01.md`**, and the
 obvious argument for pulling it ahead was declined. US004 makes the citation gate trustworthy, so
@@ -130,20 +176,22 @@ Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here.
 | Story | Story plan (`../17-STORY-PLANS/`)                               | Status      |
 | ----- | --------------------------------------------------------------- | ----------- |
 | US004 | `../17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Not started |
-| US003 | `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md`           | Not started |
+
+<!-- US003's row sat below US004's until 05/09/2026, when the story moved to SPRINT-03; its plan
+     is indexed by ../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md instead. -->
 
 ---
 
 ## Phase Breakdown
 
-**Neither story enters a code lane.** The four-phase backend → API → frontend → PR sequence in
+**US004 does not enter a code lane.** The four-phase backend → API → frontend → PR sequence in
 `project-management/docs/planning/SPRINTS.md` maps stories by the layers they touch, and these two
 touch none of them. The phases are recorded as `N/A` with a reason rather than deleted, per
 `code/docs/GATE-REPORTING.md`.
 
 ### Phase 1 — Backend (`../../workflows/19-backend-code`)
 
-**N/A** — no model, service, migration or business logic. Both stories read `Backend: N/A`.
+**N/A** — no model, service, migration or business logic. US004 reads `Backend: N/A`.
 
 ### Phase 2 — API (`../../workflows/20-api-code`)
 
@@ -158,15 +206,17 @@ touch none of them. The phases are recorded as `N/A` with a reason rather than d
 | Story | Deliverable                                                                                                 | Proven by                                                        |
 | ----- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | US004 | Five repairs to `code/src/scripts/audits/doc-references.sh`, one register mechanism, one shipped-file sweep | The script's own `--self-test`: fixture pairs plus direct probes |
-| US003 | `code/docs/ABSENCE.md` plus its registration, tier markers and reciprocity edits                            | Five documentation gates and a human read-across                 |
+
+<!-- US003's row — code/docs/ABSENCE.md, proven by five documentation gates and a read-across —
+     moved to ../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md with the story on 05/09/2026. -->
 
 **US004 is the sprint's first story with an automated proof.** Its `--self-test` is the only
-executable check either story ships, and `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md`
+executable check this sprint ships, and `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md`
 section 6 carries the method: measure by executing a patched scratch copy, never by reading.
 
 ### Phase 4 — PR & Review (`../../workflows/23-pr-and-review`)
 
-Both stories, in build order. `22-implementation-documentation` runs between the lane above and
+US004 alone. `22-implementation-documentation` runs between the lane above and
 this phase and is a merge gate — it writes each story's `../18-TESTS/US###-TEST-STATUS.md` and
 `US###-MANUAL-TESTING.md`, which **US004's own register rows make citable in advance**.
 
@@ -176,7 +226,7 @@ this phase and is a merge gate — it writes each story's `../18-TESTS/US###-TES
 
 ### GDPR (`../09-GDPR/`)
 
-**N/A** — both stories read `GDPR: N/A`. No personal data is read, written or logged; both ship
+**N/A** — US004 reads `GDPR: N/A`. No personal data is read, written or logged; it ships
 documentation and one shell script that reads repository files and emits paths.
 
 ### Security (`../10-SECURITY/`)
@@ -188,9 +238,15 @@ in `/tmp` with a predictable name, and remove it on every exit path. Recorded in
 
 ### QA & SEO
 
-Both QA plans are **Signed off**; SEO reads `N/A` on both stories. The sprint's QA union names
-**two types** — US003's five-gate manual value and US004's unit value, the sprint's first
-automated one.
+US004's QA plan is **Signed off**; SEO reads `N/A`. **The sprint's QA union narrowed to US004's
+half on 05/09/2026** — its unit value, the sprint's first automated one, alongside the
+documentation gates it runs. The five-gate manual value entered this union with US003 and left
+with it.
+
+**A union narrows only when a member leaves**, which is exactly this case: US003 moved to
+SPRINT-03 whole. This is not the Part A / Part B narrowing
+`project-management/docs/planning/SPRINTS.md` permits, and `../03-SPRINTS/SPRINT-02.md` records
+the same recomputation against its own flag table on the same day.
 
 ### Decisions binding this sprint
 
@@ -206,10 +262,20 @@ automated one.
 **This sprint's subject is a gate, so it is the sprint most able to lie about one.** Three rules
 apply throughout, from `code/docs/GATE-REPORTING.md`:
 
-- **`doc-references.sh` never reports a plain pass here.** Six findings survive US004 whatever it
-  does — three citations of `code/docs/ABSENCE.md` belonging to US003, three of
-  `code/src/scripts/audits/SLOP-FAMILY.md` belonging to **US002 in SPRINT-01**. Every survivor is
-  named with the story that owns it.
+- **`doc-references.sh` never reports a plain pass here.** Findings survive US004 whatever it
+  does, and they are **tree-wide facts its run will meet, not SPRINT-02 members**. Re-measured
+  05/09/2026: four citations of `code/src/scripts/audits/SLOP-FAMILY.md` — in
+  `../02-STORIES/US004.md`, `../03-SPRINTS/SPRINT-02.md`,
+  `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` and this plan itself — every one
+  owned by **US002 in SPRINT-01**. The `code/docs/ABSENCE.md` survivors left with US003
+  and are now SPRINT-03's; `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` carries them. Every survivor
+  is named with the story that owns it.
+
+  <!-- Read "Six findings survive US004 whatever it does — three citations of code/docs/ABSENCE.md
+       belonging to US003, three of SLOP-FAMILY.md belonging to US002" until 05/09/2026. Both
+       halves were wrong after US003's move: the ABSENCE.md half is no longer this sprint's, and
+       the SLOP-FAMILY count is four rather than three — this plan's own citation is the fourth. -->
+
 - **A fixture that passes both scripts proves nothing.** Every new case is run against the
   pre-change script and must fail there.
 - **Measure by executing.** Two claims in US004 made by reading the script were wrong, and both
@@ -225,7 +291,7 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 
 - [ ] `doc-references.sh` — no finding of the three classes US004 owns; every survivor named
 - [ ] `doc-references.sh --self-test` exits 0, probe count risen by one case per repair
-- [ ] The five documentation gates US003's QA flag names run, and their output recorded
+- [ ] US004's own gates run, and their output recorded
 - [ ] `syntax/lint.sh` and `syntax/check.sh` pass, including ShellCheck over the edited script
 - [ ] `code/src/scripts/audits/CONTEXT.md` is not grown — US002 owns that file's shape
 
@@ -234,13 +300,14 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 ## Sprint Definition of Done
 
 - [ ] **US004 is Completed** — its own DoD complete, verified by a reviewer
-- [ ] **US003 is Completed, or explicitly carried to SPRINT-03** with its reason recorded in
-      `../03-SPRINTS/SPRINT-02.md`; a `Should` is never dropped silently
+- [ ] **No `Should Have` story remains here.** US003 was this plan's stretch tier and moved to
+      `../03-SPRINTS/SPRINT-03.md` on 05/09/2026, before either sprint was worked, with its reason
+      recorded under _Should_ above. It was not dropped and it was not silent
 - [ ] All sprint-level verification checks passed
 - [ ] No open HIGH/CRITICAL security findings — **N/A**, the sprint's Security flag reads `N/A`
 - [ ] GDPR requirements implemented and verified — **N/A**, the GDPR flag reads `N/A`
-- [ ] QA scenarios passing — manual for US003, the self-test for US004
-- [ ] Both stories' implementation records written by `22-implementation-documentation`
+- [ ] QA scenarios passing — US004's self-test
+- [ ] US004's implementation records written by `22-implementation-documentation`
 - [ ] PRs merged and the version bumped
 - [ ] `../03-SPRINTS/SPRINT-02.md` `**Status:**` set to `Done`
 
@@ -253,4 +320,6 @@ Per `project-management/docs/GIT-GUIDE.md`: `us###/<kebab-descriptor>`.
 | Story | Branch                          |
 | ----- | ------------------------------- |
 | US004 | `us004/citation-gate-git-index` |
-| US003 | `us003/absence-guide`           |
+
+<!-- US003's branch row moved with the story to ../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md on
+     05/09/2026. -->

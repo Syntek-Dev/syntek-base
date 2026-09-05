@@ -26,7 +26,7 @@ isolation files. Tier 15: the **master a developer codes from**.
   deferred, risks, Docker & Nginx) → add the row to the Plans Index with its status →
   keep the `blocked-by`/`blocks` callout honest so the DAG stays accurate.
 - **Definition of done:** plan named to convention, indexed with a status, linked to
-  its `US###`, its sprint plan (14), and the decisions (13) it rests on; the four
+  its `US###`, its sprint plan (16), and the decisions (15) it rests on; the four
   worktree isolation files named per the story number; British English throughout.
 
 ## Guardrails

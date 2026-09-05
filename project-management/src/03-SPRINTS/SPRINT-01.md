@@ -19,9 +19,12 @@ cross-surface retry and idempotency, and room in the audit register for the gate
      admitted, never edit it directly.
      Recomputed 01/09/2026 when the QA gate added doctrine-drift.sh to US001's QA value
      (QA-PLAN-US001 AC-GAP-6).
-     Recomputed 02/09/2026 on US002's admission and UNCHANGED: US002's thirteen rows are
-     identical to US001's — twelve N/A and the same four-gate manual QA value — so the union
-     over two members is the same table as the union over one. Recorded rather than skipped,
+     Recomputed 02/09/2026 on US002's admission and UNCHANGED: US002's QA value is a SUBSET of
+     US001's — three of the same four gates, with doc-references.sh scoped — and its other twelve
+     rows are N/A, so the union over two members is US001's table.
+     (Corrected 05/09/2026: this read "identical to US001's — twelve N/A and the same four-gate
+     manual QA value". The union result was and is right; the justification was not, and it is
+     the justification a future recompute would trust.) Recorded rather than skipped,
      because a recomputation that changes nothing and a recomputation nobody ran are
      indistinguishable in the result. -->
 

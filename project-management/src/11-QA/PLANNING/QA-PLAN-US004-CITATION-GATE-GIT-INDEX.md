@@ -207,7 +207,7 @@ uses, so a screen reader and a terminal pager read them identically to today's.
 ## Cross-references
 
 - `project-management/src/02-STORIES/US004.md` — the story these gaps were resolved into
-- `project-management/src/03-SPRINTS/SPRINT-02.md` — the sprint, at 13/11 SP with US004 built first
+- `project-management/src/03-SPRINTS/SPRINT-02.md` — the sprint, at 8/11 SP with US004 its only member and built first (was 13/11 until US003 moved to SPRINT-03 on 05/09/2026)
 - `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` — slice `S-06`, nodes `N-009` and `N-010`
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — AC-GAP-2 there is AC-GAP-3 here
 - `code/docs/GATE-REPORTING.md` — a skip is never reported as a pass

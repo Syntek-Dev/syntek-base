@@ -129,11 +129,21 @@ and the sprint still succeeds.
 **US006 is not admitted here, and that was a live question.** It was cut from
 `project-management/src/01-FEATURE-MAPS/MAP-SCRIPT-GUARDS.md` in a parallel session on 05/09/2026
 at 8 SP `Must Have`, and its own Dependencies section names this sprint as the one it joins.
-**Settled 05/09/2026: US006 goes to SPRINT-04.** Admitting it would have made this sprint 13 SP
-all-`Must` and back at grace — the shape the move above exists to leave behind — and grace is for a
-story that would split badly, not for a story that arrives while there is room. **US006's own
-story file still says otherwise and is being written in that other session**; correcting it belongs
-to that session, not this record.
+**Settled 05/09/2026: US006 goes to SPRINT-04.** The counterfactual is dated, because the
+arithmetic moved under it the same day: **at the moment the question was live this sprint stood at
+5 SP all-`Must`**, so US006's 8 SP would have taken it to 13 — its grace ceiling, which is the
+figure `project-management/src/02-STORIES/US006.md` records. US003 was admitted afterwards, so
+measured against the sprint as it now stands US006 would give **18 SP (13 Must, 5 Should)** — over
+grace rather than at it. Either reading refuses it, and grace is for a story that would split
+badly, not for a story that arrives while there is room. **US006's own
+story file has since been corrected in that session** — as of 05/09/2026 its Dependencies section
+records `SPRINT-04` as the sprint it opens, so the two records agree.
+
+<!-- The sentence replaced here read: "US006's own story file still says otherwise and is being
+     written in that other session; correcting it belongs to that session, not this record." True
+     when written and superseded the same day, 05/09/2026, when that session recorded the reversal
+     in US006's Dependencies. Kept rather than erased, so the deferral reads as a decision that was
+     honoured rather than one that was never made. -->
 
 **This sprint is still admitting.** 1 SP of headroom is not a slot, so in practice it is closed by
 arithmetic rather than by decision — but nothing here forecloses a small story that clears its

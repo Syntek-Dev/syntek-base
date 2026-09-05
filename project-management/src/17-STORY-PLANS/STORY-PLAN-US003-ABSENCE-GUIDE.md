@@ -4,9 +4,17 @@
 | ------ | ---------------------------------- |
 | Date   | 02/09/2026                         |
 | Branch | `us003/absence-guide`              |
-| Sprint | SPRINT-02 · Wave 0 · build order 2 |
+| Sprint | SPRINT-03 · Wave 0 · build order 2 |
 | Author | <%ORG_NAME%>                       |
 | Status | `Open`                             |
+
+> **US003 moved from SPRINT-02 to SPRINT-03 on 05/09/2026, before either sprint was worked.**
+> Its `Should` tier and its wave-0 position on `../01-FEATURE-MAPS/MAP-ABSENCE.md` are
+> unchanged — only the sprint it is scheduled in moved. **The US004-before-US003 build order
+> survived the move**, as a **cross-sprint** constraint rather than an intra-sprint one, so
+> every clause below that rests on US004 landing first reads exactly as written. `Date` above
+> is this plan's authoring date and is deliberately not bumped; `../03-SPRINTS/SPRINT-03.md`
+> → _Notes_ records the move, and `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` its arithmetic.
 
 Implements `../15-DECISIONS/ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH-02-09-2026.md` (the crib's
 cells cite nothing that does not yet exist) under
@@ -23,7 +31,7 @@ by a human read-across, never by `doctrine-drift.sh`).
 > before/after finding counts, and an ADR binding both. **US004 lands first and removes the defect
 > all three exist for.** This plan therefore plans against a gate that simply passes, and records
 > that those three parts of the story are superseded by US004 shipping rather than by anyone
-> editing them. `../03-SPRINTS/SPRINT-02.md` → _Dependencies_ carries the same flag.
+> editing them. `../03-SPRINTS/SPRINT-03.md` → _Dependencies_ carries the same flag.
 
 ---
 
@@ -59,7 +67,7 @@ the HTMX contract, `S-04` the optional-surface remainders, `S-05` tiers and mech
 | Attribution                    | `README.md` → _Influences_ · `.claude/CLAUDE.md` Section 6 | Licence checked **before** deriving; the row lands in the same commit            |
 | Story                          | `../02-STORIES/US003.md`                                   | Nine scenarios, the acceptance this plan implements                              |
 | QA                             | `../11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md`         | Seven resolved AC-gaps and the scenario tables                                   |
-| Sprint plan                    | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`                  | Build order, `Should` tier, gate-honesty constraint                              |
+| Sprint plan                    | `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`                  | Build order, `Should` tier, gate-honesty constraint                              |
 | Feature map                    | `../01-FEATURE-MAPS/MAP-ABSENCE.md`                        | Slice `S-01`, nodes `N-008`, `N-009`, `N-018`                                    |
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
