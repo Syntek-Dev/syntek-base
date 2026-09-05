@@ -4,9 +4,15 @@
 | ------------- | ----------------------------------------------------------- |
 | **Story**     | US003 — Absence gets an owning guide                        |
 | **Date**      | 02/09/2026                                                  |
-| **Sprint**    | SPRINT-02 — the absence guide, and the five slices it frees |
+| **Sprint**    | SPRINT-03 — the absence guide, and the five slices it frees |
 | **Wireframe** | N/A — this story ships Markdown, not a screen               |
 | **Status**    | Signed off                                                  |
+
+<!-- The Sprint field read SPRINT-02 until 05/09/2026, when the story moved to SPRINT-03 at
+     03-sprint-planning, before either sprint was worked. Nothing else in this plan changes: its
+     seven gaps, its scenarios and its gates are properties of the story, not of the sprint that
+     carries it. The reasoning for the move is in the two sprint records; the build-order
+     constraint on US004 and this story's revision pass travelled with it. -->
 
 ---
 
@@ -157,7 +163,9 @@ introduces no field, no store, and no code path that could carry personal data.
   this plan against the shipped change
 - `project-management/src/02-STORIES/US003.md` — the story this plan tests and fed all seven
   gaps back into
-- `project-management/src/03-SPRINTS/SPRINT-02.md` — the sprint this story opens
+- `project-management/src/03-SPRINTS/SPRINT-03.md` — the sprint this story is now a member of ·
+  `project-management/src/03-SPRINTS/SPRINT-02.md` — the sprint it opened, and left on 05/09/2026
+  before either was worked
 - `project-management/src/01-FEATURE-MAPS/MAP-ABSENCE.md` — slice `S-01`, the source of the story
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan
