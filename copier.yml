@@ -264,6 +264,19 @@ _exclude:
   # header. A workflow shipped without its script is a permanently-red job on every
   # web-only project, which is the one thing a generated baseline must never carry.
   - "<: if not INCLUDE_DESKTOP :>/.github/workflows/audit-style-check.yml<: endif :>"
+  # Optional Wagtail CMS surface, gated by INCLUDE_WAGTAIL. Unlike mobile, rust and desktop
+  # this one adds NO SOURCE tree: Wagtail installs into the existing Django deployable, so
+  # what travels is documentation and its routing skill. The guide family carries the three
+  # choices a project must not re-litigate per story — native Willow renditions, Cloudinary
+  # as the storage beneath them, and the admin off /admin/ — plus what the CMS owes the auth,
+  # audit and PII doctrine. A project answering false has no CMS and reads no guide about one.
+  #
+  # The skill is gated WITH the guides for the reason 12-EXTENDING.md step 5 gives: a skill
+  # fires on description match, so one shipped without the documents it routes to would
+  # compete for work it cannot do. Its row in .claude/skills/CONTEXT.md stays, flagged.
+  - "<: if not INCLUDE_WAGTAIL :>/code/docs/WAGTAIL.md<: endif :>"
+  - "<: if not INCLUDE_WAGTAIL :>/code/docs/wagtail<: endif :>"
+  - "<: if not INCLUDE_WAGTAIL :>/.claude/skills/stack-wagtail<: endif :>"
   # Optional ClickUp sync, gated by INCLUDE_CLICKUP. Unlike the three flags above this one
   # gates an INTEGRATION rather than a deployable, and it defaults TRUE — the sync has
   # shipped in every generation to date, so defaulting false would delete a working workflow
@@ -740,6 +753,33 @@ DESKTOP_APP_NAME:
   help: Window title and application name shown to the user
   default: "<% PROJECT_NAME %>"
   when: "<% INCLUDE_DESKTOP %>"
+
+# ── Wagtail CMS surface (optional) ───────────────────────────────────────────
+# Opt-in content management system, installed INTO the existing Django deployable rather
+# than beside it — one process, one database, one deploy. Unlike the three surfaces above
+# it excludes no source tree, because there is none to exclude: what it gates is
+# code/docs/WAGTAIL.md, the guide that decides how Wagtail meets this stack's doctrine.
+#
+# This gates a CMS, not a content model. A project whose pages are authored by developers
+# in templates should answer false; answer true only when a non-developer edits published
+# content through an admin UI. That is the question, because everything expensive about
+# Wagtail follows from it: a second admin login against the same session, a second
+# permission store, a page tree that owns URLs Django views would otherwise own, and an
+# editor-authored PII sink in wagtail.contrib.forms.
+#
+# WHAT IT COSTS BEYOND THE GUIDE, so the answer is given with open eyes. Wagtail brings
+# Django REST Framework and django-tasks into the dependency graph for its own older API
+# and task interface — neither is this project's, and neither may be built on. Its media
+# pipeline needs Cloudinary wired as STORAGES["default"], which the baseline leaves as
+# FileSystemStorage. And its own log models duplicate the audit record rather than
+# discharging it. None of that is a blocker; all of it is work the guide names.
+
+INCLUDE_WAGTAIL:
+  type: bool
+  help: >-
+    Include the optional Wagtail CMS surface (page tree, editor admin, StreamField).
+    Answer true only when a non-developer edits published content.
+  default: false
 
 # ── Meta ─────────────────────────────────────────────────────────────────────
 

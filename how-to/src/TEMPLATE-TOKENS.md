@@ -342,6 +342,30 @@ Two things that tier does not cover: **embedded systems** (an appliance screen, 
 car dashboard — those need a paid Commercial licence), and **redistributing anything that exposes
 Slint's own APIs**, which is why desktop UI is never moved into a shared package layer.
 
+### Wagtail CMS surface (optional)
+
+The opt-in content management system. `<%INCLUDE_WAGTAIL%>` gates it, and is asked
+unconditionally — unlike the desktop surface it depends on no other answer.
+
+| Token                 | Meaning                    | Example value | Format |
+| --------------------- | -------------------------- | ------------- | ------ |
+| `<%INCLUDE_WAGTAIL%>` | Ship the Wagtail CMS guide | `false`       | `bool` |
+
+**This token gates a document, not a tree** — the only one here that does. Wagtail installs
+**into** the existing Django deployable rather than beside it, so there is no directory to
+exclude and no toolchain to add; what travels on `true` is `code/docs/WAGTAIL.md`, which fixes
+the three choices a project must not re-litigate per story (native Willow renditions, Cloudinary
+as the storage beneath them, and the admin off `/admin/`) and names what the CMS owes the auth,
+audit and personal-data doctrine.
+
+**Nothing is pre-wired, and that is structural rather than an omission.** Installing Wagtail
+means editing `INSTALLED_APPS`, `MIDDLEWARE`, the root URLconf and the dependency manifest —
+shared files whose _contents_ this template never templates
+(`TEMPLATE-GUIDE/12-EXTENDING.md` → _An optional subtree_, step 4). A generated project on
+`false` and one on `true` differ by exactly one file, and that property is what the rule protects.
+The install is the developer's, and the guide is the instruction for it — the same shape as the
+FastMCP tool surface, which is likewise designed, documented and deliberately unwired.
+
 ### Meta
 
 | Token      | Meaning                                                   | Example value | Format       |

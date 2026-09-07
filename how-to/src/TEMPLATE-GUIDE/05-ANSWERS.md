@@ -226,16 +226,18 @@ one-line edit in `project-management/docs/PLANNING-GUIDE.md` — no regeneration
 
 ## Optional surfaces
 
-Three booleans, each adding a whole toolchain. All default to `false`, and all are cheap to turn
-on later with `copier update` — so answer `false` when unsure. `INCLUDE_DESKTOP` is only asked at
-all when `INCLUDE_RUST` is true, because Slint is Rust; each `true` also unlocks a name question
-(`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID`, `DESKTOP_APP_NAME`).
+Four booleans. Three add a whole toolchain; the fourth adds none. All default to `false`, and all
+are cheap to turn on later with `copier update` — so answer `false` when unsure.
+`INCLUDE_DESKTOP` is only asked at all when `INCLUDE_RUST` is true, because Slint is Rust; the
+first three each unlock a name question on `true` (`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID`,
+`DESKTOP_APP_NAME`).
 
 | Question          | Turn it on when                                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------- |
 | `INCLUDE_MOBILE`  | The project ships a React Native app. Adds Node, pnpm and the Expo toolchain                            |
 | `INCLUDE_RUST`    | **This repository compiles Rust.** Adds `rustup` as a prerequisite for `uv sync` and a Rust image stage |
 | `INCLUDE_DESKTOP` | The project ships a **native desktop app** (Slint). Only offered when `INCLUDE_RUST` is true            |
+| `INCLUDE_WAGTAIL` | A **non-developer edits published content** through an admin UI. Adds no tree — see below               |
 
 The three name questions each `true` unlocks:
 
@@ -259,6 +261,20 @@ use Slint. The generated app does that with an `AboutSlint` widget, and the pack
 refuses to build a release without it. The tier does **not** cover embedded systems (an appliance
 screen, a POS terminal, a car dashboard), nor redistributing anything that exposes Slint's own
 APIs. If either applies to you, budget for a paid Commercial licence before you start.
+
+`INCLUDE_WAGTAIL` is the odd one out, and worth reading twice. **It installs nothing.** Wagtail
+lives inside the existing Django deployable rather than beside it, so there is no tree to gate —
+what the answer gates is `code/docs/WAGTAIL.md`, the guide that decides how Wagtail meets this
+stack's doctrine. Answering `true` gives you that guide and the obligation to follow it; the
+`pip` install, the settings and the URL routes are yours to add, for the reason in
+`12-EXTENDING.md` — this template never templates the contents of a shared file.
+
+Answer it on **who edits published content**, not on whether you want a CMS. If developers author
+pages in templates, answer `false`; the marketing pages are ordinary Django views and nothing is
+missing. Answer `true` only when someone who does not write code publishes through an admin UI.
+Everything expensive follows from that one fact: a second admin login against the same session, a
+second permission store, a page tree that takes ownership of URLs Django views would otherwise
+own, and an editor-authored personal-data sink in `wagtail.contrib.forms`.
 
 ## The ClickUp sync
 
@@ -295,6 +311,7 @@ Everything is recoverable; the cost varies.
 | `DEPLOYMENT_POSTURE`                  | Trivial, and expected — it is designed to be changed. Edit `.copier-answers.yml`, run `copier update`, update the register rows in the same commit. |
 | The seven platform providers          | Trivial — each records a choice behind an interface; edit the answer and the register row.                                                          |
 | `INCLUDE_MOBILE` · `RUST` · `DESKTOP` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand.                               |
+| `INCLUDE_WAGTAIL`                     | Easy either way _as an answer_ — it moves one guide. The **integration** it authorises is not reversible cheaply once pages exist.                  |
 | `DEVELOPER_*`, app names              | Easy — a scoped find-and-replace.                                                                                                                   |
 | `PRIMARY_DOMAIN`, `ENV_PREFIX`        | Moderate — dozens of occurrences, all in docs and config.                                                                                           |
 | `ORG_SLUG`                            | Moderate — also touches the server namespace and cache prefix.                                                                                      |
