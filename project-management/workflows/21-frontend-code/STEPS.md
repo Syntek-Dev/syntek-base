@@ -42,6 +42,15 @@ self-explanatory. This is deliberate, not an omission.
 `frontend` keeps its remit unchanged and is **web-only** — it hands mobile work over rather than
 applying Django-template assumptions to React Native.
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> Where a project carries the Wagtail surface, "all public pages live in `apps.marketing`" is no
+> longer the whole truth: a page the CMS serves is a node in the page tree, reached by Wagtail's
+> catch-all route rather than by a Django view. Which of the two owns a given route is settled
+> once and recorded. A StreamField block's template is an ordinary component and still consumes
+> `var(--token)` CSS — StreamField is a content model, not a second component system. The skill
+> is `stack-wagtail`, named here at its point of use because it is absent from a project without
+> the CMS; the procedure is `code/docs/wagtail/PAGES-AND-STREAMFIELD.md`.
+
 ---
 
 ## Steps

@@ -71,6 +71,11 @@ Concrete planned values — not "a good title":
   one wins
 - **Slug** — lowercase, hyphenated, human-readable (`code/docs/URL-STRATEGY.md`)
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> This step assumes `build_seo()` owns the head. A Wagtail page carries its own `seo_title`
+> and `search_description` and its own serve path, so who owns the head is a decision this
+> project settles once and records. Raised in `code/docs/wagtail/CONTRIB-SURFACES.md`.
+
 ### Step 4 — Decide structured data, robots, and sitemap
 
 > **Model:** fable

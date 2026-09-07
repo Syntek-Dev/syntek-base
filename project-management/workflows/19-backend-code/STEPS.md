@@ -91,6 +91,11 @@ backend [describe the models to implement]
 Follow the approved schema exactly. Apply PII field encryption per `code/docs/encryption/FIELD-ENCRYPTION.md`
 and row-level security per `code/docs/rls/MIDDLEWARE-AND-NINJA.md` where applicable.
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> A Wagtail `Page` subclass is a model and belongs in this step, not in the frontend phase.
+> It carries a migration like any other model, and the page tree — not `apps.marketing` —
+> then owns the URLs it serves. Procedure: `code/docs/wagtail/PAGES-AND-STREAMFIELD.md`.
+
 ### Step 5 — Implement Services
 
 Write service methods that encapsulate business logic:

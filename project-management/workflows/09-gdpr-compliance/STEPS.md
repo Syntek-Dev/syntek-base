@@ -37,6 +37,11 @@ retention, and data subject rights before documenting the data flows.
 
 Document what personal data is collected, why, and how it is stored.
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> `wagtail.contrib.forms` is on Wagtail's mandatory app list and stores submitted form data
+> as a JSON blob, so a CMS project has a personal-data sink switched on before the first
+> story. Include it in the inventory: `code/docs/wagtail/CONTRIB-SURFACES.md`.
+
 ### Step 2 — GDPR Review
 
 ```text
