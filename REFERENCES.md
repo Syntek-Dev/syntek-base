@@ -80,6 +80,8 @@ rule navigates; it does not restate it.
 | [code/docs/TESTING.md](code/docs/TESTING.md)                                                                 | Coverage floors, test structure, mocking strategy                                                                                                                                                           |
 | [code/docs/URL-STRATEGY.md](code/docs/URL-STRATEGY.md)                                                       | URL naming, slug patterns, API endpoint conventions                                                                                                                                                         |
 | [code/docs/VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)                                                     | Visual language — the per-project direction and its six axes, the universal tells, the motion standard (per-surface: `code/docs/visual-design/`)                                                            |
+| [code/docs/WAGTAIL.md](code/docs/WAGTAIL.md)                                                                 | **CMS-only.** Wagtail 8 inside the Django deployable: native renditions on Cloudinary storage, the catch-all route, the second admin surface, and what the CMS owes the audit and PII doctrine              |
+| [code/docs/wagtail/CONTEXT.md](code/docs/wagtail/CONTEXT.md)                                                 | **CMS-only.** The six sub-guides behind it — fundamentals and install, pages and StreamField, images and media, admin and permissions, contrib surfaces, API and search                                     |
 
 ### How-to guides (`how-to/docs/`)
 
@@ -244,6 +246,7 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 | Technology             | Version | Documentation URL                                       |
 | ---------------------- | ------- | ------------------------------------------------------- |
 | Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
+| Wagtail (cms-only)     | 8.x     | https://docs.wagtail.org/en/stable/                     |
 | Rust (rust-only)       | 1.92+   | https://doc.rust-lang.org/stable/book/                  |
 | PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
