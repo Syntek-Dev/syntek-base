@@ -59,6 +59,7 @@ tooling; plugin references were rewritten to internal paths.
 ├── stack-rust/             ← RUST-ONLY — build the crates: the gate question, PyO3 boundary, supply chain (task, forked)
 │   └── SKILL.md
 ├── stack-slint/            ← DESKTOP-ONLY — build the native Slint app; the licence obligation comes first (task, forked)
+├── stack-wagtail/          ← CMS-ONLY — Wagtail idioms: the page tree, blocks, the second admin surface (reference)
 │   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
@@ -164,6 +165,7 @@ tooling; plugin references were rewritten to internal paths.
 | `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                         |
 | `stack-rust`                    | **Rust-only.** Native code has to be written or audited under `code/src/rust/` — and, first, whether it belongs in Rust at all                        |
 | `stack-slint`                   | **Desktop-only.** A story needs its desktop windows built or reviewed — the AboutSlint disclosure, the lint boundary, threading, AccessKit            |
+| `stack-wagtail`                 | **CMS-only.** A `Page` subclass, a StreamField block, a Wagtail hook or the CMS admin wiring is being written or reviewed                             |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                                  |
 | `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; the conventions are `how-to/docs/OPERATOR-DOC-CRAFT.md`                |
 | `grilling`                      | Design work (architecture, DB, API, story) — the frontier-round interview engine                                                                      |
