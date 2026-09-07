@@ -4,9 +4,35 @@
 | ------ | ---------------------------------- |
 | Date   | 02/09/2026                         |
 | Branch | `us004/citation-gate-git-index`    |
-| Sprint | SPRINT-02 · Wave 1 · build order 1 |
+| Sprint | SPRINT-03 · Wave 1 · build order 1 |
 | Author | <%ORG_NAME%>                       |
 | Status | `Open`                             |
+
+<!-- The Sprint row read "SPRINT-02 · Wave 1 · build order 1" from 02/09/2026 until 07/09/2026.
+     Superseded by the cascade re-plan the note below records. Wave 1 is the story's position in
+     its feature map's cutting order and does not move with the sprint; build order 1 is unchanged
+     in figure — first of {US004, US003} then, first of one now. -->
+
+> **US004 moved from SPRINT-02 to SPRINT-03 on 07/09/2026, before any sprint was worked.** US007 —
+> the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP — was cut that day and must
+> ship before US002; <%DEVELOPER_NAME%> settled a full cascade rather than an execution reorder:
+> US007 into SPRINT-01, US002 to SPRINT-02, US003 back to SPRINT-02 as its `Should` stretch, this
+> story to SPRINT-03 as its sole member, US005 to SPRINT-04. Its `Must` tier, its wave-1 position
+> and its content are unchanged — only the sprint moved. **Two ordering facts turn round with it.**
+> The US004-before-US003 order settled 02/09/2026 is REVERSED: US003 is worked in SPRINT-02, ahead
+> of this story, so its three `code/docs/ABSENCE.md` forward references clear before this story is
+> worked — the order `../02-STORIES/US004.md` → _Dependencies_ provided for at cutting, "whichever
+> lands second reads the other's disposition". And US002, which shrinks
+> `code/src/scripts/audits/CONTEXT.md` 298 → 230, now lands in SPRINT-02 rather than SPRINT-01 —
+> still before this sprint, so P5's never-add-a-line constraint stands only if US002 has not
+> landed. The "six survivors known at cutting" are re-measured at implementation, never inherited
+> (AC-GAP-3). The Dependencies rows for US002 and US003 are corrected in place below. The
+> `Sprint plan` row names `03-SPRINT-PLAN-03.md`, which on 07/09/2026 still describes US005 and
+> US003 and is owed a rewrite by `16-sprint-plans`; until it runs, `../03-SPRINTS/SPRINT-03.md` is
+> the authoritative statement of this sprint. If US003 carries into SPRINT-03 at SPRINT-02's
+> close, it lands behind this story — the original order — and its 5 SP takes the sprint to
+> 13 / 11. `Date` above is this plan's authoring date and is deliberately not bumped, on the
+> precedent `STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
 
 Implements `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (Check 2 reads
 the citing file's name, never `is_template_only()`) and
@@ -55,17 +81,23 @@ tests.
 
 ## Reference Documents (code/docs gate map)
 
-| Concern                        | Document                                                     | What it binds here                                                        |
-| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------- |
-| Reporting a gate's result      | `code/docs/GATE-REPORTING.md`                                | Six findings survive this story; none may be reported as a pass           |
-| What a document may promise    | `code/docs/FORWARD-VOICE.md`                                 | Section 3 owns the register this story makes pattern-aware                |
-| The register itself            | `how-to/src/PROJECT-PATHS.md`                                | Two new rows; its rule against answering a question in passing            |
-| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                          | `audits/CONTEXT.md` sits at 298/300; this story may not grow it           |
-| The audit register's own rules | `code/src/scripts/audits/CLAUDE.md`                          | Row conventions for the file whose `doc-references.sh` entry is refreshed |
-| Story                          | `../02-STORIES/US004.md`                                     | Eight scenarios, the acceptance this plan implements                      |
-| QA                             | `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Nine resolved AC-gaps, the scenario tables, and the measurement method    |
-| Sprint plan                    | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`                    | Build order, phase disposition, gate-honesty constraint                   |
-| Feature map                    | `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`                   | Slice `S-06`, nodes `N-009` and `N-010`, and Batch D's measurements       |
+| Concern                        | Document                                                     | What it binds here                                                                                                                                                                                          |
+| ------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reporting a gate's result      | `code/docs/GATE-REPORTING.md`                                | Six findings survive this story; none may be reported as a pass                                                                                                                                             |
+| What a document may promise    | `code/docs/FORWARD-VOICE.md`                                 | Section 3 owns the register this story makes pattern-aware                                                                                                                                                  |
+| The register itself            | `how-to/src/PROJECT-PATHS.md`                                | Two new rows; its rule against answering a question in passing                                                                                                                                              |
+| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                          | `audits/CONTEXT.md` sits at 298/300; this story may not grow it                                                                                                                                             |
+| The audit register's own rules | `code/src/scripts/audits/CLAUDE.md`                          | Row conventions for the file whose `doc-references.sh` entry is refreshed                                                                                                                                   |
+| Story                          | `../02-STORIES/US004.md`                                     | Eight scenarios, the acceptance this plan implements                                                                                                                                                        |
+| QA                             | `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Nine resolved AC-gaps, the scenario tables, and the measurement method                                                                                                                                      |
+| Sprint plan                    | `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`                    | Build order, phase disposition, gate-honesty constraint — **owed a `16-sprint-plans` rewrite**; on 07/09/2026 it describes US005 and US003, and `../03-SPRINTS/SPRINT-03.md` is authoritative until it runs |
+
+<!-- The Sprint plan row named `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` from 02/09/2026 until
+     07/09/2026, when this story moved to SPRINT-03. That plan still describes this story alone at
+     8 / 11 and is itself stale against ../03-SPRINTS/SPRINT-02.md. The row names the plan of the
+     sprint the `| Sprint |` row names, and says in its own cell that the file on disk lags. -->
+
+| Feature map | `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` | Slice `S-06`, nodes `N-009` and `N-010`, and Batch D's measurements |
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
 `../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../10-SECURITY/`, `../12-SEO/`,
@@ -190,11 +222,21 @@ claim on the map. Close `GAPS.md`'s 02/09/2026 entry and correct its stale block
 
 ## Dependencies
 
-| Story | Relationship                                                                                                                                            |
-| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` 298 → 230. Building SPRINT-01 first removes a constraint P5 otherwise works around |
-| US003 | **Blocked by this story.** Its baseline-diff scenario, QA task and ADR are all written against the defect P1–P4 remove                                  |
-| US001 | Independent. Its two ADRs disposed of the same defect and are unaffected                                                                                |
+| Story | Relationship                                                                                                                                                                                                                                                                                         |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` 298 → 230. Building SPRINT-02 first — where US002 sits since 07/09/2026 — removes a constraint P5 otherwise works around                                                                                                        |
+| US003 | **Lands before this story since 07/09/2026** — SPRINT-02's `Should` stretch. Its baseline-diff scenario, QA task and ADR are written against the defect P1–P4 remove, and it is worked under that regime rather than after the repair; blocked by this story again only if it carries into SPRINT-03 |
+
+<!-- The two rows read, from 02/09/2026 until 07/09/2026:
+     "| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` 298 → 230.
+     Building SPRINT-01 first removes a constraint P5 otherwise works around |
+      | US003 | **Blocked by this story.** Its baseline-diff scenario, QA task and ADR are all
+     written against the defect P1–P4 remove |"
+     Superseded by the cascade re-plan recorded under the header: US002 moved SPRINT-01 → SPRINT-02
+     and US003 SPRINT-03 → SPRINT-02, both still ahead of this sprint, and the US004-before-US003
+     order is reversed. -->
+
+| US001 | Independent. Its two ADRs disposed of the same defect and are unaffected |
 
 - **Blocked by:** nothing. `MAP-RULE-OWNERSHIP`'s frontier is empty and its `Gate to stories`
   records `02-story-creation` as unblocked. `GAPS.md`'s claim that `S-06` is blocked on that map's

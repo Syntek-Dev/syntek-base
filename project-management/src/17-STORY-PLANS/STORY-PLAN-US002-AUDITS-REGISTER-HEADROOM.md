@@ -4,9 +4,33 @@
 | ------ | ---------------------------------- |
 | Date   | 02/09/2026                         |
 | Branch | `us002/audits-register-headroom`   |
-| Sprint | SPRINT-01 · Wave 0 · build order 1 |
+| Sprint | SPRINT-02 · Wave 0 · build order 1 |
 | Author | <%ORG_NAME%>                       |
 | Status | `Open`                             |
+
+<!-- The Sprint row read "SPRINT-01 · Wave 0 · build order 1" from 02/09/2026 until 07/09/2026.
+     Superseded by the cascade re-plan the note below records. Wave 0 is the story's position in
+     its feature map's cutting order (../02-STORIES/US002.md:16, :98) and does not move with the
+     sprint; build order 1 is unchanged in figure — it was first of {US002, US001} and is now first
+     of {US002, US003}. -->
+
+> **US002 moved from SPRINT-01 to SPRINT-02 on 07/09/2026, before any sprint was worked.** US007 —
+> the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP — was cut that day and has
+> to ship **before** this story, because the `register-indexes.sh` fixtures this story's line of
+> work unblocks are built against whichever vocabulary is canonical when they are written.
+> <%DEVELOPER_NAME%> settled a full cascade rather than an execution reorder: US007 into SPRINT-01,
+> this story to SPRINT-02, US003 back to SPRINT-02 as its `Should` stretch, US004 to SPRINT-03,
+> US005 to SPRINT-04. Its `Must` tier, its wave-0 position and its content are unchanged — only the
+> sprint moved, and **one ordering constraint arrived with the move: US007 (SPRINT-01) ships
+> first.** That is an ordering, not a content dependency; the story's own Dependencies still read
+> "No upstream dependencies", which `../03-SPRINTS/SPRINT-02.md` → _Dependencies_ records as true
+> of content and owed a correction by `02-story-creation`. Consequences for this plan: the
+> Dependencies table below is corrected in place for the new membership; the `Sprint plan` row
+> names `02-SPRINT-PLAN-02.md`, which on 07/09/2026 still describes US004 alone and is owed a
+> rewrite by `16-sprint-plans` — until it runs, `../03-SPRINTS/SPRINT-02.md` is the authoritative
+> statement of this sprint and the plan on disk is not. `Date` above is this plan's authoring date
+> and is deliberately not bumped, on the precedent `STORY-PLAN-US003-ABSENCE-GUIDE.md` set on
+> 05/09/2026.
 
 Implements `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` <!-- doc-references: template-only -->
 (a register under length pressure splits rather than relocating) and
@@ -36,15 +60,23 @@ This story is wave 0 and Must because those nine stories all land red without it
 
 ## Reference Documents (code/docs gate map)
 
-| Concern                      | Document                                                                                             | What it binds here                                                                        |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Length limit and the ratchet | `code/docs/DOCUMENTATION-LENGTH.md`                                                                  | The 300 limit, the 270 warn tier, the dated allowance, and Section 6 on relocation        |
-| Which half a line belongs in | `code/docs/DOCUMENTATION-PAIRING.md`                                                                 | Orientation vs operating rules; `:62-64` names rationale as the highest-value orientation |
-| Reporting a gate's result    | `code/docs/GATE-REPORTING.md`                                                                        | Two of this story's gates cannot see it; neither may be reported as a pass                |
-| The register's own rules     | `code/src/scripts/audits/CLAUDE.md`                                                                  | "Add the row to `CONTEXT.md`'s inventory and requirements tables in the same change"      |
-| Story                        | `../02-STORIES/US002.md` <!-- doc-references: template-only -->                                      | Nine scenarios, the acceptance the plan implements                                        |
-| QA                           | `../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` <!-- doc-references: template-only --> | Eleven resolved AC-gaps and the scenario tables                                           |
-| Sprint plan                  | `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` <!-- doc-references: template-only -->                     | Build order, phase disposition, gate-honesty constraint                                   |
+| Concern                      | Document                                                                                             | What it binds here                                                                                                                                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Length limit and the ratchet | `code/docs/DOCUMENTATION-LENGTH.md`                                                                  | The 300 limit, the 270 warn tier, the dated allowance, and Section 6 on relocation                                                                                                                      |
+| Which half a line belongs in | `code/docs/DOCUMENTATION-PAIRING.md`                                                                 | Orientation vs operating rules; `:62-64` names rationale as the highest-value orientation                                                                                                               |
+| Reporting a gate's result    | `code/docs/GATE-REPORTING.md`                                                                        | Two of this story's gates cannot see it; neither may be reported as a pass                                                                                                                              |
+| The register's own rules     | `code/src/scripts/audits/CLAUDE.md`                                                                  | "Add the row to `CONTEXT.md`'s inventory and requirements tables in the same change"                                                                                                                    |
+| Story                        | `../02-STORIES/US002.md` <!-- doc-references: template-only -->                                      | Nine scenarios, the acceptance the plan implements                                                                                                                                                      |
+| QA                           | `../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` <!-- doc-references: template-only --> | Eleven resolved AC-gaps and the scenario tables                                                                                                                                                         |
+| Sprint plan                  | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` <!-- doc-references: template-only -->                     | Build order, phase disposition, gate-honesty constraint — **owed a `16-sprint-plans` rewrite**; it describes US004 alone on 07/09/2026, and `../03-SPRINTS/SPRINT-02.md` is authoritative until it runs |
+
+<!-- The Sprint plan row named `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` from 02/09/2026 until
+     07/09/2026, when this story moved to SPRINT-02. That plan still lists US002 first in its build
+     order and is itself stale against ../03-SPRINTS/SPRINT-01.md; rewriting it is a 16-sprint-plans
+     pass that CADENCE.md's prerequisite — every member cleared 15 — does not yet license, US007
+     having cleared only 02 and 03 on 07/09/2026. The row names the plan of the sprint the
+     `| Sprint |` row names, and says in its own cell that the file on disk describes the previous
+     membership, rather than pointing at a plan that names this story but not its sprint. -->
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
 `../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../10-SECURITY/`, `../12-SEO/`,
@@ -161,12 +193,30 @@ unrecoverable once editing starts, and the repointing (H) cannot be done until t
 
 ## Dependencies
 
-| Story | Relationship | Detail                                                                                          |
-| ----- | ------------ | ----------------------------------------------------------------------------------------------- |
-| US001 | Independent  | Shares no file. Either order is correct; the sprint plan recommends US002 first on blast radius |
-| US003 | Independent  | SPRINT-02. Its baseline-diff ADR binds this story                                               |
+| Story | Relationship               | Detail                                                                                                                                                                                                                          |
+| ----- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US007 | **Ordering, cross-sprint** | SPRINT-01, built first (settled 07/09/2026). The `**Status:**` vocabulary it makes canonical is the one `register-indexes.sh`'s fixtures — the line of work this story unblocks — are written against. Not a content dependency |
+| US001 | Independent                | Shares no file. SPRINT-01 since 07/09/2026 — it lands a sprint **before** this story rather than beside it, and no order between the two is recommended any longer because none is needed                                       |
+| US003 | Independent                | **Co-member since 07/09/2026** — SPRINT-02's `Should` stretch, built after this story; the committed `Must` is worked first so an overrun costs the stretch. Its baseline-diff ADR binds this story                             |
 
-- **Blocked by:** nothing. Wave 0.
+<!-- The Dependencies table read, from 02/09/2026 until 07/09/2026:
+     "| US001 | Independent | Shares no file. Either order is correct; the sprint plan recommends
+     US002 first on blast radius |
+      | US003 | Independent | SPRINT-02. Its baseline-diff ADR binds this story |"
+     Superseded by the cascade re-plan recorded in the note under the header: US001 is no longer a
+     co-member, US003 is, and US007 — cut 07/09/2026 — is the one ordering constraint this story
+     acquired. The US003 row's "SPRINT-02" was true on 02/09/2026, false from 05/09/2026 to
+     07/09/2026 while US003 sat in SPRINT-03, and true again now; the cell is rewritten because
+     "SPRINT-02" alone no longer says the two share a sprint. -->
+
+- **Blocked by:** nothing, on content. Wave 0. **Ordered behind US007** (SPRINT-01) since
+  07/09/2026 — see the note under the header; the reason is in
+  `../03-SPRINTS/SPRINT-02.md` → _Dependencies_.
+
+<!-- The bullet read "**Blocked by:** nothing. Wave 0." until 07/09/2026. True of content still;
+     the ordering clause is added rather than the bullet replaced, so the wave-0 fact stays
+     legible. -->
+
 - **Blocks:** nine audit registrations across eight slices and seven maps — the table in
   `../02-STORIES/US002.md` <!-- doc-references: template-only --> names each.
 - **Can be done now:** yes, in full, once `pm/story-creation` is merged and the branch is cut.

@@ -4,9 +4,37 @@
 | ------ | ----------------------------------- |
 | Date   | 05/09/2026                          |
 | Branch | `us005/retry-ownership-and-budgets` |
-| Sprint | SPRINT-03 · Wave 1 · build order 1  |
+| Sprint | SPRINT-04 · Wave 1 · build order 1  |
 | Author | <%ORG_NAME%>                        |
 | Status | `Blocked`                           |
+
+<!-- The Sprint row read "SPRINT-03 · Wave 1 · build order 1" from 05/09/2026 until 07/09/2026.
+     Superseded by the cascade re-plan the note below records. Wave 1 is the story's position in
+     its feature map's cutting order and does not move with the sprint; build order 1 is unchanged
+     in figure — first of {US005, US003} then, first of {US005, US006} now. -->
+
+> **US005 moved from SPRINT-03 to SPRINT-04 on 07/09/2026, before any sprint was worked.** US007 —
+> the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP — was cut that day and must
+> ship before US002; <%DEVELOPER_NAME%> settled a full cascade rather than an execution reorder:
+> US007 into SPRINT-01, US002 to SPRINT-02, US003 back to SPRINT-02, US004 to SPRINT-03, this
+> story to SPRINT-04 beside US006. It is build order 1 of two `Must` members at **13 / 11 SP —
+> grace, taken deliberately over a `SPRINT-05` holding US006 alone, and the record is CLOSED to
+> further admission** (`../03-SPRINTS/SPRINT-04.md` → _Notes_). Its `Must` tier, its wave-1
+> position and its content are unchanged. **`Blocked` stands**: US001 is still the hard content
+> blocker, now SPRINT-01's second story behind US007 rather than US002, and this story sits three
+> sprints behind it rather than two. Consequences for this plan, each corrected in place below:
+> _The citation gate, corrected_ placed US004 in SPRINT-02 at exec `02` and US003 in "the same
+> sprint" — US004 is SPRINT-03 at exec `03` and US003 is SPRINT-02, both still ahead of this
+> sprint; the Dependencies table called US003 a co-member; the `Blocked by` bullet counts the
+> chain; the security-constraint count and the status-propagation list named SPRINT-03's record
+> and plan. **No sprint plan exists for SPRINT-04**: `16-sprint-plans` has not run for it — the
+> carry-over question that held it back is settled, the run has not happened — so the
+> `Sprint plan` row below names no file, and `../03-SPRINTS/SPRINT-04.md` is authoritative until
+> one is written. The plan-versus-story status divergence — `Blocked` here, `Open` in
+> `../02-STORIES/US005.md` — predates this re-plan and is not touched by it;
+> `../02-STORIES/US007.md`'s QA tasks route it to whoever owns this plan. `Date` above is this
+> plan's authoring date and is deliberately not bumped, on the precedent
+> `STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
 
 Implements `../15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md` (one layer decides
 to repeat an operation, every layer beneath makes a single attempt, and SDK transport retries are
@@ -69,25 +97,32 @@ have.** Measured 27/08, 01/09 and 05/09/2026: `code/src/django/` holds no `self.
 
 ## Reference Documents (code/docs gate map)
 
-| Concern                           | Document                                                                              | What it binds here                                                                          |
-| --------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| The family this story writes into | `code/docs/reliability/` — **US001's deliverable, absent today**                      | Every rule lands here; **its file names are US001's, cited by role only**                   |
-| Task authoring and the bound      | `code/docs/TASK-AUTHORING.md`                                                         | `:204` requires a bound by attempt count **and** total age; its 4xx-is-permanent class      |
-| Webhook delivery                  | `code/docs/api-design/WEBHOOKS.md`                                                    | `:86`'s 5-over-24-hours budget; `:88`'s disable-after-N as the breaker's partial mechanism  |
-| API performance budgets           | `code/docs/performance/API-AND-MONITORING.md`                                         | `:57` — plus `:46`, `:69` and `:142`, which the inventory must not miss                     |
-| The MCP tool surface              | `code/docs/mcp-server/TOOL-DESIGN.md`                                                 | `:139-141` states the inverse of the owner rule and is repaired or assigned                 |
-| Service and middleware shape      | `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`                                    | `:265`'s breaker mandate becomes a pointer; `:252-257`'s Retry column is `S-04`'s           |
-| What the code must never allow    | `code/docs/NEGATIVE-SPACE.md`                                                         | `:226` repointed or verified; `:211` gains a prose pointer, **never a sixth column**        |
-| Length limit and the ratchet      | `code/docs/DOCUMENTATION-LENGTH.md`                                                   | Nothing born at or above 270; nothing edited crosses it without a dated allowance           |
-| Reporting a gate's result         | `code/docs/GATE-REPORTING.md`                                                         | `doctrine-drift.sh` is never reported as having read this story's prose                     |
-| Forward-looking claims            | `code/docs/FORWARD-VOICE.md`                                                          | The `OUTBOUND-TIMEOUTS.md` reference is a forward one; a dangling path is fixed, not marked |
-| GDPR compliance examples          | `project-management/docs/gdpr/COMPLIANCE.md`                                          | `:22-49` — the whole fence, `:27`'s budget and `:46-48`'s shape together                    |
-| Story                             | `../02-STORIES/US005.md`                                                              | Nine scenarios, the acceptance this plan implements                                         |
-| Threat model                      | `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md` | Twelve findings, five trust boundaries, the promotion-trigger table                         |
-| Security assessment               | `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md`    | **Section 7's twelve constraints — carried in below, not re-derived**                       |
-| QA                                | `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`                      | Fifteen resolved AC-gaps, the scenario tables, the measured gate baselines                  |
-| Sprint plan                       | `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`                                             | Build order, the `Must` tier, the gate-honesty constraint                                   |
-| Feature map                       | `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md`                                     | Slice `S-02`, nodes `N-008`–`N-011`; the `S-04` and `S-09` rows this story edits            |
+| Concern                           | Document                                                                                                                                                      | What it binds here                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| The family this story writes into | `code/docs/reliability/` — **US001's deliverable, absent today**                                                                                              | Every rule lands here; **its file names are US001's, cited by role only**                   |
+| Task authoring and the bound      | `code/docs/TASK-AUTHORING.md`                                                                                                                                 | `:204` requires a bound by attempt count **and** total age; its 4xx-is-permanent class      |
+| Webhook delivery                  | `code/docs/api-design/WEBHOOKS.md`                                                                                                                            | `:86`'s 5-over-24-hours budget; `:88`'s disable-after-N as the breaker's partial mechanism  |
+| API performance budgets           | `code/docs/performance/API-AND-MONITORING.md`                                                                                                                 | `:57` — plus `:46`, `:69` and `:142`, which the inventory must not miss                     |
+| The MCP tool surface              | `code/docs/mcp-server/TOOL-DESIGN.md`                                                                                                                         | `:139-141` states the inverse of the owner rule and is repaired or assigned                 |
+| Service and middleware shape      | `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`                                                                                                            | `:265`'s breaker mandate becomes a pointer; `:252-257`'s Retry column is `S-04`'s           |
+| What the code must never allow    | `code/docs/NEGATIVE-SPACE.md`                                                                                                                                 | `:226` repointed or verified; `:211` gains a prose pointer, **never a sixth column**        |
+| Length limit and the ratchet      | `code/docs/DOCUMENTATION-LENGTH.md`                                                                                                                           | Nothing born at or above 270; nothing edited crosses it without a dated allowance           |
+| Reporting a gate's result         | `code/docs/GATE-REPORTING.md`                                                                                                                                 | `doctrine-drift.sh` is never reported as having read this story's prose                     |
+| Forward-looking claims            | `code/docs/FORWARD-VOICE.md`                                                                                                                                  | The `OUTBOUND-TIMEOUTS.md` reference is a forward one; a dangling path is fixed, not marked |
+| GDPR compliance examples          | `project-management/docs/gdpr/COMPLIANCE.md`                                                                                                                  | `:22-49` — the whole fence, `:27`'s budget and `:46-48`'s shape together                    |
+| Story                             | `../02-STORIES/US005.md`                                                                                                                                      | Nine scenarios, the acceptance this plan implements                                         |
+| Threat model                      | `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md`                                                                         | Twelve findings, five trust boundaries, the promotion-trigger table                         |
+| Security assessment               | `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md`                                                                            | **Section 7's twelve constraints — carried in below, not re-derived**                       |
+| QA                                | `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`                                                                                              | Fifteen resolved AC-gaps, the scenario tables, the measured gate baselines                  |
+| Sprint plan                       | **None yet** — 04-SPRINT-PLAN-04.md is not written as of 07/09/2026; `../03-SPRINTS/SPRINT-04.md` is authoritative until `16-sprint-plans` runs for SPRINT-04 | Build order, the `Must` tier, the gate-honesty constraint                                   |
+
+<!-- The Sprint plan row named `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` from 05/09/2026 until
+     07/09/2026, when this story moved to SPRINT-04. That plan was written for this story and US003
+     and is superseded in every section. The absent filename above is deliberately unbackticked:
+     it names a file that does not exist, and the citation gate tests backticked tokens —
+     ../02-STORIES/US006.md's Verification Checks record the same choice for the same reason. -->
+
+| Feature map | `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` | Slice `S-02`, nodes `N-008`–`N-011`; the `S-04` and `S-09` rows this story edits |
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
 `../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../12-SEO/`, `../13-API-DESIGN/`,
@@ -281,21 +316,28 @@ produces two owners for one file.
 **Two baselines are in circulation and the story is not the source of the larger one.**
 `../02-STORIES/US005.md` reads its checks against **53** (measured 04/09/2026, at `:367` and
 `:437`); the **56** belongs to `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`
-Section 7 and to `../03-SPRINTS/SPRINT-03.md`, and the difference is US005's own three artefacts.
+Section 7 and to `../03-SPRINTS/SPRINT-04.md` (to `SPRINT-03.md` until 07/09/2026, when the figure
+travelled with this story), and the difference is US005's own three artefacts.
 Both are honest; neither site says which one the closing check uses, and **this plan settles it:
 diff against a figure measured in the same git-index state as the run, and record that state
 beside it** — the numbers below, not either inherited one. **By the time this story is worked, most of that is
 obsolete, and the reason is build order.**
 
-| Class                             | Count | Cleared by   | Landed before US005?             |
-| --------------------------------- | ----- | ------------ | -------------------------------- |
-| `code/docs/reliability/`          | 7     | US001        | **Yes** — SPRINT-01, exec `01`   |
-| `[template-only citation]` sweep  | many  | US004        | **Yes** — SPRINT-02, exec `02`   |
-| `code/docs/ABSENCE.md`            | 2     | US003        | Same sprint, `Should` — may slip |
-| `how-to/src/OUTBOUND-TIMEOUTS.md` | 4     | slice `S-09` | **No** — not yet a story         |
+| Class                             | Count | Cleared by   | Landed before US005?                                                                                                                  |
+| --------------------------------- | ----- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `code/docs/reliability/`          | 7     | US001        | **Yes** — SPRINT-01, exec `01`                                                                                                        |
+| `[template-only citation]` sweep  | many  | US004        | **Yes** — SPRINT-03, exec `03` (SPRINT-02, exec `02`, until 07/09/2026)                                                               |
+| `code/docs/ABSENCE.md`            | 2     | US003        | **Yes, if SPRINT-02 completes** — SPRINT-02's `Should` since 07/09/2026; a slip carries it into SPRINT-03, still ahead of this sprint |
+| `how-to/src/OUTBOUND-TIMEOUTS.md` | 4     | slice `S-09` | **No** — not yet a story                                                                                                              |
+
+<!-- The US004 and US003 rows read "**Yes** — SPRINT-02, exec `02`" and "Same sprint, `Should` —
+     may slip" from 05/09/2026 until 07/09/2026, when the cascade re-plan moved US004 to SPRINT-03
+     and US003 to SPRINT-02 — and this story to SPRINT-04, so neither is a co-member and both land
+     ahead of it under every branch. -->
 
 US001 is this story's own blocker, so the family exists before a line is written and the seven
-forward references resolve on arrival. US004 sits in SPRINT-02 at execution order `02`, which satisfies the **first half** of
+forward references resolve on arrival. US004 sits in SPRINT-03 at execution order `03` (SPRINT-02,
+`02`, until 07/09/2026), which satisfies the **first half** of
 `ADR-US003-CITATION-GATE-BASELINE-DIFF`'s retirement condition. **Read that condition as written,
 because it is conjunctive and the second half will not hold here:** the record retires when `S-06`
 lands _and the gate goes green_, and the gate will not be green — correct forward references
@@ -364,19 +406,24 @@ is **fixed rather than marked**. That is the misuse `AC-GAP-12` removed from the
 
 ## Dependencies
 
-| Story | Deliverable it owns                      | Required for                                       | Current state |
-| ----- | ---------------------------------------- | -------------------------------------------------- | ------------- |
-| US001 | `code/docs/reliability/` — the family    | **Every rule this story writes.** Hard blocker     | `Open`        |
-| US004 | The citation gate's git-index repair     | The gate regime this plan's citation section reads | `Open`        |
-| US003 | `code/docs/ABSENCE.md`                   | Nothing here — co-member only, no shared file      | `Open`        |
-| US002 | `code/src/scripts/audits/` register room | Nothing here                                       | `Open`        |
+| Story | Deliverable it owns                      | Required for                                                                                    | Current state |
+| ----- | ---------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------- |
+| US001 | `code/docs/reliability/` — the family    | **Every rule this story writes.** Hard blocker                                                  | `Open`        |
+| US004 | The citation gate's git-index repair     | The gate regime this plan's citation section reads                                              | `Open`        |
+| US003 | `code/docs/ABSENCE.md`                   | Nothing here — no shared file; a co-member until 07/09/2026, now two sprints ahead in SPRINT-02 | `Open`        |
+| US002 | `code/src/scripts/audits/` register room | Nothing here                                                                                    | `Open`        |
 
 **The `Current state` column is the one the parallel-worktree DAG reads**, and every row is `Open`
 today — which is why this plan's own status is `Blocked` rather than a judgement call.
 
 - **Blocked by:** **US001**, absolutely. Not build order — the target directory does not exist,
-  and US001 is itself SPRINT-01's second story, behind US002. US005 sits three stories deep in the
-  chain.
+  and US001 is itself SPRINT-01's second story, behind US007 since 07/09/2026 (behind US002 until
+  then). US005 still sits three stories deep in the chain — US007, US001, then this story — and
+  since 07/09/2026 three sprints along rather than two.
+
+<!-- The bullet read "... behind US002. US005 sits three stories deep in the chain." until
+     07/09/2026, when US007 took SPRINT-01's first slot and this story moved to SPRINT-04. -->
+
 - **Blocks:** slices `S-04`, `S-05` and `S-06` on
   `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md`. `S-05`'s claims row pins this doctrine's
   exact wording, so a change to the phrasing after `S-05` ships is a gate edit, not a prose edit.
@@ -437,7 +484,8 @@ order:
 | 11  | TM-12                | P1 — the staleness escape hatch and what makes it mandatory        |
 | 12  | TM-02 (the live one) | P4 — `DEFERRED.md`, written by `22`                                |
 
-**Twelve, and the split matters.** `../03-SPRINTS/SPRINT-03.md` counts them as eleven wording
+**Twelve, and the split matters.** `../03-SPRINTS/SPRINT-04.md` (`SPRINT-03.md` until 07/09/2026,
+when the Security section travelled with this story) counts them as eleven wording
 constraints plus the one task that outlives the document, which is the same set described two
 ways. An earlier draft of this plan wrote "eleven" and folded rows 1 and 2 together — both are
 TM-01's, but they are separate obligations and the assessment gives each its own line.
@@ -617,8 +665,9 @@ ninth citation of a surface about to be named otherwise.
 - [ ] A tester other than the author has signed the walk-through off
 - [ ] `DEFERRED.md` carries the unenforced-window entry, written by `22`
 - [ ] Status propagated to every artefact that carries it — `../02-STORIES/US005.md`, **this plan's
-      own header** (off `Blocked`), `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`'s Story Plans row and
-      `../03-SPRINTS/SPRINT-03.md`'s Story Summary. **This plan is the first to carry `Blocked`, so
+      own header** (off `Blocked`), the SPRINT-04 sprint plan's Story Plans row once
+      `16-sprint-plans` has written it, and `../03-SPRINTS/SPRINT-04.md`'s Story Summary
+      (`03-SPRINT-PLAN-03.md`'s row and `SPRINT-03.md`'s table until 07/09/2026). **This plan is the first to carry `Blocked`, so
       it is the first whose own header needs clearing** — the template's propagation line also
       names a Plans Index, which does not exist (see _CONTEXT.md & Index Updates_)
 - [ ] Reviewed and approved; merged
