@@ -14,6 +14,13 @@
 #                     Check 3 — template-only.     A path this repository holds and copier
 #                                                  EXCLUDES, cited by a file that ships,
 #                                                  without the marker that declares it.
+#                     Check 4 — plan prefix.       A story-plan or sprint-plan FILENAME
+#                                                  written without its two-digit
+#                                                  exec-order prefix. ADDED 08/09/2026,
+#                                                  and the odd one out: a NAMING rule,
+#                                                  decided from the string, never from
+#                                                  whether anything exists. Its own long
+#                                                  comment sits at the clause below.
 #
 #                     ADDED 20/08/2026: Check 1 peels a trailing LINE ANCHOR before the
 #                     existence test. An anchor names a location INSIDE a file rather than
@@ -220,6 +227,11 @@ Suppress a citation with `doc-references: ignore` (neither check applies) or
 line or the line directly above it. The two are not synonyms — `code/docs/FORWARD-VOICE.md`.
 Check 3 reads both and neither the example markers nor `e.g.`: an illustration is not a
 claim that the path survives generation.
+
+A [plan prefix] finding is the naming rule, not a missing file: a story-plan or
+sprint-plan filename must carry its two-digit exec-order prefix. Add the prefix the
+plan is on disk under; never suppress it. The prefix is renumbered when build order
+changes, so a name quoted from before a renumber goes in "double quotes", not backticks.
 
 Exit codes: 0 clean · 1 violations found, or a failed self-test · 2 script error
 EOF
@@ -565,7 +577,7 @@ scan_files() { # $1 = newline-separated file list
   checked_tokens=0
   path_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
-  local is_marked file_ships file_dir tmpl tmpl_base peeled
+  local is_marked file_ships file_dir tmpl tmpl_base peeled plan
   local resolved_skip=false
 
   while IFS= read -r file; do
@@ -670,9 +682,93 @@ scan_files() { # $1 = newline-separated file list
         fi
       fi
 
+      # ── Check 4 — a plan filename with no exec-order prefix ─────────────────
+      # ADDED 08/09/2026, and it is a DIFFERENT KIND OF RULE from the three above. Those ask
+      # whether a citation RESOLVES -- here, downstream, or at all. This one asks whether the
+      # NAME is spelt the way the convention spells it, and it answers that from the string
+      # alone: no file has to exist on either side of generation for the finding to be true.
+      #
+      # NOTHING ELSE COULD CARRY IT, and the two reasons are worth stating because both look
+      # like bugs and neither is. Check 2 is anchored with `^` against the RAW token, so it
+      # sees a bare basename and never a path-form one. Check 1 does see path form, but its
+      # checkable-tree case drops `project-management/src/` to the catch-all deliberately --
+      # a project's own artefacts are absent here and different downstream, so their existence
+      # is unprovable from this side -- and that reasoning is sound and stays. Between them a
+      # plan cited by its full path was tested by NOTHING, prefix or no prefix. Widening an
+      # existence test would have been the wrong repair anyway: the file a CORRECT citation
+      # names is absent here and present downstream, and the file an INCORRECT one names is
+      # absent in both, so existence cannot separate them. The defect lives in the string, so
+      # the string is what is read.
+      #
+      # THE CONVENTION, settled 08/09/2026 and already applied to the plan tree. A story plan
+      # is `<exec-order>-STORY-PLAN-US###-<DESC>.md` and a sprint plan
+      # `<exec-order>-SPRINT-PLAN-##.md`, the prefix two digits and zero-padded. The prefix is
+      # the artefact's position in the settled build order ACROSS THE WHOLE BACKLOG -- not its
+      # sprint, and not a per-sprint counter -- so it is RENUMBERED whenever build order
+      # changes. A citation written under a superseded number is therefore a citation to be
+      # repointed, never a name to be preserved; and a name quoted from before the convention
+      # existed is quoted in "double quotes" rather than backticks, because this script reads
+      # backticked tokens inside HTML comments exactly as it reads them in prose.
+      #
+      # THE TWO FAMILIES ARE NOT THE SAME SHAPE, and the contrast is the whole argument for
+      # this check. A sprint plan carries TWO numbers and the PAIR carries the meaning: a
+      # prefix disagreeing with the sprint number in the suffix is DELIBERATE and must never be
+      # "corrected" (`project-management/src/16-SPRINT-PLANS/CLAUDE.md` says so in as many
+      # words). A story plan carries ONE number, so if its prefix does not track build order it
+      # says nothing whatever. Hence the rule enforced here is the half the two families share
+      # -- the prefix must be PRESENT -- and nothing about what either number's VALUE should
+      # be, which no script can decide and which the sprint family forbids guessing at.
+      #
+      # WHAT IT MUST NOT FIRE ON, and this is why it sits below is_pattern() rather than above
+      # it. Prose describing the artefact CLASS writes the placeholder form, and every spelling
+      # of it -- the angle-bracket one, the brace one a template uses, a bare `###`, an `NN-`
+      # -- is already dropped there as a naming convention being shown rather than a document
+      # being cited. That includes the forms in THIS comment: the script ships, and the gate
+      # reads its own text. A naming ROW is exempt on the same machinery every other check uses
+      # (is_naming_row above), never on a second one invented here.
+      #
+      # KNOWN LIMIT, stated rather than left to be found, and it follows from that placement.
+      # is_pattern() also drops the zero-index artefacts and anything ending -TEMPLATE.md, on
+      # the ground that a template IS the convention rather than an instance of it -- true of
+      # Checks 1 and 2, and not of this one, which is about the spelling. So the story-plan
+      # template cited under its own pre-prefix name is invisible here, and nine such citations
+      # sat in six non-exempt files on 08/09/2026, every one of them inside a dated history
+      # comment beside correct live text. Reusing the existing filter was chosen over a second,
+      # narrower one that only this clause reads: two filters disagreeing about what counts as
+      # a pattern is a worse defect than one blind spot that can be named.
+      #
+      # The anchor is peeled first, on the same argument the other two peels make: an anchored
+      # citation names a location inside a file, and the filename it names is what the
+      # convention governs. Peeling into a LOCAL copy leaves Check 2's raw token untouched.
+      if [ "$is_naming_row" = false ]; then
+        case "$token" in
+          *STORY-PLAN-US*|*SPRINT-PLAN-*)
+            peel_anchor "$token"; plan="${peeled##*/}"
+            if [[ "$plan" =~ ^STORY-PLAN-US[0-9]{3}-.+\.md$ ]] \
+               || [[ "$plan" =~ ^SPRINT-PLAN-[0-9]{2}\.md$ ]]; then
+              record "$file" "$lineno" "plan prefix" "$token"
+              continue
+            fi
+            ;;
+        esac
+      fi
+
       # ── Check 2 — instance citation ─────────────────────────────────────────
+      # CORRECTED 08/09/2026: the two PLAN alternatives accept an optional two-digit
+      # `<exec-order>-` prefix. Both artefact families are named for their position in the build
+      # order and not only for what they plan -- `NN-SPRINT-PLAN-NN.md` and
+      # `NN-STORY-PLAN-US###-<DESC>.md` -- and the alternation is ANCHORED, so a bare basename
+      # carrying that prefix matched neither `^SPRINT-PLAN-` nor `^STORY-PLAN-US`. It then fell
+      # past Check 1 too, which drops any token with no `/`, and the citation was checked by
+      # nothing at all. The sprint half had been open since the prefix was adopted; the story
+      # half opened on 08/09/2026 when `17-STORY-PLANS/` took the same convention.
+      # Optional rather than required, because the prefix is renumbered whenever build order
+      # changes and a plan may still be cited by the unprefixed name it was written under.
+      # The two forms above are written as PATTERNS, not as the plans that prompted this: a real
+      # basename in a shipped file is the instance citation this very check exists to catch, and
+      # naming one here would have made the fix fire on its own explanation.
       if [ "$is_naming_row" = false ] && printf '%s' "$token" \
-         | grep -qE '^(ADR-[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-US[0-9]{3}|API-US[0-9]{3})'; then
+         | grep -qE '^(ADR-[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|([0-9]{2}-)?SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|([0-9]{2}-)?STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-US[0-9]{3}|API-US[0-9]{3})'; then
         base="${token##*/}"
         if ! is_seeded "$token" && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE-MAPS/$base" ]; then
           record "$file" "$lineno" "instance citation" "$token"
@@ -804,6 +900,13 @@ scan_files() { # $1 = newline-separated file list
 # on known-good. Only those three are covered; the checks that shipped before them are
 # unchanged and are not re-proven here.
 #
+# EXTENDED 08/09/2026 to Check 4, which needs the fixture pair more than any clause above it. It
+# fires on a STRING rather than on a missing file, so its two failure modes are symmetrical and
+# neither is visible from an ordinary run: too narrow and the path form goes unreported exactly
+# as it did before the clause existed, too wide and every guide describing the naming pattern
+# reddens -- this script's own comments first, since it ships and the gate reads its own text.
+# One fixture per direction is what tells those apart.
+#
 # Fix the detector, never the fixtures.
 st_fails=0
 st_probes=0
@@ -848,6 +951,14 @@ self_test() {
   # them and a finding can only have come from the Direction B clause.
   st_probe "broken/direction-b.md  fires on an undeclared excluded path, bare and anchored" \
     "$FIXTURES_DIR/broken/direction-b.md" 3 'copier.yml:41-42'
+  # Check 4, in the direction that had no detector at all until 08/09/2026. Five forms, and the
+  # PATH ones are the reason the clause exists: Check 2 is anchored and cannot see them, Check 1
+  # drops the artefact tree on purpose, so before this they were checked by nothing. The
+  # substring asserted is the path form for exactly that reason -- a probe passing on the bare
+  # form alone would be green over the half that was already visible.
+  st_probe "broken/plan-prefix.md  fires on an unprefixed plan name, bare and path form" \
+    "$FIXTURES_DIR/broken/plan-prefix.md" 5 \
+    'project-management/src/17-STORY-PLANS/STORY-PLAN-US042-FIXTURE-ONLY.md'
 
   log ""
   log "  known-good — nothing below should print a finding:"
@@ -867,6 +978,13 @@ self_test() {
   # surface-gated, seeded, regenerated, and re-included inside an excluded tree.
   st_probe "clean/direction-b.md   silent on both markers, anchored or bare, and the four classes" \
     "$FIXTURES_DIR/clean/direction-b.md" 0
+  # The other half of Check 4, and the half a naming rule gets wrong most easily: the prose that
+  # DESCRIBES the pattern must never read as an instance of it. Four spellings of the
+  # placeholder, the artefact class used as a bare noun, and the zero-index template -- plus two
+  # correctly prefixed filenames, written in path form because a bare prefixed basename is an
+  # instance citation on Check 2 whatever its prefix, and this fixture proves one clause.
+  st_probe "clean/plan-prefix.md   silent on a prefixed name and on every placeholder spelling" \
+    "$FIXTURES_DIR/clean/plan-prefix.md" 0
 
   # The SET is asserted directly, not only through a fixture. A fixture proves the clause
   # fires; these prove it fires over the right forty paths — and each row is a different way
@@ -899,7 +1017,7 @@ self_test() {
 
   log ""
   if [ "$st_fails" -eq 0 ]; then
-    bold "✓ Self-test passed — $st_probes probes over the four clauses added 20–23/08/2026."
+    bold "✓ Self-test passed — $st_probes probes over the five clauses added 20/08–08/09/2026."
     log "  Not covered: Checks 1 and 2 as they shipped before 20/08, and the SURFACE-GATED"
     log "  half of Direction B, which is a prose convention rather than a clause"
     log "  (code/docs/FORWARD-VOICE.md Section 5)."
@@ -961,6 +1079,13 @@ else
   log "when the citation is right and merely unprovable downstream:"
   log "  ... the contract lives in \`copier.yml\`. <!-- doc-references: template-only -->"
   log "Rule and the difference from \`ignore\`: code/docs/FORWARD-VOICE.md Sections 1 and 4."
+  log ""
+  log "A [plan prefix] finding is neither: it is a NAMING rule, and no file has to be"
+  log "missing for it to be true. A story plan is named for its position in the settled"
+  log "build order across the whole backlog and a sprint plan likewise, so both carry a"
+  log "two-digit prefix and the citation must carry it too. That number is renumbered"
+  log "whenever build order changes — so repoint the citation at the name the plan is on"
+  log "disk under, and quote a superseded name in \"double quotes\", never in backticks."
 fi
 
 if [ -n "$OUTPUT_FORMAT" ]; then
