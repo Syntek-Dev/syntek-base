@@ -1,6 +1,6 @@
 # SPRINT-PLAN-02 — The audits register regains its headroom, and the absence guide is born behind it
 
-**Last Updated**: 07/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Last Updated**: 08/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
 **Source sprint:** `../03-SPRINTS/SPRINT-02.md` · **Capacity:** 3 SP Must + 5 SP Should = 8 / 11 · **Stories:** 2
 
 <!-- Read "**Capacity:** 8 / 11 · **Stories:** 1" from 05/09/2026 until 07/09/2026, when US004 moved
@@ -94,9 +94,9 @@ the sprint that carries it, so nothing this plan relies on is affected.
 
 ### Must
 
-| ID    | Title                                                        | Phases touched           | SP  | Story plan                                                       | Git branch                       |
-| ----- | ------------------------------------------------------------ | ------------------------ | --- | ---------------------------------------------------------------- | -------------------------------- |
-| US002 | The audits register regains the headroom nine new gates need | Docs only — no code lane | 3   | `../17-STORY-PLANS/STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | `us002/audits-register-headroom` |
+| ID    | Title                                                        | Phases touched           | SP  | Story plan                                                          | Git branch                       |
+| ----- | ------------------------------------------------------------ | ------------------------ | --- | ------------------------------------------------------------------- | -------------------------------- |
+| US002 | The audits register regains the headroom nine new gates need | Docs only — no code lane | 3   | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | `us002/audits-register-headroom` |
 
 **3 SP committed against a capacity of 11.**
 
@@ -121,9 +121,9 @@ audit registrations across eight slices and seven maps — every story that adds
 
 ### Should
 
-| ID    | Title                                                                        | Phases touched           | SP  | Story plan                                            | Git branch            |
-| ----- | ---------------------------------------------------------------------------- | ------------------------ | --- | ----------------------------------------------------- | --------------------- |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | Docs only — no code lane | 5   | `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md` | `us003/absence-guide` |
+| ID    | Title                                                                        | Phases touched           | SP  | Story plan                                               | Git branch            |
+| ----- | ---------------------------------------------------------------------------- | ------------------------ | --- | -------------------------------------------------------- | --------------------- |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | Docs only — no code lane | 5   | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md` | `us003/absence-guide` |
 
 **US003 is back, and the first move is not pretended away.** It was this plan's `Should` stretch
 from 02/09/2026, left for SPRINT-03 on 05/09/2026 to give a single-member all-`Must` sprint some
@@ -286,12 +286,26 @@ constraints put it there:
   05/09/2026 as "SPRINT-01 before SPRINT-02"; it is the same direction one sprint later on each
   side, and it now agrees with the build order rather than fighting it.
 
-**`../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md` is written for the reversed order and
-says so.** Its header block states that "US004 lands first and removes the defect all three exist
-for" and that the plan is therefore "more current than its story". Under this re-plan that is the
-stale half: the story's baseline-diff scenario is the live regime here, and the plan's corrected
-procedure applies only in the carry case. The repoint — that block, and the `| Sprint |` row
-beside it — is `17-story-plans`' to make and is named in _Story Plans_ below.
+**`../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md` was brought into line with this order on
+07/09/2026, and says so in its own header** (verified 08/09/2026). Its second header note records
+the return to SPRINT-02 and that the US004-before-US003 order is reversed; the paragraph that
+called the plan "more current than its story" — because "US004 lands first and removes the defect
+all three exist for" — now opens "Since 07/09/2026 this paragraph holds only in the carry case",
+and _The citation gate, corrected_ is scoped the same way. So the story's baseline-diff scenario is
+the live regime here, and the plan's plain-pass procedure applies only if the story carries into
+SPRINT-03 behind US004. Its `| Sprint |` row reads `SPRINT-02 · Wave 0 · build order 2`. Nothing
+on that plan is owed to this order.
+
+<!-- The paragraph read, from 07/09/2026 until 08/09/2026: "**STORY-PLAN-US003-ABSENCE-GUIDE.md is
+     written for the reversed order and says so.** Its header block states that "US004 lands first
+     and removes the defect all three exist for" and that the plan is therefore "more current than
+     its story". Under this re-plan that is the stale half: the story's baseline-diff scenario is
+     the live regime here, and the plan's corrected procedure applies only in the carry case. The
+     repoint — that block, and the `| Sprint |` row beside it — is `17-story-plans`' to make and
+     is named in _Story Plans_ below." The repoint it names was made in the same pass, by the
+     agent rewriting that plan while this one was being rewritten; as a description of the plan's
+     05/09/2026 state it was accurate history, and as a description of the file on disk it was
+     wrong by the time the change was committed. -->
 
 <!-- The section title read "Build order — SPRINT-01 before US004, and US004 before US003 across a
      sprint boundary" from 05/09/2026 until 07/09/2026, and its body argued four things, all of
@@ -311,30 +325,59 @@ beside it — is `17-story-plans`' to make and is named in _Story Plans_ below.
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Both plans exist and
-were written on 02/09/2026 against sprints the stories have since left.
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Both plans exist,
+written on 02/09/2026, and both carry a `| Sprint |` row repointed to this sprint on 07/09/2026.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                | Status |
-| ----- | ---------------------------------------------------------------- | ------ |
-| US002 | `../17-STORY-PLANS/STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | `Open` |
-| US003 | `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md`            | `Open` |
+| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status      |
+| ----- | ------------------------------------------------------------------- | ----------- |
+| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Not started |
+| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Not started |
 
-**The Status column mirrors each plan's own line 9.** Both read `Open`, and that word is written
-here because it is the one the plans carry — US007 settled that this column takes a value from the
-canonical eleven-value story-status set and nothing else. Neither is `Blocked`: US002's upstream
-constraint (US007) is ordering, not content, and US003's is the same; a plan marked anything other
-than `Blocked` asserts its blockers are cleared for content, which both are.
+**Both cells read `Not started`, and the value is knowingly false** (08/09/2026). It is a value in
+no status set anywhere in this repository, and both plans it points at carry `Open` in their own
+`| Status |` header row. It is left standing BY DESIGN, on the position `01-SPRINT-PLAN-01.md` →
+_Story Plans_ took on 07/09/2026 and <%DEVELOPER_NAME%> settled on 08/09/2026: correcting it is
+US007's Scenario 8, which names this plan's `Not started` cells among the three live mirror cells
+it changes to the value each plan's own `Status` field carries — and a re-plan that moves
+membership does not pre-empt a scheduled story's own acceptance criterion. Neither plan is
+`Blocked`: US002's upstream constraint (US007) is ordering, not content, and US003's is the same;
+a plan marked anything other than `Blocked` asserts its blockers are cleared for content, which
+both are. US007 counted three such cells at cutting — two in `01-SPRINT-PLAN-01.md`, one here;
+after the cascade there are still three — one there, two here — a population US007 re-measures at
+implementation rather than inherits.
 
-<!-- The column read "Not started" for both rows until 07/09/2026 — a value in no status set
-     anywhere in this repository, and false against plans that read Open. Corrected on the
-     re-plan rather than carried, because US007, the story this cascade exists to schedule, is the
-     one that settled which values the column may hold. -->
+<!-- The column read "Not started" — for US004's row, and for US003's before 05/09/2026 — until
+     07/09/2026, `Open` for both rows from 07/09/2026 until 08/09/2026, and "Not started" again
+     since. The 07/09/2026 edit was justified by this paragraph, superseded 08/09/2026: "**The
+     Status column mirrors each plan's own line 9.** Both read `Open`, and that word is written
+     here because it is the one the plans carry — US007 settled that this column takes a value
+     from the canonical eleven-value story-status set and nothing else. Neither is `Blocked`:
+     US002's upstream constraint (US007) is ordering, not content, and US003's is the same; a plan
+     marked anything other than `Blocked` asserts its blockers are cleared for content, which both
+     are." Its own comment read: "The column read "Not started" for both rows until 07/09/2026 — a
+     value in no status set anywhere in this repository, and false against plans that read Open.
+     Corrected on the re-plan rather than carried, because US007, the story this cascade exists to
+     schedule, is the one that settled which values the column may hold." Reverted because US007
+     has not shipped: a scheduled story has settled nothing yet, and its Scenario 8 names these
+     cells as ITS edit. 01-SPRINT-PLAN-01.md read the same rule the other way on the same day and
+     left its cell alone; the two plans now agree. -->
 
-**Both `| Sprint |` rows are stale, and neither is this plan's to repoint.** US002's reads
-`SPRINT-01 · Wave 0 · build order 1`; US003's reads `SPRINT-03 · Wave 0 · build order 2`. Against
-this plan both should read `SPRINT-02`, with US002 at build order 1 and US003 at build order 2.
-`17-story-plans` owns the rows and `../03-SPRINTS/SPRINT-02.md` → _Notes_ names the debt; until it
-is paid, a reader should trust this plan and its record over the plans' headers.
+**Both `| Sprint |` rows agree with this plan, and were repointed in the same change** (verified
+08/09/2026). US002's reads `SPRINT-02 · Wave 0 · build order 1`; US003's reads
+`SPRINT-02 · Wave 0 · build order 2` — the string it carried at authoring, reached by two moves its
+header notes record. Each keeps its superseded value in a dated comment. The rows were
+`17-story-plans`' to repoint and were repointed on 07/09/2026 as the story-plan half of the
+six-artefact discipline; `../03-SPRINTS/SPRINT-02.md` → _Notes_ named the debt on the day it was
+paid, and nothing on either row is owed.
+
+<!-- The paragraph read, from 07/09/2026 until 08/09/2026: "**Both `| Sprint |` rows are stale,
+     and neither is this plan's to repoint.** US002's reads `SPRINT-01 · Wave 0 · build order 1`;
+     US003's reads `SPRINT-03 · Wave 0 · build order 2`. Against this plan both should read
+     `SPRINT-02`, with US002 at build order 1 and US003 at build order 2. `17-story-plans` owns
+     the rows and `../03-SPRINTS/SPRINT-02.md` → _Notes_ names the debt; until it is paid, a
+     reader should trust this plan and its record over the plans' headers." Written while the
+     story plans were being repointed in parallel in the same pass, so it was false by the time
+     the change was committed; corrected against the plans as they stand on disk. -->
 
 **There is no Plans Index row for either**, and that is a decision rather than an omission.
 `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` creates `../17-STORY-PLANS/STORY-PLAN-INDEX.md`
@@ -346,7 +389,29 @@ not pre-empt a claimed slice by building one.
      07/09/2026: US003's row is back, below US002's, returned from SPRINT-03 on the re-plan; US004's
      row — ../17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md — left for SPRINT-03 and
      03-SPRINT-PLAN-03.md indexes it now. This comment is kept because the first move happened;
-     the table above is the live fact. -->
+     the table above is the live fact.
+     08/09/2026: both paths in this comment are pre-rename names, kept as written. US003's plan is
+     now ../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md and US004's
+     ../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md. -->
+
+<!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX, and every live citation in
+     this plan was repointed the same day: US002's plan is `03-STORY-PLAN-US002-…` and US003's
+     `04-STORY-PLAN-US003-…`. The form is
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded,
+     `00-` the template. The prefix is the story's position in the settled build order ACROSS THE
+     WHOLE BACKLOG — not its sprint, and not a per-sprint counter — which is why this sprint's two
+     members read `03-` and `04-` rather than `01-` and `02-`. It is RENUMBERED whenever build
+     order changes: had US003 stayed carried into SPRINT-03, its prefix would still be `04-`
+     because the build order, not the sprint, is what the number records.
+
+     THAT IS THE OPPOSITE OF THE RULE GOVERNING THIS FILE'S OWN NAME. ./CLAUDE.md says a sprint
+     plan is `<exec-order>-SPRINT-PLAN-<sprint-number>.md` and that a mismatch between the two
+     segments is deliberate and must NOT be "corrected" — a sprint plan carries TWO numbers and the
+     PAIR carries the meaning. A story plan carries ONE, so its prefix must track build order or it
+     says nothing. Do not read the sprint-plan guardrail across to `../17-STORY-PLANS/`.
+
+     A naming sweep only: no membership, capacity, tier, status or build order moved with it, and
+     the dated comments here quote the pre-rename names they were written against. -->
 
 ---
 

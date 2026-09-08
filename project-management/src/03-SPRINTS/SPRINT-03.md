@@ -1,6 +1,6 @@
 # SPRINT-03
 
-**Last Updated**: 07/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -39,6 +39,12 @@ record, and if it lands this sprint is **13 / 11 SP** and at grace. See Notes.
      widening is SPRINT-01, whose QA row moved when QA-PLAN-US001 AC-GAP-6 landed.
      Recomputed 05/09/2026 on US003's admission from SPRINT-02, and CHANGED in one row: US003's
      QA value added routing-skills and skill-conformance to the three US005 names.
+     SPELLING, recorded with that 05/09/2026 recompute and restored here on 08/09/2026 after the
+     07/09/2026 rewrite below dropped it — SPRINT-01's and SPRINT-02's FLAGS comments cite this
+     entry as the precedent, so it stays as history: "US005's flag writes the script names with
+     .sh and US003's without. The union writes all five with .sh; the full paths are in the
+     Verification Checks, and neither story's own flag is rewritten to match the other." Neither
+     story is a member now; the rule it set is what the citing records apply.
      RECOMPUTED 07/09/2026 on the re-plan — US005 and US003 DEPARTED, US004 ARRIVED — and CHANGED
      in two rows. The union over one member is that member's table, so this is US004's, copied
      verbatim including its .sh spelling. Security narrows to N/A: the four-subject value was
@@ -135,10 +141,16 @@ stretch. It is not counted until it does.
   copied.** The build order settled 07/09/2026 runs SPRINT-01 (US007 then US001), SPRINT-02 (US002
   then US003), this sprint (US004), SPRINT-04 (US005 then US006) — number order. The exec-order
   segment of `project-management/src/16-SPRINT-PLANS/{exec-order}-SPRINT-PLAN-03.md` therefore
-  reads `03`. The plan on disk under that name, however, is written for US005 and US003 and is
-  superseded in every section, not only its capacity line; see Notes.
+  reads `03`, and the plan on disk under that name — `03-SPRINT-PLAN-03.md`, retitled for US004 on
+  07/09/2026 — mirrors this record in its capacity line, goal, story table, build order and
+  Definition of Done; see Notes.
 - **`Blocked` is a story status, not a sprint one.** Unchanged from 05/09/2026, and now moot for the
   member: US004 waits on nothing, so no story `**Status:**` moves on account of this sprint.
+
+<!-- The sixth bullet ended, until 08/09/2026: "The plan on disk under that name, however, is
+     written for US005 and US003 and is superseded in every section, not only its capacity line;
+     see Notes." Written in the parallel pass of 07/09/2026 while the plan was being rewritten;
+     re-read on 08/09/2026, it carries US004 throughout. -->
 
 <!-- The Dependencies this record carried from 05/09/2026 to 07/09/2026 were written for US005 and
      US003, and each of their facts has a home now that neither is a member: US005's block on US001
@@ -158,7 +170,7 @@ stretch. It is not counted until it does.
 `project-management/src/02-STORIES/US007.md` — the story `**Status:**` vocabulary gets one owner,
 `Must Have`, 5 SP — was cut on 07/09/2026 and must ship **before** US002, because US002 builds
 `register-indexes.sh` and its status fixtures against whichever vocabulary is canonical on the day
-it ships. Sam settled the shape as a full cascade rather than an execution reorder: US007 opens
+it ships. <%DEVELOPER_NAME%> settled the shape as a full cascade rather than an execution reorder: US007 opens
 SPRINT-01 ahead of US001; US002 moves SPRINT-01 → SPRINT-02 with US003 as its stretch tier behind
 it; US004 moves SPRINT-02 → here; US005 moves here → SPRINT-04 beside US006. The final figures are
 SPRINT-01 at 10 / 11, SPRINT-02 at 8 / 11, this sprint at 8 / 11 (13 / 11 if the carry lands), and
@@ -226,7 +238,7 @@ is superseded below.
 <!-- The paragraph replaced here read: "**This sprint is still admitting.** 1 SP of headroom is not
      a slot, so in practice it is closed by arithmetic rather than by decision — but nothing here
      forecloses a small story that clears its specify tier before either blocker lands." True when
-     written on 05/09/2026 and superseded the next day by Sam's call that the sprint stays closed at
+     written on 05/09/2026 and superseded the next day by <%DEVELOPER_NAME%>'s call that the sprint stays closed at
      10 / 11. Kept rather than erased, so the closure reads as a decision that was taken rather than
      a headroom that quietly vanished. -->
 
@@ -234,9 +246,16 @@ is superseded below.
 paragraph that argued it is kept below as history, because it is the record of a decision that was
 taken; its figures — 5 SP all-`Must`, then 10 / 11 — were US005's and US003's and describe no
 member now here. Measured against this record as it stands, US006's 8 SP would give 16 / 11
-without the carry and 21 / 11 with it: over grace either way. US006 stays in SPRINT-04, now beside
-US005, and `project-management/src/02-STORIES/US006.md` Dependencies records SPRINT-04 as the
-sprint it opens, so the two records still agree.
+without the carry and 21 / 11 with it: over grace either way. US006 stays in SPRINT-04, now its
+**second** member behind US005 in build order, and `project-management/src/02-STORIES/US006.md`
+-> Dependencies records exactly that — it opened the record as sole member on 05/09/2026 and has
+been its second member since 07/09/2026 — so the two records agree.
+
+<!-- The sentence above read "US006 stays in SPRINT-04, now beside US005, and `US006.md`
+     Dependencies records SPRINT-04 as the sprint it opens" until 08/09/2026. "Opens" was true of
+     05/09/2026 and false since the cascade, which put US005 ahead of it; the story file was
+     corrected to "second member, behind US005 in build order" on 07/09/2026 and re-read on
+     08/09/2026. -->
 
 <!-- History, superseded 07/09/2026 by the re-plan. The three paragraphs below described this
      record between 05/09/2026 and 07/09/2026, when its members were US005 and US003. Kept in full
@@ -278,18 +297,53 @@ sprint it opens, so the two records still agree.
      honoured rather than one that was never made. -->
 
 **Sprint plans (`16-sprint-plans`) and story plans (`17-story-plans`) — the prerequisite holds for
-the sole member, and the plan on disk does not describe it.** US004 cleared `15-decisions` on
+the sole member, and both plans on disk describe it.** US004 cleared `15-decisions` on
 02/09/2026: `project-management/src/11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` carries
 no `[OPEN]` gap — nine found, nine resolved — and both its ADRs are written, so
 `project-management/docs/planning/CADENCE.md`'s no-unresolved-gap prerequisite is satisfied.
-`project-management/src/17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` exists; its
-`| Sprint |` row reads `SPRINT-02` until the re-plan's story-plan touch lands. But
-`project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` was written on 05/09/2026 for US005
-and US003 and is superseded in every section — capacity line, Sprint Goal, story tables,
-constraints, build order — while the plan that describes US004 alone at 8 / 11 is, as of this
-writing, `02-SPRINT-PLAN-02.md`. Reconciling the two is a `16-sprint-plans` run with its own gate
-and its own grilling pass, not an edit this record makes. **Until it runs, this record is the
-authoritative statement of SPRINT-03's membership and the plan is not.**
+`project-management/src/17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` exists and
+was repointed on 07/09/2026; its `| Sprint |` row reads "SPRINT-03 · Wave 1 · build order 1".
+`project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`, written on 05/09/2026 for US005
+and US003, was rewritten the same day as the sprint-plan half of the six-artefact discipline:
+retitled for US004, its capacity line reading `8 / 11 — 13 / 11 if US003's reserved carry lands ·
+Stories: 1, plus one reservation`, its goal this record's verbatim, and its story table, build
+order and _Sprint Definition of Done_ carrying US004 and the reservation. That edit is the mirror,
+not a fresh `16-sprint-plans` pass with its own grilling; whether one is wanted on top is that
+workflow's call, and with the member through `15` nothing blocks it.
+
+<!-- The paragraph above read, until 08/09/2026, under the heading "the prerequisite holds for the
+     sole member, and the plan on disk does not describe it":
+     "'project-management/src/17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md' exists;
+     its `| Sprint |` row reads `SPRINT-02` until the re-plan's story-plan touch lands.
+     But `03-SPRINT-PLAN-03.md` was written on 05/09/2026 for US005 and US003 and is superseded in
+     every section — capacity line, Sprint Goal, story tables, constraints, build order — while
+     the plan that describes US004 alone at 8 / 11 is, as of this writing, `02-SPRINT-PLAN-02.md`.
+     Reconciling the two is a `16-sprint-plans` run with its own gate and its own grilling pass,
+     not an edit this record makes. **Until it runs, this record is the authoritative statement
+     of SPRINT-03's membership and the plan is not.**" Written in the parallel pass of 07/09/2026
+     while both plans were being rewritten. Re-read on 08/09/2026: the story plan reads
+     `SPRINT-03`, `03-SPRINT-PLAN-03.md` is US004's, and `02-SPRINT-PLAN-02.md` holds US002 and
+     US003 — so the pointer at it was wrong the moment it was written and is deleted, not
+     repointed. -->
+
+<!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX, and this record's one
+     live citation of a story plan was repointed the same day: US004's plan is
+     `project-management/src/17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`. The
+     form is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit
+     zero-padded, `00-` the template. The prefix is the story's position in the settled build
+     order ACROSS THE WHOLE BACKLOG — not its sprint, and not a per-sprint counter, which is why
+     this sprint's sole member reads `05-` and not `03-` or `01-`. It is RENUMBERED whenever build
+     order changes.
+
+     The reserved carry, US003, keeps `04-` wherever it is worked: the prefix records build order,
+     so it does not move when the sprint does. Note the contrast with the sibling rule in
+     ../16-SPRINT-PLANS/CLAUDE.md — a sprint plan carries TWO numbers,
+     `<exec-order>-SPRINT-PLAN-<sprint-number>`, and the PAIR carries the meaning, so a mismatch
+     between them is deliberate and must never be "corrected"; a story plan carries ONE, so its
+     prefix must track build order or it says nothing. Do not read that guardrail across.
+
+     The dated comments in this file quote the pre-rename names, which is what they named at the
+     time. Nothing about membership, capacity, status or build order changed with the rename. -->
 
 <!-- The paragraph replaced here read: "**Sprint plans (`16-sprint-plans`) and story plans
      (`17-story-plans`) run for this sprint once every member has cleared `15-decisions`.** Both
@@ -436,8 +490,17 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       reason and same condition as the row above
 - [ ] `bash code/src/scripts/audits/docs-pairing.sh` — regression only; the member creates no
       directory and so owes no new pair
-- [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass,
-      including ShellCheck over the script US004 edits
+- [ ] `bash code/src/scripts/syntax/lint.sh` passes — the leg that reads Markdown, via
+      markdownlint-cli2, over the four Markdown files US004 edits. **ShellCheck over the script
+      US004 edits is what the story asks for and `lint.sh` does not carry it**: its legs are ruff,
+      markdownlint-cli2, ESLint and clippy (`code/src/scripts/syntax/CONTEXT.md`), and as of
+      08/09/2026 no project script, CI job or lefthook entry runs ShellCheck. The expectation
+      stands as US004's own and is recorded in
+      `project-management/src/18-TESTS/US004-MANUAL-TESTING.md` as run or as not run — never as a
+      `lint.sh` pass, per `code/docs/GATE-REPORTING.md`
+- [ ] `bash code/src/scripts/syntax/check.sh` — **N/A**, it type-checks Python, TypeScript and Rust
+      and has no shell or Markdown leg; the member ships one bash script, its fixtures, one
+      register row and four Markdown files, so it has nothing to look at
 - [ ] `bash code/src/scripts/database/migrate.sh check` — **N/A**, no story here touches a model
 - [ ] `bash code/src/scripts/tests/all.sh --coverage` — **N/A**, no story here ships a Python
       path; the member's proof is the script's own `--self-test`
@@ -458,6 +521,16 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      05/09/2026 at **56**" was US005's QA plan's figure, and "`code/docs/TASK-AUTHORING.md` at 266
      is the file to watch" was a file only US005's retry doctrine edits touched. Both travelled to
      SPRINT-04 with the story. -->
+
+<!-- Until 08/09/2026 the syntax row read "`lint.sh` and `check.sh` pass, including ShellCheck
+     over the script US004 edits" as one box. Checked before splitting, on SPRINT-01's precedent
+     of 07/09/2026: check.sh's legs are basedpyright, tsc and cargo check and the member ships
+     nothing they read, so it is N/A with its reason; lint.sh's legs are ruff, markdownlint-cli2,
+     ESLint and clippy, so its Markdown leg applies and ShellCheck is not something it delivers.
+     A repo-wide search on 08/09/2026 found no script under code/src/scripts/, no CI workflow and
+     no lefthook entry that runs ShellCheck — only `# shellcheck source=` directives. Per
+     code/docs/GATE-REPORTING.md a gate with nothing to look at is not reported as having looked,
+     and a check no script runs is not reported as a script's pass. -->
 
 ---
 
@@ -480,7 +553,8 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      carried to SPRINT-04 with its reason recorded here; it is never dropped silently. US003 has
      already moved once, from SPRINT-02, and a second move records both." Written 05/09/2026 when
      US003 was this sprint's stretch tier, and cited by project-management/src/02-STORIES/US006.md
-     and by 03-SPRINT-PLAN-03.md:357-359 as the live reservation to SPRINT-04. Superseded
+     — and mirrored by 03-SPRINT-PLAN-03.md -> _Sprint Definition of Done_, as both stood on
+     05/09/2026 — as the live reservation to SPRINT-04. Superseded
      07/09/2026: the reservation now runs INTO this record from SPRINT-02, not out of it to
      SPRINT-04, and SPRINT-04 no longer carries a contingent figure — it stands at 13 / 11 by
      decision. -->

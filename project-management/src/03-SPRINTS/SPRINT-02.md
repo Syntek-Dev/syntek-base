@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 07/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -44,18 +44,24 @@ born behind it.
      unit type, because "gate self-test, fixture pair" entered this union with US004 alone and a
      union narrows only when a member leaves; it regains routing-skills and skill-conformance,
      which left with US003 on 05/09/2026 and return with it; and it gains docs-pairing, which
-     US002 alone names. The result is the union of US002.md:54 and US003.md:29 and nothing more —
-     six manual gates and no automated type. Twelve rows stay N/A because both members ship
-     documentation only: one register shrunk, one guide born, four skills and a README edited; no
-     model, no endpoint, no screen, no personal-data path, no log line, no public page.
+     US002 alone names. The result is the union of US002.md's and US003.md's own FLAGS tables and
+     nothing more — six manual gates and no automated type. Twelve rows stay N/A because both
+     members ship documentation only: one register shrunk, one guide born, four skills and a
+     README edited; no model, no endpoint, no screen, no personal-data path, no log line, no
+     public page.
      SPELLING, so it is not read as drift: US002's flag writes the script names with .sh and
-     US003's without. The union writes all six with .sh, following SPRINT-03's precedent for the
-     same two spellings on 05/09/2026, and reversing this record's own 05/09/2026 choice to omit
+     US003's without. The union writes all six with .sh, following the precedent SPRINT-03's
+     FLAGS comment set for the same two spellings in its 05/09/2026 entry (kept there as
+     history), and reversing this record's own 05/09/2026 choice to omit
      the suffix — that choice matched US004's flag, and US004 is no longer here. The full paths
      are in the Verification Checks, and neither story's own flag is rewritten to match the other.
      US002's "(scoped)" qualifier on doc-references.sh and US003's baseline-diff reading of the
      same gate are one regime — ADR-US003-CITATION-GATE-BASELINE-DIFF — stated once in the
      Verification Checks rather than carried into the cell.
+     DE-NUMBERED 08/09/2026: the union sentence read "the union of US002.md:54 and US003.md:29 and
+     nothing more" until that day. On 08/09/2026 :54 is still the QA row of US002's FLAGS table
+     and :29 the QA row of US003's, so both resolved; the sentence now names the tables because a
+     line number into a story file moves with every edit above it and a table name does not.
      HISTORY, kept because a recomputation nobody ran and one that changed nothing are
      indistinguishable in the result:
      Computed 02/09/2026 on US003's admission.
@@ -135,9 +141,10 @@ born behind it.
   `**Status:**` vocabulary is canonical when they are written — so the vocabulary is settled
   before the line of work that will string-compare it opens. This is the constraint the whole
   cascade of 07/09/2026 exists to honour, and it is why US002 is here rather than in SPRINT-01.
-  **`US002.md`'s own Dependencies still read "No upstream dependencies"** — true of its content,
-  and now false of its ordering. The story-file edit is owed by `02-story-creation` and is not
-  made here.
+  **`project-management/src/02-STORIES/US002.md`'s own Dependencies still read "No upstream
+  dependencies"** (re-read 08/09/2026) —
+  true of its content, and now false of its ordering. The story-file edit is owed by
+  `02-story-creation` and is not made here.
 - **The US004-before-US003 ordering settled on 02/09/2026 is REVERSED by this re-plan, and the
   reversal is recorded rather than left to be discovered.** US003 is worked here, in SPRINT-02;
   US004 is worked in SPRINT-03. `project-management/src/02-STORIES/US004.md` Dependencies name the
@@ -162,8 +169,10 @@ born behind it.
   because the gate's own repair — US004 — now lands **after** this sprint. Every survivor US004's
   Verification Checks name at cutting belongs to a member of this sprint: the three
   `code/docs/ABSENCE.md` forward references are US003's and clear when the guide lands; the three
-  `code/src/scripts/audits/SLOP-FAMILY.md` citations are US002's (`US004.md:294-295`) and are
-  US002's to disposition when it ships.
+  `code/src/scripts/audits/SLOP-FAMILY.md` citations are US002's
+  (`project-management/src/02-STORIES/US004.md` -> Acceptance Criteria, the scenario _The classes
+  this story owns are cleared, and the baseline regime retires_) and are US002's to disposition
+  when it ships.
 - **US003's carry is reserved into SPRINT-03.** The Definition of Done below provides that the
   `Should Have` member is `Completed` here or explicitly carried there. If it carries, it lands
   beside US004 — and the intra-sprint order there is US004 then US003, the original order of
@@ -184,6 +193,15 @@ born behind it.
   names `code/src/scripts/audits/CONTEXT.md` as a file it does not write because US002 owns its
   headroom (`project-management/src/03-SPRINTS/SPRINT-04.md` Dependencies) — a non-collision, not
   a dependency.
+
+<!-- The doc-references bullet above cited "the three code/src/scripts/audits/SLOP-FAMILY.md
+     citations are US002's (US004.md:294-295)" until 08/09/2026 — quoted here without its
+     backticks, so the citation gate does not read a forward reference twice. Those lines had
+     already drifted: on 08/09/2026 :294-295 are the untracked-file probe clauses of the scenario
+     _Both proof modes are used, and each repair is proved in the one that can reach it_, and the
+     hand-off of the three SLOP-FAMILY.md citations to US002 sits in the next scenario, _The
+     classes this story owns are cleared, and the baseline regime retires_ — which the bullet now
+     names. A section name survives an edit above it; a line number does not. -->
 
 <!-- The Dependencies replaced on 07/09/2026 read, in full:
      "- **US004 has no upstream dependency.** It is cut from
@@ -272,9 +290,10 @@ one" — and padding is admitting a story to move the figure. Nothing here was.
 
 **This sprint is CLOSED at two members and 8 of 11 SP, by decision** (07/09/2026, carrying
 forward the closure of 05/09/2026). Capacity is a trigger and not a target
-(`project-management/docs/planning/CADENCE.md`, _Sprint capacity_); `SPRINT-01.md` and
-`SPRINT-03.md` both carry the precedent for closing a ledger by call; and nothing that clears
-`15-decisions` next is admitted here regardless.
+(`project-management/docs/planning/CADENCE.md`, _Sprint capacity — the trigger_); `SPRINT-01.md`
+carries the precedent for closing a ledger by call, and `SPRINT-03.md` did until 07/09/2026 and
+keeps that closure as history; and nothing that clears `15-decisions` next is admitted here
+regardless.
 
 **Grace is no longer this record's story; it is SPRINT-04's, and it is a different shape.** The
 history block below records this sprint taking grace at 13 / 11 on 02/09/2026 as **8 `Must` +
@@ -287,22 +306,75 @@ admission. There the grace covers the commitment. A reader should not carry this
 reasons and each says which. SPRINT-04's contingency of 05/09/2026 — that US003's carry might land
 there — is retired by this re-plan; the carry now targets SPRINT-03.
 
-**What this move costs elsewhere, and is not made here.** On the discipline of 05/09/2026:
-`project-management/src/16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` is written for US004 alone at
-8 / 11 and no longer describes this sprint — rewriting it against the settled set {US002, US003}
-is a `16-sprint-plans` run. `project-management/src/17-STORY-PLANS/STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`
-line 7 reads `SPRINT-01`, `STORY-PLAN-US003-ABSENCE-GUIDE.md` line 7 reads `SPRINT-03`, and
-`STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` line 7 reads `SPRINT-02`; all three are owed a
-repoint by `17-story-plans`. `US003.md`'s FLAGS comment carries a "MOVED TO SPRINT-03" note that
-is owed a return note, and `US002.md` is owed the US007 ordering (Dependencies). None of those is
-this record's to write; each is named so it is not lost.
+**What this move cost elsewhere was paid the same day, bar one story-file note.** On the
+discipline of 05/09/2026: `project-management/src/16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` took the
+mirroring edit on 07/09/2026 — its capacity line reads `3 SP Must + 5 SP Should = 8 / 11 ·
+Stories: 2`, its `Stories` section carries US002 under _Must_ and US003 under _Should_, and its
+goal is this record's verbatim. The three story plans were repointed the same day:
+`project-management/src/17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`'s
+`| Sprint |` row reads "SPRINT-02 · Wave 0 · build order 1",
+`project-management/src/17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`'s reads
+"SPRINT-02 · Wave 0 · build order 2", and
+`project-management/src/17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`'s reads
+"SPRINT-03 · Wave 1 · build order 1". `project-management/src/02-STORIES/US003.md` -> _MoSCoW
+Priority_, in the comment beneath the tier, carries its return note — "MOVED BACK TO SPRINT-02,
+07/09/2026" — beneath the 05/09/2026 "MOVED TO SPRINT-03" one; the FLAGS comment at the head of
+that file carries neither. Still open as read on 08/09/2026: `project-management/src/02-STORIES/US002.md`'s
+Dependencies do not yet name the US007 ordering, which is `02-story-creation`'s edit (see
+Dependencies above). Named so it is not lost.
+
+<!-- The paragraph above read, until 08/09/2026: "**What this move costs elsewhere, and is not
+     made here.** On the discipline of 05/09/2026: `02-SPRINT-PLAN-02.md` is written for US004
+     alone at 8 / 11 and no longer describes this sprint — rewriting it against the settled set
+     {US002, US003} is a `16-sprint-plans` run. 'STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md'
+     line 7 reads `SPRINT-01`, 'STORY-PLAN-US003-ABSENCE-GUIDE.md' line 7 reads `SPRINT-03`, and
+     'STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md' line 7 reads `SPRINT-02`; all three are owed a
+     repoint by `17-story-plans`. `US003.md`'s FLAGS comment carries a "MOVED TO SPRINT-03" note
+     that is owed a return note, and `US002.md` is owed the US007 ordering (Dependencies). None
+     of those is this record's to write; each is named so it is not lost." Written in the
+     parallel pass of 07/09/2026 while the plan, the three story plans and US003.md were taking
+     those very edits; each was re-read on 08/09/2026 and carries its corrected value, as the
+     paragraph above quotes it — the three `| Sprint |` rows read "SPRINT-02 · Wave 0 · build
+     order 1", "SPRINT-02 · Wave 0 · build order 2" and "SPRINT-03 · Wave 1 · build order 1",
+     not the line-7 values quoted here. Only the US002.md debt was still open. Two corrections
+     to this record's own 08/09/2026 wording, made later the same day: this sentence said each
+     "carries the value quoted above", which pointed the reader at the stale values; and the
+     paragraph named US003.md's "FLAGS comment" as the return note's home, when the move notes
+     sit in the comment under that story's _MoSCoW Priority_ heading. -->
+
+<!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX, and the three citations
+     in the paragraph above were repointed the same day. The form is
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded,
+     `00-` the template. The prefix is the story's position in the settled build order ACROSS THE
+     WHOLE BACKLOG — not its sprint, and not a per-sprint counter — so this record's two members
+     read `03-` (US002) and `04-` (US003) while both sit in SPRINT-02, and US004's plan reads
+     `05-` from SPRINT-03. It is RENUMBERED whenever build order changes.
+
+     The prefix is NOT this record's sprint number and carries no membership: nothing about who is
+     in this sprint can be read off it. That is also the OPPOSITE of the sibling rule in
+     ../16-SPRINT-PLANS/CLAUDE.md — a sprint plan carries TWO numbers,
+     `<exec-order>-SPRINT-PLAN-<sprint-number>`, and the PAIR carries the meaning, so a mismatch
+     between them is deliberate and must never be "corrected". A story plan carries ONE, so its
+     prefix must track build order or it says nothing. Do not read that guardrail across.
+
+     Dated comments in this file quote the pre-rename names, because that is what they named at
+     the time. No membership, capacity, status or build order changed with the rename. -->
 
 **Sprint plans (`16-sprint-plans`) and story plans (`17-story-plans`) run for this sprint once
 every member has cleared `15-decisions`.** Both have: each member's ADRs are listed in its
 story's Decisions section, and neither QA plan carries an `[OPEN]` gap — US002's eleven and
-US003's seven are all `[RESOLVED]`. The story plans exist for both and need only the repoint
-above; the sprint plan needs the rewrite above. Until they are done, the plan on disk describes a
-member that has left, and a reader should trust this record over it.
+US003's seven are all `[RESOLVED]`. The story plans exist for both and were repointed on
+07/09/2026; the sprint plan mirrors this record as of the same day, so nothing on disk describes
+a member that has left. That mirroring edit is the sprint-plan half of the six-artefact
+discipline, not a fresh `16-sprint-plans` pass with its own grilling; whether one is wanted on
+top is that workflow's call, and with both members through `15` nothing blocks it.
+
+<!-- The paragraph above ended, until 08/09/2026: "The story plans exist for both and need only
+     the repoint above; the sprint plan needs the rewrite above. Until they are done, the plan on
+     disk describes a member that has left, and a reader should trust this record over it." The
+     repoint and the rewrite had both landed on 07/09/2026, in the same parallel pass that wrote
+     the sentence, so the instruction to trust this record over the plan pointed a reader away
+     from a correct file. Deleted rather than softened. -->
 
 <!-- This paragraph read, from 05/09/2026: "Both are written:
      project-management/src/16-SPRINT-PLANS/02-SPRINT-PLAN-02.md, now at 8 / 11 with US004 alone,
@@ -533,7 +605,10 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       adds no frontmatter
 - [ ] `bash code/src/scripts/audits/skill-conformance.sh` — clause 14 discharged for every skill
       US003's guide names: `backend`, `frontend`, `code-reviewer` and `refactor`. **US003's alone**
-- [ ] `bash code/src/scripts/syntax/lint.sh` and `bash code/src/scripts/syntax/check.sh` pass
+- [ ] `bash code/src/scripts/syntax/lint.sh` passes — the leg that reads Markdown, via
+      markdownlint-cli2
+- [ ] `bash code/src/scripts/syntax/check.sh` — **N/A**, it type-checks Python, TypeScript and Rust
+      and has no Markdown leg; this sprint ships Markdown only, so it has nothing to look at
 - [ ] `bash code/src/scripts/audits/doc-references.sh --self-test` — **N/A here since
       07/09/2026**; it entered this record with US004 and is the proof of a script this sprint no
       longer edits. Marked with its reason rather than deleted, per `code/docs/GATE-REPORTING.md`
@@ -575,6 +650,12 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      "syntax/lint.sh and syntax/check.sh pass, including ShellCheck over the script US004 edits"
      — no script is edited here, so the ShellCheck clause went with US004. -->
 
+<!-- Until 08/09/2026 the syntax row read "`lint.sh` and `check.sh` pass" as one box. Split on
+     SPRINT-01's precedent of 07/09/2026: this record's own FLAGS comment says both members ship
+     documentation only, check.sh type-checks Python, TypeScript and Rust with no Markdown leg,
+     and per code/docs/GATE-REPORTING.md a gate with nothing to look at is not reported as having
+     looked. -->
+
 ---
 
 ## Definition of Done
@@ -602,5 +683,14 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      before the sprint opened, with its reason recorded in the Notes. It was not dropped and it
      was not silent." True from 05/09/2026 until 07/09/2026, when US003 returned and the carry
      clause above became live again — now reserving into SPRINT-03 rather than, as SPRINT-03's
-     own clause did, into SPRINT-04. project-management/src/02-STORIES/US006.md:174 cites the
-     carry clause by line and is owed a re-resolve to the second row above. -->
+     own clause did, into SPRINT-04. project-management/src/02-STORIES/US006.md -> Dependencies
+     cites the second row above as the live reservation, since its own correction of 07/09/2026,
+     and until 08/09/2026 it did so two ways at once: by section name (_Definition of Done_,
+     second row), which is durable, and by line (SPRINT-02.md:584-588, as it then read), which the repair passes
+     of 08/09/2026 falsified by growing this record — those lines are Verification Checks rows
+     now. The line half was de-numbered in US006.md on 08/09/2026 and the section-name half alone
+     stands. This comment's own history: on 07/09/2026 it said US006.md "cites the carry clause
+     by line and is owed a re-resolve", when the section-name half had already been added in the
+     same parallel pass; on 08/09/2026 it over-corrected to "cites the second row above by
+     section name ... no re-resolve is owed", overlooking the line half that survived beside it.
+     Both superseded the same day by the sentences above. -->

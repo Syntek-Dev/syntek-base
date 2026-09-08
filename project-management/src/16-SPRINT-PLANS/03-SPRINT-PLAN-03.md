@@ -5,7 +5,7 @@
      SPRINT-02 in the US007 re-plan. Neither deliverable it named is a member's now; the
      replacement is the title of US004, the sole member. -->
 
-**Last Updated**: 07/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Last Updated**: 08/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
 **Source sprint:** `../03-SPRINTS/SPRINT-03.md` · **Capacity:** 8 / 11 — 13 / 11 if US003's reserved carry lands · **Stories:** 1, plus one reservation
 
 <!-- Line 4 read "**Capacity:** 5 SP Must + 5 SP Should = 10 / 11 · **Stories:** 2" from
@@ -104,9 +104,9 @@ authoring it is a `16-sprint-plans` run of its own, with its own gate.
 
 ### Must
 
-| ID    | Title                                                                                 | Phases touched               | SP  | Story plan                                                      | Git branch                      |
-| ----- | ------------------------------------------------------------------------------------- | ---------------------------- | --- | --------------------------------------------------------------- | ------------------------------- |
-| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable | Script + docs — no code lane | 8   | `../17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `us004/citation-gate-git-index` |
+| ID    | Title                                                                                 | Phases touched               | SP  | Story plan                                                         | Git branch                      |
+| ----- | ------------------------------------------------------------------------------------- | ---------------------------- | --- | ------------------------------------------------------------------ | ------------------------------- |
+| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable | Script + docs — no code lane | 8   | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `us004/citation-gate-git-index` |
 
 **8 SP committed against a capacity of 11.**
 
@@ -150,13 +150,21 @@ later:
 | carries to SPRINT-03   | **13 / 11 SP** — 8 `Must` + 5 `Should` | **At grace**, and the weakness is repaired: the carry is give that can slip again if US004 runs |
 
 **The second is the better sprint, and it is SPRINT-02's close to trigger, not this plan's call to
-take.** `project-management/docs/planning/CADENCE.md` → _Sprint capacity_ owns both figures —
-capacity 11 SP, grace 13 SP — and reserves grace for one situation, a story that would otherwise
-split badly, adding that it "is not a routine allowance". A carry-over is not that situation — but
-a carry arriving into a single-member sprint buys a stretch tier rather than an overcommitment,
-because the `Must` tier stays at 8 either way. **If US003 carries here, do not read the 13 as an
-overrun.** Whoever closes SPRINT-02 makes the call and records it in both records and in
-`../02-STORIES/US003.md`.
+take.** `project-management/docs/planning/CADENCE.md` → _Sprint capacity — the trigger_ owns both
+figures as generation-time answers — `SPRINT_CAPACITY_SP` and `SPRINT_GRACE_SP`, rendered into its
+table per project; in this template repository the table is unrendered, and the 11 and 13 every
+record here uses are the defaults `copier.yml` gives those two answers — and reserves grace for <!-- doc-references: template-only -->
+one situation, a story that would otherwise split badly, adding that it "is not a routine
+allowance". A carry-over is not that situation — but a carry arriving into a single-member sprint
+buys a stretch tier rather than an overcommitment, because the `Must` tier stays at 8 either way.
+**If US003 carries here, do not read the 13 as an overrun.** Whoever closes SPRINT-02 makes the
+call and records it in both records and in `../02-STORIES/US003.md`.
+
+<!-- Until 08/09/2026 the sentence read "`CADENCE.md` → _Sprint capacity_ owns both figures —
+     capacity 11 SP, grace 13 SP". CADENCE.md's table gives the two figures as
+     `SPRINT_CAPACITY_SP` / `SPRINT_GRACE_SP` tokens, not as numbers; the numbers are copier.yml's
+     defaults for those answers (11 and 13), which `../03-SPRINTS/SPRINT-04.md` -> _Notes_ stated
+     on 08/09/2026 and this plan mirrors the same day. The arithmetic is unaffected. -->
 
 **This plan is closed to admission at one member, and what it holds is a reservation, not
 headroom.** The 3 SP under capacity and the 2 SP of grace above it are together exactly US003's 5.
@@ -210,14 +218,23 @@ _None._
   the guide it creates, went with it.
 - **US006** — refused admission here on 05/09/2026, and the refusal stands on new arithmetic. Its
   8 SP would give **16 / 11** without the carry and **21 / 11** with it: over grace either way. It
-  stays in SPRINT-04, now beside US005, and `../02-STORIES/US006.md` Dependencies records SPRINT-04
-  as the sprint it opens.
+  stays in SPRINT-04, now its **second** member behind US005 in build order, and
+  `../02-STORIES/US006.md` Dependencies records exactly that — it opened the record as sole
+  member on 05/09/2026 and has been its second member since 07/09/2026 — so the story,
+  `../03-SPRINTS/SPRINT-03.md` and this plan agree.
 - **US007** — the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP, cut 07/09/2026.
   A note on `../03-SPRINTS/SPRINT-03.md` of 06/09/2026, never committed, routed it to SPRINT-04
   beside US006; the record superseded it the next day, and it was wrong on its main claim: **US007
   opens SPRINT-01**, first in the build order, because US002 builds `register-indexes.sh` and its
   status fixtures against whichever vocabulary is canonical on the day it ships. Its refusal here
   was right for the wrong reason and stands.
+
+<!-- The US006 bullet's last sentence read "It stays in SPRINT-04, now beside US005, and
+     `../02-STORIES/US006.md` Dependencies records SPRINT-04 as the sprint it opens" until
+     08/09/2026. "Opens" was true of 05/09/2026 and false since the cascade, which put US005
+     ahead of it: the story file was corrected to "second member, behind US005 in build order" on
+     07/09/2026, `../03-SPRINTS/SPRINT-03.md` -> _Notes_ corrected its identical sentence on
+     08/09/2026, and this mirror plan follows it the same day. -->
 
 <!-- The Won't list read, from 05/09/2026 until 07/09/2026: the three retry-map slices S-04, S-05
      and S-06 ("the example-repair sweep, the retry-discipline.sh gate, and the live-code fixes.
@@ -294,10 +311,11 @@ to this plan.
 
 **The `build order N` on the story-plan headers is a recommendation, not a constraint**, on the
 precedent `01-SPRINT-PLAN-01.md` sets for saying so. Both headers were repointed by
-`17-story-plans` on 07/09/2026: `../17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`
-line 7 reads "SPRINT-03 · Wave 1 · build order 1" — first of one now, where it was first of
-{US004, US003} — and `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md` line 7 reads
-"SPRINT-02 · Wave 0 · build order 2", the same figure as at authoring with its meaning reversed:
+`17-story-plans` on 07/09/2026: `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`'s
+`| Sprint |` row reads "SPRINT-03 · Wave 1 · build order 1" — first of one now, where it was first
+of {US004, US003} — and `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`'s `| Sprint |` row
+reads "SPRINT-02 · Wave 0 · build order 2", the same figure as at authoring with its meaning
+reversed:
 behind US002 as the stretch tier, not behind US004. In the carry case the figure fits again in its
 original sense — second, behind US004. Wave numbers are positions in each map's cutting order and
 do not move with the sprint. Nothing fails if the number is read either way — it was never a
@@ -329,7 +347,7 @@ constraint.
      scenario, the QA task and the ADR named above]. That ADR **retires by its own terms** when
      US004 lands rather than being superseded. The correction belongs to whoever picks US003 up;
      `../03-SPRINTS/SPRINT-03.md` → _Dependencies_ carries it, and
-     `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md` already plans against the corrected
+     '../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md' already plans against the corrected
      state."
 
      US005's block on US001 travelled to SPRINT-04 with the story. US003's ordering reversed and
@@ -343,17 +361,31 @@ constraint.
 
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                               | Status |
-| ---------------------- | --------------------------------------------------------------- | ------ |
-| US004                  | `../17-STORY-PLANS/STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `Open` |
-| US003 — reserved carry | `../17-STORY-PLANS/STORY-PLAN-US003-ABSENCE-GUIDE.md`           | `Open` |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status |
+| ---------------------- | ------------------------------------------------------------------ | ------ |
+| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `Open` |
+| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           | `Open` |
 
-**The Status column mirrors each plan's own `Status` field, verbatim** — the value at line 9 of
-the named file, which carries the story-status set and nothing else. That is the position
-`../02-STORIES/US007.md` ratifies onto every plan, and it is why neither cell reads a value from
-the template's legend. The US003 row is a reservation, not a membership claim: it is here so that
-whoever takes the carry finds the plan from this index, and it is not a pre-computation of the
-FLAGS union, which `../03-SPRINTS/SPRINT-03.md` refuses for the same story on the same grounds.
+**The Status column mirrors each plan's own `Status` field, verbatim** — the value in the named
+file's `| Status |` header row, which carries the story-status set and nothing else. That has been
+this plan's own convention since it was written on 05/09/2026, before US007 existed, and the
+re-plan of 07/09/2026 kept it rather than chose it: the US004 row arrived carrying its plan's
+`Open` as the US005 row had carried its plan's `Blocked`. `../02-STORIES/US007.md` Scenario 8 names
+this convention as the one it will ratify onto every plan and onto the template's legend — a
+ratification that is US007's to make when it ships, not this plan's to claim in advance
+(08/09/2026). The same rule is why `01-SPRINT-PLAN-01.md` and `02-SPRINT-PLAN-02.md` leave their
+`Not started` cells for that story to change: a re-plan that moves membership does not pre-empt a
+scheduled story's own acceptance criterion, in either direction. The US003 row is a reservation,
+not a membership claim: it is here so that whoever takes the carry finds the plan from this index,
+and it is not a pre-computation of the FLAGS union, which `../03-SPRINTS/SPRINT-03.md` refuses for
+the same story on the same grounds.
+
+<!-- The paragraph's second sentence read, from 07/09/2026 until 08/09/2026: "That is the position
+     `../02-STORIES/US007.md` ratifies onto every plan, and it is why neither cell reads a value
+     from the template's legend." Reworded because it read as though the ratification were already
+     in force; US007 is scheduled, not shipped, and 02-SPRINT-PLAN-02.md was reverted the same day
+     for claiming the same thing. The cells are unchanged — verbatim mirroring predates US007 and
+     is this plan's own. -->
 
 **The two statuses now agree, and the agreement is as deliberate as the difference was.**
 `../17-STORY-PLANS/CLAUDE.md` makes a plan marked anything other than `Blocked` an assertion that
@@ -364,8 +396,8 @@ against a story that changes no file it touches, a sequencing fact its plan stat
 than as a status; in this plan it has no constraint at all until it arrives, and if it arrives
 US004 has already landed. **The `Blocked` this plan indexed — US005's, the first plan in this
 repository to carry it — left with the story.** Its target directory still exists in no branch and
-no commit, its plan still reads `Blocked` at line 9, and the sprint plan that will index that row
-is SPRINT-04's, which is not yet written.
+no commit, its plan's `| Status |` row still reads `Blocked`, and the sprint plan that will index
+that row is SPRINT-04's, which is not yet written (re-verified 08/09/2026).
 
 <!-- The passage read, from 05/09/2026 until 07/09/2026, over the rows US005 **Blocked** and US003
      `Open`: "**The two statuses differ deliberately.** `../17-STORY-PLANS/CLAUDE.md` makes a plan
@@ -376,7 +408,9 @@ is SPRINT-04's, which is not yet written.
      rather than a status." The plan-versus-plan reasoning survives above; the rows it was about do
      not. ../02-STORIES/US007.md cites this passage by line, and the US005/US003 pair by name, as
      the position it ratifies; that citation is owed a re-resolve by the story, not by this
-     plan. -->
+     plan. 08/09/2026: paid. US007.md re-resolved it by section name that day — its Scenarios 8
+     and 11 now cite _Story Plans — the code master_ by name, describe the agreement-versus-
+     difference reading above in their own words, and carry no line number into this plan. -->
 
 **There is no Plans Index row for either**, and that is a decision rather than an omission. The
 index eight artefacts already cite has never existed; `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md`
@@ -387,6 +421,35 @@ Building an index here would pre-empt a claimed slice and add a ninth citation o
 to be named something else. That slice is US002's line of work, and US002 now builds in SPRINT-02,
 ahead of this sprint: if the index exists when this sprint is worked, its row is that mechanism's
 to write, not a hand edit here.
+
+<!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX, and this plan's live
+     citations were repointed the same day: US004's plan is `05-STORY-PLAN-US004-…` and US003's
+     `04-STORY-PLAN-US003-…`. The form is
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded,
+     `00-` the template. The prefix is the story's position in the settled build order ACROSS THE
+     WHOLE BACKLOG — US007 `01`, US001 `02`, US002 `03`, US003 `04`, US004 `05`, US005 `06`, US006
+     `07` — and it is RENUMBERED whenever build order changes. It is neither a sprint number nor a
+     per-sprint counter.
+
+     TWO THINGS A READER OF THIS PLAN WILL OTHERWISE TRIP ON.
+     (1) _Build order_ above calls US004's place **third**; that is the third SPRINT in the
+     sequence, which is why both segments of this file's own name read `03`. The story's place in
+     the backlog's build order is fifth of seven, which is why its plan reads `05-`. Two different
+     counts, both correct, over different populations.
+     (2) The index table above lists US004's `05-` above US003's `04-`, because within this sprint
+     US004 is the member and US003 the reserved carry. Nothing is out of order: US003 builds
+     earlier, in SPRINT-02. Were the carry to land here instead, the build order itself would
+     change and the prefixes would be renumbered to match — that is the convention, not a defect
+     in it.
+
+     AND THE OPPOSITE OF THE RULE GOVERNING THIS FILE'S OWN NAME. ./CLAUDE.md says a sprint plan is
+     `<exec-order>-SPRINT-PLAN-<sprint-number>.md` and that a mismatch between the two segments is
+     deliberate and must NOT be "corrected" — two numbers, and the PAIR carries the meaning. A
+     story plan carries ONE number, so its prefix must track build order or it says nothing. Do not
+     read that guardrail across to `../17-STORY-PLANS/`.
+
+     A naming sweep only: membership, capacity, the reservation, the statuses and the build order
+     are all untouched, and the dated comments in this file quote the pre-rename names. -->
 
 ---
 
@@ -639,7 +702,16 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 - [ ] `routing-skills.sh` and `skill-conformance.sh` — **N/A since 07/09/2026**; they entered this
       plan with US003 and ran against its frontmatter alone. US004 adds none. Both apply again if
       the carry lands
-- [ ] `syntax/lint.sh` and `syntax/check.sh` pass, including ShellCheck over the script US004 edits
+- [ ] `syntax/lint.sh` passes over what it reads — for US004 that is the Markdown leg,
+      markdownlint-cli2, over the four Markdown files it edits; `syntax/check.sh` is **N/A**, it
+      type-checks Python, TypeScript and Rust and has no shell or Markdown leg
+- [ ] ShellCheck over the script US004 edits — **the story's own expectation, with no project
+      script to satisfy it**: `lint.sh`'s legs are ruff, markdownlint-cli2, ESLint and clippy
+      (`code/src/scripts/syntax/CONTEXT.md`), and as of 08/09/2026 no script under
+      `code/src/scripts/`, no CI job and no lefthook entry runs ShellCheck — only
+      `# shellcheck source=` and `# shellcheck disable=` directives exist. Run by hand and
+      recorded in `../18-TESTS/US004-MANUAL-TESTING.md` as run or as not run, never as a
+      `lint.sh` pass (`code/docs/GATE-REPORTING.md`)
 - [ ] The before/after whole-tree run is recorded with both finding counts, both exit codes and
       the delta; the tracked-versus-untracked A/B is reproduced before any edit and again after,
       with the index restored each time
@@ -647,6 +719,12 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       false positive, or another story's — with none left unclassified, and each repaired shipped
       file is re-read in place
 - [ ] A tester other than the author has signed the walk-through off
+
+<!-- Until 08/09/2026 the syntax rows above were one: "`syntax/lint.sh` and `syntax/check.sh`
+     pass, including ShellCheck over the script US004 edits". Neither script carries a ShellCheck
+     leg, so the row promised a pass nothing could run to earn; split the same day into what the
+     scripts read and what the story expects of itself, as `../03-SPRINTS/SPRINT-03.md` ->
+     _Verification Checks_ was. -->
 
 <!-- Three checks this plan carried from 05/09/2026 to 07/09/2026 are gone rather than N/A'd,
      because they named a departed member's file or figure and not a gate. The doc-references

@@ -1,6 +1,6 @@
 # SPRINT-01
 
-**Last Updated**: 07/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -54,8 +54,9 @@ guide that every pointer reaches.
      (regression guard only), skill-conformance.sh (attributed diff) — and US001's annotates
      none. An annotation is how a story reads a gate, not a different gate, so the union names
      each gate once and the Verification Checks below carry the regime per member. Neither
-     story's own flag is rewritten to match the other; SPRINT-03 set the precedent on a spelling
-     difference. Twelve rows stay N/A because both members ship Markdown only: no model, no
+     story's own flag is rewritten to match the other; SPRINT-03's FLAGS comment set the
+     precedent on a spelling difference in its 05/09/2026 entry, which that record keeps as
+     history. Twelve rows stay N/A because both members ship Markdown only: no model, no
      endpoint, no screen, no personal-data path, no log line, no public page. -->
 
 | Flag       | Value                                                                                                          |
@@ -114,10 +115,17 @@ shape is this sprint's known weakness**; see Notes.
   four rules are stated inside the `code/docs/reliability/` family US001 creates. US005 sat in
   SPRINT-03 until 07/09/2026; the blocker is unchanged, the sprint it waits in is not.
 - **US002's own unblocking table travelled with it** to SPRINT-02 — the nine audit registrations
-  across eight slices and seven maps that each need two rows in a register with two lines of
+  across eight slices and seven maps that each need **three counted lines** — a Directory Tree
+  row, an inventory row and a Dependencies row, **27 in all** — in a register with two lines of
   headroom. Its full table is in `project-management/src/02-STORIES/US002.md`.
 - None of the downstream slices above is yet cut into a story, so none could be admitted here even
   were the record open — and per the Notes below, it is not.
+
+<!-- The bullet above read "each need two rows" until 08/09/2026. Two was the figure US002's
+     blast-radius comment carried at cutting; QA-PLAN-US002 AC-GAP-6 corrected it to three on
+     02/09/2026, and US002.md's live acceptance criteria, SPRINT-02's Dependencies and QA Tasks
+     (27 rows dry-run) and 02-SPRINT-PLAN-02.md all carry three. Brought into line; the history
+     comment below quotes the superseded "two rows" and is correct to. -->
 
 <!-- The third, fifth and sixth bullets replace these two, superseded 07/09/2026:
      "- **US002 unblocks nine audit registrations across eight slices and seven maps** — every story
@@ -156,9 +164,10 @@ here.
 **This sprint is CLOSED at two members and 10 of 11 SP, by decision rather than by fill**
 (07/09/2026). The record is a running ledger — opened as the first story clears the per-story loop
 and accumulating each later story with its points — but a ledger is closed by a call, not only by a
-ceiling. `project-management/docs/planning/CADENCE.md:117-118` is explicit that capacity is a
-**trigger and not a target**: _"A sprint that lands on 10 SP because the next story is a 5 is a
-correct sprint, not an under-filled one."_ Ten is now that case to the letter. This record closed
+ceiling. `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_ is
+explicit that capacity is a **trigger and not a target**: _"A sprint that lands on 10 SP because
+the next story is a 5 is a correct sprint, not an under-filled one."_ Ten is now that case to the
+letter. This record closed
 once before, at eight, on the same reading; the paragraph that closed it is kept below as history.
 
 <!-- The paragraph replaced here read: "**This sprint is CLOSED at two members and 8 of 11 SP, by
@@ -171,15 +180,42 @@ once before, at eight, on the same reading; the paragraph that closed it is kept
      admit US007 and release US002. Kept rather than erased, so the earlier closure reads as a
      decision that was taken and then deliberately revisited, not one that quietly lapsed. -->
 
-**US007 came here and not to SPRINT-04, and the record that said otherwise is being corrected in
-step.** `project-management/src/03-SPRINTS/SPRINT-03.md` -> Notes, in an edit of 06/09/2026, routed
-US007 "to `SPRINT-04` beside `US006`". That routing predates the grilling pass that cut the story
-and found the ordering constraint above; it is superseded by this re-plan, and SPRINT-03's own
-record supersedes it on its own convention rather than this one deleting it at a distance. US007's
-own Dependencies section (`project-management/src/02-STORIES/US007.md`) still cites that SPRINT-03
-paragraph as the one that "currently sends this story to `SPRINT-04`" and says moving it "is a
-re-plan those records own" — which is this re-plan. That sentence is now stale, and it is the story
-file's own move note to correct.
+<!-- The paragraph above cited "`project-management/docs/planning/CADENCE.md:117-118` is explicit
+     that capacity is a **trigger and not a target**" until 08/09/2026. On 08/09/2026 :117-118 are
+     still the capacity-is-a-trigger bullet under _Sprint capacity — the trigger_, so the citation
+     resolved; it was de-numbered because a section name survives an edit above it and a line
+     number does not, and SPRINT-04's Notes cite the same section the same way. -->
+
+**US007 came here and not to SPRINT-04, and the record that said otherwise has corrected itself.**
+`project-management/src/03-SPRINTS/SPRINT-03.md` -> Notes, in an edit of 06/09/2026, routed US007
+"to `SPRINT-04` beside `US006`". That routing predated the grilling pass that cut the story and
+found the ordering constraint above, and SPRINT-03 superseded it on 07/09/2026 in a dated comment
+under its own Notes — on its own convention, rather than this record deleting it at a distance.
+Nothing trails it. US007's own Dependencies section
+(`project-management/src/02-STORIES/US007.md`, the bullet beginning "No sprint is named here") was
+brought into line on 08/09/2026, in the same change as this paragraph: it now reads that "the
+settled fact is that **this story opens SPRINT-01, first in its build order, ahead of US001**",
+names this record's _Story Summary_, _Dependencies_ and _Notes_ as the three places that carry
+it, says the SPRINT-04 routing "survives only inside a dated, superseded HTML comment" under
+SPRINT-03's Notes, and closes "This story edits no sprint record for its membership: the re-plan
+those records own has happened."
+
+<!-- Until 08/09/2026 the paragraph's second half read: "One sentence still trails it: as read on
+     08/09/2026, US007's own Dependencies section (`project-management/src/02-STORIES/US007.md`,
+     the bullet beginning "No sprint is named here") still cites that SPRINT-03 paragraph as the
+     one that "currently sends this story to `SPRINT-04`" and says moving it "is a re-plan those
+     records own" — which is this re-plan. That is the story file's own move note to correct,
+     and it is named here so it is not lost." — and this comment ended "the sentence in US007.md
+     was re-read on 08/09/2026 and does still stand." Both were written on 08/09/2026 in the
+     parallel repair pass, while US007.md was taking that very correction in the same change:
+     the defect the 07/09/2026 pass produced, reproduced once more. Superseded the same day by the
+     sentences above, which quote the bullet as it now stands.
+
+     Before that, until 08/09/2026, the paragraph opened "**US007 came here and not to SPRINT-04,
+     and the record that said otherwise is being corrected in step.**" and said of SPRINT-03's
+     routing that "it is superseded by this re-plan, and SPRINT-03's own record supersedes it" —
+     written in the parallel pass of 07/09/2026 while SPRINT-03 was taking that very correction.
+     SPRINT-03's Notes carry it as a dated comment. -->
 
 **US003 was not admitted here on 02/09/2026, and is still not.** An earlier revision of this record
 named it as expected to join; that expectation was withdrawn because admitting it would have taken
@@ -219,22 +255,61 @@ at grace and closed to further admission by <%DEVELOPER_NAME%>'s call of 07/09/2
 
 **Sprint plans (`16-sprint-plans`) and story plans (`17-story-plans`) run for this sprint once both
 members have cleared `15-decisions`.** US001 has:
-`project-management/src/17-STORY-PLANS/STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` is written,
-and its `| Sprint |` row already reads `SPRINT-01 · Wave 0 · build order 2`, which this re-plan
+`project-management/src/17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` is written,
+and its `| Sprint |` row already reads "SPRINT-01 · Wave 0 · build order 2", which this re-plan
 leaves true. US007 has not: on 07/09/2026 it has cleared `02-story-creation` and is admitted here at
 `03-sprint-planning`, with its QA plan and the rest of its per-story loop still to run — the same
 standing US002 had when this record first admitted it on 02/09/2026. Two consequences, both for
 other owners and neither taken here:
 
 - `project-management/src/16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` was written on 02/09/2026 against
-  US001 and US002 at 8 SP, with US002 first in its build order. Against this record it is now stale
-  in its capacity line, its story set, its build order and its story-plan index, and the story
-  plan it names for US002 carries a `| Sprint |` row that must itself move to SPRINT-02. Rewriting
-  it is a `16-sprint-plans` pass against this record, and `CADENCE.md`'s prerequisite for that pass
-  — every member cleared `15` — is not yet met by US007. Until it is, the plan stands as the record
-  of the 02/09/2026 membership and reads stale against this one.
-- No `STORY-PLAN-US007` exists, and none is written here: `17-story-plans` owns it and runs after
-  `16`.
+  US001 and US002 at 8 SP, with US002 first in its build order, and **took the mirroring edit on
+  07/09/2026** as the sprint-plan half of the six-artefact discipline: its capacity line reads
+  `5 SP Must + 5 SP Must = 10 / 11 · Stories: 2`, its story table and its story-plan index carry
+  US007 then US001, and its build-order section is titled _Build order — US007 before US001_. The
+  story plan it once named for US002 was repointed the same day —
+  `project-management/src/17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`'s
+  `| Sprint |` row reads "SPRINT-02 · Wave 0 · build order 1". What is still owed is narrower than
+  a repair: the full `16-sprint-plans` pass that fills the cells a `16` run takes from US007's
+  `09`–`15` artefacts — its QA plan, its story plan, its branch — and `CADENCE.md`'s prerequisite
+  for that pass, every member cleared `15`, is not met by US007. The plan says so in each such
+  cell rather than inventing a value, and says itself that the 07/09/2026 edit is the mirror, not
+  that pass.
+- No story plan for US007 exists (re-checked 08/09/2026), and none is written here:
+  `17-story-plans` owns it and runs after `16`. The **number** is reserved —
+  `project-management/src/17-STORY-PLANS/` holds `01-` for it, so the file will be
+  `01-STORY-PLAN-US007-<DESC>.md` when that workflow writes it. A reserved number is not a plan,
+  and nothing here may cite it as one.
+
+<!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX. Every story plan is now
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded,
+     `00-` being the template. The prefix is the story's position in the settled build order
+     ACROSS THE WHOLE BACKLOG — not its sprint, and not a per-sprint counter: US007 `01`, US001
+     `02`, then US002 `03`, US003 `04`, US004 `05`, US005 `06`, US006 `07`. It is RENUMBERED
+     whenever build order changes.
+
+     That is the OPPOSITE of the sibling rule in ../16-SPRINT-PLANS/CLAUDE.md, and the difference
+     is deliberate: a sprint plan carries TWO numbers, `<exec-order>-SPRINT-PLAN-<sprint-number>`,
+     and the PAIR carries the meaning, so a mismatch between them is information and must never be
+     "corrected". A story plan carries ONE, so a prefix that does not track build order says
+     nothing at all. Do not read the sprint-plan guardrail across to these files.
+
+     This record's citations of US001's and US002's plans were repointed to the new names the same
+     day. Dated comments below and above quote the pre-rename names, because that is what they
+     named at the time; they are not stale citations to fix. Membership, capacity, status and
+     build order are untouched by the rename. -->
+
+<!-- The first bullet read, until 08/09/2026: "`01-SPRINT-PLAN-01.md` was written on 02/09/2026
+     against US001 and US002 at 8 SP, with US002 first in its build order. Against this record it
+     is now stale in its capacity line, its story set, its build order and its story-plan index,
+     and the story plan it names for US002 carries a `| Sprint |` row that must itself move to
+     SPRINT-02. Rewriting it is a `16-sprint-plans` pass against this record, and `CADENCE.md`'s
+     prerequisite for that pass — every member cleared `15` — is not yet met by US007. Until it
+     is, the plan stands as the record of the 02/09/2026 membership and reads stale against this
+     one." Written in the parallel pass of 07/09/2026, while the plan and the story plan were
+     taking those very edits; both were re-read on 08/09/2026 and carry the values quoted above.
+     The one thing the paragraph got right — that a full 16 pass waits on US007 clearing 15 — is
+     restated. -->
 
 ---
 

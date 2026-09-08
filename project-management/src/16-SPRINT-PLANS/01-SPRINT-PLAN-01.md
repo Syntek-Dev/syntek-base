@@ -4,7 +4,7 @@
      US002 — the headroom — moved to SPRINT-02 and US007 was admitted here. Retitled to follow the
      goal, for the reason the goal comment below gives. -->
 
-**Last Updated**: 07/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Last Updated**: 08/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
 **Source sprint:** `../03-SPRINTS/SPRINT-01.md` <!-- doc-references: template-only --> · **Capacity:** 5 SP Must + 5 SP Must = 10 / 11 · **Stories:** 2
 
 <!-- Read "Capacity: 8 SP · Stories: 2" from 02/09/2026 until 07/09/2026, when US002 (Must, 3)
@@ -18,7 +18,18 @@
      16-sprint-plans run: CADENCE.md's prerequisite for that pass — every member cleared
      15-decisions — is not met by US007, which on 07/09/2026 has cleared 02-story-creation only.
      Every cell below that a 16 run fills from US007's 09–15 artefacts (its QA plan, its story plan,
-     its branch) says so rather than inventing a value, and is filled when that loop completes. -->
+     its branch) says so rather than inventing a value, and is filled when that loop completes.
+
+     08/09/2026: THAT LOOP COMPLETED, and the cells it reserved are filled. US007 cleared
+     11-qa-checks (its QA plan signed off, seven gaps found and seven resolved), 15-decisions (a
+     coherence pass over the four ADRs it rests on; nothing authored) and 17-story-plans (its plan
+     written that day at the reserved 01-). Four cells took their values from those artefacts in
+     the 17-story-plans Step 10 pass: the QA and Story-plans rows under _Sprint Reference
+     Documents_, the Stories table's Story-plan and Git-branch cells, the _Story Plans — the code
+     master_ row, and the _Branch Naming Reference_ row. This paragraph is kept as the record of
+     what was reserved and why; the sentences elsewhere in this file that predicted the wait are
+     rewritten in place, each with its superseded wording beside it. Membership, capacity, the
+     goal, build order and the flag union are untouched. -->
 
 ---
 
@@ -63,19 +74,22 @@
 | Wireframes         | **N/A** — both read `Wireframes: N/A`; no screen                                                                                                                                                                                                                                     |
 | GDPR               | **N/A** — both read `GDPR: N/A`; no personal-data path                                                                                                                                                                                                                               |
 | Security           | **N/A** — both read `Security: N/A`; no protected action and no new endpoint                                                                                                                                                                                                         |
-| QA                 | `../11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — **Signed off** · US007's — **not yet written**: it is authored when US007's `11-qa-checks` gate runs, and this row is filled then                                                                                   |
+| QA                 | `../11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — **Signed off**, six gaps found and six resolved · `../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — **Signed off** 08/09/2026, seven gaps found and seven resolved                                 |
 | SEO                | **N/A** — both read `SEO: N/A`; no public page                                                                                                                                                                                                                                       |
 | API design         | **N/A** — both read `API: N/A`; no Django Ninja surface                                                                                                                                                                                                                              |
 | Logging            | **N/A** — both read `Logging: N/A`; no log line                                                                                                                                                                                                                                      |
 | Decisions          | `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` <!-- doc-references: template-only --> · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` |
-| **Story plans**    | `../17-STORY-PLANS/STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — written 02/09/2026 · US007's — **does not exist**: `17-story-plans` has not run for it, and no path is invented here                                                                                             |
+| **Story plans**    | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — written 08/09/2026, taking up the reserved `01-` · `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — written 02/09/2026                                                                |
 
 <!-- 07/09/2026: the User stories, QA and Story plans rows named US002, its QA plan
      (../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md, signed off) and its story plan
      (../17-STORY-PLANS/STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md, written 02/09/2026) until the
      story moved to SPRINT-02. All three are indexed from ../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md
      from this re-plan on. The Decisions row is unchanged in its list: US007's own Decisions
-     section rests on exactly these four records. -->
+     section rests on exactly these four records.
+     08/09/2026: the story-plan path above is the pre-rename name and is kept as this comment
+     wrote it; that file is now ../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md.
+     See the prefix note under _Story Plans — the code master_. -->
 
 **Every `N/A` above is a flag reading `N/A` in both stories, not a gate anyone forgot** — the
 distinction `code/docs/GATE-REPORTING.md` requires. Twelve of the thirteen flags are `N/A` in both
@@ -109,10 +123,10 @@ stands, per the citation record's own Consequences.
 
 ### Must
 
-| ID    | Title                                                                                                          | Phases touched           | SP  | Story plan                                                        | Git branch                                             |
-| ----- | -------------------------------------------------------------------------------------------------------------- | ------------------------ | --- | ----------------------------------------------------------------- | ------------------------------------------------------ |
-| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Docs only — no code lane | 5   | _none yet — `17-story-plans` has not run for US007_               | _not yet set — fixed by its story plan's `Branch` row_ |
-| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Docs only — no code lane | 5   | `../17-STORY-PLANS/STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` | `us001/reliability-doctrine-home`                      |
+| ID    | Title                                                                                                          | Phases touched           | SP  | Story plan                                                             | Git branch                          |
+| ----- | -------------------------------------------------------------------------------------------------------------- | ------------------------ | --- | ---------------------------------------------------------------------- | ----------------------------------- |
+| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Docs only — no code lane | 5   | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | `us007/status-vocabulary-one-owner` |
+| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Docs only — no code lane | 5   | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | `us001/reliability-doctrine-home`   |
 
 **Total: 10 SP against a capacity of 11.** The sprint is closed at two members by decision rather
 than by fill (07/09/2026) — `../03-SPRINTS/SPRINT-01.md` <!-- doc-references: template-only --> → _Notes_ carries the reasoning, and
@@ -213,27 +227,120 @@ blast radius has left the sprint.
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. US001's plan exists;
-US007's does not — `17-story-plans` has not run for it, and it is a prerequisite of implementation
-this plan cannot supply. The Status column mirrors the story plan's own `Status` field, so a story
-with no plan has no value to mirror.
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Both members' plans
+now exist**: US001's was written on 02/09/2026, and US007's on 08/09/2026, taking up the `01-`
+this table had held in reserve. The last prerequisite of implementation this plan could not
+supply is therefore supplied.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                                                                           | Status              |
-| ----- | --------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| US007 | _none — US007's story plan does not exist on 07/09/2026; written by `17-story-plans` once US007 has cleared `15-decisions`_ | _no plan to mirror_ |
-| US001 | `../17-STORY-PLANS/STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`                                                           | Not started         |
+**The Status column is a mirror of the story plan's own `Status` field — and both cells below
+read `Not started`, which neither plan carries.** That is the column's current state, not a
+reading of either file, and correcting it is `../02-STORIES/US007.md` Scenario 8's own work: it
+names every `Not started` cell across the four sprint plans as the live mirror cells it changes,
+in one pass, to the value each named plan holds. US007's cell was filled at that value rather than
+at its plan's `Open` for exactly that reason — the precedent
+`../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` set at its own Step 10 on 08/09/2026,
+and the reading this plan's dated comment below already calls "the settled reading for every
+sprint plan". A cell written correct in a column of wrong ones would split the population that
+story corrects in a single pass.
+
+| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status      |
+| ----- | ---------------------------------------------------------------------- | ----------- |
+| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Not started |
+| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | Not started |
+
+<!-- 08/09/2026, `17-story-plans` Step 10: US007's plan was written and this section took the row,
+     the Status cell and the rewritten opening paragraph in the same change. SUPERSEDED WORDING,
+     preserved rather than deleted — the paragraph read:
+
+       "Per-story implementation depth lives in ../17-STORY-PLANS/, **not** here. US001's plan
+        exists; US007's does not — 17-story-plans has not run for it, and it is a prerequisite of
+        implementation this plan cannot supply. What US007 has is a reserved **number**, 01-, held
+        for the plan when it is written; the row below records the reservation and not a file. The
+        Status column mirrors the story plan's own Status field, so a story with no plan has no
+        value to mirror."
+
+     and the US007 row's two cells read:
+
+       "_no file — 01-STORY-PLAN-US007-<DESC>.md is the reserved name; the plan did not exist on
+        07/09/2026 and still does not (re-checked 08/09/2026); written by 17-story-plans once
+        US007 has cleared 15-decisions_" | "_no plan to mirror_"
+
+     Every clause of both became false the moment the file landed. The mirror sentence is REWRITTEN
+     rather than deleted: the column is still a mirror, and the paragraph above now says what the
+     cells actually hold and who corrects them, which the old sentence could not while one row had
+     no file. No filename inside this comment is backticked — doc-references.sh reads backticked
+     tokens inside comments, and two of the names quoted here are superseded forms.
+
+     WHAT THIS PASS DID NOT TOUCH, deliberately: membership, capacity, the goal, build order, the
+     flag union, and the Sprint Definition of Done — including its surviving "Sprint closed on the
+     board" clause, which ../02-STORIES/US007.md -> Dependencies names as left alone with its
+     owner. Three cells elsewhere in this file took the same pass: the QA and Story-plans rows
+     under _Sprint Reference Documents_, the Stories table's Story-plan and Git-branch cells, and
+     the _Branch Naming Reference_ row. -->
+
+<!-- STILL OWED BY THIS FILE, and named rather than silently carried (measured 08/09/2026 by the
+     17-story-plans Step 9 review). Two live claims in this plan are false against the tree and
+     are NOT this pass's to fix — a Step 10 pass edits the cells its own plan fills, not a
+     sibling's prose:
+
+     1. The two Definition-of-Done and Phase-Breakdown sentences ordering "DEFERRED.md's two US007
+        rows". US007's own Definition of Done now provides ONE row — the sprint value In Progress —
+        with the propagation-table row-3 hand-off recorded as N/A, the 08/09/2026 Plans-Index
+        rewrite having left the story consuming no such site. ../03-SPRINTS/SPRINT-01.md carries
+        the same two-row order and owes the same correction.
+     2. ../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md's live prose counting "three live mirror cells".
+        Five is the live figure, six once this plan's own US007 row is counted.
+
+     Both are recorded under _Measured divergences_ in
+     ../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md with their owners. -->
 
 <!-- US002's row — ../17-STORY-PLANS/STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md, Not started —
      sat first in this table until 07/09/2026, when the story moved to SPRINT-02; its plan is
-     indexed by ../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md instead, and that plan's own | Sprint | row
-     is owed a repoint from SPRINT-01 to SPRINT-02 by 17-story-plans.
+     indexed by ../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md instead. On 07/09/2026 this comment went
+     on: "and that plan's own | Sprint | row is owed a repoint from SPRINT-01 to SPRINT-02 by
+     17-story-plans." CORRECTED 08/09/2026: the repoint was made in the same change, as the
+     story-plan half of the six-artefact discipline — that plan's `| Sprint |` row reads
+     `SPRINT-02 · Wave 0 · build order 1`, with the SPRINT-01 value kept in its own dated comment.
+     Nothing on that row is owed.
 
      US001's cell still reads "Not started" — a value in no status set, and false against the
-     plan's own line 9, which holds `Open`. It is left as this re-plan found it BY DESIGN:
-     correcting it is US007's Scenario 8, which names this plan's "Not started" cells as the live
-     mirror cells it changes, and a re-plan that moves membership does not pre-empt a scheduled
-     story's own edit. US007 cites two such cells here at :109-110; after this edit there is one,
-     US002's having left, and the story re-resolves its line numbers at implementation. -->
+     plan's own `| Status |` header row, which holds `Open`. It is left as this re-plan found it
+     BY DESIGN: correcting it is US007's Scenario 8, which names this plan's "Not started" cells
+     as the live mirror cells it changes, and a re-plan that moves membership does not pre-empt a
+     scheduled story's own edit. On 07/09/2026 this comment read: "US007 cites two such cells
+     here by line number; after this edit there is one, US002's having left, and the story
+     re-resolves its line numbers at implementation." 08/09/2026: US007 re-resolved to section
+     names that day rather than at implementation — its Scenario 8 now names three `Not started`
+     cells across the plans by section (_Story Plans — the code master_): US001's row here alone,
+     and the US002 and US003 rows in 02-SPRINT-PLAN-02.md. It carries no line number into this
+     plan and re-counts the cells before the edit rather than inheriting the count. Also
+     08/09/2026: this is the settled reading for every sprint plan —
+     02-SPRINT-PLAN-02.md moved its cells to `Open` on 07/09/2026 on the opposite ground and
+     reverted them today, so the two plans now hold the same value for the same reason.
+
+     08/09/2026, the rename: the US002 path at the head of this comment is the pre-rename name and
+     is kept as written; that plan is now
+     ../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md. -->
+
+<!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX. Every story plan is now
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded,
+     `00-` the template — mirroring 00-SPRINT-PLAN-00-TEMPLATE.md in this folder. The prefix is
+     the story's position in the settled build order ACROSS THE WHOLE BACKLOG — not its sprint,
+     and not a per-sprint counter: US007 `01`, US001 `02`, then US002 `03`, US003 `04`, US004 `05`,
+     US005 `06`, US006 `07`. It is RENUMBERED whenever build order changes. This plan's citations
+     were repointed the same day, and its US007 row now names the reserved `01-` while still
+     recording that no plan exists.
+
+     THIS IS THE OPPOSITE OF THE RULE GOVERNING THIS FILE'S OWN NAME, and the difference is
+     deliberate. ./CLAUDE.md says a sprint plan is `<exec-order>-SPRINT-PLAN-<sprint-number>.md`
+     and that a mismatch between the two segments is deliberate and must NOT be "corrected" — a
+     sprint plan carries TWO numbers and the PAIR carries the meaning. A story plan carries ONE, so
+     its single prefix must track build order or it says nothing at all. Do not read the
+     sprint-plan guardrail across to `../17-STORY-PLANS/`: there, a prefix out of step with build
+     order is a defect, not information.
+
+     Membership, capacity, status and build order are untouched by the rename; the dated comments
+     in this file quote the pre-rename names, which is what they named at the time. -->
 
 ---
 
@@ -266,8 +373,18 @@ and by a recorded human read-across; there is no test suite to go green and no c
 report. **Five gates are in this sprint's QA union, and none of them reports a plain pass for both
 members** — see _Sprint-wide Constraints_ below. `22-implementation-documentation` runs before this
 phase and is a merge gate: it writes each story's `../18-TESTS/US###-MANUAL-TESTING.md`, closes
-`GAPS.md`'s entry of 01/09/2026 and writes `DEFERRED.md`'s two US007 rows, as US007's own
+`GAPS.md`'s entry of 01/09/2026 and writes `DEFERRED.md`'s **one** US007 row, as US007's own
 Definition of Done provides.
+
+<!-- Read "DEFERRED.md's two US007 rows" until 08/09/2026, as did the matching box under _Sprint
+     Definition of Done_. US007's own Definition of Done now provides ONE row — the sprint value
+     In Progress, which SPRINTS.md will define and nothing in this repository writes — with the
+     propagation-table row-3 hand-off recorded as N/A: a separate pass on 08/09/2026 rewrote every
+     plans-index site in the shipped plan template, so the story consumes none and the deferral is
+     already on the record twice over. Corrected in the 17-story-plans Step 10 pass of that day.
+     ../03-SPRINTS/SPRINT-01.md carries the same two-row order and owes the same correction; that
+     is the sprint record's own next pass, recorded as a divergence in
+     ../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md. -->
 
 <!-- Read "Stories: US002, US001" and "Two of the four gates a story of this shape would normally
      name cannot see this work" until 07/09/2026. The union had four gates; US007 brought the
@@ -289,12 +406,26 @@ Definition of Done provides.
 
 ### QA & SEO
 
-- **QA:** US001 has a signed-off plan in `../11-QA/PLANNING/` with **no unresolved `AC-GAP`** —
-  six found and six resolved. **US007 has no QA plan yet**: its `11-qa-checks` gate has not run,
-  and this plan records that rather than ticking a box for it. The sprint's QA union **widened by
-  one gate on 07/09/2026** — `skill-conformance.sh`, which enters with US007 alone — and narrowed
-  by nothing: US002 was the sole carrier of no value, so its departure left the union where it
-  stood. `../03-SPRINTS/SPRINT-01.md` → FLAGS comment carries the recomputation.
+- **QA:** **both members now have a signed-off plan in `../11-QA/PLANNING/` with no unresolved
+  `AC-GAP`** — US001's found six and resolved six; US007's, written and signed off on 08/09/2026,
+  found seven and resolved seven, the last of them into the story the same day. The sprint's QA
+  union **widened by one gate on 07/09/2026** — `skill-conformance.sh`, which enters with US007
+  alone — and narrowed by nothing: US002 was the sole carrier of no value, so its departure left
+  the union where it stood. `../03-SPRINTS/SPRINT-01.md` → FLAGS comment carries the
+  recomputation.
+
+<!-- The bullet read, until 08/09/2026: "US001 has a signed-off plan in ../11-QA/PLANNING/ with
+     **no unresolved AC-GAP** — six found and six resolved. **US007 has no QA plan yet**: its
+     11-qa-checks gate has not run, and this plan records that rather than ticking a box for it."
+     True when written on 07/09/2026 and falsified on 08/09/2026, when 11-qa-checks ran for US007
+     and its plan was signed off. Rewritten by the 17-story-plans Step 10 pass of that day, in the
+     same change as the four reserved cells. NOTE, and not this pass's to fix:
+     ../03-SPRINTS/SPRINT-01.md still carries the matching claim under its own Acceptance Criteria
+     — that US007's QA plan "does not yet exist and is written when its 11-qa-checks gate runs" —
+     and owes "seven found, seven resolved" beside US001's figure. That is the sprint record's own
+     next pass; it is recorded as a divergence in
+     ../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md. -->
+
 - **SEO:** **N/A** — no public page in either story.
 
 <!-- The QA bullet read "both stories have a signed-off plan in ../11-QA/PLANNING/ and no
@@ -391,16 +522,16 @@ bash code/src/scripts/syntax/format.sh --file-type markdown
 ## Sprint Definition of Done
 
 - [ ] Both Must stories — US007 and US001 — implemented, tested and reviewed; each story plan's own
-      DoD complete, US007's once `17-story-plans` has written it
+      DoD complete — both plans exist, US007's written 08/09/2026
 - [ ] US007's own `**Status:**` header is the one field of its measured population that moves, to
       **Completed**; every other live source field holds the value it held before its first edit
 - [ ] No open Critical or High security findings
 - [ ] GDPR constraints implemented and verified — **N/A**, the sprint's GDPR flag reads `N/A`
 - [ ] All QA scenarios passing per `../11-QA/`, including the human read-acrosses that no gate
-      can perform for either story — US001's plan is signed off; US007's is written when its gate
-      runs
-- [ ] `GAPS.md`'s entry of 01/09/2026 closed and `DEFERRED.md`'s two US007 rows written, both by
-      `22-implementation-documentation`, as US007's own Definition of Done provides
+      can perform for either story — **both plans are signed off**, US007's on 08/09/2026
+- [ ] `GAPS.md`'s entry of 01/09/2026 closed and `DEFERRED.md`'s **one** US007 row written, both
+      by `22-implementation-documentation`, as US007's own Definition of Done provides — the
+      row-3 hand-off is recorded **N/A** with its reason, not written
 - [ ] All code merged to the integration branch; CI passing
 - [ ] Sprint closed on the board; version bumped if this sprint produces a release
 - [ ] Gaps found during the sprint recorded per `../09-GDPR/` / `../10-SECURITY/` where applicable
@@ -420,10 +551,10 @@ bash code/src/scripts/syntax/format.sh --file-type markdown
 
 ## Branch Naming Reference
 
-| Story ID | Branch name                       | Pattern                                                                                                  |
-| -------- | --------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| US007    | _not yet set_                     | as below — fixed by the `Branch` row of US007's story plan when `17-story-plans` runs; not invented here |
-| US001    | `us001/reliability-doctrine-home` | `us` + 3-digit ID + `/` + title lowercased, kebab-cased, ≤ 5 words                                       |
+| Story ID | Branch name                         | Pattern                                                                                                                                                         |
+| -------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US007    | `us007/status-vocabulary-one-owner` | as below — taken from the `Branch` row of `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md`, written 08/09/2026, rather than invented here |
+| US001    | `us001/reliability-doctrine-home`   | `us` + 3-digit ID + `/` + title lowercased, kebab-cased, ≤ 5 words                                                                                              |
 
 <!-- US002's row — us002/audits-register-headroom — moved with the story to
      ../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md on 07/09/2026. -->
