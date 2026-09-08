@@ -8,6 +8,22 @@
 | Author | <%ORG_NAME%>                       |
 | Status | `Open`                             |
 
+<!-- RENAMED 08/09/2026, by `git mv`: this file took its `04-` prefix that day and carried the
+     same name without it before. The old name is not written out here, and no dead filename is
+     backticked anywhere in this change — `code/src/scripts/audits/doc-references.sh` reads
+     backticked tokens and would record every one as an unresolvable instance citation. The
+     convention settled 08/09/2026 is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the prefix 2-digit zero-padded. It is the story's position in the settled build order across
+     the WHOLE backlog — US007, US001, US002, US003, US004, US005, US006 — not its sprint and not
+     a per-sprint counter, so US003 is fourth, SPRINT-02's stretch tier behind US002. It is
+     RENUMBERED whenever build order changes, which is the OPPOSITE of the sibling rule for the
+     sprint plans: a sprint plan carries two numbers and a mismatch between them is information,
+     while a story plan carries one, so its prefix must track build order or it says nothing.
+     `./CLAUDE.md` owns the rule. Every story-plan citation in this file was repointed the same
+     day. The `| Date |` row above is this plan's authoring date and is not bumped for a rename;
+     the `| Sprint |` row is untouched — the prefix records build order, the row records the
+     sprint, and the two are different facts. -->
+
 <!-- The Sprint row read "SPRINT-02 · Wave 0 · build order 2" from 02/09/2026, "SPRINT-03 · Wave 0
      · build order 2" from 05/09/2026, and reads "SPRINT-02 · Wave 0 · build order 2" again since
      07/09/2026 — the same string as at authoring, reached by two moves the two notes below record.
@@ -43,9 +59,19 @@
 > `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`. The reservation is
 > `../03-SPRINTS/SPRINT-02.md` → _Definition of Done_, second row; `../03-SPRINTS/SPRINT-03.md`
 > → _Definition of Done_, second row, receives it and names the third move that would follow.
-> The `Sprint plan` row below names `02-SPRINT-PLAN-02.md`, which on 07/09/2026 still describes
-> US004 alone and is owed a rewrite by `16-sprint-plans`; until it runs, `SPRINT-02.md` is the
-> authoritative statement of this sprint. `Date` above is still not bumped.
+> The `Sprint plan` row below names `02-SPRINT-PLAN-02.md`, rewritten the same day to {US002,
+> US003} at 8 / 11 as the sprint-plan half of the six-artefact discipline — it carries this story
+> under _Should_ with the carry reservation, and indexes this plan. A full `16-sprint-plans` pass,
+> re-derived from the members' own gate artefacts with its own grilling, is the one thing still
+> owed; where plan and record disagree before it runs, `SPRINT-02.md` wins. `Date` above is still
+> not bumped.
+
+<!-- The note's closing sentences read, from 07/09/2026 until 08/09/2026: "The `Sprint plan` row
+     below names `02-SPRINT-PLAN-02.md`, which on 07/09/2026 still describes US004 alone and is
+     owed a rewrite by `16-sprint-plans`; until it runs, `SPRINT-02.md` is the authoritative
+     statement of this sprint." Written while a sibling agent was rewriting that plan in the same
+     pass; it described the file's 05/09/2026 state and was false by the time the change was
+     committed. Corrected against the plan as it stands on disk. -->
 
 Implements `../15-DECISIONS/ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH-02-09-2026.md` (the crib's
 cells cite nothing that does not yet exist) under
@@ -91,28 +117,35 @@ the HTMX contract, `S-04` the optional-surface remainders, `S-05` tiers and mech
 
 ## Reference Documents (code/docs gate map)
 
-| Concern                        | Document                                                   | What it binds here                                                                                                                                                                                  |
-| ------------------------------ | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                        | Born under 270; no edited file at or above 270 may grow at all                                                                                                                                      |
-| What shape a value has         | `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md`     | The boundary this guide must not cross — shape rules stay where they live                                                                                                                           |
-| The Rust surface's own rules   | `code/docs/data-structures/TYPES-RUST.md`                  | `:156` is cited by the crib's Rust row, never restated                                                                                                                                              |
-| What the code must never allow | `code/docs/NEGATIVE-SPACE.md`                              | Named a sibling under _What this is not_; two rows land in `S-04`, not here                                                                                                                         |
-| Reporting a gate's result      | `code/docs/GATE-REPORTING.md`                              | Named a sibling; and `doctrine-drift.sh` is never reported as reading prose                                                                                                                         |
-| Forward-looking claims         | `code/docs/FORWARD-VOICE.md`                               | Named a sibling; governs what the crib may promise about clauses not yet written                                                                                                                    |
-| The RLS middleware instance    | `code/docs/rls/MIDDLEWARE-AND-NINJA.md`                    | `:270` is the never-overload rule's one shipped instance                                                                                                                                            |
-| Attribution                    | `README.md` → _Influences_ · `.claude/CLAUDE.md` Section 6 | Licence checked **before** deriving; the row lands in the same commit                                                                                                                               |
-| Story                          | `../02-STORIES/US003.md`                                   | Nine scenarios, the acceptance this plan implements                                                                                                                                                 |
-| QA                             | `../11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md`         | Seven resolved AC-gaps and the scenario tables                                                                                                                                                      |
-| Sprint plan                    | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`                  | Build order, `Should` tier, gate-honesty constraint — **owed a `16-sprint-plans` rewrite**; on 07/09/2026 it describes US004 alone, and `../03-SPRINTS/SPRINT-02.md` is authoritative until it runs |
+| Concern                        | Document                                                   | What it binds here                                                                                                                                                                                                                                                      |
+| ------------------------------ | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                        | Born under 270; no edited file at or above 270 may grow at all                                                                                                                                                                                                          |
+| What shape a value has         | `code/docs/data-structures/TYPES-OVER-DICTIONARIES.md`     | The boundary this guide must not cross — shape rules stay where they live                                                                                                                                                                                               |
+| The Rust surface's own rules   | `code/docs/data-structures/TYPES-RUST.md`                  | _Option and Result, never sentinels_ is cited by the crib's Rust row, never restated                                                                                                                                                                                    |
+| What the code must never allow | `code/docs/NEGATIVE-SPACE.md`                              | Named a sibling under _What this is not_; two rows land in `S-04`, not here                                                                                                                                                                                             |
+| Reporting a gate's result      | `code/docs/GATE-REPORTING.md`                              | Named a sibling; and `doctrine-drift.sh` is never reported as reading prose                                                                                                                                                                                             |
+| Forward-looking claims         | `code/docs/FORWARD-VOICE.md`                               | Named a sibling; governs what the crib may promise about clauses not yet written                                                                                                                                                                                        |
+| The RLS middleware instance    | `code/docs/rls/MIDDLEWARE-AND-NINJA.md`                    | _Row locking_, the guard paragraph, is the never-overload rule's one shipped instance                                                                                                                                                                                   |
+| Attribution                    | `README.md` → _Influences_ · `.claude/CLAUDE.md` Section 6 | Licence checked **before** deriving; the row lands in the same commit                                                                                                                                                                                                   |
+| Story                          | `../02-STORIES/US003.md`                                   | Nine scenarios, the acceptance this plan implements                                                                                                                                                                                                                     |
+| QA                             | `../11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md`         | Seven resolved AC-gaps and the scenario tables                                                                                                                                                                                                                          |
+| Sprint plan                    | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`                  | Build order, `Should` tier, the carry reservation, gate-honesty constraint. Rewritten 07/09/2026 to {US002, US003} as the mirror of `../03-SPRINTS/SPRINT-02.md`; a full `16-sprint-plans` pass is still owed, and the record wins where the two disagree until it runs |
+| Feature map                    | `../01-FEATURE-MAPS/MAP-ABSENCE.md`                        | Slice `S-01`, nodes `N-008`, `N-009`, `N-018`                                                                                                                                                                                                                           |
 
 <!-- The Sprint plan row named `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` from 02/09/2026,
      `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` from 05/09/2026, and names 02 again since
-     07/09/2026 — the two moves the notes under the header record. Neither plan on disk describes
-     this story's sprint as it stands: 03-SPRINT-PLAN-03.md was written for US005 and this story and
-     is superseded in every section, 02-SPRINT-PLAN-02.md for US004 alone. The row names the plan
-     of the sprint the `| Sprint |` row names, and says in its own cell that the file lags. -->
-
-| Feature map | `../01-FEATURE-MAPS/MAP-ABSENCE.md` | Slice `S-01`, nodes `N-008`, `N-009`, `N-018` |
+     07/09/2026 — the two moves the notes under the header record. On 07/09/2026 this comment went
+     on: "Neither plan on disk describes this story's sprint as it stands: 03-SPRINT-PLAN-03.md was
+     written for US005 and this story and is superseded in every section, 02-SPRINT-PLAN-02.md for
+     US004 alone. The row names the plan of the sprint the `| Sprint |` row names, and says in its
+     own cell that the file lags." CORRECTED 08/09/2026: both plans were rewritten on 07/09/2026 in
+     the same pass as this note — 02-SPRINT-PLAN-02.md to {US002, US003} at 8 / 11, and
+     03-SPRINT-PLAN-03.md to US004 plus this story's reserved carry — so neither lags now, and the
+     cell above says what is still owed instead. The 07/09/2026 cell read: "Build order, `Should`
+     tier, gate-honesty constraint — **owed a `16-sprint-plans` rewrite**; on 07/09/2026 it
+     describes US004 alone, and `../03-SPRINTS/SPRINT-02.md` is authoritative until it runs".
+     This comment sat BETWEEN the two rows above from 07/09/2026 until 08/09/2026, severing the
+     Feature map row from its table; moved below the body so the table renders whole. -->
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
 `../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../10-SECURITY/`, `../12-SEO/`,
@@ -128,11 +161,11 @@ kinds a `None` represents is meaning and lands here.
 
 Three clauses sit on the line and `N-008` measured each:
 
-| Rule                | Owner before | Disposition                                                  |
-| ------------------- | ------------ | ------------------------------------------------------------ |
-| Absence-enum rule   | **Nobody**   | **Stated here**, and pinned by a new `doctrine-drift.sh` row |
-| Never-overload rule | Nobody       | Stated here, citing `rls/MIDDLEWARE-AND-NINJA.md:270`        |
-| Rust `Option`/shape | `TYPES-RUST` | **Cited**, at `:156`, never restated                         |
+| Rule                | Owner before | Disposition                                                        |
+| ------------------- | ------------ | ------------------------------------------------------------------ |
+| Absence-enum rule   | **Nobody**   | **Stated here**, and pinned by a new `doctrine-drift.sh` row       |
+| Never-overload rule | Nobody       | Stated here, citing `rls/MIDDLEWARE-AND-NINJA.md` -> _Row locking_ |
+| Rust `Option`/shape | `TYPES-RUST` | **Cited**, at _Option and Result, never sentinels_, never restated |
 
 `ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH` settles the second-order problem the crib creates: its
 cells describe surfaces whose clauses `S-02`, `S-03` and `S-04` have not written yet. **The cells
@@ -228,14 +261,25 @@ resolve the moment P1 lands. So:
 
 ## Key Decisions
 
-| Decision                                  | Chosen                                             | Rejected                                  | Why                                                                   |
-| ----------------------------------------- | -------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------- |
-| Where the absence-enum rule lives         | Stated in `ABSENCE.md`                             | Cited to a `TYPES-*` guide                | `N-008` measured it owned by nobody                                   |
-| Where the Rust shape rule lives           | Cited at `TYPES-RUST.md:156`                       | Restated in the crib                      | Shape belongs to the `TYPES-*` family; meaning belongs here           |
-| Whether crib cells cite forward           | Self-contained at birth                            | Cite the clauses `S-02`–`S-04` will write | A guide of dead links (ADR)                                           |
-| Which skills take the routing frontmatter | `backend`, `frontend`, `code-reviewer`, `refactor` | The surface-complete set                  | All four are clear of the 270 band, so reciprocity costs no allowance |
-| How prose doctrine is verified            | Human read-across                                  | `doctrine-drift.sh`                       | It reads fenced code only (ADR-US001)                                 |
-| Whether a row in `code/CONTEXT.md`        | No                                                 | Add one                                   | It carries none for either guide born since charting                  |
+| Decision                                  | Chosen                                                           | Rejected                                  | Why                                                                   |
+| ----------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------- |
+| Where the absence-enum rule lives         | Stated in `ABSENCE.md`                                           | Cited to a `TYPES-*` guide                | `N-008` measured it owned by nobody                                   |
+| Where the Rust shape rule lives           | Cited at `TYPES-RUST.md` -> _Option and Result, never sentinels_ | Restated in the crib                      | Shape belongs to the `TYPES-*` family; meaning belongs here           |
+| Whether crib cells cite forward           | Self-contained at birth                                          | Cite the clauses `S-02`–`S-04` will write | A guide of dead links (ADR)                                           |
+| Which skills take the routing frontmatter | `backend`, `frontend`, `code-reviewer`, `refactor`               | The surface-complete set                  | All four are clear of the 270 band, so reciprocity costs no allowance |
+| How prose doctrine is verified            | Human read-across                                                | `doctrine-drift.sh`                       | It reads fenced code only (ADR-US001)                                 |
+| Whether a row in `code/CONTEXT.md`        | No                                                               | Add one                                   | It carries none for either guide born since charting                  |
+
+<!-- Five citations in this plan were de-numbered on 08/09/2026, each to the section that owns the
+     line: under _Reference Documents_, "`:156` is cited by the crib's Rust row, never restated"
+     and "`:270` is the never-overload rule's one shipped instance"; under _Architecture
+     Decision_, "Stated here, citing `rls/MIDDLEWARE-AND-NINJA.md:270`" and "**Cited**, at
+     `:156`, never restated"; and in the table above, "Cited at `TYPES-RUST.md:156`". On
+     08/09/2026 :156 is the heading _Option and Result, never sentinels_ in
+     `code/docs/data-structures/TYPES-RUST.md`, and :270 sits in the guard paragraph under _Row
+     locking_ in `code/docs/rls/MIDDLEWARE-AND-NINJA.md`. A section name survives an edit above
+     it; a line number does not. `../02-STORIES/US003.md` took the same de-numbering the same
+     day. -->
 
 ## Dependencies
 
@@ -258,7 +302,7 @@ resolve the moment P1 lands. So:
 <!-- The bullet read "**Blocked by:** US004, on build order rather than on mechanism. The absence
      map's frontier and fog of war are both empty; nothing on that map blocks this." until
      07/09/2026. The `Status` row above stays `Open` — it was `Open` with a live build-order
-     blocker before, on the reading `STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` records, and
+     blocker before, on the reading `06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` records, and
      is `Open` with none now. -->
 
 - **Blocks:** slices `S-02` to `S-06` on `../01-FEATURE-MAPS/MAP-ABSENCE.md`. Three of them —
@@ -330,14 +374,14 @@ and `../18-TESTS/US003-MANUAL-TESTING.md`.
 
 ## CONTEXT.md & Index Updates
 
-| File                           | Change                                              |
-| ------------------------------ | --------------------------------------------------- |
-| `REFERENCES.md` (root)         | Index row for `code/docs/ABSENCE.md`                |
-| `code/REFERENCES.md`           | Index row                                           |
-| `code/docs/CONTEXT.md`         | Index row and directory-tree entry                  |
-| `code/CONTEXT.md`              | **No row** — deliberate, recorded in P2             |
-| `README.md`                    | Two _Influences_ rows, licence-checked, same commit |
-| `../17-STORY-PLANS/CONTEXT.md` | Plans Index row for this plan                       |
+| File                                      | Change                                                                                                                                                                              |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REFERENCES.md` (root)                    | Index row for `code/docs/ABSENCE.md`                                                                                                                                                |
+| `code/REFERENCES.md`                      | Index row                                                                                                                                                                           |
+| `code/docs/CONTEXT.md`                    | Index row and directory-tree entry                                                                                                                                                  |
+| `code/CONTEXT.md`                         | **No row** — deliberate, recorded in P2                                                                                                                                             |
+| `README.md`                               | Two _Influences_ rows, licence-checked, same commit                                                                                                                                 |
+| `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` | This plan's row in _Story Plans — the code master_ — Status cell kept in step with this plan's header; the reserved-carry row in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` likewise |
 
 ## Deferred Items
 
@@ -372,5 +416,19 @@ and `../18-TESTS/US003-MANUAL-TESTING.md`.
 - [ ] All five gates pass; the human read-across and the cold-read walk both done and recorded
 - [ ] The `codebase-design` ban scoped, and its own four uses checked against the new scope
 - [ ] Attribution rows land in the same commit as the rules they credit, licences checked first
-- [ ] Plans Index row added; story cross-references this plan
+- [ ] This plan's row in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code
+      master_ mirrors the final status; story cross-references this plan
 - [ ] Reviewed and approved; merged; `../02-STORIES/US003.md` status set to **Completed**
+
+<!-- 08/09/2026, later the same day: the two "Plans Index" sites in this plan were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — the CONTEXT.md & Index
+     Updates table carried a row for `../17-STORY-PLANS/CONTEXT.md` reading "Plans Index row for
+     this plan"; the Definition of Done read "Plans Index row added; story cross-references this
+     plan". Both pre-date today. Why: no Plans Index exists — `../17-STORY-PLANS/CONTEXT.md` →
+     _The plans index_ records its absence as a decision, because that file ships and an index row
+     would put a per-project citation in it — so both sites sent a reader to a table that is not
+     there. The job each did is re-pointed at where a plan is indexed today: its sprint plan's
+     _Story Plans — the code master_ table, which for this plan is `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`.
+     The `17-story-plans` workflow files and `../17-STORY-PLANS/CLAUDE.md` were re-pointed the same
+     way earlier on 08/09/2026; the folder-level index is deferred to the register-index work
+     charted in `../01-FEATURE-MAPS/`, which names its own file when it lands. -->

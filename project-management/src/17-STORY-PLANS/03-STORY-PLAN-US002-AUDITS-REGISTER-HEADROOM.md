@@ -8,11 +8,32 @@
 | Author | <%ORG_NAME%>                       |
 | Status | `Open`                             |
 
+<!-- RENAMED 08/09/2026, by `git mv`: this file took its `03-` prefix that day and carried the
+     same name without it before. The old name is not written out here, and no dead filename is
+     backticked anywhere in this change — `code/src/scripts/audits/doc-references.sh` reads
+     backticked tokens and would record every one as an unresolvable instance citation. The
+     convention settled 08/09/2026 is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the prefix 2-digit zero-padded. It is the story's position in the settled build order across
+     the WHOLE backlog — US007, US001, US002, US003, US004, US005, US006 — not its sprint and not
+     a per-sprint counter, so US002 is third, opening SPRINT-02. It is RENUMBERED whenever build
+     order changes, which is the OPPOSITE of the sibling rule for the sprint plans: a sprint plan
+     carries two numbers and a mismatch between them is information, while a story plan carries
+     one, so its prefix must track build order or it says nothing. `./CLAUDE.md` owns the rule.
+     Every story-plan citation in this file was repointed the same day. The `| Date |` row above
+     is this plan's authoring date and is not bumped for a rename; the `| Sprint |` row is
+     untouched — the prefix records build order, the row records the sprint, and the two are
+     different facts. -->
+
 <!-- The Sprint row read "SPRINT-01 · Wave 0 · build order 1" from 02/09/2026 until 07/09/2026.
      Superseded by the cascade re-plan the note below records. Wave 0 is the story's position in
-     its feature map's cutting order (../02-STORIES/US002.md:16, :98) and does not move with the
+     its feature map's cutting order (../02-STORIES/US002.md, its PROVENANCE comment and its
+     Dependencies section) and does not move with the
      sprint; build order 1 is unchanged in figure — it was first of {US002, US001} and is now first
-     of {US002, US003}. -->
+     of {US002, US003}. DE-NUMBERED 08/09/2026: this comment cited "../02-STORIES/US002.md:16, :98"
+     until that day. On 08/09/2026 :16 is still the wave-0 sentence of that story's PROVENANCE
+     comment and :98 its first Dependencies bullet ("Wave 0 of the cutting order"), so both
+     resolved; named by section because a line number into a story file moves with every edit
+     above it. -->
 
 > **US002 moved from SPRINT-01 to SPRINT-02 on 07/09/2026, before any sprint was worked.** US007 —
 > the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP — was cut that day and has
@@ -26,11 +47,21 @@
 > "No upstream dependencies", which `../03-SPRINTS/SPRINT-02.md` → _Dependencies_ records as true
 > of content and owed a correction by `02-story-creation`. Consequences for this plan: the
 > Dependencies table below is corrected in place for the new membership; the `Sprint plan` row
-> names `02-SPRINT-PLAN-02.md`, which on 07/09/2026 still describes US004 alone and is owed a
-> rewrite by `16-sprint-plans` — until it runs, `../03-SPRINTS/SPRINT-02.md` is the authoritative
-> statement of this sprint and the plan on disk is not. `Date` above is this plan's authoring date
-> and is deliberately not bumped, on the precedent `STORY-PLAN-US003-ABSENCE-GUIDE.md` set on
-> 05/09/2026.
+> names `02-SPRINT-PLAN-02.md`, rewritten the same day to {US002, US003} at 8 / 11 as the
+> sprint-plan half of the six-artefact discipline — it opens its `Must` table with this story,
+> indexes this plan, and mirrors `../03-SPRINTS/SPRINT-02.md`. A full `16-sprint-plans` pass,
+> re-derived from the members' own gate artefacts with its own grilling, is the one thing still
+> owed; where plan and record disagree before it runs, the record wins. `Date` above is this
+> plan's authoring date and is deliberately not bumped, on the precedent
+> `04-STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
+
+<!-- The note's sprint-plan sentence read, from 07/09/2026 until 08/09/2026: "the `Sprint plan`
+     row names `02-SPRINT-PLAN-02.md`, which on 07/09/2026 still describes US004 alone and is owed
+     a rewrite by `16-sprint-plans` — until it runs, `../03-SPRINTS/SPRINT-02.md` is the
+     authoritative statement of this sprint and the plan on disk is not." Written while a sibling
+     agent was rewriting that plan in the same pass; it described the file's 05/09/2026 state and
+     was false by the time the change was committed. Corrected against the plan as it stands on
+     disk. -->
 
 Implements `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` <!-- doc-references: template-only -->
 (a register under length pressure splits rather than relocating) and
@@ -60,23 +91,32 @@ This story is wave 0 and Must because those nine stories all land red without it
 
 ## Reference Documents (code/docs gate map)
 
-| Concern                      | Document                                                                                             | What it binds here                                                                                                                                                                                      |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Length limit and the ratchet | `code/docs/DOCUMENTATION-LENGTH.md`                                                                  | The 300 limit, the 270 warn tier, the dated allowance, and Section 6 on relocation                                                                                                                      |
-| Which half a line belongs in | `code/docs/DOCUMENTATION-PAIRING.md`                                                                 | Orientation vs operating rules; `:62-64` names rationale as the highest-value orientation                                                                                                               |
-| Reporting a gate's result    | `code/docs/GATE-REPORTING.md`                                                                        | Two of this story's gates cannot see it; neither may be reported as a pass                                                                                                                              |
-| The register's own rules     | `code/src/scripts/audits/CLAUDE.md`                                                                  | "Add the row to `CONTEXT.md`'s inventory and requirements tables in the same change"                                                                                                                    |
-| Story                        | `../02-STORIES/US002.md` <!-- doc-references: template-only -->                                      | Nine scenarios, the acceptance the plan implements                                                                                                                                                      |
-| QA                           | `../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` <!-- doc-references: template-only --> | Eleven resolved AC-gaps and the scenario tables                                                                                                                                                         |
-| Sprint plan                  | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` <!-- doc-references: template-only -->                     | Build order, phase disposition, gate-honesty constraint — **owed a `16-sprint-plans` rewrite**; it describes US004 alone on 07/09/2026, and `../03-SPRINTS/SPRINT-02.md` is authoritative until it runs |
+| Concern                      | Document                                                                                             | What it binds here                                                                                                                                                                                                                                   |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Length limit and the ratchet | `code/docs/DOCUMENTATION-LENGTH.md`                                                                  | The 300 limit, the 270 warn tier, the dated allowance, and Section 6 on relocation                                                                                                                                                                   |
+| Which half a line belongs in | `code/docs/DOCUMENTATION-PAIRING.md`                                                                 | Orientation vs operating rules; `:62-64` names rationale as the highest-value orientation                                                                                                                                                            |
+| Reporting a gate's result    | `code/docs/GATE-REPORTING.md`                                                                        | Two of this story's gates cannot see it; neither may be reported as a pass                                                                                                                                                                           |
+| The register's own rules     | `code/src/scripts/audits/CLAUDE.md`                                                                  | "Add the row to `CONTEXT.md`'s inventory and requirements tables in the same change"                                                                                                                                                                 |
+| Story                        | `../02-STORIES/US002.md` <!-- doc-references: template-only -->                                      | Nine scenarios, the acceptance the plan implements                                                                                                                                                                                                   |
+| QA                           | `../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` <!-- doc-references: template-only --> | Eleven resolved AC-gaps and the scenario tables                                                                                                                                                                                                      |
+| Sprint plan                  | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` <!-- doc-references: template-only -->                     | Build order, phase disposition, gate-honesty constraint. Rewritten 07/09/2026 to {US002, US003} as the mirror of `../03-SPRINTS/SPRINT-02.md`; a full `16-sprint-plans` pass is still owed, and the record wins where the two disagree until it runs |
 
 <!-- The Sprint plan row named `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` from 02/09/2026 until
-     07/09/2026, when this story moved to SPRINT-02. That plan still lists US002 first in its build
-     order and is itself stale against ../03-SPRINTS/SPRINT-01.md; rewriting it is a 16-sprint-plans
-     pass that CADENCE.md's prerequisite — every member cleared 15 — does not yet license, US007
-     having cleared only 02 and 03 on 07/09/2026. The row names the plan of the sprint the
-     `| Sprint |` row names, and says in its own cell that the file on disk describes the previous
-     membership, rather than pointing at a plan that names this story but not its sprint. -->
+     07/09/2026, when this story moved to SPRINT-02. On 07/09/2026 this comment went on: "That
+     plan still lists US002 first in its build order and is itself stale against
+     ../03-SPRINTS/SPRINT-01.md; rewriting it is a 16-sprint-plans pass that CADENCE.md's
+     prerequisite — every member cleared 15 — does not yet license, US007 having cleared only 02
+     and 03 on 07/09/2026. The row names the plan of the sprint the `| Sprint |` row names, and
+     says in its own cell that the file on disk describes the previous membership, rather than
+     pointing at a plan that names this story but not its sprint." CORRECTED 08/09/2026:
+     01-SPRINT-PLAN-01.md was brought into line the same day, in the same pass — US007 then US001
+     at 10 / 11, this story moved to its Won't list with a pointer here — as the mirror half of the
+     six-artefact discipline. The CADENCE.md prerequisite that comment cites withholds only the
+     FULL 16-sprint-plans pass, until US007 clears 15-decisions; that pass is still owed for
+     SPRINT-01 and that plan's own header comment says so. The 07/09/2026 cell above read: "Build
+     order, phase disposition, gate-honesty constraint — **owed a `16-sprint-plans` rewrite**; it
+     describes US004 alone on 07/09/2026, and `../03-SPRINTS/SPRINT-02.md` is authoritative until
+     it runs". -->
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
 `../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../10-SECURITY/`, `../12-SEO/`,
@@ -219,7 +259,18 @@ unrecoverable once editing starts, and the repointing (H) cannot be done until t
 
 - **Blocks:** nine audit registrations across eight slices and seven maps — the table in
   `../02-STORIES/US002.md` <!-- doc-references: template-only --> names each.
-- **Can be done now:** yes, in full, once `pm/story-creation` is merged and the branch is cut.
+- **Can be done now:** in content, yes, in full, once `pm/story-creation` is merged and the
+  branch is cut — but **not before US007 has landed**. The ordering above is fixed: the
+  `register-indexes.sh` status fixtures this story's line of work unblocks are written against
+  whichever `**Status:**` vocabulary is canonical on the day they are written, and starting first
+  would build them against the wrong one. An ordering, not a content dependency — US007 writes
+  into none of the files this story edits.
+
+<!-- The bullet read "**Can be done now:** yes, in full, once `pm/story-creation` is merged and
+     the branch is cut." from 02/09/2026 until 08/09/2026. The cascade of 07/09/2026 added the
+     ordering clause to the Blocked-by bullet above and left this one contradicting it; corrected
+     08/09/2026 to depend on US007 having landed. -->
+
 - **Known collision:** `project-management/src/01-FEATURE-MAPS/MAP-PROGRESSIVE-ENHANCEMENT.md` <!-- doc-references: template-only --> slice `S-01` owns a correction inside an
   inventory row this story moves. This story settles the row's final text; `S-01` inherits it.
 
@@ -300,15 +351,17 @@ the relocation-versus-deletion split required by `code/docs/DOCUMENTATION-LENGTH
 - `code/src/scripts/audits/CONTEXT.md` — the Directory Tree gains a row for `SLOP-FAMILY.md`.
 - `code/src/scripts/audits/CLAUDE.md` — re-resolve its three citations into `CONTEXT.md`; do not
   let it absorb content, and confirm it ends at or under 200 counted lines.
-- **The Plans Index row is declined, on the record.**
-  `project-management/workflows/17-story-plans/STEPS.md` Step 10.2 requires a row in
-  `../17-STORY-PLANS/CONTEXT.md` → _Plans Index_. **That section does not exist, and the row is
-  not added.** `CONTEXT.md` is re-included by `copier.yml` <!-- doc-references: template-only --> and therefore **ships**, so an
+- **The Plans Index row is declined, on the record — and since 08/09/2026 nothing asks for it.**
+  Until that day `project-management/workflows/17-story-plans/STEPS.md` Step 10.2 required a row
+  in `../17-STORY-PLANS/CONTEXT.md` → _Plans Index_. **That section has never existed, and the
+  row was never added.** `CONTEXT.md` is re-included by `copier.yml` <!-- doc-references: template-only --> and therefore **ships**, so an
   instance row naming a `STORY-PLAN-US###` would put a per-project citation in a shipped file —
   the same defect ten feature maps declined for `../01-FEATURE-MAPS/CONTEXT.md`, and the reason
   that index still reads _"None charted yet"_ against twelve maps. `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` <!-- doc-references: template-only --> slice
-  `S-01` owns relocating these indexes into seeded files and its `N-003` gate names
-  `STORY-PLAN-INDEX.md` specifically. **The decline stands until that slice lands.**
+  `S-01` owns relocating these indexes into seeded files and its `N-003` gate names the
+  folder-level index file — "STORY-PLAN-INDEX.md" — specifically. **The decline stands until that
+  slice lands.** Step 10.2 was re-pointed on 08/09/2026 at where this plan is indexed today: its
+  row in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code master_.
 - **No new directory**, so no new `CONTEXT.md`/`CLAUDE.md` pair is owed. `SLOP-FAMILY.md` is a
   third file in an existing paired directory, and `docs-pairing.sh` is directory-level.
 
@@ -344,4 +397,19 @@ the relocation-versus-deletion split required by `code/docs/DOCUMENTATION-LENGTH
 - [ ] `../18-TESTS/US002-MANUAL-TESTING.md` carries the baseline, the inventory balance, the
       deletion/relocation split and the 27-row dry run
 - [ ] A tester other than the author has signed the read-across off
-- [ ] Story `**Status:**` moved to `Completed`; the Plans Index row updated
+- [ ] Story `**Status:**` moved to `Completed`; this plan's row in
+      `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code master_ mirrors it
+
+<!-- 08/09/2026, later the same day: the two "Plans Index" sites in this plan were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — the CONTEXT.md & Index
+     Updates bullet opened "The Plans Index row is declined, on the record.", said that Step 10.2
+     "requires a row in" the folder's `CONTEXT.md` → _Plans Index_ and that "That section does not
+     exist, and the row is not added", and named the file the `N-003` gate creates,
+     "STORY-PLAN-INDEX.md", in backticks; the Definition of Done ended "the Plans Index row
+     updated". Why: no Plans Index exists — `../17-STORY-PLANS/CONTEXT.md` → _The plans index_
+     records its absence as a decision — and Step 10.2 stopped asking for the row on 08/09/2026,
+     when the `17-story-plans` workflow files and `../17-STORY-PLANS/CLAUDE.md` were re-pointed at
+     where a plan is indexed today: its sprint plan's _Story Plans — the code master_ table. This
+     plan's row is in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`. The decline itself stands and is kept; the
+     backticks came off the index filename because the file exists nowhere yet and the citation
+     gate reads backticked tokens. -->

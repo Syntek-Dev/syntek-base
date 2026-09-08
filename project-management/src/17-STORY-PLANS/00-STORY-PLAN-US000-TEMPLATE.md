@@ -12,8 +12,8 @@
 ═══════════════════════════════════════════════════════════════════════════════
   HOW TO USE THIS TEMPLATE  (delete this comment block in the real plan)
 ═══════════════════════════════════════════════════════════════════════════════
-  • Copy to STORY-PLAN-US###-<SCREAMING-KEBAB-DESCRIPTOR>.md, replace every <...> and
-    [PLACEHOLDER], and add the row to 17-STORY-PLANS/CONTEXT.md "Plans Index".
+  • Copy to <exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESCRIPTOR>.md — prefix = build order,
+    renumbered on change (17-STORY-PLANS/CLAUDE.md) — replace every <...> and [PLACEHOLDER], and point the story's row in its sprint plan's "Story Plans — the code master" table (16-SPRINT-PLANS/) at the file; 17-STORY-PLANS/CONTEXT.md holds no index, by decision.
   • This is a SUPERSET. Keep the ★-marked core sections always. Keep the
     ◇-marked sections only when the story touches that concern; delete the
     rest so the plan stays honest. Never delete a section to dodge a gate —
@@ -583,7 +583,7 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 
 | Record                                     | Filename pattern                                                    | Destination folder                                                                               | Produced by (workflow)                                                                     | This story                 |
 | ------------------------------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | -------------------------- |
-| **This plan**                              | `STORY-PLAN-US###-<DESC>.md`                                        | `project-management/src/17-STORY-PLANS/`                                                         | planning                                                                                   | Always                     |
+| **This plan**                              | `<exec-order>-STORY-PLAN-US###-<DESC>.md`                           | `project-management/src/17-STORY-PLANS/`                                                         | planning                                                                                   | Always                     |
 | ADR (if a cross-cutting decision)          | `ADR-###-<title>.md`                                                | `…/src/15-DECISIONS/`                                                                            | planning                                                                                   | Conditional                |
 | User story                                 | `US###.md`                                                          | `…/src/02-STORIES/`                                                                              | PM `02-story-creation`                                                                     | Always                     |
 | Sprint plan                                | `##-SPRINT-PLAN-##.md`                                              | `…/src/16-SPRINT-PLANS/`                                                                         | PM `16-sprint-plans`                                                                       | Always                     |
@@ -620,13 +620,13 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 
 <!-- ★ Always — part of the documentation hard gate. -->
 
-| File                                                 | Change required                                                                                                                                                     |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project-management/src/17-STORY-PLANS/CONTEXT.md`   | Add this plan's row to the Plans Index (file link, story, Status); bump **Last Updated**                                                                            |
-| `<any new directory>/CONTEXT.md` + `CLAUDE.md`       | Every new directory in any layer needs both — `CLAUDE.md` opens with `@./CONTEXT.md`, then a `Read order:` line and the four H2 sections (never a bare import stub) |
-| `code/src/django/apps/<app>/CONTEXT.md` (if new app) | Document the new app                                                                                                                                                |
-| Relevant `CONTEXT.md` **Last Updated** dates         | Refresh wherever content changed                                                                                                                                    |
-| `GAPS.md` / `DEFERRED.md` (repo root)                | Record any gap/blocker / deferred item with its target US###                                                                                                        |
+| File                                                          | Change required                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project-management/src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md` | Point this story's row in _Story Plans — the code master_ at this file, any reserved-number placeholder replaced, its Status cell filled as that plan's section defines the column — `project-management/src/17-STORY-PLANS/CONTEXT.md` holds no index, by decision (its _The plans index_ section) |
+| `<any new directory>/CONTEXT.md` + `CLAUDE.md`                | Every new directory in any layer needs both — `CLAUDE.md` opens with `@./CONTEXT.md`, then a `Read order:` line and the four H2 sections (never a bare import stub)                                                                                                                                 |
+| `code/src/django/apps/<app>/CONTEXT.md` (if new app)          | Document the new app                                                                                                                                                                                                                                                                                |
+| Relevant `CONTEXT.md` **Last Updated** dates                  | Refresh wherever content changed                                                                                                                                                                                                                                                                    |
+| `GAPS.md` / `DEFERRED.md` (repo root)                         | Record any gap/blocker / deferred item with its target US###                                                                                                                                                                                                                                        |
 
 ---
 
@@ -639,14 +639,14 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 
 On every status transition, update the same ClickUp status value everywhere it appears, in this order:
 
-| #   | Artefact                       | Where the status lives                                                   | Notes                                                        |
-| --- | ------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| 1   | **Story (source of truth)**    | `project-management/src/02-STORIES/US###.md` → `**Status:**` header      | Edit here **first** — the only file the ClickUp export reads |
-| 2   | **This plan**                  | `…/src/17-STORY-PLANS/STORY-PLAN-US###-*.md` → `Status` (metadata table) | Keep in lockstep with the story                              |
-| 3   | **Plans Index**                | `…/src/17-STORY-PLANS/CONTEXT.md` → Plans Index `Status` column          | Also bump the index **Last Updated**                         |
-| 4   | **Sprint record**              | `…/src/03-SPRINTS/SPRINT-##.md` → story status table                     | If the story is listed in a sprint                           |
-| 5   | **Sprint plan**                | `…/src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md` → story table / DoD         | If covered by a detailed sprint plan                         |
-| 6   | **ClickUp export (generated)** | `…/export/clickup/US###-CLIENT.md`                                       | **Do not hand-edit** — read-only (0444); regenerate (below)  |
+| #   | Artefact                         | Where the status lives                                                                       | Notes                                                        |
+| --- | -------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 1   | **Story (source of truth)**      | `project-management/src/02-STORIES/US###.md` → `**Status:**` header                          | Edit here **first** — the only file the ClickUp export reads |
+| 2   | **This plan**                    | `…/src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md` → `Status` (metadata table)        | Keep in lockstep with the story                              |
+| 3   | **Sprint plan — story-plan row** | `…/src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md` → _Story Plans — the code master_ `Status` cell | Mirrors row 2 — where this plan is indexed                   |
+| 4   | **Sprint record**                | `…/src/03-SPRINTS/SPRINT-##.md` → story status table                                         | If the story is listed in a sprint                           |
+| 5   | **Sprint plan**                  | `…/src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md` → story table / DoD                             | If covered by a detailed sprint plan                         |
+| 6   | **ClickUp export (generated)**   | `…/export/clickup/US###-CLIENT.md`                                                           | **Do not hand-edit** — read-only (0444); regenerate (below)  |
 
 Then regenerate the ClickUp-ready export from the (updated) source story:
 
@@ -770,5 +770,41 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
 - [ ] All quality gates green locally and in Docker; coverage floors met
 - [ ] Documentation hard gate satisfied — all records + `CONTEXT.md` updates complete **before** commit
 - [ ] PR raised and promoted via PM `23-pr-and-review/`; review record in `19-REVIEWS/`
-- [ ] Status set to the final ClickUp value across story + plan + Plans Index + sprint/sprint-plan; ClickUp export regenerated (`export-clickup-stories.sh`) and synced; `GAPS.md`/`DEFERRED.md` reconciled
+- [ ] Status set to the final ClickUp value across story + plan + sprint/sprint-plan, including this plan's row in the sprint plan's _Story Plans — the code master_ table; ClickUp export regenerated (`export-clickup-stories.sh`) and synced; `GAPS.md`/`DEFERRED.md` reconciled
 - [ ] (If releasing) version bumped + changelog per PM `24-release/` and `VERSIONING-GUIDE.md`
+
+<!-- RENAMED 08/09/2026, by `git mv`: this template took its `00-` prefix that day and carried the
+     same name without it before. This note sits at the END of the file deliberately — live
+     artefacts elsewhere in this repository cite this template by line number, and an insertion
+     higher up would silently invalidate every one of them. Only the three naming patterns above
+     were repointed (`:15-16`, `:586`, `:645`); no line was added or removed ahead of this note,
+     and nothing else in the template changed. The convention settled 08/09/2026 is
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded:
+     the story's position in the settled build order across the WHOLE backlog, not its sprint and
+     not a per-sprint counter, RENUMBERED whenever build order changes. That is the OPPOSITE of
+     the sibling rule for a sprint plan, which carries two numbers and where a mismatch between
+     them is deliberate information; a story plan carries one number, so it must track build order
+     or it says nothing. `00-` is reserved for this template, mirroring the sprint-plan template
+     next door. The folder's `CLAUDE.md` owns the rule. This file ships into every generated
+     project, so nothing above names a per-project story, map or plan — deliberately, and the same
+     reason keeps the plans index out of the folder's `CONTEXT.md`. -->
+
+<!-- 08/09/2026, later the same day: the four "Plans Index" sites in this template were rewritten
+     to describe what exists, each in place — one line for one line — so that no line was added or
+     removed ahead of the note above, and the live artefacts that cite this file by line number
+     still resolve. Superseded text, preserved rather than deleted — the HOW TO USE block's copy
+     step ended with "add the row to 17-STORY-PLANS/CONTEXT.md" and the section name "Plans Index";
+     the CONTEXT.md & Index Updates row named that same file and read "Add this plan's row to the
+     Plans Index (file link, story, Status); bump Last Updated"; propagation row 3 was headed
+     "Plans Index", pointed at that file's "Plans Index Status column" and read "Also bump the index
+     Last Updated"; the Definition of Done line read "across story + plan + Plans Index +
+     sprint/sprint-plan". All four pre-date today. Why: no Plans Index exists —
+     `project-management/src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ records its absence as
+     a decision, because that file ships and an index row would put a per-project citation in it —
+     so each site sent a reader to a table that is not there. The job each did is re-pointed at
+     where a plan is indexed today: its sprint plan's _Story Plans — the code master_ table in
+     `project-management/src/16-SPRINT-PLANS/`. The folder-level index is deferred to the
+     register-index work charted in `project-management/src/01-FEATURE-MAPS/`; no file is named for
+     it because none exists yet. This file ships, so this note names no per-project story, map or
+     plan: the story that had scheduled two of these four sites for itself, and the map slice that
+     claimed the other two, are cited from the plans in this folder, which do not ship. -->

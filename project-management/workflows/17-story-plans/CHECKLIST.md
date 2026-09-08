@@ -24,8 +24,20 @@ Use this checklist to verify the story plan is complete before implementation be
 
 ## Template & Naming
 
-- [ ] Plan copied from `STORY-PLAN-US000-TEMPLATE.md` — never started from scratch
-- [ ] Filename follows `STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`
+<!-- 08/09/2026: the naming rows gained the `<exec-order>-` prefix. Superseded text, preserved
+     rather than deleted: "Plan copied from "STORY-PLAN-US000-TEMPLATE.md"" and
+     "Filename follows `STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`". -->
+
+- [ ] Plan copied from `00-STORY-PLAN-US000-TEMPLATE.md` — never started from scratch
+- [ ] Filename follows `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix
+      2-digit zero-padded
+- [ ] `<exec-order>` is the story's position in the settled backlog build order (STEPS.md
+      Step 2) — **not** its sprint number and **not** a per-sprint counter
+- [ ] No other plan holds that number, and any number reserved for an unwritten plan is
+      left alone
+- [ ] If build order moved while this plan was written, every affected plan, its row in the
+      sprint plans' _Story Plans — the code master_ tables, and every citation was renumbered
+      in the same change
 - [ ] ★-marked core sections are all present; ◇-marked sections kept only where the
       concern applies, with a one-line reason for any dropped
 
@@ -78,7 +90,28 @@ Use this checklist to verify the story plan is complete before implementation be
 
 ## Sign-off
 
-- [ ] Plan saved to `src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`
-- [ ] Row added to `src/17-STORY-PLANS/CONTEXT.md` → Plans Index, with Status
+<!-- 08/09/2026: superseded, preserved rather than deleted — the row read
+     "Plan saved to `src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`". -->
+
+<!-- 08/09/2026, later the same day: both "Plans Index" rows in this file were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — under Template &
+     Naming: "every affected plan, Plans Index row and citation was renumbered in the same
+     change" (added earlier today with the `<exec-order>` prefix); here under Sign-off: "Row
+     added to `src/17-STORY-PLANS/CONTEXT.md` → Plans Index, with Status, and the index still
+     reads in `<exec-order>` sequence" (the row-added clause pre-dates today; the sequence
+     clause was added today). Why: no Plans Index exists —
+     `src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ records its absence as a decision,
+     because that file ships and an index row would put a per-project citation in it. The job
+     each row did is re-pointed at where a plan is indexed today: its sprint plan's
+     _Story Plans — the code master_ table in `src/16-SPRINT-PLANS/`. The folder-level index is
+     deferred to the register-index work charted in `src/01-FEATURE-MAPS/`; no file is named
+     for it because none exists yet. -->
+
+- [ ] Plan saved to `src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<descriptor>.md`
+- [ ] The story's row in its sprint plan's _Story Plans — the code master_ table
+      (`src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md`) names this file, any reserved-number
+      placeholder replaced, its Status cell filled as that plan's own section defines the column
+- [ ] Nothing added to `src/17-STORY-PLANS/CONTEXT.md` — it holds no index by recorded decision
+      (its _The plans index_ section), and the folder-level index is deferred
 - [ ] Driving user story (`src/02-STORIES/US###.md`) updated with a reference to this plan
 - [ ] Ready to proceed to `project-management/workflows/19-backend-code/`

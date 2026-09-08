@@ -17,11 +17,52 @@ project-management/workflows/17-story-plans/
 
 ## Purpose
 
+<!-- 08/09/2026: the produced artefact gained an `<exec-order>-` prefix. Superseded text,
+     preserved rather than deleted — this section named
+     `src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`, copied from
+     "STORY-PLAN-US000-TEMPLATE.md"; Inputs and Outputs named
+     "src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md" and
+     `src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`; Governing documents
+     named "project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md". -->
+
+<!-- 08/09/2026, later the same day: the three "Plans Index" mentions were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — _Why the filename
+     carries a number_ read "A number can be **reserved** in the Plans Index before its plan is
+     written" (added earlier today); Inputs listed "`src/17-STORY-PLANS/CONTEXT.md` → Plans
+     Index — the settled build order the new plan's `<exec-order>` prefix is counted against"
+     (added earlier today); Outputs listed "An updated row in `src/17-STORY-PLANS/CONTEXT.md` →
+     Plans Index, with status and links, the index kept in `<exec-order>` sequence" (the row
+     pre-dates today; the sequence clause was added today). Why: no Plans Index exists, and
+     `src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ records its absence as a decision —
+     that file ships, so an index row would put a per-project citation in it. Build order is
+     read off the sprint plans in `src/16-SPRINT-PLANS/`, a plan is indexed against its sprint
+     in that plan's _Story Plans — the code master_ table, and a reserved number is recorded in
+     the owning story. The folder-level index is deferred to the register-index work charted in
+     `src/01-FEATURE-MAPS/`; no file is named for it because none exists yet. -->
+
 Write the per-story implementation plan — the final decide-&-plan step before code — for a
 user story slotted into a sprint. This workflow produces
-`src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`, copied from the canonical
-`STORY-PLAN-US000-TEMPLATE.md`: the single master reference a developer codes from, fixing
+`src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<descriptor>.md`, copied from the canonical
+`00-STORY-PLAN-US000-TEMPLATE.md`: the single master reference a developer codes from, fixing
 the technical approach, key decisions, dependencies, and risks before any code is written.
+
+## Why the filename carries a number
+
+The prefix is the story's **position in the settled build order across the whole backlog** —
+2-digit zero-padded, read off the sprint plans in their own `<exec-order>` sequence and then
+the story order inside each. It is not the sprint number and not a per-sprint counter, and
+`00-` belongs to the template, mirroring `00-SPRINT-PLAN-00-TEMPLATE.md`. A number can be
+**reserved** before its plan is written — recorded in the story that owns it and, where a
+sprint plan already carries that story, as a no-file row in that plan's
+_Story Plans — the code master_ table; `src/17-STORY-PLANS/` holds no index of its own, and its
+`CONTEXT.md` → _The plans index_ records that as a decision. How to derive the number, and the
+rule that it is renumbered whenever build order moves: `STEPS.md` Step 2.
+
+**It is the reverse of the rule next door, and the difference is the count of numbers.** A
+sprint plan carries two — `<exec-order>` and `<sprint-number>` — and
+`project-management/src/16-SPRINT-PLANS/CLAUDE.md` holds that a mismatch between them is deliberate
+information and must never be "corrected". A story plan carries one, so there is no pair to
+disagree with: its prefix either tracks build order or means nothing.
 
 ## When to run
 
@@ -39,12 +80,22 @@ the technical approach, key decisions, dependencies, and risks before any code i
 - Every relevant 02–14 spec: story (`02-STORIES`), schema (`04-DATABASE`), logging (`14-LOGGING`), user flow
   (`05-USER-FLOW`), wireframes (`08-WIREFRAMES`), GDPR (`09-GDPR`), security
   (`10-SECURITY`), QA (`11-QA`), SEO (`12-SEO`), API design (`13-API-DESIGN`)
-- `src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the canonical superset template
+- `src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the canonical superset template
+- The sprint plans in `src/16-SPRINT-PLANS/`, in their own `<exec-order>` sequence — the
+  settled build order the new plan's `<exec-order>` prefix is counted against — and each one's
+  _Story Plans — the code master_ table, where a plan is indexed against its sprint
+- `src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ — why the folder holds no index, and
+  where a reserved number is recorded instead
 
 ## Outputs
 
-- `src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md` — the completed story plan
-- An updated row in `src/17-STORY-PLANS/CONTEXT.md` → Plans Index, with status and links
+- `src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md` — the
+  completed story plan
+- The story's row in its sprint plan's _Story Plans — the code master_ table
+  (`src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md`) pointed at the new file, any reserved-number
+  placeholder replaced. `src/17-STORY-PLANS/CONTEXT.md` gains no row: it holds no index by
+  recorded decision (its _The plans index_ section), the folder-level index being deferred to
+  the register-index work charted in `src/01-FEATURE-MAPS/`
 
 ## Key decisions
 
@@ -77,8 +128,10 @@ the technical approach, key decisions, dependencies, and risks before any code i
 
 - `project-management/src/17-STORY-PLANS/CLAUDE.md` — how-to-work-here rules for this
   folder: copy the template, never start from scratch, keep the dependency DAG honest
-- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the canonical
+- `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the canonical
   superset template every plan is copied from
+- `project-management/src/16-SPRINT-PLANS/CLAUDE.md` — the sibling `<exec-order>` rule this
+  folder deliberately inverts; read both before renumbering either
 
 ### Related reading
 

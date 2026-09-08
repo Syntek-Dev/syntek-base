@@ -8,6 +8,22 @@
 | Author | <%ORG_NAME%>                        |
 | Status | `Blocked`                           |
 
+<!-- RENAMED 08/09/2026, by `git mv`: this file took its `06-` prefix that day and carried the
+     same name without it before. The old name is not written out here, and no dead filename is
+     backticked anywhere in this change — `code/src/scripts/audits/doc-references.sh` reads
+     backticked tokens and would record every one as an unresolvable instance citation. The
+     convention settled 08/09/2026 is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the prefix 2-digit zero-padded. It is the story's position in the settled build order across
+     the WHOLE backlog — US007, US001, US002, US003, US004, US005, US006 — not its sprint and not
+     a per-sprint counter, so US005 is sixth, opening SPRINT-04. It is RENUMBERED whenever build
+     order changes, which is the OPPOSITE of the sibling rule for the sprint plans: a sprint plan
+     carries two numbers and a mismatch between them is information, while a story plan carries
+     one, so its prefix must track build order or it says nothing. `./CLAUDE.md` owns the rule.
+     Every story-plan citation in this file was repointed the same day. The `| Date |` row above
+     is this plan's authoring date and is not bumped for a rename; the `| Sprint |` row is
+     untouched — the prefix records build order, the row records the sprint, and the two are
+     different facts. -->
+
 <!-- The Sprint row read "SPRINT-03 · Wave 1 · build order 1" from 05/09/2026 until 07/09/2026.
      Superseded by the cascade re-plan the note below records. Wave 1 is the story's position in
      its feature map's cutting order and does not move with the sprint; build order 1 is unchanged
@@ -27,14 +43,25 @@
 > sprint" — US004 is SPRINT-03 at exec `03` and US003 is SPRINT-02, both still ahead of this
 > sprint; the Dependencies table called US003 a co-member; the `Blocked by` bullet counts the
 > chain; the security-constraint count and the status-propagation list named SPRINT-03's record
-> and plan. **No sprint plan exists for SPRINT-04**: `16-sprint-plans` has not run for it — the
-> carry-over question that held it back is settled, the run has not happened — so the
-> `Sprint plan` row below names no file, and `../03-SPRINTS/SPRINT-04.md` is authoritative until
-> one is written. The plan-versus-story status divergence — `Blocked` here, `Open` in
+> and plan. **SPRINT-04's sprint plan exists since 08/09/2026**: `16-sprint-plans` ran for it that
+> afternoon, once the carry-over question that held it back was settled, and the `Sprint plan`
+> row below names the file it wrote; where that plan and `../03-SPRINTS/SPRINT-04.md` disagree,
+> the record stays authoritative. The plan-versus-story status divergence — `Blocked` here, `Open` in
 > `../02-STORIES/US005.md` — predates this re-plan and is not touched by it;
 > `../02-STORIES/US007.md`'s QA tasks route it to whoever owns this plan. `Date` above is this
 > plan's authoring date and is deliberately not bumped, on the precedent
-> `STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
+> `04-STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
+
+<!-- 08/09/2026, evening — the sprint-plan sentence above read, from 07/09/2026 until that
+     afternoon's 16-sprint-plans run for SPRINT-04: "**No sprint plan exists for SPRINT-04**:
+     16-sprint-plans has not run for it — the carry-over question that held it back is settled,
+     the run has not happened — so the Sprint plan row below names no file, and
+     ../03-SPRINTS/SPRINT-04.md is authoritative until one is written." The `Sprint plan` row in
+     the header table was repointed when the plan was written; this sentence was not, and stood
+     falsified until this correction. The Definition of Done's propagation box carried the same
+     premise ("once 16-sprint-plans has written it") and is corrected in the same pass — see the
+     comment beneath it. Backticks are removed from the quoted text because the citation gate
+     reads backticked tokens inside comments. -->
 
 Implements `../15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md` (one layer decides
 to repeat an operation, every layer beneath makes a single attempt, and SDK transport retries are
@@ -97,32 +124,39 @@ have.** Measured 27/08, 01/09 and 05/09/2026: `code/src/django/` holds no `self.
 
 ## Reference Documents (code/docs gate map)
 
-| Concern                           | Document                                                                                                                                                      | What it binds here                                                                          |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| The family this story writes into | `code/docs/reliability/` — **US001's deliverable, absent today**                                                                                              | Every rule lands here; **its file names are US001's, cited by role only**                   |
-| Task authoring and the bound      | `code/docs/TASK-AUTHORING.md`                                                                                                                                 | `:204` requires a bound by attempt count **and** total age; its 4xx-is-permanent class      |
-| Webhook delivery                  | `code/docs/api-design/WEBHOOKS.md`                                                                                                                            | `:86`'s 5-over-24-hours budget; `:88`'s disable-after-N as the breaker's partial mechanism  |
-| API performance budgets           | `code/docs/performance/API-AND-MONITORING.md`                                                                                                                 | `:57` — plus `:46`, `:69` and `:142`, which the inventory must not miss                     |
-| The MCP tool surface              | `code/docs/mcp-server/TOOL-DESIGN.md`                                                                                                                         | `:139-141` states the inverse of the owner rule and is repaired or assigned                 |
-| Service and middleware shape      | `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`                                                                                                            | `:265`'s breaker mandate becomes a pointer; `:252-257`'s Retry column is `S-04`'s           |
-| What the code must never allow    | `code/docs/NEGATIVE-SPACE.md`                                                                                                                                 | `:226` repointed or verified; `:211` gains a prose pointer, **never a sixth column**        |
-| Length limit and the ratchet      | `code/docs/DOCUMENTATION-LENGTH.md`                                                                                                                           | Nothing born at or above 270; nothing edited crosses it without a dated allowance           |
-| Reporting a gate's result         | `code/docs/GATE-REPORTING.md`                                                                                                                                 | `doctrine-drift.sh` is never reported as having read this story's prose                     |
-| Forward-looking claims            | `code/docs/FORWARD-VOICE.md`                                                                                                                                  | The `OUTBOUND-TIMEOUTS.md` reference is a forward one; a dangling path is fixed, not marked |
-| GDPR compliance examples          | `project-management/docs/gdpr/COMPLIANCE.md`                                                                                                                  | `:22-49` — the whole fence, `:27`'s budget and `:46-48`'s shape together                    |
-| Story                             | `../02-STORIES/US005.md`                                                                                                                                      | Nine scenarios, the acceptance this plan implements                                         |
-| Threat model                      | `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md`                                                                         | Twelve findings, five trust boundaries, the promotion-trigger table                         |
-| Security assessment               | `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md`                                                                            | **Section 7's twelve constraints — carried in below, not re-derived**                       |
-| QA                                | `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`                                                                                              | Fifteen resolved AC-gaps, the scenario tables, the measured gate baselines                  |
-| Sprint plan                       | **None yet** — 04-SPRINT-PLAN-04.md is not written as of 07/09/2026; `../03-SPRINTS/SPRINT-04.md` is authoritative until `16-sprint-plans` runs for SPRINT-04 | Build order, the `Must` tier, the gate-honesty constraint                                   |
+| Concern                           | Document                                                                              | What it binds here                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| The family this story writes into | `code/docs/reliability/` — **US001's deliverable, absent today**                      | Every rule lands here; **its file names are US001's, cited by role only**                   |
+| Task authoring and the bound      | `code/docs/TASK-AUTHORING.md`                                                         | `:204` requires a bound by attempt count **and** total age; its 4xx-is-permanent class      |
+| Webhook delivery                  | `code/docs/api-design/WEBHOOKS.md`                                                    | `:86`'s 5-over-24-hours budget; `:88`'s disable-after-N as the breaker's partial mechanism  |
+| API performance budgets           | `code/docs/performance/API-AND-MONITORING.md`                                         | `:57` — plus `:46`, `:69` and `:142`, which the inventory must not miss                     |
+| The MCP tool surface              | `code/docs/mcp-server/TOOL-DESIGN.md`                                                 | `:139-141` states the inverse of the owner rule and is repaired or assigned                 |
+| Service and middleware shape      | `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`                                    | `:265`'s breaker mandate becomes a pointer; `:252-257`'s Retry column is `S-04`'s           |
+| What the code must never allow    | `code/docs/NEGATIVE-SPACE.md`                                                         | `:226` repointed or verified; `:211` gains a prose pointer, **never a sixth column**        |
+| Length limit and the ratchet      | `code/docs/DOCUMENTATION-LENGTH.md`                                                   | Nothing born at or above 270; nothing edited crosses it without a dated allowance           |
+| Reporting a gate's result         | `code/docs/GATE-REPORTING.md`                                                         | `doctrine-drift.sh` is never reported as having read this story's prose                     |
+| Forward-looking claims            | `code/docs/FORWARD-VOICE.md`                                                          | The `OUTBOUND-TIMEOUTS.md` reference is a forward one; a dangling path is fixed, not marked |
+| GDPR compliance examples          | `project-management/docs/gdpr/COMPLIANCE.md`                                          | `:22-49` — the whole fence, `:27`'s budget and `:46-48`'s shape together                    |
+| Story                             | `../02-STORIES/US005.md`                                                              | Nine scenarios, the acceptance this plan implements                                         |
+| Threat model                      | `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md` | Twelve findings, five trust boundaries, the promotion-trigger table                         |
+| Security assessment               | `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md`    | **Section 7's twelve constraints — carried in below, not re-derived**                       |
+| QA                                | `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`                      | Fifteen resolved AC-gaps, the scenario tables, the measured gate baselines                  |
+| Sprint plan                       | `../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md`                                             | Build order, the `Must` tier, the gate-honesty constraint                                   |
+| Feature map                       | `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md`                                     | Slice `S-02`, nodes `N-008`–`N-011`; the `S-04` and `S-09` rows this story edits            |
 
 <!-- The Sprint plan row named `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` from 05/09/2026 until
      07/09/2026, when this story moved to SPRINT-04. That plan was written for this story and US003
-     and is superseded in every section. The absent filename above is deliberately unbackticked:
-     it names a file that does not exist, and the citation gate tests backticked tokens —
-     ../02-STORIES/US006.md's Verification Checks record the same choice for the same reason. -->
+     and was rewritten the same day for US004, its sole member since the cascade. This comment sat
+     BETWEEN the two rows above from 07/09/2026 until 08/09/2026, severing the Feature map row from
+     its table; moved below the body so the table renders whole.
 
-| Feature map | `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` | Slice `S-02`, nodes `N-008`–`N-011`; the `S-04` and `S-09` rows this story edits |
+     08/09/2026, later the same day — the row now names the plan. It read: "**None yet** —
+     04-SPRINT-PLAN-04.md is not written as of 08/09/2026; ../03-SPRINTS/SPRINT-04.md is
+     authoritative until 16-sprint-plans runs for SPRINT-04", with the filename deliberately
+     unbackticked because the citation gate tests backticked tokens and the file did not exist.
+     16-sprint-plans ran for SPRINT-04 that afternoon and wrote it, so the name is now a real path
+     and is backticked like any other. The record remains authoritative where the two disagree;
+     nothing else in this row moved. -->
 
 **Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
 `../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../12-SEO/`, `../13-API-DESIGN/`,
@@ -174,7 +208,7 @@ protects a decision a reader may have relied on and this one had not reached a c
 ### Where the rules go, and why this plan will not name a file
 
 `code/docs/reliability/` does not exist, and **its file names are decided inside US001, with the
-reasoning in the family's own `CONTEXT.md`** — `../17-STORY-PLANS/STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`
+reasoning in the family's own `CONTEXT.md`** — `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`
 declines to name them too, so there is nothing to inherit provisionally and a guessed map would
 be a set of dead links. Every placement below is stated by **role**, and the directory name is the
 one path token this story may commit to.
@@ -314,14 +348,30 @@ produces two owners for one file.
 ### The citation gate, corrected
 
 **Two baselines are in circulation and the story is not the source of the larger one.**
-`../02-STORIES/US005.md` reads its checks against **53** (measured 04/09/2026, at `:367` and
-`:437`); the **56** belongs to `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`
+`../02-STORIES/US005.md` reads its checks against **53** (measured 04/09/2026, in its _QA
+Acceptance Criteria — Manual_ row for that gate); the **56** belongs to `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`
 Section 7 and to `../03-SPRINTS/SPRINT-04.md` (to `SPRINT-03.md` until 07/09/2026, when the figure
 travelled with this story), and the difference is US005's own three artefacts.
 Both are honest; neither site says which one the closing check uses, and **this plan settles it:
 diff against a figure measured in the same git-index state as the run, and record that state
 beside it** — the numbers below, not either inherited one. **By the time this story is worked, most of that is
 obsolete, and the reason is build order.**
+
+<!-- The parenthetical above read "(measured 04/09/2026, at `:367` and `:437`)" until 08/09/2026,
+     and for part of that day "(measured 04/09/2026, in its _QA Acceptance Criteria — Manual_ and
+     its _Verification Checks_)". At the story's first commit of 05/09/2026, :367 was the _QA
+     Acceptance Criteria — Manual_ row for `doc-references.sh`, reading "Measured 04/09/2026: the
+     baseline is **53** findings", and :437 the _Verification Checks_ row for the same gate,
+     reading "no new finding against the recorded baseline of 53" — so the section names were
+     right for that state. The second commit of that day, which also created this plan, rewrote
+     both rows: the first to "**One baseline, and it is the sprint's**: 56", keeping the 53 as
+     its derivation, and the second to "the recorded baseline named above", with no figure. On
+     08/09/2026 :367 and :437 hold other text, the 53 is stated in that story only in its FLAGS
+     comment and that _QA Acceptance Criteria — Manual_ row, and the story names 56 as the
+     baseline it diffs against — so the sentence's "reads its checks against **53**" was
+     overtaken on 05/09/2026, in the parallel pass that wrote it. Only the parenthetical is
+     corrected here; whether the paragraph's two-baselines framing still stands is this plan's
+     own premise, re-settled under `17-story-plans`, not by a citation repair. -->
 
 | Class                             | Count | Cleared by   | Landed before US005?                                                                                                                  |
 | --------------------------------- | ----- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
@@ -601,13 +651,18 @@ story as its deadline.
 | `DEFERRED.md`                                     | The unenforced window — **written by `22`, not by this story**                                                                                 |
 | `../17-STORY-PLANS/CONTEXT.md`                    | **No Plans Index row** — see below                                                                                                             |
 
-**There is no Plans Index row, and it is a decision.** The index eight artefacts already cite has
-never existed. `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` **creates
-`../17-STORY-PLANS/STORY-PLAN-INDEX.md`** — the file all eight citations should have named — and
-repoints them. The claim lives on that map's _Register claimed_ table, **not** on `GAPS.md` — the
-entry was re-triaged off that register and the map is now its only home, so a reader sent to
-`GAPS.md` for it finds nothing. Adding an index here would pre-empt a claimed slice and create a
-ninth citation of a surface about to be named otherwise.
+**There is no Plans Index row, and it is a decision — and since 08/09/2026 nothing asks for it.**
+The index eight artefacts once cited has never existed: `../17-STORY-PLANS/CONTEXT.md` →
+_The plans index_ records its absence as a decision, and on 08/09/2026 the `17-story-plans`
+workflow files, the folder's `CLAUDE.md`, the shipped template and the plans on disk were
+re-pointed at where a plan is indexed today — its sprint plan's _Story Plans — the code master_
+table. `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` owns relocating these indexes
+into seeded files and its `N-003` gate names the folder-level index file —
+"STORY-PLAN-INDEX.md" — specifically; the file exists nowhere yet, so it is quoted, not cited.
+**The decline stands until that slice lands.** The claim lives on that map's _Register claimed_
+table, **not** on `GAPS.md` — the entry was re-triaged off that register and the map is now its
+only home, so a reader sent to `GAPS.md` for it finds nothing. Adding an index here would
+pre-empt a claimed slice and create a fresh citation of a surface about to be named otherwise.
 
 ## Deferred Items
 
@@ -630,16 +685,24 @@ ninth citation of a surface about to be named otherwise.
 
 ## Risks
 
-| Risk                                                                        | Mitigation                                                                                                                        |
-| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| US001 lands with a family shape the role-only placement does not fit        | P1 opens by **reading the family's `CONTEXT.md`** and resolving roles onto real files before writing a line                       |
-| The inventory is captured after US001 lands and measures the wrong "before" | US001's landing state is recorded **beside** the inventory; the disposition of two budgets changes with it                        |
-| The worst case is not hand-recomputable on the override row                 | The override states **every parameter it changes**; the recomputation covers a default row and the override row, both written out |
-| The MCP inverse is left standing because it is not this story's file        | The criterion accepts a named slice assignment **written into the map** — but not silence                                         |
-| `S-05`'s gate is written against wording this story later rephrases         | The doctrine's phrasing is pinned by `S-05`'s claims row; a later rewording becomes a gate edit and is flagged as one             |
-| `TASK-AUTHORING.md` crosses 270 as this story edits it                      | US001 **reduces** it first — the 266 measurement predates that migration. Re-measure rather than inherit the figure               |
-| The gate figures in the story are read as current                           | _The citation gate, corrected_ states what build order has already cleared; the story's 56 is a pre-US001, pre-US004 number       |
-| The `INFO` severities are read as a clean security result                   | The design-state table and its four `HIGH`s are cited beside every severity claim, per `code/docs/GATE-REPORTING.md`              |
+| Risk                                                                        | Mitigation                                                                                                                                    |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| US001 lands with a family shape the role-only placement does not fit        | P1 opens by **reading the family's `CONTEXT.md`** and resolving roles onto real files before writing a line                                   |
+| The inventory is captured after US001 lands and measures the wrong "before" | US001's landing state is recorded **beside** the inventory; the disposition of two budgets changes with it                                    |
+| The worst case is not hand-recomputable on the override row                 | The override states **every parameter it changes**; the recomputation covers a default row and the override row, both written out             |
+| The MCP inverse is left standing because it is not this story's file        | The criterion accepts a named slice assignment **written into the map** — but not silence                                                     |
+| `S-05`'s gate is written against wording this story later rephrases         | The doctrine's phrasing is pinned by `S-05`'s claims row; a later rewording becomes a gate edit and is flagged as one                         |
+| `TASK-AUTHORING.md` crosses 270 as this story edits it                      | US001 **reduces** it first — the 266 measurement predates that migration. Re-measure rather than inherit the figure                           |
+| The gate figures in the story are read as current                           | _The citation gate, corrected_ states what build order has already cleared; the story's 56 is a pre-US001, pre-US004 number                   |
+| The `INFO` severities are read as a clean security result                   | The design-state table and its three `HIGH`s — TM-01, TM-02, TM-04 — are cited beside every severity claim, per `code/docs/GATE-REPORTING.md` |
+
+<!-- Until 08/09/2026 the last row's mitigation read "The design-state table and its four `HIGH`s
+     are cited beside every severity claim, per `code/docs/GATE-REPORTING.md`". Four counted TM-02
+     twice: the assessment's summary enumerates "TM-01, TM-02, TM-04 and TM-02's early-wiring
+     case", and that fourth item is TM-02's own row, whose trigger cell already carries the
+     early/late split. The threat model's Section 3a marks three rows `HIGH` — TM-01, TM-02,
+     TM-04 — and this plan's own _Every severity above expires_ paragraph under Security already
+     said three. Corrected to agree with both. -->
 
 ## Definition of Done
 
@@ -665,9 +728,40 @@ ninth citation of a surface about to be named otherwise.
 - [ ] A tester other than the author has signed the walk-through off
 - [ ] `DEFERRED.md` carries the unenforced-window entry, written by `22`
 - [ ] Status propagated to every artefact that carries it — `../02-STORIES/US005.md`, **this plan's
-      own header** (off `Blocked`), the SPRINT-04 sprint plan's Story Plans row once
-      `16-sprint-plans` has written it, and `../03-SPRINTS/SPRINT-04.md`'s Story Summary
+      own header** (off `Blocked`), this plan's row under the SPRINT-04 sprint plan's _Story Plans
+      — the code master_ table (the plan the header's `Sprint plan` row names, written
+      08/09/2026; its Status cell reads "Not started" until US007's Scenario 8 corrects it), and
+      `../03-SPRINTS/SPRINT-04.md`'s Story Summary
       (`03-SPRINT-PLAN-03.md`'s row and `SPRINT-03.md`'s table until 07/09/2026). **This plan is the first to carry `Blocked`, so
-      it is the first whose own header needs clearing** — the template's propagation line also
-      names a Plans Index, which does not exist (see _CONTEXT.md & Index Updates_)
+      it is the first whose own header needs clearing** — and since 08/09/2026 the template's
+      propagation table names no Plans Index: its row 3 is the sprint plan's _Story Plans — the
+      code master_ `Status` cell, the row listed above (why no index exists: _CONTEXT.md & Index
+      Updates_)
 - [ ] Reviewed and approved; merged
+
+<!-- 08/09/2026, later the same day: the two "Plans Index" sites in this plan were rewritten to
+     describe what exists, with the treatment `02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`
+     and `03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` received earlier that day. Superseded
+     text, preserved rather than deleted — the CONTEXT.md & Index Updates paragraph opened "There
+     is no Plans Index row, and it is a decision." and read "The index eight artefacts already
+     cite has never existed", then that slice `S-01` "creates ../17-STORY-PLANS/STORY-PLAN-INDEX.md
+     — the file all eight citations should have named — and repoints them", the path in
+     backticks, and closed "create a ninth citation of a surface about to be named otherwise";
+     the Definition of Done's propagation box ended "the template's propagation line also names a
+     Plans Index, which does not exist (see CONTEXT.md & Index Updates)". Why: no Plans Index
+     exists — `../17-STORY-PLANS/CONTEXT.md` → _The plans index_ records its absence as a
+     decision — and on 08/09/2026 the `17-story-plans` workflow files, the folder's `CLAUDE.md`
+     and `CONTEXT.md`, the shipped template and the other plans on disk were re-pointed at where
+     a plan is indexed today, its sprint plan's _Story Plans — the code master_ table; the
+     template's propagation row 3 and its Definition of Done now name that table and no index, so
+     the Definition of Done clause's premise fell. This file was outside that pass's file set. The
+     decline itself stands and is kept; the backticks came off the index filename because the
+     file exists nowhere yet and the citation gate reads backticked tokens. -->
+
+<!-- 08/09/2026, evening — the propagation box above read "the SPRINT-04 sprint plan's Story
+     Plans row once 16-sprint-plans has written it" until this correction. 16-sprint-plans ran for
+     SPRINT-04 that afternoon; the plan it wrote is the one the header's Sprint plan row names,
+     and its _Story Plans — the code master_ table carries this plan's row, the Status cell
+     reading "Not started" by that plan's own dated admission beneath the table. The header
+     blockquote's "No sprint plan exists for SPRINT-04" sentence fell with it and is corrected in
+     place, with its own comment. -->

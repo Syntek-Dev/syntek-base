@@ -8,6 +8,32 @@
 | Author | <%ORG_NAME%>                       |
 | Status | `Open`                             |
 
+<!-- RENAMED 08/09/2026, by `git mv`: this file took its `02-` prefix that day and carried the
+     same name without it before. The old name is not written out here, and no dead filename is
+     backticked anywhere in this change — `code/src/scripts/audits/doc-references.sh` reads
+     backticked tokens and would record every one as an unresolvable instance citation. The
+     convention settled 08/09/2026 is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the prefix 2-digit zero-padded. It is the story's position in the settled build order across
+     the WHOLE backlog — US007, US001, US002, US003, US004, US005, US006 — not its sprint and not
+     a per-sprint counter, so US001 is second, behind US007. It is RENUMBERED whenever build order
+     changes, which is the OPPOSITE of the sibling rule for the sprint plans: a sprint plan
+     carries two numbers and a mismatch between them is information, while a story plan carries
+     one, so its prefix must track build order or it says nothing. `./CLAUDE.md` owns the rule.
+     Every story-plan citation in this file was repointed the same day. The `| Date |` row above
+     is this plan's authoring date and is not bumped for a rename; the `| Sprint |` row is
+     untouched — the prefix records build order, the row records the sprint, and the two are
+     different facts. -->
+
+> **This plan's `| Sprint |` row survived the cascade re-plan of 07/09/2026 unchanged, and its
+> co-member did not.** US007 — the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP
+> — was cut that day and must ship before US002; <%DEVELOPER_NAME%> settled a full cascade rather
+> than an execution reorder, and in SPRINT-01 that means US002 left for SPRINT-02 and US007 arrived
+> first in the build order. `SPRINT-01 · Wave 0 · build order 2` was true before and after, so the
+> row was left alone on 07/09/2026 — and the Dependencies table beneath it, which still named US002
+> as the co-member built first on blast radius, was missed. Corrected 08/09/2026; the superseded
+> rows are kept in a dated comment there. `Date` above is this plan's authoring date and is
+> deliberately not bumped, on the precedent `04-STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
+
 Rests on `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` <!-- doc-references: template-only -->
 (prose doctrine is verified by human read-across; `doctrine-drift.sh` is a regression guard only)
 and `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` <!-- doc-references: template-only -->
@@ -162,16 +188,33 @@ repointed until its target exists and the file names are settled.
 
 ## Dependencies
 
-| Story | Relationship | Detail                                                                                    |
-| ----- | ------------ | ----------------------------------------------------------------------------------------- |
-| US002 | Independent  | Shares no file. The sprint plan runs US002 first on blast radius; either order is correct |
-| US003 | Independent  | SPRINT-02                                                                                 |
+| Story | Relationship | Detail                                                                                                                                                                                                                                                                                                                                          |
+| ----- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US007 | Independent  | **Co-member since 07/09/2026, built first.** Shares no file. The sprint runs US007 then this story — a sequencing call settled 07/09/2026, not a dependency: the vocabulary US007 makes canonical is settled before anything in this sprint or the next writes a `**Status:**` value against it (`../03-SPRINTS/SPRINT-01.md` → _Dependencies_) |
+| US002 | Independent  | Shares no file. Co-member until 07/09/2026; now opens SPRINT-02 behind US007. No order between the two is recommended any longer, because none is needed                                                                                                                                                                                        |
+| US003 | Independent  | SPRINT-02 — its `Should` stretch since 07/09/2026, after two moves (SPRINT-02 → SPRINT-03 on 05/09/2026, and back). Shares no file                                                                                                                                                                                                              |
 
-- **Blocked by:** nothing. Wave 0.
+<!-- The table read, from 02/09/2026 until 08/09/2026:
+     "| US002 | Independent | Shares no file. The sprint plan runs US002 first on blast radius; either
+     order is correct |
+      | US003 | Independent | SPRINT-02 |"
+     Superseded by the cascade re-plan of 07/09/2026, recorded under the header: US002 left
+     SPRINT-01 for SPRINT-02 and US007 — cut that day, `Must Have`, 5 SP — arrived first in the
+     build order, so the blast-radius tiebreak the first row cites has nothing left to decide
+     between (`../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` → _Build order_). The US003 cell was true
+     on 02/09/2026, false from 05/09/2026 to 07/09/2026 while US003 sat in SPRINT-03, and true
+     again now; rewritten because "SPRINT-02" alone no longer says why. -->
+
+- **Blocked by:** nothing. Wave 0. **Ordered behind US007** (SPRINT-01, build order 1) since
+  07/09/2026 — a sequencing call the sprint record fixes and this plan does not re-derive;
+  `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` → _Build order_ records that within the sprint nothing
+  fails if it is reversed.
 - **Blocks:** `project-management/src/01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` <!-- doc-references: template-only --> slices `S-02` and `S-03`, both of which write into the
   family this story creates, and the **reliability half** of `project-management/src/01-FEATURE-MAPS/MAP-CAP-POSTURE.md` <!-- doc-references: template-only --> `S-01`. That map's
   architecture half is not blocked.
 - **Can be done now:** yes, in full, once `pm/story-creation` is merged and the branch is cut.
+  In practice this story starts after US007, by the sprint's fixed build order; nothing in it
+  waits on US007's content, and the two share no file.
 
 ## GDPR
 
@@ -258,15 +301,17 @@ clears it.
 - Index rows in four surfaces: root `REFERENCES.md`, `code/REFERENCES.md`, `code/docs/CONTEXT.md`,
   `code/CONTEXT.md`.
 - `code/docs/CONTEXT.md` takes two independent edits — an index row and a repointed citation.
-- **The Plans Index row is declined, on the record.**
-  `project-management/workflows/17-story-plans/STEPS.md` Step 10.2 requires a row in
-  `../17-STORY-PLANS/CONTEXT.md` → _Plans Index_. **That section does not exist, and the row is
-  not added.** `CONTEXT.md` is re-included by `copier.yml` <!-- doc-references: template-only --> and therefore **ships**, so an
+- **The Plans Index row is declined, on the record — and since 08/09/2026 nothing asks for it.**
+  Until that day `project-management/workflows/17-story-plans/STEPS.md` Step 10.2 required a row
+  in `../17-STORY-PLANS/CONTEXT.md` → _Plans Index_. **That section has never existed, and the
+  row was never added.** `CONTEXT.md` is re-included by `copier.yml` <!-- doc-references: template-only --> and therefore **ships**, so an
   instance row naming a `STORY-PLAN-US###` would put a per-project citation in a shipped file —
   the same defect ten feature maps declined for `../01-FEATURE-MAPS/CONTEXT.md`, and the reason
   that index still reads _"None charted yet"_ against twelve maps. `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` <!-- doc-references: template-only --> slice
-  `S-01` owns relocating these indexes into seeded files and its `N-003` gate names
-  `STORY-PLAN-INDEX.md` specifically. **The decline stands until that slice lands.**
+  `S-01` owns relocating these indexes into seeded files and its `N-003` gate names the
+  folder-level index file — "STORY-PLAN-INDEX.md" — specifically. **The decline stands until that
+  slice lands.** Step 10.2 was re-pointed on 08/09/2026 at where this plan is indexed today: its
+  row in `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` → _Story Plans — the code master_.
 
 ## Deferred Items
 
@@ -306,4 +351,19 @@ clears it.
 - [ ] `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`, lint and format pass
 - [ ] `../18-TESTS/US001-MANUAL-TESTING.md` exists and its rule inventory balances
 - [ ] The human read-across is done and signed off by someone other than the author
-- [ ] Story `**Status:**` moved to `Completed`; the Plans Index row updated
+- [ ] Story `**Status:**` moved to `Completed`; this plan's row in
+      `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` → _Story Plans — the code master_ mirrors it
+
+<!-- 08/09/2026, later the same day: the two "Plans Index" sites in this plan were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — the CONTEXT.md & Index
+     Updates bullet opened "The Plans Index row is declined, on the record.", said that Step 10.2
+     "requires a row in" the folder's `CONTEXT.md` → _Plans Index_ and that "That section does not
+     exist, and the row is not added", and named the file the `N-003` gate creates,
+     "STORY-PLAN-INDEX.md", in backticks; the Definition of Done ended "the Plans Index row
+     updated". Why: no Plans Index exists — `../17-STORY-PLANS/CONTEXT.md` → _The plans index_
+     records its absence as a decision — and Step 10.2 stopped asking for the row on 08/09/2026,
+     when the `17-story-plans` workflow files and `../17-STORY-PLANS/CLAUDE.md` were re-pointed at
+     where a plan is indexed today: its sprint plan's _Story Plans — the code master_ table. This
+     plan's row is in `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`. The decline itself stands and is kept; the
+     backticks came off the index filename because the file exists nowhere yet and the citation
+     gate reads backticked tokens. -->
