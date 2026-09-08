@@ -140,7 +140,14 @@ Commit `.py`, `.tex`, and `.pdf` together. Never hand-edit the generated files.
 
 > **Model:** fable
 
-For every `STORY-PLAN-US###-*.md` whose technical approach assumed a shape this pass
+<!-- UPDATED 08/09/2026. The story-plan filename pattern gained its `<exec-order>-` prefix;
+     superseded form, quoted without backticks so no dead name is recorded as a fresh citation:
+     "STORY-PLAN-US###-*.md". The prefix is the story's position in the settled build order and
+     is renumbered when that order changes, so a correction here may also renumber — which is the
+     OPPOSITE of `project-management/src/16-SPRINT-PLANS/CLAUDE.md`, where a two-number mismatch
+     is deliberate and never "corrected". Rule: `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->
+
+For every `<exec-order>-STORY-PLAN-US###-*.md` whose technical approach assumed a shape this pass
 changed, correct the plan and note the consolidation that drove it.
 
 This step is what makes the two-stage model safe: the developer codes from the story

@@ -136,7 +136,7 @@ in a directory the current template no longer defines.
 | `LOGGING-PLAN-US###-*.md` · `LOGGING-IMPL-US###-*.md`                   | `14-LOGGING/PLANNING` · `/IMPLEMENTATION`                                                            |
 | `ADR-###-<TITLE>.md`                                                    | `15-DECISIONS/`                                                                                      |
 | `##-SPRINT-PLAN-##.md`                                                  | `16-SPRINT-PLANS/`                                                                                   |
-| `STORY-PLAN-US###-<DESCRIPTOR>.md`                                      | `17-STORY-PLANS/`                                                                                    |
+| `<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md`                         | `17-STORY-PLANS/`                                                                                    |
 | `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `18-TESTS/`                                                                                          |
 | `REVIEW-US###-<DESCRIPTOR>.md`                                          | `19-REVIEWS/`                                                                                        |
 | `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                              | `20-FINDINGS/`                                                                                       |
@@ -145,6 +145,12 @@ in a directory the current template no longer defines.
 | `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` · `INCIDENT-INDEX.md`             | `23-INCIDENTS/` (no `US###` form — an incident is not owned by a story)                              |
 
 Descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY; story numbers zero-padded to three digits.
+
+**The two plan rows look alike and are not.** A sprint plan's two numbers are execution order and
+sprint identity, and their disagreeing is deliberate; a story plan's single `<exec-order>` is its
+position in the settled build order across the whole backlog, renumbered whenever that order
+changes, so there a drifted prefix is a defect. `16-SPRINT-PLANS/CLAUDE.md` and
+`17-STORY-PLANS/CLAUDE.md` own the two rules; this table shows only the patterns.
 
 ---
 
@@ -190,3 +196,12 @@ serve that role.
 - `project-management/CONTEXT.md` — full PM layer overview and workflow gates
 - `project-management/docs/VERSIONING-GUIDE.md` — semantic versioning rules
 - `project-management/docs/GIT-GUIDE.md` — branch naming and PR conventions
+
+<!-- RENAMED 08/09/2026. The `17-STORY-PLANS/` row in _Where each artefact lives_ gained the
+     `<exec-order>-` prefix; its previous pattern read "STORY-PLAN-US###-<DESCRIPTOR>.md",
+     unprefixed. The paragraph under the table was added at the same time, because the row now
+     sits directly beneath the sprint-plan row and the two prefixes are governed by opposite
+     rules — a fact a table of patterns cannot show. Orientation only: the rules themselves stay
+     with the two folders' `CLAUDE.md` files, per `code/docs/DOCUMENTATION-PAIRING.md`. The
+     `17-STORY-PLANS/` line in the Full Directory Tree above names the folder, not a filename,
+     and is unchanged. -->

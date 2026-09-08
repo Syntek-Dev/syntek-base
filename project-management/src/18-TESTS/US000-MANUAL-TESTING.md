@@ -5,7 +5,7 @@ _Template — copy to `US###-MANUAL-TESTING.md`, replace every `{PLACEHOLDER}`, 
 **Last Updated**: {DD/MM/YYYY} · **Story**: US### · **Status**: {status: In progress / Passed / Blocked}
 
 - **Story:** `../02-STORIES/US###.md` — {short title}
-- **Story plan:** `../17-STORY-PLANS/STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this guide exercises
+- **Story plan:** `../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this guide exercises
 - **Branch:** `us###/{short-description}`
 
 ---
@@ -110,7 +110,14 @@ project defaults — adjust to the story's responsive spec.
 ## Cross-references
 
 - `../02-STORIES/US###.md` — the story under test
-- `../17-STORY-PLANS/STORY-PLAN-US###-{DESCRIPTOR}.md` — the implementation plan this guide exercises
+- `../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the implementation plan this guide exercises
 - `US###-TEST-STATUS.md` — the paired automated-test status record
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US###-{DESCRIPTOR}-DD-MM-YYYY.md` — the QA review that signs the story off
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA rules for the accessibility pass
+
+<!-- UPDATED 08/09/2026. Both story-plan citations gained the `{XX}-` build-order prefix; they read
+     "STORY-PLAN-US###-{DESCRIPTOR}.md" before — double-quoted here, never backticked, so
+     `code/src/scripts/audits/doc-references.sh` records no fresh unresolvable citation. `{XX}` is
+     the story's 2-digit position in the settled build order across the whole backlog, renumbered
+     when that order changes; copy it whole off the plan's filename. Owner of the rule:
+     `../17-STORY-PLANS/CLAUDE.md`. -->

@@ -22,7 +22,7 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
   `US###` for any gap needing capability → re-export `../DIAGRAMS/flow-<area>-<screen>.png`.
 - **Definition of done:** no dead end anywhere in the journey; every seam logged with its
   verdict; every gap either resolved or raised as a story; every affected
-  `STORY-PLAN-US###-*.md` corrected; British English; DD/MM/YYYY.
+  `<exec-order>-STORY-PLAN-US###-*.md` corrected; British English; DD/MM/YYYY.
 
 ## Guardrails
 
@@ -44,3 +44,11 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
 - **Template:** `USER-FLOW-CONSOLIDATED-000-TEMPLATE.md` — the copy source; do not delete.
 - **Generated (never hand-edit):** the PNGs in `../DIAGRAMS/`.
 - `<AREA>` in `SCREAMING-KEBAB-CASE`; superseded fragments cited as `US###`; dates DD/MM/YYYY.
+
+<!-- UPDATED 08/09/2026. The story-plan pattern in _Definition of done_ gained the `<exec-order>-`
+     build-order prefix; it read "STORY-PLAN-US###-*.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's position in the settled build order across the whole backlog and moves only on a
+     re-plan — correct a plan's contents here, never its number (`../../17-STORY-PLANS/CLAUDE.md`).
+-->

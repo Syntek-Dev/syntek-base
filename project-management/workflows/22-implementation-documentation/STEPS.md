@@ -29,10 +29,18 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Confirm Code Phases Complete and Identify Applicable Specs
 
+<!-- UPDATED 08/09/2026. The story-plan filename pattern below gained its `<exec-order>-`
+     prefix; superseded form, quoted without backticks so no dead name is recorded as a fresh
+     citation: "src/17-STORY-PLANS/STORY-PLAN-US###-*.md". The prefix is the story's position in
+     the settled build order, renumbered whenever that order changes — the OPPOSITE of the
+     two-number sprint-plan rule in `project-management/src/16-SPRINT-PLANS/CLAUDE.md`, where a
+     mismatch is deliberate and never "corrected". Rule:
+     `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->
+
 Verify all in-scope code phases have shipped for the story (`19-backend-code`,
 `20-api-code`, `21-frontend-code`). Then open the story plan
-(`src/17-STORY-PLANS/STORY-PLAN-US###-*.md`) and list every design/compliance spec that
-carried a `PLANNING/` artefact for this story:
+(`src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) and list every design/compliance
+spec that carried a `PLANNING/` artefact for this story:
 
 | Discipline | Applies when                         | PLANNING artefact                                       |
 | ---------- | ------------------------------------ | ------------------------------------------------------- |

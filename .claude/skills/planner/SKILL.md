@@ -84,7 +84,7 @@ before committing it to a phase.
 ## Output
 
 `project-management/src/17-STORY-PLANS/`, from
-`STORY-PLAN-US000-TEMPLATE.md`. That template is the shape of record and is not restated here;
+`00-STORY-PLAN-US000-TEMPLATE.md`. That template is the shape of record and is not restated here;
 the naming convention is `project-management/src/CONTEXT.md`'s. Each phase must be
 independently testable, sized for a focused session, with inter-phase dependencies explicit and
 no premature detail that locks in a decision the implementer should own.

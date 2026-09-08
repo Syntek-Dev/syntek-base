@@ -117,7 +117,7 @@
 - **AC-GAP-12** `[RESOLVED]` — **a marker is silencing the citation gate on a citation that is
   simply wrong.** `project-management/src/02-STORIES/US005.md` carries
   `<!-- doc-references: template-only -->` on a citation of
-  `project-management/src/17-STORY-PLANS/STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`, which
+  `project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`, which
   does not exist — that plan is written at `17-story-plans`, after the sprint fills. The marker
   sets the gate's naming-row flag and the dangling-path record is skipped, so the story's "three
   forward findings" are three measured plus one masked. `code/docs/FORWARD-VOICE.md` reserves the
@@ -150,6 +150,19 @@
   Resolved: the flag now reads `retry amplification · untrusted Retry-After · duplicate execution ·
 attempt-log leakage`, the security constraints are carried into the story's Verification Checks,
   and SPRINT-03's flag union was recomputed in the same pass. Added on 05/09/2026.
+
+<!-- The story-plan citation in AC-GAP-12 above was repointed 08/09/2026. That plan took its `06-`
+     prefix that day, by `git mv`, and carried the same name without it before; no dead filename
+     is backticked in this change, because `code/src/scripts/audits/doc-references.sh` reads
+     backticked tokens and would record each one as an unresolvable instance citation. The
+     convention settled that day is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the
+     2-digit prefix being the story's position in the settled build order across the whole backlog
+     — not its sprint, and not a per-sprint counter — renumbered whenever that order changes
+     (`project-management/src/17-STORY-PLANS/CLAUDE.md` owns the rule). READ THE GAP AT ITS OWN
+     DATE: "which does not exist" was true when AC-GAP-12 was written on 05/09/2026, and the plan
+     was written later the same day, which is what moved the gap to `[RESOLVED]`. The path is
+     carried forward so it still resolves; the finding, its resolution and this plan's sign-off
+     are untouched. -->
 
 ## 2. Test scenarios
 

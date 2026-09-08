@@ -47,7 +47,7 @@ resolves these to the specific files it touches; list here only what applies spr
 | SEO                | `../12-SEO/PLANNING/SEO-PLAN-US{###}-*.md` (public-page stories only)                         |
 | API design         | `../13-API-DESIGN/PLANNING/API-PLAN-US{###}-*.md` (per story with a Django Ninja surface)     |
 | Decisions          | `../15-DECISIONS/ADR-{###}-{TITLE}.md` (ADRs this sprint must honour)                         |
-| **Story plans**    | `../17-STORY-PLANS/STORY-PLAN-US{###}-*.md` — **the code master for each story**              |
+| **Story plans**    | `../17-STORY-PLANS/{XX}-STORY-PLAN-US{###}-*.md` — **the code master for each story**         |
 
 ---
 
@@ -58,22 +58,22 @@ every **Must**; **Should**/**Could** are stretch and drop first. Avoid an all-Mu
 
 ### Must
 
-| ID                | Title                    | Phases touched           | SP  | Story plan                             | Git branch                   |
-| ----------------- | ------------------------ | ------------------------ | --- | -------------------------------------- | ---------------------------- |
-| US{###}           | {Story title}            | Backend / API / Frontend | {N} | `STORY-PLAN-US{###}-{DESC}.md`         | `us{###}/{short-kebab-desc}` |
-| _[EXAMPLE] US001_ | _Restrict admin surface_ | _Backend_                | _3_ | _`STORY-PLAN-US001-RESTRICT-ADMIN.md`_ | _`us001/restrict-admin`_     |
+| ID                | Title                    | Phases touched           | SP  | Story plan                                | Git branch                   |
+| ----------------- | ------------------------ | ------------------------ | --- | ----------------------------------------- | ---------------------------- |
+| US{###}           | {Story title}            | Backend / API / Frontend | {N} | `{XX}-STORY-PLAN-US{###}-{DESC}.md`       | `us{###}/{short-kebab-desc}` |
+| _[EXAMPLE] US001_ | _Restrict admin surface_ | _Backend_                | _3_ | _`01-STORY-PLAN-US001-RESTRICT-ADMIN.md`_ | _`us001/restrict-admin`_     |
 
 ### Should
 
-| ID      | Title         | Phases touched | SP  | Story plan                     | Git branch                   |
-| ------- | ------------- | -------------- | --- | ------------------------------ | ---------------------------- |
-| US{###} | {Story title} | {phases}       | {N} | `STORY-PLAN-US{###}-{DESC}.md` | `us{###}/{short-kebab-desc}` |
+| ID      | Title         | Phases touched | SP  | Story plan                          | Git branch                   |
+| ------- | ------------- | -------------- | --- | ----------------------------------- | ---------------------------- |
+| US{###} | {Story title} | {phases}       | {N} | `{XX}-STORY-PLAN-US{###}-{DESC}.md` | `us{###}/{short-kebab-desc}` |
 
 ### Could
 
-| ID      | Title         | Phases touched | SP  | Story plan                     | Git branch                   |
-| ------- | ------------- | -------------- | --- | ------------------------------ | ---------------------------- |
-| US{###} | {Story title} | {phases}       | {N} | `STORY-PLAN-US{###}-{DESC}.md` | `us{###}/{short-kebab-desc}` |
+| ID      | Title         | Phases touched | SP  | Story plan                          | Git branch                   |
+| ------- | ------------- | -------------- | --- | ----------------------------------- | ---------------------------- |
+| US{###} | {Story title} | {phases}       | {N} | `{XX}-STORY-PLAN-US{###}-{DESC}.md` | `us{###}/{short-kebab-desc}` |
 
 ### Won't (this sprint)
 
@@ -87,9 +87,17 @@ Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** in this pl
 a story enters a development phase its story plan must exist and be complete. This sprint
 plan sets the _what_ and _when_; each story plan sets the _how_.
 
-| Story   | Story plan (`../17-STORY-PLANS/`) | Status ({Draft / Ready / In Progress / Done}) |
-| ------- | --------------------------------- | --------------------------------------------- |
-| US{###} | `STORY-PLAN-US{###}-{DESC}.md`    | {status}                                      |
+**`{XX}` is the story's position in the settled build order across the whole backlog** —
+2-digit zero-padded, not its sprint and not a counter that restarts each sprint — so it is
+renumbered whenever build order changes, and `00-` is reserved for the folder's template.
+Note the contrast with this file's own name: a sprint plan carries **two** numbers, and a
+mismatch between its `{exec-order}` prefix and its `{sprint-number}` suffix is deliberate
+information that must never be "corrected"; a story plan carries one, so a prefix that has
+drifted from build order says nothing at all. `../17-STORY-PLANS/CLAUDE.md` owns the rule.
+
+| Story   | Story plan (`../17-STORY-PLANS/`)   | Status ({Draft / Ready / In Progress / Done}) |
+| ------- | ----------------------------------- | --------------------------------------------- |
+| US{###} | `{XX}-STORY-PLAN-US{###}-{DESC}.md` | {status}                                      |
 
 ---
 
@@ -182,3 +190,14 @@ bash code/src/scripts/syntax/check.sh
 _[EXAMPLE] US001 → `us001/restrict-admin` · US043 → `us043/custom-user-model`_
 
 Full rules: `../../docs/GIT-GUIDE.md`.
+
+<!-- UPDATED 08/09/2026. Every story-plan filename in this template gained the `{XX}-` build-order
+     prefix, and the _Story Plans — the code master_ section gained the paragraph deriving it and
+     contrasting it with this file's own two-number name. The patterns read
+     "STORY-PLAN-US{###}-{DESC}.md" before, unprefixed, and the reference-documents row read
+     "STORY-PLAN-US{###}-*.md" — both quoted here in double quotes rather than backticks, because
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment and
+     a dead name written in them records a fresh unresolvable citation. The [EXAMPLE] row takes
+     `01-` and not another number: in a backlog that opens at US001 that story is genuinely first
+     in build order, and this row is what every sprint plan is copied from. The convention itself
+     is owned by `../17-STORY-PLANS/CLAUDE.md`; this template restates only enough to be copied. -->

@@ -31,8 +31,8 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
 - **Concrete steps:** inventory every `USER-STORY-IDEAS/` artefact → identify collisions
   and divergences → resolve each to one canonical form, escalating anything
   hard-to-reverse to `15-decisions/` → write `CONSOLIDATED-IDEAS/` → regenerate the brand
-  and component deliverables → correct any `STORY-PLAN-US###-*.md` the consolidation
-  invalidated → satisfy `CHECKLIST.md`.
+  and component deliverables → correct any `<exec-order>-STORY-PLAN-US###-*.md` the
+  consolidation invalidated → satisfy `CHECKLIST.md`.
 - **Definition of done:** every stage-1 artefact is either carried into a consolidated
   artefact or explicitly recorded as superseded; the consolidated set has no unresolved
   duplicate; every affected story plan is corrected; `19-backend-code/` is unblocked.
@@ -57,8 +57,8 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   value enters the token layer is `code/docs/DESIGN-TOKENS.md`. Never a literal in component
   CSS.
 - **A consolidation that changes a planned shape must correct the plan.** Leaving a
-  `STORY-PLAN-US###-*.md` asserting a superseded design is how the whole two-stage model
-  fails — the developer codes from the plan, not from here.
+  `<exec-order>-STORY-PLAN-US###-*.md` asserting a superseded design is how the whole two-stage
+  model fails — the developer codes from the plan, not from here.
 - **Generated deliverables are regenerated, never hand-edited** — `brand_guide.py` and
   `components.py` are the source; re-run them.
 - Documentation workflow — no code here. Instructional `.md` files ≤ 300 code lines
@@ -69,8 +69,20 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the consolidated artefacts under
   `src/04-DATABASE`, `src/05-USER-FLOW`, `src/06-BRAND-GUIDE`, `src/07-COMPONENTS`, and
   `src/08-WIREFRAMES` → `CONSOLIDATED-IDEAS/`.
-- **Produced by following it:** corrections to affected `STORY-PLAN-US###-*.md` files,
-  and any new `ADR-###-<TITLE>.md` a hard-to-reverse resolution warrants.
+- **Produced by following it:** corrections to affected `<exec-order>-STORY-PLAN-US###-*.md`
+  files, and any new `ADR-###-<TITLE>.md` a hard-to-reverse resolution warrants.
 - **Regenerated (never hand-edit):** `brand-guide.tex`/`.pdf` and `components.tex`/`.pdf`.
 - Consolidated artefacts `<TYPE>-CONSOLIDATED-<DESCRIPTOR>.md`; descriptors
   `SCREAMING-KEBAB-CASE`; workflow folders `NN-kebab-case/`; dates DD/MM/YYYY.
+
+<!-- UPDATED 08/09/2026. All three story-plan filename patterns above — in _Concrete steps_, in
+     the guardrail on superseded designs, and in _Output & naming_ — gained the `<exec-order>-`
+     prefix. Superseded form, quoted without backticks so no dead name is recorded as a fresh
+     citation: "STORY-PLAN-US###-*.md". The prefix is the story's 2-digit position in the settled
+     build order across the whole backlog, and is RENUMBERED whenever build order changes, so a
+     correction made by this workflow can rename the file it corrects. This is the OPPOSITE of
+     the sibling rule in `project-management/src/16-SPRINT-PLANS/CLAUDE.md`: a sprint plan
+     carries TWO numbers and a mismatch between them is deliberate information that must never be
+     "corrected"; a
+     story plan carries ONE, so a drifted prefix says nothing and IS a defect. Naming is owned by
+     `project-management/src/17-STORY-PLANS/CLAUDE.md`; this file only consumes it. -->

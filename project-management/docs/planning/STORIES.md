@@ -105,9 +105,23 @@ cross-reference pointing at the old number.
 
 ## The story plan
 
-`STORY-PLAN-US###-<DESCRIPTOR>.md` in `src/17-STORY-PLANS/`, written by `17-story-plans` when the
-story's sprint fills. **This is the master a developer codes from** — not the story, and not the
-sprint plan.
+`<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` in `src/17-STORY-PLANS/`, written by
+`17-story-plans` when the story's sprint fills. **This is the master a developer codes from** —
+not the story, and not the sprint plan.
+
+**The prefix is build order, and it is renumbered whenever build order changes.** `<exec-order>`
+is 2-digit zero-padded and gives the story's position in the settled build sequence across the
+whole backlog — not its sprint, and not a per-sprint counter; `00-` is the template. **This is the
+opposite of the sprint plan's guardrail** ([`SPRINTS.md`](SPRINTS.md)): there, `{exec-order}`
+disagreeing with `{sprint-number}` is deliberate and must never be "corrected", because the pair
+is what carries the meaning. A story plan has one number, so it either tracks build order or it
+says nothing. Rule owner: `src/17-STORY-PLANS/CLAUDE.md`.
+
+<!--
+08/09/2026 — superseded by the line above when the plans gained their `<exec-order>` prefix.
+Previous text: "`STORY-PLAN-US###-<DESCRIPTOR>.md` in `src/17-STORY-PLANS/`, written by
+`17-story-plans` when the story's sprint fills."
+-->
 
 It records:
 
@@ -132,4 +146,4 @@ assumed, the plan is corrected there — before code, not after.
 - [`CADENCE.md`](CADENCE.md) — when in the loop each of these is written
 - [`SPRINTS.md`](SPRINTS.md) — the sprint the story is slotted into
 - `project-management/docs/QA-GUIDE.md` — the scenario format acceptance criteria must support
-- `src/02-STORIES/US000-TEMPLATE.md` · `src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md`
+- `src/02-STORIES/US000-TEMPLATE.md` · `src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md`

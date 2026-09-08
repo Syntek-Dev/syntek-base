@@ -75,6 +75,11 @@ is the sprint it plans, matching `src/03-SPRINTS/SPRINT-##.md`. They usually mat
 deliberately when a sprint must be built out of number order — an infrastructure or observability
 sprint pulled early. **Do not "correct" a deliberate mismatch.**
 
+**That licence is specific to this filename, and does not reach the story plan.** A story plan
+carries one number, not two ([`STORIES.md`](STORIES.md)): its prefix is the story's position in
+the settled build order across the whole backlog and is renumbered whenever that order changes, so
+there a prefix out of step with build order is a defect rather than information.
+
 ---
 
 ## Development phases
@@ -100,7 +105,8 @@ records and refreshes the graph, and it is a merge gate.
 
 - **Sprint goal** — one sentence: what this sprint delivers and why
 - **Stories** — grouped Must / Should / Could / Won't, each linked to its story plan and QA plan
-- **Story-plans index** — each in-scope story → its `STORY-PLAN-US###-*.md`
+- **Story-plans index** — each in-scope story → its `{exec-order}-STORY-PLAN-US###-*.md`, the
+  prefix its position in the global build order, not a count within this sprint
 - **Phase breakdown** — the stories in each of the four phases, with key deliverables
 - **Sprint-wide constraints** — GDPR / security / QA / SEO summaries drawn from `09`–`13`
 - **Definition of done**
@@ -125,3 +131,13 @@ in the notes rather than padding it.
 - [`STORIES.md`](STORIES.md) — the stories a sprint is built from
 - `src/03-SPRINTS/SPRINT-00-TEMPLATE.md` · `src/16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`
 - `project-management/docs/VERSIONING-GUIDE.md` — when the sprint includes a release
+
+<!--
+08/09/2026 — two edits, both following the rename of the plans in `src/17-STORY-PLANS/` to carry
+an `<exec-order>` prefix. _What a sprint plan holds_ showed the story-plan pattern as
+"STORY-PLAN-US###-*.md", unprefixed; it now carries the prefix and says what the prefix counts.
+_Sequencing_ gained its closing paragraph, because this file states the "do not correct a
+deliberate mismatch" licence and a reader who has just been given it will apply it to the next
+prefixed plan filename they meet. The story-plan rule itself belongs to `STORIES.md` and, above
+it, to `src/17-STORY-PLANS/CLAUDE.md`; this states only the boundary.
+-->

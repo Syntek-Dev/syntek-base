@@ -68,7 +68,7 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
   instance-shaped entries. It holds identically in both trees and cannot reach a pair file,
   because a pair file is not instance-shaped.
 - **AC-GAP-6** `[RESOLVED]` — **the story's second register row covers nothing.** It named
-  `17-STORY-PLANS/STORY-PLAN-US###-*.md`. Measured: of the 22 findings the
+  `17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`. Measured: of the 22 findings the
   `project-management/src/*` arm newly produces, **every one cites
   `project-management/src/18-TESTS/`** — nothing in the repository cites a story plan that does
   not exist. `how-to/src/PROJECT-PATHS.md`'s own rule is that a row must never answer a question
@@ -213,3 +213,23 @@ uses, so a screen reader and a terminal pager read them identically to today's.
 - `code/docs/GATE-REPORTING.md` — a skip is never reported as a pass
 - `code/docs/FORWARD-VOICE.md` — Section 3 owns the register this story makes pattern-aware
 - `how-to/src/PROJECT-PATHS.md` — the register gaining the two rows
+
+<!-- UPDATED 08/09/2026. AC-GAP-6's story-plan filename pattern was repointed at the names now on
+     disk: `project-management/src/17-STORY-PLANS/` was renamed that day to
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, a 2-digit build-order prefix
+     renumbered whenever build order changes. The row as the story wrote it on 02/09/2026 carried
+     no prefix — quoted here without backticks so no dead name is recorded as a fresh citation:
+     "17-STORY-PLANS/STORY-PLAN-US###-*.md". The finding itself is unchanged and stays true: the
+     row covered nothing measured, and the two rows that shipped were the `18-TESTS/` pair.
+
+     AC-GAP-5's list of instance forms is deliberately NOT repointed. "STORY-PLAN-US###" there is
+     an artefact-class noun naming a filename SHAPE the citer test matches, not a document, and
+     the shape is what the exemption keys on. `code/src/scripts/audits/doc-references.sh` was
+     corrected the same day so its Check 2 alternation accepts the 2-digit prefix as OPTIONAL —
+     a plan may still be cited by the unprefixed name it was written under.
+
+     The story-plan rule is the OPPOSITE of the sibling one in
+     `project-management/src/16-SPRINT-PLANS/CLAUDE.md`: a sprint plan carries TWO numbers and a
+     mismatch between them is deliberate information that must never be "corrected"; a story plan
+     carries ONE, so a prefix that has drifted from build order says nothing at all and is a
+     defect. Owner: `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->

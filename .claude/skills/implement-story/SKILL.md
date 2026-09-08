@@ -19,8 +19,8 @@ metadata:
 conversation, and every phase below is a dispatch rather than work done here).
 
 **A story is not codeable without its plan.** `project-management/workflows/17-story-plans/`
-produces the master this sequence builds from; if there is no `STORY-PLAN-US###`, phase 1 makes
-one before anything else starts.
+produces the master this sequence builds from; if there is no
+`<exec-order>-STORY-PLAN-US###-<DESC>.md` for it, phase 1 makes one before anything else starts.
 
 ---
 

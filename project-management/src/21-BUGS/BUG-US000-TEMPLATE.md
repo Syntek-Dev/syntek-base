@@ -6,17 +6,17 @@ _Template — copy to `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, replace every `{PL
 > shared-infrastructure fault) — uses the fallback filename `BUG-<DESCRIPTOR>-DD-MM-YYYY.md`
 > and leaves the story fields as `N/A — cross-cutting`.
 
-| Field            | Value                                                |
-| ---------------- | ---------------------------------------------------- |
-| **Story**        | US### — {short story title}                          |
-| **Story doc**    | `../02-STORIES/US###.md`                             |
-| **Story plan**   | `../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` |
-| **Severity**     | Critical / High / Medium / Low                       |
-| **Date found**   | {DD/MM/YYYY}                                         |
-| **Last Updated** | {DD/MM/YYYY}                                         |
-| **Status**       | Open / Fixed / Verified                              |
-| **Found during** | QA / review / production / debug session             |
-| **Reporter**     | {name / agent / audit}                               |
+| Field            | Value                                                             |
+| ---------------- | ----------------------------------------------------------------- |
+| **Story**        | US### — {short story title}                                       |
+| **Story doc**    | `../02-STORIES/US###.md`                                          |
+| **Story plan**   | `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` |
+| **Severity**     | Critical / High / Medium / Low                                    |
+| **Date found**   | {DD/MM/YYYY}                                                      |
+| **Last Updated** | {DD/MM/YYYY}                                                      |
+| **Status**       | Open / Fixed / Verified                                           |
+| **Found during** | QA / review / production / debug session                          |
+| **Reporter**     | {name / agent / audit}                                            |
 
 ---
 
@@ -120,7 +120,15 @@ Commands are project scripts under `code/src/scripts/**/*.sh` — never raw pyte
 ## Cross-references
 
 - `../02-STORIES/US###.md` — the story this defect belongs to
-- `../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` — the code master the fix closes the loop on
+- `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the code master the fix closes the loop on
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)
 - `code/workflows/09-debugging-with-logs/` — tracing a defect through structured logs
 - `../19-REVIEWS/` · `../18-TESTS/` — the review and test records from the same PR
+
+<!-- UPDATED 08/09/2026. Both story-plan citations gained the `<exec-order>-` build-order prefix;
+     they read "STORY-PLAN-US###-<DESCRIPTOR>.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's 2-digit position in the settled build order across the whole backlog, renumbered when
+     that order changes — copy it whole off the plan's filename rather than deriving it. Owner of
+     the rule: `../17-STORY-PLANS/CLAUDE.md`. -->

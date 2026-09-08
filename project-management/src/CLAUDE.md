@@ -72,5 +72,23 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   `project-management/export/` and are regenerated from these sources, never hand-edited.
 - Numbered folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed patterns —
   `US###.md`, `SPRINT-##.md`, `ADR-###-<TITLE>.md`, `##-SPRINT-PLAN-##.md`,
-  `STORY-PLAN-US###-*.md`, `<TYPE>-PLAN-US###-*.md` / `<TYPE>-IMPL-US###-*.md`,
-  `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.
+  `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, `<TYPE>-PLAN-US###-*.md` /
+  `<TYPE>-IMPL-US###-*.md`, `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.
+- **Both plan folders prefix a filename with an execution order, and the two rules are
+  opposites.** `16-SPRINT-PLANS/` names a plan `<exec-order>-SPRINT-PLAN-<sprint-number>.md` —
+  **two** numbers, build sequence against sprint identity, and a mismatch between them is
+  deliberate information that must never be "corrected". `17-STORY-PLANS/` names a plan with
+  **one**: the prefix is the story's position in the settled build order across the **whole
+  backlog**, not its sprint and not a per-sprint counter, and it is **renumbered whenever build
+  order changes** — with nothing to disagree with, a drifted prefix says nothing, so there it is
+  a defect. `00-` is the template in both. Each folder's own `CLAUDE.md` owns its rule; do not
+  read either across into the other.
+
+<!-- RENAMED 08/09/2026. The _Output & naming_ pattern for a story plan gained its
+     `<exec-order>-` prefix, and the guardrail stating the contrast with the sprint-plan rule
+     was added beside it. The previous pattern read "STORY-PLAN-US###-*.md", unprefixed. This
+     list is authoritative for every artefact under `src/` that has no folder of its own; where
+     a folder does have one, that folder's `CLAUDE.md` wins (`.claude/CLAUDE.md` Section 5), and
+     both plan folders do. The contrast is stated here rather than left to the two folders
+     because this is the only list where the two patterns sit one line apart, which is exactly
+     where a reader would take them for the same rule. -->

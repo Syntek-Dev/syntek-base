@@ -254,7 +254,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   three-test ADR gate + glossary-into-`CONTEXT.md`).
 - `.claude/skills/grill-me/SKILL.md` — the stateless twin, for thinking a node through without recording.
 - `project-management/src/01-FEATURE-MAPS/CONTEXT.md` — the map index, where a new map is registered.
-- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
+- `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
   slice graduates into.
 - `project-management/src/15-DECISIONS/` — ADR home; `ADR-US###-<DECISION>-DD-MM-YYYY.md`, flat, and always driven by a `US###`.
 - `project-management/src/02-STORIES/US###.md` — the story a slice becomes; synced to ClickUp by `.github/workflows/clickup-sync.yml`.

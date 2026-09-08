@@ -177,8 +177,10 @@ review six weeks later.
 **Sprint plan** (`16-sprint-plans/`) — the definitive assignments and per-phase breakdown, written
 _after_ the gates because they constrain it.
 
-**Story plan** (`17-story-plans/`) — `STORY-PLAN-US001-*.md`. **This is what you code from.** It
-references the sprint plan, the decisions, and every specification above it.
+**Story plan** (`17-story-plans/`) — `<exec-order>-STORY-PLAN-US001-<DESCRIPTOR>.md`; the 2-digit
+prefix is the story's place in the settled build order across the backlog, so a first feature with
+nothing built ahead of it is `01-`. **This is what you code from.** It references the sprint plan,
+the decisions, and every specification above it.
 
 ## 5. Branch
 

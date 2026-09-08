@@ -5,7 +5,7 @@ _Template — copy to `US###-TEST-STATUS.md`, replace every `{PLACEHOLDER}`, del
 **Last Updated**: {DD/MM/YYYY} · **Story**: US### · **Status**: {status: Green / Red / Partial}
 
 - **Story:** `../02-STORIES/US###.md` — {short title}
-- **Story plan:** `../17-STORY-PLANS/STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this record closes the loop on
+- **Story plan:** `../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this record closes the loop on
 - **Branch:** `us###/{short-description}`
 
 ---
@@ -93,7 +93,14 @@ State "None." if the suite is clean.
 ## Cross-references
 
 - `../02-STORIES/US###.md` — the story under test
-- `../17-STORY-PLANS/STORY-PLAN-US###-{DESCRIPTOR}.md` — the implementation plan this record closes
+- `../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the implementation plan this record closes
 - `US###-MANUAL-TESTING.md` — the paired manual-testing guide for this story
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US###-{DESCRIPTOR}-DD-MM-YYYY.md` — the QA review that signs the story off
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
+
+<!-- UPDATED 08/09/2026. Both story-plan citations gained the `{XX}-` build-order prefix; they read
+     "STORY-PLAN-US###-{DESCRIPTOR}.md" before — double-quoted here, never backticked, so
+     `code/src/scripts/audits/doc-references.sh` records no fresh unresolvable citation. `{XX}` is
+     the story's 2-digit position in the settled build order across the whole backlog, renumbered
+     when that order changes; copy it whole off the plan's filename. Owner of the rule:
+     `../17-STORY-PLANS/CLAUDE.md`. -->

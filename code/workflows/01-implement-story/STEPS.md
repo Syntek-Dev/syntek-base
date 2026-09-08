@@ -48,7 +48,22 @@ planner [feature name and scope]
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
 permissions, and edge cases before producing the plan.
 
-Save the plan to `project-management/src/17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`.
+<!-- UPDATED 08/09/2026. Step 1's save instruction named the plan without its `<exec-order>-`
+     prefix. This is a LIVE instruction, so followed as written it produced a wrongly-named plan
+     on the next story built. Superseded text, preserved rather than deleted and quoted without
+     backticks so no dead name is recorded as a fresh citation:
+     "Save the plan to project-management/src/17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md."
+     The convention is owned by `project-management/src/17-STORY-PLANS/CLAUDE.md`. Note the
+     contrast with the sibling rule in `project-management/src/16-SPRINT-PLANS/CLAUDE.md`: a
+     sprint plan carries TWO numbers, so a mismatch between its `<exec-order>` prefix and its
+     `<sprint-number>` suffix is deliberate information and must never be "corrected"; a story
+     plan carries ONE, so a prefix that has drifted from build order says nothing at all, and
+     here a mismatch is a defect. Do not read the sprint-plan guardrail across. -->
+
+Save the plan to
+`project-management/src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the
+`<exec-order>` prefix is the story's 2-digit position in the settled build order across the whole
+backlog (read it off `project-management/src/03-SPRINTS/`), never its sprint number.
 
 ### Step 2 — Write Failing Tests First (Red Phase)
 

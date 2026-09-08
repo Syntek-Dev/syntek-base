@@ -9,15 +9,15 @@ nothing observable changed._
 > drop the `US###` segment and name the file `REFACTORING-<DESCRIPTOR>-DD-MM-YYYY.md`
 > (mirrors `BUG-<DESCRIPTOR>-DD-MM-YYYY.md`). The story-focused form above is preferred.
 
-| Field               | Value                                                                        |
-| ------------------- | ---------------------------------------------------------------------------- |
-| **Story**           | US### — {short title} · [`../02-STORIES/US###.md`](../02-STORIES/US###.md)   |
-| **Story plan**      | [`../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`](../17-STORY-PLANS/)   |
-| **Motivation type** | {oversized file >750 lines · duplication · tech debt · modernise} — pick one |
-| **Date**            | {DD/MM/YYYY}                                                                 |
-| **Author**          | {name / agent}                                                               |
-| **Status**          | {Proposed · In Progress · Complete}                                          |
-| **Refactor commit** | `{sha}` — separate from any feature commit (code workflow `11-refactor`)     |
+| Field               | Value                                                                                   |
+| ------------------- | --------------------------------------------------------------------------------------- |
+| **Story**           | US### — {short title} · [`../02-STORIES/US###.md`](../02-STORIES/US###.md)              |
+| **Story plan**      | [`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md`](../17-STORY-PLANS/) |
+| **Motivation type** | {oversized file >750 lines · duplication · tech debt · modernise} — pick one            |
+| **Date**            | {DD/MM/YYYY}                                                                            |
+| **Author**          | {name / agent}                                                                          |
+| **Status**          | {Proposed · In Progress · Complete}                                                     |
+| **Refactor commit** | `{sha}` — separate from any feature commit (code workflow `11-refactor`)                |
 
 ---
 
@@ -25,8 +25,8 @@ nothing observable changed._
 
 Why this refactor exists, in two or three lines, anchored to the story it closes the loop on
 (`../02-STORIES/US###.md`) and the plan that mastered it
-(`../17-STORY-PLANS/STORY-PLAN-US###-*.md`). Name the **motivation type** and the concrete
-trigger — the review note, retro finding, or gate that surfaced it.
+(`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`). Name the **motivation type** and the
+concrete trigger — the review note, retro finding, or gate that surfaced it.
 
 | Trigger                             | Detail                                                         |
 | ----------------------------------- | -------------------------------------------------------------- |
@@ -142,7 +142,15 @@ re-introducing the old shape. "None." is a valid entry.
 ## Cross-references
 
 - [`../02-STORIES/US###.md`](../02-STORIES/US###.md) — the story this refactor closes the loop on
-- [`../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`](../17-STORY-PLANS/) — the code master
+- [`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md`](../17-STORY-PLANS/) — the code master
 - [`../19-REVIEWS/`](../19-REVIEWS/) — the review that may have flagged the refactor
 - [`../../../code/workflows/11-refactor/`](../../../code/workflows/11-refactor/) — the behaviour-preserving refactor procedure
 - `code/CONTEXT.md` — the 750/800-line source-file limit this record answers to
+
+<!-- UPDATED 08/09/2026. All three story-plan citations gained the `<exec-order>-` build-order
+     prefix; they read "STORY-PLAN-US###-<DESCRIPTOR>.md" and "STORY-PLAN-US###-*.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's 2-digit position in the settled build order across the whole backlog, renumbered when
+     that order changes — copy it whole off the plan's filename. A refactor never renumbers a plan;
+     that is a re-plan's job. Owner: `../17-STORY-PLANS/CLAUDE.md`. -->

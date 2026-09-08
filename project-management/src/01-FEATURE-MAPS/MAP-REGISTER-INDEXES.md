@@ -526,7 +526,7 @@ One item added 05/09/2026, undispositioned.**
   the columns its gate reads, and only those. Graduates to `S-03`'s acceptance.
 - **Four `★ always include` sections the shipped plan template mandates and no plan carries.**
   **Found 05/09/2026, outside a resolve sitting on this map; unclaimed, and neither register
-  edited.** `STORY-PLAN-US000-TEMPLATE.md:17-20` reads _"This is a SUPERSET. Keep the ★-marked
+  edited.** `00-STORY-PLAN-US000-TEMPLATE.md:17-20` reads _"This is a SUPERSET. Keep the ★-marked
   core sections always"_, and **fifteen** H2s carry the `★ Always` marker. **Eleven reach all
   five real plans; four reach none** — `## Execution & Verification via Claude Dynamic Workflows`
   (`:397`), `## Quality Gates, Scripts & Local↔Docker Alignment` (`:470`), `## Status
@@ -598,3 +598,23 @@ and un-broken the deadlock ruling below that five sibling maps are parked on.
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked** — and per
 Sam's standing preference, **not until the frontier is empty**.
+
+<!-- STORY-PLAN RENAME, 08/09/2026. The six plans in `project-management/src/17-STORY-PLANS/` were
+     renamed by `git mv` that day to `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the 2-digit prefix being the story's position in the settled build order across the whole
+     backlog — not its sprint, and not a per-sprint counter — renumbered whenever that order
+     changes (`project-management/src/17-STORY-PLANS/CLAUDE.md` owns the rule). This map's one
+     citation of the plan template, in the fog-of-war item about the four `★ always include`
+     sections, was repointed the same day to
+     `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md`. THIS NOTE SITS AT
+     THE END OF THE FILE DELIBERATELY: a live story cites this map at `:72`, `:212`, `:213`,
+     `:215-219`, `:344`, `:392`, `:456-469`, `:556`, `:571` and `:572`, and an insertion higher up
+     would silently invalidate all of them. Nothing else here changed, and the template's own
+     `:17-20`, `:397`, `:470`, `:633`, `:646` and `:693` all still resolve, because that rename
+     repointed three naming patterns in place and appended its own note at the end rather than
+     inserting lines. SLICE `S-01` IS UNAFFECTED IN SUBSTANCE AND SHARPENED IN ONE DETAIL: the
+     index file it creates keeps the name `N-001`'s rule gives it — the folder's own noun,
+     singularised — which a build-order prefix does not touch; but the `Instance` column `N-002`
+     specifies now links a PREFIXED filename, and `N-003`'s symmetry clause reads that prefixed
+     name, so a renumber renames rows as well as files. Not assigned here; `S-01` re-measures its
+     own population as it already provides for. -->

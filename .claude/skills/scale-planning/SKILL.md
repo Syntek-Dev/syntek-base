@@ -179,8 +179,8 @@ Follow wayfinder's graduation table:
 
 - **Architectural, hard-to-reverse, real trade-off** → a new ADR (three-test gate; take the next
   free number in `project-management/src/15-DECISIONS/`).
-- **A buildable slice** → a `US###` story + `STORY-PLAN-US###-*.md` (synced to ClickUp by the
-  `clickup-sync` workflow — never write ClickUp directly).
+- **A buildable slice** → a `US###` story + `<exec-order>-STORY-PLAN-US###-*.md` (synced to
+  ClickUp by the `clickup-sync` workflow — never write ClickUp directly).
 - **A sizing / readiness / edge fact** → the living `SCALE-ARCHITECTURE` / `SERVER-ARCHITECTURE`
   snapshot.
 - **A cross-repo dependency or blocker** → `GAPS.md` (e.g. a value the NixOS repo must set).

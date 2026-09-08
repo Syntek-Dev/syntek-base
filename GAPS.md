@@ -341,7 +341,8 @@ notification feature to be scheduled.
 defines five states for a `US###.md` header (`Pending · Open · Blocked · In Review · Completed`);
 four other surfaces define the **same header** with the eleven-state ClickUp vocabulary —
 `project-management/docs/planning/STORIES.md:79-93`, which states outright "This is the canonical
-set", `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md:9`,
+set", the `Status` row of the header table in
+`project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md`,
 `.copier/README.md:568-570`, and `project-management/workflows/23-pr-and-review/STEPS.md:73-74`, <!-- doc-references: template-only -->
 which moves a story to `Accepted` / `Accepted Customer` — values the five-state set does not admit,
 so the shipped PR workflow instructs a transition the shipped completion skill forbids. Class **D**,
@@ -350,13 +351,34 @@ as "belongs to whoever owns the story lifecycle" and correctly declined to settl
 semantics to make its own index fillable.
 **Blocked by / Action:** Nothing blocks it. A pass decides which vocabulary wins, or writes the
 mapping that reconciles them, and repairs all five surfaces in one change. **Two consumers make the
-repair wider than the five sites:** `STORY-PLAN-US000-TEMPLATE.md:773` requires the status to agree
-across story + plan + Plans Index + sprint, and `MAP-REGISTER-INDEXES.md` N-003's gate will
-string-equal the field in `STORY-INDEX.md` and `STORY-PLAN-INDEX.md`, so a reconciliation lands with
-both indexes and the gate's `broken/`+`clean/` fixtures. The gate is indifferent to _which_ set wins —
+repair wider than the five sites:** `00-STORY-PLAN-US000-TEMPLATE.md`'s `## Definition of Done`
+requires the status to agree across story + plan + sprint/sprint-plan, including the plan's row
+in the sprint plan's _Story Plans — the code master_ table, and
+`MAP-REGISTER-INDEXES.md` N-003's gate will string-equal the field in "STORY-INDEX.md" and
+"STORY-PLAN-INDEX.md", so a reconciliation lands with both indexes and the gate's
+`broken/`+`clean/` fixtures. The gate is indifferent to _which_ set wins —
 it mirrors verbatim — but not to the cost. Likely charting home is `MAP-RULE-OWNERSHIP.md`, four of
 the five sites sitting inside the surfaces its four architecture passes measured; its frontier is
 closed, so this is recorded here first per the Format section above.
+
+<!--
+08/09/2026 — the story plans gained an `<exec-order>` prefix, so both citations above were
+re-pointed and de-numbered to their section names; the template is being edited in the same pass
+and a line anchor would go stale on landing. Superseded citations, verbatim:
+"project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md:9" and
+"STORY-PLAN-US000-TEMPLATE.md:773". The 01/09/2026 finding itself is unchanged.
+
+08/09/2026, later the same day — the template's `## Definition of Done` stopped naming a Plans
+Index (none exists; the template was re-pointed at the sprint plan's _Story Plans — the code
+master_ table), so the consumer clause above was corrected in place to the template's current
+wording. Superseded clause, verbatim: "requires the status to agree across story + plan + Plans
+Index + sprint". The 01/09/2026 finding and the index-gate sentence are unchanged.
+
+08/09/2026, evening — the two index filenames in the index-gate sentence, left alone by the note
+above, were de-backticked to "double quotes": neither "STORY-INDEX.md" nor "STORY-PLAN-INDEX.md"
+exists anywhere in the repository (the story US007 records both as absent), and the citation
+gate reads backticked tokens. Nothing else in the 01/09/2026 finding is touched.
+-->
 
 ---
 

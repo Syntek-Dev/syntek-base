@@ -51,7 +51,7 @@ under each of its four category folders rather than at its root.
 | `src/14-LOGGING/`      | specify       | Per-story log surface (`PLANNING/`) and what shipped with its leak evidence (`IMPLEMENTATION/`)                           |
 | `src/15-DECISIONS/`    | decide & plan | Architectural Decision Records (`ADR-###-<TITLE>.md`)                                                                     |
 | `src/16-SPRINT-PLANS/` | decide & plan | Detailed sprint execution plans (`##-SPRINT-PLAN-##.md`)                                                                  |
-| `src/17-STORY-PLANS/`  | decide & plan | Per-story implementation plans (`STORY-PLAN-US###-*.md`) — the master reference for code                                  |
+| `src/17-STORY-PLANS/`  | decide & plan | Per-story implementation plans (`<exec-order>-STORY-PLAN-US###-*.md`) — the master reference for code                     |
 | `src/18-TESTS/`        | record        | Automated test status (`US###-TEST-STATUS.md`) and manual QA guides                                                       |
 | `src/19-REVIEWS/`      | record        | Code review records (`REVIEW-US###-*.md`) per completed story                                                             |
 | `src/20-FINDINGS/`     | record        | Per-story findings (`FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — divergences, retrofit cost, what the next story carries |
@@ -63,6 +63,15 @@ The three tiers: **specify** (02–14) → **decide & plan** (15–17) → **rec
 **23-INCIDENTS** a record that sits outside the per-story chain entirely.
 The story plan (17) is the master a developer codes from; it references its sprint plan
 (16), the decisions (15), and every 02–14 spec.
+
+<!-- RENAMED 08/09/2026. The `src/17-STORY-PLANS/` row above gained the `<exec-order>-` prefix
+     when the plans in that folder were renamed to carry one; its previous pattern read
+     "STORY-PLAN-US###-*.md", unprefixed. The prefix is the story's position in the settled
+     build order across the whole backlog and is renumbered whenever that order changes — the
+     opposite of the sprint-plan row above it, where the prefix and the suffix are two different
+     numbers and a mismatch between them is deliberate. This index shows the pattern; the rule
+     and the contrast are owned by `src/17-STORY-PLANS/CLAUDE.md` and
+     `src/16-SPRINT-PLANS/CLAUDE.md`. -->
 
 ---
 

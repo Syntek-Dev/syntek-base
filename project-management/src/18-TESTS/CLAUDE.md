@@ -26,7 +26,7 @@ templates and kept in step as tests are written and coverage changes.
   `US000-MANUAL-TESTING.md` to `US###-…` (create both if absent) → replace every
   `{PLACEHOLDER}`, delete the `[EXAMPLE]` rows → record real suite results, coverage, and
   the manual walk-through → link the story (`../02-STORIES/US###.md`) and its plan
-  (`../17-STORY-PLANS/STORY-PLAN-US###-*.md`) → append the update date.
+  (`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) → append the update date.
 - **Definition of done:** both files present and current, named to convention, coverage
   matching the last suite run, story and story-plan cross-linked, British English, dates
   DD/MM/YYYY.
@@ -52,3 +52,10 @@ templates and kept in step as tests are written and coverage changes.
   `code/src/scripts/tests/**`, not authored.
 - Files strictly `US###-TEST-STATUS.md` and `US###-MANUAL-TESTING.md` — `US` + zero-padded
   three-digit story number; dates DD/MM/YYYY.
+
+<!-- UPDATED 08/09/2026. The story-plan citation in _Concrete steps_ gained the `<exec-order>-`
+     build-order prefix; it read "STORY-PLAN-US###-*.md" before, quoted here in double quotes and
+     not backticks because `code/src/scripts/audits/doc-references.sh` reads backticked tokens even
+     inside a comment. The prefix is the story's position in the settled build order across the
+     whole backlog and is renumbered when that order changes — the opposite of the sprint-plan
+     rule, where a prefix/suffix mismatch is deliberate. Owner: `../17-STORY-PLANS/CLAUDE.md`. -->

@@ -26,8 +26,9 @@ the smallest fix is, and which of those findings should shape the next story.
   `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → record each finding with a stable `F-0NN` ID,
   where it was found, why it matters, the smallest fix, and a **retrofit cost** (Cheap /
   Expensive) → set a disposition for every row → link the story
-  (`../02-STORIES/US###.md`) and its plan (`../17-STORY-PLANS/STORY-PLAN-US###-*.md`) →
-  carry the `Next story` rows into the next plan.
+  (`../02-STORIES/US###.md`) and its plan
+  (`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) → carry the `Next story` rows into
+  the next plan.
 - **Definition of done:** file named to convention with a real `DD/MM/YYYY` completion date,
   every finding carrying a retrofit cost and a disposition, expensive-to-retrofit items
   called out separately, and a `Nothing found` record written explicitly if that is the
@@ -62,3 +63,11 @@ the smallest fix is, and which of those findings should shape the next story.
 - Filename `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md` (story-anchored, primary) or
   `FINDING-<DESCRIPTOR>-DD-MM-YYYY.md` (cross-cutting fallback); descriptor in
   `SCREAMING-KEBAB-CASE`; stories `US###`; dates DD/MM/YYYY.
+
+<!-- UPDATED 08/09/2026. The story-plan citation in _Concrete steps_ gained the `<exec-order>-`
+     build-order prefix; it read "STORY-PLAN-US###-*.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's position in the settled build order across the whole backlog and is renumbered when
+     that order changes — the opposite of the sprint-plan rule, where a mismatch between prefix and
+     suffix is deliberate. Owner: `../17-STORY-PLANS/CLAUDE.md`. -->

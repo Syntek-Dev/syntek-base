@@ -106,7 +106,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the reference when a note feeds a data model.
 - `research/` — the committed, synced home for research notes (`<TOPIC>.md`).
 - `project-management/src/15-DECISIONS/` — the ADRs a note feeds; take the next free `ADR-###`.
-- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the story-plan template
+- `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the story-plan template
   a note may feed.
 - `project-management/src/02-STORIES/US###.md` — a story a note may inform.
 - `GAPS.md` · `DEFERRED.md` — open blockers, and items deferred to a named future story.

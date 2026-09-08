@@ -77,9 +77,13 @@ Follows `code/docs/URL-STRATEGY.md`.
 
 A journey change must correct any plan that assumed the old shape.
 
-| Story plan              | What changed | Corrected |
-| ----------------------- | ------------ | --------- |
-| `STORY-PLAN-US###-*.md` |              | [ ]       |
+`<exec-order>` is the plan's build-order prefix, 2-digit and zero-padded — the story's
+position in the settled build order across the whole backlog. Copy each filename whole from
+`../../17-STORY-PLANS/`; consolidation corrects a plan's contents, never its number.
+
+| Story plan                           | What changed | Corrected |
+| ------------------------------------ | ------------ | --------- |
+| `<exec-order>-STORY-PLAN-US###-*.md` |              | [ ]       |
 
 ---
 
@@ -103,3 +107,9 @@ Re-export to `../DIAGRAMS/flow-<area>-<screen>.png` on sign-off.
 - [ ] Diagram re-exported
 
 **Consolidated by**: [name] · **Date**: DD/MM/YYYY
+
+<!-- UPDATED 08/09/2026. The _Story plans corrected_ row gained the `<exec-order>-` build-order
+     prefix and the section gained the sentence deriving it; the row read "STORY-PLAN-US###-*.md"
+     before. `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a
+     comment, so the superseded name is quoted in double quotes and never in backticks. Owner of
+     the naming rule: `../../17-STORY-PLANS/CLAUDE.md`. -->
