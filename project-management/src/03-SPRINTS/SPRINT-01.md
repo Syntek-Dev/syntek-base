@@ -257,9 +257,12 @@ at grace and closed to further admission by <%DEVELOPER_NAME%>'s call of 07/09/2
 members have cleared `15-decisions`.** US001 has:
 `project-management/src/17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` is written,
 and its `| Sprint |` row already reads "SPRINT-01 · Wave 0 · build order 2", which this re-plan
-leaves true. US007 has not: on 07/09/2026 it has cleared `02-story-creation` and is admitted here at
+leaves true. US007 had not on 07/09/2026: it had cleared `02-story-creation` and was admitted here at
 `03-sprint-planning`, with its QA plan and the rest of its per-story loop still to run — the same
-standing US002 had when this record first admitted it on 02/09/2026. Two consequences, both for
+standing US002 had when this record first admitted it on 02/09/2026. **That standing moved on
+08/09/2026**, when `11-qa-checks`, `15-decisions` and `17-story-plans` all ran for US007 in one
+day; the two bullets below record where each artefact now stands, and the lead-in above is kept
+as the position on 07/09/2026 that the re-plan was decided from. Two consequences, both for
 other owners and neither taken here:
 
 - `project-management/src/16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` was written on 02/09/2026 against
@@ -275,11 +278,25 @@ other owners and neither taken here:
   for that pass, every member cleared `15`, is not met by US007. The plan says so in each such
   cell rather than inventing a value, and says itself that the 07/09/2026 edit is the mirror, not
   that pass.
-- No story plan for US007 exists (re-checked 08/09/2026), and none is written here:
-  `17-story-plans` owns it and runs after `16`. The **number** is reserved —
-  `project-management/src/17-STORY-PLANS/` holds `01-` for it, so the file will be
-  `01-STORY-PLAN-US007-<DESC>.md` when that workflow writes it. A reserved number is not a plan,
-  and nothing here may cite it as one.
+- US007's story plan exists —
+  `project-management/src/17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md`,
+  written on 08/09/2026 (verified 09/09/2026) — and none is written here: `17-story-plans` owns
+  it and runs after `16`, and it was that workflow that wrote it, under the `01-` this folder had
+  reserved for it. A reserved number is not a plan, and nothing here may cite it as one; what
+  changed on 08/09/2026 is that `01-` is no longer merely reserved, so the plan is cited above by
+  the name it is on disk under.
+
+<!-- The bullet read, until 09/09/2026: "No story plan for US007 exists (re-checked 08/09/2026),
+     and none is written here: 17-story-plans owns it and runs after 16. The **number** is
+     reserved — project-management/src/17-STORY-PLANS/ holds 01- for it, so the file will be
+     01-STORY-PLAN-US007-<DESC>.md when that workflow writes it. A reserved number is not a plan,
+     and nothing here may cite it as one." Written on 08/09/2026 at 22:53:14, forty-two seconds
+     after the plan it denies was created at 22:52:32 by the commit that cleared US007's QA,
+     decisions and planning in one day — so it was false when written, its "re-checked" stamp
+     notwithstanding. Corrected 09/09/2026 from ls and git log --diff-filter=A. The rule the
+     bullet carried, that a reserved number is not a plan, is restated above unchanged; only the
+     number's state moved. Paths in this comment are unbackticked because doc-references.sh reads
+     a backticked token here exactly as it reads one in prose. -->
 
 <!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX. Every story plan is now
      `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix 2-digit zero-padded,
@@ -345,8 +362,24 @@ that moved has left its old one, and every pointer reaches the new one.
       `project-management/src/18-TESTS/US001-MANUAL-TESTING.md` each carry a tester sign-off block
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan —
       `project-management/src/11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` (six
-      found, six resolved), and US007's, which does not yet exist and is written when its
-      `11-qa-checks` gate runs
+      found, six resolved), and
+      `project-management/src/11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md`,
+      written and signed off on 08/09/2026 when its `11-qa-checks` gate ran (seven found, seven
+      resolved)
+
+<!-- The third criterion read, until 09/09/2026: "**No [OPEN] acceptance-criteria gap remains** in
+     either member's QA plan —
+     project-management/src/11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md (six found,
+     six resolved), and US007's, which does not yet exist and is written when its 11-qa-checks
+     gate runs". True when written on 07/09/2026 and falsified on 08/09/2026, when 11-qa-checks
+     ran for US007 and its plan was signed off — the divergence both
+     ../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md (its QA bullet's dated comment) and
+     ../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md (Divergences, row 3)
+     had recorded against this file. Corrected 09/09/2026 from ls, git log --diff-filter=A and
+     the plan's own Status row. The box is left as it stood: whether the criterion is MET is the
+     completion judgement, and this correction makes none. Paths in this comment are
+     unbackticked because doc-references.sh reads a backticked token here exactly as it reads one
+     in prose. -->
 
 ---
 

@@ -90,8 +90,18 @@
 and the posture assessment that synthesises it — and both were listed here. They left with the
 story. US004's security gate was entered at `02-story-creation` and read `N/A` at its story, which
 is a decision with a reason and not an absent tool (`code/docs/GATE-REPORTING.md`). The plan that
-inherits the two-artefact row is SPRINT-04's, and **`04-SPRINT-PLAN-04.md` does not yet exist** —
-authoring it is a `16-sprint-plans` run of its own, with its own gate.
+inherits the two-artefact row is SPRINT-04's, and **`04-SPRINT-PLAN-04.md` now exists** — written
+on 08/09/2026 by a `16-sprint-plans` run of its own, through its own gate, and its Security row
+carries both of US005's artefacts.
+
+<!-- The paragraph's last sentence read, from 07/09/2026 until 09/09/2026: "The plan that inherits
+     the two-artefact row is SPRINT-04's, and **04-SPRINT-PLAN-04.md does not yet exist** —
+     authoring it is a 16-sprint-plans run of its own, with its own gate." True when written on
+     07/09/2026; falsified on 08/09/2026, when 16-sprint-plans wrote
+     project-management/src/16-SPRINT-PLANS/04-SPRINT-PLAN-04.md, and left standing by the pass of
+     that day, which edited this plan elsewhere and did not revisit the sentence. Corrected
+     09/09/2026. The ownership point survives: the plan was authored by its own run, through its
+     own gate, not by this one. -->
 
 <!-- The paragraph read: "**This is the first sprint plan whose Security row is not `N/A`**, and
      the row names two artefacts rather than one because the security gate ran in two halves: the
@@ -396,8 +406,18 @@ against a story that changes no file it touches, a sequencing fact its plan stat
 than as a status; in this plan it has no constraint at all until it arrives, and if it arrives
 US004 has already landed. **The `Blocked` this plan indexed — US005's, the first plan in this
 repository to carry it — left with the story.** Its target directory still exists in no branch and
-no commit, its plan's `| Status |` row still reads `Blocked`, and the sprint plan that will index
-that row is SPRINT-04's, which is not yet written (re-verified 08/09/2026).
+no commit, its plan's `| Status |` row still reads `Blocked` (both re-verified 09/09/2026), and the
+sprint plan that indexes that row is SPRINT-04's — written on 08/09/2026, it took over the indexing
+that day, and its own _Story Plans — the code master_ states why US005's plan carries `Blocked`.
+
+<!-- The sentence's last clause read "and the sprint plan that will index that row is SPRINT-04's,
+     which is not yet written" from 07/09/2026, and "and the sprint plan that will index that row
+     is SPRINT-04's, which is not yet written (re-verified 08/09/2026)" from 08/09/2026 until
+     09/09/2026. The stamp was added by the same commit that wrote
+     project-management/src/16-SPRINT-PLANS/04-SPRINT-PLAN-04.md — 8a03e3f, 08/09/2026 — so the
+     clause was false at the instant it was re-verified. project-management/src/02-STORIES/US007.md
+     -> Acceptance Criteria already reads this clause as superseded on 08/09/2026; corrected here on
+     09/09/2026, which makes that reading true. -->
 
 <!-- The passage read, from 05/09/2026 until 07/09/2026, over the rows US005 **Blocked** and US003
      `Open`: "**The two statuses differ deliberately.** `../17-STORY-PLANS/CLAUDE.md` makes a plan
@@ -536,9 +556,15 @@ repository already owns, never in `/tmp` with a predictable name, and remove it 
 **The live security section this plan carried left with US005 on 07/09/2026**, and the removal is
 a gate that does not apply here, not a gate skipped. The union's Security row reads `N/A` on
 US004's own flag; the twelve findings, the three design-state promotions and the twelve developer
-constraints are SPRINT-04's to summarise, and the plan that will do so does not yet exist.
-`AUDITS/` still does not fire, for the same reason as before: a code audit reads shipped code, and
-this sprint ships one bash script.
+constraints are SPRINT-04's to summarise, and the plan that does so was written on 08/09/2026 —
+the summary is under its own _Security_, not here. `AUDITS/` still does not fire, for the same
+reason as before: a code audit reads shipped code, and this sprint ships one bash script.
+
+<!-- The clause read, from 07/09/2026 until 09/09/2026: "and the plan that will do so does not yet
+     exist." True when written; falsified on 08/09/2026, when 16-sprint-plans wrote
+     project-management/src/16-SPRINT-PLANS/04-SPRINT-PLAN-04.md with the summary under its
+     Security section, and left standing by the pass of that day, which did not revisit it.
+     Corrected 09/09/2026. Whose summary it is has not moved. -->
 
 <!-- The section read, from 05/09/2026 until 07/09/2026:
 
