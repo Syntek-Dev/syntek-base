@@ -955,7 +955,7 @@ shape, because an owner that looks discharged stops anyone looking.
 - **Q39 = map only, and the reason is that the other steps already exist.** Sam's ruling:
   the graduation destinations are owned by later workflows, so RESOLVE writing them is a second,
   earlier copy of a step that already has an owner. **Verified rather than accepted**:
-  `22-implementation-documentation/STEPS.md:126-131` owns the `DEFERRED.md` row, the map's
+  `22-implementation-documentation/STEPS.md` → _Record Findings_ owns the `DEFERRED.md` row, the map's
   Resolved-decisions link-back and the `GAPS.md` close; `15-decisions/` owns the ADR;
   `02-story-creation/` cuts the story from a Slices row. **Four of the graduation table's five
   destinations therefore have a downstream owner, and the fifth — a Slices row — is on the map

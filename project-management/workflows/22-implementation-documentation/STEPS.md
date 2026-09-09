@@ -20,8 +20,9 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | ---- | ----------------------------------------------------------------------------------------------------------- |
 | 1    | **Internal — Live Artefacts** → src/17-STORY-PLANS/, and each spec's PLANNING/ folder                       |
 | 3    | **Internal — Live Artefacts** → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/ |
-| 4    | **Internal — Live Artefacts** → src/20-FINDINGS/ · **Internal — Guides** → code/docs/DATABASE.md            |
-| 5–6  | **Internal — Guides** → code/docs/CODE-REVIEW-GRAPH.md (docs ⇄ graph lockstep)                              |
+| 4    | **Internal — Live Artefacts** → src/18-TESTS/ · **Internal — Guides** → code/docs/TESTING.md                |
+| 5    | **Internal — Live Artefacts** → src/20-FINDINGS/ · **Internal — Guides** → code/docs/DATABASE.md            |
+| 6–7  | **Internal — Guides** → code/docs/CODE-REVIEW-GRAPH.md (docs ⇄ graph lockstep)                              |
 
 ---
 
@@ -80,6 +81,10 @@ Security notes (read `src/10-SECURITY/CLAUDE.md` to place records correctly):
 - Any newly discovered Critical/High finding is escalated to
   `src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/` immediately.
 
+Where the QA record's evidence for a scenario is a **manual** verification, it may cite the
+`src/18-TESTS/` row ID that exercised it (`SIGNUP-03`) instead of a test name — see Step 4, and
+walk the guide before closing that row. An automated test name stays preferred where one exists.
+
 Reuse the `PLANNING/` artefact's `<DESCRIPTOR>` (SCREAMING-KEBAB-CASE) so plan and record
 pair by name. A story that ships no public URL records `SEO: N/A` with a reason; a story
 that ships no Django Ninja API surface records that fact in the API record header.
@@ -104,7 +109,56 @@ The SEO record is the **only** one whose evidence must be gathered from a runnin
 
 A dimension marked Pass without a rendered value or a measured number is not evidence.
 
-### Step 4 — Record Findings
+### Step 4 — Write the Two Test Records
+
+Unlike Step 3, this pair is **not** conditional on a `PLANNING/` artefact and has none. It is
+written for **every** story, because its subject is not plan-versus-built but whether executing
+the tests passed. Copy both templates out of `src/18-TESTS/`:
+
+| Record    | Template                  | Record → destination                        |
+| --------- | ------------------------- | ------------------------------------------- |
+| Automated | `US000-TEST-STATUS.md`    | `US###-TEST-STATUS.md` → `src/18-TESTS/`    |
+| Manual    | `US000-MANUAL-TESTING.md` | `US###-MANUAL-TESTING.md` → `src/18-TESTS/` |
+
+**The automated record's generated block is generated, never typed.** Run the story's suites
+through `code/src/scripts/tests/**/*.sh`, then run the generator over their report artefacts:
+
+```bash
+bash code/src/scripts/tests/test-record.sh US###
+```
+
+Run it **after the suites, green or red**. It is deliberately separate from the runners — their
+exit-code contract is untouched, so a **failing** run still records — and it is the only writer of
+everything between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, the
+coverage figures included; the ban on hand-editing inside them is `src/18-TESTS/CLAUDE.md`'s.
+Everything after the block — how to reproduce the run, the outstanding gaps and flaky
+tests, the status line — is yours to write.
+
+**A test only reaches the record if it declares its story.** A pytest test carries
+`@pytest.mark.story("US###")`, inheritable from its class or module via `pytestmark`; a Bruno
+request carries `tags: [US###]` in its `meta` block, read from the `.bru` source so one
+whole-collection run still feeds every story — the marker registry is `code/docs/testing/TAXONOMY.md`.
+Enforcement warns and exits 0:
+
+```bash
+bash code/src/scripts/audits/story-markers.sh
+```
+
+Because it never fails a build, **an unmarked test is silently absent from the record** — a short
+table is not evidence of a small suite. Read the audit's output before trusting one.
+
+**The manual guide is walked, not drafted** — marked row by row as each step is executed, by a
+human tester or by Claude Chrome against the same file. Drafting it from the code and marking it
+afterwards is the one way this record can lie.
+
+Read `src/18-TESTS/CLAUDE.md` before writing either file. The three-record boundary, the
+journey-area sections and their `{AREA}-{NN}` row IDs, the `QA` citation column, the marking rule,
+the overwrite-on-re-run rule and the browser-tool contract are all owned there, and none of them is
+restated here.
+
+A red suite or a failed manual row is an **input** to Step 5, never a reason to skip this step.
+
+### Step 5 — Record Findings
 
 Write one findings record per story, capturing what shipping it revealed about the
 project's standards — divergences observed, their smallest fix, and what the **next**
@@ -143,7 +197,7 @@ Charting made the promise; this step is the evidence.
 Rows marked `Next story` are inputs to the next `src/17-STORY-PLANS/` plan — that is what
 this record is for.
 
-### Step 5 — Update Touched Context and Documentation
+### Step 6 — Update Touched Context and Documentation
 
 For every layer the implementation touched (`code/`, `how-to/`, `project-management/`):
 
@@ -154,18 +208,22 @@ For every layer the implementation touched (`code/`, `how-to/`, `project-managem
 
 This is the documentation hard gate — it must be complete before any commit.
 
-### Step 6 — Refresh the Code-Review-Graph
+### Step 7 — Refresh the Code-Review-Graph
 
 Run `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) so the
 layered docs and the graph stay in lockstep. See `code/docs/CODE-REVIEW-GRAPH.md`.
 
-### Step 7 — Confirm Every Record Is Linked and No Plan Is Orphaned
+### Step 8 — Confirm Every Record Is Linked and No Plan Is Orphaned
 
 Cross-check each record against Step 1: every applicable spec now has an
 `IMPLEMENTATION/` record naming its `US###` and linking back to its `PLANNING/` artefact.
 No spec is left with a `PLANNING/` record but no `IMPLEMENTATION/` record.
 
-### Step 8 — Commit
+The `src/18-TESTS/` pair has no `PLANNING/` side and is therefore outside that check. Confirm
+instead that **both** files exist for the story, that the generated block was regenerated against
+the last suite run, and that every manual row carries a `Pass` or a `Fail`.
+
+### Step 9 — Commit
 
 ```text
 git

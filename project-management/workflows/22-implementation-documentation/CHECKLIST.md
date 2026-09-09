@@ -14,8 +14,8 @@ model: opus
 
 > **See** `project-management/REFERENCES.md` → **Internal — Live Artefacts**
 > (src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/,
-> src/17-STORY-PLANS/) · **Internal — Guides** (code/docs/CODE-REVIEW-GRAPH.md) for
-> supporting references.
+> src/17-STORY-PLANS/, src/18-TESTS/) · **Internal — Guides**
+> (code/docs/CODE-REVIEW-GRAPH.md, code/docs/TESTING.md) for supporting references.
 
 ## Execution Checklist
 
@@ -31,6 +31,29 @@ model: opus
 - [ ] Every record is linked to its `US###` and back to its `PLANNING/` artefact
 - [ ] No spec left with a `PLANNING/` record but no matching `IMPLEMENTATION/` record
 - [ ] Any newly discovered Critical/High finding escalated to `VULNERABILITIES/IMPLEMENTATION/`
+
+---
+
+## Test records
+
+- [ ] Both `src/18-TESTS/` records copied from their `US000-…` templates — `US###-TEST-STATUS.md`
+      and `US###-MANUAL-TESTING.md`, every story, whatever the suites returned
+- [ ] Story's suites run through `code/src/scripts/tests/**/*.sh`, then
+      `bash code/src/scripts/tests/test-record.sh US###` run **after** them — green or red
+- [ ] Nothing between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`
+      hand-edited, the coverage figures included — the next run discards any edit
+- [ ] `bash code/src/scripts/audits/story-markers.sh` run and its output read — it warns and
+      exits 0, and an **unmarked test is silently absent from the record**
+- [ ] Every test the story owns declares it — `@pytest.mark.story("US###")` (or `pytestmark`
+      on its class or module), `tags: [US###]` in a Bruno request's `meta` block
+- [ ] Manual guide **walked** by a tester or Claude Chrome, one section per journey area, every
+      row marked `Pass` or `Fail` — an empty `Result` is never a pass
+- [ ] Every `Fail` carries its reason in `Notes` and a destination
+- [ ] Hand-written halves completed — reproduction, gaps, flaky tests and the status line in the
+      automated record; preconditions, failures and sign-off in the manual guide
+- [ ] Both records cross-linked to `US###` and its `src/17-STORY-PLANS/` plan
+- [ ] Surface named in the manual guide's header (Browser / CLI / Gate / API), so a non-UI story
+      still has rows
 
 ---
 
@@ -66,6 +89,8 @@ model: opus
 ## Definition of Done
 
 - [ ] All applicable IMPLEMENTATION records written, linked, and committed
+- [ ] Both `src/18-TESTS/` records written — generated block regenerated against the last suite
+      run, manual guide walked and every row marked
 - [ ] Findings record written and its `Next story` rows carried forward
 - [ ] Documentation hard gate met — docs complete and graph refreshed before any commit
 - [ ] Ready to proceed to `workflows/23-pr-and-review` (which now only verifies these records)

@@ -29,6 +29,14 @@ Happy paths get built because they are the demo. The consolidated journey exists
 down what happens when verification bounces or consent is refused — so this record verifies
 **those** explicitly, not just that the feature works.
 
+## The three-record boundary
+
+**This folder answers one question: does the flow exist as it was designed?** Each consolidated
+step, present or not, with the view, template or route as evidence. Two records next to it look
+alike and answer different questions — `../../11-QA/IMPLEMENTATION/` asks whether the story's
+**specified scenarios** were met, and `../../18-TESTS/` asks whether **executing the tests**
+passed. Each owns its own rules; read them there.
+
 ## Cross-references
 
 - `USER-FLOW-IMPL-US000-TEMPLATE.md` — the per-story record template

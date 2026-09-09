@@ -36,6 +36,20 @@ its date) in the story first.
 - When running `project-management/workflows/11-qa-checks/`
 - When deriving a story's test scope and acceptance criteria from its wireframe
 
+## The three-record boundary, and where these IDs travel
+
+**This folder is the specifying half of one question: were the story's scenarios met?** The answer
+is recorded next door in `../IMPLEMENTATION/`. Two other records look alike and ask different
+questions — `../../05-USER-FLOW/IMPLEMENTATION/` asks whether the **flow exists** as it was
+designed, and `../../18-TESTS/` asks whether **executing the tests** passed. Each owns its own
+rules; read them there.
+
+**The `HP-nn` / `ES-nn` / `EC-nn` / `PA-nn` IDs are defined here and cited downstream.** Besides
+`../IMPLEMENTATION/`, the manual walk-through `../../18-TESTS/US###-MANUAL-TESTING.md` cites them
+in its `QA` column — one scenario per walked row — and never redefines them. Renumbering a
+scenario after the plan is written therefore invalidates citations in two files, not one, and
+neither of them raises an error.
+
 ## Cross-references
 
 - `QA-PLAN-US000-TEMPLATE.md` — the per-story QA plan template

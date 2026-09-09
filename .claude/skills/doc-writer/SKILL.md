@@ -87,6 +87,11 @@ rule. **Do not copy the shape of a sibling that may predate the guide.**
 
 - **Documentation is a hard gate.** The implementation records and every affected `CONTEXT.md`
   must be complete **before** any commit, with the code-review-graph refreshed alongside them.
+- **That closeout writes the two `project-management/src/18-TESTS/` records, and neither is
+  drafted the way a guide is.** Half of `US###-TEST-STATUS.md` is written by
+  `bash code/src/scripts/tests/test-record.sh US###`, and `US###-MANUAL-TESTING.md` is walked, not
+  composed — a row nobody executed is not a `Pass`. What may be typed into either, and what the
+  next run discards, is `project-management/src/18-TESTS/CLAUDE.md`'s.
 - **Scripts, never raw commands** — every dev operation in documentation resolves to
   `code/src/scripts/**/*.sh`.
 - Documentation files `SCREAMING-SNAKE-CASE.md`; source directories `kebab-case/`.

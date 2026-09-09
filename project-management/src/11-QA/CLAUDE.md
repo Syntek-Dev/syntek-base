@@ -16,8 +16,9 @@ merged, verified feature.
 
 - **Routing:** never write here free-hand — `PLANNING/` plans come from
   `workflows/11-qa-checks/` (after security checks and wireframe sign-off);
-  `IMPLEMENTATION/` reviews come from `workflows/23-pr-and-review/`. Both are governed by
-  `docs/QA-GUIDE.md`; run the heavier passes through the `qa-tester` skill.
+  `IMPLEMENTATION/` reviews come from `workflows/22-implementation-documentation/` and are
+  only verified in `workflows/23-pr-and-review/`. Both are governed by `docs/QA-GUIDE.md`;
+  run the heavier passes through the `qa-tester` skill.
 - **Model:** Fable for the QA reasoning (scenarios, edge cases, deviation analysis,
   sign-off); Opus only for mechanical touches — filing, renaming, date-stamping.
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to

@@ -36,6 +36,19 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 - **Never rename or back-date a filed record** — the date is load-bearing for the audit trail.
 - **Documentation only** — never code, secrets, or PII sample data.
 - One record per story.
+- **Section 1's step numbers are read by a third file.** They originate in
+  `../CONSOLIDATED-IDEAS/USER-FLOW-CONSOLIDATED-<AREA>.md`, this record carries them in
+  _1 — Steps implemented_, and `../../18-TESTS/US###-MANUAL-TESTING.md` builds its walk-through
+  row IDs as `{AREA}-{NN}` from the same number. Renumbering a step is a three-file change, and
+  nothing raises an error if one is missed.
+
+<!-- UPDATED 09/09/2026. The 18-TESTS records were redesigned: the manual guide is now a journey
+walk-through whose row IDs reuse the consolidated flow's step numbers as {AREA}-{NN} rather than
+carrying a parallel set of their own, so one number identifies a flow step, this record's Section 1
+line, its diagram node and the walked row. The dependency runs one way — the consolidated flow
+owns the number, this record and the manual guide both cite it. Written here rather than as an ADR
+because 15-DECISIONS keys every ADR to a driving story, and this was template maintenance with
+none. -->
 
 ## Output & naming
 

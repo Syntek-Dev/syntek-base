@@ -39,6 +39,13 @@ _Every gap the plan marked `[OPEN]` must be closed or carried forward here — n
 Mark each scenario from the plan **Pass / Fail / Deviation / Deferred / N/A** against the
 running build, with evidence (test name, file, or observed behaviour). Keep the plan's IDs.
 
+**An automated test name stays the preferred evidence wherever a test exists** — a name a suite
+re-runs outlives a claim about one afternoon. Where a scenario was verified **by hand**, Evidence
+**may** instead cite the manual row that exercised it: a `{AREA}-{NN}` row ID from
+`../../18-TESTS/US###-MANUAL-TESTING.md` (for example `SIGNUP-03`), whose own `QA` column cites
+this scenario back, so the two records point at each other. That citation is an alternative, not
+an equal: it is right for a scenario no test can reach, and wrong as a way of not writing one.
+
 ### Happy Path
 
 | ID              | Scenario (from plan) | Result | Evidence                          |
@@ -49,9 +56,10 @@ _One row per HP-nn in the plan; anything not Pass needs a reason in Section 4 or
 
 ### Error States
 
-| ID              | Scenario (from plan) | Result | Evidence      |
-| --------------- | -------------------- | ------ | ------------- |
-| [EXAMPLE] ES-01 | {handled error}      | Pass   | `test_{name}` |
+| ID              | Scenario (from plan) | Result | Evidence                                      |
+| --------------- | -------------------- | ------ | --------------------------------------------- |
+| [EXAMPLE] ES-01 | {handled error}      | Pass   | `18-TESTS` row `SIGNUP-03` — by hand, no test |
+| [EXAMPLE] ES-02 | {handled error}      | Pass   | `test_{name}`                                 |
 
 _One row per ES-nn; confirm the user sees the intended message, not a stack trace._
 

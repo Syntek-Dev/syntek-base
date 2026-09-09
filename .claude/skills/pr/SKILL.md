@@ -64,6 +64,13 @@ and destinations belong to `project-management/workflows/22-implementation-docum
 which is entered rather than restated: GDPR, security assessments, QA, SEO and API design each
 have their own `IMPLEMENTATION/` folder under `project-management/src/`.
 
+**The two test records are read, not counted.** `US###-TEST-STATUS.md` and
+`US###-MANUAL-TESTING.md` in `project-management/src/18-TESTS/` are written at that same closeout
+and only **verified** here — what complete means for them is
+`project-management/workflows/23-pr-and-review/` Step 6, which is entered rather than restated. A
+green `TEST-STATUS` beside a failing manual row is a missing test, not a passing story: it goes
+back to `22`, never through this gate.
+
 ## Definition of done
 
 QA and review both ran as separate dispatches; the PR body names its story and its test plan;

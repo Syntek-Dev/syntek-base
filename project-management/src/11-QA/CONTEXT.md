@@ -23,10 +23,10 @@ per-story plans, as in 09-GDPR).
 
 ## When to use this
 
-| Folder            | When                                                | Workflow                      |
-| ----------------- | --------------------------------------------------- | ----------------------------- |
-| `PLANNING/`       | After wireframe sign-off, before development begins | `workflows/11-qa-checks/`     |
-| `IMPLEMENTATION/` | After code is written, during PR review             | `workflows/23-pr-and-review/` |
+| Folder            | When                                                | Workflow                                     |
+| ----------------- | --------------------------------------------------- | -------------------------------------------- |
+| `PLANNING/`       | After wireframe sign-off, before development begins | `workflows/11-qa-checks/`                    |
+| `IMPLEMENTATION/` | After the code phases, before the PR is raised      | `workflows/22-implementation-documentation/` |
 
 ## PLANNING ↔ IMPLEMENTATION — per story
 
@@ -39,15 +39,17 @@ per-story plans, as in 09-GDPR).
 
 ## Relationship to 18-TESTS/
 
-QA artefacts here precede or accompany development. Once a story is merged, automated
-test status and manual guides live in `project-management/src/18-TESTS/` — do not
-duplicate them here.
+QA artefacts here precede or accompany development. Whether **executing** the tests passed
+is a different question, recorded per story in `project-management/src/18-TESTS/` — written
+in the same documentation closeout as the `IMPLEMENTATION/` review, not after the merge, and
+not a copy of anything here.
 
 ## Cross-references
 
 - `PLANNING/CONTEXT.md` · `IMPLEMENTATION/CONTEXT.md` — the two per-story sub-folders
 - `project-management/workflows/11-qa-checks/` — produces the `PLANNING/` plan
-- `project-management/workflows/23-pr-and-review/` — produces the `IMPLEMENTATION/` review
+- `project-management/workflows/22-implementation-documentation/` — writes the `IMPLEMENTATION/` review
+- `project-management/workflows/23-pr-and-review/` — verifies it before the merge
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/src/08-WIREFRAMES/` · `src/10-SECURITY/` — the design and security
   artefacts a QA plan is written against

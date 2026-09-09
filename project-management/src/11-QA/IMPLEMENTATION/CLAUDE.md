@@ -34,6 +34,9 @@ sign-off before merge.
 - **Verify against the real implementation, never restate the plan** — mark a scenario
   Pass only with evidence (a test name, file, or observed behaviour). If the plan is
   missing, flag it; do not invent one.
+- **A hand-verified scenario may cite the manual row that exercised it** — a `{AREA}-{NN}` row ID
+  from `../../18-TESTS/US###-MANUAL-TESTING.md` — instead of a test name. Optional, and never the
+  reason a test was not written; the template's Section 3 carries the rule.
 - **The sign-off blocks the merge** — an unresolved Fail or an unjustified deviation is a
   blocker, not a footnote.
 - One review per story; do not batch multiple stories into one file.

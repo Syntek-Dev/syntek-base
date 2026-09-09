@@ -16,11 +16,11 @@ model: opus
 
 Consult `project-management/REFERENCES.md` as you work through these steps:
 
-| Step         | Section                                                                                                                                               |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5            | **Internal — Guides** → project-management/docs/GIT-GUIDE.md (gate rules: testing → dev → staging → main)                                             |
-| 5            | **External — Version Control & CI** → Conventional Commits 1.0, GitHub Actions, GitHub flow                                                           |
-| Impl records | Verified here, authored in `workflows/22-implementation-documentation/` → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/ |
+| Step         | Section                                                                                                                                                              |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 5            | **Internal — Guides** → project-management/docs/GIT-GUIDE.md (gate rules: testing → dev → staging → main)                                                            |
+| 5            | **External — Version Control & CI** → Conventional Commits 1.0, GitHub Actions, GitHub flow                                                                          |
+| Impl records | Verified here, authored in `workflows/22-implementation-documentation/` → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/, src/18-TESTS/ |
 
 ---
 
@@ -75,13 +75,13 @@ Once merged to `testing`, set the story `**Status:**` to `Completed` (move to `A
 
 ---
 
-### Step 6 — Verify Implementation Records, Write Review Records
+### Step 6 — Verify Implementation and Test Records, Write the Review Record
 
 **Hard gate — complete before marking this story done.**
 
-The design/compliance IMPLEMENTATION records are **written in `22-implementation-documentation`**, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the two PR-stage records that are the outputs of Steps 1–2.
+The design/compliance IMPLEMENTATION records and both test records are **written in `22-implementation-documentation`**, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the single PR-stage record that is the output of Steps 1–2.
 
-**Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `19` before proceeding; do not write it here:
+**Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `22-implementation-documentation` before proceeding; do not write it here:
 
 | Discipline                                          | Required                                           | Expected in                                  |
 | --------------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
@@ -90,14 +90,30 @@ The design/compliance IMPLEMENTATION records are **written in `22-implementation
 | QA plan                                             | Always                                             | `src/11-QA/IMPLEMENTATION/`                  |
 | SEO review                                          | Only if story adds public-facing pages             | `src/12-SEO/IMPLEMENTATION/`                 |
 | API design                                          | Only if story adds or changes the Django Ninja API | `src/13-API-DESIGN/IMPLEMENTATION/`          |
+| Test records (automated + manual)                   | Always                                             | `src/18-TESTS/`                              |
 | Findings                                            | Always                                             | `src/20-FINDINGS/`                           |
 
-**Write (PR-stage records)** — the outputs of the Final QA Pass (Step 1) and Code Review (Step 2):
+**Complete is not the same as present** — the two test records in `src/18-TESTS/` are read, not
+counted. Rules and templates: `project-management/src/18-TESTS/CLAUDE.md`.
 
-| Discipline         | Required | File to create                                     | Save in           |
-| ------------------ | -------- | -------------------------------------------------- | ----------------- |
-| Code review record | Always   | `REVIEW-US###-<descriptor>[-DD-MM-YYYY].md`        | `src/19-REVIEWS/` |
-| Test record        | Always   | `US###-TEST-STATUS.md` + `US###-MANUAL-TESTING.md` | `src/18-TESTS/`   |
+- **`US###-TEST-STATUS.md`** — the block between `<!-- BEGIN GENERATED: test-record -->` and
+  `<!-- END GENERATED -->` regenerated against the **last** suite run, not an earlier green one.
+  Check a short per-test table against `bash code/src/scripts/audits/story-markers.sh` before
+  reading it as coverage: an unmarked test is silently absent from the record, never reported
+  as missing.
+- **`US###-MANUAL-TESTING.md`** — every row's `Result` marked `Pass` or `Fail`, none left empty.
+  An empty `Result` means the step was not run; it is never a pass.
+- **Every `Fail` carries a reason and a destination** — the reason in its own `Notes` cell, and
+  a row in the guide's _Failures_ table routed before merge, exactly as `src/20-FINDINGS/`
+  routes a finding.
+- **A green `TEST-STATUS` beside a failing manual row is a missing test, not a passing story.**
+  Return to `22-implementation-documentation`; never merge on the automated half alone.
+
+**Write (PR-stage record)** — the output of the Final QA Pass (Step 1) and Code Review (Step 2):
+
+| Discipline         | Required | File to create                              | Save in           |
+| ------------------ | -------- | ------------------------------------------- | ----------------- |
+| Code review record | Always   | `REVIEW-US###-<descriptor>[-DD-MM-YYYY].md` | `src/19-REVIEWS/` |
 
 Any newly discovered Critical or High findings during review must be escalated to
 `src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/` immediately and fed back to
