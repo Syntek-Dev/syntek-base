@@ -174,10 +174,16 @@ it ships. <%DEVELOPER_NAME%> settled the shape as a full cascade rather than an 
 SPRINT-01 ahead of US001; US002 moves SPRINT-01 → SPRINT-02 with US003 as its stretch tier behind
 it; US004 moves SPRINT-02 → here; US005 moves here → SPRINT-04 beside US006. The final figures are
 SPRINT-01 at 10 / 11, SPRINT-02 at 8 / 11, this sprint at 8 / 11 (13 / 11 if the carry lands), and
-SPRINT-04 at 13 / 11 — grace, taken deliberately and recorded there. No SPRINT-05 is opened. **It
-is a re-plan, not a carry-over** — the distinction this record drew on 05/09/2026 for US003's first
-move: every sprint is `Planned` and unworked and no Definition of Done has been reached, so each
-move is recorded in the departing and receiving records rather than ticked off in one.
+SPRINT-04 at 13 / 11 — grace, taken deliberately and recorded there. No SPRINT-05 is opened by
+the re-plan. **It is a re-plan, not a carry-over** — the distinction this record drew on
+05/09/2026 for US003's first move: every sprint is `Planned` and unworked and no Definition of
+Done has been reached, so each move is recorded in the departing and receiving records rather
+than ticked off in one.
+
+<!-- Until 09/09/2026 the final figures closed "No SPRINT-05 is opened." — true of the re-plan of
+     07/09/2026, and false as a standing statement from that day, when SPRINT-05 was opened holding
+     US008, a story cut on 09/09/2026 that the re-plan never moved. The scope is now stated in the
+     sentence; nothing in the re-plan, this record's members or its figures changes. -->
 
 **US003 has now moved twice, and the reservation it carries has turned round.** SPRINT-02 → here on
 05/09/2026, as the `Should` give this sprint lacked; here → SPRINT-02 on 07/09/2026, as the stretch

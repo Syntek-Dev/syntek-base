@@ -167,8 +167,17 @@ _None._
   before; the clause that reserves it lives in `../03-SPRINTS/SPRINT-02.md` -> _Definition of
   Done_. If it somehow arrived here anyway, 13 / 11 would become 18 / 11 — over grace — which the
   record refuses on arithmetic before it is argued.
-- **A SPRINT-05** — declined on 07/09/2026 in favour of the grace above. No fifth record is
-  created, and none is implied by this plan.
+- **A SPRINT-05 for US006** — declined on 07/09/2026 in favour of the grace above, and the
+  decision stands: US006 is built here, at grace, and this plan implies no fifth record for it.
+  The fifth record that does exist was opened on 09/09/2026 for US008, a story cut that day and
+  never a member here; it takes nothing from this sprint, which stays at 13 / 11 and closed.
+
+<!-- The SPRINT-05 bullet read, until 09/09/2026: "**A SPRINT-05** — declined on 07/09/2026 in
+     favour of the grace above. No fifth record is created, and none is implied by this plan."
+     SPRINT-05 was opened that day, holding US008 alone — a story this plan never carried and the
+     07/09/2026 decision never weighed — so the second sentence went false the moment the record
+     existed, and it is superseded here rather than deleted. The refusal's reasoning is the part
+     that still stands: US006 is built here at grace, not alone in a fifth record. -->
 
 ---
 

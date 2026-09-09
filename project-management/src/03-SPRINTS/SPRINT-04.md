@@ -193,11 +193,18 @@ reorder execution inside the existing membership, <%DEVELOPER_NAME%> settled a f
 US007 is new into SPRINT-01; US002 moves SPRINT-01 to SPRINT-02; US003 moves SPRINT-03 to SPRINT-02
 as the stretch tier, with its carry reserved into SPRINT-03 — the same shape it held in SPRINT-03,
 one sprint earlier, and **not** a split of the story; US004 moves SPRINT-02 to SPRINT-03; US005
-moves SPRINT-03 to here. US001 and US006 stay where they were. **No SPRINT-05 is created.** Every
-sprint is `Planned` and unworked, so each move is a **re-plan rather than a carry-over** — the
-distinction SPRINT-03 drew on 05/09/2026 when US003 moved out of SPRINT-02, and the precedent for
-recording a move in both records rather than ticking a carry clause off in one. Each moved story
-keeps its own `**Status:** Open`; this cascade moves membership and nothing else.
+moves SPRINT-03 to here. US001 and US006 stay where they were. **No SPRINT-05 is created by the
+cascade.** Every sprint is `Planned` and unworked, so each move is a **re-plan rather than a
+carry-over** — the distinction SPRINT-03 drew on 05/09/2026 when US003 moved out of SPRINT-02,
+and the precedent for recording a move in both records rather than ticking a carry clause off in
+one. Each moved story keeps its own `**Status:** Open`; this cascade moves membership and nothing
+else.
+
+<!-- Until 09/09/2026 the sentence read "**No SPRINT-05 is created.**" — true of the cascade it
+     sits inside, which moved membership and nothing else, and false as a standing statement from
+     that day, when SPRINT-05 was opened holding US008: a story cut on 09/09/2026 and moved by no
+     part of the cascade. The scope is now stated in the sentence; the decision of 07/09/2026 is
+     unchanged, and this record's members, figure and closure with it. -->
 
 **This sprint takes grace, and takes it deliberately.** `project-management/docs/planning/CADENCE.md`
 -> _Sprint capacity — the trigger_ owns both figures as generation-time answers,
@@ -335,18 +342,60 @@ second carrying a dated erratum on the size of the fail-closed set. US005's QA p
 `[OPEN]` gap during its session — the boto3 clamp literal, `AC-GAP-1` — and it closed the same
 day, 05/09/2026. CADENCE's no-unresolved-gap prerequisite is therefore satisfied for both members.
 **The carry-over question that held `16` back is settled** (07/09/2026: nothing carries into this
-record), so the plan may now be written — and **it has not been**. No
-`project-management/src/16-SPRINT-PLANS/04-SPRINT-PLAN-04.md` exists on 07/09/2026, nor on
-08/09/2026; authoring it is a separate `16-sprint-plans` run with its own grilling pass and its
-own prerequisite gate, not a side-effect of this re-plan. On the story-plan side, US005's plan
-exists (`project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`,
+record), and **both the sprint plan and US006's story plan now exist** — each written on
+08/09/2026 by its own workflow run, not as a side-effect of this re-plan, and each re-read on
+09/09/2026. The sprint plan is `project-management/src/16-SPRINT-PLANS/04-SPRINT-PLAN-04.md`,
+written by a `16-sprint-plans` run and landed in commit `8a03e3f` (08/09/2026): its header names
+this record as its source sprint and mirrors the capacity line above; its _Build order_ section
+derives the exec-order segment rather than copying it, and both segments of its name read `04` —
+every blocker of every member sits in an earlier-numbered sprint, so sprint number and build order
+agree here, as this record said they would; and where it and this record disagree, the record
+wins, which the plan states itself. On the story-plan side, US005's plan is
+`project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`,
 written 05/09/2026 as a SPRINT-03 member and repointed on 07/09/2026 — its `| Sprint |` row reads
-"SPRINT-04 · Wave 1 · build order 1") and **US006's does not** (re-checked 08/09/2026);
-`17-story-plans` owns writing it and has its own gate. Its **number** is reserved, though: US006 is
-last in the settled build order, so the file will be `07-STORY-PLAN-US006-<DESC>.md` when that
-workflow writes it, and a reserved number is not a plan — nothing here may cite it as one. When the
-sprint plan is written, its exec-order segment reads `04`: every blocker of every member sits in an
-earlier-numbered sprint, so sprint number and build order agree here.
+"SPRINT-04 · Wave 1 · build order 1" — and US006's is
+`project-management/src/17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`, written by a
+`17-story-plans` run under the `07-` prefix reserved for it that morning and landed in commit
+`22ca640` (08/09/2026), the earlier of the two commits. Its `| Sprint |` row reads
+"SPRINT-04 · Wave 1 · build order 2", its `| Branch |` row `us006/posture-guard` and its
+`| Status |` row `Open` — argued in the plan rather than asserted, and not drift from US005's
+`Blocked`, which records a target directory that exists in no branch. The sprint plan's _Stories_
+table names both story plans, and the reserved-number caveat that stood here is spent: `07-` is a
+plan now, not a reservation, and this record cites it as one.
+
+<!-- Until 09/09/2026 the paragraph ran on, from "so the plan may now be written", as: "so the
+     plan may now be written — and **it has not been**. No
+     project-management/src/16-SPRINT-PLANS/04-SPRINT-PLAN-04.md exists on 07/09/2026, nor on
+     08/09/2026; authoring it is a separate `16-sprint-plans` run with its own grilling pass and
+     its own prerequisite gate, not a side-effect of this re-plan. On the story-plan side, US005's
+     plan exists
+     (project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md,
+     written 05/09/2026 as a SPRINT-03 member and repointed on 07/09/2026 — its `| Sprint |` row
+     reads "SPRINT-04 · Wave 1 · build order 1") and **US006's does not** (re-checked
+     08/09/2026); `17-story-plans` owns writing it and has its own gate. Its **number** is
+     reserved, though: US006 is last in the settled build order, so the file will be
+     07-STORY-PLAN-US006-<DESC>.md when that workflow writes it, and a reserved number is not a
+     plan — nothing here may cite it as one. When the sprint plan is written, its exec-order
+     segment reads `04`: every blocker of every member sits in an earlier-numbered sprint, so
+     sprint number and build order agree here." Backticks are removed from the quoted paths
+     because the citation gate reads backticked tokens inside comments.
+
+     "It has not been" and "US006's does not" were written on 07/09/2026 (d13380c) and were true
+     that day. "Nor on 08/09/2026", "re-checked 08/09/2026" and the reserved-number sentence were
+     added by 8a03e3f (08/09/2026, 22:53:14 +0100) — the commit that CREATED
+     04-SPRINT-PLAN-04.md, under a message that eight records "stop calling each other stale" —
+     so the paragraph denied a file the same commit was writing. The US006 plan had landed
+     seventy-six seconds earlier in 22ca640 (22:51:58 +0100), under the reserved 07- and the
+     descriptor POSTURE-GUARD, so both denials were false the moment they were committed. The
+     "re-checked" was true of that morning — the six existing plans took their prefixes and 07-
+     was reserved then, the 16-sprint-plans run came that afternoon and the 17-story-plans run
+     for US006 after it — and is kept as its record; the rename comment below still calls 07-
+     reserved for the same reason. What survives: the prerequisite reasoning above, the
+     07/09/2026 settlement, and the exec-order prediction, now derived in the plan's own
+     _Build order_ section. What does not: the reserved-number caveat, spent when the number was
+     taken, and the "separate run" clause as an instruction — it was honoured, each plan coming
+     from its own workflow run, and stands above as history. Measured 09/09/2026 at HEAD
+     ff24084. -->
 
 <!-- Until 08/09/2026 the US005 clause read "written 05/09/2026 when it was a SPRINT-03 member —
      its `Sprint` row is the cascade's to re-resolve, not this record's". The cascade re-resolved
@@ -362,8 +411,8 @@ earlier-numbered sprint, so sprint number and build order agree here.
      members are `06-` (US005) and the reserved `07-` (US006), being sixth and seventh of seven. It
      is RENUMBERED whenever build order changes.
 
-     READ THIS BESIDE THE PARAGRAPH ABOVE, which says the sprint plan's exec-order segment will
-     read `04`. The two prefixes are not the same device. A sprint plan carries TWO numbers,
+     READ THIS BESIDE THE PARAGRAPH ABOVE, which records that the sprint plan's exec-order
+     segment reads `04`. The two prefixes are not the same device. A sprint plan carries TWO numbers,
      `<exec-order>-SPRINT-PLAN-<sprint-number>`, and the PAIR carries the meaning — so
      ../16-SPRINT-PLANS/CLAUDE.md rules that a mismatch between them is deliberate and must never
      be "corrected", and the plan named above says something precise by having both segments read
