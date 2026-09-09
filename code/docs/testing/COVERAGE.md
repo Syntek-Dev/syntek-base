@@ -108,6 +108,17 @@ bash code/src/scripts/tests/backend-coverage.sh
 
 Open the HTML report with `bash code/src/scripts/tests/open-coverage.sh`.
 
+### Coverage in a story test record — generated, never transcribed
+
+`bash code/src/scripts/tests/test-record.sh US###` reads the Cobertura `coverage.xml` above and
+writes the suite summary and the coverage-vs-floors table into
+`project-management/src/18-TESTS/US###-TEST-STATUS.md`, inside that file's
+`BEGIN GENERATED` / `END GENERATED` markers. **No percentage in a record is typed in by hand** —
+a transcribed figure is a second copy of a number this file already owns, free to drift from the
+run it claims to describe, and a hand-edit inside the block is discarded without warning by the
+next run. A figure there is only ever as current as the last generator run. The record's own
+rules are `project-management/src/18-TESTS/CLAUDE.md`.
+
 ---
 
 ## Test Output & Readability
@@ -164,6 +175,9 @@ assert result == expected, f"Got {result!r}, expected {expected!r}"
 22. **Tests must model real-world scenarios.** Use realistic data.
 23. **Write initial tests at the contract level, not the implementation level.**
 24. **Structure initial tests for growth.** Use factories, `@pytest.mark.parametrize`, and correct tier markers.
+25. **Every test declares the story it belongs to** — `@pytest.mark.story("US###")` on a pytest
+    test, `tags:` in a Bruno `meta` block. It is warn-only, and an unmarked test is silently
+    absent from that story's record ([`TAXONOMY.md`](TAXONOMY.md) — _Markers_).
 
 ---
 

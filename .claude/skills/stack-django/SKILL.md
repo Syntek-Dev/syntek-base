@@ -333,6 +333,8 @@ import pytest
 from apps.blogs.models import BlogPost
 from apps.blogs.services import publication
 
+pytestmark = pytest.mark.story("US012")  # every test below belongs to this story's record
+
 
 @pytest.mark.django_db
 def test_publish_promotes_draft(draft_post: BlogPost) -> None:
@@ -353,6 +355,10 @@ def test_publish_rejects_non_draft(published_post: BlogPost) -> None:
 Test what the service guarantees (state transitions, permission denials, error paths), not
 Django's ORM. Every state-changing endpoint needs a test that asserts the permission check
 **denies** an unauthorised caller, not just that it allows the happy path.
+
+**The `story` marker is attribution, not selection** — it is what the per-story test record in
+`project-management/src/18-TESTS/` is generated from, and an unmarked test is silently absent from
+that record (`code/docs/testing/TAXONOMY.md` — _Markers_).
 
 ## Governing procedures (route here — do not restate at length)
 

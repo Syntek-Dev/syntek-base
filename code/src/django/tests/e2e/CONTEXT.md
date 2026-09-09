@@ -85,7 +85,22 @@ Scans run with `reduced_motion="reduce"`: scroll-driven reveal animations hold c
 `opacity: 0` until it enters the viewport, which hides it from axe's contrast checks.
 Under reduced motion the reveal CSS is inert and the page renders fully visible.
 
-Results are written per page/project to `code/src/scripts/tests/reports/a11y/` (gitignored).
+Results are written per page and project to `code/src/scripts/tests/reports/a11y/` (gitignored),
+and read back by the test-record generator for the violation count on a story's accessibility row.
+
+## What a run leaves behind
+
+`e2e-py.sh` runs with a JUnit XML flag, so a run is a **record** as well as a gate. Both artefacts
+are gitignored, and neither is written for a human to read:
+
+| Artefact                                                     | Written by         | Read for                                   |
+| ------------------------------------------------------------ | ------------------ | ------------------------------------------ |
+| `code/src/scripts/tests/reports/e2e/results.xml`             | the JUnit XML flag | the E2E suite rollup and its per-test rows |
+| `code/src/scripts/tests/reports/a11y/<page>--<project>.json` | `test_e2e_a11y.py` | the accessibility row's violation count    |
+
+`bash code/src/scripts/tests/test-record.sh US###` turns both into the generated block of
+`project-management/src/18-TESTS/US###-TEST-STATUS.md`. A browser test carrying no story marker is
+absent from that block rather than failing the run — the marker itself is `CLAUDE.md`'s rule.
 
 ## The configuration is typed, not a nest of dictionaries
 
@@ -113,4 +128,6 @@ pages land.
 
 - `code/docs/testing/FRONTEND-TESTING.md` — everything that does **not** need a browser
 - `code/docs/accessibility/TESTING-AND-COMPONENTS.md` — what this gate does not cover
-- `code/src/scripts/tests/CONTEXT.md` — the full runner inventory
+- `code/src/scripts/tests/CONTEXT.md` — the full runner inventory, and `test-record.sh`'s
+  blast radius
+- `project-management/src/18-TESTS/CONTEXT.md` — where a run's artefacts end up as a story record

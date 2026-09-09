@@ -10,8 +10,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 Host-run codebase-health audits — line-count enforcement, stub detection, the token-first
 guards for both surfaces (`css-tokens.sh`, `mobile-tokens.sh`), the AI-slop family, static
-analysis, the seam and orphan guards, and the dependency CVE audit. Full inventory:
-`CONTEXT.md`.
+analysis, the seam and orphan guards, the story-attribution warning, and the dependency CVE
+audit. Full inventory: `CONTEXT.md`.
 
 ## How to work here
 
@@ -92,6 +92,17 @@ analysis, the seam and orphan guards, and the dependency CVE audit. Full invento
   on composition or vocabulary fails correct work (`code/docs/VISUAL-DESIGN.md` Section 6). Answer each
   warning; never promote one to a fail to force the issue, and never raise a threshold to silence
   one.
+- **`story-markers.sh` has no fail tier at all, and that is the design.** It lists every
+  automated test carrying no `@pytest.mark.story("US###")` or Bruno `tags: [US###]` and exits
+  `0` whatever it finds — a hard gate would block every shared helper and every test written
+  before the convention (`project-management/src/18-TESTS/CLAUDE.md`). Never promote it to one,
+  and never read its exit `0` as coverage: an unmarked test is **silently absent** from that
+  story's `US###-TEST-STATUS.md`, which is a quieter defect than a red gate, not a smaller one.
+  **Its `--path` guard is the outstanding defect, and the rule above is not optional.** Swept
+  09/09/2026: a path that does not exist and a bare `.` both return `0` over an empty scan, where
+  the first must be `2` and the second must equal the unscoped run. Fix the guard before anyone
+  scopes it, and copy the flag from a sibling rather than from here. Its report name does conform
+  — `story-markers-report.<FORMAT>`, measured the same day (`CONTEXT.md` → _Reports_).
 - **Answer a warning with an annotation, and name the clause.**
   `slop-allow: superlative — the client's registered product name` records the judgement where the
   next reader will see it. A bare `slop-allow` silences everything on the line including a tell

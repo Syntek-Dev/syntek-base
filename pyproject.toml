@@ -205,6 +205,12 @@ markers = [
   "unit: pure unit tests with no DB access",
   "integration: tests that require a real database",
   "e2e: end-to-end browser tests — never run automatically",
+  # story("US###") — which user story this test belongs to, so the per-story test record in
+  # project-management/src/18-TESTS/ can be generated from a whole-project suite run. It never
+  # selects a suite; the three markers above do that. Inheritable from a class or module via
+  # pytestmark, and repeatable where more than one story genuinely tests the same behaviour.
+  # An unmarked test is silently absent from every record — audits/story-markers.sh lists them.
+  "story: the US### user story this test belongs to — see code/docs/testing/TAXONOMY.md",
 ]
 
 [tool.coverage.run]

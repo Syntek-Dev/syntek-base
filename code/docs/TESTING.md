@@ -18,11 +18,11 @@ All tests run inside Docker containers via the scripts in `code/src/scripts/test
 
 | Document                                                                     | Covers                                                                                                                                     |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`testing/TAXONOMY.md`](testing/TAXONOMY.md)                                 | Testing taxonomy, Backend & API testing checklist, Testing matrix, Running tests                                                           |
+| [`testing/TAXONOMY.md`](testing/TAXONOMY.md)                                 | Testing taxonomy, Backend & API testing checklist, Testing matrix, the tier and story markers, Running tests                               |
 | [`testing/BACKEND-TESTING.md`](testing/BACKEND-TESTING.md)                   | Compilation & type-checking, Python/Django (pytest, fixtures, PostgreSQL, factory_boy), acceptance criteria, Database isolation, Test data |
 | [`testing/FRONTEND-TESTING.md`](testing/FRONTEND-TESTING.md)                 | Template rendering, django-component tests, HTMX partials and response headers, markup-level accessibility, query counts                   |
 | [`code/src/django/tests/e2e/CONTEXT.md`](../src/django/tests/e2e/CONTEXT.md) | The browser suite (playwright-python) — what needs a real browser, viewport projects, the axe gate                                         |
-| [`testing/API-TESTING.md`](testing/API-TESTING.md)                           | Django Ninja endpoint tests (pytest), input-validation & per-endpoint authorisation negatives, Bruno JSON API tests, HTTP layer testing    |
+| [`testing/API-TESTING.md`](testing/API-TESTING.md)                           | Django Ninja endpoint tests (pytest), input-validation & per-endpoint authorisation negatives, Bruno JSON API tests and their story tag    |
 | [`testing/COVERAGE.md`](testing/COVERAGE.md)                                 | Coverage thresholds, Test output & readability, Rules and Principles                                                                       |
 | [`testing/ADVANCED-TESTING.md`](testing/ADVANCED-TESTING.md)                 | Property-based testing with Hypothesis, Security testing, Performance & load testing, Contract testing, Mutation testing                   |
 

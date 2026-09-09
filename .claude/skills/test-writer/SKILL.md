@@ -75,6 +75,21 @@ Placement follows `code/docs/TESTING.md`: backend beside its app
 (`apps/<app>/tests/unit|integration/`), frontend beside its component, API flows in
 `code/src/tests/`. **Do not invent a parallel test tree.**
 
+## Every test declares its story
+
+The suites run whole-project and their report artefacts carry no story attribution, so the
+per-story record in `project-management/src/18-TESTS/` is generated from a marker, never from a
+path or a branch diff:
+
+- **pytest** — `@pytest.mark.story("US###")`, inheritable from the class or module via
+  `pytestmark` and repeatable where a second story genuinely tests the same behaviour.
+- **Bruno** — `tags: [US###]` in the request's `meta` block, read from the `.bru` source, so one
+  whole-collection run still feeds every story's record.
+
+Enforcement is warn-only — `bash code/src/scripts/audits/story-markers.sh` lists what is unmarked
+and exits `0` — so **an unmarked test is silently absent from that record**: nothing goes red, the
+record is simply short. Convention: `code/docs/testing/TAXONOMY.md` — _Markers_.
+
 ## Security assertions — non-negotiable, and red first
 
 Where the story adds a state-changing endpoint or exposes a user-owned resource, the suite
@@ -132,6 +147,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 
 - `code/docs/TESTING.md` — test structure, mocking strategy, framework choice
 - `code/docs/testing/COVERAGE.md` — the floors (75% line and branch, 90% auth) and the discipline
+- `code/docs/testing/TAXONOMY.md` · `code/docs/testing/API-TESTING.md` — the story marker and the
+  Bruno `meta` tag that is its other half
 - `code/docs/security/AUTH-AND-AUTHZ.md` — the permission and IDOR behaviours to assert
 - `code/docs/mcp-server/TESTING-AND-OPS.md` — the in-process client and the three tool seams
 - `code/docs/CODING-PRINCIPLES.md` — naming, style, and the length limits the skeleton obeys

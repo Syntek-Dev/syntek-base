@@ -18,8 +18,9 @@ for the handful of things the Django test client cannot see.
 - **Model:** Opus for authoring a spec and for running the suite.
 - **Concrete steps:** bring the stack up (`development/server.sh up`) → add the page to
   `a11y_config.PAGES` and/or a row to `OVERFLOW_PAGES` → run `e2e-py.sh -k <name>` while
-  iterating, then the whole suite → reports land in
-  `code/src/scripts/tests/reports/a11y/`.
+  iterating, then the whole suite → reports land in `code/src/scripts/tests/reports/a11y/` and
+  `code/src/scripts/tests/reports/e2e/results.xml` → close a story's run with
+  `code/src/scripts/tests/test-record.sh US###`.
 - **Definition of done:** the suite exits `0` against the dev stack; every new public
   route appears in `a11y_config.PAGES`; no critical or serious axe violation.
 
@@ -34,6 +35,11 @@ for the handful of things the Django test client cannot see.
   tells you nothing about the cause.
 - **A new public page means a new `PAGES` entry** — the a11y gate silently covers only
   what that tuple lists, so an unlisted page is an unscanned page.
+- **A browser test declares its story like any other pytest test** —
+  `@pytest.mark.story("US###")`, or `pytestmark` on the module where the whole file belongs to
+  one. Without it the test still runs and still gates, but it is **silently absent** from that
+  story's `US###-TEST-STATUS.md`; `bash code/src/scripts/audits/story-markers.sh` lists what
+  carries none. The rule's owner is `project-management/src/18-TESTS/CLAUDE.md`.
 - **Every `SUPPRESSIONS` entry carries a ticket.** `id`, `selector`, `justification`, and
   a non-empty `ticket` — an undocumented waiver is rejected in review.
 - **Never add `django_db` or a model import here.** These tests do not own the database
@@ -53,7 +59,9 @@ for the handful of things the Django test client cannot see.
 ## Output & naming
 
 - **Hand-written:** every `.py` here.
-- **Generated (gitignored):** `code/src/scripts/tests/reports/a11y/<page>--<project>.json`.
+- **Generated (gitignored):** `code/src/scripts/tests/reports/a11y/<page>--<project>.json` and
+  the suite's JUnit XML at `code/src/scripts/tests/reports/e2e/results.xml` — both inputs to
+  `code/src/scripts/tests/test-record.sh`, never edited by hand.
 - Modules `test_e2e_<area>.py`; fixtures in `conftest.py`; scan configuration in
   `a11y_config.py` and nowhere else; the shared value objects both of those are built from
   in `browser_types.py`.

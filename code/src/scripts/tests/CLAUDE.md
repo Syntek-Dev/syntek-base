@@ -9,7 +9,8 @@ file → `reports/`.
 ## Purpose (one line)
 
 The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e2e-py.sh`,
-`mutmut.sh`, `open-coverage.sh`, `server.sh`, and the `all.sh` orchestrator.
+`mutmut.sh`, `open-coverage.sh`, `server.sh`, the `all.sh` orchestrator, and `test-record.sh`,
+which turns what a run produced into a story's test record.
 
 ## How to work here
 
@@ -22,7 +23,8 @@ The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e
 - **Concrete steps:** start the test stack (`server.sh up`) → `backend-coverage.sh`
   locally, or `all.sh --coverage` → narrow with `-m unit` or a path arg → reports
   land under `reports/<suite>/`; `open-coverage.sh` opens the HTML. For the browser
-  suite, bring the **dev** stack up first, then `e2e-py.sh`.
+  suite, bring the **dev** stack up first, then `e2e-py.sh`. Close a story's run with
+  `test-record.sh US###`, which writes the record from those reports.
 - **Definition of done:** target suite exits `0` with the coverage floor met (backend
   75% line+branch / auth 90%); the two-phase backend run passes unit then integration.
 
@@ -34,6 +36,14 @@ The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e
   gated on the app it actually has. Never lower a floor to make a run pass.
 - **Exit-code contract:** `0` pass, `1` failures/coverage below floor, `2` script
   error — CI's three test workflows depend on it; never mask a failure.
+- **`test-record.sh` is the only script here that writes outside `code/`.** Every other one
+  writes into the gitignored `reports/` tree; this one rewrites a **tracked** file in another
+  layer — `project-management/src/18-TESTS/US###-TEST-STATUS.md`. It writes **only** between
+  `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, fails loudly when either
+  marker is absent rather than appending at the end, and **never changes a suite's exit code**:
+  keep it a separate invocation and never a step inside a runner, so a red run still records.
+  Never hand-edit the block it owns — the next run discards the edit
+  (`project-management/src/18-TESTS/CLAUDE.md`).
 - **Mutation testing (`mutmut.sh`) is local-only** — deliberately out of CI; do not
   wire it into a gate.
 - **The browser suite is the exception, not the default.** `e2e-py.sh` is only for what
@@ -50,4 +60,6 @@ The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e
 - **Hand-written:** the `*.sh` runners here, this file, `CONTEXT.md`.
 - **Generated (gitignored):** everything under `reports/<suite>/` — JUnit XML,
   coverage HTML/XML, and the per-page axe JSON in `reports/a11y/`.
+- **Generated, tracked, and not in this tree:** the block between the `test-record` markers in
+  `project-management/src/18-TESTS/US###-TEST-STATUS.md`.
 - Script files `kebab-case.sh`; documentation `SCREAMING-SNAKE-CASE.md`.

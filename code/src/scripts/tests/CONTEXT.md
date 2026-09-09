@@ -38,25 +38,29 @@ code/src/scripts/tests/
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
 ├── server.sh                 ← start or manage the test stack containers
+├── test-record.sh            ← generator: US### → the 18-TESTS record (writes OUTSIDE code/)
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
     ├── a11y/                 ← axe results from e2e-py.sh (created on demand)
     ├── api/                  ← output from api.sh (created on demand)
     ├── backend/              ← output from backend.sh
-    └── backend-coverage/     ← output from backend-coverage.sh
+    ├── backend-coverage/     ← output from backend-coverage.sh
+    ├── e2e/                  ← JUnit XML from e2e-py.sh (created on demand)
+    └── story-map.json        ← story markers, written at collection by django/conftest.py
 ```
 
 ## Scripts
 
-| Script                | Tool                | Pattern | Stack required     | Default output dir                                                          |
-| --------------------- | ------------------- | ------- | ------------------ | --------------------------------------------------------------------------- |
-| `all.sh`              | orchestrator        | both    | Depends on flags   | (delegates to sub-scripts)                                                  |
-| `api.sh`              | Bruno CLI           | host    | Test stack up      | `reports/api/`                                                              |
-| `backend.sh`          | pytest              | exec    | Full test stack up | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml) |
-| `backend-coverage.sh` | pytest + cov        | exec    | Full test stack up | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)         |
-| `e2e-py.sh`           | pytest + playwright | host    | Dev stack up (:81) | `reports/a11y/`                                                             |
-| `mutmut.sh`           | mutmut              | exec    | Dev stack up       | N/A (console output)                                                        |
-| `open-coverage.sh`    | xdg-open / open     | host    | None               | N/A                                                                         |
-| `server.sh`           | docker compose      | host    | N/A                | N/A                                                                         |
+| Script                | Tool                | Pattern | Stack required     | Default output dir                                                           |
+| --------------------- | ------------------- | ------- | ------------------ | ---------------------------------------------------------------------------- |
+| `all.sh`              | orchestrator        | both    | Depends on flags   | (delegates to sub-scripts)                                                   |
+| `api.sh`              | Bruno CLI           | host    | Test stack up      | `reports/api/`                                                               |
+| `backend.sh`          | pytest              | exec    | Full test stack up | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)  |
+| `backend-coverage.sh` | pytest + cov        | exec    | Full test stack up | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)          |
+| `e2e-py.sh`           | pytest + playwright | host    | Dev stack up (:81) | `reports/a11y/` + `reports/e2e/results.xml`                                  |
+| `mutmut.sh`           | mutmut              | exec    | Dev stack up       | N/A (console output)                                                         |
+| `open-coverage.sh`    | xdg-open / open     | host    | None               | N/A                                                                          |
+| `server.sh`           | docker compose      | host    | N/A                | N/A                                                                          |
+| `test-record.sh`      | report parser       | host    | None (reads files) | `project-management/src/18-TESTS/US###-TEST-STATUS.md` — **outside `code/`** |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
@@ -76,9 +80,38 @@ overflow are browser-bound, and Django's test client executes no JavaScript. Any
 _not_ need a browser belongs in `apps/<app>/tests/` through that client — faster, in CI on every
 push, and counted towards the coverage floor. See `code/src/django/tests/e2e/CONTEXT.md`.
 
+## test-record.sh — the one script here that writes outside `code/`
+
+```bash
+bash code/src/scripts/tests/test-record.sh US###
+```
+
+The story is the only required argument; `--reports DIR`, `--record PATH`, `--dry-run` and
+`--quiet` override the defaults, and `--help` lists them. It reads the suites' own artefacts
+under `reports/` — the backend JUnit XML, `api/results.json`, the e2e JUnit XML, the per-page
+axe JSON and `backend-coverage/coverage.xml` — keeps the tests attributed to that story, and
+rewrites the generated block of `project-management/src/18-TESTS/US###-TEST-STATUS.md`. The
+attribution itself comes from `reports/story-map.json`, which the pytest hook in
+`code/src/django/conftest.py` writes at collection: a JUnit `<testcase>` carries only a classname
+and a name, so the story marker has to travel beside the XML rather than in it.
+
+**Every other script in this folder writes only into the gitignored `reports/` tree.** This one
+writes a tracked file in another layer, which is exactly the thing a reader assumes is not true,
+so three limits hold it:
+
+- **Only between the markers.** It replaces what sits between
+  `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->` and touches no other byte
+  of the file. Either marker absent is a loud failure, never an append at the end.
+- **Never a suite's exit code.** It is a separate invocation rather than a step inside a runner,
+  so the exit-code contract below is untouched and a **failing** run still records.
+- **It records only what it is told about.** A test carrying no story marker is silently absent
+  from the table rather than an error; `bash code/src/scripts/audits/story-markers.sh` lists what
+  carries none. The attribution rule and the record's own conventions:
+  `project-management/src/18-TESTS/CLAUDE.md`.
+
 ## --output flag
 
-Every script accepts `--output DIR` to write reports to a custom directory (must be within the project root). The directory is created automatically.
+Every runner accepts `--output DIR` to write reports to a custom directory (must be within the project root). The directory is created automatically.
 
 ```bash
 ./code/src/scripts/tests/backend.sh --output /abs/path/to/project/my-reports/backend
@@ -181,6 +214,12 @@ instruments nothing — counting it would inflate the figure without testing a l
 - `0` — all tests passed (coverage floor met where applicable)
 - `1` — test failures or coverage below threshold
 - `2` — script error (bad arguments, container not running, invalid `--output` path)
+
+**`test-record.sh` reads that contract differently**, because it decides no test outcome — a red
+suite and a green one both record. Measured against the script on 09/09/2026: `0` it wrote the
+block, or printed it under `--dry-run`; `1` it wrote **nothing** — no record file at the target
+path, no `BEGIN GENERATED: test-record` / `END GENERATED` markers in it, or no report artefacts
+to read; `2` a script error — a story that is not `US###`, an unknown flag, or no `python3`.
 
 ## CI
 
