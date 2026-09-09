@@ -176,12 +176,12 @@ Three rules follow from it:
   unconsolidated per-story design; that is what makes planning per story safe.
 - **`22-implementation-documentation` owns the whole closeout** — records, findings,
   `GAPS.md`/`DEFERRED.md`, the `CONTEXT.md`/`CLAUDE.md` update, and the graph refresh. Workflow
-  `22` verifies them; the code workflows hand off to `21` and restate nothing.
+  `23` verifies them; the code workflows hand off to `22` and restate nothing.
 
-**The register is a loop, not a dead end.** `GAPS.md` and `DEFERRED.md` are written at `21` and
+**The register is a loop, not a dead end.** `GAPS.md` and `DEFERRED.md` are written at `22` and
 **read at `01`**: the discovery gate mines them for candidate features and triages every open
 entry against the feature being charted — closes, blocks, or unrelated. `01` **claims**; only
-`21` **closes**, against shipped code. Without the read half, the register accumulates while
+`22` **closes**, against shipped code. Without the read half, the register accumulates while
 features are chosen from memory.
 
 ## The numbers are the running order
