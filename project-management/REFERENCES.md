@@ -52,7 +52,7 @@ under each of its four category folders rather than at its root.
 | `src/15-DECISIONS/`    | decide & plan | Architectural Decision Records (`ADR-###-<TITLE>.md`)                                                                     |
 | `src/16-SPRINT-PLANS/` | decide & plan | Detailed sprint execution plans (`##-SPRINT-PLAN-##.md`)                                                                  |
 | `src/17-STORY-PLANS/`  | decide & plan | Per-story implementation plans (`<exec-order>-STORY-PLAN-US###-*.md`) — the master reference for code                     |
-| `src/18-TESTS/`        | record        | Automated test status (`US###-TEST-STATUS.md`) and manual QA guides                                                       |
+| `src/18-TESTS/`        | record        | Automated test record (`US###-TEST-STATUS.md`, half generated) + manual journey walk-through (`US###-MANUAL-TESTING.md`)  |
 | `src/19-REVIEWS/`      | record        | Code review records (`REVIEW-US###-*.md`) per completed story                                                             |
 | `src/20-FINDINGS/`     | record        | Per-story findings (`FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — divergences, retrofit cost, what the next story carries |
 | `src/21-BUGS/`         | record        | Bug reports (`BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — story-anchored                                                     |

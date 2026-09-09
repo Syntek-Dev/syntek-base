@@ -7,6 +7,85 @@ User-facing release notes for each published version.
 
 ---
 
+## Unreleased
+
+**Status:** Not released yet — work sitting on the main branch that has not been given a version
+number. It is housekeeping to the template itself: nothing you have already built behaves any
+differently, and there is nothing for you to do.
+
+### The test record nobody had ever written
+
+Your project has always had a place to record what was tested for each piece of work and whether it
+passed. In practice not one of those records has ever been written, and the reason turned out to be
+mundane: three different documents each described whose job it was, and they did not agree. One
+step said it wrote every record of this kind but left this one off its own list. The next step said
+it wrote them too. The folder itself said neither of them did, and pointed at a third place.
+
+It is now settled in one direction. The documentation step that runs after the code is written owns
+both files; the step that raises the pull request only checks they are there and says something
+useful. A step that is meant to review a record should not be the step that writes it.
+
+### The manual guide is now a walk through your product
+
+The manual testing guide used to be a second copy of the test plan: the same four categories —
+normal use, errors, edge cases, permissions — under the same labels the plan already owned. Three
+documents were asking the same question and none of them was clearly responsible for the answer.
+
+Each of the three now answers one question and only one. The plan asks whether the scenarios that
+were promised were met. The user-flow record asks whether the journey exists as it was designed.
+This guide asks the simplest question of the three: when somebody actually sat down and used it,
+did each step work?
+
+So it now reads as a walk through the product, area by area, in the order a person really moves
+through it — sign-up, then the thing they came to do, then whatever comes next. Every step is
+marked passed or failed as you go, and a failure has to say why. Accessibility and behaviour on a
+small screen are part of the same walk rather than a separate box-ticking exercise, because that is
+how a person meets them. Work with no screens at all — a command-line tool, an automated check —
+says so at the top and gets rows in its own vocabulary rather than being left out.
+
+Running it again replaces the previous run. There is one current answer per piece of work, and the
+history is in version control where history belongs.
+
+### The same page works for a person or for the assistant
+
+Steps name buttons and fields by the words you can actually see on them — "click **Book now** in
+the banner" — never by a hidden code name. That single rule is what lets either a human tester or
+Claude driving a browser follow exactly the same page, with no second version to keep in step.
+
+It has a useful side effect. If a control cannot be found by the name a person would call it, that
+is not a gap in the instructions to work around with a hidden name — it is an accessibility
+problem, and it gets recorded as one.
+
+### The automated half now writes itself
+
+The other file records the automated tests, and it has gained the thing it was missing: every test
+listed individually, in plain words, saying what it checks and why, grouped the way the tests
+themselves are grouped. Where a test runs several times over different inputs, each one gets its
+own line, so a failure names the exact case that broke rather than a heading.
+
+All of that is now written by a command from the test run's own output rather than typed up by
+hand — including the coverage percentages, which used to be copied across by a person and could
+quietly stop being true. The parts that need judgement are still written by a person: how to
+reproduce the run, what is still missing or unreliable, and why.
+
+The command that writes the record is kept separate from the commands that run the tests, on
+purpose. The tests keep their plain pass-or-fail signal for everything that depends on it, and a run
+that failed still gets written down — a failing run is the one whose record is worth most.
+
+### Each test now says which piece of work it belongs to
+
+For a per-story record to be assembled from a run of the whole test suite, each test has to say
+which story it belongs to. That is one short line on the test, and a test can name more than one
+story where more than one genuinely depends on it.
+
+Tests that say nothing are not rejected. A check lists them and never blocks anything, because
+insisting would immediately fail every shared helper and every test written before the convention
+existed. The trade-off is worth knowing, and it is written on the record itself: a test that names
+no story simply does not appear, so a suspiciously short list is a reason to run that check before
+believing it.
+
+---
+
 ## v7.5.0 — 01/09/2026
 
 **Status:** Minor — your project can now say out loud whether real people are using it yet, and

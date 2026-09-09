@@ -1,6 +1,6 @@
 # The PM Layer — Using `project-management/src/`
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 09/09/2026
 
 Twenty-four numbered folders is a lot to meet at once. This explains what each is for, which ones
 you will actually touch, and the two patterns that govern them — so the layer reads as a system
@@ -76,7 +76,9 @@ tracker you named at generation time. Do not go looking for `workflows/23-incide
 usual way to look for a folder that does not exist: `workflows/18-consolidate-design-work` writes
 into the design folders `04`–`08` rather than into a `src/18`, and `src/18-TESTS` … `src/22-REFACTORING`
 are written by the build and record phases (`19`–`22`) rather than by the workflow sharing each
-number. `src/23-INCIDENTS` has no workflow at all, and `workflows/23-pr-and-review` and
+number — the two test records in `src/18-TESTS` are written by
+`workflows/22-implementation-documentation` and only **verified** at `23-pr-and-review`.
+`src/23-INCIDENTS` has no workflow at all, and `workflows/23-pr-and-review` and
 `24-release` have no `src/` folder.
 
 ---

@@ -1,6 +1,6 @@
 # Your First Feature — Idea to Merged PR
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 09/09/2026
 
 A walk through the whole process once, so the numbered workflows stop being abstract. Assumes a
 generated project with the stack running (`04-QUICKSTART.md`), and that you have read
@@ -213,7 +213,17 @@ Test-first throughout — Red, Green, Refactor:
 bash code/src/scripts/tests/backend.sh            # full suite
 bash code/src/scripts/tests/backend.sh -k test_x  # one test
 bash code/src/scripts/tests/all.sh --coverage     # enforce the floor
+bash code/src/scripts/tests/test-record.sh US###  # the story's test record — see Section 8
 ```
+
+`test-record.sh` is deliberately **not** a runner — it reads the reports a run leaves in
+`code/src/scripts/tests/reports/`, so a red run records as faithfully as a green one, and the
+runners' exit codes stay untouched. It only sees a test that declares the story it belongs to:
+tag each one as you write it — `@pytest.mark.story("US###")` on a pytest test (inheritable from
+its class or module), `tags: [US###]` in a Bruno request's `meta` block. Nothing blocks on a
+missing tag; `bash code/src/scripts/audits/story-markers.sh` lists them and exits 0. The cost is
+silent — an untagged test is simply absent from the record. Full marker rules:
+`code/docs/testing/TAXONOMY.md` — _Markers_.
 
 Migrations:
 
@@ -243,7 +253,11 @@ owns it:
 
 - update the directory tree in every affected `CONTEXT.md`
 - create `CONTEXT.md` + `CLAUDE.md` in every new directory
-- write the implementation records — GDPR, security, QA, SEO, API, review, tests
+- write the implementation records — GDPR, security, QA, SEO, API, review
+- write both test records into `project-management/src/18-TESTS/` — `US###-TEST-STATUS.md`, whose
+  suite, coverage and per-test tables `test-record.sh` generates between its `BEGIN GENERATED`
+  markers, and `US###-MANUAL-TESTING.md`, the journey walk-through a tester or Claude Chrome
+  executes row by row. **Workflow `22` writes both**; `23-pr-and-review` only verifies them
 - route findings: `20-FINDINGS/`, bugs to `21-BUGS/`, refactors to `22-REFACTORING/`
 - update `GAPS.md` and `DEFERRED.md`
 - refresh the code-review-graph

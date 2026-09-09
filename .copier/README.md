@@ -678,7 +678,9 @@ begins.
 | Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/21-BUGS/`              |
 
 Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
-tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
+tests are walked and marked in `US###-MANUAL-TESTING.md` at the documentation closeout
+(`project-management/workflows/22-implementation-documentation/`), before the PR is raised —
+`23-pr-and-review` verifies the record rather than writing it.
 
 ### PM workflows — when to use each
 

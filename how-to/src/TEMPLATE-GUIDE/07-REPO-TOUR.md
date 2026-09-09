@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 09/09/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -74,9 +74,9 @@ what they do:
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `new-django-view.sh`, `template-update.sh`                                                    |
 | `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                         |
-| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`                                                                      |
+| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`, `test-record.sh` (writes the `18-TESTS` record's generated block)   |
 | `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                     |
-| `audits/`                        | 24 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
+| `audits/`                        | 25 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
 | `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                       |
 | `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                      |
 | `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                 |
