@@ -14,8 +14,8 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
 
 - **Routing:** produced only by `workflows/18-consolidate-design-work/`, after every story has
   cleared `17-story-plans`.
-- **Model:** Fable throughout — finding the journey nobody owns is design judgement, not a
-  merge. Opus only for re-exporting a diagram or a rename.
+- **Model:** Opus throughout — finding the journey nobody owns is design judgement, not a merge;
+  re-exporting a diagram or a rename is a mechanical touch.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` fragment for the area → sequence
   them into one journey → walk every seam and record whether it joined, gapped, or contradicted
   → resolve every node so both outcomes are answered across the whole journey → raise a new

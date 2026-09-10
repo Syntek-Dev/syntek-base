@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [planner, codebase-design, runbook]
-model: fable
+model: opus
 ---
 
 # The Build / Operate Seam
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** fable — where a fact lives when the code, the server contract and the deploy
+**Claude Model:** opus — where a fact lives when the code, the server contract and the deploy
 repository each hold part of it
 
 One fact about infrastructure is usually owned in three places at once. This document says which

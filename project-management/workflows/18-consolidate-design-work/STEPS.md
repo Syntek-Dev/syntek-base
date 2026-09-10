@@ -2,7 +2,7 @@
 workflow: 18-consolidate-design-work
 phase: design
 skills: [planner, global-workflow, codebase-design, domain-modelling]
-model: fable
+model: opus
 ---
 
 # Consolidate Design Work — Steps
@@ -36,7 +36,7 @@ model: fable
 
 ### Step 1 — Grill, then Scope the Pass
 
-> **Model:** fable
+> **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%>:
@@ -48,7 +48,7 @@ interview <%DEVELOPER_NAME%>:
 
 ### Step 2 — Inventory Stage 1
 
-> **Model:** fable
+> **Model:** opus
 
 Walk `USER-STORY-IDEAS/` in each in-scope folder and build one inventory table per folder:
 artefact, owning `US###`, the concept it introduces, and what it depends on.
@@ -58,7 +58,7 @@ once both sides are on the page.
 
 ### Step 3 — Find the Collisions
 
-> **Model:** fable
+> **Model:** opus
 
 Against the inventory, mark every:
 
@@ -74,7 +74,7 @@ say so explicitly rather than reporting a clean sweep.
 
 ### Step 4 — Resolve, Escalating What Is Hard to Reverse
 
-> **Model:** fable
+> **Model:** opus
 
 Resolve each finding to **one canonical form**, taking `04-DATABASE` first — schema
 fragmentation is the expensive kind (`code/docs/DATABASE.md`).
@@ -88,7 +88,7 @@ Where resolving reveals a genuine capability gap, **write a new user story** thr
 
 ### Step 5 — Write the Consolidated Artefacts
 
-> **Model:** fable
+> **Model:** opus
 
 Write `CONSOLIDATED-IDEAS/` in each in-scope folder. Every consolidated artefact:
 
@@ -138,7 +138,7 @@ Commit `.py`, `.tex`, and `.pdf` together. Never hand-edit the generated files.
 
 ### Step 7 — Reconcile the Story Plans
 
-> **Model:** fable
+> **Model:** opus
 
 <!-- UPDATED 08/09/2026. The story-plan filename pattern gained its `<exec-order>-` prefix;
      superseded form, quoted without backticks so no dead name is recorded as a fresh citation:

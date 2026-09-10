@@ -2,7 +2,7 @@
 workflow: 11-qa-checks
 phase: verify
 skills: [qa-tester, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # QA Checks — Checklist

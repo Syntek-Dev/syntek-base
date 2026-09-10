@@ -2,7 +2,7 @@
 workflow: 11-qa-checks
 phase: verify
 skills: [qa-tester, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # QA Checks — Steps
@@ -54,7 +54,7 @@ For each wireframe in `project-management/src/08-WIREFRAMES/`, identify:
 qa-tester [describe the story, its wireframe, and user flow]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** none
 
 ### Step 4 — Document QA Plans
 

@@ -15,9 +15,8 @@ and recording each node as it is settled; the foundation every later planning ga
 - **Routing:** never author here free-hand — maps come from `workflows/01-feature-map/` via the
   `planner` skill loading `.claude/skills/wayfinder/SKILL.md`. CHART writes the map; RESOLVE
   updates it one node per session.
-- **Model:** Fable — charting a frontier and settling trade-offs is the reasoning tier
-  everything downstream builds on. Opus only for moving a resolved row, fixing a link, or
-  updating the index.
+- **Model:** Opus throughout — charting a frontier and settling trade-offs is substantive
+  judgement; moving a resolved row, fixing a link, or updating the index is a mechanical touch.
 - **Concrete steps:** copy `MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md` → fill destination, notes,
   frontier (typed and blocker-wired), fog of war, out of scope → add the index row in
   `CONTEXT.md` → on each RESOLVE session, move the settled node to Resolved decisions with a link

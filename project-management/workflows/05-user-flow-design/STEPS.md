@@ -2,7 +2,7 @@
 workflow: 05-user-flow-design
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # User Flow Design — Steps
@@ -27,7 +27,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Identify the Product Area
 
-> **Model:** fable
+> **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the product area's boundaries, the roles and their

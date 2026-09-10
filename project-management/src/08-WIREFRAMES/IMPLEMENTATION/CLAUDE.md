@@ -15,7 +15,7 @@ shipped Django templates honour the consolidated screens in `../CONSOLIDATED-IDE
 - **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated screens and the shipped templates.
 - **Model:** Opus — verifying a page matches an approved layout is a documentation closeout.
-  Escalate to `frontend` (Fable) where a deviation needs judging.
+  Escalate to `frontend` where a deviation needs judging.
 - **Concrete steps:** copy `WF-IMPL-US000-TEMPLATE.md` →
   `WF-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → mark each consolidated screen
   Present / Changed / Missing with the Django template as evidence → **open the running page at

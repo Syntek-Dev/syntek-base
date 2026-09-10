@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [planner, codebase-design, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Architecture Patterns

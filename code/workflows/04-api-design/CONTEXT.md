@@ -40,8 +40,8 @@ new Router modules, Schema request/response models, or endpoints.
 - `code/docs/performance/DATABASE-PERFORMANCE.md` — N+1 prevention and query optimisation
 - `code/docs/testing/API-TESTING.md` — API tests immediately follow design
 - `project-management/workflows/13-api-design/` — PM-layer API design precedes this workflow; the
-  signed-off `API-US###-*.md` is the contract this one expresses in code. Contract decided there
-  (Fable), code shape decided here (Opus).
+  signed-off `API-US###-*.md` is the contract this one expresses in code. Contract decided there,
+  code shape decided here.
 - `project-management/workflows/20-api-code/` — **this workflow is entered from there**, not
   directly from `13-api-design/`
 - `project-management/workflows/22-implementation-documentation/` — writes the `API-IMPL-US###-*.md`

@@ -8,7 +8,7 @@ description: >-
   into a sprint (`sprint`), not the phased implementation plan built from a story (`planner`),
   not flipping a finished story to Completed (`completion`), and not pushing it to the
   external PM tool (`pm-tool-sync`).
-model: fable
+model: opus
 metadata:
   skills: global-workflow grilling
 ---
@@ -17,11 +17,6 @@ metadata:
 
 **Task skill, inline** (axis 2 — the requirement arrives in the conversation and is sharpened
 there, so a fork would start without the thing it is meant to work on).
-
-**Model.** `model: fable` above applies to the turn that loads this skill and is not a
-guarantee. The durable carrier for the planning tier is the `model: fable` routing frontmatter
-on `project-management/workflows/02-story-creation/`, which is how story work is normally
-entered.
 
 ---
 

@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [qa-tester, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # QA Guide — <%PROJECT_NAME%>
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
-**Claude Model:** fable — QA test scenario design, acceptance criteria, edge case planning, test coverage
+**Claude Model:** opus — QA test scenario design, acceptance criteria, edge case planning, test coverage
 **MCP Servers:** code-review-graph (test coverage analysis)
 
 ---

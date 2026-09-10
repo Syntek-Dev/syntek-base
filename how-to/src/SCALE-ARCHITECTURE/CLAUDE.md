@@ -25,8 +25,8 @@ and the `<%DEPLOY_REPO%>` deploy repo.
   `code/src/django/config/settings/`, `config/urls.py`, the ADRs, app
   `CONTEXT.md` files, the deploy repo's modules) and patches drift. If a document
   is missing, regenerate it from the live code — never from memory of a past state.
-- **Model:** Fable for envelope/readiness/profile reasoning (it is design work);
-  Opus for mechanical reconciliation touches (a changed default, a renamed path).
+- **Model:** Opus throughout — for envelope, readiness and profile reasoning as much as
+  for a mechanical reconciliation touch (a changed default, a renamed path).
 - **Concrete steps:** reconcile → assess (readiness dimensions, profile shape) →
   grill any open decision → record the settled value with its live-code evidence →
   update `CONTEXT.md` here if the file set changed → hand the envelope numbers to

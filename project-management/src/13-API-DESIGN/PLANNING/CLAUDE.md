@@ -19,9 +19,9 @@ code is written.
   design is fixed **after** the schema is signed off and **before** `../../16-SPRINT-PLANS/`,
   and it feeds `project-management/workflows/20-api-code/`. Read a story's design before
   implementing it.
-- **Model:** Fable — the contract defines the shared interface; the Schemas, handler
-  contracts, and permission matrix are substantive design judgement. Opus only for a
-  status flip, header bump, or a rename.
+- **Model:** Opus throughout — the contract defines the shared interface; the Schemas,
+  handler contracts, and permission matrix are substantive design judgement. A status flip,
+  header bump or rename is a mechanical touch.
 - **Concrete steps:** copy `API-PLAN-US000-TEMPLATE.md` → `API-PLAN-US###-<DESCRIPTOR>.md`
   → complete the 10 steps (API surface → Ninja Schemas → read endpoints → write endpoints →
   real-time & async → permission matrix → error strategy → breaking changes → peer review →

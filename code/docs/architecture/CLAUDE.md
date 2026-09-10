@@ -14,10 +14,11 @@ state/routing, and service-layer/middleware design — behind the
 
 ## How to work here
 
-- **Routing:** `doc-writer` (Opus) or `planner` (Fable) to author;
+- **Routing:** `doc-writer` or `planner` to author;
   these guides govern any new Django app or public template route and the
   `01-implement-story` workflow.
-- **Model:** Fable for substantive guidance; Opus for typos or re-indexing.
+- **Model:** Opus throughout — substantive guidance is judgement; a typo or a
+  re-index is a mechanical touch.
 - **Concrete steps:** edit the relevant sub-doc (`AUTH-CONTRACT.md`,
   `CORE-AND-SCALING.md`, `FRONTEND-PATTERNS.md`, `SERVICE-AND-MIDDLEWARE.md`) →
   keep `ARCHITECTURE-PATTERNS.md` a thin index and update the `CONTEXT.md` file

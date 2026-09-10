@@ -11,14 +11,14 @@ skills:
     refactor,
     bugfix,
   ]
-model: fable
+model: opus
 ---
 
 # Negative Space — What the Code Must Never Allow
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** fable — Invariant classes, the single enforcement point, the error taxonomy
+**Claude Model:** opus — Invariant classes, the single enforcement point, the error taxonomy
 
 Almost every other guide here states what the code **should** do. This one states what it must
 **never** allow, and what happens the moment that becomes true anyway.

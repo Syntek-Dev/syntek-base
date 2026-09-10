@@ -899,8 +899,8 @@ a **reference skill** states conventions and runs inline; a **task skill** is a 
 dispatches `general-purpose` through the Agent tool — naming the skill to load — when a step
 needs a fresh context. Each phase dispatches separately, so no skill reviews its own work, and
 the multi-phase ones carry a **Documentation phase** as a hard gate before their commit phase.
-Skills run `opus` by default; the planning set (`story`, `sprint`, `planner`, `scale-planning`)
-runs `fable`. `sonnet` and `haiku` are never used.
+Every skill runs `opus` — planning, specification and design as well as implementation and
+review. `sonnet` and `haiku` are never used.
 
 | Skill                                               | Load when                                                                    |
 | --------------------------------------------------- | ---------------------------------------------------------------------------- |

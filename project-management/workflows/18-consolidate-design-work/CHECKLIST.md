@@ -2,7 +2,7 @@
 workflow: 18-consolidate-design-work
 phase: design
 skills: [planner, global-workflow, codebase-design, domain-modelling]
-model: fable
+model: opus
 ---
 
 # Consolidate Design Work — Checklist

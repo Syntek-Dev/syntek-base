@@ -16,8 +16,8 @@ and GDPR/security expectations from the wireframe before any code is written.
   security checks and wireframe sign-off) using the `qa-tester` skill, against a story in
   `../../02-STORIES/` and its wireframe, governed by `project-management/docs/QA-GUIDE.md`.
   Read a story's plan before implementing it.
-- **Model:** Fable — deriving scenarios, edge cases, and acceptance-criteria gaps is
-  substantive QA reasoning; Opus only for a date-header bump or a rename.
+- **Model:** Opus throughout — deriving scenarios, edge cases, and acceptance-criteria gaps
+  is substantive QA reasoning; a date-header bump or a rename is a mechanical touch.
 - **Concrete steps:** copy `QA-PLAN-US000-TEMPLATE.md` → `QA-PLAN-US###-<DESCRIPTOR>.md`
   → complete every section (AC gaps, the four scenario tables, accessibility, responsive,
   GDPR/security) → feed each `[OPEN]` AC gap back into `US###.md` → cross-link the `US###`

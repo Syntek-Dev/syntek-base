@@ -15,8 +15,8 @@ the tables that story needs, written before the story reaches `15-decisions`.
 - **Routing:** produced by `workflows/04-database-schema/` (`STEPS.md` + `CHECKLIST.md`) via the
   `database` skill, during the story's own pass through the specify tier. Read the story in
   `../../02-STORIES/US###.md` and every earlier design in this folder first.
-- **Model:** Fable — schema design, RLS scoping, and PII classification are substantive
-  judgement; Opus only for a rename or a date-header bump.
+- **Model:** Opus throughout — schema design, RLS scoping, and PII classification are
+  substantive judgement; a rename or a date-header bump is a mechanical touch.
 - **Concrete steps:** copy `DB-IDEA-US000-TEMPLATE.md` → `DB-IDEA-US###-<DESCRIPTOR>.md` →
   complete every section for **this story's** tables → flag every PII column → note any
   collision with an earlier story's design rather than resolving it → export the ERD to

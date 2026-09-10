@@ -17,8 +17,9 @@ folder along in `16-SPRINT-PLANS/`.
   `project-management/workflows/03-sprint-planning/` (`STEPS.md` + `CHECKLIST.md`),
   governed by `docs/PLANNING-GUIDE.md`. Use `sprint` to organise stories into a
   balanced sprint; `completion` to flip a sprint's stories to In Review / Done.
-- **Model:** Fable for composing or re-balancing a sprint (capacity, MoSCoW, the
-  dependency chain); Opus for mechanical touches — a status flip or a version-header bump.
+- **Model:** Opus throughout — composing or re-balancing a sprint (capacity, MoSCoW, the
+  dependency chain) is substantive judgement; a status flip or a version-header bump is a
+  mechanical touch.
 - **Concrete steps:** copy `SPRINT-00-TEMPLATE.md` → `SPRINT-##.md` (2-digit zero-padded)
   → fill the fixed format (goal · status · timeline · capacity · story table ·
   dependencies · optional notes) → cross-link every `US###`.

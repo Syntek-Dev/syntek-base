@@ -2,7 +2,7 @@
 workflow: 08-wireframes
 phase: design
 skills: [frontend, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Wireframes — Steps
@@ -35,7 +35,7 @@ the canonical home — and say so. If any axis still reads `TBD`, stop:
 
 ### Step 0 — Grill first
 
-> **Model:** fable
+> **Model:** opus
 
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` Section 10).

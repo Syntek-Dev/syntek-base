@@ -20,8 +20,7 @@ criteria before any design or code begins; every feature starts here.
 - **Charting a big epic first:** when the input is a large, ambiguous epic rather than
   one story, chart its decision frontier with `.claude/skills/wayfinder/SKILL.md` (a
   decision map resolved across sessions) before decomposing it into `US###` stories.
-- **Model:** Fable — acceptance criteria drive downstream tests, GDPR, security, and
-  SEO scope, so they are substantive, not mechanical.
+- **Model:** Opus throughout.
 - **Concrete steps:** confirm role/goal/criteria are understood → draft the story in
   the Connextra format → surface GDPR, security, and SEO acceptance criteria per the
   `docs/` guides → save as `US###.md` in `project-management/src/02-STORIES/`.

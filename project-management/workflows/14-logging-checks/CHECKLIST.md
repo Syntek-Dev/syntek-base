@@ -2,7 +2,7 @@
 workflow: 14-logging-checks
 phase: design
 skills: [logging, gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # Logging Checks — Checklist

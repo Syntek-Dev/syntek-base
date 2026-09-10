@@ -23,7 +23,7 @@ before the PR is raised in `23-pr-and-review`.
   verification is needed, the discipline skill (`gdpr-mechanics`, `security`, `qa-tester`,
   `seo`, `planner`) may be loaded against the story's already-approved `PLANNING/` artefact.
 - **Model:** Opus throughout — this is a documentation/mechanical closeout that records
-  what shipped against approved plans, not a design grill. No Fable pass here.
+  what shipped against approved plans, not a design grill.
 - **Concrete steps:** identify which specs applied to the story → copy each applicable
   `IMPLEMENTATION/` template, noting what was built vs the plan and any deviation → copy both
   `src/18-TESTS/US000-…` templates to `US###-…`, run the suites through

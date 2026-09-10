@@ -8,7 +8,7 @@ description: >-
   or refining the stories being sliced (`story`), not the per-story implementation plan
   (`planner`), not marking a sprint complete (`completion`), and not syncing it to the external
   PM tool (`pm-tool-sync`).
-model: fable
+model: opus
 metadata:
   skills: global-workflow grilling
 ---
@@ -18,10 +18,6 @@ metadata:
 **Task skill, inline** (axis 2 — three of its inputs are not derivable from the repository and
 have to be asked for). The backlog supplies points and dependencies; it never supplies the
 sprint goal, and a fork that cannot ask would invent one.
-
-**Model.** `model: fable` above applies to the turn that loads this skill and is not a
-guarantee. The durable carrier for the planning tier is the `model: fable` routing frontmatter
-on `project-management/workflows/03-sprint-planning/` and `16-sprint-plans/`.
 
 ---
 

@@ -2,7 +2,7 @@
 workflow: 07-component-designs
 phase: design
 skills: [frontend, stack-htmx-templates, prototype]
-model: fable
+model: opus
 ---
 
 # Component Designs — Steps

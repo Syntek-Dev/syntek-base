@@ -2,7 +2,7 @@
 workflow: 04-database-schema
 phase: design
 skills: [database, stack-django]
-model: fable
+model: opus
 ---
 
 # Database Schema Design — Checklist

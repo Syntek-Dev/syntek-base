@@ -15,9 +15,9 @@ acceptance criteria against the shipped build and closing its `../PLANNING/` pla
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/` (or
   `workflows/12-seo-checks/` when auditing a shipped route), using the `seo` skill against
   the story's plan in `../PLANNING/SEO-PLAN-US###-*.md` and `docs/SEO-CHECKLIST.md`.
-- **Model:** Fable for the SEO verification judgement (metadata, structured data,
-  crawlability, Core Web Vitals against targets); Opus for the mechanical touches —
-  dropping a Lighthouse `.json`, filing, renaming, date-stamping.
+- **Model:** Opus throughout — the SEO verification judgement (metadata, structured data,
+  crawlability, Core Web Vitals against targets) is substantive; dropping a Lighthouse
+  `.json`, filing, renaming and date-stamping are mechanical touches.
 - **Concrete steps:** copy `SEO-IMPL-US000-TEMPLATE.md` →
   `SEO-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the story's plan → verify every SEO
   dimension against the running build, record the Lighthouse SEO score and Core Web

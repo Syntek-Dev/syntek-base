@@ -11,7 +11,7 @@ description: >-
   code, migrations or endpoints (`backend`), not the pipelines, Compose or deploy scripts
   (`cicd`), and not the NixOS config itself — that lives in the deploy repo this only
   specifies the contract for.
-model: fable
+model: opus
 metadata:
   skills: codebase-design domain-modelling global-workflow grilling
 ---
@@ -21,13 +21,6 @@ metadata:
 **Task skill, inline** (axis 2 — the target trajectory, the buffer and the deadline come from
 the conversation, and a fork that cannot ask would fabricate the numbers this skill exists to
 refuse to fabricate).
-
-**Model.** `model: fable` above applies to the turn that loads this skill and is not a
-guarantee. The durable carriers for the planning tier are the two snapshot directories'
-operating rules — `how-to/src/SCALE-ARCHITECTURE/CLAUDE.md` and
-`how-to/src/SERVER-ARCHITECTURE/CLAUDE.md`, which both name Fable for envelope, readiness and
-contract reasoning — and `project-management/workflows/15-decisions/`, whose routing
-frontmatter is `model: fable`.
 
 Scale planning answers two questions the project has never pinned down: **is the deployment
 sized correctly for a target number of users, and is it built so that reaching the next tier

@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [planner, no-such-skill-inline]
-model: fable
+model: opus
 ---
 
 # Broken fixture — the inline flow sequence

@@ -17,8 +17,8 @@ and the one cumulative PDF deliverable in `component-build/`.
 - **Routing:** stage 1 from `workflows/07-component-designs/`, stage 2 from
   `workflows/18-consolidate-design-work/`, stage 3 from
   `workflows/22-implementation-documentation/`. Build mechanics: `component-build/CLAUDE.md`.
-- **Model:** Fable for component and variant decisions and for consolidation; Opus for
-  mechanical touches — running the generator, a wording fix, a rename.
+- **Model:** Opus throughout — component and variant decisions, and consolidation, are
+  substantive judgement; running the generator, a wording fix or a rename is a mechanical touch.
 - **Concrete steps:** pick the stage → copy that folder's template → record the components →
   **at consolidation only**, edit the palette in `component-build/components.py` or a
   `section-<name>.tex` partial, run `python3 components.py`, check `--check` passes, and commit

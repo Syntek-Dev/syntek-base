@@ -14,8 +14,8 @@ screens one story introduces, composed from `../SHARED/wireframe.css`.
 
 - **Routing:** produced by `workflows/08-wireframes/` during the story's own specify pass. A
   screen visualises the story and its `../../05-USER-FLOW/USER-STORY-IDEAS/` fragment.
-- **Model:** Fable for designing a screen (layout, hierarchy, annotations); Opus for mechanical
-  touches — a rename, a copy fix, a date bump.
+- **Model:** Opus throughout — designing a screen (layout, hierarchy, annotations) is
+  substantive judgement; a rename, a copy fix or a date bump is a mechanical touch.
 - **Concrete steps:** copy `WF-IDEA-US000-TEMPLATE.html` → `WF-IDEA-US###-<Screen-Name>.html` →
   compose from the `wf-*` classes → number regions with `wf-note` and explain them in
   `wf-annotations` → open in a browser across breakpoints → cross-link the story.

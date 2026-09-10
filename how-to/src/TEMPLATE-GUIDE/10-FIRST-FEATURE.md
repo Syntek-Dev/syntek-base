@@ -167,7 +167,7 @@ Only the ones your story actually touches:
 
 Each writes its artefact under the matching numbered `src/` folder, tied to US001.
 
-These run on **Fable** — the reasoning tier. Specification is where thinking is cheapest.
+Specification is where thinking is cheapest — spend the effort here, before code exists.
 
 ## 4. Decide and plan
 

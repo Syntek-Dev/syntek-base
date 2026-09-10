@@ -2,7 +2,7 @@
 workflow: 16-sprint-plans
 phase: design
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprint Plans — Steps
@@ -28,7 +28,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 0 — Grill first
 
-> **Model:** fable
+> **Model:** opus
 
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` Section 10).
@@ -84,7 +84,7 @@ For each story in the sprint, identify which development phases it touches:
 sprint [list the stories, their priorities, and any constraints from GDPR/security/QA reviews]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** opus · **MCP:** none
 
 ### Step 5 — Write the Sprint Plan Document
 

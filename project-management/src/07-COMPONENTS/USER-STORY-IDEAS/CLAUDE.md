@@ -14,8 +14,8 @@ components a story reuses and describing any it needs that do not yet exist.
 
 - **Routing:** produced by `workflows/07-component-designs/` during the story's own specify pass.
   Check `code/src/django/components/` and `../CONSOLIDATED-IDEAS/` before proposing anything.
-- **Model:** Fable when the story proposes a new component; Opus when the record is "reused
-  existing", which is most of them.
+- **Model:** Opus throughout — a story proposing a new component is substantive; a record of
+  "reused existing", which most of them are, is a mechanical touch.
 - **Concrete steps:** copy `COMP-IDEA-US000-TEMPLATE.md` → `COMP-IDEA-US###-<DESCRIPTOR>.md` →
   list components reused → for anything new, describe what it must **do**, its states, and the
   nearest existing component → note similarities to earlier stories' records → stop.

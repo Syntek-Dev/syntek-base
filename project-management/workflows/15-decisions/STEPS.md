@@ -2,7 +2,7 @@
 workflow: 15-decisions
 phase: design
 skills: [planner, codebase-design]
-model: fable
+model: opus
 ---
 
 # Decisions (ADRs) — Steps
@@ -85,7 +85,7 @@ the trade-off.
 
 ### Step 7 — Document the options considered
 
-> **Model:** opus (drafting the option summaries once the trade-offs are settled)
+> **Model:** opus
 
 For each realistic option — including "do nothing" where relevant — write a Summary,
 Pros, and Cons. Consult `.claude/skills/codebase-design/SKILL.md` to reason about each
@@ -100,7 +100,7 @@ planner [state the decision under discussion, the driving US### or spec, and the
 options already gathered from Steps 4–5]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** none
 
 ### Step 9 — Write the Decision section
 

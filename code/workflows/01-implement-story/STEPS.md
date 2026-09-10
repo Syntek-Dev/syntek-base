@@ -42,7 +42,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 planner [feature name and scope]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,

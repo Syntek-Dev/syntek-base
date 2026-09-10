@@ -2,7 +2,7 @@
 workflow: 03-sprint-planning
 phase: design
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprint Planning — Steps
@@ -42,7 +42,7 @@ Read open stories in `project-management/src/02-STORIES/` and identify candidate
 sprint [describe sprint goal and available stories]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** opus · **MCP:** none
 
 ### Step 3 — Review and Balance
 

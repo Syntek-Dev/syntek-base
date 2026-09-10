@@ -18,8 +18,8 @@ Ninja API, never a client-side build for the Django-served pages.
   `code-reviewer` may load `stack-react-native` without owning React Native conventions. Start
   substantive work from `project-management/workflows/21-frontend-code/`, whose mobile steps are
   flagged mobile-only.
-- **Model:** Opus for code, tests and review; Fable only where a design or schema decision is
-  being made upstream of the code.
+- **Model:** Opus throughout — code, tests and review, and any design or schema decision
+  upstream of the code.
 - **Every operation runs through `code/src/scripts/mobile/*.sh`** — never raw `pnpm`, `expo`,
   `tsc` or `jest`. The scripts table is in `CONTEXT.md`.
 - **Concrete steps:** read `CONTEXT.md` → implement under `app/` → `lint.sh` → `typecheck.sh` →

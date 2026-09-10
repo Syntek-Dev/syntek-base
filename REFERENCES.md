@@ -206,7 +206,7 @@ complete.
 
 | PM workflow                       | Paired code workflow                                                                                | Relationship                                                                              |
 | --------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `04-database-schema`              | `03-database-migration`                                                                             | Schema designed (Fable) → migration written (Opus), **entered via `18`**                  |
+| `04-database-schema`              | `03-database-migration`                                                                             | Schema designed → migration written, **entered via `18`**                                 |
 | `09-gdpr-compliance`              | `06-gdpr-enforcement`                                                                               | Obligations specified → enforced in code; review is a hard prerequisite                   |
 | `10-security-checks`              | `08-security-hardening`                                                                             | Design threat model → built-code audit, **entered via `19`** or `23`                      |
 | `13-api-design`                   | `04-api-design`                                                                                     | Ninja contract decided → expressed as routers/Schemas, **entered via `19`**               |

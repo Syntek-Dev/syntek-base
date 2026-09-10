@@ -15,7 +15,7 @@ before any new page, screen, or significant component is built.
 - **Routing:** run `STEPS.md` against `CHECKLIST.md`. **Hard gate:**
   `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA considered at layout stage; interactive
   states required from the start. Feeds GDPR (08), security (09), and QA (10).
-- **Model:** Fable — layout and interaction design is substantive.
+- **Model:** Opus — layout and interaction design is substantive.
 - **Concrete steps:** confirm a driving `US###` and its acceptance criteria → wireframe
   the agreed user flow (`src/05-USER-FLOW/`) starting at 360 px portrait and scaling up →
   **check the django-components library before specifying any new element and reuse where possible** →

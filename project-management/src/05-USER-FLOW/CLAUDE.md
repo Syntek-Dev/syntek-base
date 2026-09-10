@@ -17,8 +17,9 @@ built (`IMPLEMENTATION/`), with rendered PNGs in `DIAGRAMS/`.
 - **Routing:** never author here free-hand. Stage 1 comes from `workflows/05-user-flow-design/`,
   stage 2 from `workflows/18-consolidate-design-work/`, stage 3 from
   `workflows/22-implementation-documentation/`.
-- **Model:** Fable for mapping and for consolidation — journey design and gap-finding are
-  substantive; Opus for mechanical touches (a rename, re-exporting a diagram, a stub edit).
+- **Model:** Opus throughout — journey design and gap-finding, at both mapping and
+  consolidation, are substantive judgement; a rename, re-exporting a diagram, or a stub edit is a
+  mechanical touch.
 - **Concrete steps:** pick the stage → copy that folder's template → write the narrative
   (screens, decision points, data touchpoints) → re-export the matching
   `DIAGRAMS/flow-<area>-<screen>.png` → cross-link the `US###` and, for stages 2 and 3, the

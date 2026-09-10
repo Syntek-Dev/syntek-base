@@ -19,7 +19,7 @@ model: opus
 - [ ] Checked the "deliberately NOT declared at baseline" register in `pyproject.toml`; if listed, its trigger has genuinely fired and the register line is removed in this change · _opus_
 - [ ] Licence compatible with this project's licence — GPL/AGPL approved in writing where required · _opus_
 - [ ] The transitive tree is worth it; a small amount of first-party code was considered instead · _opus_
-- [ ] Load-bearing choice recorded as an ADR · _fable_
+- [ ] Load-bearing choice recorded as an ADR · _opus_
 
 ## Change
 

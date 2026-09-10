@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [security, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Security Guide — <%PROJECT_NAME%>
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
-**Claude Model:** fable — Security threat modelling, STRIDE analysis, OWASP review, cross-layer security design
+**Claude Model:** opus — Security threat modelling, STRIDE analysis, OWASP review, cross-layer security design
 **MCP Servers:** code-review-graph (security pattern analysis, vulnerability detection)
 
 ---

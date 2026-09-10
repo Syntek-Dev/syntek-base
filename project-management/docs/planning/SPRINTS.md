@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprints and Sprint Plans

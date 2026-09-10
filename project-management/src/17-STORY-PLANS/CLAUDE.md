@@ -14,13 +14,14 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
 
 ## How to work here
 
-- **Routing:** planning work → `planner` (Fable) for the architectural plan. It rests on
+- **Routing:** planning work → `planner` for the architectural plan. It rests on
   the sprint plan (`../16-SPRINT-PLANS/`) and the decisions (`../15-DECISIONS/`); once
   written it feeds the implementation phase — the code workflows and the PM code/PR
   workflows (`19-backend-code` → `24-release`). Copy `00-STORY-PLAN-US000-TEMPLATE.md` — the
   canonical superset — for every new plan; never start from scratch.
-- **Model:** Fable for the substance (approach, decisions table, dependency DAG, risks);
-  Opus for status flips, re-prefixing execution order, or mechanical link fixes.
+- **Model:** Opus throughout — the approach, decisions table, dependency DAG and risks are
+  substantive judgement; status flips, re-prefixing execution order and link fixes are
+  mechanical touches.
 - **Concrete steps:** copy the template → read the settled build order off `../03-SPRINTS/`
   and `../16-SPRINT-PLANS/`, and take the story's position in it as the `<exec-order>`
   prefix → name the file `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the

@@ -15,9 +15,9 @@ criteria for a story's public page(s) before any code is written.
 - **Routing:** plans are produced by `project-management/workflows/12-seo-checks/` using
   the `seo` skill, against a story in `../../02-STORIES/` and its wireframe, governed by
   `project-management/docs/SEO-CHECKLIST.md`. Read a story's plan before implementing it.
-- **Model:** Fable — setting per-dimension acceptance criteria (metadata targets, schema
-  type, robots/sitemap strategy, Core Web Vitals budgets) is substantive SEO judgement;
-  Opus only for a date-header bump or a rename.
+- **Model:** Opus throughout — setting per-dimension acceptance criteria (metadata targets,
+  schema type, robots/sitemap strategy, Core Web Vitals budgets) is substantive SEO
+  judgement; a date-header bump or a rename is a mechanical touch.
 - **Concrete steps:** copy `SEO-PLAN-US000-TEMPLATE.md` → `SEO-PLAN-US###-<DESCRIPTOR>.md`
   → record the public route and SEO flag → set a concrete planned value on every dimension
   row → state the route's robots/sitemap handling → raise unspecified intent as an `[OPEN]`

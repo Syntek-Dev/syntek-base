@@ -18,9 +18,10 @@ artefacts under `src/`.
   `QA-GUIDE.md` before `workflows/11-qa-checks`, `PLANNING-GUIDE.md` (and its
   `planning/` sub-documents) before any planning workflow. Substantive guide edits load the matching
   skill (`security`, `qa-tester`, `seo`, `gdpr-mechanics`, `git`, `version`).
-- **Model:** Fable to rewrite a planning/spec guide (GDPR, security, QA, planning,
-  responsive-design); Opus for the process guides (git, versioning, SEO); Opus for
-  mechanical touches — version-header bumps, a redirect stub, a doc-index lookup.
+- **Model:** Opus throughout — rewriting a guide, whether planning/spec (GDPR, security,
+  QA, planning, responsive-design) or process (git, versioning, SEO), is substantive
+  judgement; version-header bumps, a redirect stub and a doc-index lookup are mechanical
+  touches.
 - **Concrete steps:** edit the guide → keep it under the 300-code-line instructional
   cap, splitting overflow into a sub-folder (e.g. `gdpr/`) with this file as a thin
   index → cross-check any cited workflow still matches → update `CONTEXT.md` if you

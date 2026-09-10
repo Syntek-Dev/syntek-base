@@ -20,8 +20,8 @@ signed off and before sprint planning, producing `API-US###-<descriptor>.md` in
   `code/docs/security/AUTH-AND-AUTHZ.md` — must be read before Step 1. Inputs: approved
   story, signed-off schema (`src/04-DATABASE/`), wireframes, and the threat model
   (`src/10-SECURITY/`) for permission rules.
-- **Model:** Fable for contract design; Opus for mechanical touches (status
-  flips, moving a file).
+- **Model:** Opus throughout — contract design is substantive judgement; a status flip or
+  moving a file is a mechanical touch.
 - **Skills:** load `.claude/skills/research/SKILL.md` when a contract decision needs a
   primary-source-cited note to ground an ADR/PLAN or stack choice (ADR groundwork).
 - **Concrete steps:** read the two hard-gate guides → define Schema request/response

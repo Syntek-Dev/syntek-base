@@ -14,7 +14,7 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable), which
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill, which
   delegates: `database` for `src/04-DATABASE`, `frontend` for `src/07-COMPONENTS` and
   `src/08-WIREFRAMES`, and takes `src/05-USER-FLOW` and `src/06-BRAND-GUIDE` itself. The
   hard gates — `code/docs/DATABASE.md` and `code/docs/DESIGN-TOKENS.md` — must be read
@@ -25,9 +25,9 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   (`src/01-FEATURE-MAPS/MAP-<FEATURE>.md`) is the natural place to resume.
 - **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`) — which
   folders are genuinely in play, what counts as a collision, and how aggressively to merge.
-- **Model:** Fable throughout — resolving two stories' competing models of the same
-  concept is design judgement, not a mechanical merge. Opus only for the mechanical
-  tail: re-running a generator, a rename, a cross-link, a status flip.
+- **Model:** Opus throughout — resolving two stories' competing models of the same
+  concept is design judgement, not a mechanical merge; only the tail is mechanical:
+  re-running a generator, a rename, a cross-link, a status flip.
 - **Concrete steps:** inventory every `USER-STORY-IDEAS/` artefact → identify collisions
   and divergences → resolve each to one canonical form, escalating anything
   hard-to-reverse to `15-decisions/` → write `CONSOLIDATED-IDEAS/` → regenerate the brand

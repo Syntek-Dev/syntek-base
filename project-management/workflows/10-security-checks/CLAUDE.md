@@ -15,11 +15,11 @@ wireframes with STRIDE, OWASP Top 10, and NIST CSF 2.0, and record findings in
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive the heavier analysis with the
-  `security` skill (Fable). The hard gate
-  `docs/SECURITY-GUIDE.md` must be read before Step 1. Prerequisites: user flows,
-  signed-off wireframes, and the GDPR review (`workflows/09-gdpr-compliance`).
-- **Model:** Fable for all threat modelling and findings; Opus for mechanical
-  touches (status flips, moving a file).
+  `security` skill. The hard gate `docs/SECURITY-GUIDE.md` must be read before Step 1.
+  Prerequisites: user flows, signed-off wireframes, and the GDPR review
+  (`workflows/09-gdpr-compliance`).
+- **Model:** Opus throughout — all threat modelling and findings are substantive judgement; a
+  status flip or moving a file is a mechanical touch.
 - **Concrete steps:** read `docs/SECURITY-GUIDE.md` → threat-model each flow/wireframe
   → map every finding to STRIDE + OWASP A01–A10 + a NIST CSF function → write to
   `src/10-SECURITY/` under the right sub-dir (`THREAT-MODEL/`, `ASSESSMENTS/`,

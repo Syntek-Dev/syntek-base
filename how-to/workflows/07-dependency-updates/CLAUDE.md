@@ -13,9 +13,10 @@ resolving the advisories the nightly sweep reports.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Execution
-  → `cicd` (Opus); a load-bearing choice is grilled and recorded as an ADR via
-  `project-management/workflows/15-decisions/` (Fable).
-- **Model:** Opus for the change and verification; Fable for the ADR.
+  → `cicd`; a load-bearing choice is grilled and recorded as an ADR via
+  `project-management/workflows/15-decisions/`.
+- **Model:** Opus throughout — the ADR is substantive judgement; the change and its
+  verification are mechanical.
 - **Concrete steps:** justify → edit manifest and refresh lockfile → reinstall and rebuild
   → run the full gate → commit manifest and lockfile together.
 - **Definition of done:** image builds, full gate green, pins moved as a matched set,

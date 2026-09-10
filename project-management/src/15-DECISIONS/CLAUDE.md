@@ -18,9 +18,9 @@ capturing status, context, options considered, decision, and consequences.
   build or deploy path is drafted alongside the relevant `code/workflows/` procedure.
   Ground a contested decision or stack choice with a primary-source-cited note via
   `.claude/skills/research/SKILL.md` (ADR groundwork).
-- **Model:** Fable — an ADR is a reasoned trade-off document (context, options,
-  consequences); Opus for a mechanical status flip (e.g. `accepted` →
-  `superseded`) or a typo fix.
+- **Model:** Opus throughout — an ADR is a reasoned trade-off document (context, options,
+  consequences), substantive judgement; a status flip (e.g. `accepted` → `superseded`) or a
+  typo fix is a mechanical touch.
 - **Concrete steps:** create `ADR-US###-<DECISION>-DD-MM-YYYY.md` for the driving story
   → fill the five sections (**Status**, **Context**, **Options considered**,
   **Decision**, **Consequences**) → cross-link the `US###` that drove or consumes the

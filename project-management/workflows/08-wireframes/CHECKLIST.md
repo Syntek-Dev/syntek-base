@@ -2,7 +2,7 @@
 workflow: 08-wireframes
 phase: design
 skills: [frontend, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Wireframes — Checklist

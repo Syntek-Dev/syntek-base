@@ -2,7 +2,7 @@
 workflow: 13-api-design
 phase: design
 skills: [backend, stack-django]
-model: fable
+model: opus
 ---
 
 # Steps — API Design

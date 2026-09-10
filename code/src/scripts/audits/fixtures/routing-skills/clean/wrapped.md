@@ -11,7 +11,7 @@ skills:
     refactor,
     stack-rust,
   ]
-model: fable
+model: opus
 ---
 
 # Clean fixture — the wrapped flow sequence

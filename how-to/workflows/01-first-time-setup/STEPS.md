@@ -123,7 +123,7 @@ than copy, and the sizing is done for that project. None of them is recoverable 
 
 ### Step 7 — Sharpen the project description
 
-> **Model:** fable
+> **Model:** opus
 
 Open `CONTEXT.md` → _What this project is_. It holds the one or two sentences answered at
 generation (`PROJECT_DESCRIPTION`). Read them back to <%DEVELOPER_NAME%> and ask whether they still
@@ -142,7 +142,7 @@ _Done when `CONTEXT.md` opens with a brief <%DEVELOPER_NAME%> has confirmed, not
 
 ### Step 8 — Settle the brand voice
 
-> **Model:** fable
+> **Model:** opus
 
 Open `how-to/src/BRAND-VOICE.md` and fill Section 3 (tone, person, formality, reader, signature, the
 never-this line, and the say-this-not-that vocabulary). **Section 3 is the only section carrying
@@ -164,7 +164,7 @@ Step 9 — settle it next, and keep the two consistent._
 
 ### Step 9 — Settle the visual direction
 
-> **Model:** fable
+> **Model:** opus
 
 Open `code/docs/VISUAL-DESIGN.md` Section 3 and fill the **This project's direction** table: name the
 direction, then give every axis a setting — alignment, rhythm, contrast, ornament, density, motion.
@@ -195,7 +195,7 @@ contradict `how-to/src/BRAND-VOICE.md` Section 3._
 
 ### Step 10 — Plan scale and architecture before the first feature
 
-> **Model:** fable
+> **Model:** opus
 
 ```text
 /scale-planning

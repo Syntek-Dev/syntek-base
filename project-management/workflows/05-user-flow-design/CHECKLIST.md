@@ -2,7 +2,7 @@
 workflow: 05-user-flow-design
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # User Flow Design — Checklist

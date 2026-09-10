@@ -2,7 +2,7 @@
 workflow: 17-story-plans
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # Story Plans — Checklist

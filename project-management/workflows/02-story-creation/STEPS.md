@@ -2,7 +2,7 @@
 workflow: 02-story-creation
 phase: design
 skills: [story, global-workflow]
-model: fable
+model: opus
 ---
 
 # User Story Creation — Steps
@@ -48,7 +48,7 @@ _Done when the slice row and its flags are in view._
 story [describe the feature and user role]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `story` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `story` · **Model:** opus · **MCP:** none
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the specific user role, the measurable benefit,
@@ -58,7 +58,7 @@ or money. Record the resolved behaviour straight into the story's Gherkin accept
 
 ### Step 1a — Fill the FLAGS table
 
-> **Model:** fable
+> **Model:** opus
 
 Transcribe the slice's manifest into the story's 13-row FLAGS table, one row per gate, filling
 `N/A` for every gate this story does not need. **The flag is that gate's entry condition** — a

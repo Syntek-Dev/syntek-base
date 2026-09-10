@@ -15,7 +15,7 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 - **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated journey and the shipped views, templates, and routes.
 - **Model:** Opus — recording what was built against an approved journey is a documentation
-  closeout. Escalate to `planner` (Fable) only when a deviation needs judging.
+  closeout. Escalate to `planner` only when a deviation needs judging.
 - **Concrete steps:** copy `USER-FLOW-IMPL-US000-TEMPLATE.md` →
   `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → mark each consolidated step
   Present / Changed / Missing with the view or template as evidence → **walk every failure path

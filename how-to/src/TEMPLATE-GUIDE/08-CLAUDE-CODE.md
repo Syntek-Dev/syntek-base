@@ -65,19 +65,19 @@ work writes nothing.
 
 ## Models
 
-Two tiers only. `sonnet` and `haiku` are never used.
+One tier only. `sonnet` and `haiku` are never used.
 
-| Alias   | For                                                                                         |
-| ------- | ------------------------------------------------------------------------------------------- |
-| `fable` | Planning, specification, design — architecture, schema, user flows, stories, sprints, plans |
-| `opus`  | Everything else — code, tests, migrations, review, PR, release, docs, mechanical touches    |
+| Alias  | For                                                                                                                  |
+| ------ | -------------------------------------------------------------------------------------------------------------------- |
+| `opus` | **Everything** — planning, specification and design as well as code, tests, migrations, review, PR, release and docs |
 
-Sessions run on Opus. Skills and workflows route by tier through their `model:` frontmatter.
+Sessions run on Opus at `effortLevel: xhigh`. Every skill, workflow and docs-guide still declares
+`model:` in its frontmatter — the value is uniform, and the key stays because it is the carrier
+any future tier split would use.
 
-> **Plan requirement.** The Fable tier means this is designed for **Claude Max 20× or above, or
-> the Anthropic API**. On a smaller plan, retarget the design skills (`planner`,
-> `scale-planning`, `sprint`, `story`) to `opus` in their frontmatter — everything still works,
-> you just lose the tier separation.
+> **Plan requirement.** Opus at extra-high effort means this is designed for **Claude Max 20× or
+> above, or the Anthropic API**. On a smaller plan everything still works, but expect to hit
+> usage limits during a long implementation or review pass.
 >
 > **On another provider?** Only the model routing is Claude-specific. Swap the aliases in
 > `.claude/CLAUDE.md` Section 4, each skill's `model:` frontmatter, and the `model:` lines in `docs/` and

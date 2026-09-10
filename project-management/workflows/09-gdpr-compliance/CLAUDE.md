@@ -16,7 +16,7 @@ subject rights — when it collects, processes, or stores personal data, before 
   **Hard gates (blocking):** `docs/gdpr/DATA-RIGHTS.md` (lawful basis, erasure, SAR,
   portability, consent) and `docs/gdpr/COMPLIANCE.md` (retention, encryption at rest,
   audit logging, breach notification).
-- **Model:** Fable — compliance judgement is substantive.
+- **Model:** Opus — compliance judgement is substantive.
 - **Concrete steps:** confirm the feature is implemented and data flows are understood →
   trace each data touchpoint from `src/05-USER-FLOW/` to a lawful basis and retention
   rule → verify PII is encrypted (`code/docs/encryption/FIELD-ENCRYPTION.md`), access is

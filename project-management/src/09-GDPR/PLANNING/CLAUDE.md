@@ -13,10 +13,10 @@ lawful basis, retention, rights impact, and processors before any code is writte
 ## How to work here
 
 - **Routing:** plans are produced by `project-management/workflows/09-gdpr-compliance/`
-  loading the `gdpr-mechanics` skill (Fable), analysing a story in `../../02-STORIES/` against
+  loading the `gdpr-mechanics` skill, analysing a story in `../../02-STORIES/` against
   `project-management/docs/GDPR-GUIDE.md`. Read a story's plan before implementing it.
-- **Model:** Fable — per-story gap analysis (lawful basis, retention, rights paths) is
-  substantive judgement; Opus only for a date-header bump or a rename.
+- **Model:** Opus throughout — per-story gap analysis (lawful basis, retention, rights paths)
+  is substantive judgement; a date-header bump or a rename is a mechanical touch.
 - **Concrete steps:** copy `GDPR-PLAN-US000-TEMPLATE.md` →
   `GDPR-PLAN-US###-<DESCRIPTOR>.md` → complete every section for that story → list the
   GDPR tasks that gate implementation → cross-link the `US###` and the registers.

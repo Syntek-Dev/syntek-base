@@ -13,8 +13,8 @@ operations.
 
 ## How to work here
 
-- **Routing:** these are the only `.py` files in `.claude/` — Opus for any logic change, Opus
-  only for a rename or a corrected path. Each helper only **reads/detects** (project layout, env
+- **Routing:** these are the only `.py` files in `.claude/` — Opus throughout, from a logic
+  change to a rename or a corrected path. Each helper only **reads/detects** (project layout, env
   files, DB, git state, logs, PM config); it must never build, test, migrate, or run the stack —
   those go through `code/src/scripts/**/*.sh`.
 - **Concrete steps:** read the target `*-tool.py` whole → keep it single-purpose, read-only, and

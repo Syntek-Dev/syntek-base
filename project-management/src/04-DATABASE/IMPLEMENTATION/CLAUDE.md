@@ -16,8 +16,8 @@ migration evidence, that a story's shipped schema matches `../CONSOLIDATED-IDEAS
   skill, consulting `database` where a deviation needs judging, against the consolidated
   schema and the story's shipped migrations.
 - **Model:** Opus — this records what was built against an already-approved schema; it is a
-  documentation closeout, not a design pass. Escalate to `database` (Fable) only when a
-  deviation needs assessing.
+  documentation closeout, not a design pass. Escalate to `database` only when a deviation needs
+  assessing.
 - **Concrete steps:** copy `DB-IMPL-US000-TEMPLATE.md` →
   `DB-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → list the migrations that shipped → mark each
   consolidated table and column Present / Changed / Missing with the migration file as evidence

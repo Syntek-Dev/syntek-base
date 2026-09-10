@@ -80,15 +80,18 @@ WSL 2 to run its own engine, so this asks for no component you would not have.
 
 ### Claude Code plan
 
-The skill suite routes across **two model tiers** — `fable` for planning, specification and design
-work, `opus` for everything else. That is a deliberate split: the reasoning tier sets the
-foundation, the implementation tier builds on it.
+The skill suite runs on a **single model tier** — `opus` for everything, from planning,
+specification and design through to implementation, review and every mechanical touch. Every
+`model:` frontmatter declaration in the repository reads `opus`.
 
-Because of the Fable usage, this template is designed for **Claude Max 20× or above, or the
-Anthropic API**. On a smaller plan the Fable-tier skills (`story`, `sprint`, `planner`,
-`scale-planning`, and the design/compliance workflows) will not run as configured — you can
-retarget them to `opus` by editing the `model:` frontmatter, but you lose the tier separation the
-process is built around.
+Earlier versions split the work across two tiers, reserving `fable` for the design and
+specification skills. That split was retired on cost grounds; the `model:` frontmatter key
+remains as the carrier, so reintroducing a tier is an edit to those declarations rather than a
+structural change.
+
+Sessions still run Opus at `effortLevel: xhigh` with ultracode on, so this template is designed
+for **Claude Max 20× or above, or the Anthropic API**. On a smaller plan it will run, but expect
+to hit usage limits during a long implementation or review pass.
 
 **Using a different LLM provider?** Everything except the model routing is provider-agnostic — the
 documentation system, workflows, gates and directory conventions work with any coding agent. Expect

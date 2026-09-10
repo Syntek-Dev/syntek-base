@@ -18,9 +18,9 @@ what shipped (`IMPLEMENTATION/`), plus the rendered ERDs in `ERD-DIAGRAMS/`.
   `workflows/04-database-schema/`, stage 2 from `workflows/18-consolidate-design-work/`,
   stage 3 from `workflows/22-implementation-documentation/`. Use the `database` skill for
   the heavier modelling.
-- **Model:** Fable for schema design, consolidation, RLS decisions, and PII classification —
-  all substantive judgement; Opus for mechanical touches (a status flip, a rename, re-exporting
-  an ERD).
+- **Model:** Opus throughout — schema design, consolidation, RLS decisions, and PII
+  classification are substantive judgement; a status flip, a rename, or re-exporting an ERD is a
+  mechanical touch.
 - **Concrete steps:** pick the stage → copy that folder's template using its naming pattern →
   complete every section → export the ERD to `ERD-DIAGRAMS/erd-<domain>.png` on sign-off →
   cross-link the `US###` and, for stages 2 and 3, the stage-1 designs involved.

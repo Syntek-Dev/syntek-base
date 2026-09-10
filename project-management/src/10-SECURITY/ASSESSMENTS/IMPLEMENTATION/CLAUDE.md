@@ -14,11 +14,11 @@ evidence.
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/` (or the
-  `workflows/10-security-checks/` review step) via the `security` skill (Fable), once the
+  `workflows/10-security-checks/` review step) via the `security` skill, once the
   code audit in `../../AUDITS/IMPLEMENTATION/` is complete, against the story's
   `../PLANNING/ASSESSMENT-PLAN-US###-*.md` baseline.
-- **Model:** Fable — verifying OWASP/NIST coverage and finding status against shipped
-  code is substantive judgement; Opus only for a status flip or a file move.
+- **Model:** Opus throughout — verifying OWASP/NIST coverage and finding status against
+  shipped code is substantive judgement; a status flip or a file move is a mechanical touch.
 - **Concrete steps:** copy `ASSESSMENT-IMPL-US000-TEMPLATE.md` →
   `ASSESSMENT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the baseline →
   re-evaluate the OWASP and NIST tables with code evidence → mark each planning finding

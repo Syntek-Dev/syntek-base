@@ -17,8 +17,9 @@ reconciled into (`CONSOLIDATED-IDEAS/`), the per-story record of what shipped
 - **Routing:** stage 1 from `workflows/06-brand-guides/`, stage 2 from
   `workflows/18-consolidate-design-work/`, stage 3 from
   `workflows/22-implementation-documentation/`. Build mechanics: `guide-build/CLAUDE.md`.
-- **Model:** Fable for token decisions (colour roles, type scale, voice) and for consolidation;
-  Opus for mechanical touches — running the generator, a version bump, a wording fix.
+- **Model:** Opus throughout — token decisions (colour roles, type scale, voice) and consolidation
+  are substantive judgement; running the generator, a version bump or a wording fix is a
+  mechanical touch.
 - **Concrete steps:** pick the stage → copy that folder's template → record the tokens →
   **at consolidation only**, edit `INPUTS` in `guide-build/brand_guide.py`, run
   `python3 brand_guide.py`, check `--check` passes, and commit `.py`, `.tex`, `.pdf` together.

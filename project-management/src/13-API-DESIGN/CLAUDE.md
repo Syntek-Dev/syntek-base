@@ -19,8 +19,8 @@ a story's API surface from design into implemented, permission-checked endpoints
   `src/16-SPRINT-PLANS/`); `IMPLEMENTATION/` verifications from `workflows/23-pr-and-review/`.
   The contract is written against `code/docs/API-DESIGN.md` (Django Ninja conventions); use
   the `planner` skill for the heavier design work.
-- **Model:** Fable for the design documents (they define the shared interface); Opus only
-  for mechanical touches — status flips, moving a file, header bumps.
+- **Model:** Opus throughout — the design documents are substantive judgement (they define
+  the shared interface); status flips, moving a file and header bumps are mechanical touches.
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to
   `API-<PLAN|IMPL>-US###-<DESCRIPTOR>.md` → complete the 10-step contract (or verify it
   against the shipped endpoints) → cross-link the `US###` and the paired design/verification

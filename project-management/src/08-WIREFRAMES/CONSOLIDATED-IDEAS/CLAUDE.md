@@ -15,8 +15,8 @@ Stage-2 screen set — the per-story wireframes rebuilt on the consolidated comp
 - **Routing:** produced only by `workflows/18-consolidate-design-work/`, and only **after**
   `../../07-COMPONENTS/CONSOLIDATED-IDEAS/` and `../../05-USER-FLOW/CONSOLIDATED-IDEAS/` are
   settled — this stage consumes both.
-- **Model:** Fable for the rebuild and the reconciliation decisions; Opus for renames, copy
-  fixes, and breakpoint checks.
+- **Model:** Opus throughout — the rebuild and the reconciliation decisions are substantive
+  judgement; renames, copy fixes, and breakpoint checks are mechanical touches.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` screen → identify duplicates and
   near-duplicates → rebuild each surviving screen on the consolidated components, against the
   consolidated journey → record the merge log → open every screen at every declared breakpoint →

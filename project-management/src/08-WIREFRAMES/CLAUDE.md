@@ -18,8 +18,9 @@ the consolidated components (`CONSOLIDATED-IDEAS/`), the per-story record of wha
   `workflows/18-consolidate-design-work/`, stage 3 from
   `workflows/22-implementation-documentation/`. A screen visualises a story and its
   `../05-USER-FLOW/` narrative.
-- **Model:** Fable for designing a screen or extending the shared chrome; Opus for mechanical
-  touches — renaming a `WF-###` file, a copy fix, a date bump.
+- **Model:** Opus throughout — designing a screen or extending the shared chrome is
+  substantive judgement; renaming a `WF-###` file, a copy fix or a date bump is a mechanical
+  touch.
 - **Concrete steps:** pick the stage → copy the relevant template → compose from the `wf-*`
   classes → number key regions with `wf-note` and explain them in `wf-annotations` → open in a
   browser at every declared breakpoint → cross-link the story.

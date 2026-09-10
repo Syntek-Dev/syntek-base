@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [story, global-workflow]
-model: fable
+model: opus
 ---
 
 # Stories and Story Plans

@@ -2,7 +2,7 @@
 workflow: 01-feature-map
 phase: discovery
 skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
-model: fable
+model: opus
 ---
 
 # Feature Map — Checklist

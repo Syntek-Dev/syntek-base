@@ -20,9 +20,9 @@ implementation depth lives there, never duplicated here.
   MoSCoW, and phase-breakdown conventions come from
   `project-management/docs/PLANNING-GUIDE.md`. Use `sprint`
   for the heavier drafting.
-- **Model:** Fable to draft a plan (story selection, phasing, Definition of Done);
-  Opus for mechanical touches — renaming, re-prefixing execution order, or
-  fixing a header.
+- **Model:** Opus throughout — story selection, phasing and the Definition of Done are
+  substantive judgement; renaming, re-prefixing execution order or fixing a header is a
+  mechanical touch.
 - **Concrete steps:** copy `00-SPRINT-PLAN-00-TEMPLATE.md` → pull stories from
   `../02-STORIES/` and the matching record in `../03-SPRINTS/SPRINT-##.md` →
   prioritise with MoSCoW → break into phases → link each story to its story plan in

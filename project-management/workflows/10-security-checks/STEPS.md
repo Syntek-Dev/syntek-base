@@ -2,7 +2,7 @@
 workflow: 10-security-checks
 phase: harden
 skills: [security, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Security Checks — Steps
@@ -73,7 +73,7 @@ Add both columns to the threat table in the threat model document. Full mappings
 security [describe the feature, its user flows, and any identified threats]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** none
 
 ### Step 5 — Document Findings
 

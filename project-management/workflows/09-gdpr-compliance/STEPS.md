@@ -2,7 +2,7 @@
 workflow: 09-gdpr-compliance
 phase: compliance
 skills: [gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # GDPR Compliance Review — Steps
@@ -48,7 +48,7 @@ Document what personal data is collected, why, and how it is stored.
 gdpr-mechanics [describe the feature and its data flows]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `gdpr-mechanics` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `gdpr-mechanics` · **Model:** opus · **MCP:** none
 
 ### Step 3 — Address Findings
 

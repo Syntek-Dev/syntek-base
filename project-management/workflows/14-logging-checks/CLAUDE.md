@@ -22,7 +22,7 @@ is written, writing `LOGGING-PLAN-US###-<DESCRIPTOR>.md` into `src/14-LOGGING/PL
   the `ERROR` threshold is, whether an event belongs in the audit trail instead
   (`.claude/CLAUDE.md` Section 10). These are judgement calls with a real cost either way:
   too little and the next incident is blind, too much and the signal drowns.
-- **Model:** Fable — deciding what is worth logging, at which level, and what must never appear
+- **Model:** Opus — deciding what is worth logging, at which level, and what must never appear
   is substantive design, not transcription.
 - **Concrete steps:** confirm the flag → copy `LOGGING-PLAN-US000-TEMPLATE.md` → name the loggers
   → one row per event with level and exhaustive field list → build the exclusion table from the

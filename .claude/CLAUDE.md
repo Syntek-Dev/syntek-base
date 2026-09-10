@@ -208,14 +208,14 @@ never run dev operations. Registry: `.claude/plugins/CONTEXT.md`. The `<%ORG_SLU
 
 Every session runs on **Opus** with **ultracode** on (`effortLevel: xhigh`, dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: xhigh`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
 
-Sub-agents, workflows, and docs-guides route by **tier** through their `model:` frontmatter (Section 2.5): **Fable** sets the foundation, **Opus** builds on it and handles every mechanical touch. **Never use `sonnet` or `haiku`.**
+**This project runs a single tier.** Sub-agents, workflows and docs-guides all declare `model: opus` in their routing frontmatter (Section 2.5) — the value is uniform across every declaration, and the key stays because it is the carrier any future tier split would use. **Never use `fable`, `sonnet` or `haiku`.**
 
-| Alias        | Use for                                                                                                                                                                                     |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fable`      | **Planning · spec · design.** Architecture, schema & data design, user flows, GDPR/security/QA specs, API design, stories, sprints, plans — the reasoning tier the implementation builds on |
-| `opus`       | **Everything else.** Backend/frontend code, tests, migrations, review, PR, release, docs — and all mechanical touches (renames, version bumps, running scripts, doc-index lookups)          |
-| ~~`sonnet`~~ | **Never used.**                                                                                                                                                                             |
-| ~~`haiku`~~  | **Never used.**                                                                                                                                                                             |
+| Alias        | Use for                                                                                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `opus`       | **Everything.** Planning, spec and design as well as backend/frontend code, tests, migrations, review, PR, release, docs — and every mechanical touch |
+| ~~`fable`~~  | **Retired 10/09/2026 on cost.** The design tier collapsed into `opus`; substantive and mechanical work are now an effort distinction, not a model one |
+| ~~`sonnet`~~ | **Never used.**                                                                                                                                       |
+| ~~`haiku`~~  | **Never used.**                                                                                                                                       |
 
 ---
 

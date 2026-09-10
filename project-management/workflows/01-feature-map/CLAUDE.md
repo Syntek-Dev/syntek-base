@@ -14,15 +14,15 @@ re-asking the same questions.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable), loading
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill, loading
   `.claude/skills/wayfinder/SKILL.md`. Grilling nodes open `grill-with-docs`; research nodes use
   `research`; tracer nodes use `prototype`, which **any** node may also be probed with before it
   resolves. **Build nodes are specified onto their slice row and never performed here** — the work
   belongs to the story `02-story-creation` cuts. The hard gate — the wayfinder skill itself — must
   be read before Step 1.
-- **Model:** Fable throughout — mapping a decision frontier and settling trade-offs is the
-  reasoning tier the whole implementation builds on. Opus only for mechanical touches: a link
-  fix, moving a resolved row, a date bump.
+- **Model:** Opus throughout — mapping a decision frontier and settling trade-offs is
+  substantive judgement; a link fix, moving a resolved row or a date bump is a mechanical
+  touch.
 - **Concrete steps:** load the context in the documented order → CHART (pin the destination, map
   the frontier breadth-first, wire blocking edges, write the map with its **Slices** manifest,
   fire research nodes) → then RESOLVE a batch of related nodes per session until no blocker

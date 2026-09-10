@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # GDPR Guide — Data Subject Rights
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
-**Claude Model:** fable — Data subject rights, per-app erasure and export service logic
+**Claude Model:** opus — Data subject rights, per-app erasure and export service logic
 
 ---
 

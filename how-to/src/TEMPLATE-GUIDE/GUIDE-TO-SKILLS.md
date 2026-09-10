@@ -63,7 +63,7 @@ other — they meet at an artefact: wayfinder graduates a buildable slice into
 
 ## Plan and decide
 
-Design work runs on the **Fable** tier, because thinking is cheapest before code exists.
+Design work is where the thinking is cheapest, so it is where the effort belongs.
 
 | Skill               | What it is for                                                      |
 | ------------------- | ------------------------------------------------------------------- |

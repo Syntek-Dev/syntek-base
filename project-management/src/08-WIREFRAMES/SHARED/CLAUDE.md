@@ -12,9 +12,9 @@ placeholder-brand palette and all chrome classes that every screen links.
 
 ## How to work here
 
-- **Model:** Fable for palette/chrome decisions (which tokens, which components
-  the wireframes need); Opus for mechanical touches — a colour tweak, a new
-  utility class, a wording fix.
+- **Model:** Opus throughout — palette/chrome decisions (which tokens, which
+  components the wireframes need) are substantive judgement; a colour tweak, a
+  new utility class, or a wording fix is a mechanical touch.
 - **Concrete steps:** edit `:root { --wf-* }` to rebrand, or add a chrome class →
   open any screen in `../USER-STORY-IDEAS/` or `../CONSOLIDATED-IDEAS/` over `file://`
   to check it renders → keep the hex in step with the brand guide.

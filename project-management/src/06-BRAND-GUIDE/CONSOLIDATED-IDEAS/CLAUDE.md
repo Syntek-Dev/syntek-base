@@ -15,8 +15,8 @@ per-story ask and driving the single regeneration of `../guide-build/`.
 - **Routing:** produced only by `workflows/18-consolidate-design-work/`, after every story has
   cleared `17-story-plans`. Consolidate alongside `../../07-COMPONENTS/CONSOLIDATED-IDEAS/` —
   the two share a palette and drift apart if done separately.
-- **Model:** Fable throughout — deciding that three near-identical greys are one token is brand
-  judgement. Opus only for running the generator and committing its outputs.
+- **Model:** Opus throughout — deciding that three near-identical greys are one token is brand
+  judgement; running the generator and committing its outputs is a mechanical touch.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` ask → group near-duplicates →
   decide the canonical value for each → record accepted and rejected asks with reasons →
   verify every contrast pairing → edit `INPUTS` in `../guide-build/brand_guide.py` → run

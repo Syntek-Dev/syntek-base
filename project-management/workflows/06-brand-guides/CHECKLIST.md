@@ -2,7 +2,7 @@
 workflow: 06-brand-guides
 phase: design
 skills: [frontend, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Brand Guides — Checklist

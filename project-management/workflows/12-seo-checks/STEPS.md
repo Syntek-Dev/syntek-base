@@ -2,7 +2,7 @@
 workflow: 12-seo-checks
 phase: design
 skills: [seo, stack-htmx-templates, global-workflow]
-model: fable
+model: opus
 ---
 
 # SEO Checks — Steps
@@ -39,7 +39,7 @@ model: fable
 
 ### Step 1 — Grill, then confirm the page exists at all
 
-> **Model:** fable
+> **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%>:
@@ -53,14 +53,14 @@ _Done when the SEO flag is set and the intent is confirmed._
 
 ### Step 2 — Copy the template and set the header
 
-> **Model:** fable
+> **Model:** opus
 
 Copy `src/12-SEO/PLANNING/SEO-PLAN-US000-TEMPLATE.md` → `SEO-PLAN-US###-<DESCRIPTOR>.md`.
 Record the story, the public route(s), and the SEO flag.
 
 ### Step 3 — Set the metadata and URL targets
 
-> **Model:** fable
+> **Model:** opus
 
 Concrete planned values — not "a good title":
 
@@ -78,7 +78,7 @@ Concrete planned values — not "a good title":
 
 ### Step 4 — Decide structured data, robots, and sitemap
 
-> **Model:** fable
+> **Model:** opus
 
 - **JSON-LD schema type** and the fields it will carry
 - **robots** — indexed or not, stated explicitly rather than left to the default
@@ -86,7 +86,7 @@ Concrete planned values — not "a good title":
 
 ### Step 5 — Set the content and performance targets
 
-> **Model:** fable
+> **Model:** opus
 
 From the wireframe:
 
@@ -97,7 +97,7 @@ From the wireframe:
 
 ### Step 6 — Raise the gaps
 
-> **Model:** fable
+> **Model:** opus
 
 Where SEO intent is declared but unspecified, raise it as `SEO-GAP-n` marked `[OPEN]`. Resolve
 each in this plan, or feed it back into `src/02-STORIES/US###.md` — an open gap must not survive

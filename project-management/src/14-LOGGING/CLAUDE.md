@@ -16,8 +16,9 @@ what shipped with its leak evidence after.
 - **Routing:** never author here free-hand — plans come from
   `project-management/workflows/14-logging-checks/` via the `logging` skill; records come from
   `22-implementation-documentation`.
-- **Model:** Fable for the plan — choosing what is worth logging, at which level, and what must
-  never appear is judgement. Opus for the implementation record, which transcribes evidence.
+- **Model:** Opus throughout — the plan is substantive judgement: choosing what is worth
+  logging, at which level, and what must never appear. The implementation record transcribes
+  evidence, a mechanical touch.
 - **Concrete steps:** copy the stage template → one row per logged event with its level and its
   exact field list → name every excluded `[enc]` and PII attribute → cross-link the `US###`.
 - **Definition of done:** every event has a level and a field list; every exclusion names the

@@ -14,8 +14,8 @@ tokens a story reuses and which it needs that do not yet exist.
 
 - **Routing:** produced by `workflows/06-brand-guides/` during the story's own specify pass.
   Read `../CONSOLIDATED-IDEAS/` (if a prior cycle ran) and every earlier record here first.
-- **Model:** Fable when the story genuinely proposes a new token (that is a brand judgement);
-  Opus when the record is "reused existing", which is most of them.
+- **Model:** Opus throughout — a story genuinely proposing a new token is a brand judgement;
+  a record of "reused existing", which most of them are, is a mechanical touch.
 - **Concrete steps:** copy `BRAND-IDEA-US000-TEMPLATE.md` →
   `BRAND-IDEA-US###-<DESCRIPTOR>.md` → list the tokens reused → list any new token the story
   needs, with the reason and the nearest existing value → stop. Do not touch `../guide-build/`.

@@ -15,7 +15,7 @@ and before wireframing feature screens.
 
 - **Routing:** run `STEPS.md` against `CHECKLIST.md`. **Hard gate:**
   `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA must inform every component from the start.
-- **Model:** Fable — component and state design is substantive.
+- **Model:** Opus — component and state design is substantive.
 - **Concrete steps:** confirm brand tokens exist and user flows are agreed → **check
   the django-components library (`code/src/django/components/`) first and reuse** if a
   component covers the need → design every state (default, hover, focus, disabled, error, success,

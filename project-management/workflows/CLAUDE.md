@@ -27,9 +27,8 @@ design, GDPR, security, QA, SEO and API gates, into code, documentation, PR, and
   opens with a grilling pass; the owning skill loads `.claude/skills/grill-with-docs` and
   interviews <%DEVELOPER_NAME%> before producing the artefact (`.claude/CLAUDE.md` Section 10).
   Only trivial/mechanical steps skip it.
-- **Model:** Fable to author a design/spec procedure (01–10, 13–17); Opus for SEO (12),
-  the code procedures (19–21), documentation (22), and PR/release (23–24); Opus to fix a
-  checklist typo, bump a `Last Updated` date, or renumber a step.
+- **Model:** Opus throughout — authoring a procedure is substantive judgement; fixing a
+  checklist typo, bumping a `Last Updated` date, or renumbering a step is a mechanical touch.
 - **Concrete steps:** read the workflow `CONTEXT.md` → follow `STEPS.md` in order →
   write the artefact into the matching `src/NN-…/` folder and phase sub-folder → satisfy
   every `CHECKLIST.md` item before marking the step done.

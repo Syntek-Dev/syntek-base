@@ -2,7 +2,7 @@
 workflow: 01-feature-map
 phase: discovery
 skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
-model: fable
+model: opus
 ---
 
 # Feature Map — Steps
@@ -38,7 +38,7 @@ model: fable
 
 ### Step 0 — Mine the register for candidates
 
-> **Model:** fable
+> **Model:** opus
 
 Skip if <%DEVELOPER_NAME%> already has the feature in mind. Run it when the next feature is not obvious, or
 on a cadence — after a release, at the start of a planning cycle.
@@ -63,7 +63,7 @@ _Done when every open entry is clustered and the ranked candidates are put to <%
 
 ### Step 1 — Load the ground truth
 
-> **Model:** fable
+> **Model:** opus
 
 Load in order, each layer narrowing the next:
 
@@ -82,7 +82,7 @@ where it diverged from the plan**. Map against that, not against intentions.
 
 ### Step 2 — Triage the register against this feature
 
-> **Model:** fable
+> **Model:** opus
 
 Every open entry in `GAPS.md` and `DEFERRED.md` gets exactly one verdict — **except a standing
 limitation**, which takes none of the three. `GAPS.md`'s `## Standing limitations` section holds
@@ -107,7 +107,7 @@ _Done when every open entry carries a verdict and the closes/blocks entries are 
 
 ### Step 3 — Pin the destination
 
-> **Model:** fable
+> **Model:** opus
 
 Open a `/grill-with-docs` pass to name, in one or two lines, what "done" looks like — and the
 bounds: what is consciously **out**. Look the repo up before asking.
@@ -116,7 +116,7 @@ _Done when the destination and out-of-scope bounds are written and confirmed._
 
 ### Step 4 — Map the frontier breadth-first
 
-> **Model:** fable
+> **Model:** opus
 
 Explore the feature's surface and surface **every currently-knowable open decision**. Breadth
 first — do not follow one branch to the bottom. Anything in scope but not yet sharp enough to
@@ -126,7 +126,7 @@ _Done when every knowable decision is a node or parked in fog of war._
 
 ### Step 5 — Wire the blocking edges
 
-> **Model:** fable
+> **Model:** opus
 
 Second pass: write each node's blockers as links to the nodes it depends on, so the **takeable
 edge** — the unblocked nodes — is visible at a glance.
@@ -135,7 +135,7 @@ _Done when every frontier node names its blockers (or "none") and at least one i
 
 ### Step 6 — Write the map
 
-> **Model:** fable
+> **Model:** opus
 
 Copy `src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md`. Tag each frontier node with its
 type: **research** (looked up, no human), **tracer** (spike to raise fidelity), **grilling**
@@ -148,7 +148,7 @@ rather than a vault._
 
 ### Step 7 — Fire the research nodes, then stop
 
-> **Model:** fable
+> **Model:** opus
 
 Dispatch research nodes now — they need no human. **Do not settle grilling, tracer, or build
 nodes in this session.** Charting ends with the frontier drawn and unresolved.
@@ -159,7 +159,7 @@ nodes in this session.** Charting ends with the frontier drawn and unresolved.
 
 ### Step 8 — Take a batch, settle it, graduate it
 
-> **Model:** fable
+> **Model:** opus
 
 Per session:
 
@@ -190,7 +190,7 @@ _Repeat until no **blocking** node remains open._
 
 ### Step 8a — Cut the slices
 
-> **Model:** fable
+> **Model:** opus
 
 Once no blocking node remains, fill the map's **Slices** section: one row per buildable slice of
 user-visible value, in the six canonical columns

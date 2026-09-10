@@ -16,7 +16,7 @@ component design begins.
 - **Routing:** run `STEPS.md` against `CHECKLIST.md`. Design phase — no code safety
   gates. Four stages: ideate (Claude Design) → record (`src/06-BRAND-GUIDE/`) → present
   (the `brand-guide.pdf`, client-facing) → implement (component set + token system).
-- **Model:** Fable — brand and token decisions are substantive.
+- **Model:** Opus throughout.
 - **Concrete steps:** confirm no in-progress component design depends on tokens you are
   changing → document finalised values (hex, typeface names, spacing scale, logo
   variants) as the `BRAND-*.md` records → check contrast and legibility

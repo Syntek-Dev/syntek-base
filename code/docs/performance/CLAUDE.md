@@ -14,7 +14,7 @@ tuning.
 ## How to work here
 
 - **Routing:** documentation, not code — reach for the `doc-writer` skill
-  (Opus for substantive guidance; Opus for typo/header/version touches).
+  (Opus throughout — substantive guidance and typo/header/version touches alike).
   Back-end tuning advice ties to `stack-django`, front-end to `stack-htmx-templates`.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/PERFORMANCE.md` a
   thin index → record the measured target (N+1 counts, page weight, response-time

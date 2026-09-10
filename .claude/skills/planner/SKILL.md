@@ -8,7 +8,7 @@ description: >-
   not slicing stories into sprints (`sprint`), not writing the code, migrations or tests
   (`backend`, `database`, `frontend`, `test-writer`), and not sizing the deployment for a user
   count (`scale-planning`).
-model: fable
+model: opus
 metadata:
   skills: codebase-design domain-modelling global-workflow grilling stack-django stack-htmx-templates
 ---
@@ -17,10 +17,6 @@ metadata:
 
 **Task skill, inline** (axis 2 — a plan is settled by interrogating the request, and the
 grilling pass that settles it is the first half of the work).
-
-**Model.** `model: fable` above applies to the turn that loads this skill and is not a
-guarantee. The durable carrier for the planning tier is the `model: fable` routing frontmatter
-on `project-management/workflows/17-story-plans/`.
 
 You architect **within the existing stack** — never introduce a technology outside it. The plan
 is the contract every later phase reads, and it lands before any implementation phase starts.

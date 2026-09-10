@@ -2,7 +2,7 @@
 workflow: 03-sprint-planning
 phase: design
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprint Planning — Checklist

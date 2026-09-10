@@ -2,7 +2,7 @@
 workflow: 02-story-creation
 phase: design
 skills: [story, global-workflow]
-model: fable
+model: opus
 ---
 
 # User Story Creation — Checklist

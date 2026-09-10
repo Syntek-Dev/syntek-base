@@ -2,7 +2,7 @@
 workflow: 04-database-schema
 phase: design
 skills: [database, stack-django]
-model: fable
+model: opus
 ---
 
 # Database Schema Design — Steps
@@ -27,7 +27,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Identify Entities and Relationships
 
-> **Model:** fable · **MCP:** code-review-graph
+> **Model:** opus · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — entities and their real-world meaning,

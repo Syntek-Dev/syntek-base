@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [planner, stack-django, stack-htmx-templates, scale-planning]
-model: fable
+model: opus
 ---
 
 # Architecture Patterns — Core Decisions and Scaling

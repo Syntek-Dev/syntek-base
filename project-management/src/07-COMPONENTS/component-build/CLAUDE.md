@@ -13,8 +13,8 @@ the deliverable `components.pdf` with xelatex.
 
 ## How to work here
 
-- **Model:** Fable for component/token decisions (which components, variants, states); Opus for
-  mechanical touches — running the generator, a rename, a wording fix.
+- **Model:** Opus throughout — component/token decisions (which components, variants, states) are
+  substantive judgement; running the generator, a rename or a wording fix is a mechanical touch.
 - **Concrete steps:** edit the palette `INPUTS` in `components.py`, or a `section-<name>.tex`
   partial (never the generated files) → run `python3 components.py` → visually check
   `components.pdf` → commit the `.py`, the `section-*.tex`, the `.tex`, and the `.pdf` together.

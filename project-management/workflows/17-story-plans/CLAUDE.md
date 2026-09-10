@@ -33,14 +33,14 @@ master reference a developer codes from.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable). The hard
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill. The hard
   gates — `src/17-STORY-PLANS/CLAUDE.md` and the canonical
   `00-STORY-PLAN-US000-TEMPLATE.md` — must be read before Step 1. Inputs: the story's sprint
   plan (`src/16-SPRINT-PLANS/`), any ADRs it rests on (`src/15-DECISIONS/`), and every
   relevant 02–14 spec.
-- **Model:** Fable for the plan's substance (approach, decisions table, dependency DAG,
-  test strategy, risks); Opus for mechanical touches (status flips, the story's row in its
-  sprint plan's _Story Plans — the code master_ table).
+- **Model:** Opus throughout — the plan's substance (approach, decisions table, dependency
+  DAG, test strategy, risks) is substantive judgement; status flips and the story's row in its
+  sprint plan's _Story Plans — the code master_ table are mechanical touches.
 - **Concrete steps:** grill <%DEVELOPER_NAME%> on scope and phasing (`.claude/skills/grill-with-docs`) →
   copy `00-STORY-PLAN-US000-TEMPLATE.md` → gather the sprint plan, ADRs, and every 02–14 spec
   in scope → fix the technical approach and key decisions → break the story into phased

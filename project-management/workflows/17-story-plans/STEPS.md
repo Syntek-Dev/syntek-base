@@ -2,7 +2,7 @@
 workflow: 17-story-plans
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # Story Plans — Steps
@@ -59,7 +59,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Gather Inputs
 
-> **Model:** fable
+> **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — scope, which layers are in scope (database /
@@ -168,7 +168,7 @@ coverage; it exercises a running stack over HTTP and instruments nothing.
 planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** none
 
 ### Step 9 — Adversarial Plan Review
 

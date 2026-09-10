@@ -2,7 +2,7 @@
 workflow: 12-seo-checks
 phase: design
 skills: [seo, stack-htmx-templates, global-workflow]
-model: fable
+model: opus
 ---
 
 # SEO Checks — Checklist

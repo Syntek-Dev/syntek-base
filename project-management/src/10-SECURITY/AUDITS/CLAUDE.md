@@ -15,12 +15,13 @@ STRIDE, OWASP Top 10, and NIST CSF 2.0 before it merges.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/`
-  (`STEPS.md` + `CHECKLIST.md`) via the `security` skill (Fable). Write a story's
+  (`STEPS.md` + `CHECKLIST.md`) via the `security` skill. Write a story's
   `PLANNING/` plan before implementing it; write the `IMPLEMENTATION/` record after the
   PR. `docs/SECURITY-GUIDE.md` holds the framework tables; `code/docs/SECURITY.md` is
   the code-side control set being verified.
-- **Model:** Fable — scoping an attack surface and judging findings against shipped code
-  is substantive; Opus only for a status flip, a date-header bump, or a file move.
+- **Model:** Opus throughout — scoping an attack surface and judging findings against
+  shipped code is substantive; a status flip, a date-header bump, or a file move is a
+  mechanical touch.
 - **Concrete steps:** copy `PLANNING/AUDIT-PLAN-US000-TEMPLATE.md` →
   `AUDIT-PLAN-US###-<DESCRIPTOR>.md` → record the scope, run the control checklist, and
   list the testable developer constraints → after the PR, copy

@@ -22,9 +22,9 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   pattern under `## Output & naming`, authoritative for that tree (`.claude/CLAUDE.md` Section 5). Heavier
   artefacts go through the matching skills (`story`, `sprint`, `planner`,
   `gdpr-mechanics`, `security`, `qa-tester`, `seo`).
-- **Model:** Fable for substantive artefacts (stories, decisions/ADRs, sprint & story
-  plans, GDPR / security / QA / SEO / API specs); Opus for mechanical touches — status
-  flips, version-header bumps, moving or renaming a file.
+- **Model:** Opus throughout — stories, decisions/ADRs, sprint & story plans and the GDPR /
+  security / QA / SEO / API specs are substantive judgement; status flips, version-header
+  bumps and moving or renaming a file are mechanical touches.
 - **Concrete steps:** read the workflow `STEPS.md` → copy the target folder's per-story
   template — the stage folder for 04–08, `PLANNING/` vs `IMPLEMENTATION/` for 09–13 — using its fixed
   naming pattern → cross-link the `US###` (and, for a story plan, its sprint plan and the

@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Planning Guide — <%PROJECT_NAME%>
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
-**Claude Model:** fable — planning cadence, story and sprint conventions
+**Claude Model:** opus — planning cadence, story and sprint conventions
 **MCP Servers:** code-review-graph (scope and dependency impact analysis)
 
 ---

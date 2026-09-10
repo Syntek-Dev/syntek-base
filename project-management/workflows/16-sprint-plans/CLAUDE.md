@@ -15,12 +15,12 @@ in `src/16-SPRINT-PLANS/`, assigning each to the backend → API → frontend ph
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive with the `sprint`
-  skill (Fable). The hard gate `docs/PLANNING-GUIDE.md` (MoSCoW + phase
+  skill. The hard gate `docs/PLANNING-GUIDE.md` (MoSCoW + phase
   breakdown) must be read before Step 1. Prerequisites: GDPR
   (`workflows/09-gdpr-compliance`), security (`09`), and QA (`10`) all complete, and
   every in-scope story with full acceptance criteria.
-- **Model:** Fable for the plan; Opus for mechanical touches (version-header
-  bumps, status flips).
+- **Model:** Opus throughout — the plan is substantive judgement; version-header bumps and
+  status flips are mechanical touches.
 - **Concrete steps:** read `docs/PLANNING-GUIDE.md` → select stories, prioritise
   MoSCoW, record goal, phase breakdown, acceptance criteria, QA scenarios, and
   definition of done per story → write `SPRINT-PLAN-##.md` into `src/16-SPRINT-PLANS/`

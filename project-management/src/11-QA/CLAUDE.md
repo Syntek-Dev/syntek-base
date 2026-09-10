@@ -19,8 +19,9 @@ merged, verified feature.
   `IMPLEMENTATION/` reviews come from `workflows/22-implementation-documentation/` and are
   only verified in `workflows/23-pr-and-review/`. Both are governed by `docs/QA-GUIDE.md`;
   run the heavier passes through the `qa-tester` skill.
-- **Model:** Fable for the QA reasoning (scenarios, edge cases, deviation analysis,
-  sign-off); Opus only for mechanical touches — filing, renaming, date-stamping.
+- **Model:** Opus throughout — the QA reasoning (scenarios, edge cases, deviation
+  analysis, sign-off) is substantive judgement; filing, renaming and date-stamping are
+  mechanical touches.
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to
   `QA-<PLAN|IMPL>-US###-<DESCRIPTOR>.md` → complete every section for the story →
   cross-link the `US###` and the paired plan/review → satisfy the workflow `CHECKLIST.md`.

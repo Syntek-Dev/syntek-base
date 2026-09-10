@@ -16,7 +16,7 @@ model: opus
 
 ## Gate
 
-- [ ] An **LLM agent** is genuinely the caller — an HTTP client would not do (else use `04-api-design`) · _fable_
+- [ ] An **LLM agent** is genuinely the caller — an HTTP client would not do (else use `04-api-design`) · _opus_
 
 ## Mount (first mount only)
 
@@ -46,7 +46,7 @@ model: opus
 - [ ] `mask_error_details=True`, and the `on_call_tool` middleware is registered in `config/mcp.py` · _opus_
 - [ ] No `try/except` in any tool — the taxonomy is decided once, at the boundary · _opus_
 - [ ] Verb-phrase names in domain vocabulary; every parameter typed · _opus_
-- [ ] Task-shaped, not endpoint-shaped; the tool set is as small as it can be · _fable_
+- [ ] Task-shaped, not endpoint-shaped; the tool set is as small as it can be · _opus_
 - [ ] Returns are JSON-serialisable — no model instances, ciphertext, HMAC tokens, internal IDs, or unmasked PII · _opus_
 - [ ] Every collection return is capped · _opus_
 - [ ] `FastMCP.from_openapi()` was **not** used over this project's own API · _opus_

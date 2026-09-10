@@ -15,8 +15,8 @@ per-story designs into the canonical schema that `19-backend-code` builds from.
 - **Routing:** produced only by `workflows/18-consolidate-design-work/` via the `database` skill,
   after every story has cleared `17-story-plans`. The hard gate `code/docs/DATABASE.md` is read
   before Step 1.
-- **Model:** Fable throughout — reconciling two stories' competing models of the same entity is
-  design judgement, not a mechanical merge. Opus only for re-exporting an ERD or a rename.
+- **Model:** Opus throughout — reconciling two stories' competing models of the same entity is
+  design judgement, not a merge; re-exporting an ERD or a rename is a mechanical touch.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` design → mark duplicates,
   divergences, orphans, and contradictions → resolve each to one canonical form → record the
   chosen and rejected forms with reasons in the resolution log → escalate anything hard to
