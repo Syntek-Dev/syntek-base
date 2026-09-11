@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 09/09/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 11/09/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -572,3 +572,46 @@ accepts the blindness and does not fix the script.
 as well, filtered to the migration section before the trap deletes the log, or the log is kept
 and its path printed beside the "Preview only" line. Retire when a print-only advisory's text
 appears in the output of a successful preview.
+
+---
+
+## 11/09/2026 — `install-frontend.sh --local` hands two stray arguments to `sudo rm -rf`
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/development/install-frontend.sh:79-81` ends the path line of its
+`sudo rm -rf` with a line continuation, so the next line — `log "Removed."` — is parsed as two
+further arguments rather than a log call. `--local`, and its `--clean` alias, therefore runs
+`sudo rm -rf "$PROJECT_ROOT/node_modules" log Removed.` from the project root (the script `cd`s
+there first) and never prints "Removed.". Measured 11/09/2026: neither `log` nor `Removed.` exists
+at the root, so `-f` swallows both silently and nothing is lost **today** — the hazard is latent:
+anything later named `log` at the root is deleted as root, with no message. Root `install.sh:421`
+reaches this path on every first-time setup. The step's premise is stale as well: it removes
+"Docker-owned" `node_modules`, but no image installs Node (`code/src/docker/django/CLAUDE.md`).
+Class **B**, false green — the step reports nothing and exits 0 either way. Found by the footprint
+sweep that charted `project-management/src/01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md`. <!-- doc-references: template-only -->
+**Blocked by / Action:** Nothing blocks it, and it should not wait for that epic. Fix through the
+`bugfix` skill: drop the trailing `\`, and decide whether a `sudo` removal still has any reason to
+exist once nothing root-owned creates `node_modules`. If it is still open when the map's script
+slice rewrites this file for Bun, that slice retires it. Retire when `--local` passes exactly one
+path to `rm`.
+
+---
+
+## 11/09/2026 — the Bun map's eight tracers have no Bun to run on
+
+**Type:** Infrastructure gap
+**Summary:** `project-management/src/01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md` <!-- doc-references: template-only -->
+settles supply-chain and runtime parity by **running** Bun (tracers N-006 to N-013), and none of
+what they need exists. Measured 11/09/2026 on the development host: `command -v bun` is empty;
+Node v24.13.0 and pnpm 11.25.0 are present. The overrides set a floor of Bun 1.4.0. Every tracer
+runs in a throwaway worktree or scratch clone, **never this tree**, and between them they need: a
+Bun >= 1.4.0 binary; scratch Copier renders on both `INCLUDE_MOBILE` paths at a pinned Copier
+version (CI's `uvx copier` is unpinned; the local copy is 9.17.0); a scratch project generated at
+`--vcs-ref=v7.5.0` with one added dependency committed, so its `pnpm-lock.yaml` diverges from the
+template's (N-010); a Node-free shell — a container, or a PATH scrubbed of `node`, `npx`, `pnpm`
+and `corepack` — with the test stack up for the Bruno leg (N-012, N-013); an Expo Go device on the
+LAN for the manual `server.sh` check; and a throwaway branch with a Bun job on ubuntu runners for
+CI parity, dispatched by hand because `test-api.yml`'s path filter skips a JS-only change unless
+N-005 widens it. Provisioning is manual work, so it is recorded here rather than as a map node.
+**Blocked by / Action:** Nothing blocks it. Sam decides where Bun is installed; the tracers then
+run in the order the map's frontier sets. Retire when the first tracer has run.
