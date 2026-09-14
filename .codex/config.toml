@@ -1,0 +1,25 @@
+# Keep model choice in the user's configuration so the template does not pin a provider release.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+# Existing scoped manuals stay discoverable while shared instructions are adopted.
+project_doc_fallback_filenames = ["CLAUDE.md"]
+
+[sandbox_workspace_write]
+network_access = false
+
+[mcp_servers.code-review-graph]
+command = "uvx"
+args = ["code-review-graph", "serve"]
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+env_vars = ["CONTEXT7_API_KEY"]
+
+[mcp_servers.mcp-mermaid]
+command = "npx"
+args = ["-y", "mcp-mermaid"]
+
+[mcp_servers.mcp-mermaid.env]
+npm_config_ignore_scripts = "true"

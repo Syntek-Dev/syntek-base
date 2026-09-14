@@ -11,15 +11,17 @@ rule navigates; it does not restate it.
 
 ## Internal — Layer Entry Points
 
-| Document                                                       | Purpose                                                          |
-| -------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [CONTEXT.md](CONTEXT.md)                                       | Project overview, directory tree, layer map                      |
-| [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, design workflows     |
-| [GAPS.md](GAPS.md)                                             | Active architectural gaps, blockers, and sprint dependencies     |
-| [.claude/CLAUDE.md](.claude/CLAUDE.md)                         | Global rules, model selection, routing, security non-negotiables |
-| [code/CONTEXT.md](code/CONTEXT.md)                             | Code layer entry point                                           |
-| [how-to/CONTEXT.md](how-to/CONTEXT.md)                         | Setup and daily development entry point                          |
-| [project-management/CONTEXT.md](project-management/CONTEXT.md) | PM layer entry point                                             |
+| Document                                                       | Purpose                                                           |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [CONTEXT.md](CONTEXT.md)                                       | Project overview, directory tree, layer map                       |
+| [AGENTS.md](AGENTS.md)                                         | Codex entry point into the shared project instructions            |
+| [.ai/INSTRUCTIONS.md](.ai/INSTRUCTIONS.md)                     | Shared context loading, skill aliases and host-specific behaviour |
+| [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, design workflows      |
+| [GAPS.md](GAPS.md)                                             | Active architectural gaps, blockers, and sprint dependencies      |
+| [.claude/CLAUDE.md](.claude/CLAUDE.md)                         | Global rules, model selection, routing, security non-negotiables  |
+| [code/CONTEXT.md](code/CONTEXT.md)                             | Code layer entry point                                            |
+| [how-to/CONTEXT.md](how-to/CONTEXT.md)                         | Setup and daily development entry point                           |
+| [project-management/CONTEXT.md](project-management/CONTEXT.md) | PM layer entry point                                              |
 
 ---
 

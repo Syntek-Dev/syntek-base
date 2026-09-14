@@ -94,16 +94,14 @@ celerybeat-schedule*
 # Added by code-review-graph
 .code-review-graph/
 
-# code-review-graph install generates AI-assistant rule files at the repo root. This project is
-# Claude Code only (its manual is .claude/CLAUDE.md), so keep the generated duplicates out of the
-# repo — they regenerate on `code-review-graph install`. Leading slashes anchor to root, so
-# .claude/CLAUDE.md, code/CLAUDE.md, etc. are unaffected.
+# Graph installation generates assistant entry points; AGENTS.md is maintained by this repo.
+# Keep the other generated root files out of Git; scoped manuals remain tracked.
 /CLAUDE.md
-/AGENTS.md
 /GEMINI.md
 /.cursorrules
 /.windsurfrules
 /.kiro/
+!.ai/skills/
 
 # Keep Claude Plugins
 !.claude/plugins/

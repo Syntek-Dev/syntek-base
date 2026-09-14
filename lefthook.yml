@@ -18,6 +18,10 @@ pre-commit:
       glob: "*.{js,mjs,cjs,ts,tsx,json,yaml,yml,css,html,md}"
       exclude:
         - "project-management/export/**"
+        # Prettier rejects explicitly supplied symlinks before applying its ignore file.
+        - ".agents/**"
+        - ".ai/skills/**"
+        - ".ai/MEMORY.md"
       run: pnpm exec prettier --check {staged_files}
 
     # `uvx --from` rather than `uv run`, for the same reason as .github/workflows/
@@ -54,6 +58,9 @@ pre-commit:
       glob: "*.md"
       exclude:
         - "project-management/export/**"
+        - ".agents/**"
+        - ".ai/skills/**"
+        - ".ai/MEMORY.md"
       run: pnpm exec markdownlint-cli2 {staged_files}
 
     # code-review-graph advisory risk analysis of the staged change; never blocks the commit

@@ -129,6 +129,8 @@ Two things to do on a freshly generated project:
 
 ```text
 <%PROJECT_SLUG%>/
+├── .ai/                                 ← shared AI instructions and aliases to skills and project memory
+├── .codex/                              ← Codex project settings and MCP connections
 ├── .claude/                             ← Claude Code configuration
 │   ├── CLAUDE.md                        ← authoritative operating manual: read-order, skills, plugins, rules
 │   ├── MEMORY.md                        ← project memory store (always read second, after CLAUDE.md)
@@ -342,7 +344,8 @@ Two things to do on a freshly generated project:
 │       ├── 22-implementation-documentation/ ← docs closeout + graph refresh
 │       ├── 23-pr-and-review/
 │       └── 24-release/
-├── .agents/                             ← vendored third-party skills (Cloudinary) — see THIRD-PARTY-NOTICES.md
+├── .agents/                             ← Codex discovery links and vendored Cloudinary skills
+├── AGENTS.md                            ← Codex entry point into .ai/INSTRUCTIONS.md
 ├── .zed/                                ← Zed editor settings
 ├── handoffs/                            ← session handoff documents (the auto-compaction replacement)
 ├── questionnaires/                      ← /to-questionnaire — outbound discovery questionnaires
@@ -889,6 +892,17 @@ fix reveals a design problem, open a separate refactoring task using `11-refacto
 ---
 
 ## Claude Code Tooling
+
+Codex reads `AGENTS.md` and Claude Code imports `.ai/INSTRUCTIONS.md` from its manual. Both
+entry points reach the same project rules, skills and memory. `.agents/skills/` exposes the
+existing skill definitions to Codex; `.ai/skills/` and `.ai/MEMORY.md` are shared aliases.
+The physical sources remain under `.claude/`, except for vendored Cloudinary skills.
+
+Codex project settings and MCP servers live in `.codex/config.toml`; trust the project and
+start a fresh session to load them. The model inherits your personal settings. Context7 uses
+`CONTEXT7_API_KEY` from the environment; `/mcp` and `/skills` show available integrations.
+Claude-specific model metadata and hooks are interpreted as described in `.ai/INSTRUCTIONS.md`.
+Codex hooks are not installed by this setup. Existing Git and CI checks remain in place.
 
 ### Skills
 

@@ -15,6 +15,11 @@ _min_copier_version: "9.6.0"
 # Every file is a template — tokens are not confined to a suffixed subset.
 _templates_suffix: ""
 
+# Shared AI entry points and skill discovery paths are relative aliases. Preserve them
+# rather than rendering another copy of their targets: dereferencing .ai/MEMORY.md would
+# bypass the /.claude/MEMORY.md exclusion and ship this template's own project memory.
+_preserve_symlinks: true
+
 # Tokens are written <%TOKEN%> rather than {{TOKEN}} so they cannot collide with
 # anything already in the tree: Django templates ({{ }} / {% %}), GitHub Actions
 # expressions (${{ }}), Bruno variables ({{ }}) or bash test syntax ([[ ]]).
@@ -228,6 +233,7 @@ _exclude:
   # unconditionally, flagged mobile-only — that keeps .claude/skills/CONTEXT.md free of
   # templated contents, which is the rule this entry exists to protect.
   - "<: if not INCLUDE_MOBILE :>/.claude/skills/stack-react-native<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/.agents/skills/stack-react-native<: endif :>"
   # Optional Rust surface, gated by INCLUDE_RUST — the same one-mechanism rule as mobile
   # above. Rust is for PyO3 extensions, standalone binaries, CLI tools and services;
   # consuming a published wheel needs none of it, so this gates AUTHORING only.
@@ -245,6 +251,7 @@ _exclude:
   # reason: a Rust skill with no Rust to work on is worse than no skill at all. The shipped
   # INDEX still lists it unconditionally, flagged rust-only.
   - "<: if not INCLUDE_RUST :>/.claude/skills/stack-rust<: endif :>"
+  - "<: if not INCLUDE_RUST :>/.agents/skills/stack-rust<: endif :>"
   # Optional native desktop app (Slint), gated by INCLUDE_DESKTOP — which is itself only
   # asked when INCLUDE_RUST is true, because Slint is Rust. The crate is a member of the
   # existing workspace rather than a second one: `members = ["crates/*"]` is a glob, so it
@@ -260,6 +267,7 @@ _exclude:
   - "<: if not INCLUDE_DESKTOP :>/code/docs/visual-design/DESKTOP.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/workflows/13-desktop-app<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/.claude/skills/stack-slint<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/.agents/skills/stack-slint<: endif :>"
   # The Slint style gate travels with the script it runs — see the audit-style-check.yml
   # header. A workflow shipped without its script is a permanently-red job on every
   # web-only project, which is the one thing a generated baseline must never carry.
@@ -277,6 +285,7 @@ _exclude:
   - "<: if not INCLUDE_WAGTAIL :>/code/docs/WAGTAIL.md<: endif :>"
   - "<: if not INCLUDE_WAGTAIL :>/code/docs/wagtail<: endif :>"
   - "<: if not INCLUDE_WAGTAIL :>/.claude/skills/stack-wagtail<: endif :>"
+  - "<: if not INCLUDE_WAGTAIL :>/.agents/skills/stack-wagtail<: endif :>"
   # Optional ClickUp sync, gated by INCLUDE_CLICKUP. Unlike the three flags above this one
   # gates an INTEGRATION rather than a deployable, and it defaults TRUE — the sync has
   # shipped in every generation to date, so defaulting false would delete a working workflow
@@ -812,6 +821,13 @@ DATE:
 # a project has no use for the migrations that produced it.
 
 _migrations:
+  # Older generated projects contain materialised Cloudinary skill directories.
+  # Copier cannot replace a directory with a preserved link during its render pass.
+  # Convert identical duplicates first; divergent local changes stop the update intact.
+  # Ungated by version so this also reaches a project upgrading from an unreleased ref.
+  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/shared-ai-symlinks.sh"
+    when: "<% _stage == 'before' %>"
+
   # v7.0.0 opens src/14 for the new 14-LOGGING artefact folder, shifting 14-DECISIONS and
   # everything after it up by one. That is the SECOND deliberate exercise of the exception to
   # the frozen-numbering rule in project-management/src/CONTEXT.md — a release may renumber

@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-7.5.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-7.6.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -93,11 +93,25 @@ Sessions still run Opus at `effortLevel: xhigh` with ultracode on, so this templ
 for **Claude Max 20× or above, or the Anthropic API**. On a smaller plan it will run, but expect
 to hit usage limits during a long implementation or review pass.
 
-**Using a different LLM provider?** Everything except the model routing is provider-agnostic — the
-documentation system, workflows, gates and directory conventions work with any coding agent. Expect
-to make one pass over `.claude/` to swap the model names and aliases for your provider's
-equivalents: `.claude/CLAUDE.md` Section 4, every skill's `model:` frontmatter in `.claude/skills/`, and
-the `model:` lines in `**/docs/*.md` and `**/workflows/**/*.md` routing frontmatter.
+### Codex and shared project instructions
+
+Claude Code and Codex enter through [`.ai/INSTRUCTIONS.md`](.ai/INSTRUCTIONS.md). Codex loads the
+tracked [`AGENTS.md`](AGENTS.md); Claude Code imports the shared instructions from its manual.
+`.agents/skills/` exposes the existing skill definitions, with one maintained copy per skill.
+`.ai/skills/` and `.ai/MEMORY.md` also point to the existing skills and project memory.
+These relative links are committed alongside their source files, so a fresh checkout carries
+the same skill set. Copier preserves the links and seeds a new project's memory separately.
+
+Open the repository in Codex and trust its project configuration to load `.codex/config.toml`.
+It defines workspace permissions and the same MCP servers as `.mcp.json`; model selection inherits
+your personal Codex settings. Context7 uses `CONTEXT7_API_KEY` from the environment. Use `/mcp`
+and `/skills` to inspect discovery in a fresh session. MCP commands require the existing host
+toolchain; no credentials are stored in the project configuration.
+
+Claude model names, fork metadata and hooks remain specific to Claude Code. The shared instructions
+explain how Codex follows the same project procedures using its available tools. Codex hooks are
+not installed by this setup; existing Git hooks and CI continue to own their checks. Concurrent
+coding sessions should use separate worktrees. See the [Codex configuration documentation](https://learn.chatgpt.com/docs/config-file/config-basic).
 
 ---
 
@@ -203,6 +217,11 @@ dependency is direct and the credit is owed accordingly.
 
 ### Platform and engineering craft
 
+The [official Codex documentation](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+informs the shared entry point, [skill discovery](https://learn.chatgpt.com/docs/build-skills)
+and [project configuration](https://learn.chatgpt.com/docs/config-file/config-basic).
+These interfaces are referenced; documentation text and upstream code are not bundled.
+
 The backend, background-job, observability and security doctrine draws on these. As above, **rules
 are derived and re-authored, never copied**, and **every row is self-citing** — it links the
 source and names what that source contributed, so the primary source _is_ the citation. The two
@@ -250,4 +269,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v7.5.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v7.6.0 · British English (en_GB) throughout_

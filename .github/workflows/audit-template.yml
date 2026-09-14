@@ -162,6 +162,9 @@ jobs:
               . "$RUNNER_TEMP/gen-$mobile"
           done
 
+      - name: Shared AI aliases must survive copy and update without leaking memory
+        run: bash .github/scripts/shipped-ai.sh --self-test
+
       - name: No token may survive rendering
         # The two documentation paths are carved out because they SHIP and are prose ABOUT
         # the template: their token text sits inside Jinja `raw` blocks and is meant to

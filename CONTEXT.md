@@ -29,7 +29,8 @@ consumes this API; none of them changes the rule above for the web.
 
 ```text
 <%PROJECT_SLUG%>/
-├── .claude/                         ← Claude Code configuration — the authoritative rules
+├── .ai/                             ← shared AI entry instructions and skill/memory aliases
+├── .claude/                         ← Claude Code configuration and existing rule/skill owners
 │   ├── CLAUDE.md                    ← global rules, routing, model selection, non-negotiables
 │   ├── CONTEXT.md
 │   ├── MEMORY.md                    ← project memory (feedback, patterns, project state)
@@ -37,7 +38,8 @@ consumes this API; none of them changes the rule above for the web.
 │   ├── hooks/                       ← pre-PR quality gates
 │   ├── plugins/                     ← read-only inspection helpers a skill calls for context
 │   └── skills/                      ← internalised stack, workflow, and document skills
-├── .agents/                         ← vendored third-party skills (Cloudinary)
+├── .agents/                         ← Codex skill discovery links and vendored Cloudinary skills
+├── .codex/                          ← Codex project settings and MCP server configuration
 ├── .github/                         ← CI workflows and the template-integrity scripts
 │   └── workflows/                   ← CI: syntax, tests, audits, Claude gate, ClickUp sync (opt-in)
 ├── code/                            ← source code, coding standards, coding workflows
@@ -88,6 +90,7 @@ consumes this API; none of them changes the rule above for the web.
 │                                      moved into place and removed at generation
 ├── .zed/                            ← Zed editor settings
 ├── CONTEXT.md                       ← this file
+├── AGENTS.md                        ← Codex entry point into the shared AI instructions
 ├── REFERENCES.md                    ← curated index of internal docs and external resources
 ├── README.md                        ← the public front door — what this template is and how to use it
 ├── DESIGN.md                        ← design entry point (standards, constraints, design workflows)
@@ -140,7 +143,9 @@ conflict in a lockfile on every `copier update`. Your project's own lock is writ
 | `code/`                         | Source code, coding standards, and the coding workflows              |
 | `how-to/`                       | Setup, daily development, debugging, scaling, template instantiation |
 | `project-management/`           | User stories, sprints, design artefacts, GDPR, security, releases    |
-| `.claude/`                      | Global rules, skill routing, model selection, hooks                  |
+| `.ai/`                          | Shared AI instructions and access to project skills and memory       |
+| `.claude/`                      | Existing rules and skills; Claude Code model selection and hooks     |
+| `.codex/`                       | Codex project settings and MCP connections                           |
 | `DESIGN.md`                     | Design entry point — standards, constraints, and UI/UX workflows     |
 | `code/src/django/`              | The web deployable — API and server-rendered pages                   |
 | `code/src/mobile/`              | **Mobile-only.** The Expo / React Native app, consuming that API     |
@@ -156,7 +161,8 @@ cross-layer workflow pairing lives in `REFERENCES.md` — neither layer's `CONTE
 - **First time developing here?** → `how-to/CONTEXT.md`
 - **Writing or reviewing code?** → `code/CONTEXT.md`
 - **Planning or PM work?** → `project-management/CONTEXT.md`
-- **Routing, model selection, and global rules?** → `.claude/CLAUDE.md`
+- **Shared AI instructions and Codex setup?** → `.ai/INSTRUCTIONS.md`
+- **Existing rules, skill routing and Claude Code configuration?** → `.claude/CLAUDE.md`
 - **UI/UX design or component work?** → `DESIGN.md`
 - **Looking for a specific guide?** → `REFERENCES.md`
 
@@ -174,7 +180,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **7.5.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.6.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

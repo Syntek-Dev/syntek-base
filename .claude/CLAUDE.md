@@ -6,6 +6,7 @@
 @../CONTEXT.md
 @../REFERENCES.md
 @./CONTEXT.md
+@../.ai/INSTRUCTIONS.md
 
 ---
 

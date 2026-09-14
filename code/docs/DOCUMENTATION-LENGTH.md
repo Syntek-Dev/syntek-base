@@ -9,7 +9,7 @@ model: opus
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
 
-This guide owns the length rule for files that instruct Claude Code. `.claude/CLAUDE.md`
+This guide owns the length rule for files that instruct coding agents. `.claude/CLAUDE.md`
 Section 8 states it in one bullet and routes here; `code/src/scripts/audits/docs-length.sh`
 enforces it. Its sibling is `DOCUMENTATION-PAIRING.md`, which owns the shape of a
 `CONTEXT.md`/`CLAUDE.md` pair rather than its size.
@@ -26,19 +26,23 @@ the same as not being there. The remedy is always the same shape: split the deta
 
 ## 2. What is bound
 
-Instructional means it tells Claude Code how to work — a guide, a workflow step, a skill, or an
+Instructional means it tells a coding agent how to work — a guide, a workflow step, a skill, or an
 orientation/operating-rules pair.
 
-| Bound                                        | Exempt                                                |
-| -------------------------------------------- | ----------------------------------------------------- |
-| Every `CONTEXT.md` and `CLAUDE.md`, anywhere | Root-level `*.md` — `README`, `CHANGELOG`, `GAPS`, …  |
-| `**/docs/**/*.md`                            | `**/src/*.md` — operator guides, written for a human  |
-| `**/workflows/**/*.md`                       | Vendored trees — `.agents/`, `code/docs/cloudinary/*` |
-| `.claude/**/*.md`                            | Generated — `project-management/export/`              |
-|                                              | Sandboxes — `learning/`, `research/`, `handoffs/`     |
+| Bound                                                     | Exempt                                                                      |
+| --------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Every `CONTEXT.md`, `CLAUDE.md` and `AGENTS.md`, anywhere | Other root-level `*.md` — `README`, `CHANGELOG`, `GAPS`, …                  |
+| `**/docs/**/*.md`                                         | `**/src/*.md` — operator guides, written for a human                        |
+| `**/workflows/**/*.md`                                    | Vendor content and discovery aliases — `.agents/`, `code/docs/cloudinary/*` |
+| `.claude/**/*.md`, `.ai/**/*.md`, `.codex/**/*.md`        | Generated — `project-management/export/`                                    |
+|                                                           | Sandboxes — `learning/`, `research/`, `handoffs/`                           |
 
-**A `CONTEXT.md` or `CLAUDE.md` inside an exempt tree is still bound.** The pair is ours and
-instructional wherever it lives.
+**A `CONTEXT.md`, `CLAUDE.md` or `AGENTS.md` inside an exempt tree is still bound.** These files
+are instructional wherever they live. First-party skill aliases in `.agents/skills/` resolve to
+the existing `.claude/skills/` sources, which remain in scope and retain their house-rule audits.
+Instruction aliases are measured individually. With `--since`, their baseline contents come
+from their targets in the historical Git tree; unresolved or external targets are unmeasured
+errors, rather than a zero-length baseline.
 
 ## 3. The ratchet — the warn tier has teeth
 

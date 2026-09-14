@@ -1,6 +1,6 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.5.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 14/09/2026 **Version**: 7.6.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
@@ -9,9 +9,45 @@ User-facing release notes for each published version.
 
 ## Unreleased
 
-**Status:** Not released yet — work sitting on the main branch that has not been given a version
-number. It is housekeeping to the template itself: nothing you have already built behaves any
-differently, and there is nothing for you to do.
+## v7.6.0 — 14/09/2026
+
+**Status:** Minor — Claude Code and Codex can now work from the same project instructions,
+skills and memory. Existing projects keep their own notes when updated, and the test records
+described below make it easier to see what has actually been checked.
+
+### Work with either coding tool
+
+The new shared `.ai/` folder connects both tools to the project's existing rules and skills.
+There is one maintained copy of each skill and one project memory file, so switching tools
+does not create a second set of instructions to keep up to date.
+
+Codex now has its own project settings and access to the same documentation and code-inspection
+services. Open the project in a fresh Codex session and trust its configuration to load them.
+Your personal Codex settings still choose the model. Claude's automatic checks have not been
+ported to Codex; the shared instructions explain which checks the assistant needs to run.
+
+### Updates keep your project's knowledge
+
+New projects start with empty project memory. Existing projects keep the knowledge they have
+already recorded, while shared skill updates reach both tools. Skills for optional parts of the
+project arrive only when those parts were selected.
+
+Older projects may have duplicate copies of the supplied Cloudinary skills. The update checks
+those copies before joining them to the shared source. If a copy contains different local
+changes, it stops and identifies the files to reconcile; those changes are kept intact.
+
+### Claude uses one model tier
+
+Claude sessions now use Opus for planning, design, implementation and review. The previous
+Fable tier is retired. This affects Claude's settings; Codex continues to use its own model
+selection.
+
+### Shared instructions remain covered by the checks
+
+The documentation checks now include the new shared instructions and Codex entry point.
+They also compare linked documents with their actual earlier contents, so an unchanged
+document is no longer mistaken for one that grew. Automated checks cover fresh projects,
+updates, preserved memory and the cases where a link or local skill copy is wrong.
 
 ### The test record nobody had ever written
 
