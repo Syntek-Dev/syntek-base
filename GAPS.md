@@ -615,3 +615,24 @@ CI parity, dispatched by hand because `test-api.yml`'s path filter skips a JS-on
 N-005 widens it. Provisioning is manual work, so it is recorded here rather than as a map node.
 **Blocked by / Action:** Nothing blocks it. Sam decides where Bun is installed; the tracers then
 run in the order the map's frontier sets. Retire when the first tracer has run.
+
+---
+
+## 16/09/2026 — MCP servers are declared twice, and the shared `.ai/` entry point cannot yet hold them
+
+**Type:** Doctrine gap
+**Summary:** `.ai/` resolves every other duplication by symlink — `.ai/skills/` points at
+`.claude/skills/`, `.ai/MEMORY.md` at `.claude/MEMORY.md` — but MCP configuration cannot be
+resolved that way. `.mcp.json` is Claude Code's, `.codex/config.toml` is Codex's, the formats are
+JSON and TOML, and neither host reads the other's file. So the four servers are declared twice by
+hand, and were held in step by nothing at all until `code/src/scripts/audits/mcp-parity.sh` landed
+in this change. That audit is a **drift detector, not a fix**: it proves the two agree, it cannot
+make one declaration serve both, and every server added from here costs two edits in two formats.
+The intended destination is a single declaration under `.ai/` that every provider and model reads,
+which would delete the parity rule in `.ai/INSTRUCTIONS.md` rather than refine it — but neither
+host reads a neutral file today, so it needs a generator (one source rendering both) or upstream
+support, and nothing is built toward it.
+**Blocked by / Action:** Nothing blocks the generator approach; it is unscheduled and deliberately
+so — two servers and one audit is a cheaper state than a rendering step nobody asked for. Revisit
+when a third host joins, or when the server count makes the double edit a real cost. Until then
+parity is the contract and the audit is the gate. Retire when `.ai/` holds the single declaration.

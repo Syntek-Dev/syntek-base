@@ -16,6 +16,11 @@
       "env": {
         "npm_config_ignore_scripts": "true"
       }
+    },
+    "scrapling": {
+      "command": "uvx",
+      "args": ["--from", "scrapling[ai]", "scrapling-mcp"],
+      "env": {}
     }
   }
 }

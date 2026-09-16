@@ -18,6 +18,13 @@ and the `CONTEXT.md` / `CLAUDE.md` pair for each area being changed.
 - Codex runtime and MCP settings live in `.codex/config.toml`. Claude settings,
   permissions, hooks, plugins and browser integration do not configure Codex.
   Apply the documented project checks explicitly when the current host has no hook.
+- **MCP servers are the one duplication `.ai/` cannot resolve by a link.** The formats
+  differ and neither host reads the other's file, so `.codex/config.toml` and `.mcp.json`
+  declare the same servers twice and must agree on the server set, each `command` and
+  each `args` list. Per-host supervision keys — `startup_timeout_sec`, `tool_timeout_sec`,
+  `enabled`, and the env blocks — are expected to differ and are not drift. Adding a
+  server to one file only is the failure this arrangement produces; the rule is
+  `.ai/INSTRUCTIONS.md` and the gate is `code/src/scripts/audits/mcp-parity.sh`.
 - The project config adds `CLAUDE.md` as an instruction fallback when Codex loads a
   directory's instructions. Still read the scoped pairs for the files being changed;
   launching at the repository root does not load every descendant manual.
@@ -33,3 +40,10 @@ Project settings load only when Codex trusts the project. Start a fresh session 
 installing this setup so it can discover the skills and settings. The configured MCP
 servers need `uvx` and `npx` on the host; Context7 receives `CONTEXT7_API_KEY` from the
 launching environment, with no secret value stored in the repository.
+
+`scrapling` is the tier-3 reader in `.ai/INSTRUCTIONS.md`'s lookup order: it returns a
+page's own markdown, or a `css_selector` fragment of it, so a claim is cited to text that
+was actually read. **It fetches over HTTP only.** Its browser-backed tools require a
+Chromium that this repository deliberately never installs, so they fail at runtime — that
+is the intended posture, not a broken dependency. Its `startup_timeout_sec` is raised
+because a cold `uvx` resolves and downloads roughly 110 MB before the server speaks.

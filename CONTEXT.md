@@ -120,7 +120,7 @@ consumes this API; none of them changes the rule above for the web.
 ├── .gitattributes                   ← LF everywhere; the binary list — a CRLF checkout breaks the scripts
 ├── .gitignore                       ← what git never tracks
 ├── .markdownlint-cli2.jsonc         ← Markdown lint config
-├── .mcp.json                        ← project MCP servers (code-review-graph, context7, mermaid)
+├── .mcp.json                        ← Claude's MCP servers — mirror of .codex/config.toml, gated
 ├── .npmrc                           ← pnpm registry and install behaviour
 ├── .nvmrc                           ← Node.js version pin
 ├── .opengrep-version                ← Opengrep engine pin (audits/static-analysis.sh + its CI job)

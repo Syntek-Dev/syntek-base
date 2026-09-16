@@ -93,3 +93,27 @@ Edit the source rather than replacing a link with a copy. Keep provider settings
 their provider directory and shared loading guidance here. Moving the physical manual,
 skills or memory later also requires updating their consumers, audits and template
 generation rules together; this entry point does not perform that migration.
+
+### MCP servers are declared twice, and the two declarations must agree
+
+MCP configuration is the one place a link cannot resolve the duplication: `.mcp.json` is
+Claude Code's and `.codex/config.toml` is Codex's, the formats differ, and neither host
+reads the other's file. **So the rule is parity, not a single source: every server present
+in one is present in the other, under the same name, running the same command and
+arguments.** A server added to one host only is not a smaller capability — it is the same
+task answered two different ways depending on which tool opened the repository, which is
+the drift this whole entry point exists to prevent.
+
+The two files are hand-maintained and nothing in either one fails when they diverge.
+`code/src/scripts/audits/mcp-parity.sh` is the gate that does, and this paragraph is the
+rule it derives from.
+
+**Per-host keys are expected and are not drift.** Codex's `startup_timeout_sec` and
+`tool_timeout_sec` have no `.mcp.json` equivalent; Claude's `${VAR}` interpolation has no
+TOML equivalent. Parity binds the server set, the command and the arguments — the keys
+that decide _what runs_ — never the keys that tune how a particular host supervises it.
+
+> **Down the line.** A single declaration under `.ai/` that every provider reads is the
+> intended destination, and it removes this rule rather than refining it. It is not
+> scheduled, nothing is built toward it yet, and until it exists parity is the contract.
+> Tracked in `GAPS.md`.

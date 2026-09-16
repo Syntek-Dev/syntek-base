@@ -167,6 +167,13 @@ nothing reads it on the next task and no gate applies to it.
 | `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | Configured in `.mcp.json`                                                   |
 | `mcp-mermaid`       | Architecture and flow diagrams.                                                              | Configured in `.mcp.json`                                                   |
 | `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. | **Install the Claude Chrome extension and pair it** — no config supplies it |
+| `scrapling`         | **Reading** a primary source at tier 3 below — the page's own markdown, not a summary.       | `.mcp.json` + `.codex/config.toml`                                          |
+
+**Two servers, two config files, and they must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
+is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule: `.ai/INSTRUCTIONS.md`
+→ _Maintain one source_). **`scrapling` fetches over HTTP only.** Its browser-backed tools stay
+unusable while no Chromium is installed, which is the intended posture, not a gap — the anti-bot
+tier has no legitimate use in this repository.
 
 ### 3.2 How to look something up
 
@@ -178,10 +185,17 @@ reading the menu first produces answers this project has already rejected.
 | ----- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | 1     | **Internal** — the `**/docs/` guides, the layered `CONTEXT.md`/`CLAUDE.md` chain, and `REFERENCES.md` | What **this project has decided**: the convention, the constraint, the enforcement point    |
 | 2     | **`context7` MCP** — `resolve-library-id` → `query-docs`                                              | What a **library, framework, SDK or CLI does**, at the version pinned in `REFERENCES.md`    |
-| 3     | **Web search / `WebFetch`**                                                                           | What owns no library documentation — a vendor changelog, a standard's own page, an advisory |
+| 3     | **`WebSearch` to _find_ it, then `scrapling` to _read_ it**                                           | What owns no library documentation — a vendor changelog, a standard's own page, an advisory |
 
 - **Escalate on silence, not convenience.** Move outward when the docs are silent, name the library
   without naming the call, or describe a version we have left. "Faster to search" is not silence.
+- **Finding a source and reading one are different acts.** `WebSearch` locates it; `scrapling`'s
+  `make_request` returns the page's own markdown — or a `css_selector` fragment of it — so the text
+  entering context is the source's. **`WebFetch` is not the reader**: it answers a prompt against
+  the page with a small fast model, so what returns is a paraphrase, and a claim cannot honestly be
+  cited to a primary source nobody read. Prefer it only for a throwaway "is this page even
+  relevant?". It is also the tier that survives a JS-rendered or Cloudflare-fronted source, where
+  `WebFetch` returns an empty shell or fails outright.
 - **What comes back is a candidate, not a rule.** An external answer contradicting a guide loses;
   correcting a genuinely stale guide is its own change, through the Section 6 gate.
 - **Synthesis is not a search.** Several primary sources weighed against one another is `/research`
