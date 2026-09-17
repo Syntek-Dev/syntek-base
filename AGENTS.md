@@ -43,7 +43,9 @@ launching environment, with no secret value stored in the repository.
 
 `scrapling` is the tier-3 reader in `.ai/INSTRUCTIONS.md`'s lookup order: it returns a
 page's own markdown, or a `css_selector` fragment of it, so a claim is cited to text that
-was actually read. **It fetches over HTTP only.** Its browser-backed tools require a
-Chromium that this repository deliberately never installs, so they fail at runtime — that
-is the intended posture, not a broken dependency. Its `startup_timeout_sec` is raised
-because a cold `uvx` resolves and downloads roughly 110 MB before the server speaks.
+was actually read. **Default to `get`** — it needs no browser. The browser-backed
+tools are host-dependent: Playwright pins an exact Chromium _revision_ per release, so they
+run only where the host supplies that revision and otherwise fail at runtime. That is
+provisioning rather than a broken dependency — say the tier was unavailable instead of
+loosening a pin. Its `startup_timeout_sec` is raised because a cold `uvx` resolves and
+downloads roughly 110 MB before the server speaks.

@@ -171,9 +171,15 @@ nothing reads it on the next task and no gate applies to it.
 
 **Two servers, two config files, and they must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
 is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule: `.ai/INSTRUCTIONS.md`
-→ _Maintain one source_). **`scrapling` fetches over HTTP only.** Its browser-backed tools stay
-unusable while no Chromium is installed, which is the intended posture, not a gap — the anti-bot
-tier has no legitimate use in this repository.
+→ _Maintain one source_). **`get` is the default tier** — it returns the page's own
+markdown with no browser, and it is what 3.2 below means by _read_. The browser-backed tools
+(`fetch`, `stealthy_fetch`, `screenshot`) are **host-dependent**: Playwright pins an exact Chromium
+_revision_ per release, so they run only where the host supplies that revision and otherwise fail
+at runtime with `Executable doesn't exist at .../chromium-<rev>`. **That is provisioning, not a
+repository gap** — report the tier unavailable (`code/docs/GATE-REPORTING.md`) rather than loosen a
+pin or fall back to `WebFetch`, which paraphrases and so cannot cite a primary source.
+`stealthy_fetch` is the anti-bot tier and has no routine use here; reaching for it is a decision,
+not an escalation.
 
 ### 3.2 How to look something up
 
@@ -190,7 +196,7 @@ reading the menu first produces answers this project has already rejected.
 - **Escalate on silence, not convenience.** Move outward when the docs are silent, name the library
   without naming the call, or describe a version we have left. "Faster to search" is not silence.
 - **Finding a source and reading one are different acts.** `WebSearch` locates it; `scrapling`'s
-  `make_request` returns the page's own markdown — or a `css_selector` fragment of it — so the text
+  `get` returns the page's own markdown — or a `css_selector` fragment of it — so the text
   entering context is the source's. **`WebFetch` is not the reader**: it answers a prompt against
   the page with a small fast model, so what returns is a paraphrase, and a claim cannot honestly be
   cited to a primary source nobody read. Prefer it only for a throwaway "is this page even

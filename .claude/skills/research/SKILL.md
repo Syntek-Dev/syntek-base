@@ -38,7 +38,7 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 3. **Follow every claim to its primary source.** Read the source that _owns_ each fact —
    official documentation, the library's own source, the specification or RFC, the standard
    (OWASP, NIST, ICO, WCAG). Treat a blog or write-up as a scout that points at the primary,
-   never as the authority you cite. **Read it with the `scrapling` MCP** (`make_request`, or a
+   never as the authority you cite. **Read it with the `scrapling` MCP** (`get`, or a
    `css_selector` for one section), which returns the page's own markdown; `WebFetch` answers a
    prompt against the page with a small fast model, so citing a claim to it cites a paraphrase
    nobody read. `WebSearch` finds the source, `scrapling` reads it (`.claude/CLAUDE.md` Section 3.2).

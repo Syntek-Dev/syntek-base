@@ -85,6 +85,26 @@ dependencies = [
 [tool.uv]
 package = false
 
+# Playwright ties each release to an exact Chromium *revision*, and the browsers are not
+# part of the wheel — something else puts them on disk. Where that something is the host
+# rather than `playwright install` (a Nix store bundle, a distro package, a warmed CI
+# cache), the host has ONE revision and an unpinned resolve drifts past it:
+#
+#     Executable doesn't exist at .../chromium_headless_shell-1234/...
+#
+# A constraint, not a dependency: it binds the version `pytest-playwright` drags in
+# without adding an edge to it, so nothing here depends on Playwright directly and the
+# test group stays the only thing that pulls it.
+#
+# THIS IS A HOST FACT, NOT A PROJECT ONE. The value tracks whichever Playwright the
+# machine's browser bundle was built for. A project whose hosts all run
+# `playwright install` freely — most CI images, most developer laptops — needs no pin at
+# all and should delete this block rather than inherit a number chosen elsewhere. If you
+# keep it, `code/src/scripts/audits/render-slop.sh` and the workflow that feeds it pin
+# the same version separately, because `uv run --with` reads neither this file nor
+# UV_CONSTRAINT; all three move together or none do.
+constraint-dependencies = ["playwright==1.61.0"]
+
 [tool.ruff]
 src = ["code/src/django"]
 target-version = "py314"
