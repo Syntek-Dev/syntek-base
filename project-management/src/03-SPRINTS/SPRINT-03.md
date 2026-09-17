@@ -1,6 +1,6 @@
 # SPRINT-03
 
-**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -184,6 +184,31 @@ than ticked off in one.
      07/09/2026, and false as a standing statement from that day, when SPRINT-05 was opened holding
      US008, a story cut on 09/09/2026 that the re-plan never moved. The scope is now stated in the
      sentence; nothing in the re-plan, this record's members or its figures changes. -->
+
+**The backlog register.** Every live record carries this table and all five copies are identical;
+**this record is `SPRINT-03`**. It became a live register on 17/09/2026, when US009 was placed into
+SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
+07/09/2026 cascade alone.
+
+| Sprint      | Members, in build order                                         | SP                                |
+| ----------- | --------------------------------------------------------------- | --------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+
+Each record owns its own row, and **every record carries the whole table**: a membership or a
+capacity change is written into all five in the same change. It is maintained by hand — no gate
+reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
+`project-management/docs/planning/SPRINTS.md`. Obligation:
+`project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- This record carried no table until 17/09/2026: the cascade paragraph above states its figures
+     in prose and that was the whole of it, which is why SPRINT-03 was the one live record a reader
+     could not check the backlog from. Added when <%DEVELOPER_NAME%> settled the five tables as one
+     live register. The prose figures above are left as written — they are scoped to 07/09/2026 and
+     true of that day; the table is the live view. -->
 
 **US003 has now moved twice, and the reservation it carries has turned round.** SPRINT-02 → here on
 05/09/2026, as the `Should` give this sprint lacked; here → SPRINT-02 on 07/09/2026, as the stretch

@@ -404,6 +404,17 @@ to name the three sites, so they are repaired in the same change as the seeded m
 them independently. This entry retires when the three files stop instructing a row into a shipped
 file.
 
+**Re-measured 17/09/2026** during `02-story-creation`'s Step 0 sweep. The count is now **13** maps,
+not the 12 recorded above, and the drift has hardened rather than held: the decline is on the record
+in every map, but under **three different rationales** —
+`MAP-SUBDOMAIN-ROUTING.md:12-14`, `MAP-CAP-POSTURE.md:13-15` and `MAP-BUN-TOPOLOGY.md:10-13` cite
+`MAP-RULE-OWNERSHIP` N-010's interim decline; `MAP-REGISTER-INDEXES.md:9-13` cites its own N-001
+relocation to `MAP-INDEX.md`; `MAP-GATE-PARITY.md:85-92` declines for an unrelated third reason, the
+`copier.yml` re-include leak that would ship a row naming a syntek-base map into every generated
+project. Only the `MAP-REGISTER-INDEXES` rationale is retired by a slice, so two of the three
+justifications survive whatever that map's `S-01` ships. Whoever repairs this must dispose of all
+three, not just the one with an owner.
+
 ---
 
 ## 02/09/2026 — `doc-references.sh` applies its shipped-file citation rule to a tree that never ships
@@ -636,3 +647,85 @@ support, and nothing is built toward it.
 so — two servers and one audit is a cheaper state than a rendering step nobody asked for. Revisit
 when a third host joins, or when the server count makes the double edit a real cost. Until then
 parity is the contract and the audit is the gate. Retire when `.ai/` holds the single declaration.
+
+---
+
+## 17/09/2026 — the audits register's headroom is one line smaller than nineteen artefacts believe
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/CONTEXT.md` measures **299 of 300** counted lines as
+`audits/docs-length.sh` measures them, not 298. The file itself is **correct and current** — its
+`docs-length-allow` comment at `:8` records the move in its own words, "Done again on those terms
+on 16/09/2026, registering `mcp-parity.sh` … Re-measured at 299". What is stale is everything
+downstream: **19 artefacts** under `project-management/src/` still state 298, including `US002.md`
+(whose entire premise is shrinking that file 298 → 230, and whose stated headroom of two lines is
+now one), `US004.md`, `US006.md`, `US008.md`, four `SPRINT-0*.md` records, four sprint plans, three
+story plans, two QA plans and
+`ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md`. Four of those phrase it as a
+standing instruction — "is not grown while at 298" — which is a guard written against a number that
+has already moved. `MAP-PROGRESSIVE-ENHANCEMENT.md:365` and `MAP-BUN-TOPOLOGY.md:146` carry it in
+their slice Flags too, so two uncut slices would inherit it. Surfaced 17/09/2026 during
+`02-story-creation`'s Step 0 sweep, by running the gate rather than reading any artefact.
+**Blocked by / Action:** Nothing blocks it. The cheapest correct fix is **not** a find-and-replace
+to 299 — that re-creates the same defect one line later. US002 is the owner: it should state the
+figure as "whatever `audits/docs-length.sh` reports at implementation time" and re-measure at the
+start of its own build, and the standing "not grown while at 298" guards elsewhere should cite the
+gate rather than a literal. This entry retires when no artefact asserts a bare line count for that
+file.
+
+---
+
+## 17/09/2026 — three feature maps assert things about themselves that their own tables refute
+
+**Type:** Active gap
+**Summary:** Map prose was not re-measured when the slice tables beneath it changed, and in three
+places the prose now states something falsifiable by the same file.
+(1) `MAP-RULE-OWNERSHIP.md:1042` justifies cutting Batch E first on the ground that "the gate below
+already names Batch E _'the intended first slice'_, so the identification is the map's own" —
+`grep -c 'intended first slice'` over that file returns **1**, and the hit is line 1042 itself. The
+`## Gate to stories` section contains no such phrase. A cut-first warrant that cites only itself is
+the most dangerous shape here, because a later reader takes it as the map's settled judgement.
+(2) `:1041` on the same map reads "This map's six batches are its slices" against **nine** slice
+rows — Batch G split and Batch H was charted after that sentence was written.
+(3) `MAP-UPSTREAM-TRACKING.md:507` reads "**This is a template-development map, so there are no
+stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
+unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
+and `US008`. Its `:510` also says "the remaining open nodes refine them without gating them" while
+`:5` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
+all thirteen maps.
+**Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
+not a decision. Each map's next RESOLVE sitting should re-read its own Slices preamble against its
+table and either delete the claim or make it true; `MAP-RULE-OWNERSHIP.md:1042` should be struck
+rather than repaired unless the Gate section is genuinely given the phrase. Retires when a
+re-measure pass has cleared all three.
+
+---
+
+## 17/09/2026 — the backlog register is five hand-maintained copies with no gate behind it
+
+**Type:** Active gap
+**Summary:** Every `SPRINT-##.md` under `project-management/src/03-SPRINTS/` now carries the same
+backlog register — one row per live record, its members in build order, its capacity and its
+admission posture — and the five copies are meant to be identical. **Nothing checks that they
+are.** `code/src/scripts/audits/doctrine-drift.sh` is the audit built for exactly this defect
+class, "a rule restated in two guides is not redundancy, it is a fork", and it cannot see these
+tables on two independent counts: it reads **fenced code blocks only** by design ("Prose is free;
+examples are the contract"), and a markdown table in prose is not fenced; and its `SCAN_DIRS` is
+`code/docs`, `.claude/skills`, `code/workflows`, `project-management/workflows` and
+`how-to/workflows` — `project-management/src/` is not among them. No other audit reads a sprint
+record. So the day two copies disagree, every gate stays green and both are believed. The shape is
+the one `doctrine-drift.sh`'s own header describes: "every individual file was internally
+consistent and every citation resolved".
+**Blocked by / Action:** Nothing blocks it, and the cost was accepted knowingly —
+<%DEVELOPER_NAME%> settled the five-copy register at `03-sprint-planning` on 17/09/2026 (Q6 and
+Q11) over a single-canonical-table alternative, with the drift risk stated before the call. Two
+repairs are available and the second is the cheaper one to reach for first: (1) widen
+`doctrine-drift.sh` — add `project-management/src/` to `SCAN_DIRS` and teach it a prose-table
+mode, which is a change to the scanner's core assumption and should not be undertaken lightly;
+(2) a new single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register
+from every `SPRINT-##.md` and fails when any two differ — no new doctrine, one comparison, and it
+needs nothing from the existing gate. The obligation to hand-update all five is written in
+`project-management/src/03-SPRINTS/CLAUDE.md` and the rule in
+`project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
+This entry retires when a gate fails on a divergent register, or when the register collapses to
+one canonical copy the other records cite.

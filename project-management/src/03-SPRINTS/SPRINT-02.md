@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -241,14 +241,33 @@ execution reorder: US007 enters SPRINT-01 and US002 leaves it for this record; U
 record for SPRINT-03 and US003 returns from SPRINT-03 to this one; US005 leaves SPRINT-03 for
 SPRINT-04. **In this record: US004 (`Must`, 8) departed, US002 (`Must`, 3) and US003 (`Should`, 5)
 arrived, and the capacity figure is 8 / 11 as it was — by arithmetic coincidence, not by
-inaction.** The four records after the cascade:
+inaction.**
 
-| Sprint      | Members, in build order                        | SP                                  |
-| ----------- | ---------------------------------------------- | ----------------------------------- |
-| `SPRINT-01` | US007 then US001                               | 10 / 11                             |
-| `SPRINT-02` | US002 then US003 — **this record**             | 8 / 11, US003 the stretch           |
-| `SPRINT-03` | US004, plus US003's reserved carry if it slips | 8 / 11, or 13 / 11 with the carry   |
-| `SPRINT-04` | US005 then US006                               | 13 / 11 — grace, taken deliberately |
+**The backlog register.** Every live record carries this table and all five copies are identical;
+**this record is `SPRINT-02`**. It became a live register on 17/09/2026, when US009 was placed into
+SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
+07/09/2026 cascade alone.
+
+| Sprint      | Members, in build order                                         | SP                                |
+| ----------- | --------------------------------------------------------------- | --------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+
+Each record owns its own row, and **every record carries the whole table**: a membership or a
+capacity change is written into all five in the same change. It is maintained by hand — no gate
+reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
+`project-management/docs/planning/SPRINTS.md`. Obligation:
+`project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- The table above carried four rows and its own abbreviated spellings — "US007 then US001",
+     "grace, taken deliberately", and this record's row self-marked "— **this record**" inside the
+     cell — until 17/09/2026, when US009 was placed into SPRINT-05 and <%DEVELOPER_NAME%> settled
+     the five tables as one live register held byte-identical across every record. The self-marking
+     moved into the prose above the table for that reason: a copy that legitimately differs from
+     its siblings cannot be checked against them, and nothing gates these five. -->
 
 **It is a re-plan, not a carry-over** — the distinction
 `project-management/src/03-SPRINTS/SPRINT-03.md` drew on 05/09/2026 for US003's first move, and

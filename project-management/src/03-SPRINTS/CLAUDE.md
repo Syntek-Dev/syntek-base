@@ -30,7 +30,12 @@ folder along in `16-SPRINT-PLANS/`.
 ## Guardrails
 
 - **Respect the team capacity ceiling** — record capacity as `used / total SP`; call out
-  an under-capacity sprint in the notes.
+  an under-capacity sprint in the notes. Capacity full and the sprint plan owed are two
+  different questions: `docs/planning/SPRINTS.md` → _Capacity_ has the split.
+- **Admitting a story, moving one, or changing a capacity figure edits EVERY record.**
+  All five carry the same backlog register, byte-identical, and nothing gates them —
+  update them in the one change or they disagree silently. Rule and table shape:
+  `docs/planning/SPRINTS.md` → _The backlog register_.
 - **Honour the dependency chain** — sprint numbering is not execution order; never
   schedule a story ahead of its blocker. Flag any data-migration risk in the notes.
 - **High-level records only** — detailed plans belong in `16-SPRINT-PLANS/`; do not

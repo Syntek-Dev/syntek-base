@@ -22,6 +22,11 @@ A high-level record only — goal, status, timeline, capacity (`used / total SP`
 (ID · Title · MoSCoW · SP), and dependency notes (what blocks it, what it unblocks). The
 detailed execution plan lives in `16-SPRINT-PLANS/`. Full scaffold: `SPRINT-00-TEMPLATE.md`.
 
+Each record also carries the **backlog register** — one table listing every live record, its
+members and its capacity, identical in all of them and updated in every copy whenever membership
+or capacity moves. It is what lets a reader see the whole backlog from whichever record they
+opened. Rule: `project-management/docs/planning/SPRINTS.md` → _The backlog register_.
+
 ## Authoring a new sprint
 
 Copy `SPRINT-00-TEMPLATE.md` → `SPRINT-##.md` → fill goal · status · timeline · capacity ·

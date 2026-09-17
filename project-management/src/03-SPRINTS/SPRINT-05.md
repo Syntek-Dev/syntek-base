@@ -1,14 +1,15 @@
 # SPRINT-05
 
-**Last Updated**: 09/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
 
-**Goal:** The cookie doctrine lands — every cookie this deployable sets is host-only under a
-`__Host-` name, the CSRF cookie is httpOnly, and one guide owns the rule while the four that
-stated their own defer to it — so no generated project follows a shipped guide into a cookie the
-whole domain tree accepts.
+**Goal:** The cookie doctrine lands and the git hooks arm on purpose — every cookie this
+deployable sets is host-only under a `__Host-` name with the CSRF cookie httpOnly, one guide owns
+that rule while the four that stated their own defer to it, and `install.sh` installs the
+pre-commit hooks as an explicit, reported step instead of leaving them to arm themselves at a
+moment nobody chose.
 
 <!-- Derived from the title of US008, the sole member, and from the deliverable column of slice
      S-02 on project-management/src/01-FEATURE-MAPS/MAP-SUBDOMAIN-ROUTING.md — the derivation
@@ -18,13 +19,24 @@ whole domain tree accepts.
      are uncut and belong to no record, and a goal naming their deliverables would be the drift
      SPRINT-02 recorded on 05/09/2026 and SPRINT-03 on 07/09/2026. -->
 
+<!-- REWRITTEN 17/09/2026, when US009 was admitted as this record's stretch tier. The goal above
+     read, from 09/09/2026 until that day: "The cookie doctrine lands — every cookie this
+     deployable sets is host-only under a `__Host-` name, the CSRF cookie is httpOnly, and one
+     guide owns the rule while the four that stated their own defer to it — so no generated project
+     follows a shipped guide into a cookie the whole domain tree accepts." A goal naming one of two
+     members' deliverables is the drift SPRINT-02 recorded on 05/09/2026, so it is rewritten from
+     both members' titles in build order — US008 then US009 — on SPRINT-04's convention of
+     07/09/2026 for a sprint with two subjects. The two members come from different epics
+     (Subdomain Routing and Gate Parity), which is the ordinary shape here: SPRINT-01, SPRINT-02
+     and SPRINT-04 each span two. -->
+
 **Status:** Planned
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
-**Timeline:** TBD · **Capacity:** **8 / 11 SP** — inside capacity, all-`Must`, one member, no
-grace taken, and **open to admission with nothing to admit**. See Notes.
+**Timeline:** TBD · **Capacity:** **8 SP Must + 3 SP Should = 11 / 11 SP** — at capacity, two
+members, a stretch tier, no grace taken, and **CLOSED to further admission**. See Notes.
 
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story
      admitted, never edit it directly.
@@ -43,39 +55,62 @@ grace taken, and **open to admission with nothing to admit**. See Notes.
      project-management/src/11-QA/ names it. CADENCE.md's rule is that the flag is a manifest and
      the gate owns the design, so the Security and QA rows here are recomputed when each gate
      closes, on the precedent SPRINT-01 set when QA-PLAN-US001 AC-GAP-6 moved its QA row and
-     SPRINT-04 set when gate 11 widened US006's. -->
+     SPRINT-04 set when gate 11 widened US006's.
 
-| Flag       | Value                                                                                                                                                                                                                                          |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DB         | N/A                                                                                                                                                                                                                                            |
-| User Flow  | N/A                                                                                                                                                                                                                                            |
-| Brand      | N/A                                                                                                                                                                                                                                            |
-| Components | N/A                                                                                                                                                                                                                                            |
-| Wireframes | N/A                                                                                                                                                                                                                                            |
-| GDPR       | N/A                                                                                                                                                                                                                                            |
-| Security   | host-only cookie scope (no `Domain`, ever) · `__Host-` names per TLS environment · CSRF cookie httpOnly · session invalidation at the deploy that renames · gate asserts presence and absence                                                  |
-| QA         | unit — `negative-space.sh --self-test` over a widened fixture pair, self-test scope repointed with the real one; manual — `doc-references.sh --path code/docs`, the five-document read-across, the advisory dry run, the dev-stack cookie walk |
-| SEO        | N/A                                                                                                                                                                                                                                            |
-| API        | N/A                                                                                                                                                                                                                                            |
-| Logging    | N/A                                                                                                                                                                                                                                            |
-| Backend    | Yes                                                                                                                                                                                                                                            |
-| Frontend   | N/A                                                                                                                                                                                                                                            |
+     RECOMPUTED 17/09/2026 on US009's admission, per the rule at the head of this comment. The
+     union is now over two members, and two rows widened: Security gains US009's supply-chain
+     subject — the `--ignore-scripts` control asserted intact across all three
+     install-frontend.sh branches, and the hook-arming moment made explicit — and QA gains an
+     integration type it did not carry, US008 having named unit and manual only. Backend is
+     unchanged at Yes: US009's own row reads N/A (bash and one JSON manifest read, no model and
+     no endpoint), and a union of Yes with N/A is Yes. The other eleven rows are N/A in both
+     members, so they stay N/A. These are still FIRST-PASS VALUES for both stories: on
+     17/09/2026 nothing under project-management/src/10-SECURITY/ or
+     project-management/src/11-QA/ names US008 or US009, so both members owe gates 10 and 11,
+     and each row is recomputed at those gates' close. -->
+
+| Flag       | Value                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DB         | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| User Flow  | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Brand      | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Components | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Wireframes | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| GDPR       | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Security   | host-only cookie scope (no `Domain`, ever) · `__Host-` names per TLS environment · CSRF cookie httpOnly · session invalidation at the deploy that renames · gate asserts presence and absence · supply-chain — `--ignore-scripts` preserved on all three `install-frontend.sh` branches, the hook-arming moment made explicit                                                                               |
+| QA         | unit — `negative-space.sh --self-test` over a widened fixture pair, self-test scope repointed with the real one; integration — the pre-commit probe and its no-`.git` negative case, the generation probe on both answer sets; manual — `doc-references.sh --path code/docs`, the five-document read-across, the advisory dry run, the dev-stack cookie walk, the `.copier/README.md` claim re-read as true |
+| SEO        | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| API        | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Logging    | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Backend    | Yes                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Frontend   | N/A                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ---
 
 ## Story Summary
 
-| ID    | Title                                                                                                  | MoSCoW    | SP  |
-| ----- | ------------------------------------------------------------------------------------------------------ | --------- | --- |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have | 8   |
+| ID    | Title                                                                                                  | MoSCoW      | SP  |
+| ----- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
+| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 3   |
 
-**Total:** 8 SP — all committed, no stretch tier at opening, and nothing reserved to this record.
-**This is the sprint's known weakness, and it is the shape declined on 07/09/2026**; see Notes.
+**Total:** 11 SP — **8 committed, 3 stretch.** Rows listed in build order. The all-`Must` shape
+this record opened with on 09/09/2026 is repaired rather than inherited; see Notes.
 
 <!-- US008 is added to this table rather than referenced from it because SPRINTS.md computes the
      flag union and the capacity FROM this table, and a story in no Story Summary is counted
      nowhere — SPRINT-04's reading of 07/09/2026. US008 sits in no other record's table; its own
      `**Status:**` reads `Open`, and this record moves it nowhere. -->
+
+<!-- US009 admitted 17/09/2026 at 03-sprint-planning, cut the same day from
+     project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md slice `S-11`. It is this record's
+     first stretch tier and its only `Should`. The row reads Should Have at 3 SP, matching
+     project-management/src/02-STORIES/US009.md: its `Should` was settled at cutting on the
+     ground that the hazard's trigger is conditional rather than certain, and that grounding is
+     unchanged by the placement — the priority argument on the map (`:496`, the only defect that
+     stops work once it fires) is an intra-epic slice ordering, not a MoSCoW tier. Its
+     `**Status:**` reads `Open` and this record moves it nowhere. US009 sits in no other
+     record's table. -->
 
 ## Dependencies
 
@@ -124,14 +159,39 @@ grace taken, and **open to admission with nothing to admit**. See Notes.
   plans on disk on 09/09/2026 — and US008 builds eighth, behind SPRINT-04's last member. The next
   free prefix is `08-`, and that number is reserved, not a plan: `17-story-plans` writes it, and
   nothing here may cite it as one (SPRINT-04's rule for US006's `07-`, which has since been
-  written). When `16-sprint-plans` writes this sprint's plan, both segments of
-  `{exec-order}-SPRINT-PLAN-{sprint-number}.md` read `05`.
+  written). **US009 builds ninth, at a reserved `09-`**, behind US008 — settled 17/09/2026 at its
+  admission. Nothing is renumbered: `project-management/docs/planning/STORIES.md` makes the story
+  plan's prefix the position in the settled build order across the whole backlog and renumbers it
+  whenever that order changes, and appending US009 at the end changes no other story's position.
+  It builds behind US008 because the `Must` ships before the stretch; the priority claim
+  `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md` makes for `S-11` orders slices
+  inside the Gate Parity epic and does not reach the backlog's build order. When `16-sprint-plans`
+  writes this sprint's plan, both segments of `{exec-order}-SPRINT-PLAN-{sprint-number}.md` read
+  `05`.
 - **Nothing carries into this record.** US003's 5 SP `Should` carry is reserved into SPRINT-03 by
   `project-management/src/03-SPRINTS/SPRINT-02.md` -> Definition of Done and reaches this record
   under no branch; SPRINT-04 is closed at grace with nothing reserved out of it. This record's
   capacity line is a settled figure, not an arithmetic risk.
-- **`Blocked` is a story status, not a sprint one.** US008 waits on nothing, so no story
-  `**Status:**` moves on account of this sprint.
+- **US009 has no upstream dependency either, and shares no file with US008.** It is cut from
+  `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md` slice `S-11`, whose single node
+  `N-019` is resolved and whose `N-027` is moot and retired unbuilt. Its own `## Dependencies`
+  records the check made on 17/09/2026 across US001 to US008: none of them writes `install.sh`,
+  `code/src/scripts/development/install-frontend.sh`, `package.json`, `lefthook.yml` or
+  `.copier/README.md`. Measured against this record's other member in particular: US008 edits five
+  guides under `code/docs/`, the settings modules under `code/src/django/config/settings/`, and
+  `code/src/scripts/audits/negative-space.sh` with its fixtures — no overlap with US009's set in
+  either direction. The two can be built in either order; they are listed US008 first because the
+  `Must` precedes the stretch.
+- **Two things US009 names as adjacent, and this record inherits neither.**
+  `project-management/src/01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md` puts `install.sh` inside the Bun
+  swap's surface, and that map is 29 open / 21 blocking and can produce no story — US009 ships
+  against pnpm as the tree stands, and this record schedules no Bun work. And `GAPS.md`'s entry of
+  11/09/2026 — `install-frontend.sh --local` handing two stray arguments to `sudo rm -rf` — is
+  live in a file US009 reads and asserts against but does **not** fix; the story's assertions are
+  written so they neither depend on that defect nor mask it. Named here so neither is read into
+  this sprint's scope.
+- **`Blocked` is a story status, not a sprint one.** Neither US008 nor US009 waits on anything, so
+  no story `**Status:**` moves on account of this sprint.
 
 ## Notes
 
@@ -177,7 +237,33 @@ has none, and the only alternative is a `Must` story in no Story Summary, counte
 arithmetic rather than a call, and it is recorded as arithmetic — the way SPRINT-03 recorded
 US006's refusal on 05/09/2026.
 
-**The weakness is inherited, not repaired, and this record says so rather than papering over it.**
+**The backlog register.** Every live record carries this table and all five copies are identical;
+**this record is `SPRINT-05`**. It became a live register on 17/09/2026, when US009 was placed into
+SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
+07/09/2026 cascade alone.
+
+| Sprint      | Members, in build order                                         | SP                                |
+| ----------- | --------------------------------------------------------------- | --------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+
+Each record owns its own row, and **every record carries the whole table**: a membership or a
+capacity change is written into all five in the same change. It is maintained by hand — no gate
+reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
+`project-management/docs/planning/SPRINTS.md`. Obligation:
+`project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- This record carried no such table until 17/09/2026: the arithmetic table above is a dated
+     09/09/2026 measurement of where an 8 SP `Must` could go, not a backlog view, and it is left
+     as written. Added when <%DEVELOPER_NAME%> settled the five tables as one live register at
+     03-sprint-planning (Q6). -->
+
+**This record opened on 09/09/2026 with the weakness inherited and unrepaired, and said so rather
+than papering over it. It was repaired on 17/09/2026; the reasoning of the day it opened is kept
+below, because it is what the repair had to satisfy.**
 `project-management/docs/planning/SPRINTS.md` is explicit: "**Avoid a plan where everything is
 Must.** If every story is Must, the sprint has no give and the first surprise breaks it." Both
 repairs the earlier records used or named are unavailable. The backlog holds exactly one `Should`
@@ -185,14 +271,45 @@ repairs the earlier records used or named are unavailable. The backlog holds exa
 carry reserved into SPRINT-03; borrowing it would be a third move for a story that has moved
 twice, and would strip two records' give to build this one's. Cutting a second story to fill the
 room is the padding `SPRINTS.md` -> _Capacity_ tells a record to call out instead. Both were
-declined on 09/09/2026 (Q1 of the grilling pass). What is true and is not a repair: at 8 / 11 the
-sprint has 3 SP inside capacity, and a `Should` that arrives and clears the specify tier would be
-admitted as give — see below. Until one exists, this is a sprint where the one surprise breaks the
-plan, recorded the way SPRINT-03 recorded the same shape on 07/09/2026: "the weakness stands, and
-this record has no other give it can honestly hold".
+declined on 09/09/2026 (Q1 of the grilling pass). What was true on that day and was not a repair:
+at 8 / 11 the sprint had 3 SP inside capacity, and a `Should` that arrived and cleared the specify
+tier would be admitted as give. Until one existed, this was a sprint where the one surprise breaks
+the plan, recorded the way SPRINT-03 recorded the same shape on 07/09/2026: "the weakness stands,
+and this record has no other give it can honestly hold".
 
-**Capacity: 8 / 11, inside capacity, no grace taken, and under capacity by 3 SP — called out
-rather than padded.** `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the
+**The weakness is repaired, by the story the paragraph above was waiting for (17/09/2026).** US009
+— `Should Have`, 3 SP, cut that day from `MAP-GATE-PARITY.md` `S-11` — is admitted as this
+record's stretch tier, and the `Must` tier stays at 8. That is the distinction the arithmetic
+objection turns on and it is worth stating plainly: **capacity headroom and MoSCoW give are not
+the same quantity.** Admitting US009 spends the 3 SP of headroom and takes the `Should` tier from
+**zero to 3 SP**, so the record gains the droppable work whose absence
+`project-management/docs/planning/SPRINTS.md` -> _MoSCoW_ names as the defect — "If every story is
+Must, the sprint has no give and the first surprise breaks it." A record at 11 / 11 with 3 SP of
+`Should` has give; a record at 8 / 11 with none has headroom and no give. The shape is SPRINT-02's
+exactly — a `Must` plus a `Should` stretch — and this record's own reading below already blessed a
+larger version of it.
+
+<!-- The one condition this repair does not meet, stated rather than glossed. The paragraph below
+     reserved the give for "a `Should` that arrives and clears the specify tier", and US009 was
+     cut on 17/09/2026 and has cleared gates 10, 11 and 15 no more than US008 has — on that day
+     nothing under project-management/src/10-SECURITY/ or project-management/src/11-QA/ names
+     either story, and neither has a story plan. <%DEVELOPER_NAME%> settled the reading at
+     03-sprint-planning on 17/09/2026 (Q2): project-management/docs/planning/CADENCE.md runs gate
+     03 SECOND in the per-story loop, immediately after 02 and ahead of 04 to 15, so placement is
+     designed to precede the specify tier rather than follow it. The condition as written would
+     hold an admitted `Should` to a bar this record does not apply to its own `Must` — US008 was
+     admitted on 09/09/2026 having cleared nothing, on the arithmetic recorded above. What the
+     specify tier does gate is the sprint PLAN, not the record's membership; that separation is
+     the paragraph on the plan below. -->
+
+**Capacity: 11 / 11 — at capacity, no grace taken, 8 committed and 3 stretch (17/09/2026).** The
+paragraph below is the figure this record opened on and the sourcing of the two numbers, which is
+unchanged; only the used side has moved, from 8 to 11, on US009's admission. There is nothing left
+to call out as under-capacity: `SPRINTS.md` -> _Capacity_ asks that an under-filled record explain
+itself rather than pad, and this one is now full.
+
+**As opened, 09/09/2026 — 8 / 11, inside capacity, no grace taken, and under capacity by 3 SP,
+called out rather than padded.** `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the
 trigger_ (as read 09/09/2026) owns both figures as generation-time answers,
 `SPRINT_CAPACITY_SP` and `SPRINT_GRACE_SP`, rendered into its table per project; in this template
 repository the table is unrendered, and the 11 and 13 every record here uses are the `copier.yml` <!-- doc-references: template-only -->
@@ -206,10 +323,21 @@ an under-filled one." This sprint lands on 8 because the next story does not exi
 same case. `SPRINTS.md` -> _Capacity_ asks that an under-capacity sprint be called out in the
 notes rather than padded; called out here.
 
-**Open to admission, with nothing to admit — and what would change that.** Arithmetic: 3 SP
-inside capacity, 5 SP to the grace ceiling. Availability: US008 is the only unassigned `Open`
-story; US001 to US007 are all placed, and nothing carries here. Three things would change the
-position, and each is <%DEVELOPER_NAME%>'s call at the time, not this record's to pre-empt:
+**CLOSED to further admission, at capacity and with the stretch tier filled (17/09/2026).** The
+first of the three bullets below is the one that fired: US009 is 3 SP and went in inside capacity.
+The record now stands at 11 / 11 with 2 SP to the grace ceiling, and that 2 SP is reserved for
+nothing. `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_ is the
+reason: grace "exists for one situation — the next story would overshoot, and splitting it would
+produce two halves that make no sense alone", and "a sprint that habitually runs to it means the
+capacity figure is wrong". Holding 2 SP open invites exactly that, on a record that has what it
+needs. Closed by decision, on SPRINT-01's precedent of 07/09/2026 and SPRINT-03's of 05/09/2026 —
+a ledger is closed by a call, not only by a ceiling.
+
+**As opened, 09/09/2026 — open to admission, with nothing to admit, and what would change that.**
+Arithmetic: 3 SP inside capacity, 5 SP to the grace ceiling. Availability: US008 was the only
+unassigned `Open` story; US001 to US007 were all placed, and nothing carries here. Three things
+would change the position, and each is <%DEVELOPER_NAME%>'s call at the time, not this record's to
+pre-empt:
 
 - A story of 3 SP or less that has cleared `15-decisions` goes in inside capacity.
 - A `Should` of up to 5 SP would stand this record at 13 / 11 with the `Must` tier still at 8 —
@@ -218,28 +346,59 @@ position, and each is <%DEVELOPER_NAME%>'s call at the time, not this record's t
   weakness above. It is the one case in which 13 here is not an overrun.
 - A second `Must` of 8 would be 16 / 11 and is refused on arithmetic before it is argued.
 
+<!-- The first bullet fired on 17/09/2026, and its `15-decisions` qualifier did not hold: US009 is
+     3 SP and was admitted inside capacity without having cleared the specify tier. The
+     disposition is in the comment under the weakness paragraph above and is not restated here.
+     The second bullet was never exercised and is kept because it is the reading that licenses 13
+     on this record should a carry ever arrive; the third stands unchanged and is now moot, since
+     the record is closed. -->
+
 A candidate that has not cleared the specify tier is not counted (`CADENCE.md` -> _When a sprint
 plan is written_: "resolve it or drop it back to the backlog rather than planning a sprint around
-it"). The three uncut slices on `MAP-SUBDOMAIN-ROUTING.md` are the obvious candidates; none is a
-story, and this record pre-counts none.
+it"). The three uncut slices on `MAP-SUBDOMAIN-ROUTING.md` were the obvious candidates on the day
+this record opened; none is a story, and this record pre-counts none.
 
-**No 05-SPRINT-PLAN-05.md is written, and its absence is by rule, not omission.**
-`project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_ (as read
-09/09/2026): the record is "Opened early; filled as stories clear `15`", the plan is written "The
-moment the sprint fills". At 8 / 11 this sprint is not full — capacity is the fill trigger.
-`project-management/docs/planning/CADENCE.md` -> _When a sprint plan is written_ names the
-prerequisites that must hold for every story in the filling sprint: `15-decisions` cleared, GDPR
-review, security threat model and assessment, a QA plan with no unresolved `AC-GAP`,
-an SEO plan or `SEO: N/A` with a reason, an API contract or no Ninja surface. On 09/09/2026 US008
-has two ADRs, written at cutting — both `Accepted`, and both "to be checked, not re-opened, at
-US008's own `15-decisions` pass" by their own terms; nothing under
-`project-management/src/10-SECURITY/` or `project-management/src/11-QA/`, both of which its flags
-say it enters; and GDPR, SEO, API and Logging skipped by flag. Gates `10` and `11` are owed and
-`15` has not run as a pass, so the plan's prerequisites do not hold.
-`project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record —
-"do not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
-ordinary state between opening and filling. The story plan is likewise not written: its `08-`
-prefix is reserved by build order, and a reserved number is not a plan.
+**No 05-SPRINT-PLAN-05.md is written, and its absence is by rule, not omission — but the rule
+that supplies the absence changed on 17/09/2026, and this paragraph is rewritten rather than left
+to read as though it had not.** Until that day the argument was the fill level: at 8 / 11 the
+sprint was not full, and capacity is the fill trigger. US009's admission takes the record to
+11 / 11, which **is** the trigger
+(`project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_: at capacity,
+"the sprint is full. Stop planning stories; plan the sprint"), so that argument is spent and the
+plan would appear to be owed. It is not, and the reason is that **the record's ledger and the
+plan's count are two different numbers.**
+
+- **The ledger counts every admitted story: 11.** `project-management/docs/planning/SPRINTS.md` ->
+  _Two artefacts, two moments_ makes the record "the running ledger — it accumulates stories with
+  their points", opened early, and `CADENCE.md`'s per-story loop runs gate `03` second, so a story
+  is admitted at cutting and the ledger moves then.
+- **The plan counts only stories that have cleared the specify tier: 0.** `CADENCE.md` -> _When a
+  sprint plan is written_ names the prerequisites that must hold for **every story in the filling
+  sprint** — `15-decisions` cleared, GDPR review, security threat model and assessment, a QA plan
+  with no unresolved `AC-GAP`, an SEO plan or `SEO: N/A` with a reason, an API contract or no
+  Ninja surface — and closes: "A story that cannot satisfy these is **not ready to be counted
+  towards the sprint**." Neither member satisfies them.
+
+Measured 17/09/2026. US008 has two ADRs written at cutting — both `Accepted`, and both "to be
+checked, not re-opened, at US008's own `15-decisions` pass" by their own terms; US009 has none and
+records in its own `## Decisions` that it needs none. Neither is named by any artefact under
+`project-management/src/10-SECURITY/` or `project-management/src/11-QA/`, both of which both
+stories' flags say they enter, and neither has a story plan. GDPR, SEO, API and Logging are
+skipped by flag for both. Gates `10` and `11` are owed by both members and `15` has run as a pass
+for neither, so the plan-counted total is zero and the plan's prerequisites do not hold.
+`project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
+not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
+ordinary state between opening and filling. The story plans are likewise not written: `08-` and
+`09-` are reserved by build order, and a reserved number is not a plan.
+
+<!-- Settled at 03-sprint-planning on 17/09/2026 (Q4). The two-number reading is what makes the
+     doctrine self-consistent rather than being an accommodation invented for this record: gate 03
+     sits second in CADENCE.md's per-story loop, ahead of 04 to 15, so a record that could only
+     admit stories which had cleared 15 could never admit one at the gate the loop places it at.
+     Read the other way — ledger accumulates at 03, plan counts at 15 — both statements hold and
+     SPRINTS.md's "filled as stories clear `15`" describes when the FILL is checked, not when
+     membership is granted. Reported per code/docs/GATE-REPORTING.md: the trigger fired and was
+     answered, not skipped. -->
 
 **This record was opened at gate `03`, not after `10`, `11` and `15`, and the deviation from the
 last two records' practice is deliberate.** SPRINT-03 and SPRINT-04 opened after their members had
@@ -292,7 +451,7 @@ this change adds to them. Reported as the number it is, with its delta, and neve
 
 ## Acceptance Criteria
 
-One outcome, one member.
+Two outcomes, one per member, in build order.
 
 **US008** — every cookie this deployable sets is host-only, with no `Domain` attribute ever,
 under a `__Host-` name set per TLS environment; the CSRF cookie is httpOnly, and
@@ -302,6 +461,15 @@ under a `__Host-` name set per TLS environment; the CSRF cookie is httpOnly, and
 `code/docs/security/OWASP-AND-CHECKLIST.md` defer to it; `code/src/scripts/audits/negative-space.sh`
 asserts the presence of the settings and the absence of a `Domain`; and the session invalidation
 the rename causes at the deploy that ships it is stated rather than discovered.
+
+**US009** — `install.sh` installs the git hooks as an explicit, reported step after the
+JavaScript-dependency step, guarded on `.git` so a tree without a repository is skipped and the
+install continues, and hard-failing at exit 2 in the house `err` idiom when `lefthook install`
+genuinely cannot complete; the `--ignore-scripts` supply-chain control stays on all three
+`code/src/scripts/development/install-frontend.sh` branches and `package.json`'s `prepare` script
+is untouched, so the hook is never armed as a package-manager side effect; and
+`.copier/README.md:441`'s existing claim that `install.sh` runs `lefthook install` becomes true
+**without that file being edited**.
 
 ### Backend Acceptance Criteria
 
@@ -342,8 +510,14 @@ the rename causes at the deploy that ships it is stated rather than discovered.
       the operator is told what happens to live sessions rather than finding out
 - [ ] **The gate asserts presence and absence** — a tested setting is not an enforced one until
       something fails when it is missing or when a `Domain` appears
-- [ ] **No CRITICAL or HIGH finding is open** — cannot be ticked until gate `10` has run; the row
-      is here so that its absence is not read as a pass
+- [ ] **US009 — `--ignore-scripts` preserved on all three `install-frontend.sh` branches**,
+      asserted in the diff rather than assumed, with `package.json`'s `prepare` byte-identical
+- [ ] **US009 — the hook-arming moment is explicit**: the step runs after dependency installation,
+      resolves `lefthook` from the project's own `node_modules` rather than the host's, adds no
+      network fetch, no credential read and no write outside `.git/hooks/`, and its `.git` guard
+      tests for a repository only — never a general try/ignore that would hide a real failure
+- [ ] **No CRITICAL or HIGH finding is open** — cannot be ticked until gate `10` has run **for
+      both members**; the row is here so that its absence is not read as a pass
 - [ ] No secrets, debug flags, or hardcoded credentials are introduced in this sprint
 
 ### QA Acceptance Criteria — Automated
@@ -356,16 +530,25 @@ the rename causes at the deploy that ships it is stated rather than discovered.
 - [ ] Every fixture case US008 adds fails against the pre-change script and passes against the
       post-change one — a fixture that passes both proves nothing (SPRINT-03's criterion for a
       widened gate)
-- [ ] Coverage floors — **not marked N/A here.** The member ships Python — settings assignments —
-      and whether the floor binds settings modules is gate `11`'s call for this story; recorded as
-      open rather than decided by a record that has not seen the QA plan
+- [ ] US009 — the `[3/4] Template Generation` job generates a project on **both** answer sets
+      (`INCLUDE_MOBILE` false and true) and the generated `install.sh` carries the step in each
+- [ ] US009 — a pre-commit probe asserts that after `install.sh` completes in a git checkout,
+      `.git/hooks/pre-commit` exists and is lefthook's, and its negative case asserts that a tree
+      with no `.git` reports the skip and continues rather than exiting non-zero
+- [ ] US009 — the existing `template-integrity` pre-commit leg still passes
+- [ ] Coverage floors — **not marked N/A here.** US008 ships Python — settings assignments — and
+      whether the floor binds settings modules is gate `11`'s call for that story; US009 ships
+      bash, which the floor does not reach. Recorded as open rather than decided by a record that
+      has not seen either QA plan
 
 ### QA Acceptance Criteria — Manual
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US008-MANUAL-TESTING.md` carries a tester sign-off block
-- [ ] **No `[OPEN]` acceptance-criteria gap remains** in the member's QA plan — which gate `11`
-      has yet to write; until it exists this row cannot be ticked, and its absence is not a pass
+- [ ] `project-management/src/18-TESTS/US008-MANUAL-TESTING.md` and
+      `project-management/src/18-TESTS/US009-MANUAL-TESTING.md` each carry a tester sign-off block
+- [ ] **No `[OPEN]` acceptance-criteria gap remains** in **either member's** QA plan — which gate
+      `11` has yet to write for either; until they exist this row cannot be ticked, and its
+      absence is not a pass
 
 ---
 
@@ -379,20 +562,27 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      section and the guides are the doctrine the settings implement — on SPRINT-04's precedent,
      which carried US005's documentation deliverables under its Security Tasks. -->
 
-| Story | Task                                                                                                                                            | Done |
-| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| US008 | Make the settings assignments — the `__Host-` names per TLS environment and `CSRF_COOKIE_HTTPONLY = True` — in one change, with no `Domain` set | [ ]  |
-| US008 | Update the settings `CONTEXT.md` table for the settings that moved                                                                              | [ ]  |
-| US008 | Widen `code/src/scripts/audits/negative-space.sh` to assert presence and absence, widen its fixture pair, repoint the self-test scope           | [ ]  |
-| US008 | Rewrite the five guides so `code/docs/security/CRYPTO-AND-DATA.md` owns the rule and the other four defer to it                                 | [ ]  |
+| Story | Task                                                                                                                                                                                          | Done |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| US008 | Make the settings assignments — the `__Host-` names per TLS environment and `CSRF_COOKIE_HTTPONLY = True` — in one change, with no `Domain` set                                               | [ ]  |
+| US008 | Update the settings `CONTEXT.md` table for the settings that moved                                                                                                                            | [ ]  |
+| US008 | Widen `code/src/scripts/audits/negative-space.sh` to assert presence and absence, widen its fixture pair, repoint the self-test scope                                                         | [ ]  |
+| US008 | Rewrite the five guides so `code/docs/security/CRYPTO-AND-DATA.md` owns the rule and the other four defer to it                                                                               | [ ]  |
+| US009 | Add the git-hooks step to `install.sh` after the JavaScript-dependency step, guarded on `.git`, failing at exit 2 otherwise, and renumber the printed Phase 1 sequence and `usage()` to match | [ ]  |
+| US009 | Leave `install-frontend.sh` and `package.json`'s `prepare` unchanged — the three `--ignore-scripts` flags are asserted by tests, not edited                                                   | [ ]  |
+| US009 | Re-read `.copier/README.md:441` against the changed script, confirm it is now true, and record the re-read — **no edit to that file**                                                         | [ ]  |
+| US009 | Update `how-to/docs/DEVELOPMENT.md` and `how-to/docs/CLI-TOOLING.md` where either enumerates `install.sh`'s steps                                                                             | [ ]  |
 
 ### Security Tasks
 
-| Story | Task                                                                                                                          | Done |
-| ----- | ----------------------------------------------------------------------------------------------------------------------------- | ---- |
-| US008 | Satisfy the developer constraints gate `10` produces, once it has run — the assessment's Section 7, on the pattern of US005's | [ ]  |
-| US008 | Confirm each promotion trigger in the threat model, once written, names a surface or event that can actually fire it          | [ ]  |
-| US008 | State the session invalidation the rename causes, keyed where the advisory ships per `ADR-US008-FIRST-MINOR-MIGRATION-KEY`    | [ ]  |
+| Story | Task                                                                                                                           | Done |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------ | ---- |
+| US008 | Satisfy the developer constraints gate `10` produces, once it has run — the assessment's Section 7, on the pattern of US005's  | [ ]  |
+| US008 | Confirm each promotion trigger in the threat model, once written, names a surface or event that can actually fire it           | [ ]  |
+| US008 | State the session invalidation the rename causes, keyed where the advisory ships per `ADR-US008-FIRST-MINOR-MIGRATION-KEY`     | [ ]  |
+| US009 | Assert `--ignore-scripts` on all three `install-frontend.sh` branches and `package.json`'s `prepare` as byte-identical         | [ ]  |
+| US009 | Confirm the step resolves `lefthook` from the project's `node_modules`, not the host, and writes nowhere outside `.git/hooks/` | [ ]  |
+| US009 | Satisfy the developer constraints gate `10` produces for this story, once it has run                                           | [ ]  |
 
 ### QA Tasks — Automated
 
@@ -400,6 +590,11 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
       `project-management/src/18-TESTS/US008-TEST-STATUS.md`
 - [ ] US008 — each new fixture case is run against both the pre- and post-change script, and
       both results recorded
+- [ ] US009 — the pre-commit probe and its no-`.git` negative case are written and wired into the
+      generation job so they run on **both** `INCLUDE_MOBILE` poles
+- [ ] US009 — the three `--ignore-scripts` assertions and the `package.json` `prepare` assertion
+      are added, with their output recorded in
+      `project-management/src/18-TESTS/US009-TEST-STATUS.md`
 
 ### QA Tasks — Manual
 
@@ -414,6 +609,15 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 - [ ] US008 — the dev-stack cookie walk: every cookie observed on the dev stack carries its
       `__Host-` name and no `Domain`, and the CSRF cookie is httpOnly
 - [ ] US008 — a tester other than the author has signed the walk-through off
+- [ ] US009 — the clean-clone walk-through: install into a scratch directory, make a throwaway
+      commit, observe the pre-commit legs run, record the output
+- [ ] US009 — the idempotence walk-through: a second `install.sh` run on the same clone duplicates
+      nothing and errors nowhere
+- [ ] US009 — the failure walk-through: a broken `lefthook install` exits 2 and is reported, not
+      swallowed
+- [ ] US009 — `.copier/README.md:441` read against the changed `install.sh`, confirmed true, and
+      the file confirmed **unmodified** in the diff
+- [ ] US009 — a tester other than the author has signed the walk-through off
 - [ ] Cross-browser, responsive and accessibility walk-throughs — **N/A**, the sprint's Frontend,
       Components and Wireframes rows read `N/A`; no page, component or interactive surface is
       added. The cookie walk above is a cookie-attribute check, not a UI walk-through
@@ -451,11 +655,16 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       the warn tier without a dated allowance. Files to watch: the five guides US008 edits, none
       of which the gate named on 09/09/2026 (777 files checked, no warning against any of them;
       raw `wc -l` 156, 185, 188, 210 and 194 in the order the Acceptance Criteria list them).
-      `code/src/scripts/audits/CONTEXT.md` at 298 code lines is US002's headroom and is not grown
-      here; see Dependencies
-- [ ] `bash code/src/scripts/audits/docs-pairing.sh` — regression only; the member edits an
-      existing pair under `code/src/django/config/settings/` and creates no directory, so no new
-      pair is owed
+      `code/src/scripts/audits/CONTEXT.md` is US002's headroom and is not grown here; see
+      Dependencies. **The bare figure that stood here — 298 — is stale**: the gate measured it at
+      **299 of 300** on 17/09/2026, and `GAPS.md`'s entry of that date records that 19 artefacts
+      under `project-management/src/` assert the old number. The guard is the gate's reading at
+      implementation time, not a literal in this file. US009 adds files under neither path
+- [ ] **The `[3/4] Template Generation` job is green on both answer sets** — US009's criterion;
+      the generated `install.sh` carries the git-hooks step under `INCLUDE_MOBILE` false and true
+- [ ] `bash code/src/scripts/audits/docs-pairing.sh` — regression only; the two members edit
+      existing pairs under `code/src/django/config/settings/` and `code/src/scripts/development/`
+      and create no directory, so no new pair is owed
 - [ ] `bash code/src/scripts/audits/doctrine-drift.sh` — regression only, unless the story
       registers a claims row for the cookie rule, which is the story's and gate `11`'s to state. A
       green run says the registered claims are undisturbed and says **nothing** about the rule
@@ -471,7 +680,10 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       is recorded in `project-management/src/18-TESTS/US008-MANUAL-TESTING.md` as run or as not
       run, never as a `lint.sh` pass, per `code/docs/GATE-REPORTING.md`
 - [ ] `bash code/src/scripts/syntax/check.sh` passes — **applies here**, unlike in SPRINT-03 and
-      SPRINT-04: its basedpyright leg reads the settings modules the member edits
+      SPRINT-04: its basedpyright leg reads the settings modules US008 edits. US009 ships bash,
+      which that leg does not read; the ShellCheck caveat recorded above for `negative-space.sh`
+      applies to US009's changed `install.sh` in exactly the same terms, and for the same reason —
+      no script, CI workflow or lefthook entry runs ShellCheck
 - [ ] `bash code/src/scripts/database/migrate.sh check` — **N/A**, the sprint's DB flag reads
       `N/A`
 - [ ] `bash code/src/scripts/tests/all.sh --coverage` — the suite runs as a regression over the
@@ -492,8 +704,14 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 ## Definition of Done
 
 - [ ] **Every `Must Have` story** in the Story Summary is individually marked **Completed** (its
-      own DoD complete) — US008 alone. There is no `Should Have` tier here, so a slip fails the
-      sprint; that is the cost recorded in the Notes, not a surprise
+      own DoD complete) — US008 alone. US009 is the `Should Have` stretch tier: it is included in
+      the plan and is the first thing dropped if US008 overruns
+      (`project-management/docs/planning/SPRINTS.md` -> _MoSCoW_), and dropping it does **not**
+      fail the sprint
+- [ ] **If US009 is dropped rather than delivered**, it is recorded here with its reason and
+      carried into the next record with its 3 SP reserved there — the six-artefact discipline
+      SPRINT-03 set on 05/09/2026 for US003, and the backlog register in the Notes is updated in
+      all five records in the same change
 - [ ] **Nothing carries into this record, and nothing is expected to.** US003's carry is reserved
       into SPRINT-03 by SPRINT-02's Definition of Done; SPRINT-04 is closed at grace. If a story
       arrives here anyway, it is recorded in both records with its reason and the capacity line
@@ -502,10 +720,11 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] All sprint-level acceptance criteria met and verified by a reviewer
 - [ ] All sprint-level tasks checked off
 - [ ] All verification checks passed
-- [ ] No `[OPEN]` acceptance-criteria gap remains in the member's QA plan — once gate `11` has
-      written it
+- [ ] No `[OPEN]` acceptance-criteria gap remains in **either member's** QA plan — once gate `11`
+      has written them
 - [ ] The Security and QA rows of the FLAGS table, and the sections they govern, were recomputed
-      when gates `10` and `11` closed, and the union still equals US008's own table
+      when gates `10` and `11` closed for both members, and the union still equals US008's table
+      unioned with US009's
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] All changes merged to `main` (or the active release branch)
 - [ ] Sprint `**Status:**` set to `Done`

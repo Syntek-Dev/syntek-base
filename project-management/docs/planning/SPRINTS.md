@@ -123,6 +123,42 @@ The point ceiling and the fill trigger live in [`CADENCE.md`](CADENCE.md) → _S
 Record capacity in the sprint record as `used / total SP`, and call out an under-capacity sprint
 in the notes rather than padding it.
 
+**The ledger and the plan count differently, and conflating them is the error.** The record
+accumulates every story admitted at gate `03`; the plan counts only stories that have cleared the
+specify tier, which is what [`CADENCE.md`](CADENCE.md) → _When a sprint plan is written_ means by
+"not ready to be counted towards the sprint". So a record can stand at capacity and owe no plan —
+its ledger is full, its plan-counted total is not. Say which number you mean.
+
+---
+
+## The backlog register
+
+**Every live `SPRINT-##.md` carries the same table, and the copies are identical.** It lists every
+record, its members in build order, and its capacity with its admission posture:
+
+| Sprint      | Members, in build order                  | SP               |
+| ----------- | ---------------------------------------- | ---------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5) | 10 / 11 — closed |
+
+One row per record. Mark which record the reader is in **in the prose above the table, never
+inside a cell** — a copy that legitimately differs from its siblings cannot be checked against
+them.
+
+**Any change to membership or capacity is written into every copy in the same change.** There is
+no gate: `audits/doctrine-drift.sh` reads fenced code only and does not scan
+`project-management/src/`, so nothing fails when two copies disagree. That cost is accepted and
+filed in `GAPS.md` (17/09/2026). The do-this-now obligation is
+`src/03-SPRINTS/CLAUDE.md`.
+
+<!--
+17/09/2026 — this section is new. Until then three records (SPRINT-01, SPRINT-02, SPRINT-04)
+carried a four-row table scoped to the 07/09/2026 cascade, SPRINT-01's closing with "not so that
+another sprint can be edited from here", and SPRINT-03 and SPRINT-05 carried none. <%DEVELOPER_NAME%>
+settled at 03-sprint-planning that the tables are a live register held in all five instead; the
+SPRINT-01 sentence was corrected in the same change, with its previous wording kept in a comment
+where it stood.
+-->
+
 ---
 
 ## Related

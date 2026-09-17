@@ -1,6 +1,6 @@
 # SPRINT-01
 
-**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -148,18 +148,37 @@ US003 moves from SPRINT-03 to SPRINT-02 as that sprint's `Should` stretch, US004
 SPRINT-02 to SPRINT-03, and US005 moves from SPRINT-03 to SPRINT-04 beside US006. Every sprint is
 `Planned` and unworked, so this is a **re-plan, not a carry-over** — the distinction
 `project-management/src/03-SPRINTS/SPRINT-03.md` -> Notes draws for US003's move of 05/09/2026,
-which is the precedent this cascade follows. The four records after it:
+which is the precedent this cascade follows.
 
-| Sprint      | Members, in build order                                         | Capacity                                          |
-| ----------- | --------------------------------------------------------------- | ------------------------------------------------- |
-| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | **10 / 11 SP** — closed                           |
-| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 SP                                         |
-| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 SP, or 13 / 11 SP with the carry           |
-| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 SP — at grace, taken deliberately, closed |
+**The backlog register.** Every live record carries this table and all five copies are identical;
+**this record is `SPRINT-01`**. It became a live register on 17/09/2026, when US009 was placed into
+SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
+07/09/2026 cascade alone.
 
-Each record owns its own row. The table is here so that a reader of this file can see where its
-former member went and why its own figure moved — not so that another sprint can be edited from
-here.
+| Sprint      | Members, in build order                                         | SP                                |
+| ----------- | --------------------------------------------------------------- | --------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+
+Each record owns its own row, and **every record carries the whole table**: a membership or a
+capacity change is written into all five in the same change, and the five copies are identical. It
+is maintained by hand — no gate reads it, and that cost is filed in `GAPS.md` (17/09/2026). The
+rule is `project-management/docs/planning/SPRINTS.md`; the obligation to run the edit is
+`project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- This paragraph read, until 17/09/2026: "Each record owns its own row. The table is here so
+     that a reader of this file can see where its former member went and why its own figure moved
+     — not so that another sprint can be edited from here." It was true while the table was a dated
+     snapshot of the 07/09/2026 cascade, which is what it was on the day it was written.
+     <%DEVELOPER_NAME%> settled at 03-sprint-planning on 17/09/2026 that the five tables are a live
+     register instead, and the closing clause then reads as an instruction against the thing the
+     register requires. Corrected rather than dated, on this record's own precedent below — the
+     US007 story-plan bullet and the QA-gap criterion, both live instructions replaced with their
+     previous wording kept in a comment. SPRINT-03.md's date-only move of 09/09/2026 was for a
+     sentence that stayed true as scoped; this one does not. -->
 
 **This sprint is CLOSED at two members and 10 of 11 SP, by decision rather than by fill**
 (07/09/2026). The record is a running ledger — opened as the first story clears the per-story loop

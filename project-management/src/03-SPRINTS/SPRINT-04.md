@@ -1,6 +1,6 @@
 # SPRINT-04
 
-**Last Updated**: 08/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -181,14 +181,32 @@ weakness, and it is worse than when the record opened**; see Notes.
 of a four-sprint cascade.** US007 — the story `**Status:**` vocabulary, cut 07/09/2026 at 5 SP
 `Must Have` — must ship **before** US002, because US002's line of work builds `register-indexes.sh`
 and its status fixtures against whichever vocabulary is canonical on the day it ships. Rather than
-reorder execution inside the existing membership, <%DEVELOPER_NAME%> settled a full cascade:
+reorder execution inside the existing membership, <%DEVELOPER_NAME%> settled a full cascade.
 
-| Sprint      | Members, in build order                                    | SP                                  |
-| ----------- | ---------------------------------------------------------- | ----------------------------------- |
-| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                   | 10 / 11                             |
-| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)        | 8 / 11                              |
-| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved carry if it slips | 8 / 11, or 13 / 11 with the carry   |
-| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                   | 13 / 11 — grace, taken deliberately |
+**The backlog register.** Every live record carries this table and all five copies are identical;
+**this record is `SPRINT-04`**. It became a live register on 17/09/2026, when US009 was placed into
+SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
+07/09/2026 cascade alone.
+
+| Sprint      | Members, in build order                                         | SP                                |
+| ----------- | --------------------------------------------------------------- | --------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+
+Each record owns its own row, and **every record carries the whole table**: a membership or a
+capacity change is written into all five in the same change. It is maintained by hand — no gate
+reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
+`project-management/docs/planning/SPRINTS.md`. Obligation:
+`project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- The table above carried four rows and was scoped to the 07/09/2026 cascade this paragraph
+     describes, until 17/09/2026, when US009 was placed into SPRINT-05 and <%DEVELOPER_NAME%>
+     settled the five tables as one live register held byte-identical across every record. The
+     cascade narrative around it is unchanged and still describes 07/09/2026; only the table and
+     the sentence introducing it moved. -->
 
 US007 is new into SPRINT-01; US002 moves SPRINT-01 to SPRINT-02; US003 moves SPRINT-03 to SPRINT-02
 as the stretch tier, with its carry reserved into SPRINT-03 — the same shape it held in SPRINT-03,
