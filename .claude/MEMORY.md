@@ -42,6 +42,17 @@ _No entries yet._
 
 ## Project State
 
+### The Playwright pin's value comes from this machine's Nix config — 18/09/2026
+
+`audits/playwright-pin.sh` holds the eight in-repo declarations of the Playwright release in
+step with each other, and deliberately never compares them to a host's browsers. On **this**
+machine the browsers arrive as a Nix store bundle, so the release that matches it is reported by
+`just check-playwright` in `~/Repos/personal/nix-config` (`justfile:210`) — that command is where
+the number on `PLAYWRIGHT_PIN` comes from when the bundle bumps. It lives here rather than in a
+shipped file because a generated project has no nix-config: the shipped half states only that the
+bundle's owner reports the value (`render-slop.sh`, `15-TROUBLESHOOTING.md`). A bundle bump is the
+one change the gate cannot start — it can only confirm every site followed.
+
 ### argon2-cffi and cryptography wait for syntek-modules — 01/09/2026
 
 `argon2-cffi` and `cryptography` are declared in `pyproject.toml` but deliberately unwired —

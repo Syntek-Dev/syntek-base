@@ -10,7 +10,7 @@
 #
 # That makes the release a fact this repository must state ONCE. It cannot: `UV_CONSTRAINT`
 # is read by `uv tool run`, `uv pip *` and `uv add`, but NOT by `uv run`, `uv sync`,
-# `uv lock` or `uv export`. So the pin is declared at five sites across four files that no
+# `uv lock` or `uv export`. So the pin is declared at eight sites across seven files that no
 # tool holds in step, and this script is the one that does.
 #
 # WHAT THIS BINDS — that the declarations agree WITH EACH OTHER:
@@ -20,6 +20,15 @@
 #                               without touching the constraint above it
 #   * audits/render-slop.sh     PLAYWRIGHT_PIN, read by the detector and its operator strings
 #   * audit-render-slop.yml     the CI install step
+#   * audits/CONTEXT.md         the install command an operator is told to run
+#   * workflow 18 STEPS.md      the same command, where the wireframe pass meets it
+#   * 15-TROUBLESHOOTING.md     the same command, where a reader meets the failure
+#
+# THE LAST THREE ARE INSTRUCTIONS, AND THAT IS WHY THEY BELONG HERE. An unpinned
+# `--with playwright` resolves the newest release on every run, so a reader who follows
+# the doc installs a Chromium revision the pinned detector then refuses to use - the doc
+# hands them the exact failure the pin exists to prevent. Pinning them makes them
+# declarations, and a declaration nothing compares is the drift this script was written for.
 #
 # WHAT IT DELIBERATELY DOES NOT BIND — whether that version matches the host's bundle.
 # That is a HOST fact and it is not knowable from this tree: CI runners install their own
@@ -50,6 +59,7 @@ OUTPUT_FILE=""
 QUIET=false
 SELF_TEST=false
 FINDING_COUNT=0
+DECLARED_COUNT=0
 SURFACE_NOTE=""
 declare -a SITES=()
 
@@ -156,6 +166,9 @@ collect_sites() {
   SITES+=("uv.lock resolved package version|$(extract_lock_resolved "$root/uv.lock")")
   SITES+=("audits/render-slop.sh PLAYWRIGHT_PIN|$(extract_spec "$root/code/src/scripts/audits/render-slop.sh")")
   SITES+=("workflows/audit-render-slop.yml install step|$(extract_spec "$root/.github/workflows/audit-render-slop.yml")")
+  SITES+=("audits/CONTEXT.md install instruction|$(extract_spec "$root/code/src/scripts/audits/CONTEXT.md")")
+  SITES+=("workflow 18 STEPS.md install instruction|$(extract_spec "$root/project-management/workflows/18-consolidate-design-work/STEPS.md")")
+  SITES+=("15-TROUBLESHOOTING.md install instruction|$(extract_spec "$root/how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md")")
 }
 
 # Sets FINDING_COUNT and SURFACE_NOTE from the collected sites. Kept separate from
@@ -164,6 +177,7 @@ evaluate_sites() {
   local declared=0 silent=0 missing=0 label version
   local -a versions=()
   FINDING_COUNT=0
+  DECLARED_COUNT=0
   SURFACE_NOTE=""
 
   for entry in "${SITES[@]}"; do
@@ -174,6 +188,7 @@ evaluate_sites() {
       *)           declared=$((declared + 1)); versions+=("$version") ;;
     esac
   done
+  DECLARED_COUNT=$declared
 
   if [[ $declared -eq 0 ]]; then
     SURFACE_NOTE="No site declares a Playwright pin — nothing to compare."
@@ -209,16 +224,18 @@ render_rows() {
 }
 
 # ── Self-test ─────────────────────────────────────────────────────────────────
-# Generated rather than committed: the pair is five short files, and fixtures under
+# Generated rather than committed: the pair is eight short files, and fixtures under
 # `audits/fixtures/` owe rows in a register already under length pressure.
 run_self_test() {
-  local tmp agree_findings drift_findings
+  local tmp agree_findings drift_findings agree_declared expected_sites
   tmp="$(mktemp -d)"
   trap 'rm -rf "$tmp"' EXIT
 
   for variant in agree drift; do
     local d="$tmp/$variant"
-    mkdir -p "$d/code/src/scripts/audits" "$d/.github/workflows"
+    mkdir -p "$d/code/src/scripts/audits" "$d/.github/workflows" \
+      "$d/project-management/workflows/18-consolidate-design-work" \
+      "$d/how-to/src/TEMPLATE-GUIDE"
     local other="1.61.0"
     [[ "$variant" == drift ]] && other="1.62.0"
 
@@ -228,23 +245,35 @@ run_self_test() {
     printf 'PLAYWRIGHT_PIN="playwright==1.61.0"\n' > "$d/code/src/scripts/audits/render-slop.sh"
     printf "        run: uv run --with 'playwright==%s' playwright install\n" "$other" \
       > "$d/.github/workflows/audit-render-slop.yml"
+    printf "uv run --no-project --with 'playwright==1.61.0' playwright install chromium\n" \
+      > "$d/code/src/scripts/audits/CONTEXT.md"
+    printf "(\`uv run --no-project --with 'playwright==1.61.0' playwright install chromium\`).\n" \
+      > "$d/project-management/workflows/18-consolidate-design-work/STEPS.md"
+    printf "uv run --no-project --with 'playwright==1.61.0' playwright install chromium\n" \
+      > "$d/how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md"
   done
 
-  collect_sites "$tmp/agree"; evaluate_sites; agree_findings=$FINDING_COUNT
+  collect_sites "$tmp/agree"; evaluate_sites
+  agree_findings=$FINDING_COUNT; agree_declared=$DECLARED_COUNT
   collect_sites "$tmp/drift"; evaluate_sites; drift_findings=$FINDING_COUNT
+  expected_sites=${#SITES[@]}
 
   log ""
-  log "  self-test: agreeing=$agree_findings finding(s), drifting=$drift_findings finding(s)"
+  log "  self-test: agreeing=$agree_findings finding(s) over $agree_declared/$expected_sites site(s),"
+  log "             drifting=$drift_findings finding(s)"
   log ""
 
-  if [[ $agree_findings -eq 0 && $drift_findings -gt 0 ]]; then
+  # The declared count is asserted, not just the findings. An extractor that silently
+  # stops reading its site leaves that site SILENT rather than wrong, and a clean run
+  # over six of seven sites would otherwise report the detector healthy.
+  if [[ $agree_findings -eq 0 && $agree_declared -eq $expected_sites && $drift_findings -gt 0 ]]; then
     bold "✓ Self-test passed — the detector separates agreement from drift."
-    log "  Five agreeing sites stayed clean; one moved site was caught."
+    log "  All $expected_sites agreeing sites were read and stayed clean; one moved site was caught."
     exit 0
   fi
 
   bold "✗ Self-test FAILED — the detector does not separate the pair."
-  log "  Expected 0 findings on the agreeing tree and >0 on the drifting one."
+  log "  Expected 0 findings over $expected_sites read sites on the agreeing tree, and >0 on the drifting one."
   exit 1
 }
 

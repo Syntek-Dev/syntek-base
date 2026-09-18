@@ -32,6 +32,9 @@ on:
       - "code/src/scripts/audits/render-slop.sh"
       - "code/src/scripts/audits/playwright-pin.sh"
       - ".github/workflows/audit-render-slop.yml"
+      - "code/src/scripts/audits/CONTEXT.md"
+      - "project-management/workflows/18-consolidate-design-work/STEPS.md"
+      - "how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
@@ -40,6 +43,9 @@ on:
       - "code/src/scripts/audits/render-slop.sh"
       - "code/src/scripts/audits/playwright-pin.sh"
       - ".github/workflows/audit-render-slop.yml"
+      - "code/src/scripts/audits/CONTEXT.md"
+      - "project-management/workflows/18-consolidate-design-work/STEPS.md"
+      - "how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md"
   workflow_dispatch:
 
 jobs:

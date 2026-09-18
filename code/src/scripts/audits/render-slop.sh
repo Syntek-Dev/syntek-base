@@ -99,10 +99,18 @@ SIGNATURE_ROUND=10         # px the width is rounded to when forming a signature
 #
 #     Executable doesn't exist at .../chromium_headless_shell-1243/...
 #
-# Keep this in step with .github/workflows/audit-render-slop.yml, which installs the
-# browsers this detector then drives. Pin and installer must name ONE version: pinning
-# only one of them means CI downloads a revision the detector refuses to use, and the
-# gate breaks in CI having been green locally.
+# Seven sites declare this release and `audits/playwright-pin.sh` holds them in step, so
+# move it here and let that gate name the rest. Pin and installer must name ONE version:
+# pinning only one means CI downloads a revision the detector refuses to use, and the gate
+# breaks in CI having been green locally.
+#
+# WHERE THE VALUE COMES FROM IS THE HOST'S, and deliberately not this repository's. The
+# audit compares the declarations to EACH OTHER and never to a machine's browsers, because
+# no such comparison is portable - a CI runner installs its own and has no bundle at all.
+# So when a host's browser bundle moves, the owner of that bundle reports the Playwright
+# release matching its Chromium revision, and that number is what lands on this line. A
+# bundle bump is therefore the one change this gate cannot start; it can only confirm that
+# every site followed.
 PLAYWRIGHT_PIN="playwright==1.61.0"
 PLAYWRIGHT_INSTALL="uv run --no-project --with '$PLAYWRIGHT_PIN' playwright install chromium"
 

@@ -121,7 +121,7 @@ recurring **across the set** — the second is the page-set property nothing els
 reaches. Both are warnings, because a directory or taxonomy screen repeats one card legitimately.
 It needs no stack. If it reports that Chromium is absent it has **measured nothing** — that is not
 a clean run either; install it and re-run
-(`uv run --no-project --with playwright playwright install chromium`).
+(`uv run --no-project --with 'playwright==1.61.0' playwright install chromium`).
 
 ### Step 6 — Regenerate the Deliverables
 
