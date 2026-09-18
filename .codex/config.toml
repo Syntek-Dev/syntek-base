@@ -24,7 +24,7 @@ args = ["-y", "mcp-mermaid"]
 [mcp_servers.mcp-mermaid.env]
 npm_config_ignore_scripts = "true"
 
-# Primary-source reader. `make_request` / `bulk_get` return the page's own markdown or a
+# Primary-source reader. `get` / `bulk_get` return the page's own markdown or a
 # CSS-selected fragment, so a claim is cited to text the model actually read — which
 # WebFetch cannot supply, because it answers a prompt against the page with a small model
 # rather than handing back the source. See .claude/CLAUDE.md Section 3.2, tier 3.

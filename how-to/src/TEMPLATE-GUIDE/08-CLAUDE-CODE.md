@@ -244,11 +244,16 @@ through `code/src/scripts/`.
 | `code-review-graph` | Structural context and impact analysis — cheaper than Grep | `.mcp.json`          |
 | `context7`          | Current library and framework documentation                | `.mcp.json`          |
 | `mcp-mermaid`       | Architecture and flow diagrams                             | `.mcp.json`          |
+| `scrapling`         | Reading a primary source — the page's own markdown         | `.mcp.json`          |
 | `claude-in-chrome`  | Rendered UI inspection and browser automation              | the Chrome extension |
 
-The first three are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
+The first four are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
 gets them, launched on demand through `uvx` and `npx`. The last one is yours to install; nothing
 in the repository supplies it.
+
+**Codex gets the same four from `.codex/config.toml`.** The two files are hand-maintained, neither
+host reads the other's, and `code/src/scripts/audits/mcp-parity.sh` is the only thing holding them
+to the same server set, commands and arguments — so add a server to both or to neither.
 
 **The graph and the layered docs are two views of the same codebase** — machine-derived structure
 and human-curated orientation. Explore with both, and refresh the graph whenever you revise the

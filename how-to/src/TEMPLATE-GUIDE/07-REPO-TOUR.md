@@ -52,7 +52,7 @@ you add a directory, you add both — CI and the documentation gate both check.
 
 ```text
 code/
-├── docs/            ← 37 guides plus 20 sub-directories: architecture, security,
+├── docs/            ← 40 guides plus 21 sub-directories: architecture, security,
 │                      testing, rendering, RLS, tokens, discoverability, visual design
 ├── src/
 │   ├── django/      ← the application
@@ -145,6 +145,41 @@ incident tracker, never in git. The practice is `how-to/docs/INCIDENT-PRACTICE.m
 
 Covered properly in `08-CLAUDE-CODE.md`.
 
+## `.ai/`, `.agents/`, `.codex/` — the same project, a second coding tool
+
+Claude Code is not the only host this repository expects. The rules, the skills and the project
+memory stay where they are, under `.claude/`; these three directories are how another tool reaches
+them without a second copy being written.
+
+```text
+.ai/                ← the shared entry point
+├── CONTEXT.md      ← what is here
+├── CLAUDE.md       ← how to work here
+├── INSTRUCTIONS.md ← how ANY coding tool loads this project: read order, host mapping
+├── skills/         → symlink to .claude/skills/
+└── MEMORY.md       → symlink to .claude/MEMORY.md
+.agents/skills/     ← Codex's skill discovery: one link per first-party skill, plus the
+                      vendored Cloudinary skills, which physically live HERE and are
+                      linked back the other way from .claude/skills/
+.codex/config.toml  ← Codex's own settings and MCP servers
+AGENTS.md           ← root entry point: read .ai/INSTRUCTIONS.md, then work
+```
+
+**The links are the point.** Editing a skill means editing `.claude/skills/<name>/SKILL.md` — the
+one physical file every host resolves to. Replacing a link with a copy is how the two tools start
+disagreeing about what the project's rules are.
+
+**MCP configuration is the one duplication a link cannot resolve**, because the formats differ and
+neither host reads the other's file. `.mcp.json` and `.codex/config.toml` must declare the same
+servers, commands and arguments; `code/src/scripts/audits/mcp-parity.sh` is the gate that says so.
+Per-host supervision keys — Codex's `startup_timeout_sec`, Claude's `${VAR}` interpolation — are
+expected to differ and are not drift.
+
+`.ai/INSTRUCTIONS.md` also carries the translation table for procedures written in Claude's
+vocabulary: what `model: opus`, an `Agent` dispatch, a `Workflow`, an `@` import or a `/skill`
+invocation mean in a host that has none of them. A procedure keeps its steps, gates and required
+independence whichever tool executes it.
+
 ## The four scratch directories
 
 Not a layer — four working areas at the root, each written by one skill and read by nobody else:
@@ -173,7 +208,8 @@ note answering a question about the template means nothing in a project built fr
 | `VERSION`                                             | The single source of truth — a new project starts at `0.1.0`        |
 | `CHANGELOG.md` · `RELEASES.md` · `VERSION-HISTORY.md` | The three version logs, all seeded empty                            |
 | `install.sh`                                          | Toolchain bootstrap                                                 |
-| `.mcp.json`                                           | The three repo-scoped MCP servers                                   |
+| `.mcp.json`                                           | The four repo-scoped MCP servers (mirrored in `.codex/config.toml`) |
+| `AGENTS.md`                                           | Codex's entry point into the shared instructions in `.ai/`          |
 | `.copier-answers.yml`                                 | Your generation answers — **commit this**, `copier update` needs it |
 
 ---

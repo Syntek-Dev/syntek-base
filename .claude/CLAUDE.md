@@ -163,13 +163,13 @@ nothing reads it on the next task and no gate applies to it.
 
 | Server              | When to use                                                                                  | How you get it                                                              |
 | ------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       | Configured in `.mcp.json`                                                   |
-| `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | Configured in `.mcp.json`                                                   |
-| `mcp-mermaid`       | Architecture and flow diagrams.                                                              | Configured in `.mcp.json`                                                   |
+| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       | `.mcp.json` + `.codex/config.toml`                                          |
+| `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | `.mcp.json` + `.codex/config.toml`                                          |
+| `mcp-mermaid`       | Architecture and flow diagrams.                                                              | `.mcp.json` + `.codex/config.toml`                                          |
 | `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. | **Install the Claude Chrome extension and pair it** — no config supplies it |
 | `scrapling`         | **Reading** a primary source at tier 3 below — the page's own markdown, not a summary.       | `.mcp.json` + `.codex/config.toml`                                          |
 
-**Two servers, two config files, and they must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
+**Every server is declared twice, and both declarations must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
 is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule: `.ai/INSTRUCTIONS.md`
 → _Maintain one source_). **`get` is the default tier** — it returns the page's own
 markdown with no browser, and it is what 3.2 below means by _read_. The browser-backed tools
