@@ -39,7 +39,10 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
    official documentation, the library's own source, the specification or RFC, the standard
    (OWASP, NIST, ICO, WCAG). Treat a blog or write-up as a scout that points at the primary,
    never as the authority you cite. **Read it with the `scrapling` MCP** (`get`, or a
-   `css_selector` for one section), which returns the page's own markdown; `WebFetch` answers a
+   `css_selector` for one section), which returns the page's own markdown. Escalate only when a
+   tier returns nothing usable: `fetch` for a source that arrives as an empty shell, then
+   `stealthy_fetch` for one that answers with a challenge — and only for a source the project is
+   entitled to read. A source that refuses all three is reported unavailable, not worked around; `WebFetch` answers a
    prompt against the page with a small fast model, so citing a claim to it cites a paraphrase
    nobody read. `WebSearch` finds the source, `scrapling` reads it (`.claude/CLAUDE.md` Section 3.2).
    _Completion:_ every claim traces to a primary source, and none rests on a secondary write-up

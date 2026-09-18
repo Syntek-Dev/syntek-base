@@ -1,0 +1,66 @@
+# Playwright pin guard — the CI half of code/src/scripts/audits/playwright-pin.sh.
+#
+# Playwright ties each release to an exact Chromium revision. A host supplying its browsers as a
+# bundle ships one set of revisions, so only the release whose revisions match it can launch —
+# every other release fails at runtime with "Executable doesn't exist at .../chromium-<rev>".
+# `UV_CONSTRAINT` is not read by `uv run`, `uv sync` or `uv lock`, so that release is declared in
+# four files no tool holds in step, and drift between them is invisible until a browser refuses.
+#
+# THIS RUNS ON A RUNNER WITH NO BUNDLE, AND THAT IS THE POINT. The script deliberately compares the
+# declarations only against EACH OTHER, never against a host's browsers — a bundle check would fail
+# on every ubuntu-latest runner and on every generated project whose hosts install their own. The
+# host owns detecting its own drift. CI owns catching a site someone forgot to move.
+#
+# PATH-FILTERED, AND HERE THAT IS HONEST — the same reasoning as audit-mcp-parity.yml. This reads
+# five declarations at fixed paths, so a run triggered by anything else reproduces the previous
+# result. The script is in the filter because a change to the comparison can turn a passing set
+# into a failing one without any declaration moving.
+#
+# NOT ELIGIBLE FOR THE REQUIRED SET while it carries this filter. Criterion 1 of
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → What earns a place in the required set
+# asks that a check execute on every pull request; a path-filtered workflow does not run at all on
+# a PR that touches none of these files, and a required check that never runs blocks the merge
+# queue. Drop the filter first if it is ever wanted there.
+name: Audit — Playwright Pin
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "pyproject.toml"
+      - "uv.lock"
+      - "code/src/scripts/audits/render-slop.sh"
+      - "code/src/scripts/audits/playwright-pin.sh"
+      - ".github/workflows/audit-render-slop.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "pyproject.toml"
+      - "uv.lock"
+      - "code/src/scripts/audits/render-slop.sh"
+      - "code/src/scripts/audits/playwright-pin.sh"
+      - ".github/workflows/audit-render-slop.yml"
+  workflow_dispatch:
+
+jobs:
+  playwright-pin:
+    name: Playwright pin agreement audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # grep, sed and awk only — no Python, no uv, no browser. The audit is a text comparison
+      # across five files, so it needs nothing the runner does not already have.
+      - name: Prove the detector still separates agreement from drift
+        run: bash code/src/scripts/audits/playwright-pin.sh --self-test
+
+      - name: Run Playwright pin audit
+        run: bash code/src/scripts/audits/playwright-pin.sh --output md
+
+      - name: Upload Playwright pin report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-pin-report
+          path: code/src/scripts/audits/reports/playwright-pin-report.md
+          if-no-files-found: ignore

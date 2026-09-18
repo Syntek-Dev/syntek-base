@@ -43,7 +43,10 @@ launching environment, with no secret value stored in the repository.
 
 `scrapling` is the tier-3 reader in `.ai/INSTRUCTIONS.md`'s lookup order: it returns a
 page's own markdown, or a `css_selector` fragment of it, so a claim is cited to text that
-was actually read. **Default to `get`** — it needs no browser. The browser-backed
+was actually read. **Default to `get`** — it needs no browser. Climb only on failure:
+`fetch` renders what `get` returns as an empty shell, and `stealthy_fetch` is the anti-bot tier
+for a source this project is entitled to read that answers `fetch` with a challenge — a standard,
+a changelog, an advisory, never a paywall or a login. The browser-backed
 tools are host-dependent: Playwright pins an exact Chromium _revision_ per release, so they
 run only where the host supplies that revision and otherwise fail at runtime. That is
 provisioning rather than a broken dependency — say the tier was unavailable instead of

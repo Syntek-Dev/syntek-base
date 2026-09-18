@@ -61,7 +61,14 @@ pre-commit:
         - ".agents/**"
         - ".ai/skills/**"
         - ".ai/MEMORY.md"
-      run: pnpm exec markdownlint-cli2 {staged_files}
+      # --no-globs is load-bearing. .markdownlint-cli2.jsonc carries a top-level `globs`
+      # of **/*.md, which markdownlint-cli2 MERGES with the arguments it is given - so this
+      # leg linted the whole tree regardless of {staged_files}, and any dirty .md anywhere
+      # blocked every unrelated commit. Measured 17/09/2026: an untracked handoff from a
+      # parallel session blocked an infra commit that touched none of it. Whole-tree
+      # coverage is not lost; .github/workflows/syntax-markdown.yml runs `pnpm lint:md`
+      # over everything. The flag drops `globs` only - the `ignores` exclusions still apply.
+      run: pnpm exec markdownlint-cli2 --no-globs {staged_files}
 
     # code-review-graph advisory risk analysis of the staged change; never blocks the commit
     # (|| true). Replaces the raw hook `code-review-graph install` appends to

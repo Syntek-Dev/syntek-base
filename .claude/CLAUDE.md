@@ -178,8 +178,11 @@ _revision_ per release, so they run only where the host supplies that revision a
 at runtime with `Executable doesn't exist at .../chromium-<rev>`. **That is provisioning, not a
 repository gap** — report the tier unavailable (`code/docs/GATE-REPORTING.md`) rather than loosen a
 pin or fall back to `WebFetch`, which paraphrases and so cannot cite a primary source.
-`stealthy_fetch` is the anti-bot tier and has no routine use here; reaching for it is a decision,
-not an escalation.
+**The three readers are an escalation ladder, climbed only on failure.** `get` is the default and
+needs no browser; `fetch` renders what `get` returns as an empty shell; `stealthy_fetch` is the
+anti-bot tier, for a source this project is **entitled** to read that answers `fetch` with a
+challenge. Entitled is the limit — a public standard, a vendor changelog, an advisory; never a
+paywall, a login or a rate limit, which are access controls rather than incidental protection.
 
 ### 3.2 How to look something up
 
