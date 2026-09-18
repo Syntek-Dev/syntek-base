@@ -1,10 +1,10 @@
 # ADR-US008: The cookie advisory is keyed where it ships, and that key is the first minor one
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 09/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** —
-**Superseded by:** —
+**Superseded by:** `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`
 **Related:** US008 · `project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` (the story's second record, on the scoped citation baseline; decides nothing argued here)
 
 ---

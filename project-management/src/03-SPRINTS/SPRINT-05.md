@@ -35,8 +35,12 @@ moment nobody chose.
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
-**Timeline:** TBD · **Capacity:** **8 SP Must + 3 SP Should = 11 / 11 SP** — at capacity, two
-members, a stretch tier, no grace taken, and **CLOSED to further admission**. See Notes.
+**Timeline:** TBD · **Capacity:** **8 SP Must + 5 SP Should = 13 / 11 SP** — at the **grace
+ceiling**, two members, a stretch tier, **the full 2 SP of grace taken**, and **CLOSED to further
+admission**. See Notes. Recomputed 17/09/2026 on US009's re-estimate from 3 to 5 SP; the record
+stood at `11 / 11 SP, no grace taken` from 17/09/2026 until that gate closed the same day.
+`.claude/skills/sprint/SKILL.md` notes that a sprint **habitually** running to grace means the
+ceiling is wrong — this is the first, and a second is the signal rather than this one.
 
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story
      admitted, never edit it directly.
@@ -92,10 +96,23 @@ members, a stretch tier, no grace taken, and **CLOSED to further admission**. Se
 | ID    | Title                                                                                                  | MoSCoW      | SP  |
 | ----- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
 | US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 3   |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 5   |
 
-**Total:** 11 SP — **8 committed, 3 stretch.** Rows listed in build order. The all-`Must` shape
+**Total:** 13 SP — **8 committed, 5 stretch.** Rows listed in build order. The all-`Must` shape
 this record opened with on 09/09/2026 is repaired rather than inherited; see Notes.
+
+<!-- RECOMPUTED 17/09/2026 at `15-decisions`. US009 moved 3 -> 5 SP: its AC-GAP-1 found the story
+     as specified did not deliver its own User Story, and
+     project-management/src/15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md
+     removes `package.json`'s `prepare` to fix that. US008 HOLDS at 8 despite three decisions
+     widening it, stated in that story's own estimate comment as a wide 8 rather than absorbed —
+     Fibonacci offers nothing between 8 and 13, and STORIES.md makes 13 an epic that returns to the
+     map to be re-cut.
+
+     This record therefore moves from 11 / 11 to 13 / 11, taking the full 2 SP of grace. The
+     capacity line below is updated with it. Recomputing the table on a member's re-estimate is the
+     rule at the head of the FLAGS block applied to points rather than flags: the capacity is
+     computed FROM this table, so a stale row understates the sprint. -->
 
 <!-- US008 is added to this table rather than referenced from it because SPRINTS.md computes the
      flag union and the capacity FROM this table, and a story in no Story Summary is counted
