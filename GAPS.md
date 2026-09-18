@@ -729,3 +729,34 @@ needs nothing from the existing gate. The obligation to hand-update all five is 
 `project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
 This entry retires when a gate fails on a divergent register, or when the register collapses to
 one canonical copy the other records cite.
+
+---
+
+## 18/09/2026 — Codex's instruction budget is already exceeded in 65 of 355 directories
+
+**Type:** Active gap
+**Summary:** Codex builds its instruction chain from the project root **down to the working
+directory**, taking at most one file per directory in the order `AGENTS.override.md` →
+`AGENTS.md` → any name in `project_doc_fallback_filenames`, and it **stops adding files once the
+combined size reaches `project_doc_max_bytes`, which defaults to 32 KiB**
+(`https://developers.openai.com/codex/agent-configuration/agents-md`, read 18/09/2026). Because
+the merge runs root-first, the file dropped when the budget runs out is the one **closest to the
+work** — the most specific guidance, not the most general. This repository sets
+`project_doc_fallback_filenames = ["CLAUDE.md"]` in `.codex/config.toml`, which pulls
+`.claude/CLAUDE.md` into the chain for any session launched under `.claude/`. That file is
+**26.2 KiB — 82% of the entire budget on its own**. Measured 18/09/2026 by walking all 355
+directories and summing each chain under Codex's documented rules: **65 exceed 32 KiB**, every one
+of them under `.claude/`, the worst being `.claude/hooks/lib` and `.claude/hooks` at 34.9 KiB,
+where `.claude/hooks/CLAUDE.md` is the file silently dropped. A root-launched session is fine at
+3.9 KiB (12%); the median chain is 18.1 KiB. Nothing reports this — Codex drops the file without
+an error, which is the `code/docs/GATE-REPORTING.md` failure class: the run looks complete and is
+not.
+**Blocked by / Action:** Nothing blocks it, and two repairs exist at different depths. The
+**immediate** one is a one-line change to `.codex/config.toml` — raise `project_doc_max_bytes`
+above the worst measured chain — which buys time without deciding anything and should not be
+mistaken for the fix. The **principled** one is `MAP-INSTRUCTION-DELIVERY.md` slice **S-02**:
+`.claude/CLAUDE.md` carries neutral doctrine that belongs in the shared layer, and an adapter thin
+enough to be a per-host file is also thin enough to fit a per-host budget. Note that raising the
+limit does not make the chain measurable — nothing in this repository counts it, so the gate the
+map's S-05 specifies is what stops this recurring. This entry retires when no directory's chain
+exceeds the configured limit **and** a gate fails when one does.
