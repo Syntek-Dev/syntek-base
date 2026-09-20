@@ -4,7 +4,7 @@
 | ------------- | ------------------------------------------------------------------------------------------------------- |
 | **Story**     | US009 — The git hooks arm on purpose at install, and the README claim that they already do becomes true |
 | **Date**      | 17/09/2026                                                                                              |
-| **Sprint**    | SPRINT-05 — this story is its stretch `Should`, 3 of 11 SP                                              |
+| **Sprint**    | SPRINT-05 — this story is its stretch `Should`, 5 of 13 SP                                              |
 | **Wireframe** | N/A — this story ships bash and one JSON manifest read, not a screen                                    |
 | **Status**    | Reviewed — all nine gaps resolved into the story, 17/09/2026                                            |
 
@@ -26,6 +26,13 @@
      code/docs/GATE-REPORTING.md: the absence of the interview is stated, not implied. -->
 
 ---
+
+<!-- 20/09/2026: this header read "3 of 11 SP" from 17/09/2026 until today. The story was
+     re-estimated 3 -> 5 SP at `15-decisions` on 17/09/2026 and SPRINT-05 recomputed to 13 / 11 at
+     grace the same day; the two figures here were not carried across.
+     `../../../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` already recorded the divergence as
+     known; this is the repair it was waiting for. Surfaced by an independent QA pass at
+     `03-sprint-planning` while opening SPRINT-06 and SPRINT-07. -->
 
 ## 1. Acceptance criteria gaps
 
