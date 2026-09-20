@@ -331,7 +331,14 @@ Statuses`, a section that does not exist:
   `**Status:** Planned` line in `SPRINT-00-TEMPLATE.md` and in `../03-SPRINTS/SPRINT-01.md` to
   `../03-SPRINTS/SPRINT-04.md` — route to `SPRINTS.md` -> _Sprint statuses_ instead of to the
   skill, so no comment points at a section that no longer states the set. **This is the only edit
-  the four live sprint records take from this story.**
+  the live sprint records take from this story.**
+  <!-- 20/09/2026: read "the four live sprint records" until SPRINT-06 and SPRINT-07 were opened,
+       taking them to seven. THE EDIT SET GROWS WITH THEM. Measured that day: all seven records AND
+       SPRINT-00-TEMPLATE.md carry the ownership comment routed to
+       `.claude/skills/completion/SKILL.md`, the form this story replaces — so the "five ownership
+       comments" figure above is stale too, and the real population is EIGHT. It is de-numbered
+       here rather than re-numbered, because this story has not been built and the count will move
+       again with the next record. Count at implementation time. -->
 - `23-pr-and-review/CHECKLIST.md` gains a box for the `In Review` write its Step 3 orders and the
   `Completed` / `Accepted` write its Step 5 orders; `24-release/CHECKLIST.md` gains one for the
   `Closed` write. A write a `STEPS.md` orders is a write its `CHECKLIST.md` checks.
@@ -973,8 +980,11 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
       explicit statement that the table is a declaration of authority and not a definition
 - [ ] The three stale `PLANNING-GUIDE.md → Story Statuses` routes reach
       `planning/STORIES.md` -> _Story statuses_, with the heading's lower-case `statuses`
-- [ ] The five sprint ownership comments route to `SPRINTS.md` -> _Sprint statuses_ — and the four
-      live sprint records take **no other edit** from this story
+- [ ] **Every** sprint ownership comment routes to `SPRINTS.md` -> _Sprint statuses_ — and the live
+      sprint records take **no other edit** from this story. **Count them at implementation time,
+      never from a literal in this plan**: the comment stood in five places when this plan was
+      written (the template plus SPRINT-01 to SPRINT-04) and in **eight** on 20/09/2026, SPRINT-05,
+      SPRINT-06 and SPRINT-07 each having been opened carrying the form this story replaces
 - [ ] `23-pr-and-review/CHECKLIST.md` and `24-release/CHECKLIST.md` each gain a box for the writes
       their `STEPS.md` order
 - [ ] The four shipped surfaces are board-neutral and marked: `SPRINT-00-TEMPLATE.md`,
