@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 11/09/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 20/09/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -701,13 +701,21 @@ re-measure pass has cleared all three.
 
 ---
 
-## 17/09/2026 — the backlog register is five hand-maintained copies with no gate behind it
+## 17/09/2026 — the backlog register is a set of hand-maintained copies with no gate behind it
+
+<!-- HEADING DE-NUMBERED 20/09/2026. It read "is **five** hand-maintained copies" from
+     17/09/2026 until that day, when SPRINT-06 and SPRINT-07 took the register to seven and the
+     count in the heading went stale — the exact defect the same change stripped out of seven sprint
+     records and `project-management/src/03-SPRINTS/CLAUDE.md`. De-numbered rather than re-numbered,
+     so the eighth record does not buy it a third time. The count lives in the register table.
+     `project-management/src/01-FEATURE-MAPS/MAP-INSTRUCTION-DELIVERY.md` quotes this title and is
+     left to the session that owns `01-FEATURE-MAPS/`. -->
 
 **Type:** Active gap
 **Summary:** Every `SPRINT-##.md` under `project-management/src/03-SPRINTS/` now carries the same
 backlog register — one row per live record, its members in build order, its capacity and its
-admission posture — and the five copies are meant to be identical. **Nothing checks that they
-are.** `code/src/scripts/audits/doctrine-drift.sh` is the audit built for exactly this defect
+admission posture — and every copy is meant to be identical. <!-- 20/09/2026: read "and the five
+     copies" until the register reached seven. --> **Nothing checks that they are.** `code/src/scripts/audits/doctrine-drift.sh` is the audit built for exactly this defect
 class, "a rule restated in two guides is not redundancy, it is a fork", and it cannot see these
 tables on two independent counts: it reads **fenced code blocks only** by design ("Prose is free;
 examples are the contract"), and a markdown table in prose is not fenced; and its `SCAN_DIRS` is
@@ -724,11 +732,45 @@ repairs are available and the second is the cheaper one to reach for first: (1) 
 mode, which is a change to the scanner's core assumption and should not be undertaken lightly;
 (2) a new single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register
 from every `SPRINT-##.md` and fails when any two differ — no new doctrine, one comparison, and it
-needs nothing from the existing gate. The obligation to hand-update all five is written in
+needs nothing from the existing gate. The obligation to hand-update **every** copy is written in
 `project-management/src/03-SPRINTS/CLAUDE.md` and the rule in
 `project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
+
+<!-- 20/09/2026: this sentence read "The obligation to hand-update **all five**", which by that
+     date attributed to `project-management/src/03-SPRINTS/CLAUDE.md` a five-copy obligation the
+     same change had just deleted from it — that file now reads "Every live record carries the same
+     backlog register". A gap entry citing a claim its own change removed is the drift this entry
+     exists to catch, turned on itself. -->
+
 This entry retires when a gate fails on a divergent register, or when the register collapses to
 one canonical copy the other records cite.
+
+**It fired on 20/09/2026, three days after it was filed — and on an axis neither proposed repair
+can see.** `SPRINT-06` and `SPRINT-07` were opened at `03-sprint-planning`, which meant editing
+the register in every copy, and the `SPRINT-05` row was found stale in **all five**: it read
+"US009 (`Should`, 3, stretch)" and "11 / 11 — at capacity, closed" while
+`project-management/src/03-SPRINTS/SPRINT-05.md`'s own capacity line read **13 / 11 at the grace
+ceiling**. US009's re-estimate from 3 to 5 SP on 17/09/2026 moved that record's header, Story
+Summary and Total in the same change that first wrote the five-copy register, and never reached
+the register itself.
+
+**The five copies were byte-identical to one another throughout.** The divergence was
+register-versus-**record**, not copy-versus-copy — so proposed repair (2) above, "a new
+single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register from every
+`SPRINT-##.md` and fails when any two differ", **would have stayed green through this**. It is
+still the cheaper repair and is still worth writing, but it is not sufficient on its own: whatever
+gate lands has to compare each row against the capacity line and Story Summary of the record it
+names, which is the harder half. Recorded here rather than only in the sprint records, because the
+proposal it qualifies lives in this entry.
+
+Repaired in the same change, along with a second finding of the same class in the same file: four
+further sites in `project-management/src/03-SPRINTS/SPRINT-05.md` carried the pre-re-estimate
+figures, and a fifth denied the existence of
+`project-management/src/16-SPRINT-PLANS/05-SPRINT-PLAN-05.md`, which had been written later the
+same day. **The register's prose also lost its hardcoded count of five**, which this change would
+have made seven; `project-management/docs/planning/SPRINTS.md`'s own rule was already count-free
+and the records had added a count it never had. The register now stands at **seven copies**, and
+the count lives only in the table.
 
 ---
 

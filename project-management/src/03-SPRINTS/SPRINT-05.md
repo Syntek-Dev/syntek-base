@@ -1,6 +1,6 @@
 # SPRINT-05
 
-**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 20/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -254,24 +254,46 @@ has none, and the only alternative is a `Must` story in no Story Summary, counte
 arithmetic rather than a call, and it is recorded as arithmetic — the way SPRINT-03 recorded
 US006's refusal on 05/09/2026.
 
-**The backlog register.** Every live record carries this table and all five copies are identical;
+**The backlog register.** Every live record carries this table and the copies are identical;
 **this record is `SPRINT-05`**. It became a live register on 17/09/2026, when US009 was placed into
 SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
 07/09/2026 cascade alone.
 
-| Sprint      | Members, in build order                                         | SP                                |
-| ----------- | --------------------------------------------------------------- | --------------------------------- |
-| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
-| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
-| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
-| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+| Sprint      | Members, in build order                                         | SP                                                          |
+| ----------- | --------------------------------------------------------------- | ----------------------------------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                                            |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
+| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-07` | US011 (`Should`, 8)                                             | 8 / 11 — open, `Must` tier absent                           |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
-capacity change is written into all five in the same change. It is maintained by hand — no gate
+capacity change is written into every copy in the same change. It is maintained by hand — no gate
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS ADDED AND ONE REPAIRED, 20/09/2026 at 03-sprint-planning. `SPRINT-06` (US010, `Must`,
+     8, holding US009's reserved carry) and `SPRINT-07` (US011, `Should`, 8, open with no `Must`
+     tier) were opened that day from the slice split `02-story-creation` made on
+     project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md.
+
+     The `SPRINT-05` row was STALE IN EVERY COPY and is repaired in the same change: it read
+     "US009 (`Should`, 3, stretch)" and "11 / 11 — at capacity, closed" while that record's own
+     capacity line read 13 / 11 at the grace ceiling. US009's re-estimate from 3 to 5 SP on
+     17/09/2026 moved the record's header, Story Summary and Total and never reached the register.
+     All copies agreed with each other and all of them disagreed with their source — which is
+     `GAPS.md`'s entry of 17/09/2026 firing three days after it was filed, on an axis its own
+     proposed repair could not see: a script comparing copies to one another would have stayed
+     green. Noted in that entry on 20/09/2026.
+
+     The prose above also lost its hardcoded count of five, which this change would have made
+     seven. project-management/docs/planning/SPRINTS.md's rule was already count-free — "written
+     into every copy in the same change" — and the records had added a count it never had; the
+     wording is now the guide's, so the eighth record does not buy the same defect again. Full
+     reasoning: project-management/src/03-SPRINTS/SPRINT-06.md -> Notes, the register comment. -->
 
 <!-- This record carried no such table until 17/09/2026: the arithmetic table above is a dated
      09/09/2026 measurement of where an 8 SP `Must` could go, not a backlog view, and it is left
@@ -295,16 +317,27 @@ the plan, recorded the way SPRINT-03 recorded the same shape on 07/09/2026: "the
 and this record has no other give it can honestly hold".
 
 **The weakness is repaired, by the story the paragraph above was waiting for (17/09/2026).** US009
-— `Should Have`, 3 SP, cut that day from `MAP-GATE-PARITY.md` `S-11` — is admitted as this
-record's stretch tier, and the `Must` tier stays at 8. That is the distinction the arithmetic
-objection turns on and it is worth stating plainly: **capacity headroom and MoSCoW give are not
-the same quantity.** Admitting US009 spends the 3 SP of headroom and takes the `Should` tier from
-**zero to 3 SP**, so the record gains the droppable work whose absence
+— `Should Have`, 5 SP after the re-estimate it took the same day, cut that day from
+`MAP-GATE-PARITY.md` `S-11` — is admitted as this record's stretch tier, and the `Must` tier stays
+at 8. That is the distinction the arithmetic objection turns on and it is worth stating plainly:
+**capacity headroom and MoSCoW give are not the same quantity.** Admitting US009 spends the 3 SP
+of headroom and the full 2 SP of grace above it, and takes the `Should` tier from **zero to
+5 SP**, so the record gains the droppable work whose absence
 `project-management/docs/planning/SPRINTS.md` -> _MoSCoW_ names as the defect — "If every story is
-Must, the sprint has no give and the first surprise breaks it." A record at 11 / 11 with 3 SP of
+Must, the sprint has no give and the first surprise breaks it." A record at 13 / 11 with 5 SP of
 `Should` has give; a record at 8 / 11 with none has headroom and no give. The shape is SPRINT-02's
 exactly — a `Must` plus a `Should` stretch — and this record's own reading below already blessed a
 larger version of it.
+
+<!-- ARITHMETIC CORRECTED 20/09/2026 at 03-sprint-planning (Q3). The paragraph above was written
+     on 17/09/2026 before US009's re-estimate closed later the same day, and it stated 3 SP, "zero
+     to 3 SP" and "a record at 11 / 11" throughout — figures this record's own capacity line had
+     already moved to 5 and 13 / 11. Its ARGUMENT is untouched and is the reason the paragraph is
+     corrected rather than struck: capacity headroom and MoSCoW give are different quantities, and
+     admitting a `Should` buys give rather than merely spending room. Previous wording, verbatim:
+     "US009 — `Should Have`, 3 SP, cut that day ... Admitting US009 spends the 3 SP of headroom and
+     takes the `Should` tier from zero to 3 SP ... A record at 11 / 11 with 3 SP of `Should` has
+     give". -->
 
 <!-- The one condition this repair does not meet, stated rather than glossed. The paragraph below
      reserved the give for "a `Should` that arrives and clears the specify tier", and US009 was
@@ -319,11 +352,17 @@ larger version of it.
      specify tier does gate is the sprint PLAN, not the record's membership; that separation is
      the paragraph on the plan below. -->
 
-**Capacity: 11 / 11 — at capacity, no grace taken, 8 committed and 3 stretch (17/09/2026).** The
-paragraph below is the figure this record opened on and the sourcing of the two numbers, which is
-unchanged; only the used side has moved, from 8 to 11, on US009's admission. There is nothing left
+**Capacity: 13 / 11 — at the grace ceiling, the full 2 SP of grace taken, 8 committed and 5
+stretch (17/09/2026; arithmetic corrected 20/09/2026).** The paragraph below is the figure this
+record opened on and the sourcing of the two numbers, which is unchanged; only the used side has
+moved, from 8 to 13, on US009's admission and its re-estimate the same day. There is nothing left
 to call out as under-capacity: `SPRINTS.md` -> _Capacity_ asks that an under-filled record explain
-itself rather than pad, and this one is now full.
+itself rather than pad, and this one is past full.
+
+<!-- CORRECTED 20/09/2026 (Q3). Read "**Capacity: 11 / 11 — at capacity, no grace taken, 8
+     committed and 3 stretch (17/09/2026).**" and "only the used side has moved, from 8 to 11" from
+     17/09/2026 until that day — against a header capacity line that had been recomputed to 13 / 11
+     at grace in the same hour. The header moved and this paragraph did not. -->
 
 **As opened, 09/09/2026 — 8 / 11, inside capacity, no grace taken, and under capacity by 3 SP,
 called out rather than padded.** `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the
@@ -340,15 +379,23 @@ an under-filled one." This sprint lands on 8 because the next story does not exi
 same case. `SPRINTS.md` -> _Capacity_ asks that an under-capacity sprint be called out in the
 notes rather than padded; called out here.
 
-**CLOSED to further admission, at capacity and with the stretch tier filled (17/09/2026).** The
-first of the three bullets below is the one that fired: US009 is 3 SP and went in inside capacity.
-The record now stands at 11 / 11 with 2 SP to the grace ceiling, and that 2 SP is reserved for
-nothing. `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_ is the
-reason: grace "exists for one situation — the next story would overshoot, and splitting it would
-produce two halves that make no sense alone", and "a sprint that habitually runs to it means the
-capacity figure is wrong". Holding 2 SP open invites exactly that, on a record that has what it
-needs. Closed by decision, on SPRINT-01's precedent of 07/09/2026 and SPRINT-03's of 05/09/2026 —
-a ledger is closed by a call, not only by a ceiling.
+**CLOSED to further admission, at the grace ceiling and with the stretch tier filled
+(17/09/2026).** The first of the three bullets below is the one that fired: US009 entered at 3 SP
+inside capacity and was re-estimated to 5 later the same day, which took the record through
+capacity and on to the grace ceiling. It now stands at 13 / 11 with **nothing above it**.
+`project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_ is the reason
+nothing further is admitted: grace "exists for one situation — the next story would overshoot, and
+splitting it would produce two halves that make no sense alone", and "a sprint that habitually
+runs to it means the capacity figure is wrong". This record is the second to take it, after
+SPRINT-04; a third is the signal that the ceiling is wrong rather than the exception. Closed by
+arithmetic and by decision both, on SPRINT-01's precedent of 07/09/2026 and SPRINT-03's of
+05/09/2026 — a ledger is closed by a call, not only by a ceiling.
+
+<!-- CORRECTED 20/09/2026 (Q3). Read, from 17/09/2026: "at capacity and with the stretch tier
+     filled ... US009 is 3 SP and went in inside capacity. The record now stands at 11 / 11 with 2
+     SP to the grace ceiling, and that 2 SP is reserved for nothing ... Holding 2 SP open invites
+     exactly that, on a record that has what it needs." The re-estimate spent that 2 SP later the
+     same day, so the paragraph argued for refusing to hold open room the record no longer had. -->
 
 **As opened, 09/09/2026 — open to admission, with nothing to admit, and what would change that.**
 Arithmetic: 3 SP inside capacity, 5 SP to the grace ceiling. Availability: US008 was the only
@@ -375,38 +422,70 @@ plan is written_: "resolve it or drop it back to the backlog rather than plannin
 it"). The three uncut slices on `MAP-SUBDOMAIN-ROUTING.md` were the obvious candidates on the day
 this record opened; none is a story, and this record pre-counts none.
 
-**No 05-SPRINT-PLAN-05.md is written, and its absence is by rule, not omission — but the rule
-that supplies the absence changed on 17/09/2026, and this paragraph is rewritten rather than left
-to read as though it had not.** Until that day the argument was the fill level: at 8 / 11 the
-sprint was not full, and capacity is the fill trigger. US009's admission takes the record to
-11 / 11, which **is** the trigger
-(`project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_: at capacity,
-"the sprint is full. Stop planning stories; plan the sprint"), so that argument is spent and the
-plan would appear to be owed. It is not, and the reason is that **the record's ledger and the
-plan's count are two different numbers.**
+**`05-SPRINT-PLAN-05.md` was written on 17/09/2026 — later the same day this paragraph denied it,
+and the denial stood here until 20/09/2026.** The plan exists at
+`project-management/src/16-SPRINT-PLANS/05-SPRINT-PLAN-05.md`, written by a `16-sprint-plans` run
+"immediately after `15-decisions` closed for both members" in its own words, and both story plans
+followed at `08-` and `09-`. **The specify tier's artefacts all exist for both members, and one
+leg of it is not yet signed off** — measured 20/09/2026, and stated as two facts rather than one so
+neither is read as the other:
 
-- **The ledger counts every admitted story: 11.** `project-management/docs/planning/SPRINTS.md` ->
+- **Present and reviewed.** `15-decisions` has run — US008 carries five ADRs and US009 one under
+  `project-management/src/15-DECISIONS/`. Gate `11` has closed: both QA plans under
+  `project-management/src/11-QA/PLANNING/` read `Reviewed`, with all ten and all nine `AC-GAP`
+  entries resolved into their stories. GDPR, SEO, API and Logging are skipped by flag for both.
+- **Present and NOT yet signed off.** All four `10-SECURITY` artefacts — a threat model and an
+  assessment per member — read `**Status:** Draft`, and both US009 ones say in terms that they are
+  not yet reviewed by <%DEVELOPER_NAME%>. `project-management/docs/planning/CADENCE.md` requires the
+  security threat model and assessment **complete**, not merely written, so **gate `10` is
+  outstanding for both members**. Per `code/docs/GATE-REPORTING.md` that is reported here rather
+  than folded into the sentence above: an artefact existing is not a gate passing.
+
+**The distinction below still holds, and this record has simply moved to the other side of it: the
+record's ledger and the plan's count are two different numbers.** Until 17/09/2026 the argument for
+the plan's absence was the fill level — at 8 / 11 the sprint was not full, and capacity is the fill
+trigger. US009's admission and re-estimate took the record to 13 / 11, which is **past** the
+trigger (`project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_: at
+capacity, "the sprint is full. Stop planning stories; plan the sprint"), and the plan followed
+within the day.
+
+- **The ledger counts every admitted story: 13.** `project-management/docs/planning/SPRINTS.md` ->
   _Two artefacts, two moments_ makes the record "the running ledger — it accumulates stories with
   their points", opened early, and `CADENCE.md`'s per-story loop runs gate `03` second, so a story
   is admitted at cutting and the ledger moves then.
-- **The plan counts only stories that have cleared the specify tier: 0.** `CADENCE.md` -> _When a
-  sprint plan is written_ names the prerequisites that must hold for **every story in the filling
-  sprint** — `15-decisions` cleared, GDPR review, security threat model and assessment, a QA plan
-  with no unresolved `AC-GAP`, an SEO plan or `SEO: N/A` with a reason, an API contract or no
-  Ninja surface — and closes: "A story that cannot satisfy these is **not ready to be counted
-  towards the sprint**." Neither member satisfies them.
+- **The plan counts only stories that have cleared the specify tier: 13, since 17/09/2026.**
+  `CADENCE.md` -> _When a sprint plan is written_ names the prerequisites that must hold for
+  **every story in the filling sprint** — `15-decisions` cleared, GDPR review, security threat
+  model and assessment, a QA plan with no unresolved `AC-GAP`, an SEO plan or `SEO: N/A` with a
+  reason, an API contract or no Ninja surface — and closes: "A story that cannot satisfy these is
+  **not ready to be counted towards the sprint**." Both members now satisfy them; neither did when
+  this record opened on 09/09/2026, and the gap between those two dates is the whole reason the
+  two numbers are stated separately.
 
-Measured 17/09/2026. US008 has two ADRs written at cutting — both `Accepted`, and both "to be
-checked, not re-opened, at US008's own `15-decisions` pass" by their own terms; US009 has none and
-records in its own `## Decisions` that it needs none. Neither is named by any artefact under
-`project-management/src/10-SECURITY/` or `project-management/src/11-QA/`, both of which both
-stories' flags say they enter, and neither has a story plan. GDPR, SEO, API and Logging are
-skipped by flag for both. Gates `10` and `11` are owed by both members and `15` has run as a pass
-for neither, so the plan-counted total is zero and the plan's prerequisites do not hold.
 `project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
 not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
-ordinary state between opening and filling. The story plans are likewise not written: `08-` and
-`09-` are reserved by build order, and a reserved number is not a plan.
+ordinary state between opening and filling, and it is the state
+`project-management/src/03-SPRINTS/SPRINT-06.md` and
+`project-management/src/03-SPRINTS/SPRINT-07.md` are in as of 20/09/2026.
+
+<!-- CORRECTED 20/09/2026 at 03-sprint-planning (Q3), and the correction is the reverse of the
+     usual one: a claim that was true when written went false within hours, and nothing brought it
+     back. The block read, from 17/09/2026: "**No 05-SPRINT-PLAN-05.md is written, and its absence
+     is by rule, not omission**", with a ledger of 11, a plan count of 0, and a closing measurement
+     paragraph asserting that "Gates `10` and `11` are owed by both members and `15` has run as a
+     pass for neither" and that "The story plans are likewise not written: `08-` and `09-` are
+     reserved by build order, and a reserved number is not a plan." Every one of those was falsified
+     the same day by the specify tier closing and 16-sprint-plans running on it.
+
+     The plan's own header comment even records the record's earlier denial and says US008's
+     Dependencies bullet "was corrected in that change rather than deleted" — the correction reached
+     that bullet and not this section. Found on 20/09/2026 while opening SPRINT-06 and SPRINT-07,
+     which had to read this record's plan state to decide whether they owed plans of their own.
+
+     The ledger-versus-plan reasoning is KEPT and its counts corrected rather than struck, because
+     it is the doctrine that makes the two numbers distinguishable and both new records cite it as
+     the reason they owe no plan. What changed is which side of the distinction this record sits
+     on. -->
 
 <!-- Settled at 03-sprint-planning on 17/09/2026 (Q4). The two-number reading is what makes the
      doctrine self-consistent rather than being an accommodation invented for this record: gate 03
@@ -726,9 +805,19 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       (`project-management/docs/planning/SPRINTS.md` -> _MoSCoW_), and dropping it does **not**
       fail the sprint
 - [ ] **If US009 is dropped rather than delivered**, it is recorded here with its reason and
-      carried into the next record with its 3 SP reserved there — the six-artefact discipline
-      SPRINT-03 set on 05/09/2026 for US003, and the backlog register in the Notes is updated in
-      all five records in the same change
+      carried into `project-management/src/03-SPRINTS/SPRINT-06.md` with its **5 SP** reserved
+      there — the six-artefact discipline SPRINT-03 set on 05/09/2026 for US003, and the backlog
+      register in the Notes is updated in every copy in the same change. That record's own
+      Definition of Done receives the reservation from this side, and its capacity line already
+      licenses the 13 / 11 the carry would produce
+
+<!-- 20/09/2026, on the Definition of Done row above: it read "carried into the next record with
+     its 3 SP reserved there ... updated in all five records" until SPRINT-06 existed to be named.
+     The 3 was stale from US009's 17/09/2026 re-estimate; "the next record" was written when there
+     was none. The note is lifted OUT of the list item because Prettier re-indents a comment's
+     continuation lines inside one on every pass and never converges — the blocking pre-commit
+     format gate then fails on a file nothing else is wrong with. -->
+
 - [ ] **Nothing carries into this record, and nothing is expected to.** US003's carry is reserved
       into SPRINT-03 by SPRINT-02's Definition of Done; SPRINT-04 is closed at grace. If a story
       arrives here anyway, it is recorded in both records with its reason and the capacity line

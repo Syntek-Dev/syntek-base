@@ -1,6 +1,6 @@
 # SPRINT-01
 
-**Last Updated**: 17/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 20/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -150,24 +150,46 @@ SPRINT-02 to SPRINT-03, and US005 moves from SPRINT-03 to SPRINT-04 beside US006
 `project-management/src/03-SPRINTS/SPRINT-03.md` -> Notes draws for US003's move of 05/09/2026,
 which is the precedent this cascade follows.
 
-**The backlog register.** Every live record carries this table and all five copies are identical;
+**The backlog register.** Every live record carries this table and the copies are identical;
 **this record is `SPRINT-01`**. It became a live register on 17/09/2026, when US009 was placed into
 SPRINT-05 — until that day it stood in three records only, four rows long, and was scoped to the
 07/09/2026 cascade alone.
 
-| Sprint      | Members, in build order                                         | SP                                |
-| ----------- | --------------------------------------------------------------- | --------------------------------- |
-| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                  |
-| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11                            |
-| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11, or 13 / 11 with the carry |
-| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed        |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 3, stretch)             | 11 / 11 — at capacity, closed     |
+| Sprint      | Members, in build order                                         | SP                                                          |
+| ----------- | --------------------------------------------------------------- | ----------------------------------------------------------- |
+| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5)                        | 10 / 11 — closed                                            |
+| `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
+| `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
+| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-07` | US011 (`Should`, 8)                                             | 8 / 11 — open, `Must` tier absent                           |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
-capacity change is written into all five in the same change, and the five copies are identical. It
-is maintained by hand — no gate reads it, and that cost is filed in `GAPS.md` (17/09/2026). The
-rule is `project-management/docs/planning/SPRINTS.md`; the obligation to run the edit is
+capacity change is written into every copy in the same change. It is maintained by hand — no gate
+reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
+`project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS ADDED AND ONE REPAIRED, 20/09/2026 at 03-sprint-planning. `SPRINT-06` (US010, `Must`,
+     8, holding US009's reserved carry) and `SPRINT-07` (US011, `Should`, 8, open with no `Must`
+     tier) were opened that day from the slice split `02-story-creation` made on
+     project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md.
+
+     The `SPRINT-05` row was STALE IN EVERY COPY and is repaired in the same change: it read
+     "US009 (`Should`, 3, stretch)" and "11 / 11 — at capacity, closed" while that record's own
+     capacity line read 13 / 11 at the grace ceiling. US009's re-estimate from 3 to 5 SP on
+     17/09/2026 moved the record's header, Story Summary and Total and never reached the register.
+     All copies agreed with each other and all of them disagreed with their source — which is
+     `GAPS.md`'s entry of 17/09/2026 firing three days after it was filed, on an axis its own
+     proposed repair could not see: a script comparing copies to one another would have stayed
+     green. Noted in that entry on 20/09/2026.
+
+     The prose above also lost its hardcoded count of five, which this change would have made
+     seven. project-management/docs/planning/SPRINTS.md's rule was already count-free — "written
+     into every copy in the same change" — and the records had added a count it never had; the
+     wording is now the guide's, so the eighth record does not buy the same defect again. Full
+     reasoning: project-management/src/03-SPRINTS/SPRINT-06.md -> Notes, the register comment. -->
 
 <!-- This paragraph read, until 17/09/2026: "Each record owns its own row. The table is here so
      that a reader of this file can see where its former member went and why its own figure moved

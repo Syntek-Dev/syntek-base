@@ -33,9 +33,11 @@ folder along in `16-SPRINT-PLANS/`.
   an under-capacity sprint in the notes. Capacity full and the sprint plan owed are two
   different questions: `docs/planning/SPRINTS.md` → _Capacity_ has the split.
 - **Admitting a story, moving one, or changing a capacity figure edits EVERY record.**
-  All five carry the same backlog register, byte-identical, and nothing gates them —
-  update them in the one change or they disagree silently. Rule and table shape:
-  `docs/planning/SPRINTS.md` → _The backlog register_.
+  Every live record carries the same backlog register, byte-identical, and nothing gates
+  them — update them in the one change or they disagree silently. **Check the register
+  against each record's own capacity line, not only against its siblings**: on 20/09/2026 every
+  copy agreed with every other and all of them were stale against the record one row named.
+  Rule and table shape: `docs/planning/SPRINTS.md` → _The backlog register_.
 - **Honour the dependency chain** — sprint numbering is not execution order; never
   schedule a story ahead of its blocker. Flag any data-migration risk in the notes.
 - **High-level records only** — detailed plans belong in `16-SPRINT-PLANS/`; do not
