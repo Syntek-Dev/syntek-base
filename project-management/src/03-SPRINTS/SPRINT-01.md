@@ -1,6 +1,6 @@
 # SPRINT-01
 
-**Last Updated**: 20/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 21/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -163,13 +163,32 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
 | `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
 | `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
-| `SPRINT-07` | US011 (`Should`, 8)                                             | 8 / 11 — open, `Must` tier absent                           |
+| `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
 capacity change is written into every copy in the same change. It is maintained by hand — no gate
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- THE SAME ROW CHANGED AGAIN LATER ON 21/09/2026, at 03-sprint-planning. The SPRINT-07 row's
+     SP cell read "10 / 11 — open" from US012's admission, recorded below, until
+     <%DEVELOPER_NAME%> closed that record to further admission by call at 10 / 11: its 1 SP of
+     headroom is not spoken for, and the next map's slices estimate at 3 to 8 SP, so nothing
+     coming fits it. It reads "closed" as the SPRINT-01 and SPRINT-02 rows do for a close by call,
+     and its members did not move. A new admission opens SPRINT-08, which the first story admitted
+     to it creates and which does not exist yet. No other row moved; checked against each record's
+     own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md, and every row agrees with its source. -->
+
+<!-- ONE ROW CHANGED, 21/09/2026 at 03-sprint-planning. The `SPRINT-07` row read
+     "US011 (`Should`, 8)" and "8 / 11 — open, `Must` tier absent" from 20/09/2026 until that day.
+     US012 (`Must`, 2), cut the same day from
+     project-management/src/01-FEATURE-MAPS/MAP-SCRIPT-GUARDS.md slice `S-02`, was admitted as that
+     record's `Must` tier and builds ahead of US011, which becomes its stretch; the record stands at
+     10 / 11, inside capacity and short of the fill trigger. No other row moved. Checked against
+     each record's own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md, and every row agrees with its source. -->
 
 <!-- TWO ROWS ADDED AND ONE REPAIRED, 20/09/2026 at 03-sprint-planning. `SPRINT-06` (US010, `Must`,
      8, holding US009's reserved carry) and `SPRINT-07` (US011, `Should`, 8, open with no `Must`

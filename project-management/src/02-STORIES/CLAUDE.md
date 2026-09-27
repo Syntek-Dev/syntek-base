@@ -37,5 +37,6 @@ criteria) plus the `US000-TEMPLATE.md` scaffold.
 ## Output & naming
 
 - **Hand-written:** `US###.md` stories and `US000-TEMPLATE.md`.
+- **Hand-written, syntek-base only:** `project-management/src/02-STORIES/CUT-PLAN.md` — syntek-base's cut plan (which map slice becomes which story, in what order); copier excludes it, so it never ships and is not a story. <!-- doc-references: template-only -->
 - **Template:** `US000-TEMPLATE.md` — the copy source; do not delete or repurpose.
 - Stories `US###.md` — 3-digit zero-padded (`US043.md`); dates DD/MM/YYYY.

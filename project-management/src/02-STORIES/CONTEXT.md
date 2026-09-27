@@ -10,6 +10,7 @@ project-management/src/02-STORIES/
 ├── CONTEXT.md               ← this file
 ├── CLAUDE.md                ← operating rules for this folder
 ├── US000-TEMPLATE.md        ← story template — copy for each new story
+├── CUT-PLAN.md              ← slice-to-story cut plan, absent unless this is syntek-base
 └── US###.md                 ← user stories (e.g. US001.md, US002.md …)
 ```
 
