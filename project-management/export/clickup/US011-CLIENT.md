@@ -1,4 +1,4 @@
-# US011 — The four indexes that shipped blank get their 43 rows, and each register stops claiming it is empty
+# US011 — The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty
 
 | Status | MoSCoW | Story Points |
 | --- | --- | --- |

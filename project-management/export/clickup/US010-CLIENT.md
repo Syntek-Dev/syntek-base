@@ -9,9 +9,9 @@
 Each folder that collects project records — feature maps, stories, sprints, decisions, plans,
 findings and bugs — gains a contents page listing what is inside it, and a new project starts with
 those contents pages already in place and empty. Today the feature-map folder's contents page says
-"none charted yet" while fourteen maps sit beside it, and the instruction that produced that
-mistake is repeated in four other files. This change puts each list in its own file, fills the
-feature-map one in, and removes the instruction that made it wrong.
+"none charted yet" while every map in the folder sits beside it unlisted, and the instruction that
+produced that mistake is repeated across the shipped files. This change puts each list in its own
+file, fills the feature-map one in, and removes the instruction that made it wrong.
 
 ## User Story
 
