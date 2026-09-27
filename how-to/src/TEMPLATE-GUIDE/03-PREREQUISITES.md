@@ -166,10 +166,14 @@ hostnames.
 | **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                                |
 | **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                                 |
 
-The four MCP servers the project actually depends on — `code-review-graph`, `context7`,
-`mcp-mermaid` and `scrapling` — need **no installation**. They are declared in the shipped
+The five MCP servers the project ships — `code-review-graph`, `context7`, `mcp-mermaid`,
+`perplexity` and `scrapling` — need **no installation**. They are declared in the shipped
 `.mcp.json` (and in `.codex/config.toml`, which must declare the same set) and launched on demand
 through `uvx` and `npx`.
+
+**`perplexity` needs one optional thing more: a `PERPLEXITY_API_KEY` in your environment.** It is
+the cited web-answer tier of the lookup order, between `context7` and web search. Without the key
+only that one server fails to start; everything else runs as normal.
 
 ---
 

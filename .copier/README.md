@@ -373,7 +373,7 @@ Two things to do on a freshly generated project:
 ├── pnpm-workspace.yaml
 ├── pyproject.toml                       ← Python tooling (ruff, basedpyright, uv)
 ├── skills-lock.json                     ← vendored Claude Code skills — source, version, content hash
-├── .mcp.json                            ← project MCP servers (code-review-graph, context7, mcp-mermaid)
+├── .mcp.json                            ← project MCP servers (code-review-graph, context7, mcp-mermaid, perplexity, scrapling)
 ├── .copier-answers.yml                  ← your generation answers — keep committed, `copier update` needs it
 └── uv.lock                              ← generated at project creation; commit it (Dockerfiles build --frozen)
 ```
@@ -627,16 +627,11 @@ Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
 Database schemas and entity-relationship diagrams are documented in
 `project-management/src/04-DATABASE/` using Mermaid diagrams.
 
-The `mcp-mermaid` MCP server renders Mermaid diagrams inside Claude Code sessions. Install it once
-on your machine:
+The `mcp-mermaid` MCP server renders Mermaid diagrams inside Claude Code sessions. It is declared in
+`.mcp.json` and `.codex/config.toml`, so there is nothing to install. Project page:
+[github.com/hustcc/mcp-mermaid](https://github.com/hustcc/mcp-mermaid).
 
-```bash
-npx -y @anthropic-ai/mcp-install mcp-mermaid
-```
-
-Full installation guide: [github.com/hustcc/mcp-mermaid](https://github.com/hustcc/mcp-mermaid)
-
-Once installed, use the `mcp__mcp-mermaid__generate_mermaid_diagram` tool inside Claude Code to
+Use the `mcp__mcp-mermaid__generate_mermaid_diagram` tool inside Claude Code to
 render diagrams from Mermaid syntax. Schema design is formalised before any migration is written —
 use `project-management/workflows/04-database-schema/` to go through the sign-off process.
 
@@ -902,7 +897,9 @@ The physical sources remain under `.claude/`, except for vendored Cloudinary ski
 
 Codex project settings and MCP servers live in `.codex/config.toml`; trust the project and
 start a fresh session to load them. The model inherits your personal settings. Context7 uses
-`CONTEXT7_API_KEY` from the environment; `/mcp` and `/skills` show available integrations.
+`CONTEXT7_API_KEY` and Perplexity uses `PERPLEXITY_API_KEY` from the environment; the Perplexity
+key is optional, and without it only that one server fails to start. `/mcp` and `/skills` show
+available integrations.
 Claude-specific model metadata and hooks are interpreted as described in `.ai/INSTRUCTIONS.md`.
 Codex hooks are not installed by this setup. Existing Git and CI checks remain in place.
 
@@ -979,12 +976,18 @@ inspect the local environment for context. They do **not** run dev operations �
 
 ### MCP servers
 
-| Server              | Scope              | Always available                       |
-| ------------------- | ------------------ | -------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors |
-| `context7`          | Machine-global     | Only if installed locally              |
-| `claude-in-chrome`  | Machine-global     | Only if installed locally              |
-| `mcp-mermaid`       | Machine-global     | Only if installed locally              |
+| Server              | Scope              | Always available                                                                                      |
+| ------------------- | ------------------ | ----------------------------------------------------------------------------------------------------- |
+| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors                                                                |
+| `context7`          | Repo — `.mcp.json` | Yes — reads `CONTEXT7_API_KEY` from the environment                                                   |
+| `mcp-mermaid`       | Repo — `.mcp.json` | Yes                                                                                                   |
+| `perplexity`        | Repo — `.mcp.json` | Only with `PERPLEXITY_API_KEY` set — the key is optional; without it this server alone fails to start |
+| `scrapling`         | Repo — `.mcp.json` | Yes — `get` needs no browser; the browser tiers depend on the host                                    |
+| `claude-in-chrome`  | Machine-global     | Only if installed locally                                                                             |
+
+All five repo-scoped servers are also declared in `.codex/config.toml`, and
+`code/src/scripts/audits/mcp-parity.sh` holds the two files to the same set. `perplexity` is tier 3
+of the lookup order; how its answers may be used is `.claude/CLAUDE.md` Section 3.2.
 
 ---
 

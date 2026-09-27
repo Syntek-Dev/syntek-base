@@ -104,8 +104,10 @@ the same skill set. Copier preserves the links and seeds a new project's memory 
 
 Open the repository in Codex and trust its project configuration to load `.codex/config.toml`.
 It defines workspace permissions and the same MCP servers as `.mcp.json`; model selection inherits
-your personal Codex settings. Context7 uses `CONTEXT7_API_KEY` from the environment. Use `/mcp`
-and `/skills` to inspect discovery in a fresh session. MCP commands require the existing host
+your personal Codex settings. Context7 uses `CONTEXT7_API_KEY` from the environment. Perplexity,
+the cited web-answer tier between Context7 and web search in the lookup order, uses
+`PERPLEXITY_API_KEY` the same way; that key is optional, and without it only the Perplexity server
+fails to start. Use `/mcp` and `/skills` to inspect discovery in a fresh session. MCP commands require the existing host
 toolchain; no credentials are stored in the project configuration.
 
 Claude model names, fork metadata and hooks remain specific to Claude Code. The shared instructions

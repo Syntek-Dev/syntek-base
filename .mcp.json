@@ -17,6 +17,11 @@
         "npm_config_ignore_scripts": "true"
       }
     },
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": { "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}" }
+    },
     "scrapling": {
       "command": "uvx",
       "args": ["--from", "scrapling[ai]", "scrapling-mcp"],

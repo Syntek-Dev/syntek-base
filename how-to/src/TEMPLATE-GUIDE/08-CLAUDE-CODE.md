@@ -239,19 +239,25 @@ through `code/src/scripts/`.
 
 ## MCP servers
 
-| Server              | Use                                                        | How you get it       |
-| ------------------- | ---------------------------------------------------------- | -------------------- |
-| `code-review-graph` | Structural context and impact analysis — cheaper than Grep | `.mcp.json`          |
-| `context7`          | Current library and framework documentation                | `.mcp.json`          |
-| `mcp-mermaid`       | Architecture and flow diagrams                             | `.mcp.json`          |
-| `scrapling`         | Reading a primary source — the page's own markdown         | `.mcp.json`          |
-| `claude-in-chrome`  | Rendered UI inspection and browser automation              | the Chrome extension |
+| Server              | Use                                                                   | How you get it                |
+| ------------------- | --------------------------------------------------------------------- | ----------------------------- |
+| `code-review-graph` | Structural context and impact analysis — cheaper than Grep            | `.mcp.json`                   |
+| `context7`          | Current library and framework documentation                           | `.mcp.json`                   |
+| `mcp-mermaid`       | Architecture and flow diagrams                                        | `.mcp.json`                   |
+| `perplexity`        | Cited web answers — the lookup tier between `context7` and web search | `.mcp.json` + an optional key |
+| `scrapling`         | Reading a primary source — the page's own markdown                    | `.mcp.json`                   |
+| `claude-in-chrome`  | Rendered UI inspection and browser automation                         | the Chrome extension          |
 
-The first four are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
+The first five are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
 gets them, launched on demand through `uvx` and `npx`. The last one is yours to install; nothing
 in the repository supplies it.
 
-**Codex gets the same four from `.codex/config.toml`.** The two files are hand-maintained, neither
+**`perplexity` alone fails to start without its key.** It reads `PERPLEXITY_API_KEY` from the
+environment, as `context7` reads `CONTEXT7_API_KEY`; the key is optional, and Claude Code asks before
+enabling a project's servers either way. How its answers may be used is `.claude/CLAUDE.md` Section
+3.2.
+
+**Codex gets the same five from `.codex/config.toml`.** The two files are hand-maintained, neither
 host reads the other's, and `code/src/scripts/audits/mcp-parity.sh` is the only thing holding them
 to the same server set, commands and arguments — so add a server to both or to neither.
 

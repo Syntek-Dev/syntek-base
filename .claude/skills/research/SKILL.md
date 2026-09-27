@@ -17,20 +17,21 @@ deliverable, and the `ADR` or `PLAN` that consumes it links back.
 
 **Boundary with `context7`.** For one library, SDK, or framework's own API — signatures,
 config, a version migration — `context7` is the stop (`resolve-library-id` → `query-docs`), once
-the internal `**/docs/` have come up short: they rank ahead of it, and of web search behind it
-(`.claude/CLAUDE.md` Section 3.2 → _How to look something up_). Reach for research when the question needs
-**synthesis across primary sources** that no single doc answers: weighing two libraries for an
-ADR, grounding a decision, or establishing how X behaves per the spec.
+the internal `**/docs/` have come up short: they rank ahead of it, and of Perplexity and web search
+behind it (`.claude/CLAUDE.md` Section 3.2 → _How to look something up_). Reach for research when
+the question needs **synthesis across primary sources** that no single doc answers: weighing two
+libraries for an ADR, grounding a decision, or establishing how X behaves per the spec.
 
 Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 
 ## How to research
 
 1. **Frame one answerable question.** Reduce the ask to a single question a note can settle,
-   and confirm it needs synthesis rather than a lookup `context7` owns. Look facts up first —
+   and confirm it needs synthesis rather than a lookup — `context7` for one library's API, a
+   Perplexity answer for a question nothing durable will cite. Look facts up first —
    `code-review-graph` (structure) → Read/Grep/Glob → `.claude/plugins/*.py` — so the question
    is only what the codebase cannot answer itself. _Completion:_ the question is one sentence,
-   and it is research, not a single-library API lookup.
+   and it is research, not a lookup.
 2. **Delegate the reading to a background agent.** Dispatch the reading to a background agent
    (the general-purpose or Explore agent) with the question and the primary-source rule, so the
    main line of work continues while it reads. _Completion:_ the background agent is running
@@ -38,15 +39,19 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 3. **Follow every claim to its primary source.** Read the source that _owns_ each fact —
    official documentation, the library's own source, the specification or RFC, the standard
    (OWASP, NIST, ICO, WCAG). Treat a blog or write-up as a scout that points at the primary,
-   never as the authority you cite. **Read it with the `scrapling` MCP** (`get`, or a
-   `css_selector` for one section), which returns the page's own markdown. Escalate only when a
-   tier returns nothing usable: `fetch` for a source that arrives as an empty shell, then
-   `stealthy_fetch` for one that answers with a challenge — and only for a source the project is
-   entitled to read. A source that refuses all three is reported unavailable, not worked around; `WebFetch` answers a
-   prompt against the page with a small fast model, so citing a claim to it cites a paraphrase
-   nobody read. `WebSearch` finds the source, `scrapling` reads it (`.claude/CLAUDE.md` Section 3.2).
-   _Completion:_ every claim traces to a primary source, and none rests on a secondary write-up
-   or on a summary of a source the note never opened.
+   never as the authority you cite. **Scout wide with Perplexity** when the question spans many
+   sources: `perplexity_research` sweeps and triages them, `perplexity_search` finds one, and what
+   the note takes from either is the citations — never the answer text. **Read every web source with
+   the `scrapling` MCP** (`get`, or a `css_selector` for one section), which returns the page's
+   own markdown. Escalate only when a tier returns nothing usable: `fetch` for a source that
+   arrives as an empty shell, then `stealthy_fetch` for one that answers with a challenge — and
+   only for a source the project is entitled to read. A source that refuses all three is reported
+   unavailable, not worked around; `WebFetch` answers a prompt against the page with a small fast
+   model, so citing a claim to it cites a paraphrase nobody read. `WebSearch` or Perplexity finds
+   a source; `scrapling` reads every one the note cites (`.claude/CLAUDE.md` Section 3.2).
+   _Completion:_ every claim traces to a primary source the note's author read — a web page
+   through `scrapling`, a repo path at its line, or a pinned document — and none rests on a
+   secondary write-up, a Perplexity answer, or a summary of a source the note never opened.
 4. **Capture the note.** Write one Markdown note at `research/<TOPIC>.md`, each claim carrying its
    primary-source citation — a URL with its section, or a repo path with the line. Match any
    convention already in `research/`; yours is the first note if it is empty. _Completion:_ the

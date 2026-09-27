@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **A `perplexity` MCP server ships on both hosts, on by default in every generated project.** `.mcp.json` and `.codex/config.toml` declare `npx -y @perplexity-ai/mcp-server`, whose four tools are read-only and live-web: `perplexity_search` finds URLs, facts and recent news, `perplexity_ask` gives a quick cited answer, `perplexity_reason` a step-by-step cited analysis, and `perplexity_research` an in-depth multi-source investigation. The key is `PERPLEXITY_API_KEY`, read from the environment — `${VAR}` interpolation for Claude Code, `env_vars` for Codex — and never stored in the repository. **The key is optional**: without it only this one server fails to start, and Claude Code asks before enabling a project's servers either way. It stays out of the `.env.*.example` files on purpose, because those describe the application's environment rather than the tooling's, and `CONTEXT7_API_KEY` is absent from them for the same reason. Codex's `tool_timeout_sec = 300` matches the server's own `PERPLEXITY_TIMEOUT_MS` default of 300000, because `perplexity_research` runs for minutes and Codex's default tool timeout would cut it off first. `audits/mcp-parity.sh` holds the two declarations to the same command and arguments.
+
+### Changed
+
+- **The lookup order gains a tier: internal docs, then `context7`, then Perplexity, then `WebSearch` to find and `scrapling` to read.** A Perplexity answer counts as a lookup for answering or deciding in the session. A claim written into a durable artefact — an ADR, a research note, a guide, a story, a commit — is cited to the primary source itself, re-read through `scrapling`, and never to Perplexity's answer text, because a claim cannot honestly be cited to a primary source nobody read. `/research` uses Perplexity for multi-source investigation under the same rule, and escalation stays on silence, not convenience. `scrapling` becomes the tier-4 reader. `AGENTS.md` and `README.md` now document the optional `PERPLEXITY_API_KEY` beside `CONTEXT7_API_KEY`, and the server lists in the seeded README, `how-to/docs/tooling-guide/CONFIGURATION.md` and template guides `03` and `08` now name all five, each pointing at Section 3.2 for how Perplexity's answers may be used rather than restating it; the seeded README's server table also stops calling `context7` and `mcp-mermaid` machine-global installs, which they have not been since `.mcp.json` began declaring them.
+
 ## [7.6.0] - 14/09/2026
 
 ### Added

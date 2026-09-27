@@ -38,11 +38,16 @@ under `.claude/`; follow the shared instructions before editing those sources.
 
 Project settings load only when Codex trusts the project. Start a fresh session after
 installing this setup so it can discover the skills and settings. The configured MCP
-servers need `uvx` and `npx` on the host; Context7 receives `CONTEXT7_API_KEY` from the
-launching environment, with no secret value stored in the repository.
+servers need `uvx` and `npx` on the host; Context7 receives `CONTEXT7_API_KEY` and
+Perplexity receives `PERPLEXITY_API_KEY` from the launching environment, with no secret value
+stored in the repository. The Perplexity key is optional: without it only that one server fails
+to start, and the others load as normal.
 
-`scrapling` is the tier-3 reader in `.ai/INSTRUCTIONS.md`'s lookup order: it returns a
-page's own markdown, or a `css_selector` fragment of it, so a claim is cited to text that
+`perplexity` is tier 3 of the lookup order, between Context7 and web search; how its answers may
+be used is `.claude/CLAUDE.md` Section 3.2. Its Codex `tool_timeout_sec` matches the server's own
+300-second request deadline, because `perplexity_research` runs for minutes.
+
+`scrapling` is the tier-4 reader in that lookup order: it returns a page's own markdown, or a `css_selector` fragment of it, so a claim is cited to text that
 was actually read. **Default to `get`** — it needs no browser. Climb only on failure:
 `fetch` renders what `get` returns as an empty shell, and `stealthy_fetch` is the anti-bot tier
 for a source this project is entitled to read that answers `fetch` with a challenge — a standard,

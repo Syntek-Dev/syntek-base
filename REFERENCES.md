@@ -3,9 +3,9 @@
 A curated index of internal documentation and external resources Claude should
 consult when working in this repository.
 
-**In what order to consult them — the internal `**/docs/` first, `context7` second, web search
-last — is `.claude/CLAUDE.md` Section 3.2, _How to look something up_.** This index is what that
-rule navigates; it does not restate it.
+**In what order to consult them — the internal `**/docs/` first, `context7` second, Perplexity
+third, web search last — is `.claude/CLAUDE.md` Section 3.2, _How to look something up_.** This
+index is what that rule navigates; it does not restate it.
 
 ---
 

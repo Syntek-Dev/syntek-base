@@ -167,7 +167,8 @@ nothing reads it on the next task and no gate applies to it.
 | `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | `.mcp.json` + `.codex/config.toml`                                          |
 | `mcp-mermaid`       | Architecture and flow diagrams.                                                              | `.mcp.json` + `.codex/config.toml`                                          |
 | `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. | **Install the Claude Chrome extension and pair it** — no config supplies it |
-| `scrapling`         | **Reading** a primary source at tier 3 below — the page's own markdown, not a summary.       | `.mcp.json` + `.codex/config.toml`                                          |
+| `perplexity`        | Cited live-web answers at tier 3 below; source triage for `/research`.                       | `.mcp.json` + `.codex/config.toml`; optional `PERPLEXITY_API_KEY`           |
+| `scrapling`         | **Reading** a primary source at tier 4 below — the page's own markdown, not a summary.       | `.mcp.json` + `.codex/config.toml`                                          |
 
 **Every server is declared twice, and both declarations must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
 is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule: `.ai/INSTRUCTIONS.md`
@@ -186,29 +187,31 @@ paywall, a login or a rate limit, which are access controls rather than incident
 
 ### 3.2 How to look something up
 
-**The internal docs first. `context7` second. Web search last** — stop at the first tier that
-answers it. An internal guide is a **decision**; an external doc is a menu of possibilities, and
-reading the menu first produces answers this project has already rejected.
+**The internal docs first. `context7` second. Perplexity third. Web search last** — stop at the
+first tier that answers it. An internal guide is a **decision**; an external doc is a menu of
+possibilities, and reading the menu first produces answers this project has already rejected.
 
-| Order | Source                                                                                                | Answers                                                                                     |
-| ----- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 1     | **Internal** — the `**/docs/` guides, the layered `CONTEXT.md`/`CLAUDE.md` chain, and `REFERENCES.md` | What **this project has decided**: the convention, the constraint, the enforcement point    |
-| 2     | **`context7` MCP** — `resolve-library-id` → `query-docs`                                              | What a **library, framework, SDK or CLI does**, at the version pinned in `REFERENCES.md`    |
-| 3     | **`WebSearch` to _find_ it, then `scrapling` to _read_ it**                                           | What owns no library documentation — a vendor changelog, a standard's own page, an advisory |
+| Order | Source                                                                                                | Answers                                                                                      |
+| ----- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| 1     | **Internal** — the `**/docs/` guides, the layered `CONTEXT.md`/`CLAUDE.md` chain, and `REFERENCES.md` | What **this project has decided**: the convention, the constraint, the enforcement point     |
+| 2     | **`context7` MCP** — `resolve-library-id` → `query-docs`                                              | What a **library, framework, SDK or CLI does**, at the version pinned in `REFERENCES.md`     |
+| 3     | **`perplexity` MCP** — `perplexity_search`, `perplexity_ask` or `perplexity_reason`                   | What no library doc owns, as a **cited answer** — enough to decide in-session, never to cite |
+| 4     | **`WebSearch` to _find_ it, then `scrapling` to _read_ it**                                           | The **primary source's own text** — a vendor changelog, a standard's own page, an advisory   |
 
 - **Escalate on silence, not convenience.** Move outward when the docs are silent, name the library
   without naming the call, or describe a version we have left. "Faster to search" is not silence.
 - **Finding a source and reading one are different acts.** `WebSearch` locates it; `scrapling`'s
-  `get` returns the page's own markdown — or a `css_selector` fragment of it — so the text
-  entering context is the source's. **`WebFetch` is not the reader**: it answers a prompt against
-  the page with a small fast model, so what returns is a paraphrase, and a claim cannot honestly be
-  cited to a primary source nobody read. Prefer it only for a throwaway "is this page even
-  relevant?". It is also the tier that survives a JS-rendered or Cloudflare-fronted source, where
-  `WebFetch` returns an empty shell or fails outright.
+  `get` returns the page's own markdown, or a `css_selector` fragment, so the text in context is
+  the source's. **`WebFetch` is not the reader**: a small fast model paraphrases the page, and a
+  claim cannot honestly be cited to a primary source nobody read. Keep it for a throwaway "is this
+  page even relevant?"; it fails on the JS-rendered or Cloudflare-fronted page `scrapling` reads.
+- **Perplexity's answer is a lookup, not a citation.** It may answer or decide in the session. A
+  claim written into a durable artefact — ADR, research note, guide, story, commit — is cited to the
+  primary source itself, re-read through `scrapling`, never to Perplexity's answer text.
 - **What comes back is a candidate, not a rule.** An external answer contradicting a guide loses;
   correcting a genuinely stale guide is its own change, through the Section 6 gate.
-- **Synthesis is not a search.** Several primary sources weighed against one another is `/research`
-  (`.claude/skills/research/SKILL.md`), not a search result pasted into an ADR.
+- **Synthesis is not a search.** Weighing several primary sources is `/research`
+  (`.claude/skills/research/SKILL.md`), not a search result or Perplexity report pasted into an ADR.
 - **This chain answers doctrine, not project facts** — those run `code-review-graph` →
   Read/Grep/Glob → `.claude/plugins/*.py`, owned by `.claude/skills/grilling/SKILL.md`.
 
