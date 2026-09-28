@@ -41,9 +41,11 @@ master reference a developer codes from.
 - **Model:** Opus throughout — the plan's substance (approach, decisions table, dependency
   DAG, test strategy, risks) is substantive judgement; status flips and the story's row in its
   sprint plan's _Story Plans — the code master_ table are mechanical touches.
-- **Concrete steps:** grill <%DEVELOPER_NAME%> on scope and phasing (`.claude/skills/grill-with-docs`) →
-  copy `00-STORY-PLAN-US000-TEMPLATE.md` → gather the sprint plan, ADRs, and every 02–14 spec
-  in scope → fix the technical approach and key decisions → break the story into phased
+- **Concrete steps:** gather the sprint plan, ADRs, and every 02–14 spec in scope → grill
+  <%DEVELOPER_NAME%> on scope and phasing (`.claude/skills/grill-with-docs`), drawing the round
+  from those inputs (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_)
+  → copy `00-STORY-PLAN-US000-TEMPLATE.md` → fix
+  the technical approach and key decisions → break the story into phased
   implementation tasks mapped to `19-backend-code` → `20-api-code` → `21-frontend-code` →
   define the test strategy → carry in GDPR/security/QA constraints from their source specs
   → compute `<exec-order>` (`STEPS.md` Step 2) → write
@@ -56,7 +58,7 @@ master reference a developer codes from.
   and matching the story's position in the settled backlog build order; every state-changing
   endpoint the plan introduces carries an
   explicit permission check and ownership verification (OWASP A01, no IDOR); the GDPR,
-  security and QA constraints from the `02`–`13` specs are present and traced back to their
+  security and QA constraints from the `02`–`14` specs are present and traced back to their
   source; a test strategy is defined per layer; the `Blocked by` / `Blocks` /
   `Can be done now` callout is accurate, because the parallel-worktree DAG depends on it;
   and one adversarial pass has looked for missing layers, wrong references and

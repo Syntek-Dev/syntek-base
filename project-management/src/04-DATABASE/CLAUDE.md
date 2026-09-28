@@ -32,7 +32,7 @@ what shipped (`IMPLEMENTATION/`), plus the rendered ERDs in `ERD-DIAGRAMS/`.
 
 - **Design, not code** — no migrations, models, secrets, or `.env` content land here; the
   schema is _specified_ in these documents and _enforced_ in `code/`.
-- **Never edit a `USER-STORY-IDEAS/` file once `17` has run.** Stage 1 is the frozen record of
+- **Never edit a `USER-STORY-IDEAS/` file once `18` has run.** Stage 1 is the frozen record of
   what each story asked for; consolidation is additive and cross-links back to it.
 - **Build from the consolidated schema, not a stage-1 design.** A migration written from a
   per-story design reintroduces the drift consolidation removed — this is the single most

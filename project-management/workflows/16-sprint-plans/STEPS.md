@@ -33,16 +33,20 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` Section 10).
 
-Ask about:
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the right-hand column below, beside the question each usually settles.
 
-- Whether the sprint has genuinely filled, or is being planned early to keep momentum
-- The MoSCoW split — and specifically whether anything marked Must could survive being Should
-- Build order versus sprint number: does anything here need pulling ahead of its number
-- Which stories carry cross-sprint dependencies, and whether every blocker is actually cleared
-- Whether any story is oversized and would be better split — along a user-value seam, never a
-  layer boundary
+| Question                                                                             | Usually settled in                                                                                                                       |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Has the sprint genuinely filled, or is it being planned early to keep momentum       | The record's `**Capacity:**` field (`src/03-SPRINTS/SPRINT-##.md`), against the trigger in `project-management/docs/planning/CADENCE.md` |
+| The MoSCoW split — could anything marked Must survive being Should                   | Each member's `## MoSCoW Priority` (`src/02-STORIES/US###.md`)                                                                           |
+| Build order versus sprint number — does anything need pulling ahead of its number    | The `<exec-order>` prefixes in `src/16-SPRINT-PLANS/`, and any number reserved in a member story                                         |
+| Which stories carry cross-sprint dependencies, and is every blocker actually cleared | Each member's `## Dependencies`, checked against the tree                                                                                |
+| Is any story oversized, better split along a user-value seam, never a layer boundary | Each member's `## Story Points`, and its slice row's `Nodes` and `Acceptance` (`src/01-FEATURE-MAPS/`)                                   |
+| Is every prerequisite in Step 1 met                                                  | The gate artefacts themselves — measured, never asked                                                                                    |
 
-_Done when every question is answered and <%DEVELOPER_NAME%> has confirmed the scope._
+_Done when every question is answered — from an artefact or by <%DEVELOPER_NAME%> — and
+<%DEVELOPER_NAME%> has confirmed the scope._
 
 ### Step 1 — Confirm Prerequisites
 
@@ -75,7 +79,7 @@ For each story in the sprint, identify which development phases it touches:
 
 - **Backend** — Django models, services, business logic
 - **API** — Django Ninja routers, endpoints, and request/response Schemas (mounted on the project's single `NinjaAPI`, served under `/api/`)
-- **Frontend** — Django views + templates with django-components (HTMX + Alpine) on every surface, includich editors
+- **Frontend** — Django views + templates with django-components (HTMX + Alpine) on every surface, including rich editors
 - **Tests** — Unit, integration, and E2E tests (written alongside each phase)
 
 ### Step 4 — Run Sprint Agent
@@ -88,7 +92,9 @@ sprint [list the stories, their priorities, and any constraints from GDPR/securi
 
 ### Step 5 — Write the Sprint Plan Document
 
-Create `project-management/src/16-SPRINT-PLANS/SPRINT-PLAN-##.md` with the following sections:
+Create `project-management/src/16-SPRINT-PLANS/<exec-order>-SPRINT-PLAN-<sprint-number>.md`,
+both segments 2-digit zero-padded (rule: `project-management/src/16-SPRINT-PLANS/CLAUDE.md`),
+with the following sections:
 
 ```text
 # Sprint Plan ## — <Goal Summary>

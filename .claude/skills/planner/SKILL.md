@@ -37,6 +37,10 @@ pagination, `tenant_id`, async-safe I/O, against
 `code/docs/architecture/CORE-AND-SCALING.md`. **Hand sizing to `scale-planning`; never size in
 the plan.**
 
+**For a `STORY-PLAN-US###`, most of this is already recorded** — in the story, its sprint plan,
+its ADRs and every `02`–`14` spec in scope
+(`grilling` → _A decision already recorded is a fact_).
+
 Resolved answers go into the plan's `Requirements` and `Open Questions`. A large, ambiguous epic
 is charted with the `wayfinder` skill first; an open design question worth one throwaway answer
 goes to `prototype`; a stack choice needing primary sources goes to `research`.

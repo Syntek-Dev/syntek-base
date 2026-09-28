@@ -35,6 +35,10 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 interview <%DEVELOPER_NAME%> about the personal data collected, its lawful basis,
 retention, and data subject rights before documenting the data flows.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the schema's personal-data columns (`src/04-DATABASE/`), the data touchpoints annotated on the user
+flow (gate `05`), and the registers in `src/09-GDPR/`.
+
 Document what personal data is collected, why, and how it is stored.
 
 > **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.

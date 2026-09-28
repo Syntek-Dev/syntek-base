@@ -28,7 +28,7 @@ model: opus
 - [ ] Laid out **within the committed direction** — every screen checked against the six axes in `code/docs/VISUAL-DESIGN.md` Section 3, not against taste
 - [ ] The screen is not the shipped template's three-up in new clothes — if it repeats one card row, that is a decision with a reason, not a default
 
-> **The script gate runs at `17`, not here.** Section 4.1's repetition tell and Section 4.2's rhythm clause are
+> **The script gate runs at `18`, not here.** Section 4.1's repetition tell and Section 4.2's rhythm clause are
 > properties of a page **set**, and this workflow produces one screen at a time. `DESIGN.md` →
 > _The design-time gate_.
 

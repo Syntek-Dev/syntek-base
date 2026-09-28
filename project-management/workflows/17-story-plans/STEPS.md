@@ -57,13 +57,9 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ## Steps
 
-### Step 1 — Grill, then Gather Inputs
+### Step 1 — Gather Inputs, then Grill
 
 > **Model:** opus
-
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> — scope, which layers are in scope (database /
-service / API / frontend / infra / GDPR), phasing, and any open architectural question.
 
 Gather:
 
@@ -74,6 +70,14 @@ Gather:
   API design
 - The GDPR, security, and QA constraints each spec carries — these are **carried into** the
   plan, not re-derived
+
+**Grill before writing the plan** (`.claude/CLAUDE.md` Section 10): load
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> — scope, which layers are in
+scope (database / service / API / frontend / infra / GDPR), phasing, and any open architectural
+question.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the inputs gathered above.
 
 ### Step 2 — Copy the Template
 

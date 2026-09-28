@@ -41,6 +41,10 @@ still reads `TBD`, stop: `how-to/workflows/01-first-time-setup/` Step 9 has not 
 interview <%DEVELOPER_NAME%> about the required components, their states and
 variants, and reuse of existing shared components before identifying the component set.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story, its user flow (gate `05`), the brand tokens (gate `06`), the components earlier stories
+settled in `src/07-COMPONENTS/`, and the library already built in `code/src/django/components/`.
+
 If a design question stays open after grilling, spike it with a throwaway prototype
 (`.claude/skills/prototype/SKILL.md`) to answer that one question before committing to the
 real build.

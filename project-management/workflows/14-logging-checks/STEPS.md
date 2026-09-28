@@ -45,6 +45,10 @@ treat it as the first draft, not the answer.
 actually act on; where the `ERROR`/`WARNING` line sits for this story; whether any proposed
 event is really an **audit record** rather than a log line; whether a retention period exists.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the endpoint list in the story's API plan (gate `13`), the `[enc]` marks in its schema idea (gate
+`04`), and the PII classification and retention in its GDPR plan (gate `09`).
+
 _Done when the flag is confirmed, the event set is agreed, and anything belonging in the audit
 trail has been routed to `code/docs/security/AUDIT-TRAIL.md` instead._
 

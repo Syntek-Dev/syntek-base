@@ -49,6 +49,10 @@ model: opus
 - Should it be indexed at all — or is it a portal/admin surface that must not be?
 - Which schema type genuinely fits the content?
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the routes the story's acceptance criteria and wireframes (gate `08`) add, and the SEO plans
+earlier stories settled in `src/12-SEO/`.
+
 _Done when the SEO flag is set and the intent is confirmed._
 
 ### Step 2 — Copy the template and set the header

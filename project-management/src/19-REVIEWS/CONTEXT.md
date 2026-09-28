@@ -23,7 +23,7 @@ created by copying `REVIEW-US000-TEMPLATE.md` when a story's PR is reviewed.
                                                           (18-TESTS · 19-REVIEWS · 20-FINDINGS · 21-BUGS · 22-REFACTORING)
 ```
 
-A review (18) is a **record-tier** artefact: it is written **after** the code ships, closing
+A review (19) is a **record-tier** artefact: it is written **after** the code ships, closing
 the loop on the `17-STORY-PLANS` plan the story was coded from and reading against the
 `18-TESTS` status.
 

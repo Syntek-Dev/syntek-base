@@ -40,6 +40,10 @@ the canonical home — and say so. If any axis still reads `TBD`, stop:
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` Section 10).
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story, its user flow and components (gates `05` and `07`), and the screens earlier stories
+settled in `src/08-WIREFRAMES/`.
+
 Ask about:
 
 - Which screens this story genuinely introduces, and which it only touches

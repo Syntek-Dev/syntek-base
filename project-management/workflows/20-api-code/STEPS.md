@@ -16,33 +16,39 @@ model: opus
 
 This workflow produces code — consult **both** layer reference files:
 
-| Step      | File                 | Section                                                                     |
-| --------- | -------------------- | --------------------------------------------------------------------------- |
-| All steps | `code/REFERENCES.md` | **Guides in code/docs/** → API-DESIGN.md, SECURITY.md, CODING-PRINCIPLES.md |
-| All steps | `code/REFERENCES.md` | **External — Framework & Language Docs → Backend** → Django Ninja           |
-| Tests     | `code/REFERENCES.md` | **External — Testing** → pytest, pytest-django                              |
-| Lint/type | `code/REFERENCES.md` | **External — Code Quality** → Ruff, basedpyright                            |
+| Step      | File                               | Section                                                                     |
+| --------- | ---------------------------------- | --------------------------------------------------------------------------- |
+| All steps | `code/REFERENCES.md`               | **Guides in code/docs/** → API-DESIGN.md, SECURITY.md, CODING-PRINCIPLES.md |
+| All steps | `code/REFERENCES.md`               | **External — Framework & Language Docs → Backend** → Django Ninja           |
+| Tests     | `code/REFERENCES.md`               | **External — Testing** → pytest, pytest-django                              |
+| Lint/type | `code/REFERENCES.md`               | **External — Code Quality** → Ruff, basedpyright                            |
+| 1         | `project-management/REFERENCES.md` | **Internal — Live Artefacts** → src/17-STORY-PLANS/, src/13-API-DESIGN/     |
 
 ---
 
 ## Steps
 
-### Step 1 — Grill, then Review the Service Layer and Story
+### Step 1 — Read the Story Plan, Service Layer and Story, then Grill
 
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> — the endpoint and contract details (read and
-write endpoints), the permission check guarding every mutating endpoint (OWASP A01)
-and ownership checks (no IDOR), and the error shapes returned before writing any code.
-
-Read the implemented service methods and the user story acceptance criteria.
+Read the story's plan in `project-management/src/17-STORY-PLANS/` first, then the specs it cites
+— the API design in `project-management/src/13-API-DESIGN/` among them. Then read the implemented
+service methods and the user story acceptance criteria.
 
 Before writing any API code, read:
 
 - `code/docs/api-design/NINJA-CONVENTIONS.md` — router and Schema design, endpoint patterns, pagination conventions
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` — service/endpoint separation (endpoints must not contain business logic)
 - `code/docs/security/AUTH-AND-AUTHZ.md` — permission check patterns and IDOR prevention requirements
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+interview <%DEVELOPER_NAME%> — the endpoint and contract details (read and
+write endpoints), the permission check guarding every mutating endpoint (OWASP A01)
+and ownership checks (no IDOR), and the error shapes returned before writing any code.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story plan and the ADRs and specs it cites.
 
 Identify:
 

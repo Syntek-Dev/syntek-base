@@ -36,6 +36,10 @@ invariants, PII fields and lawful basis, retention, and expected query shapes. R
 resolved terminology in the nearest `CONTEXT.md` glossary and hard-to-reverse calls as
 an ADR in `project-management/src/15-DECISIONS/`.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story, the resolved nodes behind its feature-map slice, and the schema earlier stories settled
+in `src/04-DATABASE/`.
+
 Then list all entities involved, their fields, data types, constraints, and how they
 relate to one another (one-to-many, many-to-many, etc.).
 

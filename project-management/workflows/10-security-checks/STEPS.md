@@ -26,13 +26,9 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ## Steps
 
-### Step 1 — Grill, then Review User Flows and Wireframes
+### Step 1 — Review User Flows and Wireframes, then Grill
 
 > **Model:** opus
-
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> about the trust boundaries, authentication points,
-and data touchpoints before reviewing the user flows and wireframes.
 
 Read the completed user flows in `project-management/src/05-USER-FLOW/` and wireframes in
 `project-management/src/08-WIREFRAMES/`. Identify all points where:
@@ -41,6 +37,14 @@ Read the completed user flows in `project-management/src/05-USER-FLOW/` and wire
 - Data is submitted, stored, or transmitted
 - Roles or permissions gate access to a screen or action
 - Third-party integrations are invoked
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+interview <%DEVELOPER_NAME%> about the trust boundaries, authentication points, and data
+touchpoints at those points.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's feature-map nodes and ADRs, its GDPR plan (gate `09`), and the flows and screens
+already designed for it (gates `05` and `08`).
 
 ### Step 2 — Threat Model (STRIDE)
 

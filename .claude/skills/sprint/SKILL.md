@@ -15,8 +15,8 @@ metadata:
 
 # Sprint Planning (<%PROJECT_NAME%>)
 
-**Task skill, inline** (axis 2 — three of its inputs are not derivable from the repository and
-have to be asked for). The backlog supplies points and dependencies; it never supplies the
+**Task skill, inline** (axis 2 — three of its inputs are not in the backlog and are asked for
+when the sprint record does not already hold them). The backlog supplies points and dependencies; it never supplies the
 sprint goal, and a fork that cannot ask would invent one.
 
 ---
@@ -28,9 +28,10 @@ Name what must be settled and wait — the round shape and question format belon
 
 **Read first, ask second.** Points, MoSCoW, dependencies and existing sprints are all in
 `project-management/src/02-STORIES/` and `03-SPRINTS/`; capacity and velocity are in
-`project-management/docs/PLANNING-GUIDE.md` and `.claude/MEMORY.md`. Three inputs are genuinely
-not there and must be asked for: the **sprint goal or theme**, any **release deadline**, and
-**carry-over** from an in-flight sprint.
+`project-management/docs/PLANNING-GUIDE.md` and `.claude/MEMORY.md`. Three inputs are not in
+the backlog: the **sprint goal or theme**, any **release deadline**, and **carry-over** from an
+in-flight sprint. A goal, a deadline or a carry-over already written into the `SPRINT-##.md` is a
+recorded answer (`grilling` → _A decision already recorded is a fact_).
 
 **A body of work too large to slice in one pass is charted first** — load the `wayfinder` skill
 and resolve its decision frontier before decomposing it.

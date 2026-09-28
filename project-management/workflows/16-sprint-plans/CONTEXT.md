@@ -28,7 +28,8 @@ It produces a sprint plan document that:
 ## Key concepts
 
 - Sprint plan documents live in `project-management/src/16-SPRINT-PLANS/`
-- Naming: `SPRINT-PLAN-##.md` (2-digit zero-padded sprint number)
+- Naming: `<exec-order>-SPRINT-PLAN-<sprint-number>.md`, both segments 2-digit zero-padded —
+  the prefix is build order, the suffix the sprint (`src/16-SPRINT-PLANS/CLAUDE.md` owns the rule)
 - Each plan records: goal, stories (MoSCoW), phase breakdown, and definition of done
 - Development phases within a sprint: backend → API → frontend → PR & review
 - The sprint plan is the single source of truth for what is in scope and how it is sequenced

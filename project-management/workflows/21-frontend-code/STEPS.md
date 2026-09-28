@@ -23,7 +23,7 @@ This workflow produces code — consult **both** layer reference files:
 | Styling    | `code/REFERENCES.md`               | **External — Framework & Language Docs → Styling** → CSS custom properties (MDN)                                                                   |
 | Tests      | `code/REFERENCES.md`               | **External — Testing** → pytest, pytest-django, factory_boy                                                                                        |
 | Standards  | `code/REFERENCES.md`               | **External — Security & Standards** → WCAG 2.2 AA                                                                                                  |
-| Artefacts  | `project-management/REFERENCES.md` | **Internal — Live Artefacts** → src/08-WIREFRAMES/, src/07-COMPONENTS/                                                                             |
+| Artefacts  | `project-management/REFERENCES.md` | **Internal — Live Artefacts** → src/17-STORY-PLANS/, src/08-WIREFRAMES/, src/07-COMPONENTS/                                                        |
 | **Mobile** | `code/REFERENCES.md`               | **Mobile-only** → `code/docs/accessibility/MOBILE.md`, `code/docs/design-tokens/MOBILE.md`, `code/src/mobile/CONTEXT.md`                           |
 
 ---
@@ -55,18 +55,13 @@ applying Django-template assumptions to React Native.
 
 ## Steps
 
-### Step 1 — Grill, then Review Wireframes and Component Designs
+### Step 1 — Read the Story Plan, Wireframes and Component Designs, then Grill
 
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> — the component structure (reuse from the
-django-components library vs new), the states to implement (default, hover, focus,
-disabled, error, empty), the interactions, whether each one runs on the server, through
-HTMX, or in Alpine, and the WCAG 2.2 AA accessibility requirements before building.
-
-Read the signed-off wireframes from `project-management/src/08-WIREFRAMES/` and the component
-designs in `project-management/src/07-COMPONENTS/` for the feature area.
+Read the story's plan in `project-management/src/17-STORY-PLANS/` first, then the specs it cites
+— the signed-off wireframes from `project-management/src/08-WIREFRAMES/` and the component
+designs in `project-management/src/07-COMPONENTS/` for the feature area among them.
 
 Before writing any code, read:
 
@@ -74,6 +69,15 @@ Before writing any code, read:
 - `code/docs/coding-principles/STYLE-AND-PROCESS.md` — component design rules, naming, single-responsibility
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA requirements for all interactive components
 - `code/docs/performance/FRONTEND-PERFORMANCE.md` — page weight, HTMX tuning, fragment caching, Core Web Vitals
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+interview <%DEVELOPER_NAME%> — the component structure (reuse from the
+django-components library vs new), the states to implement (default, hover, focus,
+disabled, error, empty), the interactions, whether each one runs on the server, through
+HTMX, or in Alpine, and the WCAG 2.2 AA accessibility requirements before building.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story plan and the ADRs and specs it cites.
 
 Identify:
 

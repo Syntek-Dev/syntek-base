@@ -22,29 +22,33 @@ This workflow produces code — consult **both** layer reference files:
 | 1–4  | `code/REFERENCES.md`               | **External — Framework & Language Docs → Backend** → Django 6.x, Django Ninja, Python 3.14                                                  |
 | 3, 7 | `code/REFERENCES.md`               | **External — Testing** → pytest, pytest-django                                                                                              |
 | 8    | `code/REFERENCES.md`               | **External — Code Quality** → Ruff, basedpyright                                                                                            |
-| 1    | `project-management/REFERENCES.md` | **Internal — Live Artefacts** → src/04-DATABASE/, src/02-STORIES/                                                                           |
+| 1    | `project-management/REFERENCES.md` | **Internal — Live Artefacts** → src/17-STORY-PLANS/, src/04-DATABASE/, src/02-STORIES/                                                      |
 
 ---
 
 ## Steps
 
-### Step 1 — Grill, then Read the Schema and Story
+### Step 1 — Read the Story Plan, Schema and Story, then Grill
 
 > **Model:** opus · **MCP:** code-review-graph (reference only)
 
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> — the implementation approach, the edge cases to
-guard, and the service boundaries (which app owns each model, which service methods are
-required) before writing any code.
-
-Review the approved schema document in `project-management/src/04-DATABASE/` and the
-corresponding user story in `project-management/src/02-STORIES/`.
+Read the story's plan in `project-management/src/17-STORY-PLANS/` first, then the specs it cites
+— the approved schema document in `project-management/src/04-DATABASE/` and the corresponding
+user story in `project-management/src/02-STORIES/` among them.
 
 Before writing any code, read:
 
 - `code/CONTEXT.md` — Django project structure and settings conventions
 - `code/docs/data-structures/SCHEMA-DESIGN.md` — model naming, field conventions, and indexing strategy
 - `code/docs/coding-principles/PRACTICAL-RULES.md` — transaction rules, error handling, function design
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+interview <%DEVELOPER_NAME%> — the implementation approach, the edge cases to
+guard, and the service boundaries (which app owns each model, which service methods are
+required) before writing any code.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story plan and the ADRs and specs it cites.
 
 Confirm:
 

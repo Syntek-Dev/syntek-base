@@ -34,6 +34,10 @@ interview <%DEVELOPER_NAME%> — the product area's boundaries, the roles and th
 entry points, the decision nodes and their success/failure outcomes, and every
 personal-data touchpoint — before mapping. Record hard-to-reverse calls as an ADR.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story, the resolved nodes behind its feature-map slice, the flows earlier stories settled in
+`src/05-USER-FLOW/`, and the threat findings already filed in `src/10-SECURITY/`.
+
 Review the in-scope user stories and group them by product area (e.g. auth, client portal,
 public pages, admin content). Confirm which area this flow document covers.
 

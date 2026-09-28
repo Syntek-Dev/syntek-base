@@ -1,4 +1,4 @@
-# Workflow 16 — Story Plans
+# Workflow 17 — Story Plans
 
 **Last Updated**: <%DATE%>
 

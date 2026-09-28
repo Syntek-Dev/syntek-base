@@ -79,7 +79,7 @@ and reports two warnings: one device stamped **down a screen**, and one signatur
 **across the set**. It needs no stack; a wireframe opens over `file://`. Without Chromium it
 reports success with a note, so it never blocks anyone who has not installed it.
 
-**Stage 1 is not gated.** `USER-STORY-IDEAS/` holds one screen per story and is frozen once `17`
+**Stage 1 is not gated.** `USER-STORY-IDEAS/` holds one screen per story and is frozen once `18`
 runs; a page-set clause has nothing to say about a single screen, and a gate there would invite
 edits to an audit trail the PM layer says is never rewritten.
 

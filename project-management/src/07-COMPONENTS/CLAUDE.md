@@ -36,7 +36,7 @@ and the one cumulative PDF deliverable in `component-build/`.
   empty. A component designed only in its resting state is not designed.
 - **WCAG 2.2 AA is a gate.** Focus indicators, contrast, and target size are part of the design,
   not a later pass (`code/docs/ACCESSIBILITY.md`).
-- **Never edit `USER-STORY-IDEAS/` once `17` has run.**
+- **Never edit `USER-STORY-IDEAS/` once `18` has run.**
 - **Keep the palette identical to `../06-BRAND-GUIDE/`** — consolidate the two together.
 - **Generated artefacts are never hand-edited** — change `components.py` or a partial and re-run;
   a hand-edit breaks `--check`.

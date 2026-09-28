@@ -34,17 +34,24 @@ model: opus
 
 ## Steps
 
-### Step 1 — Grill, then Scope the Pass
+### Step 1 — Scope the Pass, then Grill
 
 > **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+**Which of the five folders accumulated work this cycle is measured, not asked.** List
+`USER-STORY-IDEAS/` in each of `src/04`–`src/08` against this cycle's planned stories: a folder
+holding an artefact of theirs is in scope, and one holding none is out.
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%>:
 
-- Which of the five folders genuinely accumulated work this cycle?
 - What counts as a collision here — identical concept only, or near-neighbours too?
 - How aggressively to merge: one canonical component with variants, or several siblings?
 - Anything already known to be contentious between two stories?
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the `USER-STORY-IDEAS/` folders of `src/04`–`src/08`, each planned story's story plan, the ADRs in
+`src/15-DECISIONS/`, and the feature maps in `src/01-FEATURE-MAPS/`.
 
 ### Step 2 — Inventory Stage 1
 

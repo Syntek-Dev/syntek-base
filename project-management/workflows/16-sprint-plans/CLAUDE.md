@@ -9,24 +9,29 @@ then `CHECKLIST.md`.
 ## Purpose (one line)
 
 The detailed sprint-planning workflow — after GDPR, security, and QA checks are
-complete, select and sequence the stories entering a sprint into a `SPRINT-PLAN-##.md`
-in `src/16-SPRINT-PLANS/`, assigning each to the backend → API → frontend phase chain.
+complete, select and sequence the stories entering a sprint into a
+`<exec-order>-SPRINT-PLAN-<sprint-number>.md` in `src/16-SPRINT-PLANS/`, assigning each to the
+backend → API → frontend phase chain.
 
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive with the `sprint`
   skill. The hard gate `docs/PLANNING-GUIDE.md` (MoSCoW + phase
   breakdown) must be read before Step 1. Prerequisites: GDPR
-  (`workflows/09-gdpr-compliance`), security (`09`), and QA (`10`) all complete, and
+  (`workflows/09-gdpr-compliance`), security (`10`), and QA (`11`) all complete, and
   every in-scope story with full acceptance criteria.
 - **Model:** Opus throughout — the plan is substantive judgement; version-header bumps and
   status flips are mechanical touches.
-- **Concrete steps:** read `docs/PLANNING-GUIDE.md` → select stories, prioritise
+- **Concrete steps:** grill <%DEVELOPER_NAME%> on the Step 0 questions
+  (`.claude/skills/grill-with-docs`), drawing the round from the recorded answers
+  (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_)
+  → read `docs/PLANNING-GUIDE.md` → select stories, prioritise
   MoSCoW, record goal, phase breakdown, acceptance criteria, QA scenarios, and
-  definition of done per story → write `SPRINT-PLAN-##.md` into `src/16-SPRINT-PLANS/`
-  → satisfy `CHECKLIST.md`.
+  definition of done per story → write `<exec-order>-SPRINT-PLAN-<sprint-number>.md` into
+  `src/16-SPRINT-PLANS/` → satisfy `CHECKLIST.md`.
 - **Definition of done:** the plan is the single source of truth for what is in scope
-  and how it is sequenced; it unlocks story planning and the development phases (`workflows/16`→`22`).
+  and how it is sequenced; it unlocks story planning and the development phases
+  (`workflows/17`→`23`).
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails
@@ -40,8 +45,9 @@ in `src/16-SPRINT-PLANS/`, assigning each to the backend → API → frontend ph
 
 ## Output & naming
 
-- **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the plan `SPRINT-PLAN-##.md`
-  (2-digit zero-padded) under `src/16-SPRINT-PLANS/`, cross-linked to its `SPRINT-##`
-  and constituent `US###`.
+- **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the plan
+  `<exec-order>-SPRINT-PLAN-<sprint-number>.md` (both segments 2-digit zero-padded — rule:
+  `src/16-SPRINT-PLANS/CLAUDE.md`) under `src/16-SPRINT-PLANS/`, cross-linked to its
+  `SPRINT-##` and constituent `US###`.
 - Documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.

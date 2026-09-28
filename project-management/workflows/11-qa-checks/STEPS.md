@@ -35,6 +35,9 @@ interview <%DEVELOPER_NAME%> — the test scope, the highest-risk areas, and the
 scenarios to cover (happy path, error states, edge cases, accessibility) before writing
 the QA plan.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's acceptance criteria, its security findings in `src/10-SECURITY/`, and its wireframes.
+
 Open `project-management/src/02-STORIES/` and identify every user story covered by the completed
 wireframes. This is the scope for the QA review.
 

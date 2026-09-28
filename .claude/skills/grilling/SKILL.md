@@ -92,6 +92,8 @@ Rules for the format:
 - **Open-ended is allowed** where options would be invented — drop the list, keep the title
   and the recommendation.
 - <%DEVELOPER_NAME%> answers by number, or overrides freely. Both are normal.
+- **The round opens with its `Settled` lines**, one per pre-answered question, before `Q1`
+  (_A decision already recorded is a fact_, below).
 
 ## Facts you look up; decisions you ask
 
@@ -107,6 +109,32 @@ ask <%DEVELOPER_NAME%> for it.
 **Never block a round on a lookup.** Treat a lookup still in flight exactly as you treat an
 unanswered question: it blocks whatever depends on it and nothing else. Send the rest of the
 round immediately.
+
+### A decision already recorded is a fact
+
+Most questions a gate asks were settled upstream, and the answer is written down: in the
+`project-management/src/` artefacts from feature map to story plan, in the per-project registers
+under `how-to/src/`, in the decisions `grill-with-docs` wrote into them, and earlier in this
+conversation. Reading those is part of mapping the tree (step 1), so it happens **before** the
+round is drawn, and every question one of them answers leaves the frontier. A wider search you
+dispatch follows the lookup rule above: it holds back only the questions it may answer, and the
+rest of the round goes out.
+
+- **Show what was pre-answered, then ask the residue.** Open the round with one line per settled
+  question — `**Settled — <title>:** <answer> (<path:line> or "this conversation")` — so a
+  wrong reading can be corrected in one reply. Put to <%DEVELOPER_NAME%> only what no record decides.
+- **A first-pass value scopes the round; it never answers a question in it.** A story's FLAGS
+  row or a slice's manifest says which gate runs and what to look at first — the gate owns the
+  design (`project-management/docs/planning/CADENCE.md` →
+  _The flags are the gate entry conditions_).
+- **A recorded decision is re-opened only on contrary evidence.** When the tree contradicts it —
+  a count has moved, a file it depends on has changed — ask, citing both the record and the
+  evidence. Never re-ask a settled question merely because the procedure lists it.
+- **An empty residue is a normal outcome.** Say that nothing is left to ask, and confirm the
+  settled design, rather than inventing a question to have one.
+
+A workflow or skill that opens a grilling pass may name where its own answers are usually
+recorded; it routes here for the rule and never restates it.
 
 ## What to grill (by design surface)
 
@@ -128,7 +156,7 @@ remits, so grilling and the skill stay in step:
 ## Anti-patterns
 
 - **Trickling and front-loading** — the two round failures in step 2.
-- Asking questions whose answers are discoverable.
+- Asking questions whose answers are discoverable, including a decision a record already holds.
 - Accepting a vague answer — restate it precisely and confirm before moving on.
 - **Sycophancy** — never soften a recommendation because <%DEVELOPER_NAME%> leaned the other
   way; phrase questions neutrally and give your honest best answer (see

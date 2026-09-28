@@ -19,7 +19,7 @@ project-management/src/20-FINDINGS/
 The `src/` folders run in three tiers: **15-DECISIONS → 16-SPRINT-PLANS → 17-STORY-PLANS →
 code → 18–22 records**. This folder is a **record** (18-TESTS, 19-REVIEWS, **20-FINDINGS**,
 21-BUGS, 22-REFACTORING) — written _after_ code exists, closing the loop on the story plan
-(15) the developer coded from.
+(17) the developer coded from.
 
 It is deliberately distinct from its siblings:
 

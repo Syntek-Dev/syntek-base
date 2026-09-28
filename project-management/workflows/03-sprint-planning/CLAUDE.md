@@ -43,4 +43,5 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 
 - **Hand-written:** the sprint record and `STEPS.md`/`CHECKLIST.md` updates.
 - High-level records `SPRINT-##.md` in `src/03-SPRINTS/`; detailed plans
-  `SPRINT-PLAN-##.md` live under `src/16-SPRINT-PLANS/`; dates DD/MM/YYYY.
+  `<exec-order>-SPRINT-PLAN-<sprint-number>.md` live under `src/16-SPRINT-PLANS/` (rule:
+  `src/16-SPRINT-PLANS/CLAUDE.md`); dates DD/MM/YYYY.

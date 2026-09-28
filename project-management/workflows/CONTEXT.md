@@ -3,7 +3,7 @@
 **Last Updated**: <%DATE%>
 
 Twenty-four numbered procedures, and here the numbers really are the running order: `02`–`15`
-run per story, `15`–`16` per sprint, `17` once the backlog is planned, and `18`–`23` build and
+run per story, `16`–`17` per sprint, `18` once the backlog is planned, and `19`–`24` build and
 ship it.
 
 ## Why this layer exists
@@ -75,7 +75,7 @@ set of stories, the same way each story informs the next. Rules and the ceiling:
 
 **Then consolidate.** Planning per story means design work arrives per story: five stories
 produce five sets of tables, flows, tokens, components, and screens, and they will drift.
-That is the accepted cost of the loop, not an accident. Once every story is through `16`,
+That is the accepted cost of the loop, not an accident. Once every story is through `17`,
 `18-consolidate-design-work` reconciles the accumulated per-story work into one coherent
 design. Only then does implementation begin.
 
@@ -84,7 +84,7 @@ Design and schema folders (`src/04`–`src/08`) carry that three-stage shape dir
 ```text
 USER-STORY-IDEAS/   →   CONSOLIDATED-IDEAS/   →   IMPLEMENTATION/
   stage 1, per story      stage 2, workflow 18      what shipped
-  frozen once 16 runs
+  frozen once 18 runs
 ```
 
 ## Directory Tree
@@ -117,7 +117,7 @@ project-management/workflows/
 ├── 16-sprint-plans/            ← on sprint fill: the detailed sprint plan
 ├── 17-story-plans/             ← on sprint fill: the per-story implementation plan
 │
-│   ── Consolidate (17) ──
+│   ── Consolidate (18) ──
 ├── 18-consolidate-design-work/ ← unify the per-story design + schema work, once
 │
 │   ── Implement (19–21) ──

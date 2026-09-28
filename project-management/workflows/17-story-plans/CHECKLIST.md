@@ -43,6 +43,8 @@ Use this checklist to verify the story plan is complete before implementation be
 
 ## Technical Approach
 
+- [ ] Step 1 drew its round from the recorded answers
+      (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_)
 - [ ] Problem Statement, Reference Documents gate map, and Approach are complete for every
       in-scope layer
 - [ ] Architecture Decision section links a new or existing ADR where the story makes a

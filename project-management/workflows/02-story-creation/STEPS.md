@@ -56,6 +56,10 @@ the success signal, constraints and dependencies, priority, and at least one edg
 case — before drafting. Always grill when the feature touches personal data, permissions,
 or money. Record the resolved behaviour straight into the story's Gherkin acceptance criteria.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the slice row's `Nodes` and `Acceptance`, the map's `## Resolved decisions`, `## Register claimed`
+and `## Session log`, and `GAPS.md` / `DEFERRED.md`.
+
 ### Step 1a — Fill the FLAGS table
 
 > **Model:** opus

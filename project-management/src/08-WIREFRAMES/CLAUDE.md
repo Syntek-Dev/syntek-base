@@ -38,7 +38,7 @@ the consolidated components (`CONSOLIDATED-IDEAS/`), the per-story record of wha
   colour or spacing literal. Rebrand via `SHARED/wireframe.css`.
 - **Stage 2 rebuilds on the consolidated components.** A consolidated screen still carrying a
   story's bespoke card or badge has not been consolidated.
-- **Never edit `USER-STORY-IDEAS/` once `17` has run.**
+- **Never edit `USER-STORY-IDEAS/` once `18` has run.**
 - **A mobile wireframe must not depend on hover, scrollbars, or browser chrome** — none exists
   natively, so intent carried by them does not survive the crossing.
 - **Keep the palette in step with `../06-BRAND-GUIDE/` and `../07-COMPONENTS/`** so the design

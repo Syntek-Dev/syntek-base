@@ -67,6 +67,10 @@ what happens if we do nothing, and who owns the call. Not every choice needs an 
 it for a decision hard to reverse, or that a later decision would need to explicitly
 supersede. A call the implementer should just make does not belong here — say so and move on.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's own `## Decisions` candidates, the `04`–`14` plans written for it, and its feature
+map's settled nodes and umbrella ADRs.
+
 ### Step 5 — Copy the template for each record this gate writes
 
 Copy `src/15-DECISIONS/ADR-US000-TEMPLATE.md` to

@@ -23,8 +23,10 @@ into one coherent design under `CONSOLIDATED-IDEAS/`, before any code is written
   itself a decision frontier — load `.claude/skills/wayfinder/SKILL.md` and chart it rather than
   attempting one grilling pass over everything. The feature's original map
   (`src/01-FEATURE-MAPS/MAP-<FEATURE>.md`) is the natural place to resume.
-- **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`) — which
-  folders are genuinely in play, what counts as a collision, and how aggressively to merge.
+- **Measure, then grill:** Step 1 measures which of the five folders are in play — never asks
+  — then grills (`.claude/skills/grill-with-docs`) what counts as a collision and how
+  aggressively to merge
+  (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_).
 - **Model:** Opus throughout — resolving two stories' competing models of the same
   concept is design judgement, not a mechanical merge; only the tail is mechanical:
   re-running a generator, a rename, a cross-link, a status flip.

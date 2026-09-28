@@ -33,7 +33,7 @@ reconciled into (`CONSOLIDATED-IDEAS/`), the per-story record of what shipped
   produces a deliverable that churns without ever being decided.
 - **Generated artefacts are never hand-edited.** `brand-guide.tex` and `brand-guide.pdf` come
   from `brand_guide.py`; change a token and re-run. A hand-edit breaks `--check`.
-- **Never edit `USER-STORY-IDEAS/` once `17` has run** — stage 1 is the frozen record of what
+- **Never edit `USER-STORY-IDEAS/` once `18` has run** — stage 1 is the frozen record of what
   each story asked for.
 - **Token-first.** For values that also live in code the DB-canonical token layer is
   authoritative (`code/docs/DESIGN-TOKENS.md`); this folder documents the brand, it does not
